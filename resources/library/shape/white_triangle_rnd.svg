@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 13.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="141.28px"
+   height="125.158px"
+   viewBox="0 0 141.28 125.158"
+   enable-background="new 0 0 141.28 125.158"
+   xml:space="preserve"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="red_triangle_rnd.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"><metadata
+   id="metadata10994"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+   id="defs10992"><inkscape:perspective
+   sodipodi:type="inkscape:persp3d"
+   inkscape:vp_x="0 : 62.578999 : 1"
+   inkscape:vp_y="0 : 1000 : 0"
+   inkscape:vp_z="141.28 : 62.578999 : 1"
+   inkscape:persp3d-origin="70.639999 : 41.719332 : 1"
+   id="perspective10996" />
+	
+	
+<linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_1_"
+   id="linearGradient11519"
+   gradientUnits="userSpaceOnUse"
+   x1="2.8071001"
+   y1="61.339401"
+   x2="134.26221"
+   y2="61.339401" /><linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_2_"
+   id="linearGradient11521"
+   gradientUnits="userSpaceOnUse"
+   x1="2.8071001"
+   y1="61.339401"
+   x2="134.26221"
+   y2="61.339401" />
+		<linearGradient
+   id="SVGID_1_"
+   gradientUnits="userSpaceOnUse"
+   x1="2.8071001"
+   y1="61.339401"
+   x2="134.26221"
+   y2="61.339401">
+			<stop
+   offset="0"
+   style="stop-color:#FF897A"
+   id="stop10978" />
+			<stop
+   offset="1"
+   style="stop-color:#FF3400"
+   id="stop10980" />
+		</linearGradient>
+		
+		<linearGradient
+   id="SVGID_2_"
+   gradientUnits="userSpaceOnUse"
+   x1="2.8071001"
+   y1="61.339401"
+   x2="134.26221"
+   y2="61.339401">
+			<stop
+   offset="0"
+   style="stop-color:#FF897A"
+   id="stop10985" />
+			<stop
+   offset="1"
+   style="stop-color:#FF3400"
+   id="stop10987" />
+		</linearGradient>
+		
+	<linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_2_"
+   id="linearGradient11530"
+   gradientUnits="userSpaceOnUse"
+   x1="2.8071001"
+   y1="61.339401"
+   x2="134.26221"
+   y2="61.339401" /><linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_1_"
+   id="linearGradient11533"
+   gradientUnits="userSpaceOnUse"
+   x1="2.8071001"
+   y1="61.339401"
+   x2="134.26221"
+   y2="61.339401" />
+		
+		
+	</defs><sodipodi:namedview
+   inkscape:window-height="970"
+   inkscape:window-width="1680"
+   inkscape:pageshadow="2"
+   inkscape:pageopacity="0.0"
+   guidetolerance="10.0"
+   gridtolerance="10.0"
+   objecttolerance="10.0"
+   borderopacity="1.0"
+   bordercolor="#666666"
+   pagecolor="#ffffff"
+   id="base"
+   showgrid="false"
+   inkscape:zoom="3.8671121"
+   inkscape:cx="19.956182"
+   inkscape:cy="62.578999"
+   inkscape:window-x="-8"
+   inkscape:window-y="-8"
+   inkscape:current-layer="Layer_1" />
+
+<g
+   id="g11537">
+   
+     
+     <path
+     style="opacity:0.25;fill-rule:evenodd"
+     id="path10971"
+     d="M 72.229,121.835 L 13.992,121.834 C 7.42,121.833 4.591,116.935 7.877,111.242 L 36.995,60.805 L 66.115,10.37 C 69.401,4.678 75.059,4.678 78.345,10.37 L 107.465,60.805 L 136.582,111.242 C 139.869,116.934 137.039,121.833 130.468,121.834 L 72.229,121.835 z"
+     clip-rule="evenodd" /><path
+     style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-opacity:1;fill-opacity:1"
+     id="path10982"
+     d="M 68.535,119.206 L 10.297,119.205 C 3.725,119.204 0.896,114.306 4.182,108.613 L 33.3,58.176 L 62.42,7.742 C 65.705,2.05 71.363,2.05 74.65,7.742 L 103.769,58.177 L 132.887,108.614 C 136.173,114.306 133.344,119.205 126.773,119.206 L 68.535,119.206 z"
+     clip-rule="evenodd" /></g>
+</svg>

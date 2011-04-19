@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		xmlns:ub="http://uniboard.mnemis.com/widgets"
+        identifier="http://uniboard.mnemis.com/widgets/wiktionary" 
+        version="1.2"
+        width="350"
+        height="450"
+        ub:resizable="true">
+      
+  		<name>Wiktionary</name>
+		<author href="http://www.getuniboard.com"
+	            email="info@mnemis.com">Mnemis SA</author>
+		<description>Wikipedia, the free encyclopedia</description>
+
+        <content src="http://web.getuniboard.com/widgets/wiktionary/wikibot.html"/>
+</widget>

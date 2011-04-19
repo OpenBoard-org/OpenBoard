@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<podcast>
+  <title>{title}</title>
+  <description>{description}</description>
+  <author>{author}</author>
+  <pubDate>{publicationISODateTime}</pubDate>
+  <duration>{duration}</duration>
+  <fileName>{fileName}</fileName>
+  <filePath>{filePath}</filePath>
+  <computerName>{computerName}</computerName>
+  <fileSize>{fileSize}</fileSize>
+</podcast>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 13.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="153.157px"
+   height="137.618px"
+   viewBox="0 0 153.157 137.618"
+   enable-background="new 0 0 153.157 137.618"
+   xml:space="preserve"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="red_bubble_speak.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"><metadata
+   id="metadata4802"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+   id="defs4800"><inkscape:perspective
+   sodipodi:type="inkscape:persp3d"
+   inkscape:vp_x="0 : 68.808998 : 1"
+   inkscape:vp_y="0 : 1000 : 0"
+   inkscape:vp_z="153.157 : 68.808998 : 1"
+   inkscape:persp3d-origin="76.578499 : 45.872665 : 1"
+   id="perspective4804" />
+	
+	
+<linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_2_"
+   id="linearGradient4813"
+   gradientUnits="userSpaceOnUse"
+   x1="3.0297999"
+   y1="68.174797"
+   x2="147.0679"
+   y2="68.174797" />
+		<linearGradient
+   id="SVGID_2_"
+   gradientUnits="userSpaceOnUse"
+   x1="3.0297999"
+   y1="68.174797"
+   x2="147.0679"
+   y2="68.174797">
+	<stop
+   offset="0"
+   style="stop-color:#FFFFFF"
+   id="stop4795" />
+		</linearGradient>
+		
+	<linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_2_"
+   id="linearGradient4818"
+   gradientUnits="userSpaceOnUse"
+   x1="3.0297999"
+   y1="68.174797"
+   x2="147.0679"
+   y2="68.174797" />
+		
+		
+	</defs><sodipodi:namedview
+   inkscape:window-height="669"
+   inkscape:window-width="640"
+   inkscape:pageshadow="2"
+   inkscape:pageopacity="0.0"
+   guidetolerance="10.0"
+   gridtolerance="10.0"
+   objecttolerance="10.0"
+   borderopacity="1.0"
+   bordercolor="#666666"
+   pagecolor="#ffffff"
+   id="base"
+   showgrid="false"
+   inkscape:zoom="3.5169819"
+   inkscape:cx="76.578499"
+   inkscape:cy="68.808998"
+   inkscape:window-x="69"
+   inkscape:window-y="69"
+   inkscape:current-layer="Layer_1" />
+
+<g
+   id="g4822">
+   
+
+     
+     <path
+     style="opacity:0.25;fill-rule:evenodd"
+     id="path4788"
+     d="M 6.725,13.982 C 6.725,9.142 10.647,5.22 15.485,5.22 L 142.002,5.22 C 146.84,5.22 150.763,9.142 150.763,13.982 L 150.763,96.928 C 150.763,101.768 146.84,105.692 142.002,105.692 L 106.732,105.692 L 86.625,136.387 L 86.625,105.692 L 15.485,105.692 C 10.647,105.692 6.725,101.768 6.725,96.928 L 6.725,13.982 z"
+     clip-rule="evenodd" /><path
+     style="fill:url(#linearGradient4818);fill-rule:evenodd;stroke:#000000"
+     id="path4797"
+     d="M 3.03,11.353 C 3.03,6.513 6.952,2.591 11.791,2.591 L 138.307,2.591 C 143.146,2.591 147.069,6.513 147.069,11.353 L 147.069,94.3 C 147.069,99.138 143.146,103.062 138.307,103.062 L 103.038,103.062 L 82.93,133.759 L 82.93,103.062 L 11.791,103.062 C 6.952,103.062 3.03,99.138 3.03,94.3 L 3.03,11.353 L 3.03,11.353 z"
+     clip-rule="evenodd" /></g>
+</svg>

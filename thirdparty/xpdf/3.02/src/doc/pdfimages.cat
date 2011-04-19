@@ -1,0 +1,85 @@
+pdfimages(1)                                                      pdfimages(1)
+
+
+
+NAME
+       pdfimages  -  Portable  Document  Format (PDF) image extractor (version
+       3.02)
+
+SYNOPSIS
+       pdfimages [options] PDF-file image-root
+
+DESCRIPTION
+       Pdfimages saves images from a Portable Document Format  (PDF)  file  as
+       Portable Pixmap (PPM), Portable Bitmap (PBM), or JPEG files.
+
+       Pdfimages  reads  the  PDF file, scans one or more pages, PDF-file, and
+       writes one PPM, PBM, or JPEG file for each  image,  image-root-nnn.xxx,
+       where  nnn  is  the image number and xxx is the image type (.ppm, .pbm,
+       .jpg).
+
+       NB: pdfimages extracts the raw image data from the  PDF  file,  without
+       performing  any  additional  transforms.  Any rotation, clipping, color
+       inversion, etc. done by the PDF content stream is ignored.
+
+CONFIGURATION FILE
+       Pdfimages reads a configuration file at startup.   It  first  tries  to
+       find the user's private config file, ~/.xpdfrc.  If that doesn't exist,
+       it looks for a system-wide config file, typically /usr/local/etc/xpdfrc
+       (but  this  location  can be changed when pdfimages is built).  See the
+       xpdfrc(5) man page for details.
+
+OPTIONS
+       Many of the following options can be set with configuration  file  com-
+       mands.  These are listed in square brackets with the description of the
+       corresponding command line option.
+
+       -f number
+              Specifies the first page to scan.
+
+       -l number
+              Specifies the last page to scan.
+
+       -j     Normally, all images are written as PBM (for monochrome  images)
+              or  PPM  (for  non-monochrome  images) files.  With this option,
+              images in DCT format are  saved  as  JPEG  files.   All  non-DCT
+              images are saved in PBM/PPM format as usual.
+
+       -opw password
+              Specify  the  owner  password  for the PDF file.  Providing this
+              will bypass all security restrictions.
+
+       -upw password
+              Specify the user password for the PDF file.
+
+       -q     Don't print any messages or errors.  [config file: errQuiet]
+
+       -v     Print copyright and version information.
+
+       -h     Print usage information.  (-help and --help are equivalent.)
+
+EXIT CODES
+       The Xpdf tools use the following exit codes:
+
+       0      No error.
+
+       1      Error opening a PDF file.
+
+       2      Error opening an output file.
+
+       3      Error related to PDF permissions.
+
+       99     Other error.
+
+AUTHOR
+       The pdfimages software and documentation are copyright 1998-2007  Glyph
+       & Cog, LLC.
+
+SEE ALSO
+       xpdf(1),    pdftops(1),    pdftotext(1),    pdfinfo(1),    pdffonts(1),
+       pdftoppm(1), xpdfrc(5)
+       http://www.foolabs.com/xpdf/
+
+
+
+                               27 February 2007                   pdfimages(1)

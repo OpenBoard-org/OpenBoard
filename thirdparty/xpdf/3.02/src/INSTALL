@@ -1,0 +1,248 @@
+Xpdf
+====
+
+version 3.02
+2007-feb-27
+
+The Xpdf software and documentation are
+copyright 1996-2007 Glyph & Cog, LLC.
+
+Email: derekn@foolabs.com
+WWW: http://www.foolabs.com/xpdf/
+
+
+Compiling xpdf
+--------------
+
+Xpdf is written in C++ (with a little bit of C).  It should work with
+any ANSI-compliant C++ and C compilers.  The systems and compilers
+it's been tested with are listed on the xpdf web page.
+
+Xpdf requires the Motif (or Lesstif) toolkit.
+
+The following notes give specific instructions for compiling on
+different systems.
+
+
+**************
+***  UNIX  ***
+**************
+
+* Install t1lib (if desired).  The resulting library (libt1) and
+  include files (t1lib.h and t1libx.h) should be placed somewhere on
+  the standard search paths.  Alternatively, when you configure xpdf,
+  you can use the following options to tell configure where to find
+  the t1lib files:
+
+    --with-t1-library=PATH
+    --with-t1-includes=PATH
+
+* Install FreeType 2 (this is required).  WARNING: You must have
+  version 2.0.5 or newer.  Some older versions of XFree86 ship with an
+  older version of FreeType, which means you'll need to explicitly set
+  include and library paths to get the correct version:
+
+    --with-freetype2-library=PATH
+    --with-freetype2-includes=PATH
+
+  (The include path is the directory which contains the freetype2
+  directory, i.e., do NOT include "freetype2" in the
+  --with-freetype2-includes path.  For example, with the default
+  installation, the library path is /usr/local/lib and the include
+  path is /usr/local/include/freetype2.)
+
+* If you have Motif (or Lesstif) installed in a non-standard place,
+  you can use the following options to tell configure where to find
+  it:
+
+    --with-Xm-library=PATH
+    --with-Xm-includes=PATH
+
+* Run the configure script:
+
+    ./configure
+
+  This should produce a set of makefiles customized for your system.
+  The configure script accepts the following options (in addition to
+  the usual things accepted by autoconf configure scripts):
+
+    --prefix=PREFIX
+        Changes the directory where xpdf is installed.  The default is
+        /usr/local.
+
+    --enable-a4-paper
+        Switches the default paper size for PostScript output (xpdf
+        and pdftops) to A4.  The default is Letter size.
+
+    --enable-no-text-select
+        With this option, xpdf will not copy text.  (This is only
+        useful on closed systems where the user can't get at the PDF
+        file directly.)
+
+    --enable-opi
+        Enables support for generation of OPI (Open Prepress
+        Interface) comments with pdftops.
+
+    --sysconfdir=DIR
+        Look for the system-wide xpdfrc config file in this directory.
+        The default is PREFIX/etc.
+
+    --with-appdef-dir=DIR
+        Use the specified app-defaults directory.  The default is
+        /usr/lib/X11/app-defaults.
+
+  If you need to pass specific options to the C and/or C++ compiler,
+  you can set the CFLAGS and/or CXXFLAGS environment variables before
+  running the configure script.  Any options given that way will be
+  added to the CFLAGS/CXXFLAGS used by all of the Xpdf makefiles.
+
+* Type 'make'.  This should build the executables:
+
+    xpdf/xpdf
+    xpdf/pdftops
+    xpdf/pdftotext
+    xpdf/pdfinfo
+    xpdf/pdffonts
+    xpdf/pdftoppm
+    xpdf/pdfimages
+
+* If desired, type 'make install' to install the binaries and man
+  pages.
+
+The old Makefile.config and Makefiles are no longer provided or
+supported.  If you really want to manually configure Xpdf (which is
+not recommended), the files that need to be created are aconf.h,
+Makefile, goo/Makefile, fofi/Makefile, splash/Makefile, and
+xpdf/Makefile, all of which are generated from the corresponding '.in'
+files.
+
+If you want to run a quick test, there is a tiny PDF file included
+with xpdf, as misc/hello.pdf .
+
+
+*************
+***  VMS  ***
+*************
+
+* The 'stddef.h' include file which comes with older versions of gcc
+  may be missing a definition for wchar_t.  In this case, add the
+  following lines:
+  -----
+  File GNU_CC:[INCLUDE]STDDEF.H;2
+   44   /* Wide characters, not yet supported by VAXCRTL [match VAXC's <stddef.
+   45   #if !defined(_WCHAR_T) && !defined(_WCHAR_T_)
+   46   typedef unsigned int wchar_t;
+   47   #endif
+   48   #define _WCHAR_T
+   49   #define _WCHAR_T_
+   50
+  -----
+
+* Read the instructions at the top of vms_make.com.
+
+* Type '@vms_make' in the top-level directory.  You'll probably want
+  to use some of the options described in the file.
+
+* The executables will be left in '[.xpdf]'.
+
+If you want to run a quick test, there is a tiny PDF file included
+with xpdf, as misc/hello.pdf .
+
+
+**************
+***  OS/2  ***
+**************
+
+Xpdf is known to run under OS/2 with the EMX runtime environment and
+XFree86.  Using a proper autoconf port you can generate a valid
+configure script version.
+
+
+***************
+***  Win32  ***
+***************
+
+The non-X programs (pdftops, pdftotext, pdfinfo, pdffonts, pdfimages,
+and pdftoppm) will compile with both gcc (from cygwin), djgpp (the
+Delorie port of gcc) and Microsoft Visual C++.
+
+With cygwin, the build procedure is the same as for Unix:
+
+  * Open a shell.
+
+  * ./configure
+
+  * make
+
+  * make install
+
+It is also possible to build the Xpdf viewer with the cygwin XFree86
+port (thanks to Michael A. Richmond for these instructions):
+
+  * make sure you have the lesstif, XFree86-base, and XFree86-prog
+    cygwin packages installed (all from the "XFree86" category)
+
+  * to build t1lib:
+    - cd T1Lib-x.y
+    - ./configure --without-x
+    - make without_doc
+    - make install
+    (this should install /usr/local/include/t1lib.h and
+    /usr/local/lib/libt1.a)
+
+  * to build xpdf:
+    - cd xpdf-x.yy
+    - ./configure --with-t1-library=/usr/local/lib
+        --with-t1-includes=/usr/local/include
+        --with-freetype2-library=/usr/X11R6/lib
+        --with-freetype2-includes=/usr/X11R6/include/freetype2
+        --with-Xm-library=/usr/X11R6/lib
+        --with-Xm-includes=/usr/X11R6/include
+      (all on one line)
+    - make
+    (this should build xpdf.exe, in addition to the command line
+    utilities)
+
+With djgpp:
+
+  * Open a DOS window.
+
+  * ./dj_make
+
+  * djgpp is a DOS/Windows port of gcc, available from
+    http://www.delorie.com/
+
+With djgpp, for DOS 6 (instead of Win32):
+
+  * ./dj_make
+
+  * cd xpdf
+
+  * strip pdftops.exe
+
+  * exe2coff pdftops.exe
+
+  * copy /B c:\djgpp\bin\cwsdstub.exe+pdftops pdftops.exe
+
+  * upx pdftops.exe
+    - if you want compressed executables
+
+  * and similarly for the other executables
+
+  * cwsdstub.exe comes from djgpp/v2misc/csdpmi5b.zip on any of the
+    djgpp ftp mirrors; exe2coff is part of the standard djgpp install
+
+  * upx comes from http://upx.sourceforge.net/
+
+With the Microsoft tools:
+
+  * Open a DOS window.
+
+  * Type "cl".  If you get the message "Bad command or file name", you
+    must run VCVARS32.BAT. (The location of this BAT file can be
+    determined with Explorer.)
+
+  * Type "ms_make"
+
+The dj_make and ms_make scripts don't build pdftoppm -- you'll need to
+install t1lib and FreeType 2 before you can compile pdftoppm.

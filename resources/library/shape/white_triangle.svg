@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 13.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="138.629px"
+   height="121.897px"
+   viewBox="0 0 138.629 121.897"
+   enable-background="new 0 0 138.629 121.897"
+   xml:space="preserve"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="blue_triangle.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"><metadata
+   id="metadata9827"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+   id="defs9825"><inkscape:perspective
+   sodipodi:type="inkscape:persp3d"
+   inkscape:vp_x="0 : 60.948502 : 1"
+   inkscape:vp_y="0 : 1000 : 0"
+   inkscape:vp_z="138.629 : 60.948502 : 1"
+   inkscape:persp3d-origin="69.314499 : 40.632334 : 1"
+   id="perspective9829" />
+	
+	
+<linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_1_"
+   id="linearGradient10352"
+   gradientUnits="userSpaceOnUse"
+   x1="3.0713"
+   y1="60.433601"
+   x2="132.6006"
+   y2="60.433601" /><linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_2_"
+   id="linearGradient10354"
+   gradientUnits="userSpaceOnUse"
+   x1="3.0713"
+   y1="60.433601"
+   x2="132.6006"
+   y2="60.433601" />
+		<linearGradient
+   id="SVGID_1_"
+   gradientUnits="userSpaceOnUse"
+   x1="3.0713"
+   y1="60.433601"
+   x2="132.6006"
+   y2="60.433601">
+			<stop
+   offset="0"
+   style="stop-color:#7CD4FF"
+   id="stop9811" />
+			<stop
+   offset="1"
+   style="stop-color:#3777AE"
+   id="stop9813" />
+		</linearGradient>
+		
+		<linearGradient
+   id="SVGID_2_"
+   gradientUnits="userSpaceOnUse"
+   x1="3.0713"
+   y1="60.433601"
+   x2="132.6006"
+   y2="60.433601">
+			<stop
+   offset="0"
+   style="stop-color:#7CD4FF"
+   id="stop9818" />
+			<stop
+   offset="1"
+   style="stop-color:#3777AE"
+   id="stop9820" />
+		</linearGradient>
+		
+	
+		
+		
+	</defs><sodipodi:namedview
+   inkscape:window-height="970"
+   inkscape:window-width="1680"
+   inkscape:pageshadow="2"
+   inkscape:pageopacity="0.0"
+   guidetolerance="10.0"
+   gridtolerance="10.0"
+   objecttolerance="10.0"
+   borderopacity="1.0"
+   bordercolor="#666666"
+   pagecolor="#ffffff"
+   id="base"
+   showgrid="false"
+   inkscape:zoom="3.9705652"
+   inkscape:cx="19.95125"
+   inkscape:cy="60.948502"
+   inkscape:window-x="-8"
+   inkscape:window-y="-8"
+   inkscape:current-layer="Layer_1" />
+
+<g
+   id="g10366">
+   
+     
+     <polygon
+     style="opacity:0.25;fill-rule:evenodd"
+     id="polygon9804"
+     points="136.192,118.913 71.427,118.915 6.662,118.913 39.042,62.824 71.427,6.737 103.812,62.824 136.192,118.913 "
+     clip-rule="evenodd" /><polygon
+     style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;fill-opacity:1;stroke-opacity:1"
+     id="polygon9815"
+     points="132.601,116.521 67.836,116.523 3.071,116.521 35.452,60.431 67.836,4.344 100.22,60.431 132.601,116.521 "
+     clip-rule="evenodd" /></g>
+</svg>

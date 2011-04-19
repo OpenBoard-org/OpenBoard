@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="54.129154"
+   id="svg1"
+   inkscape:version="0.46"
+   sodipodi:docbase="/home/danny/flat/scalable/actions"
+   sodipodi:docname="resetAngle.svg"
+   sodipodi:version="0.32"
+   version="1.0"
+   width="54.112919"
+   x="0"
+   y="0"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <metadata
+     id="metadata3">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Part of the Flat Icon Collection (Wed Aug 25 23:29:46 2004)</dc:title>
+        <dc:description />
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>hash</rdf:li>
+            <rdf:li />
+            <rdf:li>action</rdf:li>
+            <rdf:li>computer</rdf:li>
+            <rdf:li>icons</rdf:li>
+            <rdf:li>theme</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://www.openclipart.org">
+            <dc:title>Danny Allen</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Danny Allen</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Danny Allen</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date />
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://web.resource.org/cc/PublicDomain" />
+        <dc:language>en</dc:language>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://web.resource.org/cc/PublicDomain">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     bordercolor="#666666"
+     borderopacity="1.0"
+     id="base"
+     inkscape:cx="21.034485"
+     inkscape:cy="25.599763"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:window-height="1014"
+     inkscape:window-width="1680"
+     inkscape:window-x="1680"
+     inkscape:window-y="0"
+     inkscape:zoom="6.9465337"
+     pagecolor="#ffffff"
+     showgrid="false"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs3">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 30 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="60 : 30 : 1"
+       inkscape:persp3d-origin="30 : 20 : 1"
+       id="perspective8" />
+  </defs>
+  <path
+     d="M 39.777194,5.0249534 C 27.611789,-1.9987456 12.052623,2.1703201 5.0289236,14.335724 C -1.9947766,26.50113 2.1586646,42.087361 14.324068,49.111059 C 26.489474,56.134759 42.064265,51.938628 49.087966,39.773225 C 56.111664,27.60782 51.942599,12.048653 39.777194,5.0249534 z M 43.510947,13.495406 L 46.56497,24.89318 L 34.467136,29.347244 L 37.545261,24.015775 C 37.426891,23.947434 27.177815,12.983919 10.544365,24.845199 C 25.518344,4.9235621 40.401572,18.881002 40.401572,18.881001 L 43.510947,13.495406 z M 43.65872,29.926952 C 28.684743,49.84859 13.801513,35.89115 13.801514,35.89115 L 10.69214,41.276746 L 7.6381151,29.878972 L 19.735949,25.424907 L 16.657826,30.756376 C 16.776195,30.824717 27.025272,41.788235 43.65872,29.926952 z"
+     id="path701"
+     style="font-size:12px;fill:#b3b3b3;fill-opacity:1;fill-rule:evenodd;stroke:#333333;stroke-width:3.22656012;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" />
+  <path
+     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#c0c0c0;stroke-width:0.14395669;stroke-opacity:1"
+     d="M 38.367411,26.047584 C 38.394345,25.985554 38.600736,25.566018 38.826028,25.115278 C 39.56359,23.639647 39.203785,22.97801 36.688919,21.185361 C 34.622881,19.712642 31.935325,18.572666 29.203171,18.010137 C 27.256517,17.609336 23.388069,17.640142 21.375857,18.072472 C 20.554584,18.248928 19.859288,18.369951 19.830755,18.341419 C 19.73226,18.242929 22.008431,17.113389 23.059315,16.739248 C 24.978877,16.055841 26.044646,15.873684 28.123496,15.873684 C 30.814867,15.873684 32.845117,16.361613 35.391451,17.620387 C 36.57181,18.203894 37.184475,18.588293 39.260417,20.047805 C 40.517101,20.931329 41.299751,20.6489 42.308283,18.947949 L 42.929081,17.90093 L 43.152056,18.68062 C 43.918481,21.360559 44.513368,23.783382 44.423453,23.858639 C 44.365812,23.906898 43.282135,24.322353 42.015316,24.781868 C 40.748497,25.241387 39.398443,25.739526 39.015216,25.888852 C 38.631974,26.038181 38.340462,26.109605 38.367411,26.04758 L 38.367411,26.047584 z"
+     id="path3155" />
+  <path
+     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#c0c0c0;stroke-width:0.14395669;stroke-opacity:1"
+     d="M 24.308643,38.878058 C 21.249377,38.414629 18.158022,37.105816 15.664015,35.218106 C 14.49002,34.329504 14.27502,34.215652 13.773274,34.216827 C 13.125253,34.218343 12.551931,34.709394 11.912288,35.810763 C 11.584412,36.375304 11.283082,36.781843 11.242645,36.714182 C 11.079743,36.441583 9.6907481,31.007131 9.7650011,30.932881 C 9.8501081,30.847784 15.794944,28.62859 15.844436,28.663442 C 15.860516,28.674765 15.68237,29.063287 15.448555,29.526825 C 14.624,31.161525 14.943512,31.760149 17.684332,33.715652 C 18.739535,34.46851 20.764948,35.493514 22.221271,36.011669 C 25.519305,37.18509 29.819579,37.399813 33.430833,36.571376 C 33.934984,36.455718 34.371158,36.384769 34.400094,36.41371 C 34.483099,36.496711 32.3099,37.618984 31.4345,37.945187 C 29.76155,38.56858 28.371,38.837237 26.539972,38.890819 C 25.55027,38.919784 24.546172,38.914038 24.308643,38.878056 L 24.308643,38.878058 z"
+     id="path3157" />
+</svg>

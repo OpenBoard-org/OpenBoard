@@ -1,0 +1,19 @@
+Xpdf
+====
+
+version 3.02
+2007-feb-27
+
+The Xpdf software and documentation are
+copyright 1996-2007 Glyph & Cog, LLC.
+
+Email: info@glyphandcog.com
+WWW: http://www.glyphandcog.com/
+
+The PDF data structures, operators, and specification are
+copyright 1985-2006 Adobe Systems Inc.
+
+     *****
+
+This tar file contains the source code for Xpdf, packaged for holders
+of commercial source code licenses.

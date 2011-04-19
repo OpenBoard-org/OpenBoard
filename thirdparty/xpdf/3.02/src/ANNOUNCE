@@ -1,0 +1,34 @@
+Subject: ANNOUNCE: Xpdf 3.02 - a PDF viewer for X
+
+
+Glyph & Cog, LLC is pleased to announce a new version of Xpdf, the
+open source Portable Document Format (PDF) viewer for X.  The Xpdf
+project also includes a PDF text extractor, PDF-to-PostScript
+converter, and various other utilities.
+
+Xpdf runs under the X Window System on Unix, VMS, and OS/2.  The non-X
+components (pdftops, pdftotext, etc.) also run on Win32 systems and
+should run on pretty much any system with a decent C++ compiler.
+
+Major changes:
+* Anti-aliased vector graphics, including stroke adjustment.
+* Support for PDF 1.6 and PDF 1.7, including AES decryption and
+  OpenType fonts.
+* User-configurable key/mouse bindings.
+* Improved full-screen mode, with the ability to toggle on the fly.
+
+See the `CHANGES' file for a complete list of changes.
+
+Source (C++ and C) is available, and it should be fairly easy to
+compile for UNIX, VMS, OS/2, and Win32.
+
+More information, source code, and precompiled binaries are on the
+xpdf web page and ftp site:
+
+    http://www.foolabs.com/xpdf/
+    ftp://ftp.foolabs.com/pub/xpdf/
+
+For information on commercial licensing and consulting, please see the
+Glyph & Cog web site:
+
+    http://www.glyphandcog.com/

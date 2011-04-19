@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+	 	xmlns:ub="http://uniboard.mnemis.com/widgets"
+        identifier="http://uniboard.mnemis.com/widgets/colorpicker" 
+        version="1.0"
+        width="356"
+        height="176" 
+		ub:roles="tool">
+  	
+		<name>Color Picker</name>
+		<author href="http://www.getuniboard.com"
+	            email="info@mnemis.com">Mnemis SA</author>
+		<description>Simple color picker</description>
+
+  		<content src="index.html"/> 
+</widget>

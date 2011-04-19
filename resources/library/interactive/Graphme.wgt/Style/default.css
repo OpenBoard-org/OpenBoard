@@ -1,0 +1,659 @@
+/*  -----------------  */
+/*         CSS         */
+/*  -----------------  */
+
+
+/* Arrière plan du widget */
+body{
+   background-image: url('../Images/fond2.png');
+   background-repeat: no-repeat;
+   background-position: 0px 0px;
+}
+
+/* Zone d'affichage des fonctions */
+#affichage{
+   position: absolute;
+   top: 52px;
+   left: 129px;
+   width: 500px;
+   height: 400px;
+   overflow:hidden;
+   border: 2px solid black;
+   border-radius: 5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+}
+
+/* Texte et boutons qui sont en haut du widget */
+#haut{
+   position: relative;
+   top: 13px;
+   left: 20px;
+   width: 500px;
+   z-index: 2;
+}
+
+/* Champ permettant d'entrer la fonction à dessiner */
+#inputEq{
+   width: 200px;
+}
+
+/* Texte à côté du champ de la fonction à dessiner */
+#texteFonction{
+   color: white;
+   font-weight: bold;
+}
+
+/* Partie gauche du widget comprenant les boutons des menus et les options rapides */
+#gauche{
+   position: absolute;
+   top: 62px;
+   left: 18px;
+   width: 100px;
+   height: 380px;
+   padding: 2px;
+   color: white;
+   font-size: 80%;
+   background-image: url('../Images/gauche2.png');
+   border-color: black;
+   /*border-width: 2px;*/
+   border-width: 0px;
+   border-style: solid;
+   border-radius: 5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+}
+
+/* Boutons qui sont dans la partie gauche et qui ouvrent les différents menus */
+.boutonGauche{
+   width: 100%;
+   height: 32px;
+   text-align: center;
+}
+
+/* Partie gauche du widget lorsque l'affichage 3D est activé */
+#gauche3D{
+	position: absolute;
+	left: -149px;
+	top: 234px;
+	width: 360px;
+	height: 32px;
+	padding: 2px;
+	padding-left: 14px;
+	border: 2px solid rgba(255, 255, 255, 0.4);
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	background-color: rgba(255, 255, 255, 0.3);
+	-moz-transform: rotate(270deg);
+	-webkit-transform: rotate(270deg);
+	-o-transform: rotate(270deg);
+	display: none;
+	z-index: -1;
+}
+#gauche3D input.boutonGauche3D{
+	width: 90px;
+	height: 30px;
+}
+
+/* Style pour les menus */
+.menu{
+   position: absolute;
+   top: 68px;
+   left: 121px;
+   width: 450px;
+   height: 350px;
+   padding: 10px;
+   overflow: hidden;
+   background-color: rgba(255, 255, 255, 0.7);
+   border-style: none;
+   border-width: 1px;
+   border-color: rgba(0,70,128, 0.9);
+   border-radius: 4px;
+   -moz-border-radius: 4px;
+   -webkit-border-radius: 4px;
+   z-index: 2;
+   display: none;
+}
+.barreBasMenu{
+   position: absolute;
+   right: 0px;
+   bottom: 0px;
+}
+.contenuMenu{
+	font-size: 14px;
+	padding: 10px;
+	overflow: auto;
+	max-height: 315px;
+}
+.avecBordures{
+	border-top: 1px solid rgba(255, 255, 255, 0.4);
+	height: 80%
+}
+.ongletMenu{
+	position: relative;
+	top: 3px;
+	width: 100%;
+}
+.ongletMenu tr td{
+	width: 30%;
+	height: 30px;
+	text-align: center;
+	font-weight: normal;
+	background-color: rgba(255, 255, 255, 0.7);
+	border: 1px solid rgba(255, 255, 255, 0.9);
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	opacity: 0.5;
+	cursor: pointer;
+}
+.ongletMenu tr td:hover{
+	opacity: 1;
+}
+.ongletMenu tr td.ongletMenuActuel{
+	position:relative;
+	top:-1px;
+	opacity: 0.9;
+	font-weight: bold;
+	border-bottom : none;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	-moz-border-radius-bottomright: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	-webkit-border-bottom-right-radius: 0px;
+}
+.miniMenu{
+   position: absolute;
+   top: 120px;
+   left: 170px;
+   width: 320px;
+   height: 240px;
+   padding: 10px;
+   text-align: center;
+   font-size: 14px;
+   overflow: auto;
+   background-color: rgba(255, 255, 255, 0.9);
+   border-style: solid;
+   border-width: 1px;
+   border-color: rgba(0,70,128, 0.9);
+   border-radius: 15px;
+   -moz-border-radius: 15px;
+   -webkit-border-radius: 15px;
+   z-index: 2;
+   display: none;
+}
+.alertMenu{
+   position: absolute;
+   top: 170px;
+   left: 220px;
+   width: 220px;
+   height: 140px;
+   padding: 10px;
+   text-align: center;
+   font-size: 14px;
+   overflow: auto;
+   background-color: rgba(255, 255, 255, 0.9);
+   border-style: solid;
+   border-width: 1px;
+   border-color: rgba(0,70,128, 0.9);
+   border-radius: 15px;
+   -moz-border-radius: 15px;
+   -webkit-border-radius: 15px;
+   z-index: 3;
+   display: none;
+}
+.miniMenu input{
+	width: 45%;
+	height: 32px;
+}
+.alertMenu input{
+	width: 45%;
+	height: 32px;
+}
+
+/* Menu des crédits */
+#credits{
+	width: 80%;
+	margin: auto;
+}
+#credits tr td{
+	padding: 20px;
+	width: 100%;
+	height: 150px;
+	text-align: center;
+	vertical-align: middle;
+	background-color: rgba(255, 255, 255, 0.7);
+	border: 2px solid white;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+#credits tr td img{
+	float: left;
+}
+#credits tr td a{
+	font-size: 80%;
+}
+#credits tr td h3{
+	text-align:center;
+}
+
+/* Aperçu couleur 3D*/
+#apercuCouleur3D{
+	border: 1px solid rgba(0, 0, 0, 0.7);
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+/* Taille des champs contenant seulement 2 ou 3 caractères */
+.smallInput{
+   width: 35px;
+}
+
+/* Choix de la saturation et de la valeur dans le ColorPicker */
+#colorSV{
+   float: left;
+   width: 255px;
+   height: 255px;
+   border: 1px solid black;
+   background-color: red;
+   cursor: crosshair;
+}
+
+/* Choix de la teinte dans le ColorPicker */
+#colorT{
+   float: left;
+   width: 20px;
+   height: 255px;
+   margin-left: 10px;
+   border: 1px solid black;
+   background-color: black;
+   cursor: crosshair;
+}
+
+/* Valeurs de la couleur dans le ColorPicker */
+#colorValues{
+   position: relative;
+   left: 10px;
+   font-size: 80%;
+}
+
+/* Boutons qui ouvrent le ColorPicker */
+/*Menu de gauche*/
+#buttonColor{
+   float: left;
+   position: relative;
+   left: 75px;
+   top: -18px;
+   width: 20px;
+   height: 20px;
+   border: 1px white solid;
+   border-radius: 5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   background-color: rgb(193,255,0);
+   cursor:pointer;
+}
+#buttonColor:hover{
+   border-width: 2px;
+   left: 74px;
+   top: -19px;
+}
+
+#apercuCouleur{
+   position: absolute;
+   right: 20px;
+   bottom: 40px;
+   width: 40px;
+   height: 30px;
+   border: 1px white solid;
+   border-radius: 5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   background-color: rgb(193,255,0);
+}
+
+#apercuCouleur2{
+   position: absolute;
+   right: 65px;
+   bottom: 40px;
+   width: 40px;
+   height: 30px;
+   border: 1px white solid;
+   border-radius: 5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   background-color: rgb(193,255,0);
+}
+
+/*Fonctions supplémentaires*/
+.boutonCouleur{
+   position: relative;
+   left: 2px;
+   top: 0px;
+   width: 20px;
+   height: 20px;
+   color: rgba(0,0,0,0);
+   border: 1px white solid;
+   border-radius: 5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   background-color: rgb(0,171,255);
+   cursor:pointer;
+}
+.boutonCouleur:hover{
+   border-width: 2px;
+   left: 1px;
+   top: 0px;
+}
+
+/* Texte d'information (plus petit) */
+.texteSecondaire{
+   font-size: 11px;
+   color: rgba(0,0,0,0.5);
+   margin-left: 10px;
+}
+
+/* Style pour le texte où on peut cliquer dessus */
+.survol{
+   cursor: pointer;
+}
+.survol:hover{
+   color: rgba(0,0,0,0.5);
+}
+
+/* Texte en gras */
+.gras{
+   font-weight: bold;
+}
+
+/* Flèches permettant de deplacer l'affichage */
+.flecheDeplacement{
+   color: black;
+   opacity: 0;
+   font-size: 56px;
+   text-align: center;
+   cursor: pointer;
+   z-index: 1;
+}
+.flecheDeplacement:hover{
+   opacity: 0.4;
+}
+#flecheHaut{
+   position: absolute;
+   top: 46px;
+   left: 345px;
+   width: 70px;
+   height: 55px;
+}
+#flecheBas{
+   position: absolute;
+   top: 381px;
+   left: 345px;
+   width: 70px;
+   height: 55px;
+}
+#flecheGauche{
+   position: absolute;
+   top: 216px;
+   left: 137px;
+   width: 55px;
+   height: 70px;
+}
+#flecheDroite{
+   position: absolute;
+   top: 216px;
+   left: 567px;
+   width: 55px;
+   height: 70px;
+}
+
+/* Bouton permettant de minimiser et maximiser le widget */
+#miniMax{
+   position: absolute;
+   right: 10px;
+   top: 10px;
+   font-size: 24px;
+   color: rgba(0,0,0,0.4);
+   cursor: pointer;
+}
+#miniMax:hover{
+   color: rgba(0,0,0,1);
+}
+
+/* Boutons permettant de choisir l'action de la souris dans le menu des outils */
+.choixOutil{
+   width: 125px;
+   height: 40px;
+   font-size: 14px;
+   cursor: pointer;
+}
+
+/* Point sous la souris */
+#point{
+   position: absolute;
+   top: -10px;
+   left: -10px;
+   color: white;
+}
+/* Coordonnées du points sous la souris */
+#info{
+   position: absolute;
+   top: 57px;
+   left: 137px;
+   color: white;
+}
+/* Outil de tangente */
+#tangente{
+	position: absolute;
+	top: 52px;
+	left: 129px;
+	width: 500px;
+	height: 400px;
+	z-index: -1;
+}
+
+/* Petits boutons plus et moins dans les options */
+.boutonPlus{
+   position: relative;
+   top: -7px;
+   left: -5px;
+   width: 10px;
+   height: 10px;
+   font-size: 9px;
+   text-align: center;
+   background-color: rgba(0, 140, 255, 0.2);
+   border: 1px rgba(0,0,0,0.5) solid;
+   border-radius: 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+   cursor: pointer;
+   display: inline-block;
+}
+.boutonMoins{
+   position: relative;
+   top: 6px;
+   left: -17px;
+   width: 10px;
+   height: 10px;
+   font-size: 9px;
+   text-align: center;
+   background-color: rgba(0, 140, 255, 0.2);
+   border: 1px rgba(0,0,0,0.5) solid;
+   border-radius: 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+   cursor: pointer;
+   display: inline-block;
+}
+.boutonPlus:hover{
+   border: 1px rgba(0,0,0,0.7) solid;
+   background-color: rgba(0, 140, 255, 0.5);
+}
+.boutonMoins:hover{
+   border: 1px rgba(0,0,0,0.7) solid;
+   background-color: rgba(0, 140, 255, 0.5);
+}
+
+/* Bouton qui sert à choisir entre l'affichage 3D et 2D */
+#onglet3D{
+   position: absolute;
+   top: 30px;
+   left: 570px;
+   width: 40px;
+   height: 21px;
+   color: white;
+   text-align: center;
+   background-color: rgba(255, 255, 255, 0.4);
+   background-image: url("../Images/onglet1.png");
+   border: 1px solid black;
+   border-top-left-radius: 4px;
+   border-top-right-radius: 4px;
+   -moz-border-radius-topleft: 4px;
+   -moz-border-radius-topright: 4px;
+   -webkit-border-top-left-radius: 4px;
+   -webkit-border-top-right-radius: 4px;
+   cursor: pointer;
+   opacity: 0.4;
+   z-index: 3;
+}
+#onglet3D:hover{
+   opacity: 0.9;
+}
+
+/* Tableau du signe dans le menu d'étude de la fonction*/
+#etudeSigne td{
+	min-width: 25px;
+	text-align: center;
+}
+#etudeSigne td.border{
+	border: 1px solid black;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+#etudeSigne td.infini{
+	background-color: rgba(0,0,0,0.5);
+}
+
+/* Titres des menus */
+h1{
+	font-size: 16px;
+	font-weight: 600;
+	text-align: center;
+	/*font-style: italic;*/
+	margin-top: 15px;
+	margin-bottom: 25px;
+}
+h2{
+	font-size: 14px;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 30px;
+}
+h3{
+	font-size: 16px;
+	font-weight: 600;
+	text-align: left;
+	/*font-style: italic;*/
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+h4{
+	font-size: 16px;
+	font-weight: 600;
+	text-align: center;
+	/*font-style: italic;*/
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+
+/* Petits boutons en haut à droite du widget */
+.miniBouton{
+	width: 12px;
+	height: 12px;
+	color: white;
+	font-size: 12px;
+	text-align: center;
+	background-color: rgba(255,255,255,0.5);
+	border: 1px solid white;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	cursor: pointer;
+	opacity: 0.5;
+}
+.miniBouton:hover{
+	opacity: 1;
+}
+#boutonAgrandir{
+	position: absolute;
+	left: 635px;
+	top: 11px;
+	z-index: 3;
+}
+#boutonFermer{
+	position: absolute;
+	left: 615px;
+	top: 11px;
+	z-index: 3;
+}
+
+/* Menu Mise à Jour */
+#mAj{
+	text-align: center;
+	font-size: 14px;
+}
+#mAj h1{
+	font-size: 22px;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+#mAj span object{
+	position: relative;
+	bottom: 4px;
+	width: 150px;
+	height: 27px;
+	overflow: hidden;
+}
+#mAj input{
+	height: 32px;
+}
+
+.boutonSauvegarde{
+	width: 100px;
+	height: 32px;
+}
+#cacheCookies{
+	position: absolute;
+	top: 170px;
+	left: 14px;
+	width: 93%;
+	height: 130px;
+	background-color: rgba(255,255,255,0.7);
+	border: 1px rgba(255,255,255,0.8) solid;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	text-align: center;
+	display: none;
+}
+#cacheMaJ{
+	position: absolute;
+	padding-top: 10px;
+	top: 270px;
+	left: 14px;
+	width: 93%;
+	height: 25px;
+	background-color: rgba(255,255,255,0.8);
+	border: 1px rgba(255,255,255,0.8) solid;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	text-align: center;
+	font-weight: bold;
+	display: none;
+}

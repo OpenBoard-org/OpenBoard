@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+        <link rel="stylesheet" href="styles.css" type="text/css" />
+
+        <style type="text/css">
+      body {
+                          font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+                                font-size:12px;
+                                color:#333;
+                                padding:0px;
+                                margin:0 auto;
+                                background-color: #E6E6E6;
+                        }
+
+                        h2 {
+                                color:#333;
+                                font-weight: normal;
+                                margin: 0px 0px 0px 0px;
+                                padding: 10px 0px 0px 0px;
+                        }
+
+                        #content {
+                                overflow:hidden;
+                                margin:0 auto;
+                                width:100%;
+                                padding-top:18px;
+                                padding-bottom:20px;
+                                margin-bottom:10px;
+                                background-color: #FFFFFF;
+                                border-left:1px #666 solid;
+                                border-right:1px #666 solid;
+                                border-bottom:1px #666 solid;
+                        }
+
+                        #boardContent {
+                                float:left;
+                                text-align:left;
+                                width:100%;
+                                padding: 0px 10px 0px 10px;
+                                border-left: 1px solid #D8DFEA;
+                                border-right: 1px solid #D8DFEA;
+                        }
+
+                        #mainPage {
+                                width:100%;
+                          height: 100%;
+                                padding: 10px 10px 0px 10px;
+                        }
+    </style>
+
+        <title>Uniboard</title>
+
+    <script type="text/javascript">
+
+      var currentPageIndex = 0;
+
+      function bodyonload(){
+        selectPage(0);
+      }
+
+      function getPageUrlForIndex(pageIndex) {
+
+        var pageUrl = "page";
+
+        if(pageIndex < 9)
+          pageUrl += "00";
+        else if(pageIndex < 99)
+          pageUrl += "0";
+
+        pageUrl += (pageIndex + 1) + ".svg"
+
+        return pageUrl;
+      }
+
+      function getThumbUrlForIndex(pageIndex) {
+
+        var pageUrl = "page";
+
+        if(pageIndex < 9)
+          pageUrl += "00";
+        else if(pageIndex < 99)
+          pageUrl += "0";
+
+        pageUrl += (pageIndex + 1) + ".thumbnail.jpg"
+
+        return pageUrl;
+      }
+
+
+                  function selectPage(pageIndex) {
+
+                    currentPageIndex = pageIndex;
+
+              loadPage('mainPage', getPageUrlForIndex(pageIndex));
+
+              var i;
+              for (i = 0; i < 4; i++)
+              {
+                loadThumb("thumb" + (i + 1), getThumbUrlForIndex(pageIndex + i));
+              }
+                }
+
+                function loadPage(target, url)
+                {
+                        var mainPage = window.document.getElementById(target);
+
+                        mainPage.style.opacity = .0;
+                        mainPage.data = url;
+
+                        var speed = 50;
+                        var timer = 0;
+
+                        //fade in page
+                        for(i = 0; i <= 10; i++) {
+                          setTimeout("changeOpac(" + i * 10 + ", '" + target + "')",(timer * speed));
+                          timer++;
+                        }
+                }
+
+                function loadThumb(target, url)
+                {
+                        var thumb = window.document.getElementById(target);
+
+                        thumb.src = url;
+
+                }
+
+                function previousPage(){
+                    if (currentPageIndex > 0)
+                        selectPage(currentPageIndex - 1);
+                }
+
+                function nextPage(){
+                    selectPage(currentPageIndex + 1);
+                }
+
+                //change the opacity for different browsers
+    function changeOpac(opacity, id) {
+                    var object = document.getElementById(id).style;
+                    var pc = (opacity / 100);
+                    object.opacity = pc;
+                    object.MozOpacity = pc;
+                    object.KhtmlOpacity = pc;
+                    object.filter = "alpha(opacity=" + opacity + ")";
+                }
+
+        </script>
+
+</head>
+<body onLoad="bodyonload()">
+
+<div id="container">
+
+    <div id="content">
+
+          <div id="boardContent">
+              <div>
+                    <table>
+                        <tr>
+                            <td><h2><div onClick="previousPage()"><</div></h2></td>
+                            <td><h2><div onClick="nextPage()">></div></h2></td>
+                        </tr>
+                    </table>
+
+                    <table>
+                        <tr>
+                            <object id="mainPage" class="uniboardPage" type="image/svg+xml" name="mainPage" width="100%" />
+                        </tr>
+
+<!--
+                        <tr>
+                            <td width="25%">
+                                <img id="thumb1" class="thumbnail" type="image/jpg" name="thumb1" width="100%"/>
+                            </td>
+                            <td width="25%">
+                                <img id="thumb2" class="thumbnail" type="image/jpg" name="thumb2" width="100%"/>
+                            </td>
+                            <td width="25%">
+                                <img id="thumb3" class="thumbnail" type="image/jpg" name="thumb3" width="100%"/>
+                            </td>
+                            <td width="25%">
+                                <img id="thumb4" class="thumbnail" type="image/jpg" name="thumb4" width="100%"/>
+                            </td>
+                        </tr>
+-->
+            </table>
+                </div>
+            </div>
+</div>
+</body>
+</html>

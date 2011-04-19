@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 13.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<!DOCTYPE svg [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="128px" height="128px" viewBox="0 0 128 128" xml:space="preserve">
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  x="7.62" y="14.213" width="111.758" height="92.664" bottomLeftOrigin="true"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="63.4995" y1="23.46" x2="63.4995" y2="101.7982">
+	<stop  offset="0" style="stop-color:#FCFCFC"/>
+	<stop  offset="1" style="stop-color:#E6E6E6"/>
+	<a:midPointStop  offset="0" style="stop-color:#FCFCFC"/>
+	<a:midPointStop  offset="0.5" style="stop-color:#FCFCFC"/>
+	<a:midPointStop  offset="1" style="stop-color:#E6E6E6"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" d="M105.383,102.321H21.615c-6.262,0-11.356-5.097-11.356-11.36V35.118
+	c0-6.262,5.094-11.356,11.356-11.356h83.768c6.261,0,11.357,5.094,11.357,11.356v55.843
+	C116.74,97.225,111.644,102.321,105.383,102.321L105.383,102.321z"/>
+<path fill="#B0B9C4" d="M105.383,21.123c7.717,0,13.995,6.279,13.995,13.995v55.843c0,7.72-6.278,13.998-13.995,13.998H21.615
+	c-7.717,0-13.996-6.278-13.996-13.998V35.118c0-7.716,6.279-13.995,13.996-13.995H105.383 M105.383,24.643H21.615
+	c-5.776,0-10.476,4.699-10.476,10.475v55.843c0,5.777,4.699,10.479,10.476,10.479h83.768c5.776,0,10.475-4.701,10.475-10.479V35.118
+	C115.857,29.342,111.159,24.643,105.383,24.643L105.383,24.643z"/>
+<g>
+	<g>
+		<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="29.0107" y1="60.3447" x2="84.582" y2="60.3447">
+			<stop  offset="0" style="stop-color:#FFFFFF"/>
+			<stop  offset="1" style="stop-color:#DBDBDB"/>
+			<a:midPointStop  offset="0" style="stop-color:#FFFFFF"/>
+			<a:midPointStop  offset="0.5" style="stop-color:#FFFFFF"/>
+			<a:midPointStop  offset="1" style="stop-color:#DBDBDB"/>
+		</linearGradient>
+		<rect x="29.011" y="30.103" fill="url(#SVGID_2_)" stroke="#B5B5B5" stroke-width="1.76" width="55.571" height="60.483"/>
+		<g>
+			
+				<image width="47" height="39" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAnCAIAAAAQFoaWAAAACXBIWXMAAAsSAAALEgHS3X78AAAA
+GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA+BJREFUeNqcWAG22zAIg74ccmfc
+5XaDaIltQBjb/Vt/f+q4aawIIUj0z+9f8lEVebai/f2OtQ9i+x4i72cfjN0Y1xdgg7GLPgn7ysa4
+x+B6p27Bs/wz9em/VrkB7Wu3Jf0t+p7TkUAC0xEQxvI26ZjQvhrjjuZ5zYDiqho58J2xp20q41BJ
+XFRumI9xSkZ2v2jscAcUZOjLBZP0EqMOqG01CPgSLI4RUxJsXfLyoQHI5DGdHDDRAMFQC12QMpNj
+CIIY52NB1TN/Pf96t0v8uAra0pCJJMckMOGqXXTfx0nFIZ0aMhP41dA3Ru62ZF/+4wLVTqsll4kG
+QY9SsEqgaqQoZEU6I1IDkEROtct1knScYgBquA0vgE1ecR7lqCW2ppy620mfJT4kF1t7wASJxkMz
+Du/Bm2EUQBGpSLokZLmYZNyePkMoCVao1mB5MqkuMmrKcDZAF1AOXItUM19Kkpc0Hb5sF23RACXO
+GO510+eT/aRgmZKAnmgtp1puJ89VUxIkMIXHmGJ8mWVxYIglWBE1Go+cmj0Gphi1CkAJJWC/0Xnh
+U7BSWmEKmVUG7SFNVcl/rsVjeLtNqCzhnFbYSMd0M+uU3rDYmXJVuV667SyQJDte1M7ZCa9Msjq5
+KrkIxEDHSc2IdWnEbH1VN5P3uBc/vUWktNeBpq7XYQKHe0yq6wHuW1Mxg2DvsV1WcXIX9+IRGvYY
+jtRJN1U6pXZmkkI38LYhwQpMomR9JBgvV9v0ntu/4tEmINZN9z3KrJLYcDI0u98uyfPqq0IR3MC4
+SaJJmBZOExUU3PssY1T3JiHDGEteXEQDSyhlQFXFIpTxX+0YU0lHpufqFAmLBtGTSwdrAOZ24iTk
+WjLDfrCoEqzi6DUZk6FQgjV6C5k7im85hWXfnkN2hdsJZkxOg8Oyio0pp35YNdcGaGJvlUFCwhUT
+JljsNKQb/Fg3pRukcgFTMUph8kIKhpWh6CGnivXtCqdwR+G3lUm/dK/kna/mBArRyBfd8GcFQQK6
+xih1M7W9Io1gynCM2wY5Vs1sghsDpJxiTKmbWbRXkBycL4Xzq4rNADs3pf/V1Y2cbFS8e0yx42YC
+QfS8HcU6QCEaWTRZyI8CDtwUFaPyRB0FvN1U78mL9cXdAkEhOekBSIIKHJqvpJteosdzpGp9+YmE
+JJf5R91spHPFrLn9XC/Tfa4d95+6SW1yNUDvtqgL5l8pFaaOTHDUjW57iUPhtMmrd4TrboZCkkpm
+MuJJNNhZHw53WFMNhz0T0ZxQAQvUY8wUIIVs3QTmHRRkoxPNkbJuBhpFe/PgSOsDv5rqtVQt7Xj8
+/RVgAHInRcnx0BDlAAAAAElFTkSuQmCC" transform="matrix(1 0 0 1 33 33)">
+			</image>
+			
+				<image width="48" height="24" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAYCAYAAAC8/X7cAAAACXBIWXMAAAsSAAALEgHS3X78AAAA
+GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAwRJREFUeNrMV21uFDEMtcPcCpAQ
+K6SWo/DxD4FAquAA/KKiRwHail/AtWLixE4cJzPdVRctW00n8cxm3rPfc2bx4+0ZBSQIAMBnRIAH
+6UATC3mexkDw+vHPNPp/PgsRJFjpQD5j+iOIBBm8xiIVMjGxuPy1IyX04uHpyYQMnmEzkXREJSSx
+Mm/XC6Eyvvqzo9MTqMB64OSAx1ybRigKuavfpyURLPDosqzViGCqI+eoFUrXviYSp6pG8gBnljJQ
+FjYlVDGbV8Cn62zeyCZO43IuWKN4ho2AQuTlo/v54kvyWK28Vjw9982T2+m6+P7HOWmHYdDaiQJI
+J8ICTuMo5DJwmaPOZcyfVwcQucygS+WBWsVnRPjah6c3dW189/2cFLgHO5LwwEt3go4IKBSQok7J
+MGgw8gX1ITlJa0zAqx8vdtd5TXwrBBBGEsECddm2czDZr8DrvxZTwHagHgTX/Qhc1zPg1Yefnl1j
+yB6oN9iSiZElrqaupXTz8iATB+juGQ5/3X+/xpqEIvWt/eLmjBYSM7IxeePSMafNGhh5jCUNOs8Z
+p2biku0SJ5PqaQVUbNRitFGFzgumYy76xShP1R3XkwBpp+g6jwJGQYxOMuWOGQEYCRigAG4ThXEj
+5WQv3ULYvzYwqCAkarZXsq8wS3yW6xkBdPq3hMas08QLi12Ob0SpRDYyswUdl0WCgUDQEwEnpbsI
+0LQS2L8ZGPC+vUZPwMopUK/9KNmPNIImgdu03+sesV9/5odeSqP2bXOx15fZxqIl0naplfGS6bRf
+pePy38X7NuqrQTR6YY3MVELgyyubRzPthvabovt9gDY8MDGw3xvipApE7UnL1havX9rKPposd7rH
+hhadb3y1LTHfStckBfsQ6B8i2yyVF79KxPSTNdlYajRd2xjYxdaAH0Sgq0bdqMzrAzUjN9n4hnl3
+G93ywurr9KGvu5YIOe2j0byXyqbXPOiJyY9GYPZga2Sv+f3WOQz0UQhsZRFn2UeYorvvz7ijENgL
+1D/4wfn5+Tf8K8AAKw2sqAHEQYQAAAAASUVORK5CYII=" transform="matrix(1 0 0 1 33 48)">
+			</image>
+		</g>
+	</g>
+	<g>
+		<g>
+			<g>
+				<g>
+					<radialGradient id="SVGID_3_" cx="76.6299" cy="53.1172" r="44.0367" gradientUnits="userSpaceOnUse">
+						<stop  offset="0" style="stop-color:#B3D9FF"/>
+						<stop  offset="1" style="stop-color:#008CFF"/>
+						<a:midPointStop  offset="0" style="stop-color:#B3D9FF"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#B3D9FF"/>
+						<a:midPointStop  offset="1" style="stop-color:#008CFF"/>
+					</radialGradient>
+					<path fill="url(#SVGID_3_)" d="M91.722,95.336c-0.777,0-1.597-0.393-2.312-1.104c-1.202-1.205-4.48-5.441-9.229-11.93
+						l-0.265-0.359H79.47H54.751c-1.355,0-2.458-1.103-2.458-2.46V53.408c0-1.355,1.103-2.458,2.458-2.458h41.93
+						c1.355,0,2.458,1.103,2.458,2.458v26.074c0,1.357-1.103,2.46-2.458,2.46h-2.258h-0.88v0.88v10.776
+						C93.543,94.621,92.793,95.336,91.722,95.336L91.722,95.336z"/>
+				</g>
+				<g>
+					<path fill="#0075E8" d="M96.682,50.07c1.843,0,3.338,1.494,3.338,3.338v26.076c0,1.843-1.495,3.339-3.338,3.339h-2.259V93.6
+						c0,1.548-1.196,2.617-2.701,2.617c-0.929,0-1.977-0.408-2.933-1.363c-1.633-1.635-6.283-7.883-9.319-12.031H54.751
+						c-1.843,0-3.338-1.496-3.338-3.339V53.408c0-1.844,1.495-3.338,3.338-3.338H96.682 M96.682,51.83H54.751
+						c-0.87,0-1.578,0.708-1.578,1.578v26.076c0,0.87,0.708,1.579,1.578,1.579H79.47h0.893l0.527,0.721
+						c4.65,6.353,7.983,10.663,9.145,11.826c0.546,0.546,1.146,0.848,1.688,0.848c0.455,0,0.941-0.226,0.941-0.857V82.822v-1.76
+						h1.76h2.259c0.87,0,1.578-0.709,1.578-1.579V53.408C98.26,52.538,97.552,51.83,96.682,51.83L96.682,51.83z"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
+<radialGradient id="SVGID_4_" cx="107.0596" cy="95.7471" r="18.4796" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#BED63A"/>
+	<stop  offset="1" style="stop-color:#74B64A"/>
+	<a:midPointStop  offset="0" style="stop-color:#BED63A"/>
+	<a:midPointStop  offset="0.5" style="stop-color:#BED63A"/>
+	<a:midPointStop  offset="1" style="stop-color:#74B64A"/>
+</radialGradient>
+<circle fill="url(#SVGID_4_)" stroke="#17794E" stroke-width="2.64" cx="107.5" cy="102.347" r="10.12"/>
+<g>
+	<rect x="100.9" y="100.587" fill="#FFFFFF" width="13.199" height="3.521"/>
+	<rect x="105.74" y="95.747" fill="#FFFFFF" width="3.52" height="13.2"/>
+</g>
+</svg>

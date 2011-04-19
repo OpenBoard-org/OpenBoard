@@ -1,0 +1,655 @@
+/*
+ * UBBoardPaletteManager.cpp
+ *
+ *  Created on: 3 nov. 2009
+ *      Author: Luc
+ */
+
+#include "UBBoardPaletteManager.h"
+
+#include "frameworks/UBPlatformUtils.h"
+#include "frameworks/UBFileSystemUtils.h"
+
+#include "core/UBApplication.h"
+#include "core/UBSettings.h"
+#include "core/UBSetting.h"
+#include "core/UBDisplayManager.h"
+
+#include "gui/UBMainWindow.h"
+#include "gui/UBStylusPalette.h"
+#include "gui/UBClockPalette.h"
+#include "gui/UBKeyboardPalette.h"
+#include "gui/UBPageNumberPalette.h"
+#include "gui/UBToolWidget.h"
+#include "gui/UBZoomPalette.h"
+#include "gui/UBActionPalette.h"
+#include "gui/UBFavoriteToolPalette.h"
+
+
+#include "web/UBWebPage.h"
+#include "web/UBWebController.h"
+#include "web/browser/WBBrowserWindow.h"
+#include "web/browser/WBTabWidget.h"
+#include "web/browser/WBWebView.h"
+
+#include "network/UBNetworkAccessManager.h"
+#include "network/UBServerXMLHttpRequest.h"
+
+#include "domain/UBGraphicsScene.h"
+#include "domain/UBAbstractWidget.h"
+#include "domain/UBGraphicsPixmapItem.h"
+
+#include "document/UBDocumentProxy.h"
+#include "podcast/UBPodcastController.h"
+#include "board/UBLibraryController.h"
+#include "board/UBDrawingController.h"
+
+#include "tools/UBToolsManager.h"
+
+#include "adaptors/publishing/UBCapturePublisher.h"
+
+#include "UBBoardController.h"
+
+
+UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
+    : QObject(container)
+    , mContainer(container)
+    , mBoardControler(pBoardController)
+    , mStylusPalette(0)
+    , mZoomPalette(0)
+    , mKeyboardPalette(0)
+    , mNavigPalette(NULL)
+    , mLibPalette(NULL)
+    , mBackgroundsPalette(0)
+    , mToolsPalette(0)
+    , mAddItemPalette(0)
+    , mErasePalette(NULL)
+    , mPagePalette(NULL)
+    , mPendingPageButtonPressed(false)
+    , mPendingZoomButtonPressed(false)
+    , mPendingPanButtonPressed(false)
+    , mPendingEraseButtonPressed(false)
+
+{
+    setupPalettes();
+    connectPalettes();
+}
+
+
+UBBoardPaletteManager::~UBBoardPaletteManager()
+{
+    delete mAddItemPalette;
+    if(NULL != mNavigPalette)
+    {
+	delete mNavigPalette;
+	mNavigPalette = NULL;
+    }
+
+    if(NULL != mLibPalette)
+    {
+	delete mLibPalette;
+	mLibPalette = NULL;
+    }
+}
+
+
+void UBBoardPaletteManager::setupLayout()
+{
+
+}
+
+
+void UBBoardPaletteManager::setupPalettes()
+{
+    // Add the dock palettes
+    mNavigPalette = new UBNavigatorPalette(mContainer);
+
+    // We disable the lib palette for the moment because it is not yet available
+    mLibPalette = new UBLibPalette(mContainer);
+
+    // Add the other palettes
+    mStylusPalette = new UBStylusPalette(mContainer, UBSettings::settings()->appToolBarOrientationVertical->get().toBool() ? Qt::Vertical : Qt::Horizontal);
+    connect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
+    mStylusPalette->show(); // always show stylus palette at startup
+
+    if (UBPlatformUtils::hasVirtualKeyboard())
+        mKeyboardPalette = UBKeyboardPalette::create(mContainer);
+
+    mZoomPalette = new UBZoomPalette(mContainer);
+
+    //mClockPalette->addAssociatedPalette(mKeyboardPalette);
+    //mKeyboardPalette->addAssociatedPalette(mClockPalette);
+
+
+    QList<QAction*> backgroundsActions;
+
+    backgroundsActions << UBApplication::mainWindow->actionPlainLightBackground;
+    backgroundsActions << UBApplication::mainWindow->actionCrossedLightBackground;
+    backgroundsActions << UBApplication::mainWindow->actionPlainDarkBackground;
+    backgroundsActions << UBApplication::mainWindow->actionCrossedDarkBackground;
+
+    mBackgroundsPalette = new UBActionPalette(backgroundsActions, Qt::Horizontal , mContainer);
+    mBackgroundsPalette->setButtonIconSize(QSize(128, 128));
+    mBackgroundsPalette->groupActions();
+    mBackgroundsPalette->setClosable(true);
+    mBackgroundsPalette->setAutoClose(true);
+    mBackgroundsPalette->adjustSizeAndPosition();
+    mBackgroundsPalette->hide();
+
+    QList<QAction*> addItemActions;
+
+    addItemActions << UBApplication::mainWindow->actionAddItemToCurrentPage;
+    addItemActions << UBApplication::mainWindow->actionAddItemToNewPage;
+    addItemActions << UBApplication::mainWindow->actionAddItemToLibrary;
+    addItemActions << UBApplication::mainWindow->actionShareItemOnWeb;
+
+    mAddItemPalette = new UBActionPalette(addItemActions, Qt::Horizontal, 0);
+    mAddItemPalette->setButtonIconSize(QSize(128, 128));
+    mAddItemPalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    mAddItemPalette->groupActions();
+    mAddItemPalette->setClosable(true);
+    mAddItemPalette->adjustSizeAndPosition();
+    mAddItemPalette->hide();
+
+    QList<QAction*> eraseActions;
+
+    eraseActions << UBApplication::mainWindow->actionEraseAnnotations;
+    eraseActions << UBApplication::mainWindow->actionEraseItems;
+    eraseActions << UBApplication::mainWindow->actionClearPage;
+
+    mErasePalette = new UBActionPalette(eraseActions, Qt::Horizontal , mContainer);
+    mErasePalette->setButtonIconSize(QSize(128, 128));
+    mErasePalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    mErasePalette->groupActions();
+    mErasePalette->setClosable(true);
+    mErasePalette->adjustSizeAndPosition();
+    mErasePalette->hide();
+
+    QList<QAction*> pageActions;
+
+    pageActions << UBApplication::mainWindow->actionNewPage;
+    pageActions << UBApplication::mainWindow->actionDuplicatePage;
+    pageActions << UBApplication::mainWindow->actionImportPage;
+
+    mPagePalette = new UBActionPalette(pageActions, Qt::Horizontal , mContainer);
+    mPagePalette->setButtonIconSize(QSize(128, 128));
+    mPagePalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    mPagePalette->groupActions();
+    mPagePalette->setClosable(true);
+    mPagePalette->adjustSizeAndPosition();
+    mPagePalette->hide();
+
+    connect(UBSettings::settings()->appToolBarOrientationVertical, SIGNAL(changed(QVariant)), this, SLOT(changeStylusPaletteOrientation(QVariant)));
+}
+
+void UBBoardPaletteManager::pagePaletteButtonPressed()
+{
+    mPageButtonPressedTime = QTime::currentTime();
+
+    mPendingPageButtonPressed = true;
+    QTimer::singleShot(1000, this, SLOT(pagePaletteButtonReleased()));
+}
+
+
+void UBBoardPaletteManager::pagePaletteButtonReleased()
+{
+    if (mPendingPageButtonPressed)
+    {
+        if( mPageButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
+        {
+            togglePagePalette(true);
+        }
+        else
+        {
+            UBApplication::mainWindow->actionNewPage->trigger();
+        }
+
+        mPendingPageButtonPressed = false;
+    }
+}
+
+void UBBoardPaletteManager::erasePaletteButtonPressed()
+{
+    mEraseButtonPressedTime = QTime::currentTime();
+
+    mPendingEraseButtonPressed = true;
+    QTimer::singleShot(1000, this, SLOT(erasePaletteButtonReleased()));
+}
+
+
+void UBBoardPaletteManager::erasePaletteButtonReleased()
+{
+    if (mPendingEraseButtonPressed)
+    {
+        if( mEraseButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
+        {
+            toggleErasePalette(true);
+        }
+        else
+        {
+            UBApplication::mainWindow->actionClearPage->trigger();
+        }
+
+        mPendingEraseButtonPressed = false;
+    }
+}
+
+
+
+void UBBoardPaletteManager::linkClicked(const QUrl& url)
+{
+      UBApplication::applicationController->showInternet();
+      UBApplication::webController->loadUrl(url);
+}
+
+
+void UBBoardPaletteManager::purchaseLinkActivated(const QString& link)
+{
+    UBApplication::applicationController->showInternet();
+    UBApplication::webController->loadUrl(QUrl(link));
+}
+
+void UBBoardPaletteManager::connectPalettes()
+{
+    connect(UBApplication::mainWindow->actionStylus, SIGNAL(toggled(bool)), this, SLOT(toggleStylusPalette(bool)));
+
+    foreach(QWidget *widget, UBApplication::mainWindow->actionZoomIn->associatedWidgets())
+    {
+        QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
+        if (button)
+        {
+            connect(button, SIGNAL(pressed()), this, SLOT(zoomButtonPressed()));
+            connect(button, SIGNAL(released()), this, SLOT(zoomButtonReleased()));
+        }
+    }
+
+    foreach(QWidget *widget, UBApplication::mainWindow->actionZoomOut->associatedWidgets())
+    {
+        QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
+        if (button)
+        {
+            connect(button, SIGNAL(pressed()), this, SLOT(zoomButtonPressed()));
+            connect(button, SIGNAL(released()), this, SLOT(zoomButtonReleased()));
+        }
+    }
+
+    foreach(QWidget *widget, UBApplication::mainWindow->actionHand->associatedWidgets())
+    {
+        QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
+        if (button)
+        {
+            connect(button, SIGNAL(pressed()), this, SLOT(panButtonPressed()));
+            connect(button, SIGNAL(released()), this, SLOT(panButtonReleased()));
+        }
+    }
+
+    connect(UBApplication::mainWindow->actionBackgrounds, SIGNAL(toggled(bool)), this, SLOT(toggleBackgroundPalette(bool)));
+    connect(mBackgroundsPalette, SIGNAL(closed()), this, SLOT(backgroundPaletteClosed()));
+
+    connect(UBApplication::mainWindow->actionPlainLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
+    connect(UBApplication::mainWindow->actionCrossedLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
+    connect(UBApplication::mainWindow->actionPlainDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
+    connect(UBApplication::mainWindow->actionCrossedDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
+    connect(UBApplication::mainWindow->actionPodcast, SIGNAL(triggered(bool)), this, SLOT(tooglePodcastPalette(bool)));
+
+    connect(UBApplication::mainWindow->actionAddItemToCurrentPage, SIGNAL(triggered()), this, SLOT(addItemToCurrentPage()));
+    connect(UBApplication::mainWindow->actionAddItemToNewPage, SIGNAL(triggered()), this, SLOT(addItemToNewPage()));
+    connect(UBApplication::mainWindow->actionAddItemToLibrary, SIGNAL(triggered()), this, SLOT(addItemToLibrary()));
+    connect(UBApplication::mainWindow->actionShareItemOnWeb, SIGNAL(triggered()), this, SLOT(shareItemOnWeb()));
+
+    connect(UBApplication::mainWindow->actionEraseItems, SIGNAL(triggered()), mErasePalette, SLOT(close()));
+    connect(UBApplication::mainWindow->actionEraseAnnotations, SIGNAL(triggered()), mErasePalette, SLOT(close()));
+    connect(UBApplication::mainWindow->actionClearPage, SIGNAL(triggered()), mErasePalette, SLOT(close()));
+    connect(mErasePalette, SIGNAL(closed()), this, SLOT(erasePaletteClosed()));
+
+    foreach(QWidget *widget, UBApplication::mainWindow->actionErase->associatedWidgets())
+    {
+        QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
+        if (button)
+        {
+            connect(button, SIGNAL(pressed()), this, SLOT(erasePaletteButtonPressed()));
+            connect(button, SIGNAL(released()), this, SLOT(erasePaletteButtonReleased()));
+        }
+    }
+
+    connect(UBApplication::mainWindow->actionNewPage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
+    connect(UBApplication::mainWindow->actionDuplicatePage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
+    connect(UBApplication::mainWindow->actionImportPage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
+    connect(mPagePalette, SIGNAL(closed()), this, SLOT(pagePaletteClosed()));
+
+    foreach(QWidget *widget, UBApplication::mainWindow->actionPages->associatedWidgets())
+    {
+        QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
+        if (button)
+        {
+            connect(button, SIGNAL(pressed()), this, SLOT(pagePaletteButtonPressed()));
+            connect(button, SIGNAL(released()), this, SLOT(pagePaletteButtonReleased()));
+        }
+    }
+
+}
+
+
+
+void UBBoardPaletteManager::containerResized()
+{
+    int innerMargin = UBSettings::boardMargin;
+
+    int userLeft = innerMargin;
+    int userWidth = mContainer->width() - (2 * innerMargin);
+    int userTop = innerMargin;
+    int userHeight = mContainer->height() - (2 * innerMargin);
+
+    mStylusPalette->move(userLeft, userTop);
+    mStylusPalette->adjustSizeAndPosition();
+
+    mZoomPalette->move(userLeft + userWidth - mZoomPalette->width()
+            , userTop + userHeight /*- mPageNumberPalette->height()*/ - innerMargin - mZoomPalette->height());
+    mZoomPalette->adjustSizeAndPosition();
+
+    if (mKeyboardPalette)
+    {
+            mKeyboardPalette->move(userLeft + (userWidth - mKeyboardPalette->width())/2,
+                    userTop + userHeight - mKeyboardPalette->height());
+            mKeyboardPalette->adjustSizeAndPosition();
+    }
+
+    mNavigPalette->resize(mNavigPalette->width(), mContainer->height());
+    mLibPalette->resize(mLibPalette->width(), mContainer->height());
+}
+
+
+void UBBoardPaletteManager::changeBackground()
+{
+    if (UBApplication::mainWindow->actionCrossedLightBackground->isChecked())
+        UBApplication::boardController->changeBackground(false, true);
+    else if (UBApplication::mainWindow->actionPlainDarkBackground->isChecked())
+        UBApplication::boardController->changeBackground(true, false);
+    else if (UBApplication::mainWindow->actionCrossedDarkBackground->isChecked())
+        UBApplication::boardController->changeBackground(true, true);
+    else
+        UBApplication::boardController->changeBackground(false, false);
+
+    UBApplication::mainWindow->actionBackgrounds->setChecked(false);
+}
+
+
+void UBBoardPaletteManager::activeSceneChanged()
+{
+    UBGraphicsScene *activeScene =  UBApplication::boardController->activeScene();
+    int pageIndex = UBApplication::boardController->activeSceneIndex();
+
+    if (mStylusPalette)
+        connect(mStylusPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideEraser()));
+
+    if (mNavigPalette)
+    {
+        mNavigPalette->setPageNumber(pageIndex + 1, activeScene->document()->pageCount());
+    }
+
+    if (mZoomPalette)
+        connect(mZoomPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideEraser()));
+
+    if (mBackgroundsPalette)
+        connect(mBackgroundsPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideEraser()));
+}
+
+
+void UBBoardPaletteManager::toggleBackgroundPalette(bool checked)
+{
+    mBackgroundsPalette->setVisible(checked);
+
+    if (checked)
+    {
+        UBApplication::mainWindow->actionErase->setChecked(false);
+        UBApplication::mainWindow->actionNewPage->setChecked(false);
+
+        mBackgroundsPalette->adjustSizeAndPosition();
+        mBackgroundsPalette->move((mContainer->width() - mBackgroundsPalette->width()) / 2,
+            (mContainer->height() - mBackgroundsPalette->height()) / 5);
+    }
+}
+
+
+void UBBoardPaletteManager::backgroundPaletteClosed()
+{
+    UBApplication::mainWindow->actionBackgrounds->setChecked(false);
+}
+
+
+void UBBoardPaletteManager::toggleStylusPalette(bool checked)
+{
+    mStylusPalette->setVisible(checked);
+}
+
+
+void UBBoardPaletteManager::toggleErasePalette(bool checked)
+{
+    mErasePalette->setVisible(checked);
+    if (checked)
+    {
+        UBApplication::mainWindow->actionBackgrounds->setChecked(false);
+        UBApplication::mainWindow->actionNewPage->setChecked(false);
+
+        mErasePalette->adjustSizeAndPosition();
+        mErasePalette->move((mContainer->width() - mErasePalette->width()) / 2,
+            (mContainer->height() - mErasePalette->height()) / 5);
+    }
+}
+
+
+void UBBoardPaletteManager::erasePaletteClosed()
+{
+    UBApplication::mainWindow->actionErase->setChecked(false);
+}
+
+
+void UBBoardPaletteManager::togglePagePalette(bool checked)
+{
+    mPagePalette->setVisible(checked);
+    if (checked)
+    {
+        UBApplication::mainWindow->actionBackgrounds->setChecked(false);
+        UBApplication::mainWindow->actionErase->setChecked(false);
+
+        mPagePalette->adjustSizeAndPosition();
+        mPagePalette->move((mContainer->width() - mPagePalette->width()) / 2,
+            (mContainer->height() - mPagePalette->height()) / 5);
+    }
+}
+
+
+void UBBoardPaletteManager::pagePaletteClosed()
+{
+    UBApplication::mainWindow->actionPages->setChecked(false);
+}
+
+
+void UBBoardPaletteManager::tooglePodcastPalette(bool checked)
+{
+    UBPodcastController::instance()->toggleRecordingPalette(checked);
+}
+
+
+void UBBoardPaletteManager::addItem(const QUrl& pUrl)
+{
+    mItemUrl = pUrl;
+    mPixmap = QPixmap();
+    mPos = QPointF(0, 0);
+    mScaleFactor = 1.;
+
+    mAddItemPalette->show();
+    mAddItemPalette->adjustSizeAndPosition();
+
+    QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
+
+    mAddItemPalette->move(controlGeo.x() + ((controlGeo.width() - mAddItemPalette->geometry().width()) / 2),
+          (controlGeo.y() + (controlGeo.height() - mAddItemPalette->geometry().height()) / 5));
+
+}
+
+
+void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos,  qreal scaleFactor, const QUrl& sourceUrl)
+{
+    mItemUrl = sourceUrl;
+    mPixmap = pPixmap;
+    mPos = pos;
+    mScaleFactor = scaleFactor;
+
+     QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
+
+    mAddItemPalette->show();
+    mAddItemPalette->adjustSizeAndPosition();
+
+    mAddItemPalette->move(controlGeo.x() + ((controlGeo.width() - mAddItemPalette->geometry().width()) / 2),
+          (controlGeo.y() + (controlGeo.height() - mAddItemPalette->geometry().height()) / 5));
+}
+
+
+void UBBoardPaletteManager::addItemToCurrentPage()
+{
+    UBApplication::applicationController->showBoard();
+    mAddItemPalette->hide();
+    if(mPixmap.isNull())
+        UBApplication::boardController->downloadURL(mItemUrl);
+    else
+    {
+        UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, mPos, mScaleFactor);
+
+        item->setSourceUrl(mItemUrl);
+        item->setSelected(true);
+
+        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+    }
+}
+
+
+void UBBoardPaletteManager::addItemToNewPage()
+{
+    UBApplication::boardController->addScene();
+    addItemToCurrentPage();
+}
+
+
+void UBBoardPaletteManager::addItemToLibrary()
+{
+    if(mPixmap.isNull())
+    {
+       mPixmap = QPixmap(mItemUrl.toLocalFile());
+    }
+
+    if(!mPixmap.isNull())
+    {
+        QString imageDir = UBSettings::settings()->defaultUserImagesDirectory();
+
+        if(mScaleFactor != 1.)
+        {
+             mPixmap = mPixmap.scaled(mScaleFactor * mPixmap.width(), mScaleFactor* mPixmap.height()
+                     , Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        }
+        QImage image = mPixmap.toImage();
+        UBApplication::boardController->libraryController()->importImageOnLibrary(image);
+    }
+    else
+    {
+        UBApplication::showMessage(tr("Error Adding Image to Library"));
+    }
+
+    mAddItemPalette->hide();
+}
+
+void UBBoardPaletteManager::shareItemOnWeb()
+{
+    QPixmap pixmap = mPixmap;
+
+    if(mPixmap.isNull())
+    {
+       pixmap = QPixmap(mItemUrl.toLocalFile());
+    }
+
+    if(!pixmap.isNull())
+    {
+        UBCapturePublisher* publisher = new UBCapturePublisher(pixmap, this);
+        publisher->publish();
+    }
+    else
+    {
+        UBApplication::showMessage(tr("Error Publishing Image to the Web"));
+    }
+
+    mAddItemPalette->hide();
+}
+
+
+void UBBoardPaletteManager::zoomButtonPressed()
+{
+    mZoomButtonPressedTime = QTime::currentTime();
+
+    mPendingZoomButtonPressed = true;
+    QTimer::singleShot(1000, this, SLOT(zoomButtonReleased()));
+}
+
+
+void UBBoardPaletteManager::zoomButtonReleased()
+{
+    if (mPendingZoomButtonPressed)
+    {
+        if(mZoomButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
+        {
+            mBoardControler->zoomRestore();
+        }
+
+        mPendingZoomButtonPressed = false;
+    }
+}
+
+void UBBoardPaletteManager::panButtonPressed()
+{
+    mPanButtonPressedTime = QTime::currentTime();
+
+    mPendingPanButtonPressed = true;
+    QTimer::singleShot(1000, this, SLOT(panButtonReleased()));
+}
+
+
+void UBBoardPaletteManager::panButtonReleased()
+{
+    if (mPendingPanButtonPressed)
+    {
+        if(mPanButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
+        {
+            mBoardControler->centerRestore();
+        }
+
+        mPendingPanButtonPressed = false;
+    }
+}
+
+void UBBoardPaletteManager::showVirtualKeyboard(bool show)
+{
+	if (mKeyboardPalette)
+		mKeyboardPalette->setVisible(show);
+}
+
+void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
+{
+    bool bVertical = var.toBool();
+    bool bVisible = mStylusPalette->isVisible();
+
+    // Clean the old palette
+    disconnect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
+    delete mStylusPalette;
+
+    // Create the new palette
+    if(bVertical)
+    {
+        mStylusPalette = new UBStylusPalette(mContainer, Qt::Vertical);
+    }
+    else
+    {
+        mStylusPalette = new UBStylusPalette(mContainer, Qt::Horizontal);
+    }
+
+    connect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
+    mStylusPalette->setVisible(bVisible); // always show stylus palette at startup
+}

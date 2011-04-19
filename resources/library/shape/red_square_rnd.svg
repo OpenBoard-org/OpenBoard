@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 13.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="116.314px" height="116.314px" viewBox="0 0 116.314 116.314" enable-background="new 0 0 116.314 116.314"
+	 xml:space="preserve">
+
+<g>
+	<g opacity="0.25">
+		<path fill-rule="evenodd" clip-rule="evenodd" d="M5.887,31.278c0-14.409,11.679-26.088,26.088-26.088h56.389
+			c14.408,0,26.086,11.679,26.086,26.088v56.388c0,14.408-11.678,26.088-26.086,26.088H31.975c-14.409,0-26.088-11.68-26.088-26.088
+			V31.278z"/>
+	</g>
+	<g>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="2.1924" y1="56.8423" x2="110.7549" y2="56.8423">
+			<stop  offset="0" style="stop-color:#FF897A"/>
+			<stop  offset="1" style="stop-color:#FF3400"/>
+		</linearGradient>
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_1_)" stroke="#6F0000" d="M2.192,28.648
+			c0-14.409,11.678-26.088,26.088-26.088h56.389c14.408,0,26.086,11.679,26.086,26.088v56.388c0,14.408-11.678,26.088-26.086,26.088
+			H28.28c-14.41,0-26.088-11.68-26.088-26.088V28.648z"/>
+	</g>
+</g>
+</svg>

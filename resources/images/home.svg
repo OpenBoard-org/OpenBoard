@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+    <circle r="12" transform="translate(12,12)" style="fill:gray; stroke:silver; stroke-width:2"/>
+    <g style="stroke:white; stroke-width:3; stroke-linecap:round">
+    <rect x="9" y="9" width="6" height="7" fill="white"/>
+        
+    <line id="line10" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" x1="12" y1="6" x2="18" y2="11"/>
+    <line id="line10" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" x1="6" y1="11" x2="12" y2="6"/>
+        
+    </g>
+</svg>
+

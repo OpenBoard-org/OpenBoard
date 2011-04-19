@@ -1,0 +1,244 @@
+// !$*UTF8*$!
+{
+	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = A1CEC5D00F6A9713003E2DD8 /* generator_test */;
+		activeTarget = 8DD76F620486A84900D96B5E /* generator_test */;
+		codeSenseManager = A1CEC5DF0F6A9732003E2DD8 /* Code sense */;
+		executables = (
+			A1CEC5D00F6A9713003E2DD8 /* generator_test */,
+			A1CEC5D10F6A9713003E2DD8 /* handler_test */,
+			A1CEC5D20F6A9713003E2DD8 /* unit_test */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					715,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 258653249;
+			PBXWorkspaceStateSaveDate = 258653249;
+		};
+		perUserProjectItems = {
+			A1CEC5E30F6AAD85003E2DD8 /* PBXTextBookmark */ = A1CEC5E30F6AAD85003E2DD8 /* PBXTextBookmark */;
+			A1CEC5E50F6AAD85003E2DD8 /* PBXTextBookmark */ = A1CEC5E50F6AAD85003E2DD8 /* PBXTextBookmark */;
+			A1CEC5ED0F6AAD85003E2DD8 /* PBXTextBookmark */ = A1CEC5ED0F6AAD85003E2DD8 /* PBXTextBookmark */;
+			A1E1BA3D0F6AC018009B13EF /* PBXTextBookmark */ = A1E1BA3D0F6AC018009B13EF /* PBXTextBookmark */;
+			A1E1BA3E0F6AC018009B13EF /* PBXTextBookmark */ = A1E1BA3E0F6AC018009B13EF /* PBXTextBookmark */;
+			A1E1BA3F0F6AC018009B13EF /* PBXTextBookmark */ = A1E1BA3F0F6AC018009B13EF /* PBXTextBookmark */;
+			A1E1BA420F6AC018009B13EF /* PBXTextBookmark */ = A1E1BA420F6AC018009B13EF /* PBXTextBookmark */;
+		};
+		sourceControlManager = A1CEC5DE0F6A9732003E2DD8 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	8DD76F620486A84900D96B5E /* generator_test */ = {
+		activeExec = 0;
+		executables = (
+			A1CEC5D00F6A9713003E2DD8 /* generator_test */,
+		);
+	};
+	9B7CA84D0B1297F200CD3A1D /* unit_test */ = {
+		activeExec = 0;
+		executables = (
+			A1CEC5D20F6A9713003E2DD8 /* unit_test */,
+		);
+	};
+	9BD82A9A0B00267E0055103E /* handler_test */ = {
+		activeExec = 0;
+		executables = (
+			A1CEC5D10F6A9713003E2DD8 /* handler_test */,
+		);
+	};
+	9BD82BFD0B01333D0055103E /* exception_handler_test.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {691, 1512}}";
+			sepNavSelRange = "{2516, 1}";
+			sepNavVisRange = "{2169, 1008}";
+			sepNavWindowFrame = "{{15, 63}, {750, 815}}";
+		};
+	};
+	9BD82C0A0B0133520055103E /* exception_handler.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {893, 2982}}";
+			sepNavSelRange = "{8105, 0}";
+			sepNavVisRange = "{3861, 1474}";
+		};
+	};
+	A1CEC5D00F6A9713003E2DD8 /* generator_test */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = generator_test;
+		sourceDirectories = (
+		);
+	};
+	A1CEC5D10F6A9713003E2DD8 /* handler_test */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = handler_test;
+		sourceDirectories = (
+		);
+	};
+	A1CEC5D20F6A9713003E2DD8 /* unit_test */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = unit_test;
+		sourceDirectories = (
+		);
+	};
+	A1CEC5DE0F6A9732003E2DD8 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+	};
+	A1CEC5DF0F6A9732003E2DD8 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	A1CEC5E30F6AAD85003E2DD8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 9BD82BFD0B01333D0055103E /* exception_handler_test.cc */;
+		name = "exception_handler_test.cc: 28";
+		rLen = 0;
+		rLoc = 1506;
+		rType = 0;
+		vrLen = 759;
+		vrLoc = 2194;
+	};
+	A1CEC5E50F6AAD85003E2DD8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 9BD82BFD0B01333D0055103E /* exception_handler_test.cc */;
+		name = "exception_handler_test.cc: 28";
+		rLen = 0;
+		rLoc = 1506;
+		rType = 0;
+		vrLen = 759;
+		vrLoc = 2194;
+	};
+	A1CEC5ED0F6AAD85003E2DD8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 9BD82BFD0B01333D0055103E /* exception_handler_test.cc */;
+		name = "exception_handler_test.cc: 75";
+		rLen = 1;
+		rLoc = 2516;
+		rType = 0;
+		vrLen = 1008;
+		vrLoc = 2169;
+	};
+	A1E1BA3D0F6AC018009B13EF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 9BD82C0A0B0133520055103E /* exception_handler.h */;
+		name = "exception_handler.h: 201";
+		rLen = 0;
+		rLoc = 8105;
+		rType = 0;
+		vrLen = 1474;
+		vrLoc = 3861;
+	};
+	A1E1BA3E0F6AC018009B13EF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 9BD82C0A0B0133520055103E /* exception_handler.h */;
+		name = "exception_handler.h: 201";
+		rLen = 0;
+		rLoc = 8105;
+		rType = 0;
+		vrLen = 1474;
+		vrLoc = 3861;
+	};
+	A1E1BA3F0F6AC018009B13EF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 9BD82BFD0B01333D0055103E /* exception_handler_test.cc */;
+		name = "exception_handler_test.cc: 63";
+		rLen = 0;
+		rLoc = 2229;
+		rType = 0;
+		vrLen = 793;
+		vrLoc = 2330;
+	};
+	A1E1BA420F6AC018009B13EF /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 9BD82BFD0B01333D0055103E /* exception_handler_test.cc */;
+		name = "exception_handler_test.cc: 75";
+		rLen = 1;
+		rLoc = 2516;
+		rType = 0;
+		vrLen = 1008;
+		vrLoc = 2169;
+	};
+	F93A88740E8B4C700026AF89 /* obj-c_TestCases */ = {
+		activeExec = 0;
+	};
+	F9AE19C20DB04A9500C98454 /* minidump_tests64 */ = {
+		activeExec = 0;
+	};
+	F9AE5B320DBFDBA300505983 /* minidump_tests32 */ = {
+		activeExec = 0;
+	};
+}

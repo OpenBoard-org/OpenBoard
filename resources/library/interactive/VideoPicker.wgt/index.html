@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Video Picker</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script src="scripts/jquery-1.3.2.min.js" type="text/javascript"></script>
+	<script src="scripts/jquery.oembed.js" type="text/javascript"></script>
+	<!--DEFAULT FR-->
+</head>
+
+<body>
+    <script type="text/javascript">
+
+		var oembedUrl = "";
+		var language = "en";
+
+		function initialize() {
+			if(window.uniboard){
+				oembedUrl = window.uniboard.preference("oembedUrl", "");
+			}else{
+				oembedUrl = "";
+			};
+									
+			if(oembedUrl.length > 0){
+				$("#textbox").val(oembedUrl);	
+				$("#search-button").trigger("click");
+			}else{
+				//var language = navigator.userAgent.split(";");
+				//language = language[3].replace(/\s/g, "").substr(0, 2);	
+				$("#embeded-content").load("locales/" + language + "/howto.html"); // Welcome note with some explanations
+			};
+		};
+		
+		$(document).ready(function(){
+			var resizer; // Timer
+			var resizerIndex;
+			
+			resizerIndex = 0;
+			
+			//language = navigator.userAgent.split(";");
+			//language = language[3].replace(/\s/g, "").substr(0, 2);
+			
+			$("#search-button")
+				.click(function(){
+					window.resizeTo(385, 80);
+					$("#container")
+						.removeClass("welcome")
+						.removeClass("change")
+						.removeClass("error")
+						.addClass("load");
+					$("#container-shadow")
+						.hide();
+					$("#arrow")
+						.hide();
+					$("#embeded-content")
+						.css({
+							marginLeft:-9000,
+							marginTop:-9000
+						})
+						.empty()
+						.oembed($("#textbox").val());
+					checkcontent();
+				})
+				.mouseenter(function(){
+					$(this)
+						.addClass("over");
+				})
+				.mouseleave(function(){
+					$(this)
+						.removeClass("over");
+				});
+			
+			/*$("#ubwidget").mouseenter(function(){
+				$("#show-area").fadeIn(1000);
+			});
+			
+			$("#ubwidget").mouseout(function(){
+				$("#show-area").fadeOut(600);
+			});*/
+			
+			$('#textbox').keypress(function(e){
+				if (e.which == 13){
+					$('#search-button').click();
+				};
+			});
+			
+			$("#show-inputfield-button")
+				.click(
+					function(){
+						$("#show-area").fadeOut(0);
+						$("#inputfield").show();
+						$("#shadow").show();
+						$("#container")
+							.removeClass("show").addClass("change");
+						adaptWidgetSize(18, 88);
+					})
+					.mouseenter(function(){
+						$(this)
+							.addClass("over");
+					})
+					.mouseleave(function(){
+						$(this)
+							.removeClass("over");
+					});
+							
+			function checkcontent(){
+				if($("#embeded-content").html().length != 0 && $("#embeded-content").children(":first").width() > 0){
+					clearTimeout(resizer);
+					resizerIndex = 0;
+															
+					if(window.uniboard){
+						window.uniboard.setPreference("oembedUrl", $("#textbox").val());
+					};
+					
+					$("#inputfield")
+						.hide();
+					$("#shadow")
+						.hide();
+					$("#embeded-content")
+						.css({
+							marginLeft:0,
+							marginTop:0
+						})
+						.width($("#embeded-content").children(":first").width())
+						.height($("#embeded-content").children(":first").height());
+						
+					$("#container")
+						.removeClass("load").addClass("show");
+					$("#show-area")
+						.fadeIn(2000)
+						.css({
+							left:$("#embeded-content").children(":first").width()-25,
+							top:($("#embeded-content").children(":first").height()-35)/2
+						});
+										
+					adaptWidgetSize(5, 13);
+					
+					return false;
+				};
+				
+				if(resizerIndex > 30){
+					resizerIndex = 0;
+					$("#container")
+						.removeClass("show").addClass("error");
+					$("#arrow")
+						.show();
+					$("#embeded-content")
+						.css({
+							marginTop:0,
+							marginLeft:0
+						})
+						.width(395)
+						.load("locales/" + language + "/error.html", 
+							function(){
+								adaptWidgetSize(20, 125);
+							});
+					$("#container-shadow")
+						.show();
+				}else{
+					resizer = setTimeout(function(){checkcontent()}, 100);
+					resizerIndex++;
+				};
+			};
+			
+			function adaptWidgetSize(adjustmentX, adjustmentY){
+				var margins = {
+					top: cssToInt($("body").css("margin-top")), 
+					right: cssToInt($("body").css("margin-right")), 
+					bottom: cssToInt($("body").css("margin-bottom")),
+					left: cssToInt($("body").css("margin-left"))
+				};
+				var widgetWidth = $("#embeded-content").width() + margins.right + margins.left + adjustmentX;
+				var widgetHeight = $("#embeded-content").position().top + $("#embeded-content").height() + margins.bottom + adjustmentY;
+				
+				window.resizeTo(widgetWidth, $(window).height());
+				window.resizeTo($(window).width(), widgetHeight);
+				window.uniboard.resize(widgetWidth, widgetHeight);
+			};
+				
+			function cssToInt(cssvalue){
+				return(parseInt(cssvalue.replace("px", "")));
+			};
+			
+			if (window.widget) {
+			   window.widget.onremove = function(){
+			   		//$("#show-inputfield-button").trigger("click");
+					$("#embeded-content")
+						.empty()
+						.oembed($("#textbox").val());
+			   }
+			}
+			
+			window.initialize();
+		});
+    </script>
+
+    <div id="ubwidget">
+		<div id="shadow"></div>
+	
+    	<div id="inputfield">
+    		<input id="textbox" type="text">
+    		<div id="search-button" class="button">Show</div>
+    	</div>
+
+   		<div id="container" class="welcome">
+			<div id="arrow"><img src="imgs/arrow.png" alt="arrow-top"></div>
+			
+			<div id="show-container">
+				<div id="embeded-content"></div>
+			
+				<div id="show-area">
+						<img id="show-inputfield-button" src="imgs/bts.png">
+				</div>
+			</div>
+		
+			<table cellspacing="0" cellpadding="0" id="container-shadow">
+				<tr>
+					<td id="shadow-left"></td>
+					<td id="shadow-center">&nbsp;</td>
+					<td id="shadow-right"></td>
+				</tr>
+			</table>
+		</div>
+		
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+    <circle r="12" transform="translate(12,12)" style="fill:gray; stroke:silver; stroke-width:2"/>
+    <g style="stroke:white; stroke-width:3; stroke-linecap:round">
+    <line fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" x1="6.343" y1="12" x2="17.657" y2="12"/>
+    <line fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" x1="12" y1="6" x2="12" y2="18"/>
+    <line fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" x1="8" y1="8" x2="16" y2="16"/>
+    <line fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" x1="16" y1="8" x2="8" y2="16"/>
+        <line stroke-width="2"
+           y2="4"
+           x2="19"
+           y1="19"
+           x1="4" />
+    </g>
+</svg>

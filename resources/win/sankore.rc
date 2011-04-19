@@ -1,0 +1,55 @@
+#include <winver.h>
+
+/* Application Icon */
+
+IDI_ICON1               ICON    DISCARDABLE     "uniboard.ico"
+IDI_ICON2               ICON    DISCARDABLE     "uniboardDoc.ico"
+
+/* Version Info */
+
+VS_VERSION_INFO VERSIONINFO
+
+FILEVERSION    	UBVERSION_RC
+
+PRODUCTVERSION 	UBVERSION_RC
+
+FILEFLAGSMASK  	VS_FFI_FILEFLAGSMASK
+
+#ifdef PRE_RELEASE
+FILEFLAGS       VS_FF_PRERELEASE
+#endif
+
+FILEOS         	VOS__WINDOWS32
+
+FILETYPE       	VFT_APP
+
+BEGIN
+
+    BLOCK "StringFileInfo"
+
+    BEGIN
+
+        BLOCK "040904E4" /* U.S. English, code page 1252 */
+
+        BEGIN
+
+            VALUE "CompanyName",      "Mnemis\000"
+
+            VALUE "FileDescription",  "Sankore 3.1\000"
+
+            VALUE "FileVersion",      UBVERSION
+
+            VALUE "LegalCopyright",   "(c) Mnemis SA, 2009. All rights reserved\000"
+
+            VALUE "OriginalFilename", "Sankore 3.1.exe\000"
+
+            VALUE "ProductName",      "Sankore 3.1\000"
+
+            VALUE "ProductVersion",   UBVERSION
+
+        END
+
+    END
+
+END
+
