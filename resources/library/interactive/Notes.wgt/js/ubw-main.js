@@ -19,41 +19,34 @@ function init(){
 	var maximize = $('<img src="images/stick-but-maximize.png">');
 	var title = $('<div id="menu"></div>');
 	var textField = $('<div id="txt"></div>');
-		
-		var shadow = $("<table width='100%' height='18' border='0' cellspacing='0' cellpadding='0'><tr><td id='sl' width='139'></td><td id='sc' style='background-image:url(images/shadowcenter.png)'>&nbsp;</td><td id='sr' width='139'></td></tr></table>")
-			.appendTo("body");
-
-		var shadowleft = $("<img src='images/shadowleft.png'>")
-			.appendTo($("#sl"));
-		var shadowright = $("<img src='images/shadowright.png'>")
-			.appendTo($("#sr"));
+	var shadow = $("<table width='100%' height='18' border='0' cellspacing='0' cellpadding='0'><tr><td id='sl' width='139'></td><td id='sc' style='background-image:url(images/shadowcenter.png)'>&nbsp;</td><td id='sr' width='139'></td></tr></table>")
+		.appendTo("body");
+	var shadowleft = $("<img src='images/shadowleft.png'>")
+		.appendTo($("#sl"));
+	var shadowright = $("<img src='images/shadowright.png'>")
+		.appendTo($("#sr"));
 		
 		$("#ubwidget")
 			.append(header)
 			.append(textField);
 		
-		fontUp
-			.addClass('menuElement');
-		fontDown
-			.addClass('menuElement');
-		minimize
-			.addClass('menuElement');
-		maximize
-			.addClass('menuElement')
+		fontUp.addClass('menuElement');
+		fontDown.addClass('menuElement');
+		minimize.addClass('menuElement');
+		maximize.addClass('menuElement')
 			.hide();
 		
-		header
-			.append(maximize)
+		header.append(maximize)
 			.append(minimize)
 			.append(fontUp)
 			.append(fontDown);
-		var titletext = header.find('textarea');
+	var titletext = header.find('textarea');
 		
 		titletext.click(
 			function(){
 			
 				titletext.focus();			
-			
+				
 			});
 			
 		fontDown.click(
@@ -71,6 +64,7 @@ function init(){
 					window.uniboard.setPreference("fontSize", newFontSize);
 				};
 				
+				textField.focus();
 			});
 			
 		fontUp.click(
@@ -87,6 +81,8 @@ function init(){
 				if(window.uniboard){
 					window.uniboard.setPreference("fontSize", newFontSize);
 				};
+				
+				textField.focus();
 			});
 			
 		minimize.click(
