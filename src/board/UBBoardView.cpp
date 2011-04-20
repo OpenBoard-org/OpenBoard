@@ -683,10 +683,6 @@ UBBoardView::dragMoveEvent (QDragMoveEvent *event)
 void
 UBBoardView::dropEvent (QDropEvent *event)
 {
-  qDebug () << event;
-
-  qDebug() << event->source();
-
   if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()))
   {
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
@@ -801,9 +797,9 @@ UBBoardView::settingChanged (QVariant newValue)
 
 void UBBoardView::virtualKeyboardActivated(bool b)
 {
-	UBPlatformUtils::setWindowNonActivableFlag(this, b);
-	mVirtualKeyboardActive = b;
-	setInteractive(!b);
+    UBPlatformUtils::setWindowNonActivableFlag(this, b);
+    mVirtualKeyboardActive = b;
+    setInteractive(!b);
 }
 
 
@@ -812,16 +808,16 @@ void UBBoardView::virtualKeyboardActivated(bool b)
 bool
 UBBoardView::isAbsurdPoint (QPoint point)
 {
-	QDesktopWidget *desktop = qApp->desktop ();
-	bool isValidPoint = false;
+    QDesktopWidget *desktop = qApp->desktop ();
+    bool isValidPoint = false;
 
-	for (int i = 0; i < desktop->numScreens (); i++)
+    for (int i = 0; i < desktop->numScreens (); i++)
     {
       QRect screenRect = desktop->screenGeometry (i);
       isValidPoint = isValidPoint || screenRect.contains (point);
     }
 
-	return !isValidPoint;
+    return !isValidPoint;
 }
 
 void

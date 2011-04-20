@@ -46,9 +46,7 @@ class UBThumbnailWidget : public QGraphicsView
     public slots:
         void setThumbnailWidth(qreal pThumbnailWidth);
         void setSpacing(qreal pSpacing);
-        virtual void setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems,
-                const QList<QUrl>& pItemPaths, const QStringList pLabels = QStringList(),
-                const QString& pMimeType = QString(""));
+        virtual void setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems, const QList<QUrl>& pItemPaths, const QStringList pLabels = QStringList(), const QString& pMimeType = QString(""));
         void refreshScene();
         void sceneSelectionChanged();
 

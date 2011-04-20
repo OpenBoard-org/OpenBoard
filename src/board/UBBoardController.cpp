@@ -1786,9 +1786,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
         int index = 0;
 
-        foreach(const QUrl url, urls)
-        {
-            qWarning() << url;
+        foreach(const QUrl url, urls){
             QPointF pos(pPos + QPointF(index * 15, index * 15));
             downloadURL(url, pos);
             index++;

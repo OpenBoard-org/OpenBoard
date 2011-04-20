@@ -341,8 +341,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
             if (mGraphicItems.contains(item))
             {
                 if (mGraphicItems.indexOf(item) <= mItemsPaths.size()){
-                        QString localFilePath = mItemsPaths.at(mGraphicItems.indexOf(item)).toString();
-                        qlElements << QUrl::fromLocalFile(localFilePath);
+                    qlElements << mItemsPaths.at(mGraphicItems.indexOf(item));
                 }
             }
         }

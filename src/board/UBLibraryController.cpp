@@ -49,6 +49,7 @@ static quint32 magicNumber = 0xACDCAFE0;
 static QString applicationsVirtualPath = "$applications$";
 static QString picturesVirtualPath = "$pictures$";
 static QString favoriteVirtualPath = "$favorite$";
+static QString interactivesCategoryPath;
 
 UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardController *pBoardController) :
         QObject(pParentWidget),
@@ -78,6 +79,26 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardControll
 
     mPicturesStandardDirectoryPath = QUrl::fromLocalFile(UBDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
     userPath(mPicturesStandardDirectoryPath);
+
+    createInternalWidgetItems();
+
+}
+
+void UBLibraryController::createInternalWidgetItems()
+{
+    QStringList toolUris = UBToolsManager::manager()->allToolIDs();
+
+    foreach(QString toolUri, toolUris)
+    {
+        UBToolsManager::UBToolDescriptor tool = UBToolsManager::manager()->toolByID(toolUri);
+        UBLibElement *newTool = new UBLibElement(eUBLibElementType_InteractiveItem, QUrl(tool.id), tool.label);
+        QImage toolImage = tool.icon.toImage();
+        newTool->setThumbnail(&toolImage);
+        newTool->setInformation(tool.label + " " + tool.version);
+
+        mInternalLibElements << newTool;
+    }
+
 }
 
 void UBLibraryController::createNewFolder(QString name, UBLibElement *parentElem)
@@ -231,7 +252,8 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     categories << element;
 
     categoryImage = new QImage(":images/libpalette/InteractivesCategory.svg");
-    element = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(UBSettings::settings()->uniboardGipLibraryDirectory()), tr("Interactives", "Interactives category element"));
+    interactivesCategoryPath = UBSettings::settings()->uniboardGipLibraryDirectory();
+    element = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(interactivesCategoryPath), tr("Interactives", "Interactives category element"));
     element->setThumbnail(categoryImage);
     categories << element;
 
@@ -317,6 +339,8 @@ QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPat
         content << element;
     }
 
+    if (pPath == interactivesCategoryPath)
+        content << mInternalLibElements;
     return content;
 }
 

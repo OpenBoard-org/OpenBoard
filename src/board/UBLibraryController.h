@@ -157,6 +157,7 @@ class UBLibraryController : public QObject
         QList<UBLibElement*> mFavoriteList;
         void persistFavoriteList();
         void readFavoriteList();
+        QList<UBLibElement*> mInternalLibElements;
 
     private:
         QList<UBLibElement*> rootCategoriesList();
@@ -168,6 +169,7 @@ class UBLibraryController : public QObject
         QList<UBLibElement*> elementsInPicturesVirtualForlder();
         QList<UBLibElement*> elementsInApplicationsVirtualForlder();
 
+        void createInternalWidgetItems();
         void routeItem(QString& pItem, QString pMiddleDirectory = QString());
 		void createDirectory(QUrl& pDirPath);
 

@@ -104,7 +104,7 @@ void UBLibraryWidget::generateItems()
     {
         UBLibElement* pElem = mCurrentElems.at(i);
         mLabels << pElem->name();
-        mItemsPaths << pElem->path().toLocalFile();
+        mItemsPaths << pElem->path();
         QGraphicsPixmapItem *pixmapItem = new UBThumbnailPixmap(QPixmap::fromImage(*pElem->thumbnail()));
         mGraphicItems << pixmapItem;
     }
