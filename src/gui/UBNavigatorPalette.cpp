@@ -17,8 +17,8 @@ UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):UBDock
     setOrientation(eUBDockOrientation_Left);
     setMaximumWidth(300);
     mIcon = QPixmap(":images/paletteNavigator.png");
-    resize(maximumWidth(), height());
-
+    resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), height());
+    mLastWidth = 300;
     setContentsMargins(0, 0, border(), 0);
 
     // Build the gui
@@ -135,6 +135,7 @@ void UBNavigatorPalette::resizeEvent(QResizeEvent *event)
     {
         mNavigator->setMinimumHeight(height() - 2*border());
     }
+    UBSettings::settings()->navigPaletteWidth->set(width());
 }
 
 void UBNavigatorPalette::timerEvent(QTimerEvent *event)

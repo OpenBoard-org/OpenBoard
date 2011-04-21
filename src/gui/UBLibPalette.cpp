@@ -17,9 +17,10 @@ UBLibPalette::UBLibPalette(QWidget *parent, const char *name):UBDockPalette(pare
     mIcon = QPixmap(":images/paletteLibrary.png");
     setAcceptDrops(true);
 
-    resize(300, height());
+    resize(UBSettings::settings()->libPaletteWidth->get().toInt(), height());
     setContentsMargins(border(), 0, 0, 0);
     mCollapseWidth = 180;
+    mLastWidth = 300;
 
     mLayout = new QVBoxLayout(this);
     mLayout->setMargin(3);
@@ -157,4 +158,10 @@ void UBLibPalette::showFolder()
 {
     mActionBar->setButtons(mActionBar->previousButtonSet());
     mStackedWidget->setCurrentIndex(ID_NAVIGATOR);
+}
+
+void UBLibPalette::resizeEvent(QResizeEvent *event)
+{
+    UBDockPalette::resizeEvent(event);
+    UBSettings::settings()->libPaletteWidth->set(width());
 }

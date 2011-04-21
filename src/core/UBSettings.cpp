@@ -168,6 +168,9 @@ void UBSettings::init()
     appEnableAutomaticSoftwareUpdates = new UBSetting(this, "App", "EnableAutomaticSoftwareUpdates", true);
     appEnableSoftwareUpdates = new UBSetting(this, "App", "EnableSoftwareUpdates", true);
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", true);
+    navigPaletteWidth = new UBSetting(this, "Board", "NavigPaletteWidth", 300);
+    libPaletteWidth = new UBSetting(this, "Board", "LibPaletteWidth", 300);
+
 
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
