@@ -19,6 +19,8 @@ UBThumbnailWidget::UBThumbnailWidget(QWidget* parent)
     , mSelectionSpan(0)
     , mLassoRectItem(0)
 {
+    // By default, the drag is possible
+    bCanDrag = true;
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
     setFrameShape(QFrame::NoFrame);
@@ -326,30 +328,33 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         if (0 == selectedItems().size())
             return;
 
-        QDrag *drag = new QDrag(this);
-        QMimeData *mime = new QMimeData();
-
-        if (mMimeType.length() > 0)
-            mime->setData(mMimeType, QByteArray()); // trick the d&d system to register our own mime type
-
-        drag->setMimeData(mime);
-
-		QList<QUrl> qlElements;
-
-        foreach (QGraphicsItem* item, selectedItems())
+        if(bCanDrag)
         {
-            if (mGraphicItems.contains(item))
+            QDrag *drag = new QDrag(this);
+            QMimeData *mime = new QMimeData();
+
+            if (mMimeType.length() > 0)
+                mime->setData(mMimeType, QByteArray()); // trick the d&d system to register our own mime type
+
+            drag->setMimeData(mime);
+
+            QList<QUrl> qlElements;
+
+            foreach (QGraphicsItem* item, selectedItems())
             {
-                if (mGraphicItems.indexOf(item) <= mItemsPaths.size()){
-                    qlElements << mItemsPaths.at(mGraphicItems.indexOf(item));
+                if (mGraphicItems.contains(item))
+                {
+                    if (mGraphicItems.indexOf(item) <= mItemsPaths.size()){
+                        qlElements << mItemsPaths.at(mGraphicItems.indexOf(item));
+                    }
                 }
             }
-        }
 
-        if (qlElements.size() > 0){
-			mime->setUrls(qlElements);
-			drag->setMimeData(mime);
-			drag->exec();
+            if (qlElements.size() > 0){
+                            mime->setUrls(qlElements);
+                            drag->setMimeData(mime);
+                            drag->exec();
+            }
         }
     }
 

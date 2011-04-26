@@ -221,40 +221,47 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     UBLibElement* element = new UBLibElement(eUBLibElementType_Folder, mAudioStandardDirectoryPath, tr("Audios", "Audio category element"));
     QImage* categoryImage = new QImage(":images/libpalette/AudiosCategory.svg");
     element->setThumbnail(categoryImage);
+    element->setMoveable(false);
     categories << element;
 
 
     element = new UBLibElement(eUBLibElementType_Folder, mVideoStandardDirectoryPath, tr("Movies", "Movies category element"));
     categoryImage = new QImage(":images/libpalette/MoviesCategory.svg");
     element->setThumbnail(categoryImage);
+    element->setMoveable(false);
     categories << element;
 
     element = new UBLibElement(eUBLibElementType_VirtualFolder, picturesVirtualPath, tr("Pictures", "Pictures category element"));
     categoryImage = new QImage(":images/libpalette/PicturesCategory.svg");
     element->setThumbnail(categoryImage);
+    element->setMoveable(false);
     categories << element;
 
     QString path = UBSettings::settings()->uniboardShapeLibraryDirectory();
     categoryImage = new QImage(":images/libpalette/ShapesCategory.svg");
     element = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(path), tr("Shapes", "Shapes category element"));
     element->setThumbnail(categoryImage);
+    element->setMoveable(false);
     categories << element;
 
 
     categoryImage = new QImage(":images/libpalette/ApplicationsCategory.svg");
     element = new UBLibElement(eUBLibElementType_VirtualFolder, applicationsVirtualPath, tr("Applications", "Applications category element"));
     element->setThumbnail(categoryImage);
+    element->setMoveable(false);
     categories << element;
 
     categoryImage = new QImage(":images/libpalette/FavoritesCategory.svg");
     element = new UBLibElement(eUBLibElementType_VirtualFolder, favoriteVirtualPath, tr("Favorite", "Favorite category element"));
     element->setThumbnail(categoryImage);
+    element->setMoveable(false);
     categories << element;
 
     categoryImage = new QImage(":images/libpalette/InteractivesCategory.svg");
     interactivesCategoryPath = UBSettings::settings()->uniboardGipLibraryDirectory();
     element = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(interactivesCategoryPath), tr("Interactives", "Interactives category element"));
     element->setThumbnail(categoryImage);
+    element->setMoveable(false);
     categories << element;
 
 
@@ -2429,7 +2436,8 @@ QString UBLibraryController::favoritePath()
 
 UBLibElement::UBLibElement() {
     mType = eUBLibElementType_Category;
-    mName = QObject::tr("/Home", "Category list label on nagigation tool bar");
+    mName = QObject::tr("/Home", "Category list label on navigation tool bar");
+    mbMoveable = false;
 }
 
 
@@ -2439,6 +2447,7 @@ UBLibElement::UBLibElement(eUBLibElementType type, const QUrl &path, const QStri
     mPath = path;
     mName = name;
     mInfo = "";
+    mbMoveable = true;
 
     if (type == eUBLibElementType_Folder)
         mThumbnail = QImage(":images/libpalette/folder.svg");
@@ -2448,6 +2457,9 @@ UBLibElement::UBLibElement(eUBLibElementType type, const QUrl &path, const QStri
 
     if (type == eUBLibElementType_Item)
         mExtension = QFileInfo(path.toLocalFile()).completeSuffix();
+
+    if(type == eUBLibElementType_VirtualFolder || type == eUBLibElementType_Category)
+        mbMoveable = false;
 }
 
 UBLibElement::~UBLibElement()
@@ -2483,6 +2495,7 @@ UBLibElement* UBLibElement::trashElement()
     trashElement = new UBLibElement(eUBLibElementType_Folder, UBSettings::trashLibraryPaletteDirPath(), QObject::tr("Trash", "Pictures category element"));
     QImage *categoryImage = new QImage(":images/libpalette/TrashCategory.svg");
     trashElement->setThumbnail(categoryImage);
+    trashElement->setMoveable(false);
 
     return trashElement;
 }

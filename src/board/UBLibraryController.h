@@ -46,6 +46,8 @@ public:
     void setName(QString name){mName = name;}
     QString extension(){return mExtension;}
     void setExtension(QString &extension){ mExtension = extension;}
+    bool isMoveable(){return mbMoveable;}
+    void setMoveable(bool bState){mbMoveable = bState;}
 
 private:
     eUBLibElementType mType;
@@ -54,6 +56,7 @@ private:
     QString mInfo;
     QString mName;
     QString mExtension;
+    bool mbMoveable;
 };
 
 class UBChainedLibElement
