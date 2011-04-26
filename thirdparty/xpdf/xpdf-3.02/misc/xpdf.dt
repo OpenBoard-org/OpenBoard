@@ -1,0 +1,28 @@
+# simple CDE action for xpdf
+# written by Roland.Mainz@informatik.med.uni-giessen.de
+#
+# To use, copy this file into $HOME/.dt/types
+#
+# NOTE: this overrides the actions AcroRead and AcroReadPrint 
+# defined in /usr/dt/appconfig/types/C/solaris.dt
+
+ACTION AcroRead
+{
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     xpdf "%(File)Arg_1%"
+}
+
+# NOTE: Add a '-level1' switch to pdftops if your printer does not
+#       support Level 2 Postscript.
+ACTION AcroReadPrint
+{
+        TYPE            COMMAND
+        WINDOW_TYPE     NO_STDIO
+        EXEC_STRING     ksh -c ' \
+                MYFILE="%(File)Arg_1%" ; \
+                pdftops "${MYFILE}" /dev/stdout | \
+                dtlp -w -b "${MYFILE}"'
+}
+
+# EOF.

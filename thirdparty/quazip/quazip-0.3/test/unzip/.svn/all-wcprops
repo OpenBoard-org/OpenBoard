@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svnroot/quazip/!svn/ver/51/trunk/quazip/test/unzip
+END
+unzip.pro
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svnroot/quazip/!svn/ver/22/trunk/quazip/test/unzip/unzip.pro
+END
+main.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svnroot/quazip/!svn/ver/51/trunk/quazip/test/unzip/main.cpp
+END
+.cvsignore
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svnroot/quazip/!svn/ver/2/trunk/quazip/test/unzip/.cvsignore
+END

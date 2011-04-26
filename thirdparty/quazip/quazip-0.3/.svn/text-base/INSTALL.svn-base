@@ -1,0 +1,3 @@
+QuaZIP does not use autoconf (and probably will not, because I do not
+want to mess with it), so see README file or doc/html for the
+installation details.

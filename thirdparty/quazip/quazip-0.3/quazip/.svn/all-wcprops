@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svnroot/quazip/!svn/ver/54/trunk/quazip/quazip
+END
+quazipnewinfo.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svnroot/quazip/!svn/ver/47/trunk/quazip/quazip/quazipnewinfo.cpp
+END
+ioapi.c
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svnroot/quazip/!svn/ver/42/trunk/quazip/quazip/ioapi.c
+END
+zip.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svnroot/quazip/!svn/ver/50/trunk/quazip/quazip/zip.c
+END
+quaadler32.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svnroot/quazip/!svn/ver/53/trunk/quazip/quazip/quaadler32.cpp
+END
+quazipnewinfo.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svnroot/quazip/!svn/ver/47/trunk/quazip/quazip/quazipnewinfo.h
+END
+unzip.c
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svnroot/quazip/!svn/ver/42/trunk/quazip/quazip/unzip.c
+END
+ioapi.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svnroot/quazip/!svn/ver/21/trunk/quazip/quazip/ioapi.h
+END
+crypt.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svnroot/quazip/!svn/ver/42/trunk/quazip/quazip/crypt.h
+END
+zip.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svnroot/quazip/!svn/ver/21/trunk/quazip/quazip/zip.h
+END
+quaadler32.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svnroot/quazip/!svn/ver/53/trunk/quazip/quazip/quaadler32.h
+END
+quazipfile.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svnroot/quazip/!svn/ver/47/trunk/quazip/quazip/quazipfile.cpp
+END
+quazip.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svnroot/quazip/!svn/ver/52/trunk/quazip/quazip/quazip.cpp
+END
+unzip.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svnroot/quazip/!svn/ver/21/trunk/quazip/quazip/unzip.h
+END
+quazipfile.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svnroot/quazip/!svn/ver/47/trunk/quazip/quazip/quazipfile.h
+END
+quazip.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svnroot/quazip/!svn/ver/47/trunk/quazip/quazip/quazip.h
+END
+JlCompress.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svnroot/quazip/!svn/ver/54/trunk/quazip/quazip/JlCompress.cpp
+END
+quacrc32.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svnroot/quazip/!svn/ver/53/trunk/quazip/quazip/quacrc32.cpp
+END
+quachecksum32.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svnroot/quazip/!svn/ver/53/trunk/quazip/quazip/quachecksum32.h
+END
+JlCompress.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svnroot/quazip/!svn/ver/54/trunk/quazip/quazip/JlCompress.h
+END
+quazip.pro
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svnroot/quazip/!svn/ver/53/trunk/quazip/quazip/quazip.pro
+END
+quacrc32.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svnroot/quazip/!svn/ver/53/trunk/quazip/quazip/quacrc32.h
+END
+quazipfileinfo.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svnroot/quazip/!svn/ver/47/trunk/quazip/quazip/quazipfileinfo.h
+END
