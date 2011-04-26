@@ -77,6 +77,7 @@ class UBThumbnailWidget : public QGraphicsView
         QList<QUrl> mItemsPaths;
         QStringList mLabels;
         bool bSelectionInProgress;
+        bool bCanDrag;
 
     private:
         void selectAll();

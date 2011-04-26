@@ -209,6 +209,7 @@ void UBLibraryWidget::onSelectionChanged()
     QList<UBLibElement*> qlSelectedItems;
     QList<QGraphicsItem*> qlGI = selectedItems();
 
+    bCanDrag = true;
     foreach(QGraphicsItem* it, qlGI)
     {
         int itIndex = mGraphicItems.indexOf(it);
@@ -221,6 +222,11 @@ void UBLibraryWidget::onSelectionChanged()
                    eUBLibElementType_VirtualFolder != pElem->type())
                 {
                     qlSelectedItems << pElem;
+                }
+
+                if(!pElem->isMoveable())
+                {
+                    bCanDrag = false;
                 }
             }
         }

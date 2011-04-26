@@ -9,6 +9,7 @@
 #include <QDragMoveEvent>
 #include <QMimeData>
 #include <QMouseEvent>
+#include <QResizeEvent>
 
 #include "UBDockPalette.h"
 #include "UBLibNavigatorWidget.h"
@@ -33,6 +34,7 @@ protected:
     void dropEvent(QDropEvent *pEvent);
     void dragMoveEvent(QDragMoveEvent* pEvent);
     void mouseMoveEvent(QMouseEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 private slots:
     void showProperties(UBLibElement* elem);

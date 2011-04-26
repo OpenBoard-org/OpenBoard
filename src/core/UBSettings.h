@@ -310,6 +310,14 @@ class UBSettings : public QObject
         UBSetting* gipThumbnailWidth;
         UBSetting* soundThumbnailWidth;
 
+        UBSetting* navigPaletteWidth;
+        UBSetting* libPaletteWidth;
+
+        /*
+        static int navigPaletteWidth;
+        static int libPaletteWidth;
+        */
+
     public slots:
 
         void setPenWidthIndex(int index);
