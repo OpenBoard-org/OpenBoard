@@ -1618,7 +1618,7 @@
   <action name="actionCheckUpdate">
    <property name="icon">
     <iconset resource="../sankore.qrc">
-     <normaloff>:/images/toolbar/softwareUpdate.png</normaloff>:/images/toolbar/softwareUpdate.png</iconset>
+     <normaloff>:/images/toolbar/updates.png</normaloff>:/images/toolbar/updates.png</iconset>
    </property>
    <property name="text">
     <string>Check Update</string>
