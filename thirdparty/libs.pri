@@ -15,9 +15,11 @@ FREETYPE_DIR = "$$PWD/freetype/freetype-2.4.4"
 LIBS        += "-L$$FREETYPE_DIR/lib/$$SUB_LIB" "-lfreetype"
 # no INCLUDEPATH, freetype is not used directly
 
-XPDF_DIR     = "$$PWD/xpdf/3.02"
+XPDF_DIR     = "$$PWD/xpdf/xpdf-3.02"
 LIBS        += "-L$$XPDF_DIR/lib/$$SUB_LIB" "-lxpdf"
-INCLUDEPATH += "$$XPDF_DIR/include"
+INCLUDEPATH += "$$XPDF_DIR"
+INCLUDEPATH += "$$XPDF_DIR/goo"
+INCLUDEPATH += "$$XPDF_DIR/splash"
 
 BREAKPAD_DIR = "$$PWD/google-breakpad/r318"
 INCLUDEPATH += "$$BREAKPAD_DIR/include" "$$BREAKPAD_DIR/include/google_breakpad"

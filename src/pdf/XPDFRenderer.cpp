@@ -5,7 +5,7 @@
 
 #include <frameworks/UBPlatformUtils.h>
 
-#include <xpdf/SplashBitmap.h>
+#include <splash/SplashBitmap.h>
 #include <xpdf/Object.h>
 #include <xpdf/GlobalParams.h>
 #include <xpdf/SplashOutputDev.h>

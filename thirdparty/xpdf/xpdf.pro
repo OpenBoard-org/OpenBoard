@@ -1,13 +1,13 @@
 TEMPLATE  = lib
 CONFIG   += staticlib release warn_off
 
-XPDF_DIR = "3.02"
+XPDF_DIR = "xpdf-3.02"
 
 linux-g++ {
      SUB_LIB = "linux"
 }
 
-macx {   
+macx {
     SUB_LIB = "macx"
 }
 
@@ -25,106 +25,105 @@ macx {
 }
 
 # Free type includes and lib
-FREETYPE_DIR = "../freetype/2.3.8"
+FREETYPE_DIR = "../freetype/freetype-2.4.4"
 INCLUDEPATH += "$$FREETYPE_DIR/include" "$$FREETYPE_DIR/include/freetype2"
 LIBS        += "-L$$FREETYPE_DIR/lib" "-lfreetype"
 
-INCLUDEPATH += $$XPDF_DIR $$XPDF_DIR/src "$$XPDF_DIR/src/fofi" "$$XPDF_DIR/src/goo" "$$XPDF_DIR/src/splash" "$$XPDF_DIR/include"
+INCLUDEPATH += $$XPDF_DIR $$XPDF_DIR "$$XPDF_DIR/fofi" "$$XPDF_DIR/goo" "$$XPDF_DIR/splash" "$$XPDF_DIR/include" xpdf-3.02Extra
 
-aconf.path    = "$$XPDF_DIR/include"
-aconf.files   = aconf2.h
-headers.path  = "$$XPDF_DIR/include/xpdf"
-headers.files = $$XPDF_DIR/src/goo/gmem.h \
-                $$XPDF_DIR/src/goo/gtypes.h \
-                $$XPDF_DIR/src/goo/GMutex.h \
-                $$XPDF_DIR/src/goo/GString.h \
-                $$XPDF_DIR/src/splash/SplashTypes.h \
-                $$XPDF_DIR/src/splash/SplashBitmap.h \
-                $$XPDF_DIR/src/xpdf/config.h \
-                $$XPDF_DIR/src/xpdf/Array.h \
-                $$XPDF_DIR/src/xpdf/CharTypes.h \
-                $$XPDF_DIR/src/xpdf/Dict.h \
-                $$XPDF_DIR/src/xpdf/Function.h \
-                $$XPDF_DIR/src/xpdf/GfxState.h \
-                $$XPDF_DIR/src/xpdf/GlobalParams.h \
-                $$XPDF_DIR/src/xpdf/Object.h \
-                $$XPDF_DIR/src/xpdf/OutputDev.h \
-                $$XPDF_DIR/src/xpdf/PDFDoc.h \
-                $$XPDF_DIR/src/xpdf/SplashOutputDev.h \
-                $$XPDF_DIR/src/xpdf/Catalog.h \
-                $$XPDF_DIR/src/xpdf/Page.h \
-                $$XPDF_DIR/src/xpdf/Stream.h \
-                $$XPDF_DIR/src/xpdf/XRef.h
+aconf.path    = $$XPDF_DIR
+aconf.files = $$XPDF_DIR/aconf.h
+headers.path  = "$$XPDF_DIR/xpdf"
+headers.files = $$XPDF_DIR/goo/gmem.h \
+                $$XPDF_DIR/goo/gtypes.h \
+                $$XPDF_DIR/goo/GMutex.h \
+                $$XPDF_DIR/goo/GString.h \
+                $$XPDF_DIR/splash/SplashTypes.h \
+                $$XPDF_DIR/splash/SplashBitmap.h \
+                $$XPDF_DIR/xpdf/config.h \
+                $$XPDF_DIR/xpdf/Array.h \
+                $$XPDF_DIR/xpdf/CharTypes.h \
+                $$XPDF_DIR/xpdf/Dict.h \
+                $$XPDF_DIR/xpdf/Function.h \
+                $$XPDF_DIR/xpdf/GfxState.h \
+                $$XPDF_DIR/xpdf/GlobalParams.h \
+                $$XPDF_DIR/xpdf/Object.h \
+                $$XPDF_DIR/xpdf/OutputDev.h \
+                $$XPDF_DIR/xpdf/PDFDoc.h \
+                $$XPDF_DIR/xpdf/SplashOutputDev.h \
+                $$XPDF_DIR/xpdf/Catalog.h \
+                $$XPDF_DIR/xpdf/Page.h \
+                $$XPDF_DIR/xpdf/Stream.h \
+                $$XPDF_DIR/xpdf/XRef.h
 
-INSTALLS += "aconf" "headers"
+#INSTALLS += "aconf" "headers"
+INSTALLS += "headers"
 
-SOURCES += $$XPDF_DIR/src/fofi/FoFiBase.cc \
-           $$XPDF_DIR/src/fofi/FoFiEncodings.cc \
-           $$XPDF_DIR/src/fofi/FoFiTrueType.cc \
-           $$XPDF_DIR/src/fofi/FoFiType1.cc \
-           $$XPDF_DIR/src/fofi/FoFiType1C.cc \
-           $$XPDF_DIR/src/fofi/FoFiIdentifier.cc \
-           $$XPDF_DIR/src/goo/gfile.cc \
-           $$XPDF_DIR/src/goo/GHash.cc \
-           $$XPDF_DIR/src/goo/GList.cc \
-           $$XPDF_DIR/src/goo/gmem.cc \
-           $$XPDF_DIR/src/goo/GString.cc \
-           $$XPDF_DIR/src/splash/Splash.cc \
-           $$XPDF_DIR/src/splash/SplashBitmap.cc \
-           $$XPDF_DIR/src/splash/SplashClip.cc \
-           $$XPDF_DIR/src/splash/SplashFTFont.cc \
-           $$XPDF_DIR/src/splash/SplashFTFontEngine.cc \
-           $$XPDF_DIR/src/splash/SplashFTFontFile.cc \
-           $$XPDF_DIR/src/splash/SplashFont.cc \
-           $$XPDF_DIR/src/splash/SplashFontEngine.cc \
-           $$XPDF_DIR/src/splash/SplashFontFile.cc \
-           $$XPDF_DIR/src/splash/SplashFontFileID.cc \
-           $$XPDF_DIR/src/splash/SplashPath.cc \
-           $$XPDF_DIR/src/splash/SplashPattern.cc \
-           $$XPDF_DIR/src/splash/SplashScreen.cc \
-           $$XPDF_DIR/src/splash/SplashState.cc \
-           $$XPDF_DIR/src/splash/SplashXPath.cc \
-           $$XPDF_DIR/src/splash/SplashXPathScanner.cc \
-           $$XPDF_DIR/src/xpdf/Annot.cc \
-           $$XPDF_DIR/src/xpdf/Array.cc \
-           $$XPDF_DIR/src/xpdf/BuiltinFont.cc \
-           $$XPDF_DIR/src/xpdf/BuiltinFontTables.cc \
-           $$XPDF_DIR/src/xpdf/Catalog.cc \
-           $$XPDF_DIR/src/xpdf/CharCodeToUnicode.cc \
-           $$XPDF_DIR/src/xpdf/CMap.cc \
-           $$XPDF_DIR/src/xpdf/CoreOutputDev.cc \
-           $$XPDF_DIR/src/xpdf/Decrypt.cc \
-           $$XPDF_DIR/src/xpdf/Dict.cc \
-           $$XPDF_DIR/src/xpdf/Error.cc \
-           $$XPDF_DIR/src/xpdf/FontEncodingTables.cc \
-           $$XPDF_DIR/src/xpdf/Function.cc \
-           $$XPDF_DIR/src/xpdf/Gfx.cc \
-           $$XPDF_DIR/src/xpdf/GfxFont.cc \
-           $$XPDF_DIR/src/xpdf/GfxState.cc \
-           $$XPDF_DIR/src/xpdf/GlobalParams.cc \
-           $$XPDF_DIR/src/xpdf/ImageOutputDev.cc \
-           $$XPDF_DIR/src/xpdf/JArithmeticDecoder.cc \
-           $$XPDF_DIR/src/xpdf/JBIG2Stream.cc \
-           $$XPDF_DIR/src/xpdf/JPXStream.cc \
-           $$XPDF_DIR/src/xpdf/Lexer.cc \
-           $$XPDF_DIR/src/xpdf/Link.cc \
-           $$XPDF_DIR/src/xpdf/NameToCharCode.cc \
-           $$XPDF_DIR/src/xpdf/Object.cc \
-           $$XPDF_DIR/src/xpdf/OptionalContent.cc \
-           $$XPDF_DIR/src/xpdf/Outline.cc \
-           $$XPDF_DIR/src/xpdf/OutputDev.cc \
-           $$XPDF_DIR/src/xpdf/Page.cc \
-           $$XPDF_DIR/src/xpdf/Parser.cc \
-           $$XPDF_DIR/src/xpdf/PDFCore.cc \
-           $$XPDF_DIR/src/xpdf/PDFDoc.cc \
-           $$XPDF_DIR/src/xpdf/PDFDocEncoding.cc \
-           $$XPDF_DIR/src/xpdf/PreScanOutputDev.cc \
-           $$XPDF_DIR/src/xpdf/PSOutputDev.cc \
-           $$XPDF_DIR/src/xpdf/PSTokenizer.cc \
-           $$XPDF_DIR/src/xpdf/SecurityHandler.cc \
-           $$XPDF_DIR/src/xpdf/SplashOutputDev.cc \
-           $$XPDF_DIR/src/xpdf/Stream.cc \
-           $$XPDF_DIR/src/xpdf/TextOutputDev.cc \
-           $$XPDF_DIR/src/xpdf/UnicodeMap.cc \
-           $$XPDF_DIR/src/xpdf/UnicodeTypeTable.cc \
-           $$XPDF_DIR/src/xpdf/XRef.cc
+SOURCES += $$XPDF_DIR/fofi/FoFiBase.cc \
+           $$XPDF_DIR/fofi/FoFiEncodings.cc \
+           $$XPDF_DIR/fofi/FoFiTrueType.cc \
+           $$XPDF_DIR/fofi/FoFiType1.cc \
+           $$XPDF_DIR/fofi/FoFiType1C.cc \
+           $$XPDF_DIR/goo/gfile.cc \
+           $$XPDF_DIR/goo/GHash.cc \
+           $$XPDF_DIR/goo/GList.cc \
+           $$XPDF_DIR/goo/gmem.cc \
+           $$XPDF_DIR/goo/GString.cc \
+           $$XPDF_DIR/splash/Splash.cc \
+           $$XPDF_DIR/splash/SplashBitmap.cc \
+           $$XPDF_DIR/splash/SplashClip.cc \
+           $$XPDF_DIR/splash/SplashFTFont.cc \
+           $$XPDF_DIR/splash/SplashFTFontEngine.cc \
+           $$XPDF_DIR/splash/SplashFTFontFile.cc \
+           $$XPDF_DIR/splash/SplashFont.cc \
+           $$XPDF_DIR/splash/SplashFontEngine.cc \
+           $$XPDF_DIR/splash/SplashFontFile.cc \
+           $$XPDF_DIR/splash/SplashFontFileID.cc \
+           $$XPDF_DIR/splash/SplashPath.cc \
+           $$XPDF_DIR/splash/SplashPattern.cc \
+           $$XPDF_DIR/splash/SplashScreen.cc \
+           $$XPDF_DIR/splash/SplashState.cc \
+           $$XPDF_DIR/splash/SplashXPath.cc \
+           $$XPDF_DIR/splash/SplashXPathScanner.cc \
+           $$XPDF_DIR/xpdf/Annot.cc \
+           $$XPDF_DIR/xpdf/Array.cc \
+           $$XPDF_DIR/xpdf/BuiltinFont.cc \
+           $$XPDF_DIR/xpdf/BuiltinFontTables.cc \
+           $$XPDF_DIR/xpdf/Catalog.cc \
+           $$XPDF_DIR/xpdf/CharCodeToUnicode.cc \
+           $$XPDF_DIR/xpdf/CMap.cc \
+           $$XPDF_DIR/xpdf/CoreOutputDev.cc \
+           $$XPDF_DIR/xpdf/Decrypt.cc \
+           $$XPDF_DIR/xpdf/Dict.cc \
+           $$XPDF_DIR/xpdf/Error.cc \
+           $$XPDF_DIR/xpdf/FontEncodingTables.cc \
+           $$XPDF_DIR/xpdf/Function.cc \
+           $$XPDF_DIR/xpdf/Gfx.cc \
+           $$XPDF_DIR/xpdf/GfxFont.cc \
+           $$XPDF_DIR/xpdf/GfxState.cc \
+           $$XPDF_DIR/xpdf/GlobalParams.cc \
+           $$XPDF_DIR/xpdf/ImageOutputDev.cc \
+           $$XPDF_DIR/xpdf/JArithmeticDecoder.cc \
+           $$XPDF_DIR/xpdf/JBIG2Stream.cc \
+           $$XPDF_DIR/xpdf/JPXStream.cc \
+           $$XPDF_DIR/xpdf/Lexer.cc \
+           $$XPDF_DIR/xpdf/Link.cc \
+           $$XPDF_DIR/xpdf/NameToCharCode.cc \
+           $$XPDF_DIR/xpdf/Object.cc \
+           $$XPDF_DIR/xpdf/Outline.cc \
+           $$XPDF_DIR/xpdf/OutputDev.cc \
+           $$XPDF_DIR/xpdf/Page.cc \
+           $$XPDF_DIR/xpdf/Parser.cc \
+           $$XPDF_DIR/xpdf/PDFCore.cc \
+           $$XPDF_DIR/xpdf/PDFDoc.cc \
+           $$XPDF_DIR/xpdf/PDFDocEncoding.cc \
+           $$XPDF_DIR/xpdf/PreScanOutputDev.cc \
+           $$XPDF_DIR/xpdf/PSOutputDev.cc \
+           $$XPDF_DIR/xpdf/PSTokenizer.cc \
+           $$XPDF_DIR/xpdf/SecurityHandler.cc \
+           $$XPDF_DIR/xpdf/SplashOutputDev.cc \
+           $$XPDF_DIR/xpdf/Stream.cc \
+           $$XPDF_DIR/xpdf/TextOutputDev.cc \
+           $$XPDF_DIR/xpdf/UnicodeMap.cc \
+           $$XPDF_DIR/xpdf/UnicodeTypeTable.cc \
+           $$XPDF_DIR/xpdf/XRef.cc
