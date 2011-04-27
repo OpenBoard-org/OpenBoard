@@ -4301,7 +4301,7 @@ void PSOutputDev::doImageL1Sep(GfxImageColorMap *colorMap,
 	     width, -height, height);
 
   // allocate a line buffer
-  lineBuf = (Guchar *)gmallocn(width, 4);
+  lineBuf = (Guchar *)gmalloc(4 * width);
 
   // set up to process the data stream
   imgStr = new ImageStream(str, width, colorMap->getNumPixelComps(),

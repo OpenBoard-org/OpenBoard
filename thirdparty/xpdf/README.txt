@@ -7,8 +7,9 @@ instructions for version 3.02
 - Decompress xpdf-3.02.xx.tar.gz
 
 Windows:
-    - Copy aconf-win32.h to aconf.h
-    - undefine unicode API support by adding '#undef UNICODE' aconf.h
+	- using cywin run ./configure
+	- run qmake xpdf.pro -r -spec win32-g++
+	- run make
 
 OSX:
     - run ./configure (may need extrea options ?)

@@ -78,10 +78,6 @@ private:
 			     Guint *refSegs, Guint nRefSegs);
   void readGenericRegionSeg(Guint segNum, GBool imm,
 			    GBool lossless, Guint length);
-  void mmrAddPixels(int a1, int blackPixels,
-		    int *codingLine, int *a0i, int w);
-  void mmrAddPixelsNeg(int a1, int blackPixels,
-		       int *codingLine, int *a0i, int w);
   JBIG2Bitmap *readGenericBitmap(GBool mmr, int w, int h,
 				 int templ, GBool tpgdOn,
 				 GBool useSkip, JBIG2Bitmap *skip,
