@@ -136,8 +136,8 @@ macx {
    QMAKE_MAC_SDK = "/Developer/SDKs/MacOSX10.5.sdk"
    QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.4"
 
-   VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
-   # VERSION_RC_PATH = "/Network/Servers/dub.palace.sente.ch/Volumes/dupondt/Users/didier/Projects/Sankore/Sankore_3-build-desktop/build/macx/version_rc"
+  # VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
+   VERSION_RC_PATH = "/Network/Servers/dub.palace.sente.ch/Volumes/dupondt/Users/didier/Projects/Sankore/Sankore_3-build-desktop/build/macx/version_rc"
 
    # Embed version into executable for breakpad
    QMAKE_LFLAGS += -sectcreate \
