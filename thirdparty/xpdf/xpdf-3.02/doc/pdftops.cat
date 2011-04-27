@@ -1,0 +1,229 @@
+pdftops(1)                                             pdftops(1)
+
+
+
+NAME
+       pdftops  -  Portable  Document  Format (PDF) to PostScript
+       converter (version 3.02)
+
+SYNOPSIS
+       pdftops [options] [PDF-file [PS-file]]
+
+DESCRIPTION
+       Pdftops converts Portable Document Format (PDF)  files  to
+       PostScript so they can be printed.
+
+       Pdftops  reads  the  PDF  file,  PDF-file,  and  writes  a
+       PostScript file, PS-file.  If PS-file  is  not  specified,
+       pdftops converts file.pdf to file.ps (or file.eps with the
+       -eps option).  If PS-file is '-', the PostScript  is  sent
+       to stdout.
+
+CONFIGURATION FILE
+       Pdftops  reads  a configuration file at startup.  It first
+       tries to find the user's private config  file,  ~/.xpdfrc.
+       If  that  doesn't exist, it looks for a system-wide config
+       file, typically /usr/local/etc/xpdfrc (but  this  location
+       can  be changed when pdftops is built).  See the xpdfrc(5)
+       man page for details.
+
+OPTIONS
+       Many of the following options can be set  with  configura-
+       tion  file  commands.  These are listed in square brackets
+       with the description of  the  corresponding  command  line
+       option.
+
+       -f number
+              Specifies the first page to print.
+
+       -l number
+              Specifies the last page to print.
+
+       -level1
+              Generate   Level   1   PostScript.   The  resulting
+              PostScript files will be significantly  larger  (if
+              they  contain  images),  but  will print on Level 1
+              printers.  This also converts all images  to  black
+              and  white.   No  more  than  one of the PostScript
+              level  options   (-level1,   -level1sep,   -level2,
+              -level2sep,  -level3,  -level3Sep)  may  be  given.
+              [config file: psLevel]
+
+       -level1sep
+              Generate Level 1 separable PostScript.  All  colors
+              are  converted  to  CMYK.   Images are written with
+              separate  stream  data  for  the  four  components.
+              [config file: psLevel]
+
+       -level2
+              Generate  Level  2  PostScript.   Level  2 supports
+              color images and image compression.   This  is  the
+              default setting.  [config file: psLevel]
+
+       -level2sep
+              Generate  Level 2 separable PostScript.  All colors
+              are converted to CMYK.  The  PostScript  separation
+              convention  operators  are  used  to  handle custom
+              (spot) colors.  [config file: psLevel]
+
+       -level3
+              Generate Level  3  PostScript.   This  enables  all
+              Level 2 features plus CID font embedding and masked
+              image generation.  [config file: psLevel]
+
+       -level3Sep
+              Generate Level 3 separable PostScript.  The separa-
+              tion handling is the same as for -level2Sep.  [con-
+              fig file: psLevel]
+
+       -eps   Generate an Encapsulated PostScript (EPS) file.  An
+              EPS  file  contains  a  single image, so if you use
+              this option with a multi-page PDF  file,  you  must
+              use  -f  and  -l to specify a single page.  No more
+              than one of the mode options (-eps, -form)  may  be
+              given.
+
+       -form  Generate a PostScript form which can be imported by
+              software that understands forms.  A form contains a
+              single  page,  so  if  you  use  this option with a
+              multi-page PDF file, you must  use  -f  and  -l  to
+              specify  a  single page.  The -level1 option cannot
+              be used with -form.
+
+       -opi   Generate OPI comments  for  all  images  and  forms
+              which  have  OPI information.  (This option is only
+              available if pdftops was  compiled  with  OPI  sup-
+              port.)  [config file: psOPI]
+
+       -noembt1
+              By  default, any Type 1 fonts which are embedded in
+              the PDF file are copied into the  PostScript  file.
+              This option causes pdftops to substitute base fonts
+              instead.   Embedded  fonts  make  PostScript  files
+              larger,  but  may be necessary for readable output.
+              [config file: psEmbedType1Fonts]
+
+       -noembtt
+              By default, any TrueType fonts which  are  embedded
+              in  the  PDF  file  are  copied into the PostScript
+              file.  This option  causes  pdftops  to  substitute
+              base fonts instead.  Embedded fonts make PostScript
+              files larger, but may  be  necessary  for  readable
+              output.   Also, some PostScript interpreters do not
+              have TrueType  rasterizers.   [config  file:  psEm-
+              bedTrueTypeFonts]
+
+       -noembcidps
+              By  default,  any  CID  PostScript  fonts which are
+              embedded in  the  PDF  file  are  copied  into  the
+              PostScript  file.  This option disables that embed-
+              ding.  No attempt is made to  substitute  for  non-
+              embedded CID PostScript fonts.  [config file: psEm-
+              bedCIDPostScriptFonts]
+
+       -noembcidtt
+              By default, any CID TrueType fonts which are embed-
+              ded  in the PDF file are copied into the PostScript
+              file.  This option  disables  that  embedding.   No
+              attempt  is made to substitute for non-embedded CID
+              TrueType fonts.  [config file:  psEmbedCIDTrueType-
+              Fonts]
+
+       -preload
+              Convert  PDF  forms  to  PS procedures, and preload
+              image  data.   This  uses  more   memory   in   the
+              PostScript interpreter, but generates significantly
+              smaller PS files in  situations  where,  e.g.,  the
+              same  image  is drawn on every page of a long docu-
+              ment.
+
+       -paper size
+              Set the paper size to  one  of  "letter",  "legal",
+              "A4",  or  "A3".   This can also be set to "match",
+              which will set the paper size  to  match  the  size
+              specified  in the PDF file.  [config file: psPaper-
+              Size]
+
+       -paperw size
+              Set the paper  width,  in  points.   [config  file:
+              psPaperSize]
+
+       -paperh size
+              Set  the  paper  height,  in points.  [config file:
+              psPaperSize]
+
+       -nocrop
+              By default, output is cropped to the CropBox speci-
+              fied  in  the PDF file.  This option disables crop-
+              ping.  [config file: psCrop]
+
+       -expand
+              Expand PDF pages smaller than the paper to fill the
+              paper.   By  default,  these  pages are not scaled.
+              [config file: psExpandSmaller]
+
+       -noshrink
+              Don't scale PDF pages which  are  larger  than  the
+              paper.  By default, pages larger than the paper are
+              shrunk to fit.  [config file: psShrinkLarger]
+
+       -nocenter
+              By default, PDF pages smaller than the paper (after
+              any  scaling)  are  centered  on  the  paper.  This
+              option causes them to be aligned to the  lower-left
+              corner  of the paper instead.  [config file: psCen-
+              ter]
+
+       -pagecrop
+              Treat  the  CropBox  as  the  PDF  page  size.   By
+              default, the MediaBox is used as the page size.
+
+       -duplex
+              Set  the  Duplex pagedevice entry in the PostScript
+              file.  This tells duplex-capable printers to enable
+              duplexing.  [config file: psDuplex]
+
+       -opw password
+              Specify  the owner password for the PDF file.  Pro-
+              viding this will bypass all security  restrictions.
+
+       -upw password
+              Specify the user password for the PDF file.
+
+       -q     Don't  print any messages or errors.  [config file:
+              errQuiet]
+
+       -cfg config-file
+              Read config-file in place of ~/.xpdfrc or the  sys-
+              tem-wide config file.
+
+       -v     Print copyright and version information.
+
+       -h     Print  usage  information.   (-help  and --help are
+              equivalent.)
+
+EXIT CODES
+       The Xpdf tools use the following exit codes:
+
+       0      No error.
+
+       1      Error opening a PDF file.
+
+       2      Error opening an output file.
+
+       3      Error related to PDF permissions.
+
+       99     Other error.
+
+AUTHOR
+       The  pdftops  software  and  documentation  are  copyright
+       1996-2007 Glyph & Cog, LLC.
+
+SEE ALSO
+       xpdf(1),     pdftotext(1),     pdfinfo(1),    pdffonts(1),
+       pdftoppm(1), pdfimages(1), xpdfrc(5)
+       http://www.foolabs.com/xpdf/
+
+
+
+                         27 February 2007              pdftops(1)
