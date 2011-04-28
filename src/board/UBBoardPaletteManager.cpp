@@ -92,6 +92,10 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
     }
 }
 
+void UBBoardPaletteManager::initPalettesPosAtStartup()
+{
+    mStylusPalette->initPosition();
+}
 
 void UBBoardPaletteManager::setupLayout()
 {
@@ -342,6 +346,7 @@ void UBBoardPaletteManager::containerResized()
 
     mStylusPalette->move(userLeft, userTop);
     mStylusPalette->adjustSizeAndPosition();
+    mStylusPalette->initPosition();
 
     mZoomPalette->move(userLeft + userWidth - mZoomPalette->width()
             , userTop + userHeight /*- mPageNumberPalette->height()*/ - innerMargin - mZoomPalette->height());

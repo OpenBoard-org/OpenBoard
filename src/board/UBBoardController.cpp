@@ -118,6 +118,7 @@ void UBBoardController::init()
     UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createDocument();
 
     setActiveDocumentScene(doc);
+
     undoRedoStateChange(true);
 }
 

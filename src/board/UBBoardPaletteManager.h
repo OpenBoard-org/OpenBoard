@@ -37,6 +37,7 @@ class UBBoardPaletteManager : public QObject
         void setupLayout();
 		UBNavigatorPalette* navigatorPalette(){return mNavigPalette;}
 		void showVirtualKeyboard(bool show = true);
+        void initPalettesPosAtStartup();
 
     public slots:
 

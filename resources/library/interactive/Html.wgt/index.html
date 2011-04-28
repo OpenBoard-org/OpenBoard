@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>markItUp! Universal markup editor</title>
+<link rel="stylesheet" type="text/css" href="images/style.css" />
+<!-- jQuery -->
+<script type="text/javascript" src="jquery.pack.js"></script>
+<!-- markItUp! -->
+<script type="text/javascript" src="markitup/jquery.markitup.js"></script>
+<!-- markItUp! toolbar settings -->
+<script type="text/javascript" src="markitup/sets/html/set.js"></script>
+<!-- markItUp! skin -->
+<link rel="stylesheet" type="text/css" href="markitup/skins/simple/style.css" />
+<!--  markItUp! toolbar skin -->
+<link rel="stylesheet" type="text/css" href="markitup/sets/html/style.css" />
+
+</head>
+<body>
+	<script type="text/javascript" >
+	$(document).ready(function()	{
+		
+		$("#reset-btn").hide();
+				
+		$('#markItUp').markItUp(mySettings);
+		$("#markItUp").width($(window).width()-22)
+					  .height(($(window).height())-(40));
+		$('iframe').width($(window).width()-24)
+				   .height($(window).height()-46);
+		if(window.uniboard){
+			var html = window.uniboard.preference("html", "Welcome to HTML EDITOR");
+			$("#markItUp").val(html);
+		};
+		
+		$("#reset-btn").click(function(){
+			$(this).data("hidden", true).hide();
+			$('textarea').show(); 
+			$('iframe').remove();
+			$("#fakebar").show();
+			$("#menu").show();
+		});
+	});
+	
+	$(window).resize(function(){		
+	$("#markItUp").width($(window).width()-22)
+				  .height($(window).height()-40);
+		$('iframe').width($(window).width()-24)
+				   .height($(window).height()-46);	
+	$('#markItUpFooter').width($(window).width()-30);
+		
+	});
+	</script>
+
+<div id='fakebar'></div>
+<textarea id="markItUp" cols="80" rows="20">
+Welcome to HTML EDITOR
+</textarea>
+<img id="reset-btn" src="images/bts.png" style="position:absolute; top:0; left:5">
+
+</body>
+</html>
