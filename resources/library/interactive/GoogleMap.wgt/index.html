@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:v="urn:schemas-microsoft-com:vml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Google Maps</title>
+
+	<script src="http://www.google.com/jsapi?key=ABQIAAAA6vtVqAUu8kZ_eTz7c8kwSBT9UCAhw_xm0LNFHsWmQxTJAdp5lxSY_5r-lZriY_7sACaMnl80JcX6Og"></script>
+		
+	<style type="text/css">
+	  @import url("http://www.google.com/uds/css/gsearch.css");
+	  @import url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css");
+	</style>
+	
+	<script type="text/javascript">
+	
+	google.load("maps", "2");
+	google.load("elements", "1", {
+	  packages : ["localsearch"]
+	});
+
+	function initialize() 
+	{
+		var map = null;
+		var defaultMapType = G_SATELLITE_MAP;
+    var mapType = null;
+	    var lat = 30;
+	    var lng = 0;
+	    var zoom = 2;
+		var latlng = new google.maps.LatLng(lat, lng);
+
+		if (window.uniboard)
+		{
+		    lat = parseFloat(window.uniboard.preference('latitude', lat));
+		    lng = parseFloat(window.uniboard.preference('longitude', lng));
+		    zoom = parseFloat(window.uniboard.preference('zoom', zoom));  
+		    mapType = window.uniboard.preference('mapType', mapType);
+
+			latlng = new google.maps.LatLng(lat, lng);
+		};
+		
+		if (GBrowserIsCompatible()) {
+			map = new GMap2(document.getElementById("map_canvas"));
+			map.setCenter(latlng);
+			map.setUIToDefault();
+      var mapTypeToSet = defaultMapType;
+      if (mapType != null) {
+        mapTypeToSet = map.getMapTypes()[mapType];
+      }
+			map.setMapType(mapTypeToSet);
+			map.setZoom(zoom);
+			map.addControl(new google.elements.LocalSearch(), 
+				new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(5,30)));	
+			
+			// Add persistence
+			if (window.uniboard)
+			{				
+				GEvent.addListener(map,'zoomend',function()
+				{ 
+		           	window.uniboard.setPreference('zoom', map.getZoom());
+				});
+
+				GEvent.addListener(map,'moveend',function()
+				{ 
+		         	window.uniboard.setPreference('latitude', map.getCenter().lat());
+		         	window.uniboard.setPreference('longitude', map.getCenter().lng());
+				});
+
+				GEvent.addListener(map,'maptypechanged',function()
+				{ 
+          var newMapType = null; 
+          for (var i = 0; i < map.getMapTypes().length; i++) {
+            var aMaptype = map.getMapTypes()[i];
+            if (aMaptype == map.getCurrentMapType()) {
+              newMapType = i;
+              break;
+            }  
+          }
+		      window.uniboard.setPreference('mapType', newMapType);
+				});
+			};
+		}
+		
+		window.onresize();
+	};
+
+	window.onresize = function()
+	{
+		document.getElementById('map_canvas').style.width = window.innerWidth + 'px';
+	    document.getElementById('map_canvas').style.height = window.innerHeight + 'px';      
+	};
+      
+    </script>
+  </head>
+
+<body onload="initialize()" style="margin: 0px">
+    <div id="map_canvas" style="width: 800px; height: 600px"></div>
+</body>
+
+</html>

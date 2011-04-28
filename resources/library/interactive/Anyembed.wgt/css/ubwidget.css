@@ -1,0 +1,21 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	margin:0px;
+}
+
+.ubw-container{
+	position:absolute;
+	margin:0px;
+	left:0px;
+	top:0px;
+}
+
+.ubw-body{
+	margin:0px;
+
+}
+
