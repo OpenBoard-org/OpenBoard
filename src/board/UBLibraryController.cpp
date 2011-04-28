@@ -46,10 +46,7 @@
 #include <QDataStream>
 
 static quint32 magicNumber = 0xACDCAFE0;
-static QString applicationsVirtualPath = "$applications$";
-static QString picturesVirtualPath = "$pictures$";
 static QString favoriteVirtualPath = "$favorite$";
-static QString interactivesCategoryPath;
 
 UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardController *pBoardController) :
         QObject(pParentWidget),
@@ -79,6 +76,8 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardControll
 
     mPicturesStandardDirectoryPath = QUrl::fromLocalFile(UBDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
     userPath(mPicturesStandardDirectoryPath);
+
+    mInteractiveUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveUserDirectory());
 
     createInternalWidgetItems();
 
@@ -224,14 +223,13 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     element->setMoveable(false);
     categories << element;
 
-
     element = new UBLibElement(eUBLibElementType_Folder, mVideoStandardDirectoryPath, tr("Movies", "Movies category element"));
     categoryImage = new QImage(":images/libpalette/MoviesCategory.svg");
     element->setThumbnail(categoryImage);
     element->setMoveable(false);
     categories << element;
 
-    element = new UBLibElement(eUBLibElementType_VirtualFolder, picturesVirtualPath, tr("Pictures", "Pictures category element"));
+    element = new UBLibElement(eUBLibElementType_Folder, mPicturesStandardDirectoryPath, tr("Pictures", "Pictures category element"));
     categoryImage = new QImage(":images/libpalette/PicturesCategory.svg");
     element->setThumbnail(categoryImage);
     element->setMoveable(false);
@@ -246,7 +244,7 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
 
 
     categoryImage = new QImage(":images/libpalette/ApplicationsCategory.svg");
-    element = new UBLibElement(eUBLibElementType_VirtualFolder, applicationsVirtualPath, tr("Applications", "Applications category element"));
+    element = new UBLibElement(eUBLibElementType_Folder, mInteractiveUserDirectoryPath, tr("Applications", "Applications category element"));
     element->setThumbnail(categoryImage);
     element->setMoveable(false);
     categories << element;
@@ -258,8 +256,8 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     categories << element;
 
     categoryImage = new QImage(":images/libpalette/InteractivesCategory.svg");
-    interactivesCategoryPath = UBSettings::settings()->uniboardGipLibraryDirectory();
-    element = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(interactivesCategoryPath), tr("Interactives", "Interactives category element"));
+    mInteractiveCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardGipLibraryDirectory());
+    element = new UBLibElement(eUBLibElementType_Folder, mInteractiveCategoryPath, tr("Interactives", "Interactives category element"));
     element->setThumbnail(categoryImage);
     element->setMoveable(false);
     categories << element;
@@ -315,9 +313,27 @@ QImage* UBLibraryController::thumbnailForFile(UBLibElement* pElement)
         return createThumbnail(pElement);
 }
 
-QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPath)
+QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QString& pPath)
 {
     QList<UBLibElement*> content;
+    if (pPath == mInteractiveCategoryPath.toString())
+        content << mInternalLibElements;
+    else if (pPath == mPicturesStandardDirectoryPath.toLocalFile()){
+        QUrl path = QUrl::fromLocalFile(UBSettings::settings()->uniboardImageLibraryDirectory());
+        userPath(path);
+        content << listElementsInPath(path.toLocalFile());
+    }
+    else if (pPath == mInteractiveUserDirectoryPath.toLocalFile()){
+        content << listElementsInPath(UBSettings::settings()->uniboardInteractiveLibraryDirectory());
+        content << listElementsInPath(UBSettings::settings()->uniboardInteractiveFavoritesDirectory());
+    }
+
+    return content;
+}
+
+QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPath)
+{
+    QList<UBLibElement*> content = addVirtualElementsForItemPath(pPath);
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(pPath);
 
     QFileInfoList::iterator fileInfo;
@@ -346,56 +362,14 @@ QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPat
         content << element;
     }
 
-    if (pPath == interactivesCategoryPath)
-        content << mInternalLibElements;
     return content;
 }
 
-QList<UBLibElement*> UBLibraryController::elementsInPicturesVirtualForlder()
-{
-    QList<UBLibElement*> content;
 
-    UBLibElement *element = new UBLibElement(eUBLibElementType_Folder, mPicturesStandardDirectoryPath, tr("User Pictures", "User Pictures directory"));
-
-    QImage* categoryImage = new QImage(":images/libpalette/PicturesCategory.svg");
-    element->setThumbnail(categoryImage);
-    content << element;
-
-    QUrl path = QUrl::fromLocalFile(UBSettings::settings()->uniboardImageLibraryDirectory());
-    userPath(path);
-    element = new UBLibElement(eUBLibElementType_Folder, path,tr("Sankoré 3.1 Pictures", "Sankoré 3.1 Pictures directory"));
-
-    element->setThumbnail(categoryImage);
-    content << element;
-
-    return content;
-}
-
-QList<UBLibElement*> UBLibraryController::elementsInApplicationsVirtualForlder()
-{
-    QList<UBLibElement*> content;
-
-    UBLibElement *element = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveLibraryDirectory()), tr("Sankoré Interactive"));
-    content << element;
-
-    element = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveUserDirectory()), tr("User Interactive"));
-    content << element;
-
-    element = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveFavoritesDirectory()), tr("Favorite Interactive"));
-    content << element;
-
-    return content;
-
-}
 
 QList<UBLibElement*> UBLibraryController::listElementsInVirtualForlder(UBLibElement* pElement)
 {
-    if (pElement->path() == applicationsVirtualPath)
-        return elementsInApplicationsVirtualForlder();
-    else if (pElement->path() == picturesVirtualPath)
-        return elementsInPicturesVirtualForlder();
-    else
-        return mFavoriteList;
+    return mFavoriteList;
 }
 
 void UBLibraryController::moveContent(QList<UBLibElement*> sourceList, UBLibElement *pDestination)
