@@ -1,0 +1,126 @@
+#========================================================================
+#
+# Main xpdf Makefile.
+#
+# Copyright 1996-2003 Glyph & Cog, LLC
+#
+#========================================================================
+
+SHELL = /bin/sh
+
+DESTDIR =
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+srcdir = @srcdir@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+
+EXE = @EXE@
+
+all:
+	cd goo; $(MAKE)
+	cd @UP_DIR@fofi; $(MAKE)
+	cd @UP_DIR@splash; $(MAKE)
+	cd @UP_DIR@xpdf; $(MAKE) @XPDF_TARGET@
+
+all-no-x:
+	cd goo; $(MAKE)
+	cd @UP_DIR@fofi; $(MAKE)
+	cd @UP_DIR@xpdf; $(MAKE) all-no-x
+
+xpdf: dummy
+	cd goo; $(MAKE)
+	cd @UP_DIR@fofi; $(MAKE)
+	cd @UP_DIR@splash; $(MAKE)
+	cd @UP_DIR@xpdf; $(MAKE) xpdf$(EXE)
+
+pdftops: dummy
+	cd goo; $(MAKE)
+	cd @UP_DIR@fofi; $(MAKE)
+	cd @UP_DIR@splash; $(MAKE)
+	cd @UP_DIR@xpdf; $(MAKE) pdftops$(EXE)
+
+pdftotext: dummy
+	cd goo; $(MAKE)
+	cd @UP_DIR@fofi; $(MAKE)
+	cd @UP_DIR@splash; $(MAKE)
+	cd @UP_DIR@xpdf; $(MAKE) pdftotext$(EXE)
+
+pdfinfo:
+	cd goo; $(MAKE)
+	cd @UP_DIR@fofi; $(MAKE)
+	cd @UP_DIR@splash; $(MAKE)
+	cd @UP_DIR@xpdf; $(MAKE) pdfinfo$(EXE)
+
+pdffonts:
+	cd goo; $(MAKE)
+	cd @UP_DIR@fofi; $(MAKE)
+	cd @UP_DIR@splash; $(MAKE)
+	cd @UP_DIR@xpdf; $(MAKE) pdffonts$(EXE)
+
+pdftoppm:
+	cd goo; $(MAKE)
+	cd @UP_DIR@fofi; $(MAKE)
+	cd @UP_DIR@splash; $(MAKE)
+	cd @UP_DIR@xpdf; $(MAKE) pdftoppm$(EXE)
+
+pdfimages:
+	cd goo; $(MAKE)
+	cd @UP_DIR@fofi; $(MAKE)
+	cd @UP_DIR@splash; $(MAKE)
+	cd @UP_DIR@xpdf; $(MAKE) pdfimages$(EXE)
+
+dummy:
+
+install: dummy
+	-mkdir -p $(DESTDIR)@bindir@
+@X@	$(INSTALL_PROGRAM) xpdf/xpdf$(EXE) $(DESTDIR)@bindir@/xpdf$(EXE)
+	$(INSTALL_PROGRAM) xpdf/pdftops$(EXE) $(DESTDIR)@bindir@/pdftops$(EXE)
+	$(INSTALL_PROGRAM) xpdf/pdftotext$(EXE) $(DESTDIR)@bindir@/pdftotext$(EXE)
+	$(INSTALL_PROGRAM) xpdf/pdfinfo$(EXE) $(DESTDIR)@bindir@/pdfinfo$(EXE)
+	$(INSTALL_PROGRAM) xpdf/pdffonts$(EXE) $(DESTDIR)@bindir@/pdffonts$(EXE)
+@X@	$(INSTALL_PROGRAM) xpdf/pdftoppm$(EXE) $(DESTDIR)@bindir@/pdftoppm$(EXE)
+	$(INSTALL_PROGRAM) xpdf/pdfimages$(EXE) $(DESTDIR)@bindir@/pdfimages$(EXE)
+	-mkdir -p $(DESTDIR)@mandir@/man1
+@X@	$(INSTALL_DATA) $(srcdir)/doc/xpdf.1 $(DESTDIR)@mandir@/man1/xpdf.1
+	$(INSTALL_DATA) $(srcdir)/doc/pdftops.1 $(DESTDIR)@mandir@/man1/pdftops.1
+	$(INSTALL_DATA) $(srcdir)/doc/pdftotext.1 $(DESTDIR)@mandir@/man1/pdftotext.1
+	$(INSTALL_DATA) $(srcdir)/doc/pdfinfo.1 $(DESTDIR)@mandir@/man1/pdfinfo.1
+	$(INSTALL_DATA) $(srcdir)/doc/pdffonts.1 $(DESTDIR)@mandir@/man1/pdffonts.1
+@X@	$(INSTALL_DATA) $(srcdir)/doc/pdftoppm.1 $(DESTDIR)@mandir@/man1/pdftoppm.1
+	$(INSTALL_DATA) $(srcdir)/doc/pdfimages.1 $(DESTDIR)@mandir@/man1/pdfimages.1
+	-mkdir -p $(DESTDIR)@mandir@/man5
+	$(INSTALL_DATA) $(srcdir)/doc/xpdfrc.5 $(DESTDIR)@mandir@/man5/xpdfrc.5
+	-mkdir -p $(DESTDIR)@sysconfdir@
+	@if test ! -f $(DESTDIR)@sysconfdir@/xpdfrc; then \
+		echo "$(INSTALL_DATA) $(srcdir)/doc/sample-xpdfrc $(DESTDIR)@sysconfdir@/xpdfrc"; \
+		$(INSTALL_DATA) $(srcdir)/doc/sample-xpdfrc $(DESTDIR)@sysconfdir@/xpdfrc; \
+	else \
+		echo "# not overwriting the existing $(DESTDIR)@sysconfdir@/xpdfrc"; \
+	fi
+
+clean:
+	-cd goo; $(MAKE) clean
+	-cd @UP_DIR@fofi; $(MAKE) clean
+	-cd @UP_DIR@splash; $(MAKE) clean
+	-cd @UP_DIR@xpdf; $(MAKE) clean
+
+distclean: clean
+	rm -f config.log config.status config.cache
+	rm -f aconf.h
+	rm -f Makefile goo/Makefile xpdf/Makefile
+	rm -f goo/Makefile.dep fofi/Makefile.dep splash/Makefile.dep xpdf/Makefile.dep
+	rm -f goo/Makefile.in.bak fofi/Makefile.in.bak splash/Makefile.in.bak xpdf/Makefile.in.bak
+	touch goo/Makefile.dep
+	touch fofi/Makefile.dep
+	touch splash/Makefile.dep
+	touch xpdf/Makefile.dep
+
+depend:
+	cd goo; $(MAKE) depend
+	cd @UP_DIR@fofi; $(MAKE) depend
+	cd @UP_DIR@splash; $(MAKE) depend
+	cd @UP_DIR@xpdf; $(MAKE) depend
