@@ -12,8 +12,10 @@ class UBStylusPalette : public UBActionPalette
     Q_OBJECT;
 
     public:
-    UBStylusPalette(QWidget *parent = 0, Qt::Orientation orient = Qt::Vertical);
+        UBStylusPalette(QWidget *parent = 0, Qt::Orientation orient = Qt::Vertical);
         virtual ~UBStylusPalette();
+
+        void initPosition();
 
     private slots:
 

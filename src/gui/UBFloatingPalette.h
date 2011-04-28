@@ -57,16 +57,16 @@ class UBFloatingPalette : public QWidget
         bool mbGrip;
         static const int sLayoutContentMargin = 12;
         static const int sLayoutSpacing = 15;
+        void moveInsideParent(const QPoint &position);
+        bool mCustomPosition;
 
     private:
-        void moveInsideParent(const QPoint &position);
         void removeAllAssociatedPalette();
         void minimizePalette(const QPoint& pos);
 
         QList<UBFloatingPalette*> mAssociatedPalette;
         QPoint mDragPosition;
         bool mIsMoving;
-        bool mCustomPosition;
         bool mCanBeMinimized;
 	eMinimizedLocation mMinimizedLocation;
         Qt::Corner mDefaultPosition;

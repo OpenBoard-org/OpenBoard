@@ -57,6 +57,8 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 
     adjustSizeAndPosition();
 
+    initPosition();
+
     foreach(const UBActionPaletteButton* button, mButtons)
     {
         connect(button, SIGNAL(doubleClicked()), this, SLOT(stylusToolDoubleClicked()));
@@ -64,6 +66,26 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 
 }
 
+void UBStylusPalette::initPosition()
+{
+    if(!UBSettings::settings()->appToolBarOrientationVertical->get().toBool())
+    {
+        QWidget* pParentW = parentWidget();
+        if(NULL != pParentW)
+        {
+            mCustomPosition = true;
+            QPoint pos;
+            int parentWidth = pParentW->width();
+            int parentHeight = pParentW->height();
+            int posX = (parentWidth / 2) - (width() / 2);
+            int posY = parentHeight - border() - height();
+
+            pos.setX(posX);
+            pos.setY(posY);
+            moveInsideParent(pos);
+        }
+    }
+}
 
 UBStylusPalette::~UBStylusPalette()
 {
