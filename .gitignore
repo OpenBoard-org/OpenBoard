@@ -48,6 +48,5 @@ Thumbs.db
 
 # Build files #
 ###############
-Makefile*
 build
 install
