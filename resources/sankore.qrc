@@ -202,7 +202,6 @@
         <file>images/toolbar/tutorial.png</file>
         <file>images/edit-mode.svg</file>
         <file>images/save.svg</file>
-        <file>images/toolbar/softwareUpdate.png</file>
         <file>images/toolbar/stylusTab.png</file>
         <file>images/libpalette/social.png</file>
         <file>images/navig_arrow.png</file>
@@ -284,5 +283,6 @@
         <file>images/libpalette/miniNewFolder.png</file>
         <file>images/libpalette/miniFavorite.png</file>
         <file>images/libpalette/home.png</file>
+        <file>images/toolbar/updates.png</file>
     </qresource>
 </RCC>
