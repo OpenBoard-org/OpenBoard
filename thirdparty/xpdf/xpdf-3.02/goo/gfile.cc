@@ -118,7 +118,7 @@ GString *appendToPath(GString *path, char *fileName) {
     if (*p1 == ']') {
       for (p2 = p1; p2 > p0 && *p2 != '.' && *p2 != '['; --p2) ;
       if (*p2 == '[')
-    ++p2;
+	++p2;
       path->del(p2 - p0, p1 - p2);
     } else if (*p1 == ':') {
       path->append("[-]");
@@ -206,21 +206,21 @@ GString *appendToPath(GString *path, char *fileName) {
   if (!strcmp(fileName, "..")) {
     for (i = path->getLength() - 2; i >= 0; --i) {
       if (path->getChar(i) == '/' || path->getChar(i) == '\\' ||
-      path->getChar(i) == ':')
-    break;
+	  path->getChar(i) == ':')
+	break;
     }
     if (i <= 0) {
       if (path->getChar(0) == '/' || path->getChar(0) == '\\') {
-    path->del(1, path->getLength() - 1);
+	path->del(1, path->getLength() - 1);
       } else if (path->getLength() >= 2 && path->getChar(1) == ':') {
-    path->del(2, path->getLength() - 2);
+	path->del(2, path->getLength() - 2);
       } else {
-    path->clear();
-    path->append("..");
+	path->clear();
+	path->append("..");
       }
     } else {
       if (path->getChar(i-1) == ':')
-    ++i;
+	++i;
       path->del(i, path->getLength() - i);
     }
     return path;
@@ -246,14 +246,14 @@ GString *appendToPath(GString *path, char *fileName) {
   if (!strcmp(fileName, "..")) {
     for (i = path->getLength() - 2; i >= 0; --i) {
       if (path->getChar(i) == '/')
-    break;
+	break;
     }
     if (i <= 0) {
       if (path->getChar(0) == '/') {
-    path->del(1, path->getLength() - 1);
+	path->del(1, path->getLength() - 1);
       } else {
-    path->clear();
-    path->append("..");
+	path->clear();
+	path->append("..");
       }
     } else {
       path->del(i, path->getLength() - i);
@@ -323,7 +323,7 @@ GBool isAbsolutePath(char *path) {
 #ifdef VMS
   //---------- VMS ----------
   return strchr(path, ':') ||
-     (path[0] == '[' && path[1] != '.' && path[1] != '-');
+	 (path[0] == '[' && path[1] != '.' && path[1] != '-');
 
 #elif defined(__EMX__) || defined(WIN32)
   //---------- OS/2+EMX and Win32 ----------
@@ -390,9 +390,9 @@ GString *makePathAbsolute(GString *path) {
   if (path->getChar(0) == '~') {
     if (path->getChar(1) == '/' ||
 #ifdef __EMX__
-    path->getChar(1) == '\\' ||
+	path->getChar(1) == '\\' ||
 #endif
-    path->getLength() == 1) {
+	path->getLength() == 1) {
       path->del(0, 1);
       s = getHomeDir();
       path->insert(0, s);
@@ -405,12 +405,12 @@ GString *makePathAbsolute(GString *path) {
       for (p2 = p1; *p2 && *p2 != '/'; ++p2) ;
 #endif
       if ((n = p2 - p1) > PATH_MAX)
-    n = PATH_MAX;
+	n = PATH_MAX;
       strncpy(buf, p1, n);
       buf[n] = '\0';
       if ((pw = getpwnam(buf))) {
-    path->del(0, p2 - p1 + 1);
-    path->insert(0, pw->pw_dir);
+	path->del(0, p2 - p1 + 1);
+	path->insert(0, pw->pw_dir);
       }
     }
   } else if (!isAbsolutePath(path->getCString())) {
@@ -467,9 +467,9 @@ GBool openTempFile(GString **name, FILE **f, char *mode, char *ext) {
     }
     if (!(f2 = fopen(s2->getCString(), "r"))) {
       if (!(f2 = fopen(s2->getCString(), mode))) {
-    delete s2;
-    delete s;
-    return gFalse;
+	delete s2;
+	delete s;
+	return gFalse;
       }
       *name = s2;
       *f = f2;
@@ -571,9 +571,9 @@ char *getLine(char *buf, int size, FILE *f) {
     if (c == '\x0d') {
       c = fgetc(f);
       if (c == '\x0a' && i < size - 1) {
-    buf[i++] = (char)c;
+	buf[i++] = (char)c;
       } else if (c != EOF) {
-    ungetc(c, f);
+	ungetc(c, f);
       }
       break;
     }
@@ -606,7 +606,7 @@ GDirEntry::GDirEntry(char *dirPath, char *nameA, GBool doStat) {
   if (doStat) {
 #ifdef VMS
     if (!strcmp(nameA, "-") ||
-    ((p = strrchr(nameA, '.')) && !strncmp(p, ".DIR;", 5)))
+	((p = strrchr(nameA, '.')) && !strncmp(p, ".DIR;", 5)))
       dir = gTrue;
 #elif defined(ACORN)
 #else
