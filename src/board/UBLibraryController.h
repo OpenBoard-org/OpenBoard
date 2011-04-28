@@ -103,8 +103,8 @@ class UBLibraryController : public QObject
         void addToFavorite(QList<UBLibElement*> elementList);
         void removeFromFavorite(QList<UBLibElement*> elementList);
 
-		void importItemOnLibrary(QString& pItemString);
-		void importImageOnLibrary(QImage &pImage);
+        void importItemOnLibrary(QString& pItemString);
+        void importImageOnLibrary(QImage &pImage);
 
         QString favoritePath();
 
@@ -169,16 +169,17 @@ class UBLibraryController : public QObject
         void userPath(QUrl &pPath);
         QImage* thumbnailForFile(UBLibElement* pPath);
         QImage* createThumbnail(UBLibElement* pPath);
-        QList<UBLibElement*> elementsInPicturesVirtualForlder();
-        QList<UBLibElement*> elementsInApplicationsVirtualForlder();
+        QList<UBLibElement*> addVirtualElementsForItemPath(const QString& pPath);
 
         void createInternalWidgetItems();
         void routeItem(QString& pItem, QString pMiddleDirectory = QString());
-		void createDirectory(QUrl& pDirPath);
+        void createDirectory(QUrl& pDirPath);
 
-		QUrl mAudioStandardDirectoryPath;
-		QUrl mVideoStandardDirectoryPath;
-		QUrl mPicturesStandardDirectoryPath;
+        QUrl mAudioStandardDirectoryPath;
+        QUrl mVideoStandardDirectoryPath;
+        QUrl mPicturesStandardDirectoryPath;
+        QUrl mInteractiveUserDirectoryPath;
+        QUrl mInteractiveCategoryPath;
 
         QStringList addItemsToCurrentLibrary(const QDir& pSelectedFolder, const QStringList& pExtensions);
 
