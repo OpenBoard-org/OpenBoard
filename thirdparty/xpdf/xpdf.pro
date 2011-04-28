@@ -15,7 +15,7 @@ win32 {
     SUB_LIB = "win32"
 }
 
-DESTDIR = "$$XPDF_DIR/lib/$$SUB_LIB"
+DESTDIR = "lib/$$SUB_LIB"
 
 OBJECTS_DIR  = "objects"
 
@@ -27,7 +27,7 @@ macx {
 # Free type includes and lib
 FREETYPE_DIR = "../freetype/freetype-2.4.4"
 INCLUDEPATH += "$$FREETYPE_DIR/include" "$$FREETYPE_DIR/include/freetype2"
-LIBS        += "-L$$FREETYPE_DIR/lib" "-lfreetype"
+LIBS        += "-Lfreetype/lib" "-lfreetype"
 
 INCLUDEPATH += $$XPDF_DIR $$XPDF_DIR "$$XPDF_DIR/fofi" "$$XPDF_DIR/goo" "$$XPDF_DIR/splash" "$$XPDF_DIR/include" xpdf-3.02Extra
 

@@ -12,24 +12,24 @@ win32 {
 }
 
 FREETYPE_DIR = "$$PWD/freetype/freetype-2.4.4"
-LIBS        += "-L$$FREETYPE_DIR/lib/$$SUB_LIB" "-lfreetype"
+LIBS        += "-L"$$PWD/freetype/lib/$$SUB_LIB" "-lfreetype"
 # no INCLUDEPATH, freetype is not used directly
 
 XPDF_DIR     = "$$PWD/xpdf/xpdf-3.02"
-LIBS        += "-L$$XPDF_DIR/lib/$$SUB_LIB" "-lxpdf"
+LIBS        += "-L$$PWD/xpdf/lib/$$SUB_LIB" "-lxpdf"
 INCLUDEPATH += "$$XPDF_DIR"
 INCLUDEPATH += "$$XPDF_DIR/goo"
 INCLUDEPATH += "$$XPDF_DIR/splash"
 
-BREAKPAD_DIR = "$$PWD/google-breakpad/r318"
+BREAKPAD_DIR = "$$PWD/google-breakpad/google-breakpad-r768"
 INCLUDEPATH += "$$BREAKPAD_DIR/include" "$$BREAKPAD_DIR/include/google_breakpad"
 
 win32 {
 CONFIG(debug, debug|release) {
-        LIBS        += "-L$$BREAKPAD_DIR/lib/$$SUB_LIB" "-ldbreakpad"
+        LIBS        += "-L$$PWD/google-breakpad/lib/$$SUB_LIB" "-ldbreakpad"
 }
 CONFIG(release, debug|release) {
-        LIBS        += "-L$$BREAKPAD_DIR/lib/$$SUB_LIB" "-lbreakpad"
+        LIBS        += "-L$$PWD/google-breakpad/lib/$$SUB_LIB" "-lbreakpad"
 }
     LIBS        += "-L$$PWD/openssl/0.9.8i/lib/VC/static" "-llibeay32MD"
     INCLUDEPATH += "$$PWD/openssl/0.9.8i/include"
@@ -64,7 +64,7 @@ macx {
     LIBS         += "-framework Carbon"
             
     LIBS         += "-lcrypto"
-    LIBS         += "-L$$BREAKPAD_DIR/lib/$$SUB_LIB" "-lbreakpad"
+    LIBS         += "-L$$PWD/google-breakpad/lib/$$SUB_LIB" "-lbreakpad"
     LIBS         += "$$PWD/unsanity/ape/APELite.o"
     INCLUDEPATH  += "$$PWD/unsanity/ape"
 }

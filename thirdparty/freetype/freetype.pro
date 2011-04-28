@@ -15,8 +15,8 @@ win32 {
     SUB_LIB = "win32"
 }
 
-DESTDIR = "$$FREETYPE_DIR_WITH_VERSION/lib/$$SUB_LIB"
-OBJECTS_DIR  = "$$FREETYPE_DIR_WITH_VERSION/objs"
+DESTDIR = "lib/$$SUB_LIB"
+OBJECTS_DIR  = "objects"
 
 macx {
     DEFINES += "FT_MACINTOSH"
