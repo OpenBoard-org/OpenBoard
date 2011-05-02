@@ -15,7 +15,7 @@ OSX:
     - run ./configure (may need extrea options ?)
 
 Linux:
-    - run ./configure --with-freetype2-library=/usr/lib --with-freetype2-includes=/usr/include/freetype2
+    - run ./configure 
 
 - Run qmake (-spec macx-g++ on OSX)
 - Run make (nmake on windows)
