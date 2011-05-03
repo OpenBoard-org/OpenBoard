@@ -28,6 +28,10 @@ git describe %LAST_TAG% > tmp
 set /p LAST_TAG_VERSION=< tmp
 erase tmp
 
+echo %VERSION%
+echo %LAST_TAG_VERSION%
+
+if not %LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 if not %VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
 
