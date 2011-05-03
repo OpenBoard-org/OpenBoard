@@ -12,8 +12,8 @@ VERSION_PATCH = 00
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
 
-SVN_VERSION = $$system(svnversion)
-SVN_VERSION = $$replace(SVN_VERSION, "\\n", "")
+#SVN_VERSION = $$system(svnversion)
+#SVN_VERSION = $$replace(SVN_VERSION, "\\n", "")
 
 LONG_VERSION = "$${VERSION}.$${SVN_VERSION}"
 macx:OSX_VERSION = "$${VERSION} (r$${SVN_VERSION})"
