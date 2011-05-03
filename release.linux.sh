@@ -1,23 +1,27 @@
 #!/bin/sh
 
-SVN_REVISION=`svnversion`
-# only accept up to date, non modified, non switched svn revisions
-if echo $SVN_REVISION | grep -q [:MS]
-then
-    echo "bad subversion revision ($SVN_REVISION)"
-#    exit 1
-fi
-
 make clean
 rm -rf build/linux/release/
 
-#/usr/local/Trolltech/Qt-4.6.1/bin/qmake
 /usr/bin/qmake-qt4
 
 VERSION=`cat build/linux/release/version`
 if [ "$VERSION" = "" ]; then
     echo "version not found"
     exit 1
+else
+    LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
+    if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
+	echo creating a tag with the version $VERSION
+        git tag -a "v$VERSION"
+	git push origin --tags 
+    else
+	if [ "$1" != "escape" ] ; then
+	    echo "if you have already compiled a release (e.g. on a different os) please use the fallowing command line"
+	    echo sh release.linux.sh escape
+	    exit 2
+	fi
+    fi
 fi
 
 make -j 4 release-install

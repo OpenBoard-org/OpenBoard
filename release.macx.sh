@@ -69,18 +69,24 @@ QMAKE_CMD="$QMAKE -spec macx-g++42"
 $QMAKE_CMD
 
 VERSION=`cat "$BUILD_DIR/version"`
-if [ "$VERSION" == "" ]; then
-    abort "version not found"
+if [ "$VERSION" = "" ]; then
+    echo "version not found"
+    exit 1
+else
+    LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
+    if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
+	echo creating a tag with the version $VERSION
+	git tag -a "v$VERSION"
+	git push origin --tags
+    else
+	if [ "$1" != "escape" ] ; then
+	    echo "if you have already compiled a release (e.g. on a different os) please use the fallowing command line"
+	    echo sh release.macx.sh escape
+	    exit 2
+	fi
+    fi
 fi
-
-SVN_REVISION=`svnversion`
-# only accept up to date, non modified, non switched svn revisions
-if echo $SVN_REVISION | grep -q [:MS]
-then
-    #warn "bad subversion revision ($SVN_REVISION)"
-    echo "bad subversion revision ($SVN_REVISION)"
-fi
-
+  
 # build
 notify "Compiling ..."
 make -j4 release
