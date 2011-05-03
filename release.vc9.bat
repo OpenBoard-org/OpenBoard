@@ -17,16 +17,19 @@ rmdir /S /Q %BUILD_DIR%
 :END_COMMENT1
 
 set EDITION=MNEMIS_EDITION
-set EDITION_LABEL=
-
-if %2.==Wacom. set EDITION=WACOM_EDITION 
-if %2.==Wacom. set EDITION_LABEL=Wacom Edition 
 
 qmake "DEFINES+=%EDITION%"
 
-set VERSION=1
-set LONG_VERSION=1.0.a.0
-set SVN_VERSION=0
+set /p VERSION= < build\win32\release\version
+git rev-list --tags --max-count=1 > tmp
+set /p LAST_TAG= < tmp
+erase tmp
+git describe %LAST_TAG% > tmp
+set /p LAST_TAG_VERSION=< tmp
+erase tmp
+
+if not %VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
+
 
 nmake release-install
 
@@ -34,8 +37,12 @@ nmake release-install
 
 del .\build\win32\release\product\Sankore 3.1.pdb
 
-set INSTALLER_NAME=Sankore 3.1 %VERSION%setup
+set INSTALLER_NAME=Sankore 3.1 setup
 
 set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 
 call %INNO_EXE% "Sankore 3.1.iss" /F"%INSTALLER_NAME%"
+
+:EXIT_WITH_ERROR
+	echo version %VERSION%
+	echo last tag version %LAST_TAG_VERSION%
