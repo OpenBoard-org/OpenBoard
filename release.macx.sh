@@ -69,14 +69,14 @@ QMAKE_CMD="$QMAKE -spec macx-g++42"
 $QMAKE_CMD
 
 VERSION=`cat "$BUILD_DIR/version"`
-if [ "$VERSION" = "" ]; then
+if [ ! -f "$BUILD_DIR/version" ]; then
     echo "version not found"
     exit 1
 else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
 	echo creating a tag with the version $VERSION
-	git tag -a "v$VERSION"
+	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
 	git push origin --tags
     else
 	if [ "$1" != "escape" ] ; then

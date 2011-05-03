@@ -26,7 +26,7 @@ LDFLAGS =
 T1LIBS = 
 FTLIBS = 
 
-XLIBS =   -lXt -lXp -lXext -lXpm  -lSM -lICE  -lX11 
+XLIBS =         -lX11 
 
 SPLASHLIBS = -L$(SPLASHLIBDIR) -lsplash
 
