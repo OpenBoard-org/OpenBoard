@@ -5,6 +5,8 @@ rm -rf build/linux/release/
 
 /usr/bin/qmake-qt4
 
+make -j 4 release-install
+
 VERSION=`cat build/linux/release/version`
 if [ ! -f build/linux/release/version ]; then
     echo "version not found"
@@ -15,16 +17,8 @@ else
 	echo creating a tag with the version $VERSION
         git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
 	git push origin --tags 
-    else
-	if [ "$1" != "escape" ] ; then
-	    echo "if you have already compiled a release (e.g. on a different os) please use the following command line"
-	    echo sh release.linux.sh escape
-	    exit 2
-	fi
     fi
 fi
-
-make -j 4 release-install
 
 cp resources/linux/run.sh build/linux/release/product
 chmod +x build/linux/release/product/run.sh

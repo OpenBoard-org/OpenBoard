@@ -64,9 +64,13 @@ rm -rf "$BUILD_DIR"
 # generate Makefiles
 notify "Generating Makefile ..."
 
-QMAKE_CMD="$QMAKE -spec macx-g++42"
+QMAKE_CMD="$QMAKE -spec macx-g++"
 
 $QMAKE_CMD
+
+# build
+notify "Compiling ..."
+make -j4 release
 
 VERSION=`cat "$BUILD_DIR/version"`
 if [ ! -f "$BUILD_DIR/version" ]; then
@@ -78,19 +82,9 @@ else
 	echo creating a tag with the version $VERSION
 	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
 	git push origin --tags
-    else
-	if [ "$1" != "escape" ] ; then
-	    echo "if you have already compiled a release (e.g. on a different os) please use the fallowing command line"
-	    echo sh release.macx.sh escape
-	    exit 2
-	fi
     fi
 fi
   
-# build
-notify "Compiling ..."
-make -j4 release
-
 if [ $? != 0 ]; then
     abort "compilation failed"
 fi
