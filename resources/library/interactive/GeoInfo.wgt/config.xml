@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+        version="1.0"
+        width="680"
+        height="400" 
+		ub:resizable="true">
+  <name>GeoInfo</name>
+  <content src="GeoInfo.html"/>
+</widget>

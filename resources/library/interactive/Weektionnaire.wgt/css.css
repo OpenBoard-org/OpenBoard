@@ -1,0 +1,155 @@
+/* Mise en forme */ 
+
+#Fond {
+background:url(images/widget/widget.png);
+background-repeat:no-repeat;
+width:271px;
+height:38px;
+position:absolute;
+top:5px;
+left:5px;
+z-index:0;
+}
+
+#Weektionnaire {
+font-family:arial;
+width:145px;
+height:16px;
+font-size:11px; /* La déformation du caractère due à la taille en pixel est intéressante */
+border:none;
+background-color:rgba(255,255,255,0);
+position:absolute;
+top:16;
+left:81;
+}
+
+#BoutonWeektionnaire {
+position:absolute;
+top:12px;
+left:21px;
+width:22px;
+height:22px;
+}
+
+#BoutonRechercher {
+position:absolute;
+top:16px;
+left:64px;
+width:14px;
+height:14px;
+}
+
+#BoutonMinimiser {
+position:absolute;
+top:19px;
+left:250px;
+width:18px;
+height:9px;
+}
+
+#FondDefinition {
+background:url(images/widget/contenu.png);
+width:271px;
+height:218px;
+position:absolute;
+top:37px;
+left:5px;
+z-index:1;
+}
+
+#BoutonHistorique {
+background:url(images/boutons/historique.png);
+position:absolute;
+top:17px;
+left:226px;
+width:14px;
+height:14px;
+z-index:7;
+}
+
+#TexteDefinition {
+font-family:Georgia,Times;
+text-align:left;
+font-size:75%;
+position:absolute;
+top:13px;
+left:13px;
+z-index:3;
+width:244px;
+height:180px;
+overflow-y:visible;
+overflow-x:hidden;
+}
+
+#MenuHistorique {
+background:url(images/options/menuhistorique.png);
+width:210px;
+height:130px;
+position:absolute;
+top:30px;
+left:42px;
+z-index:8;
+}
+
+#TexteHistorique {
+font-family:Arial;
+font-size:11px;
+width:175px;
+height:58px;
+position:absolute;
+top:61px;
+left:19px;
+z-index:9;
+overflow:auto;
+overflow-x:hidden;
+}
+
+#FermerHistorique {
+width:24px;
+height:24px;
+position:absolute;
+top:27px;
+left:9px;
+z-index:10;
+}
+
+#Options {
+position:absolute;
+top:30px;
+left:16px;
+z-index:2;
+}
+
+#MenuContenu {
+width:175px;
+height:58px;
+overflow:hidden;
+font-size:75%;
+font-family:Arial;
+color:black;
+position:absolute;
+top:85px;
+left:32px;
+z-index:10;
+}
+
+#fermer {
+position:absolute;
+top:57px;
+left:198px;
+z-index:4;
+}
+
+/* Styles de texte */ 
+a {
+text-decoration:none;
+color:black;
+}
+
+a:hover {
+color:yellow;
+}
+
+a:active {
+color:gray;
+}

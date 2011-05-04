@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Weektionnaire</title>
+<link rel="stylesheet" type="text/css" href="css.css"/>
+<script type="text/javascript" src="javascript.js"></script>
+</head>
+<body>
+<div id="MenuOptions" style="display:none">
+<div id="Bouton" onClick="FermerMenu()">
+<img src="images/boutons/fermer.png" id="Fermer" onMouseOver="FermerIn()" onMouseOut="FermerOut()">
+</div>
+<div id="MenuContenu">
+<p id="apropostxt">Weektionnaire 1.1<br/>
+Développé par Joël Amorim<br/>
+Copyright © 2010 GYB</p>
+</div>
+<img src="images/options/apropos.png" id="Options">
+</div>
+<div id="Fond">
+</div>
+<div id="Entrée">
+<input id="Weektionnaire" type="text" onClick="FermerDefinitionInput()" onKeypress="if(event.keyCode==13){RechercherNew()}"/>
+</div>
+<div id="BoutonWeektionnaire" onMouseOver="BoutonWeektionnaireIn()" onMouseOut="BoutonWeektionnaireOut()" onClick="ToggleMenuOptions()">
+</div>
+<div id="BoutonRechercher"  onMouseOver="BoutonRechercherIn()" onMouseOut="BoutonRechercherOut()" onClick="RechercherNew();FermerHistorique();FermerMenu()">
+</div>
+<div id="BoutonMinimiser" onMouseOver="BoutonMinimiserIn()" onMouseOut="BoutonMinimiserOut()" onClick="Minimiser('FondDefinition');FermerHistorique();FermerMenu()">
+</div>
+<div id="BoutonHistorique" onMouseOver="BoutonHistoriqueIn()" onMouseOut="BoutonHistoriqueOut()" onClick="ToggleMenuHistorique();actualiserHistorique()">
+</div>
+<div id="MenuHistorique" style="display:none;">
+<div id="FermerHistorique" onMouseOver="FermerHIn()" onMouseOut="FermerHOut()" onClick="FermerHistorique()">
+<img src="images/boutons/fermer.png" id="FermerH">
+</div>
+<div id="TexteHistorique">
+<a href=# id="Mots" onMouseOver="LienNoir('Mots')"></a>
+</div>
+</div>
+<div id="FondDefinition" style="display:none;">
+<div id="TexteDefinition">
+</div>
+</div>
+<iframe id="DefinitionCNRTL" name="frame" src="" style="display:none"></iframe>
+</body>
+</html>

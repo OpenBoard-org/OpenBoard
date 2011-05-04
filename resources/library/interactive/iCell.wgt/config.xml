@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget xmlns="http://www.w3.org/ns/widgets" 
+        identifier="http://uniboard.mnemis.com/widgets/Clock" 
+        version="1.1"
+        width="500"
+        height="500" >        
+  <name>iCell</name>
+  <content src="widget.html"/> 
+</widget>
+
+<!-- This XML is probably more complete, but it isn't working very well (the widget is resized, but its content doesn't move)
+<widget xmlns="http://www.w3.org/ns/widgets"
+		xmlns:ub="http://uniboard.mnemis.com/widgets"
+        version="1.1"
+        width="500"
+        height="500"
+		ub:resizable="true">
+
+		<name>iCell</name>
+		<author href="http://www.gyb.ch"
+	            email="sidney.bovet@gmain.com">
+			Sidney Bovet
+		</author>
+		<description>An interactive cell</description>
+		<content src="widget.html"/> 
+
+</widget>-->

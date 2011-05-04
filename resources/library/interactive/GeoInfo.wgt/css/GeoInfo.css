@@ -1,0 +1,143 @@
+.styleDiv
+{
+	height:250px;
+	overflow:auto;
+	display:none;
+	font-size:11px;
+	font-family:Arial, "Times New Roman", Sans-serif;
+	border-left:solid 2px grey;
+	-moz-border-radius-topright: 1em;
+	-moz-border-radius-bottomright:1em;
+}
+
+.question
+{
+	position:absolute;
+	top:320px;
+	left:13px;
+	z-index:4;
+}
+
+.comparer
+{
+	margin:auto;
+	font-family:Arial, "Times New Roman", Sans-serif;
+}
+
+#souris
+{
+	display:none;
+}
+
+#coords
+{
+	display:none;
+}
+
+.curseur 
+{
+	cursor:pointer;
+}
+
+.carteMonde1 
+{
+	border-style:solid;
+	border-width:3px;
+	height:332px;
+	width:654px;
+	border-color: black;
+}
+
+.carte 
+{
+	position:absolute;
+	top:11px;
+	left:11px;
+	height:332px;
+	width:654px;
+	display: none;
+	opacity:0;
+	z-index:1;
+}
+
+.retour 
+{
+	position:absolute;
+	top:13px;
+	left:13px;
+	width:100px;
+	height:50.5px;
+	opacity:0;
+	z-index:2;
+	border: 1px black solid;
+	display: none;
+	cursor:pointer;
+}
+
+#carteRetour
+{
+	width:100%;
+	height: 100%;
+}
+
+.texte
+{
+	position:absolute;
+	top:300px;
+	left:0px;
+	width:654px;
+}
+
+#description 
+{
+	font-size:18px;
+	text-align:center;
+}
+
+.infoPays 
+{
+	position:absolute;
+	border:1px black solid;
+	background-color:rgba(150,150,150,0.5);
+	display:none;
+	z-index:2;
+	padding:4px;
+}
+
+.infoSupp
+{
+	position:absolute;
+	top:344px;
+	border:1px black solid;
+	width:300px;
+	height:0px;
+	overflow:scroll;
+}
+
+#infoSupp2
+{
+	position:absolute;
+	top:344px;
+	left:320px;
+}
+
+.nomPays 
+{
+	font-weight:bold;
+	color:black;
+}
+
+.capitalePays 
+{
+	color:white;	
+}
+
+.cacher 
+{
+	display:none;
+}
+
+.drapeaux 
+{
+	height:40px;
+}

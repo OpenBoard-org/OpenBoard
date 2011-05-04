@@ -1,0 +1,80 @@
+	body {
+		font-family: "Times New Roman";
+		font-size: 16px;
+	}
+	
+	img {
+	border:none;
+	}
+	
+	#div_body {
+		position:absolute;
+		top:0px;
+		left:0px;
+		opacity:1;
+	}
+	
+	#div_organite {
+		position:absolute;
+		top:0px;
+		left:0px;
+		opacity:0;
+		z-index:-1;
+	}
+	
+	#div_infos {
+		
+		border-radius: 5px;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		
+		background-color:#7FC6BC;
+		border:1px solid #575757;
+		
+		width:350px;
+		height:400px;
+		
+		position:absolute;
+		top:40px;
+		left:75px;
+		padding:7px;
+		
+		opacity:0;
+		z-index:-1;
+	}
+	
+	#div_infos p:first-letter { /*première lettre de chaque paragraphe (pour faire la tabulation dans les infos de l'organite)*/
+		padding-left: 10px;
+	}
+	
+	#div_infos h4 {
+		margin: 5px 10px 0px 5px;
+	}
+
+	#div_infos p{
+		margin-top: 2px;
+	}
+	
+	#div_infos h2{
+		margin: 2px 2px 2px 2px;
+	}
+	
+	#div_aura{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+	
+	#div_ADN{
+		position:absolute;
+		top: 0px;
+		left: 0px;
+		z-index: -1;
+	}
+	
+	#div_zoom{
+		position: absolute;
+		top:25px;
+		left: 25px;
+		z-index: -4;
+	}
