@@ -1,0 +1,95 @@
+<!-- Widget crée pour Uniboard 4.3 par Sidney Bovet dans le cadre d'un Travail de Maturité au GyB -->
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>iCell</title>
+
+<script type="Text/Javascript" src="js/script.js"></script>
+<script type="Text/Javascript" src="js/textes_descriptifs.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style/style.css" />
+
+</head>
+
+<body onclick="clicINFOS()">
+	<map name="mapCellule" id="mapCellule">
+		<!-- Vesicules -->
+		<area shape="circle" coords="58,241,16" onclick="vesicule(1)" onmouseout="auraOut('')" onmouseover="aura('Vesic')" alt=""/>
+		<area shape="circle" coords="53,212,10" onclick="vesicule(2)" onmouseout="auraOut('')" onmouseover="aura('Vesic')" alt=""/>
+		<area shape="circle" coords="175,72,21" onclick="vesicule(3)" onmouseout="auraOut('')" onmouseover="aura('Vesic')" alt=""/>
+		<area shape="circle" coords="430,258,12" onclick="vesicule(4)" onmouseout="auraOut('')" onmouseover="aura('Vesic')" alt=""/>
+		<area shape="circle" coords="337,422,11" onclick="vesicule(5)" onmouseout="auraOut('')" onmouseover="aura('Vesic')" alt=""/>
+		<area shape="circle" coords="426,221,6" onclick="vesicule(6)" onmouseout="auraOut('')" onmouseover="aura('Vesic')" alt=""/>
+		
+		<!-- Lysosomes -->
+		<area shape="circle" coords="110,142,18" onclick="lysosome(1)" onmouseout="auraOut('')" onmouseover="aura('Lys')" alt=""/>
+		<area shape="circle" coords="330,70,18" onclick="lysosome(2)" onmouseout="auraOut('')" onmouseover="aura('Lys')" alt=""/>
+		<area shape="circle" coords="240,407,18" onclick="lysosome(3)" onmouseout="auraOut('')" onmouseover="aura('Lys')" alt=""/>
+		
+		<!-- Mitochondries -->
+		<area shape="poly" coords="149,369,157,359,157,358,177,356,163,380,155,392,145,392,148,369" onclick="mitoch(1)" onmouseout="auraOut('')" onmouseover="aura('Mitoch')" alt=""/>
+		<area shape="poly" coords="104,286,116,272,130,262,125,252,105,255,96,266,95,279,103,287" onclick="mitoch(2)" onmouseout="auraOut('')" onmouseover="aura('Mitoch')" alt=""/>
+		<area shape="poly" coords="95,250,101,244,98,225,87,216,72,215,71,224,85,236,93,251" onclick="mitoch(3)" onmouseout="auraOut('')" onmouseover="aura('Mitoch')" alt=""/>
+		<area shape="poly" coords="124,203,114,190,113,171,122,165,127,169,130,183,140,196,137,203,125,204" onclick="mitoch(4)" onmouseout="auraOut('')" onmouseover="aura('Mitoch')" alt=""/>
+		<area shape="poly" coords="379,308,386,303,400,310,407,326,404,340,397,344,391,341,391,331,383,319" onclick="mitoch(5)" onmouseout="auraOut('')" onmouseover="aura('Mitoch')" alt=""/>
+		<area shape="poly" coords="325,336,344,350,343,379,328,379,326,364,314,347" onclick="mitoch(6)" onmouseout="auraOut('')" onmouseover="aura('Mitoch')" alt=""/>
+		
+		<!-- Appareils de Golgi -->
+		<area shape="poly" coords="201,76,228,67,261,67,288,71,285,79,270,84,266,94,222,93" onclick="golgi(1)" onmouseout="auraOut('')" onmouseover="aura('Golgi')" alt=""/>
+		<area shape="poly" coords="377,191,387,156,412,191,416,241,393,223,385,218" onclick="golgi(2)" onmouseout="auraOut('')" onmouseover="aura('Golgi')" alt=""/>
+		<area shape="poly" coords="123,366,123,336,108,305,74,288,87,332,94,342" onclick="golgi(3)" onmouseout="auraOut('')" onmouseover="aura('Golgi')" alt=""/>
+		
+		<!-- Nucléole -->
+		<area shape="circle" coords="269,244,22" onclick="nucl()" onmouseout="auraOut('')" onmouseover="aura('nucl')" alt=""/>
+		
+		<!-- Noyau -->
+		<area shape="poly" coords="262,302,205,292,178,263,173,222,196,183,220,159,254,152,275,154,299,171,319,203,325,246,315,273,298,291,286,296" onclick="noy()" onmouseout="auraOut('')" onmouseover="aura('Noy')" alt=""/>
+		
+		<!-- Reticulum endoplasmique rugueux -->
+		<area shape="poly" coords="82,376,60,347,46,315,42,293,41,260,73,267,70,288,73,309,87,338,93,343,100,355,100,366,106,376,118,390,126,405,125,414,106,402,93,391" onclick="rer()" onmouseout="auraOut('')" onmouseover="aura('RER')" alt=""/>
+		<area shape="poly" coords="251,343,198,332,148,292,131,247,148,183,178,141,228,114,281,111,300,122,301,132,292,159,318,188,325,218,354,189,366,240,350,295,330,319,294,336" onclick="rer()" onmouseout="auraOut('')" onmouseover="aura('RER')" alt=""/>
+		<area shape="poly" coords="247,455,200,449,155,433,155,423,169,409,180,406,196,419,209,424,208,434,225,434,228,428,267,429,297,429,305,438,318,435,327,436,326,443,284,455" onclick="rer()" onmouseout="auraOut('')" onmouseover="aura('RER')" alt=""/>
+
+		<!-- Reticulum endoplasmique lisse -->
+		<area shape="poly" coords="199,348,215,367,247,371,272,367,269,359,242,355,225,348,203,343" onclick="rel()" onmouseout="auraOut('')" onmouseover="aura('REL')" alt=""/>
+		<area shape="poly" coords="151,156,139,141,130,114,138,89,149,90,157,117,156,139,157,152" onclick="rel()" onmouseout="auraOut('')" onmouseover="aura('REL')" alt=""/>
+		<area shape="poly" coords="300,127,329,150,355,156,390,150,388,140,359,138,329,132,304,122" onclick="rel()" onmouseout="auraOut('')" onmouseover="aura('REL')" alt=""/>
+		
+		<!-- Centriole  -->
+		<area shape="poly" coords="166,132,177,134,187,101,174,98" onclick="centriole()" onmouseout="auraOut('')" onmouseover="aura('centriole')" alt=""/>
+		<area shape="poly" coords="382,267,411,249,404,241,374,257" onclick="centriole()" onmouseout="auraOut('')" onmouseover="aura('centriole')" alt=""/>
+		
+		<!-- Ribosomes -->
+		<area shape="poly" coords="355,423,349,408,350,397,369,383,392,368,409,361,420,366,390,401" onclick="rib()" onmouseout="auraOut('')" onmouseover="aura('rib')" alt=""/>
+		<area shape="poly" coords="434,335,423,314,437,273,430,280,454,273,454,286" onclick="rib()" onmouseout="auraOut('')" onmouseover="aura('rib')" alt=""/>
+		<area shape="poly" coords="452,213,434,200,425,166,427,155,443,163,455,179" onclick="rib()" onmouseout="auraOut('')" onmouseover="aura('rib')" alt=""/>
+		<area shape="poly" coords="409,133,412,120,394,103,396,91,358,80,348,114" onclick="rib()" onmouseout="auraOut('')" onmouseover="aura('rib')" alt=""/>
+		<area shape="poly" coords="290,57,293,40,212,38,217,59" onclick="rib()" onmouseout="auraOut('')" onmouseover="aura('rib')" alt=""/>
+		<area shape="poly" coords="62,155,75,155,61,199,51,190" onclick="rib()" onmouseout="auraOut('')" onmouseover="aura('rib')" alt=""/>
+		
+		
+	</map>
+	
+	<map  name="mapOrganite" id="mapOrganite">
+		<area shape="circle" coords="364,477,19" onclick="t_div=setInterval(cacherDIV,50)" alt=""/>
+		<area shape="circle" coords="416,477,19" onclick="infos()" alt=""/>
+		<area shape="circle" coords="469,477,19" alt="" onclick="loupe_interact()"/>
+		<area shape="poly" coords="328,337,281,311,213,277,159,277,131,228,111,227,83,262,70,193,66,153,120,99,229,104,233,83,328,67,334,81,307,121,350,156,409,220,391,316" alt="" onclick="adn()"/>
+	</map>
+	
+	
+	<div id="div_body"><img alt="" src="images/index.png" usemap="#mapCellule" /></div>
+	<div id="div_organite"><img id="img_organite" alt="" src="" usemap="#mapOrganite" /></div>
+	<div id="div_infos"><p>[Texte descriptif de l'organite sélectionnée]</p></div>
+	<div id="div_aura"><img id="img_aura" usemap="#mapCellule" alt="" src=""/></div>
+	<div id="div_ADN"><img id="img_ADN" alt="" src=""/></div>
+	<div id="div_zoom"></div>
+	
+</body>
+</html>
+
