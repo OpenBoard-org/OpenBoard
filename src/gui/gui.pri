@@ -37,7 +37,8 @@ HEADERS      += src/gui/UBThumbnailView.h \
     src/gui/UBLibItemProperties.h \
     src/gui/UBLibActionBar.h \
     src/gui/UBLibraryWidget.h \
-    src/gui/UBLibPathViewer.h
+    src/gui/UBLibPathViewer.h \
+    src/gui/UBUpdateDlg.h
                 
 SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBFloatingPalette.cpp \
@@ -77,7 +78,8 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
     src/gui/UBLibItemProperties.cpp \
     src/gui/UBLibActionBar.cpp \
     src/gui/UBLibraryWidget.cpp \
-    src/gui/UBLibPathViewer.cpp
+    src/gui/UBLibPathViewer.cpp \
+    src/gui/UBUpdateDlg.cpp
 
 win32 {
 
