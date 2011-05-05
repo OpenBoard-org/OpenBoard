@@ -1563,6 +1563,9 @@
    <property name="toolTip">
     <string>Share Capture on the Web</string>
    </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="actionDesktopTools">
    <property name="checkable">
