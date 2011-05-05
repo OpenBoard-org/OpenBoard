@@ -3,24 +3,29 @@
 
 #include <QObject>
 #include <QFileInfo>
+#include "gui/UBUpdateDlg.h"
 
 class UniboardSankoreTransition : public QObject
 {
     Q_OBJECT
 public:
     explicit UniboardSankoreTransition(QObject *parent = 0);
-    bool backupUniboardDirectory();
+    ~UniboardSankoreTransition();
     void documentTransition();
+
 
 private:
     void rollbackDocumentsTransition(QFileInfoList& fileInfoList);
+    UBUpdateDlg* mTransitionDlg;
 
 protected:
     QString mUniboardSourceDirectory;
 
 signals:
+    void transitionFinished(bool result);
 
-public slots:
+private slots:
+    void startDocumentTransition();
 
 };
 

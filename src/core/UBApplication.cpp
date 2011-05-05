@@ -45,7 +45,6 @@
 
 #include "ui_mainWindow.h"
 
-#include "transition/UniboardSankoreTransition.h"
 
 QPointer<QUndoStack> UBApplication::undoStack;
 
@@ -54,6 +53,7 @@ UBBoardController* UBApplication::boardController = 0;
 UBWebController* UBApplication::webController = 0;
 UBDocumentController* UBApplication::documentController = 0;
 UBSoftwareUpdateController* UBApplication::softwareUpdateController = 0;
+UniboardSankoreTransition* UBApplication::mUniboardSankoreTransition = 0;
 
 UBMainWindow* UBApplication::mainWindow = 0;
 
@@ -299,8 +299,8 @@ int UBApplication::exec(const QString& pFileToImport)
 
     UBLibraryController::preloadFirstOnlineLibrary();
 
-    UniboardSankoreTransition* transition = new UniboardSankoreTransition();
-    transition->backupUniboardDirectory();
+    mUniboardSankoreTransition = new UniboardSankoreTransition();
+    mUniboardSankoreTransition->documentTransition();
 
     return QApplication::exec();
 }
