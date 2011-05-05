@@ -337,7 +337,7 @@ void UBLibActionBar::onSelectionChanged(QList<UBLibElement *> itemList, bool isI
 
     mpFavoriteAction->setEnabled(bEnable);
     mpSocialAction->setEnabled(bEnable);
-    mpDeleteAction->setEnabled(bEnable);
+    mpDeleteAction->setEnabled(bEnable && libraryController()->canItemsOnElementBeDeleted(itemList.at(0)));
 }
 
 /**

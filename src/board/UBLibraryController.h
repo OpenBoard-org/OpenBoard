@@ -109,6 +109,7 @@ class UBLibraryController : public QObject
         QString favoritePath();
 
         void createNewFolder(QString name, UBLibElement* parentElem);
+        bool canItemsOnElementBeDeleted(UBLibElement *pElement);
 
     signals:
         void dialogClosed(int state);
