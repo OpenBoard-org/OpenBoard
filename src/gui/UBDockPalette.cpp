@@ -277,7 +277,7 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
 	path.addRect(0.0, 0.0, width()-border(), height());
         path.addRoundedRect(width()-2*border(), border(), 2*border(), TABSIZE, radius(), radius());
 	painter.drawPath(path);
-        painter.drawPixmap(width() - border(), border() + (TABSIZE / 2) - 6, 12, 12, mIcon);
+        painter.drawPixmap(width() - border() + 1, border() + 1 , border() - 4, TABSIZE - 2, mIcon);
     }
     else if(mOrientation == eUBDockOrientation_Right)
     {
@@ -286,7 +286,7 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
 	path.addRect(border(), 0.0, width()-border(), height());
 	path.addRoundedRect(0.0, border(), 2*border(), TABSIZE, radius(), radius());
 	painter.drawPath(path);
-        painter.drawPixmap(2, border() + (TABSIZE / 2) - 6, 12, 12, mIcon);
+        painter.drawPixmap(2, border() + 1, border() - 3, TABSIZE - 2, mIcon);
     }
     else
     {
