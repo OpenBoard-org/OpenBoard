@@ -1078,8 +1078,7 @@
    </property>
    <property name="icon">
     <iconset resource="../sankore.qrc">
-     <normaloff>:/images/toolPalette/podcast.svg</normaloff>
-     <normalon>:/images/toolPalette/podcastOn.svg</normalon>:/images/toolPalette/podcast.svg</iconset>
+     <normaloff>:/images/toolbar/record.png</normaloff>:/images/toolbar/record.png</iconset>
    </property>
    <property name="text">
     <string>Podcast</string>
@@ -1640,6 +1639,10 @@
    </property>
   </action>
   <action name="actionHideApplication">
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/toolbar/hide.png</normaloff>:/images/toolbar/hide.png</iconset>
+   </property>
    <property name="text">
     <string>Hide Sankoré</string>
    </property>
