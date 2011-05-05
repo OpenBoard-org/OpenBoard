@@ -7,7 +7,7 @@ UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     QObject(parent)
 {
     mUniboardSourceDirectory = UBDesktopServices::storageLocation(QDesktopServices::DataLocation);
-    mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Mnemis/Uniboard");
+    mUniboardSourceDirectory.replace("Sankore", "Mnemis/Uniboard");
 }
 
 bool UniboardSankoreTransition::backupUniboardDirectory()
