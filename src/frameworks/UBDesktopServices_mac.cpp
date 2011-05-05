@@ -70,8 +70,7 @@ QString UBDesktopServices::storageLocation(StandardLocation type)
 
     short domain = kOnAppropriateDisk;
 
-    if (QDesktopServices::DataLocation == type
-        || QDesktopServices::CacheLocation == type)
+    if (QDesktopServices::DataLocation == type || QDesktopServices::CacheLocation == type)
         domain = kUserDomain;
 
      // http://developer.apple.com/documentation/Carbon/Reference/Folder_Manager/Reference/reference.html
@@ -82,9 +81,8 @@ QString UBDesktopServices::storageLocation(StandardLocation type)
 
     QString path = getFullPath(ref);
 
-    if (QDesktopServices::DataLocation == type
-        || QDesktopServices::CacheLocation == type)
-        path += "/" + QCoreApplication::applicationName();
+    if (QDesktopServices::DataLocation == type || QDesktopServices::CacheLocation == type)
+        path += "/Sankore";
 
     return path;
 }

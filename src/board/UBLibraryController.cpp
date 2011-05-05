@@ -374,6 +374,7 @@ QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPat
 
 QList<UBLibElement*> UBLibraryController::listElementsInVirtualForlder(UBLibElement* pElement)
 {
+    Q_UNUSED(pElement);
     return mFavoriteList;
 }
 

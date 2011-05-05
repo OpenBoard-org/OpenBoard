@@ -397,7 +397,10 @@ void UBLibActionBar::dropEvent(QDropEvent *event)
         }
         else if(mpDeleteBtn == pTargetW)
         {
-            onActionTrash();
+            if(mpDeleteBtn->isEnabled())
+            {
+                onActionTrash();
+            }
         }
         else if(mpSocialBtn == pTargetW)
         {
