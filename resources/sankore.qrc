@@ -45,7 +45,6 @@
         <file>images/reload.svg</file>
         <file>images/frozen.svg</file>
         <file>images/unfrozen.svg</file>
-        <file>images/toolbar/display.png</file>
         <file>images/toolbar/window.png</file>
         <file>images/toolbar/plusBlack.png</file>
         <file>images/toolbar/plusBlackOn.png</file>
@@ -107,7 +106,6 @@
         <file>images/toolbar/captureWindow.png</file>
         <file>images/toolbar/extraTool.png</file>
         <file>images/toolbar/webUpload.png</file>
-        <file>images/toolbar/record.png</file>
         <file>images/toolbar/stop.png</file>
         <file>images/toolbar/pause.png</file>
         <file>images/toolbar/cut.png</file>
@@ -121,7 +119,6 @@
         <file>images/toolbar/eraserTool.png</file>
         <file>images/toolbar/lineTool.png</file>
         <file>images/toolbar/tools.png</file>
-        <file>images/toolbar/paraschool.png</file>
         <file>images/stylusPalette/arrow.png</file>
         <file>images/stylusPalette/arrowOn.png</file>
         <file>images/stylusPalette/eraser.png</file>
@@ -259,8 +256,6 @@
         <file>images/libpalette/notFound.png</file>
         <file>images/libpalette/trash_favorite.svg</file>
         <file>images/libpalette/back.png</file>
-        <file>images/paletteLibrary.png</file>
-        <file>images/paletteNavigator.png</file>
         <file>images/stylusPalette/eraserArrow.png</file>
         <file>images/stylusPalette/eraserOnArrow.png</file>
         <file>images/stylusPalette/markerArrow.png</file>
@@ -284,5 +279,11 @@
         <file>images/libpalette/miniFavorite.png</file>
         <file>images/libpalette/home.png</file>
         <file>images/toolbar/updates.png</file>
+        <file>images/paletteLibrary.png</file>
+        <file>images/paletteNavigator.png</file>
+        <file>images/toolbar/paraschool.png</file>
+        <file>images/toolbar/display.png</file>
+        <file>images/toolbar/hide.png</file>
+        <file>images/toolbar/record.png</file>
     </qresource>
 </RCC>
