@@ -83,6 +83,11 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardControll
 
 }
 
+bool UBLibraryController::canItemsOnElementBeDeleted(UBLibElement *pElement)
+{
+    return !pElement->path().toLocalFile().startsWith(UBSettings::settings()->uniboardShapeLibraryDirectory());
+}
+
 void UBLibraryController::createInternalWidgetItems()
 {
     QStringList toolUris = UBToolsManager::manager()->allToolIDs();
@@ -369,6 +374,7 @@ QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPat
 
 QList<UBLibElement*> UBLibraryController::listElementsInVirtualForlder(UBLibElement* pElement)
 {
+    Q_UNUSED(pElement);
     return mFavoriteList;
 }
 

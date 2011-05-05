@@ -154,8 +154,7 @@ QStringList UBFileSystemUtils::allFiles(const QString& pDirPath)
 QFileInfoList UBFileSystemUtils::allElementsInDirectory(const QString& pDirPath)
 {
     QDir dir = QDir(pDirPath);
-    dir.setFilter(QDir::Files | QDir::Dirs |
-     QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     dir.setSorting(QDir::DirsFirst);
 
     return QFileInfoList(dir.entryInfoList());
@@ -164,8 +163,6 @@ QFileInfoList UBFileSystemUtils::allElementsInDirectory(const QString& pDirPath)
 
 bool UBFileSystemUtils::deleteDir(const QString& pDirPath)
 {
-    //qDebug() << "UBFileSystemUtils::deleteDir.start" << pDirPath;
-
     if (pDirPath == "" || pDirPath == "." || pDirPath == "..")
         return false;
 

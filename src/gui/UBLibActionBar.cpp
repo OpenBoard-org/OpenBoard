@@ -337,7 +337,7 @@ void UBLibActionBar::onSelectionChanged(QList<UBLibElement *> itemList, bool isI
 
     mpFavoriteAction->setEnabled(bEnable);
     mpSocialAction->setEnabled(bEnable);
-    mpDeleteAction->setEnabled(bEnable);
+    mpDeleteAction->setEnabled(bEnable && libraryController()->canItemsOnElementBeDeleted(itemList.at(0)));
 }
 
 /**
@@ -397,7 +397,10 @@ void UBLibActionBar::dropEvent(QDropEvent *event)
         }
         else if(mpDeleteBtn == pTargetW)
         {
-            onActionTrash();
+            if(mpDeleteBtn->isEnabled())
+            {
+                onActionTrash();
+            }
         }
         else if(mpSocialBtn == pTargetW)
         {
