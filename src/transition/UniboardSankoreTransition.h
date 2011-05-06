@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QFileInfo>
 #include "gui/UBUpdateDlg.h"
+#include "document/UBDocumentProxy.h"
 
 class UniboardSankoreTransition : public QObject
 {
@@ -23,6 +24,7 @@ protected:
 
 signals:
     void transitionFinished(bool result);
+    void docAdded(UBDocumentProxy* doc);
 
 private slots:
     void startDocumentTransition();
