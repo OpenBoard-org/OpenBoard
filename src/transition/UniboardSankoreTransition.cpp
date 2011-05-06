@@ -8,7 +8,11 @@ UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     QObject(parent)
 {
     mUniboardSourceDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
+#if defined(Q_WS_MACX)
+    mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Uniboard");
+#else
     mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Mnemis/Uniboard");
+#endif
 }
 UniboardSankoreTransition::~UniboardSankoreTransition()
 {
