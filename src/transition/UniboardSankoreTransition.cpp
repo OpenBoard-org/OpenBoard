@@ -3,6 +3,7 @@
 #include "frameworks/UBDesktopServices.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
 
 UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     QObject(parent)
@@ -13,6 +14,7 @@ UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
 #else
     mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Mnemis/Uniboard");
 #endif
+    connect(this, SIGNAL(docAdded(UBDocumentProxy*)), UBPersistenceManager::persistenceManager(), SIGNAL(documentCreated(UBDocumentProxy*)));
 }
 UniboardSankoreTransition::~UniboardSankoreTransition()
 {
@@ -62,11 +64,14 @@ void UniboardSankoreTransition::startDocumentTransition()
     QFileInfoList::iterator fileInfo;
     QString sankoreDocumentDirectory = UBSettings::uniboardDocumentDirectory();
 
+    QStringList qslNewDocs;
+
     for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
         if (fileInfo->isDir() && fileInfo->fileName().startsWith("Uniboard Document ")){
             QString sankoreDocumentName = fileInfo->fileName();
             sankoreDocumentName.replace("Uniboard","Sankore");
             result = UBFileSystemUtils::copyDir(fileInfo->filePath(),sankoreDocumentDirectory + "/" + sankoreDocumentName);
+            qslNewDocs << sankoreDocumentName;
         }
     }
 
@@ -75,8 +80,16 @@ void UniboardSankoreTransition::startDocumentTransition()
         rollbackDocumentsTransition(fileInfoList);
         UBFileSystemUtils::deleteDir(backupDestinationPath);
     }
-    else {
+    else
+    {
         UBFileSystemUtils::deleteDir(mUniboardSourceDirectory);
+        // Notify the application that new documents have been added
+//        foreach(QString qstr, qslNewDocs)
+//        {
+//            UBDocumentProxy* pDoc = new UBDocumentProxy();
+//            pDoc->setMetaData(UBSettings::documentName, qstr);
+//            emit docAdded(pDoc);
+//        }
     }
 
     emit transitionFinished(result);
