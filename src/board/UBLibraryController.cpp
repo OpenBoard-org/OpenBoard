@@ -321,7 +321,7 @@ QImage* UBLibraryController::thumbnailForFile(UBLibElement* pElement)
 QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QString& pPath)
 {
     QList<UBLibElement*> content;
-    if (pPath == mInteractiveCategoryPath.toString())
+    if (pPath == mInteractiveUserDirectoryPath.toLocalFile())
         content << mInternalLibElements;
     else if (pPath == mPicturesStandardDirectoryPath.toLocalFile()){
         QUrl path = QUrl::fromLocalFile(UBSettings::settings()->uniboardImageLibraryDirectory());

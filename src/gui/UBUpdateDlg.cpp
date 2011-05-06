@@ -61,7 +61,7 @@ void UBUpdateDlg::onFilesUpdated(bool bResult)
 
     if(bResult)
     {
-        qsMsg = tr("Files update successful");
+        qsMsg = tr("Files update successful!\nPlease reboot the application to access the updated documents.");
     }
     else
     {

@@ -130,7 +130,7 @@ void UBWebController::webBrowserInstance()
 
     if (mDownloadViewIsVisible)
        WBBrowserWindow::downloadManager()->show();
-	
+
 }
 
 void UBWebController::tutorialWebInstance()
@@ -195,7 +195,7 @@ void UBWebController::tutorialWebInstance()
 
 void UBWebController::paraschoolWebInstance()
 {
-    QUrl currentUrl("http://apps.dev-paraschool.com/editor");
+    QUrl currentUrl("http://host9.paraschool.net/editor/#home");
 
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {

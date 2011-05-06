@@ -47,6 +47,7 @@ include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/softwareupdate/softwareupdate.pri)
 include(src/paraschool/paraschool.pri)
+include(src/transition/transition.pri)
 
 DEPENDPATH += thirdparty/mera/pdf-merger
 INCLUDEPATH += thirdparty/mera/pdf-merger
@@ -346,9 +347,3 @@ INSTALLS = UB_ETC \
    UB_THIRDPARTY_INTERACTIVE
 
 OTHER_FILES +=
-
-HEADERS += \
-    src/transition/UniboardSankoreTransition.h
-
-SOURCES += \
-    src/transition/UniboardSankoreTransition.cpp

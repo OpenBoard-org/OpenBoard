@@ -12,11 +12,13 @@
 
 #include "qtsingleapplication.h"
 
+#include "transition/UniboardSankoreTransition.h"
 
 namespace Ui
 {
     class MainWindow;
 }
+
 
 class UBBoardController;
 class UBWebController;
@@ -49,6 +51,7 @@ class UBApplication : public QtSingleApplication
         static UBWebController* webController;
         static UBDocumentController* documentController;
         static UBSoftwareUpdateController* softwareUpdateController;
+        static UniboardSankoreTransition* mUniboardSankoreTransition;
 
         static UBMainWindow* mainWindow;
 
