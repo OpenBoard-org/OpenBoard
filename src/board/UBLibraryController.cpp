@@ -323,17 +323,20 @@ QImage* UBLibraryController::thumbnailForFile(UBLibElement* pElement)
 QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QString& pPath)
 {
     QList<UBLibElement*> content;
-    if (pPath == mInteractiveUserDirectoryPath.toLocalFile())
+    if (pPath == mInteractiveUserDirectoryPath.toLocalFile()){
         content << mInternalLibElements;
+        content << listElementsInPath(UBSettings::settings()->uniboardInteractiveLibraryDirectory());
+        content << listElementsInPath(UBSettings::settings()->uniboardInteractiveFavoritesDirectory());
+    }
     else if (pPath == mPicturesStandardDirectoryPath.toLocalFile()){
         QUrl path = QUrl::fromLocalFile(UBSettings::settings()->uniboardImageLibraryDirectory());
         userPath(path);
         content << listElementsInPath(path.toLocalFile());
     }
-    else if (pPath == mInteractiveUserDirectoryPath.toLocalFile()){
+/*    else if (pPath == mInteractiveUserDirectoryPath.toLocalFile()){
         content << listElementsInPath(UBSettings::settings()->uniboardInteractiveLibraryDirectory());
         content << listElementsInPath(UBSettings::settings()->uniboardInteractiveFavoritesDirectory());
-    }
+    }*/
 
     return content;
 }
