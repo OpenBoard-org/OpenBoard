@@ -40,7 +40,7 @@ nmake release-install
 
 del .\build\win32\release\product\Sankore 3.1.pdb
 
-set INSTALLER_NAME=Sankore 3.1 setup
+set INSTALLER_NAME=Sankore 3.1
 
 set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 
