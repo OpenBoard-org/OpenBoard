@@ -35,4 +35,4 @@ cd build/linux/release
 
 # "Removing .svn directories ..."
 find . -name .svn -exec rm -rf {} \; 2> /dev/null
-tar cvzf ../../../install/linux/Sankore_3.1.tar.gz Sankore_3.1.$VERSION -C .
+tar cvzf ../../../install/linux/Sankore\ 3.1.tar.gz Sankore_3.1.$VERSION -C .
