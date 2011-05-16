@@ -21,6 +21,7 @@ private:
 
 protected:
     QString mUniboardSourceDirectory;
+    QString mOldSankoreDirectory;
 
 signals:
     void transitionFinished(bool result);
