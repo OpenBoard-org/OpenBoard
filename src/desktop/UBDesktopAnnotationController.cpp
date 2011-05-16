@@ -111,12 +111,12 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     UBPlatformUtils::disableShadow(mDesktopMarkerPalette);
     mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView);
     UBPlatformUtils::disableShadow(mDesktopEraserPalette);
-	if (UBPlatformUtils::hasVirtualKeyboard())
-	{
-		mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
+        if (UBPlatformUtils::hasVirtualKeyboard())
+        {
+                mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
 
-		connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
-	}
+                connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
+        }
 
     mDesktopPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopToolsPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);

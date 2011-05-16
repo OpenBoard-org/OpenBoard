@@ -16,6 +16,7 @@ class UBLibNavigatorWidget : public QWidget
 public:
     UBLibNavigatorWidget(QWidget* parent=0, const char* name="UBLibNavigatorWidget");
     ~UBLibNavigatorWidget();
+    void dropMe(const QMimeData* _data);
 
 signals:
     void propertiesRequested(UBLibElement* elem);

@@ -9,7 +9,7 @@
 
 class UBStylusPalette : public UBActionPalette
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBStylusPalette(QWidget *parent = 0, Qt::Orientation orient = Qt::Vertical);

@@ -94,6 +94,12 @@ UBLibNavigatorWidget::~UBLibNavigatorWidget()
     }
 }
 
+void UBLibNavigatorWidget::dropMe(const QMimeData *_data)
+{
+    // Forward the mime data to the library widget
+
+}
+
 /**
  * \brief Update the navigation bar
  * @param pElem as the current element
