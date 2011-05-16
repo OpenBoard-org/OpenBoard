@@ -89,7 +89,7 @@ void UBStylusPalette::initPosition()
 
 UBStylusPalette::~UBStylusPalette()
 {
-    // NOOP
+
 }
 
 void UBStylusPalette::stylusToolDoubleClicked()

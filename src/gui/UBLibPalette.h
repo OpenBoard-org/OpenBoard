@@ -10,6 +10,7 @@
 #include <QMimeData>
 #include <QMouseEvent>
 #include <QResizeEvent>
+#include <QLabel>
 
 #include "UBDockPalette.h"
 #include "UBLibNavigatorWidget.h"
@@ -18,6 +19,18 @@
 
 #define ID_NAVIGATOR    0
 #define ID_PROPERTIES   1
+#define ID_DROPME       2
+
+class UBDropMeWidget : public QWidget
+{
+public:
+    UBDropMeWidget(QWidget* parent=0, const char* name="dropMeWidget");
+    ~UBDropMeWidget();
+
+private:
+    QLabel* mpLabel;
+    QVBoxLayout* mpLayout;
+};
 
 class UBLibPalette : public UBDockPalette
 {
@@ -33,6 +46,7 @@ protected:
     void dragEnterEvent(QDragEnterEvent* pEvent);
     void dropEvent(QDropEvent *pEvent);
     void dragMoveEvent(QDragMoveEvent* pEvent);
+    void dragLeaveEvent(QDragLeaveEvent* pEvent);
     void mouseMoveEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *event);
 
@@ -53,6 +67,10 @@ private:
     UBLibItemProperties* mProperties;
     /** UBLibActionBar */
     UBLibActionBar* mActionBar;
+    /** The 'drop here' indicator */
+    UBDropMeWidget* mDropWidget;
+    /** The current stack widget index*/
+    int miCrntStackWidget;
 };
 
 #endif // UBLIBPALETTE_H

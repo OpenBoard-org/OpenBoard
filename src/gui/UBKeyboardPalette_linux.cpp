@@ -95,7 +95,7 @@ void UBKeyboardButton::sendControlSymbol(int nSymbol)
 
 void UBKeyboardPalette::createCtrlButtons()
 {
-        ctrlButtons = new UBKeyboardButton*[7];
+        ctrlButtons = new UBKeyboardButton*[8];
 
         ctrlButtons[0] = new UBCntrlButton(this, "<-", XK_BackSpace);
         ctrlButtons[1] = new UBCntrlButton(this, "<->", XK_Tab);

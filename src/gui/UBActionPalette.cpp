@@ -43,6 +43,7 @@ void UBActionPalette::init(Qt::Orientation orientation)
     mAutoClose = false;
     mButtonGroup = 0;
     mToolButtonStyle = Qt::ToolButtonIconOnly;
+    mButtons.clear();
 
     QBoxLayout *layout = 0;
 
@@ -111,7 +112,8 @@ QList<QAction*> UBActionPalette::actions()
 
 UBActionPalette::~UBActionPalette()
 {
-
+    qDeleteAll(mButtons.begin(), mButtons.end());
+    mButtons.clear();
 }
 
 
@@ -160,6 +162,7 @@ void UBActionPalette::updateLayout()
     {
         layout()->setContentsMargins (sLayoutContentMargin  + border(), sLayoutContentMargin  + border()
                 , sLayoutContentMargin  + border(), sLayoutContentMargin + border());
+
     }
     update();
 }
@@ -256,7 +259,7 @@ UBActionPaletteButton::UBActionPaletteButton(QAction* action, QWidget * parent)
 
 UBActionPaletteButton::~UBActionPaletteButton()
 {
-    // NOOP
+
 }
 
 

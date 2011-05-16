@@ -35,7 +35,7 @@ public slots:
     void onElementsDropped(QList<QString> elements, UBLibElement* target);
     void onSearchElement(QString elem);
     void onNewFolderToCreate();
-
+    void onDropMe(const QMimeData* _data);
 signals:
     void navigBarUpdate(UBLibElement* pElem);
     void itemsSelected(QList<UBLibElement*> elemList, bool inTrash);

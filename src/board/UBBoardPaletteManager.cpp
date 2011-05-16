@@ -90,6 +90,12 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
 	delete mLibPalette;
 	mLibPalette = NULL;
     }
+
+    if(NULL != mStylusPalette)
+    {
+        delete mStylusPalette;
+        mStylusPalette = NULL;
+    }
 }
 
 void UBBoardPaletteManager::initPalettesPosAtStartup()
@@ -641,9 +647,13 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     bool bVertical = var.toBool();
     bool bVisible = mStylusPalette->isVisible();
 
+    UBStylusPalette* mOldPalette;
     // Clean the old palette
-    disconnect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
-    delete mStylusPalette;
+    if(NULL != mStylusPalette)
+    {
+        // TODO : check why this line creates a crash in the application.
+        delete mStylusPalette;
+    }
 
     // Create the new palette
     if(bVertical)

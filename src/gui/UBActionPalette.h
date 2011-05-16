@@ -73,7 +73,6 @@ class UBActionPalette : public UBFloatingPalette
         QPoint mMousePos;
         UBActionPaletteButton *createPaletteButton(QAction* action, QWidget *parent);
 
-
     private slots:
         void buttonClicked();
         void actionChanged();
@@ -82,7 +81,7 @@ class UBActionPalette : public UBFloatingPalette
 
 class UBActionPaletteButton : public QToolButton
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBActionPaletteButton(QAction* action, QWidget * parent = 0);

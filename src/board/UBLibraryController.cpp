@@ -79,6 +79,8 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardControll
 
     mInteractiveUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveUserDirectory());
 
+    qDebug() << ">>  mInteractiveUserDirectoryPath : " << mInteractiveUserDirectoryPath;
+
     createInternalWidgetItems();
 
 }

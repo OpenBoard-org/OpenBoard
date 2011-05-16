@@ -283,6 +283,11 @@ void UBLibraryWidget::dragMoveEvent(QDragMoveEvent *event)
     }
 }
 
+void UBLibraryWidget::onDropMe(const QMimeData *_data)
+{
+
+}
+
 /**
  * \brief Handles the drop event
  * @param event as the drop event
