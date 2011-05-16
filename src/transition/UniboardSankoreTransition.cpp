@@ -8,6 +8,8 @@
 UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     QObject(parent)
 {
+    mOldSankoreDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
+
     mUniboardSourceDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
 #if defined(Q_WS_MACX)
     mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Uniboard");
@@ -38,17 +40,20 @@ void UniboardSankoreTransition::rollbackDocumentsTransition(QFileInfoList& fileI
 
 void UniboardSankoreTransition::documentTransition()
 {
-    if (QFileInfo(mUniboardSourceDirectory).exists()){
+    if (QFileInfo(mUniboardSourceDirectory).exists() || QFileInfo(mOldSankoreDirectory).exists()){
         QString uniboardDocumentDirectory = mUniboardSourceDirectory + "/document";
 
         QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(uniboardDocumentDirectory);
+        fileInfoList << UBFileSystemUtils::allElementsInDirectory(mOldSankoreDirectory + "/document");
 
         QString backupDirectoryPath = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
 
-        mTransitionDlg = new UBUpdateDlg(0, fileInfoList.count(), backupDirectoryPath);
-        connect(mTransitionDlg, SIGNAL(updateFiles()), this, SLOT(startDocumentTransition()));
-        connect(this, SIGNAL(transitionFinished(bool)), mTransitionDlg, SLOT(onFilesUpdated(bool)));
-        mTransitionDlg->show();
+        if (fileInfoList.count() != 0){
+            mTransitionDlg = new UBUpdateDlg(0, fileInfoList.count(), backupDirectoryPath);
+            connect(mTransitionDlg, SIGNAL(updateFiles()), this, SLOT(startDocumentTransition()));
+            connect(this, SIGNAL(transitionFinished(bool)), mTransitionDlg, SLOT(onFilesUpdated(bool)));
+            mTransitionDlg->show();
+        }
     }
 }
 
@@ -80,16 +85,9 @@ void UniboardSankoreTransition::startDocumentTransition()
         rollbackDocumentsTransition(fileInfoList);
         UBFileSystemUtils::deleteDir(backupDestinationPath);
     }
-    else
-    {
+    else{
+        UBFileSystemUtils::deleteDir(mOldSankoreDirectory);
         UBFileSystemUtils::deleteDir(mUniboardSourceDirectory);
-        // Notify the application that new documents have been added
-//        foreach(QString qstr, qslNewDocs)
-//        {
-//            UBDocumentProxy* pDoc = new UBDocumentProxy();
-//            pDoc->setMetaData(UBSettings::documentName, qstr);
-//            emit docAdded(pDoc);
-//        }
     }
 
     emit transitionFinished(result);
