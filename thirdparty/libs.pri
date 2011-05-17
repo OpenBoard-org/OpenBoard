@@ -12,7 +12,7 @@ win32 {
 }
 
 FREETYPE_DIR = "$$PWD/freetype/freetype-2.4.4"
-LIBS        += "-L"$$PWD/freetype/lib/$$SUB_LIB" "-lfreetype"
+LIBS        += "-L$$PWD/freetype/lib/$$SUB_LIB" "-lfreetype"
 # no INCLUDEPATH, freetype is not used directly
 
 XPDF_DIR     = "$$PWD/xpdf/xpdf-3.02"

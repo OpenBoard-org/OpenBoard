@@ -1,5 +1,5 @@
 TEMPLATE  = lib
-CONFIG   += staticlib release warn_off
+CONFIG   += staticlib release 
 
 XPDF_DIR = "xpdf-3.02"
 
@@ -21,15 +21,15 @@ OBJECTS_DIR  = "objects"
 
 macx {
     CONFIG += x86 ppc
-    QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.4"
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.5"
 }
 
 # Free type includes and lib
 FREETYPE_DIR = "../freetype/freetype-2.4.4"
 INCLUDEPATH += "$$FREETYPE_DIR/include" "$$FREETYPE_DIR/include/freetype2"
-LIBS        += "-Lfreetype/lib" "-lfreetype"
+LIBS        += "-L../freetype/lib/$$SUB_LIB" "-lfreetype"
 
-INCLUDEPATH += $$XPDF_DIR $$XPDF_DIR "$$XPDF_DIR/fofi" "$$XPDF_DIR/goo" "$$XPDF_DIR/splash" "$$XPDF_DIR/include" xpdf-3.02Extra
+INCLUDEPATH += $$XPDF_DIR "$$XPDF_DIR/fofi" "$$XPDF_DIR/goo" "$$XPDF_DIR/splash" "$$XPDF_DIR/include" "xpdf-3.02Extra"
 
 aconf.path    = $$XPDF_DIR
 aconf.files = $$XPDF_DIR/aconf.h

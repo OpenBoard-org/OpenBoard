@@ -16,7 +16,7 @@ GOOLIBDIR = ../goo
 FOFISRCDIR = $(srcdir)/../fofi
 FOFILIBDIR = ../fofi
 
-CXXFLAGS = -g -O2 -DHAVE_CONFIG_H -I.. -I$(GOOSRCDIR) -I$(FOFISRCDIR) -I$(srcdir)  
+CXXFLAGS = -g -O2 -DHAVE_CONFIG_H -I.. -I$(GOOSRCDIR) -I$(FOFISRCDIR) -I$(srcdir)  -I../../freetype/freetype-2.4.4/include
 
 CXX = g++
 AR = ar rc

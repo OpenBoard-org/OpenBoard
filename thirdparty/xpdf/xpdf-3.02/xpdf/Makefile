@@ -19,12 +19,12 @@ FOFILIBDIR = ../fofi
 SPLASHSRCDIR = $(srcdir)/../splash
 SPLASHLIBDIR = ../splash
 
-CXXFLAGS = -g -O2 -DHAVE_CONFIG_H -I.. -I$(GOOSRCDIR) -I$(FOFISRCDIR) -I$(SPLASHSRCDIR) -I$(srcdir)          
+CXXFLAGS = -g -O2 -DHAVE_CONFIG_H -I.. -I$(GOOSRCDIR) -I$(FOFISRCDIR) -I$(SPLASHSRCDIR) -I$(srcdir) -I../../freetype/freetype-2.4.4/include         
 
 LDFLAGS = 
 
 T1LIBS = 
-FTLIBS = 
+FTLIBS = -L../../freetype/lib/linux -lfreetype
 
 XLIBS =   -lXt  -lXext   -lSM -lICE  -lX11 
 

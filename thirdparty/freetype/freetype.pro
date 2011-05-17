@@ -29,11 +29,10 @@ INCLUDEPATH += "$$FREETYPE_DIR_WITH_VERSION/include"
 
 DEFINES = "FT2_BUILD_LIBRARY"
 
-FREETYPE_DIR   = "$$[UNIBOARD_DIR]/thirdparty/freetype/$$FREETYPE_DIR_WITH_VERSION"
-target.path    = "$$FREETYPE_DIR/lib"
-ft2build.path  = "$$FREETYPE_DIR/include"
+target.path    = "lib"
+ft2build.path  = "$$FREETYPE_DIR_WITH_VERSION/include"
 ft2build.files = "$$FREETYPE_DIR_WITH_VERSION/include/ft2build.h"
-headers.path   = "$$FREETYPE_DIR/include/freetype"
+headers.path   = "$$FREETYPE_DIR_WITH_VERSION/include/freetype"
 headers.files  = "$$FREETYPE_DIR_WITH_VERSION/include/freetype/config" "$$FREETYPE_DIR_WITH_VERSION/include/freetype/*.h"
 
 INSTALLS += "target" "ft2build" "headers"
