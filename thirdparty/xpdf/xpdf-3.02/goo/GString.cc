@@ -528,7 +528,7 @@ void GString::formatDouble(double x, char *buf, int bufSize, int prec,
   if ((neg = x < 0)) {
     x = -x;
   }
-  x = floor(x * pow(10, prec) + 0.5);
+  x = floor(x * pow(10.0, prec) + 0.5);
   i = bufSize;
   started = !trim;
   for (j = 0; j < prec && i > 1; ++j) {

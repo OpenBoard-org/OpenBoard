@@ -7,9 +7,10 @@ instructions for version 3.02
 - Decompress xpdf-3.02.xx.tar.gz
 
 Windows:
-	- using cywin run ./configure
-	- run qmake xpdf.pro -r -spec win32-g++
-	- run make
+	- copy xpdf-3.02/aconf-win32.h into xpdf-3.02/aconf.h
+	- edit xpdf-3.02/aconf.h, add this line "#undef UNICODE"
+	- qmake
+	- nmake
 
 OSX:
     - cd xpdf-3.02
