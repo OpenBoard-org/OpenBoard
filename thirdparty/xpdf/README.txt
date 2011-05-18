@@ -12,7 +12,11 @@ Windows:
 	- run make
 
 OSX:
-    - run ./configure (may need extrea options ?)
+    - cd xpdf-3.02
+    - ./configure
+    - cd ..
+    - qmake xpdf.pro -spec macx-g++
+    - make
 
 Linux:
     - cd xpdf-3.02
