@@ -21,16 +21,7 @@ INCLUDEPATH += "$$XPDF_DIR"
 INCLUDEPATH += "$$XPDF_DIR/goo"
 INCLUDEPATH += "$$XPDF_DIR/splash"
 
-BREAKPAD_DIR = "$$PWD/google-breakpad/r318"
-INCLUDEPATH += "$$BREAKPAD_DIR/include" "$$BREAKPAD_DIR/include/google_breakpad"
-
 win32 {
-CONFIG(debug, debug|release) {
-        LIBS        += "-L$$BREAKPAD_DIR/lib/$$SUB_LIB" "-ldbreakpad"
-}
-CONFIG(release, debug|release) {
-        LIBS        += "-L$$BREAKPAD_DIR/lib/$$SUB_LIB" "-lbreakpad"
-}
     LIBS        += "-L$$PWD/openssl/0.9.8i/lib/VC/static" "-llibeay32MD"
     INCLUDEPATH += "$$PWD/openssl/0.9.8i/include"
 
@@ -57,7 +48,6 @@ macx {
     LIBS         += "-framework Carbon"
             
     LIBS         += "-lcrypto"
-    LIBS         += "-L$$BREAKPAD_DIR/lib/$$SUB_LIB" "-lbreakpad"
     LIBS         += "$$PWD/unsanity/ape/APELite.o"
     INCLUDEPATH  += "$$PWD/unsanity/ape"
 }
