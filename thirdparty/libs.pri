@@ -34,13 +34,6 @@ CONFIG(release, debug|release) {
     LIBS        += "-L$$PWD/openssl/0.9.8i/lib/VC/static" "-llibeay32MD"
     INCLUDEPATH += "$$PWD/openssl/0.9.8i/include"
 
-    LIBS        += "-L$$PWD/microsoft/ppt/lib" "-lppt"
-    INCLUDEPATH += "$$PWD/microsoft/ppt/include"
-
-    # need those link if we want to change default printer and print usind shell command
-    LIBS        += "-L$$PWD/microsoft/lib" "-lWinspool"
-    LIBS        += "-L$$PWD/microsoft/lib" "-lshell32"
-
     LIBS        += "-lWmvcore"
     LIBS        += "-lWinmm"
 

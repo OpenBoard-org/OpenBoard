@@ -13,8 +13,6 @@
 #include "softwareupdate/UBSoftwareUpdateController.h"
 #include "softwareupdate/UBSoftwareUpdate.h"
 
-#include "adaptors/UBImportVirtualPrinter.h"
-
 #include "board/UBBoardView.h"
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
@@ -651,32 +649,9 @@ void UBApplicationController::importFile(const QString& pFilePath)
 
     bool success = false;
 
-#ifdef Q_WS_WIN
+    document = UBDocumentManager::documentManager()->importFile(fileToOpen, UBSettings::defaultDocumentGroupName);
 
-    if (UBImportVirtualPrinter::pendingDocument.isNull())
-    {
-
-#endif
-        document = UBDocumentManager::documentManager()->importFile(fileToOpen,
-                UBSettings::defaultDocumentGroupName);
-
-        success = (document != 0);
-
-#ifdef Q_WS_WIN
-
-    }
-    else
-    {
-        document = UBImportVirtualPrinter::pendingDocument;
-
-        UBImportVirtualPrinter::pendingDocument = 0;
-
-        success = UBDocumentManager::documentManager()->addFileToDocument(document, fileToOpen);
-        if (success)
-            document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-    }
-
-#endif
+    success = (document != 0);
 
     if (success && document)
     {

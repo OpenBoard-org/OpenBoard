@@ -47,22 +47,9 @@ SOURCES      += src/adaptors/voting/UBAbstractVotingSystem.cpp
 
 win32 {
 
-    SOURCES  += src/adaptors/UBPowerPointApplication_win.cpp \
-                src/adaptors/UBImportVirtualPrinter.cpp \
-                src/adaptors/voting/UBReply2005VotingSystem.cpp \
+    SOURCES  += src/adaptors/voting/UBReply2005VotingSystem.cpp \
                 src/adaptors/voting/UBReplyWRS970VotingSystem.cpp
 
-    HEADERS  += src/adaptors/UBPowerPointApplication_win.h \
-                src/adaptors/UBImportVirtualPrinter.h \
-                src/adaptors/voting/UBReply2005VotingSystem.h \
+    HEADERS  += src/adaptors/voting/UBReply2005VotingSystem.h \
                 src/adaptors/voting/UBReplyWRS970VotingSystem.h
 }            
-
-
-macx {                
-
-    SOURCES  += src/adaptors/UBPowerPointApplication_mac.mm
-
-    HEADERS  += src/adaptors/UBPowerPointApplication_mac.h
-                
-}    
