@@ -16,7 +16,6 @@
 #include "core/UBSetting.h"
 
 #include "adaptors/UBExportPDF.h"
-#include "adaptors/UBPowerPointApplication.h"
 #include "adaptors/UBThumbnailAdaptor.h"
 
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
