@@ -23,7 +23,7 @@ Linux:
     - cd xpdf-3.02
     - ./configure --with-freetype2-library="../../freetype/lib/linux" --with-freetype2-includes="../../freetype/freetype-2.4.4/include"
     - cd ..
-    - qmake xpdf.pdf -spec linux-g++
+    - qmake xpdf.pro -spec linux-g++
     - make:
 
 - Run qmake (-spec macx-g++ on OSX)
