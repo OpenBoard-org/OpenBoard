@@ -1,6 +1,8 @@
 TARGET = "Sankore 3.1"
 TEMPLATE = app
 
+THIRD_PARTY_PATH=../Sankore-ThirdParty
+
 CONFIG += debug_and_release \
    no_include_pwd
 
@@ -30,7 +32,7 @@ QT += xmlpatterns
 
 INCLUDEPATH += src
 
-include(thirdparty/libs.pri)
+include($$THIRD_PARTY_PATH/libs.pri)
 include(src/adaptors/adaptors.pri)
 include(src/api/api.pri)
 include(src/board/board.pri)
@@ -52,12 +54,12 @@ include(src/transition/transition.pri)
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
-DEPENDPATH += thirdparty/quazip/
-INCLUDEPATH += thirdparty/quazip/
-include(thirdparty/quazip/quazip.pri)
-DEPENDPATH += thirdparty/trolltech/singleapplication
-INCLUDEPATH += thirdparty/trolltech/singleapplication
-include(thirdparty/trolltech/singleapplication/qtsingleapplication.pri)
+DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
+INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
+include($$THIRD_PARTY_PATH/quazip/quazip.pri)
+DEPENDPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
+INCLUDEPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
+include($$THIRD_PARTY_PATH/trolltech/singleapplication/qtsingleapplication.pri)
 
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
@@ -109,7 +111,6 @@ win32 {
    QMAKE_CXXFLAGS_RELEASE += /Od \
        /Zi
    QMAKE_LFLAGS_RELEASE += /DEBUG
-   INCLUDEPATH += thirdparty/microsoft
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
    UB_ETC.path = $$DESTDIR
@@ -138,10 +139,10 @@ macx {
    VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
 
    # Embed version into executable for breakpad
-#   QMAKE_LFLAGS += -sectcreate \
-#       __DATA \
-#       __version \
-#       $$VERSION_RC_PATH
+   QMAKE_LFLAGS += -sectcreate \
+       __DATA \
+       __version \
+       $$VERSION_RC_PATH
 
    QMAKE_CXXFLAGS_RELEASE += -gdwarf-2 \
        -mdynamic-no-pic
@@ -160,7 +161,7 @@ macx {
    UB_LIBRARY.path = "$$RESOURCES_DIR"
    UB_FONTS.files = "resources/fonts"
    UB_FONTS.path = "$$RESOURCES_DIR"
-   UB_THIRDPARTY_INTERACTIVE.files = $$files(thirdparty/interactive/*)
+   UB_THIRDPARTY_INTERACTIVE.files = $$files($$THIRD_PARTY_PATH/interactive/*)
    UB_THIRDPARTY_INTERACTIVE.path = "$$RESOURCES_DIR/library/interactive"
    UB_MACX_ICNS.files = $$files(resources/macx/*.icns)
    UB_MACX_ICNS.path = "$$RESOURCES_DIR"

@@ -5,10 +5,9 @@ set VS_BIN="C:\Program Files\Microsoft Visual Studio 9.0\VC\bin"
 set WIN_SDK_BIN="C:\Program Files\Microsoft SDKs\Windows\v6.1\Bin"
 set INNO_EXE="C:\Program Files\Inno Setup 5\iscc.exe "
 set BUILD_DIR=build\win32\release
-set SVN_BIN="C:\Program Files\Subversion\bin"
 set UB_DATA_DIR="D:\"
 
-set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%SVN_BIN%
+set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%
 
 call %VS_BIN%\vcvars32.bat
 
@@ -31,7 +30,7 @@ erase tmp
 echo %VERSION%
 echo %LAST_TAG_VERSION%
 
-if not %VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
+if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
 
 nmake release-install

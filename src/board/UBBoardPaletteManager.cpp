@@ -647,8 +647,7 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     bool bVertical = var.toBool();
     bool bVisible = mStylusPalette->isVisible();
 
-    UBStylusPalette* mOldPalette;
-    // Clean the old palette
+	// Clean the old palette
     if(NULL != mStylusPalette)
     {
         // TODO : check why this line creates a crash in the application.

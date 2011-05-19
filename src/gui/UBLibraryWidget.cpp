@@ -285,7 +285,7 @@ void UBLibraryWidget::dragMoveEvent(QDragMoveEvent *event)
 
 void UBLibraryWidget::onDropMe(const QMimeData *_data)
 {
-
+	Q_UNUSED(_data);
 }
 
 /**
