@@ -49,9 +49,9 @@ include(src/softwareupdate/softwareupdate.pri)
 include(src/paraschool/paraschool.pri)
 include(src/transition/transition.pri)
 
-DEPENDPATH += thirdparty/mera/pdf-merger
-INCLUDEPATH += thirdparty/mera/pdf-merger
-include(thirdparty/mera/pdf-merger/pdfMerger.pri)
+DEPENDPATH += src/pdf-merger
+INCLUDEPATH += src/pdf-merger
+include(src/pdf-merger/pdfMerger.pri)
 DEPENDPATH += thirdparty/quazip/
 INCLUDEPATH += thirdparty/quazip/
 include(thirdparty/quazip/quazip.pri)
