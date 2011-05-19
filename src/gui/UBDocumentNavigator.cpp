@@ -91,7 +91,7 @@ void UBDocumentNavigator::generateThumbnails()
 	QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailPixmap(pix, mCrntDoc, i);
 
 	// Get the selected item
-	if(UBApplication::boardController->activeSceneIndex() == i)
+        if(UBApplication::boardController->activeSceneIndex() == i)
 	{
 	    selection = pixmapItem;
 	    mCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(pixmapItem);
@@ -152,10 +152,10 @@ void UBDocumentNavigator::addNewPage()
 {
     if(!bNavig)
     {
-	generateThumbnails();
+        generateThumbnails();
 	if(NULL != mCrntItem)
 	{
-	    mCrntItem->setSelected(true);
+            mCrntItem->setSelected(true);
 	}
     }
 }

@@ -58,7 +58,8 @@ void UBGraphicsTextItemDelegate::contentsChanged()
     delegated()->contentsChanged();
 }
 
-
+// This method is used to filter the available fonts. Only the web-compliant fonts
+// will remain in the font list.
 void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
 {
     fontDialog.setOption(QFontDialog::DontUseNativeDialog);

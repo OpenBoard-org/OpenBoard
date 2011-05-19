@@ -1132,11 +1132,11 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         UBGraphicsTextItem::lastUsedTextColor = QColor();
     }
 
-    if (sceneChange)
-        emit activeSceneChanged();
-
     // Notify the navigator palette that the document has changed
     mPaletteManager->navigatorPalette()->setDocument(pDocumentProxy);
+
+    if (sceneChange)
+        emit activeSceneChanged();
 }
 
 
