@@ -14,14 +14,9 @@
 #include "adaptors/UBExportDocument.h"
 #include "adaptors/UBExportWeb.h"
 #include "adaptors/UBWebPublisher.h"
-#include "adaptors/UBPowerPointApplication.h"
 #include "adaptors/UBImportDocument.h"
 #include "adaptors/UBImportPDF.h"
 #include "adaptors/UBImportImage.h"
-
-#ifdef Q_OS_WIN
-    #include "adaptors/UBImportVirtualPrinter.h"
-#endif
 
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
@@ -60,27 +55,12 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     UBExportDocument* exportDocument = new UBExportDocument(this);
     mExportAdaptors.append(exportDocument);
 
-//    remove the Publish Documents on Uniboard Web entry
-//    UBWebPublisher* webPublisher = new UBWebPublisher(this);
-//    mExportAdaptors.append(webPublisher);
-
-
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC) // TODO UB 4.x - Linux implement a wrapper around Open Office
-    UBPowerPointApplication* pptImport = new UBPowerPointApplication(this);
-    mImportAdaptors.append(pptImport);
-#endif
-
     UBImportDocument* documentImport = new UBImportDocument(this);
     mImportAdaptors.append(documentImport);
     UBImportPDF* pdfImport = new UBImportPDF(this);
     mImportAdaptors.append(pdfImport);
     UBImportImage* imageImport = new UBImportImage(this);
     mImportAdaptors.append(imageImport);
-
-#ifdef Q_OS_WIN
-    UBImportVirtualPrinter* virtualPrinterImport = new UBImportVirtualPrinter(this);
-    mImportAdaptors.append(virtualPrinterImport);
-#endif
 }
 
 
