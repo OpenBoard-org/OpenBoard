@@ -3,9 +3,8 @@
 # Executables
 QMAKE="/usr/bin/qmake"
 MACDEPLOYQT="/usr/bin/macdeployqt"
-DMGUTIL=./thirdparty/refnum/dmgutil.pl
+DMGUTIL="`pwd`/../Sankore-ThirdParty/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
-DUMPSYMS=./thirdparty/google-breakpad/r318/bin/macx/dump_syms
 STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
 
@@ -52,7 +51,6 @@ checkExecutable "$QMAKE"
 checkExecutable "$MACDEPLOYQT"
 checkExecutable "$DMGUTIL"
 checkExecutable "$DSYMUTIL"
-checkExecutable "$DUMPSYMS"
 checkExecutable "$STRIP"
 checkExecutable "$PLISTBUDDY"
 
@@ -116,7 +114,6 @@ $MACDEPLOYQT "$APP"
 
 notify "Extracting debug information ..."
 $DSYMUTIL "$APP/Contents/MacOS/Sankore 3.1" -o "$DSYM"
-$DUMPSYMS -a i386 "$DSYM/Contents/Resources/DWARF/Sankore 3.1" > "$GSYM_i386"
 $STRIP -S "$APP/Contents/MacOS/Sankore 3.1"
 
 notify "Creating dmg ..."
