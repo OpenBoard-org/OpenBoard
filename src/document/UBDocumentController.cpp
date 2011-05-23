@@ -55,6 +55,7 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
 {
     setupViews();
     setupToolbar();
+    connect(this, SIGNAL(exportDone()), mMainWindow, SLOT(onExportDone()));
 }
 
 
@@ -818,6 +819,7 @@ void UBDocumentController::exportDocument()
     if (proxy)
     {
         selectedExportAdaptor->persist(proxy);
+        emit exportDone();
     }
     else
     {

@@ -102,3 +102,17 @@ void UBMainWindow::keyPressEvent(QKeyEvent *event)
     }
     */
 }
+
+void UBMainWindow::onExportDone()
+{
+    // HACK :  When opening the file save dialog during the document exportation,
+    //         some buttons of the toolbar become disabled without any reason. We
+    //         re-enable them here.
+    actionExport->setEnabled(true);
+    actionNewDocument->setEnabled(true);
+    actionRename->setEnabled(true);
+    actionDuplicate->setEnabled(true);
+    actionDelete->setEnabled(true);
+    actionOpen->setEnabled(true);
+    actionDocumentAdd->setEnabled(true);
+}

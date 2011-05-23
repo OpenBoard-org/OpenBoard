@@ -37,6 +37,7 @@ class UBDocumentController : public QObject
 
     signals:
 	void refreshThumbnails();
+        void exportDone();
 
     public slots:
         void createNewDocument();
