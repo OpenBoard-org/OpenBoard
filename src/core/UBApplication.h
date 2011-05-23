@@ -99,6 +99,9 @@ class UBApplication : public QtSingleApplication
     private slots:
 
         void closing();
+#ifdef Q_WS_MAC
+        void showMinimized();
+#endif
 
     private:
 

@@ -223,8 +223,12 @@ int UBApplication::exec(const QString& pFileToImport)
     applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
+#ifndef Q_WS_MAC
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
-
+#else
+    connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
+#endif
+    
     mPreferencesController = new UBPreferencesController(mainWindow);
 
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
@@ -300,7 +304,13 @@ int UBApplication::exec(const QString& pFileToImport)
     return QApplication::exec();
 }
 
+#ifdef Q_WS_MAC
+void UBApplication::showMinimized()
+{
+    mainWindow->hide();
+}
 
+#endif
 
 void UBApplication::showBoard()
 {
@@ -485,6 +495,11 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
             boardController->controlView()->forcedTabletRelease();
     }
 
+#ifdef Q_WS_MAC
+    if (event->type() == QEvent::ApplicationActivate){
+        if (mainWindow->isHidden()) mainWindow->show();
+    }
+#endif
     return result;
 }
 
