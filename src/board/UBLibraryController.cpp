@@ -79,8 +79,6 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardControll
 
     mInteractiveUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveUserDirectory());
 
-    qDebug() << ">>  mInteractiveUserDirectoryPath : " << mInteractiveUserDirectoryPath;
-
     createInternalWidgetItems();
 
 }
@@ -333,10 +331,6 @@ QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QS
         userPath(path);
         content << listElementsInPath(path.toLocalFile());
     }
-/*    else if (pPath == mInteractiveUserDirectoryPath.toLocalFile()){
-        content << listElementsInPath(UBSettings::settings()->uniboardInteractiveLibraryDirectory());
-        content << listElementsInPath(UBSettings::settings()->uniboardInteractiveFavoritesDirectory());
-    }*/
 
     return content;
 }
@@ -496,6 +490,13 @@ void UBLibraryController::addItemToPage(UBLibElement* item)
         addVideosToCurrentPage(list);
     }
     else if (mimeType.contains("application")){
+        addInteractivesToCurrentPage(list);
+    }
+    else if (mimeType.isEmpty() && item->type() == eUBLibElementType_InteractiveItem){
+        // Those conditions allow us to detect internal app like
+        // mask, ruler, compass and protractor
+        list.clear();
+        list << item->path().toString().replace("file:","");
         addInteractivesToCurrentPage(list);
     }
     else{
