@@ -105,7 +105,11 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, QString fi
             else
                 pdfPrinter.setPageSize(QPrinter::A4);
 
-            pdfPrinter.setOrientation(QPrinter::Landscape);
+            QSize docSize = pDocumentProxy->defaultDocumentSize();
+            if(docSize.width() > docSize.height())
+            {
+                pdfPrinter.setOrientation(QPrinter::Landscape);
+            }
 
             if (pageIndex != 0)
                  pdfPrinter.newPage();
