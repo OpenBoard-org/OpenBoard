@@ -181,11 +181,6 @@ UBApplication::~UBApplication()
     staticMemoryCleaner = 0;
 }
 
-void UBApplication::showMinimized()
-{
-    mainWindow->showMinimized();
-}
-
 int UBApplication::exec(const QString& pFileToImport)
 {
     QPixmapCache::setCacheLimit(1024 * 100);
@@ -228,7 +223,7 @@ int UBApplication::exec(const QString& pFileToImport)
     applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
-    connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
+    connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
 
     mPreferencesController = new UBPreferencesController(mainWindow);
 

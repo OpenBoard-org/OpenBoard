@@ -99,9 +99,9 @@ class UBApplication : public QtSingleApplication
     private slots:
 
         void closing();
-        void showMinimized();
 
     private:
+
         void updateProtoActionsState();
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
