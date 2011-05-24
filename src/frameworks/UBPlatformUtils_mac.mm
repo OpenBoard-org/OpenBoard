@@ -211,7 +211,9 @@ void UBPlatformUtils::disableShadow(QWidget *widget)
     widget->winId();
     ChangeWindowAttributes(qt_mac_window_for(widget), kWindowNoShadowAttribute, kWindowNoAttributes);
 #else
-    Q_UNUSED(widget);
+    NSView* view = (NSView*)widget->winId();
+    NSWindow* window = [view window];
+    [window setHasShadow:NO];
 #endif
 }
 

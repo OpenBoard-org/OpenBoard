@@ -114,7 +114,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         if (UBPlatformUtils::hasVirtualKeyboard())
         {
                 mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
-
                 connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
         }
 
