@@ -473,7 +473,10 @@ void UBLibActionBar::onNavigbarUpdate(UBLibElement *crntElem)
     {
         if(crntElem->type() == eUBLibElementType_Folder)
         {
-            mpNewFolderBtn->setEnabled(true);
+            if(libraryController()->canItemsOnElementBeDeleted(crntElem) && !bIsInTrash)
+                mpNewFolderBtn->setEnabled(true);
+            else 
+                mpNewFolderBtn->setEnabled(false);
         }
         else
         {
