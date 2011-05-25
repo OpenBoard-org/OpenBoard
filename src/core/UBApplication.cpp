@@ -62,6 +62,9 @@ const QString UBApplication::mimeTypeUniboardPage = QString("application/vnd.mne
 const QString UBApplication::mimeTypeUniboardPageItem =  QString("application/vnd.mnemis-uniboard-page-item");
 const QString UBApplication::mimeTypeUniboardPageThumbnail = QString("application/vnd.mnemis-uniboard-thumbnail");
 
+#ifdef Q_WS_MAC
+bool bIsMinimized = false;
+#endif
 
 QObject* UBApplication::staticMemoryCleaner = 0;
 
@@ -308,6 +311,7 @@ int UBApplication::exec(const QString& pFileToImport)
 void UBApplication::showMinimized()
 {
     mainWindow->hide();
+    bIsMinimized = true;
 }
 
 #endif
@@ -496,8 +500,9 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     }
 
 #ifdef Q_WS_MAC
-    if (event->type() == QEvent::ApplicationActivate){
+    if (bIsMinimized && event->type() == QEvent::ApplicationActivate){
         if (mainWindow->isHidden()) mainWindow->show();
+        bIsMinimized = false;
     }
 #endif
     return result;

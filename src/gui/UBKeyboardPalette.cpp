@@ -53,8 +53,8 @@ UBKeyboardPalette* UBKeyboardPalette::create(QWidget *parent)
 	instances.append(instance);
 
 	instance->setKeyButtonSize(UBSettings::settings()->boardKeyboardPaletteKeyBtnSize->get().toString());
-	instance->setAutoMinimize(UBSettings::settings()->boardKeyboardPaletteAutoMinimize->get().toBool());
-	instance->setVisible(false);
+        instance->setAutoMinimize(UBSettings::settings()->boardKeyboardPaletteAutoMinimize->get().toBool());
+        instance->setVisible(false);
 	connect(UBSettings::settings()->boardKeyboardPaletteAutoMinimize , SIGNAL(changed(QVariant)), instance, SLOT(keyboardPaletteAutoMinimizeChanged(QVariant)));
 	connect(UBSettings::settings()->boardKeyboardPaletteKeyBtnSize, SIGNAL(changed(QVariant)), instance, SLOT(keyboardPaletteButtonSizeChanged(QVariant)));
 
