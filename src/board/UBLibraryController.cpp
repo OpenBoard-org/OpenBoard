@@ -322,9 +322,9 @@ QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QS
 {
     QList<UBLibElement*> content;
     if (pPath == mInteractiveUserDirectoryPath.toLocalFile()){
-        content << mInternalLibElements;
         content << listElementsInPath(UBSettings::settings()->uniboardInteractiveLibraryDirectory());
         content << listElementsInPath(UBSettings::settings()->uniboardInteractiveFavoritesDirectory());
+        content << mInternalLibElements;
     }
     else if (pPath == mPicturesStandardDirectoryPath.toLocalFile()){
         QUrl path = QUrl::fromLocalFile(UBSettings::settings()->uniboardImageLibraryDirectory());
@@ -337,7 +337,7 @@ QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QS
 
 QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPath)
 {
-    QList<UBLibElement*> content = addVirtualElementsForItemPath(pPath);
+    QList<UBLibElement*> content;
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(pPath);
 
     QFileInfoList::iterator fileInfo;
@@ -365,6 +365,7 @@ QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPat
         }
         content << element;
     }
+    content << addVirtualElementsForItemPath(pPath);
 
     return content;
 }
