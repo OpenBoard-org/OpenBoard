@@ -22,9 +22,6 @@ UBLibPathViewer::UBLibPathViewer(QWidget *parent, const char *name):QGraphicsVie
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setAcceptDrops(true);
     setStyleSheet(QString("QGraphicsView{background:#EEEEEE; border-radius:10px; border:2px solid #999999;}"));
-   // setStyleSheet(QString("QScrollArea{background-color: #EEEEEE;}QScrollBar::horizontal{border-radius:2px;background-color:transparent;height:15px;}QScrollBar::add-line::horizontal{background-color:transparent;border-radius:5px;}QScrollBar::sub-line::horizontal{background-color:transparent;border-radius:5px;}QScrollBar::left-arrow::horizontal{background-color:white;width:3px;height:3px;}"));
-    // For later --> QScrollBar::horizontal{border-radius:2px; background-color:#DDDDDD; height:10px;} QScrollBar::handle::horizontal{color:#BBBBBB;}
-//    mpScene = new QGraphicsScene(this);
 
     mpScene = new UBPathScene(this);
     setScene(mpScene);
@@ -175,15 +172,21 @@ void UBLibPathViewer::addItem(UBChainedLibElement *elem)
  */
 void UBLibPathViewer::resizeEvent(QResizeEvent *event)
 {
-    if(NULL != mpContainer)
-    {
-        mpContainer->setMinimumWidth(width() - 20);
+    qDebug() << "old" << event->oldSize();
+    qDebug() << "new" << event->size();
+
+    if(event->oldSize() == event->size())
+        event->ignore();
+    else{
+        if(NULL != mpContainer){
+		    mpContainer->setMinimumWidth(width() - 20);
+	}
+
+	viewport()->resize(width() - 10, viewport()->height());
+
+	updateScrolls();
+	event->accept();
     }
-
-    viewport()->resize(width() - 10, viewport()->height());
-
-    updateScrolls();
-    event->accept();
 }
 
 void UBLibPathViewer::showEvent(QShowEvent *event)
