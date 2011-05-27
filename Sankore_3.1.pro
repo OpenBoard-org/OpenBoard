@@ -48,7 +48,6 @@ include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/softwareupdate/softwareupdate.pri)
-include(src/paraschool/paraschool.pri)
 include(src/transition/transition.pri)
 
 DEPENDPATH += src/pdf-merger
