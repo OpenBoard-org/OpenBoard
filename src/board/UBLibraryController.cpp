@@ -262,6 +262,9 @@ QImage* UBLibraryController::createThumbnail(UBLibElement* pElement)
 
 QImage* UBLibraryController::thumbnailForFile(UBLibElement* pElement)
 {
+    if (pElement->path().toString().contains("uniboardTool://"))
+        return &UBToolsManager::manager()->iconFromToolId(pElement->path().toString()).toImage();
+
     QString thumbnailPath = UBFileSystemUtils::thumbnailPath(pElement->path().toLocalFile());
 
     if (!thumbnailPath.length())
@@ -490,7 +493,7 @@ void UBLibraryController::persistFavoriteList()
     foreach(UBLibElement* eachElement, mFavoriteList)
     {
         out << (quint32)eachElement->type();
-        out << eachElement->path();
+        out << eachElement->path().toString();
         out << eachElement->information();
         out << eachElement->name();
         out << eachElement->extension();
@@ -517,7 +520,7 @@ void UBLibraryController::readFavoriteList()
 
         in >> type >> path >> info >> name >> extension;
 
-        UBLibElement* eachElement = new UBLibElement((eUBLibElementType)type, path, name);
+        UBLibElement* eachElement = new UBLibElement((eUBLibElementType)type, QUrl(path), name);
         eachElement->setInformation(info);
         eachElement->setExtension(extension);
         eachElement->setThumbnail(thumbnailForFile(eachElement));
