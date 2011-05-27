@@ -17,28 +17,28 @@ UBToolsManager::UBToolsManager(QObject *parent)
     mask.icon = QPixmap(":/images/toolPalette/maskTool.png");
     mask.label = tr("Mask");
     mask.version = "1.0";
-    mToolsIcon.insert(mask.id, mask.icon);
+    mToolsIcon.insert(mask.id, ":/images/toolPalette/maskTool.png");
     mDescriptors << mask;
 
     ruler.id = "uniboardTool://uniboard.mnemis.com/ruler";
     ruler.icon = QPixmap(":/images/toolPalette/rulerTool.png");
     ruler.label = tr("Ruler");
     ruler.version = "1.0";
-    mToolsIcon.insert(ruler.id, ruler.icon);
+    mToolsIcon.insert(ruler.id, ":/images/toolPalette/rulerTool.png");
     mDescriptors << ruler;
 
     compass.id = "uniboardTool://uniboard.mnemis.com/compass";
     compass.icon = QPixmap(":/images/toolPalette/compassTool.png");
     compass.label = tr("Compass");
     compass.version = "1.0";
-    mToolsIcon.insert(compass.id, compass.icon);
+    mToolsIcon.insert(compass.id, ":/images/toolPalette/compassTool.png");
     mDescriptors << compass;
 
     protractor.id = "uniboardTool://uniboard.mnemis.com/protractor";
     protractor.icon = QPixmap(":/images/toolPalette/protractorTool.png");
     protractor.label = tr("Protractor");
     protractor.version = "1.0";
-    mToolsIcon.insert(protractor.id, protractor.icon);
+    mToolsIcon.insert(protractor.id,":/images/toolPalette/protractorTool.png");
     mDescriptors << protractor;
 
 }

@@ -70,7 +70,7 @@ class UBToolsManager : public QObject
         UBToolDescriptor compass;
         UBToolDescriptor mask;
 
-        QPixmap iconFromToolId(QString id) { return mToolsIcon.value(id);}
+        QString iconFromToolId(QString id) { return mToolsIcon.value(id);}
 
     private:
         UBToolsManager(QObject *parent = 0);
@@ -80,7 +80,7 @@ class UBToolsManager : public QObject
 
         QList<UBToolDescriptor> mDescriptors;
 
-        QMap<QString ,QPixmap> mToolsIcon;
+        QMap<QString ,QString> mToolsIcon;
 
 };
 
