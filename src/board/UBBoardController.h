@@ -149,7 +149,6 @@ class UBBoardController : public QObject
         void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0);
 
         void showDocumentsDialog();
-        void showLibraryDialog(bool show);
 
         void showKeyboard(bool show);
 

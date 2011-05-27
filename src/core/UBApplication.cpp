@@ -140,8 +140,6 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv)
     }
     else
     {
-        // Make sure we don't mix English language with unsupported language dates
-        //QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
         localString = "en_US";
     }
 
@@ -182,6 +180,10 @@ UBApplication::~UBApplication()
 
 //    delete staticMemoryCleaner;
     staticMemoryCleaner = 0;
+
+
+    delete mUniboardSankoreTransition;
+    mUniboardSankoreTransition = 0;
 }
 
 int UBApplication::exec(const QString& pFileToImport)
@@ -231,7 +233,7 @@ int UBApplication::exec(const QString& pFileToImport)
 #else
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
 #endif
-    
+
     mPreferencesController = new UBPreferencesController(mainWindow);
 
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
@@ -255,9 +257,6 @@ int UBApplication::exec(const QString& pFileToImport)
 //    // this cause a problem on MACX/PPC (see https://trac.assembla.com/uniboard/ticket/862)
 //    installEventFilter(new UBIdleTimer(this));
 //#endif
-
-    // TODO UB 4.x make it better and reenable it ... or dump
-    //installEventFilter(new UBMousePressFilter);
 
     applicationController->initScreenLayout();
     boardController->setupLayout();
@@ -298,8 +297,6 @@ int UBApplication::exec(const QString& pFileToImport)
             }
         }
     }
-
-    UBLibraryController::preloadFirstOnlineLibrary();
 
     mUniboardSankoreTransition = new UniboardSankoreTransition();
     mUniboardSankoreTransition->documentTransition();
@@ -526,30 +523,6 @@ bool UBApplication::handleOpenMessage(const QString& pMessage)
     return true;
 }
 
-
-
-#if defined(Q_WS_MACX) && !defined(QT_MAC_USE_COCOA)
-
-bool UBApplication::macEventFilter(EventHandlerCallRef caller, EventRef event)
-{
-    Q_UNUSED(caller);
-
-    if ((GetEventClass(event) == kEventClassCommand) && (GetEventKind(event) == kEventProcessCommand))
-    {
-        HICommand cmd;
-        GetEventParameter(event, kEventParamDirectObject, typeHICommand, 0, sizeof(cmd), 0, &cmd);
-        if (cmd.commandID == kHICommandHide)
-        {
-            // Override the command + H (Hide Uniboard) behavior
-            applicationController->showDesktop();
-            return true;
-        }
-    }
-    return false;
-}
-#endif
-
-
 void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,
                           bool enabled, const QString& text, QPalette::ColorRole textRole) const
 {
@@ -577,30 +550,6 @@ void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, 
         painter->setPen(pen);
     }
 
-    /*
-     *
-#if defined(Q_WS_MACX)
-
-    if (pal.brush(textRole).color() == Qt::black)
-    {
-        painter->save();
-        painter->translate(0, 0.1);
-
-        QBrush brush = pal.brush(QPalette::Light);
-        QColor color = brush.color();
-        color.setAlpha(color.alpha() * 0.6);
-        brush.setColor(color);
-
-        painter->setPen(QPen(brush, savedPen.widthF() * 0.8));
-
-        painter->drawText(rect, alignment, text);
-
-        painter->restore();
-    }
-
-#endif
-
-    */
     painter->drawText(rect, alignment, text);
 
     if (textRole != QPalette::NoRole)

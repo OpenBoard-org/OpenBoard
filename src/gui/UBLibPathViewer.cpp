@@ -172,20 +172,17 @@ void UBLibPathViewer::addItem(UBChainedLibElement *elem)
  */
 void UBLibPathViewer::resizeEvent(QResizeEvent *event)
 {
-    qDebug() << "old" << event->oldSize();
-    qDebug() << "new" << event->size();
-
+ 
     if(event->oldSize() == event->size())
         event->ignore();
     else{
-        if(NULL != mpContainer){
-		    mpContainer->setMinimumWidth(width() - 20);
-	}
+        if(NULL != mpContainer)
+            mpContainer->setMinimumWidth(width() - 20);
+        
+        viewport()->resize(width() - 10, viewport()->height());
 
-	viewport()->resize(width() - 10, viewport()->height());
-
-	updateScrolls();
-	event->accept();
+        updateScrolls();
+        event->accept();
     }
 }
 
@@ -422,8 +419,8 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
                 // The drag comes from this application, we have now to get the list of UBLibElements*
                 QList<QString> qlDroppedElems;
 
-				foreach(QUrl url, pMimeData->urls())
-					qlDroppedElems << url.toString();
+                foreach(QUrl url, pMimeData->urls())
+                    qlDroppedElems << url.toString();
 
                 if(!qlDroppedElems.empty())
                 {

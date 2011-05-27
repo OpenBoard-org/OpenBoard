@@ -65,7 +65,6 @@ FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
    resources/forms/brushProperties.ui \
    resources/forms/documents.ui \
-   resources/forms/library.ui \
    resources/forms/blackoutWidget.ui \
    resources/forms/trapFlash.ui \
    resources/forms/youTubePublishingDialog.ui \

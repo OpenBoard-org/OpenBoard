@@ -6,8 +6,6 @@
 
 #include "web/UBWebPage.h"
 
-#include "ui_library.h"
-
 class UBGraphicsScene;
 class UBBoardController;
 class QGraphicsSvgItem;
@@ -82,14 +80,6 @@ class UBLibraryController : public QObject
         UBLibraryController(QWidget *parentWidget, UBBoardController *boardController);
         virtual ~UBLibraryController();
 
-        QWidget* libraryWindow()
-        {
-            return mLibraryWindow;
-        }
-
-        static QStringList onlineLibraries();
-        static void preloadFirstOnlineLibrary();
-
         QList<UBLibElement*> getContent(UBLibElement* pElement);
         void moveContent(QList<UBLibElement*> sourceList, UBLibElement *pDestination);
         void trashElements(QList<UBLibElement*> trashList);
@@ -117,42 +107,10 @@ class UBLibraryController : public QObject
 
     public slots:
         void removeBackground();
-
-
-        void showLibraryDialog(bool show);
-
-        void refreshShapeThumbnailsView();
-        void refreshImageThumbnailsView();
-        void refreshInteractiveThumbnailsView();
-        void refreshVideoThumbnailsView();
-        void refreshSoundThumbnailsView();
-
-        void addShape();
-        void setShapeAsBackground();
-
-        void addToPage();
-        void setAsBackground();
-
-
-        void addImage();
-        void addVideo();
-        void addAudio();
-        void addInteractiveToCurrentPage();
-
         void addImagesToCurrentPage(const QList<QUrl>& images);
         void addVideosToCurrentPage(const QList<QUrl>& videos);
         void addAudiosToCurrentPage(const QList<QUrl>& sounds);
         void addInteractivesToCurrentPage(const QList<QUrl>& interactiveWidgets);
-        void setImageAsBackground();
-
-        void closeWindow();
-
-        void addObjectFromFilesystemToPage();
-
-        void needRefreshOnNextDisplay()
-        {
-                mNeedRefreshOnNextDisplay = true;
-        }
 
     protected:
 
@@ -186,215 +144,11 @@ class UBLibraryController : public QObject
 
         UBLibElement* isOnFavoriteList(UBLibElement * element);
 
-        void loadLibraries();
-
         QWidget *mParentWidget;
         UBBoardController *mBoardController;
-        QDialog *mLibraryWindow;
-        Ui::library *mLibraryUI;
-
-        // TODO UB 4.x break this logic, by carrying the path within the thumb item (see Video items path)
-        //
-        QMap<QGraphicsSvgItem*, QString> mSvgItemToFilepath; //shape mapping
-        QMap<QGraphicsSvgItem*, QString> mSvgImageItemToFilepath; // svg image mapping
-        QMap<QGraphicsPixmapItem*, QString> mPixmapItemToFilepath; // other image mapping
-        QMap<QGraphicsPixmapItem*, QString> mInteractiveItemToFilepath; // interactive widget mapping
-        QMap<QGraphicsPixmapItem*, QString> mSoundItemToFilepath; // sounds mapping
-
-        UBLibraryWebView *mImageWebView;
-        UBLibraryWebView *mVideoWebView;
-        UBLibraryWebView *mInteractiveWebView;
-
-        QTreeWidgetItem *mImageOnlineTi;
-        QTreeWidgetItem *mVideoOnlineTi;
-        QTreeWidgetItem *mInteractiveOnlineTi;
-        QTreeWidgetItem *mInteractiveUniboardTi;
-
-        struct TabIndex
-        {
-            enum Enum
-            {
-                Gip = 0,
-                Interactive = 1,
-                Image = 2,
-                Video = 3,
-                Shape = 4,
-                Sound = 5
-            };
-        };
 
         int mLastItemOffsetIndex;
 
-        QStringList mLibraryFileToDownload;
-
-        bool mNeedRefreshOnNextDisplay;
-
-
-    private slots:
-
-        void tabChanged(int value);
-
-        void zoomSliderValueChanged(int value);
-
-        void createNewFolder();
-        void addInteractivesToLibrary();
-        void addImagesToLibrary();
-
-        void removeItemsFromLibrary(UBThumbnailWidget* pThumbnailView);
-        void removeDir();
-        void remove();
-
-        void itemSelectionChanged();
-        void itemChanged(QTreeWidgetItem * item, int column);
-
-        void selectionChanged();
-
-        void thumbnailViewResized();
-
-        void getLibraryListResponse(bool, const QByteArray&);
-
 };
-
-
-class UBLibraryFolderItem : public QTreeWidgetItem
-{
-
-    public:
-
-        UBLibraryFolderItem(const QDir& pDir, const QString& name, QTreeWidgetItem * parent,
-            bool pCanWrite, const QStringList& pExtensionsToHide);
-
-        virtual ~UBLibraryFolderItem(){}
-
-        void refreshSubDirs();
-
-        QDir dir()
-        {
-            return mDir;
-        }
-
-        void setDir(const QDir& dir)
-        {
-            mDir = dir;
-        }
-
-        bool canWrite()
-        {
-            return mCanWrite;
-        }
-
-        void setCanWrite(bool canWrite)
-        {
-            mCanWrite = canWrite;
-        }
-
-    private:
-        const QStringList mExtensionsToHide;
-        QDir mDir;
-        bool mCanWrite;
-};
-
-
-class UBOnlineLibraryItem : public QTreeWidgetItem
-{
-
-    public:
-
-        UBOnlineLibraryItem(const QUrl& pUrl, const QString& name, QTreeWidgetItem * parent)
-            : QTreeWidgetItem(parent)
-            , mUrl(pUrl)
-        {
-            setText(0, UBLibraryController::trUtf8(name.toUtf8()));
-            setIcon(0, QWebSettings::iconForUrl(pUrl));
-        }
-
-        virtual ~UBOnlineLibraryItem(){}
-
-        QUrl url() const
-        {
-            return mUrl;
-        }
-
-    private:
-
-        QUrl mUrl;
-};
-
-
-class UBLibraryWebView : public QWebView
-{
-    Q_OBJECT;
-
-    public:
-        UBLibraryWebView(QWidget * parent = 0 );
-        virtual ~UBLibraryWebView(){};
-
-        virtual void mousePressEvent ( QMouseEvent * event)
-        {
-            QWebView::mousePressEvent(event);
-        }
-
-        virtual void mouseMoveEvent ( QMouseEvent * event)
-        {
-            QWebView::mouseMoveEvent(event);
-        }
-
-        virtual void mouseReleaseEvent ( QMouseEvent * event)
-        {
-            QWebView::mouseReleaseEvent(event);
-        }
-
-        void load ( const QUrl & url )
-        {
-            mCurrentLibraryItem = 0;
-            QWebView::load(url);
-        }
-
-        void load ( const QUrl & url, UBOnlineLibraryItem* pLibraryItem)
-        {
-            mCurrentLibraryItem = pLibraryItem;
-            QWebView::load(url);
-        }
-
-    protected:
-
-        virtual QWebView * createWindow(QWebPage::WebWindowType type);
-
-    private slots:
-
-        void javaScriptWindowObjectCleared();
-
-        void newIconAvailable();
-
-        void loadFinished(bool ok);
-
-    private:
-        UBOnlineLibraryItem* mCurrentLibraryItem;
-
-
-};
-
-
-class UBLibraryPreloader : public QObject
-{
-    Q_OBJECT;
-
-    public:
-        UBLibraryPreloader(QObject* pParent);
-        virtual ~UBLibraryPreloader(){};
-
-    private slots:
-
-        void loadLibrary();
-
-        void getLibraryListResponse(bool ok, const QByteArray& replyContent);
-
-        void loadFinished (bool ok);
-
-    private:
-        QWebView *mWebView;
-};
-
-
 
 #endif /* UBLIBRARYCONTROLLER_H_ */

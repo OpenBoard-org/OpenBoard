@@ -332,7 +332,6 @@ void UBBoardController::connectToolbar()
     connect(mMainWindow->actionRedo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(redo()));
     connect(mMainWindow->actionBack, SIGNAL( triggered()), this, SLOT(previousScene()));
     connect(mMainWindow->actionForward, SIGNAL(triggered()), this, SLOT(nextScene()));
-    connect(mMainWindow->actionLibrary, SIGNAL(toggled(bool)), this, SLOT(showLibraryDialog(bool)));
     connect(mMainWindow->actionSleep, SIGNAL(triggered()), this, SLOT(blackout()));
     connect(mMainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
     connect(mMainWindow->actionImportPage, SIGNAL(triggered()), this, SLOT(importPage()));
@@ -525,19 +524,6 @@ void UBBoardController::showDocumentsDialog()
     UBApplication::mainWindow->actionLibrary->setChecked(false);
 
 }
-
-
-void UBBoardController::showLibraryDialog(bool show)
-{
-    if (!mLibraryController)
-    {
-        mLibraryController = new UBLibraryController(mMainWindow->centralWidget(), this);
-        connect(mLibraryController, SIGNAL(dialogClosed(int)), this, SLOT(libraryDialogClosed(int)));
-    }
-
-    mLibraryController->showLibraryDialog(show);
-}
-
 
 void UBBoardController::libraryDialogClosed(int ret)
 {
@@ -920,7 +906,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         bool acceptFlash = true;
 
 #ifdef Q_WS_X11
-        acceptFlash = false;
+         acceptFlash = false;
 #endif
         if (acceptFlash)
         {
@@ -1371,10 +1357,6 @@ UBToolWidget* UBBoardController::addTool(const QUrl& toolUrl)
 UBToolWidget* UBBoardController::addTool(const QUrl& toolUrl, QPointF scenePos)
 {
     UBToolWidget *toolWidget = new UBToolWidget(toolUrl, mMainWindow); // Deleted in UBBoardController::removeTool
-
-    if (mLibraryController && mLibraryController->libraryWindow())
-        toolWidget->stackUnder(mLibraryController->libraryWindow());
-
     QPoint pos = mControlView->mapToGlobal(mControlView->mapFromScene(scenePos));
     pos -= QPoint(toolWidget->width() / 2, toolWidget->height() / 2);
 
@@ -1551,8 +1533,6 @@ void UBBoardController::updateBackgroundState()
         newBackgroundStyle ="QWidget {background-color: #F1F1F1}";
     }
 
-    //    if (mControlContainer->styleSheet() != newBackgroundStyle)
-    //        mControlContainer->setStyleSheet(newBackgroundStyle);
 }
 
 
