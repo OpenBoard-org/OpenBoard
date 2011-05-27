@@ -169,7 +169,7 @@ void UBLibraryController::importItemOnLibrary(QString& pItemString)
 
 void UBLibraryController::userPath(QUrl& pPath)
 {
-    pPath = QUrl::fromLocalFile(pPath.toLocalFile() + "/" + QCoreApplication::applicationName());
+    pPath = QUrl::fromLocalFile(pPath.toLocalFile() + "/Sankore");
     createDirectory(pPath);
 }
 
@@ -467,7 +467,7 @@ void UBLibraryController::removeBackground()
 {
     if (activeScene())
         activeScene()->setAsBackgroundObject(0);
-    
+
 }
 
 UBGraphicsScene* UBLibraryController::activeScene()
