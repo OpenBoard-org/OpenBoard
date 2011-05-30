@@ -60,22 +60,22 @@
     <message>
         <location filename="../forms/intranetPodcastPublishingDialog.ui" line="17"/>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/intranetPodcastPublishingDialog.ui" line="28"/>
         <source>Title</source>
-        <translation type="unfinished">Titre</translation>
+        <translation>Titre</translation>
     </message>
     <message>
         <location filename="../forms/intranetPodcastPublishingDialog.ui" line="42"/>
         <source>Description</source>
-        <translation type="unfinished">Description</translation>
+        <translation>Description</translation>
     </message>
     <message>
         <location filename="../forms/intranetPodcastPublishingDialog.ui" line="65"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur</translation>
     </message>
 </context>
 <context>
@@ -164,7 +164,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1104"/>
         <source>Start Screen Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer enregistrement d&apos;écran</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1203"/>
@@ -232,7 +232,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1463"/>
         <source>Configure Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurer podcast</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1472"/>
@@ -242,7 +242,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1475"/>
         <source>Trap Flash Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturer flash</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1488"/>
@@ -252,7 +252,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1491"/>
         <source>Trap Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturer contenu web</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1512"/>
@@ -303,59 +303,59 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="244"/>
         <source>Change Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer le fond d&apos;écran</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="280"/>
         <location filename="../forms/mainWindow.ui" line="496"/>
         <source>Previous Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Page précédente</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="295"/>
         <location filename="../forms/mainWindow.ui" line="511"/>
         <source>Next Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Page suivante</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="313"/>
         <source>Manage Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Gérer les documents</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="328"/>
         <source>Web Browsing</source>
-        <translation type="unfinished"></translation>
+        <translation>Parcourir la toile</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="349"/>
         <source>Small Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Petite ligne</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="364"/>
         <source>Medium Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligne moyenne</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="379"/>
         <source>Large Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Grosse ligne</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="412"/>
         <source>Smalle Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Petite gomme</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="430"/>
         <source>Medium Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Gomme moyenne</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="445"/>
         <source>Large Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Gomme large</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="454"/>
@@ -394,27 +394,27 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="526"/>
         <source>Reload Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Rafraîchir la page courante</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="538"/>
         <source>Load Home Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Charger la page d&apos;accueil</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="550"/>
         <source>Show Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les favoris</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="562"/>
         <source>Add Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un favori</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="574"/>
         <source>Display Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher le tableau</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="577"/>
@@ -429,77 +429,77 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="592"/>
         <source>Erase Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer le contenu</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="604"/>
         <source>Display Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les préférences</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="619"/>
         <source>Show Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la bibliothèque</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="646"/>
         <source>Show Computer Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher le bureau de l&apos;ordinateur</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="691"/>
         <source>Create a New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau dossier</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="703"/>
         <source>Create a New Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer un nouveau document</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="715"/>
         <source>Import a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer un document</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="727"/>
         <source>Export a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter un document</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="739"/>
         <source>Open Page in Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir la page dans le tableau</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="754"/>
         <source>Duplicate Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Dupliquer le contenu sélectionné</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="766"/>
         <source>Delete Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer le contenu sélectionné</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1561"/>
         <source>Share Item on the Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Partager l&apos;élément sur internet</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1564"/>
         <source>Share Capture on the Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Partager la capture sur internet</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1579"/>
         <source>Define Drawing Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Définir les options de dessin</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="793"/>
         <source>Add Content to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un contenu au document</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="180"/>
@@ -510,7 +510,7 @@
     <message utf8="true">
         <location filename="../forms/mainWindow.ui" line="631"/>
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="634"/>
@@ -520,58 +520,58 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="643"/>
         <source>Show Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher le bureau</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="649"/>
         <source>Ctrl+Shift+H</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="805"/>
         <source>Rename Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer le contenu</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="820"/>
         <location filename="../forms/mainWindow.ui" line="835"/>
         <source>Display Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les outils</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="868"/>
         <source>Use Document Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser le format de document 16/9</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="889"/>
         <source>Use Document Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser le format de document 4/3</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="913"/>
         <source>Use Custom Document Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser un format de document personnalisé</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="928"/>
         <source>Stop Loading Web Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Stopper le chargement de la page web</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="980"/>
         <source>Put Presentation to Sleep</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre la présentation sur pause</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="996"/>
         <source>Display Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher le clavier virtuel</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1088"/>
         <source>Record Presentation to Video</source>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrer la présentation sur une vidéo</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1113"/>
@@ -581,7 +581,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1116"/>
         <source>Erase All Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer tous les éléments</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1125"/>
@@ -592,7 +592,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1128"/>
         <source>Erase All Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer toutes les annotations</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1137"/>
@@ -602,108 +602,108 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1140"/>
         <source>Clear All Elements</source>
-        <translation type="unfinished"></translation>
+        <translation>Effaccer tous les éléments</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1168"/>
         <source>Annotate Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Annoter le document</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1171"/>
         <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1187"/>
         <source>Erase Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer une annotation</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1190"/>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1206"/>
         <source>Highlight </source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre en surbrillance</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1209"/>
         <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1225"/>
         <source>Select And Modify Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner et modifier des objets</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1228"/>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1244"/>
         <source>Scroll Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Faire défiler la page</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1283"/>
         <source>Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Pointeur laser</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1286"/>
         <source>Virtual Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Pointeur laser virtuel</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1289"/>
         <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1305"/>
         <source>Draw Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Dessiner des lignes</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1308"/>
         <source>Ctrl+J</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1324"/>
         <source>Write Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Ecrire du texte</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1327"/>
         <source>Ctrl+K</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1358"/>
         <source>Add Item To Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un élément à la page courante</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1370"/>
         <source>Add Item To New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un élément à une nouvelle page</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1382"/>
         <source>Add Item To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un élément à la bibliothèque</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1397"/>
         <location filename="../forms/mainWindow.ui" line="1409"/>
         <source>Create a New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Créer une nouvelle page</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1418"/>
@@ -713,7 +713,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1421"/>
         <source>Duplicate the Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Dupliquer la page courante</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1430"/>
@@ -723,7 +723,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1433"/>
         <source>Import an External Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer une page externe</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1448"/>
@@ -733,7 +733,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1451"/>
         <source>Pause Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre en pause l&apos;enregistrement du Podcast</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1460"/>
@@ -743,7 +743,7 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="1615"/>
         <source>Open the tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le didacticiel</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1624"/>
@@ -753,73 +753,73 @@
     <message utf8="true">
         <location filename="../forms/mainWindow.ui" line="1633"/>
         <source>Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editeur Sankoré</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1636"/>
         <source>Show Sankore Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher l&apos;éditeur de widget Sankoré</translation>
     </message>
     <message utf8="true">
         <location filename="../forms/mainWindow.ui" line="1641"/>
         <source>Hide Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Cacher Sankoré</translation>
     </message>
     <message utf8="true">
         <location filename="../forms/mainWindow.ui" line="1644"/>
         <source>Hide Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Cacher l&apos;application Sankoré</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1647"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1343"/>
         <location filename="../forms/mainWindow.ui" line="1503"/>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturer une partie de l&apos;écran</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1500"/>
         <source>Custom Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Capture personnalisée</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1515"/>
         <source>Capture a Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturer une fenêtre</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1527"/>
         <source>Embed Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Embarquer un contenu web</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1530"/>
         <source>Capture Embeddable Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturer un contenu web embarquable</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1546"/>
         <source>Show Main Screen on Display Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher l&apos;écran principal sur l&apos;écran d&apos;affichage</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1591"/>
         <source>Erase all Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer toutes les annotations</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1600"/>
         <source>eduMedia</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1603"/>
         <source>Import eduMedia simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer une simulation eduMedia</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="769"/>
@@ -829,12 +829,12 @@
     <message>
         <location filename="../forms/mainWindow.ui" line="391"/>
         <source>Quit Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter Sankoré</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="781"/>
         <source>Add Selected Content to Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter le contenu sélectionné au document ouvert</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="925"/>
@@ -1090,7 +1090,7 @@
     <message>
         <location filename="../../src/web/browser/proxy.ui" line="71"/>
         <source>Save username and password for future use</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver nom utilisateur &amp; mot de passe</translation>
     </message>
 </context>
 <context>
@@ -1121,18 +1121,18 @@
     <message>
         <location filename="../../src/adaptors/publishing/UBAbstractPublisher.cpp" line="36"/>
         <source>Contacting %1</source>
-        <translation type="unfinished"></translation>
+        <translation>En train de contacter %1</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBAbstractPublisher.cpp" line="73"/>
         <source>Found %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Trouvé %1</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBAbstractPublisher.cpp" line="83"/>
         <location filename="../../src/adaptors/publishing/UBAbstractPublisher.cpp" line="92"/>
         <source>Cannot Authenticate with %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de s&apos;identifier avec %1</translation>
     </message>
 </context>
 <context>
@@ -1232,7 +1232,7 @@
     <message>
         <location filename="../../src/board/UBBoardPaletteManager.cpp" line="577"/>
         <source>Error Publishing Image to the Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de la publication d&apos;image sur le Web</translation>
     </message>
 </context>
 <context>
@@ -1240,22 +1240,22 @@
     <message>
         <location filename="../../src/adaptors/publishing/UBCapturePublisher.cpp" line="46"/>
         <source>Preparing capture for upload...</source>
-        <translation type="unfinished"></translation>
+        <translation>En train de préparer la capture pour le transfer...</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBCapturePublisher.cpp" line="96"/>
         <source>Publication canceled ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Publication annulée...</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBCapturePublisher.cpp" line="108"/>
         <source>Capture Published to the Web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Capture publiée sur le Web.</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBCapturePublisher.cpp" line="112"/>
         <source>Error Publishing Capture to the Web: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur lors de la publication de la capture sur le Web: %1</translation>
     </message>
 </context>
 <context>
@@ -1263,7 +1263,7 @@
     <message>
         <location filename="../../src/adaptors/publishing/UBCapturePublisher.cpp" line="137"/>
         <source>Publish</source>
-        <translation type="unfinished">Publier</translation>
+        <translation>Publier</translation>
     </message>
 </context>
 <context>
@@ -1271,32 +1271,32 @@
     <message>
         <location filename="../../src/desktop/UBDesktopPalette.cpp" line="30"/>
         <source>Show Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher Sankoré</translation>
     </message>
     <message>
         <location filename="../../src/desktop/UBDesktopPalette.cpp" line="50"/>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturer une partie de l&apos;écran</translation>
     </message>
     <message>
         <location filename="../../src/desktop/UBDesktopPalette.cpp" line="54"/>
         <source>Capture the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturer l&apos;écran</translation>
     </message>
     <message>
         <location filename="../../src/desktop/UBDesktopPalette.cpp" line="77"/>
         <source>Show the stylus palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher la barre d&apos;outil du stylet</translation>
     </message>
     <message>
         <location filename="../../src/desktop/UBDesktopPalette.cpp" line="116"/>
         <source>Show Board on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher le tableau sur l&apos;écran secondaire</translation>
     </message>
     <message>
         <location filename="../../src/desktop/UBDesktopPalette.cpp" line="118"/>
         <source>Show Desktop on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher le bureau sur l&apos;écran secondaire</translation>
     </message>
 </context>
 <context>
@@ -1512,7 +1512,7 @@
     <message>
         <location filename="../../src/gui/UBDocumentNavigator.cpp" line="102"/>
         <source>Page %0</source>
-        <translation type="unfinished">Page %0</translation>
+        <translation>Page %0</translation>
     </message>
 </context>
 <context>
@@ -1520,53 +1520,53 @@
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="72"/>
         <source>Preparing document for upload...</source>
-        <translation type="unfinished"></translation>
+        <translation>Préparation du document pour le transfer...</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="159"/>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="169"/>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportation échouée.</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="183"/>
         <source>Export failed ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportation échouée...</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="189"/>
         <source>Export canceled ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportation annulée ...</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="246"/>
         <source>Converting page %1/%2 ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Conversion de la page %1/%2 ...</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="714"/>
         <source>Upload to Uniboard Web in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer vers Sankoré Web en cours %1 %</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="716"/>
         <source>Sending document ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoi du document ...</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="725"/>
         <source>The document has been sent to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document a été envoyé à %1</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="734"/>
         <source>Error while publishing document to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur durant la publication du document à %1</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="737"/>
         <source>Error while publishing document to %1 : (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur durant la publication du document à %1 : (%2)</translation>
     </message>
 </context>
 <context>
@@ -1574,7 +1574,7 @@
     <message>
         <location filename="../../src/adaptors/publishing/UBDocumentPublisher.cpp" line="760"/>
         <source>Publish</source>
-        <translation type="unfinished">Publier</translation>
+        <translation>Publier</translation>
     </message>
 </context>
 <context>
@@ -1687,32 +1687,32 @@
     <message>
         <location filename="../../src/adaptors/UBExportWeb.cpp" line="24"/>
         <source>Page</source>
-        <translation type="unfinished">Page</translation>
+        <translation>Page</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBExportWeb.cpp" line="39"/>
         <source>Export as Web data</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter en tant que donnée Web</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBExportWeb.cpp" line="44"/>
         <source>Exporting document...</source>
-        <translation type="unfinished">Exportation du document...</translation>
+        <translation>Exportation du document...</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBExportWeb.cpp" line="53"/>
         <source>Export successful.</source>
-        <translation type="unfinished">Exportation terminée.</translation>
+        <translation>Exportation terminée.</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBExportWeb.cpp" line="59"/>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportation échouée.</translation>
     </message>
     <message>
         <location filename="../../src/adaptors/UBExportWeb.cpp" line="70"/>
         <source>Export to Web Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter vers un navigateur Web</translation>
     </message>
 </context>
 <context>
@@ -1730,7 +1730,7 @@
     <message>
         <location filename="../../src/domain/UBGraphicsItemDelegate.cpp" line="393"/>
         <source>Go to Content Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Aller à la source du contenu</translation>
     </message>
 </context>
 <context>
@@ -1843,12 +1843,12 @@
     <message>
         <location filename="../../src/podcast/intranet/UBIntranetPodcastPublisher.cpp" line="161"/>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur durant la publication de la vidéo sur l&apos;intranet (%1)</translation>
     </message>
     <message>
         <location filename="../../src/podcast/intranet/UBIntranetPodcastPublisher.cpp" line="172"/>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>Publication sur l&apos;intranet en cours %1 %</translation>
     </message>
 </context>
 <context>
@@ -1856,7 +1856,7 @@
     <message>
         <location filename="../../src/podcast/intranet/UBIntranetPodcastPublisher.cpp" line="191"/>
         <source>Publish</source>
-        <translation type="unfinished">Publier</translation>
+        <translation>Publier</translation>
     </message>
 </context>
 <context>
@@ -2080,7 +2080,7 @@
         <location filename="../../src/board/UBLibraryController.cpp" line="1117"/>
         <location filename="../../src/board/UBLibraryController.cpp" line="1164"/>
         <source>Sankore 3.1</source>
-        <translation type="unfinished">Sankore 3.1</translation>
+        <translation>Sankore 3.1</translation>
     </message>
     <message>
         <location filename="../../src/board/UBLibraryController.cpp" line="1169"/>
@@ -2163,7 +2163,7 @@
     <message>
         <location filename="../../src/network/UBNetworkAccessManager.cpp" line="122"/>
         <source>Failed to log to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur d&apos;identification au proxy</translation>
     </message>
     <message>
         <location filename="../../src/network/UBNetworkAccessManager.cpp" line="147"/>
@@ -2188,12 +2188,12 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <location filename="../../src/gui/UBLibraryWidget.cpp" line="497"/>
         <source>Add new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un nouveau dossier</translation>
     </message>
     <message>
         <location filename="../../src/gui/UBLibraryWidget.cpp" line="499"/>
         <source>New Folder name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du dossier:</translation>
     </message>
 </context>
 <context>
@@ -2239,17 +2239,17 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <location filename="../../src/podcast/UBPodcastController.cpp" line="696"/>
         <source>on your desktop ...</source>
-        <translation type="unfinished"></translation>
+        <translation>sur le bureau ...</translation>
     </message>
     <message>
         <location filename="../../src/podcast/UBPodcastController.cpp" line="700"/>
         <source>in folder %1</source>
-        <translation type="unfinished"></translation>
+        <translation>dans le dossier %1</translation>
     </message>
     <message>
         <location filename="../../src/podcast/UBPodcastController.cpp" line="703"/>
         <source>Podcast created %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast créé %1</translation>
     </message>
     <message>
         <location filename="../../src/podcast/UBPodcastController.cpp" line="722"/>
@@ -2284,7 +2284,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <location filename="../../src/podcast/UBPodcastController.cpp" line="936"/>
         <source>Publish to Intranet</source>
-        <translation type="unfinished"></translation>
+        <translation>Publier sur l&apos;intranet</translation>
     </message>
     <message>
         <location filename="../../src/podcast/UBPodcastController.cpp" line="943"/>
@@ -2426,7 +2426,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <location filename="../../src/adaptors/UBWebPublisher.cpp" line="31"/>
         <source>Publish Document on Uniboard Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Publier le document sur le Web Sankoré</translation>
     </message>
 </context>
 <context>
@@ -2452,7 +2452,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <location filename="../../src/podcast/youtube/UBYouTubePublisher.cpp" line="329"/>
         <source>Upload</source>
-        <translation type="unfinished">Téléchargement</translation>
+        <translation>Téléchargement</translation>
     </message>
     <message>
         <location filename="../../src/podcast/youtube/UBYouTubePublisher.cpp" line="354"/>
@@ -2556,7 +2556,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <location filename="../../src/web/browser/WBDownloadManager.cpp" line="232"/>
         <source>Error opening saved file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur durant l&apos;ouverture du fichier: %1</translation>
     </message>
     <message>
         <location filename="../../src/web/browser/WBDownloadManager.cpp" line="243"/>
@@ -2774,7 +2774,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <location filename="../forms/youTubePublishingDialog.ui" line="17"/>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>Publier le Podcast sur YouTube</translation>
     </message>
     <message>
         <location filename="../forms/youTubePublishingDialog.ui" line="28"/>
@@ -2804,12 +2804,12 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <location filename="../forms/youTubePublishingDialog.ui" line="105"/>
         <source>YouTube Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisateur YouTube</translation>
     </message>
     <message>
         <location filename="../forms/youTubePublishingDialog.ui" line="115"/>
         <source>YouTube Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mot de passe</translation>
     </message>
     <message>
         <location filename="../forms/youTubePublishingDialog.ui" line="129"/>
@@ -2818,7 +2818,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2831,17 +2831,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/brushProperties.ui" line="75"/>
         <source>On Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Sur fond clair</translation>
     </message>
     <message>
         <location filename="../forms/brushProperties.ui" line="123"/>
         <source>On Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Sur fond foncé</translation>
     </message>
     <message>
         <location filename="../forms/brushProperties.ui" line="264"/>
         <source>Line Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Epaisseur de ligne</translation>
     </message>
     <message>
         <location filename="../forms/brushProperties.ui" line="324"/>
@@ -2861,7 +2861,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/brushProperties.ui" line="483"/>
         <source>Pen is Pressure Sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>Stylet sensible à la pression</translation>
     </message>
 </context>
 <context>
@@ -2869,27 +2869,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/capturePublishing.ui" line="17"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialogue</translation>
     </message>
     <message>
         <location filename="../forms/capturePublishing.ui" line="28"/>
         <source>Title</source>
-        <translation type="unfinished">Titre</translation>
+        <translation>Titre</translation>
     </message>
     <message>
         <location filename="../forms/capturePublishing.ui" line="42"/>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <location filename="../forms/capturePublishing.ui" line="52"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur</translation>
     </message>
     <message>
         <location filename="../forms/capturePublishing.ui" line="62"/>
         <source>Description</source>
-        <translation type="unfinished">Description</translation>
+        <translation>Description</translation>
     </message>
 </context>
 <context>
@@ -2897,42 +2897,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/webPublishing.ui" line="17"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialogue</translation>
     </message>
     <message>
         <location filename="../forms/webPublishing.ui" line="28"/>
         <source>Title</source>
-        <translation type="unfinished">Titre</translation>
+        <translation>Titre</translation>
     </message>
     <message>
         <location filename="../forms/webPublishing.ui" line="42"/>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <location filename="../forms/webPublishing.ui" line="52"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur</translation>
     </message>
     <message>
         <location filename="../forms/webPublishing.ui" line="62"/>
         <source>Description</source>
-        <translation type="unfinished">Description</translation>
+        <translation>Description</translation>
     </message>
     <message>
         <location filename="../forms/webPublishing.ui" line="98"/>
         <source>Attach Downloadable PDF Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Attacher version PDF</translation>
     </message>
     <message>
         <location filename="../forms/webPublishing.ui" line="105"/>
         <source>Attach Downloadable Uniboard File (UBZ)</source>
-        <translation type="unfinished"></translation>
+        <translation>Attacher fichier Sankoré (UBZ)</translation>
     </message>
     <message>
         <location filename="../forms/webPublishing.ui" line="112"/>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Attention: Ce document contient une vidéo qui ne peut pas s&apos;afficher correctement sur le Web</translation>
     </message>
 </context>
 <context>
@@ -3271,7 +3271,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;apply, that proxy&apos;s public statement of acceptance of any version is&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;permanent authorization for you to choose that version for the&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../forms/preferences.ui" line="830"/>
@@ -3321,7 +3321,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/preferences.ui" line="476"/>
         <source>Stylus Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Barre d&apos;outil du stylo</translation>
     </message>
     <message>
         <location filename="../forms/preferences.ui" line="502"/>
