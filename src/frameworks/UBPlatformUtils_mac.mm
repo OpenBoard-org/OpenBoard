@@ -26,6 +26,7 @@ OSStatus emptySetSystemUIMode (
     Q_UNUSED(inMode);
     Q_UNUSED(inOptions);
     // NOOP
+    return noErr;
 }
 
 void *originalSetSystemUIMode = 0;
@@ -34,7 +35,7 @@ void UBPlatformUtils::init()
 {
 	initializeKeyboardLayouts();
 
-    // qwidget_mac.mm qt_mac_set_fullscreen_mode uses kUIModeAllSuppressed with is unfortunate in our case
+    // qwidget_mac.mm qt_mac_set_fullscreen_mode uses kUIModeAllSuppressed which is unfortunate in our case
     //
     // http://developer.apple.com/mac/library/documentation/Carbon/Reference/Dock_Manager/Reference/reference.html#//apple_ref/c/func/SetSystemUIMode
     //
