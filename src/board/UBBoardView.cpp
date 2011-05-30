@@ -638,7 +638,6 @@ UBBoardView::drawItems (QPainter *painter, int numItems,
                         QGraphicsItem* items[],
                         const QStyleOptionGraphicsItem options[])
 {
-
   if (!mFilterZIndex)
     {
       QGraphicsView::drawItems (painter, numItems, items, options);

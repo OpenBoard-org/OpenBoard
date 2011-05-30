@@ -9,7 +9,6 @@
 #define UBBOARDVIEW_H_
 
 #include <QtGui>
-
 #include "core/UB.h"
 
 class UBBoardController;

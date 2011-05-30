@@ -256,6 +256,7 @@ void UBGraphicsTextItem::setTextHeight(qreal height)
     qreal minHeight = fm.height() + document()->documentMargin() * 2;
     mTextHeight = qMax(minHeight, height);
     update();
+    setFocus();
 }
 
 
