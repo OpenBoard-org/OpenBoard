@@ -433,7 +433,13 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             menu->addSeparator();
             menu->addAction(mainWindow->actionSankoreEditor);
-            menu->addAction(mainWindow->actionCheckUpdate);
+
+            // SANKORE-48: Hide the check update action if the setting
+            // EnableAutomaticSoftwareUpdates is false in Uniboard.config
+            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool())
+            {
+                menu->addAction(mainWindow->actionCheckUpdate);
+            }
 
 #ifndef Q_WS_X11 // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
