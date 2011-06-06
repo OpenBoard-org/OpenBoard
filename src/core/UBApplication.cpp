@@ -298,8 +298,13 @@ int UBApplication::exec(const QString& pFileToImport)
         }
     }
 
-    mUniboardSankoreTransition = new UniboardSankoreTransition();
-    mUniboardSankoreTransition->documentTransition();
+    // SANKORE-47: Deactivate the Uniboard to Sankore transition if
+    // EnableUniboardTransition is set at false in Uniboard.config
+    if(UBSettings::settings()->appEnableUniboardTransition->get().toBool())
+    {
+        mUniboardSankoreTransition = new UniboardSankoreTransition();
+        mUniboardSankoreTransition->documentTransition();
+    }
 
     return QApplication::exec();
 }

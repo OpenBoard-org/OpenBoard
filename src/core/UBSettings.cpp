@@ -170,7 +170,7 @@ void UBSettings::init()
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
     navigPaletteWidth = new UBSetting(this, "Board", "NavigPaletteWidth", 300);
     libPaletteWidth = new UBSetting(this, "Board", "LibPaletteWidth", 300);
-
+    appEnableUniboardTransition = new UBSetting(this, "App", "EnableUniboardTransition", true);
 
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
