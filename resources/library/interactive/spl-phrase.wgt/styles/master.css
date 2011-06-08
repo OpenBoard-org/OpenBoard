@@ -1,0 +1,44 @@
+body{
+	background-color: #fff;
+	margin: 0px; padding: 0px;
+	font-family: arial;
+	font-size: 11pt;
+	color: #000;
+}
+
+
+h1{
+	font-size:18px;
+	margin-bottom:20px;
+	margin-top:0px;
+}
+#ub-widget{
+	background-color: white;
+	padding: 20px;
+	border: 3px solid #aaaaaa;
+	word-wrap: break-word;
+}
+
+input{
+	font-size: 14pt;
+}
+
+.inputbox{
+	width:50px;
+}
+
+button{
+	width: 80px;
+}
+
+input.percent, textarea.percent{
+	width: 100%;
+	margin: 0px; padding: 0px;
+	border-width: 0px;
+}
+.inputwrap{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #dbdfe6;
+	border-top-color: #abadb3;
+}
