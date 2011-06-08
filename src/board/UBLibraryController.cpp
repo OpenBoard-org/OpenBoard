@@ -24,6 +24,7 @@
 #include "UBBoardController.h"
 
 #include "gui/UBThumbnailWidget.h"
+#include "../core/UBSettings.h"
 
 static quint32 magicNumber = 0xACDCAFE0;
 static QString favoriteVirtualPath = "$favorite$";
@@ -32,7 +33,7 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardControll
         QObject(pParentWidget),
         mParentWidget(pParentWidget),
         mBoardController(pBoardController),
-         mLastItemOffsetIndex(0)
+        mLastItemOffsetIndex(0)
 {
     readFavoriteList();
 
@@ -289,6 +290,7 @@ QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QS
         QUrl path = QUrl::fromLocalFile(UBSettings::settings()->uniboardImageLibraryDirectory());
         userPath(path);
         content << listElementsInPath(path.toLocalFile());
+	content << listElementsInPath(UBSettings::settings()->uniboardDefaultUserImageLibraryDirectory());	
     }
 
     return content;
