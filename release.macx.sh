@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Executables
-QMAKE="/usr/bin/qmake"
+QMAKE="/usr/local/Trolltech/Qt-4.7.3/bin/qmake"
 MACDEPLOYQT="/usr/bin/macdeployqt"
 DMGUTIL="`pwd`/../Sankore-ThirdParty/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
