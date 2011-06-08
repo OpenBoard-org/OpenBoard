@@ -137,10 +137,10 @@ macx {
    VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
 
    # Embed version into executable for breakpad
-   QMAKE_LFLAGS += -sectcreate \
-       __DATA \
-       __version \
-       $$VERSION_RC_PATH
+   #QMAKE_LFLAGS += -sectcreate \
+   #    __DATA \
+   #    __version \
+   #    $$VERSION_RC_PATH
 
    QMAKE_CXXFLAGS_RELEASE += -gdwarf-2 \
        -mdynamic-no-pic
