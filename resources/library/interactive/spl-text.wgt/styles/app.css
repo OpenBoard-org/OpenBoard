@@ -1,0 +1,39 @@
+/* custom */
+
+#mp_view{
+	font-size: 24pt;
+	word-wrap: normal;
+}
+
+#mp_view div{
+	display: inline-block;
+	cursor: pointer;
+}
+
+#mp_view.answerRight div{
+	color: #00b8e4;
+}
+
+#mp_view div.dash{
+	display: none;
+	width: 30px;
+}
+
+#mp_view div.dash_hover{
+	display: inline-block;
+	background-image: url( "separator-hover.png" );
+}
+#mp_view div.dash_hover_fixed{
+	display: inline-block;
+	background-image: url( "separator-activated.png" );
+}
+
+#mp_view div.fixed{
+	display: inline-block;
+}
+
+
+#mp_edit textarea{
+	resize: none;
+	height: 100px;
+}
