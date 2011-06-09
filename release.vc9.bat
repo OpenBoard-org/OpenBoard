@@ -1,4 +1,4 @@
-set QT_DIR=C:\Qt\4.7.1
+set QT_DIR=..\Qt-sankore3.1
 set QT_BIN=%QT_DIR%\bin
 
 set VS_BIN="C:\Program Files\Microsoft Visual Studio 9.0\VC\bin"
