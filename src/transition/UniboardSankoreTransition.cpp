@@ -9,15 +9,15 @@ UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     QObject(parent)
   , mTransitionDlg(NULL)
 {
-//    mOldSankoreDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    mOldSankoreDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
 
-//    mUniboardSourceDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
-//#if defined(Q_WS_MACX)
-//    mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Uniboard");
-//#else
-//    mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Mnemis/Uniboard");
-//#endif
-//    connect(this, SIGNAL(docAdded(UBDocumentProxy*)), UBPersistenceManager::persistenceManager(), SIGNAL(documentCreated(UBDocumentProxy*)));
+    mUniboardSourceDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
+#if defined(Q_WS_MACX)
+    mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Uniboard");
+#else
+    mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Mnemis/Uniboard");
+#endif
+    connect(this, SIGNAL(docAdded(UBDocumentProxy*)), UBPersistenceManager::persistenceManager(), SIGNAL(documentCreated(UBDocumentProxy*)));
 }
 UniboardSankoreTransition::~UniboardSankoreTransition()
 {
