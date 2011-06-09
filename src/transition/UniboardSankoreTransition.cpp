@@ -10,9 +10,11 @@ UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
   , mTransitionDlg(NULL)
 {
     mOldSankoreDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    qDebug() << mOldSankoreDirectory;
 
     mUniboardSourceDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
 #if defined(Q_WS_MACX)
+    mOldSankoreDirectory.replace("Sankore/Sankore 3.1", "Sankore 3.1");
     mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Uniboard");
 #else
     mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Mnemis/Uniboard");
@@ -65,11 +67,13 @@ void UniboardSankoreTransition::documentTransition()
 void UniboardSankoreTransition::startDocumentTransition()
 {
     bool result = false;
-    QString backupDestinationPath = mTransitionDlg->backupPath() + "/UniboardBackup";
-    result = UBFileSystemUtils::copyDir(mUniboardSourceDirectory, backupDestinationPath);
+    QString backupDestinationPath = mTransitionDlg->backupPath() + "/OldSankoreAndUniboardVersionsBackup";
+    result = UBFileSystemUtils::copyDir(mUniboardSourceDirectory + "/document", backupDestinationPath);
+    result &= UBFileSystemUtils::copyDir(mOldSankoreDirectory + "/document", backupDestinationPath);
 
     QString uniboardDocumentDirectory = mUniboardSourceDirectory + "/document";
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(uniboardDocumentDirectory);
+    fileInfoList.append(UBFileSystemUtils::allElementsInDirectory(mOldSankoreDirectory + "/document"));
 
     QFileInfoList::iterator fileInfo;
     QString sankoreDocumentDirectory = UBSettings::uniboardDocumentDirectory();
@@ -77,7 +81,7 @@ void UniboardSankoreTransition::startDocumentTransition()
     QStringList qslNewDocs;
 
     for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
-        if (fileInfo->isDir() && fileInfo->fileName().startsWith("Uniboard Document ")){
+        if (fileInfo->isDir() && (fileInfo->fileName().startsWith("Uniboard Document ") || fileInfo->fileName().startsWith("Sankore Document "))){
             QString sankoreDocumentName = fileInfo->fileName();
             sankoreDocumentName.replace("Uniboard","Sankore");
             result = UBFileSystemUtils::copyDir(fileInfo->filePath(),sankoreDocumentDirectory + "/" + sankoreDocumentName);
