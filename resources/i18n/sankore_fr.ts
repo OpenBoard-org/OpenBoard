@@ -1608,7 +1608,7 @@
     <message>
         <source>Interactives</source>
         <comment>Interactives category element</comment>
-        <translation>Intéractivités</translation>
+        <translation>Interactivités</translation>
     </message>
     <message>
         <source>Creating image thumbnail for %1.</source>
