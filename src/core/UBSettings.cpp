@@ -1109,6 +1109,22 @@ QString UBSettings::uniboardInteractiveUserDirectory()
 }
 
 
+QString UBSettings::sankoreDistributedInteractiveDirectory()
+{
+    QString defaultRelativePath = QString("./library/sankoreInteractivities");
+
+    QString configPath = value("Library/DefaultUserImageDirectory", QVariant(defaultRelativePath)).toString();
+
+    if (configPath.startsWith("."))
+    {
+        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+    }
+    else
+    {
+        return configPath;
+    }
+}
+
 QString UBSettings::uniboardInteractiveLibraryDirectory()
 {
     QString defaultRelativePath = QString("./library/interactive");

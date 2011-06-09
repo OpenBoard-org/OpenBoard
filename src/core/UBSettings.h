@@ -109,6 +109,7 @@ class UBSettings : public QObject
         QString uniboardInteractiveUserDirectory();
         QString uniboardInteractiveLibraryDirectory();
         QString uniboardInteractiveFavoritesDirectory();
+	QString sankoreDistributedInteractiveDirectory();
 
         QString podcastRecordingDirectory();
 

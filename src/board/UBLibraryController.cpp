@@ -47,7 +47,7 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardControll
     userPath(mPicturesStandardDirectoryPath);
 
     mInteractiveUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveUserDirectory());
-
+    
     createInternalWidgetItems();
 
 }
@@ -291,6 +291,9 @@ QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QS
         userPath(path);
         content << listElementsInPath(path.toLocalFile());
 	content << listElementsInPath(UBSettings::settings()->uniboardDefaultUserImageLibraryDirectory());	
+    }
+    else if (pPath == mInteractiveCategoryPath.toLocalFile()){
+        content << listElementsInPath(UBSettings::settings()->sankoreDistributedInteractiveDirectory());
     }
 
     return content;
