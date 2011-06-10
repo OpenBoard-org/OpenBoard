@@ -263,10 +263,15 @@ QImage* UBLibraryController::createThumbnail(UBLibElement* pElement)
 
 QImage* UBLibraryController::thumbnailForFile(UBLibElement* pElement)
 {
-	if (pElement->path().toString().contains("uniboardTool://")){
-		QImage* image = new QImage(UBToolsManager::manager()->iconFromToolId(pElement->path().toString()));
-		return image;
-	}
+    if (pElement->path().toString().contains("uniboardTool://")){
+            QImage* image = new QImage(UBToolsManager::manager()->iconFromToolId(pElement->path().toString()));
+            return image;
+    }
+    if (pElement->type() == eUBLibElementType_InteractiveItem){
+        QImage* image = new QImage(UBAbstractWidget::iconFilePath(pElement->path()));
+        return image;
+    }
+
     QString thumbnailPath = UBFileSystemUtils::thumbnailPath(pElement->path().toLocalFile());
 
     if (!thumbnailPath.length())
