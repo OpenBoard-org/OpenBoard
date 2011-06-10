@@ -1465,7 +1465,7 @@
   <action name="actionWebTrapFlash">
    <property name="icon">
     <iconset resource="../sankore.qrc">
-     <normaloff>:/images/extraPalette/trapFlash.png</normaloff>:/images/extraPalette/trapFlash.png</iconset>
+     <normaloff>:/images/toolbar/addToolToLibrary.png</normaloff>:/images/toolbar/addToolToLibrary.png</iconset>
    </property>
    <property name="text">
     <string>Flash Trap</string>

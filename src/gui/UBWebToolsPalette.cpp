@@ -23,13 +23,13 @@ UBWebToolsPalette::UBWebToolsPalette(QWidget *parent,bool tutorialMode=false)
     }
     else{
         actions << UBApplication::mainWindow->actionWebTrapFlash;
-        actions << UBApplication::mainWindow->actionWebTrap;
+        //actions << UBApplication::mainWindow->actionWebTrap;
 
         actions << UBApplication::mainWindow->actionWebCustomCapture;
         actions << UBApplication::mainWindow->actionWebWindowCapture;
         actions << UBApplication::mainWindow->actionWebOEmbed;
 
-        actions << UBApplication::mainWindow->actionEduMedia;
+        //actions << UBApplication::mainWindow->actionEduMedia;
 
         actions << UBApplication::mainWindow->actionWebShowHideOnDisplay;
 
