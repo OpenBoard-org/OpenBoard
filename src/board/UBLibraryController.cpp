@@ -218,7 +218,7 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
 
     categoryImage = new QImage(":images/libpalette/InteractivesCategory.svg");
     mInteractiveCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardGipLibraryDirectory());
-    element = new UBLibElement(eUBLibElementType_Folder, mInteractiveCategoryPath, tr("Interactives", "Interactives category element"));
+    element = new UBLibElement(eUBLibElementType_Folder, mInteractiveCategoryPath, tr("Interactivities", "Interactives category element"));
     element->setThumbnail(categoryImage);
     element->setMoveable(false);
     categories << element;
