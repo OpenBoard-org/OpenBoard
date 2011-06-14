@@ -26,7 +26,7 @@
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
 
-#include "softwareupdate/UBSoftwareUpdateController.h"
+//#include "softwareupdate/UBSoftwareUpdateController.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -52,7 +52,7 @@ UBApplicationController* UBApplication::applicationController = 0;
 UBBoardController* UBApplication::boardController = 0;
 UBWebController* UBApplication::webController = 0;
 UBDocumentController* UBApplication::documentController = 0;
-UBSoftwareUpdateController* UBApplication::softwareUpdateController = 0;
+//UBSoftwareUpdateController* UBApplication::softwareUpdateController = 0;
 UniboardSankoreTransition* UBApplication::mUniboardSankoreTransition = 0;
 
 UBMainWindow* UBApplication::mainWindow = 0;
@@ -107,7 +107,6 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv)
     const char *version = CFStringGetCStringPtr(shortVersion, kCFStringEncodingMacRoman);
     Q_ASSERT(version);
     setApplicationVersion(version);
-
 #endif
 
     QStringList args = arguments();
