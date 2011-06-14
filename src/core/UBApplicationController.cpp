@@ -479,18 +479,44 @@ void UBApplicationController::showSankoreEditor()
 
 void UBApplicationController::checkUpdate()
 {
-    networkAccessManager->get (QNetworkRequest (QUrl ("http://getuniboard.com/dl/sankore/update.json")));
+    mFtp = new QFtp(this);
+    connect(mFtp, SIGNAL(commandFinished(int,bool)), this, SLOT(ftpCommandFinished(int,bool)));
+
+    mFtp->connectToHost("91.121.248.138",21);
+    mFtp->login("anonymous", "anonymous");
+    mFtp->get("update.json",0);
 }
 
-void UBApplicationController::downloadJsonFinished(QNetworkReply* pReply)
+void UBApplicationController::ftpCommandFinished(int id, bool error)
 {
-    QString currentJson = pReply->readAll();
+   if (error){
+       qWarning() << "ftp command id" << id << "return the error: " << mFtp->errorString();
+       mFtp->close();
+   }
+   else{
+       // 3 stand for the third command we have sent
+       // in our case
+       // 1->connect
+       // 2->login
+       // 3->get
+       if (id == 3){
+           QString updateString =  QString(mFtp->readAll());
+           mFtp->close();
+           downloadJsonFinished(updateString);
+       }
+   }
+}
+
+
+
+void UBApplicationController::downloadJsonFinished(QString currentJson)
+{
     QScriptValue scriptValue;
     QScriptEngine scriptEngine;
     scriptValue = scriptEngine.evaluate ("(" + currentJson + ")");
 
-    UBVersion installedVersion (qApp->applicationVersion());
-    UBVersion jsonVersion (scriptValue.property("version").toString());
+    UBVersion installedVersion (qApp->applicationVersion().left(4));
+    UBVersion jsonVersion (scriptValue.property("version").toString().left(4));
 
     if (installedVersion.isValid() &&  jsonVersion.isValid() && jsonVersion > installedVersion) {
             QMessageBox msgBox;
@@ -511,7 +537,8 @@ void UBApplicationController::downloadJsonFinished(QNetworkReply* pReply)
                     // should never be reached
                     break;
             }
-    } else {
+    }
+    else {
         if (isNoUpdateDisplayed) {
             QMessageBox msgBox;
             msgBox.setText (tr ("No update available"));

@@ -3,6 +3,7 @@
 #define UBAPPLICATIONCONTROLLER_H_
 
 #include <QtGui>
+#include <QFtp>
 
 class UBBoardView;
 class UBDocumentProxy;
@@ -15,6 +16,7 @@ class UBVersion;
 class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
+
 
 class UBApplicationController : public QObject
 {
@@ -117,7 +119,9 @@ class UBApplicationController : public QObject
 
         void checkUpdateRequest();
         void checkUpdateAtLaunch();
-        void downloadJsonFinished(QNetworkReply* pReply);
+
+    private slots:
+        void ftpCommandFinished(int id, bool error);
 
     protected:
 
@@ -134,6 +138,7 @@ class UBApplicationController : public QObject
         UBScreenMirror* mMirror;
 
         int mInitialHScroll, mInitialVScroll;
+        QFtp* mFtp;
 
     private:
 
@@ -151,6 +156,8 @@ class UBApplicationController : public QObject
         bool isNoUpdateDisplayed;
         void checkUpdate ();
         QNetworkAccessManager *networkAccessManager;
+
+        void downloadJsonFinished(QString updateString);
 };
 
 #endif /* UBAPPLICATIONCONTROLLER_H_ */
