@@ -5,7 +5,6 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBVersion.h"
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
