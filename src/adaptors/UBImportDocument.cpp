@@ -39,7 +39,7 @@ QStringList UBImportDocument::supportedExtentions()
 
 QString UBImportDocument::importFileFilter()
 {
-    return tr("Uniboard (*.ubz)");
+    return tr("Sankore 3.1 (*.ubz)");
 }
 
 
@@ -77,9 +77,8 @@ QString UBImportDocument::expandFileToDir(const QFile& pZipFile, const QString& 
     }
 
     if (createNewDocument)
-    {
         documentRootFolder = UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath();
-    }
+
 
     QFile out;
     char c;
