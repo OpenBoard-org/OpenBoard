@@ -435,9 +435,11 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             // SANKORE-48: Hide the check update action if the setting
             // EnableAutomaticSoftwareUpdates is false in Uniboard.config
-            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool())
-            {
+            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
                 menu->addAction(mainWindow->actionCheckUpdate);
+            }
+            else{
+                mainWindow->actionCheckUpdate->setEnabled(false);
             }
 
 #ifndef Q_WS_X11 // No Podcast on Linux yet
