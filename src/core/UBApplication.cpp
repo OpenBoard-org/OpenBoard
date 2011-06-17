@@ -199,6 +199,7 @@ int UBApplication::exec(const QString& pFileToImport)
 
     QWebSettings *gs = QWebSettings::globalSettings();
     gs->setAttribute(QWebSettings::PluginsEnabled, true);
+	gs->setAttribute(QWebSettings::JavaEnabled, true);
     gs->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
     gs->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
     gs->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
@@ -435,9 +436,11 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             // SANKORE-48: Hide the check update action if the setting
             // EnableAutomaticSoftwareUpdates is false in Uniboard.config
-            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool())
-            {
+            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
                 menu->addAction(mainWindow->actionCheckUpdate);
+            }
+            else{
+                mainWindow->actionCheckUpdate->setEnabled(false);
             }
 
 #ifndef Q_WS_X11 // No Podcast on Linux yet

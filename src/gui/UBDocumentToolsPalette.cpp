@@ -14,15 +14,10 @@ UBDocumentToolsPalette::UBDocumentToolsPalette(QWidget *parent)
 {
     QList<QAction*> actions;
 
-     if (UBPlatformUtils::hasVirtualKeyboard())
-     {
-         actions << UBApplication::mainWindow->actionVirtualKeyboard;
-     }
+    setActions(actions);
+    setButtonIconSize(QSize(42, 42));
 
-     setActions(actions);
-     setButtonIconSize(QSize(42, 42));
-
-     adjustSizeAndPosition();
+    adjustSizeAndPosition();
 }
 
 
