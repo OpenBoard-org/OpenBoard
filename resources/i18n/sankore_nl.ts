@@ -882,9 +882,6 @@
     </message>
 </context>
 <context>
-    <name>QuaZipFile</name>
-</context>
-<context>
     <name>UBAbstractPublisher</name>
     <message>
         <source>Contacting %1</source>
@@ -1068,11 +1065,6 @@
     <message>
         <source>Remove Page</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="obsolete">
-        </translation>
     </message>
     <message>
         <source>Remove Document</source>
@@ -1265,11 +1257,6 @@
         <source>Copying page %1/%2</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>%1 pages copied</source>
-        <translation type="obsolete">
-        </translation>
-    </message>
 </context>
 <context>
     <name>UBDropMeWidget</name>
@@ -1417,15 +1404,15 @@
 <context>
     <name>UBImportDocument</name>
     <message>
-        <source>Uniboard (*.ubz)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Importing file %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Import successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sankore 3.1 (*.ubz)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1462,9 +1449,6 @@
         <source>PDF import successful.</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>UBImportVirtualPrinter</name>
 </context>
 <context>
     <name>UBIntranetPodcastPublisher</name>
@@ -1575,11 +1559,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Interactives</source>
-        <comment>Interactives category element</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Creating image thumbnail for %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1587,9 +1566,11 @@
         <source>Adding to page failed for item %1.</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>UBLibraryTreeWidget</name>
+    <message>
+        <source>Interactivities</source>
+        <comment>Interactives category element</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBNetworkAccessManager</name>
@@ -1700,9 +1681,6 @@ Do you want to ignore these errors for this host?</source>
         <source>Publish to Youtube</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>UBPowerPointApplication</name>
 </context>
 <context>
     <name>UBPreferencesController</name>
@@ -2264,9 +2242,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>library</name>
-</context>
-<context>
     <name>preferencesDialog</name>
     <message>
         <source>Preferences</source>
@@ -2612,7 +2587,21 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;Sankoré 3.1 version , Copyright (C) year name of author Sankoré 3.1 comes with ABSOLUTELY NO WARRANTY; for details type `show w&apos;.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;This is free software, and you are welcome to redistribute it under certain conditions; type `show c&apos; for details.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;Sankoré 3.1 version , Copyright (C) 2010  Sankoré 3.1 comes with ABSOLUTELY NO WARRANTY.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;GIPENA&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;20 Avenue Ségur Paris 75007&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;Téléphone : 01 43 17 68 08&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
