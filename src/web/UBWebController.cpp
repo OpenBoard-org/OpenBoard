@@ -137,9 +137,9 @@ void UBWebController::tutorialWebInstance()
 {
     QLocale locale = QLocale();
     QString language = "_" + locale.name().left(2);
-    qDebug() << language;
+
     QString tutorialHtmlIndexFile = 0;
-    QString tutorialPath = "/etc/Paraschool/Tutorial/site" + language + "/index.html";
+    QString tutorialPath = "/etc/Tutorial/tutorial" + language + "/index.html";
 #if defined(Q_WS_MAC)
     tutorialHtmlIndexFile = QApplication::applicationDirPath()+ "/../Resources" + tutorialPath;
 #elif defined(Q_WS_WIN)
@@ -195,19 +195,28 @@ void UBWebController::tutorialWebInstance()
 
 void UBWebController::paraschoolWebInstance()
 {
-    QUrl currentUrl("http://host9.paraschool.net/editor/#home");
+    QLocale locale = QLocale();
+    QString language = "_" + locale.name().left(2);
+    QString editorPath = "/etc/SankoreEditor/editor" + language + "/index.html";
+    QString editorHtmlIndexFile;
+    #if defined(Q_WS_MAC)
+        editorHtmlIndexFile = QApplication::applicationDirPath() + "/../Resources" + editorPath;
+    #elif defined(Q_WS_WIN)
+        editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
+    #else
+        editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
+    #endif
 
-    if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
-    {
+    QUrl currentUrl = QUrl::fromLocalFile(editorHtmlIndexFile);
+
+    if (UBSettings::settings()->webUseExternalBrowser->get().toBool()){
         QDesktopServices::openUrl(currentUrl);
     }
-    else
-    {
+    else {
         mCurrentWebBrowser = &mWebBrowserList[Paraschool];
         mToolsCurrentPalette = &mToolsPaletteList[Paraschool];
         mToolsPalettePositionned = &mToolsPalettePositionnedList[Paraschool];
-        if (!(*mCurrentWebBrowser))
-        {
+        if (!(*mCurrentWebBrowser)){
             (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow, true);
             connect((*mCurrentWebBrowser), SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
 
