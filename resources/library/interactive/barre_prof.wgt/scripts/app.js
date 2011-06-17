@@ -46,6 +46,13 @@ $(document).ready(function()
 						window.uniboard.setPreference("text", ed.getContent());
 					}
 				});
+				ed.onExecCommand.add(function(ed, e)
+				{
+					if (window.uniboard)
+					{
+						window.uniboard.setPreference("text", ed.getContent());
+					}
+				});				
 			},
 
 			// Replace values for the template plugin
