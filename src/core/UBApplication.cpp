@@ -198,6 +198,7 @@ int UBApplication::exec(const QString& pFileToImport)
     QWebSettings::setOfflineStoragePath (webDbPath);
 
     QWebSettings *gs = QWebSettings::globalSettings();
+    gs->setAttribute(QWebSettings::JavaEnabled, true);
     gs->setAttribute(QWebSettings::PluginsEnabled, true);
     gs->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
     gs->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
