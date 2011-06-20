@@ -195,9 +195,7 @@ void UBKeyboardPalette::enterEvent ( QEvent * )
 
 void UBKeyboardPalette::leaveEvent ( QEvent * )
 {
-	if (languagePopupActive)
-		return;
-	if (!keyboardActive)
+    if (languagePopupActive || !keyboardActive || mIsMoving)
 		return;
 
 	keyboardActive = false;

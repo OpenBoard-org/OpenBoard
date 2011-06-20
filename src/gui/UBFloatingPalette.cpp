@@ -10,7 +10,7 @@
 
 
 UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
-    : QWidget(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint)
+    : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))
     , mIsMoving(false)
     , mCustomPosition(false)
     , mCanBeMinimized(false)
@@ -27,7 +27,9 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     {
         // standalone window
         setAttribute(Qt::WA_TranslucentBackground);
-        UBPlatformUtils::disableShadow(this);
+        setAttribute(Qt::WA_MacAlwaysShowToolWindow);
+        setAttribute(Qt::WA_MacNonActivatingToolWindow);
+        setAttribute(Qt::WA_MacNoShadow);
     }
 
     mBackgroundBrush = QBrush(UBSettings::paletteColor);
