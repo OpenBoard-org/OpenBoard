@@ -33,7 +33,7 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
     {
 	// standalone window
 	setAttribute(Qt::WA_TranslucentBackground);
-	UBPlatformUtils::disableShadow(this);
+	setAttribute(Qt::WA_MacNoShadow);
     }
 
     mBackgroundBrush = QBrush(UBSettings::paletteColor);

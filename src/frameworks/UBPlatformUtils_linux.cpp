@@ -53,12 +53,6 @@ QString UBPlatformUtils::preferredLanguage()
     return QLocale::system().name();
 }
 
-void UBPlatformUtils::disableShadow(QWidget *widget)
-{
-    Q_UNUSED(widget)
-    // Linux windows do not have a shadow
-}
-
 void UBPlatformUtils::runInstaller(const QString &installerFilePath)
 {
     // TODO UB 4.x - auto update & installer are deactivated on Linux

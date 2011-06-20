@@ -114,7 +114,7 @@ void UBDisplayManager::setAsControl(QWidget* pControlWidget )
         mControlWidget->hide();
         mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
         mControlWidget->showFullScreen();
-        UBPlatformUtils::disableShadow(mControlWidget);
+        mControlWidget->setAttribute(Qt::WA_MacNoShadow);
     }
 }
 
@@ -127,7 +127,7 @@ void UBDisplayManager::setAsDisplay(QWidget* pDisplayWidget)
         mDisplayWidget->hide();
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
         mDisplayWidget->showFullScreen();
-        UBPlatformUtils::disableShadow(mDisplayWidget);
+        mDisplayWidget->setAttribute(Qt::WA_MacNoShadow);
     }
 }
 

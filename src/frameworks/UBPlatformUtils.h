@@ -95,8 +95,6 @@ class UBPlatformUtils
         static QString preferredTranslation();
         static QString preferredLanguage();
 
-        static void disableShadow(QWidget *widget);
-
         static bool hasVirtualKeyboard();
         //static void showVirtualKeyboard();
 

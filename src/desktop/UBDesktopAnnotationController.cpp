@@ -61,13 +61,12 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, 0); // deleted in UBDesktopAnnotationController::destructor
 
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
+    mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
     mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
 
     mTransparentDrawingView->setMouseTracking(true);
-
-    UBPlatformUtils::disableShadow(mTransparentDrawingView);
 
     mTransparentDrawingView->setAcceptDrops(false);
 
@@ -78,10 +77,8 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
 
     mLibPalette = new UBLibPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mLibPalette);
 
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopPalette);
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
 	//connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
@@ -100,17 +97,13 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
     // Add the desktop associated palettes
     mDesktopToolsPalette = new UBDesktopToolsPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopToolsPalette);
     mDesktopPenPalette = new UBDesktopPenPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopPenPalette);
 
     connect(mDesktopPalette, SIGNAL(maximized()), mDesktopPenPalette, SLOT(onParentMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), mDesktopPenPalette, SLOT(onParentMinimized()));
 
     mDesktopMarkerPalette = new UBDesktopMarkerPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopMarkerPalette);
     mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopEraserPalette);
         if (UBPlatformUtils::hasVirtualKeyboard())
         {
                 mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
@@ -331,8 +324,6 @@ void UBDesktopAnnotationController::showWindow()
     UBDrawingController::drawingController()->setStylusTool(mDesktopStylusTool);
 
     mTransparentDrawingView->showFullScreen();
-    UBPlatformUtils::disableShadow(mTransparentDrawingView);
-
 
     UBPlatformUtils::setDesktopMode(true);
 
