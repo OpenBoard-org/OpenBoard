@@ -59,6 +59,7 @@ class UBFloatingPalette : public QWidget
         static const int sLayoutSpacing = 15;
         void moveInsideParent(const QPoint &position);
         bool mCustomPosition;
+        bool mIsMoving;
 
     private:
         void removeAllAssociatedPalette();
@@ -66,7 +67,6 @@ class UBFloatingPalette : public QWidget
 
         QList<UBFloatingPalette*> mAssociatedPalette;
         QPoint mDragPosition;
-        bool mIsMoving;
         bool mCanBeMinimized;
 	eMinimizedLocation mMinimizedLocation;
         Qt::Corner mDefaultPosition;

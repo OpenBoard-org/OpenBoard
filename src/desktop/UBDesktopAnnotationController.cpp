@@ -45,7 +45,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mDesktopPenPalette(NULL)
         , mDesktopMarkerPalette(NULL)
         , mDesktopEraserPalette(NULL)
-        , mKeyboardPalette(NULL)
         , mLibPalette(NULL)
         , mWindowPositionInitialized(0)
         , mIsFullyTransparent(false)
@@ -61,13 +60,12 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, 0); // deleted in UBDesktopAnnotationController::destructor
 
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
+    mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
     mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
 
     mTransparentDrawingView->setMouseTracking(true);
-
-    UBPlatformUtils::disableShadow(mTransparentDrawingView);
 
     mTransparentDrawingView->setAcceptDrops(false);
 
@@ -78,14 +76,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
 
     mLibPalette = new UBLibPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mLibPalette);
 
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopPalette);
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
-	//connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
-    connect(mDesktopPalette, SIGNAL(showVirtualKeyboard(bool)), this, SLOT(showKeyboard(bool)));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
     connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(windowCapture()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
@@ -100,30 +94,19 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
     // Add the desktop associated palettes
     mDesktopToolsPalette = new UBDesktopToolsPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopToolsPalette);
     mDesktopPenPalette = new UBDesktopPenPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopPenPalette);
 
     connect(mDesktopPalette, SIGNAL(maximized()), mDesktopPenPalette, SLOT(onParentMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), mDesktopPenPalette, SLOT(onParentMinimized()));
 
     mDesktopMarkerPalette = new UBDesktopMarkerPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopMarkerPalette);
     mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView);
-    UBPlatformUtils::disableShadow(mDesktopEraserPalette);
-        if (UBPlatformUtils::hasVirtualKeyboard())
-        {
-                mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
-                connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
-        }
 
     mDesktopPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopToolsPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopPenPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopMarkerPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopEraserPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
-	if (mKeyboardPalette)
-		mKeyboardPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
 
     mDesktopToolsPalette->setVisible(UBApplication::mainWindow->actionDesktopTools->isChecked());
 
@@ -136,7 +119,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mDesktopPenPalette->setVisible(false);
     mDesktopMarkerPalette->setVisible(false);
     mDesktopEraserPalette->setVisible(false);
-	if (mKeyboardPalette) mKeyboardPalette->setVisible(false);
 
     connect(UBApplication::mainWindow->actionDesktopTools, SIGNAL(triggered(bool)), this, SLOT(desktopToolsActionToogled(bool)));
     connect(UBApplication::mainWindow->actionEraseDesktopAnnotations, SIGNAL(triggered()), this, SLOT(eraseDesktopAnnotations()));
@@ -168,11 +150,6 @@ UBDesktopAnnotationController::~UBDesktopAnnotationController()
         delete mDesktopEraserPalette;
         mDesktopEraserPalette = NULL;
     }
-	if (NULL != mKeyboardPalette)
-	{
-		delete mKeyboardPalette;
-		mKeyboardPalette = NULL;
-	}
     if(NULL != mLibPalette)
     {
         delete mLibPalette;
@@ -316,11 +293,6 @@ void UBDesktopAnnotationController::showWindow()
         //mDesktopPalette->move((desktopRect.right() - (mDesktopPalette->width() + 20)), desktopRect.top() + 150);
         mDesktopPalette->move(5, desktopRect.top() + 150);
 
-        mKeyboardPalette->move(desktopRect.left() + (desktopRect.width() - mKeyboardPalette->width())/2,
-			desktopRect.top() + desktopRect.height() - mKeyboardPalette->height());
-		mKeyboardPalette->adjustSizeAndPosition();
-
-
         mWindowPositionInitialized = true;
     }
 
@@ -331,8 +303,6 @@ void UBDesktopAnnotationController::showWindow()
     UBDrawingController::drawingController()->setStylusTool(mDesktopStylusTool);
 
     mTransparentDrawingView->showFullScreen();
-    UBPlatformUtils::disableShadow(mTransparentDrawingView);
-
 
     UBPlatformUtils::setDesktopMode(true);
 
@@ -395,15 +365,6 @@ void UBDesktopAnnotationController::goToUniboard()
     UBPlatformUtils::setDesktopMode(false);
 
     emit restoreUniboard();
-}
-
-
-void UBDesktopAnnotationController::showKeyboard(bool v)
-{
-	if (mKeyboardPalette!=NULL)
-	{
-		mKeyboardPalette->setVisible(v);
-	}
 }
 
 

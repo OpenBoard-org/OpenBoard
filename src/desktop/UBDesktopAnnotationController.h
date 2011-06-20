@@ -52,7 +52,6 @@ class UBDesktopAnnotationController : public QObject
 
         void screenLayoutChanged();
         void goToUniboard();
-        void showKeyboard(bool v);
         void customCapture();
         void windowCapture();
         void screenCapture();
@@ -103,7 +102,6 @@ class UBDesktopAnnotationController : public QObject
         UBDesktopPenPalette* mDesktopPenPalette;
         UBDesktopMarkerPalette* mDesktopMarkerPalette;
         UBDesktopEraserPalette* mDesktopEraserPalette;
-        UBKeyboardPalette* mKeyboardPalette;
 
         UBLibPalette* mLibPalette;
 

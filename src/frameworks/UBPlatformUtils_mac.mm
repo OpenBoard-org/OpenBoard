@@ -205,19 +205,6 @@ QString UBPlatformUtils::preferredLanguage()
     return lprojFileInfo.baseName();
 }
 
-void UBPlatformUtils::disableShadow(QWidget *widget)
-{
-#ifndef QT_MAC_USE_COCOA
-    // Make sure we have a native window, see http://doc.trolltech.com/4.5/qwidget.html#native-widgets-vs-alien-widgets
-    widget->winId();
-    ChangeWindowAttributes(qt_mac_window_for(widget), kWindowNoShadowAttribute, kWindowNoAttributes);
-#else
-    NSView* view = (NSView*)widget->winId();
-    NSWindow* window = [view window];
-    [window setHasShadow:NO];
-#endif
-}
-
 void UBPlatformUtils::runInstaller(const QString &installerFilePath)
 {
     UBApplication::setDisabled(true);

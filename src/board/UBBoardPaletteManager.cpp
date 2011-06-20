@@ -123,7 +123,7 @@ void UBBoardPaletteManager::setupPalettes()
     mStylusPalette->show(); // always show stylus palette at startup
 
     if (UBPlatformUtils::hasVirtualKeyboard())
-        mKeyboardPalette = UBKeyboardPalette::create(mContainer);
+        mKeyboardPalette = UBKeyboardPalette::create(0);
 
     mZoomPalette = new UBZoomPalette(mContainer);
 

@@ -1,0 +1,99 @@
+/* @group Layout Colours */
+
+#bar,
+.photo-navigation,
+.movie-title {
+	background-color: #51748C;
+}
+
+#pageHeader #title {
+	background-color: #FF7E00;
+}
+
+#pageHeader h1,
+#pageHeader h2 {
+	text-shadow: 0px -1px 0px #994B00;
+}
+
+#footer {
+	background-color: #82B4D7;
+}
+
+#footer p {
+	text-shadow: 0px -1px 0px #4E6C81;
+}
+
+#breadcrumbcontainer li {
+	color: #5B7E96;
+}
+
+/* @end */
+
+/* @group Content Colours */
+	
+body,
+.blog-entry-body,
+.blog-entry-date,
+.blog-entry {
+	color: #7F7F7F;
+}
+
+
+#sidebarContainer .sideHeader,
+#sidebarContainer #sidebar h1,
+#sidebarContainer #sidebar h2,
+#sidebarContainer #sidebar h3 {
+	color: #51748C;
+}
+
+#sidebarContainer {
+	color: #A6A6A6;
+}
+
+#sidebarContainer #sidebar a,
+#breadcrumbcontainer,
+a:link, a:visited {
+	color: #656565;
+}
+
+h1, h2, h3, h4, h5,
+h1.blog-entry-title a,
+.blog-archive-headings-wrapper,
+.album-title,
+.photo-title,
+.movie-page-title {
+	color: #FF7E00;
+}
+
+
+
+/* @end */
+
+/* @group Navbar */
+
+#navcontainer a {
+	color: #7F7F7F;
+}
+
+#navcontainer a:hover,
+#navcontainer #current,
+#navcontainer .currentAncestor,
+#sidebarContainer #sidebar a:hover,
+.photo-navigation a:hover,
+a:hover, a:active,
+form,
+h1 {
+	color: #FF7E00;
+}
+
+#navcontainer ul ul a:hover,
+#navcontainer ul ul #current,
+#navcontainer ul ul .currentAncestor {
+	background: #FF7E00;
+	color: #fff;
+	border-bottom-color: #FF7E00;
+}
+
+
+
+/* @end */

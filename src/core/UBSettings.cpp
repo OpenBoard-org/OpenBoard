@@ -1113,7 +1113,7 @@ QString UBSettings::sankoreDistributedInteractiveDirectory()
 {
     QString defaultRelativePath = QString("./library/sankoreInteractivities");
 
-    QString configPath = value("Library/DefaultUserImageDirectory", QVariant(defaultRelativePath)).toString();
+    QString configPath = value("Library/sankoreInteractivities", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith("."))
     {

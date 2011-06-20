@@ -1,0 +1,8 @@
+#sidebarContainer {
+	display: none;
+}
+
+#contentContainer {
+	width: auto;
+	background-image: none;
+}
