@@ -31,6 +31,7 @@ class UBResources : public QObject
          QCursor arrowCursor;
          QCursor textCursor;
          QCursor rotateCursor;
+		 QCursor drawLineRulerCursor;
 };
 
 #endif /* UBRESOURCES_H_ */

@@ -19,7 +19,6 @@
 
 #include "gui/UBResources.h"
 
-const double PI = 4.0 * atan(1.0);
 qreal const UBGraphicsDelegateFrame::mAngleTolerance = 6;
 
 UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelegate, QRectF pRect, qreal pFrameWidth, bool respectRatio)

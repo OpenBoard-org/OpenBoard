@@ -179,7 +179,8 @@ void UBWidgetUniboardAPI::drawLineTo(const qreal x, const qreal y, const qreal p
         return;
 
     if (mScene)
-    mScene->drawLineTo(QPointF(x, y), pWidth);
+    mScene->drawLineTo(QPointF(x, y), pWidth, 
+		UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
 }
 
 

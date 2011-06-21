@@ -27,6 +27,7 @@ UBDrawingController::UBDrawingController(QObject * parent)
     : QObject(parent)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
+	, mActiveRuler(NULL)
 {
     connect(UBSettings::settings(), SIGNAL(colorContextChanged()), this, SIGNAL(colorPaletteChanged()));
 

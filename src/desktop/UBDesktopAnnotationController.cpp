@@ -60,7 +60,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, 0); // deleted in UBDesktopAnnotationController::destructor
 
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
+	// !!!! Should be included into Windows after QT recompilation
+#ifndef Q_WS_WIN
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
+#endif
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
     mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());

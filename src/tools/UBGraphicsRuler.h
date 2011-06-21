@@ -14,10 +14,11 @@
 
 #include "core/UB.h"
 #include "domain/UBItem.h"
+#include "tools/UBAbstractDrawRuler.h"
 
 class UBGraphicsScene;
 
-class UBGraphicsRuler : public QObject, public QGraphicsRectItem, public UBItem
+class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, public UBItem
 {
     Q_OBJECT;
 
@@ -33,6 +34,10 @@ class UBGraphicsRuler : public QObject, public QGraphicsRectItem, public UBItem
         }
 
         virtual UBItem* deepCopy() const;
+
+		virtual void StartLine(const QPointF& position, qreal width);
+		virtual void DrawLine(const QPointF& position, qreal width);
+		virtual void EndLine();
 
     signals:
 
@@ -63,6 +68,7 @@ class UBGraphicsRuler : public QObject, public QGraphicsRectItem, public UBItem
         QCursor              resizeCursor() const;
         QCursor              rotateCursor() const;
         QCursor               closeCursor() const;
+		QCursor				drawRulerLineCursor() const;
         QRectF           resizeButtonRect() const;
         QRectF            closeButtonRect() const;
         QRectF           rotateButtonRect() const;
@@ -71,6 +77,8 @@ class UBGraphicsRuler : public QObject, public QGraphicsRectItem, public UBItem
         QColor            middleFillColor() const;
         QColor              edgeFillColor() const;
         QFont                        font() const;
+
+		int drawLineDirection;
 
         // Members
         bool mResizing;
@@ -81,6 +89,8 @@ class UBGraphicsRuler : public QObject, public QGraphicsRectItem, public UBItem
         QGraphicsSvgItem* mResizeSvgItem;
         QCursor mResizeCursor;
         qreal mAntiScaleRatio;
+
+		QPointF startDrawPosition;
 
         // Constants
         static const QRect               sDefaultRect;
