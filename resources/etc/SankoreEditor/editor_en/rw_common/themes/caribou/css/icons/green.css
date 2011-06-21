@@ -1,0 +1,25 @@
+.blog-entry-category {
+	background: url(../../images/file_green.png) no-repeat left 0;
+	}
+	
+p.blog-entry-tags {
+	background: url(../../images/tag_green.png) no-repeat left 2px;
+}
+
+.blog-category-link-disabled,
+.blog-archive-link-disabled {
+	background: url(../../images/file_green.png) no-repeat left center;
+}
+
+
+.blog-category-link-enabled,
+.blog-archive-link-enabled {
+	background: url(../../images/file_green.png) no-repeat left 1px;
+}
+
+.blog-rss-link {
+	background: url(../../images/feed.png) no-repeat 0;}
+
+.blog-comments-rss-link {
+	background: url(../../images/feed.png) no-repeat 0;
+}

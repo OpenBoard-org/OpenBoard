@@ -49,6 +49,9 @@ UBKeyboardPalette::UBKeyboardPalette(QWidget *parent)
 QList<UBKeyboardPalette*> UBKeyboardPalette::instances;
 UBKeyboardPalette* UBKeyboardPalette::create(QWidget *parent)
 {
+	if (!UBPlatformUtils::hasVirtualKeyboard())
+		return NULL;
+
 	UBKeyboardPalette* instance = new UBKeyboardPalette(parent);
 	instances.append(instance);
 
@@ -195,9 +198,7 @@ void UBKeyboardPalette::enterEvent ( QEvent * )
 
 void UBKeyboardPalette::leaveEvent ( QEvent * )
 {
-	if (languagePopupActive)
-		return;
-	if (!keyboardActive)
+    if (languagePopupActive || !keyboardActive || mIsMoving)
 		return;
 
 	keyboardActive = false;

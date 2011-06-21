@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation>Cliquer pour activer Uniboard</translation>
+        <translation>Cliquer pour activer Sankoré</translation>
     </message>
     <message>
         <source>background: url(:/images/bigUniboard.png); border: none;</source>
@@ -58,7 +58,7 @@
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation></translation>
+        <translation type="unfinished">Publier le Podcast sur YouTube</translation>
     </message>
     <message>
         <source>Title</source>
@@ -77,7 +77,7 @@
     <name>MainWindow</name>
     <message>
         <source>Uniboard</source>
-        <translation>Uniboard</translation>
+        <translation type="unfinished">Sankoré</translation>
     </message>
     <message>
         <source>Board</source>
@@ -137,7 +137,7 @@
     </message>
     <message>
         <source>Start Screen Recording</source>
-        <translation>Démarrer enregistrement d&apos;écran</translation>
+        <translation type="unfinished">Démarrer l&apos;enregistrement de l&apos;écran</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -197,7 +197,7 @@
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Capturer flash</translation>
+        <translation type="unfinished">Capturer Flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -257,11 +257,11 @@
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation>Parcourir la toile</translation>
+        <translation type="unfinished">Parcourir le Web</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation>Petite ligne</translation>
+        <translation type="unfinished">Ligne fine</translation>
     </message>
     <message>
         <source>Medium Line</source>
@@ -269,11 +269,11 @@
     </message>
     <message>
         <source>Large Line</source>
-        <translation>Grosse ligne</translation>
+        <translation type="unfinished">Ligne large</translation>
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Petite gomme</translation>
+        <translation type="unfinished">Gomme fine</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -381,11 +381,11 @@
     </message>
     <message>
         <source>Share Item on the Web</source>
-        <translation>Partager l&apos;élément sur internet</translation>
+        <translation type="unfinished">Partager l&apos;élément sur le Web</translation>
     </message>
     <message>
         <source>Share Capture on the Web</source>
-        <translation>Partager la capture sur internet</translation>
+        <translation type="unfinished">Partager la capture sur le Web</translation>
     </message>
     <message>
         <source>Define Drawing Options</source>
@@ -405,7 +405,7 @@
     </message>
     <message>
         <source>Sankore 3.1</source>
-        <translation>Sankore 3.1</translation>
+        <translation type="unfinished">Sankoré 3.1</translation>
     </message>
     <message>
         <source>Show Desktop</source>
@@ -413,7 +413,7 @@
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
-        <translation></translation>
+        <translation type="unfinished">Ctrl+Shift+H</translation>
     </message>
     <message>
         <source>Rename Content</source>
@@ -473,7 +473,7 @@
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation>Effaccer tous les éléments</translation>
+        <translation type="unfinished">Effacer tous les éléments</translation>
     </message>
     <message>
         <source>Annotate Document</source>
@@ -481,7 +481,7 @@
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation></translation>
+        <translation type="unfinished">Ctrl+I</translation>
     </message>
     <message>
         <source>Erase Annotation</source>
@@ -489,11 +489,11 @@
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation></translation>
+        <translation type="unfinished">Ctrl+E</translation>
     </message>
     <message>
         <source>Highlight </source>
-        <translation>Mettre en surbrillance</translation>
+        <translation type="unfinished">Mettre en surbrillance</translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -577,7 +577,7 @@
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation>Mettre en pause l&apos;enregistrement du Podcast</translation>
+        <translation type="unfinished">Mettre en pause l&apos;enregistrement</translation>
     </message>
     <message>
         <source>Podcast Config</source>
@@ -597,7 +597,7 @@
     </message>
     <message>
         <source>Show Sankore Widgets Editor</source>
-        <translation>Afficher l&apos;éditeur de widget Sankoré</translation>
+        <translation type="unfinished">Afficher l&apos;éditeur d&apos;Apps Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Sankoré</source>
@@ -873,26 +873,14 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on nagigation tool bar</comment>
-        <translation type="obsolete">Racine</translation>
-    </message>
-    <message>
         <source>Trash</source>
         <comment>Pictures category element</comment>
-        <translation>Poubelle</translation>
+        <translation type="unfinished">Corbeille</translation>
     </message>
     <message>
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
-        <translation>Racine</translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation type="obsolete">ZIP/UNZIP API erreur %1</translation>
+        <translation type="unfinished">Accueil</translation>
     </message>
 </context>
 <context>
@@ -997,7 +985,7 @@
     <name>UBCapturePublisher</name>
     <message>
         <source>Preparing capture for upload...</source>
-        <translation>En train de préparer la capture pour le transfer...</translation>
+        <translation type="unfinished">En train de préparer la capture pour le transfert...</translation>
     </message>
     <message>
         <source>Publication canceled ...</source>
@@ -1085,29 +1073,24 @@
         <translation>Supprimer la page</translation>
     </message>
     <message>
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="obsolete">Souhaitez-vous supprimer %n pages du document &apos;%1&apos; ?
-        </translation>
-    </message>
-    <message>
         <source>Remove Document</source>
         <translation>Supprimer le document</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Vider la poubelle</translation>
+        <translation type="unfinished">Vider la corbeille</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Êtes-vous sûr de vouloir vider la poubelle ?</translation>
+        <translation type="unfinished">Êtes-vous sûr de vouloir vider la corbeille ?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Supression du contenu de la poubelle</translation>
+        <translation type="unfinished">Supression du contenu de la corbeille</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Poubelle vidée</translation>
+        <translation type="unfinished">Corbeille vidée</translation>
     </message>
     <message>
         <source>Remove Folder</source>
@@ -1143,7 +1126,7 @@
     </message>
     <message>
         <source>Trash</source>
-        <translation>Poubelle</translation>
+        <translation type="unfinished">Corbeille</translation>
     </message>
     <message>
         <source>Open Document</source>
@@ -1151,7 +1134,7 @@
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Uniboard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation>Le document &apos;%1&apos; a été créé avec une version ultérieure d&apos;Uniboard (%2), en l&apos;ouvrant, vous risquez de perdre certaines informations. Voulez-vous continuer ?</translation>
+        <translation type="unfinished">Le document &apos;%1&apos; a été créé avec une version ultérieure de Sankoré (%2), en l&apos;ouvrant, vous risquez de perdre certaines informations. Voulez-vous continuer ?</translation>
     </message>
     <message>
         <source>Add all Images to Document</source>
@@ -1198,7 +1181,7 @@
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation>Imporation de la page %1 sur %2</translation>
+        <translation type="unfinished">Importation de la page %1 sur %2</translation>
     </message>
     <message>
         <source>Erronous image data, skipping file %1</source>
@@ -1220,7 +1203,7 @@
     <name>UBDocumentPublisher</name>
     <message>
         <source>Preparing document for upload...</source>
-        <translation>Préparation du document pour le transfer...</translation>
+        <translation type="unfinished">Préparation du document pour le transfert...</translation>
     </message>
     <message>
         <source>Export failed.</source>
@@ -1240,7 +1223,7 @@
     </message>
     <message>
         <source>Upload to Uniboard Web in progress %1 %</source>
-        <translation>Transfer vers Sankoré Web en cours %1 %</translation>
+        <translation type="unfinished">Transfert vers Sankoré Web en cours %1 %</translation>
     </message>
     <message>
         <source>Sending document ...</source>
@@ -1276,17 +1259,12 @@
         <source>Copying page %1/%2</source>
         <translation>Copie de la page %1/%2 en cours</translation>
     </message>
-    <message>
-        <source>%1 pages copied</source>
-        <translation type="obsolete">%1 pages copiées
-        </translation>
-    </message>
 </context>
 <context>
     <name>UBDropMeWidget</name>
     <message>
         <source>Drop here</source>
-        <translation></translation>
+        <translation type="unfinished">Déposer ici</translation>
     </message>
 </context>
 <context>
@@ -1301,7 +1279,7 @@
     </message>
     <message>
         <source>Export to Uniboard Format</source>
-        <translation>Exporter au format Uniboard</translation>
+        <translation type="unfinished">Exporter au format Uniboard</translation>
     </message>
     <message>
         <source>Page</source>
@@ -1428,16 +1406,16 @@
 <context>
     <name>UBImportDocument</name>
     <message>
-        <source>Uniboard (*.ubz)</source>
-        <translation>Uniboard (*.ubz)</translation>
-    </message>
-    <message>
         <source>Importing file %1...</source>
         <translation>Importation du fichier %1...</translation>
     </message>
     <message>
         <source>Import successful.</source>
         <translation>Importation terminée.</translation>
+    </message>
+    <message>
+        <source>Sankore 3.1 (*.ubz)</source>
+        <translation type="unfinished">Sankore 3.1 (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1472,17 +1450,6 @@
     <message>
         <source>PDF import successful.</source>
         <translation>Importation PDF terminée.</translation>
-    </message>
-</context>
-<context>
-    <name>UBImportVirtualPrinter</name>
-    <message>
-        <source>Importing Uniboard printer file ...</source>
-        <translation type="obsolete">Importation du fichier imprimante Uniboard...</translation>
-    </message>
-    <message>
-        <source>Error while importing Uniboard printer file.</source>
-        <translation type="obsolete">Erreur d&apos;importation du fichier imprimante Uniboard...</translation>
     </message>
 </context>
 <context>
@@ -1523,7 +1490,7 @@
     </message>
     <message>
         <source>Back to folder</source>
-        <translation>Retour au répertoir</translation>
+        <translation type="unfinished">Retour au répertoire</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
@@ -1560,18 +1527,6 @@
 <context>
     <name>UBLibraryController</name>
     <message>
-        <source>Finished copying %1 files ...</source>
-        <translation type="obsolete">%1 fichier(s) copié(s) …</translation>
-    </message>
-    <message>
-        <source>My Images</source>
-        <translation type="obsolete">Mes images</translation>
-    </message>
-    <message>
-        <source>Backgrounds</source>
-        <translation type="obsolete">Fonds</translation>
-    </message>
-    <message>
         <source>Added 1 Image to Library</source>
         <translation>1 images ajoutées à la bibiliothèque</translation>
     </message>
@@ -1583,7 +1538,7 @@
     <message>
         <source>Movies</source>
         <comment>Movies category element</comment>
-        <translation>Videos</translation>
+        <translation type="unfinished">Vidéos</translation>
     </message>
     <message>
         <source>Pictures</source>
@@ -1606,143 +1561,17 @@
         <translation>Favoris</translation>
     </message>
     <message>
-        <source>Interactives</source>
-        <comment>Interactives category element</comment>
-        <translation type="obsolete">Interactivités</translation>
-    </message>
-    <message>
         <source>Creating image thumbnail for %1.</source>
-        <translation>Creation de la vignette pour %1</translation>
-    </message>
-    <message>
-        <source>User Pictures</source>
-        <comment>User Pictures directory</comment>
-        <translation type="obsolete">Images utilisateur</translation>
-    </message>
-    <message>
-        <source>SankorÃ© 3.1 Pictures</source>
-        <comment>SankorÃ© 3.1 Pictures directory</comment>
-        <translation type="obsolete">Images Sankoré</translation>
-    </message>
-    <message>
-        <source>SankorÃ© Interactive</source>
-        <translation type="obsolete">Intéractivitées Sankoré</translation>
-    </message>
-    <message>
-        <source>User Interactive</source>
-        <translation type="obsolete">Intéractivitées utilisateur</translation>
-    </message>
-    <message>
-        <source>Favorite Interactive</source>
-        <translation type="obsolete">Intéractivitées favorites</translation>
+        <translation type="unfinished">Création de la vignette pour %1.</translation>
     </message>
     <message>
         <source>Adding to page failed for item %1.</source>
-        <translation>Impossible ajouter %1 à la page courrante.</translation>
-    </message>
-    <message>
-        <source>New Folder</source>
-        <translation type="obsolete">Nouveau dossier</translation>
-    </message>
-    <message>
-        <source>Add Item to Library</source>
-        <translation type="obsolete">Ajouter des éléments à la bibliothèque</translation>
-    </message>
-    <message>
-        <source>All Supported (%1)</source>
-        <translation type="obsolete">Tous (%1)</translation>
-    </message>
-    <message>
-        <source>Copying page %1 of file %2 to library %3</source>
-        <translation type="obsolete">Copie de la page %1 du fichier %2 dans la bibliothèque %3</translation>
-    </message>
-    <message>
-        <source>Page</source>
-        <translation type="obsolete">Page</translation>
-    </message>
-    <message>
-        <source>Copying file %1 to library %2 (%3/%4)</source>
-        <translation type="obsolete">Copie du fichier %1 dans la bibliothèque %2 (%3/%4)</translation>
-    </message>
-    <message>
-        <source>Creating thumbnail %1 (%2/%3)</source>
-        <translation type="obsolete">Création de la vignette %1 (%2/%3)</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="obsolete">Supprimer le dossier</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder %1 from the library?</source>
-        <translation type="obsolete">Souhaitez-vous supprimer le dossier %1 de la bibliothèque?</translation>
-    </message>
-    <message>
-        <source>Remove Item</source>
-        <translation type="obsolete">Supprimer l&apos;élément</translation>
-    </message>
-    <message>
-        <source>Sankore 3.1</source>
-        <translation type="obsolete">Sankore 3.1</translation>
-    </message>
-    <message>
-        <source>My Applications</source>
-        <translation type="obsolete">Mes Applications</translation>
-    </message>
-    <message>
-        <source>Add Applications to Current Page</source>
-        <translation type="obsolete">Ajouter l&apos;Application à page courante</translation>
-    </message>
-    <message>
-        <source>All Applications (%1)</source>
-        <translation type="obsolete">Toutes les applications (%1)</translation>
-    </message>
-    <message>
-        <source>Add Images to Current Page</source>
-        <translation type="obsolete">Ajouter des images à la page courante</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation type="obsolete">En ligne</translation>
-    </message>
-    <message>
-        <source>Add Movies to Current Page</source>
-        <translation type="obsolete">Ajouter des films à la page courante</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the item from the library?</source>
-        <translation type="obsolete">Souhaitez-vous supprimer l&apos;élément de la bibliothèque?</translation>
-    </message>
-    <message>
-        <source>My Movies</source>
-        <translation type="obsolete">Mes films</translation>
-    </message>
-    <message>
-        <source>All Images (%1)</source>
-        <translation type="obsolete">Toutes les images (%1)</translation>
-    </message>
-    <message>
-        <source>All Files (*.*)</source>
-        <translation type="obsolete">Tous les fichiers (*.*)</translation>
+        <translation type="unfinished">Impossible d&apos;ajouter %1 à la page courrante.</translation>
     </message>
     <message>
         <source>Interactivities</source>
         <comment>Interactives category element</comment>
         <translation>Interactivités</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryTreeWidget</name>
-    <message>
-        <source>Downloading content from %1</source>
-        <translation type="obsolete">Téléchargement du contenu depuis %1</translation>
-    </message>
-    <message>
-        <source>Downloading content %1 failed</source>
-        <translation type="obsolete">Erreur de téléchargement du contenu %1</translation>
-    </message>
-    <message>
-        <source>Download finished</source>
-        <translation type="obsolete">Téléchargement terminé</translation>
     </message>
 </context>
 <context>
@@ -1862,25 +1691,6 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
 </context>
 <context>
-    <name>UBPowerPointApplication</name>
-    <message>
-        <source>Converting PowerPoint file ...</source>
-        <translation type="obsolete">Conversion du fichier PowerPoint …</translation>
-    </message>
-    <message>
-        <source>PowerPoint import successful.</source>
-        <translation type="obsolete">Importation PowerPoint terminée.</translation>
-    </message>
-    <message>
-        <source>PowerPoint import failed.</source>
-        <translation type="obsolete">L&apos;importation du fichier PowerPoint a échoué.</translation>
-    </message>
-    <message>
-        <source>Uniboard printer is not installed. Import will be done in jpg format.</source>
-        <translation type="obsolete">L&apos;imprimante virtuelle d&apos;Uniboard n&apos;est pas installée. L&apos;importation s&apos;effectuera au format JPG.</translation>
-    </message>
-</context>
-<context>
     <name>UBPreferencesController</name>
     <message>
         <source>Marker is pressure sensitive</source>
@@ -1899,7 +1709,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation>Poubelle</translation>
+        <translation type="unfinished">Corbeille</translation>
     </message>
     <message>
         <source>Images</source>
@@ -2260,14 +2070,14 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation>Supprimer l&apos;historique de recherche</translation>
+        <translation type="unfinished">Supprimer l&apos;historique de recherches</translation>
     </message>
 </context>
 <context>
     <name>WBWebPage</name>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Uniboard document?</source>
-        <translation>Document PDF: préférez-vous télécharger le fichier PDF ou l&apos;ajouter au document courant ?</translation>
+        <translation type="unfinished">Document PDF: Désirez-vous télécharger le fichier PDF ou l&apos;ajouter au document courant ?</translation>
     </message>
     <message>
         <source>Download</source>
@@ -2275,7 +2085,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation>Ajouter au document en cours</translation>
+        <translation type="unfinished">Ajouter au document courant</translation>
     </message>
     <message>
         <source>PDF</source>
@@ -2313,7 +2123,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Uniboard</source>
-        <translation>Uniboard</translation>
+        <translation type="unfinished">Sankoré</translation>
     </message>
     <message>
         <source>Category</source>
@@ -2418,11 +2228,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Attach Downloadable PDF Version</source>
-        <translation>Attacher version PDF</translation>
+        <translation type="unfinished">Attacher la version PDF</translation>
     </message>
     <message>
         <source>Attach Downloadable Uniboard File (UBZ)</source>
-        <translation>Attacher fichier Sankoré (UBZ)</translation>
+        <translation type="unfinished">Attacher le fichier Sankoré (UBZ)</translation>
     </message>
     <message>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
@@ -2441,77 +2251,10 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>library</name>
-    <message>
-        <source>Images</source>
-        <translation type="obsolete">Images</translation>
-    </message>
-    <message>
-        <source>New Folder</source>
-        <translation type="obsolete">Nouveau dossier</translation>
-    </message>
-    <message>
-        <source>Iteractive Models</source>
-        <translation type="obsolete">Modèles Interactifs</translation>
-    </message>
-    <message>
-        <source>Import to Library</source>
-        <translation type="obsolete">Importer dans la bibliothèque</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <translation type="obsolete">Formes</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <translation type="obsolete">Films</translation>
-    </message>
-    <message>
-        <source>Sankore Library</source>
-        <translation type="obsolete">Bibliothèques Sankore</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <translation type="obsolete">Applications</translation>
-    </message>
-    <message>
-        <source>Sounds</source>
-        <translation type="obsolete">Sons</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="obsolete">Supprimer</translation>
-    </message>
-    <message>
-        <source>Set as Background</source>
-        <translation type="obsolete">Mettre en fond</translation>
-    </message>
-    <message>
-        <source>Remove Background</source>
-        <translation type="obsolete">Supprimer le fond</translation>
-    </message>
-    <message>
-        <source>Add File to Page</source>
-        <translation type="obsolete">Ajouter un fichier à la page</translation>
-    </message>
-    <message>
-        <source>Add to Page</source>
-        <translation type="obsolete">Ajouter à la page</translation>
-    </message>
-    <message>
-        <source>Add to Editor</source>
-        <translation type="obsolete">Ajouter à l&apos;éditeur</translation>
-    </message>
-</context>
-<context>
     <name>preferencesDialog</name>
     <message>
         <source>Preferences</source>
         <translation>Préférences</translation>
-    </message>
-    <message>
-        <source>Licence</source>
-        <translation type="obsolete">Licence</translation>
     </message>
     <message>
         <source>Default Settings</source>
@@ -2527,7 +2270,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation>Ouvrir la page dans un browser externe</translation>
+        <translation type="unfinished">Ouvrir la page dans un navigateur Web externe</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
@@ -2539,15 +2282,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>Taille des buttons du clavier virtuel</translation>
+        <translation type="unfinished">Taille des touches du clavier virtuel:</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation>Positionné en haut (reccomandé pour les tablettes)</translation>
+        <translation type="unfinished">Positionné en haut (recommandé pour les tablettes)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>Positionné en bas (reccomandé pour les tableaux blancs)</translation>
+        <translation type="unfinished">Positionné en bas (recommandé pour les tableaux blancs)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
@@ -2591,7 +2334,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation>Barre d&apos;outil du stylo</translation>
+        <translation type="unfinished">Barre d&apos;outil du stylet</translation>
     </message>
     <message>
         <source>Horizontal</source>
@@ -2615,7 +2358,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Licences</source>
-        <translation>Licenses</translation>
+        <translation type="unfinished">Licences</translation>
     </message>
     <message>
         <source>OpenSSl</source>

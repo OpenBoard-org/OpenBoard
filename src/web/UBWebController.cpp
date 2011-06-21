@@ -24,6 +24,7 @@
 #include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBWebToolsPalette.h"
+#include "gui/UBKeyboardPalette.h"
 
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
@@ -46,6 +47,7 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     , mBrowserWidget(0)
     , mTrapFlashController(0)
     , mToolsCurrentPalette(0)
+	, mKeyboardCurrentPalette(0)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
 
@@ -81,6 +83,7 @@ void UBWebController::webBrowserInstance()
     {
         mCurrentWebBrowser = &mWebBrowserList[WebBrowser];
         mToolsCurrentPalette = &mToolsPaletteList[WebBrowser];
+		mKeyboardCurrentPalette = &mKeyboardPaletteList[WebBrowser];
         mToolsPalettePositionned = mToolsPalettePositionnedList[WebBrowser];
         if (!(*mCurrentWebBrowser))
         {
@@ -137,9 +140,9 @@ void UBWebController::tutorialWebInstance()
 {
     QLocale locale = QLocale();
     QString language = "_" + locale.name().left(2);
-    qDebug() << language;
+
     QString tutorialHtmlIndexFile = 0;
-    QString tutorialPath = "/etc/Paraschool/Tutorial/site" + language + "/index.html";
+    QString tutorialPath = "/etc/Tutorial/tutorial" + language + "/index.html";
 #if defined(Q_WS_MAC)
     tutorialHtmlIndexFile = QApplication::applicationDirPath()+ "/../Resources" + tutorialPath;
 #elif defined(Q_WS_WIN)
@@ -158,6 +161,7 @@ void UBWebController::tutorialWebInstance()
     {
         mCurrentWebBrowser = &mWebBrowserList[Tutorial];
         mToolsCurrentPalette = &mToolsPaletteList[Tutorial];
+		mKeyboardCurrentPalette = &mKeyboardPaletteList[Tutorial];
         mToolsPalettePositionned = &mToolsPalettePositionnedList[Tutorial];
         if (!(*mCurrentWebBrowser))
         {
@@ -195,19 +199,29 @@ void UBWebController::tutorialWebInstance()
 
 void UBWebController::paraschoolWebInstance()
 {
-    QUrl currentUrl("http://host9.paraschool.net/editor/#home");
+    QLocale locale = QLocale();
+    QString language = "_" + locale.name().left(2);
+    QString editorPath = "/etc/SankoreEditor/editor" + language + "/index.html";
+    QString editorHtmlIndexFile;
+    #if defined(Q_WS_MAC)
+        editorHtmlIndexFile = QApplication::applicationDirPath() + "/../Resources" + editorPath;
+    #elif defined(Q_WS_WIN)
+        editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
+    #else
+        editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
+    #endif
 
-    if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
-    {
+    QUrl currentUrl = QUrl::fromLocalFile(editorHtmlIndexFile);
+
+    if (UBSettings::settings()->webUseExternalBrowser->get().toBool()){
         QDesktopServices::openUrl(currentUrl);
     }
-    else
-    {
+    else {
         mCurrentWebBrowser = &mWebBrowserList[Paraschool];
         mToolsCurrentPalette = &mToolsPaletteList[Paraschool];
+		mKeyboardCurrentPalette = &mKeyboardPaletteList[Paraschool];
         mToolsPalettePositionned = &mToolsPalettePositionnedList[Paraschool];
-        if (!(*mCurrentWebBrowser))
-        {
+        if (!(*mCurrentWebBrowser)){
             (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow, true);
             connect((*mCurrentWebBrowser), SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
 
@@ -343,8 +357,11 @@ QPixmap UBWebController::captureCurrentPage()
 
 void UBWebController::setupPalettes()
 {
-	if(!(*mToolsCurrentPalette)){
+	if(!(*mToolsCurrentPalette))
+	{
 		(*mToolsCurrentPalette) = new UBWebToolsPalette((*mCurrentWebBrowser),false);
+
+		(*mKeyboardCurrentPalette) = UBKeyboardPalette::create(*mCurrentWebBrowser);
 
 		connect(mMainWindow->actionWebTrapFlash, SIGNAL(triggered()), this, SLOT(trapFlash()));
 	    connect(mMainWindow->actionWebCustomCapture, SIGNAL(triggered()), this, SLOT(customCapture()));
@@ -355,9 +372,12 @@ void UBWebController::setupPalettes()
 		connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));
 		connect(mMainWindow->actionWebTrap, SIGNAL(toggled(bool)), this, SLOT(toggleWebTrap(bool)));
 
+		connect(mMainWindow->actionVirtualKeyboard, SIGNAL(toggled(bool)), this, SLOT(showKeyboard(bool)));
+
 		(*mToolsCurrentPalette)->hide();
 		(*mToolsCurrentPalette)->adjustSizeAndPosition();
 
+		(*mKeyboardCurrentPalette)->adjustSizeAndPosition();
 
 		if (controlView()){
 			int left = controlView()->width() - 20 - (*mToolsCurrentPalette)->width();
@@ -378,6 +398,15 @@ void UBWebController::toggleWebTrap(bool checked)
         && (*mCurrentWebBrowser)->currentTabWebView())
     {
         (*mCurrentWebBrowser)->currentTabWebView()->setIsTrapping(checked);
+    }
+}
+
+void UBWebController::showKeyboard(bool checked)
+{
+	if (mKeyboardCurrentPalette
+        && (*mKeyboardCurrentPalette))
+    {
+		(*mKeyboardCurrentPalette)->setVisible(checked);
     }
 }
 

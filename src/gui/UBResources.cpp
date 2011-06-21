@@ -43,4 +43,5 @@ void UBResources::init()
     arrowCursor   = QCursor(Qt::ArrowCursor);
     textCursor    = QCursor(Qt::ArrowCursor);
     rotateCursor  = QCursor(QPixmap(":/images/cursors/rotate.png"), 16, 16);
+	drawLineRulerCursor = QCursor(QPixmap(":/images/cursors/drawRulerLine.png"), 3, 12);
 }

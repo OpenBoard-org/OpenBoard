@@ -37,6 +37,7 @@ class UBDocumentProxy;
 class UBGraphicsCurtainItem;
 class UBGraphicsStroke;
 
+const double PI = 4.0 * atan(1.0);
 
 class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 {
@@ -99,7 +100,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         QRectF normalizedSceneRect(qreal ratio = -1.0);
 
         void moveTo(const QPointF& pPoint);
-        void drawLineTo(const QPointF& pEndPoint, const qreal& pWidth);
+        void drawLineTo(const QPointF& pEndPoint, const qreal& pWidth, bool bLineStyle);
         void eraseLineTo(const QPointF& pEndPoint, const qreal& pWidth);
         void drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle);
 
@@ -239,6 +240,11 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         {
             mTools << item;
         }
+
+		const QPointF& previousPoint()
+		{
+			return mPreviousPoint;
+		}
 
     public slots:
 

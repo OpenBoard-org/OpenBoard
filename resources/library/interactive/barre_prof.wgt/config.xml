@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <widget xmlns="http://www.w3.org/ns/widgets" 
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
-        id="http://uniboard.mnemis.com/widgets/teachertool" 
+        id="http://www.example.net/widgets/helloworld" 
         version="1.0"
-        width="302"
-        height="260" 
-        ub:resizable="true">     
-   
-		<name>Barre du Prof</name>
-		<author href="http://www.getuniboard.com"
-	            email="info@mnemis.com">Mnemis SA</author>
-		<description>Barre du Prof</description>
+        width="200"
+        height="700" 
+		ub:resizable="true">
 		
-		<content src="index.html"/>
+		<name>Rich Note</name>
+		<description>Allows the teacher to attach a rich note to the page.</description>
+		<preference name="skin"
+		            value="uniboard"/>
+		<content src="index.html"/> 
 </widget>

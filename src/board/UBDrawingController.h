@@ -12,6 +12,8 @@
 
 #include "core/UB.h"
 
+class UBAbstractDrawRuler;
+
 class UBDrawingController : public QObject
 {
     Q_OBJECT;
@@ -38,6 +40,8 @@ class UBDrawingController : public QObject
         void setPenColor(bool onDarkBackground, const QColor& color, int pIndex);
         void setMarkerColor(bool onDarkBackground, const QColor& color, int pIndex);
         void setMarkerAlpha(qreal alpha);
+
+		UBAbstractDrawRuler* mActiveRuler;
 
     public slots:
 

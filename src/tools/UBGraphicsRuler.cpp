@@ -13,6 +13,7 @@
 #include "core/UBApplication.h"
 #include "gui/UBResources.h"
 #include "board/UBBoardController.h" // TODO UB 4.x clean that dependency
+#include "board/UBDrawingController.h"
 
 const QRect                     UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800, 96);
 const QColor UBGraphicsRuler::sLightBackgroundMiddleFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
@@ -200,29 +201,40 @@ void UBGraphicsRuler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    mCloseSvgItem->setParentItem(this);
-    mResizeSvgItem->setParentItem(this);
-    mRotateSvgItem->setParentItem(this);
+	UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-    mShowButtons = true;
-    mCloseSvgItem->setVisible(mShowButtons);
-    mResizeSvgItem->setVisible(mShowButtons);
-    mRotateSvgItem->setVisible(mShowButtons);
-    if (event->pos().x() >= resizeButtonRect().left())
-    {
-        setCursor(resizeCursor());
-    }
-    else
-    {
-        if (closeButtonRect().contains(event->pos()))
-            setCursor(closeCursor());
-        else if (rotateButtonRect().contains(event->pos()))
-            setCursor(rotateCursor());
-        else
-            setCursor(moveCursor());
-    }
-    event->accept();
-    update();
+	if (currentTool == UBStylusTool::Selector)
+	{
+		mCloseSvgItem->setParentItem(this);
+	    mResizeSvgItem->setParentItem(this);
+		mRotateSvgItem->setParentItem(this);
+
+	    mShowButtons = true;
+		mCloseSvgItem->setVisible(mShowButtons);
+		mResizeSvgItem->setVisible(mShowButtons);
+	    mRotateSvgItem->setVisible(mShowButtons);
+		if (event->pos().x() >= resizeButtonRect().left())
+		{
+			setCursor(resizeCursor());
+		}
+		else
+		{
+			if (closeButtonRect().contains(event->pos()))
+				setCursor(closeCursor());
+			else if (rotateButtonRect().contains(event->pos()))
+				setCursor(rotateCursor());
+			else
+				setCursor(moveCursor());
+		}
+		event->accept();
+		update();
+	}
+	else if (UBDrawingController::drawingController()->isDrawingTool())
+	{
+		setCursor(drawRulerLineCursor());
+		UBDrawingController::drawingController()->mActiveRuler = this;
+		event->accept();
+	}
 }
 
 void UBGraphicsRuler::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
@@ -232,29 +244,39 @@ void UBGraphicsRuler::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     mCloseSvgItem->setVisible(mShowButtons);
     mResizeSvgItem->setVisible(mShowButtons);
     mRotateSvgItem->setVisible(mShowButtons);
+	UBDrawingController::drawingController()->mActiveRuler = NULL;
     event->accept();
     update();
 }
 
 void UBGraphicsRuler::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
-    mCloseSvgItem->setVisible(mShowButtons);
-    mResizeSvgItem->setVisible(mShowButtons);
-    mRotateSvgItem->setVisible(mShowButtons);
-    if (event->pos().x() >= resizeButtonRect().left())
-    {
-        setCursor(resizeCursor());
-    }
-    else
-    {
-        if (closeButtonRect().contains(event->pos()))
-            setCursor(closeCursor());
-        else if (rotateButtonRect().contains(event->pos()))
-            setCursor(rotateCursor());
-        else
-            setCursor(moveCursor());
-    }
-    event->accept();
+	UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
+
+	if (currentTool == UBStylusTool::Selector)
+	{
+		mCloseSvgItem->setVisible(mShowButtons);
+		mResizeSvgItem->setVisible(mShowButtons);
+		mRotateSvgItem->setVisible(mShowButtons);
+		if (event->pos().x() >= resizeButtonRect().left())
+		{
+			setCursor(resizeCursor());
+		}
+		else
+		{
+			if (closeButtonRect().contains(event->pos()))
+				setCursor(closeCursor());
+			else if (rotateButtonRect().contains(event->pos()))
+				setCursor(rotateCursor());
+			else
+				setCursor(moveCursor());
+		}
+		event->accept();
+	}
+	else if (currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Marker)
+	{
+		event->accept();
+	}
 }
 
 void UBGraphicsRuler::fillBackground(QPainter *painter)
@@ -456,3 +478,66 @@ void UBGraphicsRuler::updateResizeCursor()
     QCursor resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
     mResizeCursor = resizeCursor;
 }
+
+QCursor UBGraphicsRuler::drawRulerLineCursor() const
+{
+	return UBResources::resources()->drawLineRulerCursor;
+}
+
+void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
+{
+	QPointF itemPos = mapFromScene(scenePos);
+
+	qreal y;
+
+	if (itemPos.y() > rect().y() + rect().height() / 2)
+	{
+		drawLineDirection = 0;
+		y = rect().y() + rect().height() + width / 2;
+	}
+	else
+	{
+		drawLineDirection = 1;
+		y = rect().y() - width /2;
+	}
+	
+	if (itemPos.x() < rect().x() + sLeftEdgeMargin)
+		itemPos.setX(rect().x() + sLeftEdgeMargin);
+	if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
+		itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+
+	itemPos.setY(y);
+	itemPos = mapToScene(itemPos);
+
+	scene()->moveTo(itemPos);
+	scene()->drawLineTo(itemPos, width, true);
+}
+
+void UBGraphicsRuler::DrawLine(const QPointF& scenePos, qreal width)
+{
+	QPointF itemPos = mapFromScene(scenePos);
+
+	qreal y;
+	if (drawLineDirection == 0)
+	{
+		y = rect().y() + rect().height() + width / 2;
+	}
+	else
+	{
+		y = rect().y() - width /2;
+	}
+	if (itemPos.x() < rect().x() + sLeftEdgeMargin)
+		itemPos.setX(rect().x() + sLeftEdgeMargin);
+	if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
+		itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+
+	itemPos.setY(y);
+	itemPos = mapToScene(itemPos);
+
+	// We have to use "pointed" line for marker tool
+	scene()->drawLineTo(itemPos, width, 
+		UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker);
+}
+
+void UBGraphicsRuler::EndLine()
+{}

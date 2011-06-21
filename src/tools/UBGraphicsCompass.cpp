@@ -16,8 +16,6 @@
 #include "board/UBBoardController.h" // TODO UB 4.x clean that dependency
 #include "board/UBDrawingController.h" // TODO UB 4.x clean that dependency
 
-const double PI = 4.0 * atan(1.0);
-
 const QRect UBGraphicsCompass::sDefaultRect = QRect(0, -20, 300, 48);
 const QColor UBGraphicsCompass::sLightBackgroundMiddleFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
 const QColor UBGraphicsCompass::sLightBackgroundEdgeFillColor = QColor(0xc3, 0xc3, 0xc3, sFillTransparency);
@@ -511,9 +509,11 @@ void UBGraphicsCompass::paintCenterCross()
 {
     QPointF needleCrossCenter = mapToScene(needlePosition());
     scene()->moveTo(QPointF(needleCrossCenter.x() - 5, needleCrossCenter.y()));
-    scene()->drawLineTo(QPointF(needleCrossCenter.x() + 5, needleCrossCenter.y()), 1);
+    scene()->drawLineTo(QPointF(needleCrossCenter.x() + 5, needleCrossCenter.y()), 1,
+		UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
     scene()->moveTo(QPointF(needleCrossCenter.x(), needleCrossCenter.y() - 5));
-    scene()->drawLineTo(QPointF(needleCrossCenter.x(), needleCrossCenter.y() + 5), 1);
+    scene()->drawLineTo(QPointF(needleCrossCenter.x(), needleCrossCenter.y() + 5), 1,
+		UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
 }
 
 QPointF UBGraphicsCompass::needlePosition() const

@@ -61,12 +61,6 @@ QString UBPlatformUtils::preferredLanguage()
     return QLocale::system().name();
 }
 
-void UBPlatformUtils::disableShadow(QWidget *widget)
-{
-    Q_UNUSED(widget);
-    // Windows windows do not have a shadow
-}
-
 //void UBPlatformUtils::showVirtualKeyboard()
 //{
 //    ShellExecute(NULL,NULL,TEXT("tabtip.exe"), NULL, NULL, SW_SHOWNORMAL);

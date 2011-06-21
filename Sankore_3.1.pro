@@ -7,8 +7,8 @@ CONFIG += debug_and_release \
    no_include_pwd
 
 VERSION_MAJ = 1
-VERSION_MIN = 07
-VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
+VERSION_MIN = 00
+VERSION_TYPE = r # a = alpha, b = beta, r = release, other => error
 VERSION_PATCH = 00
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
@@ -113,7 +113,7 @@ win32 {
    UB_I18N.path = $$DESTDIR/i18n
    UB_ETC.path = $$DESTDIR
    UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
-   system(md $$replace(BUILD_DIR, /, \))
+   system(md $$replace(BUILD_DIR, /, \\))
    system(echo "$$VERSION" > $$BUILD_DIR/version)
    system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
    system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
@@ -137,10 +137,10 @@ macx {
    VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
 
    # Embed version into executable for breakpad
-   #QMAKE_LFLAGS += -sectcreate \
-   #    __DATA \
-   #    __version \
-   #    $$VERSION_RC_PATH
+   QMAKE_LFLAGS += -sectcreate \
+       __DATA \
+       __version \
+       $$VERSION_RC_PATH
 
    QMAKE_CXXFLAGS_RELEASE += -gdwarf-2 \
        -mdynamic-no-pic

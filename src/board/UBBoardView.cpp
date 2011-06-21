@@ -450,15 +450,18 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
 
           event->accept ();
         }
-      else
-        {
-          viewport ()->setCursor (QCursor (Qt::BlankCursor));
+		else
+		{
+			if(UBDrawingController::drawingController()->mActiveRuler==NULL)
+			{
+				viewport()->setCursor (QCursor (Qt::BlankCursor));			
+			}
 
-          if (scene () && !mTabletStylusIsPressed)
-            {
-              scene ()->inputDevicePress (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())));
-            }
-          event->accept ();
+			if (scene () && !mTabletStylusIsPressed)
+			{
+				scene ()->inputDevicePress (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())));
+			}
+			event->accept ();
         }
     }
 }
@@ -487,6 +490,11 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
     {
       QGraphicsView::mouseMoveEvent (event);
     }
+  else if ((UBDrawingController::drawingController()->isDrawingTool())
+  	&& !mMouseButtonIsPressed)
+  {
+	QGraphicsView::mouseMoveEvent (event);
+  }
   else if (currentTool == UBStylusTool::Text || currentTool == UBStylusTool::Capture)
     {
       if (mRubberBand && (mIsCreatingTextZone || mIsCreatingSceneGrabZone))

@@ -59,8 +59,6 @@ qreal UBGraphicsScene::toolOffsetEraser = 200;
 qreal UBGraphicsScene::toolOffsetCurtain = 1000;
 qreal UBGraphicsScene::toolOffsetPointer = 1100;
 
-const double PI = 4.0 * atan(1.0);
-
 UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
@@ -163,8 +161,18 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 
             mAddedItems.clear();
             mRemovedItems.clear();
-            moveTo(scenePos);
-            drawLineTo(scenePos, width);
+
+			if (UBDrawingController::drawingController()->mActiveRuler)
+			{
+				UBDrawingController::drawingController()->mActiveRuler->StartLine(
+					scenePos, width);
+			}
+			else
+			{
+				moveTo(scenePos);
+				drawLineTo(scenePos, width,
+					UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+			}
             accepted = true;
         }
         else if (currentTool == UBStylusTool::Eraser)
@@ -220,21 +228,29 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             width /= UBApplication::boardController->systemScaleFactor();
             width /= UBApplication::boardController->currentZoom();
 
-            if (currentTool == UBStylusTool::Line)
-            {
-                QLineF radius(mPreviousPoint, position);
-                qreal angle = radius.angle();
-                angle = qRound(angle / 45) * 45;
-                qreal radiusLength = radius.length();
-                QPointF newPosition(
-                    mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
-                    mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
-                QLineF chord(position, newPosition);
-                if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
-                    position = newPosition;
-            }
+			if (dc->mActiveRuler)
+			{
+				dc->mActiveRuler->DrawLine(position, width);
+			}
+			else
+			{
+	            if (currentTool == UBStylusTool::Line)
+		        {
+			        QLineF radius(mPreviousPoint, position);
+				    qreal angle = radius.angle();
+					angle = qRound(angle / 45) * 45;
+	                qreal radiusLength = radius.length();
+		            QPointF newPosition(
+			            mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
+				        mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
+					QLineF chord(position, newPosition);
+					if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
+						position = newPosition;
+				}
 
-            drawLineTo(position, width);
+				drawLineTo(position, width,
+					UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+			}
         }
         else if (currentTool == UBStylusTool::Eraser)
         {
@@ -348,7 +364,7 @@ void UBGraphicsScene::moveTo(const QPointF &pPoint)
 }
 
 
-void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth)
+void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, bool bLineStyle)
 {
     if (mPreviousWidth == -1.0)
         mPreviousWidth = pWidth;
@@ -364,7 +380,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         }
     }
 
-    if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line)
+	if (bLineStyle)
     {
         QSetIterator<QGraphicsItem*> itItems(mAddedItems);
 
@@ -388,7 +404,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
     mPreviousPolygonItems.append(polygonItem);
 
-    if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Line)
+	if (!bLineStyle)
     {
         mPreviousPoint = pEndPoint;
         mPreviousWidth = pWidth;

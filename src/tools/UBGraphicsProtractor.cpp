@@ -13,7 +13,6 @@
 #include "board/UBBoardController.h"
 
 
-const double PI = 4.0 * atan(1.0);
 const int UBGraphicsProtractor::sFillTransparency = 127;
 const int UBGraphicsProtractor::sDrawTransparency = 192;
 const QRectF                   UBGraphicsProtractor::sDefaultRect = QRectF(-175, -175, 350, 350);

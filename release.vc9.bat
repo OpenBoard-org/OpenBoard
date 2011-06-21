@@ -11,13 +11,11 @@ set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%
 
 call %VS_BIN%\vcvars32.bat
 
-GOTO END_COMMENT1
 rmdir /S /Q %BUILD_DIR%
-:END_COMMENT1
 
 set EDITION=MNEMIS_EDITION
 
-qmake "DEFINES+=%EDITION%"
+"%QT_BIN%\qmake.exe" "DEFINES+=%EDITION%"
 
 set /p VERSION= < build\win32\release\version
 git rev-list --tags --max-count=1 > tmp

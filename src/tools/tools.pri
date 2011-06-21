@@ -4,7 +4,8 @@ HEADERS      += src/tools/UBGraphicsRuler.h \
                 src/tools/UBGraphicsCompass.h \
                 src/tools/UBToolsManager.h  \
                 src/tools/UBGraphicsCurtainItem.h \
-                src/tools/UBGraphicsCurtainItemDelegate.h
+                src/tools/UBGraphicsCurtainItemDelegate.h \
+                src/tools/UBAbstractDrawRuler.h
                 
 SOURCES      += src/tools/UBGraphicsRuler.cpp \
                 src/tools/UBGraphicsProtractor.cpp \
@@ -12,3 +13,4 @@ SOURCES      += src/tools/UBGraphicsRuler.cpp \
                 src/tools/UBToolsManager.cpp \
                 src/tools/UBGraphicsCurtainItem.cpp \
                 src/tools/UBGraphicsCurtainItemDelegate.cpp \
+                src/tools/UBAbstractDrawRuler.cpp

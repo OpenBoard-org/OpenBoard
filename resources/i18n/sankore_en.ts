@@ -1067,11 +1067,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="obsolete">Are you sure you want to remove %n pages from the selected document &apos;%1&apos;?
-        </translation>
-    </message>
-    <message>
         <source>Remove Document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1262,11 +1257,6 @@
         <source>Copying page %1/%2</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>%1 pages copied</source>
-        <translation type="obsolete">
-        </translation>
-    </message>
 </context>
 <context>
     <name>UBDropMeWidget</name>
@@ -1414,15 +1404,15 @@
 <context>
     <name>UBImportDocument</name>
     <message>
-        <source>Uniboard (*.ubz)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Importing file %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Import successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sankore 3.1 (*.ubz)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
