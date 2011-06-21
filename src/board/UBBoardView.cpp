@@ -101,6 +101,7 @@ UBBoardView::init ()
 
   settingChanged (QVariant ());
 
+  unsetCursor();
 }
 
 UBGraphicsScene*
@@ -493,7 +494,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
   else if ((UBDrawingController::drawingController()->isDrawingTool())
   	&& !mMouseButtonIsPressed)
   {
-	QGraphicsView::mouseMoveEvent (event);
+	  QGraphicsView::mouseMoveEvent (event);
   }
   else if (currentTool == UBStylusTool::Text || currentTool == UBStylusTool::Capture)
     {
@@ -510,9 +511,9 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
   else
     {
       if (!mTabletStylusIsPressed && scene ())
-        {
+      {
           scene ()->inputDeviceMove (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())), mMouseButtonIsPressed);
-        }
+      }
       event->accept ();
     }
 }

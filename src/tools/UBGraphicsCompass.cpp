@@ -59,6 +59,8 @@ UBGraphicsCompass::UBGraphicsCompass()
     updateResizeCursor();
     updateDrawCursor();
 
+	unsetCursor();
+
     connect(UBApplication::boardController, SIGNAL(penColorChanged()), this, SLOT(penColorChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), this, SLOT(lineWidthChanged()));
 }
@@ -157,6 +159,9 @@ QVariant UBGraphicsCompass::itemChange(GraphicsItemChange change, const QVariant
 
 void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+		return;
+
     if (resizeButtonRect().contains(event->pos()))
     {
         mResizing = true;
@@ -189,6 +194,9 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+		return;
+
     if (!mResizing && !mRotating && !mDrawing)
     {
         QGraphicsRectItem::mouseMoveEvent(event);
@@ -230,6 +238,9 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsCompass::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+		return;
+
     if (mResizing)
     {
         mResizing = false;
@@ -267,6 +278,9 @@ void UBGraphicsCompass::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsCompass::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+		return;
+
     mOuterCursor = cursor();
     mShowButtons = shape().contains(event->pos());
 
@@ -293,16 +307,22 @@ void UBGraphicsCompass::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void UBGraphicsCompass::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+		return;
+
     mShowButtons = false;
     mCloseSvgItem->setVisible(mShowButtons);
     mResizeSvgItem->setVisible(mShowButtons);
-    setCursor(mOuterCursor);
+    unsetCursor();
     event->accept();
     update();
 }
 
 void UBGraphicsCompass::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+		return;
+
     mShowButtons = shape().contains(event->pos());
     mCloseSvgItem->setVisible(mShowButtons);
     mResizeSvgItem->setVisible(mShowButtons);
