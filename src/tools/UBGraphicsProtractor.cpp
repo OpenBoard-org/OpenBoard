@@ -11,6 +11,7 @@
 #include "gui/UBResources.h"
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
+#include "board/UBDrawingController.h"
 
 
 const int UBGraphicsProtractor::sFillTransparency = 127;
@@ -263,6 +264,9 @@ void UBGraphicsProtractor::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsProtractor::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+		return;
+
     if (!mShowButtons)
     {
         mShowButtons = true;
@@ -283,7 +287,7 @@ void UBGraphicsProtractor::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void UBGraphicsProtractor::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     mShowButtons = false;
-    setCursor(Qt::ArrowCursor);
+    unsetCursor();
     update();
     event->accept();
 }
@@ -291,6 +295,9 @@ void UBGraphicsProtractor::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void UBGraphicsProtractor::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+		return;
+
     Tool currentTool = toolFromPos(event->pos());
 
     if (!mShowButtons)
