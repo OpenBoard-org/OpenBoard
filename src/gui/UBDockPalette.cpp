@@ -35,8 +35,8 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
 	setAttribute(Qt::WA_TranslucentBackground);
 
 	// !!!! Should be included into Windows after QT recompilation
-#ifndef Q_WS_WIN
-		setAttribute(Qt::WA_MacNoShadow);
+#ifdef Q_WS_MAC
+        setAttribute(Qt::WA_MacNoShadow);
 #endif
 
     }

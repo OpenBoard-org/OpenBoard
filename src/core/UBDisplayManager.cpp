@@ -115,7 +115,7 @@ void UBDisplayManager::setAsControl(QWidget* pControlWidget )
         mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
         mControlWidget->showFullScreen();
 		// !!!! Should be included into Windows after QT recompilation
-#ifndef Q_WS_WIN
+#ifdef Q_WS_MAC
         mControlWidget->setAttribute(Qt::WA_MacNoShadow);
 #endif
     }
@@ -131,7 +131,7 @@ void UBDisplayManager::setAsDisplay(QWidget* pDisplayWidget)
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
         mDisplayWidget->showFullScreen();
 		// !!!! Should be included into Windows after QT recompilation
-#ifndef Q_WS_WIN
+#ifdef Q_WS_MAC
         mDisplayWidget->setAttribute(Qt::WA_MacNoShadow);
 #endif
     }
