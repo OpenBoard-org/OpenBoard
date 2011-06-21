@@ -263,7 +263,6 @@
         <file>images/stylusPalette/penArrow.png</file>
         <file>images/stylusPalette/penOnArrow.png</file>
         <file>images/libpalette/AudiosCategory.svg</file>
-        <file>images/libpalette/MoviesCategory.svg</file>
         <file>images/libpalette/PicturesCategory.svg</file>
         <file>images/libpalette/ShapesCategory.svg</file>
         <file>images/libpalette/InteractivesCategory.svg</file>
@@ -285,5 +284,6 @@
         <file>images/toolbar/display.png</file>
         <file>images/toolbar/hide.png</file>
         <file>images/toolbar/record.png</file>
+        <file>images/libpalette/MoviesCategory.svg</file>
     </qresource>
 </RCC>
