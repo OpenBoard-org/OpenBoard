@@ -7,6 +7,8 @@
 
 #include "UBToolsManager.h"
 
+#include "core/memcheck.h"
+
 UBToolsManager* UBToolsManager::sManager = 0;
 
 UBToolsManager::UBToolsManager(QObject *parent)
@@ -40,6 +42,13 @@ UBToolsManager::UBToolsManager(QObject *parent)
     protractor.version = "1.0";
     mToolsIcon.insert(protractor.id,":/images/toolPalette/protractorTool.png");
     mDescriptors << protractor;
+
+    triangle.id = "uniboardTool://uniboard.mnemis.com/triangle";
+    triangle.icon = QPixmap(":/images/toolPalette/triangleTool.png");
+    triangle.label = tr("Triangle");
+    triangle.version = "1.0";
+    mToolsIcon.insert(triangle.id,":/images/toolPalette/triangleTool.png");
+    mDescriptors << triangle;
 
 }
 

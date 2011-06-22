@@ -2,6 +2,7 @@
 #include "UBGraphicsAudioItemDelegate.h"
 #include "UBGraphicsDelegateFrame.h"
 
+#include "core/memcheck.h"
 
 UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl& pAudioFileUrl, QGraphicsItem *parent):
         UBGraphicsMediaItem(pAudioFileUrl,parent)

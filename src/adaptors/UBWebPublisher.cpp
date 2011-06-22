@@ -11,7 +11,7 @@
 
 #include "adaptors/publishing/UBDocumentPublisher.h"
 
-
+#include "core/memcheck.h"
 
 UBWebPublisher::UBWebPublisher(QObject *parent)
     : UBExportAdaptor(parent)

@@ -156,8 +156,10 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         qreal getNextObjectZIndex();
 
         void addRuler(QPointF center);
+		void addTriangle(QPointF center);
         void addProtractor(QPointF center);
         void addCompass(QPointF center);
+
         void addMask();
 
         class SceneViewState

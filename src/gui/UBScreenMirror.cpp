@@ -11,6 +11,8 @@
 #include "core/UBSetting.h"
 #include "core/UBApplication.h"
 
+#include "core/memcheck.h"
+
 UBScreenMirror::UBScreenMirror(QWidget* parent)
     : QWidget(parent)
     , mScreenIndex(0)

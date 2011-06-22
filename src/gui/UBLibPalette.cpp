@@ -1,6 +1,8 @@
 #include <QDebug>
 #include "UBLibPalette.h"
 
+#include "core/memcheck.h"
+
 /**
  * \brief Constructor
  * @param parent as the parent widget
@@ -53,17 +55,18 @@ UBLibPalette::UBLibPalette(QWidget *parent, const char *name):UBDockPalette(pare
  */
 UBLibPalette::~UBLibPalette()
 {
-    if(NULL != mStackedWidget)
-    {
-        delete mStackedWidget;
-        mStackedWidget = NULL;
-    }
-    if(NULL != mNavigator)
-    {
-        delete mNavigator;
-        mNavigator = NULL;
-    }
-    if(NULL != mProperties)
+    //if(NULL != mStackedWidget)
+    //{
+    //    delete mStackedWidget;
+    //    mStackedWidget = NULL;
+    //}
+    //if(NULL != mNavigator)
+    //{
+    //    delete mNavigator;
+    //    mNavigator = NULL;
+	//}
+	
+	if(NULL != mProperties)
     {
         delete mProperties;
         mProperties = NULL;
@@ -78,11 +81,11 @@ UBLibPalette::~UBLibPalette()
         delete mDropWidget;
         mDropWidget = NULL;
     }
-    if(NULL != mLayout)
-    {
-	delete mLayout;
-	mLayout = NULL;
-    }
+    //if(NULL != mLayout)
+    //{
+	//delete mLayout;
+	//mLayout = NULL;
+    //}
 }
 
 /**

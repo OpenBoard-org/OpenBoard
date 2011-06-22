@@ -11,6 +11,9 @@
 #include <xpdf/SplashOutputDev.h>
 #include <xpdf/PDFDoc.h>
 
+
+#include "core/memcheck.h"
+
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
 
 XPDFRenderer::XPDFRenderer(const QString &filename)

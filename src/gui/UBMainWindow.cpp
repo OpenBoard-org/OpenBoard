@@ -7,6 +7,7 @@
 #include "core/UBApplicationController.h"
 #include "board/UBBoardController.h"
 
+#include "core/memcheck.h"
 
 UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)

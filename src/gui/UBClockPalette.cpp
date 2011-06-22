@@ -3,6 +3,7 @@
 
 
 #include "UBClockPalette.h"
+#include "core/memcheck.h"
 
 UBClockPalette::UBClockPalette(QWidget *parent)
     : UBFloatingPalette(Qt::TopRightCorner, parent)

@@ -6,6 +6,8 @@
 #include "../core/UBApplication.h"
 #include "../gui/UBMainWindow.h"
 
+#include "core/memcheck.h"
+
 void UBKeyboardButton::sendUnicodeSymbol(unsigned int nSymbol1, unsigned int nSymbol2, bool shift)
 {
 	unsigned int nSymbol = shift? nSymbol2 : nSymbol1;

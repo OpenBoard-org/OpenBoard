@@ -50,6 +50,7 @@
 
 #include "UBBoardController.h"
 
+#include "core/memcheck.h"
 
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
     : QObject(container)

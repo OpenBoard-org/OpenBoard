@@ -27,6 +27,8 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
 
+#include "core/memcheck.h"
+
 QPixmap* UBToolWidget::sClosePixmap = 0;
 QPixmap* UBToolWidget::sUnpinPixmap = 0;
 

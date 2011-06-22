@@ -10,6 +10,8 @@
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
 
+#include "core/memcheck.h"
+
 UBReplyWRS970VotingSystem::UBReplyWRS970VotingSystem(QWidget *parent)
     : UBAbstractVotingSystem(parent)
     , mParent(parent)

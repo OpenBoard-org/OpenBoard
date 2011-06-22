@@ -14,6 +14,7 @@
 
 #include "UBGraphicsDelegateFrame.h"
 
+#include "core/memcheck.h"
 
 UBGraphicsProxyWidget::UBGraphicsProxyWidget(QGraphicsItem* parent)
     : QGraphicsProxyWidget(parent, Qt::FramelessWindowHint)

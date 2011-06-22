@@ -8,6 +8,7 @@
 
 #include "core/UBSettings.h"
 
+#include "core/memcheck.h"
 
 UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))

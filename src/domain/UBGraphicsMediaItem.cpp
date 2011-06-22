@@ -8,6 +8,8 @@
 
 #include "board/UBBoardController.h"
 
+#include "core/memcheck.h"
+
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
 UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent)

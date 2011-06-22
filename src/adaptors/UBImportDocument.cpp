@@ -19,6 +19,8 @@
 #include "quazipfile.h"
 #include "quazipfileinfo.h"
 
+#include "core/memcheck.h"
+
 UBImportDocument::UBImportDocument(QObject *parent)
     :UBImportAdaptor(parent)
 {

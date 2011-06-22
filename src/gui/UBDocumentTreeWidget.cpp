@@ -17,6 +17,7 @@
 #include "core/UBDocumentManager.h"
 #include "document/UBDocumentController.h"
 
+#include "core/memcheck.h"
 
 UBDocumentTreeWidget::UBDocumentTreeWidget(QWidget * parent)
     : QTreeWidget(parent)

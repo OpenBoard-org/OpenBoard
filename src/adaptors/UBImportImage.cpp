@@ -13,6 +13,8 @@
 
 #include "pdf/PDFRenderer.h"
 
+#include "core/memcheck.h"
+
 UBImportImage::UBImportImage(QObject *parent)
     : UBImportAdaptor(parent)
 {

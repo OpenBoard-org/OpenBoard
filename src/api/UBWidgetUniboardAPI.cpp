@@ -19,6 +19,7 @@
 
 #include "UBWidgetMessageAPI.h"
 
+#include "core/memcheck.h"
 
 UBWidgetUniboardAPI::UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidgetItem *widget)
     : QObject(pScene)

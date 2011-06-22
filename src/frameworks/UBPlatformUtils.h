@@ -77,6 +77,7 @@ class UBPlatformUtils
         virtual ~UBPlatformUtils();
 
 		static void initializeKeyboardLayouts();
+		static void destroyKeyboardLayouts();
 		static int nKeyboardLayouts;
 		static UBKeyboardLocale** keyboardLayouts;
 

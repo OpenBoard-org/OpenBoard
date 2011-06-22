@@ -7,6 +7,7 @@
 #include "UBGraphicsPixmapItem.h"
 #include "UBGraphicsItemDelegate.h"
 
+#include "core/memcheck.h"
 
 UBGraphicsPDFItem::UBGraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphicsItem* parent)
     : GraphicsPDFItem(renderer, pageNumber, parent)

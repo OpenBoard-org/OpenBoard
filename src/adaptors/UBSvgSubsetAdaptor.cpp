@@ -41,6 +41,8 @@
 
 #include "pdf/PDFRenderer.h"
 
+#include "core/memcheck.h"
+
 const QString UBSvgSubsetAdaptor::nsSvg = "http://www.w3.org/2000/svg";
 const QString UBSvgSubsetAdaptor::nsXHtml = "http://www.w3.org/1999/xhtml";
 const QString UBSvgSubsetAdaptor::nsXLink = "http://www.w3.org/1999/xlink";
@@ -410,7 +412,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             }
             else if (mXmlReader.name() == "g")
             {
-                annotationGroup = new UBGraphicsStroke();
+				// Create new stroke, if its NULL or already has poligons
+				if (annotationGroup)
+				{
+					if (!annotationGroup->polygons().empty())
+						annotationGroup = new UBGraphicsStroke();
+				}
+				else
+					annotationGroup = new UBGraphicsStroke();
 
                 QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
 
@@ -747,7 +756,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         {
             if (mXmlReader.name() == "g")
             {
-                annotationGroup = 0;
+				if (annotationGroup)
+				{
+					if (!annotationGroup->polygons().empty())
+						annotationGroup = 0;
+				}
                 mGroupHasInfo = false;
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
@@ -766,6 +779,12 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         scene->setDrawingZIndex(maxDrawingZIndex);
         scene->setModified(false);
     }
+
+	if (annotationGroup)
+	{
+		if (annotationGroup->polygons().empty())
+			delete annotationGroup;
+	}
 
     return scene;
 }

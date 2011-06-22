@@ -9,6 +9,8 @@
 
 #include "core/UBSettings.h"
 
+#include "core/memcheck.h"
+
 UBReply2005VotingSystem::UBReply2005VotingSystem(QWidget *parent)
     : UBAbstractVotingSystem(parent)
     , mParent(parent)

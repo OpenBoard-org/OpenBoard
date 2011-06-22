@@ -6,6 +6,7 @@
  */
 
 #include "UBCircleFrame.h"
+#include "core/memcheck.h"
 
 UBCircleFrame::UBCircleFrame(QWidget* parent)
     : QFrame(parent)

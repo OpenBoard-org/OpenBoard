@@ -477,4 +477,5 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 
 }
 
-
+void UBPlatformUtils::destroyKeyboardLayouts()
+{}

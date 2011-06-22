@@ -1,6 +1,8 @@
 #include "UBLibNavigatorWidget.h"
 #include "UBLibPalette.h"
 
+#include "core/memcheck.h"
+
 static int lowBoundForSlider = 40;
 static int topBoundForSlider = 120;
 static int tickIntervalForSlider = 10;
@@ -67,16 +69,16 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
  */
 UBLibNavigatorWidget::~UBLibNavigatorWidget()
 {
-    if(NULL != mLayout)
-    {
-        delete mLayout;
-        mLayout = NULL;
-    }
-    if(NULL != mLibWidget)
-    {
-        delete mLibWidget;
-        mLibWidget = NULL;
-    }
+    //if(NULL != mLayout)
+    //{
+    //    delete mLayout;
+    //    mLayout = NULL;
+    //}
+    //if(NULL != mLibWidget)
+    //{
+    //    delete mLibWidget;
+    //    mLibWidget = NULL;
+    //}
     if(NULL != mPathViewer)
     {
         delete mPathViewer;

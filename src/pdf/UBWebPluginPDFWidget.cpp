@@ -4,6 +4,9 @@
 #include "UBWebPluginPDFWidget.h"
 #include "XPDFRenderer.h"
 
+
+#include "core/memcheck.h"
+
 UBWebPluginPDFWidget::UBWebPluginPDFWidget(const QUrl &url, QWidget *parent)
     : UBWebPluginWidget(url, parent)
     , mPreviousPageButton(this)

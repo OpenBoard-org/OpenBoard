@@ -7,9 +7,12 @@
 
 #include "UBCoreGraphicsScene.h"
 
+#include "core/memcheck.h"
+
 UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
     : QGraphicsScene ( parent  )
 {
+	int a = 13;
     //NOOP
 }
 
@@ -18,7 +21,7 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
     //we must delete removed items that are no more in any scene
     foreach (const QGraphicsItem* item, mItemsToDelete)
     {
-        if (!item->scene() && !(item->scene() == this))
+        if (item->scene()==NULL || item->scene() == this)
         {
             delete item;
         }

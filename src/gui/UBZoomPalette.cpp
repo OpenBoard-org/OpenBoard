@@ -15,6 +15,7 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
 
+#include "core/memcheck.h"
 
 UBZoomPalette::UBZoomPalette(QWidget* parent)
     : UBFloatingPalette(Qt::BottomRightCorner, parent)

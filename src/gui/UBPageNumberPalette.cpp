@@ -3,6 +3,8 @@
 
 #include "UBPageNumberPalette.h"
 
+#include "core/memcheck.h"
+
 UBPageNumberPalette::UBPageNumberPalette(QWidget *parent)
     : UBFloatingPalette(Qt::BottomRightCorner, parent)
 {

@@ -45,6 +45,7 @@
 
 #include "ui_mainWindow.h"
 
+#include "core/memcheck.h"
 
 QPointer<QUndoStack> UBApplication::undoStack;
 
@@ -91,7 +92,8 @@ static OSStatus ub_appleEventProcessor(const AppleEvent *ae, AppleEvent *event, 
 
 
 UBApplication::UBApplication(const QString &id, int &argc, char **argv)
-    : QtSingleApplication(id, argc, argv)
+    : QtSingleApplication(id, argc, argv),
+	mPreferencesController(NULL)
 {
 
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
@@ -183,6 +185,12 @@ UBApplication::~UBApplication()
 
     delete mUniboardSankoreTransition;
     mUniboardSankoreTransition = 0;
+
+	if (mPreferencesController)
+	{
+		delete mPreferencesController;
+		mPreferencesController = 0;
+	}
 }
 
 int UBApplication::exec(const QString& pFileToImport)
@@ -535,6 +543,22 @@ bool UBApplication::handleOpenMessage(const QString& pMessage)
     UBApplication::applicationController->importFile(pMessage);
 
     return true;
+}
+
+void UBApplication::cleanup()
+{
+	if (applicationController) delete applicationController;
+	if (boardController) delete boardController;
+	if (webController) delete webController;
+	if (documentController) delete documentController;
+	if (mUniboardSankoreTransition) delete mUniboardSankoreTransition;
+
+
+	applicationController = NULL;
+	boardController = NULL;
+	webController = NULL;
+	documentController = NULL;
+	mUniboardSankoreTransition = NULL;
 }
 
 void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,

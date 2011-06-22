@@ -21,7 +21,7 @@
 #include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsDelegateFrame.h"
 
-
+#include "core/memcheck.h"
 
 UBGraphicsVideoItemDelegate::UBGraphicsVideoItemDelegate(UBGraphicsVideoItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated, parent, true, false)

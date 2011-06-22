@@ -15,6 +15,8 @@
 #include "board/UBBoardController.h" // TODO UB 4.x clean that dependency
 #include "board/UBDrawingController.h"
 
+#include "core/memcheck.h"
+
 const QRect                     UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800, 96);
 const QColor UBGraphicsRuler::sLightBackgroundMiddleFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
 const QColor   UBGraphicsRuler::sLightBackgroundEdgeFillColor = QColor(0xc3, 0xc3, 0xc3, sFillTransparency);
@@ -201,6 +203,7 @@ void UBGraphicsRuler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+	QObject* obj = new QObject();
 	UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
 	if (currentTool == UBStylusTool::Selector)

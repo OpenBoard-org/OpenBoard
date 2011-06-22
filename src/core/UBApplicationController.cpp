@@ -41,6 +41,8 @@
 #include <Carbon/Carbon.h>
 #endif
 
+#include "core/memcheck.h"
+
 UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBoardView *pDisplayView,
         UBMainWindow* pMainWindow, QObject* parent)
     : QObject(parent)
@@ -53,6 +55,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
     , mAutomaticCheckForUpdates(false)
     , mCheckingForUpdates(false)
     , mIsShowingDesktop(false)
+	, mFtp(0)
 {
     mDisplayManager = new UBDisplayManager(this);
 
@@ -103,6 +106,7 @@ UBApplicationController::~UBApplicationController()
 
     delete mBlackScene;
     delete mMirror;
+	if (mFtp) delete mFtp;
 }
 
 
@@ -479,6 +483,8 @@ void UBApplicationController::showSankoreEditor()
 
 void UBApplicationController::checkUpdate()
 {
+	if (mFtp!=NULL)
+		delete mFtp;
     mFtp = new QFtp(this);
     connect(mFtp, SIGNAL(commandFinished(int,bool)), this, SLOT(ftpCommandFinished(int,bool)));
 

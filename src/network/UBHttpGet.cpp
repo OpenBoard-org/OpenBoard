@@ -11,6 +11,7 @@
 
 #include "network/UBNetworkAccessManager.h"
 
+#include "core/memcheck.h"
 
 UBHttpGet::UBHttpGet(QObject* parent)
     : QObject(parent)

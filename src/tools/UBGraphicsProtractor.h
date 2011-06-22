@@ -25,12 +25,12 @@ class UBGraphicsProtractor : public QObject, public QGraphicsEllipseItem, public
 
     public:
         UBGraphicsProtractor ();
-                enum Tool {None, Move, Resize, Rotate, Reset, Close, MoveMarker};
+		enum Tool {None, Move, Resize, Rotate, Reset, Close, MoveMarker};
 
-        qreal        angle () { return mStartAngle; }
-        qreal  markerAngle () { return mCurrentAngle; }
-        void         setAngle (qreal angle) { mStartAngle = angle; setStartAngle(mStartAngle * 16); }
-        void   setMarkerAngle (qreal angle) { mCurrentAngle = angle; }
+        qreal angle () { return mStartAngle; }
+        qreal markerAngle () { return mCurrentAngle; }
+        void  setAngle (qreal angle) { mStartAngle = angle; setStartAngle(mStartAngle * 16); }
+        void  setMarkerAngle (qreal angle) { mCurrentAngle = angle; }
 
         virtual UBItem* deepCopy() const;
 
@@ -46,14 +46,14 @@ class UBGraphicsProtractor : public QObject, public QGraphicsEllipseItem, public
         void hidden();
 
     protected:
-        virtual void             paint (QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
+        virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
         virtual void   mousePressEvent (QGraphicsSceneMouseEvent *event);
         virtual void    mouseMoveEvent (QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent (QGraphicsSceneMouseEvent *event);
-                virtual void   hoverEnterEvent (QGraphicsSceneHoverEvent *event);
+        virtual void   hoverEnterEvent (QGraphicsSceneHoverEvent *event);
         virtual void   hoverLeaveEvent (QGraphicsSceneHoverEvent *event);
         virtual void    hoverMoveEvent (QGraphicsSceneHoverEvent *event);
         virtual QPainterPath shape() const;

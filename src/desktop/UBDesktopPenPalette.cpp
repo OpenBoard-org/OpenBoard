@@ -6,6 +6,8 @@
 #include "gui/UBMainWindow.h"
 #include "gui/UBToolbarButtonGroup.h"
 
+#include "core/memcheck.h"
+
 UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent)
     : UBPropertyPalette(Qt::Horizontal, parent)
 {

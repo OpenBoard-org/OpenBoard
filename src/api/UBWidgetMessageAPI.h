@@ -12,7 +12,6 @@
 
 #include "domain/UBGraphicsWidgetItem.h"
 
-
 class UBWidgetMessageAPI : public QObject
 {
     Q_OBJECT;

@@ -7,6 +7,8 @@
 
 #include "UBBase32.h"
 
+#include "core/memcheck.h"
+
 QString UBBase32::sBase32Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
 int UBBase32::sBase32Lookup[] =

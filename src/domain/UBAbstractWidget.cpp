@@ -24,6 +24,7 @@
 #include "web/UBWebKitUtils.h"
 #include "web/UBWebController.h"
 
+#include "core/memcheck.h"
 
 QStringList UBAbstractWidget::sInlineJavaScripts;
 bool UBAbstractWidget::sInlineJavaScriptLoaded = false;

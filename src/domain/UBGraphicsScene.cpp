@@ -23,6 +23,7 @@
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsProtractor.h"
 #include "tools/UBGraphicsCompass.h"
+#include "tools/UBGraphicsTriangle.h"
 #include "tools/UBGraphicsCurtainItem.h"
 
 #include "document/UBDocumentProxy.h"
@@ -45,6 +46,8 @@
 #include "UBAppleWidget.h"
 #include "UBW3CWidget.h"
 #include "UBGraphicsStroke.h"
+
+#include "core/memcheck.h"
 
 qreal UBGraphicsScene::backgroundLayerStart = -20000000.0;
 qreal UBGraphicsScene::objectLayerStart = -10000000.0;
@@ -122,6 +125,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 
 UBGraphicsScene::~UBGraphicsScene()
 {
+	int a = 13;
     // NOOP
 }
 
@@ -1403,6 +1407,25 @@ void UBGraphicsScene::addProtractor(QPointF center)
 
     protractor->setVisible(true);
     setModified(true);
+}
+
+void UBGraphicsScene::addTriangle(QPointF center)
+{
+    // Protractor
+/*
+    UBGraphicsTriangle* protractor = new UBGraphicsTriangle(); // mem : owned and destroyed by the scene
+    mTools << triangle;
+
+    triangle->setZValue(toolLayerStart + toolOffsetProtractor);
+    triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
+    addItem(triangle);
+
+    QPointF itemSceneCenter = triangle->sceneBoundingRect().center();
+    triangle->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
+
+    triangle->setVisible(true);
+    setModified(true);*/
 }
 
 

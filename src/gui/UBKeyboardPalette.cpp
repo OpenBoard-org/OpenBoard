@@ -12,6 +12,9 @@
 #include "UBKeyboardPalette.h"
 #include "core/UBSettings.h"
 
+
+#include "core/memcheck.h"
+
 /*
 
 			UBKeyboardPalette

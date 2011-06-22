@@ -2,6 +2,7 @@
 #include "UBGraphicsVideoItemDelegate.h"
 #include "UBGraphicsDelegateFrame.h"
 
+#include "core/memcheck.h"
 
 UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl& pVideoFileUrl, QGraphicsItem *parent):
         UBGraphicsMediaItem(pVideoFileUrl,parent)

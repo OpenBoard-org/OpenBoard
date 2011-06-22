@@ -11,6 +11,8 @@
 
 #include "core/UBSettings.h"
 
+#include "core/memcheck.h"
+
 UBThumbnailWidget::UBThumbnailWidget(QWidget* parent)
     : QGraphicsView(parent)
     , mThumbnailWidth(UBSettings::defaultThumbnailWidth)

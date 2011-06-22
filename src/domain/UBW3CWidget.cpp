@@ -21,6 +21,8 @@
 
 #include "board/UBBoardController.h"
 
+#include "core/memcheck.h"
+
 bool UBW3CWidget::sTemplateLoaded = false;
 QMap<QString, QString> UBW3CWidget::sNPAPIWrapperTemplates;
 QString UBW3CWidget::sNPAPIWrappperConfigTemplate;

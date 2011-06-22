@@ -18,6 +18,8 @@
 #include "quazip.h"
 #include "quazipfile.h"
 
+#include "core/memcheck.h"
+
 UBExportWeb::UBExportWeb(QObject *parent)
     : UBExportAdaptor(parent)
 {

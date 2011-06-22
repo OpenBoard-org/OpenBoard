@@ -13,6 +13,8 @@
 
 #include "board/UBBoardView.h"
 
+#include "core/memcheck.h"
+
 UBWindowCapture::UBWindowCapture(UBDesktopAnnotationController *parent)
         : QObject(parent)
         , mParent(parent)

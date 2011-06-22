@@ -7,6 +7,9 @@
 #include "gui/UBMainWindow.h"
 #include "gui/UBToolbarButtonGroup.h"
 
+
+#include "core/memcheck.h"
+
 UBDesktopEraserPalette::UBDesktopEraserPalette(QWidget *parent)
     : UBPropertyPalette(Qt::Horizontal, parent)
 {

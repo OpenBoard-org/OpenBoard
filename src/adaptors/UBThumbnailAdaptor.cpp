@@ -15,6 +15,8 @@
 
 #include "UBSvgSubsetAdaptor.h"
 
+#include "core/memcheck.h"
+
 UBThumbnailAdaptor::UBThumbnailAdaptor(QObject *parent)
     : QObject(parent)
 {

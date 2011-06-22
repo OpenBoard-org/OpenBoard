@@ -36,6 +36,8 @@
 
 #include "gui/UBKeyboardPalette.h"
 
+#include "core/memcheck.h"
+
 UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         : QObject(parent)
         , mTransparentDrawingView(0)
@@ -138,6 +140,7 @@ UBDesktopAnnotationController::~UBDesktopAnnotationController()
     delete mTransparentDrawingScene;
     delete mTransparentDrawingView;
 
+	/*
     if(NULL != mDesktopPenPalette)
     {
         delete mDesktopPalette;
@@ -158,6 +161,7 @@ UBDesktopAnnotationController::~UBDesktopAnnotationController()
         delete mLibPalette;
         mLibPalette = NULL;
     }
+	*/
 }
 
 

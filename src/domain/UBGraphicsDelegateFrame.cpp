@@ -19,6 +19,8 @@
 
 #include "gui/UBResources.h"
 
+#include "core/memcheck.h"
+
 qreal const UBGraphicsDelegateFrame::mAngleTolerance = 6;
 
 UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelegate, QRectF pRect, qreal pFrameWidth, bool respectRatio)

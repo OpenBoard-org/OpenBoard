@@ -4,6 +4,7 @@
 
 #include "core/UBMimeData.h"
 
+#include "core/memcheck.h"
 
 UBThumbnailView::UBThumbnailView()
 {

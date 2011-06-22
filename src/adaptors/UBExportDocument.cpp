@@ -17,6 +17,8 @@
 #include "quazip.h"
 #include "quazipfile.h"
 
+#include "core/memcheck.h"
+
 UBExportDocument::UBExportDocument(QObject *parent)
     : UBExportAdaptor(parent)
 {

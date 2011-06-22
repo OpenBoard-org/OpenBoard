@@ -3,6 +3,8 @@
 #include "domain/UBGraphicsDelegateFrame.h"
 #include "UBGraphicsScene.h"
 
+#include "core/memcheck.h"
+
 UBGraphicsAudioItemDelegate::UBGraphicsAudioItemDelegate ( UBGraphicsAudioItem* pDelegated, QObject *parent )
         : UBGraphicsItemDelegate ( pDelegated, parent )
         , mDelegated ( pDelegated )

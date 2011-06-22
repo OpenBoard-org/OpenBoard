@@ -11,6 +11,8 @@
 #include "core/UBMimeData.h"
 #include "core/UBSettings.h"
 
+#include "core/memcheck.h"
+
 
 UBDocumentThumbnailWidget::UBDocumentThumbnailWidget(QWidget* parent)
     : UBThumbnailWidget(parent)

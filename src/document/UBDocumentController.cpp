@@ -39,6 +39,7 @@
 #include "ui_documents.h"
 #include "ui_mainWindow.h"
 
+#include "core/memcheck.h"
 
 UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
    : QObject(mainWindow->centralWidget())

@@ -9,6 +9,7 @@
 
 #include "UBGraphicsPolygonItem.h"
 
+#include "core/memcheck.h"
 
 UBGraphicsStroke::UBGraphicsStroke()
 {

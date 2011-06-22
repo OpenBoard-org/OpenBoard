@@ -9,6 +9,8 @@
 
 #include <QtGui>
 
+#include "core/memcheck.h"
+
 UBColorPicker::UBColorPicker(QWidget* parent)
     : QFrame(parent)
     , mSelectedColorIndex(0)
