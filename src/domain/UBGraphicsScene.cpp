@@ -10,6 +10,7 @@
 #include <QtGui>
 #include <QtWebKit>
 #include <QtSvg>
+#include <QGraphicsView>
 
 #include "frameworks/UBGeometryUtils.h"
 #include "frameworks/UBPlatformUtils.h"

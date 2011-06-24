@@ -5,12 +5,6 @@
 
 #include <frameworks/UBPlatformUtils.h>
 
-#include <splash/SplashBitmap.h>
-#include <xpdf/Object.h>
-#include <xpdf/GlobalParams.h>
-#include <xpdf/SplashOutputDev.h>
-#include <xpdf/PDFDoc.h>
-
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
 
 XPDFRenderer::XPDFRenderer(const QString &filename)
@@ -27,7 +21,11 @@ XPDFRenderer::XPDFRenderer(const QString &filename)
 
     mDocument = new PDFDoc(new GString(filename.toUtf8().data()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
     sInstancesCount.ref();
-
+    bThumbGenerated = false;
+    bPagesGenerated = false;
+    mPagesMap.clear();
+    mThumbs.clear();
+    mThumbMap.clear();
 }
 
 XPDFRenderer::~XPDFRenderer()
@@ -118,47 +116,100 @@ int XPDFRenderer::pageRotation(int pageNumber) const
         return 0;
 }
 
-
 void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
 {
     if (isValid())
     {
+        // First verify if the thumbnails and the pages are generated
+        if(!bThumbGenerated)
+        {
+            qreal xscale = p->worldTransform().m11();
+            qreal yscale = p->worldTransform().m22();
+            if(!mThumbMap[pageNumber - 1])
+            {
+                // Generate the thumbnail
+                mThumbs << *createPDFImage(pageNumber, xscale, yscale, bounds);
+                mThumbMap[pageNumber - 1] = true;
+                if(pageNumber == mDocument->getNumPages())
+                {
+                    bThumbGenerated = true;
+                }
+            }
+        }
+        else if(!bPagesGenerated)
+        {
+            qreal xscale = p->worldTransform().m11();
+            qreal yscale = p->worldTransform().m22();
+            if(!mPagesMap[pageNumber - 1])
+            {
+                // Generate the page
+                mNumPageToPageMap[pageNumber] = *createPDFImage(pageNumber, xscale, yscale, bounds);
+                mPagesMap[pageNumber - 1] = true;
+                if(mPagesMap.size() == mDocument->getNumPages())
+                {
+                    bPagesGenerated = true;
+                }
+            }
+        }
+
+        // Warning: verify pagenumber
+        QImage pdfImage;
+
+        if(!bThumbGenerated)
+        {
+            pdfImage = mThumbs.at(pageNumber - 1);
+        }
+        else
+        {
+            pdfImage = mNumPageToPageMap[pageNumber];
+        }
+
+        pdfImage.rect();
+
+        QTransform savedTransform = p->worldTransform();
+        p->resetTransform();
+        p->drawImage(QPointF(savedTransform.dx() + mSliceX, savedTransform.dy() + mSliceY), pdfImage);
+        p->setWorldTransform(savedTransform);
+    }
+}
+
+QImage* XPDFRenderer::createPDFImage(int pageNumber, const qreal xscale, const qreal yscale, const QRectF &bounds)
+{
+    QImage* img = new QImage();
+    if (isValid())
+    {
         SplashColor paperColor = {0xFF, 0xFF, 0xFF}; // white
-        SplashOutputDev splash(splashModeRGB8, 1, gFalse, paperColor);
-        splash.startDoc(mDocument->getXRef());
+        mSplash = new SplashOutputDev(splashModeRGB8, 1, gFalse, paperColor);
+        mSplash->startDoc(mDocument->getXRef());
         int hResolution = 72;
         int vResolution = 72;
         int rotation = 0; // in degrees (get it from the worldTransform if we want to support rotation)
         GBool useMediaBox = gFalse;
         GBool crop = gTrue;
         GBool printing = gFalse;
-        const qreal xScale = p->worldTransform().m11();
-        const qreal yScale = p->worldTransform().m22();
-        qreal sliceX = 0.;
-        qreal sliceY = 0.;
+        const qreal xScale = xscale;
+        const qreal yScale = yscale;
+        mSliceX = 0.;
+        mSliceY = 0.;
 
         if (bounds.isNull())
         {
-            mDocument->displayPage(&splash, pageNumber, hResolution * xScale, vResolution * yScale,
+            mDocument->displayPage(mSplash, pageNumber, hResolution * xScale, vResolution * yScale,
                                    rotation, useMediaBox, crop, printing);
         }
         else
         {
-            sliceX = bounds.x() * xScale;
-            sliceY = bounds.y() * yScale;
+            mSliceX = bounds.x() * xScale;
+            mSliceY = bounds.y() * yScale;
             qreal sliceW = bounds.width() * xScale;
             qreal sliceH = bounds.height() * yScale;
 
-            mDocument->displayPageSlice(&splash, pageNumber, hResolution * xScale, vResolution * yScale,
-                                        rotation, useMediaBox, crop, printing, sliceX, sliceY, sliceW, sliceH);
+            mDocument->displayPageSlice(mSplash, pageNumber, hResolution * xScale, vResolution * yScale,
+                                        rotation, useMediaBox, crop, printing, mSliceX, mSliceY, sliceW, sliceH);
         }
 
-        SplashBitmap *bitmap = splash.getBitmap();
-        QImage pdfImage(bitmap->getDataPtr(), bitmap->getWidth(), bitmap->getHeight(), bitmap->getWidth() * 3, QImage::Format_RGB888);
-
-        QTransform savedTransform = p->worldTransform();
-        p->resetTransform();
-        p->drawImage(QPointF(savedTransform.dx() + sliceX, savedTransform.dy() + sliceY), pdfImage);
-        p->setWorldTransform(savedTransform);
+        mpSplashBitmap = mSplash->getBitmap();
+        img = new QImage(mpSplashBitmap->getDataPtr(), mpSplashBitmap->getWidth(), mpSplashBitmap->getHeight(), mpSplashBitmap->getWidth() * 3, QImage::Format_RGB888);
     }
+    return img;
 }
