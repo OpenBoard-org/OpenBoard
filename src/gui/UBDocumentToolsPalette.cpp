@@ -9,6 +9,8 @@
 #include "gui/UBMainWindow.h"
 
 
+#include "core/memcheck.h"
+
 UBDocumentToolsPalette::UBDocumentToolsPalette(QWidget *parent)
     : UBActionPalette(Qt::TopRightCorner, parent)
 {

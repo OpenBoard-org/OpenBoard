@@ -26,6 +26,7 @@
 
 #include "UBSvgSubsetRasterizer.h"
 
+#include "core/memcheck.h"
 
 UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *parent)
     : UBAbstractPublisher(parent)

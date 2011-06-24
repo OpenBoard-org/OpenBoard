@@ -35,6 +35,8 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "board/UBDrawingController.h"
 
+#include "core/memcheck.h"
+
 class UBGraphicsParaschoolEditorWidgetItem;
 
 UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, bool respectRatio, bool canRotate)

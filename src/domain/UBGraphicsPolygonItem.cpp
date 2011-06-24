@@ -3,7 +3,10 @@
 
 #include "frameworks/UBGeometryUtils.h"
 #include "UBGraphicsScene.h"
+#include "domain/UBGraphicsPolygonItem.h"
+#include "domain/UBGraphicsStroke.h"
 
+#include "core/memcheck.h"
 
 UBGraphicsPolygonItem::UBGraphicsPolygonItem (QGraphicsItem * parent)
     : QGraphicsPolygonItem(parent)
@@ -39,7 +42,15 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pWidth)
 
 UBGraphicsPolygonItem::~UBGraphicsPolygonItem()
 {
-    // NOOP
+	if (mStroke!=NULL)
+	{
+		QList<UBGraphicsPolygonItem*> pp = mStroke->polygons();
+		int n = pp.indexOf(this);
+		if (n>=0)
+			pp.removeAt(n);
+		if (pp.empty())
+			delete mStroke;
+	}
 }
 
 

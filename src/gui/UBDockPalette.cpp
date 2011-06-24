@@ -6,6 +6,8 @@
 #include "core/UBSettings.h"
 #include "frameworks/UBPlatformUtils.h"
 
+#include "core/memcheck.h"
+
 /**
  * \brief The constructor
  */

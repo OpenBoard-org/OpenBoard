@@ -13,6 +13,8 @@
 #include <QtGui/QMacStyle>
 #endif
 
+#include "core/memcheck.h"
+
 UBRubberBand::UBRubberBand(Shape s, QWidget * p)
     : QRubberBand(s, p)
 {

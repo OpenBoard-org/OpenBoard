@@ -22,6 +22,7 @@
 
 #include "pdf/GraphicsPDFItem.h"
 
+#include "core/memcheck.h"
 
 UBExportPDF::UBExportPDF(QObject *parent)
     : UBExportAdaptor(parent)

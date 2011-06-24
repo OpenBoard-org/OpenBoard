@@ -11,6 +11,8 @@
 #include "network/UBNetworkAccessManager.h"
 #include "network/UBServerXMLHttpRequest.h"
 
+#include "core/memcheck.h"
+
 UBAbstractPublisher::UBAbstractPublisher(QObject *parent)
     : QObject(parent)
     , mTokenRequest(0)

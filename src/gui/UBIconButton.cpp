@@ -3,6 +3,9 @@
 
 #include "UBIconButton.h"
 
+#include "core/memcheck.h"
+
+
 UBIconButton::UBIconButton(QWidget *parent, const QIcon &icon)
     : QAbstractButton(parent)
     , mToggleable(false)

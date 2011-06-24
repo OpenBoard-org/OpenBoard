@@ -6,6 +6,8 @@
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
 
+#include "core/memcheck.h"
+
 /**
  * \brief Constructor
  * @param parent as the parent widget
@@ -47,11 +49,11 @@ UBLibPathViewer::~UBLibPathViewer()
         delete mpContainer;
         mpContainer = NULL;
     }
-    if(NULL != mpLayout)
-    {
-        delete mpLayout;
-        mpLayout = NULL;
-    }
+    //if(NULL != mpLayout)
+    //{
+    //    delete mpLayout;
+    //    mpLayout = NULL;
+    //}
     if(NULL != mpElems)
     {
         delete mpElems;

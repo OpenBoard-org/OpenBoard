@@ -28,6 +28,8 @@
 #include "UBSettings.h"
 #include "UBPersistenceManager.h"
 
+#include "core/memcheck.h"
+
 UBDocumentManager* UBDocumentManager::sDocumentManager = 0;
 
 UBDocumentManager* UBDocumentManager::documentManager()

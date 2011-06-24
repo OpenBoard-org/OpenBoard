@@ -1,15 +1,20 @@
 #include <QtGui>
 #include <QTextCodec>
 
-#if (defined(Q_WS_WIN) && defined(_DEBUG))
-//#include <vld.h>
-#endif
-
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "UBApplication.h"
 #include "UBSettings.h"
+
+#if defined(WIN32) && defined(_DEBUG)
+     #define _CRTDBG_MAP_ALLOC
+     #include <stdlib.h>
+     #include <crtdbg.h>
+     #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
+     #define new DEBUG_NEW
+#endif
+
 
 void ub_message_output(QtMsgType type, const char *msg) {
 	// We must temporarily remove the handler to avoid the infinite recursion of
@@ -47,7 +52,12 @@ void ub_message_output(QtMsgType type, const char *msg) {
 	qInstallMsgHandler(previousHandler);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) 
+{
+#if defined(_MSC_VER) && defined(_DEBUG)
+    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
+
 	Q_INIT_RESOURCE(sankore);
 
 	qInstallMsgHandler(ub_message_output);
@@ -96,7 +106,11 @@ int main(int argc, char *argv[]) {
 
 	int result = app.exec(fileToOpen);
 
+	app.cleanup();
+
 	qDebug() << "application is quitting";
+
+	
 
 	return result;
 

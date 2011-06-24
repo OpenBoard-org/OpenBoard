@@ -1,5 +1,6 @@
 
 #include "UBDesktopServices.h"
+#include "core/memcheck.h"
 
 QString UBDesktopServices::storageLocation(StandardLocation type)
 {

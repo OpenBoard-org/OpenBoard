@@ -58,9 +58,21 @@ struct UBGraphicsItemType
 {
     enum Enum
     {
-        PolygonItemType = QGraphicsItem::UserType + 1, PixmapItemType,
-            SvgItemType, VideoItemType, AudioItemType, AppleWidgetItemType, PDFItemType, TextItemType, W3CWidgetItemType, CurtainItemType,
-            RulerItemType, CompassItemType, ProtractorItemType, StrokeItemType
+        PolygonItemType = QGraphicsItem::UserType + 1, 
+		PixmapItemType,
+        SvgItemType, 
+		VideoItemType, 
+		AudioItemType, 
+		AppleWidgetItemType, 
+		PDFItemType, 
+		TextItemType, 
+		W3CWidgetItemType, 
+		CurtainItemType,
+        RulerItemType, 
+		CompassItemType, 
+		ProtractorItemType, 
+		StrokeItemType,
+		TriangleItemType
     };
 };
 

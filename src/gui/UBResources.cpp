@@ -5,6 +5,8 @@
 
 #include "core/UBApplication.h"
 
+#include "core/memcheck.h"
+
 UBResources* UBResources::sSingleton = 0;
 
 UBResources::UBResources(QObject* pParent)

@@ -17,6 +17,7 @@
 
 #include <windows.h>
 
+#include "core/memcheck.h"
 
 QString UBImportVirtualPrinter::sOriginalDefaultPrintername = "";
 

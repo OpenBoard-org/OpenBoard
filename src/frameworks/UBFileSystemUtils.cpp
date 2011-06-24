@@ -14,6 +14,8 @@
 
 #include <openssl/md5.h>
 
+#include "core/memcheck.h"
+
 QStringList UBFileSystemUtils::sTempDirToCleanUp;
 
 

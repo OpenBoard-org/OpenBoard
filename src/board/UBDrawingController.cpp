@@ -12,6 +12,8 @@
 
 #include "gui/UBMainWindow.h"
 
+#include "core/memcheck.h"
+
 UBDrawingController* UBDrawingController::sDrawingController = 0;
 
 

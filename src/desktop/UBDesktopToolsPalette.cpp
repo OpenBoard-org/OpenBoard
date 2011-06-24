@@ -9,6 +9,7 @@
 #include "gui/UBMainWindow.h"
 #include "gui/UBToolbarButtonGroup.h"
 
+#include "core/memcheck.h"
 
 UBDesktopToolsPalette::UBDesktopToolsPalette(QWidget *parent)
     : UBActionPalette(Qt::Horizontal, parent)

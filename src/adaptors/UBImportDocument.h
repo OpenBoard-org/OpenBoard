@@ -10,6 +10,7 @@
 
 #include <QtGui>
 #include "UBImportAdaptor.h"
+
 class UBDocumentProxy;
 
 class UBImportDocument : public UBImportAdaptor

@@ -1,5 +1,7 @@
 #include "UBPropertyPalette.h"
 
+#include "core/memcheck.h"
+
 /**
  * \brief Constructor
  * @param parent as the parent widget

@@ -21,6 +21,8 @@
 
 #include "tools/UBToolsManager.h"
 
+#include "core/memcheck.h"
+
 QPointer<UBSettings> UBSettings::sSingleton = 0;
 
 int UBSettings::pointerDiameter = 40;

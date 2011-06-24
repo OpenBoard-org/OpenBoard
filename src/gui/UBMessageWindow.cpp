@@ -9,6 +9,8 @@
 
 #include "UBSpinningWheel.h"
 
+#include "core/memcheck.h"
+
 UBMessageWindow::UBMessageWindow(QWidget *parent)
     : UBFloatingPalette(Qt::BottomLeftCorner, parent)
     , mTimerID(-1)

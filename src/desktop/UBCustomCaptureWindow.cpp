@@ -9,6 +9,8 @@
 
 #include "gui/UBRubberBand.h"
 
+#include "core/memcheck.h"
+
 UBCustomCaptureWindow::UBCustomCaptureWindow(QWidget *parent)
     : QDialog(parent, Qt::FramelessWindowHint  | Qt::Window)
     , mSelectionBand(0)

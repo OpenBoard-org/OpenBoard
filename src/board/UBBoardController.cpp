@@ -49,6 +49,8 @@
 
 #include "UBBoardPaletteManager.h"
 
+#include "core/memcheck.h"
+
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : QObject(mainWindow->centralWidget())
     , mMainWindow(mainWindow)
@@ -998,6 +1000,11 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         else if (sourceUrl.toString() == UBToolsManager::manager()->protractor.id)
         {
             mActiveScene->addProtractor(pPos);
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        }
+		else if (sourceUrl.toString() == UBToolsManager::manager()->triangle.id)
+        {
+            mActiveScene->addTriangle(pPos);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
         else if (sourceUrl.toString() == UBToolsManager::manager()->mask.id)

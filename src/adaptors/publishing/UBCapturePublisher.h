@@ -7,7 +7,6 @@
 
 #include "UBAbstractPublisher.h"
 
-
 class UBServerXMLHttpRequest;
 
 class UBCapturePublisher : public UBAbstractPublisher

@@ -1,6 +1,7 @@
 #include "UBWindowCaptureDelegate_win.h"
 #include <windows.h>
 
+#include "core/memcheck.h"
 
 UBWindowCaptureDelegate::UBWindowCaptureDelegate(QObject *parent)
     :QObject(parent)

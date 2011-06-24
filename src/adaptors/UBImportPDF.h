@@ -4,6 +4,7 @@
 
 #include <QtGui>
 #include "UBImportAdaptor.h"
+
 class UBDocumentProxy;
 
 class UBImportPDF : public UBImportAdaptor

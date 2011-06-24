@@ -16,6 +16,7 @@
 
 #include "network/UBNetworkAccessManager.h"
 
+#include "core/memcheck.h"
 
 UBAppleWidget::UBAppleWidget(const QUrl& pWidgetUrl, QWidget *parent)
     : UBAbstractWidget(pWidgetUrl, parent)

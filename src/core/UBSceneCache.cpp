@@ -9,6 +9,7 @@
 
 #include "document/UBDocumentProxy.h"
 
+#include "core/memcheck.h"
 
 UBSceneCache::UBSceneCache()
     : mCachedSceneCount(0)

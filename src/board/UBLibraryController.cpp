@@ -26,6 +26,8 @@
 #include "gui/UBThumbnailWidget.h"
 #include "../core/UBSettings.h"
 
+#include "core/memcheck.h"
+
 static quint32 magicNumber = 0xACDCAFE0;
 static QString favoriteVirtualPath = "$favorite$";
 

@@ -18,6 +18,7 @@
 #include "core/UBApplicationController.h" // TODO UB 4.x clean that dependency
 #include "core/UBDisplayManager.h" // TODO UB 4.x clean that dependency
 
+#include "core/memcheck.h"
 
 const int UBGraphicsTextItemDelegate::sMinPixelSize = 8;
 

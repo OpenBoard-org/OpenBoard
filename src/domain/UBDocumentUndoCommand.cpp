@@ -10,6 +10,7 @@
 #include "document/UBDocumentProxy.h"
 #include "UBGraphicsScene.h"
 
+#include "core/memcheck.h"
 
 UBDocumentUndoCommand::UBDocumentUndoCommand(UBDocumentProxy* pDocument, const QList<UBGraphicsScene*>& pOldScenes,
         const QList<UBGraphicsScene*>& pNewScenes, const int& pActiveSceneIndex)

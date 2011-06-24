@@ -39,6 +39,8 @@
 
 #include "frameworks/UBPlatformUtils.h"
 
+#include "core/memcheck.h"
+
 UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 : QGraphicsView (pParent)
 , mController (pController)

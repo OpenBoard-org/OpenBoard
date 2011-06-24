@@ -16,6 +16,8 @@
 
 #include "gui/UBMainWindow.h"
 
+#include "core/memcheck.h"
+
 UBAbstractVotingSystem::UBAbstractVotingSystem(QObject *parent)
     : QObject(parent)
 {

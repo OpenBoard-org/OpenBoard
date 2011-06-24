@@ -44,6 +44,8 @@ class UBApplication : public QtSingleApplication
 
         int exec(const QString& pFileToImport);
 
+		void cleanup();
+
         static QPointer<QUndoStack> undoStack;
 
         static UBApplicationController *applicationController;

@@ -13,6 +13,8 @@
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
 
+#include "core/memcheck.h"
+
 
 const int UBGraphicsProtractor::sFillTransparency = 127;
 const int UBGraphicsProtractor::sDrawTransparency = 192;

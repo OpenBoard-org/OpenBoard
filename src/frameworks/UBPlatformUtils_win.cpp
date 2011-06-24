@@ -6,6 +6,8 @@
 #include <windows.h>
 #include <shellapi.h>
 
+#include "core/memcheck.h"
+
 void UBPlatformUtils::init()
 {
 	initializeKeyboardLayouts();
@@ -347,3 +349,10 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 	keyboardLayouts[3] = new UBKeyboardLocale("German", "de", "", new QIcon(":/images/flags/de.png"), GERMAN_LOCALE);
 }
 
+void UBPlatformUtils::destroyKeyboardLayouts()
+{
+	for(int i=0; i<4; i++)
+		delete keyboardLayouts[i];
+	delete [] keyboardLayouts;
+	keyboardLayouts = NULL;
+}

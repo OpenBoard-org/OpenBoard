@@ -11,6 +11,8 @@
 
 #include "domain/UBAbstractWidget.h"
 
+#include "core/memcheck.h"
+
 UBWidgetMessageAPI::UBWidgetMessageAPI(UBW3CWidget *widget)
     : QObject(widget)
     , mWebWidget(widget)

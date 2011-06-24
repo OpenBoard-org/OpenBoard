@@ -11,6 +11,8 @@
 #include "UBGraphicsScene.h"
 #include "UBAppleWidget.h"
 
+#include "core/memcheck.h"
+
 UBGraphicsWidgetItem::UBGraphicsWidgetItem(QGraphicsItem *parent, int widgetType)
     : UBGraphicsProxyWidget(parent)
     , mWebKitWidget(0)

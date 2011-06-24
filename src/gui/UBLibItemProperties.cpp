@@ -6,6 +6,9 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 
+
+#include "core/memcheck.h"
+
 /**
  * \brief Constructor
  * @param parent as the parent widget
@@ -132,11 +135,11 @@ UBLibItemProperties::~UBLibItemProperties()
         delete mpLayout;
         mpLayout = NULL;
     }
-    if(NULL != mpButtonLayout)
-    {
-        delete mpButtonLayout;
-        mpButtonLayout = NULL;
-    }
+    //if(NULL != mpButtonLayout)
+    //{
+    //    delete mpButtonLayout;
+    //    mpButtonLayout = NULL;
+    //}
     if(NULL != mpSetAsBackgroundButton)
     {
         delete mpSetAsBackgroundButton;

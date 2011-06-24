@@ -11,6 +11,9 @@
 #include <QtCore>
 #include <QStringList>
 
+
+#include "core/memcheck.h"
+
 UBVersion::UBVersion()
     : mIsValid(false)
     , mPlatform(-1)

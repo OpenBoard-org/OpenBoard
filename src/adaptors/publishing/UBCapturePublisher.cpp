@@ -14,6 +14,7 @@
 
 #include "domain/UBGraphicsScene.h"
 
+#include "core/memcheck.h"
 
 UBCapturePublisher::UBCapturePublisher(const QPixmap& pixmap, QObject *parent)
     : UBAbstractPublisher(parent)

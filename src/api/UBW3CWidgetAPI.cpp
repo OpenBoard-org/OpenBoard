@@ -20,6 +20,7 @@
 
 #include "UBWidgetMessageAPI.h"
 
+#include "core/memcheck.h"
 
 UBW3CWidgetAPI::UBW3CWidgetAPI(UBGraphicsW3CWidgetItem *graphicsWidget)
     : QObject(graphicsWidget)

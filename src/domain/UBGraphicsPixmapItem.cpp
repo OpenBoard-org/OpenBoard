@@ -15,6 +15,8 @@
 
 #include "UBGraphicsItemDelegate.h"
 
+#include "core/memcheck.h"
+
 UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent/*, QString pSource*/)
     : QGraphicsPixmapItem(parent)
 {

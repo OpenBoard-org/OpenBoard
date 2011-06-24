@@ -18,6 +18,8 @@
 
 #include "gui/UBMainWindow.h"
 
+#include "core/memcheck.h"
+
 UBExportAdaptor::UBExportAdaptor(QObject *parent)
     : QObject(parent)
     , mIsVerbose(true)

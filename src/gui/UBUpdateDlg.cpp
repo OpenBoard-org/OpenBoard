@@ -3,6 +3,8 @@
 
 #include "UBUpdateDlg.h"
 
+#include "core/memcheck.h"
+
 UBUpdateDlg::UBUpdateDlg(QWidget *parent, int nbFiles, const QString& bkpPath)
     : QDialog(parent)
     , mpDlgBttn(NULL)

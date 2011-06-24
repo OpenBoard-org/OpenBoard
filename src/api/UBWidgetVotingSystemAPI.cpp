@@ -9,6 +9,7 @@
 
 #include "adaptors/voting/UBAbstractVotingSystem.h"
 
+#include "core/memcheck.h"
 
 UBWidgetVotingSystemAPI::UBWidgetVotingSystemAPI(QObject* parent)
     : QObject(parent)
