@@ -1000,7 +1000,7 @@ void UBPersistenceManager::checkIfDocumentRepositoryExists()
         QMessageBox::question(
             QApplication::activeWindow(),
             tr("Document Repository Loss"),
-            tr("Uniboard has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.").arg(humanPath),
+            tr("Sankore has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.").arg(humanPath),
             QMessageBox::Yes);
 
         UBApplication::quit();

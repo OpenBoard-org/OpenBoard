@@ -46,8 +46,8 @@ void UBPlatformUtils::init()
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-    NSString *currentPath      = [[NSBundle mainBundle] pathForResource:@"Save PDF to Uniboard" ofType:@"workflow"];
-    NSString *installedPath    = [[[@"~/Library/PDF Services" stringByExpandingTildeInPath] stringByAppendingPathComponent:@"Save PDF to Uniboard"] stringByAppendingPathExtension:@"workflow"];
+    NSString *currentPath      = [[NSBundle mainBundle] pathForResource:@"Save PDF to Sankore" ofType:@"workflow"];
+    NSString *installedPath    = [[[@"~/Library/PDF Services" stringByExpandingTildeInPath] stringByAppendingPathComponent:@"Save PDF to Sankore"] stringByAppendingPathExtension:@"workflow"];
     NSString *currentVersion   = bundleShortVersion([NSBundle bundleWithPath:currentPath]);
     NSString *installedVersion = bundleShortVersion([NSBundle bundleWithPath:installedPath]);
 
@@ -59,7 +59,7 @@ void UBPlatformUtils::init()
         BOOL copyOK = [fileManager copyPath:currentPath toPath:installedPath handler:nil];
         if (!copyOK)
         {
-            qWarning("Could not install the 'Save PDF to Uniboard' workflow");
+            qWarning("Could not install the 'Save PDF to Sankore' workflow");
         }
     }
 
@@ -364,25 +364,25 @@ KEYBT* createKeyBt(const UCKeyboardLayout* keyLayout, int vkk)
 
 void UBPlatformUtils::initializeKeyboardLayouts()
 {
-	CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceIsEnableCapable, kTISPropertyInputSourceIsSelectCapable };          
-	const void* values[] = { kTISCategoryKeyboardInputSource, kCFBooleanTrue, kCFBooleanTrue };          
-	CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 3, NULL, NULL);  
-	CFArrayRef kbds = TISCreateInputSourceList(dict, false);          
-	
-	int count = CFArrayGetCount(kbds);  
+	CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceIsEnableCapable, kTISPropertyInputSourceIsSelectCapable };
+	const void* values[] = { kTISCategoryKeyboardInputSource, kCFBooleanTrue, kCFBooleanTrue };
+	CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 3, NULL, NULL);
+	CFArrayRef kbds = TISCreateInputSourceList(dict, false);
+
+	int count = CFArrayGetCount(kbds);
 	QList<UBKeyboardLocale*> result;
-	
+
 	for(int i=0; i<count; i++)
 	{
-		TISInputSourceRef keyLayoutRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, i);  
+		TISInputSourceRef keyLayoutRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, i);
 		if (keyLayoutRef==NULL)
 			continue;
 
 		CFDataRef ref = (CFDataRef) TISGetInputSourceProperty(keyLayoutRef,
-					 kTISPropertyUnicodeKeyLayoutData);  
+					 kTISPropertyUnicodeKeyLayoutData);
 		if (ref==NULL)
 			continue;
-		const UCKeyboardLayout* keyLayout = (const UCKeyboardLayout*) CFDataGetBytePtr(ref); 
+		const UCKeyboardLayout* keyLayout = (const UCKeyboardLayout*) CFDataGetBytePtr(ref);
 		if (keyLayoutRef==NULL)
 			continue;
 
@@ -438,12 +438,12 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 		keybt[44] = createKeyBt(keyLayout, 43);
 		keybt[45] = createKeyBt(keyLayout, 47);
 		keybt[46] = createKeyBt(keyLayout, 44);
-		
-		
-		CFStringRef sr = (CFStringRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyInputSourceID);  
+
+
+		CFStringRef sr = (CFStringRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyInputSourceID);
 		QString ID = QStringFromStringRef(sr);
-		
-		sr = (CFStringRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyLocalizedName);  
+
+		sr = (CFStringRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyLocalizedName);
 		QString fullName = QStringFromStringRef(sr);
 
 		CFArrayRef langs = (CFArrayRef) TISGetInputSourceProperty(keyLayoutRef,
@@ -455,13 +455,13 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 			CFStringRef langRef = (CFStringRef)CFArrayGetValueAtIndex(langs, 0);
 			name = QStringFromStringRef(langRef);
 		}
-		
+
 		//IconRef iconRef = (IconRef)TISGetInputSourceProperty(kTISPropertyIconRef,
 		//											  kTISPropertyInputSourceLanguages);
-		
+
 		result.append(new UBKeyboardLocale(fullName, name, ID, NULL, keybt));
 	}
-	
+
 	if (result.size()==0)
 	{
 		nKeyboardLayouts = 0;

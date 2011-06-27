@@ -28,7 +28,7 @@ UBWebPublisher::~UBWebPublisher()
 
 QString UBWebPublisher::exportName()
 {
-    return tr("Publish Document on Uniboard Web");
+    return tr("Publish Document on Sankore Web");
 }
 
 

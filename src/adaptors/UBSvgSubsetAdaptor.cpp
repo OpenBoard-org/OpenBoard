@@ -770,7 +770,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     if (mXmlReader.hasError())
     {
-        qWarning() << "error parsing uniboard file " << mXmlReader.errorString();
+        qWarning() << "error parsing Sankore file " << mXmlReader.errorString();
     }
 
     if (scene)

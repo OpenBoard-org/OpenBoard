@@ -676,7 +676,7 @@ void UBDocumentPublisher::sendZipToUniboardWeb(const QString& zipFilePath, const
 
     if(!zipFile.open(QIODevice::ReadOnly))
     {
-        qWarning() << "Cannot open file" << zipFilePath << "for upload to Uniboard Web";
+        qWarning() << "Cannot open file" << zipFilePath << "for upload to Sankore Web";
         return;
     }
 
@@ -712,7 +712,7 @@ void UBDocumentPublisher::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
     int percentage = (((qreal)bytesSent / (qreal)bytesTotal ) * 100);
 
     if (bytesSent < bytesTotal)
-        UBApplication::showMessage(tr("Upload to Uniboard Web in progress %1 %").arg(percentage), true);
+        UBApplication::showMessage(tr("Upload to Sankore Web in progress %1 %").arg(percentage), true);
     else
         UBApplication::showMessage(tr("Sending document ..."), true);
 
@@ -727,7 +727,7 @@ void UBDocumentPublisher::postZipUploadResponse(bool success, const QByteArray& 
     }
     else
     {
-        qWarning() << "error uploading document to Uniboard Web" << QString::fromUtf8(payload);
+        qWarning() << "error uploading document to Sankore Web" << QString::fromUtf8(payload);
 
         QString errorMessage = QString::fromUtf8(payload);
 
