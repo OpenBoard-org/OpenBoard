@@ -87,11 +87,10 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
             , this, SLOT(addCapturedPixmap(const QPixmap &, bool, const QUrl&)));
 
     networkAccessManager = new QNetworkAccessManager (this);
-    connect (networkAccessManager, SIGNAL (finished (QNetworkReply*)), this, SLOT (downloadJsonFinished (QNetworkReply*)));
     QTimer::singleShot (1000, this, SLOT (checkUpdateAtLaunch()));
 
 #ifdef Q_WS_X11
-//    mMainWindow->setStyleSheet("QToolButton { font-size: 11px}");
+    mMainWindow->setStyleSheet("QToolButton { font-size: 11px}");
 #endif
 
 }
