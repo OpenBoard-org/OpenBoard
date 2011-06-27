@@ -28,6 +28,8 @@ XPDFRenderer::XPDFRenderer(const QString &filename)
     mPagesMap.clear();
     mThumbs.clear();
     mThumbMap.clear();
+    mScaleX = 0.0;
+    mScaleY = 0.0;
 }
 
 XPDFRenderer::~XPDFRenderer()
@@ -122,11 +124,21 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
 {
     if (isValid())
     {
+        qreal xscale = p->worldTransform().m11();
+        qreal yscale = p->worldTransform().m22();
+        bool bZoomChanged = false;
+
+        if(mScaleX != xscale || mScaleY != yscale)
+        {
+            mScaleX = xscale;
+            mScaleY = yscale;
+            bZoomChanged = true;
+        }
+
         // First verify if the thumbnails and the pages are generated
         if(!bThumbGenerated)
         {
-            qreal xscale = p->worldTransform().m11();
-            qreal yscale = p->worldTransform().m22();
+
             if(!mThumbMap[pageNumber - 1])
             {
                 // Generate the thumbnail
@@ -138,11 +150,9 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
                 }
             }
         }
-        else if(!bPagesGenerated)
+        else if(!bPagesGenerated || bZoomChanged)
         {
-            qreal xscale = p->worldTransform().m11();
-            qreal yscale = p->worldTransform().m22();
-            if(!mPagesMap[pageNumber - 1])
+            if(!mPagesMap[pageNumber - 1] || bZoomChanged)
             {
                 // Generate the page
                 mNumPageToPageMap[pageNumber] = *createPDFImage(pageNumber, xscale, yscale, bounds);

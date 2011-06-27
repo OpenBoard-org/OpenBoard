@@ -49,6 +49,8 @@ class XPDFRenderer : public PDFRenderer
         bool bPagesGenerated;
         SplashBitmap* mpSplashBitmap;
         SplashOutputDev* mSplash;
+        qreal mScaleX;
+        qreal mScaleY;
 };
 
 #endif // XPDFRENDERER_H
