@@ -16,15 +16,7 @@
 #include "core/memcheck.h"
 
 
-const int UBGraphicsProtractor::sFillTransparency = 127;
-const int UBGraphicsProtractor::sDrawTransparency = 192;
 const QRectF                   UBGraphicsProtractor::sDefaultRect = QRectF(-175, -175, 350, 350);
-const QColor                     UBGraphicsProtractor::sFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
-const QColor               UBGraphicsProtractor::sFillColorCenter = QColor(0xbe, 0xbe, 0xbe, sFillTransparency);
-const QColor                     UBGraphicsProtractor::sDrawColor = QColor(32, 32, 32, sDrawTransparency);
-const QColor       UBGraphicsProtractor::sDarkBackgroundFillColor = QColor(0xb5, 0xb5, 0xb5, sFillTransparency);
-const QColor UBGraphicsProtractor::sDarkBackgroundFillColorCenter = QColor(0xde, 0xde, 0xde, sFillTransparency);
-const QColor       UBGraphicsProtractor::sDarkBackgroundDrawColor = QColor(255, 255, 255, sDrawTransparency);
 
 UBGraphicsProtractor::UBGraphicsProtractor()
     : QGraphicsEllipseItem(sDefaultRect)
@@ -34,46 +26,32 @@ UBGraphicsProtractor::UBGraphicsProtractor()
     , mSpan(180)
     , mStartAngle(0)
     , mScaleFactor(1)
-    , mCloseSvgItem(0)
     , mResetSvgItem(0)
     , mResizeSvgItem(0)
-    , mRotateSvgItem(0)
     , mMarkerSvgItem(0)
 {
-    setFlag(QGraphicsItem::ItemIsMovable, true);
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
-    setAcceptsHoverEvents(true);
-    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+	create(*this);
+
+	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
 	setStartAngle(0);
 	setSpanAngle(180 * 16);
 
-    mCloseSvgItem = new QGraphicsSvgItem(":/images/closeTool.svg", this);
-    mCloseSvgItem->setVisible(false);
-    mCloseSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    mCloseSvgItem->setPos(closeButtonBounds().topLeft());
-
     mResetSvgItem = new QGraphicsSvgItem(":/images/resetTool.svg", this);
     mResetSvgItem->setVisible(false);
     mResetSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    mResetSvgItem->setPos(resetButtonBounds().topLeft());
+    mResetSvgItem->setPos(resetButtonRect().topLeft());
 
     mResizeSvgItem = new QGraphicsSvgItem(":/images/resizeTool.svg", this);
     mResizeSvgItem->setVisible(false);
     mResizeSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    mResizeSvgItem->setPos(resizeButtonBounds().topLeft());
-
-    mRotateSvgItem = new QGraphicsSvgItem(":/images/rotateProtractor.svg", this);
-    mRotateSvgItem->setVisible(false);
-    mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    mRotateSvgItem->setPos(rotateButtonBounds().topLeft());
+    mResizeSvgItem->setPos(resizeButtonRect().topLeft());
 
     mMarkerSvgItem = new QGraphicsSvgItem(":/images/angleMarker.svg", this);
     mMarkerSvgItem->setVisible(false);
     mMarkerSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
-    mMarkerSvgItem->setPos(markerButtonBounds().topLeft());
+    mMarkerSvgItem->setPos(markerButtonRect().topLeft());
 
     scale(1.5, 1.5);
 }
@@ -120,9 +98,9 @@ QRectF UBGraphicsProtractor::boundingRect() const
     qreal centerX = center.x();
     qreal centerY = center.y();
 
-    QRectF bounds = resizeButtonBounds().adjusted(centerX, centerY, centerX, centerY);
-    bounds = bounds.united(closeButtonBounds().adjusted(centerX, centerY, centerX, centerY));
-    bounds = bounds.united(resetButtonBounds().adjusted(centerX, centerY, centerX, centerY));
+    QRectF bounds = resizeButtonRect().adjusted(centerX, centerY, centerX, centerY);
+    bounds = bounds.united(closeButtonRect().adjusted(centerX, centerY, centerX, centerY));
+    bounds = bounds.united(resetButtonRect().adjusted(centerX, centerY, centerX, centerY));
 
     QTransform t;
     t.translate(centerX, centerY);
@@ -140,21 +118,21 @@ QPainterPath UBGraphicsProtractor::shape() const
 {
     QPainterPath path = QGraphicsEllipseItem::shape();
     QPainterPath buttonPath;
-    QRectF markerBounds = markerButtonBounds();
+    QRectF markerRect = markerButtonRect();
 
     QPointF center = rect().center();
     qreal centerX = center.x();
     qreal centerY = center.y();
 
-    buttonPath.addRect(resizeButtonBounds().adjusted(centerX, centerY, centerX, centerY));
-    if(!resizeButtonBounds().contains(markerBounds))
+    buttonPath.addRect(resizeButtonRect().adjusted(centerX, centerY, centerX, centerY));
+    if(!resizeButtonRect().contains(markerRect))
     {
-        buttonPath.addRect(markerBounds.adjusted(centerX - markerBounds.left() * 2 - markerBounds.width(), centerY
-                , centerX - markerBounds.left() * 2 - markerBounds.width(), centerY));
-        buttonPath.addRect(markerBounds.adjusted(centerX, centerY, centerX, centerY));
+        buttonPath.addRect(markerRect.adjusted(centerX - markerRect.left() * 2 - markerRect.width(), centerY
+                , centerX - markerRect.left() * 2 - markerRect.width(), centerY));
+        buttonPath.addRect(markerRect.adjusted(centerX, centerY, centerX, centerY));
     }
-    buttonPath.addRect(closeButtonBounds().adjusted(centerX, centerY, centerX, centerY));
-    buttonPath.addRect(resetButtonBounds().adjusted(centerX, centerY, centerX, centerY));
+    buttonPath.addRect(closeButtonRect().adjusted(centerX, centerY, centerX, centerY));
+    buttonPath.addRect(resetButtonRect().adjusted(centerX, centerY, centerX, centerY));
     QTransform t;
     t.translate(centerX, centerY);
     t.rotate(-mStartAngle);
@@ -323,7 +301,7 @@ qreal UBGraphicsProtractor::antiScale() const
 }
 
 
-QRectF UBGraphicsProtractor::resetButtonBounds () const
+QRectF UBGraphicsProtractor::resetButtonRect () const
 {
     qreal antiSc = antiScale();
 
@@ -336,7 +314,7 @@ QRectF UBGraphicsProtractor::resetButtonBounds () const
 }
 
 
-QRectF UBGraphicsProtractor::closeButtonBounds () const
+QRectF UBGraphicsProtractor::closeButtonRect () const
 {
     qreal antiSc = antiScale();
 
@@ -352,7 +330,7 @@ QRectF UBGraphicsProtractor::closeButtonBounds () const
 }
 
 
-QRectF UBGraphicsProtractor::resizeButtonBounds () const
+QRectF UBGraphicsProtractor::resizeButtonRect () const
 {
     qreal antiSc = antiScale();
 
@@ -442,41 +420,41 @@ void UBGraphicsProtractor::paintButtons(QPainter *painter)
         qreal antiSc = antiScale();
 
         qreal scale = buttonSizeReference().width() / mCloseSvgItem->boundingRect().width();
-        mCloseSvgItem->setPos(closeButtonBounds().topLeft() + rect().center());
+        mCloseSvgItem->setPos(closeButtonRect().topLeft() + rect().center());
         mCloseSvgItem->resetTransform();
-        mCloseSvgItem->translate(-closeButtonBounds().left(),-closeButtonBounds().top());
+        mCloseSvgItem->translate(-closeButtonRect().left(),-closeButtonRect().top());
         mCloseSvgItem->rotate(-mStartAngle);
-        mCloseSvgItem->translate(closeButtonBounds().left(), closeButtonBounds().top());
+        mCloseSvgItem->translate(closeButtonRect().left(), closeButtonRect().top());
         mCloseSvgItem->scale(scale * antiSc, scale * antiSc);//this do not impact the bounding box of thr svg item...
 
-        mResetSvgItem->setPos(resetButtonBounds().topLeft() + rect().center());
+        mResetSvgItem->setPos(resetButtonRect().topLeft() + rect().center());
         mResetSvgItem->resetTransform();
-        mResetSvgItem->translate(-resetButtonBounds().left(), -resetButtonBounds().top());
+        mResetSvgItem->translate(-resetButtonRect().left(), -resetButtonRect().top());
         mResetSvgItem->rotate(-mStartAngle);
-        mResetSvgItem->translate(resetButtonBounds().left(), resetButtonBounds().top());
+        mResetSvgItem->translate(resetButtonRect().left(), resetButtonRect().top());
         mResetSvgItem->scale(scale * antiSc, scale * antiSc);//this do not impact the bounding box of thr svg item...
 
-        mResizeSvgItem->setPos(resizeButtonBounds().topLeft() + rect().center());
+        mResizeSvgItem->setPos(resizeButtonRect().topLeft() + rect().center());
         mResizeSvgItem->resetTransform();
-        mResizeSvgItem->translate(-resizeButtonBounds().left(), -resizeButtonBounds().top());
+        mResizeSvgItem->translate(-resizeButtonRect().left(), -resizeButtonRect().top());
         mResizeSvgItem->rotate(-mStartAngle);
-        mResizeSvgItem->translate(resizeButtonBounds().left(), resizeButtonBounds().top());
+        mResizeSvgItem->translate(resizeButtonRect().left(), resizeButtonRect().top());
         mResizeSvgItem->scale(scale * antiSc, scale * antiSc);//this do not impact the bounding box of thr svg item...
 
-        mRotateSvgItem->setPos(rotateButtonBounds().topLeft() + rect().center());
+        mRotateSvgItem->setPos(rotateButtonRect().topLeft() + rect().center());
         mRotateSvgItem->resetTransform();
-        mRotateSvgItem->translate(-rotateButtonBounds().left(), -rotateButtonBounds().top());
+        mRotateSvgItem->translate(-rotateButtonRect().left(), -rotateButtonRect().top());
         mRotateSvgItem->rotate(-mStartAngle);
-        mRotateSvgItem->translate(rotateButtonBounds().left(), rotateButtonBounds().top());
+        mRotateSvgItem->translate(rotateButtonRect().left(), rotateButtonRect().top());
         mRotateSvgItem->scale(scale, scale);//this do not impact the bounding box of thr svg item...
     }
 
     qreal scale = markerSizeReference().width()/mMarkerSvgItem->boundingRect().width();
-    mMarkerSvgItem->setPos(markerButtonBounds().topLeft() + rect().center());
+    mMarkerSvgItem->setPos(markerButtonRect().topLeft() + rect().center());
     mMarkerSvgItem->resetTransform();
-    mMarkerSvgItem->translate(-markerButtonBounds().left(), -markerButtonBounds().top());
+    mMarkerSvgItem->translate(-markerButtonRect().left(), -markerButtonRect().top());
     mMarkerSvgItem->rotate(- mStartAngle - mCurrentAngle);
-    mMarkerSvgItem->translate(markerButtonBounds().left(), markerButtonBounds().top());
+    mMarkerSvgItem->translate(markerButtonRect().left(), markerButtonRect().top());
     mMarkerSvgItem->scale(scale, scale);//this do not impact the bounding box of thr svg item...
 
     mCloseSvgItem->setVisible(mShowButtons);
@@ -550,15 +528,15 @@ UBGraphicsProtractor::Tool UBGraphicsProtractor::toolFromPos(QPointF pos)
     t.rotate(mCurrentAngle);
     QPointF p2 = t.map(pos);
 
-    if(resizeButtonBounds().contains(p1))
+    if(resizeButtonRect().contains(p1))
         return Resize;
-    else if(closeButtonBounds().contains(p1))
+    else if(closeButtonRect().contains(p1))
         return Close;
-    else if(resetButtonBounds().contains(p1))
+    else if(resetButtonRect().contains(p1))
         return Reset;
-    else if(rotateButtonBounds().contains(p1))
+    else if(rotateButtonRect().contains(p1))
         return Rotate;
-    else if(markerButtonBounds().contains(p2))
+    else if(markerButtonRect().contains(p2))
         return MoveMarker;
     else if(line.length() <= radius())
         return Move;
@@ -572,15 +550,10 @@ UBGraphicsScene* UBGraphicsProtractor::scene() const
     return static_cast<UBGraphicsScene*>(QGraphicsEllipseItem::scene());
 }
 
-QColor UBGraphicsProtractor::drawColor() const
-{
-    return scene()->isDarkBackground() ? sDarkBackgroundDrawColor : sDrawColor;
-}
-
 QBrush UBGraphicsProtractor::fillBrush() const
 {
-    QColor fillColor = scene()->isDarkBackground() ? sDarkBackgroundFillColor : sFillColor;
-    QColor fillColorCenter = scene()->isDarkBackground() ? sDarkBackgroundFillColorCenter : sFillColorCenter;
+    QColor fillColor = edgeFillColor();// scene()->isDarkBackground() ? sDarkBackgroundFillColor : sFillColor;
+    QColor fillColorCenter = middleFillColor();//scene()->isDarkBackground() ? sDarkBackgroundFillColorCenter : sFillColorCenter;
     QColor transparentWhite = Qt::white;
     transparentWhite.setAlpha(scene()->isDarkBackground() ? sDrawTransparency : sFillTransparency);
     QRadialGradient radialGradient(rect().center(), radius(), rect().center());
@@ -607,4 +580,13 @@ UBItem* UBGraphicsProtractor::deepCopy() const
     // TODO UB 4.7 ... complete all members ?
 
     return copy;
+}
+
+
+void UBGraphicsProtractor::rotateAroundTopLeftOrigin(qreal angle)
+{}
+
+QPointF	UBGraphicsProtractor::topLeftOrigin() const
+{
+	return QPointF(rect().x(), rect().y());
 }

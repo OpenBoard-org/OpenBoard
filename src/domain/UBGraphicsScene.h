@@ -235,6 +235,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         static qreal toolOffsetProtractor;
         static qreal toolOffsetCompass;
         static qreal toolOffsetCurtain;
+		static qreal toolOffsetTriangle;
 
         QSet<QGraphicsItem*> tools(){ return mTools;}
 
