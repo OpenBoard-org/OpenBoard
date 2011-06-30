@@ -12,8 +12,8 @@
 
 UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))
-    , mIsMoving(false)
     , mCustomPosition(false)
+    , mIsMoving(false)
     , mCanBeMinimized(false)
     , mMinimizedLocation(eMinimizedLocation_None)
     , mDefaultPosition(position)
@@ -27,7 +27,7 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     else
     {
         // standalone window
-		// !!!! Should be included into Windows after QT recompilation
+        // !!!! Should be included into Windows after QT recompilation
 #ifndef Q_WS_WIN
         setAttribute(Qt::WA_TranslucentBackground);
         setAttribute(Qt::WA_MacAlwaysShowToolWindow);

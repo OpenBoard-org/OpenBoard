@@ -24,8 +24,7 @@ class UBApplicationController : public QObject
 
     public:
 
-        UBApplicationController(UBBoardView *pControlView, UBBoardView *pDisplayView,
-                UBMainWindow *pMainWindow, QObject* parent = 0);
+        UBApplicationController(UBBoardView *pControlView, UBBoardView *pDisplayView, UBMainWindow *pMainWindow, QObject* parent = 0);
         virtual ~UBApplicationController();
 
         int initialHScroll() { return mInitialHScroll; }

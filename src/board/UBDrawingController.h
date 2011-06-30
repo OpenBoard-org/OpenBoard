@@ -41,7 +41,7 @@ class UBDrawingController : public QObject
         void setMarkerColor(bool onDarkBackground, const QColor& color, int pIndex);
         void setMarkerAlpha(qreal alpha);
 
-		UBAbstractDrawRuler* mActiveRuler;
+        UBAbstractDrawRuler* mActiveRuler;
 
     public slots:
 

@@ -69,16 +69,6 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
  */
 UBLibNavigatorWidget::~UBLibNavigatorWidget()
 {
-    //if(NULL != mLayout)
-    //{
-    //    delete mLayout;
-    //    mLayout = NULL;
-    //}
-    //if(NULL != mLibWidget)
-    //{
-    //    delete mLibWidget;
-    //    mLibWidget = NULL;
-    //}
     if(NULL != mPathViewer)
     {
         delete mPathViewer;
@@ -99,7 +89,7 @@ UBLibNavigatorWidget::~UBLibNavigatorWidget()
 void UBLibNavigatorWidget::dropMe(const QMimeData *_data)
 {
     // Forward the mime data to the library widget
-
+    Q_UNUSED(_data);
 }
 
 /**

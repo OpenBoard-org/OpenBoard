@@ -50,12 +50,13 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
     , mControlView(pControlView)
     , mDisplayView(pDisplayView)
     , mMirror(0)
+    , mFtp(0)
     , mMainMode(Board)
     , mDisplayManager(0)
     , mAutomaticCheckForUpdates(false)
     , mCheckingForUpdates(false)
     , mIsShowingDesktop(false)
-	, mFtp(0)
+
 {
     mDisplayManager = new UBDisplayManager(this);
 

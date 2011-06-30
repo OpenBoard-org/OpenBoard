@@ -42,6 +42,8 @@ private slots:
 
 private:
 
+    UBDocumentProxy *mSourceDocument;
+    UBDocumentProxy *mPublishingDocument;
     void init();
     void sendUbw();
     QString getBase64Of(QString stringToEncode);
@@ -57,9 +59,6 @@ private:
 
     void buildUbwFile();
     QString mTmpZipFile;
-
-    UBDocumentProxy *mSourceDocument;
-    UBDocumentProxy *mPublishingDocument;
 
 };
 #endif // UBDOCUMENTPUBLISHER_H
