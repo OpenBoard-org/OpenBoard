@@ -41,10 +41,6 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
             return Type;
         }
 
-    signals:
-
-        void hidden();
-
     protected:
         virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
 
@@ -62,10 +58,10 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
     private:
         // Helpers
         void paintGraduations (QPainter *painter);
-        void     paintButtons (QPainter *painter);
+        void paintButtons (QPainter *painter);
         void paintAngleMarker (QPainter *painter);
-                Tool      toolFromPos (QPointF pos);
-        qreal       antiScale () const;
+        Tool toolFromPos (QPointF pos);
+        qreal antiScale () const;
         UBGraphicsScene*            scene() const;
         QBrush                  fillBrush() const;
 
@@ -90,14 +86,12 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         QGraphicsSvgItem* mResetSvgItem;
         QGraphicsSvgItem* mResizeSvgItem;
         QGraphicsSvgItem* mMarkerSvgItem;
+		QGraphicsSvgItem* mRotateSvgItem;
 
         static const QRectF sDefaultRect;
 
-        virtual void rotateAroundTopLeftOrigin(qreal angle);
-        virtual QPointF	topLeftOrigin() const;
-
-        int sFillTransparency;
-        int sDrawTransparency;
+        virtual void rotateAroundCenter(qreal angle);
+        virtual QPointF	rotationCenter() const;
 };
 
 #endif /* UBGRAPHICSPROTRACTOR_H_ */

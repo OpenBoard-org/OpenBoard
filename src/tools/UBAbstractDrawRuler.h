@@ -19,33 +19,27 @@ public:
     virtual void DrawLine(const QPointF& position, qreal width);
     virtual void EndLine();
 
+    signals:
+        void hidden();
+
 protected:
 
     void paint();
 
     virtual UBGraphicsScene* scene() const = 0;
 
-    virtual void rotateAroundTopLeftOrigin(qreal angle) = 0;
+    virtual void rotateAroundCenter(qreal angle) = 0;
 
-    virtual QPointF topLeftOrigin() const = 0;
-    virtual QRectF  resizeButtonRect() const = 0;
+    virtual QPointF rotationCenter() const = 0;
     virtual QRectF  closeButtonRect() const = 0;
-    virtual QRectF  rotateButtonRect() const = 0;
 
-    void updateResizeCursor(QGraphicsItem &item);
-
-    bool mResizing;
-    bool mRotating;
     bool mShowButtons;
     QGraphicsSvgItem* mCloseSvgItem;
-    QGraphicsSvgItem* mRotateSvgItem;
-    QCursor mResizeCursor;
     qreal mAntiScaleRatio;
 
     QPointF startDrawPosition;
 
     QCursor moveCursor() const;
-    QCursor resizeCursor() const;
     QCursor rotateCursor() const;
     QCursor closeCursor() const;
     QCursor drawRulerLineCursor() const;
@@ -63,7 +57,6 @@ protected:
     static const QColor sDarkBackgroundDrawColor;
 
     static const int    sLeftEdgeMargin = 10;
-    static const int    sMinLength = 150;
     static const int    sDegreeToQtAngleUnit = 16;
     static const int    sRotationRadius = 15;
     static const int    sPixelsPerMillimeter = 5;
