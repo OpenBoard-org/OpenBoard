@@ -127,8 +127,9 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
         qreal xscale = p->worldTransform().m11();
         qreal yscale = p->worldTransform().m22();
         bool bZoomChanged = false;
+        bool bFirstThumbnail = false;
 
-        if(mScaleX != xscale || mScaleY != yscale)
+        if(fabs(mScaleX - xscale) > 0.1 || fabs(mScaleY - yscale) > 0.1)
         {
             mScaleX = xscale;
             mScaleY = yscale;
@@ -138,9 +139,14 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
         // First verify if the thumbnails and the pages are generated
         if(!bThumbGenerated)
         {
+            if(pageNumber == 1)
+            {
+                bFirstThumbnail = true;
+            }
 
             if(!mThumbMap[pageNumber - 1])
             {
+
                 // Generate the thumbnail
                 mThumbs << *createPDFImage(pageNumber, xscale, yscale, bounds);
                 mThumbMap[pageNumber - 1] = true;
@@ -164,10 +170,9 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
             }
         }
 
-        // Warning: verify pagenumber
         QImage pdfImage;
 
-        if(!bThumbGenerated)
+        if(!bThumbGenerated || bFirstThumbnail)
         {
             pdfImage = mThumbs.at(pageNumber - 1);
         }
@@ -175,8 +180,6 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
         {
             pdfImage = mNumPageToPageMap[pageNumber];
         }
-
-        pdfImage.rect();
 
         QTransform savedTransform = p->worldTransform();
         p->resetTransform();

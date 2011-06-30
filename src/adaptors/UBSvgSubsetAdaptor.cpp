@@ -2593,14 +2593,14 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
     QStringRef svgWidth = mXmlReader.attributes().value("width");
     QStringRef svgHeight = mXmlReader.attributes().value("height");
 
-	UBGraphicsTriangle::UBGraphicsTriangleOrientation orientation = 
-		UBGraphicsTriangle::orientationFromStr((mXmlReader.attributes().value("orientation")));
+        UBGraphicsTriangle::UBGraphicsTriangleOrientation orientation =
+                UBGraphicsTriangle::orientationFromStr((mXmlReader.attributes().value("orientation")));
 
     if (!svgX.isNull() && !svgY.isNull() && !svgWidth.isNull() && !svgHeight.isNull())
     {
         triangle->setRect(svgX.toString().toFloat(), svgY.toString().toFloat()
                             , svgWidth.toString().toFloat(), svgHeight.toString().toFloat(),
-							orientation);
+                                                        orientation);
     }
 
     triangle->setVisible(true);

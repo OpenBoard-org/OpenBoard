@@ -33,8 +33,8 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
         setAttribute(Qt::WA_MacAlwaysShowToolWindow);
 #endif
 #ifdef Q_WS_MAC
-        setAttribute(Qt::WA_MacNonActivatingToolWindow);
-        setAttribute(Qt::WA_MacNoShadow);
+        //setAttribute(Qt::WA_MacNonActivatingToolWindow);
+        //setAttribute(Qt::WA_MacNoShadow);
 #endif
     }
 
