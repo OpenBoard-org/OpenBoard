@@ -31,6 +31,7 @@ class UBGraphicsScene;
 class UBDocumentProxy;
 class UBGraphicsStroke;
 class UBPersistenceManager;
+class UBGraphicsTriangle;
 
 class UBSvgSubsetAdaptor
 {
@@ -117,6 +118,8 @@ class UBSvgSubsetAdaptor
                 UBGraphicsCompass* compassFromSvg();
 
                 UBGraphicsProtractor* protractorFromSvg();
+
+				UBGraphicsTriangle* triangleFromSvg();
 
                 void graphicsItemFromSvg(QGraphicsItem* gItem);
 

@@ -57,6 +57,7 @@ qreal UBGraphicsScene::toolLayerStart = 10000000.0;
 
 qreal UBGraphicsScene::toolOffsetRuler = 100;
 qreal UBGraphicsScene::toolOffsetProtractor = 100;
+qreal UBGraphicsScene::toolOffsetTriangle = 100;
 qreal UBGraphicsScene::toolOffsetCompass = 100;
 qreal UBGraphicsScene::toolOffsetEraser = 200;
 
@@ -126,7 +127,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 
 UBGraphicsScene::~UBGraphicsScene()
 {
-	int a = 13;
     // NOOP
 }
 
@@ -1412,9 +1412,9 @@ void UBGraphicsScene::addProtractor(QPointF center)
 
 void UBGraphicsScene::addTriangle(QPointF center)
 {
-    // Protractor
-/*
-    UBGraphicsTriangle* protractor = new UBGraphicsTriangle(); // mem : owned and destroyed by the scene
+    // Triangle
+
+    UBGraphicsTriangle* triangle = new UBGraphicsTriangle(); // mem : owned and destroyed by the scene
     mTools << triangle;
 
     triangle->setZValue(toolLayerStart + toolOffsetProtractor);
@@ -1426,7 +1426,7 @@ void UBGraphicsScene::addTriangle(QPointF center)
     triangle->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
 
     triangle->setVisible(true);
-    setModified(true);*/
+    setModified(true);
 }
 
 

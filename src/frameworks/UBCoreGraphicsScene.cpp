@@ -12,7 +12,6 @@
 UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
     : QGraphicsScene ( parent  )
 {
-	int a = 13;
     //NOOP
 }
 
