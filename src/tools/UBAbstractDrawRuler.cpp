@@ -18,6 +18,15 @@ const QColor UBAbstractDrawRuler::sDarkBackgroundMiddleFillColor = QColor(0xb5, 
 const QColor UBAbstractDrawRuler::sDarkBackgroundEdgeFillColor = QColor(0xdd, 0xdd, 0xdd, sFillTransparency);
 const QColor UBAbstractDrawRuler::sDarkBackgroundDrawColor = QColor(0xff, 0xff, 0xff, sDrawTransparency);
 
+const int UBAbstractDrawRuler::sLeftEdgeMargin = 10;
+const int UBAbstractDrawRuler::sDegreeToQtAngleUnit = 16;
+const int UBAbstractDrawRuler::sRotationRadius = 15;
+const int UBAbstractDrawRuler::sPixelsPerMillimeter = 5;
+const int UBAbstractDrawRuler::sFillTransparency = 127;
+const int UBAbstractDrawRuler::sDrawTransparency = 192;
+const int UBAbstractDrawRuler::sRoundingRadius = sLeftEdgeMargin / 2;
+
+
 UBAbstractDrawRuler::UBAbstractDrawRuler()
 	: mShowButtons(false)
     , mAntiScaleRatio(1.0)

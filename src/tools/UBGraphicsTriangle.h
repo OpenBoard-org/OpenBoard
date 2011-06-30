@@ -92,6 +92,10 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
 	private:
 
+        QTransform calculateRotationTransform();
+        qreal angle;
+        void rotateAroundCenter(QTransform& transform);
+
 		bool mResizing1;
 		bool mResizing2;
 		bool mRotating;

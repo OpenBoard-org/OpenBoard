@@ -20,6 +20,7 @@ UBGraphicsTriangle::UBGraphicsTriangle()
 	, mResizing1(false)
 	, mResizing2(false)
 	, mRotating(false)
+    , angle(0)
 
 {
 	setRect(sDefaultRect, sDefaultOrientation);
@@ -89,7 +90,9 @@ void UBGraphicsTriangle::setOrientation(UBGraphicsTriangleOrientation orientatio
 		t.setMatrix(-1, 0, 0, 0, -1, 0, boundingRect().right(), boundingRect().bottom(), 1);
 		break;
 	}
-	setTransform(t, true);
+
+    rotateAroundCenter(t);
+	setTransform(t);
 }
 
 UBGraphicsScene* UBGraphicsTriangle::scene() const
@@ -203,7 +206,7 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
 
 		// Check that grad. line inside triangle
 		qreal lineY = rect().bottom() - rect().height()/rect().width()*(rect().width() - graduationX);
-		if (lineY >= rotationCenter().y() + rect().height() - graduationHeight)
+		if (lineY >= rotationCenter().y() - graduationHeight)
 			break;
         
         painter->drawLine(QLine(graduationX, rotationCenter().y(), graduationX, rotationCenter().y() - graduationHeight));
@@ -233,12 +236,19 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
 
 void UBGraphicsTriangle::rotateAroundCenter(qreal angle)
 {
+    this->angle = angle;
     QTransform transform;
+    rotateAroundCenter(transform);
+    setTransform(transform, true);
+}
+
+void UBGraphicsTriangle::rotateAroundCenter(QTransform& transform)
+{
     transform.translate(rotationCenter().x(), rotationCenter().y());
     transform.rotate(angle);
     transform.translate(- rotationCenter().x(), - rotationCenter().y());
-    setTransform(transform, true);
 }
+
 
 QPointF	UBGraphicsTriangle::rotationCenter() const
 {

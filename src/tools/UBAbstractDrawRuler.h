@@ -56,13 +56,13 @@ protected:
     static const QColor sDarkBackgroundMiddleFillColor;
     static const QColor sDarkBackgroundDrawColor;
 
-    static const int    sLeftEdgeMargin = 10;
-    static const int    sDegreeToQtAngleUnit = 16;
-    static const int    sRotationRadius = 15;
-    static const int    sPixelsPerMillimeter = 5;
-    static const int    sFillTransparency = 127;
-    static const int    sDrawTransparency = 192;
-    static const int    sRoundingRadius = sLeftEdgeMargin / 2;
+    static const int    sLeftEdgeMargin;
+    static const int    sDegreeToQtAngleUnit;
+    static const int    sRotationRadius;
+    static const int    sPixelsPerMillimeter;
+    static const int    sFillTransparency;
+    static const int    sDrawTransparency;
+    static const int    sRoundingRadius;
 
 };
 

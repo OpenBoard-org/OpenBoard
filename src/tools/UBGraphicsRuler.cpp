@@ -17,7 +17,7 @@
 
 #include "core/memcheck.h"
 
-const QRect                     UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800, 96);
+const QRect UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800, 96);
 
 
 UBGraphicsRuler::UBGraphicsRuler()
