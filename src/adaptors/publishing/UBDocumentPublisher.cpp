@@ -28,14 +28,14 @@
 #include "UBSvgSubsetRasterizer.h"
 
 #include "core/memcheck.h"
-#include <../Trolltech/Qt-4.7.0/include/QtWebKit/qwebview.h>
+
 
 UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *parent)
         : UBAbstractPublisher(parent)
         , mSourceDocument(pDocument)
         , mPublishingDocument(0)
-        , mUsername(0)
-        , mPassword(0)
+        , mUsername("")
+        , mPassword("")
 {
     mpWebView = new QWebView(0);
     UBApplication::mainWindow->addSankoreWebDocumentWidget(mpWebView);
