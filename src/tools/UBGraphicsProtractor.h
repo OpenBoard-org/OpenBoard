@@ -58,6 +58,7 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         virtual void    hoverMoveEvent (QGraphicsSceneHoverEvent *event);
         virtual QPainterPath shape() const;
         QRectF boundingRect() const;
+
     private:
         // Helpers
         void paintGraduations (QPainter *painter);
@@ -90,10 +91,13 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         QGraphicsSvgItem* mResizeSvgItem;
         QGraphicsSvgItem* mMarkerSvgItem;
 
-		static const QRectF sDefaultRect;
+        static const QRectF sDefaultRect;
 
-		virtual void rotateAroundTopLeftOrigin(qreal angle);
-		virtual QPointF	topLeftOrigin() const;
+        virtual void rotateAroundTopLeftOrigin(qreal angle);
+        virtual QPointF	topLeftOrigin() const;
+
+        int sFillTransparency;
+        int sDrawTransparency;
 };
 
 #endif /* UBGRAPHICSPROTRACTOR_H_ */

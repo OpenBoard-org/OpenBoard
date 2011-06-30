@@ -2576,31 +2576,18 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 
     graphicsItemFromSvg(triangle);
 
-    //QStringRef angle = mXmlReader.attributes().value(mNamespaceUri, "angle");
-    //if (!angle.isNull())
-    //{
-    //    protractor->setAngle(angle.toString().toFloat());
-    //}
-
-    //QStringRef markerAngle = mXmlReader.attributes().value(mNamespaceUri, "marker-angle");
-    //if (!markerAngle.isNull())
-    //{
-    //    protractor->setMarkerAngle(markerAngle.toString().toFloat());
-    //}
-
     QStringRef svgX = mXmlReader.attributes().value("x");
     QStringRef svgY = mXmlReader.attributes().value("y");
     QStringRef svgWidth = mXmlReader.attributes().value("width");
     QStringRef svgHeight = mXmlReader.attributes().value("height");
 
-	UBGraphicsTriangle::UBGraphicsTriangleOrientation orientation = 
-		UBGraphicsTriangle::orientationFromStr((mXmlReader.attributes().value("orientation")));
+
+    QStringRef orientationStringRef = mXmlReader.attributes().value("orientation");
+    UBGraphicsTriangle::UBGraphicsTriangleOrientation orientation = UBGraphicsTriangle::orientationFromStr(orientationStringRef);
 
     if (!svgX.isNull() && !svgY.isNull() && !svgWidth.isNull() && !svgHeight.isNull())
     {
-        triangle->setRect(svgX.toString().toFloat(), svgY.toString().toFloat()
-                            , svgWidth.toString().toFloat(), svgHeight.toString().toFloat(),
-							orientation);
+        triangle->setRect(svgX.toString().toFloat(), svgY.toString().toFloat(), svgWidth.toString().toFloat(), svgHeight.toString().toFloat(), orientation);
     }
 
     triangle->setVisible(true);
