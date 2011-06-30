@@ -53,7 +53,6 @@ UBApplicationController* UBApplication::applicationController = 0;
 UBBoardController* UBApplication::boardController = 0;
 UBWebController* UBApplication::webController = 0;
 UBDocumentController* UBApplication::documentController = 0;
-//UBSoftwareUpdateController* UBApplication::softwareUpdateController = 0;
 UniboardSankoreTransition* UBApplication::mUniboardSankoreTransition = 0;
 
 UBMainWindow* UBApplication::mainWindow = 0;
@@ -91,9 +90,8 @@ static OSStatus ub_appleEventProcessor(const AppleEvent *ae, AppleEvent *event, 
 #endif
 
 
-UBApplication::UBApplication(const QString &id, int &argc, char **argv)
-    : QtSingleApplication(id, argc, argv),
-	mPreferencesController(NULL)
+UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSingleApplication(id, argc, argv),
+    mPreferencesController(NULL)
 {
 
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
@@ -186,11 +184,11 @@ UBApplication::~UBApplication()
     delete mUniboardSankoreTransition;
     mUniboardSankoreTransition = 0;
 
-	if (mPreferencesController)
-	{
-		delete mPreferencesController;
-		mPreferencesController = 0;
-	}
+    if (mPreferencesController)
+    {
+        delete mPreferencesController;
+        mPreferencesController = 0;
+    }
 }
 
 int UBApplication::exec(const QString& pFileToImport)
@@ -343,6 +341,10 @@ void UBApplication::showDocument()
     applicationController->showDocument();
 }
 
+void UBApplication::showSankoreWebDocument()
+{
+    applicationController->showSankoreWebDocument();
+}
 
 int UBApplication::toolBarHeight()
 {

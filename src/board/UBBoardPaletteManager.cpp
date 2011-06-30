@@ -152,7 +152,7 @@ void UBBoardPaletteManager::setupPalettes()
     addItemActions << UBApplication::mainWindow->actionAddItemToCurrentPage;
     addItemActions << UBApplication::mainWindow->actionAddItemToNewPage;
     addItemActions << UBApplication::mainWindow->actionAddItemToLibrary;
-    //addItemActions << UBApplication::mainWindow->actionShareItemOnWeb;
+    addItemActions << UBApplication::mainWindow->actionShareItemOnWeb;
 
     mAddItemPalette = new UBActionPalette(addItemActions, Qt::Horizontal, 0);
     mAddItemPalette->setButtonIconSize(QSize(128, 128));
@@ -306,7 +306,7 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionAddItemToCurrentPage, SIGNAL(triggered()), this, SLOT(addItemToCurrentPage()));
     connect(UBApplication::mainWindow->actionAddItemToNewPage, SIGNAL(triggered()), this, SLOT(addItemToNewPage()));
     connect(UBApplication::mainWindow->actionAddItemToLibrary, SIGNAL(triggered()), this, SLOT(addItemToLibrary()));
-    //connect(UBApplication::mainWindow->actionShareItemOnWeb, SIGNAL(triggered()), this, SLOT(shareItemOnWeb()));
+    connect(UBApplication::mainWindow->actionShareItemOnWeb, SIGNAL(triggered()), this, SLOT(shareItemOnWeb()));
 
     connect(UBApplication::mainWindow->actionEraseItems, SIGNAL(triggered()), mErasePalette, SLOT(close()));
     connect(UBApplication::mainWindow->actionEraseAnnotations, SIGNAL(triggered()), mErasePalette, SLOT(close()));

@@ -33,10 +33,10 @@ class UBDocumentController : public QObject
         QWidget* controlView();
         UBDocumentProxyTreeItem* findDocument(UBDocumentProxy* proxy);
         bool addFileToDocument(UBDocumentProxy* document);
-	UBDocumentProxy* getCurrentDocument();
+        UBDocumentProxy* getCurrentDocument();
 
     signals:
-	void refreshThumbnails();
+        void refreshThumbnails();
         void exportDone();
 
     public slots:
@@ -91,7 +91,7 @@ class UBDocumentController : public QObject
         UBDocumentToolsPalette *mToolsPalette;
         bool mToolsPalettePositionned;
         UBDocumentGroupTreeItem* mTrashTi;
-	UBDocumentProxy* mCurrentDocument;
+        UBDocumentProxy* mCurrentDocument;
 
     private slots:
         void documentZoomSliderValueChanged (int value);

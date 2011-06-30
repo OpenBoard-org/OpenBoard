@@ -53,6 +53,8 @@ class UBApplicationController : public QObject
 
         void showDocument();
 
+        void showSankoreWebDocument();
+
         void showMessage(const QString& message, bool showSpinningWheel);
 
         void importFile(const QString& pFilePath);
@@ -69,7 +71,7 @@ class UBApplicationController : public QObject
 
         enum MainMode
         {
-            Board = 0, Internet, Document, Tutorial, ParaschoolEditor
+            Board = 0, Internet, Document, Tutorial, ParaschoolEditor, WebDocument
         };
 
         MainMode displayMode()

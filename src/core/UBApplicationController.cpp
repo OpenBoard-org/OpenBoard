@@ -87,11 +87,10 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
             , this, SLOT(addCapturedPixmap(const QPixmap &, bool, const QUrl&)));
 
     networkAccessManager = new QNetworkAccessManager (this);
-    connect (networkAccessManager, SIGNAL (finished (QNetworkReply*)), this, SLOT (downloadJsonFinished (QNetworkReply*)));
     QTimer::singleShot (1000, this, SLOT (checkUpdateAtLaunch()));
 
 #ifdef Q_WS_X11
-//    mMainWindow->setStyleSheet("QToolButton { font-size: 11px}");
+    mMainWindow->setStyleSheet("QToolButton { font-size: 11px}");
 #endif
 
 }
@@ -326,7 +325,7 @@ void UBApplicationController::showBoard()
     if (UBApplication::boardController)
         UBApplication::boardController->show();
 
-        UBPlatformUtils::setDesktopMode(false);
+    UBPlatformUtils::setDesktopMode(false);
 
     mUninoteController->hideWindow();
     mMainWindow->show();
@@ -396,6 +395,32 @@ void UBApplicationController::showDocument()
 
     emit mainModeChanged(Document);
 }
+
+void UBApplicationController::showSankoreWebDocument()
+{
+    mMainWindow->webToolBar->hide();
+    mMainWindow->boardToolBar->hide();
+    mMainWindow->tutorialToolBar->hide();
+    mMainWindow->documentToolBar->show();
+
+
+    mMainMode = WebDocument;
+
+    adaptToolBar();
+
+    mirroringEnabled(false);
+
+    mMainWindow->switchToSankoreWebDocumentWidget();
+
+    UBApplication::documentController->hide();
+
+    mMainWindow->show();
+
+    mUninoteController->hideWindow();
+
+    emit mainModeChanged(WebDocument);
+}
+
 
 
 void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
