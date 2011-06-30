@@ -22,6 +22,8 @@ const QRect                     UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800,
 
 UBGraphicsRuler::UBGraphicsRuler()
     : QGraphicsRectItem()
+	, mResizing(false)
+    , mRotating(false)
 {
     setRect(sDefaultRect);
 
@@ -29,9 +31,30 @@ UBGraphicsRuler::UBGraphicsRuler()
     mResizeSvgItem->setVisible(false);
     mResizeSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
+    mRotateSvgItem = new QGraphicsSvgItem(":/images/rotateTool.svg", this);
+    mRotateSvgItem->setVisible(false);
+    mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
 	create(*this);
+
+	updateResizeCursor();
 }
+
+void UBGraphicsRuler::updateResizeCursor()
+{
+    QPixmap pix(":/images/cursors/resize.png");
+    QTransform itemTransform = sceneTransform();
+    QRectF itemRect = boundingRect();
+    QPointF topLeft = itemTransform.map(itemRect.topLeft());
+    QPointF topRight = itemTransform.map(itemRect.topRight());
+    QLineF topLine(topLeft, topRight);
+    qreal angle = topLine.angle();
+    QTransform tr;
+    tr.rotate(- angle);
+    QCursor resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
+    mResizeCursor = resizeCursor;
+}
+
 
 UBGraphicsRuler::~UBGraphicsRuler()
 {
@@ -62,8 +85,13 @@ void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *s
 	QTransform antiScaleTransform2;
     qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
     antiScaleTransform2.scale(ratio, 1.0);
+
     mResizeSvgItem->setTransform(antiScaleTransform2);
     mResizeSvgItem->setPos(resizeButtonRect().topLeft());
+
+    mRotateSvgItem->setTransform(antiScaleTransform2);
+    mRotateSvgItem->setPos(rotateButtonRect().topLeft());
+
 
 
     painter->setPen(drawColor());
@@ -122,13 +150,13 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
     QFontMetricsF fontMetrics(painter->font());
     for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
     {
-        int graduationX = topLeftOrigin().x() + sPixelsPerMillimeter * millimeters;
+        int graduationX = rotationCenter().x() + sPixelsPerMillimeter * millimeters;
         int graduationHeight = (0 == millimeters % millimetersPerCentimeter) ?
             centimeterGraduationHeight :
             ((0 == millimeters % millimetersPerHalfCentimeter) ?
                 halfCentimeterGraduationHeight : millimeterGraduationHeight);
-        painter->drawLine(QLine(graduationX, topLeftOrigin().y(), graduationX, topLeftOrigin().y() + graduationHeight));
-        painter->drawLine(QLine(graduationX, topLeftOrigin().y() + rect().height(), graduationX, topLeftOrigin().y() + rect().height() - graduationHeight));
+        painter->drawLine(QLine(graduationX, rotationCenter().y(), graduationX, rotationCenter().y() + graduationHeight));
+        painter->drawLine(QLine(graduationX, rotationCenter().y() + rect().height(), graduationX, rotationCenter().y() + rect().height() - graduationHeight));
         if (0 == millimeters % millimetersPerCentimeter)
         {
             QString text = QString("%1").arg((int)(millimeters / millimetersPerCentimeter));
@@ -151,21 +179,21 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
 void UBGraphicsRuler::paintRotationCenter(QPainter *painter)
 {
     painter->drawArc(
-        topLeftOrigin().x() - sRotationRadius, topLeftOrigin().y() - sRotationRadius,
+        rotationCenter().x() - sRotationRadius, rotationCenter().y() - sRotationRadius,
         2 * sRotationRadius, 2 * sRotationRadius,
         270 * sDegreeToQtAngleUnit, 90 * sDegreeToQtAngleUnit);
 }
 
-void UBGraphicsRuler::rotateAroundTopLeftOrigin(qreal angle)
+void UBGraphicsRuler::rotateAroundCenter(qreal angle)
 {
     QTransform transform;
-    transform.translate(topLeftOrigin().x(), topLeftOrigin().y());
+    transform.translate(rotationCenter().x(), rotationCenter().y());
     transform.rotate(angle);
-    transform.translate(- topLeftOrigin().x(), - topLeftOrigin().y());
+    transform.translate(- rotationCenter().x(), - rotationCenter().y());
     setTransform(transform, true);
 }
 
-QPointF UBGraphicsRuler::topLeftOrigin() const
+QPointF UBGraphicsRuler::rotationCenter() const
 {
     return QPointF(rect().x() + sLeftEdgeMargin, rect().y());
 }
@@ -246,7 +274,7 @@ void UBGraphicsRuler::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 
 		event->accept();
 	}
-	else if (currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Marker)
+	else if (UBDrawingController::drawingController()->isDrawingTool())
 	{
 		event->accept();
 	}
@@ -292,9 +320,9 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         }
         else
         {
-            QLineF currentLine(topLeftOrigin(), event->pos());
-            QLineF lastLine(topLeftOrigin(), event->lastPos());
-            rotateAroundTopLeftOrigin(currentLine.angleTo(lastLine));
+            QLineF currentLine(rotationCenter(), event->pos());
+            QLineF lastLine(rotationCenter(), event->lastPos());
+            rotateAroundCenter(currentLine.angleTo(lastLine));
         }
 
         event->accept();
@@ -311,8 +339,8 @@ void UBGraphicsRuler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     else if (mRotating)
     {
         mRotating = false;
-        updateResizeCursor(*this);
-        update(QRectF(topLeftOrigin(), QSizeF(sRotationRadius, sRotationRadius)));
+        updateResizeCursor();
+        update(QRectF(rotationCenter(), QSizeF(sRotationRadius, sRotationRadius)));
         event->accept();
     }
     else if (closeButtonRect().contains(event->pos()))

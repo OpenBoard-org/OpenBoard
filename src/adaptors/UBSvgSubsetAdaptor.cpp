@@ -2580,8 +2580,6 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
     QStringRef svgY = mXmlReader.attributes().value("y");
     QStringRef svgWidth = mXmlReader.attributes().value("width");
     QStringRef svgHeight = mXmlReader.attributes().value("height");
-
-
     QStringRef orientationStringRef = mXmlReader.attributes().value("orientation");
     UBGraphicsTriangle::UBGraphicsTriangleOrientation orientation = UBGraphicsTriangle::orientationFromStr(orientationStringRef);
 

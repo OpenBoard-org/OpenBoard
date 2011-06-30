@@ -64,7 +64,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 	// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
-    mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
+    //mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
 #endif
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);

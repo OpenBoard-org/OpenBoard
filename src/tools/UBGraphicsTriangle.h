@@ -60,21 +60,45 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 			setRect(rect.x(), rect.y(), rect.width(), rect.height(), orientation);
 		}
 		void setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsTriangleOrientation orientation);
-		QRectF rect() const {return mRect;}
+		void setOrientation(UBGraphicsTriangleOrientation orientation);
+		QRectF rect() const {return boundingRect();}
 
 		UBGraphicsScene* scene() const;
+
 	protected:
+
 		virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
 
-		virtual void rotateAroundTopLeftOrigin(qreal angle);
+		virtual void rotateAroundCenter(qreal angle);
 
-		virtual QPointF	topLeftOrigin() const;
-        virtual QRectF	resizeButtonRect() const;
+		virtual QPointF	rotationCenter() const;
+
         virtual QRectF	closeButtonRect() const;
-        virtual QRectF	rotateButtonRect() const;
+		QPolygonF resize1Polygon() const;
+		QPolygonF resize2Polygon() const;
+		QRectF	hFlipRect() const;
+		QRectF	vFlipRect() const;
+		QRectF	rotateRect() const;
 
+		QCursor	moveResizeCursor() const;
+		QCursor	flipCursor() const;
+
+        virtual void	mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void    mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+        virtual void	mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void	hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        virtual void	hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+		virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
 	private:
+
+		bool mResizing1;
+		bool mResizing2;
+		bool mRotating;
+
+		QGraphicsSvgItem* mHFlipSvgItem;
+		QGraphicsSvgItem* mVFlipSvgItem;
+		QGraphicsSvgItem* mRotateSvgItem;
 
 		static const QRect sDefaultRect;
 		static const UBGraphicsTriangleOrientation sDefaultOrientation;
@@ -82,8 +106,12 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 		void paintGraduations(QPainter *painter);
 
 
-		QRectF mRect;
 		UBGraphicsTriangleOrientation mOrientation;
+
+		static const int d = 70; // width of triangle border
+		static const int sArrowLength = 30;
+		static const int sMinWidth = 200;
+		static const int sMinHeight = 150;
 };
 
 #endif /* UBGRAPHICSTRIANGLE_H_ */

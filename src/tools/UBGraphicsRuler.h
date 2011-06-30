@@ -39,10 +39,6 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
 		virtual void DrawLine(const QPointF& position, qreal width);
 		virtual void EndLine();
 
-    signals:
-
-        void hidden();
-
     protected:
 		
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
@@ -57,24 +53,37 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
 		virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
     private:
+
+		bool mResizing;
+        bool mRotating;
+
+
         // Helpers
         void    fillBackground(QPainter *painter);
         void    paintGraduations(QPainter *painter);
         void    paintRotationCenter(QPainter *painter);
-        virtual void    rotateAroundTopLeftOrigin(qreal angle);
+        virtual void    rotateAroundCenter(qreal angle);
 
+		QGraphicsSvgItem* mRotateSvgItem;
 		QGraphicsSvgItem* mResizeSvgItem;
 
-        virtual QPointF             topLeftOrigin() const;
+		void updateResizeCursor();
+		QCursor resizeCursor() const{return mResizeCursor;}
+
+        virtual QPointF             rotationCenter() const;
         virtual QRectF           resizeButtonRect() const;
         virtual QRectF            closeButtonRect() const;
         virtual QRectF           rotateButtonRect() const;
         virtual UBGraphicsScene*            scene() const;
 
+		QCursor mResizeCursor;
+
 		int drawLineDirection;
 
         // Constants
         static const QRect               sDefaultRect;
+
+		static const int	sMinLength = 150;
 };
 
 #endif /* UBGRAPHICSRULER_H_ */

@@ -13,7 +13,6 @@
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
 
-
 #include "core/memcheck.h"
 
 
@@ -31,8 +30,6 @@ UBGraphicsProtractor::UBGraphicsProtractor()
         , mResizeSvgItem(0)
         , mMarkerSvgItem(0)
 {
-    sFillTransparency = 127;
-    sDrawTransparency = 192;
 
     create(*this);
 
@@ -44,17 +41,19 @@ UBGraphicsProtractor::UBGraphicsProtractor()
     mResetSvgItem = new QGraphicsSvgItem(":/images/resetTool.svg", this);
     mResetSvgItem->setVisible(false);
     mResetSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    mResetSvgItem->setPos(resetButtonRect().topLeft());
 
     mResizeSvgItem = new QGraphicsSvgItem(":/images/resizeTool.svg", this);
     mResizeSvgItem->setVisible(false);
     mResizeSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    mResizeSvgItem->setPos(resizeButtonRect().topLeft());
 
     mMarkerSvgItem = new QGraphicsSvgItem(":/images/angleMarker.svg", this);
     mMarkerSvgItem->setVisible(false);
     mMarkerSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
-    mMarkerSvgItem->setPos(markerButtonRect().topLeft());
+    
+    mRotateSvgItem = new QGraphicsSvgItem(":/images/rotateTool.svg", this);
+    mRotateSvgItem->setVisible(false);
+    mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+
 
     scale(1.5, 1.5);
 }
@@ -586,12 +585,12 @@ UBItem* UBGraphicsProtractor::deepCopy() const
 }
 
 
-void UBGraphicsProtractor::rotateAroundTopLeftOrigin(qreal angle)
+void UBGraphicsProtractor::rotateAroundCenter(qreal angle)
 {
     Q_UNUSED(angle);
 }
 
-QPointF UBGraphicsProtractor::topLeftOrigin() const
+QPointF UBGraphicsProtractor::rotationCenter() const
 {
     return QPointF(rect().x(), rect().y());
 }
