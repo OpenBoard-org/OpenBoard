@@ -56,8 +56,10 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     mExportAdaptors.append(exportFullPdf);
     UBExportDocument* exportDocument = new UBExportDocument(this);
     mExportAdaptors.append(exportDocument);
-    UBExportWeb* exportWeb = new UBExportWeb(this);
-    mExportAdaptors.append(exportWeb);
+//     UBExportWeb* exportWeb = new UBExportWeb(this);
+//     mExportAdaptors.append(exportWeb);
+    UBWebPublisher* webPublished = new UBWebPublisher(this);
+    mExportAdaptors.append(webPublished);
 
     UBImportDocument* documentImport = new UBImportDocument(this);
     mImportAdaptors.append(documentImport);

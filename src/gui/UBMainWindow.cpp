@@ -14,6 +14,7 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     , mBoardWidget(0)
     , mWebWidget(0)
     , mDocumentsWidget(0)
+    , mSankoreWebDocumentWidget(0)
 {
     Ui::MainWindow::setupUi(this);
 
@@ -91,6 +92,19 @@ void UBMainWindow::switchToDocumentsWidget()
     }
 }
 
+void UBMainWindow::addSankoreWebDocumentWidget(QWebView* pWidget)
+{
+    if(!mSankoreWebDocumentWidget){
+        mSankoreWebDocumentWidget = pWidget;
+        mStackedLayout->addWidget(mSankoreWebDocumentWidget);
+    }
+}
+
+void UBMainWindow::switchToSankoreWebDocumentWidget()
+{
+    if(mSankoreWebDocumentWidget)
+        mStackedLayout->setCurrentWidget(mSankoreWebDocumentWidget);
+}
 void UBMainWindow::keyPressEvent(QKeyEvent *event)
 {
     QMainWindow::keyPressEvent(event);

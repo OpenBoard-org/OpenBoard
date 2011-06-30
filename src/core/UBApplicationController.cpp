@@ -325,7 +325,7 @@ void UBApplicationController::showBoard()
     if (UBApplication::boardController)
         UBApplication::boardController->show();
 
-        UBPlatformUtils::setDesktopMode(false);
+    UBPlatformUtils::setDesktopMode(false);
 
     mUninoteController->hideWindow();
     mMainWindow->show();
@@ -395,6 +395,32 @@ void UBApplicationController::showDocument()
 
     emit mainModeChanged(Document);
 }
+
+void UBApplicationController::showSankoreWebDocument()
+{
+    mMainWindow->webToolBar->hide();
+    mMainWindow->boardToolBar->hide();
+    mMainWindow->tutorialToolBar->hide();
+    mMainWindow->documentToolBar->show();
+
+
+    mMainMode = WebDocument;
+
+    adaptToolBar();
+
+    mirroringEnabled(false);
+
+    mMainWindow->switchToSankoreWebDocumentWidget();
+
+    UBApplication::documentController->hide();
+
+    mMainWindow->show();
+
+    mUninoteController->hideWindow();
+
+    emit mainModeChanged(WebDocument);
+}
+
 
 
 void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
