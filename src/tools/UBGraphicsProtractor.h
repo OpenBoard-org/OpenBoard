@@ -92,6 +92,9 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
 
         virtual void rotateAroundCenter(qreal angle);
         virtual QPointF	rotationCenter() const;
+
+        int    sFillTransparency;
+        int    sDrawTransparency;
 };
 
 #endif /* UBGRAPHICSPROTRACTOR_H_ */
