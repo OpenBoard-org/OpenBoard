@@ -12,6 +12,7 @@
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
+#include "UBAbstractDrawRuler.h"
 
 #include "core/memcheck.h"
 
@@ -30,7 +31,8 @@ UBGraphicsProtractor::UBGraphicsProtractor()
         , mResizeSvgItem(0)
         , mMarkerSvgItem(0)
 {
-
+    sFillTransparency = 127;
+    sDrawTransparency = 192;
     create(*this);
 
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
@@ -49,7 +51,7 @@ UBGraphicsProtractor::UBGraphicsProtractor()
     mMarkerSvgItem = new QGraphicsSvgItem(":/images/angleMarker.svg", this);
     mMarkerSvgItem->setVisible(false);
     mMarkerSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
-    
+
     mRotateSvgItem = new QGraphicsSvgItem(":/images/rotateTool.svg", this);
     mRotateSvgItem->setVisible(false);
     mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
