@@ -38,6 +38,8 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     mPreferencesWindow = new QDialog(parent, Qt::Dialog);
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in UBPreferencesController::destructor
     mPreferencesUI->setupUi(mPreferencesWindow);
+    connect(mPreferencesUI->Username_textBox, SIGNAL(editingFinished()), this, SLOT(onCommunityUsernameChanged()));
+    connect(mPreferencesUI->Password_textEdit, SIGNAL(editingFinished()), this, SLOT(onCommunityPasswordChanged()));
 
     wire();
 }
@@ -160,6 +162,9 @@ void UBPreferencesController::init()
     mPreferencesUI->verticalChoice->setChecked(settings->appToolBarOrientationVertical->get().toBool());
     mPreferencesUI->horizontalChoice->setChecked(!settings->appToolBarOrientationVertical->get().toBool());
 
+    mPreferencesUI->Username_textBox->setText(settings->communityUsername());
+    mPreferencesUI->Password_textEdit->setText(settings->communityPassword());
+
     // pen tab
     mPenProperties->fineSlider->setValue(settings->boardPenFineWidth->get().toDouble() * sSliderRatio);
     mPenProperties->mediumSlider->setValue(settings->boardPenMediumWidth->get().toDouble() * sSliderRatio);
@@ -174,6 +179,18 @@ void UBPreferencesController::init()
 
     mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
 
+}
+
+void UBPreferencesController::onCommunityUsernameChanged()
+{
+    UBSettings* settings = UBSettings::settings();
+    settings->setCommunityUsername(mPreferencesUI->Username_textBox->text());
+}
+
+void UBPreferencesController::onCommunityPasswordChanged()
+{
+    UBSettings* settings = UBSettings::settings();
+    settings->setCommunityPassword(mPreferencesUI->Password_textEdit->text());
 }
 
 void UBPreferencesController::close()

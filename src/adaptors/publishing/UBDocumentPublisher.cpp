@@ -60,8 +60,10 @@ UBDocumentPublisher::~UBDocumentPublisher()
 void UBDocumentPublisher::publish()
 {
     //check that the username and password are stored on preferences
-    mUsername = "Admin";
-    mPassword = "admin";
+    UBSettings* settings = UBSettings::settings();
+
+    mUsername = settings->communityUsername();
+    mPassword = settings->communityPassword();
     buildUbwFile();
     UBApplication::showMessage(tr("Uploading Sankore File on Web."));
     sendUbw();

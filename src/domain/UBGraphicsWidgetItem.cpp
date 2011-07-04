@@ -36,7 +36,7 @@ void UBGraphicsWidgetItem::javaScriptWindowObjectCleared()
     if(!mUniboardAPI)
             mUniboardAPI = new UBWidgetUniboardAPI(scene(), this);
 
-    mWebKitWidget->page()->mainFrame()->addToJavaScriptWindowObject("uniboard", mUniboardAPI);
+    mWebKitWidget->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mUniboardAPI);
 
 }
 

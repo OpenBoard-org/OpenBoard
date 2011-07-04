@@ -120,7 +120,7 @@ void UBToolWidget::javaScriptWindowObjectCleared()
 {
     UBWidgetUniboardAPI* uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
 
-    mToolWidget->page()->mainFrame()->addToJavaScriptWindowObject("uniboard", uniboardAPI);
+    mToolWidget->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
 
     UBW3CWidget* w3c = dynamic_cast<UBW3CWidget*>(mToolWidget);
     if (w3c)
