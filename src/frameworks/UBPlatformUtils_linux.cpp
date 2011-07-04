@@ -56,6 +56,8 @@ QString UBPlatformUtils::preferredLanguage()
 void UBPlatformUtils::runInstaller(const QString &installerFilePath)
 {
     // TODO UB 4.x - auto update & installer are deactivated on Linux
+    Q_UNUSED(installerFilePath);
+
 }
 
 void UBPlatformUtils::bringPreviousProcessToFront()
@@ -77,6 +79,8 @@ QString UBPlatformUtils::computerName()
 
 void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivable)
 {
+    Q_UNUSED(widget);
+    Q_UNUSED(nonAcivable);
 }
 
 
@@ -84,6 +88,7 @@ void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivabl
 void UBPlatformUtils::setDesktopMode(bool desktop)
 {
     // NOOP
+    Q_UNUSED(desktop);
 }
 
 const KEYBT ENGLISH_LOCALE[] = {

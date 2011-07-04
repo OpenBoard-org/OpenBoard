@@ -338,7 +338,7 @@ void UBPodcastController::start()
             }
             else
             {
-                videoFileName = mPodcastRecordingPath + "/" + tr("Uniboard Cast") + "." + mVideoEncoder->videoFileExtension();
+                videoFileName = mPodcastRecordingPath + "/" + tr("Sankore Cast") + "." + mVideoEncoder->videoFileExtension();
             }
 
             videoFileName = UBFileSystemUtils::nextAvailableFileName(videoFileName, " ");

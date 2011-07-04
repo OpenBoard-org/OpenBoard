@@ -2,8 +2,23 @@
 
 make clean
 rm -rf build/linux/release/
+rm -rf install
 
-/usr/bin/qmake-qt4
+QT_PATH="/usr/local/Trolltech/Qt-4.7.0"
+PLUGINS_PATH="$QT_PATH/plugins"
+QMAKE_PATH="$QT_PATH/bin/qmake"
+
+if [ ! -e "$QMAKE_PATH" ]; then
+    echo "qmake command not found at $QMAKE_PATH"
+    exit 1
+fi
+
+if [ ! -e "$PLUGINS_PATH" ]; then
+    echo "plugins path not found at $PLUGINS_PATH"
+    exit 1
+fi
+
+$QMAKE_PATH -spec linux-g++
 
 make -j 4 release-install
 
@@ -25,7 +40,36 @@ chmod +x build/linux/release/product/run.sh
 
 cp -R resources/linux/qtlinux/* build/linux/release/product/
 
-cp -R /usr/lib/qt4/plugins build/linux/release/product/
+#copying plugins
+cp -R $PLUGINS_PATH build/linux/release/product/
+#removing debug version
+find build/linux/release/product/ -name *.debug -exec rm {} \;
+
+#copying custom qt library
+QT_LIBRARY_DEST_PATH="build/linux/release/product/qtlib"
+mkdir $QT_LIBRARY_DEST_PATH
+QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
+
+copyQtLibrary(){
+    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4" ]; then
+        echo "library not found: $QT_LIBRARY_SOURCE_PATH"
+        exit 1;
+    fi
+    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4" "$QT_LIBRARY_DEST_PATH/"
+    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.0" "$QT_LIBRARY_DEST_PATH/"
+}
+
+copyQtLibrary libQtWebKit
+copyQtLibrary libphonon
+copyQtLibrary libQtDBus
+copyQtLibrary libQtScript
+copyQtLibrary libQtSvg
+copyQtLibrary libQtXmlPatterns
+copyQtLibrary libQtNetwork
+copyQtLibrary libQtXml
+copyQtLibrary libQtGui
+copyQtLibrary libQtCore
+
 
 rm -rf install/linux
 mkdir -p install/linux
@@ -35,4 +79,5 @@ cd build/linux/release
 
 # "Removing .svn directories ..."
 find . -name .svn -exec rm -rf {} \; 2> /dev/null
-tar cvzf ../../../install/linux/Sankore\ 3.1.tar.gz Sankore_3.1.$VERSION -C .
+tar cvzf ../../../install/linux/Sankore\ 3.1.tar.gz Sankore_3.1.$VERSION -C . 
+echo "Build Finished"; alert

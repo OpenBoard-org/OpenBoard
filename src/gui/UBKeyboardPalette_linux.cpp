@@ -41,7 +41,7 @@ void x11SendKey(Display *display, int keyCode, int modifiers)
 
 // Get the root window for the current display.
    Window winRoot = XDefaultRootWindow(display);
-   if (winRoot==NULL)
+   if (winRoot==0)
        return;
 
 // Find the window which has the current keyboard focus.

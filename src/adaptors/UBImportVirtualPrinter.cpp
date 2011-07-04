@@ -132,7 +132,7 @@ void UBImportVirtualPrinter::cleanUp(const QFile& pFile, const QString& pPdfFile
 
 UBDocumentProxy* UBImportVirtualPrinter::importFile(const QFile& pFile, const QString& pGroup)
 {
-    UBApplication::showMessage(tr("Importing Uniboard printer file ..."));
+    UBApplication::showMessage(tr("Importing Sankore printer file ..."));
     UBDocumentProxy *document = 0;
 
     QString pdfFilename = pdfFileName(pFile);
@@ -159,7 +159,7 @@ UBDocumentProxy* UBImportVirtualPrinter::importFile(const QFile& pFile, const QS
 
     if (!document)
     {
-        UBApplication::showMessage(tr("Error while importing Uniboard printer file."));
+        UBApplication::showMessage(tr("Error while importing Sankore printer file."));
     }
 
     cleanUp(pFile, pdfFilename, emfFileNames(pFile));
@@ -170,7 +170,7 @@ UBDocumentProxy* UBImportVirtualPrinter::importFile(const QFile& pFile, const QS
 
 bool UBImportVirtualPrinter::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
 {
-    UBApplication::showMessage(tr("Importing Uniboard printer file ..."));
+    UBApplication::showMessage(tr("Importing Sankore printer file ..."));
     bool result = false;
 
     QString pdfFilename = pdfFileName(pFile);
@@ -183,7 +183,7 @@ bool UBImportVirtualPrinter::addFileToDocument(UBDocumentProxy* pDocument, const
 
     if (!result)
     {
-        UBApplication::showMessage(tr("Error while importing Uniboard printer file."));
+        UBApplication::showMessage(tr("Error while importing Sankore printer file."));
     }
 
     cleanUp(pFile, pdfFilename, emfFileNames(pFile));

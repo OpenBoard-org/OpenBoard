@@ -68,13 +68,13 @@ class UBFloatingPalette : public QWidget
         QList<UBFloatingPalette*> mAssociatedPalette;
         QPoint mDragPosition;
         bool mCanBeMinimized;
-	eMinimizedLocation mMinimizedLocation;
+        eMinimizedLocation mMinimizedLocation;
         Qt::Corner mDefaultPosition;
 
     signals:
         void mouseEntered();
-	void minimizeStart(eMinimizedLocation location);
-	void maximizeStart();
+        void minimizeStart(eMinimizedLocation location);
+        void maximizeStart();
         void maximized();
 };
 

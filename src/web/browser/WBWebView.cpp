@@ -151,7 +151,7 @@ void WBWebPage::handleUnsupportedContent(QNetworkReply *reply)
     if (isPDF)
     {
         QMessageBox messageBox(mainWindow());
-        messageBox.setText(tr("Download PDF Document: would you prefer to download the PDF file or add it to the current Uniboard document?"));
+        messageBox.setText(tr("Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?"));
 
         messageBox.addButton(tr("Download"), QMessageBox::AcceptRole);
         QAbstractButton *addButton =

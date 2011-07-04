@@ -1,4 +1,4 @@
-#include "UBDocumentPublisher.h"
+ #include "UBDocumentPublisher.h"
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -10,6 +10,7 @@
 #include "core/UBDocumentManager.h"
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+#include "core/UBApplicationController.h"
 
 #include "gui/UBMainWindow.h"
 
@@ -28,162 +29,119 @@
 
 #include "core/memcheck.h"
 
+
 UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *parent)
-    : UBAbstractPublisher(parent)
-    , mSourceDocument(pDocument)
-    , mPublishingDocument(0)
+        : UBAbstractPublisher(parent)
+        , mSourceDocument(pDocument)
+        , mPublishingDocument(0)
+        , mUsername("")
+        , mPassword("")
 {
-    connect(this, SIGNAL(authenticated(const QUuid&, const QString&))
-            , this, SLOT(postDocument(const QUuid&, const QString&)));
+    mpWebView = new QWebView(0);
+    UBApplication::mainWindow->addSankoreWebDocumentWidget(mpWebView);
+    mpWebView->setWindowTitle(tr("Sankore Uploading Page"));
+    mpWebView->setAcceptDrops(false);
+
+    connect(mpWebView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
+    connect(mpWebView, SIGNAL(linkClicked(QUrl)), this, SLOT(onLinkClicked(QUrl)));
+
+
+    init();
 }
 
 
 UBDocumentPublisher::~UBDocumentPublisher()
 {
+    delete mpWebView;
     delete mPublishingDocument;
 }
 
 
 void UBDocumentPublisher::publish()
 {
-    UBAbstractPublisher::authenticate();
+    //check that the username and password are stored on preferences
+    mUsername = "Admin";
+    mPassword = "admin";
+    buildUbwFile();
+    UBApplication::showMessage(tr("Uploading Sankore File on Web."));
+    sendUbw();
+
 }
 
 
-void UBDocumentPublisher::postDocument(const QUuid& tokenUuid, const QString& encryptedBase64Token)
+void UBDocumentPublisher::buildUbwFile()
 {
-    mAuthenticationUuid = tokenUuid;
-    mAuthenticationBase64Token = encryptedBase64Token;
+    QDir d;
+    d.mkpath(UBFileSystemUtils::defaultTempDirPath());
 
-    UBDocumentPublishingDialog dialog(UBApplication::mainWindow);
+    QString tmpDir = UBFileSystemUtils::createTempDir();
 
-    dialog.videoWarning->setVisible(UBPersistenceManager::persistenceManager()->mayHaveVideo(mSourceDocument));
-
-    dialog.title->setText(mSourceDocument->name());
-
-    QString defaultEMail = UBSettings::settings()->uniboardWebEMail->get().toString();
-    dialog.email->setText(defaultEMail);
-
-    QString defaultAuthor = UBSettings::settings()->uniboardWebAuthor->get().toString();
-    dialog.author->setText(defaultAuthor);
-
-    if (dialog.exec() == QDialog::Accepted)
+    if (UBFileSystemUtils::copyDir(mSourceDocument->persistencePath(), tmpDir))
     {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        UBApplication::showMessage(tr("Preparing document for upload..."), true);
+        QUuid publishingUuid = QUuid::createUuid();
 
-        mTitle = dialog.title->text();
-        mDescription = dialog.description->toPlainText();
-        mEMail = dialog.email->text();
-        mAuthor = dialog.author->text();
+        mPublishingDocument = new UBDocumentProxy(tmpDir);
+        mPublishingDocument->setPageCount(mSourceDocument->pageCount());
 
-        bool attachPDF = dialog.attachPDF->isChecked();
-        bool attachUBZ = dialog.attachUBZ->isChecked();
+        rasterizeScenes();
 
-        mPublishingServiceUrl = UBSettings::settings()->documentsPublishingUrl;
+        upgradeDocumentForPublishing();
 
-        UBSettings::settings()->uniboardWebEMail->set(mEMail);
-        UBSettings::settings()->uniboardWebAuthor->set(mAuthor);
+        UBExportFullPDF pdfExporter;
+        pdfExporter.setVerbode(false);
+        pdfExporter.persistsDocument(mSourceDocument, mPublishingDocument->persistencePath() + "/" + UBStringUtils::toCanonicalUuid(publishingUuid) + ".pdf");
 
-        QDir d;
-        d.mkpath(UBFileSystemUtils::defaultTempDirPath());
+        UBExportDocument ubzExporter;
+        ubzExporter.setVerbode(false);
+        ubzExporter.persistsDocument(mSourceDocument, mPublishingDocument->persistencePath() + "/" + UBStringUtils::toCanonicalUuid(publishingUuid) + ".ubz");
 
-        QString tmpDir = UBFileSystemUtils::createTempDir();
 
-        if (UBFileSystemUtils::copyDir(mSourceDocument->persistencePath(), tmpDir))
-        {
-            QUuid publishingUuid = QUuid::createUuid();
+        // remove all useless files
 
-            mPublishingDocument = new UBDocumentProxy(tmpDir);
-            mPublishingDocument->setPageCount(mSourceDocument->pageCount());
+        for (int pageIndex = 0; pageIndex < mPublishingDocument->pageCount(); pageIndex++) {
+            QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex + 1);
 
-            rasterizeScenes();
-
-            //rasterizePDF(); // not needed as we do not publish svg file anymore
-
-            //rasterizeSVGImages(); // not needed as we do not publish svg file anymore
-
-            upgradeDocumentForPublishing();
-
-            if (attachPDF)
-            {
-                UBExportFullPDF pdfExporter;
-                pdfExporter.setVerbode(false);
-                pdfExporter.persistsDocument(mSourceDocument,
-                        mPublishingDocument->persistencePath() + "/" + UBStringUtils::toCanonicalUuid(publishingUuid) + ".pdf");
-            }
-
-            if (attachUBZ)
-            {
-                UBExportDocument ubzExporter;
-                ubzExporter.setVerbode(false);
-                ubzExporter.persistsDocument(mSourceDocument,
-                        mPublishingDocument->persistencePath() + "/" + UBStringUtils::toCanonicalUuid(publishingUuid) + ".ubz");
-            }
-
-            // remove all useless files
-
-            for (int pageIndex = 0; pageIndex < mPublishingDocument->pageCount(); pageIndex++)
-            {
-                QString filename = mPublishingDocument->persistencePath() +
-                        UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex + 1);
-
-                QFile::remove(filename);
-            }
-
-            UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::imageDirectory);
-            UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::objectDirectory);
-            UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::videoDirectory);
-            UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::audioDirectory);
-
-            QString tempZipFile = UBFileSystemUtils::defaultTempDirPath()
-                    + "/" + UBStringUtils::toCanonicalUuid(QUuid::createUuid()) + ".zip";
-
-            //qDebug() << "compressing" << mPublishingDocument->persistencePath() << "in" << tempZipFile;
-
-            QuaZip zip(tempZipFile);
-            zip.setFileNameCodec("UTF-8");
-            if (!zip.open(QuaZip::mdCreate))
-            {
-                qWarning() << "Export failed. Cause: zip.open(): " << zip.getZipError() << "," << tempZipFile;
-                QApplication::restoreOverrideCursor();
-                return;
-            }
-
-            QuaZipFile outFile(&zip);
-
-            if (!UBFileSystemUtils::compressDirInZip(mPublishingDocument->persistencePath(), "", &outFile, true))
-            {
-                qWarning("Export failed. compressDirInZip failed ...");
-                zip.close();
-                //zip.remove();
-                UBApplication::showMessage(tr("Export failed."));
-                QApplication::restoreOverrideCursor();
-                return;
-            }
-
-            if (zip.getZipError() != 0)
-            {
-                qWarning("Export failed. Cause: zip.close(): %d", zip.getZipError());
-                zip.close();
-                //zip.remove();
-                UBApplication::showMessage(tr("Export failed."));
-                QApplication::restoreOverrideCursor();
-                return;
-            }
-
-            zip.close();
-
-            mPublishingUrl = QUrl(mPublishingServiceUrl + "/documents/publish/"
-                + UBStringUtils::toCanonicalUuid(mSourceDocument->uuid()));
-
-            sendZipToUniboardWeb(tempZipFile, publishingUuid);
+            QFile::remove(filename);
         }
-        else
+
+        UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::imageDirectory);
+        UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::objectDirectory);
+        UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::videoDirectory);
+        UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::audioDirectory);
+
+        mTmpZipFile = UBFileSystemUtils::defaultTempDirPath() + "/" + UBStringUtils::toCanonicalUuid(QUuid::createUuid()) + ".zip";
+
+        QuaZip zip(mTmpZipFile);
+        zip.setFileNameCodec("UTF-8");
+        if (!zip.open(QuaZip::mdCreate))
         {
-            UBApplication::showMessage(tr("Export failed ..."));
+            qWarning() << "Export failed. Cause: zip.open(): " << zip.getZipError() << "," << mTmpZipFile;
             QApplication::restoreOverrideCursor();
+            return;
         }
+
+        QuaZipFile outFile(&zip);
+
+        if (!UBFileSystemUtils::compressDirInZip(mPublishingDocument->persistencePath(), "", &outFile, true))
+        {
+            qWarning("Export failed. compressDirInZip failed ...");
+            zip.close();
+            UBApplication::showMessage(tr("Export failed."));
+            QApplication::restoreOverrideCursor();
+            return;
+        }
+
+        if (zip.getZipError() != 0)
+        {
+            qWarning("Export failed. Cause: zip.close(): %d", zip.getZipError());
+            zip.close();
+            UBApplication::showMessage(tr("Export failed."));
+            QApplication::restoreOverrideCursor();
+            return;
+        }
+
+        zip.close();
+
     }
     else
     {
@@ -192,64 +150,16 @@ void UBDocumentPublisher::postDocument(const QUuid& tokenUuid, const QString& en
     }
 }
 
-
-/*
- * // not needed as we do not publish svg file anymore
- *
-
-void UBDocumentPublisher::rasterizePDF()
-{
-    if (UBPersistenceManager::persistenceManager()->mayHavePDF(mPublishingDocument))
-    {
-        UBSvgSubsetAdaptor::convertPDFObjectsToImages(mPublishingDocument);
-
-        QDir objectDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::objectDirectory);
-
-        QStringList filters;
-        filters << "*.pdf";
-
-        foreach(QFileInfo fi, objectDir.entryInfoList(filters))
-        {
-            QFile::remove(fi.absoluteFilePath());
-        }
-    }
-}
-*/
-
-/*
- * // not needed as we do not publish svg file anymore
-
-
-void UBDocumentPublisher::rasterizeSVGImages()
-{
-    if (UBPersistenceManager::persistenceManager()->mayHaveSVGImages(mPublishingDocument))
-    {
-        UBSvgSubsetAdaptor::convertSvgImagesToImages(mPublishingDocument);
-
-        QDir objectDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::imageDirectory);
-
-        QStringList filters;
-        filters << "*.svg";
-
-        foreach(QFileInfo fi, objectDir.entryInfoList(filters))
-        {
-            QFile::remove(fi.absoluteFilePath());
-        }
-    }
-}
-*/
-
 void UBDocumentPublisher::rasterizeScenes()
 {
 
-    for(int pageIndex = 0; pageIndex < mPublishingDocument->pageCount(); pageIndex++)
+    for (int pageIndex = 0; pageIndex < mPublishingDocument->pageCount(); pageIndex++)
     {
         UBApplication::showMessage(tr("Converting page %1/%2 ...").arg(pageIndex + 1).arg(mPublishingDocument->pageCount()), true);
 
         UBSvgSubsetRasterizer rasterizer(mPublishingDocument, pageIndex);
 
-        QString filename = mPublishingDocument->persistencePath() +
-            UBFileSystemUtils::digitFileFormat("/page%1.jpg", pageIndex + 1);
+        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.jpg", pageIndex + 1);
 
         rasterizer.rasterizeToFile(filename);
 
@@ -275,7 +185,7 @@ void UBDocumentPublisher::updateGoogleMapApiKey()
             {
                 QFile file(fileInfo.absoluteFilePath());
 
-                if(file.open(QIODevice::ReadWrite))
+                if (file.open(QIODevice::ReadWrite))
                 {
                     QTextStream stream(&file);
                     QString content = stream.readAll();
@@ -298,7 +208,7 @@ void UBDocumentPublisher::updateGoogleMapApiKey()
 
 void UBDocumentPublisher::upgradeDocumentForPublishing()
 {
-    for(int pageIndex = 0; pageIndex < mPublishingDocument->pageCount(); pageIndex++)
+    for (int pageIndex = 0; pageIndex < mPublishingDocument->pageCount(); pageIndex++)
     {
         UBGraphicsScene *scene = UBSvgSubsetAdaptor::loadScene(mPublishingDocument, pageIndex);
 
@@ -306,25 +216,17 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
         QList<UBGraphicsW3CWidgetItem*> widgets;
 
-        foreach(QGraphicsItem* item, scene->items())
-        {
+        foreach(QGraphicsItem* item, scene->items()){
             UBGraphicsW3CWidgetItem *widgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
 
-            if (widgetItem)
-            {
+            if(widgetItem){
                 generateWidgetPropertyScript(widgetItem, pageIndex + 1);
                 sceneHasWidget = true;
                 widgets << widgetItem;
             }
         }
 
-        //if (sceneHasWidget)
-        //{
-        //    updateSVGForWidget(pageIndex); // not needed as we do not publish svg file anymore
-        //}
-
-        QString filename = mPublishingDocument->persistencePath() +
-            UBFileSystemUtils::digitFileFormat("/page%1.json", pageIndex + 1);
+        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.json", pageIndex + 1);
 
         QFile jsonFile(filename);
         if (jsonFile.open(QIODevice::WriteOnly | QIODevice::Truncate))
@@ -381,10 +283,10 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
                         sep = "";
 
                     jsonFile.write(QString("          \"%1\": \"%2\"%3\n")
-                            .arg(key)
-                            .arg(preferences.value(key))
-                            .arg(sep)
-                                .toUtf8());
+                                   .arg(key)
+                                   .arg(preferences.value(key))
+                                   .arg(sep)
+                                   .toUtf8());
                 }
                 jsonFile.write(QString("      },\n").toUtf8());
 
@@ -399,10 +301,10 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
                         sep = "";
 
                     jsonFile.write(QString("          \"%1\": \"%2\"%3\n")
-                            .arg(entry)
-                            .arg(datastoreEntries.value(entry))
-                            .arg(sep)
-                                .toUtf8());
+                                   .arg(entry)
+                                   .arg(datastoreEntries.value(entry))
+                                   .arg(sep)
+                                   .toUtf8());
                 }
                 jsonFile.write(QString("      }\n").toUtf8());
 
@@ -426,57 +328,6 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 }
 
 
-/** // not needed as we do not publish svg file anymore
-void UBDocumentPublisher::updateSVGForWidget(int pageIndex)
-{
-    QString fileName = mPublishingDocument->persistencePath() +
-        UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex + 1);
-
-    QFile svgFile(fileName);
-
-    if (svgFile.exists())
-    {
-        if (!svgFile.open(QIODevice::ReadWrite))
-        {
-            qWarning() << "Cannot open file " << fileName << " for widget upgrade ...";
-            return;
-        }
-
-        QTextStream stream(&svgFile);
-        QStringList lines;
-
-        QString line;
-        do
-        {
-            line = stream.readLine();
-            if (!line.isNull())
-            {
-                if (line.contains("<svg") && line.contains(">")) // TODO UB 4.6, this is naive ... the SVG tag may be on several lines
-                {
-                    lines << "<?xml-stylesheet type=\"text/css\" href=\"" + UBSettings::settings()->documentPlayerCssUrl + "\" ?>";
-                    lines << line;
-                    lines << "";
-                    lines << "    <script type=\"text/ecmascript\" xlink:href=\"" + UBSettings::settings()->documentPlayerScriptUrl + "\"/>";
-                    lines << "    <script type=\"text/ecmascript\" xlink:href=\"" + UBSettings::settings()->documentPlayerPageScriptUrl + "\"/>";
-                    lines << "";
-                }
-                else
-                {
-                    lines << line;
-                }
-            }
-        }
-        while (!line.isNull());
-
-        svgFile.resize(0);
-        svgFile.write(lines.join("\n").toUtf8()); // TODO UB 4.x detect real html encoding
-
-        svgFile.close();
-    }
-}
-*/
-
-
 void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *widgetItem, int pageNumber)
 {
 
@@ -487,15 +338,13 @@ void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *
 
     if (!startFileName.startsWith("http://"))
     {
-        QString startFilePath = mPublishingDocument->persistencePath() + "/"
-                                + UBPersistenceManager::widgetDirectory + "/"
-                                + widgetItem->uuid().toString() + ".wgt/" + startFileName;
+        QString startFilePath = mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::widgetDirectory + "/" + widgetItem->uuid().toString() + ".wgt/" + startFileName;
 
         QFile startFile(startFilePath);
 
-        if(startFile.exists())
+        if (startFile.exists())
         {
-            if(startFile.open(QIODevice::ReadWrite))
+            if (startFile.open(QIODevice::ReadWrite))
             {
                 QTextStream stream(&startFile);
                 QStringList lines;
@@ -663,111 +512,138 @@ void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *
             }
         }
     }
-    else
-    {
+    else{
         qWarning() << "Remote Widget start file, cannot inject widget preferences and datastore entries";
     }
 }
 
 
-void UBDocumentPublisher::sendZipToUniboardWeb(const QString& zipFilePath, const QUuid& publishingUuid)
-{
-    QFile zipFile(zipFilePath);
 
-    if(!zipFile.open(QIODevice::ReadOnly))
+
+void UBDocumentPublisher::init()
+{
+    mCrlf=0x0d;
+    mCrlf+=0x0a;
+
+    mpNetworkMgr = new QNetworkAccessManager(this);
+    mpCookieJar = new QNetworkCookieJar();
+
+    connect(mpNetworkMgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(onFinished(QNetworkReply*)));
+}
+
+void UBDocumentPublisher::onFinished(QNetworkReply *reply)
+{
+    QByteArray response = reply->readAll();
+
+    if (!bCookieSet)
     {
-        qWarning() << "Cannot open file" << zipFilePath << "for upload to Uniboard Web";
-        return;
+        QList<QNetworkCookie> cookiesList;
+        QVariant cookieHeader = reply->rawHeader("Set-Cookie");
+        qDebug() << cookieHeader.toString();
+        // First we concatenate all the Set-Cookie values (the packet can contains many of them)
+        QStringList qslCookie = cookieHeader.toString().split("\n");
+        QString qsCookieValue = qslCookie.at(0);
+        for (int i = 1; i < qslCookie.size(); i++) {
+            qsCookieValue += "; " +qslCookie.at(i);
+        }
+        qDebug() << "qsCookieValue " << qsCookieValue;
+        // Now we isolate every cookie value
+        QStringList qslCookieVals = qsCookieValue.split("; ");
+
+        // Finally we create the cookies
+        for (int i = 0; i < qslCookieVals.size(); i++)
+        {
+            QString cookieString = qslCookieVals.at(i);
+            qDebug() << "qslCookieVals.at(i): " << cookieString.replace("\"", "");
+            QStringList qslCrntCookie = cookieString.split("=");
+            QNetworkCookie crntCookie;
+            if (qslCrntCookie.length() == 2)
+                crntCookie = QNetworkCookie(qslCrntCookie.at(0).toAscii().constData(), qslCrntCookie.at(1).toAscii().constData());
+            else
+                crntCookie = QNetworkCookie(qslCrntCookie.at(0).toAscii().constData());
+            cookiesList << crntCookie;
+        }
+
+        // Set the cookiejar : it set the cookies that will be sent with every packet.
+        qDebug() << reply->url().toString();
+        mpCookieJar->setCookiesFromUrl(cookiesList, reply->url());
+        mpNetworkMgr->setCookieJar(mpCookieJar);
+        bCookieSet = true;
     }
 
-    QUrl publishingEndpoint = QUrl(mPublishingServiceUrl);
-
-    mUploadRequest = new UBServerXMLHttpRequest(UBNetworkAccessManager::defaultAccessManager()
-        , "application/octet-stream");
-
-    mUploadRequest->setVerbose(true);
-
-    connect(mUploadRequest, SIGNAL(progress(qint64, qint64)), this,  SLOT(uploadProgress(qint64, qint64)));
-    connect(mUploadRequest, SIGNAL(finished(bool, const QByteArray&)), this, SLOT(postZipUploadResponse(bool, const QByteArray&)));
-
-    mUploadRequest->addHeader("Publishing-UUID", UBStringUtils::toCanonicalUuid(publishingUuid));
-    mUploadRequest->addHeader("Document-UUID", UBStringUtils::toCanonicalUuid(mSourceDocument->uuid()));
-    mUploadRequest->addHeader("Document-PageCount", QString("%1").arg(mSourceDocument->pageCount()));
-    mUploadRequest->addHeader("Document-Title", mTitle);
-    mUploadRequest->addHeader("Document-Author", mAuthor);
-    mUploadRequest->addHeader("Document-AuthorEMail", mEMail);
-    mUploadRequest->addHeader("Document-Description", mDescription);
-    mUploadRequest->addHeader("Deletion-Token", UBStringUtils::toCanonicalUuid(QUuid::createUuid()));
-    mUploadRequest->addHeader("Token-UUID", UBStringUtils::toCanonicalUuid(mAuthenticationUuid));
-    mUploadRequest->addHeader("Token-Encrypted", mAuthenticationBase64Token);
-
-    mUploadRequest->post(publishingEndpoint, zipFile.readAll());
-
-    zipFile.remove();
-}
-
-
-void UBDocumentPublisher::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
-{
-    int percentage = (((qreal)bytesSent / (qreal)bytesTotal ) * 100);
-
-    if (bytesSent < bytesTotal)
-        UBApplication::showMessage(tr("Upload to Uniboard Web in progress %1 %").arg(percentage), true);
-    else
-        UBApplication::showMessage(tr("Sending document ..."), true);
-
-}
-
-
-void UBDocumentPublisher::postZipUploadResponse(bool success, const QByteArray& payload)
-{
-    if (success)
-    {
-        UBApplication::showMessage(tr("The document has been sent to %1").arg(UBSettings::settings()->uniboardWebUrl->get().toString()), false);
+    if (response.isEmpty()){
+        emit loginDone();
     }
-    else
-    {
-        qWarning() << "error uploading document to Uniboard Web" << QString::fromUtf8(payload);
+    else{
+        // Display the iframe
+        mpWebView->setHtml(response, QUrl("http://sankore.devxwiki.com/xwiki/bin/view/Test/FileUpload"));
+        UBApplication::applicationController->showSankoreWebDocument();
 
-        QString errorMessage = QString::fromUtf8(payload);
-
-        if (errorMessage.length() == 0)
-            UBApplication::showMessage(tr("Error while publishing document to %1")
-                                       .arg(UBSettings::settings()->uniboardWebUrl->get().toString()), false);
-        else
-            UBApplication::showMessage(tr("Error while publishing document to %1 : (%2)")
-                                       .arg(UBSettings::settings()->uniboardWebUrl->get().toString())
-                                       .arg(errorMessage), false);
     }
-
-    QApplication::restoreOverrideCursor();
-
-    deleteLater();
 }
 
-
-UBDocumentPublishingDialog::UBDocumentPublishingDialog(QWidget *parent)
-    : QDialog(parent)
+void UBDocumentPublisher::sendUbw()
 {
-    Ui::documentPublishingDialog::setupUi(this);
+    if (QFile::exists(mTmpZipFile))
+    {
+        QFile f(mTmpZipFile);
+        if (f.open(QIODevice::ReadOnly))
+        {
+            QByteArray ba = f.readAll();
+            QString boundary,data, multipartHeader;
+            QByteArray datatoSend;
 
-    connect(dialogButtons, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(dialogButtons, SIGNAL(rejected()), this, SLOT(reject()));
+            boundary = "---WebKitFormBoundaryDKBTgA53MiyWrzLY";
+            multipartHeader = "multipart/form-data; boundary="+boundary;
 
-    connect(title, SIGNAL(textChanged(const QString&)), this, SLOT(updateUIState(const QString&)));
-    connect(email, SIGNAL(textChanged(const QString&)), this, SLOT(updateUIState(const QString&)));
+            data="--"+boundary+mCrlf;
+            data+="Content-Disposition: form-data; name=\"file\"; filename=\""+ f.fileName() +"\""+mCrlf;
+            data+="Content-Type: application/octet-stream"+mCrlf+mCrlf;
+            datatoSend=data.toAscii(); // convert data string to byte array for request
+            datatoSend += ba;
+            datatoSend += mCrlf.toAscii();
+            datatoSend += QString("--%0--%1").arg(boundary).arg(mCrlf).toAscii();
 
-    dialogButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
-    dialogButtons->button(QDialogButtonBox::Ok)->setText(tr("Publish"));
+            QNetworkRequest request(QUrl("http://sankore.devxwiki.com/xwiki/bin/view/Test/FileUpload"));
+            request.setHeader(QNetworkRequest::ContentTypeHeader, multipartHeader);
+            request.setHeader(QNetworkRequest::ContentLengthHeader,datatoSend.size());
+            request.setRawHeader("Accept", "application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
+            request.setRawHeader("Accept-Language", "en-US,*");
+            request.setRawHeader("Referer", "http://sankore.devxwiki.com/xwiki/bin/view/Test/FileUpload");
+            request.setRawHeader("Origin", "http://sankore.devxwiki.com");
+
+            QString b64Auth = getBase64Of(QString("%0:%1").arg(mUsername).arg(mPassword));
+            request.setRawHeader("Authorization", QString("Basic %0").arg(b64Auth).toAscii().constData());
+
+            // Send the file
+            mpNetworkMgr->post(request,datatoSend);
+        }
+    }
 }
 
-
-void UBDocumentPublishingDialog::updateUIState(const QString& string)
+QString UBDocumentPublisher::getBase64Of(QString stringToEncode)
 {
-    Q_UNUSED(string);
-
-    bool ok = title->text().length() > 0
-                    &&  email->text().length() > 0;
-
-    dialogButtons->button(QDialogButtonBox::Ok)->setEnabled(ok);
+    return stringToEncode.toAscii().toBase64();
 }
+
+void UBDocumentPublisher::onLinkClicked(const QUrl &url)
+{
+    // [Basic Auth] Here we interpret the link and send the request with the basic auth header.
+    QNetworkRequest request;
+    request.setUrl(url);
+    QString b64Auth = getBase64Of(QString("%0:%1").arg(mUsername).arg(mPassword));
+    request.setRawHeader("Authorization", QString("Basic %0").arg(b64Auth).toAscii().constData());
+    mpNetworkMgr->get(request);
+}
+
+void UBDocumentPublisher::onLoadFinished(bool result)
+{
+    Q_UNUSED(result);
+    // [Basic Auth] This line says: if the user click on a link, do not interpret it.
+    mpWebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+}
+
+
+
+
+

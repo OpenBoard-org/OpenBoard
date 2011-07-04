@@ -7,7 +7,7 @@
 
 class UBDocumentProxy;
 class UBGraphicsScene;
-class UBGraphicsScene::SceneViewState;
+class UBGraphicsScene;
 
 class UBSceneCacheID
 {

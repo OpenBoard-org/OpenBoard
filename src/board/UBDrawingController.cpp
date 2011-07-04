@@ -27,9 +27,10 @@ UBDrawingController* UBDrawingController::drawingController()
 
 UBDrawingController::UBDrawingController(QObject * parent)
     : QObject(parent)
+    , mActiveRuler(NULL)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
-	, mActiveRuler(NULL)
+
 {
     connect(UBSettings::settings(), SIGNAL(colorContextChanged()), this, SIGNAL(colorPaletteChanged()));
 
@@ -171,7 +172,7 @@ void UBDrawingController::setLineWidthIndex(int index)
     {
         UBSettings::settings()->setPenWidthIndex(index);
 
-        if(stylusTool() != UBStylusTool::Line 
+        if(stylusTool() != UBStylusTool::Line
             && stylusTool() != UBStylusTool::Selector)
         {
             setStylusTool(UBStylusTool::Pen);

@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#include <QWebView>
 
 class QStackedLayout;
 
@@ -27,6 +28,9 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         void addDocumentsWidget(QWidget *pWidget);
         void switchToDocumentsWidget();
 
+        void addSankoreWebDocumentWidget(QWebView* pWidget);
+        void switchToSankoreWebDocumentWidget();
+
     public slots:
         void onExportDone();
 
@@ -45,6 +49,7 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         QWidget *mBoardWidget;
         QWidget *mWebWidget;
         QWidget *mDocumentsWidget;
+        QWebView* mSankoreWebDocumentWidget;
 
 };
 

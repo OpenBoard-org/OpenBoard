@@ -29,6 +29,7 @@
 #include "UBPersistenceManager.h"
 
 #include "core/memcheck.h"
+#include "../adaptors/UBExportWeb.h"
 
 UBDocumentManager* UBDocumentManager::sDocumentManager = 0;
 
@@ -53,9 +54,12 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
 
     UBExportFullPDF* exportFullPdf = new UBExportFullPDF(this);
     mExportAdaptors.append(exportFullPdf);
-
     UBExportDocument* exportDocument = new UBExportDocument(this);
     mExportAdaptors.append(exportDocument);
+//     UBExportWeb* exportWeb = new UBExportWeb(this);
+//     mExportAdaptors.append(exportWeb);
+    UBWebPublisher* webPublished = new UBWebPublisher(this);
+    mExportAdaptors.append(webPublished);
 
     UBImportDocument* documentImport = new UBImportDocument(this);
     mImportAdaptors.append(documentImport);

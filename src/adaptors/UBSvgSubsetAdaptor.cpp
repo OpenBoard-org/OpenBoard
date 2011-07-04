@@ -26,6 +26,7 @@
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsProtractor.h"
 #include "tools/UBGraphicsCurtainItem.h"
+#include "tools/UBGraphicsTriangle.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -645,6 +646,16 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     scene->registerTool(protractor);
                 }
             }
+			else if (mXmlReader.name() == "protractor")
+            {
+                UBGraphicsTriangle *triangle = triangleFromSvg();
+
+                if (triangle)
+                {
+                    scene->addItem(triangle);
+                    scene->registerTool(triangle);
+                }
+            }
             else if (mXmlReader.name() == "foreignObject")
             {
                 QString href = mXmlReader.attributes().value(nsXLink, "href").toString();
@@ -770,7 +781,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     if (mXmlReader.hasError())
     {
-        qWarning() << "error parsing uniboard file " << mXmlReader.errorString();
+        qWarning() << "error parsing Sankore file " << mXmlReader.errorString();
     }
 
     if (scene)
@@ -2556,7 +2567,31 @@ UBGraphicsProtractor* UBSvgSubsetAdaptor::UBSvgSubsetReader::protractorFromSvg()
     return protractor;
 }
 
+UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
+{
+    UBGraphicsTriangle* triangle = new UBGraphicsTriangle();
 
+    triangle->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetTriangle);
+    triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
+    graphicsItemFromSvg(triangle);
+
+    QStringRef svgX = mXmlReader.attributes().value("x");
+    QStringRef svgY = mXmlReader.attributes().value("y");
+    QStringRef svgWidth = mXmlReader.attributes().value("width");
+    QStringRef svgHeight = mXmlReader.attributes().value("height");
+    QStringRef orientationStringRef = mXmlReader.attributes().value("orientation");
+    UBGraphicsTriangle::UBGraphicsTriangleOrientation orientation = UBGraphicsTriangle::orientationFromStr(orientationStringRef);
+
+    if (!svgX.isNull() && !svgY.isNull() && !svgWidth.isNull() && !svgHeight.isNull())
+    {
+        triangle->setRect(svgX.toString().toFloat(), svgY.toString().toFloat(), svgWidth.toString().toFloat(), svgHeight.toString().toFloat(), orientation);
+    }
+
+    triangle->setVisible(true);
+
+    return triangle;
+}
 
 void UBSvgSubsetAdaptor::convertPDFObjectsToImages(UBDocumentProxy* proxy)
 {

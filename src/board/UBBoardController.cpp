@@ -956,7 +956,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         }
         else
         {
-            UBApplication::showMessage(tr("Flash is not supported on Uniboard Linux"));
+            UBApplication::showMessage(tr("Flash is not supported on Sankore Linux"));
         }
     }
     else if (mimeType.startsWith("application/pdf"))

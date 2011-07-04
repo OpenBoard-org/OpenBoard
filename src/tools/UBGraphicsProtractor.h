@@ -13,12 +13,12 @@
 #include <QtSvg>
 
 #include "core/UB.h"
-
+#include "tools/UBAbstractDrawRuler.h"
 #include "domain/UBItem.h"
 
 class UBGraphicsScene;
 
-class UBGraphicsProtractor : public QObject, public QGraphicsEllipseItem, public UBItem
+class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipseItem, public UBItem
 {
 
     Q_OBJECT;
@@ -41,10 +41,6 @@ class UBGraphicsProtractor : public QObject, public QGraphicsEllipseItem, public
             return Type;
         }
 
-    signals:
-
-        void hidden();
-
     protected:
         virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
 
@@ -58,24 +54,24 @@ class UBGraphicsProtractor : public QObject, public QGraphicsEllipseItem, public
         virtual void    hoverMoveEvent (QGraphicsSceneHoverEvent *event);
         virtual QPainterPath shape() const;
         QRectF boundingRect() const;
+
     private:
         // Helpers
         void paintGraduations (QPainter *painter);
-        void     paintButtons (QPainter *painter);
+        void paintButtons (QPainter *painter);
         void paintAngleMarker (QPainter *painter);
-                Tool      toolFromPos (QPointF pos);
-        qreal       antiScale () const;
+        Tool toolFromPos (QPointF pos);
+        qreal antiScale () const;
         UBGraphicsScene*            scene() const;
-        QColor                  drawColor() const;
         QBrush                  fillBrush() const;
 
         QSizeF buttonSizeReference () const{return QSizeF(radius() / 10, mCloseSvgItem->boundingRect().height() * radius()/(10 * mCloseSvgItem->boundingRect().width()));}
         QSizeF markerSizeReference () const{return QSizeF(radius() / 10, mMarkerSvgItem->boundingRect().height() * radius()/(10 * mMarkerSvgItem->boundingRect().width()));}
-        QRectF	 resetButtonBounds () const;
-        QRectF	 closeButtonBounds () const;
-        QRectF	resizeButtonBounds () const;
-        QRectF	rotateButtonBounds () const{return QRectF(buttonSizeReference().width() * 5.5, -buttonSizeReference().width() * 5, buttonSizeReference().width(), buttonSizeReference().width());}
-        QRectF	markerButtonBounds () const{return QRectF(radius() + 3, -markerSizeReference().height() / 2 , markerSizeReference().width(), markerSizeReference().height());}
+        QRectF	resetButtonRect () const;
+        QRectF	closeButtonRect () const;
+        QRectF	resizeButtonRect () const;
+        QRectF	rotateButtonRect () const{return QRectF(buttonSizeReference().width() * 5.5, -buttonSizeReference().width() * 5, buttonSizeReference().width(), buttonSizeReference().width());}
+        QRectF	markerButtonRect () const{return QRectF(radius() + 3, -markerSizeReference().height() / 2 , markerSizeReference().width(), markerSizeReference().height());}
                 inline qreal               radius () const{return rect().height() / 2 - 20;}
 
         // Members
@@ -87,21 +83,18 @@ class UBGraphicsProtractor : public QObject, public QGraphicsEllipseItem, public
         qreal   mStartAngle;
         qreal   mScaleFactor;
 
-        QGraphicsSvgItem* mCloseSvgItem;
         QGraphicsSvgItem* mResetSvgItem;
         QGraphicsSvgItem* mResizeSvgItem;
-        QGraphicsSvgItem* mRotateSvgItem;
         QGraphicsSvgItem* mMarkerSvgItem;
+		QGraphicsSvgItem* mRotateSvgItem;
 
-        static const int                 sFillTransparency;
-        static const int                 sDrawTransparency;
-        static const QRectF                   sDefaultRect;
-        static const QColor                     sFillColor;
-        static const QColor               sFillColorCenter;
-        static const QColor                     sDrawColor;
-        static const QColor       sDarkBackgroundFillColor;
-        static const QColor sDarkBackgroundFillColorCenter;
-        static const QColor       sDarkBackgroundDrawColor;
+        static const QRectF sDefaultRect;
+
+        virtual void rotateAroundCenter(qreal angle);
+        virtual QPointF	rotationCenter() const;
+
+        int    sFillTransparency;
+        int    sDrawTransparency;
 };
 
 #endif /* UBGRAPHICSPROTRACTOR_H_ */

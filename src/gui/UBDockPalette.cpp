@@ -38,7 +38,7 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
 
 	// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
-        setAttribute(Qt::WA_MacNoShadow);
+        //setAttribute(Qt::WA_MacNoShadow);
 #endif
 
     }

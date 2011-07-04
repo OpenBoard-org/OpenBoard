@@ -10,74 +10,55 @@
 class UBDocumentProxy;
 class UBServerXMLHttpRequest;
 class UBGraphicsW3CWidgetItem;
+class QWebView;
 
 class UBDocumentPublisher : public UBAbstractPublisher
 {
     Q_OBJECT;
 
-    public:
-        explicit UBDocumentPublisher(UBDocumentProxy* sourceDocument, QObject *parent = 0);
-        virtual ~UBDocumentPublisher();
+public:
+    explicit UBDocumentPublisher(UBDocumentProxy* sourceDocument, QObject *parent = 0);
+    virtual ~UBDocumentPublisher();
 
-        void publish();
+    void publish();
 
-    protected:
+signals:
 
-        // not needed as we do not publish svg file anymore
-        //virtual void rasterizePDF();
-        //virtual void rasterizeSVGImages();
-        //virtual void updateSVGForWidget(int sceneIndex);
+    void loginDone();
 
-        virtual void updateGoogleMapApiKey();
+protected:
 
-        virtual void rasterizeScenes();
+    virtual void updateGoogleMapApiKey();
+    virtual void rasterizeScenes();
+    virtual void upgradeDocumentForPublishing();
+    virtual void generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *widgetItem, int pageNumber);
 
-        virtual void upgradeDocumentForPublishing();
+private slots:
 
-        virtual void generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *widgetItem, int pageNumber);
+    void onFinished(QNetworkReply* reply);
+    void onLinkClicked(const QUrl& url);
+    void onLoadFinished(bool result);
 
-        void sendZipToUniboardWeb(const QString& zipFile, const QUuid& publishingUuid);
 
-    private slots:
+private:
 
-        void postDocument(const QUuid& tokenUuid, const QString& encryptedBase64Token);
-        void uploadProgress(qint64, qint64);
-        void postZipUploadResponse(bool, const QByteArray&);
+    UBDocumentProxy *mSourceDocument;
+    UBDocumentProxy *mPublishingDocument;
+    void init();
+    void sendUbw();
+    QString getBase64Of(QString stringToEncode);
 
-    private:
+    QWebView* mpWebView;
+    QHBoxLayout* mpLayout;
+    QNetworkAccessManager* mpNetworkMgr;
+    QNetworkCookieJar* mpCookieJar;
+    QString mUsername;
+    QString mPassword;
+    QString mCrlf;
+    bool bCookieSet;
 
-        UBDocumentProxy *mSourceDocument;
-        UBDocumentProxy *mPublishingDocument;
-
-        UBServerXMLHttpRequest* mUploadRequest;
-
-        QString mTitle;
-        QString mAuthor;
-        QString mDescription;
-        QString mEMail;
-        bool mAttachPDF;
-        bool mAttachUBZ;
-
-        QUrl mPublishingUrl;
-
-        QString mPublishingServiceUrl;
-        QUuid mAuthenticationUuid;
-        QString mAuthenticationBase64Token;
+    void buildUbwFile();
+    QString mTmpZipFile;
 
 };
-
-
-class UBDocumentPublishingDialog : public QDialog, public Ui::documentPublishingDialog
-{
-    Q_OBJECT;
-
-    public:
-        UBDocumentPublishingDialog(QWidget *parent = 0);
-        ~UBDocumentPublishingDialog(){}
-
-    private slots:
-        void updateUIState(const QString& string);
-
-};
-
 #endif // UBDOCUMENTPUBLISHER_H

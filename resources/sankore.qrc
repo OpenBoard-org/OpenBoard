@@ -33,6 +33,8 @@
         <file>images/resizeRuler.svg</file>
         <file>images/resizeCompass.svg</file>
         <file>images/closeTool.svg</file>
+        <file>images/hflipTool.svg</file>
+        <file>images/vflipTool.svg</file>
         <file>images/resetTool.svg</file>
         <file>images/angleMarker.svg</file>
         <file>images/currentDocument.png</file>

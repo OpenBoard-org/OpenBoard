@@ -724,7 +724,7 @@ UBLibElement* UBLibElement::trashElement()
     if (trashElement)
         return trashElement;
 
-    trashElement = new UBLibElement(eUBLibElementType_Folder, UBSettings::trashLibraryPaletteDirPath(), QObject::tr("Trash", "Pictures category element"));
+	trashElement = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(UBSettings::trashLibraryPaletteDirPath()), QObject::tr("Trash", "Pictures category element"));
     QImage *categoryImage = new QImage(":images/libpalette/TrashCategory.svg");
     trashElement->setThumbnail(categoryImage);
     trashElement->setMoveable(false);
