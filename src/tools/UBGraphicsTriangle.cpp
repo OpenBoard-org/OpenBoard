@@ -73,26 +73,30 @@ void UBGraphicsTriangle::setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsT
 
 void UBGraphicsTriangle::setOrientation(UBGraphicsTriangleOrientation orientation)
 {
-	mOrientation = orientation;
-	QTransform t;
-	switch(orientation)
-	{
-	case BottomLeft:
-		t.setMatrix(1, 0, 0, 0, 1, 0, 0, 0, 1);
-		break;
-	case BottomRight:
-		t.setMatrix(-1, 0, 0, 0, 1, 0, boundingRect().right(), 0, 1);
-		break;
-	case TopLeft:
-		t.setMatrix(1, 0, 0, 0, -1, 0, 0, boundingRect().bottom(), 1);
-		break;
-	case TopRight:
-		t.setMatrix(-1, 0, 0, 0, -1, 0, boundingRect().right(), boundingRect().bottom(), 1);
-		break;
-	}
+    if (mOrientation != orientation)
+    {
+	    mOrientation = orientation;
+	    QTransform t;
+	    switch(orientation)
+    	{
+	    case BottomLeft:
+		    t.setMatrix(1, 0, 0, 0, 1, 0, 0, 0, 1);
+		    break;
+	    case BottomRight:
+		    t.setMatrix(-1, 0, 0, 0, 1, 0, boundingRect().right(), 0, 1);
+		    break;
+	    case TopLeft:
+		    t.setMatrix(1, 0, 0, 0, -1, 0, 0, boundingRect().bottom(), 1);
+		    break;
+	    case TopRight:
+		    t.setMatrix(-1, 0, 0, 0, -1, 0, boundingRect().right(), boundingRect().bottom(), 1);
+		    break;
+	    }
 
-    rotateAroundCenter(t);
-	setTransform(t);
+        this->angle = -this->angle;
+        rotateAroundCenter(t, rotationCenter());
+	    setTransform(t);
+    }
 }
 
 UBGraphicsScene* UBGraphicsTriangle::scene() const
@@ -236,17 +240,19 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
 
 void UBGraphicsTriangle::rotateAroundCenter(qreal angle)
 {
+    qreal oldAngle = this->angle;
     this->angle = angle;
     QTransform transform;
-    rotateAroundCenter(transform);
+    rotateAroundCenter(transform, rotationCenter());
     setTransform(transform, true);
+    this->angle = oldAngle + angle; // We have to store absolute value for FLIP case
 }
 
-void UBGraphicsTriangle::rotateAroundCenter(QTransform& transform)
+void UBGraphicsTriangle::rotateAroundCenter(QTransform& transform, QPointF center)
 {
-    transform.translate(rotationCenter().x(), rotationCenter().y());
+    transform.translate(center.x(), center.y());
     transform.rotate(angle);
-    transform.translate(- rotationCenter().x(), - rotationCenter().y());
+    transform.translate(- center.x(), - center.y());
 }
 
 
@@ -388,11 +394,11 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			}
 			else
 			{
-				setRect(
+				setRect(QRectF(
 					rect().left() - delta.x(),
 					rect().top(),
 					rect().width() + delta.x(),
-					rect().height(),
+					rect().height()),
 					mOrientation
 					);
 			}
@@ -400,15 +406,18 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (mResizing2)
 		{
 			QPointF delta = event->pos() - event->lastPos();
-			if (rect().height() + delta.y() < sMinHeight)
+			if (rect().height() - delta.y() < sMinHeight)
 				delta.setY(sMinHeight - rect().height());
-			qDebug() << delta;
-			setRect(QRect(
+            qDebug() << event->pos() << event->lastPos() << delta;
+			QRectF r(
 				rect().left(),
 				rect().top() + delta.y(),
 				rect().width(),
-				rect().height() - delta.y()),
-				mOrientation);
+				rect().height() - delta.y());
+            qDebug() << r;
+            setRect(r, mOrientation);
+
+
 		}
         if (mRotating)
         {

@@ -94,7 +94,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
         QTransform calculateRotationTransform();
         qreal angle;
-        void rotateAroundCenter(QTransform& transform);
+        void rotateAroundCenter(QTransform& transform, QPointF center);
 
 		bool mResizing1;
 		bool mResizing2;
@@ -115,7 +115,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 		static const int d = 70; // width of triangle border
 		static const int sArrowLength = 30;
 		static const int sMinWidth = 200;
-		static const int sMinHeight = 150;
+		static const int sMinHeight = 200;
 };
 
 #endif /* UBGRAPHICSTRIANGLE_H_ */
