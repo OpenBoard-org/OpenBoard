@@ -40,8 +40,34 @@ UBGraphicsTriangle::UBGraphicsTriangle()
     mRotateSvgItem->setVisible(false);
     mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
-    //updateResizeCursor();
+    updateResizeCursor();
 }
+
+
+void UBGraphicsTriangle::updateResizeCursor()
+{
+    QPixmap pix(":/images/cursors/resize.png");
+    QTransform itemTransform = sceneTransform();
+    QRectF itemRect = boundingRect();
+
+    QPointF topLeft = itemTransform.map(itemRect.topLeft());
+    QPointF topRight = itemTransform.map(itemRect.topRight());
+    QPointF bottomLeft = itemTransform.map(itemRect.bottomLeft());
+
+    QLineF topLine(topLeft, topRight);
+    QLineF leftLine(topLeft, bottomLeft);
+
+    qreal angle = topLine.angle();
+    QTransform tr1;
+    tr1.rotate(- angle);
+    mResizeCursor1  = QCursor(pix.transformed(tr1, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
+
+    angle = leftLine.angle();
+    QTransform tr2;
+    tr2.rotate(- angle);
+    mResizeCursor2  = QCursor(pix.transformed(tr2, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
+}
+
 
 UBGraphicsTriangle::~UBGraphicsTriangle()
 {
@@ -65,7 +91,7 @@ UBItem* UBGraphicsTriangle::deepCopy(void) const
 void UBGraphicsTriangle::setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsTriangleOrientation orientation)
 {
 	QPolygonF polygon;
-	polygon << QPointF(x, y) << QPoint(x, y + h) << QPoint(x+w, y + h) << QPoint(x, y);
+	polygon << QPointF(x, y) << QPoint(x, y + h) << QPoint(x+w, y + h);
 	setPolygon(polygon);
 
 	setOrientation(orientation);
@@ -73,30 +99,12 @@ void UBGraphicsTriangle::setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsT
 
 void UBGraphicsTriangle::setOrientation(UBGraphicsTriangleOrientation orientation)
 {
-    if (mOrientation != orientation)
-    {
-	    mOrientation = orientation;
-	    QTransform t;
-	    switch(orientation)
-    	{
-	    case BottomLeft:
-		    t.setMatrix(1, 0, 0, 0, 1, 0, 0, 0, 1);
-		    break;
-	    case BottomRight:
-		    t.setMatrix(-1, 0, 0, 0, 1, 0, boundingRect().right(), 0, 1);
-		    break;
-	    case TopLeft:
-		    t.setMatrix(1, 0, 0, 0, -1, 0, 0, boundingRect().bottom(), 1);
-		    break;
-	    case TopRight:
-		    t.setMatrix(-1, 0, 0, 0, -1, 0, boundingRect().right(), boundingRect().bottom(), 1);
-		    break;
-	    }
+    mOrientation = orientation;
+    calculatePoints(boundingRect());
 
-        this->angle = -this->angle;
-        rotateAroundCenter(t, rotationCenter());
-	    setTransform(t);
-    }
+    QPolygonF polygon;
+    polygon << A1 << B1 << C1;
+    setPolygon(polygon);
 }
 
 UBGraphicsScene* UBGraphicsTriangle::scene() const
@@ -104,25 +112,81 @@ UBGraphicsScene* UBGraphicsTriangle::scene() const
 	return static_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene());
 }
 
-void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void UBGraphicsTriangle::calculatePoints(const QRectF& r)
 {
-	QPointF A1(rect().x(), rect().y());
-	QPointF B1(rect().x(), rect().y() + rect().height());
-	QPointF C1(rect().x() + rect().width(), rect().y() + rect().height());
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            A1.setX(r.left()); A1.setY(r.top());
+            B1.setX(r.left()); B1.setY(r.bottom());
+            C1.setX(r.right()); C1.setY(r.bottom());
+            break;
+        case TopLeft:
+            A1.setX(r.left()); A1.setY(r.bottom());
+            B1.setX(r.left()); B1.setY(r.top());
+            C1.setX(r.right()); C1.setY(r.top());
+            break;
+        case TopRight:
+            A1.setX(r.right()); A1.setY(r.bottom());
+            B1.setX(r.right()); B1.setY(r.top());
+            C1.setX(r.left()); C1.setY(r.top());
+            break;
+        case BottomRight:
+            A1.setX(r.right()); A1.setY(r.top());
+            B1.setX(r.right()); B1.setY(r.bottom());
+            C1.setX(r.left()); C1.setY(r.bottom());
+            break;
+    }
 
-	qreal C = sqrt(rect().width() * rect().width() + rect().height() * rect().height());
+	C = sqrt(rect().width() * rect().width() + rect().height() * rect().height());
 	qreal L = (C * d + rect().width() * d)/ rect().height();
 	qreal K = (C * d + rect().height() * d)/ rect().width();
 
-	qreal W1 = rect().height() * d / C;
-	qreal H1 = rect().width() * d / C;
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            A2.setX(r.left() + d); A2.setY(r.top() + K);
+            B2.setX(r.left() + d); B2.setY(r.bottom() - d);
+            C2.setX(r.right() - L); C2.setY(r.bottom() - d);
+            break;
+        case TopLeft:
+            A2.setX(r.left() + d); A2.setY(r.bottom() - K);
+            B2.setX(r.left() + d); B2.setY(r.top() + d);
+            C2.setX(r.right() - L); C2.setY(r.top() + d);
+            break;
+        case TopRight:
+            A2.setX(r.right() - d); A2.setY(r.bottom() - K);
+            B2.setX(r.right() - d); B2.setY(r.top() + d);
+            C2.setX(r.left() + L); C2.setY(r.top() + d);
+            break;
+        case BottomRight:
+            A2.setX(r.right() - d); A2.setY(r.top() + K);
+            B2.setX(r.right() - d); B2.setY(r.bottom() - d);
+            C2.setX(r.left() + L); C2.setY(r.bottom() - d);
+            break;
+    }
+	W1 = rect().height() * d / C;
+	H1 = rect().width() * d / C;
 
-	QPointF A2(rect().x() + d, rect().y() + K);
-	QPointF B2(rect().x() + d, rect().y() + rect().height() - d);
-	QPointF C2(rect().x() + rect().width() - L, rect().y() + rect().height() - d);
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            CC.setX(r.right() - L + W1); CC.setY(r.bottom() - d - H1);
+            break;
+        case TopLeft:
+            CC.setX(r.right() - L + W1); CC.setY(r.top() + d + H1);
+            break;
+        case TopRight:
+            CC.setX(r.left() + L - W1); CC.setY(r.top() + d + H1);
+            break;
+        case BottomRight:
+            CC.setX(r.left() + L - W1); CC.setY(r.top() - d - H1);
+            break;
+    }
+}
 
-	QPoint CC(rect().x() + rect().width() - L + W1,
-		rect().y() + rect().height() - d - H1);
+void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+{
 
 	painter->setPen(Qt::NoPen);
 
@@ -197,41 +261,76 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
     const int       millimetersPerCentimeter = 10;
     const int   millimetersPerHalfCentimeter = 5;
 
+    qreal kx = (mOrientation == TopLeft || mOrientation == BottomLeft) ? 1 : -1;
+    qreal ky = (mOrientation == BottomLeft || mOrientation == BottomRight) ? 1 : -1;
+
     painter->save();
     painter->setFont(font());
     QFontMetricsF fontMetrics(painter->font());
     for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
     {
-        int graduationX = rotationCenter().x() + sPixelsPerMillimeter * millimeters;
+        int graduationX = rotationCenter().x() + kx * sPixelsPerMillimeter * millimeters;
         int graduationHeight = (0 == millimeters % millimetersPerCentimeter) ?
             centimeterGraduationHeight :
             ((0 == millimeters % millimetersPerHalfCentimeter) ?
                 halfCentimeterGraduationHeight : millimeterGraduationHeight);
 
 		// Check that grad. line inside triangle
-		qreal lineY = rect().bottom() - rect().height()/rect().width()*(rect().width() - graduationX);
-		if (lineY >= rotationCenter().y() - graduationHeight)
-			break;
+        qreal dx = (kx > 0) ? rect().width() - graduationX : graduationX - rect().x();
+        qreal lineY = rotationCenter().y() - ky * rect().height()/rect().width() * dx;
+        if (mOrientation == BottomLeft || mOrientation == BottomRight)
+        {
+		    if (lineY >= rotationCenter().y() - ky * graduationHeight)
+			    break;
+        }
+        else
+        {
+		    if (lineY <= rotationCenter().y() - ky * graduationHeight)
+			    break;
+        }
         
-        painter->drawLine(QLine(graduationX, rotationCenter().y(), graduationX, rotationCenter().y() - graduationHeight));
+        painter->drawLine(QLine(graduationX, rotationCenter().y(), graduationX, rotationCenter().y() - ky * graduationHeight));
         if (0 == millimeters % millimetersPerCentimeter)
         {
             QString text = QString("%1").arg((int)(millimeters / millimetersPerCentimeter));
 			int textXRight = graduationX + fontMetrics.width(text) / 2;
 			qreal textWidth = fontMetrics.width(text);
             qreal textHeight = fontMetrics.tightBoundingRect(text).height() + 5;
-			int textY = rect().bottom() - 5 - centimeterGraduationHeight - textHeight;
 
-			lineY = rect().bottom() - rect().height()/rect().width()*(rect().width() - textXRight);
+			int textY = (ky > 0) ? rotationCenter().y() - 5 - centimeterGraduationHeight - textHeight
+                : rotationCenter().y() + 5 + centimeterGraduationHeight;
 
-			if (textXRight < rect().right()
-				&& lineY < textY)
+            bool bText = false;
+            switch(mOrientation)
             {
+                case BottomLeft:
+                    dx = rect().width() - textXRight;
+                    lineY = rotationCenter().y() - rect().height()/rect().width() * dx;
+                    bText = lineY <= textY;
+                    break;
+                case TopLeft:
+                    dx = rect().width() - textXRight;
+                    lineY = rotationCenter().y() + rect().height()/rect().width() * dx;
+                    bText = lineY >= textY + textHeight;
+                    break;
+                case TopRight:
+                    dx = textXRight - textWidth - rect().left();
+                    lineY = rotationCenter().y() + rect().height()/rect().width() * dx;
+                    bText = lineY >= textY + textHeight;
+                    break;
+                case BottomRight:
+                    dx = textXRight - textWidth - rect().left();
+                    lineY = rotationCenter().y() - rect().height()/rect().width() * dx;
+                    bText = lineY <= textY;
+                    break;
+            }
+
+            if (bText)
                 painter->drawText(
                     QRectF(graduationX - textWidth / 2, 
-					textY, textWidth, textHeight),
+				    textY, textWidth, textHeight),
                     Qt::AlignVCenter, text);
-            }
+
         }
     }
     painter->restore();
@@ -258,82 +357,192 @@ void UBGraphicsTriangle::rotateAroundCenter(QTransform& transform, QPointF cente
 
 QPointF	UBGraphicsTriangle::rotationCenter() const
 {
-    return QPointF(rect().x() + sLeftEdgeMargin , rect().bottom());
+    switch(mOrientation)
+    {
+        case BottomLeft:
+        case TopLeft:
+            return B1 + QPointF(sLeftEdgeMargin, 0);
+        case TopRight:
+        case BottomRight:
+            return B1 - QPointF(sLeftEdgeMargin, 0);
+    }
+    return QPointF(0, 0);
 }
 
 QRectF	UBGraphicsTriangle::closeButtonRect() const
 {
-	return QRectF(rect().x() + d - mCloseSvgItem->boundingRect().width() - 5, 
-		rect().bottom() - d - mCloseSvgItem->boundingRect().height() - 5, 
-		mCloseSvgItem->boundingRect().width(),
-		mCloseSvgItem->boundingRect().height());
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            return QRectF(B2.x() - mCloseSvgItem->boundingRect().width() - 5, 
+		      B2.y() - mCloseSvgItem->boundingRect().height() - 5, 
+		      mCloseSvgItem->boundingRect().width(),
+		      mCloseSvgItem->boundingRect().height());
+        case TopLeft:
+            return QRectF(B2.x() - mCloseSvgItem->boundingRect().width() - 5, 
+		      B2.y() + 5, 
+		      mCloseSvgItem->boundingRect().width(),
+		      mCloseSvgItem->boundingRect().height());
+        case TopRight:
+            return QRectF(B2.x() + 5, 
+		      B2.y() + 5, 
+		      mCloseSvgItem->boundingRect().width(),
+		      mCloseSvgItem->boundingRect().height());
+        case BottomRight:
+            return QRectF(B2.x() + 5, 
+		      B2.y() - mCloseSvgItem->boundingRect().height() - 5, 
+		      mCloseSvgItem->boundingRect().width(),
+		      mCloseSvgItem->boundingRect().height());
+    }
+    return QRectF(0,0,0,0);
 }
 
 QPolygonF UBGraphicsTriangle::resize1Polygon() const
 {
-	qreal C = sqrt(rect().width() * rect().width() + rect().height() * rect().height());
-
+    qreal x1, y1;
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            x1 = -1;
+            y1 = -1;
+            break;
+        case TopLeft:
+            x1 = -1;
+            y1 = 1;
+            break;
+        case TopRight:
+            x1 = 1;
+            y1 = 1;
+            break;
+        case BottomRight:
+            x1 = 1;
+            y1 = -1;
+            break;
+    }
+    QPointF P1(C1.x() + x1 * sArrowLength, C1.y());
+    QPointF P2(C1.x() + x1 * sArrowLength * rect().width()/C, C1.y() + y1 * sArrowLength * rect().height() / C);
 	QPolygonF p;
-	
-	QPointF P1(rect().right() - sArrowLength, rect().bottom());
-	QPointF P2(rect().right() - sArrowLength * rect().width() / C,
-		rect().bottom() - sArrowLength * rect().height() / C );
-
-	p << QPointF(rect().right(), rect().bottom()) << P1 << P2;
-
+    p << C1 << P1 << P2;	
 	return p;
 }
 
 QPolygonF UBGraphicsTriangle::resize2Polygon() const
 {
-	qreal C = sqrt(rect().width() * rect().width() + rect().height() * rect().height());
-
+    qreal x1, y1;
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            x1 = 1;
+            y1 = 1;
+            break;
+        case TopLeft:
+            x1 = 1;
+            y1 = -1;
+            break;
+        case TopRight:
+            x1 = -1;
+            y1 = -1;
+            break;
+        case BottomRight:
+            x1 = -1;
+            y1 = 1;
+            break;
+    }
+    QPointF P1(A1.x(), A1.y() + y1 * sArrowLength);
+    QPointF P2(A1.x() + x1 * sArrowLength * rect().width()/C, 
+        A1.y() + y1 * sArrowLength * rect().height() / C);
 	QPolygonF p;
-	
-	QPointF P1(rect().left(), rect().top() + sArrowLength);
-	QPointF P2(rect().left() + sArrowLength * rect().width() / C,
-		rect().top() + sArrowLength * rect().height() / C );
-
-	p << QPointF(rect().left(), rect().top()) << P1 << P2;
-
+    p << A1 << P1 << P2;	
 	return p;
 }
 
 QRectF	UBGraphicsTriangle::hFlipRect() const
 {
-	return QRectF(rect().x() + d - mHFlipSvgItem->boundingRect().width() - 5, 
-		rect().bottom() - d - mCloseSvgItem->boundingRect().height() - mVFlipSvgItem->boundingRect().height() -
-			mVFlipSvgItem->boundingRect().height() - 15, 
-		mHFlipSvgItem->boundingRect().width(),
-		mHFlipSvgItem->boundingRect().height());
+    qreal dy = mVFlipSvgItem->boundingRect().height() + mCloseSvgItem->boundingRect().height() + 10;
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            return QRectF(B2.x() - mHFlipSvgItem->boundingRect().width() - 5, 
+		      B2.y() - mHFlipSvgItem->boundingRect().height() - 5 - dy, 
+              mHFlipSvgItem->boundingRect().width(),
+		      mHFlipSvgItem->boundingRect().height());
+        case TopLeft:
+            return QRectF(B2.x() - mHFlipSvgItem->boundingRect().width() - 5, 
+		      B2.y() + 5 + dy, 
+		      mHFlipSvgItem->boundingRect().width(),
+		      mHFlipSvgItem->boundingRect().height());
+        case TopRight:
+            return QRectF(B2.x() + 5, 
+		      B2.y() + 5 + dy, 
+		      mHFlipSvgItem->boundingRect().width(),
+		      mHFlipSvgItem->boundingRect().height());
+        case BottomRight:
+            return QRectF(B2.x() + 5, 
+		      B2.y() - mHFlipSvgItem->boundingRect().height() - 5 - dy, 
+		      mHFlipSvgItem->boundingRect().width(),
+		      mHFlipSvgItem->boundingRect().height());
+    }
+    return QRectF(0,0,0,0);
 }
 
 QRectF	UBGraphicsTriangle::vFlipRect() const
 {
-	return QRectF(rect().x() + d - mVFlipSvgItem->boundingRect().width() - 5, 
-		rect().bottom() - d - mCloseSvgItem->boundingRect().height() - mVFlipSvgItem->boundingRect().height() - 10, 
-		mVFlipSvgItem->boundingRect().width(),
-		mVFlipSvgItem->boundingRect().height());
+    qreal dy = mCloseSvgItem->boundingRect().height() + 5;
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            return QRectF(B2.x() - mVFlipSvgItem->boundingRect().width() - 5, 
+		      B2.y() - mVFlipSvgItem->boundingRect().height() - 5 - dy, 
+              mVFlipSvgItem->boundingRect().width(),
+		      mVFlipSvgItem->boundingRect().height());
+        case TopLeft:
+            return QRectF(B2.x() - mVFlipSvgItem->boundingRect().width() - 5, 
+		      B2.y() + 5 + dy, 
+		      mVFlipSvgItem->boundingRect().width(),
+		      mVFlipSvgItem->boundingRect().height());
+        case TopRight:
+            return QRectF(B2.x() + 5, 
+		      B2.y() + 5 + dy, 
+		      mVFlipSvgItem->boundingRect().width(),
+		      mVFlipSvgItem->boundingRect().height());
+        case BottomRight:
+            return QRectF(B2.x() + 5, 
+		      B2.y() - mVFlipSvgItem->boundingRect().height() - 5 - dy, 
+		      mVFlipSvgItem->boundingRect().width(),
+		      mVFlipSvgItem->boundingRect().height());
+    }
+    return QRectF(0,0,0,0);
 }
 
 QRectF	UBGraphicsTriangle::rotateRect() const
 {
-	QPointF A1(rect().x(), rect().y());
-	QPointF B1(rect().x(), rect().y() + rect().height());
-	QPointF C1(rect().x() + rect().width(), rect().y() + rect().height());
-
-	qreal C = sqrt(rect().width() * rect().width() + rect().height() * rect().height());
-	qreal L = (C * d + rect().width() * d)/ rect().height();
-
-	QPointF C2(rect().x() + rect().width() - L, rect().y() + rect().height() - d);
-
-	return QRectF(C2 + QPointF(20, 5), QSizeF(mRotateSvgItem->boundingRect().size()));
-
+    QPointF p(C2);
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            p += QPointF(20, 5);
+            break;
+        case TopLeft:
+            p += QPointF(20, -5 - mRotateSvgItem->boundingRect().height());
+            break;
+        case TopRight:
+            p += QPointF(-20 - mRotateSvgItem->boundingRect().width(), -5 - mRotateSvgItem->boundingRect().height());
+            break;
+        case BottomRight:
+            p += QPointF(-20 - mRotateSvgItem->boundingRect().width(), 5);
+            break;
+    }
+	return QRectF(p, QSizeF(mRotateSvgItem->boundingRect().size()));
 }
 
-QCursor	UBGraphicsTriangle::moveResizeCursor() const
+QCursor	UBGraphicsTriangle::resizeCursor1() const
 {
-	return Qt::OpenHandCursor;
+    return mResizeCursor1;
+}
+
+QCursor	UBGraphicsTriangle::resizeCursor2() const
+{
+    return mResizeCursor2;
 }
 
 QCursor	UBGraphicsTriangle::flipCursor() const
@@ -382,8 +591,16 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (mResizing1)
 		{
 			QPointF delta = event->pos() - event->lastPos();
-			if (rect().width() + delta.x() < sMinWidth)
-				delta.setX(sMinWidth - rect().width());
+            if (mOrientation == TopLeft || mOrientation == BottomLeft)
+            {
+			    if (rect().width() + delta.x() < sMinWidth)
+				    delta.setX(sMinWidth - rect().width());
+            }
+            else
+            {
+			    if (rect().width() - delta.x() < sMinWidth)
+				    delta.setX(sMinWidth - rect().width());
+            }
 			if (mOrientation == TopLeft || mOrientation == BottomLeft)
 			{
 				setRect(QRectF(
@@ -395,9 +612,9 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			else
 			{
 				setRect(QRectF(
-					rect().left() - delta.x(),
+					rect().left() + delta.x(),
 					rect().top(),
-					rect().width() + delta.x(),
+					rect().width() - delta.x(),
 					rect().height()),
 					mOrientation
 					);
@@ -406,18 +623,30 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (mResizing2)
 		{
 			QPointF delta = event->pos() - event->lastPos();
-			if (rect().height() - delta.y() < sMinHeight)
-				delta.setY(sMinHeight - rect().height());
-            qDebug() << event->pos() << event->lastPos() << delta;
-			QRectF r(
-				rect().left(),
-				rect().top() + delta.y(),
-				rect().width(),
-				rect().height() - delta.y());
-            qDebug() << r;
-            setRect(r, mOrientation);
-
-
+            if (mOrientation == BottomRight || mOrientation == BottomLeft)
+            {
+                if (rect().height() - delta.y() < sMinHeight)
+				    delta.setY(sMinHeight - rect().height());
+            }
+            else
+            {
+			    if (rect().height() + delta.y() < sMinHeight)
+				    delta.setY(sMinHeight - rect().height());
+            }
+            if (mOrientation == BottomRight || mOrientation == BottomLeft)
+                setRect(QRectF(
+				    rect().left(),
+				    rect().top()  + delta.y(),
+				    rect().width(),
+				    rect().height() - delta.y()),
+                    mOrientation);
+            else
+                setRect(QRectF(
+				    rect().left(),
+				    rect().top(),
+				    rect().width(),
+				    rect().height() + delta.y()),
+                    mOrientation);
 		}
         if (mRotating)
         {
@@ -434,6 +663,8 @@ void UBGraphicsTriangle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (mResizing1 || mResizing2 || mRotating)
     {
+        if (mRotating)
+            updateResizeCursor();
         mResizing1 = false;
 		mResizing2 = false;
 		mRotating = false;
@@ -505,9 +736,10 @@ void UBGraphicsTriangle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 		mVFlipSvgItem->setVisible(true);
 		mRotateSvgItem->setVisible(true);
 
-		if (resize1Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill) ||
-			resize2Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
-			setCursor(moveResizeCursor());
+		if (resize1Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
+            setCursor(resizeCursor1());
+        else if(resize2Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
+			setCursor(resizeCursor2());
 		else if (closeButtonRect().contains(event->pos()))
 			setCursor(closeCursor());
 		else if (hFlipRect().contains(event->pos())
@@ -546,9 +778,10 @@ void UBGraphicsTriangle::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 		mHFlipSvgItem->setVisible(mShowButtons);
 		mRotateSvgItem->setVisible(mShowButtons);
 
-		if (resize1Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill) ||
-			resize2Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
-			setCursor(moveResizeCursor());
+		if (resize1Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
+            setCursor(resizeCursor1());
+        else if (resize2Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
+			setCursor(resizeCursor2());
 		else if (closeButtonRect().contains(event->pos()))
 			setCursor(closeCursor());
 		else if (hFlipRect().contains(event->pos())
