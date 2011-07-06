@@ -56,7 +56,7 @@ UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *pa
 UBDocumentPublisher::~UBDocumentPublisher()
 {
     //delete mpWebView;
-    delete mPublishingDocument;
+    //delete mPublishingDocument;
 }
 
 
@@ -574,6 +574,9 @@ void UBDocumentPublisher::init()
     mCrlf+=0x0a;
 
     mpNetworkMgr = new QNetworkAccessManager(this);
+    //mpCache = new QNetworkDiskCache(this);
+    //mpCache->setCacheDirectory("cache");
+    //mpNetworkMgr->setCache(mpCache);
     mpCookieJar = new QNetworkCookieJar();
 
     connect(mpNetworkMgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(onFinished(QNetworkReply*)));
@@ -581,11 +584,11 @@ void UBDocumentPublisher::init()
 
 void UBDocumentPublisher::onFinished(QNetworkReply *reply)
 {
+    qDebug() << "[-[ Request finished! ]-]";
     QByteArray response = reply->readAll();
 
     if (!bLoginCookieSet)
     {
-        QList<QNetworkCookie> cookiesList;
         QVariant cookieHeader = reply->rawHeader("Set-Cookie");
         // First we concatenate all the Set-Cookie values (the packet can contains many of them)
         QStringList qslCookie = cookieHeader.toString().split("\n");
@@ -621,19 +624,19 @@ void UBDocumentPublisher::onFinished(QNetworkReply *reply)
                crntCookie.name() == "rememberme" ||
                crntCookie.name() == "validation")
             {
-                cookiesList << crntCookie;
+                mCookies << crntCookie;
             }
         }
         QNetworkCookie langCookie("language", "en");
-        cookiesList << langCookie;
+        mCookies << langCookie;
         // DEBUG : Verify
-        for(int i = 0; i < cookiesList.size(); i++)
+        for(int i = 0; i < mCookies.size(); i++)
         {
-            qDebug() << cookiesList.at(i).name() << "=" << cookiesList.at(i).value();
+            qDebug() << mCookies.at(i).name() << "=" << mCookies.at(i).value();
         }
 
         // Set the cookiejar : it set the cookies that will be sent with every packet.
-        mpCookieJar->setCookiesFromUrl(cookiesList, QUrl(DOCPUBLICATION_URL)/*reply->url()*/);
+        mpCookieJar->setCookiesFromUrl(mCookies, QUrl(DOCPUBLICATION_URL)/*reply->url()*/);
 
         mpNetworkMgr->setCookieJar(mpCookieJar);
         bLoginCookieSet = true;
@@ -643,28 +646,20 @@ void UBDocumentPublisher::onFinished(QNetworkReply *reply)
     {
         if (!response.isEmpty()){
             // Display the iframe
-            mpWebView->setHtml(response, QUrl(DOCPUBLICATION_URL));
+            mpWebView->setHtml(response, reply->url());
             UBApplication::applicationController->showSankoreWebDocument();
-
         }
         else
         {
             // Redirect
             QVariant locationHeader = reply->rawHeader("Location");
 
-
-            qDebug() << "---------------------------";
-            QList<QNetworkCookie> clist = mpCookieJar->cookiesForUrl(QUrl(locationHeader.toString()));
-            for(int i = 0; i < clist.size(); i++)
-            {
-                qDebug() << clist.at(i).name() << "=" << clist.at(i).value();
-            }
-
-
             QNetworkRequest req(QUrl(locationHeader.toString()));
             mpNetworkMgr->get(req);
+            qDebug() << mpWebView->url().toString();
         }
     }
+    reply->deleteLater();
 }
 
 void UBDocumentPublisher::sendUbw()
@@ -689,12 +684,7 @@ void UBDocumentPublisher::sendUbw()
             datatoSend += ba;
             datatoSend += mCrlf;
             datatoSend += QString("--%0--%1").arg(boundary).arg(mCrlf);
-            //datatoSend += QString("%0").arg("Content-Disposition: form-data; name=\"submit\"");
-            //datatoSend += "Submit Query";
-            //datatoSend += mCrlf;
-            //datatoSend += QString("--%0--%1").arg(boundary).arg(mCrlf);
 
-            // ?xpage=plain&outputSyntax=plain
             QNetworkRequest request(QUrl(DOCPUBLICATION_URL));
             request.setHeader(QNetworkRequest::ContentTypeHeader, multipartHeader);
             request.setHeader(QNetworkRequest::ContentLengthHeader,datatoSend.size());
@@ -727,7 +717,8 @@ void UBDocumentPublisher::onLoadFinished(bool result)
 {
     Q_UNUSED(result);
     // [Basic Auth] This line says: if the user click on a link, do not interpret it.
-    mpWebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    //mpWebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    mpWebView->page()->setNetworkAccessManager(mpNetworkMgr);
 }
 
 

@@ -64,6 +64,7 @@ private:
     void buildUbwFile();
     void login(QString username, QString password);
     QString mTmpZipFile;
+    QList<QNetworkCookie> mCookies;
 
 };
 #endif // UBDOCUMENTPUBLISHER_H
