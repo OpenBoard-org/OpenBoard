@@ -7,6 +7,9 @@
 #include "ui_webPublishing.h"
 #include "UBAbstractPublisher.h"
 
+#define DOCPUBLICATION_URL     "http://sankore.devxwiki.com/xwiki/bin/view/CreateResources/UniboardUpload"
+#define XWIKI_ORIGIN_HEADER    "http://sankore.devxwiki.com"
+
 class UBDocumentProxy;
 class UBServerXMLHttpRequest;
 class UBGraphicsW3CWidgetItem;
@@ -38,6 +41,7 @@ private slots:
     void onFinished(QNetworkReply* reply);
     void onLinkClicked(const QUrl& url);
     void onLoadFinished(bool result);
+    void onLoginDone();
 
 
 private:
@@ -55,9 +59,10 @@ private:
     QString mUsername;
     QString mPassword;
     QString mCrlf;
-    bool bCookieSet;
+    bool bLoginCookieSet;
 
     void buildUbwFile();
+    void login(QString username, QString password);
     QString mTmpZipFile;
 
 };
