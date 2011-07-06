@@ -38,6 +38,7 @@ UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *pa
         , mPublishingDocument(0)
         , mUsername("")
         , mPassword("")
+		, bLoginCookieSet(false)
 {
     mpWebView = new QWebView(0);
     UBApplication::mainWindow->addSankoreWebDocumentWidget(mpWebView);
