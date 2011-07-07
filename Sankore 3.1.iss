@@ -84,6 +84,5 @@ end;
 
 function isProcessorNotX64: Boolean;
 begin
-  Result := not isProcessorX64;
+	Result := not isProcessorX64;
 end;
-

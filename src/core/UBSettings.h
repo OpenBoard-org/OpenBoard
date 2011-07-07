@@ -89,6 +89,11 @@ class UBSettings : public QObject
         QString proxyPassword();
         void setProxyPassword(const QString& password);
 
+        QString communityUsername();
+        void setCommunityUsername(const QString& username);
+        QString communityPassword();
+        void setCommunityPassword(const QString& password);
+
         void init();
 
         static QString uniboardDataDirectory();
@@ -314,6 +319,9 @@ class UBSettings : public QObject
 
         UBSetting* navigPaletteWidth;
         UBSetting* libPaletteWidth;
+
+        UBSetting* communityUser;
+        UBSetting* communityPsw;
 
         /*
         static int navigPaletteWidth;

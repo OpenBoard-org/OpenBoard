@@ -169,7 +169,7 @@ void UBW3CWidget::javaScriptWindowObjectCleared()
 {
     UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), 0);
 
-    page()->mainFrame()->addToJavaScriptWindowObject("uniboard", uniboardAPI);
+    page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
 
     UBWidgetVotingSystemAPI *votingSystem = new UBWidgetVotingSystemAPI(this);
     page()->mainFrame()->addToJavaScriptWindowObject("voting", votingSystem);

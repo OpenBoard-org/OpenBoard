@@ -183,7 +183,10 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
 
         QTransform savedTransform = p->worldTransform();
         p->resetTransform();
+        QTime t;
+        t.start();
         p->drawImage(QPointF(savedTransform.dx() + mSliceX, savedTransform.dy() + mSliceY), pdfImage);
+        //qDebug() << "XPDFRenderer::render(...) execution time: " << t.elapsed() << "ms";
         p->setWorldTransform(savedTransform);
     }
 }

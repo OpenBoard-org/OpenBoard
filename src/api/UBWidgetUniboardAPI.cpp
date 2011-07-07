@@ -375,6 +375,26 @@ QString UBWidgetUniboardAPI::lang()
     return lang;
 }
 
+void UBWidgetUniboardAPI::returnStatus(const QString& method, const QString& status)
+{
+    QString msg = QString(tr("%0 called (method=%1, status=%2)")).arg("returnStatus").arg(method).arg(status);
+    UBApplication::showMessage(msg);
+}
+
+void UBWidgetUniboardAPI::usedMethods(QStringList methods)
+{
+    // TODO: Implement this method
+    foreach(QString method, methods)
+    {
+
+    }
+}
+
+void UBWidgetUniboardAPI::response(bool correct)
+{
+    Q_UNUSED(correct);
+    // TODO: Implement this method
+}
 
 
 UBDocumentDatastoreAPI::UBDocumentDatastoreAPI(UBGraphicsW3CWidgetItem *graphicsWidget)

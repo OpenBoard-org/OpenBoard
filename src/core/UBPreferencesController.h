@@ -55,6 +55,8 @@ class UBPreferencesController : public QObject
         void toolbarPositionChanged(bool checked);
         void toolbarOrientationVertical(bool checked);
         void toolbarOrientationHorizontal(bool checked);
+        void onCommunityUsernameChanged();
+        void onCommunityPasswordChanged();
 
     private:
 

@@ -67,6 +67,8 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
 	protected:
 
+        void updateResizeCursor();
+
 		virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
 
 		virtual void rotateAroundCenter(qreal angle);
@@ -80,7 +82,9 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 		QRectF	vFlipRect() const;
 		QRectF	rotateRect() const;
 
-		QCursor	moveResizeCursor() const;
+		QCursor	resizeCursor1() const;
+        QCursor	resizeCursor2() const;
+
 		QCursor	flipCursor() const;
 
         virtual void	mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -92,9 +96,12 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
 	private:
 
+        QCursor mResizeCursor1;
+        QCursor mResizeCursor2;
+
         QTransform calculateRotationTransform();
         qreal angle;
-        void rotateAroundCenter(QTransform& transform);
+        void rotateAroundCenter(QTransform& transform, QPointF center);
 
 		bool mResizing1;
 		bool mResizing2;
@@ -112,10 +119,16 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
 		UBGraphicsTriangleOrientation mOrientation;
 
+        QPointF A1, B1, C1, A2, B2, C2; // coordinates of points in ext and int triangles
+        qreal C;
+        qreal W1, H1; // Neccessary for filling
+        QPointF CC; // Hyp. fillining gradient - top point
+        void calculatePoints(const QRectF& rect);
+
 		static const int d = 70; // width of triangle border
 		static const int sArrowLength = 30;
-		static const int sMinWidth = 200;
-		static const int sMinHeight = 150;
+		static const int sMinWidth = 380;
+		static const int sMinHeight = 200;
 };
 
 #endif /* UBGRAPHICSTRIANGLE_H_ */

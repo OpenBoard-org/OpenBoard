@@ -313,6 +313,9 @@ void UBSettings::init()
     uniboardWebAuthor = new UBSetting(this, "UniboardWeb", "Author", "");
     uniboardWebGoogleMapApiKey = new UBSetting(this, "UniboardWeb", "GoogleMapAPIKey", "ABQIAAAAsWU4bIbaeCLinpZ30N_erRQEk562OPinwQkG9J-ZXUNAqYhJ5RT_z2EmpfVXiUg8c41BcsD_XM6P5g");
 
+    communityUser = new UBSetting(this, "Community", "Username", "");
+    communityPsw = new UBSetting(this, "Community", "Password", "");
+
     QStringList uris = UBToolsManager::manager()->allToolIDs();
 
     favoritesNativeToolUris = new UBSetting(this, "App", "FavoriteToolURIs", uris);
@@ -1292,3 +1295,22 @@ void UBSettings::setProxyPassword(const QString& password)
 
 }
 
+QString UBSettings::communityUsername()
+{
+    return communityUser->get().toString();
+}
+
+void UBSettings::setCommunityUsername(const QString &username)
+{
+    communityUser->set(QVariant(username));
+}
+
+QString UBSettings::communityPassword()
+{
+    return communityPsw->get().toString();
+}
+
+void UBSettings::setCommunityPassword(const QString &password)
+{
+    communityPsw->set(QVariant(password));
+}

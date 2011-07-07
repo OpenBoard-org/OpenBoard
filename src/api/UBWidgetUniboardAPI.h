@@ -207,6 +207,9 @@ class UBWidgetUniboardAPI : public QObject
         void addText(const QString& text, const qreal x, const qreal y, const int height = -1, const QString& font = ""
                 , bool bold = false, bool italic = false);
 
+        void returnStatus(const QString& method, const QString& status);
+        void usedMethods(QStringList methods);
+        void response(bool correct);
     private:
 
         QString uuid();
