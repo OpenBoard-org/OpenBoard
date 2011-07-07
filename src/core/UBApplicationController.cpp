@@ -338,25 +338,29 @@ void UBApplicationController::showBoard()
 void UBApplicationController::showInternet()
 {
 
-    if (UBApplication::boardController){
+    if (UBApplication::boardController)
+    {
         UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->hide();
     }
 
-    if (UBSettings::settings()->webUseExternalBrowser->get().toBool()){
+    if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
+    {
         showDesktop(true);
     }
-    else {
+    else 
+    {
         mMainWindow->boardToolBar->hide();
         mMainWindow->documentToolBar->hide();
         mMainWindow->tutorialToolBar->hide();
         mMainWindow->webToolBar->show();
 
+        mMainMode = Internet;
+
         adaptToolBar();
 
         mMainWindow->show();
         mUninoteController->hideWindow();
-        mMainMode = Internet;
         emit mainModeChanged(Internet);
     }
     UBApplication::webController->show(UBWebController::WebBrowser);
@@ -370,7 +374,6 @@ void UBApplicationController::showDocument()
     mMainWindow->boardToolBar->hide();
     mMainWindow->tutorialToolBar->hide();
     mMainWindow->documentToolBar->show();
-
 
     mMainMode = Document;
 
