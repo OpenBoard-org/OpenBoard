@@ -1,4 +1,4 @@
-// uniboard = {
+// sankore = {
 	// preference : function(){},
 	// setPreference : function(){}
 // }
@@ -14,7 +14,7 @@ $(document).ready(function()
 	function _init()
 	{
 		w.setSplashContent( '<img src="custom_icon.png" alt="Click">' );
-		w.setEditContent('<textarea style="width: 100%; height: 100%;">'+(window.uniboard.preference("text") || 'Type a note here')+'</textarea>');
+		w.setEditContent('<textarea style="width: 100%; height: 100%;">'+(window.sankore.preference("text") || 'Type a note here')+'</textarea>');
 		w.elements.containerEdit.find( "textarea" ).tinymce(
 		{
 			script_url : 'tinymcejq/tiny_mce.js',
@@ -41,16 +41,16 @@ $(document).ready(function()
 			{
 				ed.onKeyUp.add(function(ed, e) 
 				{
-					if (window.uniboard)
+					if (window.sankore)
 					{
-						window.uniboard.setPreference("text", ed.getContent());
+						window.sankore.setPreference("text", ed.getContent());
 					}
 				});
 				ed.onExecCommand.add(function(ed, e)
 				{
-					if (window.uniboard)
+					if (window.sankore)
 					{
-						window.uniboard.setPreference("text", ed.getContent());
+						window.sankore.setPreference("text", ed.getContent());
 					}
 				});				
 			},
@@ -63,9 +63,9 @@ $(document).ready(function()
 		});
 		w.modeView(); // init view mode
 		w.modeEdit(); // init edit mode
-		if (window.uniboard.preference("state") == 'view') // back to view mode if last state was it
+		if (window.sankore.preference("state") == 'view') // back to view mode if last state was it
 			w.modeView();
-		if (window.uniboard.preference("is_splash") == '1')
+		if (window.sankore.preference("is_splash") == '1')
 			w.modeSplash(true);
 		w.allowResize = true;
 	};
@@ -84,15 +84,15 @@ $(document).ready(function()
 	w.getWidth = function()
 	{
 		var res = 360;
-		if (window.uniboard && window.uniboard.preference("width"))
-			res = parseInt(window.uniboard.preference("width"));
+		if (window.sankore && window.sankore.preference("width"))
+			res = parseInt(window.sankore.preference("width"));
 		return res;
 	};
 	w.getHeight = function()
 	{
 		var res = 230;
-		if (window.uniboard && window.uniboard.preference("height"))
-			res = parseInt(window.uniboard.preference("height"));
+		if (window.sankore && window.sankore.preference("height"))
+			res = parseInt(window.sankore.preference("height"));
 		return res;
 	};
 	
@@ -121,24 +121,24 @@ $(document).ready(function()
 		w.elements.container.width(winwidth);
 		w.elements.container.height(winheight);
 		tinyMCE.activeEditor.theme.resizeTo(winwidth, winheight-98);
-		if(window.uniboard)
+		if(window.sankore)
 		{
-			window.uniboard.setPreference("width", winwidth);
-			window.uniboard.setPreference("height", winheight-33);
+			window.sankore.setPreference("width", winwidth);
+			window.sankore.setPreference("height", winheight-33);
 		}
 	};
 	
 	w.modeView = function()
 	{
 		if (w.allowResize)
-			window.uniboard.setPreference("state", "view");
+			window.sankore.setPreference("state", "view");
 		return _super_modeView.call(this);
 	}
 	
 	w.modeEdit = function()
 	{
 		if (w.allowResize)
-			window.uniboard.setPreference("state", "edit");
+			window.sankore.setPreference("state", "edit");
 		return _super_modeEdit.call(this);
 	}
 	
@@ -146,7 +146,7 @@ $(document).ready(function()
 	{
 		if (enable == undefined)
 			enable = true;
-		window.uniboard.setPreference("is_splash", (w.allowResize && enable)?1:0);
+		window.sankore.setPreference("is_splash", (w.allowResize && enable)?1:0);
 		return _super_modeSplash.call(this, enable);
 	}
 
