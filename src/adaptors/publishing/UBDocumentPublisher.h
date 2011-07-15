@@ -15,6 +15,28 @@ class UBServerXMLHttpRequest;
 class UBGraphicsW3CWidgetItem;
 class QWebView;
 
+class UBProxyLoginDlg : public QDialog
+{
+    Q_OBJECT
+public:
+    UBProxyLoginDlg(QWidget* parent=0, const char* name="ProxyLoginDlg");
+    ~UBProxyLoginDlg();
+
+    QString username(){return mpUsername->text();}
+    QString password(){return mpPassword->text();}
+
+private:
+    QVBoxLayout* mpLayout;
+    QHBoxLayout* mpUserLayout;
+    QHBoxLayout* mpPasswordLayout;
+    QDialogButtonBox* mpButtons;
+    QLabel* mpUserLabel;
+    QLabel* mpPasswordLabel;
+    QLineEdit* mpUsername;
+    QLineEdit* mpPassword;
+};
+
+
 class UBDocumentPublisher : public UBAbstractPublisher
 {
     Q_OBJECT;
@@ -42,6 +64,7 @@ private slots:
     void onLinkClicked(const QUrl& url);
     void onLoadFinished(bool result);
     void onLoginDone();
+    void onProxyAuthenticationRequired(const QNetworkProxy & proxy, QAuthenticator * authenticator);
 
 
 private:
