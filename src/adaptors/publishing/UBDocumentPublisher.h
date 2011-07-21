@@ -10,6 +10,12 @@
 #define DOCPUBLICATION_URL     "http://sankore.devxwiki.com/xwiki/bin/view/CreateResources/UniboardUpload"
 #define XWIKI_ORIGIN_HEADER    "http://sankore.devxwiki.com"
 
+typedef struct
+{
+    QString title;
+    QString description;
+} sDocumentInfos;
+
 class UBDocumentProxy;
 class UBServerXMLHttpRequest;
 class UBGraphicsW3CWidgetItem;
@@ -34,6 +40,29 @@ private:
     QLabel* mpPasswordLabel;
     QLineEdit* mpUsername;
     QLineEdit* mpPassword;
+};
+
+class UBPublicationDlg : public QDialog
+{
+    Q_OBJECT
+public:
+    UBPublicationDlg(QWidget* parent=0, const char* name="UBPublicationDlg");
+    ~UBPublicationDlg();
+
+    QString title(){return mpTitle->text();}
+    QString description(){return mpDescription->document()->toPlainText();}
+
+private slots:
+    void onTextChanged();
+
+private:
+    QVBoxLayout* mpLayout;
+    QHBoxLayout* mpTitleLayout;
+    QLabel* mpTitleLabel;
+    QLineEdit* mpTitle;
+    QLabel* mpDescLabel;
+    QTextEdit* mpDescription;
+    QDialogButtonBox* mpButtons;
 };
 
 
@@ -88,6 +117,7 @@ private:
     void login(QString username, QString password);
     QString mTmpZipFile;
     QList<QNetworkCookie> mCookies;
+    sDocumentInfos mDocInfos;
 
 };
 #endif // UBDOCUMENTPUBLISHER_H
