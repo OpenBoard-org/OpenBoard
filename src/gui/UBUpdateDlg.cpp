@@ -163,6 +163,7 @@ void UBUpdateDlg::onUpdate()
 
 void UBUpdateDlg::onFilesUpdated(bool bResult)
 {
+	this->hide();
     QString qsMsg;
 
     if (bResult)

@@ -90,15 +90,12 @@ void UniboardSankoreTransition::executeTransition()
     QFileInfoList::iterator fileInfo;
     QString sankoreDocumentDirectory = UBSettings::uniboardDocumentDirectory();
 
-    QStringList qslNewDocs;
-
     for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
         if (fileInfo->isDir() && (fileInfo->fileName().startsWith("Uniboard Document ") || fileInfo->fileName().startsWith("Sankore Document "))){
             QString sankoreDocumentName = fileInfo->fileName();
             emit transitioningFile(sankoreDocumentName);
             sankoreDocumentName.replace("Uniboard","Sankore");
             result = UBFileSystemUtils::copyDir(fileInfo->filePath(),sankoreDocumentDirectory + "/" + sankoreDocumentName);
-            qslNewDocs << sankoreDocumentName;
         }
     }
 
@@ -113,8 +110,6 @@ void UniboardSankoreTransition::executeTransition()
     }
 
     emit transitionFinished(result);
-
-    mTransitionDlg->hide();
 }
 
 
