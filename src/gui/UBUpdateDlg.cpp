@@ -4,7 +4,6 @@
 #include "UBUpdateDlg.h"
 
 #include "core/memcheck.h"
-#include <../Trolltech/Qt-4.7.0/include/QtWebKit/qwebpage.h>
 
 UBUpdateDlg::UBUpdateDlg(QWidget *parent, int nbFiles, const QString& bkpPath)
         : QDialog(parent)
