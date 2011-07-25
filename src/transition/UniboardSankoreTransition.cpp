@@ -7,10 +7,10 @@
 
 UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     QObject(parent)
-  , mTransitionDlg(NULL)
+    , mTransitionDlg(NULL)
+    , mThread(NULL)
 {
     mOldSankoreDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
-    qDebug() << mOldSankoreDirectory;
 
     mUniboardSourceDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
 #if defined(Q_WS_MACX)
@@ -27,6 +27,11 @@ UniboardSankoreTransition::~UniboardSankoreTransition()
     {
         delete mTransitionDlg;
         mTransitionDlg = NULL;
+    }
+
+    if(mThread){
+        delete mThread;
+        mThread = NULL;
     }
 }
 
@@ -56,7 +61,7 @@ void UniboardSankoreTransition::documentTransition()
         QString backupDirectoryPath = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
 
         if (fileInfoList.count() != 0){
-            mTransitionDlg = new UBUpdateDlg(0, fileInfoList.count(), backupDirectoryPath);
+            mTransitionDlg = new UBUpdateDlg(NULL, fileInfoList.count(), backupDirectoryPath);
             connect(mTransitionDlg, SIGNAL(updateFiles()), this, SLOT(startDocumentTransition()));
             connect(this, SIGNAL(transitionFinished(bool)), mTransitionDlg, SLOT(onFilesUpdated(bool)));
             mTransitionDlg->show();
@@ -65,6 +70,13 @@ void UniboardSankoreTransition::documentTransition()
 }
 
 void UniboardSankoreTransition::startDocumentTransition()
+{
+    mThread = new UniboardSankoreThread(this);
+    mThread->start();
+    connect(this,SIGNAL(transitioningFile(QString)),mTransitionDlg,SLOT(transitioningFile(QString)));
+}
+
+void UniboardSankoreTransition::executeTransition()
 {
     bool result = false;
     QString backupDestinationPath = mTransitionDlg->backupPath() + "/OldSankoreAndUniboardVersionsBackup";
@@ -83,6 +95,7 @@ void UniboardSankoreTransition::startDocumentTransition()
     for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
         if (fileInfo->isDir() && (fileInfo->fileName().startsWith("Uniboard Document ") || fileInfo->fileName().startsWith("Sankore Document "))){
             QString sankoreDocumentName = fileInfo->fileName();
+            emit transitioningFile(sankoreDocumentName);
             sankoreDocumentName.replace("Uniboard","Sankore");
             result = UBFileSystemUtils::copyDir(fileInfo->filePath(),sankoreDocumentDirectory + "/" + sankoreDocumentName);
             qslNewDocs << sankoreDocumentName;
@@ -103,3 +116,22 @@ void UniboardSankoreTransition::startDocumentTransition()
 
     mTransitionDlg->hide();
 }
+
+
+UniboardSankoreThread::UniboardSankoreThread(QObject* parent):QThread(parent)
+{
+
+}
+
+UniboardSankoreThread::~UniboardSankoreThread()
+{
+
+}
+
+void UniboardSankoreThread::run()
+{
+    UniboardSankoreTransition* pTransition = dynamic_cast<UniboardSankoreTransition*>(parent());
+
+    pTransition->executeTransition();
+}
+
