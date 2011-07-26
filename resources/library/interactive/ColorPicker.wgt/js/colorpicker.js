@@ -57,8 +57,8 @@
 			},
 			setNewColor = function (hsb, cal) {
 				$(cal).data('colorpicker').newColor.css('backgroundColor', '#' + HSBToHex(hsb));
-				window.uniboard.setTool('pen');
-				window.uniboard.setPenColor('#' + HSBToHex(hsb));
+				window.sankore.setTool('pen');
+				window.sankore.setPenColor('#' + HSBToHex(hsb));
 			},
 			keyDown = function (ev) {
 				var pressedKey = ev.charCode || ev.keyCode || -1;

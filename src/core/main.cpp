@@ -73,10 +73,16 @@ int main(int argc, char *argv[])
 #endif
 
 	UBApplication app("Sankore 3.1", argc, argv);
+	
+	//BUGFIX:
+	//when importing a sankore file that contains a non standard character
+	//the codecForLocale or the codecForCString is used to convert the file path
+	//into a const char*. This is why in french windows setup the codec name shouldn't be 
+	//set to UTF-8. For example, setting UTF-8, will convert "Haïti" into "HaÂ-ti.
 
-        QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-        QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+    //QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
 	QStringList args = app.arguments();
 
