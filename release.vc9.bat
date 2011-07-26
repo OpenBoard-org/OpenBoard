@@ -5,7 +5,6 @@ set VS_BIN="C:\Program Files\Microsoft Visual Studio 9.0\VC\bin"
 set WIN_SDK_BIN="C:\Program Files\Microsoft SDKs\Windows\v6.1\Bin"
 set INNO_EXE="C:\Program Files\Inno Setup 5\iscc.exe "
 set BUILD_DIR=build\win32\release
-set UB_DATA_DIR="D:\"
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%
 
@@ -32,8 +31,6 @@ if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
 
 nmake release-install
-
-.\thirdparty\google-breakpad\r318\bin\win32\dump_syms.exe .\build\win32\release\product\Sankore 3.1.pdb > "%UB_DATA_DIR%\releases\uniboard\sym\win32\Sankore 3.1.exe\%LONG_VERSION%%EDITION%.sym"
 
 del .\build\win32\release\product\Sankore 3.1.pdb
 

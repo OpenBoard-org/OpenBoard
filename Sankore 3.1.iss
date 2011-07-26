@@ -8,7 +8,7 @@
 AppId={{E63D17F8-D9DA-479D-B9B5-0D101A03703B}
 AppName=Sankore 3.1
 AppVerName=Sankore 3.1
-AppPublisher=Mnemis
+AppPublisher=Sankore
 
 AppPublisherURL=http://www.getuniboard.com
 AppSupportURL=http://support.getuniboard.com
@@ -24,7 +24,11 @@ Compression=lzma
 SolidCompression=yes
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
+Name: "en"; MessagesFile: "compiler:Default.isl"
+Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
+Name: "gr"; MessagesFile: "compiler:Languages\German.isl"
+Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
+Name: "sp"; MessagesFile: "compiler:Languages\Spanish.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -40,6 +44,7 @@ Type: filesandordirs ; Name: "{app}\i18n"
 Type: files ; Name: "{app}\*.dll"
 
 [Files]
+Source: "..\Sankore-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
 Source: ".\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\runtime\windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs;
 Source: ".\resources\win\plugins\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
@@ -47,7 +52,6 @@ Source: ".\resources\win\plugins\*"; DestDir: "{app}"; Flags: recursesubdirs cre
 
 [Icons]
 Name: "{group}\Sankore 3.1"; Filename: "{app}\Sankore 3.1.exe"
-;Name: "{group}\{cm:ProgramOnTheWeb,Sankore 3.1}"; Filename: "http://www.getuniboard.com/"
 Name: "{group}\{cm:UninstallProgram,Sankore 3.1}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\Sankore 3.1"; Filename: "{app}\Sankore 3.1.exe"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Sankore 3.1"; Filename: "{app}\Sankore 3.1.exe"; Tasks: quicklaunchicon
@@ -70,6 +74,7 @@ Root: HKLM64; Subkey: "SOFTWARE\Sankore 3.1"; ValueType: dword; ValueName: "EMF:
 Root: HKLM64; Subkey: "SOFTWARE\Sankore 3.1\Defaults"; ValueType: dword; ValueName: "PDF: Enabled"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 [Run]
+Filename: "{tmp}\vcredist_x86.exe";WorkingDir:"{tmp}"
 Filename: "{app}\Sankore 3.1.exe"; Description: "{cm:LaunchProgram,Sankore 3.1}"; Flags: nowait postinstall
 
 [UninstallDelete]
