@@ -32,21 +32,21 @@ UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailW
  */
 UBLibraryWidget::~UBLibraryWidget()
 {
-    //if(NULL != chainedElements)
-    //{
-    //    delete chainedElements;
-    //    chainedElements = NULL;
-    //}
-    //if(NULL != mpCrntDir)
-    //{
-    //    delete mpCrntDir;
-    //    mpCrntDir = NULL;
-    //}
-    //if(NULL != mpCrntElem)
-    //{
-    //    delete mpCrntElem;
-    //    mpCrntElem = NULL;
-    //}
+//     if(NULL != chainedElements)
+//     {
+//        delete chainedElements;
+//        chainedElements = NULL;
+//     }
+//     if(NULL != mpCrntDir)
+//     {
+//        delete mpCrntDir;
+//        mpCrntDir = NULL;
+//     }
+//     if(NULL != mpCrntElem)
+//     {
+//        delete mpCrntElem;
+//        mpCrntElem = NULL;
+//     }
 }
 
 /**
