@@ -10,6 +10,11 @@ set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%
 
 call %VS_BIN%\vcvars32.bat
 
+REM this checks if the custom qt directory path
+REM is correct. This is important because installer
+REM pick up dll from this directory
+IF NOT EXIST "..\Qt-sankore3.1\lib\QtCore4.dll" GOTO EXIT_WITH_ERROR
+
 rmdir /S /Q %BUILD_DIR%
 
 set EDITION=MNEMIS_EDITION
@@ -29,7 +34,6 @@ echo %LAST_TAG_VERSION%
 
 if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
-
 nmake release-install
 
 del .\build\win32\release\product\Sankore 3.1.pdb
@@ -41,5 +45,4 @@ set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 call %INNO_EXE% "Sankore 3.1.iss" /F"%INSTALLER_NAME%"
 
 :EXIT_WITH_ERROR
-	echo version %VERSION%
-	echo last tag version %LAST_TAG_VERSION%
+	echo ERROR

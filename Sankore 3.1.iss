@@ -18,7 +18,7 @@ DefaultDirName={pf}\Sankore 3.1
 DefaultGroupName=Sankore 3.1
 
 OutputDir=.\install\win32\
-OutputBaseFilename=Sankore 3.1 setup
+OutputBaseFilename=Sankore 3.1
 SetupIconFile=.\resources\win\uniboard.ico
 Compression=lzma
 SolidCompression=yes
@@ -46,22 +46,22 @@ Type: files ; Name: "{app}\*.dll"
 [Files]
 Source: "..\Sankore-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
 Source: ".\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: ".\runtime\windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs;
+;Source: ".\runtime\windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs;
 
 ;Source: ".\resources\win\plugins\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
 ;Qt base dll
-Source: "..Qt-sankore3.1\lib\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..Qt-sankore3.1\lib\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..Qt-sankore3.1\lib\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..Qt-sankore3.1\lib\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..Qt-sankore3.1\lib\QtWebKit4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..Qt-sankore3.1\lib\phonon.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..Qt-sankore3.1\lib\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..Qt-sankore3.1\lib\QtSvg4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\lib\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\lib\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\lib\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\lib\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\lib\QtWebKit4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\lib\phonon4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\lib\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\lib\QtSvg4.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ;Qt plugins
-Source: "..\Qt-sankore3.1\plugins\imageformats\qjpeg4.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\imageformats\qsvg4.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\plugins\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\plugins\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
