@@ -10,9 +10,9 @@ AppName=Sankore 3.1
 AppVerName=Sankore 3.1
 AppPublisher=Sankore
 
-AppPublisherURL=http://www.getuniboard.com
-AppSupportURL=http://support.getuniboard.com
-AppUpdatesURL=http://www.getuniboard.com
+AppPublisherURL=http://dev.open-sankore.org
+AppSupportURL=http://dev.open-sankore.org
+AppUpdatesURL=http://dev.open-sankore.org
 
 DefaultDirName={pf}\Sankore 3.1
 DefaultGroupName=Sankore 3.1
@@ -46,9 +46,7 @@ Type: files ; Name: "{app}\*.dll"
 [Files]
 Source: "..\Sankore-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
 Source: ".\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-;Source: ".\runtime\windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs;
 
-;Source: ".\resources\win\plugins\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
 ;Qt base dll
 Source: "..\Qt-sankore3.1\lib\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Qt-sankore3.1\lib\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -69,7 +67,7 @@ Name: "{group}\Sankore 3.1"; Filename: "{app}\Sankore 3.1.exe"
 Name: "{group}\{cm:UninstallProgram,Sankore 3.1}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\Sankore 3.1"; Filename: "{app}\Sankore 3.1.exe"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Sankore 3.1"; Filename: "{app}\Sankore 3.1.exe"; Tasks: quicklaunchicon
-Name: "{group}\Printing Preferences"; Filename: "{app}\properties.exe"; WorkingDir: {app}
+;Name: "{group}\Printing Preferences"; Filename: "{app}\properties.exe"; WorkingDir: {app}
 
 [Registry]
 Root: HKCR; Subkey: ".ubz"; ValueType: string; ValueName: ""; ValueData: "SankoreFile"; Flags: uninsdeletevalue
