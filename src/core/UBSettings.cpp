@@ -1052,6 +1052,15 @@ QString UBSettings::uniboardDefaultUserImageLibraryDirectory()
 }
 
 
+QString UBSettings::animationUserDirectory()
+{
+    QString animationDirectory = uniboardDataDirectory() + "/animationUserDirectory";
+    if (!QDir(animationDirectory).exists())
+        QDir().mkpath(animationDirectory);
+
+    return animationDirectory;
+}
+
 QString UBSettings::uniboardInteractiveUserDirectory()
 {
     QString valideUserInteractiveDirectory = uniboardDataDirectory() + "/interactive content";

@@ -50,6 +50,8 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget, UBBoardControll
 
     mInteractiveUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveUserDirectory());
 
+    mAnimationUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->animationUserDirectory());
+
     createInternalWidgetItems();
 
 }
@@ -103,8 +105,12 @@ void UBLibraryController::routeItem(QString& pItem, QString pMiddleDirectory)
         destination = mVideoStandardDirectoryPath.toLocalFile();
     else if (mimetype.contains("image"))
         destination = mPicturesStandardDirectoryPath.toLocalFile();
-    else if (mimetype.contains("application"))
-        destination = UBSettings::settings()->uniboardInteractiveUserDirectory();
+    else if (mimetype.contains("application")){
+        if (mimetype.contains("x-shockwave-flash"))
+            destination = mAnimationUserDirectoryPath.toLocalFile();
+        else
+            destination = mInteractiveUserDirectoryPath.toLocalFile();
+    }
     else{
         return;
     }
@@ -224,6 +230,13 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     element->setThumbnail(categoryImage);
     element->setMoveable(false);
     categories << element;
+
+    categoryImage = new QImage(":images/libpalette/InteractivesCategory.svg");
+    element = new UBLibElement(eUBLibElementType_Folder, mAnimationUserDirectoryPath, tr("Animations", "Animations category element"));
+    element->setThumbnail(categoryImage);
+    element->setMoveable(false);
+    categories << element;
+
 
 
     categories << UBLibElement::trashElement();

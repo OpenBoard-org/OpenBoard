@@ -8,6 +8,7 @@
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QStackedWidget>
 
 class UBUpdateDlg : public QDialog
 {
@@ -27,15 +28,25 @@ signals:
 private slots:
     void onBrowse();
     void onUpdate();
+    void transitioningFile(QString fileName);
 
 private:
-    QLabel mNbFilesLabel;
-    QLabel mBkpLabel;
-    QLineEdit mBkpPath;
-    QPushButton mBrowseBttn;
+    QVBoxLayout* mMainLayout;
+
+    QLabel* mNbFilesLabel;
+    QLabel* mBkpLabel;
+    QLineEdit* mBkpPath;
+    QPushButton* mBrowseBttn;
     QDialogButtonBox* mpDlgBttn;
-    QVBoxLayout mLayout;
-    QHBoxLayout mHLayout;
+    QVBoxLayout* mLayout;
+    QHBoxLayout* mHLayout;
+
+
+    QStackedWidget* mStackedWidget;
+    QWidget* mDialogWidget;
+    QWidget* mProgressWidget;
+    QHBoxLayout* mProgressLayout;
+    QLabel* mProgressLabel;
 };
 
 #endif // UBUPDATEDLG_H

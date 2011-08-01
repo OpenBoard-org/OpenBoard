@@ -175,11 +175,15 @@ UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString&
 
     QString documentRootFolder = expandFileToDir(pFile, path);
 
-    UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder);
-
-    UBApplication::showMessage(tr("Import successful."));
-
-    return newDocument;
+	if(!documentRootFolder.length()){
+		UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
+		return 0;
+	}
+	else{
+		UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder);
+		UBApplication::showMessage(tr("Import successful."));
+		return newDocument;
+	}
 }
 
 

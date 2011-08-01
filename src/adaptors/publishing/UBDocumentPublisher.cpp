@@ -38,7 +38,7 @@ UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *pa
         , mPublishingDocument(0)
         , mUsername("")
         , mPassword("")
-		, bLoginCookieSet(false)
+        , bLoginCookieSet(false)
 {
     mpWebView = new QWebView(0);
     UBApplication::mainWindow->addSankoreWebDocumentWidget(mpWebView);
@@ -63,17 +63,23 @@ UBDocumentPublisher::~UBDocumentPublisher()
 
 void UBDocumentPublisher::publish()
 {
-    //check that the username and password are stored on preferences
-    UBSettings* settings = UBSettings::settings();
+    UBPublicationDlg dlg;
+    if(QDialog::Accepted == dlg.exec())
+    {
+        mDocInfos.title = dlg.title();
+        mDocInfos.description = dlg.description();
 
-    mUsername = settings->communityUsername();
-    mPassword = settings->communityPassword();
-    buildUbwFile();
-    UBApplication::showMessage(tr("Uploading Sankore File on Web."));
+        //check that the username and password are stored on preferences
+        UBSettings* settings = UBSettings::settings();
 
-    login(mUsername, mPassword);
-    //sendUbw();
+        mUsername = settings->communityUsername();
+        mPassword = settings->communityPassword();
+        buildUbwFile();
+        UBApplication::showMessage(tr("Uploading Sankore File on Web."));
 
+        login(mUsername, mPassword);
+        //sendUbw();
+    }
 }
 
 void UBDocumentPublisher::onLoginDone()
@@ -573,39 +579,44 @@ void UBDocumentPublisher::init()
 {
     mCrlf=0x0d;
     mCrlf+=0x0a;
+    mDocInfos.title = "";
+    mDocInfos.description = "";
 
     mpNetworkMgr = new QNetworkAccessManager(this);
-    //mpCache = new QNetworkDiskCache(this);
-    //mpCache->setCacheDirectory("cache");
-    //mpNetworkMgr->setCache(mpCache);
     mpCookieJar = new QNetworkCookieJar();
 
+//    QNetworkProxy* pProxy = UBSettings::settings()->httpProxy();
+//    if(NULL != pProxy)
+//    {
+//        mpNetworkMgr->setProxy(*pProxy);
+//        qDebug() << "Proxy set!";
+//    }
+
     connect(mpNetworkMgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(onFinished(QNetworkReply*)));
+    connect(mpNetworkMgr, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)), this, SLOT(onProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
 }
 
 void UBDocumentPublisher::onFinished(QNetworkReply *reply)
 {
-    qDebug() << "[-[ Request finished! ]-]";
     QByteArray response = reply->readAll();
+
+    QVariant cookieHeader = reply->rawHeader("Set-Cookie");
+    // First we concatenate all the Set-Cookie values (the packet can contains many of them)
+    QStringList qslCookie = cookieHeader.toString().split("\n");
+    QString qsCookieValue = qslCookie.at(0);
+    for (int i = 1; i < qslCookie.size(); i++) {
+        qsCookieValue += "; " +qslCookie.at(i);
+    }
+
+    // Now we isolate every cookie value
+    QStringList qslCookieVals = qsCookieValue.split("; ");
 
     if (!bLoginCookieSet)
     {
-        QVariant cookieHeader = reply->rawHeader("Set-Cookie");
-        // First we concatenate all the Set-Cookie values (the packet can contains many of them)
-        QStringList qslCookie = cookieHeader.toString().split("\n");
-        QString qsCookieValue = qslCookie.at(0);
-        for (int i = 1; i < qslCookie.size(); i++) {
-            qsCookieValue += "; " +qslCookie.at(i);
-        }
-
-        // Now we isolate every cookie value
-        QStringList qslCookieVals = qsCookieValue.split("; ");
-
         // Finally we create the cookies
         for (int i = 0; i < qslCookieVals.size(); i++)
         {
             QString cookieString = qslCookieVals.at(i);
-            //qDebug() << "qslCookieVals.at(i): " << cookieString.replace("\"", "");
             QStringList qslCrntCookie = cookieString.split("=");
             QNetworkCookie crntCookie;
             if (qslCrntCookie.length() == 2)
@@ -630,11 +641,6 @@ void UBDocumentPublisher::onFinished(QNetworkReply *reply)
         }
         QNetworkCookie langCookie("language", "en");
         mCookies << langCookie;
-        // DEBUG : Verify
-        for(int i = 0; i < mCookies.size(); i++)
-        {
-            qDebug() << mCookies.at(i).name() << "=" << mCookies.at(i).value();
-        }
 
         // Set the cookiejar : it set the cookies that will be sent with every packet.
         mpCookieJar->setCookiesFromUrl(mCookies, QUrl(DOCPUBLICATION_URL)/*reply->url()*/);
@@ -645,19 +651,30 @@ void UBDocumentPublisher::onFinished(QNetworkReply *reply)
     }
     else
     {
-        if (!response.isEmpty()){
-            // Display the iframe
-            mpWebView->setHtml(response, reply->url());
-            UBApplication::applicationController->showSankoreWebDocument();
-        }
-        else
+        if (response.isEmpty())
         {
-            // Redirect
-            QVariant locationHeader = reply->rawHeader("Location");
-
-            QNetworkRequest req(QUrl(locationHeader.toString()));
-            mpNetworkMgr->get(req);
-            qDebug() << mpWebView->url().toString();
+            // Verify that the UBW file has been sent correctly
+            bool bTransferOk = false;
+            for(int j = 0; j <= qslCookieVals.size(); j++)
+            {
+                if(qslCookieVals.at(j).startsWith("assetStatus"))
+                {
+                    QStringList qslAsset = qslCookieVals.at(j).split("=");
+                    if(qslAsset.at(1) == "UPLOADED")
+                    {
+                        bTransferOk = true;
+                        break;
+                    }
+                }
+            }
+            if(bTransferOk)
+            {
+                UBApplication::showMessage(tr("Document uploaded correctly on the web."));
+            }
+            else
+            {
+                UBApplication::showMessage(tr("Failed to upload document on the web."));
+            }
         }
     }
     reply->deleteLater();
@@ -693,6 +710,15 @@ void UBDocumentPublisher::sendUbw()
             request.setRawHeader("Accept-Language", "en-US,*");
             request.setRawHeader("Referer", DOCPUBLICATION_URL);
 
+            QNetworkCookie titleCookie("title", mDocInfos.title.toAscii().constData());
+            QNetworkCookie descCookie("description", mDocInfos.description.remove("\n").toAscii().constData());
+
+            mCookies << titleCookie;
+            mCookies << descCookie;
+
+            mpCookieJar->setCookiesFromUrl(mCookies, QUrl(DOCPUBLICATION_URL));
+            mpNetworkMgr->setCookieJar(mpCookieJar);
+
             // Send the file
             mpNetworkMgr->post(request,datatoSend);
         }
@@ -719,10 +745,189 @@ void UBDocumentPublisher::onLoadFinished(bool result)
     Q_UNUSED(result);
     // [Basic Auth] This line says: if the user click on a link, do not interpret it.
     //mpWebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+
     mpWebView->page()->setNetworkAccessManager(mpNetworkMgr);
 }
 
+void UBDocumentPublisher::onProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
+{
+    Q_UNUSED(proxy);
+    UBProxyLoginDlg dlg;
+    if(QDialog::Accepted == dlg.exec())
+    {
+        authenticator->setUser(dlg.username());
+        authenticator->setPassword(dlg.password());
+    }
+}
 
 
+// ---------------------------------------------------------
+UBProxyLoginDlg::UBProxyLoginDlg(QWidget *parent, const char *name):QDialog(parent)
+  , mpLayout(NULL)
+  , mpUserLayout(NULL)
+  , mpPasswordLayout(NULL)
+  , mpButtons(NULL)
+  , mpUserLabel(NULL)
+  , mpPasswordLabel(NULL)
+  , mpUsername(NULL)
+  , mpPassword(NULL)
+{
+    setObjectName(name);
+    setFixedSize(400, 150);
+    setWindowTitle(tr("Proxy Login"));
 
+    mpLayout = new QVBoxLayout();
+    setLayout(mpLayout);
+    mpUserLayout = new QHBoxLayout();
+    mpLayout->addLayout(mpUserLayout);
+    mpPasswordLayout = new QHBoxLayout();
+    mpLayout->addLayout(mpPasswordLayout);
 
+    mpUserLabel = new QLabel(tr("Username:"), this);
+    mpUsername = new QLineEdit(this);
+    mpUserLayout->addWidget(mpUserLabel, 0);
+    mpUserLayout->addWidget(mpUsername, 1);
+
+    mpPasswordLabel = new QLabel(tr("Password:"), this);
+    mpPassword = new QLineEdit(this);
+    mpPasswordLayout->addWidget(mpPasswordLabel, 0);
+    mpPasswordLayout->addWidget(mpPassword, 1);
+
+    mpButtons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    mpLayout->addWidget(mpButtons);
+
+    connect(mpButtons, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(mpButtons, SIGNAL(rejected()), this, SLOT(reject()));
+
+}
+
+UBProxyLoginDlg::~UBProxyLoginDlg()
+{
+    if(NULL != mpLayout)
+    {
+        delete mpLayout;
+        mpLayout = NULL;
+    }
+    if(NULL != mpButtons)
+    {
+        delete mpButtons;
+        mpButtons = NULL;
+    }
+    if(NULL != mpUserLabel)
+    {
+        delete mpUserLabel;
+        mpUserLabel = NULL;
+    }
+    if(NULL != mpPasswordLabel)
+    {
+        delete mpPasswordLabel;
+        mpPasswordLabel = NULL;
+    }
+    if(NULL != mpUsername)
+    {
+        delete mpUsername;
+        mpUsername = NULL;
+    }
+    if(NULL != mpPassword)
+    {
+        delete mpPassword;
+        mpPassword = NULL;
+    }
+}
+
+// ---------------------------------------------------------
+UBPublicationDlg::UBPublicationDlg(QWidget *parent, const char *name):QDialog(parent)
+  , mpLayout(NULL)
+  , mpTitleLayout(NULL)
+  , mpTitleLabel(NULL)
+  , mpTitle(NULL)
+  , mpDescLabel(NULL)
+  , mpDescription(NULL)
+  , mpButtons(NULL)
+{
+    setObjectName(name);
+    setWindowTitle(tr("Publish document on the web"));
+
+    resize(500, 300);
+
+    mpLayout = new QVBoxLayout();
+    setLayout(mpLayout);
+
+    mpTitleLabel = new QLabel(tr("Title:"), this);
+    mpTitle = new QLineEdit(this);
+    mpTitleLayout = new QHBoxLayout();
+    mpTitleLayout->addWidget(mpTitleLabel, 0);
+    mpTitleLayout->addWidget(mpTitle, 1);
+    mpLayout->addLayout(mpTitleLayout, 0);
+
+    mpDescLabel = new QLabel(tr("Description:"), this);
+    mpLayout->addWidget(mpDescLabel, 0);
+
+    mpDescription = new QTextEdit(this);
+    mpLayout->addWidget(mpDescription, 1);
+
+    mpButtons = new QDialogButtonBox(QDialogButtonBox::Cancel | QDialogButtonBox::Ok, Qt::Horizontal, this);
+    mpButtons->button(QDialogButtonBox::Ok)->setText(tr("Publish"));
+    mpLayout->addWidget(mpButtons);
+
+    mpButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
+
+    connect(mpButtons, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(mpButtons, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged()));
+    connect(mpDescription, SIGNAL(textChanged()), this, SLOT(onTextChanged()));
+}
+
+UBPublicationDlg::~UBPublicationDlg()
+{
+    if(NULL != mpTitleLabel)
+    {
+        delete mpTitleLabel;
+        mpTitleLabel = NULL;
+    }
+    if(NULL != mpTitle)
+    {
+        delete mpTitle;
+        mpTitle = NULL;
+    }
+    if(NULL != mpDescLabel)
+    {
+        delete mpDescLabel;
+        mpDescLabel = NULL;
+    }
+    if(NULL != mpDescription)
+    {
+        delete mpDescription;
+        mpDescription = NULL;
+    }
+    if(NULL != mpButtons)
+    {
+        delete mpButtons;
+        mpButtons = NULL;
+    }
+    if(NULL != mpTitleLayout)
+    {
+        delete mpTitleLayout;
+        mpTitleLayout = NULL;
+    }
+    if(NULL != mpLayout)
+    {
+        delete mpLayout;
+        mpLayout = NULL;
+    }
+}
+
+void UBPublicationDlg::onTextChanged()
+{
+    bool bPublishButtonState = false;
+    if(mpTitle->text() != "" && mpDescription->document()->toPlainText() != "")
+    {
+        bPublishButtonState = true;
+    }
+    else
+    {
+        bPublishButtonState = false;
+    }
+
+    mpButtons->button(QDialogButtonBox::Ok)->setEnabled(bPublishButtonState);
+}

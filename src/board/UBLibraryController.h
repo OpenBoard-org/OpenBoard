@@ -139,6 +139,7 @@ class UBLibraryController : public QObject
         QUrl mPicturesStandardDirectoryPath;
         QUrl mInteractiveUserDirectoryPath;
         QUrl mInteractiveCategoryPath;
+        QUrl mAnimationUserDirectoryPath;
 
         QStringList addItemsToCurrentLibrary(const QDir& pSelectedFolder, const QStringList& pExtensions);
 
