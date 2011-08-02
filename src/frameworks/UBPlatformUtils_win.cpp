@@ -62,9 +62,7 @@ void UBPlatformUtils::fadeDisplayIn()
 QString UBPlatformUtils::preferredTranslation()
 {
     QString localPreferredLanguage = preferredLanguage();
-    if (localPreferredLanguage == "fr_CH") {
-        localPreferredLanguage = "fr";
-    }
+
     QString qmPath = applicationResourcesDirectory() + "/" + "i18n" + "/" + QString("sankore_") + localPreferredLanguage + ".qm";
 
     qDebug() << "Looking for translation:" << qmPath;
