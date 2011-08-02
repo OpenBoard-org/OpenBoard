@@ -34,6 +34,6 @@ mySettings = {
 		{name:'Link', key:'L', openWith:'<a target="_blank" href="[![Link:!:http://]!]"(!( title="[![Title]!]")!)>', closeWith:'</a>', placeHolder:'Your text to link...' },
 		{separator:'---------------' },
 		//{name:'Editor', className:'clean', replaceWith:function() { $('textarea').show(); $('iframe').remove();} },
-		{name:'Preview', className:'preview', call:'preview'}
+		{name:'', className:'preview', call:'preview'}
 	]
 }

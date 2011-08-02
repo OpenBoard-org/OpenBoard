@@ -38,8 +38,8 @@ function init(){
 	});
 	
 	//FIT WIDGET FRAME ON LAUNCH...
-	if(window.uniboard){
-		window.uniboard.resize($("#ubwidget").width()-15,85);
+	if(window.sankore){
+		window.sankore.resize($("#ubwidget").width()-15,85);
 	}
 	
 	searchWrap.append(inputBox)
@@ -50,21 +50,27 @@ function init(){
 	submit.click(function(){
 		$("#ubwidget").append(loadWindow)
 		embed = inputBox.val();
+		////////////!!!1///////// попробовать с реади
 		searchWrap.hide();
 		loadWindow.append(embed);
-		
-				if(window.uniboard){
-					window.uniboard.resize($(document).width(),$(document).height());
-					window.uniboard.setPreference("embed", escape(embed));
-				}
+		//alert($("#ubwidget").html());
+		$("#ubwidget embed").attr("wmode", "transparent");
+		var ubwidget_html = $("#ubwidget").html();
+		alert(ubwidget_html);
+		setTimeOut(alert);
+		$("#ubwidget").empty().html(ubwidget_html);
+		if(window.sankore){
+			window.sankore.resize($(document).width(),$(document).height());
+			window.sankore.setPreference("embed", escape(embed));
+		}
 		
 	});
 	
-	if(window.uniboard){
+	if(window.sankore){
 
-		if(window.uniboard.preferenceKeys().length != 0){
+		if(window.sankore.preferenceKeys().length != 0){
 
-				var loadEmbed = unescape(window.uniboard.preference("embed"));
+				var loadEmbed = unescape(window.sankore.preference("embed"));
 				inputBox.val(loadEmbed);
 				submit.trigger("click");	
 		}	

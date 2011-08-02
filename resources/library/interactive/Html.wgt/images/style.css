@@ -1,7 +1,9 @@
 body {
 	font: 13px "Trebuchet MS", Arial, Verdana;
 	padding-top:0px;
+	color: gray;
 }
+
 a {
 	text-decoration:none;
 	color:#3C769D;

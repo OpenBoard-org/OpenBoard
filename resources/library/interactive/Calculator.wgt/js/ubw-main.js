@@ -26,8 +26,8 @@ function init(){
 					backgroundImage:"url(images/back.png)",
 					width:328
 				});
-				if(window.uniboard){
-					window.uniboard.setPreference('historyTab', "visible");
+				if(window.sankore){
+					window.sankore.setPreference('historyTab', "visible");
 				};
 			},
 			function(){
@@ -37,8 +37,8 @@ function init(){
 					backgroundImage:"url(images/back_small.png)",
 					width:160
 				});
-				if(window.uniboard){
-					window.uniboard.setPreference('historyTab', "hidden");
+				if(window.sankore){
+					window.sankore.setPreference('historyTab', "hidden");
 				};
 			}
 		)
@@ -200,9 +200,9 @@ function init(){
 		.append(historyPanel)
 		.append(keysPanel);
 		
-	if(window.uniboard){
-		historyTxt = window.uniboard.preference('historyTxt', historyTxt);
-		var ht = window.uniboard.preference('historyTab', "hidden");
+	if(window.sankore){
+		historyTxt = window.sankore.preference('historyTxt', historyTxt);
+		var ht = window.sankore.preference('historyTab', "hidden");
 		$("#historyBox").val(historyTxt);
 		if(ht === "visible"){
 			historyTab.trigger("click");
@@ -210,7 +210,7 @@ function init(){
 	}
 	
 function resizeWidget(w, h){
-	window.uniboard.resize(w+2, h+2);
+	window.sankore.resize(w+2, h+2);
 	$("#indicator").remove();
 	var indicator = $("<div id='indicator'></div>")
 		.css({
@@ -238,8 +238,8 @@ function compute(){
 	displayTrunk = "";
 	historyTrunk = "";
 	
-	if(window.uniboard){
-		window.uniboard.setPreference('historyTxt', $("#historyBox").val());
+	if(window.sankore){
+		window.sankore.setPreference('historyTxt', $("#historyBox").val());
 	};
 	
 	lastHistory = $("#historyBox").val();
