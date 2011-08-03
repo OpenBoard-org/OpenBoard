@@ -16,10 +16,14 @@
     <script type="text/javascript">
 
 		$(document).ready(function(){
-			var resizer; // Timer
-			var resizerIndex;
+			//var resizer; // Timer
+			//var resizerIndex;
+			var currentHistory = 0;
+			var references = new Array();
+			var globalWidth = 850;
+			var globalHeight = 700;
 			var language;
-			var url;
+			var url = "";
 			var margins = {
 				top: cssToInt($("body").css("margin-top")), 
 				right: cssToInt($("body").css("margin-right")), 
@@ -27,25 +31,31 @@
 				left: cssToInt($("body").css("margin-left"))
 			};
 			
-			resizerIndex = 0;
+			//resizerIndex = 0;
 									
-			if(window.uniboard){
-				url = window.uniboard.preference("url", "");
+			/*if(window.sankore){
+				url = window.sankore.preference("url", "");
 			}else{
 				url = "";
-			};			
+			};		*/	
 			
 			language = navigator.userAgent.split(";");
 			language = language[3].replace(/\s/g, "").substr(0, 2);
 			
 			$("#back-button")
 				.click(function(){
-					frames['web-content'].history.go(-1);
+					if((currentHistory - 1) > 0){					
+						$("#textbox").val(references[--currentHistory-1]);						
+						frames['web-content'].location.href = references[currentHistory-1];					
+					}
 				});
 				
 			$("#forward-button")
 				.click(function(){
-					frames['web-content'].history.go(+1);
+					if(currentHistory < references.length) {
+						$("#textbox").val(references[currentHistory++]);
+						frames['web-content'].location.href = $("#textbox").val();
+					}
 				});
 			
 			$("#textbox").keypress(function(e) {
@@ -56,32 +66,48 @@
 			
 			$("#search-button")
 				.click(function(){
-					var url = $("#textbox").val();
-					var urlStart = url.split("://");
-								
-					if(urlStart[0]!="http"){
-						url = "http://" + url;
-					};
-										
-					window.resizeTo(850, 700);
-					
-					$("#container")
-						.removeClass("welcome")
-						.removeClass("change")
-						.removeClass("error")
-						.addClass("load");
-					$("#container-shadow")
-						.hide();
-					$("#arrow")
-						.hide();
-					$("#embeded-content")
-						.hide();
-					$("#web-content")
-						.show();
+					if($("#textbox").val().length > 0){
+						var url = $("#textbox").val();
+						var urlStart = url.split("://");
+									
+						if(urlStart[0]!="http"){
+							url = "http://" + url;
+						};
 						
-					frames['web-content'].location.href = url;
+						if(checkURLs(references, url)){
+							if(currentHistory == references.length)
+								references[currentHistory++] = url;
+							else
+								references = insertInto(references, currentHistory++, url);
+						}
+						window.resizeTo(globalWidth, globalHeight);
 						
-					checkcontent();
+						$("#container")
+							.removeClass("welcome")
+							.removeClass("change")
+							.removeClass("error")
+							.addClass("load");
+						$("#container-shadow").hide();
+						$("#arrow").hide();
+						$("#embeded-content").hide();
+						$("#web-content").show();
+							
+						frames['web-content'].location.href = url;
+							
+						checkcontent();
+					} else {
+						$("#embeded-content").load("locales/" + "en" + "/howto.html"); // Welcome screen with some explanations
+						$("#container")
+							.addClass("welcome")
+							.addClass("change")
+							.addClass("error")
+							.removeClass("load");
+						$("#container-shadow").show();
+						$("#arrow").show();
+						$("#embeded-content").show();
+						$("#web-content").hide();
+						window.resizeTo(550, 280);
+					}
 				})
 				.mouseenter(function(){
 					$(this)
@@ -99,14 +125,15 @@
 				$("#embeded-content").load("locales/" + "en" + "/howto.html"); // Welcome screen with some explanations
 			};
 			
-			$("#show-inputfield-button")
+			/*$("#show-inputfield-button")
 				.click(
 					function(){
 						$("#show-area").hide();
 						$("#inputfield").show();
 						$("#shadow").show();
 						$("#container")
-							.removeClass("show").addClass("change");
+							.removeClass("show")
+							.addClass("change");
 						adaptWidgetSize(18, 82);
 					})
 					.mouseenter(function(){
@@ -116,39 +143,58 @@
 					.mouseleave(function(){
 						$(this)
 							.removeClass("over");
-					});
+					});*/
 			
 			$(window).resize(function(){
+				globalWidth = $(window).width();
+				globalHeight = $(window).height();
 				$("#web-content")
-					.attr("width", $(window).width() - 25)
-					.attr("height", $(window).height() - 90);
+					.attr("width", globalWidth - 25)
+					.attr("height", globalHeight - 90);
 			});
 							
 			function checkcontent(){
-				clearTimeout(resizer);
-				resizerIndex = 0;
+				//clearTimeout(resizer);
+				//resizerIndex = 0;
 														
-				if(window.uniboard){
-					window.uniboard.setPreference("url", $("#textbox").val());
-				};
+				/*if(window.sankore){
+					window.sankore.setPreference("url", $("#textbox").val());
+				};*/
 
-				$("#embeded-content")
-					.hide();
-				$("#container")
-					.removeClass("load").addClass("show");									
+				$("#embeded-content").hide();
+				$("#container").removeClass("load").addClass("show");									
 			};
 			
-			function adaptWidgetSize(adjustmentX, adjustmentY){
+			/*function adaptWidgetSize(adjustmentX, adjustmentY){
 				var widgetWidth = $("#container").width() + margins.right + margins.left + adjustmentX;
 				var widgetHeight = $("#container").position().top + $("#container").height() + margins.bottom + adjustmentY;
 				
 				window.resizeTo(widgetWidth, $(window).height());
 				window.resizeTo($(window).width(), widgetHeight);
-			};
+			};*/
 				
 			function cssToInt(cssvalue){
 				return(parseInt(cssvalue.replace("px", "")));
-			};
+			}
+			
+			function checkURLs(arr, value){
+				for(var i = 0; i < arr.length; i++)
+					if(arr[i] == value)
+						return false;
+				return true;
+			}
+			
+			function insertInto(arr, index, url){
+				var newArr = new Array();
+				for(var i = 0, j = 0; i < arr.length; i++, j++)
+					if(i == index - 1){
+						newArr[j] = arr[i];
+						newArr[++j] = url;
+					} else 
+						newArr[j] = arr[i];
+				return newArr;
+			}
+			
 		});
     </script>
 

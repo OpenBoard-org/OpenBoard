@@ -89,9 +89,7 @@ function popupInfo(text)
 	
 	// met la bonne grandeur à chaque div
 	for (i = 1; i <= currentInfo; i++)
-	{
 		document.getElementById("info" + i).style.width = (654/currentInfo) + 'px';
-	}
 }
 
 // affiche le text de l'erreur en cas de problème
@@ -224,19 +222,19 @@ function fondu(carte)
 // permet de faire apparaître les infos du pays dans la petite fenêtre
 function afficheInfoPays(pays) 
 {
-	document.getElementById("infoPays").innerHTML = document.getElementById(pays).innerHTML
+	document.getElementById("infoPays").innerHTML = document.getElementById(pays).innerHTML;
 }
 
 // permet de cacher la petite fenêtre
 function cacherInfoPays()
 {
-	document.getElementById("infoPays").style.display = 'none'
+	document.getElementById("infoPays").style.display = 'none';
 }
 
 // permet à la petite fenêtre de suivre la souris
 function deplacerInfo(event)
 {
-	document.getElementById("infoPays").style.display = 'block'
-	document.getElementById("infoPays").style.top = event.clientY
-	document.getElementById	("infoPays").style.left = event.clientX+20
+	document.getElementById("infoPays").style.display = 'block';
+	document.getElementById("infoPays").style.top = event.clientY;
+	document.getElementById	("infoPays").style.left = event.clientX+20;
 }
