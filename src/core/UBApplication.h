@@ -96,7 +96,6 @@ class UBApplication : public QtSingleApplication
         void showBoard();
         void showInternet();
         void showDocument();
-        void showSankoreWebDocument();
 
         void toolBarPositionChanged(QVariant topOrBottom);
         void toolBarDisplayTextChanged(QVariant display);

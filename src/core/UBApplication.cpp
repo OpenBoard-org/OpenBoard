@@ -349,11 +349,6 @@ void UBApplication::showDocument()
     applicationController->showDocument();
 }
 
-void UBApplication::showSankoreWebDocument()
-{
-    applicationController->showSankoreWebDocument();
-}
-
 int UBApplication::toolBarHeight()
 {
     return mainWindow->boardToolBar->rect().height();

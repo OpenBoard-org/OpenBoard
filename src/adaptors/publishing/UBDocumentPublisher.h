@@ -21,7 +21,7 @@
 #include "ui_webPublishing.h"
 #include "UBAbstractPublisher.h"
 
-#define DOCPUBLICATION_URL     "http://sankore.devxwiki.com/xwiki/bin/view/CreateResources/UniboardUpload"
+#define DOCPUBLICATION_URL     "http://sankore.devxwiki.com/xwiki/bin/view/CreateResources/UniboardUpload?xpage=plain&outputSyntax=plain"
 #define XWIKI_ORIGIN_HEADER    "http://sankore.devxwiki.com"
 
 typedef struct
@@ -104,21 +104,15 @@ protected:
 private slots:
 
     void onFinished(QNetworkReply* reply);
-    void onLinkClicked(const QUrl& url);
-    void onLoadFinished(bool result);
-    void onLoginDone();
-    void onProxyAuthenticationRequired(const QNetworkProxy & proxy, QAuthenticator * authenticator);
-
 
 private:
 
     UBDocumentProxy *mSourceDocument;
     UBDocumentProxy *mPublishingDocument;
     void init();
-    void sendUbw();
+    void sendUbw(QString username, QString password);
     QString getBase64Of(QString stringToEncode);
 
-    QWebView* mpWebView;
     QHBoxLayout* mpLayout;
     QNetworkAccessManager* mpNetworkMgr;
     QNetworkCookieJar* mpCookieJar;
@@ -128,7 +122,6 @@ private:
     bool bLoginCookieSet;
 
     void buildUbwFile();
-    void login(QString username, QString password);
     QString mTmpZipFile;
     QList<QNetworkCookie> mCookies;
     sDocumentInfos mDocInfos;
