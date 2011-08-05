@@ -25,6 +25,7 @@
 #include "adaptors/UBImportDocument.h"
 #include "adaptors/UBImportPDF.h"
 #include "adaptors/UBImportImage.h"
+#include "adaptors/UBImportCFF.h"
 
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
@@ -75,6 +76,8 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     mImportAdaptors.append(pdfImport);
     UBImportImage* imageImport = new UBImportImage(this);
     mImportAdaptors.append(imageImport);
+    UBImportCFF* cffImport = new UBImportCFF(this);
+    mImportAdaptors.append(cffImport);
 }
 
 

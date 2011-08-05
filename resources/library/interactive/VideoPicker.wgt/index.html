@@ -1,3 +1,17 @@
+<!--
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -18,13 +32,13 @@
 		var oembedUrl = "";
 		var language = "en";
 
+		
 		function initialize() {
-			if(window.uniboard){
-				oembedUrl = window.uniboard.preference("oembedUrl", "");
-			}else{
-				oembedUrl = "";
-			};
-									
+			if(window.sankore){
+				oembedUrl = window.sankore.preference("oembedUrl", "");
+			}
+			
+			window.resizeTo(426, 630);
 			if(oembedUrl.length > 0){
 				$("#textbox").val(oembedUrl);	
 				$("#search-button").trigger("click");
@@ -41,28 +55,16 @@
 			
 			resizerIndex = 0;
 			
-			//language = navigator.userAgent.split(";");
-			//language = language[3].replace(/\s/g, "").substr(0, 2);
-			
 			$("#search-button")
 				.click(function(){
 					window.resizeTo(385, 80);
-					$("#container")
-						.removeClass("welcome")
-						.removeClass("change")
-						.removeClass("error")
-						.addClass("load");
-					$("#container-shadow")
-						.hide();
-					$("#arrow")
-						.hide();
-					$("#embeded-content")
-						.css({
+					$("#container").removeClass("welcome").removeClass("change").removeClass("error").addClass("load");
+					$("#container-shadow").hide();
+					$("#arrow").hide();
+					$("#embeded-content").css({
 							marginLeft:-9000,
 							marginTop:-9000
-						})
-						.empty()
-						.oembed($("#textbox").val());
+						}).empty().oembed($("#textbox").val());					
 					checkcontent();
 				})
 				.mouseenter(function(){
@@ -73,14 +75,6 @@
 					$(this)
 						.removeClass("over");
 				});
-			
-			/*$("#ubwidget").mouseenter(function(){
-				$("#show-area").fadeIn(1000);
-			});
-			
-			$("#ubwidget").mouseout(function(){
-				$("#show-area").fadeOut(600);
-			});*/
 			
 			$('#textbox').keypress(function(e){
 				if (e.which == 13){
@@ -94,72 +88,62 @@
 						$("#show-area").fadeOut(0);
 						$("#inputfield").show();
 						$("#shadow").show();
-						$("#container")
-							.removeClass("show").addClass("change");
+						$("#container").removeClass("show").addClass("change");
 						adaptWidgetSize(18, 88);
 					})
 					.mouseenter(function(){
-						$(this)
-							.addClass("over");
+						$(this).addClass("over");
 					})
 					.mouseleave(function(){
-						$(this)
-							.removeClass("over");
+						$(this).removeClass("over");
 					});
 							
 			function checkcontent(){
 				if($("#embeded-content").html().length != 0 && $("#embeded-content").children(":first").width() > 0){
+					$("#embeded-content embed").attr("wmode", "transparent");
+					var embeded_content_html = $("#embeded-content").html();
+					$("#embeded-content").empty().html(embeded_content_html);
+					
 					clearTimeout(resizer);
 					resizerIndex = 0;
 															
-					if(window.uniboard){
-						window.uniboard.setPreference("oembedUrl", $("#textbox").val());
+					if(window.sankore){
+						window.sankore.setPreference("oembedUrl", $("#textbox").val());
 					};
 					
-					$("#inputfield")
-						.hide();
-					$("#shadow")
-						.hide();
-					$("#embeded-content")
-						.css({
+					$("#inputfield").hide();
+					$("#shadow").hide();
+					$("#embeded-content").css({
 							marginLeft:0,
 							marginTop:0
 						})
 						.width($("#embeded-content").children(":first").width())
 						.height($("#embeded-content").children(":first").height());
-						
-					$("#container")
-						.removeClass("load").addClass("show");
-					$("#show-area")
-						.fadeIn(2000)
-						.css({
+						//alert(html);
+						//alert($("#embeded-content").children(":first").width() + " | " + $("#embeded-content").children(":first").height());
+					$("#container").removeClass("load").addClass("show");
+					$("#show-area").fadeIn(2000).css({
 							left:$("#embeded-content").children(":first").width()-25,
 							top:($("#embeded-content").children(":first").height()-35)/2
 						});
 										
-					adaptWidgetSize(5, 13);
-					
+					adaptWidgetSize(5, 13);					
 					return false;
 				};
 				
-				if(resizerIndex > 30){
+				if(resizerIndex > 50){
 					resizerIndex = 0;
-					$("#container")
-						.removeClass("show").addClass("error");
-					$("#arrow")
-						.show();
-					$("#embeded-content")
-						.css({
+					$("#container").removeClass("show").addClass("error");
+					$("#arrow").show();
+					$("#embeded-content").css({
 							marginTop:0,
 							marginLeft:0
-						})
-						.width(395)
+						}).width(395)
 						.load("locales/" + language + "/error.html", 
 							function(){
 								adaptWidgetSize(20, 125);
 							});
-					$("#container-shadow")
-						.show();
+					$("#container-shadow").show();
 				}else{
 					resizer = setTimeout(function(){checkcontent()}, 100);
 					resizerIndex++;
@@ -176,25 +160,27 @@
 				var widgetWidth = $("#embeded-content").width() + margins.right + margins.left + adjustmentX;
 				var widgetHeight = $("#embeded-content").position().top + $("#embeded-content").height() + margins.bottom + adjustmentY;
 				
-				window.resizeTo(widgetWidth, $(window).height());
-				window.resizeTo($(window).width(), widgetHeight);
-				window.uniboard.resize(widgetWidth, widgetHeight);
+				//alert(widgetWidth + " | " + widgetHeight);
+				
+				//window.resizeTo(widgetWidth, $(window).height());
+				window.resizeTo(widgetWidth, widgetHeight);
+				window.sankore.resize(widgetWidth, widgetHeight);
 			};
 				
 			function cssToInt(cssvalue){
 				return(parseInt(cssvalue.replace("px", "")));
 			};
 			
-			if (window.widget) {
+			/*if (window.widget) {
 			   window.widget.onremove = function(){
 			   		//$("#show-inputfield-button").trigger("click");
 					$("#embeded-content")
 						.empty()
 						.oembed($("#textbox").val());
 			   }
-			}
+			}*/
 			
-			window.initialize();
+			initialize();
 		});
     </script>
 

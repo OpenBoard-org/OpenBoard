@@ -10,9 +10,8 @@
 <script type="text/javascript" src="markitup/jquery.markitup.js"></script>
 <!-- markItUp! toolbar settings -->
 <script type="text/javascript" src="markitup/sets/html/set.js"></script>
-<!-- markItUp! skin -->
-<link rel="stylesheet" type="text/css" href="markitup/skins/simple/style.css" />
 <!--  markItUp! toolbar skin -->
+<link rel="stylesheet" type="text/css" href="markitup/skins/markitup/style.css" />
 <link rel="stylesheet" type="text/css" href="markitup/sets/html/style.css" />
 
 </head>
@@ -27,10 +26,22 @@
 					  .height(($(window).height())-(40));
 		$('iframe').width($(window).width()-24)
 				   .height($(window).height()-46);
-		if(window.uniboard){
-			var html = window.uniboard.preference("html", "Welcome to HTML EDITOR");
+		if(window.sankore){
+			var html = window.sankore.preference("iHtml", "Welcome to HTML EDITOR");
 			$("#markItUp").val(html);
 		};
+		
+		$("#markItUp").keyup(function(){
+			if(window.sankore){
+				window.sankore.setPreference("iHtml", $("#markItUp").val());
+			}
+		});
+		
+		$("li").mouseout(function(){
+			if(window.sankore){
+				window.sankore.setPreference("iHtml", $("#markItUp").val());
+			}
+		});
 		
 		$("#reset-btn").click(function(){
 			$(this).data("hidden", true).hide();

@@ -21,6 +21,7 @@
 class UBColorPicker;
 class UBApplication;
 class UBSettings;
+class UBPreferencesController;
 
 namespace Ui
 {
@@ -31,6 +32,21 @@ namespace Ui
 
 class UBBrushPropertiesFrame;
 
+
+class UBPreferencesDialog : public QDialog
+{
+    Q_OBJECT;
+
+public:
+    UBPreferencesDialog(UBPreferencesController* prefController, QWidget* parent = 0,Qt::WindowFlags f = 0 );
+    ~UBPreferencesDialog();
+
+protected:
+    void closeEvent(QCloseEvent* e);
+    UBPreferencesController *mPreferencesController;
+};
+
+
 class UBPreferencesController : public QObject
 {
     Q_OBJECT;
@@ -38,6 +54,8 @@ class UBPreferencesController : public QObject
     public:
         UBPreferencesController(QWidget *parent);
         virtual ~UBPreferencesController();
+
+        bool inputValuesConsistence();
 
     public slots:
 
@@ -48,7 +66,7 @@ class UBPreferencesController : public QObject
         void wire();
         void init();
 
-        QDialog* mPreferencesWindow;
+        UBPreferencesDialog* mPreferencesWindow;
         Ui::preferencesDialog* mPreferencesUI;
         UBBrushPropertiesFrame* mPenProperties;
         UBBrushPropertiesFrame* mMarkerProperties;
@@ -78,9 +96,7 @@ class UBBrushPropertiesFrame : public Ui::brushProperties
 {
 
     public:
-        UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,
-                const QList<QColor>& darkBackgroundColors, const QList<QColor>& lightBackgroundSelectedColors,
-                const QList<QColor>& darkBackgroundSelectedColors, UBPreferencesController* controller);
+        UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,const QList<QColor>& darkBackgroundColors, const QList<QColor>& lightBackgroundSelectedColors,const QList<QColor>& darkBackgroundSelectedColors, UBPreferencesController* controller);
 
         virtual ~UBBrushPropertiesFrame(){}
 

@@ -43,7 +43,7 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     actionPreferences->setShortcut(QKeySequence(Qt::ALT + Qt::Key_Return));
     actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
 #else
-   // No shortcut on Linux (like GEdit/Nautilius)
+    actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
 #endif
 }
 
@@ -106,19 +106,6 @@ void UBMainWindow::switchToDocumentsWidget()
     }
 }
 
-void UBMainWindow::addSankoreWebDocumentWidget(QWebView* pWidget)
-{
-    if(!mSankoreWebDocumentWidget){
-        mSankoreWebDocumentWidget = pWidget;
-        mStackedLayout->addWidget(mSankoreWebDocumentWidget);
-    }
-}
-
-void UBMainWindow::switchToSankoreWebDocumentWidget()
-{
-    if(mSankoreWebDocumentWidget)
-        mStackedLayout->setCurrentWidget(mSankoreWebDocumentWidget);
-}
 void UBMainWindow::keyPressEvent(QKeyEvent *event)
 {
     QMainWindow::keyPressEvent(event);

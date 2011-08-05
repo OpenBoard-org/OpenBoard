@@ -4,13 +4,13 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
-        width="200"
-        height="700" 
+        width="660"
+        height="410" 
 		ub:resizable="true">
 		
-		<name>Rich Note</name>
-		<description>Allows the teacher to attach a rich note to the page.</description>
+		<name>Rich Text Editor</name>
+		<description>Allows the teacher to attach a text editor to the page.</description>
 		<preference name="skin"
-		            value="uniboard"/>
+		            value="sankore"/>
 		<content src="index.html"/> 
 </widget>

@@ -3,95 +3,71 @@
 // By Jay Salvat - http://markitup.jaysalvat.com/
 // ------------------------------------------------------------------*/
 .markItUp .markItUpButton1 a {
-	position:static;
-	margin-left:5px;
 	background-image:url(images/h1.png); 
+	background-repeat:no-repeat;
 }
-.markItUp .markItUpButton2 a {
-	position:static;
-	
+.markItUp .markItUpButton2 a {	
 	background-image:url(images/h2.png); 
+	background-repeat:no-repeat;
 }
 .markItUp .markItUpButton3 a {
-	position:static;
-	
 	background-image:url(images/h3.png); 
+	background-repeat:no-repeat;
 }
 .markItUp .markItUpButton4 a {
-	position:static;
-	
 	background-image:url(images/h4.png); 
+	background-repeat:no-repeat;
 }
 .markItUp .markItUpButton5 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/h5.png); 
 }
 .markItUp .markItUpButton6 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/h6.png); 
 }
 .markItUp .markItUpButton7 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/paragraph.png); 
 }
 
 .markItUp .markItUpButton8 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/bold.png);
 }
 .markItUp .markItUpButton9 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/italic.png);
 }
 .markItUp .markItUpButton10 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/stroke.png);
 }
 
 .markItUp .markItUpButton11 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/list-bullet.png);
 }
 .markItUp .markItUpButton12 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/list-numeric.png);
 }
 .markItUp .markItUpButton13 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/list-item.png);
 }
 
 .markItUp .markItUpButton14 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/picture.png); 
 }
 .markItUp .markItUpButton15 a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	background-image:url(images/link.png);
 }
 
-.markItUp .clean a {
-	position:static;
-	
-	margin-top:-2px;
-	width:32px;
-	height:20px;
-	background-image:url(images/clean.png);
-}
 .markItUp .preview a {
-	position:static;
-	
+	background-repeat:no-repeat;
 	margin-top:-2px;
 	width:46px;
 	height:20px;
