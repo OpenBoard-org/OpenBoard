@@ -42,9 +42,6 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         void addDocumentsWidget(QWidget *pWidget);
         void switchToDocumentsWidget();
 
-        void addSankoreWebDocumentWidget(QWebView* pWidget);
-        void switchToSankoreWebDocumentWidget();
-
     public slots:
         void onExportDone();
 

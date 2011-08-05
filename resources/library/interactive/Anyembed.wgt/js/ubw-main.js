@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 function init(){
 	var embed;
@@ -50,15 +64,18 @@ function init(){
 	submit.click(function(){
 		$("#ubwidget").append(loadWindow)
 		embed = inputBox.val();
-		////////////!!!1///////// попробовать с реади
 		searchWrap.hide();
-		loadWindow.append(embed);
-		//alert($("#ubwidget").html());
-		$("#ubwidget embed").attr("wmode", "transparent");
-		var ubwidget_html = $("#ubwidget").html();
-		alert(ubwidget_html);
-		setTimeOut(alert);
-		$("#ubwidget").empty().html(ubwidget_html);
+		
+		if(/<object/.test(embed)){
+			loadWindow.append(embed);
+			loadWindow.find("embed").attr("wmode","transparent");
+			var loadWindow_content = loadWindow.html();
+			loadWindow.empty().html(loadWindow_content);
+		}
+		else {
+			loadWindow.append(embed);				
+		}
+
 		if(window.sankore){
 			window.sankore.resize($(document).width(),$(document).height());
 			window.sankore.setPreference("embed", escape(embed));

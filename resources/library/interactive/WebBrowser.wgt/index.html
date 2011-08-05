@@ -33,11 +33,11 @@
 			
 			//resizerIndex = 0;
 									
-			/*if(window.sankore){
+			if(window.sankore){
 				url = window.sankore.preference("url", "");
 			}else{
 				url = "";
-			};		*/	
+			};		
 			
 			language = navigator.userAgent.split(";");
 			language = language[3].replace(/\s/g, "").substr(0, 2);
@@ -157,9 +157,9 @@
 				//clearTimeout(resizer);
 				//resizerIndex = 0;
 														
-				/*if(window.sankore){
+				if(window.sankore){
 					window.sankore.setPreference("url", $("#textbox").val());
-				};*/
+				};
 
 				$("#embeded-content").hide();
 				$("#container").removeClass("load").addClass("show");									

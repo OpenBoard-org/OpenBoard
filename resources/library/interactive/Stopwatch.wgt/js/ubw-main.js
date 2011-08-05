@@ -1,5 +1,33 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 function init(){
+	
+	var tempHours;
+	var tempMinutes;
+	var tempSeconds;
+	
+	if(window.sankore){
+		tempHours = window.sankore.preference("hours","00");
+		tempMinutes = window.sankore.preference("minutes","00");
+		tempSeconds = window.sankore.preference("seconds","00");
+	} else {
+		tempHours = "00";
+		tempMinutes = "00";
+		tempSeconds = "00";
+	}
 	
     var ubwidget = $("#ubwidget").ubwidget({
         width:252,
@@ -32,8 +60,8 @@ function init(){
         borderRight:"none"
     });
     spacec.find(".ubw-button-canvas").unbind("mouseenter");
-		
-    var hours = $("<div class='scroll' id='hours'>00</div>").ubwbutton({
+	
+    var hours = $("<div class='scroll' id='hours'>" + tempHours + "</div>").ubwbutton({
         w:52, 
         h:68
     }, {
@@ -45,7 +73,7 @@ function init(){
     hours.find(".ubw-button-body").css({
         borderRight:"none"
     });
-    var minutes = $("<div class='scroll' id='minutes'>00</div>").ubwbutton({
+    var minutes = $("<div class='scroll' id='minutes'>" + tempMinutes + "</div>").ubwbutton({
         w:52, 
         h:68
     }, {
@@ -58,7 +86,7 @@ function init(){
         borderLeft:"none",
         borderRight:"none"
     });
-    var seconds = $("<div class='scroll' id='seconds'>00</div>").ubwbutton({
+    var seconds = $("<div class='scroll' id='seconds'>" + tempSeconds + "</div>").ubwbutton({
         w:52, 
         h:68
     }, {
@@ -67,6 +95,7 @@ function init(){
         right:0, 
         left:0
     });
+	
     seconds.find(".ubw-button-body").css({
         borderLeft:"none",
         borderRight:"none"
@@ -239,12 +268,26 @@ function init(){
     }	
 				
     function timeButtonDownHandler(m){
-        var button = m.data.button;
-        var mouseStart = {
+		var button = m.data.button;
+		var content = button.find(".ubw-button-content");
+		if(window.sankore){
+			var temp = button.attr("id");
+			switch(temp){
+				case "seconds":
+					window.sankore.setPreference("seconds", content.text());
+					break;
+				case "minutes":
+					window.sankore.setPreference("minutes", content.text());
+					break;
+				case "hours":
+					window.sankore.setPreference("hours", content.text());
+					break;
+			}
+		}
+        /*var mouseStart = {
             pageX:m.pageX, 
             pageY:m.pageY
-        };
-        var content = button.find(".ubw-button-content");
+        };*/        
         var val = content.text();
         isScrolling = true;
         reverse = true;
@@ -331,6 +374,12 @@ function init(){
         hoursValue.text(formatTime(currentHour));
         minutesValue.text(formatTime(currentMinute));
         secondsValue.text(formatTime(currentSecond));
+		
+		if(window.sankore){
+			window.sankore.setPreference("hours", hoursValue.text());
+			window.sankore.setPreference("minutes", minutesValue.text());
+			window.sankore.setPreference("seconds", secondsValue.text());
+		}
 		
     }	
 	

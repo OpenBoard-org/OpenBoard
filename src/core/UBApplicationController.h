@@ -66,8 +66,6 @@ class UBApplicationController : public QObject
 
         void showDocument();
 
-        void showSankoreWebDocument();
-
         void showMessage(const QString& message, bool showSpinningWheel);
 
         void importFile(const QString& pFilePath);

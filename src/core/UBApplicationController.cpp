@@ -365,7 +365,7 @@ void UBApplicationController::showInternet()
     {
         showDesktop(true);
     }
-    else 
+    else
     {
         mMainWindow->boardToolBar->hide();
         mMainWindow->documentToolBar->hide();
@@ -416,33 +416,6 @@ void UBApplicationController::showDocument()
 
     emit mainModeChanged(Document);
 }
-
-void UBApplicationController::showSankoreWebDocument()
-{
-    mMainWindow->webToolBar->hide();
-    mMainWindow->boardToolBar->hide();
-    mMainWindow->tutorialToolBar->hide();
-    mMainWindow->documentToolBar->show();
-
-
-    mMainMode = WebDocument;
-
-    adaptToolBar();
-
-    mirroringEnabled(false);
-
-    mMainWindow->switchToSankoreWebDocumentWidget();
-
-    UBApplication::documentController->hide();
-
-    mMainWindow->show();
-
-    mUninoteController->hideWindow();
-
-    emit mainModeChanged(WebDocument);
-}
-
-
 
 void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 {
