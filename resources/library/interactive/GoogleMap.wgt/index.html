@@ -15,6 +15,21 @@
 	
 	<script type="text/javascript">
 	
+	/*
+	 * This program is free software: you can redistribute it and/or modify
+	 * it under the terms of the GNU General Public License as published by
+	 * the Free Software Foundation, either version 3 of the License, or
+	 * (at your option) any later version.
+	 *
+	 * This program is distributed in the hope that it will be useful,
+	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	 * GNU General Public License for more details.
+	 *
+	 * You should have received a copy of the GNU General Public License
+	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	*/
+
 	google.load("maps", "2");
 	google.load("elements", "1", {
 	  packages : ["localsearch"]
@@ -30,12 +45,12 @@
 	    var zoom = 2;
 		var latlng = new google.maps.LatLng(lat, lng);
 
-		if (window.uniboard)
+		if (window.sankore)
 		{
-		    lat = parseFloat(window.uniboard.preference('latitude', lat));
-		    lng = parseFloat(window.uniboard.preference('longitude', lng));
-		    zoom = parseFloat(window.uniboard.preference('zoom', zoom));  
-		    mapType = window.uniboard.preference('mapType', mapType);
+		    lat = parseFloat(window.sankore.preference('latitude', lat));
+		    lng = parseFloat(window.sankore.preference('longitude', lng));
+		    zoom = parseFloat(window.sankore.preference('zoom', zoom));  
+		    mapType = window.sankore.preference('mapType', mapType);
 
 			latlng = new google.maps.LatLng(lat, lng);
 		};
@@ -54,17 +69,17 @@
 				new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(5,30)));	
 			
 			// Add persistence
-			if (window.uniboard)
+			if (window.sankore)
 			{				
 				GEvent.addListener(map,'zoomend',function()
 				{ 
-		           	window.uniboard.setPreference('zoom', map.getZoom());
+		           	window.sankore.setPreference('zoom', map.getZoom());
 				});
 
 				GEvent.addListener(map,'moveend',function()
 				{ 
-		         	window.uniboard.setPreference('latitude', map.getCenter().lat());
-		         	window.uniboard.setPreference('longitude', map.getCenter().lng());
+		         	window.sankore.setPreference('latitude', map.getCenter().lat());
+		         	window.sankore.setPreference('longitude', map.getCenter().lng());
 				});
 
 				GEvent.addListener(map,'maptypechanged',function()
@@ -77,7 +92,7 @@
               break;
             }  
           }
-		      window.uniboard.setPreference('mapType', newMapType);
+		      window.sankore.setPreference('mapType', newMapType);
 				});
 			};
 		}
