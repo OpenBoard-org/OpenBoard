@@ -5,14 +5,15 @@
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBDocumentManager.h"
+#include "core/memcheck.h"
+#include "core/UBPersistenceManager.h"
+
+#include "frameworks/UBFileSystemUtils.h"
 
 #include "domain/UBGraphicsPDFItem.h"
 
 #include "pdf/PDFRenderer.h"
 
-#include "core/memcheck.h"
-
-#include "core/UBPersistenceManager.h"
 
 #include "UBCFFSubsetAdaptor.h"
 
@@ -63,25 +64,53 @@ QString UBImportCFF::importFileFilter()
 
 bool UBImportCFF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
 {
-	//TODO add cff file import here
-/*    int res = UBDocumentManager::documentManager()->addImageAsPageToDocument(QStringList(QFileInfo(pFile).absoluteFilePath()), pDocument);
-    if (res == 0)
-    {
-        UBApplication::showMessage(tr("Image import failed."));
-        return false;
+    QFileInfo fi(pFile);
+    UBApplication::showMessage(tr("Importing file %1...").arg(fi.baseName()), true);
+
+    // first unzip the file to the correct place
+    //TODO create temporary path for iwb file content
+    QString path = QDir::tempPath();
+
+    QString documentRootFolder = expandFileToDir(pFile, path);
+        QString contentFile;
+    if (documentRootFolder.isEmpty()) //if file has failed to unzip it is probably just xml file
+        contentFile = pFile.fileName();
+    else //get path to content xml (according to iwbcff specification)
+        contentFile = documentRootFolder.append("/content.xml");
+
+    if(!contentFile.length()){
+            UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
+            return false;
     }
-    else
-    {
-        UBApplication::showMessage(tr("Image import successful."));
-        return true;
-    }*/
-    return true;
+    else{
+        //TODO convert expanded CFF file content to the destination document
+        //create destination document proxy
+        //fill metadata and save
+        UBDocumentProxy* destDocument = new UBDocumentProxy(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath());
+        QDir dir;
+        dir.mkdir(destDocument->persistencePath());
+
+        //try to import cff to document
+        if (UBCFFSubsetAdaptor::ConvertCFFFileToUbz(contentFile, destDocument))
+        {
+            UBPersistenceManager::persistenceManager()->addDirectoryContentToDocument(destDocument->persistencePath(), pDocument);
+            UBFileSystemUtils::deleteDir(destDocument->persistencePath());
+            delete destDocument;
+            UBApplication::showMessage(tr("Import successful."));
+            return true;
+        }
+        else
+        {
+            UBFileSystemUtils::deleteDir(destDocument->persistencePath());
+            delete destDocument;
+            UBApplication::showMessage(tr("Import failed."));
+            return false;
+        }
+    }
 }
 
 QString UBImportCFF::expandFileToDir(const QFile& pZipFile, const QString& pDir)
 {
-
-    QDir rootDir(pDir);
     QuaZip zip(pZipFile.fileName());
 
     if(!zip.open(QuaZip::mdUnzip))
@@ -94,10 +123,34 @@ QString UBImportCFF::expandFileToDir(const QFile& pZipFile, const QString& pDir)
     QuaZipFileInfo info;
     QuaZipFile file(&zip);
 
-    // TODO UB 4.x  implement a mechanism that can replace an existing
-    // document based on the UID of the document.
-    bool createNewDocument = true;
+    //create unique cff document root fodler
+    //use current date/time and temp number for folder name
     QString documentRootFolder;
+    int tmpNumber = 0;
+    QDir rootDir;
+    while (true)
+    {
+        QString tempPath = QString("%1/sank%2.%3")
+                .arg(pDir)
+                .arg(QDateTime::currentDateTime().toString("dd_MM_yyyy_HH-mm"))
+                .arg(tmpNumber);
+        if (!rootDir.exists(tempPath))
+        {
+            documentRootFolder = tempPath;
+            break;
+        }
+        tmpNumber++;
+        if (tmpNumber == 100000)
+        {
+            qWarning() << "Import failed. Failed to create temporary directory for iwb file";
+            return "";
+        }
+    }
+
+    if (!rootDir.mkdir(documentRootFolder))
+    {
+        qWarning() << "Import failed. Couse: failed to create temp folder for cff package";
+    }
 
     // first we search the metadata.rdf to check the document properties
     for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())
@@ -110,9 +163,6 @@ QString UBImportCFF::expandFileToDir(const QFile& pZipFile, const QString& pDir)
 
         QFileInfo currentFileInfo(pDir + "/" + file.getActualFileName());
     }
-
-    if (createNewDocument)
-        documentRootFolder = UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath();
 
 
     QFile out;
@@ -208,22 +258,49 @@ UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGro
     QString path = QDir::tempPath();
 
     QString documentRootFolder = expandFileToDir(pFile, path);
+    QString contentFile;
     if (documentRootFolder.isEmpty())
-        documentRootFolder = pFile.fileName();
+        //if file has failed to umzip it is probably just xml file
+        contentFile = pFile.fileName();
     else
-        documentRootFolder = path.append("\\content.xml");
+        //get path to content xml
+        contentFile = QString("%1/content.xml").arg(documentRootFolder);
 
-    if(!documentRootFolder.length()){
+    if(!contentFile.length()){
             UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
             return 0;
     }
     else{
-        //TODO convert expanded CFF file content to ubz destination folder
-        QString temporaryFolder = QDir::tempPath();
-        UBCFFSubsetAdaptor::ConvertCFFFileToUbz(documentRootFolder, temporaryFolder);
-        // create document proxy for destination folder and return
-        UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(temporaryFolder);
-        UBApplication::showMessage(tr("Import successful."));
+        //create destination document proxy
+        //fill metadata and save
+        UBDocumentProxy* destDocument = new UBDocumentProxy(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath());
+        QDir dir;
+        dir.mkdir(destDocument->persistencePath());
+        if (pGroup.length() > 0)
+            destDocument->setMetaData(UBSettings::documentGroupName, pGroup);
+        if (fi.baseName() > 0)
+            destDocument->setMetaData(UBSettings::documentName, fi.baseName());
+
+        destDocument->setMetaData(UBSettings::documentVersion, UBSettings::currentFileVersion);
+        destDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+
+        UBDocumentProxy* newDocument = NULL;
+        //try to import cff to document
+        if (UBCFFSubsetAdaptor::ConvertCFFFileToUbz(contentFile, destDocument))
+        {
+            newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(destDocument->persistencePath());
+            UBApplication::showMessage(tr("Import successful."));
+        }
+        else
+        {
+            UBFileSystemUtils::deleteDir(destDocument->persistencePath());
+            UBApplication::showMessage(tr("Import failed."));
+        }
+        delete destDocument;
+
+        if (documentRootFolder.length() != 0)
+            UBFileSystemUtils::deleteDir(documentRootFolder);
         return newDocument;
     }
 }
+
