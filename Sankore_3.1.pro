@@ -7,9 +7,9 @@ CONFIG += debug_and_release \
    no_include_pwd
 
 VERSION_MAJ = 1
-VERSION_MIN = 10
+VERSION_MIN = 11
 VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 01
+VERSION_PATCH = 00
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
