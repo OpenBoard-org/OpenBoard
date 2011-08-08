@@ -15,10 +15,11 @@
         <script type="text/javascript"> 
 		
             var browsing = false;
+            var mode = 'wiki';
             var lang = 'en';
             var internalChange = false;
             var toolbar = {
-                state:"begin",
+                state:"",
                 loading:false
             };
             var appHistory = {
@@ -42,7 +43,7 @@
 			
                 var ubHistoryList = "";
                 var ubHistoryIndex = "";
-              
+                
                 lang = navigator.userAgent.split(";");
 
                 lang = (navigator.language || navigator.systemLanguage || 
@@ -53,6 +54,7 @@
                     toolbar.state = loadPref("historyState", "begin");
                     ubHistoryList = loadPref("historyList", "");
                     ubHistoryIndex = loadPref("historyIndex", "-1");
+                    //window.resizeTo(350, 450);
                 }
               
                 if(ubHistoryList !== "") {
@@ -111,12 +113,14 @@
             });
             
             $(window).resize(function(){
-                $("#web-browser").height($(window).height() - $("#toolbar").height() - 2);
-                $("#web-browser").width($(window).width() - 2);
-              
-                if($(window).width() < 280){
-                    window.resizeTo(280, $(window).height());
-                }
+
+                if($(window).width() < 300){
+                    window.resizeTo(300, $(window).height());
+                } else if($(window).width() > 755){
+                    $("#web-browser").height($(window).height() - $("#toolbar").height() - 2);
+                    $("#web-browser").width($(window).width() - 2);
+                } else 
+                    $("#web-browser").height($(window).height() - $("#toolbar").height() - 2);
               
             });
             
@@ -124,15 +128,15 @@
                 
                 var textBoxInput = "";
  
-                textBoxInput = remacc(kword.replace(/ /g,'+'));	
+                textBoxInput = remacc(kword.replace(/ /g,'_'));	
  
-                textBoxInput = textBoxInput.replace(textBoxInput.charAt(0),textBoxInput.charAt(0).toUpperCase());          
+                textBoxInput = textBoxInput.replace(textBoxInput.charAt(0),textBoxInput.charAt(0).toLowerCase());                
                 if(toolbar.state == "begin"){
                     $('#web-browser').attr('src',"");
                     toolbar.state = "started";
                 }
                 else
-                    $('#web-browser').attr('src',"http://mobile.wikipedia.org/transcode.php?go=" + textBoxInput);
+                    $('#web-browser').attr('src',"http://" + lang + ".wiktionary.org/wiki/" + textBoxInput);
                 $('#url').val(kword);
                 $('#toolbar-button-search').css("background-image", "url(images/toolbarLoading.jpg)");
                 toolbar.loading = true;
@@ -260,7 +264,7 @@
             <div class="toolbar-body"> 
 
                 <div id="toolbar-down" class="toolbar"> 
-                    Wikipedia
+                    Wiktionary
                 </div> <!--toolbar-down--> 
 
             </div> <!--toolbar-body--> 
