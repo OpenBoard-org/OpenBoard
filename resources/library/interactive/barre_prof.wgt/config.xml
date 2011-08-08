@@ -4,8 +4,8 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
-        width="660"
-        height="410" 
+        width="800"
+        height="450" 
 		ub:resizable="true">
 		
 		<name>Rich Text Editor</name>
