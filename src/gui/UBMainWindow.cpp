@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <QtGui>
 
@@ -29,7 +43,7 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     actionPreferences->setShortcut(QKeySequence(Qt::ALT + Qt::Key_Return));
     actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
 #else
-   // No shortcut on Linux (like GEdit/Nautilius)
+    actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
 #endif
 }
 
@@ -92,19 +106,6 @@ void UBMainWindow::switchToDocumentsWidget()
     }
 }
 
-void UBMainWindow::addSankoreWebDocumentWidget(QWebView* pWidget)
-{
-    if(!mSankoreWebDocumentWidget){
-        mSankoreWebDocumentWidget = pWidget;
-        mStackedLayout->addWidget(mSankoreWebDocumentWidget);
-    }
-}
-
-void UBMainWindow::switchToSankoreWebDocumentWidget()
-{
-    if(mSankoreWebDocumentWidget)
-        mStackedLayout->setCurrentWidget(mSankoreWebDocumentWidget);
-}
 void UBMainWindow::keyPressEvent(QKeyEvent *event)
 {
     QMainWindow::keyPressEvent(event);

@@ -1,8 +1,16 @@
 /*
- * UBPreferencesController.cpp
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  Created on: Nov 18, 2008
- *      Author: luc
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "UBPreferencesController.h"
@@ -28,6 +36,27 @@ qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
 qreal UBPreferencesController::sMaxPenWidth = 50.0;
 
+
+UBPreferencesDialog::UBPreferencesDialog(UBPreferencesController* prefController, QWidget* parent,Qt::WindowFlags f)
+    :QDialog(parent,f)
+    ,mPreferencesController(prefController)
+{
+}
+
+UBPreferencesDialog::~UBPreferencesDialog()
+{
+}
+
+void UBPreferencesDialog::closeEvent(QCloseEvent* e)
+{
+    if(mPreferencesController->inputValuesConsistence())
+        e->accept();
+    else
+        e->ignore();
+}
+
+
+
 UBPreferencesController::UBPreferencesController(QWidget *parent)
     : QObject(parent)
     , mPreferencesWindow(0)
@@ -35,8 +64,8 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     , mPenProperties(0)
     , mMarkerProperties(0)
 {
-    mPreferencesWindow = new QDialog(parent, Qt::Dialog);
-    mPreferencesUI = new Ui::preferencesDialog();  // deleted in UBPreferencesController::destructor
+    mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
+    mPreferencesUI = new Ui::preferencesDialog();  // deleted in
     mPreferencesUI->setupUi(mPreferencesWindow);
     connect(mPreferencesUI->Username_textBox, SIGNAL(editingFinished()), this, SLOT(onCommunityUsernameChanged()));
     connect(mPreferencesUI->Password_textEdit, SIGNAL(editingFinished()), this, SLOT(onCommunityPasswordChanged()));
@@ -100,8 +129,8 @@ void UBPreferencesController::wire()
     QList<QColor> penDarkBackgroundSelectedColors = settings->boardPenDarkBackgroundSelectedColors->colors();
 
     mPenProperties = new UBBrushPropertiesFrame(mPreferencesUI->penFrame,
-            penLightBackgroundColors, penDarkBackgroundColors, penLightBackgroundSelectedColors,
-            penDarkBackgroundSelectedColors, this);
+                                                penLightBackgroundColors, penDarkBackgroundColors, penLightBackgroundSelectedColors,
+                                                penDarkBackgroundSelectedColors, this);
 
     mPenProperties->opacityFrame->hide();
 
@@ -117,8 +146,8 @@ void UBPreferencesController::wire()
     QList<QColor> markerDarkBackgroundSelectedColors = settings->boardMarkerDarkBackgroundSelectedColors->colors();
 
     mMarkerProperties = new UBBrushPropertiesFrame(mPreferencesUI->markerFrame, markerLightBackgroundColors,
-            markerDarkBackgroundColors, markerLightBackgroundSelectedColors,
-            markerDarkBackgroundSelectedColors, this);
+                                                   markerDarkBackgroundColors, markerLightBackgroundSelectedColors,
+                                                   markerDarkBackgroundSelectedColors, this);
 
     mMarkerProperties->pressureSensitiveCheckBox->setText(tr("Marker is pressure sensitive"));
 
@@ -143,7 +172,7 @@ void UBPreferencesController::init()
     mPreferencesUI->keyboardPaletteAutoMinimize->setChecked(settings->boardKeyboardPaletteAutoMinimize->get().toBool());
     for(int i=0; i<mPreferencesUI->keyboardPaletteKeyButtonSize->count(); i++)
         if (mPreferencesUI->keyboardPaletteKeyButtonSize->itemText(i) ==
-            settings->boardKeyboardPaletteKeyBtnSize->get().toString())
+                settings->boardKeyboardPaletteKeyBtnSize->get().toString())
         {
             mPreferencesUI->keyboardPaletteKeyButtonSize->setCurrentIndex(i);
             break;
@@ -193,14 +222,47 @@ void UBPreferencesController::onCommunityPasswordChanged()
     settings->setCommunityPassword(mPreferencesUI->Password_textEdit->text());
 }
 
+
+bool UBPreferencesController::inputValuesConsistence()
+{
+    QString backgroundStyle = "QWidget {background-color: white}";
+    mPreferencesUI->Username_textBox->setStyleSheet(backgroundStyle);
+    mPreferencesUI->Password_textEdit->setStyleSheet(backgroundStyle);
+
+    QString username = mPreferencesUI->Username_textBox->text();
+    QString password = mPreferencesUI->Password_textEdit->text();
+    bool isConsistent = true;
+    if (username.length() + password.length()){
+        backgroundStyle = "QWidget {background-color: magenta}";
+        if(username.isEmpty()){
+            isConsistent = false;
+            mPreferencesUI->mainTabWidget->setCurrentWidget(mPreferencesUI->networkTab);
+            mPreferencesUI->Username_textBox->setStyleSheet(backgroundStyle);
+            mPreferencesUI->Username_textBox->setFocus();
+            mPreferencesUI->Username_textBox->setCursorPosition(0);
+        }
+        else if(password.isEmpty()){
+            isConsistent = false;
+            mPreferencesUI->mainTabWidget->setCurrentWidget(mPreferencesUI->networkTab);
+            mPreferencesUI->Password_textEdit->setStyleSheet(backgroundStyle);
+            mPreferencesUI->Password_textEdit->setFocus();
+            mPreferencesUI->Password_textEdit->setCursorPosition(0);
+        }
+    }
+    return isConsistent;
+}
+
 void UBPreferencesController::close()
 {
     //web
     QString homePage = mPreferencesUI->webHomePage->text();
-    UBSettings::settings()->webHomePage->set(homePage);
 
+    UBSettings::settings()->webHomePage->set(homePage);
     UBSettings::settings()->setProxyUsername(mPreferencesUI->proxyUsername->text());
     UBSettings::settings()->setProxyPassword(mPreferencesUI->proxyPassword->text());
+
+    if (!inputValuesConsistence())
+        return;
 
     mPreferencesWindow->accept();
 }
@@ -245,8 +307,8 @@ void UBPreferencesController::defaultSettings()
 
         for (int i = 0 ; i < settings->colorPaletteSize ; i++)
         {
-             mPenProperties->lightBackgroundColorPickers[i]->setSelectedColorIndex(lightBackgroundSelectedColors.indexOf(settings->penColors(false).at(i)));
-             mPenProperties->darkBackgroundColorPickers[i]->setSelectedColorIndex(darkBackgroundSelectedColors.indexOf(settings->penColors(true).at(i)));
+            mPenProperties->lightBackgroundColorPickers[i]->setSelectedColorIndex(lightBackgroundSelectedColors.indexOf(settings->penColors(false).at(i)));
+            mPenProperties->darkBackgroundColorPickers[i]->setSelectedColorIndex(darkBackgroundSelectedColors.indexOf(settings->penColors(true).at(i)));
         }
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->markerTab)
@@ -266,8 +328,8 @@ void UBPreferencesController::defaultSettings()
 
         for (int i = 0 ; i < settings->colorPaletteSize ; i++)
         {
-             mMarkerProperties->lightBackgroundColorPickers[i]->setSelectedColorIndex(lightBackgroundSelectedColors.indexOf(settings->markerColors(false).at(i)));
-             mMarkerProperties->darkBackgroundColorPickers[i]->setSelectedColorIndex(darkBackgroundSelectedColors.indexOf(settings->markerColors(true).at(i)));
+            mMarkerProperties->lightBackgroundColorPickers[i]->setSelectedColorIndex(lightBackgroundSelectedColors.indexOf(settings->markerColors(false).at(i)));
+            mMarkerProperties->darkBackgroundColorPickers[i]->setSelectedColorIndex(darkBackgroundSelectedColors.indexOf(settings->markerColors(true).at(i)));
         }
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->aboutTab)
@@ -404,8 +466,8 @@ void UBPreferencesController::toolbarOrientationHorizontal(bool checked)
 }
 
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,
-        const QList<QColor>& darkBackgroundColors, const QList<QColor>& lightBackgroundSelectedColors,
-        const QList<QColor>& darkBackgroundSelectedColors, UBPreferencesController* controller)
+                                               const QList<QColor>& darkBackgroundColors, const QList<QColor>& lightBackgroundSelectedColors,
+                                               const QList<QColor>& darkBackgroundSelectedColors, UBPreferencesController* controller)
 {
     setupUi(owner);
 
@@ -477,4 +539,3 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
 
     }
 }
-

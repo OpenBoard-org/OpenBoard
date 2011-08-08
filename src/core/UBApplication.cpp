@@ -1,8 +1,16 @@
 /*
- * UBApplication.cpp
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  Created on: Sep 11, 2008
- *      Author: luc
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "UBApplication.h"
@@ -260,11 +268,6 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionCopy, SIGNAL(triggered()), applicationController, SLOT(actionCopy()));
     connect(mainWindow->actionPaste, SIGNAL(triggered()), applicationController, SLOT(actionPaste()));
 
-//#ifndef __ppc__
-//    // this cause a problem on MACX/PPC (see https://trac.assembla.com/uniboard/ticket/862)
-//    installEventFilter(new UBIdleTimer(this));
-//#endif
-
     applicationController->initScreenLayout();
     boardController->setupLayout();
 
@@ -339,11 +342,6 @@ void UBApplication::showInternet()
 void UBApplication::showDocument()
 {
     applicationController->showDocument();
-}
-
-void UBApplication::showSankoreWebDocument()
-{
-    applicationController->showSankoreWebDocument();
 }
 
 int UBApplication::toolBarHeight()

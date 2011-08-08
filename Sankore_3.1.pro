@@ -7,9 +7,9 @@ CONFIG += debug_and_release \
    no_include_pwd
 
 VERSION_MAJ = 1
-VERSION_MIN = 10
+VERSION_MIN = 11
 VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 01
+VERSION_PATCH = 00
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
@@ -185,6 +185,12 @@ macx {
        TRANSLATION_fr.path = "$$RESOURCES_DIR/fr.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_fr
    }
+   exists(resources/i18n/sankore_fr_CH.qm) {
+       TRANSLATION_fr.files = resources/i18n/sankore_fr_CH.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_fr.path = "$$RESOURCES_DIR/fr.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_fr_CH
+   }
    exists(resources/i18n/sankore_de.qm) {
        TRANSLATION_de.files = resources/i18n/sankore_de.qm \
            resources/i18n/Localizable.strings
@@ -331,6 +337,7 @@ RESOURCES += resources/sankore.qrc
 TRANSLATIONS = resources/i18n/sankore_en.ts \
    resources/i18n/sankore_en_UK.ts \
    resources/i18n/sankore_fr.ts \
+   resources/i18n/sankore_fr_CH.ts \
    resources/i18n/sankore_de.ts \
    resources/i18n/sankore_nl.ts \
    resources/i18n/sankore_es.ts \

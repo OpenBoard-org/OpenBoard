@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include <QFileInfo>
 
 #include "UBDocumentPublisher.h"
@@ -30,6 +44,7 @@
 #include "UBSvgSubsetRasterizer.h"
 
 #include "core/memcheck.h"
+#include "../../core/UBApplication.h"
 
 
 UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *parent)
@@ -40,89 +55,51 @@ UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *pa
         , mPassword("")
         , bLoginCookieSet(false)
 {
-    mpWebView = new QWebView(0);
-    UBApplication::mainWindow->addSankoreWebDocumentWidget(mpWebView);
-    mpWebView->setWindowTitle(tr("Sankore Uploading Page"));
-    mpWebView->setAcceptDrops(false);
-
-    connect(mpWebView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
-    connect(mpWebView, SIGNAL(linkClicked(QUrl)), this, SLOT(onLinkClicked(QUrl)));
-    connect(this, SIGNAL(loginDone()), this, SLOT(onLoginDone()));
-
-
     init();
 }
 
 
 UBDocumentPublisher::~UBDocumentPublisher()
 {
-    //delete mpWebView;
-    //delete mPublishingDocument;
+    if(mSourceDocument){
+        delete mSourceDocument;
+        mSourceDocument = NULL;
+    }
+
+    if(mPublishingDocument){
+        delete mPublishingDocument;
+        mPublishingDocument = NULL;
+    }
 }
 
 
 void UBDocumentPublisher::publish()
 {
+            //check that the username and password are stored on preferences
+    UBSettings* settings = UBSettings::settings();
+
+    if(settings->communityUsername().isEmpty() || settings->communityPassword().isEmpty()){
+        UBApplication::showMessage(tr("Credentials has to not been filled out yet."));
+        qDebug() << "trying to connect to community without the required credentials";
+        return;
+    }
+
+    mUsername = settings->communityUsername();
+    mPassword = settings->communityPassword();
+
     UBPublicationDlg dlg;
     if(QDialog::Accepted == dlg.exec())
     {
         mDocInfos.title = dlg.title();
         mDocInfos.description = dlg.description();
 
-        //check that the username and password are stored on preferences
-        UBSettings* settings = UBSettings::settings();
-
-        mUsername = settings->communityUsername();
-        mPassword = settings->communityPassword();
         buildUbwFile();
+
         UBApplication::showMessage(tr("Uploading Sankore File on Web."));
 
-        login(mUsername, mPassword);
-        //sendUbw();
+        sendUbw(mUsername, mPassword);
     }
 }
-
-void UBDocumentPublisher::onLoginDone()
-{
-    sendUbw();
-}
-
-void UBDocumentPublisher::login(QString username, QString password)
-{
-    QString data,crlf;
-    QByteArray datatoSend;
-
-    // Create the request body
-    data="srid=&j_username=" +username +"&j_password=" +password +crlf+crlf;
-    datatoSend=data.toAscii(); // convert data string to byte array for request
-
-    // Create the request header
-    QString qsLoginURL = QString("http://sankore.devxwiki.com/xwiki/bin/loginsubmit/XWiki/XWikiLogin?xredirect=%0").arg(DOCPUBLICATION_URL);
-    QNetworkRequest request(QUrl(qsLoginURL.toAscii().constData()));
-    request.setRawHeader("Origin", "http://sankore.devxwiki.com");
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    request.setRawHeader("Accept", "application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
-    request.setRawHeader("Referer", DOCPUBLICATION_URL);
-    request.setHeader(QNetworkRequest::ContentLengthHeader,datatoSend.size());
-    request.setRawHeader("Accept-Language", "en-US,*");
-
-    // Generate a session id
-    //mSessionID = getSessionID();
-
-    // Create the cookie
-    //QList<QNetworkCookie> cookiesList;
-    //QString qsCookieValue;
-    //qsCookieValue = mSessionID;
-    //qsCookieValue += "; language=en";
-    //QNetworkCookie cookie("JSESSIONID", qsCookieValue.toAscii().constData());
-    //cookiesList << cookie;
-    //request.setHeader(QNetworkRequest::CookieHeader, QVariant::fromValue(cookiesList));
-
-    // Send the request
-    mpNetworkMgr->post(request,datatoSend);
-}
-
-
 
 void UBDocumentPublisher::buildUbwFile()
 {
@@ -149,7 +126,6 @@ void UBDocumentPublisher::buildUbwFile()
         UBExportDocument ubzExporter;
         ubzExporter.setVerbode(false);
         ubzExporter.persistsDocument(mSourceDocument, mPublishingDocument->persistencePath() + "/" + UBStringUtils::toCanonicalUuid(publishingUuid) + ".ubz");
-
 
         // remove all useless files
 
@@ -572,9 +548,6 @@ void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *
     }
 }
 
-
-
-
 void UBDocumentPublisher::init()
 {
     mCrlf=0x0d;
@@ -585,21 +558,11 @@ void UBDocumentPublisher::init()
     mpNetworkMgr = new QNetworkAccessManager(this);
     mpCookieJar = new QNetworkCookieJar();
 
-//    QNetworkProxy* pProxy = UBSettings::settings()->httpProxy();
-//    if(NULL != pProxy)
-//    {
-//        mpNetworkMgr->setProxy(*pProxy);
-//        qDebug() << "Proxy set!";
-//    }
-
     connect(mpNetworkMgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(onFinished(QNetworkReply*)));
-    connect(mpNetworkMgr, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)), this, SLOT(onProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
 }
 
 void UBDocumentPublisher::onFinished(QNetworkReply *reply)
 {
-    QByteArray response = reply->readAll();
-
     QVariant cookieHeader = reply->rawHeader("Set-Cookie");
     // First we concatenate all the Set-Cookie values (the packet can contains many of them)
     QStringList qslCookie = cookieHeader.toString().split("\n");
@@ -611,49 +574,6 @@ void UBDocumentPublisher::onFinished(QNetworkReply *reply)
     // Now we isolate every cookie value
     QStringList qslCookieVals = qsCookieValue.split("; ");
 
-    if (!bLoginCookieSet)
-    {
-        // Finally we create the cookies
-        for (int i = 0; i < qslCookieVals.size(); i++)
-        {
-            QString cookieString = qslCookieVals.at(i);
-            QStringList qslCrntCookie = cookieString.split("=");
-            QNetworkCookie crntCookie;
-            if (qslCrntCookie.length() == 2)
-            {
-                QString qsValue = qslCrntCookie.at(1);
-                qsValue.remove("\"");
-                crntCookie = QNetworkCookie(qslCrntCookie.at(0).toAscii().constData(), qsValue.toAscii().constData());
-            }
-            else
-            {
-                crntCookie = QNetworkCookie(qslCrntCookie.at(0).toAscii().constData());
-            }
-            // HACK : keep only the same cookies as the XWiki website does.
-            if(crntCookie.name() == "JSESSIONID" ||
-               crntCookie.name() == "username" ||
-               crntCookie.name() == "password" ||
-               crntCookie.name() == "rememberme" ||
-               crntCookie.name() == "validation")
-            {
-                mCookies << crntCookie;
-            }
-        }
-        QNetworkCookie langCookie("language", "en");
-        mCookies << langCookie;
-
-        // Set the cookiejar : it set the cookies that will be sent with every packet.
-        mpCookieJar->setCookiesFromUrl(mCookies, QUrl(DOCPUBLICATION_URL)/*reply->url()*/);
-
-        mpNetworkMgr->setCookieJar(mpCookieJar);
-        bLoginCookieSet = true;
-        emit loginDone();
-    }
-    else
-    {
-        if (response.isEmpty())
-        {
-            // Verify that the UBW file has been sent correctly
             bool bTransferOk = false;
             for(int j = 0; j <= qslCookieVals.size(); j++)
             {
@@ -675,12 +595,10 @@ void UBDocumentPublisher::onFinished(QNetworkReply *reply)
             {
                 UBApplication::showMessage(tr("Failed to upload document on the web."));
             }
-        }
-    }
     reply->deleteLater();
 }
 
-void UBDocumentPublisher::sendUbw()
+void UBDocumentPublisher::sendUbw(QString username, QString password)
 {
     if (QFile::exists(mTmpZipFile))
     {
@@ -696,6 +614,10 @@ void UBDocumentPublisher::sendUbw()
             multipartHeader = "multipart/form-data; boundary="+boundary;
 
             data="--"+boundary+mCrlf;
+            data+="Content-Disposition: form-data; name=\"title\"" + mCrlf + mCrlf + mDocInfos.title + mCrlf;
+            data+="--"+boundary+mCrlf;
+            data+="Content-Disposition: form-data; name=\"description\"" + mCrlf + mCrlf + mDocInfos.description.remove("\n") + mCrlf;
+            data+="--"+boundary+mCrlf;
             data+="Content-Disposition: form-data; name=\"file\"; filename=\""+ fi.fileName() +"\""+mCrlf;
             data+="Content-Type: application/octet-stream"+mCrlf+mCrlf;
             datatoSend=data.toAscii(); // convert data string to byte array for request
@@ -703,18 +625,15 @@ void UBDocumentPublisher::sendUbw()
             datatoSend += mCrlf;
             datatoSend += QString("--%0--%1").arg(boundary).arg(mCrlf);
 
-            QNetworkRequest request(QUrl(DOCPUBLICATION_URL));
+            QNetworkRequest request(QUrl(QString(DOCPUBLICATION_URL).toAscii().constData()));
+
             request.setHeader(QNetworkRequest::ContentTypeHeader, multipartHeader);
             request.setHeader(QNetworkRequest::ContentLengthHeader,datatoSend.size());
-            request.setRawHeader("Accept", "application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
+            QString b64Auth = getBase64Of(QString("%0:%1").arg(username).arg(password));
+            request.setRawHeader("Authorization", QString("Basic %0").arg(b64Auth).toAscii().constData());
+            request.setRawHeader("Host", "sankore.devxwiki.com");
+            request.setRawHeader("Accept", "*/*");
             request.setRawHeader("Accept-Language", "en-US,*");
-            request.setRawHeader("Referer", DOCPUBLICATION_URL);
-
-            QNetworkCookie titleCookie("title", mDocInfos.title.toAscii().constData());
-            QNetworkCookie descCookie("description", mDocInfos.description.remove("\n").toAscii().constData());
-
-            mCookies << titleCookie;
-            mCookies << descCookie;
 
             mpCookieJar->setCookiesFromUrl(mCookies, QUrl(DOCPUBLICATION_URL));
             mpNetworkMgr->setCookieJar(mpCookieJar);
@@ -729,37 +648,6 @@ QString UBDocumentPublisher::getBase64Of(QString stringToEncode)
 {
     return stringToEncode.toAscii().toBase64();
 }
-
-void UBDocumentPublisher::onLinkClicked(const QUrl &url)
-{
-    // [Basic Auth] Here we interpret the link and send the request with the basic auth header.
-    QNetworkRequest request;
-    request.setUrl(url);
-    QString b64Auth = getBase64Of(QString("%0:%1").arg(mUsername).arg(mPassword));
-    request.setRawHeader("Authorization", QString("Basic %0").arg(b64Auth).toAscii().constData());
-    mpNetworkMgr->get(request);
-}
-
-void UBDocumentPublisher::onLoadFinished(bool result)
-{
-    Q_UNUSED(result);
-    // [Basic Auth] This line says: if the user click on a link, do not interpret it.
-    //mpWebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-
-    mpWebView->page()->setNetworkAccessManager(mpNetworkMgr);
-}
-
-void UBDocumentPublisher::onProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
-{
-    Q_UNUSED(proxy);
-    UBProxyLoginDlg dlg;
-    if(QDialog::Accepted == dlg.exec())
-    {
-        authenticator->setUser(dlg.username());
-        authenticator->setPassword(dlg.password());
-    }
-}
-
 
 // ---------------------------------------------------------
 UBProxyLoginDlg::UBProxyLoginDlg(QWidget *parent, const char *name):QDialog(parent)

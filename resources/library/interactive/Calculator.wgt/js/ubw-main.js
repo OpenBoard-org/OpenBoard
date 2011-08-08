@@ -1,3 +1,18 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 function init(){
 	var h = 292;
 	var w = 160;
@@ -26,8 +41,8 @@ function init(){
 					backgroundImage:"url(images/back.png)",
 					width:328
 				});
-				if(window.uniboard){
-					window.uniboard.setPreference('historyTab', "visible");
+				if(window.sankore){
+					window.sankore.setPreference('historyTab', "visible");
 				};
 			},
 			function(){
@@ -37,8 +52,8 @@ function init(){
 					backgroundImage:"url(images/back_small.png)",
 					width:160
 				});
-				if(window.uniboard){
-					window.uniboard.setPreference('historyTab', "hidden");
+				if(window.sankore){
+					window.sankore.setPreference('historyTab', "hidden");
 				};
 			}
 		)
@@ -200,9 +215,9 @@ function init(){
 		.append(historyPanel)
 		.append(keysPanel);
 		
-	if(window.uniboard){
-		historyTxt = window.uniboard.preference('historyTxt', historyTxt);
-		var ht = window.uniboard.preference('historyTab', "hidden");
+	if(window.sankore){
+		historyTxt = window.sankore.preference('historyTxt', historyTxt);
+		var ht = window.sankore.preference('historyTab', "hidden");
 		$("#historyBox").val(historyTxt);
 		if(ht === "visible"){
 			historyTab.trigger("click");
@@ -210,7 +225,7 @@ function init(){
 	}
 	
 function resizeWidget(w, h){
-	window.uniboard.resize(w+2, h+2);
+	window.sankore.resize(w+2, h+2);
 	$("#indicator").remove();
 	var indicator = $("<div id='indicator'></div>")
 		.css({
@@ -238,8 +253,8 @@ function compute(){
 	displayTrunk = "";
 	historyTrunk = "";
 	
-	if(window.uniboard){
-		window.uniboard.setPreference('historyTxt', $("#historyBox").val());
+	if(window.sankore){
+		window.sankore.setPreference('historyTxt', $("#historyBox").val());
 	};
 	
 	lastHistory = $("#historyBox").val();

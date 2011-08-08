@@ -1,3 +1,17 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef UBDOCUMENTPUBLISHER_H
 #define UBDOCUMENTPUBLISHER_H
 
@@ -7,7 +21,7 @@
 #include "ui_webPublishing.h"
 #include "UBAbstractPublisher.h"
 
-#define DOCPUBLICATION_URL     "http://sankore.devxwiki.com/xwiki/bin/view/CreateResources/UniboardUpload"
+#define DOCPUBLICATION_URL     "http://sankore.devxwiki.com/xwiki/bin/view/CreateResources/UniboardUpload?xpage=plain&outputSyntax=plain"
 #define XWIKI_ORIGIN_HEADER    "http://sankore.devxwiki.com"
 
 typedef struct
@@ -90,21 +104,15 @@ protected:
 private slots:
 
     void onFinished(QNetworkReply* reply);
-    void onLinkClicked(const QUrl& url);
-    void onLoadFinished(bool result);
-    void onLoginDone();
-    void onProxyAuthenticationRequired(const QNetworkProxy & proxy, QAuthenticator * authenticator);
-
 
 private:
 
     UBDocumentProxy *mSourceDocument;
     UBDocumentProxy *mPublishingDocument;
     void init();
-    void sendUbw();
+    void sendUbw(QString username, QString password);
     QString getBase64Of(QString stringToEncode);
 
-    QWebView* mpWebView;
     QHBoxLayout* mpLayout;
     QNetworkAccessManager* mpNetworkMgr;
     QNetworkCookieJar* mpCookieJar;
@@ -114,7 +122,6 @@ private:
     bool bLoginCookieSet;
 
     void buildUbwFile();
-    void login(QString username, QString password);
     QString mTmpZipFile;
     QList<QNetworkCookie> mCookies;
     sDocumentInfos mDocInfos;
