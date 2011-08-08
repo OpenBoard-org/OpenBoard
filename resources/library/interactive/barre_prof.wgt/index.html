@@ -1,47 +1,60 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!--
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
--->
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<title>Very nice text editor!!11</title>
-	<meta content="text/html; charset=utf-8" http-equiv="content-type" />
-	<script type="text/javascript" src="scripts/ckeditor.js"></script>	
-	<link href="styles/sample.css" rel="stylesheet" type="text/css" />
-	<script>
-		window.onload = function() {
-			CKEDITOR.replace( 'fineEditor', 
-			{
-				language : 'en',
-				toolbar : 
-				[
-					{ name: 'document', items : [ 'Source','-','Save','NewPage','Preview' ] },
-					{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
-					{ name: 'editing', items : [ 'Find','Replace','-','SelectAll' ] },
-					,'/',
-					{ name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
-					{ name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
-					{ name: 'links', items : [ 'Link','Unlink','Anchor' ] },
-					{ name: 'insert', items : [ 'Image','HorizontalRule','SpecialChar','PageBreak','Iframe' ] },
-					'/',
-					{ name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
-					{ name: 'colors', items : [ 'TextColor','BGColor' ] },
-					{ name: 'tools', items : [ 'ShowBlocks', 'About' ] }
-				] 
-			});		
-		
-			/*window.onresize(function(){
-				globalWidth = $(window).width();
-				globalHeight = $(window).height();
-				$("#web-content")
-					.attr("width", globalWidth - 25)
-					.attr("height", globalHeight - 90);
-			});*/
-		}
-	</script>
-</head>
-<body>
-	<textarea cols="80" id="fineEditor" name="fineEditor" rows="10">&lt;p&gt;This is some &lt;strong&gt;sample text&lt;/strong&gt;.</textarea>
-</body>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    
+    <head>
+        <style type="text/css">
+            body, html { font-family:helvetica,arial,sans-serif; font-size:90%; }
+        </style>
+        <script src="dojo/dojo.js" djConfig="parseOnLoad: true">
+        </script>
+        <script type="text/javascript">
+		var flag = false;
+            dojo.require("dijit.Editor");
+            dojo.require("dijit._editor.plugins.FontChoice"); // 'fontName','fontSize','formatBlock'
+            dojo.require("dijit._editor.plugins.TextColor");
+			dojo.require("dijit._editor.plugins.LinkDialog");
+			dojo.require("dijit._editor.plugins.FullScreen");
+			dojo.require("dijit._editor.plugins.ViewSource");
+			dojo.require("dijit._editor.plugins.NewPage");
+			dojo.require("dojox.editor.plugins.Preview");
+			dojo.require("dojox.editor.plugins.Breadcrumb");
+			dojo.require("dojox.editor.plugins.FindReplace");
+			dojo.require("dojox.editor.plugins.PasteFromWord");
+			dojo.require("dojox.editor.plugins.CollapsibleToolbar");
+			//&amp;nbsp;
+			function setSankoreData() {
+				if(window.sankore) {				
+					if(flag){
+					sankore.returnStatus("startEditing()", "FFFFFFFFFUUUUUUUUUUU");
+						window.sankore.setPreference("textForEditing", window.frames[0].document.getElementById("dijitEditorBody").innerHTML);}
+				}
+			}
+			
+			function setTextEditorData() {
+				if(window.sankore) {
+					if(!window.frames[0].document.body)
+						setTimeout(function(){setTextEditorData()}, 300);
+					else {
+						flag = true;
+						window.frames[0].document.getElementById("dijitEditorBody").innerHTML = window.sankore.preference("textForEditing","<p>Enter your text here ...</p>");
+					}
+				}
+			}
+			
+			//function addDataInto(){window.frames[0].document.getElementById("dijitEditorBody").innerHTML = window.sankore.preference("textForEditing","<p>Enter your text here ...</p>");}
+			
+        </script>
+        <link rel="stylesheet" type="text/css" href="dijit/themes/claro/claro.css"/>
+		<link rel="stylesheet" type="text/css" href="dojox/editor/plugins/resources/editorPlugins.css"/>
+		<link rel="stylesheet" type="text/css" href="dojox/editor/plugins/resources/css/Preview.css"/>
+		<link rel="stylesheet" type="text/css" href="dojox/editor/plugins/resources/css/Breadcrumb.css"/>
+		<link rel="stylesheet" type="text/css" href="dojox/editor/plugins/resources/css/FindReplace.css"/>
+		<link rel="stylesheet" type="text/css" href="dojox/editor/plugins/resources/css/PasteFromWord.css"/>
+		<link rel="stylesheet" type="text/css" href="dojox/editor/plugins/resources/css/CollapsibleToolbar.css"/>
+    </head>
+    
+    <body class="claro" onload="setTextEditorData()">
+        <div dojoType="dijit.Editor" id="editor2" plugins="['undo','redo','|','cut','copy','paste','|','bold','italic','underline','strikethrough','subscript','superscript','|','selectAll','removeFormat','delete','|','insertOrderedList','insertUnorderedList','insertHorizontalRule','|','indent','outdent','justifyLeft','justifyCenter','justifyRight','justifyFull','||']" extraPlugins="['createLink','unlink','insertImage','|','fullscreen','|','newpage','viewsource','preview','breadcrumb','findreplace','pastefromword','|','foreColor','hiliteColor','||','collapsibletoolbar','fontName','fontSize','formatBlock']" onmouseout="setSankoreData()"></div>        
+    </body>
+
 </html>
