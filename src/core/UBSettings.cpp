@@ -120,6 +120,8 @@ QSettings* UBSettings::getAppSettings()
 UBSettings::UBSettings(QObject *parent)
     : QObject(parent)
 {
+    InitKeyboardPaletteKeyBtnSizes();
+
     mAppSettings = UBSettings::getAppSettings();
 
     QString userSettingsFile = UBSettings::uniboardDataDirectory() + "/UniboardUser.config";
@@ -133,8 +135,38 @@ UBSettings::UBSettings(QObject *parent)
 UBSettings::~UBSettings()
 {
     delete mAppSettings;
+
+    if(supportedKeyboardSizes)
+        delete supportedKeyboardSizes;
 }
 
+void UBSettings::InitKeyboardPaletteKeyBtnSizes()
+{
+    supportedKeyboardSizes = new QStringList();
+    supportedKeyboardSizes->append("29x29");
+    supportedKeyboardSizes->append("41x41");
+}
+
+void UBSettings::ValidateKeyboardPaletteKeyBtnSize()
+{
+    // if boardKeyboardPaletteKeyBtnSize is not initialized, or supportedKeyboardSizes not initialized or empty
+    if( !boardKeyboardPaletteKeyBtnSize ||
+        !supportedKeyboardSizes || 
+        supportedKeyboardSizes->size() == 0 ) return;
+
+    // get original size value
+    QString origValue = boardKeyboardPaletteKeyBtnSize->get().toString();
+
+    // parse available size values, for make sure original value is valid
+    for(int i = 0; i < supportedKeyboardSizes->size(); i++)
+    {
+        int compareCode = QString::compare(origValue, supportedKeyboardSizes->at(i));
+        if(compareCode == 0) return;
+    }
+
+    // if original value is invalid, than set it value to first value from avaliable list
+    boardKeyboardPaletteKeyBtnSize->set(supportedKeyboardSizes->at(0));
+}
 
 void UBSettings::init()
 {
@@ -192,7 +224,8 @@ void UBSettings::init()
     boardUseHighResTabletEvent = new UBSetting(this, "Board", "UseHighResTabletEvent", true);
 
 //    boardKeyboardPaletteAutoMinimize = new UBSetting(this, "Board", "KeyboardPaletteAutoMinimize", true);
-    boardKeyboardPaletteKeyBtnSize = new UBSetting(this, "Board", "KeyboardPaletteKeyBtnSize", "24x24");
+    boardKeyboardPaletteKeyBtnSize = new UBSetting(this, "Board", "KeyboardPaletteKeyBtnSize", "16x16");
+    ValidateKeyboardPaletteKeyBtnSize();
 
     QStringList penLightBackgroundColors;
     penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A";
