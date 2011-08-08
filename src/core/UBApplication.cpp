@@ -268,11 +268,6 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionCopy, SIGNAL(triggered()), applicationController, SLOT(actionCopy()));
     connect(mainWindow->actionPaste, SIGNAL(triggered()), applicationController, SLOT(actionPaste()));
 
-//#ifndef __ppc__
-//    // this cause a problem on MACX/PPC (see https://trac.assembla.com/uniboard/ticket/862)
-//    installEventFilter(new UBIdleTimer(this));
-//#endif
-
     applicationController->initScreenLayout();
     boardController->setupLayout();
 
