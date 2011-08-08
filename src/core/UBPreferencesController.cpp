@@ -65,7 +65,6 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     , mMarkerProperties(0)
 {
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
-    //    mPreferencesWindow = new QDialog(parent, Qt::Dialog);
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in
     mPreferencesUI->setupUi(mPreferencesWindow);
     connect(mPreferencesUI->Username_textBox, SIGNAL(editingFinished()), this, SLOT(onCommunityUsernameChanged()));
