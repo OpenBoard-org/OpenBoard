@@ -106,10 +106,8 @@ void UBPreferencesController::wire()
 
 
     // OSK preferences
-    mPreferencesUI->keyboardPaletteKeyButtonSize->addItem("16x16");
-    mPreferencesUI->keyboardPaletteKeyButtonSize->addItem("24x24");
-    mPreferencesUI->keyboardPaletteKeyButtonSize->addItem("32x32");
-    connect(mPreferencesUI->keyboardPaletteAutoMinimize, SIGNAL(clicked(bool)), settings->boardKeyboardPaletteAutoMinimize, SLOT(setBool(bool)));
+    mPreferencesUI->keyboardPaletteKeyButtonSize->addItem("29x29");
+    mPreferencesUI->keyboardPaletteKeyButtonSize->addItem("41x41");
     connect(mPreferencesUI->keyboardPaletteKeyButtonSize, SIGNAL(currentIndexChanged(const QString &)), settings->boardKeyboardPaletteKeyBtnSize, SLOT(setString(const QString &)));
 
 
@@ -169,7 +167,6 @@ void UBPreferencesController::init()
     mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox->setChecked(settings->appEnableAutomaticSoftwareUpdates->get().toBool());
 
     // display tab
-    mPreferencesUI->keyboardPaletteAutoMinimize->setChecked(settings->boardKeyboardPaletteAutoMinimize->get().toBool());
     for(int i=0; i<mPreferencesUI->keyboardPaletteKeyButtonSize->count(); i++)
         if (mPreferencesUI->keyboardPaletteKeyButtonSize->itemText(i) ==
                 settings->boardKeyboardPaletteKeyBtnSize->get().toString())

@@ -289,5 +289,27 @@
         <file>images/toolbar/hide.png</file>
         <file>images/toolbar/record.png</file>
         <file>images/libpalette/MoviesCategory.svg</file>
+
+
+        <file>images/virtual.keyboard/41/centre-passive.png</file>
+        <file>images/virtual.keyboard/41/left-passive.png</file>
+        <file>images/virtual.keyboard/41/right-passive.png</file>
+        <file>images/virtual.keyboard/41/centre-active.png</file>
+        <file>images/virtual.keyboard/41/left-active.png</file>
+        <file>images/virtual.keyboard/41/right-active.png</file>
+        <file>images/virtual.keyboard/41/backspace.png</file>
+        <file>images/virtual.keyboard/41/capslock.png</file>
+        <file>images/virtual.keyboard/41/tab.png</file>
+
+        <file>images/virtual.keyboard/29/centre-passive.png</file>
+        <file>images/virtual.keyboard/29/left-passive.png</file>
+        <file>images/virtual.keyboard/29/right-passive.png</file>
+        <file>images/virtual.keyboard/29/centre-active.png</file>
+        <file>images/virtual.keyboard/29/left-active.png</file>
+        <file>images/virtual.keyboard/29/right-active.png</file>
+        <file>images/virtual.keyboard/29/backspace.png</file>
+        <file>images/virtual.keyboard/29/capslock.png</file>
+        <file>images/virtual.keyboard/29/tab.png</file>
+
     </qresource>
 </RCC>
