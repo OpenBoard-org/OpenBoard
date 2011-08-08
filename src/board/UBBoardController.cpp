@@ -918,60 +918,50 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
 
     else if (mimeType.startsWith("application/x-shockwave-flash"))
     {
-        bool acceptFlash = true;
 
-#ifdef Q_WS_X11
-         acceptFlash = false;
-#endif
-        if (acceptFlash)
+        qDebug() << "accepting mime type" << mimeType << "as flash";
+
+        QString sUrl = sourceUrl.toString();
+
+        if (sUrl.startsWith("file://") || sUrl.startsWith("/"))
         {
-            qDebug() << "accepting mime type" << mimeType << "as flash";
-
-            QString sUrl = sourceUrl.toString();
-
-            if (sUrl.startsWith("file://") || sUrl.startsWith("/"))
-            {
-                sUrl = sourceUrl.toLocalFile();
-            }
-
-            QTemporaryFile* eduMediaFile = 0;
-
-            if (sUrl.toLower().contains("edumedia-sciences.com"))
-            {
-                eduMediaFile = new QTemporaryFile("XXXXXX.swf");
-                if (eduMediaFile->open())
-                {
-                    eduMediaFile->write(pData);
-                    QFileInfo fi(*eduMediaFile);
-                    sUrl = fi.absoluteFilePath();
-                }
-            }
-
-            QSize size;
-
-            if (pSize.height() > 0 && pSize.width() > 0)
-                size = pSize;
-            else
-                size = mActiveScene->nominalSize() * .8;
-
-            QString widgetUrl = UBW3CWidget::createNPAPIWrapper(sUrl, mimeType, size);
-
-            if (widgetUrl.length() > 0)
-            {
-                UBGraphicsWidgetItem *widgetItem = mActiveScene->addW3CWidget(QUrl::fromLocalFile(widgetUrl), pPos);
-
-                widgetItem->setSourceUrl(sourceUrl);
-
-                UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-            }
-
-            if (eduMediaFile)
-                delete eduMediaFile;
+            sUrl = sourceUrl.toLocalFile();
         }
+
+        QTemporaryFile* eduMediaFile = 0;
+
+        if (sUrl.toLower().contains("edumedia-sciences.com"))
+        {
+            eduMediaFile = new QTemporaryFile("XXXXXX.swf");
+            if (eduMediaFile->open())
+            {
+                eduMediaFile->write(pData);
+                QFileInfo fi(*eduMediaFile);
+                sUrl = fi.absoluteFilePath();
+            }
+        }
+
+        QSize size;
+
+        if (pSize.height() > 0 && pSize.width() > 0)
+            size = pSize;
         else
+            size = mActiveScene->nominalSize() * .8;
+
+        QString widgetUrl = UBW3CWidget::createNPAPIWrapper(sUrl, mimeType, size);
+
+        if (widgetUrl.length() > 0)
         {
-            UBApplication::showMessage(tr("Flash is not supported on Sankore Linux"));
+            UBGraphicsWidgetItem *widgetItem = mActiveScene->addW3CWidget(QUrl::fromLocalFile(widgetUrl), pPos);
+
+            widgetItem->setSourceUrl(sourceUrl);
+
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
+
+        if (eduMediaFile)
+            delete eduMediaFile;
+
     }
     else if (mimeType.startsWith("application/pdf"))
     {
