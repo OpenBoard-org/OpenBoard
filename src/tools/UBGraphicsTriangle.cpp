@@ -607,13 +607,13 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			QPointF delta = event->pos() - event->lastPos();
             if (mOrientation == TopLeft || mOrientation == BottomLeft)
             {
-			    if (rect().width() + delta.x() < sMinWidth)
-				    delta.setX(sMinWidth - rect().width());
+			    if (rect().width() + delta.x() < (qreal)sMinWidth)
+				    delta.setX((qreal)sMinWidth - rect().width());
             }
             else
             {
-			    if (rect().width() - delta.x() < sMinWidth)
-				    delta.setX(sMinWidth - rect().width());
+			    if (rect().width() - delta.x() < (qreal)sMinWidth)
+				    delta.setX((qreal)sMinWidth - rect().width());
             }
 			if (mOrientation == TopLeft || mOrientation == BottomLeft)
 			{
@@ -639,13 +639,13 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			QPointF delta = event->pos() - event->lastPos();
             if (mOrientation == BottomRight || mOrientation == BottomLeft)
             {
-                if (rect().height() - delta.y() < sMinHeight)
-				    delta.setY(sMinHeight - rect().height());
+                if (rect().height() - delta.y() < (qreal)sMinHeight)
+				    delta.setY((qreal)sMinHeight - rect().height());
             }
             else
             {
-			    if (rect().height() + delta.y() < sMinHeight)
-				    delta.setY(sMinHeight - rect().height());
+			    if (rect().height() + delta.y() < (qreal)sMinHeight)
+				    delta.setY((qreal)sMinHeight - rect().height());
             }
             if (mOrientation == BottomRight || mOrientation == BottomLeft)
                 setRect(QRectF(

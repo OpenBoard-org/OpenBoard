@@ -37,6 +37,11 @@ class UBSettings : public QObject
 
     public:
 
+        QStringList* supportedKeyboardSizes;
+        void InitKeyboardPaletteKeyBtnSizes();
+        void ValidateKeyboardPaletteKeyBtnSize();
+
+
         int penWidthIndex();
 
         qreal currentPenWidth();
