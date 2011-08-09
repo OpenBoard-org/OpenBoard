@@ -152,20 +152,20 @@ void UBKeyboardPalette::setInput(const UBKeyboardLocale* locale)
 
 UBKeyboardPalette::~UBKeyboardPalette()
 {
-    for (int i=0; i<47; i++)
-        delete buttons[i];
+    //for (int i=0; i<47; i++)
+    //    delete buttons[i];
     delete [] buttons;
 
-    for (int i=0; i<8; i++)
-        delete ctrlButtons[i];
+    //for (int i=0; i<8; i++)
+    //    delete ctrlButtons[i];
     delete [] ctrlButtons;
 
-    if (locales!=NULL)
-    {
-        for (int i=0; i<nLocalesCount; i++)
-            delete locales[i];
-        delete [] locales;
-    }
+    //if (locales!=NULL)
+    //{
+    //    for (int i=0; i<nLocalesCount; i++)
+    //        delete locales[i];
+    //    delete [] locales;
+    //}
 
     if(currBtnImages != NULL)
     {
