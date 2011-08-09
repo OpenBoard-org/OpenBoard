@@ -1,231 +1,226 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+    "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Video Picker</title>
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<script src="scripts/jquery-1.3.2.min.js" type="text/javascript"></script>
-	<script src="scripts/jquery.oembed.js" type="text/javascript"></script>
-	<!--DEFAULT FR-->
-</head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Web Browser</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <script src="scripts/jquery-1.3.2.min.js" type="text/javascript"></script>
+        <!--DEFAULT FR-->
+    </head>
 
-<body>
-    <script type="text/javascript">
+    <body>
+        <script type="text/javascript">
 
-		$(document).ready(function(){
-			//var resizer; // Timer
-			//var resizerIndex;
-			var currentHistory = 0;
-			var references = new Array();
-			var globalWidth = 850;
-			var globalHeight = 700;
-			var language;
-			var url = "";
-			var margins = {
-				top: cssToInt($("body").css("margin-top")), 
-				right: cssToInt($("body").css("margin-right")), 
-				bottom: cssToInt($("body").css("margin-bottom")),
-				left: cssToInt($("body").css("margin-left"))
-			};
+            var loadingState = false;
+            
+            function changeLoadingState(){
+                loadingState = true;
+            }
+               
+            $(document).ready(function(){
+                //var resizer; // Timer
+                //var resizerIndex;
+                var currentHistory = 0;
+                var references = new Array();
+                var globalWidth = 850;
+                var globalHeight = 700;
+                var language;
+                var url = "";
+                var margins = {
+                    top: cssToInt($("body").css("margin-top")), 
+                    right: cssToInt($("body").css("margin-right")), 
+                    bottom: cssToInt($("body").css("margin-bottom")),
+                    left: cssToInt($("body").css("margin-left"))
+                };
 			
-			//resizerIndex = 0;
+                var resizer; // Timer
+                var resizerIndex;
+                
+			
+                resizerIndex = 0;
 									
-			if(window.sankore){
-				url = window.sankore.preference("url", "");
-			}else{
-				url = "";
-			};		
+                if(window.sankore){
+                    url = window.sankore.preference("url", "");
+                }else{
+                    url = "";
+                };		
 			
-			language = navigator.userAgent.split(";");
-			language = language[3].replace(/\s/g, "").substr(0, 2);
+                language = navigator.userAgent.split(";");
+                language = language[3].replace(/\s/g, "").substr(0, 2);
 			
-			$("#back-button")
-				.click(function(){
-					if((currentHistory - 1) > 0){					
-						$("#textbox").val(references[--currentHistory-1]);						
-						frames['web-content'].location.href = references[currentHistory-1];					
-					}
-				});
+                $("#back-button")
+                .click(function(){
+                    loadingState = false;
+                    if((currentHistory - 1) > 0){					
+                        $("#textbox").val(references[--currentHistory-1]);						
+                        $("#search-button").trigger("click");
+                    }
+                });
 				
-			$("#forward-button")
-				.click(function(){
-					if(currentHistory < references.length) {
-						$("#textbox").val(references[currentHistory++]);
-						frames['web-content'].location.href = $("#textbox").val();
-					}
-				});
+                $("#forward-button")
+                .click(function(){
+                    loadingState = false;
+                    if(currentHistory < references.length) {
+                        $("#textbox").val(references[currentHistory++]);
+                        $("#search-button").trigger("click");
+                    }
+                });
 			
-			$("#textbox").keypress(function(e) {
-			    if(e.keyCode == 13) {
-			        $("#search-button").trigger("click");
-			    }
-			});
+                $("#textbox").keypress(function(e) {
+                    if(e.keyCode == 13) {
+                        $("#search-button").trigger("click");
+                    }
+                });
 			
-			$("#search-button")
-				.click(function(){
-					if($("#textbox").val().length > 0){
-						var url = $("#textbox").val();
-						var urlStart = url.split("://");
+                $("#search-button").click(function(){
+                    if($("#textbox").val().length > 0){
+                        loadingState = false;
+                        var url = $("#textbox").val();
+                        var urlStart = url.split("://");
 									
-						if(urlStart[0]!="http"){
-							url = "http://" + url;
-						};
+                        if(urlStart[0]!="http"){
+                            url = "http://" + url;
+                        };
 						
-						if(checkURLs(references, url)){
-							if(currentHistory == references.length)
-								references[currentHistory++] = url;
-							else
-								references = insertInto(references, currentHistory++, url);
-						}
-						window.resizeTo(globalWidth, globalHeight);
+                        if(checkURLs(references, url)){
+                            if(currentHistory == references.length)
+                                references[currentHistory++] = url;
+                            else
+                                references = insertInto(references, currentHistory++, url);
+                        }
+                        window.resizeTo(globalWidth, globalHeight);
 						
-						$("#container")
-							.removeClass("welcome")
-							.removeClass("change")
-							.removeClass("error")
-							.addClass("load");
-						$("#container-shadow").hide();
-						$("#arrow").hide();
-						$("#embeded-content").hide();
-						$("#web-content").show();
+                        $("#container").removeClass("welcome").removeClass("change")
+                        .removeClass("error").addClass("load");
+                        $("#container-shadow").hide();
+                        $("#arrow").hide();
+                        $("#embeded-content").hide();
+                        $("#web-content").show();
+                        $('#web-content').attr('src',url);
 							
-						frames['web-content'].location.href = url;
+                        checkcontent();
+                        checkLoading();
+                    } else {
+                        $("#embeded-content").load("locales/" + "en" + "/howto.html"); // Welcome screen with some explanations
+                        $("#container")
+                        .addClass("welcome")
+                        .addClass("change")
+                        .addClass("error")
+                        .removeClass("load");
+                        $("#container-shadow").show();
+                        $("#arrow").show();
+                        $("#embeded-content").show();
+                        $("#web-content").hide();
+                        window.resizeTo(550, 280);
+                    }
+                })
+                .mouseenter(function(){
+                    $(this)
+                    .addClass("over");
+                })
+                .mouseleave(function(){
+                    $(this)
+                    .removeClass("over");
+                });
+			
+                if(url.length > 0){
+                    $("#textbox").val(url);	
+                    $("#search-button").trigger("click");
+                }else{
+                    $("#embeded-content").load("locales/" + "en" + "/howto.html"); // Welcome screen with some explanations
+                };
+		
+                $(window).resize(function(){
+                    globalWidth = $(window).width();
+                    globalHeight = $(window).height();
+                    $("#web-content")
+                    .attr("width", globalWidth - 25)
+                    .attr("height", globalHeight - 90);
+                });
 							
-						checkcontent();
-					} else {
-						$("#embeded-content").load("locales/" + "en" + "/howto.html"); // Welcome screen with some explanations
-						$("#container")
-							.addClass("welcome")
-							.addClass("change")
-							.addClass("error")
-							.removeClass("load");
-						$("#container-shadow").show();
-						$("#arrow").show();
-						$("#embeded-content").show();
-						$("#web-content").hide();
-						window.resizeTo(550, 280);
-					}
-				})
-				.mouseenter(function(){
-					$(this)
-						.addClass("over");
-				})
-				.mouseleave(function(){
-					$(this)
-						.removeClass("over");
-				});
-			
-			if(url.length > 0){
-				$("#textbox").val(url);	
-				$("#search-button").trigger("click");
-			}else{
-				$("#embeded-content").load("locales/" + "en" + "/howto.html"); // Welcome screen with some explanations
-			};
-			
-			/*$("#show-inputfield-button")
-				.click(
-					function(){
-						$("#show-area").hide();
-						$("#inputfield").show();
-						$("#shadow").show();
-						$("#container")
-							.removeClass("show")
-							.addClass("change");
-						adaptWidgetSize(18, 82);
-					})
-					.mouseenter(function(){
-						$(this)
-							.addClass("over");
-					})
-					.mouseleave(function(){
-						$(this)
-							.removeClass("over");
-					});*/
-			
-			$(window).resize(function(){
-				globalWidth = $(window).width();
-				globalHeight = $(window).height();
-				$("#web-content")
-					.attr("width", globalWidth - 25)
-					.attr("height", globalHeight - 90);
-			});
-							
-			function checkcontent(){
-				//clearTimeout(resizer);
-				//resizerIndex = 0;
+                function checkcontent(){
 														
-				if(window.sankore){
-					window.sankore.setPreference("url", $("#textbox").val());
-				};
+                    if(window.sankore){
+                        window.sankore.setPreference("url", $("#textbox").val());
+                    };
 
-				$("#embeded-content").hide();
-				$("#container").removeClass("load").addClass("show");									
-			};
+                    $("#embeded-content").hide();
+                    $("#container").removeClass("load").addClass("show");									
+                };
 			
-			/*function adaptWidgetSize(adjustmentX, adjustmentY){
-				var widgetWidth = $("#container").width() + margins.right + margins.left + adjustmentX;
-				var widgetHeight = $("#container").position().top + $("#container").height() + margins.bottom + adjustmentY;
+                function checkLoading(){
+                    if(loadingState){
+                        
+                        clearTimeout(resizer);
+                        resizerIndex = 0;							
+                        return false;
+                    };
+                    if(resizerIndex > 70){
+                        resizerIndex = 0;
+                        $("#textbox").val("http://www.google.com/search?q=" + $("#textbox").val().replace("http://", ""));
+                        $("#search-button").trigger("click");
+                    }else{
+                        resizer = setTimeout(function(){checkLoading()}, 100);
+                        resizerIndex++;
+                    };
+                };
 				
-				window.resizeTo(widgetWidth, $(window).height());
-				window.resizeTo($(window).width(), widgetHeight);
-			};*/
-				
-			function cssToInt(cssvalue){
-				return(parseInt(cssvalue.replace("px", "")));
-			}
+                function cssToInt(cssvalue){
+                    return(parseInt(cssvalue.replace("px", "")));
+                }
 			
-			function checkURLs(arr, value){
-				for(var i = 0; i < arr.length; i++)
-					if(arr[i] == value)
-						return false;
-				return true;
-			}
+                function checkURLs(arr, value){
+                    for(var i = 0; i < arr.length; i++)
+                        if(arr[i] == value)
+                            return false;
+                    return true;
+                }
 			
-			function insertInto(arr, index, url){
-				var newArr = new Array();
-				for(var i = 0, j = 0; i < arr.length; i++, j++)
-					if(i == index - 1){
-						newArr[j] = arr[i];
-						newArr[++j] = url;
-					} else 
-						newArr[j] = arr[i];
-				return newArr;
-			}
+                function insertInto(arr, index, url){
+                    var newArr = new Array();
+                    for(var i = 0, j = 0; i < arr.length; i++, j++)
+                        if(i == index - 1){
+                            newArr[j] = arr[i];
+                            newArr[++j] = url;
+                        } else 
+                        newArr[j] = arr[i];
+                    return newArr;
+                }               
 			
-		});
-    </script>
+            });
+        </script>
 
-    <div id="ubwidget">
-		<div id="shadow"></div>
-	
-    	<div id="inputfield">
-			<div id="back-button" class="button">Previous</div>
-			<div id="forward-button" class="button">Next</div>
-    		<input id="textbox" type="text">
-    		<div id="search-button" class="button">Show</div>
-    	</div>
+        <div id="ubwidget">
+            <div id="shadow"></div>
 
-   		<div id="container" class="welcome">
-			<div id="arrow"><img src="imgs/arrow.png" alt="arrow-top"></div>
-			
-			<div id="show-container">
-				<div id="embeded-content"></div>
-				<iframe id="web-content" name="web-content" src="" scrolling=auto frameborder=1 ></iframe>
-			</div>
-		
-			<table cellspacing="0" cellpadding="0" id="container-shadow">
-				<tr>
-					<td id="shadow-left"></td>
-					<td id="shadow-center">&nbsp;</td>
-					<td id="shadow-right"></td>
-				</tr>
-			</table>
-		</div>
-		
-    </div>
-</body>
+            <div id="inputfield">
+                <div id="back-button" class="button">Previous</div>
+                <div id="forward-button" class="button">Next</div>
+                <input id="textbox" type="text">
+                <div id="search-button" class="button">Show</div>
+            </div>
+
+            <div id="container" class="welcome">
+                <div id="arrow"><img src="imgs/arrow.png" alt="arrow-top"></div>
+
+                <div id="show-container">
+                    <div id="embeded-content"></div>
+                    <iframe id="web-content" name="web-content" src="" scrolling=auto frameborder=1 onload="changeLoadingState()"></iframe>
+                </div>
+
+                <table cellspacing="0" cellpadding="0" id="container-shadow">
+                    <tr>
+                        <td id="shadow-left"></td>
+                        <td id="shadow-center">&nbsp;</td>
+                        <td id="shadow-right"></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </body>
 
 </html>

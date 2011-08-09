@@ -41,6 +41,8 @@ public:
     void documentTransition();
     bool checkPage(QString& sankorePagePath);
     bool updateSankoreHRef(QString &sankoreDocumentPath);
+    bool checkWidget(QString& sankoreWidgetPath);
+    bool updateIndexWidget(QString& sankoreWidgetPath);
     void executeTransition();
 
 
