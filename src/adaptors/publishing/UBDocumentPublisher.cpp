@@ -574,27 +574,31 @@ void UBDocumentPublisher::onFinished(QNetworkReply *reply)
     // Now we isolate every cookie value
     QStringList qslCookieVals = qsCookieValue.split("; ");
 
-            bool bTransferOk = false;
-            for(int j = 0; j <= qslCookieVals.size(); j++)
+    bool bTransferOk = false;
+
+    for(int j = 0; j < qslCookieVals.size(); j++)
+    {
+        qDebug() << j;
+        if(qslCookieVals.at(j).startsWith("assetStatus"))
+        {
+            QStringList qslAsset = qslCookieVals.at(j).split("=");
+            if(qslAsset.at(1) == "UPLOADED")
             {
-                if(qslCookieVals.at(j).startsWith("assetStatus"))
-                {
-                    QStringList qslAsset = qslCookieVals.at(j).split("=");
-                    if(qslAsset.at(1) == "UPLOADED")
-                    {
-                        bTransferOk = true;
-                        break;
-                    }
-                }
+                bTransferOk = true;
+                break;
             }
-            if(bTransferOk)
-            {
-                UBApplication::showMessage(tr("Document uploaded correctly on the web."));
-            }
-            else
-            {
-                UBApplication::showMessage(tr("Failed to upload document on the web."));
-            }
+        }
+    }
+
+    if(bTransferOk)
+    {
+        UBApplication::showMessage(tr("Document uploaded correctly on the web."));
+    }
+    else
+    {
+        UBApplication::showMessage(tr("Failed to upload document on the web."));
+    }
+
     reply->deleteLater();
 }
 

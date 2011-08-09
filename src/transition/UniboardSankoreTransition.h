@@ -39,6 +39,8 @@ public:
     explicit UniboardSankoreTransition(QObject *parent = 0);
     ~UniboardSankoreTransition();
     void documentTransition();
+    bool checkPage(QString& sankorePagePath);
+    bool updateSankoreHRef(QString &sankoreDocumentPath);
     void executeTransition();
 
 
