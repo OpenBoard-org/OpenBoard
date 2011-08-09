@@ -1,17 +1,3 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 #include "UBKeyboardPalette.h"
 
@@ -66,16 +52,19 @@ void UBKeyboardButton::sendControlSymbol(int nSymbol)
 
 void UBKeyboardPalette::createCtrlButtons()
 {
-	ctrlButtons = new UBKeyboardButton*[7];
+    int ctrlID = 0;
+    ctrlButtons = new UBKeyboardButton*[9];
 
-	ctrlButtons[0] = new UBCntrlButton(this, "<-", 0x08);
-	ctrlButtons[1] = new UBCntrlButton(this, "<->", 0x09);
-	ctrlButtons[2] = new UBCntrlButton(this, "Enter", 0x0d);
-	ctrlButtons[3] = new UBCapsLockButton(this);
-	ctrlButtons[4] = new UBCapsLockButton(this);
-	ctrlButtons[5] = new UBLocaleButton(this);
-	ctrlButtons[6] = new UBCntrlButton(this, "", 0x20);
-	ctrlButtons[7] = new UBLocaleButton(this);
+    ctrlButtons[ctrlID++] = new UBCntrlButton(this, 0x08, "backspace");// Backspace
+    ctrlButtons[ctrlID++] = new UBCntrlButton(this, 0x09, "tab");      // Tab
+//     ctrlButtons[ctrlID++] = new UBKeyButton(this);                  // Row 2 Stub
+//     ctrlButtons[ctrlID++] = new UBKeyButton(this);                  // Row 3 Stub
+    ctrlButtons[ctrlID++] = new UBCntrlButton(this, "Enter", 0x0d);    // Enter
+    ctrlButtons[ctrlID++] = new UBCapsLockButton(this, "capslock");    // Caps Lock
+    ctrlButtons[ctrlID++] = new UBCapsLockButton(this, "capslock");    // Caps Lock
+    ctrlButtons[ctrlID++] = new UBLocaleButton(this);                  // Language Switch 
+    ctrlButtons[ctrlID++] = new UBCntrlButton(this, "", 0x20);         // Space
+    ctrlButtons[ctrlID++] = new UBLocaleButton(this);                  // Language Switch 
 }
 
 void UBKeyboardPalette::onActivated(bool)

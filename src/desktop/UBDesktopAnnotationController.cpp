@@ -1,16 +1,8 @@
 /*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * UNWindowController.cpp
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  Created on: Jan 15, 2009
+ *      Author: julienbachmann
  */
 
 #include <QDesktopWidget>
@@ -65,6 +57,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mbArrowClicked(false)
         , mBoardStylusTool(UBStylusTool::Pen)
         , mDesktopStylusTool(UBStylusTool::Selector)
+        , mKeyboardPalette(0)
 {
 
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, 0); // deleted in UBDesktopAnnotationController::destructor
@@ -92,12 +85,22 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView);
 
+    if (UBPlatformUtils::hasVirtualKeyboard())
+    {
+        mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
+        mKeyboardPalette->setParent(mTransparentDrawingView);
+        connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool))); 
+    }
+
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
     connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(windowCapture()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
+    connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
+
+//    connect(mDesktopPalette, SIGNAL(showVirtualKeyboard(bool)), this, SLOT());
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 
@@ -141,6 +144,13 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(&mHoldTimerEraser, SIGNAL(timeout()), this, SLOT(eraserActionReleased()));
 
     onDesktopPaletteMaximized();
+}
+
+void UBDesktopAnnotationController::showKeyboard(bool show)
+{
+    mKeyboardPalette->setVisible(show);
+
+//    mDesktopPalette->showVirtualKeyboard(show);
 }
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()

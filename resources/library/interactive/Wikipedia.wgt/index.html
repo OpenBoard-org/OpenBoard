@@ -1,0 +1,310 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"> 
+    <head> 
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/> 
+        <title>Wikipedia</title> 
+
+        <link rel="stylesheet" type="text/css" href="css/master.css"/> 
+        <link rel="stylesheet" type="text/css" href="css/superfish.css"/>         
+
+        <!-- jQuery --> 
+        <script type="text/javascript" src="script/jquery.min.js"></script> 
+        <script type="text/javascript" src="script/superfish.js"></script> 
+
+        <script type="text/javascript"> 
+		
+            var browsing = false;
+            var lang = 'en';
+            var internalChange = false;
+            var toolbar = {
+                state:"begin",
+                loading:false
+            };
+            var appHistory = {
+                list:[],
+                back:function(){
+                    if(typeof(appHistory.list[appHistory.index-1]) !== "undefined"){
+                        appHistory.index--;
+                        wikiReq(appHistory.list[appHistory.index]);
+                    }
+                },
+                forward:function(){
+                    if(typeof(appHistory.list[appHistory.index+1]) !== "undefined"){
+                        appHistory.index++;
+                        wikiReq(appHistory.list[appHistory.index]);
+                    }
+                },
+                index:-1
+            }
+            
+            $(document).ready(function() {
+			
+                var ubHistoryList = "";
+                var ubHistoryIndex = "";
+              
+                lang = navigator.userAgent.split(";");
+
+                lang = (navigator.language || navigator.systemLanguage || 
+                    navigator.userLanguage || 'en').substr(0, 2).toLowerCase();
+                $("#current-language").text(lang.charAt(0).toUpperCase() + lang.substr(1));
+              
+                if(window.sankore){
+                    toolbar.state = loadPref("historyState", "begin");
+                    ubHistoryList = loadPref("historyList", "");
+                    ubHistoryIndex = loadPref("historyIndex", "-1");
+                }
+              
+                if(ubHistoryList !== "") {
+                    appHistory.list = ubHistoryList.split(",");
+                    appHistory.index = parseInt(ubHistoryIndex);
+                    wikiReq(appHistory.list[appHistory.index]);
+                } else {
+                    wikiReq("");
+                }
+              
+                $(window).resize();
+              
+                $("#languages-dropdown>li>ul>li").each(function(){
+                    $(this).click(function(){
+                        languagesHandler($(this).text());
+                        $("#current-language").text(lang.charAt(0).toUpperCase() + lang.substr(1));
+                    });
+                });
+              
+                $("#languages-dropdown").superfish({ 
+                    dropShadows:false,
+                    speed:1,
+                    delay:100
+                });
+              
+                $("#url")
+                .change(function(){
+                    if(!toolbar.loading){
+                        browsing = false;
+                        wikiReq($("#url").val());
+                    }
+                })
+                .keypress(function (e){
+                    if(e.which == 13){
+                        $("#url").change();
+                    };
+                });
+              
+                $("#url").val(appHistory.list[appHistory.index]);
+                
+                if($("#url").val().length > 0)
+                    $("#url").change();
+              
+                $("#toolbar-button-back").click(function(){
+                    browsing = true;
+                    appHistory.back();
+                });
+              
+                $("#toolbar-button-forward").click(function(){
+                    browsing = true;
+                    appHistory.forward();
+                });
+              
+                $("#toolbar-button-home").click(function(){
+                });
+            });
+            
+            $(window).resize(function(){
+                $("#web-browser").height($(window).height() - $("#toolbar").height() - 2);
+                $("#web-browser").width($(window).width() - 2);
+              
+                if($(window).width() < 280){
+                    window.resizeTo(280, $(window).height());
+                }
+              
+            });
+            
+            function wikiReq(kword){
+                
+                var textBoxInput = "";
+ 
+                textBoxInput = remacc(kword.replace(/ /g,'+'));	
+ 
+                textBoxInput = textBoxInput.replace(textBoxInput.charAt(0),textBoxInput.charAt(0).toUpperCase());          
+                if(toolbar.state == "begin"){
+                    $('#web-browser').attr('src',"");
+                    toolbar.state = "started";
+                }
+                else
+                    $('#web-browser').attr('src',"http://mobile.wikipedia.org/transcode.php?go=" + textBoxInput);
+                $('#url').val(kword);
+                $('#toolbar-button-search').css("background-image", "url(images/toolbarLoading.jpg)");
+                toolbar.loading = true;
+            }
+          	
+            function hideLoading(){
+                $('#toolbar-button-search').css("background-image", "url(images/toolbarButtonSearch.png)");
+                toolbar.loading = false;
+          	  
+                // History
+                if(appHistory.list[appHistory.index] !== $("#url").val() && !browsing && $("#url").val().length > 0){
+                    appHistory.list = appHistory.list.slice(0, appHistory.index+1);
+                    appHistory.list[appHistory.index+1] = $("#url").val();
+                    appHistory.index = appHistory.list.length-1;
+                }
+        	            	    
+                if(window.sankore && $("#web-browser").attr("src") !== ""){
+                    savePref("historyState", "started");
+                    savePref("historyList", appHistory.list.toString());
+                    savePref("historyIndex", appHistory.index)
+                }
+            }
+          	
+            String.prototype.accnt = function(){
+                var cnt = 0;
+                var acnt = this;
+                acnt = acnt.split('');
+                var sec = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+                var rep = ['A','A','A','A','A','A','a','a','a','a','a','a','O','O','O','O','O','O','O','o','o','o','o','o','o','E','E','E','E','e','e','e','e','e','C','c','D','I','I','I','I','i','i','i','i','U','U','U','U','u','u','u','u','N','n','S','s','Y','y','y','Z','z'];
+                for (var y = 0; y < acnt.length; y++)
+                    if (sec.indexOf(acnt[y]) != -1)
+                        cnt++;
+                return cnt;
+            }
+            
+            String.prototype.renlacc = function(){
+                var torem = this;
+                torem = torem.split('');
+                var toremout = new Array();
+                var sec = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+                var rep = ['A','A','A','A','A','A','a','a','a','a','a','a','O','O','O','O','O','O','O','o','o','o','o','o','o','E','E','E','E','e','e','e','e','e','C','c','D','I','I','I','I','i','i','i','i','U','U','U','U','u','u','u','u','N','n','S','s','Y','y','y','Z','z'];
+                for (var y = 0; y < torem.length; y++){
+                    if (sec.indexOf(torem[y]) != -1)
+                        toremout[y] = rep[sec.indexOf(torem[y])];
+                    else 
+                        toremout[y] = torem[y];
+                }
+                var toascout = toremout.join('');
+                document.title = toascout;
+                return toascout;
+            }
+ 
+            function remacc(kword){
+                
+                var countarr = new Array();
+                var c = '';
+                var text=kword;
+                var textout = new Array();
+                text = text.replace(/\r/g,'');
+                text = text.split('\n');
+                var linecnt = text.length;
+                for (var x = 0; x < linecnt; x++){
+                    countarr[x] = Math.abs(text[x].accnt());
+                    textout[x] = text[x].renlacc();
+                }
+                textout = textout.join('\n');
+                return textout;
+            }
+            
+            function loadPref(name, defaultValue){
+                var pref = defaultValue;
+ 
+                if (sankore.preference(name) !== "") {
+                    pref = sankore.preference(name);
+                };
+ 
+                return pref;
+            };
+ 
+            function savePref(name, value){
+                sankore.setPreference(name, String(value));
+            };
+        		
+            function languagesHandler(language){
+                switch(language){
+                    case "Deutsch":
+                        lang = 'de'
+                        break;
+                    case "English":
+                        lang = 'en'
+                        break;
+                    case "Español":
+                        lang = 'es'
+                        break;
+                    case "Français":
+                        lang = 'fr'
+                        break;
+                    case "Italiano":
+                        lang = 'it'
+                        break;
+                    case "Nederlands":
+                        lang = 'nl'
+                        break;
+                    case "Polski":
+                        lang = 'pl'
+                        break;
+                    case "Português":
+                        lang = 'pt'
+                        break;
+                    case "Русский":
+                        lang = 'ru'
+                        break;
+                    case "日本語":
+                        lang = 'ja'
+                        break;
+                }
+            };
+ 
+        </script> 
+    </head> 
+    <body style="overflow:hidden; margin: 0px; width:100%; height:100%; position:absolute; background:#ffffff"> 
+
+        <div id="toolbar"> 
+
+            <div class="toolbar-body"> 
+
+                <div id="toolbar-down" class="toolbar"> 
+                    Wikipedia
+                </div> <!--toolbar-down--> 
+
+            </div> <!--toolbar-body--> 
+
+            <div class="toolbar-body"> 
+
+                <div id="toolbar-up" class="toolbar"> 
+                    <div id="left-field"> 
+                        <div id="toolbar-button-back" class="button" alt="back button"></div> 
+                        <div id="toolbar-button-forward" class="button" alt="forward button"></div> 
+                    </div> 
+                    <div id="center-field" class="full"> 
+                        <input type="text" id="url" alt="url"/> 
+                            <div class="on-the-right"> 
+                                <div id="toolbar-button-search"></div> 
+                            </div> 
+                    </div> <!--center-field--> 
+                    <div id="right-field"> 
+                        <div id="toolbar-button-languages" class="button" alt="languages button"> 
+                            <ul id='languages-dropdown' class='sf-menu'> 
+                                <li class='current'><a id='current-language' class='selected' href='#a'></a> 
+                                    <ul> 
+                                        <li><a class="sf-sl-first" href="#">Deutsch</a></li> 
+                                        <li><a href="#">English</a></li> 
+                                        <li><a href="#">Español</a></li> 
+                                        <li><a href="#">Français</a></li> 
+                                        <li><a href="#">Italiano</a></li> 
+                                        <li><a href="#">Nederlands</a></li> 
+                                        <li><a href="#">Polski</a></li> 
+                                        <li><a href="#">Português</a></li> 
+                                        <li><a href="#">Русский</a></li> 
+                                        <li><a class="sf-sl-last" href="#">日本語</a></li> 
+                                    </ul> 
+                                </li> 
+                            </ul> 
+                        </div> 
+                    </div> 
+                </div> <!--toolbar-up--> 
+
+            </div> <!--toolbar-body--> 
+
+        </div> <!--toolbar--> 
+        <div id="web-canevas"> 
+            <iframe id="web-browser" name="web-browser" src="" onload="hideLoading()"></iframe> 
+        </div>
+    </body> 
+</html> 

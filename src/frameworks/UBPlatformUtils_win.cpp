@@ -363,7 +363,7 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 
 void UBPlatformUtils::destroyKeyboardLayouts()
 {
-	for(int i=0; i<4; i++)
+	for(int i=0; i<nKeyboardLayouts; i++)
 		delete keyboardLayouts[i];
 	delete [] keyboardLayouts;
 	keyboardLayouts = NULL;

@@ -12,6 +12,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "UniboardSankoreTransition.h"
 #include "core/UBSettings.h"
 #include "frameworks/UBDesktopServices.h"
@@ -90,6 +91,59 @@ void UniboardSankoreTransition::startDocumentTransition()
     connect(this,SIGNAL(transitioningFile(QString)),mTransitionDlg,SLOT(transitioningFile(QString)));
 }
 
+
+bool UniboardSankoreTransition::checkPage(QString& sankorePagePath)
+{
+    QFile file(sankorePagePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    QByteArray documentByteArray = file.readAll();
+    file.close();
+
+    QString sankoreDirectory = sankorePagePath.left(sankorePagePath.indexOf("/page"));
+    ;
+    sankoreDirectory = QUrl::fromLocalFile(sankoreDirectory).toString();
+    QString documentString(documentByteArray);
+    qDebug() << documentString;
+    documentString.replace("xlink:href=\"videos/","xlink:href=\"" + sankoreDirectory + "/videos/");
+
+    documentString.replace("xlink:href=\"widgets/","xlink:href=\"" + sankoreDirectory + "/widgets/");
+
+    documentString.replace("xlink:href=\"objects/","xlink:href=\"" + sankoreDirectory + "/objects/");
+
+    documentString.replace("xlink:href=\"audios/","xlink:href=\"" + sankoreDirectory + "/audios/");
+
+    qDebug() << documentString;
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
+
+    file.write(documentString.toAscii());
+    file.close();
+
+    return true;
+}
+
+bool UniboardSankoreTransition::updateSankoreHRef(QString& sankoreDocumentPath)
+{
+    bool result = true;
+    QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(sankoreDocumentPath);
+
+    QFileInfoList::iterator fileInfo;
+    QString sankoreDocumentDirectory = UBSettings::uniboardDocumentDirectory();
+
+    for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
+        if (fileInfo->fileName().endsWith("svg")){
+            qDebug() << fileInfo->absolutePath();
+            QString path = fileInfo->absolutePath() + "/" + fileInfo->fileName();
+            result = checkPage(path);
+        }
+    }
+
+    return result;
+}
+
 void UniboardSankoreTransition::executeTransition()
 {
     bool result = false;
@@ -109,7 +163,9 @@ void UniboardSankoreTransition::executeTransition()
             QString sankoreDocumentName = fileInfo->fileName();
             emit transitioningFile(sankoreDocumentName);
             sankoreDocumentName.replace("Uniboard","Sankore");
-            result = UBFileSystemUtils::copyDir(fileInfo->filePath(),sankoreDocumentDirectory + "/" + sankoreDocumentName);
+            QString sankoreDocumentPath = sankoreDocumentDirectory + "/" + sankoreDocumentName;
+            result = UBFileSystemUtils::copyDir(fileInfo->filePath(),sankoreDocumentPath);
+            result &= updateSankoreHRef(sankoreDocumentPath);
         }
     }
 

@@ -1,22 +1,7 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 #ifndef UBKEYBOARDPALETTE_H
 #define UBKEYBOARDPALETTE_H
 
-#include "UBFloatingPalette.h"
-
+#include "UBActionPalette.h"
 
 #include <QLayout>
 #include <QPainter>
@@ -28,7 +13,52 @@
 class UBKeyButton;
 class UBKeyboardButton;
 
-class UBKeyboardPalette : public UBFloatingPalette
+class UBApplication;
+class UBMainWindow;
+
+class BTNImages
+{
+public:
+
+    BTNImages(QString _strHeight, int _width, int _height);
+
+    QString m_strHeight;
+    int m_width;
+    int m_height;
+
+    QImage m_btnLeftPassive;
+    QImage m_btnCenterPassive;
+    QImage m_btnRightPassive;
+    QImage m_btnLeftActive;
+    QImage m_btnCenterActive;
+    QImage m_btnRightActive;
+
+private:
+    QString m_strLeftPassive;
+    QString m_strCenterPassive;
+    QString m_strRightPassive;
+    QString m_strLeftActive;
+    QString m_strCenterActive;
+    QString m_strRightActive;
+
+};
+
+class ContentImage
+{
+public:
+
+    ContentImage(QString strHeight, int m_height, QString strContentPath);
+
+    QString m_strHeight;
+    int m_height;
+
+    QImage m_btnContent;
+
+private:
+    QString m_strContent;
+};
+
+class UBKeyboardPalette : public UBActionPalette
 {
     Q_OBJECT
 
@@ -39,13 +69,18 @@ friend class UBLocaleButton;
 public:
     ~UBKeyboardPalette();
 
+    BTNImages *currBtnImages;
+
     bool isEnabled(){return locales!= NULL;}
     virtual QSize  sizeHint () const;
     virtual void adjustSizeAndPosition(bool pUp = true);
     QString getKeyButtonSize() const {QString res; res.sprintf("%dx%d", btnWidth, btnHeight); return res;}
     void setKeyButtonSize(const QString& strSize);
-    void setAutoMinimize(bool autoMinimize);
+
     static UBKeyboardPalette* create(QWidget *parent);
+    static QList<UBKeyboardPalette*> instances;
+    bool m_isVisible;
+    QPoint m_pos;
 
 signals:
     void moved(const QPoint&);
@@ -55,9 +90,10 @@ signals:
 private slots:
     void syncPosition(const QPoint & pos);
     void syncLocale(int nLocale);
-    void keyboardPaletteAutoMinimizeChanged(QVariant b);
     void keyboardPaletteButtonSizeChanged(QVariant size);
     void onActivated(bool b);
+    void showKeyboard(bool show);
+    void hideKeyboard();
 
 protected:
     bool capsLock;
@@ -65,16 +101,16 @@ protected:
     int nLocalesCount;
     UBKeyboardLocale** locales;
 
+    QString strSize;
     int btnWidth;
     int btnHeight;
-
+// 
     bool languagePopupActive;
     bool keyboardActive;
-    bool autoMinimize;
-
+// 
     virtual void  enterEvent ( QEvent * event );
     virtual void  leaveEvent ( QEvent * event );
-    virtual void paintEvent(QPaintEvent *event);
+    virtual void  paintEvent(QPaintEvent *event);
     virtual void  moveEvent ( QMoveEvent * event );
 
     void sendKeyEvent(const KEYBT& keybt);
@@ -86,7 +122,6 @@ protected:
 private:
 
     UBKeyboardPalette(QWidget *parent);
-    static QList<UBKeyboardPalette*> instances;
 
     QRect originalRect;
 
@@ -110,17 +145,22 @@ private:
 
 };
 
-
 class UBKeyboardButton : public QWidget
 {
     Q_OBJECT
 
 public:
-    UBKeyboardButton(UBKeyboardPalette* parent);
+    UBKeyboardButton(UBKeyboardPalette* parent, QString contentImagePath);
     ~UBKeyboardButton();
 
 protected:
+
+    UBKeyboardPalette* m_parent;
+    ContentImage *imgContent;
+    QString m_contentImagePath;
+
     void paintEvent(QPaintEvent *event);
+
     virtual void  enterEvent ( QEvent * event );
     virtual void  leaveEvent ( QEvent * event );
     virtual void  mousePressEvent ( QMouseEvent * event );
@@ -165,6 +205,7 @@ class UBCntrlButton : public UBKeyboardButton
     Q_OBJECT
 
 public:
+    UBCntrlButton(UBKeyboardPalette* parent, int _code, const QString& _contentImagePath );
     UBCntrlButton(UBKeyboardPalette* parent, const QString& _label, int _code );
     ~UBCntrlButton();
 
@@ -182,7 +223,7 @@ class UBCapsLockButton : public UBKeyboardButton
     Q_OBJECT
 
 public:
-    UBCapsLockButton(UBKeyboardPalette* parent);
+    UBCapsLockButton(UBKeyboardPalette* parent, const QString _contentImagePath);
     ~UBCapsLockButton();
 
     virtual void onPress();
@@ -203,7 +244,7 @@ public:
     virtual void paintContent(QPainter& painter);
 
 protected:
-	QMenu* localeMenu;
+    QMenu* localeMenu;
 };
 
 #endif // UBKEYBOARDPALETTE_H

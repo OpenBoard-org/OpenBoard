@@ -1,16 +1,8 @@
 /*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * UNWindowController.h
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  Created on: Jan 15, 2009
+ *      Author: julienbachmann
  */
 
 #ifndef UBUNINOTESWINDOWCONTROLLER_H_
@@ -70,6 +62,8 @@ class UBDesktopAnnotationController : public QObject
         void stylusToolChanged(int tool);
         void updateBackground();
 
+        void showKeyboard(bool show);
+
     signals:
         /**
          * This signal is emitted once the screenshot has been performed. This signal is also emitted when user
@@ -106,6 +100,7 @@ class UBDesktopAnnotationController : public QObject
         void togglePropertyPalette(UBActionPalette* palette);
 
         UBDesktopPalette *mDesktopPalette;
+        UBKeyboardPalette *mKeyboardPalette;
         UBDesktopToolsPalette *mDesktopToolsPalette;
         UBDesktopPenPalette* mDesktopPenPalette;
         UBDesktopMarkerPalette* mDesktopMarkerPalette;

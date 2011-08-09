@@ -1,16 +1,8 @@
 /*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * UBActionPalette.cpp
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  Created on: 8 oct. 2009
+ *      Author: Luc
  */
 
 #include "UBActionPalette.h"
@@ -48,6 +40,8 @@ UBActionPalette::UBActionPalette(Qt::Corner corner, QWidget * parent, Qt::Orient
 
 void UBActionPalette::init(Qt::Orientation orientation)
 {
+    m_customCloseProcessing = false;
+
     mButtonSize = QSize(32, 32);
     mIsClosable = false;
     mAutoClose = false;
@@ -174,7 +168,7 @@ void UBActionPalette::updateLayout()
                 , sLayoutContentMargin  + border(), sLayoutContentMargin + border());
 
     }
-    update();
+   update();
 }
 
 
@@ -209,7 +203,9 @@ void UBActionPalette::paintEvent(QPaintEvent *event)
 
 void UBActionPalette::close()
 {
-    hide();
+    if(!m_customCloseProcessing)
+        hide();
+
     emit closed();
 }
 
@@ -240,17 +236,18 @@ void UBActionPalette::clearLayout()
     QLayout* pLayout = layout();
     if(NULL != pLayout)
     {
-	while(!pLayout->isEmpty())
-	{
-	    QLayoutItem* pItem = pLayout->itemAt(0);
-	    QWidget* pW = pItem->widget();
-	    pLayout->removeItem(pItem);
-	    delete pItem;
-	    pLayout->removeWidget(pW);
-	    delete pW;
-	}
-	mActions.clear();
-	mButtons.clear();
+        while(!pLayout->isEmpty())
+        {
+            QLayoutItem* pItem = pLayout->itemAt(0);
+            QWidget* pW = pItem->widget();
+            pLayout->removeItem(pItem);
+            delete pItem;
+            pLayout->removeWidget(pW);
+            delete pW;
+        }
+
+        mActions.clear();
+        mButtons.clear();
     }
 }
 
