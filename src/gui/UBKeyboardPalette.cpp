@@ -82,8 +82,6 @@ UBKeyboardPalette* UBKeyboardPalette::create(QWidget *parent)
 
         connect(inst, SIGNAL(localeChanged(int)), instance, SLOT(syncLocale(int)));
         connect(instance, SIGNAL(localeChanged(int)), inst, SLOT(syncLocale(int)));
-
-//        connect(instance, SIGNAL(closed()), inst, )
     }
 
     return instance;
@@ -91,7 +89,7 @@ UBKeyboardPalette* UBKeyboardPalette::create(QWidget *parent)
 
 void UBKeyboardPalette::hideKeyboard()
 {
-    UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction.Trigger);
+    UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
 }
 
 void UBKeyboardPalette::syncPosition(const QPoint & pos)
