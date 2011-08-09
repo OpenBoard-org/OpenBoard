@@ -105,16 +105,12 @@ bool UniboardSankoreTransition::checkPage(QString& sankorePagePath)
     ;
     sankoreDirectory = QUrl::fromLocalFile(sankoreDirectory).toString();
     QString documentString(documentByteArray);
-    qDebug() << documentString;
-    documentString.replace("xlink:href=\"videos/","xlink:href=\"" + sankoreDirectory + "/videos/");
 
-    documentString.replace("xlink:href=\"widgets/","xlink:href=\"" + sankoreDirectory + "/widgets/");
+    documentString.replace("xlink:href=\"videos/","xlink:href=\"" + sankoreDirectory + "/videos/");
 
     documentString.replace("xlink:href=\"objects/","xlink:href=\"" + sankoreDirectory + "/objects/");
 
     documentString.replace("xlink:href=\"audios/","xlink:href=\"" + sankoreDirectory + "/audios/");
-
-    qDebug() << documentString;
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return false;
@@ -123,6 +119,51 @@ bool UniboardSankoreTransition::checkPage(QString& sankorePagePath)
     file.close();
 
     return true;
+}
+
+
+bool UniboardSankoreTransition::checkWidget(QString& sankoreWidgetIndexPath)
+{
+    QFile file(sankoreWidgetIndexPath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    QByteArray documentByteArray = file.readAll();
+    file.close();
+
+    QString documentString(documentByteArray);
+
+    documentString.replace("/Uniboard/interactive content","/Sankore/interactive content");
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
+
+    file.write(documentString.toAscii());
+    file.close();
+
+    return true;
+}
+
+
+bool UniboardSankoreTransition::updateIndexWidget(QString& sankoreWidgetPath)
+{
+    bool result = true;
+    QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(sankoreWidgetPath);
+
+    QFileInfoList::iterator fileInfo;
+    for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
+        if (fileInfo->fileName().endsWith("wgt")){
+            QString path = fileInfo->absolutePath() + "/" + fileInfo->fileName() + "/index.html";
+            if (QFile(path).exists())
+                result = checkWidget(path);
+
+            path = fileInfo->absolutePath() + "/" + fileInfo->fileName() + "/index.htm";
+            if (QFile(path).exists())
+                result &= checkWidget(path);
+        }
+    }
+
+    return result;
 }
 
 bool UniboardSankoreTransition::updateSankoreHRef(QString& sankoreDocumentPath)
@@ -135,7 +176,6 @@ bool UniboardSankoreTransition::updateSankoreHRef(QString& sankoreDocumentPath)
 
     for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
         if (fileInfo->fileName().endsWith("svg")){
-            qDebug() << fileInfo->absolutePath();
             QString path = fileInfo->absolutePath() + "/" + fileInfo->fileName();
             result = checkPage(path);
         }
@@ -166,6 +206,8 @@ void UniboardSankoreTransition::executeTransition()
             QString sankoreDocumentPath = sankoreDocumentDirectory + "/" + sankoreDocumentName;
             result = UBFileSystemUtils::copyDir(fileInfo->filePath(),sankoreDocumentPath);
             result &= updateSankoreHRef(sankoreDocumentPath);
+            QString sankoreWidgetPath = sankoreDocumentDirectory +  "/" + sankoreDocumentName + "/widgets";
+            result &= updateIndexWidget(sankoreWidgetPath);
         }
     }
 
@@ -175,6 +217,10 @@ void UniboardSankoreTransition::executeTransition()
         UBFileSystemUtils::deleteDir(backupDestinationPath);
     }
     else{
+        QString sankoreInteractiveAppPath = sankoreDocumentDirectory;
+        sankoreInteractiveAppPath = sankoreInteractiveAppPath.replace("document","") + "interactive content/";
+        UBFileSystemUtils::copyDir(mOldSankoreDirectory + "/interactive content", sankoreInteractiveAppPath);
+        UBFileSystemUtils::copyDir(mUniboardSourceDirectory + "/interactive content", sankoreInteractiveAppPath);
         UBFileSystemUtils::deleteDir(mOldSankoreDirectory);
         UBFileSystemUtils::deleteDir(mUniboardSourceDirectory);
     }
