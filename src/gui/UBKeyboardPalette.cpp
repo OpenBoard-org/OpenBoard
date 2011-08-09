@@ -117,7 +117,7 @@ void UBKeyboardPalette::showKeyboard(bool show)
 
 void UBKeyboardPalette::hideKeyboard()
 {
-    UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction.Trigger);
+    UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
 }
 
 void UBKeyboardPalette::syncPosition(const QPoint & pos)
