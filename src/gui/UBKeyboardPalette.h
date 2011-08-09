@@ -76,7 +76,11 @@ public:
     virtual void adjustSizeAndPosition(bool pUp = true);
     QString getKeyButtonSize() const {QString res; res.sprintf("%dx%d", btnWidth, btnHeight); return res;}
     void setKeyButtonSize(const QString& strSize);
+
     static UBKeyboardPalette* create(QWidget *parent);
+    static QList<UBKeyboardPalette*> instances;
+    bool m_isVisible;
+    QPoint m_pos;
 
 signals:
     void moved(const QPoint&);
@@ -88,6 +92,7 @@ private slots:
     void syncLocale(int nLocale);
     void keyboardPaletteButtonSizeChanged(QVariant size);
     void onActivated(bool b);
+    void showKeyboard(bool show);
     void hideKeyboard();
 
 protected:
@@ -117,7 +122,6 @@ protected:
 private:
 
     UBKeyboardPalette(QWidget *parent);
-    static QList<UBKeyboardPalette*> instances;
 
     QRect originalRect;
 

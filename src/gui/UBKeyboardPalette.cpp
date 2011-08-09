@@ -62,19 +62,37 @@ UBKeyboardPalette::UBKeyboardPalette(QWidget *parent)
 QList<UBKeyboardPalette*> UBKeyboardPalette::instances;
 UBKeyboardPalette* UBKeyboardPalette::create(QWidget *parent)
 {
+    //------------------------------//
+
     if (!UBPlatformUtils::hasVirtualKeyboard())
         return NULL;
 
+    //------------------------------//
+
+    UBKeyboardPalette* firstKeyboard = NULL;
+    // if we already have keyboards inside, get it position and show/hide status, for new keyboard
+    if(instances.size() > 0)
+        firstKeyboard = instances.at(0);
+
+    //------------------------------//
+
     UBKeyboardPalette* instance = new UBKeyboardPalette(parent);
-    instances.append(instance);
- 
     instance->setKeyButtonSize(UBSettings::settings()->boardKeyboardPaletteKeyBtnSize->get().toString());
-    instance->setVisible(false);
+
+    instance->m_isVisible = firstKeyboard ? firstKeyboard->m_isVisible : false;
+    instance->setVisible(instance->m_isVisible);
+
+    if( firstKeyboard )
+        instance->move(firstKeyboard->m_pos);
+
     connect(UBSettings::settings()->boardKeyboardPaletteKeyBtnSize, SIGNAL(changed(QVariant)), instance, SLOT(keyboardPaletteButtonSizeChanged(QVariant)));
- 
+    connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), instance, SLOT(showKeyboard(bool)));
+//    connect(instance, SIGNAL(moved(const QPoint&)), instance, SLOT(syncPosition(const QPoint&)));
     connect(instance, SIGNAL(closed()), instance, SLOT(hideKeyboard()));
 
+    //------------------------------//
 
+    instances.append(instance);
     foreach(UBKeyboardPalette* inst, instances)
     {
         connect(inst, SIGNAL(moved(const QPoint&)), instance, SLOT(syncPosition(const QPoint&)));
@@ -82,18 +100,29 @@ UBKeyboardPalette* UBKeyboardPalette::create(QWidget *parent)
 
         connect(inst, SIGNAL(localeChanged(int)), instance, SLOT(syncLocale(int)));
         connect(instance, SIGNAL(localeChanged(int)), inst, SLOT(syncLocale(int)));
+
+//        connect(instance, SIGNAL(closed()), inst, )
     }
+
+    //------------------------------//
 
     return instance;
 }
 
+void UBKeyboardPalette::showKeyboard(bool show)
+{
+    m_isVisible = show;
+}
+
+
 void UBKeyboardPalette::hideKeyboard()
 {
-    UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+    UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction.Trigger);
 }
 
 void UBKeyboardPalette::syncPosition(const QPoint & pos)
 {
+    m_pos = pos;
     move(pos);
 }
 
@@ -123,20 +152,20 @@ void UBKeyboardPalette::setInput(const UBKeyboardLocale* locale)
 
 UBKeyboardPalette::~UBKeyboardPalette()
 {
-    //for (int i=0; i<47; i++)
-    //    delete buttons[i];
+    for (int i=0; i<47; i++)
+        delete buttons[i];
     delete [] buttons;
 
-    //for (int i=0; i<8; i++)
-    //    delete ctrlButtons[i];
+    for (int i=0; i<8; i++)
+        delete ctrlButtons[i];
     delete [] ctrlButtons;
 
-    //if (locales!=NULL)
-    //{
-    //    for (int i=0; i<nLocalesCount; i++)
-    //        delete locales[i];
-    //    delete [] locales;
-    //}
+    if (locales!=NULL)
+    {
+        for (int i=0; i<nLocalesCount; i++)
+            delete locales[i];
+        delete [] locales;
+    }
 
     if(currBtnImages != NULL)
     {
