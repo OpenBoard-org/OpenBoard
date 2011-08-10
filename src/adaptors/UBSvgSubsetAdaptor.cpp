@@ -1801,6 +1801,13 @@ UBGraphicsAudioItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
 
     QString href = audioHref.toString();
 
+    //Claudio this is necessary to fix the absolute path added on Sankore 3.1 1.00.00
+    //The absoult path doesn't work when you want to share Sankore documents.
+    if(!href.startsWith("audios/")){
+        int indexOfAudioDirectory = href.lastIndexOf("audios");
+        href = href.right(href.length() - indexOfAudioDirectory);
+    }
+
     UBGraphicsAudioItem* audioItem = new UBGraphicsAudioItem(href);
     graphicsItemFromSvg(audioItem);
     QStringRef ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
@@ -1827,6 +1834,13 @@ UBGraphicsVideoItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
     }
 
     QString href = videoHref.toString();
+
+    //Claudio this is necessary to fix the absolute path added on Sankore 3.1 1.00.00
+    //The absoult path doesn't work when you want to share Sankore documents.
+    if(!href.startsWith("videos/")){
+        int indexOfAudioDirectory = href.lastIndexOf("videos");
+        href = href.right(href.length() - indexOfAudioDirectory);
+    }
 
     UBGraphicsVideoItem* videoItem = new UBGraphicsVideoItem(href);
     graphicsItemFromSvg(videoItem);

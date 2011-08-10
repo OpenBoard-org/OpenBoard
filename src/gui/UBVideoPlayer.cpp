@@ -32,7 +32,6 @@ UBVideoPlayer::UBVideoPlayer(QWidget* pParent)
     setLayout(mainLayout);
 
     mainLayout->setContentsMargins(0, 0, 0, 0);
-    //mainLayout->setSpacing(0);
     mainLayout->addWidget(mVideoPlayer);
 
     QHBoxLayout* transportLayout = new QHBoxLayout(this);
