@@ -106,11 +106,16 @@ bool UniboardSankoreTransition::checkPage(QString& sankorePagePath)
     sankoreDirectory = QUrl::fromLocalFile(sankoreDirectory).toString();
     QString documentString(documentByteArray);
 
-    documentString.replace("xlink:href=\"videos/","xlink:href=\"" + sankoreDirectory + "/videos/");
+    QRegExp videoRegExp("<video(.*)xlink:href=\"(.*)videos/(.*)/>");
+    videoRegExp.setMinimal(true);
 
-    documentString.replace("xlink:href=\"objects/","xlink:href=\"" + sankoreDirectory + "/objects/");
+    documentString.replace(videoRegExp,"<video\\1xlink:href=\"videos/\\3/>");
 
-    documentString.replace("xlink:href=\"audios/","xlink:href=\"" + sankoreDirectory + "/audios/");
+
+    QRegExp audioRegExp("<audio(.*)xlink:href=\"(.*)audios/(.*)/>");
+    audioRegExp.setMinimal(true);
+
+    documentString.replace(audioRegExp,"<audio\\1xlink:href=\"audios/\\3/>");
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return false;
@@ -133,7 +138,36 @@ bool UniboardSankoreTransition::checkWidget(QString& sankoreWidgetIndexPath)
 
     QString documentString(documentByteArray);
 
-    documentString.replace("/Uniboard/interactive content","/Sankore/interactive content");
+    QRegExp swfOriginFilePathRegExp("<param name=\"movie\" value=\"(.*)\">");
+    swfOriginFilePathRegExp.setMinimal(true);
+    swfOriginFilePathRegExp.indexIn(documentString);
+    QString origin = swfOriginFilePathRegExp.cap(1);
+    if(origin.contains("http://")){
+        // an url is the source of the swf. The source is kept as is.
+        return true;
+    }
+
+    //changing the path
+    QRegExp swfDataPathRegExp("<object(.*)data=\"(.*)interactive content/Web/(.*)\"(.*)>");
+    swfDataPathRegExp.setMinimal(true);
+    documentString.replace(swfDataPathRegExp,"<object\\1data=\"\\3\">");
+
+    QRegExp swfMoviePathRegExp("<param name=\"movie\" value=\"(.*)interactive content/Web/(.*)\">");
+    swfMoviePathRegExp.setMinimal(true);
+    documentString.replace(swfMoviePathRegExp,"<param name=\"movie\" value=\"\\2\">");
+
+    //copy the swf on the right place
+    QRegExp swfFileNameRegExp("<param name=\"movie\" value=\"(.*)\">");
+    swfFileNameRegExp.setMinimal(true);
+    swfFileNameRegExp.indexIn(documentString);
+    QString swfFileName = swfFileNameRegExp.cap(1);
+    int lastDirectoryLevel = sankoreWidgetIndexPath.lastIndexOf("/");
+    if (lastDirectoryLevel == -1)
+        lastDirectoryLevel = sankoreWidgetIndexPath.lastIndexOf("\\");
+
+
+    QString destination(sankoreWidgetIndexPath.left(lastDirectoryLevel) + "/" + swfFileName);
+    QFile(origin).copy(destination);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return false;
@@ -217,10 +251,6 @@ void UniboardSankoreTransition::executeTransition()
         UBFileSystemUtils::deleteDir(backupDestinationPath);
     }
     else{
-        QString sankoreInteractiveAppPath = sankoreDocumentDirectory;
-        sankoreInteractiveAppPath = sankoreInteractiveAppPath.replace("document","") + "interactive content/";
-        UBFileSystemUtils::copyDir(mOldSankoreDirectory + "/interactive content", sankoreInteractiveAppPath);
-        UBFileSystemUtils::copyDir(mUniboardSourceDirectory + "/interactive content", sankoreInteractiveAppPath);
         UBFileSystemUtils::deleteDir(mOldSankoreDirectory);
         UBFileSystemUtils::deleteDir(mUniboardSourceDirectory);
     }
