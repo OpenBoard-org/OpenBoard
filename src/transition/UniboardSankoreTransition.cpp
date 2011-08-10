@@ -65,6 +65,15 @@ void UniboardSankoreTransition::rollbackDocumentsTransition(QFileInfoList& fileI
     }
 }
 
+bool UniboardSankoreTransition::checkDocumentDirectory(QString& documentDirectoryPath)
+{
+    bool result = true;
+    result = updateSankoreHRef(documentDirectoryPath);
+    QString sankoreWidgetPath = documentDirectoryPath + "/widgets";
+    result &= updateIndexWidget(sankoreWidgetPath);
+    return result;
+}
+
 void UniboardSankoreTransition::documentTransition()
 {
     if (QFileInfo(mUniboardSourceDirectory).exists() || QFileInfo(mOldSankoreDirectory).exists()){
@@ -206,7 +215,6 @@ bool UniboardSankoreTransition::updateSankoreHRef(QString& sankoreDocumentPath)
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(sankoreDocumentPath);
 
     QFileInfoList::iterator fileInfo;
-    QString sankoreDocumentDirectory = UBSettings::uniboardDocumentDirectory();
 
     for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
         if (fileInfo->fileName().endsWith("svg")){
