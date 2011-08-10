@@ -27,7 +27,6 @@
                 var references = new Array();
                 var globalWidth = 850;
                 var globalHeight = 700;
-                var language;
                 var url = "";
                 var margins = {
                     top: cssToInt($("body").css("margin-top")), 
@@ -46,10 +45,7 @@
                     url = window.sankore.preference("url", "");
                 }else{
                     url = "";
-                };		
-			
-                language = navigator.userAgent.split(";");
-                language = language[3].replace(/\s/g, "").substr(0, 2);
+                };
 			
                 $("#back-button")
                 .click(function(){
@@ -98,7 +94,7 @@
                         $("#container-shadow").hide();
                         $("#arrow").hide();
                         $("#embeded-content").hide();
-                        $("#web-content").show();
+                        $("#web-content").hide();
                         $('#web-content').attr('src',url);
 							
                         checkcontent();
@@ -155,10 +151,11 @@
                     if(loadingState){
                         
                         clearTimeout(resizer);
-                        resizerIndex = 0;							
+                        resizerIndex = 0;
+                        $("#web-content").show();
                         return false;
                     };
-                    if(resizerIndex > 70){
+                    if(resizerIndex > 50){
                         resizerIndex = 0;
                         $("#textbox").val("http://www.google.com/search?q=" + $("#textbox").val().replace("http://", ""));
                         $("#search-button").trigger("click");
