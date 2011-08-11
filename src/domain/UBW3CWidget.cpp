@@ -222,34 +222,25 @@ QString UBW3CWidget::createNPAPIWrapperInDir(const QString& pUrl, const QDir& pD
     if (name.length() == 0)
         name = fi.baseName();
 
-    if (fi.exists())
-    {
-        QString target = pDir.path() + "/" + fi.fileName();
-        QFile::copy(url, target);
-
-        url = target;
+    if (fi.exists()){
+        url = fi.fileName();
     }
 
     loadNPAPIWrappersTemplates();
 
     QString htmlTemplate;
 
-    if (pMimeType.length() > 0 && sNPAPIWrapperTemplates.contains(pMimeType))
-    {
+    if (pMimeType.length() > 0 && sNPAPIWrapperTemplates.contains(pMimeType)){
         htmlTemplate = sNPAPIWrapperTemplates.value(pMimeType);
     }
-    else
-    {
+    else {
         QString extension = UBFileSystemUtils::extension(url);
 
         if (sNPAPIWrapperTemplates.contains(extension))
             htmlTemplate = sNPAPIWrapperTemplates.value(extension);
     }
 
-    if (htmlTemplate.length() > 0)
-    {
-        QString sUrl;
-
+    if (htmlTemplate.length() > 0){
         htmlTemplate = htmlTemplate.replace(QString("{in.url}"), url)
             .replace(QString("{in.width}"), QString("%1").arg(sizeHint.width()))
             .replace(QString("{in.height}"), QString("%1").arg(sizeHint.height()));
@@ -277,6 +268,10 @@ QString UBW3CWidget::createNPAPIWrapperInDir(const QString& pUrl, const QDir& pD
         }
 
         widgetLibraryDir.mkpath(widgetLibraryPath);
+        if (fi.exists())        {
+            QString target = widgetLibraryPath + "/" + fi.fileName();
+            QFile::copy(pUrl, target);
+        }
 
         QFile configFile(widgetLibraryPath + "/config.xml");
 

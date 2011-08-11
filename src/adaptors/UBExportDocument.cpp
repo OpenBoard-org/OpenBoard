@@ -25,6 +25,8 @@
 #include "quazip.h"
 #include "quazipfile.h"
 
+#include "transition/UniboardSankoreTransition.h"
+
 #include "core/memcheck.h"
 
 UBExportDocument::UBExportDocument(QObject *parent)
@@ -64,6 +66,9 @@ void UBExportDocument::persist(UBDocumentProxy* pDocumentProxy)
 
 void UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, QString filename)
 {
+    UniboardSankoreTransition document;
+    QString documentPath(pDocumentProxy->persistencePath());
+    document.checkDocumentDirectory(documentPath);
 
     QuaZip zip(filename);
     zip.setFileNameCodec("UTF-8");
