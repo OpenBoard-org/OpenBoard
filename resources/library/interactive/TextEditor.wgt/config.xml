@@ -4,8 +4,8 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
-        width="200"
-        height="700" 
+        width="540"
+        height="320" 
 		ub:resizable="true">
 		
 		<name>Rich Note</name>
