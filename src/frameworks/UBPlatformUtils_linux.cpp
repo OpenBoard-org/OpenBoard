@@ -248,7 +248,7 @@ const KEYBT FRENCH_LOCALE[] = {
         /* j J */ KEYBT(0x6a, 0x4a),
         /* k K */ KEYBT(0x6b, 0x4b),
         /* l L */ KEYBT(0x6c, 0x4c),
-        /* m M */ KEYBT(0x6b, 0x4d),
+        /* m M */ KEYBT(0x6d, 0x4d),
         /* ? % */ KEYBT(0xf9, 0x25),
         /* * ? */ KEYBT(0x2a, 0xb5),
 

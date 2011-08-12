@@ -102,7 +102,7 @@ function adn() {
         document.getElementById("div_zoom").innerHTML='<img src="images/'+elt_a_zoomer+'_zoom.jpg" alt="" />'
 			
         /*Uniboard 4 ne supportant pas bien les gifs...*/
-        if(window.uniboard){
+        if(window.sankore){
             document.getElementById("img_ADN").src="images/adn.jpg"
         } else {
             document.getElementById("img_ADN").src="images/ADN.gif"
