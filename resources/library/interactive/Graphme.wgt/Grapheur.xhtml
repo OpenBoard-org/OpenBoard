@@ -6,7 +6,7 @@
 		<meta name="description" content="Traceur de fonctions mathématiques en JavaScript"/>
 		<meta name="author" content="Yannick Vessaz"/>
 		<meta name="revised" content="2010/09/25"/>
-		<title>Traceur de fonctions mathématiques</title>
+		<title>Graphics</title>
 		<link rel="stylesheet" type="text/css" href="Style/default.css"/>
 		<script type="text/javascript" src="JavaScript/ColorPicker.js"></script>
 		<script type="text/javascript" src="JavaScript/Etude.js"></script>
@@ -28,7 +28,7 @@
 			var ligne = new Array()
 			var j = 0
 
-			var interdit = new Array(";", "interdit", "'", '"', "eval", "new", "uniboard", "=", "document", "window", "alert")
+			var interdit = new Array(";", "interdit", "'", '"', "eval", "new", "sankore", "=", "document", "window", "alert")
 
 			var menuActuel = ""
 			var mouseDown = false
@@ -89,7 +89,7 @@
 
 		// Cette fonction permet de choisir la méthode d'affichage entre:
 		// 1) Image au format XPM
-		// 2) Affichage directe dans uniboard
+		// 2) Affichage directe dans sankore
 		// 3) Autres Méthodes d'affichages (svg ou canvas)
 			function evaluer(eq){
 				if(check(eq)){
@@ -109,7 +109,7 @@
 						else if(document.getElementById("selectMethodeAffichage").value == "xpm"){
 						evaluerXPM(eq)
 						}
-						else if(document.getElementById("selectMethodeAffichage").value == "uniboard"){
+						else if(document.getElementById("selectMethodeAffichage").value == "sankore"){
 						evaluerUniboard(eq)
 						}
 						else if(document.getElementById("selectMethodeAffichage").value == "canvas" || document.getElementById("selectMethodeAffichage").value == "canvas2"){
@@ -270,8 +270,8 @@
 	<body onload="evaluer(1000);checkCouleurs3D();loadOptions();majAuto()" onkeypress="keyPress(event)">
 		<!-- ..... Haut du Widget ..... -->
 		<span id="haut">
-			<span id="texteFonction">Fonction : </span><input id="inputEq" onkeypress='if(event.keyCode==13) evaluer(this.value)' onkeyup="document.getElementById('fonctionActuelle').innerHTML = this.value"/> 
-			<input type="button" onclick='evaluer(document.getElementById("inputEq").value)' value="Afficher"/><input type="button" style="width:21px;" onclick="menuFonctions()" value="+"/>
+			<span id="texteFonction">Function: </span><input id="inputEq" onkeypress='if(event.keyCode==13) evaluer(this.value)' onkeyup="document.getElementById('fonctionActuelle').innerHTML = this.value"/> 
+			<input type="button" onclick='evaluer(document.getElementById("inputEq").value)' value="Display"/><input type="button" style="width:21px;" onclick="menuFonctions()" value="+"/>
 		</span>
  		<!--<div id="miniMax" onclick="miniMax()">-</div>  ▶▼ -->
 		<div id="boutonAgrandir" class="miniBouton" onclick="agrandirAffichage()">^</div>
@@ -295,22 +295,22 @@
 			<hr/>
 			<br/>
 			Menus:
-			<input type="button" class="boutonGauche" onclick='document.getElementById("etudeFct").innerHTML = document.getElementById("inputEq").value;afficherMenu("menuOutils")' value="Outils"/>
+			<input type="button" class="boutonGauche" onclick='document.getElementById("etudeFct").innerHTML = document.getElementById("inputEq").value;afficherMenu("menuOutils")' value="Tools"/>
 			<input type="button" class="boutonGauche" onclick='afficherMenu("menuOptions")' value="Options"/>
-			<input type="button" class="boutonGauche" onclick='afficherMenu("menuAide")' value="Aide"/>
-			<input type="button" class="boutonGauche" onclick='afficherMenu("menuCredits")' value="À propos"/>
+			<input type="button" class="boutonGauche" onclick='afficherMenu("menuAide")' value="Help"/>
+			<input type="button" class="boutonGauche" onclick='afficherMenu("menuCredits")' value="About"/>
 
 			<!-- ..... Menus ..... -->
 			<div id="menu" class="menu">
 				<div id="contenuMenu" class="contenuMenu"></div>
 				<div class="barreBasMenu">
-					<input type="button" onclick='cacherMenu()' value="Fermer"/>
+					<input type="button" onclick='cacherMenu()' value="Cancel"/>
 				</div>
 			</div>
 		</div>
 		<div id="gauche3D">
-			<input type="button" class="boutonGauche3D" onclick='afficherMenu("menuCredits")' value="À propos"/>
-			<input type="button" class="boutonGauche3D" onclick='afficherMenu("menuAide")' value="Aide"/>
+			<input type="button" class="boutonGauche3D" onclick='afficherMenu("menuCredits")' value="About"/>
+			<input type="button" class="boutonGauche3D" onclick='afficherMenu("menuAide")' value="Help"/>
 			<input type="button" class="boutonGauche3D" onclick='afficherMenu("menuOptions")' value="Options"/>
 			<input type="button" style="width:30px;" onclick='zoom3D(0.8)' value="-"/><input type="button" style="width:30px;" onclick='zoom3D(1.25)' value="+"/>
 		</div>
@@ -325,26 +325,26 @@
 				</tr>
 			</table>
 			<div class="contenuMenu avecBordures">
-				<h3>Options du widget</h3>
+				<h3>Widget options</h3>
 
-				Thème du widget : <select id="selectTheme" onchange="changerTheme(this.value)">
-					<option value="noir">Noir</option>
-					<option value="bleu">Bleu</option>
-					<option value="blanc">Blanc</option>
+				Themes of widget: <select id="selectTheme" onchange="changerTheme(this.value)">
+					<option value="noir">Black</option>
+					<option value="bleu">Blue</option>
+					<option value="blanc">White</option>
 				</select><br/>
 				<br/><br/><br/>
-				<span class="gras">Gèrer les options :</span><br/>
-				<input type="button" class="boutonSauvegarde" onclick="saveOptions()" value="Sauvegarder"/><input type="button" class="boutonSauvegarde" onclick="loadOptions()" value="Charger"/> <input class="boutonSauvegarde2" type="button" onclick="delOptions()" value="Supprimer"/><input class="boutonSauvegarde2" type="button" onclick="alertOptions()" value="Afficher"/><br/>
-				<span class="texteSecondaire">Sauvegarder les options du widget dans les cookies, charger les options depuis les cookies ou supprimer les options actuellement enregistrées.</span>
+				<span class="gras">Control options:</span><br/>
+				<input type="button" class="boutonSauvegarde" onclick="saveOptions()" value="Save"/><input type="button" class="boutonSauvegarde" onclick="loadOptions()" value="Load"/> <input class="boutonSauvegarde2" type="button" onclick="delOptions()" value="Delete"/><input class="boutonSauvegarde2" type="button" onclick="alertOptions()" value="Display"/><br/>
+				<span class="texteSecondaire">Save a widget options in cookies or load an options from cookies or delete a registered options.</span>
 				<br/><br/>
-				<label for="checkMaJ">Mise à jour automatique à l'ouverture du widget</label> <input type="checkbox" id="checkMaJ" onclick="checkboxMaJ()"/>
+				<label for="checkMaJ">Automatically update when a widget opening.</label> <input type="checkbox" id="checkMaJ" onclick="checkboxMaJ()"/>
 				<br/>
-				<div id="cacheCookies"><br/><br/><h1>Les cookies sont désactivés, impossible de sauvegarder les options...</h1></div>
-				<div id="cacheMaJ">Vous utilisez la dernière version du widget en ligne.</div>
-				<input type="button" onclick='reset()' value="Recharger le widget" style="position:absolute; bottom:20px; width:140px; height:32px;"/>
-				<input type="button" onclick='miseAjour()' value="Mise à jour" style="position:absolute; bottom:20px; left:160px; width:140px; height:32px;"/>
+				<div id="cacheCookies"><br/><br/><h1>Cookies are disabled. You cannot save an options...</h1></div>
+				<div id="cacheMaJ">You are using the last version of this widget.</div>
+				<input type="button" onclick='reset()' value="Reload widget" style="position:absolute; bottom:20px; width:140px; height:32px;"/>
+				<input type="button" onclick='miseAjour()' value="Updated" style="position:absolute; bottom:20px; left:160px; width:140px; height:32px;"/>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick="cacherMenu(); actualiserGraph()" value="Valider"/></div>
+			<div class="barreBasMenu"><input type="button" onclick="cacherMenu(); actualiserGraph()" value="Check"/></div>
 		</div>
 
 		 <div id="menuOptions2D" class="menu">
@@ -357,34 +357,34 @@
 			</table>
 			<div class="contenuMenu avecBordures">
 				<h3>Options 2D</h3>
-				Méthode d'affichage du graphique :<select id="selectMethodeAffichage">
-					<option value="canvas">canvas (lignes)</option>
+				The graphical method displaying:<select id="selectMethodeAffichage">
+					<option value="canvas">canvas (lines)</option>
 					<option value="canvas2">canvas (points)</option>
 					<option value="svg">svg</option>
 					<option value="svg2">svg (1 image)</option>
 					<option value="xpm">xpm</option>
-					<option value="uniboard">uniboard</option>
+					<option value="sankore">sankore</option>
 				</select> <br/>
-				Zoom par défaut: 
+				Zoom default: 
 				<input value="5" class="smallInput" id="zoomDefaut"/>
-				<input type="button" onclick='reinitialiserZoom(document.getElementById("zoomDefaut").value)' value="Réinitialiser le zoom"/> <br/>
+				<input type="button" onclick='reinitialiserZoom(document.getElementById("zoomDefaut").value)' value="Reset zoom"/> <br/>
 				<br/>
-				<input type="checkbox" id="checkGrille" checked="true" onclick="actualiserGraph()"/><label for="checkGrille"> Afficher la grille</label> <br/>
-				<input type="checkbox" id="checkAxes" checked="true" onclick="actualiserGraph()"/><label for="checkAxes"> Afficher les axes</label> <br/>
-				<input type="checkbox" id="checkEchelle" checked="true" onclick="actualiserGraph()"/><label for="checkEchelle"> Afficher l'échelle</label> <br/>
-				Épaisseur de la fonction: <input id="inputTaille" class="smallInput" value="3" onkeypress='if(event.keyCode==13) actualiserGraph()' style=""/>
+				<input type="checkbox" id="checkGrille" checked="true" onclick="actualiserGraph()"/><label for="checkGrille">Show grid</label> <br/>
+				<input type="checkbox" id="checkAxes" checked="true" onclick="actualiserGraph()"/><label for="checkAxes">Show axis</label> <br/>
+				<input type="checkbox" id="checkEchelle" checked="true" onclick="actualiserGraph()"/><label for="checkEchelle">Scale</label> <br/>
+				Thickness: <input id="inputTaille" class="smallInput" value="3" onkeypress='if(event.keyCode==13) actualiserGraph()' style=""/>
 				<div class="boutonPlus" type="button" onclick="boutonPlus('inputTaille', 1); actualiserGraph()">+</div><div class="boutonMoins" type="button" onclick="boutonMoins('inputTaille', 1); actualiserGraph()">-</div> <br/>
 				<br/>
-				Décalage du graphique: 
+				Offset diagram: 
 				x=<input value="0" class="smallInput" id="inputDecalageX" onkeyup="decalageX = parseFloat(this.value)"/>
 				y=<input value="0" class="smallInput" id="inputDecalageY" onkeyup="decalageY = parseFloat(this.value)"/>
 				<br/>
-				Précision des calculs du graphique:
+				Accuracy graph:
 				<input value="0.02" class="smallInput" id="inputPrecision" onkeyup="precision = parseFloat(this.value)"/>
 				<div class="boutonPlus" type="button" onclick="boutonPlus('inputPrecision', 0.01); precision = parseFloat(document.getElementById('inputPrecision').value); actualiserGraph()">+</div><div class="boutonMoins" type="button" onclick="boutonMoins('inputPrecision', 0.01); precision = parseFloat(document.getElementById('inputPrecision').value); actualiserGraph()">-</div> <br/>
 				<br/>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick='cacherMenu(); actualiserGraph()' value="Valider"/></div>
+			<div class="barreBasMenu"><input type="button" onclick='cacherMenu(); actualiserGraph()' value="Check"/></div>
 		</div>
 
 		 <div id="menuOptions3D" class="menu">
@@ -397,121 +397,121 @@
 			</table>
 			<div class="contenuMenu avecBordures">
 				<h3>Options 3D</h3>
-				Style d'affichage : 
+				Show the style: 
 				<select id="selectAffichage3D">
 					<option value="surfaces"> surfaces </option>
 					<option value="points"> points </option>
-				</select> <input type="button" onclick='reinitialiserZoom(5)' value="Réinitialiser l'affichage"/> <br/>
+				</select> <input type="button" onclick='reinitialiserZoom(5)' value="Reset display"/> <br/>
 				<br/>
-				Précision de la fonction : <input value="0.2" class="smallInput" id="inputPrecision3D" onkeyup="precisionFonction3D = parseFloat(this.value)"/>
+				Accuracy function: <input value="0.2" class="smallInput" id="inputPrecision3D" onkeyup="precisionFonction3D = parseFloat(this.value)"/>
 				<div class="boutonPlus" type="button" onclick="boutonPlus('inputPrecision3D', 0.1); precisionFonction3D = parseFloat(document.getElementById('inputPrecision3D').value); actualiserGraph()">+</div><div class="boutonMoins" type="button" onclick="boutonMoins('inputPrecision3D', 0.1); precisionFonction3D = parseFloat(document.getElementById('inputPrecision3D').value); actualiserGraph()">-</div> <br/>
 				<br/>
-				Utilisation des couleurs<br/>
-				rouge :
+				Use the color:<br/>
+				red:
 				<select onchange="checkCouleurs3D()" id="selectRouge3D">
-					<option value="plus">valeur positive</option>
-					<option value="moins">valeur négative</option>
-					<option value="tout">valeur générale</option>
+					<option value="plus">positive value</option>
+					<option value="moins">negative value</option>
+					<option value="tout">general value</option>
 				</select>
 				<br/>
-				vert :
+				green :
 				<select onchange="checkCouleurs3D()" id="selectVert3D">
-					<option value="moins">valeur négative</option>
-					<option value="plus">valeur positive</option>
-					<option value="tout">valeur générale</option>
+                                        <option value="moins">negative value</option>
+					<option value="plus">positive value</option>					
+					<option value="tout">general value</option>
 				</select>
 				<br/>
-				bleu :
+				blue :
 				<select onchange="checkCouleurs3D()" id="selectBleu3D">
-					<option value="tout">valeur générale</option>
-					<option value="plus">valeur positive</option>
-					<option value="moins">valeur négative</option>
+                                        <option value="tout">general value</option>
+					<option value="plus">positive value</option>
+					<option value="moins">negative value</option>					
 				</select>
 				<br/>
-				Valeur générale : <input class="smallInput" id="couleur3Dgenerale" type="texte" value="0" onkeyup="checkCouleurs3D()"/> (entre 0 et 255)
+				General value : <input class="smallInput" id="couleur3Dgenerale" type="texte" value="0" onkeyup="checkCouleurs3D()"/> (from 0 to 255)
 				<br/>
 				<span id="apercuCouleur3D"></span>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick='cacherMenu(); actualiserGraph()' value="Valider"/></div>
+			<div class="barreBasMenu"><input type="button" onclick='cacherMenu(); actualiserGraph()' value="Check"/></div>
 		</div>
 
 		 <!-- Aide -->
 		<div id="menuAide" class="menu">
 			<table class="ongletMenu">
 				<tr>
-					<td class="ongletMenuActuel" onclick='afficherMenu("menuAide")'>Utilisation</td>
-					<td onclick='afficherMenu("menuAideExemples")'>Exemples</td>
-					<td onclick='afficherMenu("menuAideAutres")'>Autres</td>
+					<td class="ongletMenuActuel" onclick='afficherMenu("menuAide")'>Using</td>
+					<td onclick='afficherMenu("menuAideExemples")'>Examples</td>
+					<td onclick='afficherMenu("menuAideAutres")'>Other</td>
 				</tr>
 			</table>
 			<div class="contenuMenu avecBordures">
-				<h1>Fonctionnement</h1>
-				<p>Ce widget vous permet de dessiner des fonctions mathématiques. Entrez une fonction dans le champ en haut du widget et cliquez sur le bouton "Afficher". </p>
-				<p>Vous pouvez saisir les fonctions mathématiques suivantes : <br/>
-					<h2>Les opérations de base</h2>
+				<h1>How it work.</h1>
+				<p>This widget allow to draw mathematical function. Enter function in the field in the top part of widget and press "Show".</p>
+				<p>You can enter following mathematical function:<br/>
+					<h2>Basic operations</h2>
 					<ul>
-						<li>Addition -> <span class="gras">+</span></li>
-						<li>Soustraction -> <span class="gras">-</span></li>
+						<li>Plus -> <span class="gras">+</span></li>
+						<li>Minus -> <span class="gras">-</span></li>
 						<li>Multiplication -> <span class="gras">*</span></li>
 						<li>Division -> <span class="gras">/</span></li>
-						<li>Modulo -> <span class="gras">%</span></li>
+						<li>Mod -> <span class="gras">%</span></li>
 					</ul>
-					<h2>Les fonctions trigonométriques</h2>
+					<h2>Trigonometric functions</h2>
 					<ul>
-						<li>Sinus -> <span class="gras">sin(x)</span></li>
-						<li>Cosinus -> <span class="gras">cos(x)</span></li>
-						<li>Tangente -> <span class="gras">tan(x)</span></li>
-						<li>Cotangente -> <span class="gras">cot(x)</span></li>
-						<li>Secante -> <span class="gras">sec(x)</span></li>
-						<li>Cosecante -> <span class="gras">csc(x)</span></li>
-					</ul>
-					<ul>
-						<li>Arcsinus -> <span class="gras">arcsin(x)</span> ou <span class="gras">asin(x)</span></li>
-						<li>Arccosinus -> <span class="gras">arccos(x)</span> ou <span class="gras">acos(x)</span></li>
-						<li>Arctangente -> <span class="gras">arctan(x)</span> ou <span class="gras">atan(x)</span></li>
-						<li>Arccotangente -> <span class="gras">arccot(x)</span> ou <span class="gras">acot(x)</span></li>
-					</ul>
-					<h2>Les fonctions hyperboliques</h2>
-					<ul>
-						<li>Sinus hyp -> <span class="gras">sinh(x)</span></li>
-						<li>Cosinus hyp -> <span class="gras">cosh(x)</span></li>
-						<li>Tangente hyp -> <span class="gras">tanh(x)</span></li>
-						<li>Cotangente hyp -> <span class="gras">coth(x)</span></li>
-						<li>Secante hyp -> <span class="gras">sech(x)</span></li>
-						<li>Cosecante hyp -> <span class="gras">csch(x)</span></li>
+						<li>Sine -> <span class="gras">sin(x)</span></li>
+						<li>Cosine -> <span class="gras">cos(x)</span></li>
+						<li>Tangent -> <span class="gras">tan(x)</span></li>
+						<li>Cotangent -> <span class="gras">cot(x)</span></li>
+						<li>Secant -> <span class="gras">sec(x)</span></li>
+						<li>Cosecant -> <span class="gras">csc(x)</span></li>
 					</ul>
 					<ul>
-						<li>Arcsinus hyp -> <span class="gras">arcsinh(x)</span> ou <span class="gras">asinh(x)</span></li>
-						<li>Arccosinus hyp -> <span class="gras">arccosh(x)</span> ou <span class="gras">acosh(x)</span></li>
-						<li>Arctangente hyp -> <span class="gras">arctanh(x)</span> ou <span class="gras">atanh(x)</span></li>
-						<li>Arccotangente hyp -> <span class="gras">arccoth(x)</span> ou <span class="gras">acoth(x)</span></li>
+						<li>Arc sine -> <span class="gras">arcsin(x)</span> ou <span class="gras">asin(x)</span></li>
+						<li>Arc cosine -> <span class="gras">arccos(x)</span> ou <span class="gras">acos(x)</span></li>
+						<li>Arc tangent -> <span class="gras">arctan(x)</span> ou <span class="gras">atan(x)</span></li>
+						<li>Arc cotangent -> <span class="gras">arccot(x)</span> ou <span class="gras">acot(x)</span></li>
 					</ul>
-					<h2>Les racines et les puissances</h2>
+					<h2>Hyperbolic functions</h2>
 					<ul>
-						<li>Racine carrée -> <span class="gras">sqrt(x)</span></li>
-						<li>Puissances -> <span class="gras">pow(x, y)</span> <span class="texteSecondaire">Élève x à une puissance y</span></li>
-						<li>Racines -> <span class="gras">root(x, y)</span> <span class="texteSecondaire">Racine y<span style="vertical-align:super;">ème</span> d'un nombre x</span></li>
+						<li>Hyperbolic sine -> <span class="gras">sinh(x)</span></li>
+						<li>Hyperbolic cosine -> <span class="gras">cosh(x)</span></li>
+						<li>Hyperbolic tangent -> <span class="gras">tanh(x)</span></li>
+						<li>Hyperbolic cotangent -> <span class="gras">coth(x)</span></li>
+						<li>Hyperbolic secant -> <span class="gras">sech(x)</span></li>
+						<li>Hyperbolic cosecant -> <span class="gras">csch(x)</span></li>
 					</ul>
-					<h2>Les exponentielles et logarithmes</h2>
+					<ul>
+						<li>Hyperbolic arc sine -> <span class="gras">arcsinh(x)</span> or <span class="gras">asinh(x)</span></li>
+						<li>Hyperbolic arc cosine -> <span class="gras">arccosh(x)</span> or <span class="gras">acosh(x)</span></li>
+						<li>Hyperbolic arc tangent -> <span class="gras">arctanh(x)</span> or <span class="gras">atanh(x)</span></li>
+						<li>Hyperbolic arc cotangent -> <span class="gras">arccoth(x)</span> or <span class="gras">acoth(x)</span></li>
+					</ul>
+					<h2>Square roots and degrees</h2>
+					<ul>
+						<li>Square root -> <span class="gras">sqrt(x)</span></li>
+						<li>Degree -> <span class="gras">pow(x, y)</span> <span class="texteSecondaire">Variable x to the power y</span></li>
+						<li>Root -> <span class="gras">root(x, y)</span> <span class="texteSecondaire">Root y of x</span></li>
+					</ul>
+					<h2>Exponential and logarithm</h2>
 					<ul>
 						<li>e<span style="vertical-align:super;">x</span> -> <span class="gras">exp(x)</span></li>
-						<li>logarithme naturel -> <span class="gras">ln(x)</span></li>
-						<li>logarithme de base 10 -> <span class="gras">log(x)</span></li>
+						<li>Natural logarithm -> <span class="gras">ln(x)</span></li>
+						<li>Decimal logarithm -> <span class="gras">log(x)</span></li>
 					</ul>
-					<h2>La valeur absolue d'un nombre</h2>
+					<h2>Absolute number value</h2>
 					<ul>
 						<li>|x| -> <span class="gras">abs(x)</span></li>
 					</ul>
-					<h2>Les arrondis</h2>
+					<h2>Rounding</h2>
 					<ul>
-						<li><span class="gras">round(x)</span> -> arrondit à l'entier le plus proche</li>
-						<li><span class="gras">ceil(x)</span> -> arrondit à l'entier supérieur</li>
-						<li><span class="gras">floor(x)</span> -> arrondit à l'entier inférieur</li>
+						<li><span class="gras">round(x)</span> -> rounding to the nearest whole number</li>
+						<li><span class="gras">ceil(x)</span> -> rounding to the nearest whole number in a big way</li>
+						<li><span class="gras">floor(x)</span> -> rounding to the nearest whole number the smaller side</li>
 					</ul>					
 				</p> <br/>
 				<hr/>
-				<h1>Constantes</h1>
-				<p>Quelques constantes sont aussi disponibles : <br/>
+				<h1>Constants</h1>
+				<p>Also are available some constants:<br/>
 					<ul>
 						<li><span class="gras">pi</span> = 4 * atan(1) ≈  3,141592653589793</li>
 						<li><span class="gras">e</span> = exp(1) ≈ 2.718281828459045</li>
@@ -519,34 +519,34 @@
 				</p>
 				<br/>
 				<hr/>
-				<h1>Touches clavier</h1>
+				<h1>Keyboard keys</h1>
 				<p style="font-size:90%;">
-					esc (échap) -> recharger le widget <br/>
-					ctrl + flèche gauche -> déplacer le graphique à gauche <br/>
-					ctrl + flèche haut -> déplacer le graphique en  haut <br/>
-					ctrl + flèche droite -> déplacer le graphique à droite <br/>
-					ctrl + flèche bas -> déplacer le graphique en bas <br/>
+					esc -> reset widget <br/>
+					ctrl + left arrow -> graph will be moved left<br/>
+					ctrl + top arrow -> graph will be moved top<br/>
+					ctrl + right arrow -> graph will be moved right<br/>
+					ctrl + bottom arrow -> graph will be moved bottom<br/>
 					<br/>
 				</p>
 				<br/>
-				<input type="button" value="Guide d'utilisation" onclick="navigateur('Guide_Utilisateur.html')" style="position:absolute;bottom:0px;left:0px;"/>
+				<input type="button" value="User's guide" onclick="navigateur('Guide_Utilisateur.html')" style="position:absolute;bottom:0px;left:0px;"/>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Fermer"/></div>
+			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
 		</div>
 
 		<div id="menuAideExemples" class="menu">
 			<table class="ongletMenu">
 				<tr>
-					<td onclick='afficherMenu("menuAide")'>Utilisation</td>
-					<td class="ongletMenuActuel" onclick='afficherMenu("menuAideExemples")'>Exemples</td>
-					<td onclick='afficherMenu("menuAideAutres")'>Autres</td>
+					<td onclick='afficherMenu("menuAide")'>Using</td>
+					<td class="ongletMenuActuel" onclick='afficherMenu("menuAideExemples")'>Examples</td>
+					<td onclick='afficherMenu("menuAideAutres")'>Other</td>
 				</tr>
 			</table>
 			<div class="contenuMenu avecBordures">
-				<span class="texteSecondaire">(Vous pouvez cliquer sur un exemple pour l'afficher. Pensez à ajuster la précision du graphique dans les options si nécessaire)</span>
+				<span class="texteSecondaire">(You can view example. Do not forget to set accuracy in options if necessary.)</span>
 				<br/><br/>
 				<hr/>
-				<h1>Fonctions 2D</h1>
+				<h1>Functions 2D</h1>
 				<p>
 					<span class="survol" onclick="document.getElementById('inputEq').value = '0.5*x+1' ; actualiserGraph()">0.5*x+1</span> <br/>
 					<span class="survol" onclick="document.getElementById('inputEq').value = 'pow(x,2)-3' ; actualiserGraph()">pow(x,2)-3</span> <br/>
@@ -561,7 +561,7 @@
 				</p>
 				<br/><br/>
 				<hr/>
-				<h1>Fonctions 3D</h1>
+				<h1>Functions 3D</h1>
 				<p>
 					<span class="survol" onclick="document.getElementById('inputEq').value = 'sin(x)+cos(y)' ; actualiserGraph()">sin(x)+cos(y)</span> <br/>
 					<span class="survol" onclick="document.getElementById('inputEq').value = 'sqrt(10-x*x)' ; actualiserGraph()">sqrt(10-x*x)</span> <br/>
@@ -569,27 +569,25 @@
 				</p>
 				<br/>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Fermer"/></div>
+			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
 		</div>
 
 		<div id="menuAideAutres" class="menu">
 			<table class="ongletMenu">
 				<tr>
-					<td onclick='afficherMenu("menuAide")'>Utilisation</td>
-					<td onclick='afficherMenu("menuAideExemples")'>Exemples</td>
-					<td class="ongletMenuActuel" onclick='afficherMenu("menuAideAutres")'>Autres</td>
+					<td onclick='afficherMenu("menuAide")'>Using</td>
+					<td onclick='afficherMenu("menuAideExemples")'>Examples</td>
+					<td class="ongletMenuActuel" onclick='afficherMenu("menuAideAutres")'>Other</td>
 				</tr>
 			</table>
 			<div class="contenuMenu avecBordures">
-				<h4>Enregistrer le graphique</h4>
-				Dans certains navigateurs, lorsque vous utilisez la méthode d'affichage "Canvas", vous pouvez sauvegarder le graphique en cliquant avec le bouton de droite de la souris sur celui-ci et en séléctionnant "Enregistrer l'image".
-				Vous pouvez aussi sauvegarder le graphique 3D.
+				<h4>Save graph</h4>
+				In some browsers when used display method "Canvas" you can save graph by clicking it with right mouse button and selecting "Save image". Also you can save 3D-graphs.
 				<br/><br/>
-				<h4>Décalage</h4>
-					Si le graphique n'est pas à la bonne place (il dépasse de la zone prévue), ajustez le "décalage du graphique" dans le menu des options.
-					Pour Konqueror, il faut utiliser un décalage de x=122 et y=48.
+				<h4>Offset</h4>
+					If graph isn't in the right place (larger than canvas) then can you set necessary parameters graph displaying in settings menu. 
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Fermer"/></div>
+			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
 		</div>
 
 		 <!-- Crédits -->
@@ -600,7 +598,7 @@
 					<tr>
 						<td>
 							<img src="icon.png"/>
-							<h3>Widget réalisé par</h3> 
+							<h3>Widget is developed by</h3> 
 							Yannick Vessaz <br/>
 							<a href='mailto:yannick.vessaz@gmail.com'>yannick.vessaz@gmail.com</a>
 						</td>
@@ -608,105 +606,105 @@
 				</table>
 				<span class="texteSecondaire">
 					<br/><br/>
-					Si vous voulez rapporter un bug, avez une suggestion par rapport au widget ou voulez simplement poser une question, merci de me contacter par <a href='mailto:yannick.vessaz@gmail.com'>e-mail</a>.
+					If you want to inform about bug, make a proposal or just ask some questions then you can  contact to me at the following e-mail: <a href='mailto:yannick.vessaz@gmail.com'>e-mail</a>.
 					<br/><br/>
-					Les images d'arrière-plan du widget on été tirées des thèmes du bureau "plasma-desktop" de l'environnement <a href="http://kde.org">KDE</a>.
+					If you want to change background design then you can contact at following address: <a href="http://kde.org">KDE</a>.
 				</span>
 				<span id="version" class="texteSecondaire" style="position:absolute;bottom:10px;left:15px;">version 1.3</span>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Fermer"/></div>
+			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
 		</div>
 
 		 <!-- Outils -->
 		<div id="menuOutils" class="menu">
 			<div class="contenuMenu">
-				<h3 style="margin-top:0px; margin-bottom:15px;">Outils</h3> 
-				Action de la souris:<br/>
-				<input type="button" class="choixOutil" onclick="choixOutil('deplacement');cacherMenu()" value="Déplacement"/>
+				<h3 style="margin-top:0px; margin-bottom:15px;">Tools</h3> 
+				Mouse events:<br/>
+				<input type="button" class="choixOutil" onclick="choixOutil('deplacement');cacherMenu()" value="Moving"/>
 				<input type="button" class="choixOutil" onclick="choixOutil('tangente');cacherMenu()" value="Tangente"/>
 				<input type="button" class="choixOutil" onclick="choixOutil('point');cacherMenu()" value="Point"/>
 				<br/><br/>
-				Dessiner la dérivée de la fonction:<br/>
+				Derivative:<br/>
 				<label for="checkDerivee"> f'(x) </label><input type="checkbox" id="checkDerivee" onclick="actualiserGraph()"/><label for="checkDerivee2"> f''(x) </label><input type="checkbox" id="checkDerivee2" onclick="actualiserGraph()"/>
 				<br/><br/>
-				Aire sous la fonction:<br/>
-				De <input value="-5" class="smallInput" id="aireG"/> à <input value="5" class="smallInput" id="aireD"/> <input type="button" onclick='calculerAire()' value="Calculer"/> <span id="outputAire"></span>
-				<div style="float: right;"><label for="checkAire">Dessiner </label><input type="checkbox" id="checkAire" onclick="actualiserGraph()"/></div>
+				Square under function:<br/>
+				From <input value="-5" class="smallInput" id="aireG"/> to <input value="5" class="smallInput" id="aireD"/> <input type="button" onclick='calculerAire()' value="Calculate"/> <span id="outputAire"></span>
+				<div style="float: right;"><label for="checkAire">Draw </label><input type="checkbox" id="checkAire" onclick="actualiserGraph()"/></div>
 				<br/><br/>
-				Calculer un point de la fonction:<br/>
+				Calculate the point on the function:<br/>
 				x=<input value="0" class="smallInput" id="inputX" onkeypress='if(event.keyCode==13) execute(document.getElementById("inputEq").value)'/>
-				<input type="button" onclick='execute(document.getElementById("inputEq").value)' value="Évaluer"/>
+				<input type="button" onclick='execute(document.getElementById("inputEq").value)' value="Estimate"/>
 				<span id="outputX"></span>
 				<br/><br/>
-				Étudier la fonction : <br/>
-				f(x) = <span id="etudeFct"></span> <input type="button" value="Démarrer l'étude" onclick='etudier(document.getElementById("inputEq").value);afficherMenu("menuEtude")'/>
+				Analysis of function: <br/>
+				f(x) = <span id="etudeFct"></span> <input type="button" value="Start to analysis" onclick='etudier(document.getElementById("inputEq").value);afficherMenu("menuEtude")'/>
 				<br/><br/>
-				Tests d'affichage<br/>
+				Display test:<br/>
 				<input type="button" onclick='cacherMenu(); testXPM()' value="Test XPM"/><input type="button" onclick='cacherMenu(); testSVG()' value="Test SVG"/><input type="button" onclick='cacherMenu(); testCanvas()' value="Test Canvas"/>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Fermer"/></div>
+			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
 		</div>
 
 		 <!--Etude de fonction -->
 		<div id="menuEtude" class="menu">
 			<div class="contenuMenu">
-				<h3>Étude de fonction</h3>
-				Ensemble de définition : <span id="etudeEDF">...</span> <br/>
-				Parité : <span id="etudeParite">...</span> <br/>
-				Zéros de la fonction : <span id="etudeZeros">...</span> <br/>
+				<h3>Analysis of function in the</h3>
+				Set of definitions : <span id="etudeEDF">...</span> <br/>
+				Parity : <span id="etudeParite">...</span> <br/>
+				Zeros of functions : <span id="etudeZeros">...</span> <br/>
 				<table>
 					<tr id="etudeSigne">
-						<td>Signe : ...</td>
+						<td>Sign : ...</td>
 					</tr>
 				</table>
 				Asymptotes <br/>
-				AH gauche : <span id="etudeAHG">...</span> <br/>
-				AH droite : <span id="etudeAHD">...</span> <br/>
+				AH left : <span id="etudeAHG">...</span> <br/>
+				AH right : <span id="etudeAHD">...</span> <br/>
 				AV : <span id="etudeAV">...</span>
                 <span id="etudeMin">...</span>
                 <span id="etudeMax">...</span>
                 <span id="etudeI">...</span> <br/><br/>
-				<span class="texteSecondaire" style="font-size:10px;">L'outil permettant d'étudier les fonctions n'est pas fiable à 100%. Pensez à vérifier les résultats de l'étude avant d'en faire une quelconque utilisation.</span>
+				<span class="texteSecondaire" style="font-size:10px;">Tool for analysis of function is not reliable on 100%. Don't forget check results of analysis before use it.</span>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick="etudier(document.getElementById('inputEq').value)" value="Actualiser" style="position:relative;right:310px;"/> <input type="button" onclick='cacherMenu()' value="Fermer"/></div>
+			<div class="barreBasMenu"><input type="button" onclick="etudier(document.getElementById('inputEq').value)" value="Actualize" style="position:relative;right:310px;"/> <input type="button" onclick='cacherMenu()' value="Cancel"/></div>
 		</div>
 
 		 <!-- Fonctions multiples -->
 		<div id="menuFonctions" class="menu">
 			<table class="ongletMenu">
 				<tr>
-					<td class="ongletMenuActuel" onclick='afficherMenu("menuFonctions")'>Fonctions</td>
-					<td onclick='afficherMenu("menuHistorique")'>Historique</td>
+					<td class="ongletMenuActuel" onclick='afficherMenu("menuFonctions")'>Functions</td>
+					<td onclick='afficherMenu("menuHistorique")'>History</td>
 				</tr>
 			</table>
 			<div class="contenuMenu avecBordures">
-				<em>Actuelle</em><br/>
+				<em>Current</em><br/>
 				f(x) = <span id="fonctionActuelle">x</span> <input type="button" value="+" onclick="ajouterFonction(document.getElementById('fonctionActuelle').innerHTML)"/>
 				<br/><br/>
-				<em>Supplémentaires</em><br/>
-				<span id="fonctionsSupp">aucune ...</span>
+				<em>Additional</em><br/>
+				<span id="fonctionsSupp">n/a ...</span>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Fermer"/></div>
+			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
 		</div>
 
 		 <!-- Historique -->
 		<div id="menuHistorique" class="menu">
 			<table class="ongletMenu">
 				<tr>
-					<td onclick='afficherMenu("menuFonctions")'>Fonctions</td>
-					<td class="ongletMenuActuel" onclick='afficherMenu("menuHistorique")'>Historique</td>
+					<td onclick='afficherMenu("menuFonctions")'>Functions</td>
+					<td class="ongletMenuActuel" onclick='afficherMenu("menuHistorique")'>History</td>
 				</tr>
 			</table>
 			<div class="contenuMenu avecBordures" id="divHistorique">
 				<span id="spanHistorique"></span>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Fermer"/></div>
+			<div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
 		</div>
 
 		 <!-- Couleur -->
 		<div id="menuCouleur" class="menu">
 			<div class="contenuMenu">
-				<em>Choix de la couleur:</em> <br/><br/>
+				<em>Choosing the color:</em> <br/><br/>
 				<div id="colorSV" onmousemove="if(mouseDown==true){colorSV(event)}" onmousedown="colorSV(event); mouseDown = true" onmouseup="mouseDown = false">
 					<svg:svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
 					<svg:defs id="defs1">
@@ -802,36 +800,36 @@
 				</div>
 				<table id="colorValues">
 					<tr>
-						<td>Teinte: </td><td><input id="inputTeinte" class="smallInput" value="0" onkeypress=''/></td>
+						<td>Color: </td><td><input id="inputTeinte" class="smallInput" value="0" onkeypress=''/></td>
 					</tr><tr>
-						<td>Valeur: </td><td><input id="inputValeur" class="smallInput" value="0" onkeypress=''/></td>
+						<td>Value: </td><td><input id="inputValeur" class="smallInput" value="0" onkeypress=''/></td>
 					</tr><tr>
 						<td>Saturation: </td><td><input id="inputSaturation" class="smallInput" value="0" onkeypress=''/></td>
 					</tr><tr>
-						<td>Rouge: </td><td><input id="inputRouge" class="smallInput" value="255" onkeypress=''/></td>
+						<td>Red: </td><td><input id="inputRouge" class="smallInput" value="255" onkeypress=''/></td>
 					</tr><tr>
-						<td>Vert: </td><td><input id="inputVert" class="smallInput" value="0" onkeypress=''/></td>
+						<td>Green: </td><td><input id="inputVert" class="smallInput" value="0" onkeypress=''/></td>
 					</tr><tr>
-						<td>Bleu: </td><td><input id="inputBleu" class="smallInput" value="0" onkeypress=''/></td>
+						<td>Blue: </td><td><input id="inputBleu" class="smallInput" value="0" onkeypress=''/></td>
 					</tr><tr>
-						<td>Opacité: </td><td><input id="inputOpacity" class="smallInput" value="1" onkeypress=''/></td>
+						<td>Opacity: </td><td><input id="inputOpacity" class="smallInput" value="1" onkeypress=''/></td>
 					</tr><!--<tr>
 						<td><input id="inputCouleur" style="width: 70%" value="cyan" onkeypress='couleurFonction = this.value; if(event.keyCode==13) actualiserGraph()'/></td>
 					</tr>-->
 				</table>
-				<div id="apercuCouleur" title="Nouvelle Couleur"></div><div id="apercuCouleur2" title="Ancienne Couleur"></div>
+				<div id="apercuCouleur" title="New Color"></div><div id="apercuCouleur2" title="Old Color"></div>
 			</div>
-			<div class="barreBasMenu"><input type="button" onclick="if(idColor=='buttonColor'){cacherMenu()}else{afficherMenu('menuFonctions')}; actualiserGraph()" value="Valider"/></div>
+			<div class="barreBasMenu"><input type="button" onclick="if(idColor=='buttonColor'){cacherMenu()}else{afficherMenu('menuFonctions')}; actualiserGraph()" value="Check"/></div>
 		 </div>
 
 		 <!-- Erreurs Fonctions interdites -->
 		<div id="fctInterdite" class="miniMenu">
 			<br/>
-			<h1>------- Erreur -------</h1>
+			<h1>------- Error -------</h1>
 			<br/>
-			Impossible de dessiner la fonction ...
+			Impossible to draw the function ...
 			<br/><br/>
-			Expression ou carractère invalide : <br/>
+			Error in expression or unexpected char: <br/>
 			<span id="spanFctInterdite" style="font-style:italic;"></span>
 			<br/><br/>
 			<input type="button" onclick="cacherMenu()" value="Ok"/>
@@ -839,34 +837,31 @@
 
 		 <!-- Autres erreurs -->
 		<div id="erreurFct" class="miniMenu">
-			<h1>------- Erreur -------</h1>
-			Une erreur s'est produite pendant les calculs nécessaires à afficher la fonction. Vérifiez la fonction que vous vouliez dessiner et appuyez à nouveau sur "afficher".
+			<h1>------- Error -------</h1>
+			Runtime error! Check your function and try to draw it again.
 			<br/>
-			Une description ainsi que des exemples des différentes fonctions que vous pouvez entrer se trouve dans l'aide.
+			Description and parameters various functions which are available to help.
 			<br/><br/>
-			<input type="button" onclick="afficherMenu('menuAide')" value="Aide"/>
+			<input type="button" onclick="afficherMenu('menuAide')" value="Help"/>
 			<input type="button" onclick="cacherMenu()" value="Ok"/>
 		</div>
 
 		 <!-- Menu des mises à jour -->
 		<div id="mAj" class="menu">
-			<h1>Mise à jour</h1>
-			Version en cours d'utilisation : <br/><span id="thisVersion"></span><br/>
-			Dernière version disponible en ligne : <br/><span id="newVersion"></span><br/>
+			<h1>Updated</h1>
+			Current version: <br/><span id="thisVersion"></span><br/>
+			The last on-line version: <br/><span id="newVersion"></span><br/>
 			<br/>
-			Ce widget est également utilisable dans un navigateur internet sur le site : <em>http://gyb.educanet2.ch/tm-widgets/yannick</em><br/>
-			<br/>
-			Vous pouvez remplacer la version en cours d'utilisation par la version du widget en ligne. Notez que ceci ne met pas à jour le widget. Il faudra réitérer cette procédure la prochaine fois que vous l'utiliserez.<br/>
-			<input type="button" onclick="document.location.href='http://gyb.educanet2.ch/tm-widgets/yannick/GraphMe.wgt/Grapheur.xhtml'" value="Utiliser la dernière version"/><br/>
-			<input type="button" onclick="cacherMenu()" value="Garder ma version"/>
+			This widget is available to using on web-site: <em>http://gyb.educanet2.ch/tm-widgets/yannick</em><br/>
+			<br/>			
 		</div>
 
 		 <!-- Erreur mise à jour -->
 		<div id="erreurMaJ" class="miniMenu">
 			<br/>
-			<h1>------- Erreur -------</h1>
+			<h1>------- Error -------</h1>
 			<br/><br/>
-			Il est impossible de mettre à jour le widget vers la version en ligne car vous utilisez déjà la version en ligne.
+			Update to latest version is not available because you already use the latest version.
 			<br/><br/><br/>
 			<input type="button" onclick="cacherMenu()" value="Ok"/>
 		</div>
@@ -874,23 +869,12 @@
 		 <!-- Info options sauvegardées -->
 		<div id="infoSauvegarde" class="alertMenu">
 			<br/>
-			<h1>Options sauvegardées!</h1>
+			<h1>Options saved!</h1>
 			<br/>
 			<input type="button" onclick="document.getElementById('infoSauvegarde').style.display = 'none'" value="Ok"/>
 		</div>
 
-		 <!-- Demande mise à jour auto -->
-		<div id="demandeMaJ" class="miniMenu">
-			<br/>
-			<h1>Mise à jour automatique</h1>
-			<br/><br/>
-			Voulez-vous vraiment utiliser la dernière version du widget disponible ?
-			<br/><br/><br/>
-			<input type="button" onclick="cacherMenu()" value="Non"/>
-			<input type="button" onclick="document.location.href='http://gyb.educanet2.ch/tm-widgets/yannick/GraphMe.wgt/Grapheur.xhtml'" value="Oui"/>
-		</div>
-
-		<!-- ..... Flèches de déplacement ..... -->
+				<!-- ..... Flèches de déplacement ..... -->
 		<div class="flecheDeplacement" id="flecheHaut" onclick="if(fonction3D){zoom3D(1.25)}else{deplacerY(1)}" onmousemove="sourisMove(event)">▲</div>
 		<div class="flecheDeplacement" id="flecheGauche" onclick="deplacerX(-1)" onmousemove="sourisMove(event)">◀</div>
 		<div class="flecheDeplacement" id="flecheBas" onclick="if(fonction3D){zoom3D(0.8)}else{deplacerY(-1)}" onmousemove="sourisMove(event)">▼</div>

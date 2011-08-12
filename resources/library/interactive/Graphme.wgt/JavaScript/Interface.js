@@ -28,7 +28,7 @@ function cacherMenu(){
 	menuActuel = ""
 }
 
-// ---- Minimiser ou Maximiser le widget (pour Uniboard) ----
+// ---- Minimiser ou Maximiser le widget (pour sankore) ----
 function miniMax(){
 	if (maximise){
 		maximise = false
@@ -99,7 +99,7 @@ function changerTheme(){
 
 // Affiche un message d'erreur
 function error(err){
-	alert(" Erreur sur la page...\n\n Description: " + err.description + "\n\n Cliquez sur OK pour continuer.\n\n")
+	alert(" Error has occurred on the page ...\n\n Description: " + err.description + "\n\n Click 'OK' to continue.\n\n")
 }
 
 

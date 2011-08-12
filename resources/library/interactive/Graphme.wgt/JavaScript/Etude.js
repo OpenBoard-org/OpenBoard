@@ -136,13 +136,13 @@ function pariteFct(){
 		}
 	}
 	if(paire){
-		document.getElementById("etudeParite").innerHTML = "paire"
+		document.getElementById("etudeParite").innerHTML = "even"
 	}
 	else if(impaire){
-		document.getElementById("etudeParite").innerHTML = "impaire"
+		document.getElementById("etudeParite").innerHTML = "uneven"
 	}
 	else{
-		document.getElementById("etudeParite").innerHTML = "aucune"
+		document.getElementById("etudeParite").innerHTML = "n/a"
 	}
 }
 
@@ -272,7 +272,7 @@ function signeFct(fct){
 		listeZeros.splice((aSupprimer[i]-i), 1)
 	}
 	if(listeZeros==""){
-		texteZeros = "aucuns"
+		texteZeros = "n/a"
 	}
 	document.getElementById("etudeZeros").innerHTML = texteZeros+listeZeros
 }
@@ -282,32 +282,32 @@ function asymptotes(){
 	if(Math.abs(limGauche[0])<1000){
 		var limRound = Math.round(limGauche[0]*100)/100
 		if(limGauche[0]<limRound){
-			document.getElementById("etudeAHG").innerHTML = "y = "+limRound +" <span class='texteSecondaire'>(courbe au-dessous de l'AH)</span>"
+			document.getElementById("etudeAHG").innerHTML = "y = "+limRound +" <span class='texteSecondaire'>(curve is higher than a l'AH)</span>"
 		}
 		else if(limGauche[0]>limRound){
-			document.getElementById("etudeAHG").innerHTML = "y = "+limRound +" <span class='texteSecondaire'>(courbe au-dessus de l'AH)</span>"
+			document.getElementById("etudeAHG").innerHTML = "y = "+limRound +" <span class='texteSecondaire'>(curve is lower than a l'AH)</span>"
 		}
 		else{
 			document.getElementById("etudeAHG").innerHTML = "y = "+limRound
 		}
 	}
 	else{
-		document.getElementById("etudeAHG").innerHTML = "aucune"
+		document.getElementById("etudeAHG").innerHTML = "n/a"
 	}
 	if(Math.abs(limDroite[0])<1000){
 		var limRound = Math.round(limDroite[0]*100)/100
 		if(limDroite[0]<limRound){
-			document.getElementById("etudeAHD").innerHTML =  "y = "+limRound +" <span class='texteSecondaire'>(courbe au-dessous de l'AH)</span>"
+			document.getElementById("etudeAHD").innerHTML =  "y = "+limRound +" <span class='texteSecondaire'>(curve is lower than a l'AH)</span>"
 		}
 		else if(limDroite[0]>limRound){
-			document.getElementById("etudeAHD").innerHTML =  "y = "+limRound +" <span class='texteSecondaire'>(courbe au-dessus de l'AH)</span>"
+			document.getElementById("etudeAHD").innerHTML =  "y = "+limRound +" <span class='texteSecondaire'>(curve is higher than a l'AH)</span>"
 		}
 		else{
 			document.getElementById("etudeAHD").innerHTML =  "y = "+limRound
 		}
 	}
 	else{
-		document.getElementById("etudeAHD").innerHTML = "aucune"
+		document.getElementById("etudeAHD").innerHTML = "n/a"
 	}
 	// Verticales
 	var texteAV = ""
@@ -318,7 +318,7 @@ function asymptotes(){
 		}
 	}
 	if(texteAV==""){
-		texteAV = "aucune <br/>"
+		texteAV = "n/a <br/>"
 	}
 	document.getElementById("etudeAV").innerHTML = texteAV
 }
@@ -343,8 +343,8 @@ function courbure(){
             }
         }
     }
-    if(texteMin==""){texteMin = "<br/>Aucun Minimum";}
-    if(texteMax==""){texteMax = "<br/>Aucun Maximum";}
+    if(texteMin==""){texteMin = "<br/>No minimum";}
+    if(texteMax==""){texteMax = "<br/>No maximum";}
     if(texteI==""){texteI = "<br/>Aucun I";}
     document.getElementById("etudeMin").innerHTML = texteMin;
     document.getElementById("etudeMax").innerHTML = texteMax;
