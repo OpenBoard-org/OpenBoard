@@ -130,12 +130,38 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
             UBApplication::applicationController->initialHScroll(),
             UBApplication::applicationController->initialVScroll()));
     }
+
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+
 }
 
 
 UBGraphicsScene::~UBGraphicsScene()
 {
     // NOOP
+}
+
+void UBGraphicsScene::selectionChangedProcessing()
+{
+    QList<QGraphicsItem *> allItemsList = items();
+    for( int i = 0; i < allItemsList.size(); i++ )
+    {
+        QGraphicsItem *nextItem = allItemsList.at(i);
+        qreal zValue = nextItem->zValue();
+        nextItem->setZValue(qreal(1));
+        qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+    }
+
+    QList<QGraphicsItem *> selItemsList = selectedItems();
+    for( int i = 0; i < selItemsList.size(); i++ )
+    {
+        QGraphicsItem *nextItem = selItemsList.at(i);
+        qreal zValue = nextItem->zValue();
+        nextItem->setZValue(2);
+        qDebug() << QString(" >>> %1 <<< ").arg(i) << QString(" >>> %1 <<< ").arg(zValue);
+    }
+
+
 }
 
 // MARK: -
@@ -1063,6 +1089,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     graphicsWidget->setFlag(QGraphicsItem::ItemIsSelectable, true);
     graphicsWidget->setZValue(getNextObjectZIndex());
 
+//    QGraphicsScene::addWidget(graphicsWidget->widgetWebView());
     addItem(graphicsWidget);
 
     qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
@@ -1079,6 +1106,16 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
         UBApplication::undoStack->push(uc);
 
         setDocumentUpdated();
+
+//        graphicsWidget->widgetWebView()->setParent(graphicsWidget->v));
+//         QObject *zz1= graphicsWidget->widgetWebView()->parent();
+//         QWidget *zz2= graphicsWidget->widgetWebView()->parentWidget();
+// 
+//         QObject *zz3= graphicsWidget->parent();
+//         QGraphicsWidget *zz4= graphicsWidget->parentWidget();
+
+//        graphicsWidget->widgetWebView()->loadUrl();
+
     }
     else
     {
