@@ -12,6 +12,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "UniboardSankoreTransition.h"
 #include "core/UBSettings.h"
 #include "frameworks/UBDesktopServices.h"
@@ -64,6 +65,15 @@ void UniboardSankoreTransition::rollbackDocumentsTransition(QFileInfoList& fileI
     }
 }
 
+bool UniboardSankoreTransition::checkDocumentDirectory(QString& documentDirectoryPath)
+{
+    bool result = true;
+    result = updateSankoreHRef(documentDirectoryPath);
+    QString sankoreWidgetPath = documentDirectoryPath + "/widgets";
+    result &= updateIndexWidget(sankoreWidgetPath);
+    return result;
+}
+
 void UniboardSankoreTransition::documentTransition()
 {
     if (QFileInfo(mUniboardSourceDirectory).exists() || QFileInfo(mOldSankoreDirectory).exists()){
@@ -90,6 +100,132 @@ void UniboardSankoreTransition::startDocumentTransition()
     connect(this,SIGNAL(transitioningFile(QString)),mTransitionDlg,SLOT(transitioningFile(QString)));
 }
 
+
+bool UniboardSankoreTransition::checkPage(QString& sankorePagePath)
+{
+    QFile file(sankorePagePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    QByteArray documentByteArray = file.readAll();
+    file.close();
+
+    QString sankoreDirectory = sankorePagePath.left(sankorePagePath.indexOf("/page"));
+    ;
+    sankoreDirectory = QUrl::fromLocalFile(sankoreDirectory).toString();
+    QString documentString(documentByteArray);
+
+    QRegExp videoRegExp("<video(.*)xlink:href=\"(.*)videos/(.*)/>");
+    videoRegExp.setMinimal(true);
+
+    documentString.replace(videoRegExp,"<video\\1xlink:href=\"videos/\\3/>");
+
+
+    QRegExp audioRegExp("<audio(.*)xlink:href=\"(.*)audios/(.*)/>");
+    audioRegExp.setMinimal(true);
+
+    documentString.replace(audioRegExp,"<audio\\1xlink:href=\"audios/\\3/>");
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
+
+    file.write(documentString.toAscii());
+    file.close();
+
+    return true;
+}
+
+
+bool UniboardSankoreTransition::checkWidget(QString& sankoreWidgetIndexPath)
+{
+    QFile file(sankoreWidgetIndexPath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    QByteArray documentByteArray = file.readAll();
+    file.close();
+
+    QString documentString(documentByteArray);
+
+    QRegExp swfOriginFilePathRegExp("<param name=\"movie\" value=\"(.*)\">");
+    swfOriginFilePathRegExp.setMinimal(true);
+    swfOriginFilePathRegExp.indexIn(documentString);
+    QString origin = swfOriginFilePathRegExp.cap(1);
+    if(origin.contains("http://")){
+        // an url is the source of the swf. The source is kept as is.
+        return true;
+    }
+
+    //changing the path
+    QRegExp swfDataPathRegExp("<object(.*)data=\"(.*)interactive content/Web/(.*)\"(.*)>");
+    swfDataPathRegExp.setMinimal(true);
+    documentString.replace(swfDataPathRegExp,"<object\\1data=\"\\3\">");
+
+    QRegExp swfMoviePathRegExp("<param name=\"movie\" value=\"(.*)interactive content/Web/(.*)\">");
+    swfMoviePathRegExp.setMinimal(true);
+    documentString.replace(swfMoviePathRegExp,"<param name=\"movie\" value=\"\\2\">");
+
+    //copy the swf on the right place
+    QRegExp swfFileNameRegExp("<param name=\"movie\" value=\"(.*)\">");
+    swfFileNameRegExp.setMinimal(true);
+    swfFileNameRegExp.indexIn(documentString);
+    QString swfFileName = swfFileNameRegExp.cap(1);
+    int lastDirectoryLevel = sankoreWidgetIndexPath.lastIndexOf("/");
+    if (lastDirectoryLevel == -1)
+        lastDirectoryLevel = sankoreWidgetIndexPath.lastIndexOf("\\");
+
+
+    QString destination(sankoreWidgetIndexPath.left(lastDirectoryLevel) + "/" + swfFileName);
+    QFile(origin).copy(destination);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
+
+    file.write(documentString.toAscii());
+    file.close();
+
+    return true;
+}
+
+
+bool UniboardSankoreTransition::updateIndexWidget(QString& sankoreWidgetPath)
+{
+    bool result = true;
+    QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(sankoreWidgetPath);
+
+    QFileInfoList::iterator fileInfo;
+    for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
+        if (fileInfo->fileName().endsWith("wgt")){
+            QString path = fileInfo->absolutePath() + "/" + fileInfo->fileName() + "/index.html";
+            if (QFile(path).exists())
+                result = checkWidget(path);
+
+            path = fileInfo->absolutePath() + "/" + fileInfo->fileName() + "/index.htm";
+            if (QFile(path).exists())
+                result &= checkWidget(path);
+        }
+    }
+
+    return result;
+}
+
+bool UniboardSankoreTransition::updateSankoreHRef(QString& sankoreDocumentPath)
+{
+    bool result = true;
+    QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(sankoreDocumentPath);
+
+    QFileInfoList::iterator fileInfo;
+
+    for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
+        if (fileInfo->fileName().endsWith("svg")){
+            QString path = fileInfo->absolutePath() + "/" + fileInfo->fileName();
+            result = checkPage(path);
+        }
+    }
+
+    return result;
+}
+
 void UniboardSankoreTransition::executeTransition()
 {
     bool result = false;
@@ -109,7 +245,11 @@ void UniboardSankoreTransition::executeTransition()
             QString sankoreDocumentName = fileInfo->fileName();
             emit transitioningFile(sankoreDocumentName);
             sankoreDocumentName.replace("Uniboard","Sankore");
-            result = UBFileSystemUtils::copyDir(fileInfo->filePath(),sankoreDocumentDirectory + "/" + sankoreDocumentName);
+            QString sankoreDocumentPath = sankoreDocumentDirectory + "/" + sankoreDocumentName;
+            result = UBFileSystemUtils::copyDir(fileInfo->filePath(),sankoreDocumentPath);
+            result &= updateSankoreHRef(sankoreDocumentPath);
+            QString sankoreWidgetPath = sankoreDocumentDirectory +  "/" + sankoreDocumentName + "/widgets";
+            result &= updateIndexWidget(sankoreWidgetPath);
         }
     }
 

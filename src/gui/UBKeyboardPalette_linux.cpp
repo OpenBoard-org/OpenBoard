@@ -75,6 +75,7 @@ void x11SendKey(Display *display, int keyCode, int modifiers)
 void UBKeyboardButton::sendUnicodeSymbol(unsigned int nSymbol1, unsigned int nSymbol2, bool shift)
 {
     unsigned int nSymbol = shift ? nSymbol2 : nSymbol1;
+
     // Obtain the X11 display.
     Display *display = XOpenDisplay(0);
     if(display == NULL)
@@ -96,6 +97,7 @@ void UBKeyboardButton::sendControlSymbol(int nSymbol)
     Display *display = XOpenDisplay(0);
     if(display == NULL)
        return;
+
 
     KeyCode keyCode = XKeysymToKeycode(display, nSymbol);
 
@@ -174,8 +176,10 @@ void setSymbolsFromButton(Display *display,
     {
         keySyms[byte_per_code * i + 0] =
                 keySyms[byte_per_code * i + 2] = locale[nFromButton + i]->code1;
+
         keySyms[byte_per_code * i + 1] =
                 keySyms[byte_per_code * i + 3] = locale[nFromButton + i]->code2;
+
         for(int j=4; j<byte_per_code; j++)
             keySyms[byte_per_code * i + j] = NoSymbol;
     }
@@ -193,11 +197,8 @@ void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)
     setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 41, 0, 1);
     setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 2,  1, 12);
     setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 16,  13, 12);
-    setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 30,  25, 12);
+    setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 30,  25, 11);
     setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 44,  37, 10);
-
 
     XCloseDisplay(display);
 }
-
-
