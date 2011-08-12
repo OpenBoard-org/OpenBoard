@@ -31,7 +31,7 @@ class PDFRenderer : public QObject
     Q_OBJECT
 
     public:
-        static PDFRenderer* rendererForUuid(const QUuid &uuid, const QString &filename);
+        static PDFRenderer* rendererForUuid(const QUuid &uuid, const QString &filename, bool importingFile = false);
         virtual ~PDFRenderer();
 
         virtual bool isValid() const = 0;
