@@ -271,6 +271,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void setToolCursor(int tool);
 
+        void selectionChangedProcessing();
+
+
     signals:
 
        void pageSizeChanged();

@@ -30,7 +30,7 @@ PDFRenderer::~PDFRenderer()
     // NOOP
 }
 
-PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &filename)
+PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &filename, bool importingFile)
 {
     if (sRenderers.contains(uuid))
     {
@@ -38,7 +38,7 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
     }
     else
     {
-        PDFRenderer *newRenderer = new XPDFRenderer(filename);
+        PDFRenderer *newRenderer = new XPDFRenderer(filename,importingFile);
 
         newRenderer->setRefCount(0);
         newRenderer->setFileUuid(uuid);

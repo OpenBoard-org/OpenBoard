@@ -38,9 +38,14 @@ class UniboardSankoreTransition : public QObject
 public:
     explicit UniboardSankoreTransition(QObject *parent = 0);
     ~UniboardSankoreTransition();
+
+    bool checkDocumentDirectory(QString& documentDirectoryPath);
+
     void documentTransition();
     bool checkPage(QString& sankorePagePath);
     bool updateSankoreHRef(QString &sankoreDocumentPath);
+    bool checkWidget(QString& sankoreWidgetPath);
+    bool updateIndexWidget(QString& sankoreWidgetPath);
     void executeTransition();
 
 

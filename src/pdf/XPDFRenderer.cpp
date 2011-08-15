@@ -23,7 +23,7 @@
 
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
 
-XPDFRenderer::XPDFRenderer(const QString &filename)
+XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
     : mDocument(0)
 {
     if (!globalParams)
@@ -37,7 +37,7 @@ XPDFRenderer::XPDFRenderer(const QString &filename)
 
     mDocument = new PDFDoc(new GString(filename.toUtf8().data()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
     sInstancesCount.ref();
-    bThumbGenerated = false;
+    bThumbGenerated = !importingFile;
     bPagesGenerated = false;
     mPagesMap.clear();
     mThumbs.clear();

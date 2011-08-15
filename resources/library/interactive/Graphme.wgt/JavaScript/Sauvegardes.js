@@ -88,7 +88,7 @@ function loadOptions(){
 		}
 		else{
 			if(document.cookie!=""){
-				alert("Impossible de charger les options enregistrées...");
+				alert("It's can't be downloaded ...");
 			}
 		}
 	}
@@ -115,5 +115,5 @@ function checkOptions(){
 }
 
 function alertOptions(){
-	alert("Options actuellement sauvegardées\n------------------------------------------------------------\n"+document.cookie);
+	alert("Now parameters will be saved\n------------------------------------------------------------\n"+document.cookie);
 }

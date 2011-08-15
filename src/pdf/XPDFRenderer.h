@@ -30,7 +30,7 @@ class XPDFRenderer : public PDFRenderer
     Q_OBJECT
 
     public:
-        XPDFRenderer(const QString &filename);
+        XPDFRenderer(const QString &filename, bool importingFile = false);
         virtual ~XPDFRenderer();
 
         bool isValid() const;

@@ -61,7 +61,7 @@ bool UBImportPDF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFi
 
     QString filepath = UBPersistenceManager::persistenceManager()->addPdfFileToDocument(pDocument, pFile.fileName(), uuid);
 
-    PDFRenderer *pdfRenderer = PDFRenderer::rendererForUuid(uuid, pDocument->persistencePath() + "/" + filepath); // renderer is automatically deleted when not used anymore
+    PDFRenderer *pdfRenderer = PDFRenderer::rendererForUuid(uuid, pDocument->persistencePath() + "/" + filepath, true); // renderer is automatically deleted when not used anymore
 
     if (!pdfRenderer->isValid())
     {
