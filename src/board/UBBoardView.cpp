@@ -462,18 +462,18 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
 
           event->accept ();
         }
-		else
-		{
-			if(UBDrawingController::drawingController()->mActiveRuler==NULL)
-			{
-				viewport()->setCursor (QCursor (Qt::BlankCursor));			
-			}
+            else
+            {
+                if(UBDrawingController::drawingController()->mActiveRuler==NULL)
+                {
+                        viewport()->setCursor (QCursor (Qt::BlankCursor));
+                }
 
-			if (scene () && !mTabletStylusIsPressed)
-			{
-				scene ()->inputDevicePress (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())));
-			}
-			event->accept ();
+                if (scene () && !mTabletStylusIsPressed)
+                {
+                        scene ()->inputDevicePress (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())));
+                }
+                event->accept ();
         }
     }
 }

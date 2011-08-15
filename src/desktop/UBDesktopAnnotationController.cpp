@@ -90,6 +90,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
         mKeyboardPalette->setParent(mTransparentDrawingView);
         connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool))); 
+        connect(mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
     }
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
@@ -143,12 +144,16 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(&mHoldTimerMarker, SIGNAL(timeout()), this, SLOT(markerActionReleased()));
     connect(&mHoldTimerEraser, SIGNAL(timeout()), this, SLOT(eraserActionReleased()));
 
+    connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
+    connect(mLibPalette, SIGNAL(resized()), this, SLOT(refreshMask()));
+
     onDesktopPaletteMaximized();
 }
 
 void UBDesktopAnnotationController::showKeyboard(bool show)
 {
     mKeyboardPalette->setVisible(show);
+    updateMask(true);
 
 //    mDesktopPalette->showVirtualKeyboard(show);
 }
@@ -332,6 +337,10 @@ void UBDesktopAnnotationController::showWindow()
     UBPlatformUtils::setDesktopMode(true);
 
     mDesktopPalette->appear();
+
+#ifdef Q_WS_X11
+    updateMask(true);
+#endif
 }
 
 
@@ -343,7 +352,15 @@ void UBDesktopAnnotationController::close()
 
 void UBDesktopAnnotationController::stylusToolChanged(int tool)
 {
-    Q_UNUSED(tool);
+    UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
+    mDesktopPalette->notifySelectorSelection(UBStylusTool::Selector == eTool);
+
+    if(UBStylusTool::Selector != eTool)
+    {
+        UBApplication::mainWindow->actionVirtualKeyboard->setChecked(false);
+        mKeyboardPalette->setVisible(false);
+    }
+
     updateBackground();
 }
 
@@ -356,6 +373,9 @@ void UBDesktopAnnotationController::updateBackground()
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
     {
         newBrush = QBrush(Qt::transparent);
+#ifdef Q_WS_X11
+        updateMask(true);
+#endif
     }
     else
     {
@@ -363,6 +383,9 @@ void UBDesktopAnnotationController::updateBackground()
         newBrush = QBrush(QColor(127, 127, 127, 15));
 #else
         newBrush = QBrush(QColor(127, 127, 127, 1));
+#endif
+#ifdef Q_WS_X11
+        updateMask(false);
 #endif
     }
 
@@ -388,6 +411,8 @@ void UBDesktopAnnotationController::goToUniboard()
     hideWindow();
 
     UBPlatformUtils::setDesktopMode(false);
+
+    UBApplication::mainWindow->actionVirtualKeyboard->setEnabled(true);
 
     emit restoreUniboard();
 }
@@ -750,4 +775,84 @@ void UBDesktopAnnotationController::onTransparentWidgetResized()
 //    qDebug() << "mTransparentDrawingView (" << mTransparentDrawingView->width() << "," << mTransparentDrawingView->height() << ")";
 //    qDebug() << "mLibPalette (" << mLibPalette->width() << "," << mLibPalette->height() << ")";
       mLibPalette->resize(mLibPalette->width(), mTransparentDrawingView->height());
+}
+
+void UBDesktopAnnotationController::updateMask(bool bTransparent)
+{
+    if(bTransparent)
+    {
+        // Here we have to generate a new mask. This method is certainly resource
+        // consuming but for the moment this is the only solution that I found.
+        mMask = QPixmap(mTransparentDrawingView->width(), mTransparentDrawingView->height());
+
+        QPainter p;
+
+        p.begin(&mMask);
+
+        p.setPen(Qt::red);
+        p.setBrush(QBrush(Qt::red));
+
+        // Here we draw the widget mask
+        if(mDesktopPalette->isVisible())
+        {
+            p.drawRect(mDesktopPalette->geometry().x(), mDesktopPalette->geometry().y(), mDesktopPalette->width(), mDesktopPalette->height());
+        }
+        if(mKeyboardPalette->isVisible())
+        {
+            p.drawRect(mKeyboardPalette->geometry().x(), mKeyboardPalette->geometry().y(), mKeyboardPalette->width(), mKeyboardPalette->height());
+        }
+        if(mLibPalette->isVisible())
+        {
+            p.drawRect(mLibPalette->geometry().x(), mLibPalette->geometry().y(), mLibPalette->width(), mLibPalette->height());
+        }
+
+        p.end();
+
+        // Then we add the annotations. We create another painter because we need to
+        // apply transformations on it for coordinates matching
+        QPainter annotationPainter;
+
+        QTransform trans;
+        trans.translate(mTransparentDrawingView->width()/2, mTransparentDrawingView->height()/2);
+
+        annotationPainter.begin(&mMask);
+        annotationPainter.setPen(Qt::red);
+        annotationPainter.setBrush(Qt::red);
+
+        annotationPainter.setTransform(trans);
+
+        QList<QGraphicsItem*> allItems = mTransparentDrawingScene->items();
+
+        for(int i = 0; i < allItems.size(); i++)
+        {
+            QGraphicsItem* pCrntItem = allItems.at(i);
+
+            if(pCrntItem->isVisible())
+            {
+                QPainterPath crntPath = pCrntItem->shape();
+                QRectF rect = crntPath.boundingRect();
+
+                annotationPainter.drawRect(rect);
+            }
+        }
+
+        annotationPainter.end();
+
+        mTransparentDrawingView->setMask(mMask.createMaskFromColor(Qt::black));
+    }
+    else
+    {
+        // Remove the mask
+        QPixmap noMask(mTransparentDrawingView->width(), mTransparentDrawingView->height());
+        mTransparentDrawingView->setMask(noMask.mask());
+    }
+}
+
+void UBDesktopAnnotationController::refreshMask()
+{
+    if(mIsFullyTransparent
+            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
+    {
+        updateMask(true);
+    }
 }

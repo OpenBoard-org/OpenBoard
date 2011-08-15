@@ -34,7 +34,7 @@ UBLibPalette::UBLibPalette(QWidget *parent, const char *name):UBDockPalette(pare
     mIcon = QPixmap(":images/paletteLibrary.png");
     setAcceptDrops(true);
 
-    resize(UBSettings::settings()->libPaletteWidth->get().toInt(), height());
+    resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());
     setContentsMargins(border(), 0, 0, 0);
     mCollapseWidth = 180;
     mLastWidth = 300;
@@ -201,6 +201,7 @@ void UBLibPalette::resizeEvent(QResizeEvent *event)
 {
     UBDockPalette::resizeEvent(event);
     UBSettings::settings()->libPaletteWidth->set(width());
+    emit resized();
 }
 
 // --------------------------------------------------------------------------

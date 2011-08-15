@@ -249,6 +249,8 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 			{
 	            if (currentTool == UBStylusTool::Line)
 		        {
+                            // TODO:    Verify this beautiful implementation and check if
+                            //          it is possible to optimize it
 			        QLineF radius(mPreviousPoint, position);
 				    qreal angle = radius.angle();
 					angle = qRound(angle / 45) * 45;
@@ -257,7 +259,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 			            mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
 				        mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
 					QLineF chord(position, newPosition);
-					if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
+                                        if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
 						position = newPosition;
 				}
 

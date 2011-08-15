@@ -55,6 +55,9 @@ public:
 
     UBLibActionBar* actionBar(){return mActionBar;}
 
+signals:
+    void resized();
+
 protected:
     void updateMaxWidth();
     void dragEnterEvent(QDragEnterEvent* pEvent);

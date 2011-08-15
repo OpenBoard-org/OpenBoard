@@ -78,6 +78,7 @@ class UBFloatingPalette : public QWidget
         void minimizeStart(eMinimizedLocation location);
         void maximizeStart();
         void maximized();
+        void moving();
 };
 
 
