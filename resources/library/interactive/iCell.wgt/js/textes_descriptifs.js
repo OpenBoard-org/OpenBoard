@@ -40,24 +40,24 @@
 				"<h4>Role:</h4><span><p>DNA contains all the information needed for a life.</p></span>"+
 				"<h4>Operation:</h4><span><p>All information is written using the four letters A, T, G and C. Using these combinations, it is possible to write anything useful about cell.</p></span>"
 
- var txt_centr=	"<h2>Centrioles - Remorqueurs de choromosomes</h2>"+
-				"<h4>Structure:</h4><span><p>Neuf triplets de microtubules entourés par un certain nombre de protéines.</p></span>"+
-				"<h4>Role:</h4><span><p>Séparer les différents chromosomes durant la division cellulaire.</p></span>"+
-				"<h4>Operation:</h4><span><p>Les centrioles, une fois placés aux deux poles de la cellule, déploient des microtubules vers les centromères des chromosomes et les tirent vers eux pour les séparer.</p></span>"
+ var txt_centr=	"<h2>Centrioles - Tug of chromosomes</h2>"+
+				"<h4>Structure:</h4><span><p>Nine triplets of microtubules surrounded by a some number of proteins.</p></span>"+
+				"<h4>Role:</h4><span><p>Separate the different chromosomes during cell division.</p></span>"+
+				"<h4>Operation:</h4><span><p>Centrioles, once placed at the two poles of the cell, deploy the microtubules to the centromeres of chromosomes and pull them to them to separate them.</p></span>"
 				
- var txt_rib =	"<h2>Ribosome - Décodeurs</h2>"+
-				"<h4>Structure:</h4><span><p>Formé par deux sous-unités composées d'ARN ribosomique et de protéines.</p></span>"+
-				"<h4>Role:</h4><span><p>Le ribosome synthétise les protéines.</p></span>"+
-				"<h4>Operation:</h4><span><p>Un brin d'ARNm (messager) passe dans le ribosome et un ARNt (de transfert) entre dans la grande sous-unité si son codon (groupe de trois bases azotées) correspond а celui qui est en face sur l'ARNm. Cet ARNt porte avec lui un acide aminé spécifique qui est ajouté а la chaine déja assemblée.</p></span>"
+ var txt_rib =	"<h2>Ribosome - Decoders</h2>"+
+				"<h4>Structure:</h4><span><p>Formed by two subunits composed of ribosomal RNA and proteins.</p></span>"+
+				"<h4>Role:</h4><span><p>The ribosome synthesizes proteins.</p></span>"+
+				"<h4>Operation:</h4><span><p>A strand of mRNA (messenger) pass through the ribosome and tRNA (transfer) between the large subunit where the codon (group of three nitrogen bases) is one who is in front of the mRNA. This tRNA carries with it a specific amino acid that is added а chain already assembled.</p></span>"
 
- var txt_arn =	"<h2>ARN - Multifonction</h2>"+
-				"<h4>Structure:</h4><span><p>Très similaire а l'ADN а la différence qu'il ne possède qu'un brin et que la thymine (T) de l'ADN est remplacée par l'uracile (U). De plus, il est chimiquement plus instable que l'ADN, c'est pourquoi il n'est pas utilisé pour le stockage d'informations а long terme.</p></span>"+
-				"<h4>Role:</h4><span><p>Multiples, il existe des ARN de transport, messagers, régulateus, guides, satellites, ...</p></span>"+
-				"<h4>Operation:</h4><span><p>La copie d'informations génétiques se fait grвce а l'ouverture de la double-hélice d'ADN, puis la copie des codons sur l'ARN. Celui-ci peut alors sortir du noyau, ce que l'ADN ne peut pas faire.</p></span>"
+ var txt_arn =	"<h2>RNA - Multifunction</h2>"+
+				"<h4>Structure:</h4><span><p>Very similar DNA with the difference it has only one strand and thymine (T) of DNA is replaced by uracil (U). In addition, it is chemically more stable than DNA, so it is not used for information storage, just if in long term.</p></span>"+
+				"<h4>Role:</h4><span><p>Multiple, there are RNA transport, passenger, cruise, guides, satellite ...</p></span>"+
+				"<h4>Operation:</h4><span><p>Copying of genetic information, the opening of the double helix of DNA, and then copying the RNA codons. It can then exit the nucleus, the DNA can not do it.</p></span>"
 
- var txt_nucl =	"<h2>Nucléole - Fabrique d'ARN</h2>"+
-				"<h4>Structure:</h4><span><p>Composé d'aucune membranne, c'est un agglomérat de protéines et d'ARN.</p></span>"+
-				"<h4>Role:</h4><span><p>Lieu de la transcription d'ARN, nottament d'ARNr (ribosomiques) qui, associés avec des protéines, vont former les deux sous-unités des ribosomes.</p></span>"+
-				"<h4>Operation:</h4><span><p>Création d'un ribosome: Transcription des ARNr ainsi que des protéines nécessaires (cette étape est effectuée dans le cytoplasme par d'autres ribosomes) qui rentrent dans le noyau, association des molécules fraоchement formées en un nouveau ribosome, qui sort du noyau pour jouer son role.</p></span>"
+ var txt_nucl =	"<h2>Nucleolus - Factory RNA</h2>"+
+				"<h4>Structure:</h4><span><p>Composed of any membrane, a cluster of proteins and RNA.</p></span>"+
+				"<h4>Role:</h4><span><p>Location of the RNA transcripts, including RNA (ribosomal), which combines with protein, will form the two subunits of ribosomes.</p></span>"+
+				"<h4>Operation:</h4><span><p>Creation of a ribosome: Transcription of rRNA and protein needed (this step is performed in the cytoplasm by other ribosomes) that fall within the nucleus, association of molecules frankly formed a new ribosome, which leaves the nucleus to play its role.</p></span>"
 
 	
