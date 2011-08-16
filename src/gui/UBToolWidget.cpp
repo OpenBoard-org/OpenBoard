@@ -72,6 +72,7 @@ UBToolWidget::UBToolWidget(UBAbstractWidget* pWidget, QWidget* pParent)
     , mShouldMoveWidget(false)
 {
     mToolWidget->setParent(this);
+    mToolWidget->loadMainHtml();
 
     initialize();
 

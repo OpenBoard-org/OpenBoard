@@ -451,6 +451,7 @@ void UBPreferencesController::toolbarPositionChanged(bool checked)
     UBSettings* settings = UBSettings::settings();
 
     settings->appToolBarPositionedAtTop->set(mPreferencesUI->toolbarAtTopRadioButton->isChecked());
+
 }
 
 void UBPreferencesController::toolbarOrientationVertical(bool checked)

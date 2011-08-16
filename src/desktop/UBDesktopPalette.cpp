@@ -36,9 +36,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent)
     actions << UBApplication::mainWindow->actionPen;
     actions << UBApplication::mainWindow->actionEraser;
     actions << UBApplication::mainWindow->actionMarker;
-#ifndef Q_WS_X11
     actions << UBApplication::mainWindow->actionSelector;
-#endif
     actions << UBApplication::mainWindow->actionPointer;
 
     if (UBPlatformUtils::hasVirtualKeyboard())
@@ -152,9 +150,7 @@ void UBDesktopPalette::maximizeMe()
     actions << UBApplication::mainWindow->actionPen;
     actions << UBApplication::mainWindow->actionEraser;
     actions << UBApplication::mainWindow->actionMarker;
-#ifndef Q_WS_X11
     actions << UBApplication::mainWindow->actionSelector;
-#endif
     actions << UBApplication::mainWindow->actionPointer;
     if (UBPlatformUtils::hasVirtualKeyboard())
         actions << UBApplication::mainWindow->actionVirtualKeyboard;
@@ -220,4 +216,9 @@ QPoint UBDesktopPalette::buttonPos(QAction *action)
     }
 
     return p;
+}
+
+void UBDesktopPalette::notifySelectorSelection(bool selected)
+{
+    UBApplication::mainWindow->actionVirtualKeyboard->setEnabled(selected);
 }

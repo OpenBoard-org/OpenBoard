@@ -35,11 +35,10 @@ UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):UBDock
     mIcon = QPixmap(":images/paletteNavigator.png");
     resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), height());
     mLastWidth = 300;
-    setContentsMargins(0, 0, border(), 0);
 
     // Build the gui
     mLayout = new QVBoxLayout(this);
-    mLayout->setMargin(3);
+    mLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());
     setLayout(mLayout);
 
     mNavigator = new UBDocumentNavigator(this);

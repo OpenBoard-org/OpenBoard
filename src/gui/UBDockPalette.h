@@ -39,14 +39,22 @@ typedef enum
     eUBDockOrientation_Bottom /** [to be implemented]Bottom dock */
 }eUBDockOrientation;
 
+typedef enum
+{
+    eUBDockTabOrientation_Up,   /** Up tabs */
+    eUBDockTabOrientation_Down  /** Down tabs */
+}eUBDockTabOrientation;
+
 class UBDockPalette : public QWidget
 {
+    Q_OBJECT
 public:
     UBDockPalette(QWidget* parent=0, const char* name="UBDockPalette");
     ~UBDockPalette();
 
     eUBDockOrientation orientation();
     void setOrientation(eUBDockOrientation orientation);
+    void setTabsOrientation(eUBDockTabOrientation orientation);
 
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
@@ -60,6 +68,7 @@ public:
 protected:
     virtual int border();
     virtual int radius();
+    virtual int customMargin();
     virtual void updateMaxWidth();
     virtual void resizeEvent(QResizeEvent *event);
     virtual int collapseWidth();
@@ -86,6 +95,13 @@ protected:
     QPoint mMousePressPos;
     /** The palette icon */
     QPixmap mIcon;
+    /** The tab orientation */
+    eUBDockTabOrientation mTabsOrientation;
+    /** The h position of the tab */
+    int mHTab;
+
+private slots:
+    void onToolbarPosUpdated();
 
 private:
     void tabClicked();

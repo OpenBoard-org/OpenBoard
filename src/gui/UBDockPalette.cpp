@@ -19,8 +19,26 @@
 #include "UBDockPalette.h"
 #include "core/UBSettings.h"
 #include "frameworks/UBPlatformUtils.h"
+#include "core/UBApplication.h"
+#include "core/UBPreferencesController.h"
 
 #include "core/memcheck.h"
+
+/*
+    Note to myself: I will have to modify this implementation when we will
+                    have to support mulitple tab. At this moment, a UBDockPalette
+                    will be only the palette that manages the tabs. This
+                    palette will maintain a list of tabs with icons and will
+                    contain a QStackedWidget that will be contains the different
+                    widget contents.
+                    A click on a tab that is not related to the current widget
+                    will show the related widget in the palette.
+                    A click on a tab that is related to the current widget will
+                    collapse the palette.
+                    If the palette is collapsed, a click on any tab will expand it
+                    and show the tab related widget.
+*/
+
 
 /**
  * \brief The constructor
@@ -34,11 +52,12 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
     , mResized(false)
     , mCollapseWidth(150)
     , mLastWidth(-1)
+    , mHTab(0)
 {
     setObjectName(name);
 
     // We let 2 pixels in order to keep a small border for the resizing
-    setMinimumWidth(border() + 2);
+    setMinimumWidth(2*border() + 2);
 
     if (parent)
     {
@@ -61,6 +80,10 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
 
     // This is the only way to set the background as transparent!
     setStyleSheet("QWidget {background-color: transparent}");
+
+    // Set the position of the tab
+    onToolbarPosUpdated();
+    connect(UBSettings::settings()->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(onToolbarPosUpdated()));
 }
 
 /**
@@ -206,9 +229,9 @@ void UBDockPalette::mouseReleaseEvent(QMouseEvent *event)
         if(eUBDockOrientation_Left == mOrientation)
         {
             if(mMousePressPos.x() >= width() - 2*border() &&
-               mMousePressPos.y() >= border() &&
+               mMousePressPos.y() >= mHTab &&
                mMousePressPos.x() <= width() &&
-               mMousePressPos.y() <= border() + TABSIZE)
+               mMousePressPos.y() <= mHTab + TABSIZE)
             {
                 tabClicked();
             }
@@ -217,8 +240,8 @@ void UBDockPalette::mouseReleaseEvent(QMouseEvent *event)
         {
             if(mMousePressPos.x() >= 0 &&
                mMousePressPos.x() <= 2*border() &&
-               mMousePressPos.y() >= border() &&
-               mMousePressPos.y() <= border() + TABSIZE)
+               mMousePressPos.y() >= mHTab &&
+               mMousePressPos.y() <= mHTab + TABSIZE)
             {
                 tabClicked();
             }
@@ -291,23 +314,32 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
     painter.setPen(Qt::NoPen);
     painter.setBrush(mBackgroundBrush);
 
+    if(eUBDockTabOrientation_Up == mTabsOrientation)
+    {
+        mHTab = border();
+    }
+    else
+    {
+        mHTab = height() - border() - TABSIZE;
+    }
+
     if(mOrientation == eUBDockOrientation_Left)
     {
 	QPainterPath path;
 	path.setFillRule(Qt::WindingFill);
-	path.addRect(0.0, 0.0, width()-border(), height());
-        path.addRoundedRect(width()-2*border(), border(), 2*border(), TABSIZE, radius(), radius());
+        path.addRect(0.0, 0.0, width()-2*border(), height());
+        path.addRoundedRect(width()-4*border(), mHTab, 4*border(), TABSIZE, radius(), radius());
 	painter.drawPath(path);
-        painter.drawPixmap(width() - border() + 1, border() + 1 , border() - 4, TABSIZE - 2, mIcon);
+        painter.drawPixmap(width() - border() + 1, mHTab + 1 , border() - 4, TABSIZE - 2, mIcon);
     }
     else if(mOrientation == eUBDockOrientation_Right)
     {
 	QPainterPath path;
 	path.setFillRule(Qt::WindingFill);
-	path.addRect(border(), 0.0, width()-border(), height());
-	path.addRoundedRect(0.0, border(), 2*border(), TABSIZE, radius(), radius());
+        path.addRect(2*border(), 0.0, width()-2*border(), height());
+        path.addRoundedRect(0.0, mHTab, 4*border(), TABSIZE, radius(), radius());
 	painter.drawPath(path);
-        painter.drawPixmap(2, border() + 1, border() - 3, TABSIZE - 2, mIcon);
+        painter.drawPixmap(2, mHTab + 1, border() - 3, TABSIZE - 2, mIcon);
     }
     else
     {
@@ -372,7 +404,7 @@ void UBDockPalette::tabClicked()
     {
         // The palette must be collapsed
         mLastWidth = width();
-        resize(border(), height());
+        resize(2*border(), height());
     }
     else
     {
@@ -380,4 +412,28 @@ void UBDockPalette::tabClicked()
         resize(mLastWidth, height());
         mLastWidth = -1;
     }
+}
+
+void UBDockPalette::setTabsOrientation(eUBDockTabOrientation orientation)
+{
+    mTabsOrientation = orientation;
+}
+
+void UBDockPalette::onToolbarPosUpdated()
+{
+    // Get the position of the tab
+    if(UBSettings::settings()->appToolBarPositionedAtTop->get().toBool())
+    {
+        setTabsOrientation(eUBDockTabOrientation_Up);
+    }
+    else
+    {
+        setTabsOrientation(eUBDockTabOrientation_Down);
+    }
+    update();
+}
+
+int UBDockPalette::customMargin()
+{
+    return 5;
 }

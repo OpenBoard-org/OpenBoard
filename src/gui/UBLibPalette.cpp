@@ -34,13 +34,13 @@ UBLibPalette::UBLibPalette(QWidget *parent, const char *name):UBDockPalette(pare
     mIcon = QPixmap(":images/paletteLibrary.png");
     setAcceptDrops(true);
 
-    resize(UBSettings::settings()->libPaletteWidth->get().toInt(), height());
+    resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());
     setContentsMargins(border(), 0, 0, 0);
     mCollapseWidth = 180;
     mLastWidth = 300;
 
     mLayout = new QVBoxLayout(this);
-    mLayout->setMargin(3);
+    mLayout->setContentsMargins(20, customMargin(), customMargin(), customMargin());
     setLayout(mLayout);
 
     // Build the GUI
@@ -201,6 +201,7 @@ void UBLibPalette::resizeEvent(QResizeEvent *event)
 {
     UBDockPalette::resizeEvent(event);
     UBSettings::settings()->libPaletteWidth->set(width());
+    emit resized();
 }
 
 // --------------------------------------------------------------------------

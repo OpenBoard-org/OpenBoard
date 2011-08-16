@@ -106,6 +106,7 @@ void UBFloatingPalette::mouseMoveEvent(QMouseEvent *event)
     {
         moveInsideParent(event->globalPos() - mDragPosition);
         event->accept();
+        emit moving();
     }
     else
     {

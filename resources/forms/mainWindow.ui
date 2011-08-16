@@ -1551,21 +1551,6 @@
     <enum>QAction::TextHeuristicRole</enum>
    </property>
   </action>
-  <action name="actionShareItemOnWeb">
-   <property name="icon">
-    <iconset resource="../sankore.qrc">
-     <normaloff>:/images/addItemToLibrary.svg</normaloff>:/images/addItemToLibrary.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Share Item on the Web</string>
-   </property>
-   <property name="toolTip">
-    <string>Share Capture on the Web</string>
-   </property>
-   <property name="visible">
-    <bool>true</bool>
-   </property>
-  </action>
   <action name="actionDesktopTools">
    <property name="checkable">
     <bool>true</bool>

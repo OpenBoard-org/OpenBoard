@@ -130,12 +130,38 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
             UBApplication::applicationController->initialHScroll(),
             UBApplication::applicationController->initialVScroll()));
     }
+
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+
 }
 
 
 UBGraphicsScene::~UBGraphicsScene()
 {
     // NOOP
+}
+
+void UBGraphicsScene::selectionChangedProcessing()
+{
+    QList<QGraphicsItem *> allItemsList = items();
+    for( int i = 0; i < allItemsList.size(); i++ )
+    {
+        QGraphicsItem *nextItem = allItemsList.at(i);
+        qreal zValue = nextItem->zValue();
+        nextItem->setZValue(qreal(1));
+        qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+    }
+
+    QList<QGraphicsItem *> selItemsList = selectedItems();
+    for( int i = 0; i < selItemsList.size(); i++ )
+    {
+        QGraphicsItem *nextItem = selItemsList.at(i);
+        qreal zValue = nextItem->zValue();
+        nextItem->setZValue(2);
+        qDebug() << QString(" >>> %1 <<< ").arg(i) << QString(" >>> %1 <<< ").arg(zValue);
+    }
+
+
 }
 
 // MARK: -
@@ -249,6 +275,8 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 			{
 	            if (currentTool == UBStylusTool::Line)
 		        {
+                            // TODO:    Verify this beautiful implementation and check if
+                            //          it is possible to optimize it
 			        QLineF radius(mPreviousPoint, position);
 				    qreal angle = radius.angle();
 					angle = qRound(angle / 45) * 45;
@@ -257,7 +285,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 			            mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
 				        mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
 					QLineF chord(position, newPosition);
-					if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
+                                        if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
 						position = newPosition;
 				}
 
@@ -1074,6 +1102,8 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     if (graphicsWidget->widgetWebView()->canBeContent())
     {
+        graphicsWidget->widgetWebView()->loadMainHtml();
+
         graphicsWidget->setSelected(true);
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, graphicsWidget);
         UBApplication::undoStack->push(uc);

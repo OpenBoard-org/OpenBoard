@@ -44,8 +44,8 @@ UBAbstractWidget::UBAbstractWidget(const QUrl& pWidgetUrl, QWidget *parent)
     , mInitialLoadDone(false)
     , mLoadIsErronous(false)
     , mIsFreezable(true)
-    , mCanBeContent(true)
-    , mCanBeTool(true)
+    , mCanBeContent(0)
+    , mCanBeTool(0)
     , mIsFrozen(false)
     , mIsTakingSnapshot(false)
 {
@@ -74,12 +74,51 @@ UBAbstractWidget::UBAbstractWidget(const QUrl& pWidgetUrl, QWidget *parent)
     setMouseTracking(true);
 }
 
+bool UBAbstractWidget::canBeContent()
+{
+    // if we under MAC OS
+    #if defined(Q_OS_MAC)
+        return mCanBeContent & OSType::type_MAC;
+    #endif
+
+    // if we under UNIX OS
+    #if defined(Q_OS_UNIX)
+        return mCanBeContent & OSType::type_UNIX;
+    #endif
+
+    // if we under WINDOWS OS
+    #if defined(Q_OS_WIN)
+        return mCanBeContent & OSType::type_WIN;
+    #endif
+}
+
+bool UBAbstractWidget::canBeTool()
+{
+    // if we under MAC OS
+    #if defined(Q_OS_MAC)
+        return mCanBeTool & OSType::type_MAC;
+    #endif
+
+        // if we under UNIX OS
+    #if defined(Q_OS_UNIX)
+        return mCanBeTool & OSType::type_UNIX;
+    #endif
+
+        // if we under WINDOWS OS
+    #if defined(Q_OS_WIN)
+        return mCanBeTool & OSType::type_WIN;
+    #endif
+}
 
 UBAbstractWidget::~UBAbstractWidget()
 {
     // NOOP
 }
 
+void UBAbstractWidget::loadMainHtml()
+{
+    QWebView::load(mMainHtmlUrl);
+}
 
 bool UBAbstractWidget::event(QEvent *event)
 {

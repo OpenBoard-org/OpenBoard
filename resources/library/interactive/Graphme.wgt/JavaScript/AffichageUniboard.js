@@ -1,5 +1,5 @@
-// -------------------- Uniboard --------------------
-// Ces fonctions permettent de dessiner le graphique directement dans Uniboard.
+// -------------------- sankore --------------------
+// Ces fonctions permettent de dessiner le graphique directement dans sankore.
 
 // Calcule tous les points de la fonction mathématique et les place dans des tableaux.
 	function evaluerUniboard(eq) {
@@ -28,33 +28,33 @@
 // Regarde chaque coordonnées stockées dans le tableau et dessine le graphique
 	function calculerGraphUniboard(fin){
 	   document.getElementById("affichage").innerHTML = ""
-	   uniboard.setTool('pen')
-	   uniboard.moveTo(pointX[2]+decalageX, pointY[2]+decalageY)
+	   sankore.setTool('pen')
+	   sankore.moveTo(pointX[2]+decalageX, pointY[2]+decalageY)
 	   for (i=3; i<fin; i++){
 	     if ((pointY[i]<0) || (pointY[i]>hauteur)){
-		uniboard.moveTo(pointX[i+1]+decalageX,pointY[i+1]+decalageY)
+		sankore.moveTo(pointX[i+1]+decalageX,pointY[i+1]+decalageY)
 		continue
 	     }
-	       uniboard.drawLineTo(pointX[i]+decalageX, pointY[i]+decalageY, lineWidth)
+	       sankore.drawLineTo(pointX[i]+decalageX, pointY[i]+decalageY, lineWidth)
 	   }
 
 	   //dessiner le cadre
-	   uniboard.moveTo(0+decalageX,0+decalageY)
-	   uniboard.drawLineTo(largeur+decalageX, 0+decalageY, lineWidth)
-	   uniboard.drawLineTo(largeur+decalageX, hauteur+decalageY, lineWidth)
-	   uniboard.drawLineTo(0+decalageX, hauteur+decalageY, lineWidth)
-	   uniboard.drawLineTo(0+decalageX, 0+decalageY, lineWidth)
+	   sankore.moveTo(0+decalageX,0+decalageY)
+	   sankore.drawLineTo(largeur+decalageX, 0+decalageY, lineWidth)
+	   sankore.drawLineTo(largeur+decalageX, hauteur+decalageY, lineWidth)
+	   sankore.drawLineTo(0+decalageX, hauteur+decalageY, lineWidth)
+	   sankore.drawLineTo(0+decalageX, 0+decalageY, lineWidth)
 
 	   //dessiner les axes
-	   uniboard.moveTo((-borneXGauche*multiplicateurX)+decalageX, 0+decalageY)
-	   uniboard.drawLineTo((-borneXGauche*multiplicateurX)+decalageX, hauteur+decalageY, lineWidth)
-	   uniboard.moveTo(0+decalageX, (hauteur-(-borneYGauche*multiplicateurY))+decalageY)
-	   uniboard.drawLineTo(largeur+decalageX, (hauteur-(-borneYGauche*multiplicateurY))+decalageY, lineWidth)
+	   sankore.moveTo((-borneXGauche*multiplicateurX)+decalageX, 0+decalageY)
+	   sankore.drawLineTo((-borneXGauche*multiplicateurX)+decalageX, hauteur+decalageY, lineWidth)
+	   sankore.moveTo(0+decalageX, (hauteur-(-borneYGauche*multiplicateurY))+decalageY)
+	   sankore.drawLineTo(largeur+decalageX, (hauteur-(-borneYGauche*multiplicateurY))+decalageY, lineWidth)
 
 	   decalageX += 250
 	   decalageY += 200
 	   largeur -= 100
 	   hauteur -= 100
-	   uniboard.setTool('arrow')
+	   sankore.setTool('arrow')
 	}
 	
