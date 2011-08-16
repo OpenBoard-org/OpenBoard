@@ -39,6 +39,7 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
     UBLibPalette* pLibPalette = dynamic_cast<UBLibPalette*>(parentWidget());
 
     mLayout = new QVBoxLayout(this);
+//    mLayout->setContentsMargins(20, 5, 5, 5);
     setLayout(mLayout);
 
     mPathViewer = new UBLibPathViewer(this);

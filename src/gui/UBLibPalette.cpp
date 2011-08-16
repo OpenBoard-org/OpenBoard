@@ -40,7 +40,7 @@ UBLibPalette::UBLibPalette(QWidget *parent, const char *name):UBDockPalette(pare
     mLastWidth = 300;
 
     mLayout = new QVBoxLayout(this);
-    mLayout->setMargin(3);
+    mLayout->setContentsMargins(20, customMargin(), customMargin(), customMargin());
     setLayout(mLayout);
 
     // Build the GUI
