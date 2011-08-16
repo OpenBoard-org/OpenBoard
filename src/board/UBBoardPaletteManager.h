@@ -118,7 +118,6 @@ class UBBoardPaletteManager : public QObject
         void addItemToCurrentPage();
         void addItemToNewPage();
         void addItemToLibrary();
-        void shareItemOnWeb();
 
         void purchaseLinkActivated(const QString&);
 

@@ -54,8 +54,6 @@
 
 #include "tools/UBToolsManager.h"
 
-#include "adaptors/publishing/UBCapturePublisher.h"
-
 #include "UBBoardController.h"
 
 #include "core/memcheck.h"
@@ -579,27 +577,27 @@ void UBBoardPaletteManager::addItemToLibrary()
     mAddItemPalette->hide();
 }
 
-void UBBoardPaletteManager::shareItemOnWeb()
-{
-    QPixmap pixmap = mPixmap;
+//void UBBoardPaletteManager::shareItemOnWeb()
+//{
+//    QPixmap pixmap = mPixmap;
 
-    if(mPixmap.isNull())
-    {
-       pixmap = QPixmap(mItemUrl.toLocalFile());
-    }
+//    if(mPixmap.isNull())
+//    {
+//       pixmap = QPixmap(mItemUrl.toLocalFile());
+//    }
 
-    if(!pixmap.isNull())
-    {
-        UBCapturePublisher* publisher = new UBCapturePublisher(pixmap, this);
-        publisher->publish();
-    }
-    else
-    {
-        UBApplication::showMessage(tr("Error Publishing Image to the Web"));
-    }
+//    if(!pixmap.isNull())
+//    {
+//        UBCapturePublisher* publisher = new UBCapturePublisher(pixmap, this);
+//        publisher->publish();
+//    }
+//    else
+//    {
+//        UBApplication::showMessage(tr("Error Publishing Image to the Web"));
+//    }
 
-    mAddItemPalette->hide();
-}
+//    mAddItemPalette->hide();
+//}
 
 
 void UBBoardPaletteManager::zoomButtonPressed()
