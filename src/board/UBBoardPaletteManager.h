@@ -36,7 +36,7 @@ class UBMainWindow;
 
 class UBBoardPaletteManager : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBBoardPaletteManager(QWidget* container, UBBoardController* controller);

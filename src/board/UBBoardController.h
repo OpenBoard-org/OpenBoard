@@ -42,7 +42,7 @@ class UBBoardPaletteManager;
 
 class UBBoardController : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBBoardController(UBMainWindow *mainWindow);
