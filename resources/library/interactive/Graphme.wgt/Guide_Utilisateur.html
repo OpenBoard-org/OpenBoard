@@ -134,67 +134,67 @@
 		</p>
 		<h2 id="MenuOptions">7. The options menu</h2>
 		<p>
-			To open the menu you should click button "Options" that is in the left of the widget. If you click on this button again then menu will close. There are some buttons for navigation between options. Their short description:
+			To open the menu you should click a button "Options" that is in the left of the widget. If you click on this button again then menu will close. There are some buttons for navigation between options. Their short description:
 		</p>
 		<ul>
 			<li>Changing a background image and color. In Sankore changing background theme used for displaying widget on black and white background.</li>
 			<li>Display-method used for defining displaying function. There are 6 possibilities: <br/>
 				<ol>
 					<li>SVG is a vector format of image and it can be built in HTML-page. It's compatible in most of browsers and Sankore support it very well so is it selected default.</li>
-					<li>« SVG (une image) » ne présente que peu de différence avec la méthode d'affichage « SVG ». A moins d'un problème de compatibilité, il n'est pas très utile de la choisir.</li>
-					<li>Canvas est une nouvelle balise présente depuis HTML 5.0. Elle permet de définir une zone dans laquelle on peut faire des dessins. Cette méthode d'affichage est plus rapide que d'utiliser du SVG, cependant, elle n'est pas complètement compatible dans sankore. Il est conseillé de choisir cette option si vous utilisez le widget ailleurs que dans sankore.</li>
-					<li>Canvas (point) utilise aussi canvas, mais dessine des points à la place de lignes.</li>
-					<li>XPM est un format d'image très peu connu. De ce fait, il est compatible qu'avec une minorité de navigateur.</li>
-					<li>La méthode d'affichage « Uniboard » permet de dessiner directement sur la page d'sankore avec les outils de dessins.</li>
+					<li>There is a big difference between SVG (image) and display method SVG. If you have a compatibility problems then you should not use this method.</li>
+					<li>"Canvas" is a new tag that used in HTML 5.0. It define a area in which you can place some images. This display-method is faster than SVG-method, but Sankore does not fully support it. It's desirable to choose this method when you use no Sankore widget.</li>
+					<li>"Canvas" (point) also uses a canvas but draws a points instead of lines.</li>
+					<li>XPM format is little known so it's compatible just with a minority of browsers.</li>
+					<li>Display method "Uniboard" allows to draw directly on the page using Sankore drawing.</li>
 				</ol>
 				<img src="Images/Guide_Options.png"/>
 			</li>
-			<li>Le zoom par défaut ainsi que le bouton « réinitialiser le zoom » permettent de remettre l'affichage à l'état qu'il était à l'ouverture du widget. Cela permet aussi de centrer l'affichage sur l'origine.</li>
-			<li>Les options d'affichage permettent d'afficher ou non la grille, les axes ainsi que l'échelle. Elles sont utiles pour rendre l'affichage plus lisible. Il est également possible de modifier l'épaisseur du trait de la fonction.</li>
-			<li>Le décalage du graphique n'a en principe pas besoin d'être utilisé. Il permet de déplacer tout l'affichage dans un sens ou dans l'autre, s'il n'est pas centré à la bonne place. Cela peut arriver avec certains navigateurs Internet.</li>
-			<li>La précision des calculs du graphique permet d'augmenter ou de diminuer le nombre de points calculés. Plus le nombre est petit, plus la précision est grande. Il est utile de mettre cette valeur à « 0.01 » si vous dessinez des fonctions ressemblant à 0.5*sin(10*x*x).</li>
-			<li>Dans les options 3D, le style d'affichage permet de choisir comment la fonction est dessinée : avec des petits points ou avec des polygones (surfaces). La plupart des fonctions sont plus jolies en dessinant la surface entre les points calculés. Toutefois, c'est mieux de dessiner des points pour des fonctions comme la demi-sphère : sqrt(12-x*x-y*y).</li>
-			<li>Dans le dernier onglet, vous pouvez modifier d'autres options 3D, comme la précision des calculs ainsi que la couleur de la fonction.</li>
+			<li>Default zoom button returns display into original state. It helps alsoto return to the origin.</li>
+			<li>Display options allow to display or not a grid, axis and scale. They make a mapping more readable. Also you can change the thickness of function line.</li>
+			<li>Offset of graph not used usually. But if you use it then you can move a mapping in any direction when a center isn't in the right place. It's avaliable in some browsers.</li>
+			<li>The accuracy of calculations of the graph will increase or decrease the number of points calculated. The higher the number, the more accuracy. It is useful to set this value to "0.01" if you draw functions like 0.5 * sin (10 * x * x).</li>
+			<li>Options in 3D, the display style to choose how the function is designed: with small points or polygons (areas). Most functions are prettier drawing surface between the points calculated. However, it is better to draw points for functions such as the hemisphere: sqrt (12 - x*x - y*y).</li>
+			<li>In the last tab you can change such options 3D, as the accuracy of the calculations and the color of the function.</li>
 		</ul>
-		<h2 id="MenuOutils">8. Le menu des outils</h2>
+		<h2 id="MenuOutils">8. The tools menu.</h2>
 		<p>
-			Ce menu permet tout d'abord de choisir l'action de la souris sur le graphique. Il y a le choix entre trois possibilités :
+			This menu allows you to choose first action of the mouse on the graph. There is a choice of three options:
 		</p>
 		<ul>
-			<li>L'outil sélectionné par défaut est le point. En bougeant la souris, un point se déplace sur la fonction et les coordonnées de ce point sont indiquées en haut à gauche de l'affichage.</li>
-			<li>Le deuxième outil est le déplacement. Il permet de déplacer le graphique avec la souris. Il suffit de tenir cliqué sur l'affichage et de bouger la souris. Malheureusement, cet outil peut être lent sur certains navigateurs.</li>
-			<li>Le troisième outil est la tangente. Cet outil dessine la tangente à la fonction au point où se trouve la souris.</li>
+			<li>The selected tool is the default. By moving the mouse, a point moves on the function and the coordinates of this point are shown in the top left of the display.</li>
+			<li>The second tool is moving. It allows you to move the chart with the mouse. Just keep clicking on the display and move the mouse. Unfortunately, this tool can be slow on some browsers.</li>
+			<li>The third tool is the tangent. This tool draws the tangent to the function at the point where is a mouse cursor.</li>
 		</ul>
 		<p>
-			Ensuite, ce menu permet  aussi de calculer un point de la fonction. Il faut simplement entrer la coordonnée « x » du point dont on veut trouver la coordonnée « y », et appuyer sur le bouton « Évaluer ». Par exemple, si la fonction est « x*x » et qu'on défini « x=2 », alors le point dont la coordonnée sur l'axe des X est « 2 » aura comme coordonnée sur l'axe des Y « 4 ».
+			Then, this menu also allows to calculate a point of the function. Simply enter the coordinate "x" from the point where we want to find the coordinate "y" and press the "Evaluate". For example, if the function is "x * x" and that defined "x = 2", then the point whose coordinate on the X axis is "2" will be to coordinate on the Y axis "4".
 		</p>
 		<p>
-			Un autre outil très utile est l'étude de fonction. Pour étudier la fonction entrée dans le champ en haut du widget, cliquez sur « démarrer l'étude ». Les études de fonction de ce widget ne sont pas fiables à 100% mais servent de complément à une étude de fonction que l'on fait soi-même. Il se peut que cet outil soit amélioré dans une prochaine version du widget.
+			Another useful tool is the analysis of function. To analyse the function click on "start the analysis". Analyses based on this widget are not 100% reliable, but are complementary to a analysis of function that you are doing yourself. It may be that this tool will be improved in a future version of the widget.
 		</p>
 		<p>
-			Dans ce menu, on trouve également des tests d'affichage. Ils permettent d'essayer les différentes méthodes d'affichage et de voir si elles fonctionnent sur le navigateur internet utilisé.
+			In this menu there are also tests the display. They can try different methods to display and see if they work on the browser used.
 		</p>
-		<h2 id="PlusieursFonctions">9. Dessiner plusieurs fonctions</h2>
+		<h2 id="PlusieursFonctions">9. Drawing some functions</h2>
 		<p>
-			Pour dessiner plusieurs fonctions simultanément, cliquez sur le petit bouton « + » qui se situe à droite du bouton « Afficher » (point 1). Ensuite, un menu apparaît.
+			To draw multiple functions simultaneously, click the small "+" button which is located to the right of "View" (point 1). Then, a menu appears.
 		</p>
 		<img src="Images/Guide_Plus.png"/>
 		<p>
-			Dans ce menu, des onglets permettent d'aller à l'historique ou aux fonctions supplémentaires (point 2). Pour ajouter une fonction, cliquez sur le bouton à droite de la fonction actuelle (point 3). En dessous, une liste contient toutes les fonctions affichées (point 4). Pour supprimer une fonction, il faut simplement cliquer sur le bouton « - » à coté de celle-ci. Il est également possible de modifier la couleur de chaque fonction séparément.
+			The tabs in this menu can go to the history or the additional features (point 2). To add a function click the button to the right of the current function (point 3). Below is a list that contains all the displayed functions (point 4). To remove a function, just click on the "-" button next to it. It is also possible to change the color of each function separately.
 		</p>
 		<p>
-			L'historique permet de revoir toutes les fonctions qui ont déjà été dessinées. Lorsque l'on clique sur une fonction de l'historique, celle qui est dessinée actuellement est remplacée par la fonction de l'historique.
+			History can review all the functions that have already been drawn. When you click on a function of history current function replaced by the function of history.
 		</p>
 		<p>
-			Dessiner plusieurs fonctions simultanément est uniquement possible avec la méthode d'affichage « canvas » en deux dimensions. Par contre, l'historique est utilisable avec toutes les méthodes d'affichage. 
+			"Drawing several functions simultaneously" mode is only possible with the display method "canvas" in two dimensions, but the history can be used with all methods of display.
 		</p>
-		<h2 id="MaJ">10. Mettre à jour GraphMe</h2>
+		<h2 id="MaJ">10. GraphMe update</h2>
 		<p>
-			La dernière version du widget est téléchargeable sur la page suivante : <a href="http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15">http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15</a>. Pour mettre à jour GraphMe, vous pouvez aussi cliquer sur le bouton "Mise à jour" dans le menu des options.
+			The latest version of the widget can be downloaded from the following page: <a href="http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15">http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15</a>. To update GraphMe, you can also click on "Update" in the options menu.
 		</p>
 		<h2 id="Contact">11. Contact</h2>
 		<p>
-			Si vous voulez rapporter un bug, avez une suggestion par rapport au widget ou voulez simplement poser une question, merci de me contacter par e-mail à l'adresse : <a href="mailto:yannick.vessaz@gmail.com">yannick.vessaz@gmail.com</a>.
+			If you want to report a bug, have a suggestion from the widget or just want to ask a question, please contact me by e-mail at: <a href="mailto:yannick.vessaz@gmail.com">yannick.vessaz@gmail.com</a>.
 		</p>
 	</body>
 </html>
