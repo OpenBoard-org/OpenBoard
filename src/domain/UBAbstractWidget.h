@@ -39,6 +39,8 @@ class UBAbstractWidget : public UBRoutedMouseEventWebView
         UBAbstractWidget(const QUrl& pWidgetUrl, QWidget *parent = 0);
         virtual ~UBAbstractWidget();
 
+        void loadMainHtml();
+
         QUrl mainHtml()
         {
             return mMainHtmlUrl;
@@ -64,15 +66,8 @@ class UBAbstractWidget : public UBRoutedMouseEventWebView
             return mNominalSize;
         }
 
-        bool canBeContent() const
-        {
-            return mCanBeContent;
-        }
-
-        bool canBeTool() const
-        {
-            return mCanBeTool;
-        }
+        bool canBeContent();
+        bool canBeTool();
 
         bool hasLoadedSuccessfully() const
         {
@@ -123,8 +118,16 @@ class UBAbstractWidget : public UBRoutedMouseEventWebView
         bool mLoadIsErronous;
 
         bool mIsFreezable;
-        bool mCanBeContent;
-        bool mCanBeTool;
+        int mCanBeContent;
+        int mCanBeTool;
+        enum OSType
+        {
+            type_NONE = 0, // 0000
+            type_WIN  = 1, // 0001
+            type_MAC  = 2, // 0010
+            type_UNIX = 4, // 0100
+            type_ALL  = 7, // 0111
+        };
 
         virtual void injectInlineJavaScript();
         virtual void paintEvent(QPaintEvent * event);

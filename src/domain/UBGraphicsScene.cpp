@@ -1091,7 +1091,6 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     graphicsWidget->setFlag(QGraphicsItem::ItemIsSelectable, true);
     graphicsWidget->setZValue(getNextObjectZIndex());
 
-//    QGraphicsScene::addWidget(graphicsWidget->widgetWebView());
     addItem(graphicsWidget);
 
     qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
@@ -1103,21 +1102,13 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     if (graphicsWidget->widgetWebView()->canBeContent())
     {
+        graphicsWidget->widgetWebView()->loadMainHtml();
+
         graphicsWidget->setSelected(true);
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, graphicsWidget);
         UBApplication::undoStack->push(uc);
 
         setDocumentUpdated();
-
-//        graphicsWidget->widgetWebView()->setParent(graphicsWidget->v));
-//         QObject *zz1= graphicsWidget->widgetWebView()->parent();
-//         QWidget *zz2= graphicsWidget->widgetWebView()->parentWidget();
-// 
-//         QObject *zz3= graphicsWidget->parent();
-//         QGraphicsWidget *zz4= graphicsWidget->parentWidget();
-
-//        graphicsWidget->widgetWebView()->loadUrl();
-
     }
     else
     {

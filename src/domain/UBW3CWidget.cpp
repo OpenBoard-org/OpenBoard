@@ -86,8 +86,51 @@ UBW3CWidget::UBW3CWidget(const QUrl& pWidgetUrl, QWidget *parent)
 
         QString roles = widgetElement.attribute("ub:roles", "content tool").trimmed().toLower();
 
-        mCanBeTool = roles == "" || roles.contains("tool");
-        mCanBeContent =  roles == "" || roles.contains("content");
+        //------------------------------//
+
+        if( roles == "" || roles.contains("tool") )
+        {
+            mCanBeTool = UBAbstractWidget::OSType::type_ALL;
+        }
+
+        if( roles.contains("twin") )
+        {
+            mCanBeTool |= UBAbstractWidget::OSType::type_WIN;
+        }
+
+        if( roles.contains("tmac") )
+        {
+            mCanBeTool |= UBAbstractWidget::OSType::type_MAC;
+        }
+        
+        if( roles.contains("tunix") )
+        {
+            mCanBeTool |= UBAbstractWidget::OSType::type_UNIX;
+        }
+
+        //---------//
+
+        if( roles == "" || roles.contains("content") )
+        {
+            mCanBeContent = UBAbstractWidget::OSType::type_ALL;
+        }
+
+        if( roles.contains("cwin") )
+        {
+            mCanBeContent |= UBAbstractWidget::OSType::type_WIN;
+        }
+
+        if( roles.contains("cmac") )
+        {
+            mCanBeContent |= UBAbstractWidget::OSType::type_MAC;
+        }
+
+        if( roles.contains("cunix") )
+        {
+            mCanBeContent |= UBAbstractWidget::OSType::type_UNIX;
+        }
+
+        //------------------------------//
 
         QDomNodeList contentDomList = widgetElement.elementsByTagName("content");
 
@@ -159,8 +202,6 @@ UBW3CWidget::UBW3CWidget(const QUrl& pWidgetUrl, QWidget *parent)
     connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(javaScriptWindowObjectCleared()));
 
-    QWebView::load(mMainHtmlUrl);
-
     setFixedSize(QSize(width, height));
 
     mNominalSize = QSize(width, height);
@@ -170,7 +211,6 @@ UBW3CWidget::~UBW3CWidget()
 {
     // NOOP
 }
-
 
 void UBW3CWidget::javaScriptWindowObjectCleared()
 {
