@@ -90,44 +90,44 @@ UBW3CWidget::UBW3CWidget(const QUrl& pWidgetUrl, QWidget *parent)
 
         if( roles == "" || roles.contains("tool") )
         {
-            mCanBeTool = UBAbstractWidget::OSType::type_ALL;
+            mCanBeTool = UBAbstractWidget::type_ALL;
         }
 
         if( roles.contains("twin") )
         {
-            mCanBeTool |= UBAbstractWidget::OSType::type_WIN;
+            mCanBeTool |= UBAbstractWidget::type_WIN;
         }
 
         if( roles.contains("tmac") )
         {
-            mCanBeTool |= UBAbstractWidget::OSType::type_MAC;
+            mCanBeTool |= UBAbstractWidget::type_MAC;
         }
         
         if( roles.contains("tunix") )
         {
-            mCanBeTool |= UBAbstractWidget::OSType::type_UNIX;
+            mCanBeTool |= UBAbstractWidget::type_UNIX;
         }
 
         //---------//
 
         if( roles == "" || roles.contains("content") )
         {
-            mCanBeContent = UBAbstractWidget::OSType::type_ALL;
+            mCanBeContent = UBAbstractWidget::type_ALL;
         }
 
         if( roles.contains("cwin") )
         {
-            mCanBeContent |= UBAbstractWidget::OSType::type_WIN;
+            mCanBeContent |= UBAbstractWidget::type_WIN;
         }
 
         if( roles.contains("cmac") )
         {
-            mCanBeContent |= UBAbstractWidget::OSType::type_MAC;
+            mCanBeContent |= UBAbstractWidget::type_MAC;
         }
 
         if( roles.contains("cunix") )
         {
-            mCanBeContent |= UBAbstractWidget::OSType::type_UNIX;
+            mCanBeContent |= UBAbstractWidget::type_UNIX;
         }
 
         //------------------------------//
