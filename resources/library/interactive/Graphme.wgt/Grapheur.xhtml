@@ -283,13 +283,13 @@
 		<div id="affichage" onmousedown="sourisDown()" onmouseup="sourisUp()" onmousemove="sourisMove(event)" ondblclick="doubleClick(event.ctrlKey)"></div>
 		<!-- Zone de boutons gauche -->
 		<div id="gauche">
-			X-axis: <br/>
+			Axe des X de: <br/>
 			<input id="borneXGauche" class="smallInput" value="-5" onkeypress='if(event.keyCode==13) actualiserGraph()'/> à <input id="borneXDroite" class="smallInput" value="5" onkeypress='if(event.keyCode==13) actualiserGraph()'/> <br/>
-			Y-axis: <br/>
+			Axe des Y de: <br/>
 			<input id="borneYGauche" class="smallInput" value="-5" onkeypress='if(event.keyCode==13) actualiserGraph()'/> à <input id="borneYDroite" class="smallInput" value="5" onkeypress='if(event.keyCode==13) actualiserGraph()'/>
 			<br/>Zoom: <br/>
 			<input type="button" style="width:45%;" onclick='zoom(1.25)' value="-"/><input type="button" style="width:45%; position:relative; left: 9px;" onclick='zoom(0.8)' value="+"/><br/><br/>
-			Color: <br/>
+			Couleur: <br/>
 			<div id="buttonColor" title="couleurFonction" onclick="colorPicker(this.id); afficherMenu('menuCouleur')"></div>
 			<br/><br/>
 			<hr/>
