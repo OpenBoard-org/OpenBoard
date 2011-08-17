@@ -78,17 +78,17 @@ bool UBAbstractWidget::canBeContent()
 {
     // if we under MAC OS
     #if defined(Q_OS_MAC)
-        return mCanBeContent & OSType::type_MAC;
+        return mCanBeContent & UBAbstractWidget::type_MAC;
     #endif
 
     // if we under UNIX OS
     #if defined(Q_OS_UNIX)
-        return mCanBeContent & OSType::type_UNIX;
+        return mCanBeContent & UBAbstractWidget::type_UNIX;
     #endif
 
     // if we under WINDOWS OS
     #if defined(Q_OS_WIN)
-        return mCanBeContent & OSType::type_WIN;
+        return mCanBeContent & UBAbstractWidget::type_WIN;
     #endif
 }
 
@@ -96,17 +96,17 @@ bool UBAbstractWidget::canBeTool()
 {
     // if we under MAC OS
     #if defined(Q_OS_MAC)
-        return mCanBeTool & OSType::type_MAC;
+        return mCanBeTool & UBAbstractWidget::type_MAC;
     #endif
 
         // if we under UNIX OS
     #if defined(Q_OS_UNIX)
-        return mCanBeTool & OSType::type_UNIX;
+        return mCanBeTool & UBAbstractWidget::type_UNIX;
     #endif
 
         // if we under WINDOWS OS
     #if defined(Q_OS_WIN)
-        return mCanBeTool & OSType::type_WIN;
+        return mCanBeTool & UBAbstractWidget::type_WIN;
     #endif
 }
 
