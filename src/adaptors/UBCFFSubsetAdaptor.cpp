@@ -35,41 +35,41 @@
 
 //tag names definition
 //use them everiwhere!
-static char* tElement       = "element";
-static char* tEllipse       = "ellipse";
-static char* tIwb           = "iwb";
-static char* tMeta          = "meta";
-static char* tPage          = "page";
-static char* tPageset       = "pageset";
-static char* tPolygon       = "polygon";
-static char* tRect          = "rect";
-static char* tSvg           = "svg";
-static char* tText          = "text";
-static char* tTextarea      = "textarea";
-static char* tTspan         = "tspan";
-static char* tBreak         = "tbreak";
+static QString tElement         = "element";
+static QString tEllipse         = "ellipse";
+static QString tIwb             = "iwb";
+static QString tMeta            = "meta";
+static QString tPage            = "page";
+static QString tPageset         = "pageset";
+static QString tPolygon         = "polygon";
+static QString tRect            = "rect";
+static QString tSvg             = "svg";
+static QString tText            = "text";
+static QString tTextarea        = "textarea";
+static QString tTspan           = "tspan";
+static QString tBreak           = "tbreak";
 
 //attribute names definition
-static char* aFill          = "fill";
-static char* aFillopacity   = "fill-opacity";
-static char* aX             = "x";
-static char* aY             = "y";
-static char* aWidth         = "width";
-static char* aHeight        = "height";
-static char* aStroke        = "stroke";
-static char* aStrokewidth   = "stroke-width";
-static char* aCx            = "cx";
-static char* aCy            = "cy";
-static char* aRx            = "rx";
-static char* aRy            = "ry";
-static char* aTransform     = "transform";
-static char* aViewbox       = "viewbox";
-static char* aFontSize      = "font-size";
-static char* aFontfamily    = "font-family";
-static char* aFontstretch   = "font-stretch";
-static char* aFontstyle     = "font-style";
-static char* aFontweight    = "font-weight";
-static char* aTextalign     = "text-align";
+static QString aFill            = "fill";
+static QString aFillopacity     = "fill-opacity";
+static QString aX               = "x";
+static QString aY               = "y";
+static QString aWidth           = "width";
+static QString aHeight          = "height";
+static QString aStroke          = "stroke";
+static QString aStrokewidth     = "stroke-width";
+static QString aCx              = "cx";
+static QString aCy              = "cy";
+static QString aRx              = "rx";
+static QString aRy              = "ry";
+static QString aTransform       = "transform";
+static QString aViewbox         = "viewbox";
+static QString aFontSize        = "font-size";
+static QString aFontfamily      = "font-family";
+static QString aFontstretch     = "font-stretch";
+static QString aFontstyle       = "font-style";
+static QString aFontweight      = "font-weight";
+static QString aTextalign       = "text-align";
 
 
 UBCFFSubsetAdaptor::UBCFFSubsetAdaptor()
@@ -333,7 +333,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvg()
 void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(UBGraphicsSvgItem *item, qreal width, qreal height, qreal x, qreal y, bool useTransform, QTransform &transform)
 {
     QTransform curTrans = item->transform();
-    qWarning() << QString().sprintf("Item current transform = %f 0 0 %f %f %f, position %f, %f, size %f, %f", curTrans.m11(), curTrans.m22(), curTrans.dx(), curTrans.dy(), item->x(), item->y());
+    qWarning() << QString().sprintf("Item current transform = %f 0 0 %f %f %f, position %f, %f", curTrans.m11(), curTrans.m22(), curTrans.dx(), curTrans.dy(), item->x(), item->y());
     //check if rect is rotated
     //rotate svg item itself
     QRectF itemBounds = item->boundingRect();
@@ -505,8 +505,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTextArea()
     parseTextAttributes(fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
 
     QSvgGenerator *generator = createSvgGenerator(width, height);
-    qreal hScale = 1;//mCurrentSceneRect.width() / mViewBox.width();
-    qreal vScale = 1;//mCurrentSceneRect.height() / mViewBox.height();
     QPainter painter;
     painter.begin(generator);
     painter.setFont(QFont(fontFamily, fontSize, fontWeight, italic));
@@ -685,9 +683,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseText()
             if (text.trimmed().length() == 0)
                 continue;
             //get bounding rect to obtain desired text height
-            qreal lWidth = metrics.width(text);
             lastDrawnTextBoundingRect = metrics.boundingRect(QRectF(), textAlign, text);
-            /*lastDrawnTextBoundingRect = QRectF(curX, curY, metrics.width(text), curHeight);*/
             QString log = QString().sprintf(" at rect  %f, %f, %f, %f. Bounding rect is %f, %f, %f, %f", 0.0, curY, width, height - curY, lastDrawnTextBoundingRect.x(), lastDrawnTextBoundingRect.y(), lastDrawnTextBoundingRect.width(), lastDrawnTextBoundingRect.height());
             qWarning() << "Text " << text << log;
             textFonts.append(textFont);
