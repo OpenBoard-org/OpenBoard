@@ -1,24 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- 
-  GeoInfo permet d'obtenir différentes informations sur les pays du monde.
-  
-  Copyright (C) 2010 Baptiste Sottas — Tous droits réservés.
-  
-  Ce programme est un logiciel libre ; vous pouvez le redistribuer ou le
-  modifier suivant les termes de la “GNU General Public License” telle que
-  publiée par la Free Software Foundation : soit la version 3 de cette
-  licence, soit (à votre gré) toute version ultérieure.
-  
-  Ce programme est distribué dans l’espoir qu’il vous sera utile, mais SANS
-  AUCUNE GARANTIE : sans même la garantie implicite de COMMERCIALISABILITÉ
-  ni d’ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence Générale
-  Publique GNU pour plus de détails.
-  
-  Vous devriez avoir reçu une copie de la Licence Générale Publique GNU avec
-  ce programme ; si ce n’est pas le cas, consultez :
-  http://www.gnu.org/licenses
-  
-  baptiste.sottas@bluewin.ch
+<!--
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <html>
 	<head>
@@ -33,7 +26,7 @@
 		<script type="text/javascript" src="js/GeoInfo.js"></script>
 	</head>
 	
-	<body onLoad="recevoirPays('')"; onClick="coords = coords + (event.clientX-13) + ',' + (event.clientY-13) + ','">
+	<body onLoad="recevoirPays('')" onClick="coords = coords + (event.clientX-13) + ',' + (event.clientY-13) + ','">
 		
 		<!-- Div contenant le point d'interrogation pour les satistiques-->
 		<div class="question">
@@ -46,28 +39,28 @@
 			
 			<!-- Zones délimitant chaque continent-->
 			<map name="monde1">
-				<area class="curseur" alt="Amerique du Nord" shape="poly" coords="10,57,45,32,103,31,120,20,142,25,172,10,210,8,283,9,270,24,262,37,197,74,198,83,134,119,168,149,171,169,159,166,139,160,124,167,114,173,65,146,46,106,49,89,57,68,47,56,22,65,9,64" 
-					onMouseOver="writeText('Amerique du Nord'); document.getElementById('monde').src='images/Cartes/Carte_Monde_AmeriqueNord.bmp'"  
+				<area class="curseur" alt="North America" shape="poly" coords="10,57,45,32,103,31,120,20,142,25,172,10,210,8,283,9,270,24,262,37,197,74,198,83,134,119,168,149,171,169,159,166,139,160,124,167,114,173,65,146,46,106,49,89,57,68,47,56,22,65,9,64" 
+					onMouseOver="writeText('North America'); document.getElementById('monde').src='images/Cartes/Carte_Monde_AmeriqueNord.bmp'"  
 					onMouseOut="effaceTexte(); document.getElementById('monde').src='images/Cartes/Carte_Monde_1.png'" 
 					onClick="document.getElementById('carteAmeriqueNord').innerHTML = imageAmeriqueNord; apparition('carteAmeriqueNord')"
 				/>
-				<area class="curseur" alt="Eurasie" shape="poly" coords="279,104,309,101,357,114,384,152,415,141,434,142,453,177,466,175,476,144,505,207,554,211,562,184,542,134,545,118,573,108,560,71,583,73,580,59,604,40,460,20,416,12,401,23,377,17,366,30,339,25,335,13,307,14,313,33,296,48,300,65,284,54,269,38,257,46,275,68,284,83,272,90,272,102,279,102,294,100" 
-					onMouseOver="writeText('Eurasie'); document.getElementById('monde').src='images/Cartes/Carte_Monde_Eurasie.bmp'" 
+				<area class="curseur" alt="Eurasia" shape="poly" coords="279,104,309,101,357,114,384,152,415,141,434,142,453,177,466,175,476,144,505,207,554,211,562,184,542,134,545,118,573,108,560,71,583,73,580,59,604,40,460,20,416,12,401,23,377,17,366,30,339,25,335,13,307,14,313,33,296,48,300,65,284,54,269,38,257,46,275,68,284,83,272,90,272,102,279,102,294,100" 
+					onMouseOver="writeText('Eurasia'); document.getElementById('monde').src='images/Cartes/Carte_Monde_Eurasie.bmp'" 
 					onMouseOut="effaceTexte(); document.getElementById('monde').src='images/Cartes/Carte_Monde_1.png'" 
 					onClick="document.getElementById('carteEurasie').innerHTML = imageEurasie; apparition('carteEurasie')"
 				/>
-				<area class="curseur" alt="Amerique du Sud" shape="poly" coords="139,160,159,167,220,201,206,241,171,291,188,305,174,318,148,299,141,234,113,198,124,177,124,168,139,158" 
-					onMouseOver="writeText('Amerique du Sud'); document.getElementById('monde').src='images/Cartes/Carte_Monde_AmeriqueSud.bmp'" 
+				<area class="curseur" alt="South America" shape="poly" coords="139,160,159,167,220,201,206,241,171,291,188,305,174,318,148,299,141,234,113,198,124,177,124,168,139,158" 
+					onMouseOver="writeText('South America'); document.getElementById('monde').src='images/Cartes/Carte_Monde_AmeriqueSud.bmp'" 
 					onMouseOut="effaceTexte(); document.getElementById('monde').src='images/Cartes/Carte_Monde_1.png'" 
 					onClick="document.getElementById('carteAmeriqueSud').innerHTML = imageAmeriqueSud; apparition('carteAmeriqueSud')"
 				/>
-				<area class="curseur" alt="Afrique" shape="poly" coords="279,107,356,119,395,165,390,237,334,267,301,179,257,174,265,135" 
-					onMouseOver="writeText('Afrique'); document.getElementById('monde').src='images/Cartes/Carte_Monde_Afrique.bmp'" 
+				<area class="curseur" alt="Africa" shape="poly" coords="279,107,356,119,395,165,390,237,334,267,301,179,257,174,265,135" 
+					onMouseOver="writeText('Africa'); document.getElementById('monde').src='images/Cartes/Carte_Monde_Afrique.bmp'" 
 					onMouseOut="effaceTexte(); document.getElementById('monde').src='images/Cartes/Carte_Monde_1.png'" 
 					onClick="document.getElementById('carteAfrique').innerHTML = imageAfrique; apparition('carteAfrique')"
 				/>
-				<area class="curseur" alt="Oceanie" shape="poly" coords="566,191,563,215,522,238,519,271,553,264,570,290,607,298,644,278,643,225,610,194,567,189,565,194,566,213,547,223" 
-					onMouseOver="writeText('Oceanie'); document.getElementById('monde').src='images/Cartes/Carte_Monde_Oceanie.bmp'"
+				<area class="curseur" alt="Oceania" shape="poly" coords="566,191,563,215,522,238,519,271,553,264,570,290,607,298,644,278,643,225,610,194,567,189,565,194,566,213,547,223" 
+					onMouseOver="writeText('Oceania'); document.getElementById('monde').src='images/Cartes/Carte_Monde_Oceanie.bmp'"
 					onMouseOut="effaceTexte(); document.getElementById('monde').src='images/Cartes/Carte_Monde_1.png'"
 					onClick="document.getElementById('carteOceanie').innerHTML = imageOceanie; apparition('carteOceanie')"/>
 			</map>
@@ -1010,7 +1003,7 @@
 		</div></br>
 		
 		<!-- Divs pour afficher les détails des pays comparés-->
-		<span class="comparer">Comparer les pays: <input id="compare" type="checkbox" onClick="vide()" ></span>
+		<span class="comparer">Compare countries:<input id="compare" type="checkbox" onClick="vide()" ></span>
 		<table width="654px"  border="0">
 		  <tr>
 			<td><div class="styleDiv" id="info1"></td>
@@ -1023,1062 +1016,1062 @@
 
 		<!-- Informations sur les pays d'Afrique-->
 		<div id="MA" class="cacher">
-		<span class="nomPays">Maroc</span></br>
-		<span class="capitalePays">Capitale: Rabat</span></br>
+		<span class="nomPays">Morocco</span></br>
+		<span class="capitalePays">Capital city: Rabat</span></br>
 		<object data="images/Drapeaux/Afrique/Flag_of_Morocco.png" class="drapeaux"/>
 		</div>
 
 		<div id="DZ" class="cacher">
-		<span class="nomPays">Algerie</span></br>
-		<span class="capitalePays">Capitale: Alger</span></br>
+		<span class="nomPays">Algeria</span></br>
+		<span class="capitalePays">Capital city: Alger</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Algeria.png" class="drapeaux"/>
 		</div>
 
 		<div id="TN" class="cacher">
-		<span class="nomPays">Tunisie</span></br>
-		<span class="capitalePays">Capitale: Tunis</span></br>
+		<span class="nomPays">Tunisia/span></br>
+		<span class="capitalePays">Capital city: Tunis</span></br>
 		<object data="images/Drapeaux/Afrique/Flag_of_Tunisia.png" class="drapeaux"/>
 		</div>
 
 		<div id="LY" class="cacher">
-		<span class="nomPays">Libye</span></br>
-		<span class="capitalePays">Capitale: Tripoli</span></br>
+		<span class="nomPays">Libya</span></br>
+		<span class="capitalePays">Capital city: Tripoli</span></br>
 		<object data="images/Drapeaux/Afrique/Flag_of_Libya.png" class="drapeaux"/>
 		</div>
 
 		<div id="EG" class="cacher">
-		<span class="nomPays">Egypte</span></br>
-		<span class="capitalePays">Capitale: Le Caire</span></br>
+		<span class="nomPays">Egypt</span></br>
+		<span class="capitalePays">Capital city: Cairo</span></br>
 		<object data="images/Drapeaux/Afrique/Flag_of_Egypt.png" class="drapeaux"/>
 		</div>
 
 		<div id="Sahara occidental" class="cacher">
 		<span class="nomPays">Sahara occidental</span></br>
-		<span class="capitalePays">Capitale: </span></br>
+		<span class="capitalePays">Capital city: </span></br>
 		<object data="images/Drapeaux/Afrique/Flag_of_.png" class="drapeaux"/>
 		</div>
 
 		<div id="MR" class="cacher">
-		<span class="nomPays">Mauritanie</span></br>
-		<span class="capitalePays">Capitale: Nouakchott</span></br>
+		<span class="nomPays">Mauritania</span></br>
+		<span class="capitalePays">Capital city: Nouakchott</span></br>
 		<object data="images/Drapeaux/Afrique/Flag_of_Mauritania.png" class="drapeaux"/>
 		</div>
 
 		<div id="ML" class="cacher">
 		<span class="nomPays">Mali</span></br>
-		<span class="capitalePays">Capitale: Bamako</span></br>
+		<span class="capitalePays">Capital city: Bamako</span></br>
 		<object data="images/Drapeaux/Afrique/Flag_of_Mali.png" class="drapeaux"/>
 		</div>
 
 		<div id="NE" class="cacher">
 		<span class="nomPays">Niger</span></br>
-		<span class="capitalePays">Capitale: Niamey</span></br>
+		<span class="capitalePays">Capital city: Niamey</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Niger.png" class="drapeaux"/>
 		</div>
 
 		<div id="TD" class="cacher">
 		<span class="nomPays">Tchad</span></br>
-		<span class="capitalePays">Capitale: Ndjamena</span></br>
+		<span class="capitalePays">Capital city: Ndjamena</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Chad.png" class="drapeaux"/>
 		</div>
 
 		<div id="SD" class="cacher">
 		<span class="nomPays">Soudan</span></br>
-		<span class="capitalePays">Capitale: Khartoum</span></br>
+		<span class="capitalePays">Capital city: Khartoum</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Sudan.png" class="drapeaux"/>
 		</div>
 
 		<div id="ER" class="cacher">
-		<span class="nomPays">Erythree</span></br>
-		<span class="capitalePays">Capitale: Asmara</span></br>
+		<span class="nomPays">Eritrea</span></br>
+		<span class="capitalePays">Capital city: Asmara</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Eritrea.png" class="drapeaux"/>
 		</div>
 
 		<div id="DJ" class="cacher"><span class="nomPays">Djibouti</span></br>
-		<span class="capitalePays">Capitale: Djibouti</span></br>
+		<span class="capitalePays">Capital city: Djibouti</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Djibouti.png" class="drapeaux"/>
 		</div>
 
 		<div id="ET" class="cacher">
-		<span class="nomPays">Ethiopie</span></br>
-		<span class="capitalePays">Capitale: Addis Abeba</span></br>
+		<span class="nomPays">Ethiopia</span></br>
+		<span class="capitalePays">Capital city: Addis Ababa</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Ethiopia.png" class="drapeaux"/>
 		</div>
 
 		<div id="SO" class="cacher">
-		<span class="nomPays">Somalie</span></br>
-		<span class="capitalePays">Capitale: Mogadiscio</span></br>
+		<span class="nomPays">Somalia</span></br>
+		<span class="capitalePays">Capital city: Mogadiscio</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Somalia.png" class="drapeaux"/>
 		</div>
 
 		<div id="KE" class="cacher">
 		<span class="nomPays">Kenya</span></br>
-		<span class="capitalePays">Capitale: Nairobi</span></br>
+		<span class="capitalePays">Capital city: Nairobi</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Kenya.png" class="drapeaux"/>
 		</div>
 
 		<div id="UG" class="cacher">
-		<span class="nomPays">Ouganda</span></br>
-		<span class="capitalePays">Capitale: Kampala</span></br>
+		<span class="nomPays">Uganda</span></br>
+		<span class="capitalePays">Capital city: Kampala</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Uganda.png" class="drapeaux"/>
 		</div>
 
 		<div id="CD" class="cacher">
-		<span class="nomPays">Republique democratique du Congo</span></br>
-		<span class="capitalePays">Capitale: Kinshasa</span></br>
+		<span class="nomPays">Democratic Republic of Congo</span></br>
+		<span class="capitalePays">Capital city: Kinshasa</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_the_Democratic_Republic_of_the_Congo.png" class="drapeaux"/>
 		</div>
 
 		<div id="CF" class="cacher">
-		<span class="nomPays">Republique centrafricaine</span></br>
-		<span class="capitalePays">Capitale: Bangui</span></br>
+		<span class="nomPays">Central African Republic</span></br>
+		<span class="capitalePays">Capital city: Bangui</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_the_Central_African_Republic.png" class="drapeaux"/>
 		</div>
 
 		<div id="CM" class="cacher">
 		<span class="nomPays">Cameroun</span></br>
-		<span class="capitalePays">Capitale: Yaounde</span></br>
+		<span class="capitalePays">Capital city: Yaounde</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Cameroon.png" class="drapeaux"/>
 		</div>
 
 		<div id="NG" class="cacher">
 		<span class="nomPays">Nigeria</span></br>
-		<span class="capitalePays">Capitale: Abuja</span></br>
+		<span class="capitalePays">Capital city: Abuja</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Nigeria.png" class="drapeaux"/>
 		</div>
 
 		<div id="BJ" class="cacher">
 		<span class="nomPays">Benin</span></br>
-		<span class="capitalePays">Capitale: Porto Novo</span></br>
+		<span class="capitalePays">Capital city: Porto Novo</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Benin.png" class="drapeaux"/>
 		</div>
 
 		<div id="TG" class="cacher">
 		<span class="nomPays">Togo</span></br>
-		<span class="capitalePays">Capitale: Lome</span></br>
+		<span class="capitalePays">Capital city: Lome</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Togo.png" class="drapeaux"/>
 		</div>
 
 		<div id="GH" class="cacher">
 		<span class="nomPays">Ghana</span></br>
-		<span class="capitalePays">Capitale: Accra</span></br>
+		<span class="capitalePays">Capital city: Accra</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Ghana.png" class="drapeaux"/>
 		</div>
 
 		<div id="CI" class="cacher">
 		<span class="nomPays">Cote d'Ivoire</span></br>
-		<span class="capitalePays">Capitale: Yamoussoukro</span></br>
+		<span class="capitalePays">Capital city: Yamoussoukro</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Cote_d'Ivoire.png" class="drapeaux"/>
 		</div>
 
 		<div id="BF" class="cacher">
 		<span class="nomPays">Burkina Faso</span></br>
-		<span class="capitalePays">Capitale: Ouagadougou</span></br>
+		<span class="capitalePays">Capital city: Ouagadougou</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Burkina_Faso.png" class="drapeaux"/>
 		</div>
 
 		<div id="LR" class="cacher">
 		<span class="nomPays">Liberia</span></br>
-		<span class="capitalePays">Capitale: Monravia</span></br>
+		<span class="capitalePays">Capital city: Monravia</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Liberia.png" class="drapeaux"/>
 		</div>
 
 		<div id="SL" class="cacher">
 		<span class="nomPays">Sierra Leone</span></br>
-		<span class="capitalePays">Capitale: Freetown</span></br>
+		<span class="capitalePays">Capital city: Freetown</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Sierra_Leone.png" class="drapeaux"/>
 		</div>
 
 		<div id="GN" class="cacher">
-		<span class="nomPays">Guinee</span></br>
-		<span class="capitalePays">Capitale: Conakry</span></br>
+		<span class="nomPays">Guinea</span></br>
+		<span class="capitalePays">Capital city: Conakry</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Guinea.png" class="drapeaux"/>
 		</div>
 
 		<div id="GW" class="cacher">
-		<span class="nomPays">Guinee-Bissau</span></br>
-		<span class="capitalePays">Capitale: Bissau</span></br>
+		<span class="nomPays">Guinea-Bissau</span></br>
+		<span class="capitalePays">Capital city: Bissau</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Guinea-Bissau.png" class="drapeaux"/>
 		</div>
 
 		<div id="SN" class="cacher">
 		<span class="nomPays">Senegal</span></br>
-		<span class="capitalePays">Capitale: Dakar</span></br>
+		<span class="capitalePays">Capital city: Dakar</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Senegal.png" class="drapeaux"/>
 		</div>
 
 		<div id="GM" class="cacher">
-		<span class="nomPays">Gambie</span></br>
-		<span class="capitalePays">Capitale: Banjul</span></br>
+		<span class="nomPays">Gambia</span></br>
+		<span class="capitalePays">Capital city: Banjul</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_The_Gambia.png" class="drapeaux"/>
 		</div>
 
 		<div id="RW" class="cacher">
 		<span class="nomPays">Rwanda</span></br>
-		<span class="capitalePays">Capitale: Kigali</span></br>
+		<span class="capitalePays">Capital city: Kigali</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Rwanda.png" class="drapeaux"/>
 		</div>
 
 		<div id="BI" class="cacher">
 		<span class="nomPays">Burundi</span></br>
-		<span class="capitalePays">Capitale: Bujumbura</span></br>
+		<span class="capitalePays">Capital city: Bujumbura</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Burundi.png" class="drapeaux"/>
 		</div>
 
 		<div id="CG" class="cacher">
-		<span class="nomPays">Republique du Congo</span></br>
-		<span class="capitalePays">Capitale: Brazzaville</span></br>
+		<span class="nomPays">Republic of Congo</span></br>
+		<span class="capitalePays">Capital city: Brazzaville</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_the_Republic_of_the_Congo.png" class="drapeaux"/>
 		</div>
 
 		<div id="GA" class="cacher">
 		<span class="nomPays">Gabon</span></br>
-		<span class="capitalePays">Capitale: Libreville</span></br>
+		<span class="capitalePays">Capital city: Libreville</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Gabon.png" class="drapeaux"/>
 		</div>
 
 		<div id="GQ" class="cacher">
-		<span class="nomPays">Guinee Equatoriale</span></br>
-		<span class="capitalePays">Capitale: Malabo</span></br>
+		<span class="nomPays">Equatorial Guinea</span></br>
+		<span class="capitalePays">Capital city: Malabo</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Equatorial_Guinea.png" class="drapeaux"/>
 		</div>
 
 		<div id="TZ" class="cacher">
-		<span class="nomPays">Tanzanie</span></br>
-		<span class="capitalePays">Capitale: Dodoma</span></br>
+		<span class="nomPays">Tanzania</span></br>
+		<span class="capitalePays">Capital city: Dodoma</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Tanzania.png" class="drapeaux"/>
 		</div>
 
 		<div id="MW" class="cacher">
 		<span class="nomPays">Malawi</span></br>
-		<span class="capitalePays">Capitale: Lilongwe</span></br>
+		<span class="capitalePays">Capital city: Lilongwe</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Malawi.png" class="drapeaux"/>
 		</div>
 
 		<div id="ZM" class="cacher">
-		<span class="nomPays">Zambie</span></br>
-		<span class="capitalePays">Capitale: Lusaka</span></br>
+		<span class="nomPays">Zambia</span></br>
+		<span class="capitalePays">Capital city: Lusaka</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Zambia.png" class="drapeaux"/>
 		</div>
 
 		<div id="AO" class="cacher">
 		<span class="nomPays">Angola</span></br>
-		<span class="capitalePays">Capitale: Luanda</span></br>
+		<span class="capitalePays">Capital city: Luanda</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Angola.png" class="drapeaux"/>
 		</div>
 
 		<div id="MZ" class="cacher">
 		<span class="nomPays">Mozambique</span></br>
-		<span class="capitalePays">Capitale: Maputo</span></br>
+		<span class="capitalePays">Capital city: Maputo</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Mozambique.png" class="drapeaux"/>
 		</div>
 
 		<div id="ZW" class="cacher">
 		<span class="nomPays">Zimbabwe</span></br>
-		<span class="capitalePays">Capitale: Harare</span></br>
+		<span class="capitalePays">Capital city: Harare</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Zimbabwe.png" class="drapeaux"/>
 		</div>
 
 		<div id="BW" class="cacher">
 		<span class="nomPays">Botswana</span></br>
-		<span class="capitalePays">Capitale: Gaborone</span></br>
+		<span class="capitalePays">Capital city: Gaborone</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Botswana.png" class="drapeaux"/>
 		</div>
 
 		<div id="NA" class="cacher">
-		<span class="nomPays">Namibie</span></br>
-		<span class="capitalePays">Capitale: Windhoec</span></br>
+		<span class="nomPays">Namibia</span></br>
+		<span class="capitalePays">Capital city: Windhoec</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Namibia.png" class="drapeaux"/>
 		</div>
 
 		<div id="ZA" class="cacher">
-		<span class="nomPays">Afrique du Sud</span></br>
-		<span class="capitalePays">Capitale: Pretoria</span></br>
+		<span class="nomPays">South Africa</span></br>
+		<span class="capitalePays">Capital city: Pretoria</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_South_Africa.png" class="drapeaux"/>
 		</div>
 
 		<div id="LS" class="cacher">
 		<span class="nomPays">Lesotho</span></br>
-		<span class="capitalePays">Capitale: Maseru</span></br>
+		<span class="capitalePays">Capital city: Maseru</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Lesotho.png" class="drapeaux"/>
 		</div>
 
 		<div id="SZ" class="cacher">
 		<span class="nomPays">Swaziland</span></br>
-		<span class="capitalePays">Capitale: Mbabane</span></br>
+		<span class="capitalePays">Capital city: Mbabane</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Swaziland.png" class="drapeaux"/>
 		</div>
 
 		<div id="MG" class="cacher">
 		<span class="nomPays">Madagascar</span></br>
-		<span class="capitalePays">Capitale: Antananarivo</span></br>
+		<span class="capitalePays">Capital city: Antananarivo</span></br>
 		<img src="images/Drapeaux/Afrique/Flag_of_Madagascar.png" class="drapeaux"/>
 		</div>
 
 		<!-- Informations sur les pays d'Amerique du Sud-->
 		<div id="AR" class="cacher">
 		<span class="nomPays">Argentine</span></br>
-		<span class="capitalePays">Capitale: Buenos Aires</span></br>
+		<span class="capitalePays">Capital city: Buenos Aires</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Argentina.png" class="drapeaux"/>
 		</div>
 
 		<div id="CL" class="cacher">
 		<span class="nomPays">Chili</span></br>
-		<span class="capitalePays">Capitale: Santiago</span></br>
+		<span class="capitalePays">Capital city: Santiago</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Chile.png" class="drapeaux"/>
 		</div>
 
 		<div id="UY" class="cacher">
 		<span class="nomPays">Uruguay</span></br>
-		<span class="capitalePays">Capitale: Montevideo</span></br>
+		<span class="capitalePays">Capital city: Montevideo</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Uruguay.png" class="drapeaux"/>
 		</div>
 
 		<div id="PY" class="cacher">
 		<span class="nomPays">Paraguay</span></br>
-		<span class="capitalePays">Capitale: Asuncion</span></br>
+		<span class="capitalePays">Capital city: Asuncion</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Paraguay.png" class="drapeaux"/>
 		</div>
 
 		<div id="BO" class="cacher">
-		<span class="nomPays">Bolivie</span></br>
-		<span class="capitalePays">Capitale: La Paz</span></br>
+		<span class="nomPays">Bolivia</span></br>
+		<span class="capitalePays">Capital city: La Paz</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Bolivia.png" class="drapeaux"/>
 		</div>
 
 		<div id="BR" class="cacher">
-		<span class="nomPays">Bresil</span></br>
-		<span class="capitalePays">Capitale: Brasilia</span></br>
+		<span class="nomPays">Brazil</span></br>
+		<span class="capitalePays">Capital city: Brasilia</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Brazil.png" class="drapeaux"/>
 		</div>
 
 		<div id="PE" class="cacher">
-		<span class="nomPays">Perou</span></br>
-		<span class="capitalePays">Capitale: Lima</span></br>
+		<span class="nomPays">Peru</span></br>
+		<span class="capitalePays">Capital city: Lima</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Peru.png" class="drapeaux"/>
 		</div>
 
 		<div id="EC" class="cacher">
-		<span class="nomPays">Equateur</span></br>
-		<span class="capitalePays">Capitale: Quito</span></br>
+		<span class="nomPays">Ecuador</span></br>
+		<span class="capitalePays">Capital city: Quito</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Ecuador.png" class="drapeaux"/>
 		</div>
 
 		<div id="CO" class="cacher">
-		<span class="nomPays">Colombie</span></br>
-		<span class="capitalePays">Capitale: Bogota</span></br>
+		<span class="nomPays">Colombia</span></br>
+		<span class="capitalePays">Capital city: Bogota</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Colombia.png" class="drapeaux"/>
 		</div>
 
 		<div id="VE" class="cacher">
 		<span class="nomPays">Venezuela</span></br>
-		<span class="capitalePays">Capitale: Caracas</span></br>
+		<span class="capitalePays">Capital city: Caracas</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Venezuela.png" class="drapeaux"/>
 		</div>
 
 		<div id="GY" class="cacher">
 		<span class="nomPays">Guyana</span></br>
-		<span class="capitalePays">Capitale: Georgetown</span></br>
+		<span class="capitalePays">Capital city: Georgetown</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Guyana.png" class="drapeaux"/>
 		</div>
 
 		<div id="SR" class="cacher">
 		<span class="nomPays">Suriname</span></br>
-		<span class="capitalePays">Capitale: Paramaribo</span></br>
+		<span class="capitalePays">Capital city: Paramaribo</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_Suriname.png" class="drapeaux"/>
 		</div>
 
 		<div id="GF" class="cacher">
-		<span class="nomPays">Guyane</span></br>
-		<span class="capitalePays">Capitale: Paris</span></br>
+		<span class="nomPays">Guyana</span></br>
+		<span class="capitalePays">Capital city: Paris</span></br>
 		<img src="images/Drapeaux/AmeriqueSud/Flag_of_France.png" class="drapeaux"/>
 		</div>
 
 		<!-- Informations sur les pays d'Amérique du Nord-->
 		<div id="CA" class="cacher">
 		<span class="nomPays">Canada</span></br>
-		<span class="capitalePays">Capitale: Ottawa</span></br>
+		<span class="capitalePays">Capital city: Ottawa</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Canada.png" class="drapeaux"/>
 		</div>
 
 		<div id="GL" class="cacher">
-		<span class="nomPays">Groenland</span></br>
-		<span class="capitalePays">Capitale: Nuuk</span></br>
+		<span class="nomPays">Greenland</span></br>
+		<span class="capitalePays">Capital city: Nuuk</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Greenland.png" class="drapeaux"/>
 		</div>
 
 		<div id="US" class="cacher">
-		<span class="nomPays">Etats-Unis d'Amerique</span></br>
-		<span class="capitalePays">Capitale: Washington DC</span></br>
+		<span class="nomPays">United States of America</span></br>
+		<span class="capitalePays">Capital city: Washington DC</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_the_United_States.png" class="drapeaux"/>
 		</div>
 
 		<div id="MX" class="cacher">
-		<span class="nomPays">Mexique</span></br>
-		<span class="capitalePays">Capitale: Mexico</span></br>
+		<span class="nomPays">Mexico</span></br>
+		<span class="capitalePays">Capital city: Mexico</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Mexico.png" class="drapeaux"/>
 		</div>
 
 		<div id="CU" class="cacher">
 		<span class="nomPays">Cuba</span></br>
-		<span class="capitalePays">Capitale: La Havane</span></br>
+		<span class="capitalePays">Capital city: Havana</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Cuba.png" class="drapeaux"/>
 		</div>
 
 		<div id="HT" class="cacher">
 		<span class="nomPays">Haiti</span></br>
-		<span class="capitalePays">Capitale: Port-au-Prince</span></br>
+		<span class="capitalePays">Capital city: Port-au-Prince</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Haiti.png" class="drapeaux"/>
 		</div>
 
 		<div id="DO" class="cacher">
-		<span class="nomPays">Republique dominicaine</span></br>
-		<span class="capitalePays">Capitale: Saint-Domingue</span></br>
+		<span class="nomPays">Dominican Republic</span></br>
+		<span class="capitalePays">Capital city: Santo Domingo</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_the_Dominican_Republic.png" class="drapeaux"/>
 		</div>
 
 		<div id="JM" class="cacher">
-		<span class="nomPays">Jamaique</span></br>
-		<span class="capitalePays">Capitale: Kingston</span></br>
+		<span class="nomPays">Jamaica</span></br>
+		<span class="capitalePays">Capital city: Kingston</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Jamaica.png" class="drapeaux"/>
 		</div>
 
 		<div id="BS" class="cacher">
 		<span class="nomPays">Bahamas</span></br>
-		<span class="capitalePays">Capitale: Nassau</span></br>
+		<span class="capitalePays">Capital city: Nassau</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_the_Bahamas.png" class="drapeaux"/>
 		</div>
 
 		<div id="GT" class="cacher">
 		<span class="nomPays">Guatemala</span></br>
-		<span class="capitalePays">Capitale: Guatemala</span></br>
+		<span class="capitalePays">Capital city: Guatemala</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Guatemala.png" class="drapeaux"/>
 		</div>
 
 		<div id="BZ" class="cacher">
 		<span class="nomPays">Belize</span></br>
-		<span class="capitalePays">Capitale: Belmopan</span></br>
+		<span class="capitalePays">Capital city: Belmopan</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Belize.png" class="drapeaux"/>
 		</div>
 
 		<div id="SV" class="cacher">
-		<span class="nomPays">El Salvador</span></br>
-		<span class="capitalePays">Capitale: San Salvador</span></br>
+		<span class="nomPays">Salvador</span></br>
+		<span class="capitalePays">Capital city: San Salvador</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_El_Salvador.png" class="drapeaux"/>
 		</div>
 
 		<div id="HN" class="cacher">
 		<span class="nomPays">Honduras</span></br>
-		<span class="capitalePays">Capitale: Tegucigalpa</span></br>
+		<span class="capitalePays">Capital city: Tegucigalpa</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Honduras.png" class="drapeaux"/>
 		</div>
 
 		<div id="NI" class="cacher">
 		<span class="nomPays">Nicaragua</span></br>
-		<span class="capitalePays">Capitale: Managua</span></br>
+		<span class="capitalePays">Capital city: Managua</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Nicaragua.png" class="drapeaux"/>
 		</div>
 
 		<div id="CR" class="cacher">
 		<span class="nomPays">Costa-Rica</span></br>
-		<span class="capitalePays">Capitale: San Jose</span></br>
+		<span class="capitalePays">Capital city: San Jose</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Costa_Rica.png" class="drapeaux"/>
 		</div>
 
 		<div id="PA" class="cacher">
 		<span class="nomPays">Panama</span></br>
-		<span class="capitalePays">Capitale: Panama</span></br>
+		<span class="capitalePays">Capital city: Panama</span></br>
 		<img src="images/Drapeaux/AmeriqueNord/Flag_of_Panama.png" class="drapeaux"/>
 		</div>
 
 		<!-- Informations sur les pays d'Oceanie-->
 		<div id="AU" class="cacher">
-		<span class="nomPays">Australie</span></br>
-		<span class="capitalePays">Capitale: Canberra</span></br>
+		<span class="nomPays">Australia</span></br>
+		<span class="capitalePays">Capital city: Canberra</span></br>
 		<img src="images/Drapeaux/Oceanie/Flag_of_Australia.png" class="drapeaux"/>
 		</div>
 
 		<div id="NZ" class="cacher">
-		<span class="nomPays">Nouvelle-Zelande</span></br>
-		<span class="capitalePays">Capitale: Wellington</span></br>
+		<span class="nomPays">New Zealand</span></br>
+		<span class="capitalePays">Capital city: Wellington</span></br>
 		<img src="images/Drapeaux/Oceanie/Flag_of_New_Zealand.png" class="drapeaux"/>
 		</div>
 
 		<div id="PG" class="cacher">
-		<span class="nomPays">Papouasie-Nouvelle-Guinee</span></br>
-		<span class="capitalePays">Capitale: Port Moresby</span></br>
+		<span class="nomPays">Papua New Guinea</span></br>
+		<span class="capitalePays">Capital city: Port Moresby</span></br>
 		<img src="images/Drapeaux/Oceanie/Flag_of_Papua_New_Guinea.png" class="drapeaux"/>
 		</div>
 
 		<div id="ID" class="cacher">
-		<span class="nomPays">Indonesie</span></br>
-		<span class="capitalePays">Capitale: Jakarta</span></br>
+		<span class="nomPays">Indonesia</span></br>
+		<span class="capitalePays">Capital city: Jakarta</span></br>
 		<img src="images/Drapeaux/Oceanie/Flag_of_Indonesia.png" class="drapeaux"/>
 		</div>
 
 		<div id="SB" class="cacher">
-		<span class="nomPays">Iles Salomon</span></br>
-		<span class="capitalePays">Capitale: Honiara</span></br>
+		<span class="nomPays">Solomon Islands</span></br>
+		<span class="capitalePays">Capital city: Honiara</span></br>
 		<img src="images/Drapeaux/Oceanie/Flag_of_the_Solomon_Islands.png" class="drapeaux"/>
 		</div>
 
 		<div id="VU" class="cacher">
 		<span class="nomPays">Vanuatu</span></br>
-		<span class="capitalePays">Capitale: Port-Vila</span></br>
+		<span class="capitalePays">Capital city: Port-Vila</span></br>
 		<img src="images/Drapeaux/Oceanie/Flag_of_Vanuatu.png" class="drapeaux"/>
 		</div>
 
 		<div id="NC" class="cacher">
-		<span class="nomPays">Nouvelle-Caledonie</span></br>
-		<span class="capitalePays">Capitale: Paris</span></br>
+		<span class="nomPays">New Caledonia</span></br>
+		<span class="capitalePays">Capital city: Paris</span></br>
 		<img src="images/Drapeaux/Oceanie/Flag_of_France.png" class="drapeaux"/>
 		</div>
 
 		<!-- Informations sur les pays d'Europe-->
 		<div id="AL" class="cacher">
-		<span class="nomPays">Albanie</span></br>
-		<span class="capitalePays">Capitale: Tirana</span></br>
+		<span class="nomPays">Albania</span></br>
+		<span class="capitalePays">Capital city: Tirana</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Albania.png" class="drapeaux"/>
 		</div>
 
 		<div id="DE" class="cacher">
-		<span class="nomPays">Allemagne</span></br>
-		<span class="capitalePays">Capitale: Berlin</span></br>
+		<span class="nomPays">Germany</span></br>
+		<span class="capitalePays">Capital city: Berlin</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Germany.png" class="drapeaux"/>
 		</div>
 
 		<div id="AD" class="cacher">
-		<span class="nomPays">Andorre</span></br>
-		<span class="capitalePays">Capitale: Andorre-la-Vieille</span></br>
+		<span class="nomPays">Andorra</span></br>
+		<span class="capitalePays">Capital city: Andorra la Vella</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Andorra.png" class="drapeaux"/>
 		</div>
 
 		<div id="AM" class="cacher">
-		<span class="nomPays">Armenie</span></br>
-		<span class="capitalePays">Capitale: Erevan</span></br>
+		<span class="nomPays">Armenia</span></br>
+		<span class="capitalePays">Capital city: Erevan</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Armenia.png" class="drapeaux"/>
 		</div>
 
 		<div id="AT" class="cacher">
-		<span class="nomPays">Autriche</span></br>
-		<span class="capitalePays">Capitale: Vienne</span></br>
+		<span class="nomPays">Austria</span></br>
+		<span class="capitalePays">Capital city: Vienne</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Austria.png" class="drapeaux"/>
 		</div>
 
 		<div id="AZ" class="cacher">
-		<span class="nomPays">Azerbaidjan</span></br>
-		<span class="capitalePays">Capitale: Bakou</span></br>
+		<span class="nomPays">Azerbaijan</span></br>
+		<span class="capitalePays">Capital city: Baku</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Azerbaijan.png" class="drapeaux"/>
 		</div>
 
 		<div id="BE" class="cacher">
-		<span class="nomPays">Belgique</span></br>
-		<span class="capitalePays">Capitale: Bruxelles</span></br>
+		<span class="nomPays">Belgium</span></br>
+		<span class="capitalePays">Capital city: Bruxelles</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Belgium.png" class="drapeaux"/>
 		</div>
 
 		<div id="BY" class="cacher">
 		<span class="nomPays">Belarus</span></br>
-		<span class="capitalePays">Capitale: Minsk</span></br>
+		<span class="capitalePays">Capital city: Minsk</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Belarus.png" class="drapeaux"/>
 		</div>
 
 		<div id="BA" class="cacher">
-		<span class="nomPays">Bosnie</span></br>
-		<span class="capitalePays">Capitale: Sarajevo</span></br>
+		<span class="nomPays">Bosnia</span></br>
+		<span class="capitalePays">Capital city: Sarajevo</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Bosnia_and_Herzegovina.png" class="drapeaux"/>
 		</div>
 
 		<div id="BG" class="cacher">
-		<span class="nomPays">Bulgarie</span></br>
-		<span class="capitalePays">Capitale: Sofia</span></br>
+		<span class="nomPays">Bulgaria</span></br>
+		<span class="capitalePays">Capital city: Sofia</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Bulgaria.png" class="drapeaux"/>
 		</div>
 
 		<div id="CY" class="cacher">
-		<span class="nomPays">Chypre</span></br>
-		<span class="capitalePays">Capitale: Nicosie</span></br>
+		<span class="nomPays">Cyprus</span></br>
+		<span class="capitalePays">Capital city: Nicosia</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Cyprus.png" class="drapeaux"/>
 		</div>
 
 		<div id="HR" class="cacher">
-		<span class="nomPays">Croatie</span></br>
-		<span class="capitalePays">Capitale: Zagreb</span></br>
+		<span class="nomPays">Croatia</span></br>
+		<span class="capitalePays">Capital city: Zagreb</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Croatia.png" class="drapeaux"/>
 		</div>
 
 		<div id="DK" class="cacher">
-		<span class="nomPays">Danemark</span></br>
-		<span class="capitalePays">Capitale: Copenhague</span></br>
+		<span class="nomPays">Denmark</span></br>
+		<span class="capitalePays">Capital city: Copenhagen</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Denmark.png" class="drapeaux"/>
 		</div>
 
 		<div id="ES" class="cacher">
-		<span class="nomPays">Espagne</span></br>
-		<span class="capitalePays">Capitale: Madrid</span></br>
+		<span class="nomPays">Spain</span></br>
+		<span class="capitalePays">Capital city: Madrid</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Spain.png" class="drapeaux"/>
 		</div>
 
 		<div id="EE" class="cacher">
-		<span class="nomPays">Estonie</span></br>
-		<span class="capitalePays">Capitale: Tallinn</span></br>
+		<span class="nomPays">Estonia</span></br>
+		<span class="capitalePays">Capital city: Tallinn</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Estonia.png" class="drapeaux"/>
 		</div>
 
 		<div id="FI" class="cacher">
-		<span class="nomPays">Finlande</span></br>
-		<span class="capitalePays">Capitale: Helsinki</span></br>
+		<span class="nomPays">Finland</span></br>
+		<span class="capitalePays">Capital city: Helsinki</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Finland.png" class="drapeaux"/>
 		</div>
 
 		<div id="FR" class="cacher">
 		<span class="nomPays">France</span></br>
-		<span class="capitalePays">Capitale: Paris</span></br>
+		<span class="capitalePays">Capital city: Paris</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_France.png" class="drapeaux"/>
 		</div>
 
 		<div id="GE" class="cacher">
-		<span class="nomPays">Georgie</span></br>
-		<span class="capitalePays">Capitale: Tbilissi</span></br>
+		<span class="nomPays">Georgia</span></br>
+		<span class="capitalePays">Capital city: Tbilisi</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Georgia.png" class="drapeaux"/>
 		</div>
 
 		<div id="EL" class="cacher">
-		<span class="nomPays">Grece</span></br>
-		<span class="capitalePays">Capitale: Athenes</span></br>
+		<span class="nomPays">Greece</span></br>
+		<span class="capitalePays">Capital city: Athenes</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Greece.png" class="drapeaux"/>
 		</div>
 
 		<div id="HU" class="cacher">
-		<span class="nomPays">Hongrie</span></br>
-		<span class="capitalePays">Capitale: Budapest</span></br>
+		<span class="nomPays">Hungary</span></br>
+		<span class="capitalePays">Capital city: Budapest</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Hungary.png" class="drapeaux"/>
 		</div>
 
 		<div id="IE" class="cacher">
-		<span class="nomPays">Irlande</span></br>
-		<span class="capitalePays">Capitale: Dublin</span></br>
+		<span class="nomPays">Ireland</span></br>
+		<span class="capitalePays">Capital city: Dublin</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Ireland.png" class="drapeaux"/>
 		</div>
 
 		<div id="IS" class="cacher">
-		<span class="nomPays">Islande</span></br>
-		<span class="capitalePays">Capitale: Reykjavik</span></br>
+		<span class="nomPays">Island</span></br>
+		<span class="capitalePays">Capital city: Reykjavik</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Iceland.png" class="drapeaux"/>
 		</div>
 
 		<div id="IT" class="cacher">
-		<span class="nomPays">Italie</span></br>
-		<span class="capitalePays">Capitale: Rome</span></br>
+		<span class="nomPays">Italy</span></br>
+		<span class="capitalePays">Capital city: Rome</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Italy.png" class="drapeaux"/>
 		</div>
 
 		<div id="LV" class="cacher">
-		<span class="nomPays">Lettonie</span></br>
-		<span class="capitalePays">Capitale: Riga</span></br>
+		<span class="nomPays">Latvia</span></br>
+		<span class="capitalePays">Capital city: Riga</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Latvia.png" class="drapeaux"/>
 		</div>
 
 		<div id="LI" class="cacher">
 		<span class="nomPays">Liechtenstein</span></br>
-		<span class="capitalePays">Capitale: Vaduz</span></br>
+		<span class="capitalePays">Capital city: Vaduz</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Liechtenstein.png" class="drapeaux"/>
 		</div>
 
 		<div id="LT" class="cacher">
-		<span class="nomPays">Lituanie</span></br>
-		<span class="capitalePays">Capitale: Vilnius</span></br>
+		<span class="nomPays">Lithuania</span></br>
+		<span class="capitalePays">Capital city: Vilnius</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Lithuania.png" class="drapeaux"/>
 		</div>
 
 		<div id="LU" class="cacher">
 		<span class="nomPays">Luxembourg</span></br>
-		<span class="capitalePays">Capitale: Luxembourg</span></br>
+		<span class="capitalePays">Capital city: Luxembourg</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Luxembourg.png" class="drapeaux"/>
 		</div>
 
 		<div id="MK" class="cacher">
 		<span class="nomPays">Macedoine</span></br>
-		<span class="capitalePays">Capitale: Skopje</span></br>
+		<span class="capitalePays">Capital city: Skopje</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Macedonia.png" class="drapeaux"/>
 		</div>
 
 		<div id="MT" class="cacher">
-		<span class="nomPays">Malte</span></br>
-		<span class="capitalePays">Capitale: La Valette</span></br>
+		<span class="nomPays">Malta</span></br>
+		<span class="capitalePays">Capital city: La Valetta</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Malta.png" class="drapeaux"/>
 		</div>
 
 		<div id="MD" class="cacher">
-		<span class="nomPays">Moldavie</span></br>
-		<span class="capitalePays">Capitale: Chisinau</span></br>
+		<span class="nomPays">Moldavia</span></br>
+		<span class="capitalePays">Capital city: Chisinau</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Moldova.png" class="drapeaux"/>
 		</div>
 
 		<div id="MC" class="cacher">
 		<span class="nomPays">Monaco</span></br>
-		<span class="capitalePays">Capitale: Monaco</span></br>
+		<span class="capitalePays">Capital city: Monaco</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Monaco.png" class="drapeaux"/>
 		</div>
 
 		<div id="ME" class="cacher">
 		<span class="nomPays">Montenegro</span></br>
-		<span class="capitalePays">Capitale: Podaorica</span></br>
+		<span class="capitalePays">Capital city: Podaorica</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Montenegro.png" class="drapeaux"/>
 		</div>
 
 		<div id="NO" class="cacher">
-		<span class="nomPays">Norvege</span></br>
-		<span class="capitalePays">Capitale: Oslo</span></br>
+		<span class="nomPays">Norway</span></br>
+		<span class="capitalePays">Capital city: Oslo</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Norway.png" class="drapeaux"/>
 		</div>
 
 		<div id="NL" class="cacher">
 		<span class="nomPays">Pays-Bas</span></br>
-		<span class="capitalePays">Capitale: Amsterdam</span></br>
+		<span class="capitalePays">Capital city: Amsterdam</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_the_Netherlands.png" class="drapeaux"/>
 		</div>
 
 		<div id="PL" class="cacher">
-		<span class="nomPays">Pologne</span></br>
-		<span class="capitalePays">Capitale: Varsovie</span></br>
+		<span class="nomPays">Poland</span></br>
+		<span class="capitalePays">Capital city: Warsaw</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Poland.png" class="drapeaux"/>
 		</div>
 
 		<div id="PT" class="cacher">
 		<span class="nomPays">Portugal</span></br>
-		<span class="capitalePays">Capitale: Lisbonne</span></br>
+		<span class="capitalePays">Capital city: Lisbon</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Portugal.png" class="drapeaux"/>
 		</div>
 
 		<div id="CZ" class="cacher">
-		<span class="nomPays">Republique tcheque</span></br>
-		<span class="capitalePays">Capitale: Prague</span></br>
+		<span class="nomPays">Czech Republic</span></br>
+		<span class="capitalePays">Capital city: Prague</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_the_Czech_Republic.png" class="drapeaux"/>
 		</div>
 
 		<div id="RO" class="cacher">
-		<span class="nomPays">Roumanie</span></br>
-		<span class="capitalePays">Capitale: Bucarest</span></br>
+		<span class="nomPays">Romania</span></br>
+		<span class="capitalePays">Capital city: Bucharest</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Romania.png" class="drapeaux"/>
 		</div>
 
 		<div id="UK" class="cacher">
-		<span class="nomPays">Royaume-Uni</span></br>
-		<span class="capitalePays">Capitale: Londres</span></br>
+		<span class="nomPays">United Kingdom</span></br>
+		<span class="capitalePays">Capital city: London</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_the_United_Kingdom.png" class="drapeaux"/>
 		</div>
 
 		<div id="SM" class="cacher">
 		<span class="nomPays">Saint-Marin</span></br>
-		<span class="capitalePays">Capitale: Saint-Marin</span></br>
+		<span class="capitalePays">Capital city: Saint-Marin</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_San_Marino.png" class="drapeaux"/>
 		</div>
 
 		<div id="RS" class="cacher">
-		<span class="nomPays">Serbie</span></br>
-		<span class="capitalePays">Capitale: Belgrade</span></br>
+		<span class="nomPays">Serbia</span></br>
+		<span class="capitalePays">Capital city: Belgrade</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Serbia.png" class="drapeaux"/>
 		</div>
 
 		<div id="SK" class="cacher">
-		<span class="nomPays">Slovaquie</span></br>
-		<span class="capitalePays">Capitale: Bratislava</span></br>
+		<span class="nomPays">Slovakia</span></br>
+		<span class="capitalePays">Capital city: Bratislava</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Slovakia.png" class="drapeaux"/>
 		</div>
 
 		<div id="SI" class="cacher">
-		<span class="nomPays">Slovenie</span></br>
-		<span class="capitalePays">Capitale: Ljubljana</span></br>
+		<span class="nomPays">Slovenia</span></br>
+		<span class="capitalePays">Capital city: Ljubljana</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Slovenia.png" class="drapeaux"/>
 		</div>
 
 		<div id="SE" class="cacher">
 		<span class="nomPays">Suede</span></br>
-		<span class="capitalePays">Capitale: Stockholm</span></br>
+		<span class="capitalePays">Capital city: Stockholm</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Sweden.png" class="drapeaux"/>
 		</div>
 
 		<div id="CH" class="cacher">
 		<span class="nomPays">Suisse</span></br>
-		<span class="capitalePays">Capitale: Berne</span></br>
+		<span class="capitalePays">Capital city: Berne</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Switzerland.png" class="drapeaux"/>
 		</div>
 
 		<div id="TR" class="cacher">
-		<span class="nomPays">Turquie</span></br>
-		<span class="capitalePays">Capitale: Ankara</span></br>
+		<span class="nomPays">Turkey</span></br>
+		<span class="capitalePays">Capital city: Ankara</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Turkey.png" class="drapeaux"/>
 		</div>
 
 		<div id="UA" class="cacher">
 		<span class="nomPays">Ukraine</span></br>
-		<span class="capitalePays">Capitale: Kiev</span></br>
+		<span class="capitalePays">Capital city: Kiev</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Ukraine.png" class="drapeaux"/>
 		</div>
 
 		<div id="VA" class="cacher">
 		<span class="nomPays">Vatican</span></br>
-		<span class="capitalePays">Capitale: Cite du Vatican</span></br>
+		<span class="capitalePays">Capital city: Cite du Vatican</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_the_Vatican_City.png" class="drapeaux"/>
 		</div>
 
 		<!-- Informations sur les pays d'Asie-->
 		<div id="AF" class="cacher">
 		<span class="nomPays">Afghanistan</span></br>
-		<span class="capitalePays">Capitale: Kaboul</span></br>
+		<span class="capitalePays">Capital city: Kabul</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Afghanistan.png" class="drapeaux"/>
 		</div>
 
 		<div id="SA" class="cacher">
-		<span class="nomPays">Arabie Saoudite</span></br>
-		<span class="capitalePays">Capitale: Riyad</span></br>
+		<span class="nomPays">Saudi Arabia</span></br>
+		<span class="capitalePays">Capital city: Riyadh</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Saudi_Arabia.png" class="drapeaux"/>
 		</div>
 
 		<div id="BH" class="cacher">
 		<span class="nomPays">Bahrein</span></br>
-		<span class="capitalePays">Capitale: Manama</span></br>
+		<span class="capitalePays">Capital city: Manama</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Bahrain.png" class="drapeaux"/>
 		</div>
 
 		<div id="BD" class="cacher">
 		<span class="nomPays">Bangladesh</span></br>
-		<span class="capitalePays">Capitale: Dhaka</span></br>
+		<span class="capitalePays">Capital city: Dhaka</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Bangladesh.png" class="drapeaux"/>
 		</div>
 
 		<div id="BT" class="cacher">
-		<span class="nomPays">Bhoutan</span></br>
-		<span class="capitalePays">Capitale: Thimphou</span></br>
+		<span class="nomPays">Bhutan</span></br>
+		<span class="capitalePays">Capital city: Thimphu</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Bhutan.png" class="drapeaux"/>
 		</div>
 
 		<div id="BN" class="cacher">
 		<span class="nomPays">Brunei</span></br>
-		<span class="capitalePays">Capitale: Bandar Seri Begawan</span></br>
+		<span class="capitalePays">Capital city: Bandar Seri Begawan</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Brunei.png" class="drapeaux"/>
 		</div>
 
 		<div id="KH" class="cacher">
-		<span class="nomPays">Cambodge</span></br>
-		<span class="capitalePays">Capitale: Phnom Penh</span></br>
+		<span class="nomPays">Cambodia</span></br>
+		<span class="capitalePays">Capital city: Phnom Penh</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Cambodia.png" class="drapeaux"/>
 		</div>
 
 		<div id="CN" class="cacher">
 		<span class="nomPays">Chine</span></br>
-		<span class="capitalePays">Capitale: Pekin</span></br>
+		<span class="capitalePays">Capital city: Pekin</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_the_People's_Republic_of_China.png" class="drapeaux"/>
 		</div>
 
 		<div id="KP" class="cacher">
-		<span class="nomPays">Coree du Nord</span></br>
-		<span class="capitalePays">Capitale: Pyongyang</span></br>
+		<span class="nomPays">North Korea</span></br>
+		<span class="capitalePays">Capital city: Pyongyang</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_North_Korea.png" class="drapeaux"/>
 		</div>
 
 		<div id="KR" class="cacher">
-		<span class="nomPays">Coree du Sud</span></br>
-		<span class="capitalePays">Capitale: Seoul</span></br>
+		<span class="nomPays">South Korea</span></br>
+		<span class="capitalePays">Capital city: Seoul</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_South_Korea.png" class="drapeaux"/>
 		</div>
 
 		<div id="AE" class="cacher">
-		<span class="nomPays">Emirats arabes unis</span></br>
-		<span class="capitalePays">Capitale: Abou Dabi</span></br>
+		<span class="nomPays">United Arab Emirates</span></br>
+		<span class="capitalePays">Capital city: Abu Dhabi</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_the_United_Arab_Emirates.png" class="drapeaux"/>
 		</div>
 
 		<div id="IN" class="cacher">
-		<span class="nomPays">Inde</span></br>
-		<span class="capitalePays">Capitale: New Delhi</span></br>
+		<span class="nomPays">India</span></br>
+		<span class="capitalePays">Capital city: New Delhi</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_India.png" class="drapeaux"/>
 		</div>
 
 		<div id="ID" class="cacher">
-		<span class="nomPays">Indonesie</span></br>
-		<span class="capitalePays">Capitale: Jakarta</span></br>
+		<span class="nomPays">Indonesia</span></br>
+		<span class="capitalePays">Capital city: Jakarta</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Indonesia.png" class="drapeaux"/>
 		</div>
 
 		<div id="IR" class="cacher">
 		<span class="nomPays">Iran</span></br>
-		<span class="capitalePays">Capitale: Teheran</span></br>
+		<span class="capitalePays">Capital city: Teheran</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Iran.png" class="drapeaux"/>
 		</div>
 
 		<div id="IQ" class="cacher">
 		<span class="nomPays">Iraq</span></br>
-		<span class="capitalePays">Capitale: Bagdad</span></br>
+		<span class="capitalePays">Capital city: Bagdad</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Iraq.png" class="drapeaux"/>
 		</div>
 
 		<div id="IL" class="cacher">
 		<span class="nomPays">Israel</span></br>
-		<span class="capitalePays">Capitale: Jerusalem</span></br>
+		<span class="capitalePays">Capital city: Jerusalem</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Israel.png" class="drapeaux"/>
 		</div>
 
 		<div id="JP" class="cacher">
-		<span class="nomPays">Japon</span></br>
-		<span class="capitalePays">Capitale: Tokyo</span></br>
+		<span class="nomPays">Japan</span></br>
+		<span class="capitalePays">Capital city: Tokyo</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Japan.png" class="drapeaux"/>
 		</div>
 
 		<div id="JO" class="cacher">
-		<span class="nomPays">Jordanie</span></br>
-		<span class="capitalePays">Capitale: Amman</span></br>
+		<span class="nomPays">Jordan</span></br>
+		<span class="capitalePays">Capital city: Amman</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Jordan.png" class="drapeaux"/>
 		</div>
 
 		<div id="KZ" class="cacher">
 		<span class="nomPays">Kazakhstan</span></br>
-		<span class="capitalePays">Capitale: Astana</span></br>
+		<span class="capitalePays">Capital city: Astana</span></br>
 		<img src="images/Drapeaux/Europe/Flag_of_Kazakhstan.png" class="drapeaux"/>
 		</div>
 
 		<div id="KG" class="cacher">
-		<span class="nomPays">Kirghizistan</span></br>
-		<span class="capitalePays">Capitale: Bichkek</span></br>
+		<span class="nomPays">Kyrgyzstan</span></br>
+		<span class="capitalePays">Capital city: Bishkek</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Kyrgyzstan.png" class="drapeaux"/>
 		</div>
 
 		<div id="KW" class="cacher">
 		<span class="nomPays">Koweit</span></br>
-		<span class="capitalePays">Capitale: Koweit</span></br>
+		<span class="capitalePays">Capital city: Koweit</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Kuwait.png" class="drapeaux"/>
 		</div>
 
 		<div id="LA" class="cacher">
 		<span class="nomPays">Laos</span></br>
-		<span class="capitalePays">Capitale: Vientiane</span></br>
+		<span class="capitalePays">Capital city: Vientiane</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Laos.png" class="drapeaux"/>
 		</div>
 
 		<div id="LB" class="cacher">
-		<span class="nomPays">Liban</span></br>
-		<span class="capitalePays">Capitale: Beyrouth</span></br>
+		<span class="nomPays">Lebanon</span></br>
+		<span class="capitalePays">Capital city: Beyrouth</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Lebanon.png" class="drapeaux"/>
 		</div>
 
 		<div id="MY" class="cacher">
-		<span class="nomPays">Malaisie</span></br>
-		<span class="capitalePays">Capitale: Kuala Lumpur</span></br>
+		<span class="nomPays">Malaysia</span></br>
+		<span class="capitalePays">Capital city: Kuala Lumpur</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Malaysia.png" class="drapeaux"/>
 		</div>
 
 		<div id="MV" class="cacher">
 		<span class="nomPays">Maldives</span></br>
-		<span class="capitalePays">Capitale: Male</span></br>
+		<span class="capitalePays">Capital city: Male</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Maldives.png" class="drapeaux"/>
 		</div>
 
 		<div id="MN" class="cacher">
-		<span class="nomPays">Mongolie</span></br>
-		<span class="capitalePays">Capitale: Oulan-Bator</span></br>
+		<span class="nomPays">Mongolia</span></br>
+		<span class="capitalePays">Capital city: Ulan-Bator</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Mongolia.png" class="drapeaux"/>
 		</div>
 
 		<div id="MM" class="cacher">
 		<span class="nomPays">Myanmar</span></br>
-		<span class="capitalePays">Capitale: Naypyidaw</span></br>
+		<span class="capitalePays">Capital city: Naypyidaw</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Myanmar.png" class="drapeaux"/>
 		</div>
 
 		<div id="NP" class="cacher">
 		<span class="nomPays">Nepal</span></br>
-		<span class="capitalePays">Capitale: Katmandou</span></br>
+		<span class="capitalePays">Capital city: Katmandu</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Nepal.png" class="drapeaux"/>
 		</div>
 
 		<div id="OM" class="cacher">
 		<span class="nomPays">Oman</span></br>
-		<span class="capitalePays">Capitale: Mascate</span></br>
+		<span class="capitalePays">Capital city: Muscat</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Oman.png" class="drapeaux"/>
 		</div>
 
 		<div id="UZ" class="cacher">
-		<span class="nomPays">Ouzbekistan</span></br>
-		<span class="capitalePays">Capitale: Tachkent</span></br>
+		<span class="nomPays">Uzbekistan</span></br>
+		<span class="capitalePays">Capital city: Tashkent</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Uzbekistan.png" class="drapeaux"/>
 		</div>
 
 		<div id="PK" class="cacher">
 		<span class="nomPays">Pakistan</span></br>
-		<span class="capitalePays">Capitale: Islamabad</span></br>
+		<span class="capitalePays">Capital city: Islamabad</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Pakistan.png" class="drapeaux"/>
 		</div>
 
 		<div id="PH" class="cacher">
 		<span class="nomPays">Philippines</span></br>
-		<span class="capitalePays">Capitale: Manille</span></br>
+		<span class="capitalePays">Capital city: Manille</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_the_Philippines.png" class="drapeaux"/>
 		</div>
 
 		<div id="QA" class="cacher">
 		<span class="nomPays">Qatar</span></br>
-		<span class="capitalePays">Capitale: Doha</span></br>
+		<span class="capitalePays">Capital city: Doha</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Qatar.png" class="drapeaux"/>
 		</div>
 
 		<div id="RU" class="cacher">
-		<span class="nomPays">Russie</span></br>
-		<span class="capitalePays">Capitale: Moscou</span></br>
+		<span class="nomPays">Russia</span></br>
+		<span class="capitalePays">Capital city: Moscow</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Russia.png" class="drapeaux"/>
 		</div>
 
 		<div id="SG" class="cacher">
-		<span class="nomPays">Singapour</span></br>
-		<span class="capitalePays">Capitale: Singapour</span></br>
+		<span class="nomPays">Singapore</span></br>
+		<span class="capitalePays">Capital city: Singapore</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Singapore.png" class="drapeaux"/>
 		</div>
 
 		<div id="LK" class="cacher">
 		<span class="nomPays">Sri Lanka</span></br>
-		<span class="capitalePays">Capitale: Colombo</span></br>
+		<span class="capitalePays">Capital city: Colombo</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Sri_Lanka.png" class="drapeaux"/>
 		</div>
 
 		<div id="SY" class="cacher">
-		<span class="nomPays">Syrie</span></br>
-		<span class="capitalePays">Capitale: Damas</span></br>
+		<span class="nomPays">Syria</span></br>
+		<span class="capitalePays">Capital city: Damask</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Syria.png" class="drapeaux"/>
 		</div>
 
 		<div id="TJ" class="cacher">
-		<span class="nomPays">Tadjikistan</span></br>
-		<span class="capitalePays">Capitale: Douchanbe</span></br>
+		<span class="nomPays">Tajikistan</span></br>
+		<span class="capitalePays">Capital city: Dushanbe</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Tajikistan.png" class="drapeaux"/>
 		</div>
 
 		<div id="TH" class="cacher">
-		<span class="nomPays">Thailande</span></br>
-		<span class="capitalePays">Capitale: Bangkok</span></br>
+		<span class="nomPays">Thailand</span></br>
+		<span class="capitalePays">Capital city: Bangkok</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Thailand.png" class="drapeaux"/>
 		</div>
 
 		<div id="TL" class="cacher">
 		<span class="nomPays">Timor-oriental</span></br>
-		<span class="capitalePays">Capitale: Dili</span></br>
+		<span class="capitalePays">Capital city: Dili</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_East_Timor.png" class="drapeaux"/>
 		</div>
 
 		<div id="TM" class="cacher">
 		<span class="nomPays">Turkmenistan</span></br>
-		<span class="capitalePays">Capitale: Achgabat</span></br>
+		<span class="capitalePays">Capital city: Ashgabat</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Turkmenistan.png" class="drapeaux"/>
 		</div>
 
 		<div id="VN" class="cacher">
 		<span class="nomPays">Viet Nam</span></br>
-		<span class="capitalePays">Capitale: Hanoi</span></br>
+		<span class="capitalePays">Capital city: Hanoi</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Vietnam.png" class="drapeaux"/>
 		</div>
 
 		<div id="YE" class="cacher">
 		<span class="nomPays">Yemen</span></br>
-		<span class="capitalePays">Capitale: Sanaa</span></br>
+		<span class="capitalePays">Capital city: Sanaa</span></br>
 		<img src="images/Drapeaux/Asie/Flag_of_Yemen.png" class="drapeaux"/>
 		</div>
 	</body>
