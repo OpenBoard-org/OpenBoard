@@ -186,9 +186,9 @@ macx {
        QMAKE_BUNDLE_DATA += TRANSLATION_fr
    }
    exists(resources/i18n/sankore_fr_CH.qm) {
-       TRANSLATION_fr.files = resources/i18n/sankore_fr_CH.qm \
+       TRANSLATION_fr_CH.files = resources/i18n/sankore_fr_CH.qm \
            resources/i18n/Localizable.strings
-       TRANSLATION_fr.path = "$$RESOURCES_DIR/fr.lproj"
+       TRANSLATION_fr_CH.path = "$$RESOURCES_DIR/fr_CH.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_fr_CH
    }
    exists(resources/i18n/sankore_de.qm) {
@@ -282,6 +282,13 @@ macx {
        QMAKE_BUNDLE_DATA += TRANSLATION_ar
    }
 
+   exists(resources/i18n/sankore_iw.qm) {
+       TRANSLATION_iw.files = resources/i18n/sankore_iw.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_iw.path = "$$RESOURCES_DIR/iw.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_iw
+   }
+
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
        UB_FONTS \
@@ -352,7 +359,8 @@ TRANSLATIONS = resources/i18n/sankore_en.ts \
    resources/i18n/sankore_ko.ts \
    resources/i18n/sankore_zh.ts \
    resources/i18n/sankore_ro.ts \
-   resources/i18n/sankore_ar.ts
+   resources/i18n/sankore_ar.ts \
+   resources/i18n/sankore_iw.ts
 
 INSTALLS = UB_ETC \
    UB_I18N \
