@@ -21,7 +21,7 @@
 #include "ui_webPublishing.h"
 #include "UBAbstractPublisher.h"
 
-#define DOCPUBLICATION_URL     "http://sankore.devxwiki.com/xwiki/bin/view/CreateResources/UniboardUpload?xpage=plain&outputSyntax=plain"
+#define DOCPUBLICATION_URL     "http://planetsankore-staging.devxwiki.com/xwiki/bin/view/CreateResources/UniboardUpload?xpage=plain&outputSyntax=plain"
 #define XWIKI_ORIGIN_HEADER    "http://sankore.devxwiki.com"
 
 typedef struct
