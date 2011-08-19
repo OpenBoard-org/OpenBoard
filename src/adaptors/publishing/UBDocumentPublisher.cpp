@@ -140,7 +140,7 @@ void UBDocumentPublisher::buildUbwFile()
         UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::videoDirectory);
         UBFileSystemUtils::deleteDir(mPublishingDocument->persistencePath() + "/" + UBPersistenceManager::audioDirectory);
 
-        mTmpZipFile = UBFileSystemUtils::defaultTempDirPath() + "/" + UBStringUtils::toCanonicalUuid(QUuid::createUuid()) + ".zip";
+        mTmpZipFile = UBFileSystemUtils::defaultTempDirPath() + "/" + UBStringUtils::toCanonicalUuid(QUuid::createUuid()) + ".ubw~";
 
         QuaZip zip(mTmpZipFile);
         zip.setFileNameCodec("UTF-8");
