@@ -71,6 +71,7 @@ class UBDesktopAnnotationController : public QObject
         void updateBackground();
 
         void showKeyboard(bool show);
+        void showKeyboard(); //X11 virtual keyboard working only needed
 
     signals:
         /**

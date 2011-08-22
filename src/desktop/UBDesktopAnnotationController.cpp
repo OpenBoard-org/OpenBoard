@@ -95,8 +95,14 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
+#ifdef Q_WS_X11
+        mKeyboardPalette = UBKeyboardPalette::create(0);
+        connect(mTransparentDrawingView, SIGNAL(hidden()), mKeyboardPalette, SLOT(hide()));
+        connect(mTransparentDrawingView, SIGNAL(shown()), this, SLOT(showKeyboard()));
+#else
         mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
         mKeyboardPalette->setParent(mTransparentDrawingView);
+#endif
         connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool))); 
         connect(mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
     }
@@ -160,6 +166,11 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
 void UBDesktopAnnotationController::showKeyboard(bool show)
 {
+    #ifdef Q_WS_X11
+        if (!mTransparentDrawingView->isVisible())
+            return;
+    #endif
+
     if(mKeyboardPalette)
     {
         if(show)
@@ -169,6 +180,11 @@ void UBDesktopAnnotationController::showKeyboard(bool show)
         //    mDesktopPalette->showVirtualKeyboard(show);
     }
 
+}
+void UBDesktopAnnotationController::showKeyboard()
+{
+    if (UBApplication::mainWindow->actionVirtualKeyboard->isChecked())
+        mKeyboardPalette->show();
 }
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()

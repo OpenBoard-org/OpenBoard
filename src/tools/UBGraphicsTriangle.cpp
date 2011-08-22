@@ -802,6 +802,7 @@ void UBGraphicsTriangle::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     mVFlipSvgItem->setVisible(false);
     mHFlipSvgItem->setVisible(false);
     mRotateSvgItem->setVisible(false);
+    UBDrawingController::drawingController()->mActiveRuler = NULL;
     event->accept();
     update();
 }
@@ -824,21 +825,20 @@ void UBGraphicsTriangle::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
         else if (closeButtonRect().contains(event->pos()))
             setCursor(closeCursor());
         else if (hFlipRect().contains(event->pos())
-            || vFlipRect().contains(event->pos()))
-                setCursor(flipCursor());
+                 || vFlipRect().contains(event->pos()))
+            setCursor(flipCursor());
         else if (rotateRect().contains(event->pos()))
             setCursor(rotateCursor());
         else
             setCursor(moveCursor());
 
         event->accept();
+    }  else if (UBDrawingController::drawingController()->isDrawingTool())  {
+        event->accept();
     }
 }
 void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
 {
-    qDebug() << "morientation" << mOrientation;
-    //qDebug() << "triangle rect()" << rect();
-
     QPointF itemPos = mapFromScene(scenePos);
 
     qreal y;
