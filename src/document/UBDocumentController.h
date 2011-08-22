@@ -34,6 +34,7 @@ class UBDocumentGroupTreeItem;
 class UBDocumentProxyTreeItem;
 class UBMainWindow;
 class UBDocumentToolsPalette;
+class UBKeyboardPalette;
 
 class UBDocumentController : public QObject
 {
@@ -73,6 +74,8 @@ class UBDocumentController : public QObject
         void paste();
         void focusChanged(QWidget *old, QWidget *current);
 
+        void showKeyboard(bool show);
+
     protected:
         virtual void setupViews();
         virtual void setupToolbar();
@@ -106,6 +109,9 @@ class UBDocumentController : public QObject
         bool mToolsPalettePositionned;
         UBDocumentGroupTreeItem* mTrashTi;
         UBDocumentProxy* mCurrentDocument;
+
+        UBKeyboardPalette *mKeyboardPalette;
+
 
     private slots:
         void documentZoomSliderValueChanged (int value);

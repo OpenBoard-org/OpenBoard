@@ -160,10 +160,15 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
 void UBDesktopAnnotationController::showKeyboard(bool show)
 {
-    mKeyboardPalette->setVisible(show);
-    updateMask(true);
+    if(mKeyboardPalette)
+    {
+        if(show)
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        mKeyboardPalette->setVisible(show);
+        updateMask(true);
+        //    mDesktopPalette->showVirtualKeyboard(show);
+    }
 
-//    mDesktopPalette->showVirtualKeyboard(show);
 }
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
@@ -361,12 +366,10 @@ void UBDesktopAnnotationController::close()
 void UBDesktopAnnotationController::stylusToolChanged(int tool)
 {
     UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
-    mDesktopPalette->notifySelectorSelection(UBStylusTool::Selector == eTool);
-
-    if(UBStylusTool::Selector != eTool)
+    if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
     {
-        UBApplication::mainWindow->actionVirtualKeyboard->setChecked(false);
-        mKeyboardPalette->setVisible(false);
+        if(mKeyboardPalette->m_isVisible)
+            UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
     }
 
     updateBackground();
@@ -420,7 +423,7 @@ void UBDesktopAnnotationController::goToUniboard()
 
     UBPlatformUtils::setDesktopMode(false);
 
-    UBApplication::mainWindow->actionVirtualKeyboard->setEnabled(true);
+//    UBApplication::mainWindow->actionVirtualKeyboard->setEnabled(true);
 
     emit restoreUniboard();
 }

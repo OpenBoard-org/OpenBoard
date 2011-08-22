@@ -130,26 +130,27 @@ void UBGraphicsTriangle::calculatePoints(const QRectF& r)
 {
     switch(mOrientation)
     {
-        case BottomLeft:
-            A1.setX(r.left()); A1.setY(r.top());
-            B1.setX(r.left()); B1.setY(r.bottom());
-            C1.setX(r.right()); C1.setY(r.bottom());
-            break;
-        case TopLeft:
-            A1.setX(r.left()); A1.setY(r.bottom());
-            B1.setX(r.left()); B1.setY(r.top());
-            C1.setX(r.right()); C1.setY(r.top());
-            break;
-        case TopRight:
-            A1.setX(r.right()); A1.setY(r.bottom());
-            B1.setX(r.right()); B1.setY(r.top());
-            C1.setX(r.left()); C1.setY(r.top());
-            break;
-        case BottomRight:
-            A1.setX(r.right()); A1.setY(r.top());
-            B1.setX(r.right()); B1.setY(r.bottom());
-            C1.setX(r.left()); C1.setY(r.bottom());
-            break;
+
+    case BottomLeft:
+        A1.setX(r.left()); A1.setY(r.top());
+        B1.setX(r.left()); B1.setY(r.bottom());
+        C1.setX(r.right()); C1.setY(r.bottom());
+        break;
+    case TopLeft:
+        A1.setX(r.left()); A1.setY(r.bottom());
+        B1.setX(r.left()); B1.setY(r.top());
+        C1.setX(r.right()); C1.setY(r.top());
+        break;
+    case TopRight:
+        A1.setX(r.right()); A1.setY(r.bottom());
+        B1.setX(r.right()); B1.setY(r.top());
+        C1.setX(r.left()); C1.setY(r.top());
+        break;
+    case BottomRight:
+        A1.setX(r.right()); A1.setY(r.top());
+        B1.setX(r.right()); B1.setY(r.bottom());
+        C1.setX(r.left()); C1.setY(r.bottom());
+        break;
     }
 
     C = sqrt(rect().width() * rect().width() + rect().height() * rect().height());
@@ -265,6 +266,22 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
         if (mShowButtons || mResizing2)
             painter->drawPolygon(resize2Polygon());
     }
+}
+
+QPainterPath UBGraphicsTriangle::shape() const
+{
+    QPainterPath tShape;
+    QPolygonF tPolygon;
+
+    tPolygon << A1 << B1 << C1;
+    tShape.addPolygon(tPolygon);
+    tPolygon.clear();
+
+    tPolygon << A2 << B2 << C2;
+    tShape.addPolygon(tPolygon);
+    tPolygon.clear();
+
+    return tShape;
 }
 
 void UBGraphicsTriangle::paintGraduations(QPainter *painter)
@@ -744,8 +761,7 @@ void UBGraphicsTriangle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-    if (currentTool == UBStylusTool::Selector)
-    {
+    if (currentTool == UBStylusTool::Selector)  {
         mCloseSvgItem->setParentItem(this);
 
         mShowButtons = true;
@@ -770,6 +786,11 @@ void UBGraphicsTriangle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
         event->accept();
         update();
+
+    } else if (UBDrawingController::drawingController()->isDrawingTool())  {
+            setCursor(drawRulerLineCursor());
+            UBDrawingController::drawingController()->mActiveRuler = this;
+            event->accept();
     }
 }
 
@@ -813,3 +834,59 @@ void UBGraphicsTriangle::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
         event->accept();
     }
 }
+void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
+{
+    qDebug() << "morientation" << mOrientation;
+    //qDebug() << "triangle rect()" << rect();
+
+    QPointF itemPos = mapFromScene(scenePos);
+
+    qreal y;
+
+    if (mOrientation == 0 || mOrientation == 1) {
+        y = rect().y() + rect().height() + width / 2;
+    } else if (mOrientation == 2 || mOrientation == 3) {
+        y = rect().y() - width / 2;
+    }
+
+    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
+            itemPos.setX(rect().x() + sLeftEdgeMargin);
+    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
+            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+
+    itemPos.setY(y);
+    itemPos = mapToScene(itemPos);
+
+    scene()->moveTo(itemPos);
+    scene()->drawLineTo(itemPos, width, true);
+}
+
+void UBGraphicsTriangle::DrawLine(const QPointF &scenePos, qreal width)
+{
+    QPointF itemPos = mapFromScene(scenePos);
+
+    qreal y;
+
+    if (mOrientation == 0 || mOrientation == 1) {
+        y = rect().y() + rect().height() + width / 2;
+    } else if (mOrientation == 2 || mOrientation == 3) {
+        y = rect().y() - width / 2;
+    }
+
+    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
+            itemPos.setX(rect().x() + sLeftEdgeMargin);
+    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
+            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+
+    itemPos.setY(y);
+    itemPos = mapToScene(itemPos);
+
+    // We have to use "pointed" line for marker tool
+    scene()->drawLineTo(itemPos, width,
+            UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker);
+}
+
+void UBGraphicsTriangle::EndLine()
+{
+}
+

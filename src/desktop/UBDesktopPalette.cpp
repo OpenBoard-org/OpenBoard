@@ -217,8 +217,3 @@ QPoint UBDesktopPalette::buttonPos(QAction *action)
 
     return p;
 }
-
-void UBDesktopPalette::notifySelectorSelection(bool selected)
-{
-    UBApplication::mainWindow->actionVirtualKeyboard->setEnabled(selected);
-}

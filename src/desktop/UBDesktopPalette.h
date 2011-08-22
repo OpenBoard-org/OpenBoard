@@ -27,7 +27,6 @@ class UBDesktopPalette : public UBActionPalette
         void disappearForCapture();
         void appear();
         QPoint buttonPos(QAction* action);
-        void notifySelectorSelection(bool selected);
 
     signals:
         void uniboardClick();
