@@ -30,7 +30,7 @@ class UBItem;
 
 class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonItem, public UBItem
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsTriangle();
@@ -45,6 +45,10 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
 
         virtual UBItem* deepCopy(void) const;
+
+        virtual void StartLine(const QPointF& scenePos, qreal width);
+        virtual void DrawLine(const QPointF& position, qreal width);
+        virtual void EndLine();
 
         enum UBGraphicsTriangleOrientation
         {
@@ -77,6 +81,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         void updateResizeCursor();
 
         virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
+        virtual QPainterPath shape() const;
 
         virtual void rotateAroundCenter(qreal angle);
 
