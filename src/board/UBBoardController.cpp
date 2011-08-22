@@ -35,6 +35,7 @@
 #include "gui/UBToolbarButtonGroup.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBToolWidget.h"
+#include "gui/UBKeyboardPalette.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
@@ -556,6 +557,8 @@ void UBBoardController::blackout()
 
 void UBBoardController::showKeyboard(bool show)
 {
+    if(show)
+        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
     mPaletteManager->showVirtualKeyboard(show);
 }
 
@@ -1548,7 +1551,15 @@ void UBBoardController::updateBackgroundState()
 
 void UBBoardController::stylusToolChanged(int tool)
 {
-    Q_UNUSED(tool);
+    if (UBPlatformUtils::hasVirtualKeyboard() && mPaletteManager->mKeyboardPalette)
+    {
+        UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
+        if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
+        {
+            if(mPaletteManager->mKeyboardPalette->m_isVisible)
+                UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+        }
+    }
 
     updateBackgroundState();
 }

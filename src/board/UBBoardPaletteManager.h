@@ -47,6 +47,8 @@ class UBBoardPaletteManager : public QObject
 		void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
 
+        UBKeyboardPalette *mKeyboardPalette;
+
     public slots:
 
         void activeSceneChanged();
@@ -66,7 +68,6 @@ class UBBoardPaletteManager : public QObject
         UBStylusPalette *mStylusPalette;
 
         UBZoomPalette *mZoomPalette;
-        UBKeyboardPalette *mKeyboardPalette;
         UBNavigatorPalette* mNavigPalette;
         UBLibPalette* mLibPalette;
 
