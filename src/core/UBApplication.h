@@ -34,7 +34,6 @@ class UBControlView;
 class UBPreferencesController;
 class UBResources;
 class UBSettings;
-class UBLicense;
 class UBPersistenceManager;
 class UBApplicationController;
 class UBDocumentController;
