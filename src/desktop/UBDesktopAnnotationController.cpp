@@ -176,8 +176,11 @@ void UBDesktopAnnotationController::showKeyboard(bool show)
         if(show)
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         mKeyboardPalette->setVisible(show);
-        updateMask(true);
-        //    mDesktopPalette->showVirtualKeyboard(show);
+
+        #ifdef Q_WS_X11
+            updateMask(true);
+        #endif
+        
     }
 
 }
