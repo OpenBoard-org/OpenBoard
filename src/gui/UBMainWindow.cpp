@@ -28,7 +28,6 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     , mBoardWidget(0)
     , mWebWidget(0)
     , mDocumentsWidget(0)
-    , mSankoreWebDocumentWidget(0)
 {
     Ui::MainWindow::setupUi(this);
 
