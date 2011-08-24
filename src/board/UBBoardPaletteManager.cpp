@@ -132,7 +132,7 @@ void UBBoardPaletteManager::setupPalettes()
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
         mKeyboardPalette = UBKeyboardPalette::create(0);
-        mKeyboardPalette->setParent(mContainer);
+        //mKeyboardPalette->setParent(mContainer);
     }
 
     mZoomPalette = new UBZoomPalette(mContainer);
