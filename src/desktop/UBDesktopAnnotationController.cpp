@@ -51,6 +51,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mTransparentDrawingView(0)
         , mTransparentDrawingScene(0)
         , mDesktopPalette(NULL)
+        , mKeyboardPalette(0)
         , mDesktopToolsPalette(NULL)
         , mDesktopPenPalette(NULL)
         , mDesktopMarkerPalette(NULL)
@@ -65,7 +66,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mbArrowClicked(false)
         , mBoardStylusTool(UBStylusTool::Pen)
         , mDesktopStylusTool(UBStylusTool::Selector)
-        , mKeyboardPalette(0)
 {
 
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, 0); // deleted in UBDesktopAnnotationController::destructor
