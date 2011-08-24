@@ -132,7 +132,9 @@ void UBBoardPaletteManager::setupPalettes()
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
         mKeyboardPalette = UBKeyboardPalette::create(0);
-        //mKeyboardPalette->setParent(mContainer);
+#ifndef Q_WS_MAC
+        mKeyboardPalette->setParent(mContainer);
+#endif
     }
 
     mZoomPalette = new UBZoomPalette(mContainer);
