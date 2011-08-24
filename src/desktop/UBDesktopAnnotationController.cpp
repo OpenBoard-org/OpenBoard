@@ -104,7 +104,9 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         mKeyboardPalette->setParent(mTransparentDrawingView);
 #endif
         connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool))); 
+#ifdef Q_WS_X11
         connect(mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
+#endif
     }
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
@@ -114,8 +116,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
     connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
-
-//    connect(mDesktopPalette, SIGNAL(showVirtualKeyboard(bool)), this, SLOT());
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 
@@ -158,9 +158,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(&mHoldTimerMarker, SIGNAL(timeout()), this, SLOT(markerActionReleased()));
     connect(&mHoldTimerEraser, SIGNAL(timeout()), this, SLOT(eraserActionReleased()));
 
+#ifdef Q_WS_X11
     connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
     connect(mLibPalette, SIGNAL(resized()), this, SLOT(refreshMask()));
-
+#endif
     onDesktopPaletteMaximized();
 }
 
@@ -352,7 +353,6 @@ void UBDesktopAnnotationController::showWindow()
     {
         QRect desktopRect = QApplication::desktop()->screenGeometry(mDesktopPalette->pos());
 
-        //mDesktopPalette->move((desktopRect.right() - (mDesktopPalette->width() + 20)), desktopRect.top() + 150);
         mDesktopPalette->move(5, desktopRect.top() + 150);
 
         mWindowPositionInitialized = true;
@@ -441,8 +441,6 @@ void UBDesktopAnnotationController::goToUniboard()
     hideWindow();
 
     UBPlatformUtils::setDesktopMode(false);
-
-//    UBApplication::mainWindow->actionVirtualKeyboard->setEnabled(true);
 
     emit restoreUniboard();
 }
@@ -802,8 +800,6 @@ void UBDesktopAnnotationController::onDesktopPaletteMinimize()
  */
 void UBDesktopAnnotationController::onTransparentWidgetResized()
 {
-//    qDebug() << "mTransparentDrawingView (" << mTransparentDrawingView->width() << "," << mTransparentDrawingView->height() << ")";
-//    qDebug() << "mLibPalette (" << mLibPalette->width() << "," << mLibPalette->height() << ")";
       mLibPalette->resize(mLibPalette->width(), mTransparentDrawingView->height());
 }
 
