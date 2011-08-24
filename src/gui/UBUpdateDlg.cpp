@@ -168,6 +168,7 @@ void UBUpdateDlg::onBrowse()
 void UBUpdateDlg::onUpdate()
 {
     mProgressLabel = new QLabel(mProgressWidget);
+    mProgressLabel->setText(tr("Please wait the import process will start soon..."));
     mProgressLayout = new QHBoxLayout();
     mProgressLayout->addWidget(mProgressLabel);
     mProgressWidget->setLayout(mProgressLayout);
