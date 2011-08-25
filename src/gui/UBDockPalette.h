@@ -95,6 +95,7 @@ protected:
     QPoint mMousePressPos;
     /** The palette icon */
     QPixmap mIcon;
+    QPixmap mCollapsedIcon;
     /** The tab orientation */
     eUBDockTabOrientation mTabsOrientation;
     /** The h position of the tab */
