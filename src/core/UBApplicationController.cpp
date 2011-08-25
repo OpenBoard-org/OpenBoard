@@ -514,7 +514,6 @@ void UBApplicationController::checkUpdate()
 
 void UBApplicationController::ftpCommandFinished(int id, bool error)
 {
-   qDebug() << id;
    if (error){
        qWarning() << "ftp command id" << id << "return the error: " << mFtp->errorString();
        mFtp->close();
