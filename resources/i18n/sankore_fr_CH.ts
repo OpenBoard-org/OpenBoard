@@ -7,6 +7,10 @@
         <source>Click to Return to Application</source>
         <translation>Cliquer pour activer Sankoré</translation>
     </message>
+    <message>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DownloadDialog</name>
@@ -45,12 +49,16 @@
         <source>Open</source>
         <translation>Ouvrir</translation>
     </message>
+    <message>
+        <source>Ico</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished">Publier le Podcast sur YouTube</translation>
+        <translation>Publier le Podcast sur YouTube</translation>
     </message>
     <message>
         <source>Title</source>
@@ -129,7 +137,7 @@
     </message>
     <message>
         <source>Start Screen Recording</source>
-        <translation type="unfinished">Démarrer l&apos;enregistrement de l&apos;écran</translation>
+        <translation>Démarrer l&apos;enregistrement de l&apos;écran</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -189,7 +197,7 @@
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation type="unfinished">Capturer Flash</translation>
+        <translation>Capturer Flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -249,11 +257,11 @@
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation type="unfinished">Parcourir le Web</translation>
+        <translation>Parcourir le Web</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation type="unfinished">Ligne fine</translation>
+        <translation>Ligne fine</translation>
     </message>
     <message>
         <source>Medium Line</source>
@@ -261,11 +269,11 @@
     </message>
     <message>
         <source>Large Line</source>
-        <translation type="unfinished">Ligne large</translation>
+        <translation>Ligne large</translation>
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation type="unfinished">Gomme fine</translation>
+        <translation>Gomme fine</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -389,7 +397,7 @@
     </message>
     <message>
         <source>Sankore 3.1</source>
-        <translation type="unfinished">Sankoré 3.1</translation>
+        <translation>Sankoré 3.1</translation>
     </message>
     <message>
         <source>Show Desktop</source>
@@ -397,7 +405,7 @@
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
-        <translation type="unfinished">Ctrl+Shift+H</translation>
+        <translation>Ctrl+Shift+H</translation>
     </message>
     <message>
         <source>Rename Content</source>
@@ -457,7 +465,7 @@
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation type="unfinished">Effacer tous les éléments</translation>
+        <translation>Effacer tous les éléments</translation>
     </message>
     <message>
         <source>Annotate Document</source>
@@ -465,7 +473,7 @@
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation type="unfinished">Ctrl+I</translation>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
         <source>Erase Annotation</source>
@@ -473,11 +481,11 @@
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished">Ctrl+E</translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Highlight </source>
-        <translation type="unfinished">Mettre en surbrillance</translation>
+        <translation>Mettre en surbrillance</translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -561,7 +569,7 @@
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation type="unfinished">Mettre en pause l&apos;enregistrement</translation>
+        <translation>Mettre en pause l&apos;enregistrement</translation>
     </message>
     <message>
         <source>Podcast Config</source>
@@ -581,7 +589,7 @@
     </message>
     <message>
         <source>Show Sankore Widgets Editor</source>
-        <translation type="unfinished">Afficher l&apos;éditeur d&apos;Apps Sankoré</translation>
+        <translation>Afficher l&apos;éditeur d&apos;Apps Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Sankoré</source>
@@ -818,6 +826,14 @@
         <source>Password:</source>
         <translation>Mot de passe:</translation>
     </message>
+    <message>
+        <source>DUMMY ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTRO TEXT DUMMY</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyDialog</name>
@@ -841,6 +857,10 @@
         <source>Save username and password for future use</source>
         <translation>Sauver nom utilisateur &amp; mot de passe</translation>
     </message>
+    <message>
+        <source>ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -853,13 +873,6 @@
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
         <translation type="unfinished">Accueil</translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1097,16 +1110,9 @@
         <source>Page %1</source>
         <translation>Page %1</translation>
     </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce document &apos;%1&apos; a été créé avec une version plus récente de Sankoré (%2). En l&apos;ouvrant, vous risquez de perdre certains éléments. Désirez-vous continuer?</translation>
     </message>
 </context>
 <context>
@@ -1167,19 +1173,19 @@
     </message>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les informations n&apos;ont pas encore été remplies.</translation>
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier Sankoré en cours d&apos;import sur le Web.</translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Document correctment importé sur le Web.</translation>
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;import Web du document a échoué.</translation>
     </message>
 </context>
 <context>
@@ -1192,19 +1198,12 @@
         <source>Copying page %1/%2</source>
         <translation>Copie de la page %1/%2 en cours</translation>
     </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
 </context>
 <context>
     <name>UBDropMeWidget</name>
     <message>
         <source>Drop here</source>
-        <translation type="unfinished">Déposer ici</translation>
+        <translation>Déposer ici</translation>
     </message>
 </context>
 <context>
@@ -1231,7 +1230,7 @@
     </message>
     <message>
         <source>Export to Sankore Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Export au format Sankoré</translation>
     </message>
 </context>
 <context>
@@ -1351,19 +1350,19 @@
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished">Importation du fichier %1...</translation>
+        <translation>Importation du fichier %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;import du fichier %1 a échoué.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">Importation terminée.</translation>
+        <translation>Importation terminée.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;import a échoué.</translation>
     </message>
 </context>
 <context>
@@ -1378,11 +1377,11 @@
     </message>
     <message>
         <source>Sankore 3.1 (*.ubz)</source>
-        <translation type="unfinished">Sankore 3.1 (*.ubz)</translation>
+        <translation>Sankore 3.1 (*.ubz)</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;import du fichier %1 a échoué.</translation>
     </message>
 </context>
 <context>
@@ -1457,7 +1456,7 @@
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished">Retour au répertoire</translation>
+        <translation>Retour au répertoire</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
@@ -1495,7 +1494,7 @@
     <name>UBLibraryController</name>
     <message>
         <source>Added 1 Image to Library</source>
-        <translation>1 images ajoutées à la bibiliothèque</translation>
+        <translation>1 image ajoutées à la bibiliothèque</translation>
     </message>
     <message>
         <source>Audios</source>
@@ -1505,7 +1504,7 @@
     <message>
         <source>Movies</source>
         <comment>Movies category element</comment>
-        <translation type="unfinished">Vidéos</translation>
+        <translation>Vidéos</translation>
     </message>
     <message>
         <source>Pictures</source>
@@ -1529,11 +1528,11 @@
     </message>
     <message>
         <source>Creating image thumbnail for %1.</source>
-        <translation type="unfinished">Création de la vignette pour %1.</translation>
+        <translation>Création de la vignette pour %1.</translation>
     </message>
     <message>
         <source>Adding to page failed for item %1.</source>
-        <translation type="unfinished">Impossible d&apos;ajouter %1 à la page courrante.</translation>
+        <translation>Impossible d&apos;ajouter %1 à la page courrante.</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1547,7 +1546,7 @@
     <message>
         <source>Animations</source>
         <comment>Animations category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Animations</translation>
     </message>
 </context>
 <context>
@@ -1600,7 +1599,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré a perdu l&apos;accès au dossier de document &apos;%1&apos;. Malheurheusement l&apos;application doit être fermée pour éviter tout risque de corruption de vos fichiers. Les dernières modifications effectuées risquent d&apos;être perdues.</translation>
     </message>
 </context>
 <context>
@@ -1663,7 +1662,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
     <message>
         <source>Sankore Cast</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1681,34 +1680,34 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished">Nom d&apos;utilisateur:</translation>
+        <translation>Nom d&apos;utilisateur:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished">Mot de passe:</translation>
+        <translation>Mot de passe:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation type="unfinished"></translation>
+        <translation>Publier le document sur le web</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Description:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation type="unfinished">Publier</translation>
+        <translation>Publier</translation>
     </message>
 </context>
 <context>
@@ -1719,7 +1718,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Corbeille</translation>
+        <translation>Corbeille</translation>
     </message>
     <message>
         <source>Images</source>
@@ -1761,7 +1760,7 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Equerre</translation>
     </message>
 </context>
 <context>
@@ -1817,7 +1816,11 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Updating file </source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour du fichier</translation>
+    </message>
+    <message>
+        <source>Please wait the import process will start soon...</source>
+        <translation>Merci de patienter, le processus d&apos;import va commencer...</translation>
     </message>
 </context>
 <context>
@@ -1838,7 +1841,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Publier le document sur Planète Sankoré</translation>
     </message>
 </context>
 <context>
@@ -2095,7 +2098,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation type="unfinished">Supprimer l&apos;historique de recherches</translation>
+        <translation>Supprimer l&apos;historique de recherches</translation>
     </message>
 </context>
 <context>
@@ -2106,7 +2109,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation type="unfinished">Ajouter au document courant</translation>
+        <translation>Ajouter au document courant</translation>
     </message>
     <message>
         <source>PDF</source>
@@ -2118,7 +2121,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargement du PDF: préférez-vous téléchargemer le fichier PDF ou l&apos;ajouter à votre document Sankoré actuellement ouvert ?</translation>
     </message>
 </context>
 <context>
@@ -2148,7 +2151,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished">Sankoré</translation>
+        <translation>Sankoré</translation>
     </message>
     <message>
         <source>Category</source>
@@ -2253,11 +2256,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Attach Downloadable PDF Version</source>
-        <translation type="unfinished">Attacher la version PDF</translation>
+        <translation>Attacher la version PDF</translation>
     </message>
     <message>
         <source>Attach Downloadable Uniboard File (UBZ)</source>
-        <translation type="unfinished">Attacher le fichier Sankoré (UBZ)</translation>
+        <translation>Attacher le fichier Sankoré (UBZ)</translation>
     </message>
     <message>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
@@ -2269,6 +2272,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Uniboard Documents</source>
         <translation>Documents Uniboard</translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2291,7 +2298,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation type="unfinished">Ouvrir la page dans un navigateur Web externe</translation>
+        <translation>Ouvrir la page dans un navigateur Web externe</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
@@ -2299,15 +2306,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="unfinished">Taille des touches du clavier virtuel:</translation>
+        <translation>Taille des touches du clavier virtuel:</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation type="unfinished">Positionné en haut (recommandé pour les tablettes)</translation>
+        <translation>Positionné en haut (recommandé pour les tablettes)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation type="unfinished">Positionné en bas (recommandé pour les tableaux blancs)</translation>
+        <translation>Positionné en bas (recommandé pour les tableaux blancs)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
@@ -2351,7 +2358,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation type="unfinished">Barre d&apos;outil du stylet</translation>
+        <translation>Barre d&apos;outil du stylet</translation>
     </message>
     <message>
         <source>Horizontal</source>
@@ -2375,7 +2382,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Licences</source>
-        <translation type="unfinished">Licences</translation>
+        <translation>Licences</translation>
     </message>
     <message>
         <source>OpenSSl</source>
@@ -2632,15 +2639,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Réseau</translation>
     </message>
     <message>
         <source>Community</source>
-        <translation type="unfinished"></translation>
+        <translation>Communauté</translation>
     </message>
     <message>
         <source>User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom d&apos;utilisateur/Mot de passe:</translation>
     </message>
 </context>
 <context>
