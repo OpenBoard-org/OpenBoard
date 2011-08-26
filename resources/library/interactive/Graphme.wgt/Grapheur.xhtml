@@ -103,15 +103,15 @@
                         $("#zoomDefaut").val(sankore.preference("defaultZoom", "4"));
                         reinitialiserZoom($("#zoomDefaut").val());
                         
-                        if(sankore.preference("showGrid","0") == 1)
+                        if(sankore.preference("showGrid","1") == 1)
                             $("#checkGrille").attr("checked", "checked");
                         else
                             $("#checkGrille").removeAttr('checked');
-                        if(sankore.preference("showAxis","0") == 1)
+                        if(sankore.preference("showAxis","1") == 1)
                             $("#checkAxes").attr("checked", "checked");
                         else
                             $("#checkAxes").removeAttr('checked');
-                        if(sankore.preference("showScale","0") == 1)
+                        if(sankore.preference("showScale","1") == 1)
                             $("#checkEchelle").attr("checked", "checked");
                         else
                             $("#checkEchelle").removeAttr('checked');
