@@ -23,18 +23,7 @@
         <script type="text/javascript">
 // <![CDATA[
         // --- Variables nécessaires au fonctionnement du widget ---
-                $(document).ready(function(){
-                    $(document).disableTextSelect();
-                   
-                    $("input").mouseover(function(){
-                        $(document).enableTextSelect(); 
-                    });
-                    
-                    $("input").mouseout(function(){
-                        $(document).disableTextSelect(); 
-                    });
-                    //$("input").change(function(){$(this).trigger('blur');});
-                });
+                var loadingFlag = false
                 var largeur = 500
                 var hauteur = 400
                 var graphique = ""
@@ -67,6 +56,177 @@
                 var decalageY = 0
 
                 var lineWidth = 3
+                
+                $(document).ready(function(){
+                    
+                    if(window.sankore){
+                        
+                        $("#inputEq").val(sankore.preference("functionData", ""));
+                                                
+                        $("#inputTeinte").val(sankore.preference("functionColor",""));
+                        $("#inputValeur").val(sankore.preference("functionValue","0"));                        
+                        $("#inputSaturation").val(sankore.preference("functionSaturation","0"));
+                        $("#inputRouge").val(sankore.preference("functionRed","255"));
+                        $("#inputVert").val(sankore.preference("functionGreen","0"));
+                        $("#inputBleu").val(sankore.preference("functionBlue","0"));
+                        $("#inputOpacity").val(sankore.preference("functionOpacity","1"));
+                        idColor = sankore.preference("functionColorId","");                        
+                        actualiserGraph();
+                        
+                        if(sankore.preference("simplefx","0") == 1)
+                            $("#checkDerivee").attr("checked", "checked");
+                        else
+                            $("#checkDerivee").removeAttr('checked');
+                        if(sankore.preference("hardfx","0") == 1)
+                            $("#checkDerivee2").attr("checked", "checked");
+                        else
+                            $("#checkDerivee2").removeAttr('checked');
+                        actualiserGraph();
+                        
+                        $("#aireG").val(sankore.preference("squareUnderFrom","-5"));
+                        $("#aireD").val(sankore.preference("squareUnderTo","5"));
+                        calculerAire();
+                        
+                        $("#inputX").val(sankore.preference("calculateThePoint","0"));
+                        execute($("#inputEq").val());
+                        
+                        if(sankore.preference("checkboxDraw","0") == 1)
+                            $("#checkAire").attr("checked", "checked");
+                        else
+                            $("#checkAire").removeAttr('checked');
+                        actualiserGraph();
+                        
+                        $("#selectTheme").val(sankore.preference("selectedTheme","noir"));
+                        changerTheme($("#selectTheme").val());
+                        
+                        $("#selectMethodeAffichage").val(sankore.preference("graphicalMethodDisplaying", "canvas"));
+                        $("#zoomDefaut").val(sankore.preference("defaultZoom", "4"));
+                        reinitialiserZoom($("#zoomDefaut").val());
+                        
+                        if(sankore.preference("showGrid","1") == 1)
+                            $("#checkGrille").attr("checked", "checked");
+                        else
+                            $("#checkGrille").removeAttr('checked');
+                        if(sankore.preference("showAxis","1") == 1)
+                            $("#checkAxes").attr("checked", "checked");
+                        else
+                            $("#checkAxes").removeAttr('checked');
+                        if(sankore.preference("showScale","1") == 1)
+                            $("#checkEchelle").attr("checked", "checked");
+                        else
+                            $("#checkEchelle").removeAttr('checked');
+                        actualiserGraph();
+                        
+                        $("#inputTaille").val(sankore.preference("thickness", "3"));
+                        actualiserGraph();
+                        
+                        $("#inputDecalageX").val(sankore.preference("offsetDiagrammX", "0"));
+                        decalageX = parseFloat($("#inputDecalageX").val())
+                        $("#inputDecalageY").val(sankore.preference("offsetDiagrammY", "0"));
+                        decalageY = parseFloat($("#inputDecalageY").val())
+                        
+                        $("#inputPrecision").val(sankore.preference("accuracyGraph", "0.02"));
+                        precision = parseFloat($("#inputPrecision").val());
+                        
+                        $("#selectAffichage3D").val(sankore.preference("styleOf3DShow", "surfaces"));
+                        reinitialiserZoom(5);
+                        
+                        $("#inputPrecision3D").val(sankore.preference("accuracyFunction", "0.2"));
+                        precisionFonction3D = parseFloat($("#inputPrecision3D").val());
+                        
+                        $("#selectRouge3D").val(sankore.preference("redColor", "plus"));
+                        $("#selectVert3D").val(sankore.preference("greenColor", "moins"));
+                        $("#selectBleu3D").val(sankore.preference("blueColor", "tout"));
+                        checkCouleurs3D();
+                        
+                        $("#couleur3Dgenerale").val(sankore.preference("3DGeneralColor", "0"));       
+                        checkCouleurs3D();
+                        
+                        actualiserGraph();
+                        
+                        $("#borneXGauche").val(sankore.preference("xAxisFrom", "-5"));
+                        $("#borneXDroite").val(sankore.preference("xAxisTo", "5"));
+                        $("#borneYGauche").val(sankore.preference("yAxisFrom", "-5"));
+                        $("#borneYDroite").val(sankore.preference("yAxisTo", "5"));                        
+                        
+                        actualiserGraph();
+                        loadingFlag = true;
+                    }
+                    
+                    $(document).disableTextSelect();
+                   
+                    $("input, select").mouseover(function(){
+                        $(document).enableTextSelect(); 
+                    });
+                    
+                    $("input, select").mouseout(function(){
+                        $(document).disableTextSelect(); 
+                    });
+                    
+                    $("body").mouseout(function(){
+                        if(window.sankore && loadingFlag){
+                            sankore.setPreference("functionData",$("#inputEq").val());
+                            sankore.setPreference("xAxisFrom",$("#borneXGauche").val());
+                            sankore.setPreference("xAxisTo",$("#borneXDroite").val());
+                            sankore.setPreference("yAxisFrom",$("#borneYGauche").val());
+                            sankore.setPreference("yAxisTo",$("#borneYDroite").val());
+                            sankore.setPreference("functionColor",$("#inputTeinte").val());
+                            sankore.setPreference("functionValue",$("#inputValeur").val());
+                            sankore.setPreference("functionSaturation",$("#inputSaturation").val());
+                            sankore.setPreference("functionRed",$("#inputRouge").val());
+                            sankore.setPreference("functionGreen",$("#inputVert").val());
+                            sankore.setPreference("functionBlue",$("#inputBleu").val());
+                            sankore.setPreference("functionOpacity",$("#inputOpacity").val());
+                            sankore.setPreference("functionColorId", idColor);
+                            
+                            if ($('#checkDerivee').is(":checked"))
+                                sankore.setPreference("simplefx","1");
+                            else
+                                sankore.setPreference("simplefx","0");
+                            if ($('#checkDerivee2').is(":checked"))
+                                sankore.setPreference("hardfx","1");
+                            else
+                                sankore.setPreference("hardfx","0");
+                            
+                            sankore.setPreference("squareUnderFrom", $("#aireG").val());
+                            sankore.setPreference("squareUnderTo", $("#aireD").val());
+                            sankore.setPreference("calculateThePoint", $("#inputX").val());
+                            
+                            if ($('#checkAire').is(":checked"))
+                                sankore.setPreference("checkboxDraw","1");
+                            else
+                                sankore.setPreference("checkboxDraw","0");
+                                                        
+                            sankore.setPreference("selectedTheme", $("#selectTheme").val());
+                            sankore.setPreference("graphicalMethodDisplaying", $("#selectMethodeAffichage").val());
+                            sankore.setPreference("defaultZoom", $("#zoomDefaut").val());
+                            
+                            if ($('#checkGrille').is(":checked"))
+                                sankore.setPreference("showGrid","1");
+                            else
+                                sankore.setPreference("showGrid","0");
+                            if ($('#checkAxes').is(":checked"))
+                                sankore.setPreference("showAxis","1");
+                            else
+                                sankore.setPreference("showAxis","0");
+                            if ($('#checkEchelle').is(":checked"))
+                                sankore.setPreference("showScale","1");
+                            else
+                                sankore.setPreference("showScale","0");
+                            
+                            sankore.setPreference("styleOf3DShow", $("#selectAffichage3D").val());
+                            sankore.setPreference("accuracyFunction", $("#inputPrecision3D").val());
+                            sankore.setPreference("redColor", $("#selectRouge3D").val());
+                            sankore.setPreference("greenColor", $("#selectVert3D").val());
+                            sankore.setPreference("blueColor", $("#selectBleu3D").val());
+                            sankore.setPreference("3DGeneralColor", $("#couleur3Dgenerale").val());
+                            sankore.setPreference("thickness", $("#inputTaille").val());
+                            sankore.setPreference("offsetDiagrammX", $("#inputDecalageX").val());
+                            sankore.setPreference("offsetDiagrammY", $("#inputDecalageY").val());
+                            sankore.setPreference("accuracyGraph", $("#inputPrecision").val());
+                        }
+                    });
+                });
                 //alert(navigator.appName+" ; "+navigator.appVersion+" ; "+navigator.userAgent)
 
         // ------------- Fonctions du widgets -------------
@@ -382,7 +542,7 @@
                 </select> <br/>
                 Zoom default: 
                 <input value="5" class="smallInput" id="zoomDefaut"/>
-                <input type="button" onclick='reinitialiserZoom(document.getElementById("zoomDefaut").value)' value="Reset zoom"/> <br/>
+                <input type="button" onclick='reinitialiserZoom(document.getElementById("zoomDefaut").value)' value="Update zoom"/> <br/>
                 <br/>
                 <input type="checkbox" id="checkGrille" checked="true" onclick="actualiserGraph()"/><label for="checkGrille">Show grid</label> <br/>
                 <input type="checkbox" id="checkAxes" checked="true" onclick="actualiserGraph()"/><label for="checkAxes">Show axis</label> <br/>

@@ -330,7 +330,14 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
         path.addRect(0.0, 0.0, width()-2*border(), height());
         path.addRoundedRect(width()-4*border(), mHTab, 4*border(), TABSIZE, radius(), radius());
 	painter.drawPath(path);
-        painter.drawPixmap(width() - border() + 1, mHTab + 1 , border() - 4, TABSIZE - 2, mIcon);
+        if(mCollapseWidth >= width())
+        {
+            painter.drawPixmap(width() - 2*border() + 1, mHTab + 1 , 2*border() - 4, TABSIZE - 2, mCollapsedIcon);
+        }
+        else
+        {
+            painter.drawPixmap(width() - 2*border() + 1, mHTab + 1 , 2*border() - 4, TABSIZE - 2, mIcon);
+        }
     }
     else if(mOrientation == eUBDockOrientation_Right)
     {
@@ -339,7 +346,14 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
         path.addRect(2*border(), 0.0, width()-2*border(), height());
         path.addRoundedRect(0.0, mHTab, 4*border(), TABSIZE, radius(), radius());
 	painter.drawPath(path);
-        painter.drawPixmap(2, mHTab + 1, border() - 3, TABSIZE - 2, mIcon);
+        if(width() <= mCollapseWidth)
+        {
+            painter.drawPixmap(2, mHTab + 1, 2*border() - 3, TABSIZE - 2, mCollapsedIcon);
+        }
+        else
+        {
+            painter.drawPixmap(2, mHTab + 1, 2*border() - 3, TABSIZE - 2, mIcon);
+        }
     }
     else
     {
