@@ -629,6 +629,7 @@ void UBQuickTimeFile::appendAudioBuffer(void* pBuffer, long pLength, int inNumbe
             }
         }
     }
+    free((void*)inPacketDescs);
 }
 
 
