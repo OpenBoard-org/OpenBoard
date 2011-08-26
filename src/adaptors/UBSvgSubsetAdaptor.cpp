@@ -892,6 +892,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
         {
             QGraphicsItem *item = items.takeFirst();
 
+
             UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
 
             if (polygonItem && polygonItem->isVisible())
@@ -1895,7 +1896,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     {
         if (!svgX.isNull() && !svgY.isNull())
         {
-            gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
+            //gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
         }
     }
 
@@ -2530,7 +2531,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::protractorToSvg(UBGraphicsProtractor
       </ub:protractor>
      */
 
-
     mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "protractor");
 
     mXmlWriter.writeAttribute("x", QString("%1").arg(item->rect().x()));
@@ -2639,9 +2639,19 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 
     graphicsItemFromSvg(triangle);
 
+    QStringRef svgX = mXmlReader.attributes().value("x");
+    QStringRef svgY = mXmlReader.attributes().value("y");
+    QStringRef svgWidth = mXmlReader.attributes().value("width");
+    QStringRef svgHeight = mXmlReader.attributes().value("height");
+
     QStringRef orientationStringRef = mXmlReader.attributes().value("orientation");
     UBGraphicsTriangle::UBGraphicsTriangleOrientation orientation = UBGraphicsTriangle::orientationFromStr(orientationStringRef);
     triangle->setOrientation(orientation);
+
+        if (!svgX.isNull() && !svgY.isNull() && !svgWidth.isNull() && !svgHeight.isNull())
+    {
+        triangle->setRect(svgX.toString().toFloat(), svgY.toString().toFloat(), svgWidth.toString().toFloat(), svgHeight.toString().toFloat(), orientation);
+    }
 
 
     triangle->setVisible(true);
