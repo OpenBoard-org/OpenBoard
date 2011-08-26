@@ -176,7 +176,7 @@
         <file>images/cursors/rotate.png</file>
         <file>images/cursors/resize.png</file>
         <file>images/cursors/drawCompass.png</file>
-	<file>images/cursors/drawRulerLine.png</file>
+        <file>images/cursors/drawRulerLine.png</file>
         <file>images/print/onepage.png</file>
         <file>images/print/thumbnails.png</file>
         <file>images/print/twopages.png</file>
@@ -203,7 +203,6 @@
         <file>images/toolbar/tutorial.png</file>
         <file>images/edit-mode.svg</file>
         <file>images/save.svg</file>
-        <file>images/toolbar/stylusTab.png</file>
         <file>images/libpalette/social.png</file>
         <file>images/navig_arrow.png</file>
         <file>images/flags/ar.png</file>
@@ -289,8 +288,6 @@
         <file>images/toolbar/hide.png</file>
         <file>images/toolbar/record.png</file>
         <file>images/libpalette/MoviesCategory.svg</file>
-
-
         <file>images/virtual.keyboard/41/centre-passive.png</file>
         <file>images/virtual.keyboard/41/left-passive.png</file>
         <file>images/virtual.keyboard/41/right-passive.png</file>
@@ -300,7 +297,6 @@
         <file>images/virtual.keyboard/41/backspace.png</file>
         <file>images/virtual.keyboard/41/capslock.png</file>
         <file>images/virtual.keyboard/41/tab.png</file>
-
         <file>images/virtual.keyboard/29/centre-passive.png</file>
         <file>images/virtual.keyboard/29/left-passive.png</file>
         <file>images/virtual.keyboard/29/right-passive.png</file>
@@ -310,6 +306,12 @@
         <file>images/virtual.keyboard/29/backspace.png</file>
         <file>images/virtual.keyboard/29/capslock.png</file>
         <file>images/virtual.keyboard/29/tab.png</file>
-
+        <file>images/libpalette/FlashCategory.svg</file>
+        <file>images/libpalette/FlashIcon.svg</file>
+        <file>images/toolbar/stylusTab.png</file>
+        <file>images/library_close.png</file>
+        <file>images/library_open.png</file>
+        <file>images/pages_close.png</file>
+        <file>images/pages_open.png</file>
     </qresource>
 </RCC>

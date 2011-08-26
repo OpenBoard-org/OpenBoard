@@ -60,8 +60,6 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         QWidget *mBoardWidget;
         QWidget *mWebWidget;
         QWidget *mDocumentsWidget;
-        QWebView* mSankoreWebDocumentWidget;
-
 };
 
 #endif /* UBMAINWINDOW_H_ */

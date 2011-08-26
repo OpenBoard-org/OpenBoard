@@ -107,9 +107,15 @@ QFont UBAbstractDrawRuler::font() const
 }
 
 void UBAbstractDrawRuler::StartLine(const QPointF& position, qreal width)
-{}
+{
+    Q_UNUSED(position);
+    Q_UNUSED(width);
+}
 void UBAbstractDrawRuler::DrawLine(const QPointF& position, qreal width)
-{}
+{
+    Q_UNUSED(position);
+    Q_UNUSED(width);
+}
 void UBAbstractDrawRuler::EndLine()
 {}
 

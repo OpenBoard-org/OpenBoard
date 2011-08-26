@@ -654,7 +654,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     scene->registerTool(protractor);
                 }
             }
-			else if (mXmlReader.name() == "protractor")
+            else if (mXmlReader.name() == "triangle")
             {
                 UBGraphicsTriangle *triangle = triangleFromSvg();
 
@@ -892,6 +892,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
         {
             QGraphicsItem *item = items.takeFirst();
 
+
             UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
 
             if (polygonItem && polygonItem->isVisible())
@@ -1058,6 +1059,14 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
             if (protractor  && protractor->isVisible())
             {
                 protractorToSvg(protractor);
+                continue;
+            }
+
+            UBGraphicsTriangle *triangle = qgraphicsitem_cast<UBGraphicsTriangle*> (item);
+
+            if (triangle  && triangle->isVisible())
+            {
+                triangleToSvg(triangle);
                 continue;
             }
         }
@@ -1887,7 +1896,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     {
         if (!svgX.isNull() && !svgY.isNull())
         {
-            gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
+            #ifndef Q_WS_X11
+                gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
+            #endif
         }
     }
 
@@ -2522,7 +2533,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::protractorToSvg(UBGraphicsProtractor
       </ub:protractor>
      */
 
-
     mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "protractor");
 
     mXmlWriter.writeAttribute("x", QString("%1").arg(item->rect().x()));
@@ -2589,6 +2599,39 @@ UBGraphicsProtractor* UBSvgSubsetAdaptor::UBSvgSubsetReader::protractorFromSvg()
     return protractor;
 }
 
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::triangleToSvg(UBGraphicsTriangle *item)
+{
+
+    /**
+     *
+     * sample
+     *
+      <ub:triangle x="250" y="150" width="122" height="67"...>
+      </ub:triangle>
+     */
+
+    mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "triangle");
+    mXmlWriter.writeAttribute("x", QString("%1").arg(item->boundingRect().x()));
+    mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
+    mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("orientation", UBGraphicsTriangle::orientationToStr(item->getOrientation()));
+
+    QString zs;
+    zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value", zs);
+
+    UBItem* ubItem = dynamic_cast<UBItem*>(item);
+
+    if (ubItem)
+    {
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(ubItem->uuid()));
+    }
+
+    mXmlWriter.writeEndElement();
+}
+
 UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 {
     UBGraphicsTriangle* triangle = new UBGraphicsTriangle();
@@ -2602,16 +2645,18 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
     QStringRef svgY = mXmlReader.attributes().value("y");
     QStringRef svgWidth = mXmlReader.attributes().value("width");
     QStringRef svgHeight = mXmlReader.attributes().value("height");
+
     QStringRef orientationStringRef = mXmlReader.attributes().value("orientation");
     UBGraphicsTriangle::UBGraphicsTriangleOrientation orientation = UBGraphicsTriangle::orientationFromStr(orientationStringRef);
+    triangle->setOrientation(orientation);
 
-    if (!svgX.isNull() && !svgY.isNull() && !svgWidth.isNull() && !svgHeight.isNull())
+        if (!svgX.isNull() && !svgY.isNull() && !svgWidth.isNull() && !svgHeight.isNull())
     {
         triangle->setRect(svgX.toString().toFloat(), svgY.toString().toFloat(), svgWidth.toString().toFloat(), svgHeight.toString().toFloat(), orientation);
     }
 
-    triangle->setVisible(true);
 
+    triangle->setVisible(true);
     return triangle;
 }
 

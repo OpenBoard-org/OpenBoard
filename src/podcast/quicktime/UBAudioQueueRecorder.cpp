@@ -349,7 +349,10 @@ void UBAudioQueueRecorder::audioQueueInputCallback (void *inUserData, AudioQueue
 void UBAudioQueueRecorder::emitNewWaveBuffer(AudioQueueBufferRef pBuffer,
                 int inNumberPacketDescriptions, const AudioStreamPacketDescription *inPacketDescs)
 {
-    emit newWaveBuffer(pBuffer->mAudioData, pBuffer->mAudioDataByteSize, inNumberPacketDescriptions, inPacketDescs);
+    AudioStreamPacketDescription* tmpPackages = (AudioStreamPacketDescription*)malloc(inNumberPacketDescriptions *sizeof(AudioStreamPacketDescription));
+    memcpy(tmpPackages,inPacketDescs,inNumberPacketDescriptions * sizeof(AudioStreamPacketDescription));
+
+    emit newWaveBuffer(pBuffer->mAudioData, pBuffer->mAudioDataByteSize, inNumberPacketDescriptions, tmpPackages);
 
     qreal level = 0;
     UInt32 size;

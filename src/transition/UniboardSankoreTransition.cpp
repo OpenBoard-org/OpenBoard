@@ -111,7 +111,7 @@ bool UniboardSankoreTransition::checkPage(QString& sankorePagePath)
     file.close();
 
     QString sankoreDirectory = sankorePagePath.left(sankorePagePath.indexOf("/page"));
-    ;
+
     sankoreDirectory = QUrl::fromLocalFile(sankoreDirectory).toString();
     QString documentString(documentByteArray);
 

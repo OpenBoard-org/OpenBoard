@@ -70,7 +70,7 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
    , mToolsPalette(0)
    , mToolsPalettePositionned(false)
    , mTrashTi(0)
-    , mKeyboardPalette(0)
+   , mKeyboardPalette(0)
 {
     setupViews();
     setupToolbar();

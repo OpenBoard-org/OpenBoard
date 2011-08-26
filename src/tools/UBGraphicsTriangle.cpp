@@ -29,12 +29,12 @@ const UBGraphicsTriangle::UBGraphicsTriangleOrientation UBGraphicsTriangle::sDef
 UBGraphicsTriangle::BottomLeft;
 
 UBGraphicsTriangle::UBGraphicsTriangle()
-    : QGraphicsPolygonItem()
-    , UBAbstractDrawRuler()
+    : UBAbstractDrawRuler()
+    , QGraphicsPolygonItem()
+    , angle(0)
     , mResizing1(false)
     , mResizing2(false)
     , mRotating(false)
-    , angle(0)
 
 {
     setRect(sDefaultRect, sDefaultOrientation);
