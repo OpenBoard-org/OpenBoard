@@ -361,7 +361,7 @@ void UBGraphicsCompass::paintAngleDisplay(QPainter *painter)
     qreal angle = angleInDegrees();
 
     qreal angleValue = mDrawing ? - mSpanAngleInDegrees : angle;
-    QString angleText = QString("%1").arg(angleValue, 0, 'f', 1) + "°";
+    QString angleText = QString("%1").arg(angleValue, 0, 'f', 1) + "Â°";
 
     painter->save();
     painter->setFont(font());
