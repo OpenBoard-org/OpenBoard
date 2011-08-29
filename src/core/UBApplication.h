@@ -99,6 +99,8 @@ class UBApplication : public QtSingleApplication
         void toolBarPositionChanged(QVariant topOrBottom);
         void toolBarDisplayTextChanged(QVariant display);
 
+        void closeEvent(QCloseEvent *event);
+
         /**
          * Used on Windows platform to open file in running application. On MacOS X opening file is done through the
          * FileOpen event that is handle in eventFilter method.

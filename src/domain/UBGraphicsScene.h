@@ -289,7 +289,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void drawEraser(const QPointF& pEndPoint);
         void drawPointer(const QPointF& pEndPoint);
-        void CreateMagnifierQWidgets(const QPoint &point);
+        void CreateMagnifierQWidgets();
         void DisposeMagnifierQWidgets();
 
 

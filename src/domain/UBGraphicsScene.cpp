@@ -238,7 +238,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
         }
         else if (currentTool == UBStylusTool::Magnifier)
         {
-            CreateMagnifierQWidgets(QCursor::pos() /*scenePos*/);
+            CreateMagnifierQWidgets();
             magniferControlViewWidget->grabNMove(QCursor::pos(), true);
             magniferDisplayViewWidget->grabNMove(scenePos, true);
             magniferControlViewWidget->show();
@@ -424,7 +424,7 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint)
 }
 
 // call this function when user press mouse button in Magnifier mode
-void UBGraphicsScene::CreateMagnifierQWidgets(const QPoint & globalPos)
+void UBGraphicsScene::CreateMagnifierQWidgets()
 {
     UBApplication::app()->setOverrideCursor( QCursor( Qt::BlankCursor ) );
 
