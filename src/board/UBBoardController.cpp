@@ -687,9 +687,10 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 
 void UBBoardController::handScroll(qreal dx, qreal dy)
 {
-    mControlView->horizontalScrollBar()->setValue(mControlView->horizontalScrollBar()->value() - dx);
-    mControlView->verticalScrollBar()->setValue(mControlView->verticalScrollBar()->value() - dy);
-
+//    mControlView->horizontalScrollBar()->setValue(mControlView->horizontalScrollBar()->value() - dx);
+//    mControlView->verticalScrollBar()->setValue(mControlView->verticalScrollBar()->value() - dy);
+    mControlView->translate(dx, dy);
+	
     UBApplication::applicationController->adjustDisplayView();
 
     emit controlViewportChanged();
