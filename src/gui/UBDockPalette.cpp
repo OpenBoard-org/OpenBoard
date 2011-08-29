@@ -53,8 +53,12 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
     , mCollapseWidth(150)
     , mLastWidth(-1)
     , mHTab(0)
+    , mpStackWidget(NULL)
 {
     setObjectName(name);
+
+    // clear the tab widgets
+    mTabWidgets.clear();
 
     // We let 2 pixels in order to keep a small border for the resizing
     setMinimumWidth(2*border() + 2);
@@ -91,7 +95,11 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
  */
 UBDockPalette::~UBDockPalette()
 {
-
+    if(NULL != mpStackWidget)
+    {
+        delete mpStackWidget;
+        mpStackWidget = NULL;
+    }
 }
 
 /**
@@ -314,36 +322,39 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
     painter.setPen(Qt::NoPen);
     painter.setBrush(mBackgroundBrush);
 
-    if(eUBDockTabOrientation_Up == mTabsOrientation)
+    for(int i = 0; i < mTabWidgets.size(); i++)
     {
-        mHTab = border();
-    }
-    else
-    {
-        mHTab = height() - border() - TABSIZE;
-    }
+        if(eUBDockTabOrientation_Up == mTabsOrientation)
+        {
+            mHTab = border();
+        }
+        else
+        {
+            mHTab = height() - border() - i*TABSIZE;
+        }
 
-    if(mOrientation == eUBDockOrientation_Left)
-    {
-	QPainterPath path;
-	path.setFillRule(Qt::WindingFill);
-        path.addRect(0.0, 0.0, width()-2*border(), height());
-        path.addRoundedRect(width()-4*border(), mHTab, 4*border(), TABSIZE, radius(), radius());
-	painter.drawPath(path);
-        painter.drawPixmap(width() - border() + 1, mHTab + 1 , border() - 4, TABSIZE - 2, mIcon);
-    }
-    else if(mOrientation == eUBDockOrientation_Right)
-    {
-	QPainterPath path;
-	path.setFillRule(Qt::WindingFill);
-        path.addRect(2*border(), 0.0, width()-2*border(), height());
-        path.addRoundedRect(0.0, mHTab, 4*border(), TABSIZE, radius(), radius());
-	painter.drawPath(path);
-        painter.drawPixmap(2, mHTab + 1, border() - 3, TABSIZE - 2, mIcon);
-    }
-    else
-    {
-	painter.drawRoundedRect(border(), border(), width() - 2 * border(), height() - 2 * border(), radius(), radius());
+        if(mOrientation == eUBDockOrientation_Left)
+        {
+            QPainterPath path;
+            path.setFillRule(Qt::WindingFill);
+            path.addRect(0.0, 0.0, width()-2*border(), height());
+            path.addRoundedRect(width()-4*border(), mHTab, 4*border(), TABSIZE, radius(), radius());
+            painter.drawPath(path);
+            //painter.drawPixmap(width() - border() + 1, mHTab + 1 , border() - 4, TABSIZE - 2, mIcon);
+        }
+        else if(mOrientation == eUBDockOrientation_Right)
+        {
+            QPainterPath path;
+            path.setFillRule(Qt::WindingFill);
+            path.addRect(2*border(), 0.0, width()-2*border(), height());
+            path.addRoundedRect(0.0, mHTab, 4*border(), TABSIZE, radius(), radius());
+            painter.drawPath(path);
+            //painter.drawPixmap(2, mHTab + 1, border() - 3, TABSIZE - 2, mIcon);
+        }
+        else
+        {
+            painter.drawRoundedRect(border(), border(), width() - 2 * border(), height() - 2 * border(), radius(), radius());
+        }
     }
 }
 
@@ -436,4 +447,14 @@ void UBDockPalette::onToolbarPosUpdated()
 int UBDockPalette::customMargin()
 {
     return 5;
+}
+
+void UBDockPalette::addTabWidget(const QString &widgetName, UBDockPaletteWidget *widget)
+{
+    mTabWidgets[widgetName] = widget;
+}
+
+void UBDockPalette::removeTab(const QString &widgetName)
+{
+    mTabWidgets.remove(widgetName);
 }

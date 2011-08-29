@@ -34,6 +34,7 @@
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsTriangle.h"
 #include "tools/UBGraphicsCurtainItem.h"
+#include "tools/UBGraphicsCache.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -68,6 +69,7 @@ qreal UBGraphicsScene::toolOffsetProtractor = 100;
 qreal UBGraphicsScene::toolOffsetTriangle = 100;
 qreal UBGraphicsScene::toolOffsetCompass = 100;
 qreal UBGraphicsScene::toolOffsetEraser = 200;
+qreal UBGraphicsScene::toolOffsetCache = 1000;
 
 qreal UBGraphicsScene::toolOffsetCurtain = 1000;
 qreal UBGraphicsScene::toolOffsetPointer = 1100;
@@ -132,7 +134,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     }
 
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
-
+    mHasCache = false;
 }
 
 
@@ -1484,6 +1486,24 @@ void UBGraphicsScene::addCompass(QPointF center)
     setModified(true);
 }
 
+void UBGraphicsScene::addCache()
+{
+    UBGraphicsCache* cache = new UBGraphicsCache();
+    mTools << cache;
+    QGraphicsView* view;
+
+    if(UBApplication::applicationController->displayManager()->hasDisplay())
+    {
+        view = (QGraphicsView*)(UBApplication::boardController->displayView());
+    }
+    else
+    {
+        view = (QGraphicsView*)(UBApplication::boardController->controlView());
+    }
+    addItem(cache);
+    cache->setVisible(true);
+    cache->setSelected(true);
+}
 
 void UBGraphicsScene::addMask()
 {

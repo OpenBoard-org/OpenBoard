@@ -31,7 +31,7 @@ UBLibPalette::UBLibPalette(QWidget *parent, const char *name):UBDockPalette(pare
     , mDropWidget(NULL)
 {
     setOrientation(eUBDockOrientation_Right);
-    mIcon = QPixmap(":images/paletteLibrary.png");
+    //mIcon = QPixmap(":images/paletteLibrary.png");
     setAcceptDrops(true);
 
     resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());

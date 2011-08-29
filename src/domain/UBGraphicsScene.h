@@ -44,6 +44,7 @@ class UBAbstractWidget;
 class UBDocumentProxy;
 class UBGraphicsCurtainItem;
 class UBGraphicsStroke;
+class UBGraphicsCache;
 
 const double PI = 4.0 * atan(1.0);
 
@@ -164,9 +165,10 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         qreal getNextObjectZIndex();
 
         void addRuler(QPointF center);
-		void addTriangle(QPointF center);
+        void addTriangle(QPointF center);
         void addProtractor(QPointF center);
         void addCompass(QPointF center);
+        void addCache();
 
         void addMask();
 
@@ -243,7 +245,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         static qreal toolOffsetProtractor;
         static qreal toolOffsetCompass;
         static qreal toolOffsetCurtain;
-		static qreal toolOffsetTriangle;
+        static qreal toolOffsetTriangle;
+        static qreal toolOffsetCache;
 
         QSet<QGraphicsItem*> tools(){ return mTools;}
 
@@ -347,6 +350,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         QList<QGraphicsItem*> mFastAccessItems; // a local copy as QGraphicsScene::items() is very slow in Qt 4.6
 
         //int mMesure1Ms, mMesure2Ms;
+
+        bool mHasCache;
 };
 
 #endif /* UBGRAPHICSSCENE_H_ */

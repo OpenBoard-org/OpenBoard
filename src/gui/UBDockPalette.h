@@ -24,6 +24,10 @@
 #include <QTime>
 #include <QPoint>
 #include <QPixmap>
+#include <QMap>
+#include <QStackedWidget>
+
+#include "UBDockPaletteWidget.h"
 
 #define TABSIZE	    50
 #define CLICKTIME   1000000
@@ -64,6 +68,8 @@ public:
     virtual void leaveEvent(QEvent *);
 
     void setBackgroundBrush(const QBrush& brush);
+    void addTabWidget(const QString& widgetName, UBDockPaletteWidget* widget);
+    void removeTab(const QString& widgetName);
 
 protected:
     virtual int border();
@@ -93,12 +99,16 @@ protected:
     QTime mClickTime;
     /** The mouse pressed position */
     QPoint mMousePressPos;
-    /** The palette icon */
-    QPixmap mIcon;
+    ///** The palette icon */
+    //QPixmap mIcon;
     /** The tab orientation */
     eUBDockTabOrientation mTabsOrientation;
     /** The h position of the tab */
     int mHTab;
+    /** The tab widgets */
+    QMap<QString, UBDockPaletteWidget*> mTabWidgets;
+    /** The stacked widget */
+    QStackedWidget* mpStackWidget;
 
 private slots:
     void onToolbarPosUpdated();

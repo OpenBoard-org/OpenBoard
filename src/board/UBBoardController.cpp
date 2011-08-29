@@ -1009,9 +1009,14 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             mActiveScene->addProtractor(pPos);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
-		else if (sourceUrl.toString() == UBToolsManager::manager()->triangle.id)
+        else if (sourceUrl.toString() == UBToolsManager::manager()->triangle.id)
         {
             mActiveScene->addTriangle(pPos);
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        }
+        else if(sourceUrl.toString() == UBToolsManager::manager()->cache.id)
+        {
+            mActiveScene->addCache();
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
         else if (sourceUrl.toString() == UBToolsManager::manager()->mask.id)
