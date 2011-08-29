@@ -60,11 +60,11 @@
 
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
     : QObject(container)
+    , mKeyboardPalette(0)
     , mContainer(container)
     , mBoardControler(pBoardController)
     , mStylusPalette(0)
     , mZoomPalette(0)
-    , mKeyboardPalette(0)
     , mNavigPalette(NULL)
     , mLibPalette(NULL)
     , mBackgroundsPalette(0)
@@ -132,7 +132,9 @@ void UBBoardPaletteManager::setupPalettes()
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
         mKeyboardPalette = UBKeyboardPalette::create(0);
+#ifndef Q_WS_MAC
         mKeyboardPalette->setParent(mContainer);
+#endif
     }
 
     mZoomPalette = new UBZoomPalette(mContainer);

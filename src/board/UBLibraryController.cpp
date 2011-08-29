@@ -245,7 +245,7 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     element->setMoveable(false);
     categories << element;
 
-    categoryImage = new QImage(":images/libpalette/InteractivesCategory.svg");
+    categoryImage = new QImage(":images/libpalette/FlashCategory.svg");
     element = new UBLibElement(eUBLibElementType_Folder, mAnimationUserDirectoryPath, tr("Animations", "Animations category element"));
     element->setThumbnail(categoryImage);
     element->setMoveable(false);

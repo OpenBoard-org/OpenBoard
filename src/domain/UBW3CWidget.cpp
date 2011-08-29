@@ -40,7 +40,6 @@ UBW3CWidget::UBW3CWidget(const QUrl& pWidgetUrl, QWidget *parent)
 
 {
     QString path = pWidgetUrl.toLocalFile();
-
     QDir potentialDir(path);
 
     if (!path.endsWith(".wgt") && !path.endsWith(".wgt/") && !potentialDir.exists())
@@ -58,7 +57,7 @@ UBW3CWidget::UBW3CWidget(const QUrl& pWidgetUrl, QWidget *parent)
     int width = 300;
     int height = 150;
 
-    QFile configFile(path + "/config.xml");
+    QFile configFile(path + "config.xml");
     configFile.open(QFile::ReadOnly);
 
     QDomDocument doc;
@@ -201,6 +200,8 @@ UBW3CWidget::UBW3CWidget(const QUrl& pWidgetUrl, QWidget *parent)
 
     connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(javaScriptWindowObjectCleared()));
+
+    QWebView::load(mMainHtmlUrl);
 
     setFixedSize(QSize(width, height));
 

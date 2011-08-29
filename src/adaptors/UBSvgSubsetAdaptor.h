@@ -214,6 +214,7 @@ class UBSvgSubsetAdaptor
                 void compassToSvg(UBGraphicsCompass *item);
                 void protractorToSvg(UBGraphicsProtractor *item);
                 void cacheToSvg(UBGraphicsCache* item);
+                void triangleToSvg(UBGraphicsTriangle *item);
                 void writeSvgElement();
 
         private:

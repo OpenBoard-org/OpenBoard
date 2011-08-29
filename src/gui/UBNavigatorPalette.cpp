@@ -32,7 +32,8 @@ UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):UBDock
 {
     setOrientation(eUBDockOrientation_Left);
     setMaximumWidth(300);
-    //mIcon = QPixmap(":images/paletteNavigator.png");
+    //mCollapsedIcon = QPixmap(":images/pages_open.png");
+    //mIcon = QPixmap(":images/pages_close.png");
     resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), height());
     mLastWidth = 300;
 

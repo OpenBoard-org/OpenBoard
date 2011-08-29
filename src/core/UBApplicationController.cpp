@@ -519,15 +519,10 @@ void UBApplicationController::ftpCommandFinished(int id, bool error)
        mFtp->close();
    }
    else{
-       // 3 stand for the third command we have sent
-       // in our case
-       // 1->connect
-       // 2->login
-       // 3->get
-       if (id == 3){
-           QString updateString =  QString(mFtp->readAll());
+       QString responseString =  QString(mFtp->readAll());
+       if (!responseString.isEmpty() && responseString.contains("version:") && responseString.contains("url:")){
            mFtp->close();
-           downloadJsonFinished(updateString);
+           downloadJsonFinished(responseString);
        }
    }
 }

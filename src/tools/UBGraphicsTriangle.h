@@ -66,12 +66,24 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
             if (str == "TopRight") return TopRight;
             return sDefaultOrientation;
         }
+        static QString orientationToStr(UBGraphicsTriangleOrientation orientation)
+        {
+            QString result;
+            if (orientation == 0) result = "BottomLeft";
+            else if (orientation == 1) result = "BottomRight";
+            else if (orientation == 2) result = "TopLeft";
+            else if (orientation == 3) result = "TopRight";
+
+            return result;
+        }
+
         void setRect(const QRectF &rect, UBGraphicsTriangleOrientation orientation)
         {
             setRect(rect.x(), rect.y(), rect.width(), rect.height(), orientation);
         }
         void setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsTriangleOrientation orientation);
         void setOrientation(UBGraphicsTriangleOrientation orientation);
+        UBGraphicsTriangleOrientation getOrientation() const {return mOrientation;}
         QRectF rect() const {return boundingRect();}
 
         UBGraphicsScene* scene() const;

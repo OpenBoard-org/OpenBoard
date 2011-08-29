@@ -203,7 +203,6 @@
         <file>images/toolbar/tutorial.png</file>
         <file>images/edit-mode.svg</file>
         <file>images/save.svg</file>
-        <file>images/toolbar/stylusTab.png</file>
         <file>images/libpalette/social.png</file>
         <file>images/navig_arrow.png</file>
         <file>images/flags/ar.png</file>
@@ -308,5 +307,12 @@
         <file>images/virtual.keyboard/29/capslock.png</file>
         <file>images/virtual.keyboard/29/tab.png</file>
         <file>images/toolPalette/cacheTool.png</file>
+        <file>images/libpalette/FlashCategory.svg</file>
+        <file>images/libpalette/FlashIcon.svg</file>
+        <file>images/toolbar/stylusTab.png</file>
+        <file>images/library_close.png</file>
+        <file>images/library_open.png</file>
+        <file>images/pages_close.png</file>
+        <file>images/pages_open.png</file>
     </qresource>
 </RCC>

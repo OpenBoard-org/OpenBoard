@@ -99,8 +99,9 @@ protected:
     QTime mClickTime;
     /** The mouse pressed position */
     QPoint mMousePressPos;
-    ///** The palette icon */
-    //QPixmap mIcon;
+//    /** The palette icon */
+//    QPixmap mIcon;
+//    QPixmap mCollapsedIcon;
     /** The tab orientation */
     eUBDockTabOrientation mTabsOrientation;
     /** The h position of the tab */
