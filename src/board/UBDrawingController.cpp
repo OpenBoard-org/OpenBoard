@@ -44,6 +44,7 @@ UBDrawingController::UBDrawingController(QObject * parent)
 
     connect(UBApplication::mainWindow->actionPen, SIGNAL(triggered(bool)), this, SLOT(penToolSelected(bool)));
     connect(UBApplication::mainWindow->actionEraser, SIGNAL(triggered(bool)), this, SLOT(eraserToolSelected(bool)));
+    connect(UBApplication::mainWindow->actionMagnifier, SIGNAL(triggered(bool)), this, SLOT(magnifierToolSelected(bool)));
     connect(UBApplication::mainWindow->actionMarker, SIGNAL(triggered(bool)), this, SLOT(markerToolSelected(bool)));
     connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered(bool)), this, SLOT(selectorToolSelected(bool)));
     connect(UBApplication::mainWindow->actionHand, SIGNAL(triggered(bool)), this, SLOT(handToolSelected(bool)));
@@ -102,6 +103,8 @@ void UBDrawingController::setStylusTool(int tool)
             UBApplication::mainWindow->actionPen->setChecked(true);
         else if (mStylusTool == UBStylusTool::Eraser)
             UBApplication::mainWindow->actionEraser->setChecked(true);
+        else if (mStylusTool == UBStylusTool::Magnifier)
+            UBApplication::mainWindow->actionMagnifier->setChecked(true);
         else if (mStylusTool == UBStylusTool::Marker)
             UBApplication::mainWindow->actionMarker->setChecked(true);
         else if (mStylusTool == UBStylusTool::Selector)
@@ -263,6 +266,20 @@ void UBDrawingController::setEraserWidthIndex(int index)
 }
 
 
+void UBDrawingController::setMagnifierZoomIndex(int index)
+{
+    setStylusTool(UBStylusTool::Magnifier);
+    UBSettings::settings()->setMagnifierZoomIndex(index);
+}
+
+
+void UBDrawingController::setMagnifierSizeIndex(int index)
+{
+    setStylusTool(UBStylusTool::Magnifier);
+    UBSettings::settings()->setMagnifierSizeIndex(index);
+}
+
+
 void UBDrawingController::setPenColor(bool onDarkBackground, const QColor& color, int pIndex)
 {
     if (onDarkBackground)
@@ -323,6 +340,11 @@ void UBDrawingController::eraserToolSelected(bool checked)
         setStylusTool(UBStylusTool::Eraser);
 }
 
+void UBDrawingController::magnifierToolSelected(bool checked)
+{
+    if (checked)
+        setStylusTool(UBStylusTool::Magnifier);
+}
 
 void UBDrawingController::markerToolSelected(bool checked)
 {

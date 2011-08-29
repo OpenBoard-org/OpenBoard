@@ -40,6 +40,7 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     actionQuit->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
 #elif defined(Q_WS_WIN)
     actionPreferences->setShortcut(QKeySequence(Qt::ALT + Qt::Key_Return));
+    // this code, because it unusable, system key combination can`t be triggered, even we add it manually
     actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
 #else
     actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
@@ -116,6 +117,12 @@ void UBMainWindow::keyPressEvent(QKeyEvent *event)
         event->accept();
     }
     */
+}
+
+void UBMainWindow::closeEvent(QCloseEvent *event)
+{
+    event->ignore();
+    emit closeEvent_Signal(event);
 }
 
 void UBMainWindow::onExportDone()

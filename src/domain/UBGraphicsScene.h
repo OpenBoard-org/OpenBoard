@@ -44,6 +44,7 @@ class UBAbstractWidget;
 class UBDocumentProxy;
 class UBGraphicsCurtainItem;
 class UBGraphicsStroke;
+class UBMagnifer;
 
 const double PI = 4.0 * atan(1.0);
 
@@ -288,6 +289,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void drawEraser(const QPointF& pEndPoint);
         void drawPointer(const QPointF& pEndPoint);
+        void CreateMagnifierQWidgets();
+        void DisposeMagnifierQWidgets();
+
 
         virtual void keyReleaseEvent(QKeyEvent * keyEvent);
 
@@ -347,6 +351,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         QList<QGraphicsItem*> mFastAccessItems; // a local copy as QGraphicsScene::items() is very slow in Qt 4.6
 
         //int mMesure1Ms, mMesure2Ms;
+
+        UBMagnifer *magniferControlViewWidget;
+        UBMagnifer *magniferDisplayViewWidget;
 };
 
 #endif /* UBGRAPHICSSCENE_H_ */

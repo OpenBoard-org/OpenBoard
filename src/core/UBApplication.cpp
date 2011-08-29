@@ -233,7 +233,8 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));
     connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(showDocument()));
     connect(mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(closing()));
-
+    connect(mainWindow, SIGNAL(closeEvent_Signal(QCloseEvent*)), this, SLOT(closeEvent(QCloseEvent*)));
+     
     boardController = new UBBoardController(mainWindow);
     boardController->init();
 
@@ -378,6 +379,13 @@ void UBApplication::toolBarDisplayTextChanged(QVariant display)
     mainWindow->tutorialToolBar->setToolButtonStyle(toolButtonStyle);
 }
 
+
+void UBApplication::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event);
+
+    closing();
+}
 
 void UBApplication::closing()
 {

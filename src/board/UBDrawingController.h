@@ -57,6 +57,8 @@ class UBDrawingController : public QObject
         void setLineWidthIndex(int index);
         void setColorIndex(int index);
         void setEraserWidthIndex(int index);
+        void setMagnifierZoomIndex(int index);
+        void setMagnifierSizeIndex(int index);
 
     signals:
         void stylusToolChanged(int tool);
@@ -75,6 +77,7 @@ class UBDrawingController : public QObject
 
         void penToolSelected(bool checked);
         void eraserToolSelected(bool checked);
+        void magnifierToolSelected(bool checked);
         void markerToolSelected(bool checked);
         void selectorToolSelected(bool checked);
         void handToolSelected(bool checked);

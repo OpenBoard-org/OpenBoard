@@ -508,7 +508,7 @@ void UBGraphicsProtractor::paintAngleMarker(QPainter *painter)
 
     if (angle != 0)
     {
-        QString ang = QString("%1°").arg(angle,0, 'f', 1);
+        QString ang = QString("%1?°").arg(angle,0, 'f', 1);
         QFont font2 = painter->font();
         font2.setBold(true);
         QFontMetricsF fm2(font2);
