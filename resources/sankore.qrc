@@ -121,6 +121,12 @@
         <file>images/toolbar/eraserTool.png</file>
         <file>images/toolbar/lineTool.png</file>
         <file>images/toolbar/tools.png</file>
+        <file>images/toolbar/largeMagnifierSize.png</file>
+        <file>images/toolbar/mediumMagnifierSize.png</file>
+        <file>images/toolbar/smallMagnifierSize.png</file>
+        <file>images/toolbar/largeMagnifierZoom.png</file>
+        <file>images/toolbar/mediumMagnifierZoom.png</file>
+        <file>images/toolbar/smallMagnifierZoom.png</file>
         <file>images/stylusPalette/arrow.png</file>
         <file>images/stylusPalette/arrowOn.png</file>
         <file>images/stylusPalette/eraser.png</file>
@@ -144,6 +150,8 @@
         <file>images/stylusPalette/textOn.png</file>
         <file>images/stylusPalette/captureArea.png</file>
         <file>images/stylusPalette/captureAreaOn.png</file>
+        <file>images/stylusPalette/magnifier.png</file>
+        <file>images/stylusPalette/magnifierOn.png</file>
         <file>images/backgroundPalette/background1.svg</file>
         <file>images/backgroundPalette/background1On.svg</file>
         <file>images/backgroundPalette/background2.svg</file>

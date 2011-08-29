@@ -289,7 +289,9 @@ void UBBoardController::setupToolbar()
 
     mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, lineWidthChoice);
 
+    //-----------------------------------------------------------//
     // Setup eraser width choice widget
+
     QList<QAction *> eraserWidthActions;
     eraserWidthActions.append(mMainWindow->actionEraserSmall);
     eraserWidthActions.append(mMainWindow->actionEraserMedium);
@@ -307,6 +309,45 @@ void UBBoardController::setupToolbar()
     eraserWidthChoice->setCurrentIndex(settings->eraserWidthIndex());
 
     mMainWindow->boardToolBar->insertSeparator(mMainWindow->actionBackgrounds);
+
+    //-----------------------------------------------------------//
+
+    QList<QAction *> magnifierZoomActions;
+    magnifierZoomActions.append(mMainWindow->actionMagnifierZoomSmall);
+    magnifierZoomActions.append(mMainWindow->actionMagnifierZoomMedium);
+    magnifierZoomActions.append(mMainWindow->actionMagnifierZoomLarge);
+
+    UBToolbarButtonGroup *magnifierZoomChoice =
+        new UBToolbarButtonGroup(mMainWindow->boardToolBar, magnifierZoomActions);
+
+    mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, magnifierZoomChoice);
+
+    connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), magnifierZoomChoice, SLOT(displayText(QVariant)));
+    connect(magnifierZoomChoice, SIGNAL(activated(int)), UBDrawingController::drawingController(), SLOT(setMagnifierZoomIndex(int)));
+
+    magnifierZoomChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
+    magnifierZoomChoice->setCurrentIndex(settings->magnifierZoomIndex());
+
+    QList<QAction *> magnifierSizeActions;
+    magnifierSizeActions.append(mMainWindow->actionMagnifierSizeSmall);
+    magnifierSizeActions.append(mMainWindow->actionMagnifierSizeMedium);
+    magnifierSizeActions.append(mMainWindow->actionMagnifierSizeLarge);
+
+    UBToolbarButtonGroup *magnifierSizeChoice =
+        new UBToolbarButtonGroup(mMainWindow->boardToolBar, magnifierSizeActions);
+
+    mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, magnifierSizeChoice);
+
+    connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), magnifierSizeChoice, SLOT(displayText(QVariant)));
+    connect(magnifierSizeChoice, SIGNAL(activated(int)), UBDrawingController::drawingController(), SLOT(setMagnifierSizeIndex(int)));
+
+    magnifierSizeChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
+    magnifierSizeChoice->setCurrentIndex(settings->magnifierSizeIndex());
+
+    mMainWindow->boardToolBar->insertSeparator(mMainWindow->actionBackgrounds);
+
+    //-----------------------------------------------------------//
+
     UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->boardToolBar, mMainWindow->actionBoard);
     UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->tutorialToolBar, mMainWindow->actionBoard);
 

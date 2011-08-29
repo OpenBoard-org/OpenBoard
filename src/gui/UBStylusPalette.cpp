@@ -37,6 +37,7 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 
     actions << UBApplication::mainWindow->actionPen;
     actions << UBApplication::mainWindow->actionEraser;
+    actions << UBApplication::mainWindow->actionMagnifier;
     actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionSelector;
 

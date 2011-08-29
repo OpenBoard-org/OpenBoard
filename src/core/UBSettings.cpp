@@ -556,54 +556,48 @@ QList<QColor> UBSettings::markerColors(bool onDarkBackground)
     }
 }
 
+//----------------------------------------//
+// eraser
 
 int UBSettings::eraserWidthIndex()
 {
     return value("Board/EraserCircleWidthIndex", 1).toInt();
 }
 
-
 void UBSettings::setEraserWidthIndex(int index)
 {
     setValue("Board/EraserCircleWidthIndex", index);
 }
-
 
 qreal UBSettings::eraserFineWidth()
 {
     return value("Board/EraserFineWidth", 16).toDouble();
 }
 
-
 void UBSettings::setEraserFineWidth(qreal width)
 {
     setValue("Board/EraserFineWidth", width);
 }
-
 
 qreal UBSettings::eraserMediumWidth()
 {
     return value("Board/EraserMediumWidth", 64).toDouble();
 }
 
-
 void UBSettings::setEraserMediumWidth(qreal width)
 {
     setValue("Board/EraserMediumWidth", width);
 }
-
 
 qreal UBSettings::eraserStrongWidth()
 {
     return value("Board/EraserStrongWidth", 128).toDouble();
 }
 
-
 void UBSettings::setEraserStrongWidth(qreal width)
 {
     setValue("Board/EraserStrongWidth", width);
 }
-
 
 qreal UBSettings::currentEraserWidth()
 {
@@ -629,6 +623,169 @@ qreal UBSettings::currentEraserWidth()
 
     return width;
 }
+
+//----------------------------------------//
+// magnifier
+
+//-------------//
+// zoom index
+
+int UBSettings::magnifierZoomIndex()
+{
+    return value("Board/MagnifierZoomIndex", 1).toInt();
+}
+
+void UBSettings::setMagnifierZoomIndex(int index)
+{
+    setValue("Board/MagnifierZoomIndex", index);
+}
+
+//-------------//
+// small zoom
+
+qreal UBSettings::magnifierSmallZoom()
+{
+    return value("Board/MagnifierSmallZoom", 2).toDouble();
+}
+
+void UBSettings::setMagnifierSmallZoom(qreal xZoom)
+{
+    setValue("Board/MagnifierSmallZoom", xZoom);
+}
+
+//-------------//
+// medium zoom
+
+qreal UBSettings::magnifierMediumZoom()
+{
+    return value("Board/MagnifierMediumZoom", 3).toDouble();
+}
+
+void UBSettings::setMagnifierMediumZoom(qreal xZoom)
+{
+    setValue("Board/MagnifierMediumZoom", xZoom);
+}
+
+//-------------//
+// large zoom
+
+qreal UBSettings::magnifierLargeZoom()
+{
+    return value("Board/MagnifierLargeZoom", 4).toDouble();
+}
+
+void UBSettings::setMagnifierLargeZoom(qreal xZoom)
+{
+    setValue("Board/MagnifierLargeZoom", xZoom);
+}
+
+//-------------//
+
+qreal UBSettings::currentMagnifierZoom()
+{
+    qreal zoom = 0;
+
+    switch (magnifierZoomIndex())
+    {
+    case UBZoom::Small:
+        zoom = magnifierSmallZoom();
+        break;
+    case UBZoom::Medium:
+        zoom = magnifierMediumZoom();
+        break;
+    case UBZoom::Large:
+        zoom = magnifierLargeZoom();
+        break;
+    default:
+        Q_ASSERT(false);
+        //failsafe
+        zoom = magnifierSmallZoom();
+        break;
+    }
+
+    return zoom;
+}
+
+//-------------//
+// size index
+
+int UBSettings::magnifierSizeIndex()
+{
+    return value("Board/MagnifierSizeIndex", 1).toInt();
+}
+
+void UBSettings::setMagnifierSizeIndex(int index)
+{
+    setValue("Board/MagnifierSizeIndex", index);
+}
+
+//-------------//
+// small zoom
+
+qreal UBSettings::magnifierSmallSize()
+{
+    return value("Board/MagnifierSmallSize", 10).toDouble();
+}
+
+void UBSettings::setMagnifierSmallSize(qreal xSize)
+{
+    setValue("Board/MagnifierSmallSize", xSize);
+}
+
+//-------------//
+// medium zoom
+
+qreal UBSettings::magnifierMediumSize()
+{
+    return value("Board/MagnifierMediumSize", 20).toDouble();
+}
+
+void UBSettings::setMagnifierMediumSize(qreal xSize)
+{
+    setValue("Board/MagnifierMediumSize", xSize);
+}
+
+//-------------//
+// large zoom
+
+qreal UBSettings::magnifierLargeSize()
+{
+    return value("Board/MagnifierLargeSize", 30).toDouble();
+}
+
+void UBSettings::setMagnifierLargeSize(qreal xSize)
+{
+    setValue("Board/MagnifierLargeSize", xSize);
+}
+
+//-------------//
+
+qreal UBSettings::currentMagnifierSize()
+{
+    qreal size = 0;
+
+    switch (magnifierSizeIndex())
+    {
+    case UBSize::Small:
+        size = magnifierSmallSize();
+        break;
+    case UBSize::Medium:
+        size = magnifierMediumSize();
+        break;
+    case UBSize::Large:
+        size = magnifierLargeSize();
+        break;
+    default:
+        Q_ASSERT(false);
+        //failsafe
+        size = magnifierSmallSize();
+        break;
+    }
+
+    return size;
+}
+
+//----------------------------------------//
 
 
 bool UBSettings::isDarkBackground()

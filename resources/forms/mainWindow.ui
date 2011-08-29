@@ -1638,6 +1638,115 @@
     <string>Ctrl+H</string>
    </property>
   </action>
+  <action name="actionMagnifier">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/stylusPalette/magnifier.png</normaloff>
+     <normalon>:/images/stylusPalette/magnifierOn.png</normalon>:/images/stylusPalette/magnifier.png</iconset>
+   </property>
+   <property name="text">
+    <string>Magnifier</string>
+   </property>
+   <property name="toolTip">
+    <string>Magnifier</string>
+   </property>
+  </action>
+  <action name="actionMagnifierZoomSmall">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/toolbar/smallMagnifierZoom.png</normaloff>:/images/toolbar/smallMagnifierZoom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom</string>
+   </property>
+   <property name="toolTip">
+    <string>x2 Zoom</string>
+   </property>
+  </action>
+  <action name="actionMagnifierZoomMedium">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/toolbar/mediumMagnifierZoom.png</normaloff>:/images/toolbar/mediumMagnifierZoom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom</string>
+   </property>
+   <property name="toolTip">
+    <string>x3 Zoom</string>
+   </property>
+  </action>
+  <action name="actionMagnifierZoomLarge">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/toolbar/largeMagnifierZoom.png</normaloff>:/images/toolbar/largeMagnifierZoom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom</string>
+   </property>
+   <property name="toolTip">
+    <string>x4 Zoom</string>
+   </property>
+  </action>
+  <action name="actionMagnifierSizeSmall">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/toolbar/smallMagnifierSize.png</normaloff>:/images/toolbar/smallMagnifierSize.png</iconset>
+   </property>
+   <property name="text">
+    <string>Size</string>
+   </property>
+   <property name="toolTip">
+    <string>10% from scene size</string>
+   </property>
+  </action>
+  <action name="actionMagnifierSizeMedium">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/toolbar/mediumMagnifierSize.png</normaloff>:/images/toolbar/mediumMagnifierSize.png</iconset>
+   </property>
+   <property name="text">
+    <string>Size</string>
+   </property>
+   <property name="toolTip">
+    <string>20% from scene size</string>
+   </property>
+  </action>
+  <action name="actionMagnifierSizeLarge">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/toolbar/largeMagnifierSize.png</normaloff>:/images/toolbar/largeMagnifierSize.png</iconset>
+   </property>
+   <property name="text">
+    <string>Size</string>
+   </property>
+   <property name="toolTip">
+    <string>30% from scene size</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../sankore.qrc"/>
