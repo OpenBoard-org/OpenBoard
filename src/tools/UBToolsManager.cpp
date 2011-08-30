@@ -58,12 +58,12 @@ UBToolsManager::UBToolsManager(QObject *parent)
     mToolsIcon.insert(triangle.id,":/images/toolPalette/triangleTool.png");
     mDescriptors << triangle;
 
-    cache.id = "uniboardTool://uniboard.mnemis.com/cache";
-    cache.icon = QPixmap(":/images/toolPalette/cacheTool.png");
-    cache.label = tr("Cache");
-    cache.version = "1.0";
-    mToolsIcon.insert(cache.id, ":/images/toolPalette/cacheTool.png");
-    mDescriptors << cache;
+//    cache.id = "uniboardTool://uniboard.mnemis.com/cache";
+//    cache.icon = QPixmap(":/images/toolPalette/cacheTool.png");
+//    cache.label = tr("Cache");
+//    cache.version = "1.0";
+//    mToolsIcon.insert(cache.id, ":/images/toolPalette/cacheTool.png");
+//    mDescriptors << cache;
 }
 
 UBToolsManager::~UBToolsManager()
