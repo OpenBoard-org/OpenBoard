@@ -2,24 +2,22 @@
 #define UBDOCKPALETTEWIDGET_H
 
 #include <QWidget>
-#include <QIcon>
+#include <QPixmap>
 #include <QString>
 
 class UBDockPaletteWidget : public QWidget
 {
 public:
-    UBDockPaletteWidget(const char* name="UBDockPaletteWidget", QWidget* parent=0);
+    UBDockPaletteWidget(QWidget* parent=0, const char* name="UBDockPaletteWidget");
     ~UBDockPaletteWidget();
 
-    QWidget* widget();
-    QIcon icon();
-    QIcon collapsedIcon();
+    QPixmap iconToRight();
+    QPixmap iconToLeft();
     QString name();
 
 protected:
-    QWidget* mpWidget;
-    QIcon mIcon;
-    QIcon mCollapsedIcon;
+    QPixmap mIconToRight;   // arrow like this: >
+    QPixmap mIconToLeft;    // arrow like this: <
     QString mName;
 
 };

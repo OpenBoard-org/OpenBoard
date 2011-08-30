@@ -56,7 +56,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mDesktopPenPalette(NULL)
         , mDesktopMarkerPalette(NULL)
         , mDesktopEraserPalette(NULL)
-        , mLibPalette(NULL)
+        , mRightPalette(NULL)
         , mWindowPositionInitialized(0)
         , mIsFullyTransparent(false)
         , mDesktopToolsPalettePositioned(false)
@@ -89,7 +89,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingScene = new UBGraphicsScene(0);
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
 
-    mLibPalette = new UBLibPalette(mTransparentDrawingView);
+    mRightPalette = new UBRightPalette(mTransparentDrawingView);
 
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView);
 
@@ -160,7 +160,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
 #ifdef Q_WS_X11
     connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
-    connect(mLibPalette, SIGNAL(resized()), this, SLOT(refreshMask()));
+    connect(mRightPalette, SIGNAL(resized()), this, SLOT(refreshMask()));
 #endif
     onDesktopPaletteMaximized();
 }
@@ -212,10 +212,10 @@ UBDesktopAnnotationController::~UBDesktopAnnotationController()
         delete mDesktopEraserPalette;
         mDesktopEraserPalette = NULL;
     }
-    if(NULL != mLibPalette)
+    if(NULL != mRightPalette)
     {
-        delete mLibPalette;
-        mLibPalette = NULL;
+        delete mRightPalette;
+        mRightPalette = NULL;
     }
 	*/
 }
@@ -800,7 +800,7 @@ void UBDesktopAnnotationController::onDesktopPaletteMinimize()
  */
 void UBDesktopAnnotationController::onTransparentWidgetResized()
 {
-      mLibPalette->resize(mLibPalette->width(), mTransparentDrawingView->height());
+      mRightPalette->resize(mRightPalette->width(), mTransparentDrawingView->height());
 }
 
 void UBDesktopAnnotationController::updateMask(bool bTransparent)
@@ -827,9 +827,9 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
         {
             p.drawRect(mKeyboardPalette->geometry().x(), mKeyboardPalette->geometry().y(), mKeyboardPalette->width(), mKeyboardPalette->height());
         }
-        if(mLibPalette->isVisible())
+        if(mRightPalette->isVisible())
         {
-            p.drawRect(mLibPalette->geometry().x(), mLibPalette->geometry().y(), mLibPalette->width(), mLibPalette->height());
+            p.drawRect(mRightPalette->geometry().x(), mRightPalette->geometry().y(), mRightPalette->width(), mRightPalette->height());
         }
 
         p.end();

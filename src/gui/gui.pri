@@ -39,7 +39,11 @@ HEADERS      += src/gui/UBThumbnailView.h \
     src/gui/UBLibraryWidget.h \
     src/gui/UBLibPathViewer.h \
     src/gui/UBUpdateDlg.h \
-    src/gui/UBDockPaletteWidget.h
+    src/gui/UBDockPaletteWidget.h \
+    src/gui/UBLeftPalette.h \
+    src/gui/UBRightPalette.h \
+    src/gui/UBPageNavigationWidget.h \
+    src/gui/UBLibWidget.h
                 
 SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBFloatingPalette.cpp \
@@ -81,7 +85,11 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
     src/gui/UBLibraryWidget.cpp \
     src/gui/UBLibPathViewer.cpp \
     src/gui/UBUpdateDlg.cpp \
-    src/gui/UBDockPaletteWidget.cpp
+    src/gui/UBDockPaletteWidget.cpp \
+    src/gui/UBLeftPalette.cpp \
+    src/gui/UBRightPalette.cpp \
+    src/gui/UBPageNavigationWidget.cpp \
+    src/gui/UBLibWidget.cpp
 
 win32 {
 

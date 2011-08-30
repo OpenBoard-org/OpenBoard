@@ -20,7 +20,7 @@
 #include <QTime>
 #include <QTimer>
 
-#include "gui/UBLibPalette.h"
+#include "gui/UBRightPalette.h"
 
 class UBDesktopPalette;
 class UBDesktopToolsPalette;
@@ -117,7 +117,7 @@ class UBDesktopAnnotationController : public QObject
         UBDesktopMarkerPalette* mDesktopMarkerPalette;
         UBDesktopEraserPalette* mDesktopEraserPalette;
 
-        UBLibPalette* mLibPalette;
+        UBRightPalette* mRightPalette;
 
         QTime mPenHoldTimer;
         QTime mMarkerHoldTimer;

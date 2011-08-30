@@ -13,8 +13,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QDebug>
-#include "UBLibPalette.h"
 
+#include "UBLibWidget.h"
 #include "core/memcheck.h"
 
 /**
@@ -22,24 +22,20 @@
  * @param parent as the parent widget
  * @param name as the object name
  */
-UBLibPalette::UBLibPalette(QWidget *parent, const char *name):UBDockPalette(parent, name)
-    , mLayout(NULL)
-    , mStackedWidget(NULL)
-    , mNavigator(NULL)
-    , mProperties(NULL)
-    , mActionBar(NULL)
+UBLibWidget::UBLibWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
+  , mLayout(NULL)
+  , mStackedWidget(NULL)
+  , mNavigator(NULL)
+  , mProperties(NULL)
+  , mActionBar(NULL)
 {
-    setOrientation(eUBDockOrientation_Right);
-
+    setObjectName(name);
+    mName = "LibWidget";
+    mIconToLeft = QPixmap(":images/library_open.png");
+    mIconToRight = QPixmap(":images/library_close.png");
     setAcceptDrops(true);
 
-    resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());
-    setContentsMargins(border(), 0, 0, 0);
-    mCollapseWidth = 180;
-    mLastWidth = 300;
-
     mLayout = new QVBoxLayout(this);
-    mLayout->setContentsMargins(20, customMargin(), customMargin(), customMargin());
     setLayout(mLayout);
 
     // Build the GUI
@@ -64,7 +60,7 @@ UBLibPalette::UBLibPalette(QWidget *parent, const char *name):UBDockPalette(pare
 /**
  * \brief Destructor
  */
-UBLibPalette::~UBLibPalette()
+UBLibWidget::~UBLibWidget()
 {
     if(NULL != mProperties)
     {
@@ -79,26 +75,16 @@ UBLibPalette::~UBLibPalette()
 }
 
 /**
- * \brief Update the maximum width
- */
-void UBLibPalette::updateMaxWidth()
-{
-    setMaximumWidth((int)((parentWidget()->width() * 2)/3));
-    setMaximumHeight(parentWidget()->height());
-    setMinimumHeight(parentWidget()->height());
-}
-
-/**
  * \brief Handles the drag enter event
  * @param pEvent as the drag enter event
  */
-void UBLibPalette::dragEnterEvent(QDragEnterEvent *pEvent)
+void UBLibWidget::dragEnterEvent(QDragEnterEvent *pEvent)
 {
     setBackgroundRole(QPalette::Highlight);
     pEvent->acceptProposedAction();
 }
 
-void UBLibPalette::dragLeaveEvent(QDragLeaveEvent *pEvent)
+void UBLibWidget::dragLeaveEvent(QDragLeaveEvent *pEvent)
 {
     pEvent->accept();
 }
@@ -107,7 +93,7 @@ void UBLibPalette::dragLeaveEvent(QDragLeaveEvent *pEvent)
  * \brief Handles the drop event
  * @param pEvent as the drop event
  */
-void UBLibPalette::dropEvent(QDropEvent *pEvent)
+void UBLibWidget::dropEvent(QDropEvent *pEvent)
 {
     processMimeData(pEvent->mimeData());
     setBackgroundRole(QPalette::Dark);
@@ -119,7 +105,7 @@ void UBLibPalette::dropEvent(QDropEvent *pEvent)
  * \brief Handles the drag move event
  * @param pEvent as the drag move event
  */
-void UBLibPalette::dragMoveEvent(QDragMoveEvent *pEvent)
+void UBLibWidget::dragMoveEvent(QDragMoveEvent *pEvent)
 {
     pEvent->acceptProposedAction();
 }
@@ -128,7 +114,7 @@ void UBLibPalette::dragMoveEvent(QDragMoveEvent *pEvent)
  * \brief Process the dropped MIME data
  * @param pData as the mime dropped data
  */
-void UBLibPalette::processMimeData(const QMimeData *pData)
+void UBLibWidget::processMimeData(const QMimeData *pData)
 {
     // Display the different mime types contained in the mime data
     QStringList qslFormats = pData->formats();
@@ -138,19 +124,7 @@ void UBLibPalette::processMimeData(const QMimeData *pData)
     }
 }
 
-void UBLibPalette::mouseMoveEvent(QMouseEvent *event)
-{
-    if(mCanResize)
-    {
-        UBDockPalette::mouseMoveEvent(event);
-    }
-    else
-    {
-        //qDebug() << "Mouse move event detected!" ;
-    }
-}
-
-void UBLibPalette::showProperties(UBLibElement *elem)
+void UBLibWidget::showProperties(UBLibElement *elem)
 {
     if(NULL != elem)
     {
@@ -162,16 +136,19 @@ void UBLibPalette::showProperties(UBLibElement *elem)
     }
 }
 
-void UBLibPalette::showFolder()
+void UBLibWidget::showFolder()
 {
     mActionBar->setButtons(mActionBar->previousButtonSet());
     mStackedWidget->setCurrentIndex(ID_NAVIGATOR);
     miCrntStackWidget = ID_NAVIGATOR;
 }
 
-void UBLibPalette::resizeEvent(QResizeEvent *event)
+int UBLibWidget::customMargin()
 {
-    UBDockPalette::resizeEvent(event);
-    UBSettings::settings()->libPaletteWidth->set(width());
-    emit resized();
+    return 5;
+}
+
+int UBLibWidget::border()
+{
+    return 15;
 }

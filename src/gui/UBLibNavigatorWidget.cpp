@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "UBLibNavigatorWidget.h"
-#include "UBLibPalette.h"
+#include "UBRightPalette.h"
 
 #include "core/memcheck.h"
 
@@ -36,7 +36,7 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
     setObjectName(name);
     setAcceptDrops(true);
 
-    UBLibPalette* pLibPalette = dynamic_cast<UBLibPalette*>(parentWidget());
+    UBRightPalette* pRightPalette = dynamic_cast<UBRightPalette*>(parentWidget());
 
     mLayout = new QVBoxLayout(this);
 //    mLayout->setContentsMargins(20, 5, 5, 5);
@@ -66,14 +66,14 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
     connect(mSlider,SIGNAL(valueChanged(int)),this,SLOT(updateThumbnailsSize(int)));
     connect(mPathViewer, SIGNAL(elementsDropped(QList<QString>,UBLibElement*)), mLibWidget, SLOT(onElementsDropped(QList<QString>,UBLibElement*)));
 
-    if(NULL != pLibPalette)
+    if(NULL != pRightPalette)
     {
-       connect(mLibWidget, SIGNAL(navigBarUpdate(UBLibElement*)), pLibPalette->actionBar(), SLOT(onNavigbarUpdate(UBLibElement*)));
-       connect(mLibWidget, SIGNAL(itemsSelected(QList<UBLibElement*>, bool)), pLibPalette->actionBar(), SLOT(onSelectionChanged(QList<UBLibElement*>, bool)));
-       connect(pLibPalette->actionBar(), SIGNAL(deleteDone()), mLibWidget, SLOT(onRefreshCurrentFolder()));
-       connect(mLibWidget, SIGNAL(favoritesEntered(bool)), pLibPalette->actionBar(), SLOT(onFavoritesEntered(bool)));
-       connect(pLibPalette->actionBar(), SIGNAL(searchElement(QString)), mLibWidget, SLOT(onSearchElement(QString)));
-       connect(pLibPalette->actionBar(), SIGNAL(newFolderToCreate()), mLibWidget, SLOT(onNewFolderToCreate()));
+       connect(mLibWidget, SIGNAL(navigBarUpdate(UBLibElement*)), pRightPalette->libWidget()->actionBar(), SLOT(onNavigbarUpdate(UBLibElement*)));
+       connect(mLibWidget, SIGNAL(itemsSelected(QList<UBLibElement*>, bool)), pRightPalette->libWidget()->actionBar(), SLOT(onSelectionChanged(QList<UBLibElement*>, bool)));
+       connect(pRightPalette->libWidget()->actionBar(), SIGNAL(deleteDone()), mLibWidget, SLOT(onRefreshCurrentFolder()));
+       connect(mLibWidget, SIGNAL(favoritesEntered(bool)), pRightPalette->libWidget()->actionBar(), SLOT(onFavoritesEntered(bool)));
+       connect(pRightPalette->libWidget()->actionBar(), SIGNAL(searchElement(QString)), mLibWidget, SLOT(onSearchElement(QString)));
+       connect(pRightPalette->libWidget()->actionBar(), SIGNAL(newFolderToCreate()), mLibWidget, SLOT(onNewFolderToCreate()));
     }
 
     mLibWidget->init();

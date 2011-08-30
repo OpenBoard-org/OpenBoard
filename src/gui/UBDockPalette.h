@@ -26,6 +26,8 @@
 #include <QPixmap>
 #include <QMap>
 #include <QStackedWidget>
+#include <QVBoxLayout>
+#include <QVector>
 
 #include "UBDockPaletteWidget.h"
 
@@ -68,10 +70,11 @@ public:
     virtual void leaveEvent(QEvent *);
 
     void setBackgroundBrush(const QBrush& brush);
-    void addTabWidget(const QString& widgetName, UBDockPaletteWidget* widget);
-    void removeTab(const QString& widgetName);
 
 protected:
+    void addTabWidget(UBDockPaletteWidget* widget);
+    void removeTab(const QString& widgetName);
+
     virtual int border();
     virtual int radius();
     virtual int customMargin();
@@ -107,15 +110,25 @@ protected:
     /** The h position of the tab */
     int mHTab;
     /** The tab widgets */
-    QMap<QString, UBDockPaletteWidget*> mTabWidgets;
+    //QMap<QString, UBDockPaletteWidget*> mTabWidgets;
     /** The stacked widget */
     QStackedWidget* mpStackWidget;
+    /** The layout */
+    QVBoxLayout* mpLayout;
+    /** The current tab index */
+    int mCurrentTab;
+    /** The tab widgets */
+    QVector<UBDockPaletteWidget*> mTabWidgets;
 
 private slots:
     void onToolbarPosUpdated();
+    void onResizeRequest(QResizeEvent* event);
 
 private:
-    void tabClicked();
+    void tabClicked(int tabIndex);
+    int tabSpacing();
+    void showTabWidget(int tabIndex);
+    void toggleCollapseExpand();
 };
 
 #endif // UBDOCKPALETTE_H

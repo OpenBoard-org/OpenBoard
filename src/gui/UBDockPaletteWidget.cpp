@@ -1,36 +1,26 @@
 #include "UBDockPaletteWidget.h"
 
-UBDockPaletteWidget::UBDockPaletteWidget(const char *name, QWidget *parent):QWidget(parent)
-  , mpWidget(NULL)
+UBDockPaletteWidget::UBDockPaletteWidget(QWidget *parent, const char *name):QWidget(parent)
 {
     setObjectName(name);
-
 }
 
 UBDockPaletteWidget::~UBDockPaletteWidget()
 {
-    if(NULL != mpWidget)
-    {
-        delete mpWidget;
-        mpWidget = NULL;
-    }
+
 }
 
-QWidget* UBDockPaletteWidget::widget()
+QPixmap UBDockPaletteWidget::iconToRight()
 {
-    return mpWidget;
+    return mIconToRight;
 }
 
-QIcon UBDockPaletteWidget::icon()
+QPixmap UBDockPaletteWidget::iconToLeft()
 {
-    return mIcon;
+    return mIconToLeft;
 }
 
-QIcon UBDockPaletteWidget::collapsedIcon()
+QString UBDockPaletteWidget::name()
 {
-    return mCollapsedIcon;
+    return mName;
 }
- QString UBDockPaletteWidget::name()
- {
-     return mName;
- }

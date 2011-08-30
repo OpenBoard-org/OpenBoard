@@ -12,8 +12,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef UBLIBPALETTE_H
-#define UBLIBPALETTE_H
+#ifndef UBLIBWIDGET_H
+#define UBLIBWIDGET_H
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -26,7 +26,7 @@
 #include <QResizeEvent>
 #include <QLabel>
 
-#include "UBDockPalette.h"
+#include "UBDockPaletteWidget.h"
 #include "UBLibNavigatorWidget.h"
 #include "UBLibItemProperties.h"
 #include "UBLibActionBar.h"
@@ -34,12 +34,12 @@
 #define ID_NAVIGATOR    0
 #define ID_PROPERTIES   1
 
-class UBLibPalette : public UBDockPalette
+class UBLibWidget : public UBDockPaletteWidget
 {
     Q_OBJECT
 public:
-    UBLibPalette(QWidget* parent=0, const char* name="libPalette");
-    ~UBLibPalette();
+    UBLibWidget(QWidget* parent=0, const char* name="UBLibWidget");
+    ~UBLibWidget();
 
     UBLibActionBar* actionBar(){return mActionBar;}
 
@@ -47,13 +47,10 @@ signals:
     void resized();
 
 protected:
-    void updateMaxWidth();
     void dragEnterEvent(QDragEnterEvent* pEvent);
     void dropEvent(QDropEvent *pEvent);
     void dragMoveEvent(QDragMoveEvent* pEvent);
     void dragLeaveEvent(QDragLeaveEvent* pEvent);
-    void mouseMoveEvent(QMouseEvent *event);
-    void resizeEvent(QResizeEvent *event);
 
 private slots:
     void showProperties(UBLibElement* elem);
@@ -61,6 +58,8 @@ private slots:
 
 private:
     void processMimeData(const QMimeData* pData);
+    int customMargin();
+    int border();
 
     /** The layout */
     QVBoxLayout* mLayout;
@@ -76,4 +75,4 @@ private:
     int miCrntStackWidget;
 };
 
-#endif // UBLIBPALETTE_H
+#endif // UBLIBWIDGET_H
