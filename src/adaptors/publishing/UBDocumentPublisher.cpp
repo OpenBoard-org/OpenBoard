@@ -635,7 +635,7 @@ void UBDocumentPublisher::sendUbw(QString username, QString password)
             request.setHeader(QNetworkRequest::ContentLengthHeader,datatoSend.size());
             QString b64Auth = getBase64Of(QString("%0:%1").arg(username).arg(password));
             request.setRawHeader("Authorization", QString("Basic %0").arg(b64Auth).toAscii().constData());
-            request.setRawHeader("Host", "sankore.devxwiki.com");
+            request.setRawHeader("Host", "planete.sankore.org");
             request.setRawHeader("Accept", "*/*");
             request.setRawHeader("Accept-Language", "en-US,*");
 

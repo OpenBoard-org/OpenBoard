@@ -26,6 +26,7 @@ struct UBStylusTool
     {
         Pen = 0, 
 		Eraser, 
+        Magnifier,
 		Marker, 
 		Selector, 
 		Hand, 
@@ -45,6 +46,23 @@ struct UBWidth
         Fine = 0, Medium, Strong
     };
 };
+
+struct UBZoom
+{
+    enum Enum
+    {
+        Small = 0, Medium, Large
+    };
+};
+
+struct UBSize
+{
+    enum Enum
+    {
+        Small = 0, Medium, Large
+    };
+};
+
 
 struct UBItemLayerType
 {
@@ -80,7 +98,8 @@ struct UBGraphicsItemType
 		CompassItemType, 
 		ProtractorItemType, 
 		StrokeItemType,
-		TriangleItemType
+		TriangleItemType,
+        MagnifierItemType,
     };
 };
 

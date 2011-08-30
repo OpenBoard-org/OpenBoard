@@ -66,6 +66,19 @@ class UBSettings : public QObject
         qreal eraserStrongWidth();
         qreal currentEraserWidth();
 
+        // Magnifier related
+        int magnifierZoomIndex();
+        qreal magnifierSmallZoom();
+        qreal magnifierMediumZoom();
+        qreal magnifierLargeZoom();
+        qreal currentMagnifierZoom();
+
+        int magnifierSizeIndex();
+        qreal magnifierSmallSize();
+        qreal magnifierMediumSize();
+        qreal magnifierLargeSize();
+        qreal currentMagnifierSize();
+
         // Background related
         bool isDarkBackground();
         bool isCrossedBackground();
@@ -346,6 +359,17 @@ class UBSettings : public QObject
         void setEraserFineWidth(qreal width);
         void setEraserMediumWidth(qreal width);
         void setEraserStrongWidth(qreal width);
+
+        void setMagnifierZoomIndex(int index);
+        void setMagnifierSmallZoom(qreal xZoom);
+        void setMagnifierMediumZoom(qreal xZoom);
+        void setMagnifierLargeZoom(qreal xZoom);
+
+        void setMagnifierSizeIndex(int index);
+        void setMagnifierSmallSize(qreal xSize);
+        void setMagnifierMediumSize(qreal xSize);
+        void setMagnifierLargeSize(qreal xSize);
+
 
         void setStylusPaletteVisible(bool visible);
 

@@ -45,6 +45,7 @@ class UBDocumentProxy;
 class UBGraphicsCurtainItem;
 class UBGraphicsStroke;
 class UBGraphicsCache;
+class UBMagnifer;
 
 const double PI = 4.0 * atan(1.0);
 
@@ -291,6 +292,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void drawEraser(const QPointF& pEndPoint);
         void drawPointer(const QPointF& pEndPoint);
+        void CreateMagnifierQWidgets();
+        void DisposeMagnifierQWidgets();
+
 
         virtual void keyReleaseEvent(QKeyEvent * keyEvent);
 
@@ -352,6 +356,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         //int mMesure1Ms, mMesure2Ms;
 
         bool mHasCache;
+
+        UBMagnifer *magniferControlViewWidget;
+        UBMagnifer *magniferDisplayViewWidget;
 };
 
 #endif /* UBGRAPHICSSCENE_H_ */

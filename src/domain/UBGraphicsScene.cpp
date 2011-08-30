@@ -29,6 +29,8 @@
 #include "core/UBDisplayManager.h"
 #include "core/UBPersistenceManager.h"
 
+#include "gui/UBMagnifer.h"
+
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsProtractor.h"
 #include "tools/UBGraphicsCompass.h"
@@ -90,6 +92,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mCurrentStroke(0)
     , mShouldUseOMP(true)
     , mItemCount(0)
+    , magniferControlViewWidget(0)
+    , magniferDisplayViewWidget(0)
 {
 
 #ifdef __ppc__
@@ -234,6 +238,15 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             drawPointer(scenePos);
             accepted = true;
         }
+        else if (currentTool == UBStylusTool::Magnifier)
+        {
+            CreateMagnifierQWidgets();
+            magniferControlViewWidget->grabNMove(QCursor::pos(), true);
+            magniferDisplayViewWidget->grabNMove(scenePos, true);
+            magniferControlViewWidget->show();
+            magniferDisplayViewWidget->show();
+            accepted = true;
+        }
     }
 
     return accepted;
@@ -307,6 +320,11 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
         {
             drawPointer(position);
         }
+        else if (currentTool == UBStylusTool::Magnifier)
+        {
+            magniferControlViewWidget->grabNMove(QCursor::pos(), false);
+            magniferDisplayViewWidget->grabNMove(position, false);
+        }
 
         accepted = true;
     }
@@ -331,15 +349,25 @@ bool UBGraphicsScene::inputDeviceRelease()
 
     bool accepted = false;
 
+
+
     if (mPointer)
     {
         mPointer->hide();
         accepted = true;
     }
 
-    if (UBDrawingController::drawingController()->isDrawingTool())
+    UBDrawingController *dc = UBDrawingController::drawingController();
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)dc->stylusTool();
+    if (dc->isDrawingTool()) 
     {
         mCurrentStroke = 0;
+    } 
+    else 
+    if (currentTool == UBStylusTool::Magnifier) 
+    {
+        DisposeMagnifierQWidgets();
+        //qDebug() << "deleted";
     }
 
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
@@ -397,6 +425,45 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint)
     }
 }
 
+// call this function when user press mouse button in Magnifier mode
+void UBGraphicsScene::CreateMagnifierQWidgets()
+{
+    UBApplication::app()->setOverrideCursor( QCursor( Qt::BlankCursor ) );
+
+    magniferControlViewWidget = new UBMagnifer((QWidget*)(UBApplication::boardController->controlContainer()));
+    magniferControlViewWidget->setGrabView((QGraphicsView*)UBApplication::boardController->controlView());
+    magniferControlViewWidget->setMoveView((QGraphicsView*)UBApplication::boardController->controlContainer());
+    magniferControlViewWidget->setSize(UBSettings::settings()->currentMagnifierSize());
+    magniferControlViewWidget->setZoom(UBSettings::settings()->currentMagnifierZoom());
+
+    magniferDisplayViewWidget = new UBMagnifer((QWidget*)(UBApplication::boardController->displayView()));
+    magniferDisplayViewWidget->setGrabView((QGraphicsView*)UBApplication::boardController->controlView());
+    magniferDisplayViewWidget->setMoveView((QGraphicsView*)UBApplication::boardController->displayView());
+    magniferDisplayViewWidget->setSize(UBSettings::settings()->currentMagnifierSize());
+    magniferDisplayViewWidget->setZoom(UBSettings::settings()->currentMagnifierZoom());
+}
+
+// call this function when user release mouse button in Magnifier mode
+void UBGraphicsScene::DisposeMagnifierQWidgets()
+{
+    if(magniferControlViewWidget) 
+    {
+        magniferControlViewWidget->hide();
+        magniferControlViewWidget->setParent(0);
+        delete magniferControlViewWidget;
+        magniferControlViewWidget = NULL;
+    }
+
+    if(magniferDisplayViewWidget) 
+    {
+        magniferDisplayViewWidget->hide();
+        magniferDisplayViewWidget->setParent(0);
+        delete magniferDisplayViewWidget;
+        magniferDisplayViewWidget = NULL;
+    }
+
+     UBApplication::app()->restoreOverrideCursor();
+}
 
 void UBGraphicsScene::moveTo(const QPointF &pPoint)
 {

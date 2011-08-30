@@ -42,12 +42,16 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         void addDocumentsWidget(QWidget *pWidget);
         void switchToDocumentsWidget();
 
+    signals:
+        void closeEvent_Signal( QCloseEvent *event );
+
     public slots:
         void onExportDone();
 
     protected:
 
         virtual void keyPressEvent(QKeyEvent *event);
+        virtual void closeEvent (QCloseEvent *event);
 
         virtual QMenu* createPopupMenu ()
         {

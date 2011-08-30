@@ -3,7 +3,7 @@
         version="1.0"
         width="680"
         height="400" 
-		ub:resizable="true">
+		ub:resizable="false">
   <name>GeoInfo</name>
   <content src="GeoInfo.html"/>
 </widget>
