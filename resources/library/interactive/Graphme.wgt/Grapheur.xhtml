@@ -148,8 +148,15 @@
                         $("#borneXGauche").val(sankore.preference("xAxisFrom", "-5"));
                         $("#borneXDroite").val(sankore.preference("xAxisTo", "5"));
                         $("#borneYGauche").val(sankore.preference("yAxisFrom", "-5"));
-                        $("#borneYDroite").val(sankore.preference("yAxisTo", "5"));                        
+                        $("#borneYDroite").val(sankore.preference("yAxisTo", "5"));
                         
+                        var tempArray;
+                        if(sankore.preference("graphmeHistory",""))
+                                tempArray = sankore.preference("graphmeHistory","").split(",");
+                        if(sankore.preference("graphmeHistory","")){
+                            for(i in tempArray)
+                                evaluer(tempArray[i]);                            
+                        }
                         actualiserGraph();
                         loadingFlag = true;
                     }
@@ -225,6 +232,9 @@
                             sankore.setPreference("offsetDiagrammX", $("#inputDecalageX").val());
                             sankore.setPreference("offsetDiagrammY", $("#inputDecalageY").val());
                             sankore.setPreference("accuracyGraph", $("#inputPrecision").val());
+                            
+                            if(historique.length)
+                                sankore.setPreference("graphmeHistory", historique.toString());
                         }
                     });
                 });
