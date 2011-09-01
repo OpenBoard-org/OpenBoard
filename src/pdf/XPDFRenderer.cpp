@@ -40,7 +40,6 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
     mDocument = new PDFDoc(new GString(filename.toUtf8().data()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
     sInstancesCount.ref();
     bThumbGenerated = !importingFile;
-    bPagesGenerated = false;
     mPagesMap.clear();
     mThumbs.clear();
     mThumbMap.clear();
@@ -154,7 +153,6 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
         qreal xscale = p->worldTransform().m11();
         qreal yscale = p->worldTransform().m22();
         bool bZoomChanged = false;
-        bool bFirstThumbnail = false;
 
         if(fabs(mScaleX - xscale) > 0.1 || fabs(mScaleY - yscale) > 0.1)
         {
@@ -163,49 +161,34 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
             bZoomChanged = true;
         }
 
+        QImage *pdfImage;
+
         // First verify if the thumbnails and the pages are generated
         if(!bThumbGenerated)
         {
-            if(pageNumber == 1)
-            {
-                bFirstThumbnail = true;
-            }
-
             if(!mThumbMap[pageNumber - 1])
             {
-
                 // Generate the thumbnail
                 mThumbs << createPDFImage(pageNumber, xscale, yscale, bounds);
                 mThumbMap[pageNumber - 1] = true;
+                pdfImage = mThumbs.at(pageNumber - 1);
                 if(pageNumber == mDocument->getNumPages())
                 {
                     bThumbGenerated = true;
                 }
             }
         }
-        else if(!bPagesGenerated || bZoomChanged)
+        else
         {
             if(!mPagesMap[pageNumber - 1] || bZoomChanged)
             {
                 // Generate the page
+                if (mPagesMap[pageNumber - 1])
+                    delete mNumPageToPageMap[pageNumber];
                 mNumPageToPageMap[pageNumber] = createPDFImage(pageNumber, xscale, yscale, bounds);
                 mPagesMap[pageNumber - 1] = true;
-                if(mPagesMap.size() == mDocument->getNumPages())
-                {
-                    bPagesGenerated = true;
-                }
+                pdfImage = mNumPageToPageMap[pageNumber];
             }
-        }
-
-        QImage *pdfImage;
-
-        if(!bThumbGenerated || bFirstThumbnail)
-        {
-            pdfImage = mThumbs.at(pageNumber - 1);
-        }
-        else
-        {
-            pdfImage = mNumPageToPageMap[pageNumber];
         }
 
         QTransform savedTransform = p->worldTransform();
