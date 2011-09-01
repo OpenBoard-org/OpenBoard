@@ -26,8 +26,7 @@ struct UBStylusTool
     {
         Pen = 0, 
 		Eraser, 
-        Magnifier,
-		Marker, 
+ 		Marker, 
 		Selector, 
 		Hand, 
 		ZoomIn, 

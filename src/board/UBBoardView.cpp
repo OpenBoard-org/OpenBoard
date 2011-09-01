@@ -857,9 +857,6 @@ UBBoardView::setToolCursor (int tool)
     case UBStylusTool::Eraser:
       controlViewport->setCursor (UBResources::resources ()->eraserCursor); 
       break;
-    case UBStylusTool::Magnifier:
-      controlViewport->setCursor (UBResources::resources ()->magnifierCursor);
-      break;
     case UBStylusTool::Marker:
       controlViewport->setCursor (UBResources::resources ()->markerCursor);
       break;

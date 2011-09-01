@@ -36,6 +36,7 @@
 #include "gui/UBMainWindow.h"
 #include "gui/UBToolWidget.h"
 #include "gui/UBKeyboardPalette.h"
+#include "gui/UBMagnifer.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
@@ -307,42 +308,6 @@ void UBBoardController::setupToolbar()
 
     eraserWidthChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
     eraserWidthChoice->setCurrentIndex(settings->eraserWidthIndex());
-
-    mMainWindow->boardToolBar->insertSeparator(mMainWindow->actionBackgrounds);
-
-    //-----------------------------------------------------------//
-
-    QList<QAction *> magnifierZoomActions;
-    magnifierZoomActions.append(mMainWindow->actionMagnifierZoomSmall);
-    magnifierZoomActions.append(mMainWindow->actionMagnifierZoomMedium);
-    magnifierZoomActions.append(mMainWindow->actionMagnifierZoomLarge);
-
-    UBToolbarButtonGroup *magnifierZoomChoice =
-        new UBToolbarButtonGroup(mMainWindow->boardToolBar, magnifierZoomActions);
-
-    mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, magnifierZoomChoice);
-
-    connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), magnifierZoomChoice, SLOT(displayText(QVariant)));
-    connect(magnifierZoomChoice, SIGNAL(activated(int)), UBDrawingController::drawingController(), SLOT(setMagnifierZoomIndex(int)));
-
-    magnifierZoomChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
-    magnifierZoomChoice->setCurrentIndex(settings->magnifierZoomIndex());
-
-    QList<QAction *> magnifierSizeActions;
-    magnifierSizeActions.append(mMainWindow->actionMagnifierSizeSmall);
-    magnifierSizeActions.append(mMainWindow->actionMagnifierSizeMedium);
-    magnifierSizeActions.append(mMainWindow->actionMagnifierSizeLarge);
-
-    UBToolbarButtonGroup *magnifierSizeChoice =
-        new UBToolbarButtonGroup(mMainWindow->boardToolBar, magnifierSizeActions);
-
-    mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, magnifierSizeChoice);
-
-    connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), magnifierSizeChoice, SLOT(displayText(QVariant)));
-    connect(magnifierSizeChoice, SIGNAL(activated(int)), UBDrawingController::drawingController(), SLOT(setMagnifierSizeIndex(int)));
-
-    magnifierSizeChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
-    magnifierSizeChoice->setCurrentIndex(settings->magnifierSizeIndex());
 
     mMainWindow->boardToolBar->insertSeparator(mMainWindow->actionBackgrounds);
 
@@ -1056,9 +1021,14 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             mActiveScene->addTriangle(pPos);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
-        else if(sourceUrl.toString() == UBToolsManager::manager()->cache.id)
+        else if (sourceUrl.toString() == UBToolsManager::manager()->magnifier.id)
         {
-            mActiveScene->addCache();
+            UBMagnifierParams params;
+            params.x = controlContainer()->geometry().width() / 2;
+            params.y = controlContainer()->geometry().height() / 2;
+            params.zoom = 2;
+            params.sizePercentFromScene = 20;
+            mActiveScene->addMagnifier(params);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
         else if (sourceUrl.toString() == UBToolsManager::manager()->mask.id)

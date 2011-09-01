@@ -44,8 +44,8 @@ class UBAbstractWidget;
 class UBDocumentProxy;
 class UBGraphicsCurtainItem;
 class UBGraphicsStroke;
-class UBGraphicsCache;
-class UBMagnifer;
+class UBMagnifierParams;
+class UBMagnifier;
 
 const double PI = 4.0 * atan(1.0);
 
@@ -166,10 +166,10 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         qreal getNextObjectZIndex();
 
         void addRuler(QPointF center);
-        void addTriangle(QPointF center);
         void addProtractor(QPointF center);
         void addCompass(QPointF center);
-        void addCache();
+        void addTriangle(QPointF center);
+        void addMagnifier(UBMagnifierParams params);
 
         void addMask();
 
@@ -247,7 +247,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         static qreal toolOffsetCompass;
         static qreal toolOffsetCurtain;
         static qreal toolOffsetTriangle;
-        static qreal toolOffsetCache;
 
         QSet<QGraphicsItem*> tools(){ return mTools;}
 
@@ -277,6 +276,11 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void selectionChangedProcessing();
 
+        void moveMagnifier(QPoint newPos);
+        void closeMagnifier();
+        void zoomInMagnifier();
+        void zoomOutMagnifier();
+        void resizedMagnifier(qreal newPercent);
 
     signals:
 
@@ -292,7 +296,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void drawEraser(const QPointF& pEndPoint);
         void drawPointer(const QPointF& pEndPoint);
-        void CreateMagnifierQWidgets();
         void DisposeMagnifierQWidgets();
 
 
@@ -355,10 +358,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         //int mMesure1Ms, mMesure2Ms;
 
-        bool mHasCache;
-
-        UBMagnifer *magniferControlViewWidget;
-        UBMagnifer *magniferDisplayViewWidget;
+        UBMagnifier *magniferControlViewWidget;
+        UBMagnifier *magniferDisplayViewWidget;
 };
 
 #endif /* UBGRAPHICSSCENE_H_ */
