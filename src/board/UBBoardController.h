@@ -80,6 +80,11 @@ class UBBoardController : public QObject
             return mDisplayView;
         }
 
+        UBGraphicsScene* activeScene()
+        {
+            return mActiveScene;
+        }
+
         void setPenColorOnDarkBackground(const QColor& pColor)
         {
             if (mPenColorOnDarkBackground == pColor)
