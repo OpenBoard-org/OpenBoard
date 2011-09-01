@@ -12,14 +12,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "UBLibWidget.h"
 #include "UBLibItemProperties.h"
 
 #include "core/UBApplication.h"
 
-#include "board/UBBoardController.h"
-
 #include "frameworks/UBFileSystemUtils.h"
-
 
 #include "core/memcheck.h"
 
@@ -223,7 +222,8 @@ void UBLibItemProperties::adaptSize()
  */
 void UBLibItemProperties::onAddToPage()
 {
-    UBApplication::boardController->libraryController()->addItemToPage(mpElement);
+    UBLibWidget* libWidget = dynamic_cast<UBLibWidget*>(parentWidget()->parentWidget());
+    libWidget->libNavigator()->libraryWidget()->libraryController()->addItemToPage(mpElement);
 }
 
 /**
@@ -239,7 +239,8 @@ void UBLibItemProperties::onAddToLib()
  */
 void UBLibItemProperties::onSetAsBackground()
 {
-    UBApplication::boardController->libraryController()->setItemAsBackground(mpElement);
+    UBLibWidget* libWidget = dynamic_cast<UBLibWidget*>(parentWidget()->parentWidget());
+    libWidget->libNavigator()->libraryWidget()->libraryController()->setItemAsBackground(mpElement);
 }
 
 /**

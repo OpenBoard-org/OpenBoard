@@ -49,7 +49,6 @@
 
 #include "document/UBDocumentProxy.h"
 #include "podcast/UBPodcastController.h"
-#include "board/UBLibraryController.h"
 #include "board/UBDrawingController.h"
 
 #include "tools/UBToolsManager.h"
@@ -569,7 +568,8 @@ void UBBoardPaletteManager::addItemToLibrary()
                      , Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
         QImage image = mPixmap.toImage();
-        UBApplication::boardController->libraryController()->importImageOnLibrary(image);
+        //UBApplication::boardController->libraryController()->importImageOnLibrary(image);
+
     }
     else
     {
@@ -578,29 +578,6 @@ void UBBoardPaletteManager::addItemToLibrary()
 
     mAddItemPalette->hide();
 }
-
-//void UBBoardPaletteManager::shareItemOnWeb()
-//{
-//    QPixmap pixmap = mPixmap;
-
-//    if(mPixmap.isNull())
-//    {
-//       pixmap = QPixmap(mItemUrl.toLocalFile());
-//    }
-
-//    if(!pixmap.isNull())
-//    {
-//        UBCapturePublisher* publisher = new UBCapturePublisher(pixmap, this);
-//        publisher->publish();
-//    }
-//    else
-//    {
-//        UBApplication::showMessage(tr("Error Publishing Image to the Web"));
-//    }
-
-//    mAddItemPalette->hide();
-//}
-
 
 void UBBoardPaletteManager::zoomButtonPressed()
 {

@@ -42,6 +42,7 @@ public:
     ~UBLibWidget();
 
     UBLibActionBar* actionBar(){return mActionBar;}
+    UBLibNavigatorWidget* libNavigator() {return mNavigator;};
 
 signals:
     void resized();

@@ -54,7 +54,6 @@
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
 
-#include "board/UBLibraryController.h"
 #include "board/UBDrawingController.h"
 #include "board/UBBoardView.h"
 
@@ -72,7 +71,6 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mActiveDocument(0)
     , mActiveScene(0)
     , mActiveSceneIndex(-1)
-    , mLibraryController(0)
     , mPaletteManager(0)
     , mSoftwareUpdateDialog(0)
     , mMessageWindow(0)
@@ -85,8 +83,6 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mSystemScaleFactor(1.0)
     , mCleanupDone(false)
 {
-    mLibraryController = new UBLibraryController(mMainWindow->centralWidget(), this);
-
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
     int penColorIndex = UBSettings::settings()->penColorIndex();

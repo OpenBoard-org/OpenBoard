@@ -34,11 +34,11 @@ UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailW
         , chainedElements(NULL)
         , mpCrntDir(NULL)
         , mpCrntElem(NULL)
-        , mCrntPath("/")
 {
     setObjectName(name);
     setSpacing(5);
     setStyleSheet(QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;"));
+    mLibraryController = new UBLibraryController(parentWidget());
 }
 
 /**
@@ -46,21 +46,26 @@ UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailW
  */
 UBLibraryWidget::~UBLibraryWidget()
 {
+    if(mLibraryController){
+        delete mLibraryController;
+        mLibraryController = NULL;
+    }
+
 //     if(NULL != chainedElements)
 //     {
 //        delete chainedElements;
 //        chainedElements = NULL;
 //     }
-//     if(NULL != mpCrntDir)
-//     {
-//        delete mpCrntDir;
-//        mpCrntDir = NULL;
-//     }
-//     if(NULL != mpCrntElem)
-//     {
-//        delete mpCrntElem;
-//        mpCrntElem = NULL;
-//     }
+     if(NULL != mpCrntDir)
+     {
+        delete mpCrntDir;
+        mpCrntDir = NULL;
+     }
+     if(NULL != mpCrntElem)
+     {
+        delete mpCrntElem;
+        mpCrntElem = NULL;
+     }
 }
 
 /**
@@ -70,9 +75,9 @@ void UBLibraryWidget::init()
 {
     setAcceptDrops(true);
     mpCrntElem = new UBLibElement();
-    mpCrntElem->setThumbnail(new QImage(":images/libpalette/home.png"));
+    mpCrntElem->setThumbnail(QImage(":images/libpalette/home.png"));
     chainedElements = new UBChainedLibElement(mpCrntElem);
-    QList<UBLibElement*> qlElems = libraryController()->getContent(mpCrntElem);
+    QList<UBLibElement*> qlElems = mLibraryController->getContent(mpCrntElem);
     mCurrentElems = qlElems;
 
     setCurrentElemsAndRefresh(chainedElements);
@@ -104,7 +109,7 @@ void UBLibraryWidget::refreshView()
     emit navigBarUpdate(mpCrntElem);
 
     bool bFavorite = false;
-    if(NULL != mpCrntDir && libraryController()->favoritePath() == mpCrntDir->path().toLocalFile())
+    if(NULL != mpCrntDir && mLibraryController->favoritePath() == mpCrntDir->path().toLocalFile())
     {
         bFavorite = true;
     }
@@ -142,18 +147,17 @@ void UBLibraryWidget::onItemClicked(QGraphicsItem *item, int index)
             UBLibElement* pElem = mCurrentElems.at(iItem);
             if(NULL != pElem)
             {
-                mpCrntElem = pElem;
-                if(eUBLibElementType_Folder == pElem->type() ||
-                   eUBLibElementType_VirtualFolder == pElem->type())
-                {
+                delete mpCrntElem;
+                mpCrntElem = new UBLibElement(pElem);
+                if(eUBLibElementType_Folder == pElem->type() || eUBLibElementType_VirtualFolder == pElem->type()) {
                     // Add the clicked element to the end of the elements list
                     // (at this level, the user can only go down in the path)
                     UBChainedLibElement* pNextElem = new UBChainedLibElement(pElem);
                     appendChainedElement(pNextElem, chainedElements);
-
-                    mpCrntDir = pElem;
+                    delete mpCrntDir;
+                    mpCrntDir = new UBLibElement(pElem);
                     // Display the content of the folder
-                    QList<UBLibElement*> qlElems = libraryController()->getContent(pElem);
+                    QList<UBLibElement*> qlElems = mLibraryController->getContent(mpCrntDir);
                     mCurrentElems = qlElems;
                     refreshView();
                 }
@@ -200,13 +204,15 @@ void UBLibraryWidget::setCurrentElemsAndRefresh(UBChainedLibElement *elem)
         {
             if(eUBLibElementType_Item != pLibElem->type())
             {
-                QList<UBLibElement*> qlElements = libraryController()->getContent(pLibElem);
+                QList<UBLibElement*> qlElements = mLibraryController->getContent(pLibElem);
                 mCurrentElems = qlElements;
-                mpCrntElem = pLibElem;
+                delete mpCrntElem;
+                mpCrntElem = new UBLibElement(pLibElem);
                 refreshView();
-                mpCrntDir = pLibElem;
+                delete mpCrntDir;
+                mpCrntDir = new UBLibElement(pLibElem);
                 bool bFavorite = false;
-                if(NULL != mpCrntDir && libraryController()->favoritePath() == mpCrntDir->path().toLocalFile())
+                if(NULL != mpCrntDir && mLibraryController->favoritePath() == mpCrntDir->path().toLocalFile())
                 {
                     bFavorite = true;
                 }
@@ -234,9 +240,7 @@ void UBLibraryWidget::onSelectionChanged()
             UBLibElement* pElem = mCurrentElems.at(itIndex);
             if(NULL != pElem)
             {
-                if(eUBLibElementType_Category != pElem->type() &&
-                   eUBLibElementType_VirtualFolder != pElem->type())
-                {
+                if(eUBLibElementType_Category != pElem->type() && eUBLibElementType_VirtualFolder != pElem->type()) {
                     qlSelectedItems << pElem;
                 }
 
@@ -268,7 +272,7 @@ void UBLibraryWidget::onSelectionChanged()
 void UBLibraryWidget::onRefreshCurrentFolder()
 {
     // Refresh the current view
-    mCurrentElems = libraryController()->getContent(mpCrntDir);
+    mCurrentElems = mLibraryController->getContent(mpCrntDir);
     refreshView();
 }
 
@@ -341,7 +345,7 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
         {
             qDebug() << "hasImage";
             QImage image = qvariant_cast<QImage>(pMimeData->imageData());
-            libraryController()->importImageOnLibrary(image);
+            mLibraryController->importImageOnLibrary(image);
             bDropAccepted = true;
         }
         else if (pMimeData->hasHtml())
@@ -353,7 +357,7 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
             // On linux external dragged element are considered as text;
             qDebug()  << "hasText: " << pMimeData->text();
             QString filePath = QUrl(pMimeData->text()).toLocalFile();
-            libraryController()->importItemOnLibrary(filePath);
+            mLibraryController->importItemOnLibrary(filePath);
             bDropAccepted = true;
         }
         else if (pMimeData->hasUrls())
@@ -363,7 +367,7 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
             for (int i = 0; i < urlList.size() && i < 32; ++i)
             {
                 QString filePath = QUrl(urlList.at(i).path()).toLocalFile();
-                libraryController()->importItemOnLibrary(filePath);
+                mLibraryController->importItemOnLibrary(filePath);
                 bDropAccepted = true;
             }
         }
@@ -427,14 +431,6 @@ UBLibElement* UBLibraryWidget::elementFromFilePath(const QString &filePath)
     return pElem;
 }
 
-/**
- * \brief Get a pointer on the library controller
- * @return a pointer on the library controller
- */
-UBLibraryController* UBLibraryWidget::libraryController()
-{
-    return UBApplication::boardController->libraryController();
-}
 
 /**
  * \brief Update the thumbnails size
@@ -460,8 +456,8 @@ void UBLibraryWidget::onElementsDropped(QList<QString> elements, UBLibElement *t
         foreach(QString qsElem, elements)
             qlElements << elementFromFilePath(qsElem);
 
-        libraryController()->moveContent(qlElements, target);
-        mCurrentElems = libraryController()->getContent(mpCrntDir);
+        mLibraryController->moveContent(qlElements, target);
+        mCurrentElems = mLibraryController->getContent(mpCrntDir);
         refreshView();
     }
 }
@@ -473,7 +469,7 @@ void UBLibraryWidget::onElementsDropped(QList<QString> elements, UBLibElement *t
 void UBLibraryWidget::onSearchElement(QString elem)
 {
     // Store the original list of items
-    mOrigCurrentElems = libraryController()->getContent(mpCrntDir);
+    mOrigCurrentElems = mLibraryController->getContent(mpCrntDir);
 
     // Build the filtered list
     mCurrentElems.clear();
@@ -503,7 +499,7 @@ void UBLibraryWidget::onNewFolderToCreate()
     UBNewFolderDlg dlg;
     if(QDialog::Accepted == dlg.exec())
     {
-        libraryController()->createNewFolder(dlg.folderName(), mpCrntElem);
+        mLibraryController->createNewFolder(dlg.folderName(), mpCrntElem);
         onRefreshCurrentFolder();
     }
 }

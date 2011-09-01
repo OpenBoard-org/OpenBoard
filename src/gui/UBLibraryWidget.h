@@ -29,7 +29,10 @@
 #include <QVBoxLayout>
 
 #include "UBThumbnailWidget.h"
-#include "board/UBLibraryController.h"
+
+class UBLibraryController;
+class UBChainedLibElement;
+class UBLibElement;
 
 class UBLibraryWidget : public UBThumbnailWidget
 {
@@ -43,6 +46,8 @@ public:
 
     void updateThumbnailsSize(int newSize);
     void init();
+
+    UBLibraryController* libraryController() {return mLibraryController;};
 
 public slots:
     void onRefreshCurrentFolder();
@@ -71,14 +76,13 @@ private:
     void appendChainedElement(UBChainedLibElement* element, UBChainedLibElement* toElem);
     UBLibElement* elementAt(QPoint p);
     UBLibElement* elementFromFilePath(const QString& filePath);
-    UBLibraryController* libraryController();
+    UBLibraryController* mLibraryController;
 
     UBLibElement* mpCrntDir;
     UBLibElement* mpCrntElem;
     QList<UBLibElement*> mCurrentElems;
     QList<UBLibElement*> mOrigCurrentElems;
     QList<QGraphicsItem*> mItems;
-    QString mCrntPath;
 
 };
 

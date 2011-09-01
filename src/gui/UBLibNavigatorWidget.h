@@ -32,6 +32,8 @@ public:
     ~UBLibNavigatorWidget();
     void dropMe(const QMimeData* _data);
 
+    UBLibraryWidget* libraryWidget(){return mLibWidget;};
+
 signals:
     void propertiesRequested(UBLibElement* elem);
 

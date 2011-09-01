@@ -38,7 +38,6 @@
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
-#include "board/UBLibraryController.h"
 #include "board/UBBoardView.h"
 
 #include "web/UBWebController.h"

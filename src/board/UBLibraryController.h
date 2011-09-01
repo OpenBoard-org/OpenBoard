@@ -42,6 +42,7 @@ class UBLibElement
 public:
     UBLibElement();
     UBLibElement(eUBLibElementType type, const QUrl& path, const QString& name);
+    UBLibElement(UBLibElement* element);
     ~UBLibElement();
 
     static UBLibElement* trashElement();
@@ -51,7 +52,7 @@ public:
     QUrl path(){return mPath;}
     void setPath(QUrl path){mPath = path;}
     QImage* thumbnail(){return &mThumbnail;}
-    void setThumbnail(QImage* pThumb){mThumbnail = *pThumb;}
+    void setThumbnail(QImage pThumb){mThumbnail = pThumb;}
     QString information(){return mInfo;}
     void setInformation(QString info){mInfo = info;}
     QString name(){return mName;}
@@ -91,7 +92,7 @@ class UBLibraryController : public QObject
     Q_OBJECT;
 
     public:
-        UBLibraryController(QWidget *parentWidget, UBBoardController *boardController);
+        UBLibraryController(QWidget *parentWidget);
         virtual ~UBLibraryController();
 
         QList<UBLibElement*> getContent(UBLibElement* pElement);
@@ -134,14 +135,16 @@ class UBLibraryController : public QObject
         void persistFavoriteList();
         void readFavoriteList();
         QList<UBLibElement*> mInternalLibElements;
+        QList<UBLibElement*> mElementsList;
+        void cleanElementsList();
 
     private:
         QList<UBLibElement*> rootCategoriesList();
         QList<UBLibElement*> listElementsInPath(const QString& pPath);
         QList<UBLibElement*> listElementsInVirtualForlder(UBLibElement* pElement);
         void userPath(QUrl &pPath);
-        QImage* thumbnailForFile(UBLibElement* pPath);
-        QImage* createThumbnail(UBLibElement* pPath);
+        QImage thumbnailForFile(UBLibElement* pPath);
+        QImage createThumbnail(UBLibElement* pPath);
         QList<UBLibElement*> addVirtualElementsForItemPath(const QString& pPath);
 
         void createInternalWidgetItems();
