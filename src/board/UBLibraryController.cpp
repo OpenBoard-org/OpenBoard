@@ -403,7 +403,7 @@ void UBLibraryController::trashElements(QList<UBLibElement*> trashList)
 void UBLibraryController::emptyElementsOnTrash( QList<UBLibElement*> elementsList)
 {
     foreach(UBLibElement* eachElement, elementsList) {
-        if (eachElement->type() == eUBLibElementType_Folder)
+        if (QFileInfo(eachElement->path().toLocalFile()).isDir())
             UBFileSystemUtils::deleteDir(eachElement->path().toLocalFile());
         else
             QFile::remove(eachElement->path().toLocalFile());
@@ -412,10 +412,6 @@ void UBLibraryController::emptyElementsOnTrash( QList<UBLibElement*> elementsLis
 
 void UBLibraryController::cleanElementsList()
 {
-//    qDebug() << "cleanElementsList()";
-//    qDebug() << this;
-//    foreach(UBLibElement*eachElement, mElementsList)
-//        qDebug() << eachElement;
     qDeleteAll(mElementsList);
     mElementsList.clear();
 }
