@@ -29,7 +29,6 @@ HEADERS      += src/gui/UBThumbnailView.h \
                 src/gui/UBFavoriteToolPalette.h  \
                 src/gui/UBKeyboardPalette.h \  
     src/gui/UBNavigatorPalette.h \
-    src/gui/UBLibPalette.h \
     src/gui/UBDocumentNavigator.h \
     src/gui/UBDockPalette.h \
     src/gui/UBPropertyPalette.h \
@@ -39,6 +38,11 @@ HEADERS      += src/gui/UBThumbnailView.h \
     src/gui/UBLibraryWidget.h \
     src/gui/UBLibPathViewer.h \
     src/gui/UBUpdateDlg.h \
+    src/gui/UBDockPaletteWidget.h \
+    src/gui/UBLeftPalette.h \
+    src/gui/UBRightPalette.h \
+    src/gui/UBPageNavigationWidget.h \
+    src/gui/UBLibWidget.h \
     src/gui/UBMagnifer.h
                 
 SOURCES      += src/gui/UBThumbnailView.cpp \
@@ -71,7 +75,6 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBFavoriteToolPalette.cpp \
                 src/gui/UBKeyboardPalette.cpp \  
     src/gui/UBNavigatorPalette.cpp \
-    src/gui/UBLibPalette.cpp \
     src/gui/UBDocumentNavigator.cpp \
     src/gui/UBDockPalette.cpp \
     src/gui/UBPropertyPalette.cpp \
@@ -81,6 +84,11 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
     src/gui/UBLibraryWidget.cpp \
     src/gui/UBLibPathViewer.cpp \
     src/gui/UBUpdateDlg.cpp \
+    src/gui/UBDockPaletteWidget.cpp \
+    src/gui/UBLeftPalette.cpp \
+    src/gui/UBRightPalette.cpp \
+    src/gui/UBPageNavigationWidget.cpp \
+    src/gui/UBLibWidget.cpp \
     src/gui/UBMagnifer.cpp
 
 win32 {

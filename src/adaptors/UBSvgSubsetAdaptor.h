@@ -40,6 +40,7 @@ class UBDocumentProxy;
 class UBGraphicsStroke;
 class UBPersistenceManager;
 class UBGraphicsTriangle;
+class UBGraphicsCache;
 
 class UBSvgSubsetAdaptor
 {
@@ -127,7 +128,9 @@ class UBSvgSubsetAdaptor
 
                 UBGraphicsProtractor* protractorFromSvg();
 
-				UBGraphicsTriangle* triangleFromSvg();
+                UBGraphicsTriangle* triangleFromSvg();
+
+                UBGraphicsCache* cacheFromSvg();
 
                 void graphicsItemFromSvg(QGraphicsItem* gItem);
 
@@ -210,6 +213,7 @@ class UBSvgSubsetAdaptor
                 void rulerToSvg(UBGraphicsRuler *item);
                 void compassToSvg(UBGraphicsCompass *item);
                 void protractorToSvg(UBGraphicsProtractor *item);
+                void cacheToSvg(UBGraphicsCache* item);
                 void triangleToSvg(UBGraphicsTriangle *item);
                 void writeSvgElement();
 

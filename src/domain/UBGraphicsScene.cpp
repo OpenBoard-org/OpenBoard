@@ -136,13 +136,13 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     }
 
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
-
 }
 
 
 UBGraphicsScene::~UBGraphicsScene()
 {
     // NOOP
+    DisposeMagnifierQWidgets();
 }
 
 void UBGraphicsScene::selectionChangedProcessing()
@@ -236,15 +236,6 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             drawPointer(scenePos);
             accepted = true;
         }
-        else if (currentTool == UBStylusTool::Magnifier)
-        {
-            CreateMagnifierQWidgets();
-            magniferControlViewWidget->grabNMove(QCursor::pos(), true);
-            magniferDisplayViewWidget->grabNMove(scenePos, true);
-            magniferControlViewWidget->show();
-            magniferDisplayViewWidget->show();
-            accepted = true;
-        }
     }
 
     return accepted;
@@ -318,11 +309,6 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
         {
             drawPointer(position);
         }
-        else if (currentTool == UBStylusTool::Magnifier)
-        {
-            magniferControlViewWidget->grabNMove(QCursor::pos(), false);
-            magniferDisplayViewWidget->grabNMove(position, false);
-        }
 
         accepted = true;
     }
@@ -361,13 +347,7 @@ bool UBGraphicsScene::inputDeviceRelease()
     {
         mCurrentStroke = 0;
     } 
-    else 
-    if (currentTool == UBStylusTool::Magnifier) 
-    {
-        DisposeMagnifierQWidgets();
-        //qDebug() << "deleted";
-    }
-
+   
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
     {
         UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(this, mRemovedItems, mAddedItems); //deleted by the undoStack
@@ -421,24 +401,6 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint)
 
         mPointer->show();
     }
-}
-
-// call this function when user press mouse button in Magnifier mode
-void UBGraphicsScene::CreateMagnifierQWidgets()
-{
-    UBApplication::app()->setOverrideCursor( QCursor( Qt::BlankCursor ) );
-
-    magniferControlViewWidget = new UBMagnifer((QWidget*)(UBApplication::boardController->controlContainer()));
-    magniferControlViewWidget->setGrabView((QGraphicsView*)UBApplication::boardController->controlView());
-    magniferControlViewWidget->setMoveView((QGraphicsView*)UBApplication::boardController->controlContainer());
-    magniferControlViewWidget->setSize(UBSettings::settings()->currentMagnifierSize());
-    magniferControlViewWidget->setZoom(UBSettings::settings()->currentMagnifierZoom());
-
-    magniferDisplayViewWidget = new UBMagnifer((QWidget*)(UBApplication::boardController->displayView()));
-    magniferDisplayViewWidget->setGrabView((QGraphicsView*)UBApplication::boardController->controlView());
-    magniferDisplayViewWidget->setMoveView((QGraphicsView*)UBApplication::boardController->displayView());
-    magniferDisplayViewWidget->setSize(UBSettings::settings()->currentMagnifierSize());
-    magniferDisplayViewWidget->setZoom(UBSettings::settings()->currentMagnifierZoom());
 }
 
 // call this function when user release mouse button in Magnifier mode
@@ -1534,6 +1496,119 @@ void UBGraphicsScene::addTriangle(QPointF center)
     setModified(true);
 }
 
+void UBGraphicsScene::addMagnifier(UBMagnifierParams params)
+{
+    // can have only one magnifier at one time
+    if(magniferControlViewWidget) return;
+
+    QWidget *cContainer = (QWidget*)(UBApplication::boardController->controlContainer());
+    QGraphicsView *cView = (QGraphicsView*)UBApplication::boardController->controlView();
+    QGraphicsView *dView = (QGraphicsView*)UBApplication::boardController->displayView();
+
+    QPoint ccZeroPoint = cContainer->mapToGlobal(QPoint(0,0));
+    QPoint cvZeroPoint = cView->mapToGlobal(QPoint(0,0));
+    QPoint dvZeroPoint = dView->mapToGlobal(QPoint(0,0));
+
+    int cvW = cView->width();
+    int dvW = dView->width();
+    qreal wCoeff = (qreal)dvW / (qreal)cvW;
+
+    int cvH = cView->height();
+    int dvH = dView->height();
+    qreal hCoeff = (qreal)dvH / (qreal)cvH;
+
+    QPoint ccPoint(params.x,params.y);
+    QPoint globalPoint = cContainer->mapToGlobal(ccPoint);
+    QPoint cvPoint = cView->mapFromGlobal(globalPoint);
+    QPoint dvPoint( cvPoint.x() * wCoeff + dvZeroPoint.x(), cvPoint.y() * hCoeff + dvZeroPoint.y());
+
+    magniferControlViewWidget = new UBMagnifier((QWidget*)(UBApplication::boardController->controlContainer()), true);
+    magniferControlViewWidget->setGrabView((QGraphicsView*)UBApplication::boardController->controlView());
+    magniferControlViewWidget->setMoveView((QWidget*)(UBApplication::boardController->controlContainer()));
+    magniferControlViewWidget->setSize(params.sizePercentFromScene);
+    magniferControlViewWidget->setZoom(params.zoom);
+
+    magniferDisplayViewWidget = new UBMagnifier((QWidget*)(UBApplication::boardController->displayView()), false);
+    magniferDisplayViewWidget->setGrabView((QGraphicsView*)UBApplication::boardController->controlView());
+    magniferDisplayViewWidget->setMoveView((QGraphicsView*)UBApplication::boardController->displayView());
+    magniferDisplayViewWidget->setSize(params.sizePercentFromScene);
+    magniferDisplayViewWidget->setZoom(params.zoom);
+
+    magniferControlViewWidget->grabNMove(globalPoint, globalPoint, true);
+    magniferDisplayViewWidget->grabNMove(globalPoint, dvPoint, true);
+    magniferControlViewWidget->show();
+    magniferDisplayViewWidget->show();
+
+    connect(magniferControlViewWidget, SIGNAL(magnifierMoved_Signal(QPoint)), this, SLOT(moveMagnifier(QPoint)));
+    connect(magniferControlViewWidget, SIGNAL(magnifierClose_Signal()), this, SLOT(closeMagnifier()));
+    connect(magniferControlViewWidget, SIGNAL(magnifierZoomIn_Signal()), this, SLOT(zoomInMagnifier()));
+    connect(magniferControlViewWidget, SIGNAL(magnifierZoomOut_Signal()), this, SLOT(zoomOutMagnifier()));
+    connect(magniferControlViewWidget, SIGNAL(magnifierResized_Signal(qreal)), this, SLOT(resizedMagnifier(qreal)));
+
+    setModified(true);
+}
+
+void UBGraphicsScene::moveMagnifier(QPoint newPos)
+{
+    QWidget *cContainer = (QWidget*)(UBApplication::boardController->controlContainer());
+    QGraphicsView *cView = (QGraphicsView*)UBApplication::boardController->controlView();
+    QGraphicsView *dView = (QGraphicsView*)UBApplication::boardController->displayView();
+
+    QPoint ccZeroPoint = cContainer->mapToGlobal(QPoint(0,0));
+    QPoint cvZeroPoint = cView->mapToGlobal(QPoint(0,0));
+    QPoint dvZeroPoint = dView->mapToGlobal(QPoint(0,0));
+
+    int cvW = cView->width();
+    int dvW = dView->width();
+    qreal wCoeff = (qreal)dvW / (qreal)cvW;
+
+    int cvH = cView->height();
+    int dvH = dView->height();
+    qreal hCoeff = (qreal)dvH / (qreal)cvH;
+
+    QPoint globalPoint = cContainer->mapToGlobal(newPos);
+    QPoint cvPoint = cView->mapFromGlobal(globalPoint);
+    QPoint dvPoint( cvPoint.x() * wCoeff + dvZeroPoint.x(), cvPoint.y() * hCoeff + dvZeroPoint.y());
+
+    magniferControlViewWidget->grabNMove(globalPoint, globalPoint, false, false);
+    magniferDisplayViewWidget->grabNMove(globalPoint, dvPoint, false, true);
+
+    setModified(true);
+}
+
+void UBGraphicsScene::closeMagnifier()
+{
+    DisposeMagnifierQWidgets();
+}
+
+void UBGraphicsScene::zoomInMagnifier()
+{
+    if(magniferControlViewWidget->params.zoom < 8)
+    {
+        magniferControlViewWidget->setZoom(magniferControlViewWidget->params.zoom + 0.5);
+        magniferDisplayViewWidget->setZoom(magniferDisplayViewWidget->params.zoom + 0.5);
+    }
+}
+
+void UBGraphicsScene::zoomOutMagnifier()
+{
+    if(magniferControlViewWidget->params.zoom > 1)
+    {
+        magniferControlViewWidget->setZoom(magniferControlViewWidget->params.zoom - 0.5);
+        magniferDisplayViewWidget->setZoom(magniferDisplayViewWidget->params.zoom - 0.5);
+    }
+}
+
+void UBGraphicsScene::resizedMagnifier(qreal newPercent)
+{
+    if(newPercent > 18 && newPercent < 50)
+    {
+        magniferControlViewWidget->setSize(newPercent);
+        magniferControlViewWidget->grabPoint();
+        magniferDisplayViewWidget->setSize(newPercent);
+        magniferDisplayViewWidget->grabPoint();
+    }
+}
 
 void UBGraphicsScene::addCompass(QPointF center)
 {

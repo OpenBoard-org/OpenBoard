@@ -12,10 +12,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "UBNavigatorPalette.h"
+#include "UBPageNavigationWidget.h"
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
-
 #include "core/memcheck.h"
 
 /**
@@ -23,23 +22,22 @@
  * @param parent as the parent widget
  * @param name as the object name
  */
-UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):UBDockPalette(parent, name)
-	, mNavigator(NULL)
-	, mLayout(NULL)
-        , mHLayout(NULL)
-        , mPageNbr(NULL)
-        , mClock(NULL)
+UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
+  , mNavigator(NULL)
+  , mLayout(NULL)
+  , mHLayout(NULL)
+  , mPageNbr(NULL)
+  , mClock(NULL)
 {
-    setOrientation(eUBDockOrientation_Left);
-    setMaximumWidth(300);
-    //mCollapsedIcon = QPixmap(":images/pages_open.png");
-    //mIcon = QPixmap(":images/pages_close.png");
-    resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), height());
-    mLastWidth = 300;
+    setObjectName(name);
+    mName = "PageNavigator";
+
+    mIconToRight = QPixmap(":images/pages_open.png");
+    mIconToLeft = QPixmap(":images/pages_close.png");
 
     // Build the gui
     mLayout = new QVBoxLayout(this);
-    mLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());
+    //mLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());
     setLayout(mLayout);
 
     mNavigator = new UBDocumentNavigator(this);
@@ -69,13 +67,13 @@ UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):UBDock
     mTimeFormat = mTimeFormat.remove(":s");
     mTimerID = startTimer(1000);
 
-    connect(mNavigator, SIGNAL(changeCurrentPage()), this, SLOT(changeCurrentPage()));  
+    connect(mNavigator, SIGNAL(changeCurrentPage()), this, SLOT(changeCurrentPage()));
 }
 
 /**
  * \brief Destructor
  */
-UBNavigatorPalette::~UBNavigatorPalette()
+UBPageNavigationWidget::~UBPageNavigationWidget()
 {
     killTimer(mTimerID);
 
@@ -96,13 +94,13 @@ UBNavigatorPalette::~UBNavigatorPalette()
     }
     if(NULL != mLayout)
     {
-	delete mLayout;
-	mLayout = NULL;
+        delete mLayout;
+        mLayout = NULL;
     }
     if(NULL != mNavigator)
     {
-	delete mNavigator;
-	mNavigator = NULL;
+        delete mNavigator;
+        mNavigator = NULL;
     }
 }
 
@@ -110,32 +108,32 @@ UBNavigatorPalette::~UBNavigatorPalette()
  * \brief Set the current document in the navigator
  * @param document as the given document
  */
-void UBNavigatorPalette::setDocument(UBDocumentProxy *document)
+void UBPageNavigationWidget::setDocument(UBDocumentProxy *document)
 {
     if(mNavigator->currentDoc() != document)
     {
-	mNavigator->setDocument(document);
+        mNavigator->setDocument(document);
     }
 }
 
 /**
  * \brief Change the current page
  */
-void UBNavigatorPalette::changeCurrentPage()
+void UBPageNavigationWidget::changeCurrentPage()
 {
     //	Get the index of the page to display
     int iPage = mNavigator->selectedPageNumber();
     if(NO_PAGESELECTED != iPage)
     {
-	// Display the selected page
-	UBApplication::boardController->setActiveDocumentScene(mNavigator->currentDoc(), iPage);
+        // Display the selected page
+        UBApplication::boardController->setActiveDocumentScene(mNavigator->currentDoc(), iPage);
     }
 }
 
 /**
  * \brief Refresh the thumbnails widget
  */
-void UBNavigatorPalette::refresh()
+void UBPageNavigationWidget::refresh()
 {
     mNavigator->setDocument(UBApplication::boardController->activeDocument());
 }
@@ -144,9 +142,10 @@ void UBNavigatorPalette::refresh()
  * \brief Handle the resize event
  * @param event as the resize event
  */
-void UBNavigatorPalette::resizeEvent(QResizeEvent *event)
+void UBPageNavigationWidget::resizeEvent(QResizeEvent *event)
 {
-    UBDockPalette::resizeEvent(event);
+    emit resizeRequest(event);
+    //UBDockPalette::resizeEvent(event);
     if(NULL != mNavigator)
     {
         mNavigator->setMinimumHeight(height() - 2*border());
@@ -154,13 +153,20 @@ void UBNavigatorPalette::resizeEvent(QResizeEvent *event)
     UBSettings::settings()->navigPaletteWidth->set(width());
 }
 
-void UBNavigatorPalette::timerEvent(QTimerEvent *event)
+/**
+ * \brief Notify a timer event
+ * @param event as the timer event
+ */
+void UBPageNavigationWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
     updateTime();
 }
 
-void UBNavigatorPalette::updateTime()
+/**
+ * \brief Update the current time
+ */
+void UBPageNavigationWidget::updateTime()
 {
     if (mClock)
     {
@@ -168,7 +174,22 @@ void UBNavigatorPalette::updateTime()
     }
 }
 
-void UBNavigatorPalette::setPageNumber(int current, int total)
+/**
+ * \brief Set the page number
+ * @param current as the current page
+ * @param total as the total number of pages
+ */
+void UBPageNavigationWidget::setPageNumber(int current, int total)
 {
     mPageNbr->setText(QString("%1 / %2").arg(current).arg(total));
+}
+
+int UBPageNavigationWidget::customMargin()
+{
+    return 5;
+}
+
+int UBPageNavigationWidget::border()
+{
+    return 15;
 }

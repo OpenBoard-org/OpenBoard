@@ -20,8 +20,8 @@
 #include <QtWebKit>
 
 #include "web/UBRoutedMouseEventWebView.h"
-#include "gui/UBNavigatorPalette.h"
-#include "gui/UBLibPalette.h"
+#include "gui/UBLeftPalette.h"
+#include "gui/UBRightPalette.h"
 
 class UBStylusPalette;
 class UBClockPalette;
@@ -43,8 +43,8 @@ class UBBoardPaletteManager : public QObject
         virtual ~UBBoardPaletteManager();
 
         void setupLayout();
-		UBNavigatorPalette* navigatorPalette(){return mNavigPalette;}
-		void showVirtualKeyboard(bool show = true);
+        UBLeftPalette* leftPalette(){return mLeftPalette;}
+        void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
 
         UBKeyboardPalette *mKeyboardPalette;
@@ -68,8 +68,9 @@ class UBBoardPaletteManager : public QObject
         UBStylusPalette *mStylusPalette;
 
         UBZoomPalette *mZoomPalette;
-        UBNavigatorPalette* mNavigPalette;
-        UBLibPalette* mLibPalette;
+
+        UBLeftPalette* mLeftPalette;
+        UBRightPalette* mRightPalette;
 
         UBActionPalette *mBackgroundsPalette;
         UBActionPalette *mToolsPalette;
@@ -113,7 +114,7 @@ class UBBoardPaletteManager : public QObject
         void togglePagePalette(bool ckecked);
         void pagePaletteClosed();
 
-		void pagePaletteButtonPressed();
+        void pagePaletteButtonPressed();
         void pagePaletteButtonReleased();
 
         void addItemToCurrentPage();

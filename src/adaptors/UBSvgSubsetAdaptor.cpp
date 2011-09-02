@@ -35,6 +35,7 @@
 #include "tools/UBGraphicsProtractor.h"
 #include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsTriangle.h"
+#include "tools/UBGraphicsCache.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -664,6 +665,15 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     scene->registerTool(triangle);
                 }
             }
+            else if(mXmlReader.name() == "cache")
+            {
+                UBGraphicsCache* cache = cacheFromSvg();
+                if(cache)
+                {
+                    scene->addItem(cache);
+                    scene->registerTool(cache);
+                }
+            }
             else if (mXmlReader.name() == "foreignObject")
             {
                 QString href = mXmlReader.attributes().value(nsXLink, "href").toString();
@@ -1043,6 +1053,13 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
             if (ruler  && ruler->isVisible())
             {
                 rulerToSvg(ruler);
+                continue;
+            }
+
+            UBGraphicsCache* cache = qgraphicsitem_cast<UBGraphicsCache*>(item);
+            if(cache && cache->isVisible())
+            {
+                cacheToSvg(cache);
                 continue;
             }
 
@@ -2658,6 +2675,38 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 
     triangle->setVisible(true);
     return triangle;
+}
+
+UBGraphicsCache* UBSvgSubsetAdaptor::UBSvgSubsetReader::cacheFromSvg()
+{
+    UBGraphicsCache* pCache = new UBGraphicsCache();
+    pCache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+    pCache->setVisible(true);
+
+    return pCache;
+}
+
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::cacheToSvg(UBGraphicsCache* item)
+{
+    mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "cache");
+
+    mXmlWriter.writeAttribute("x", QString("%1").arg(item->rect().x()));
+    mXmlWriter.writeAttribute("y", QString("%1").arg(item->rect().y()));
+    mXmlWriter.writeAttribute("width", QString("%1").arg(item->rect().width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(item->rect().height()));
+
+    QString zs;
+    zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value", zs);
+
+    UBItem* ubItem = dynamic_cast<UBItem*>(item);
+
+    if (ubItem)
+    {
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(ubItem->uuid()));
+    }
+
+    mXmlWriter.writeEndElement();
 }
 
 void UBSvgSubsetAdaptor::convertPDFObjectsToImages(UBDocumentProxy* proxy)

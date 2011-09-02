@@ -5,5 +5,5 @@
 	 width="26px" height="26px" viewBox="0 0 26 26" style="enable-background:new 0 0 26 26;" xml:space="preserve">
 <circle style="fill:#CCCCCC;" cx="13" cy="13" r="13"/>
 <circle style="fill:#999999;" cx="13" cy="13" r="11"/>
-<polygon style="fill:#FFFFFF;" points="20,17 16,13 20,9 17,6 13,10 9,6 6,9 10,13 6,17 9,20 13,16 17,20 "/>
+<polygon style="fill:#FFFFFF;" points="20,15 20,11 15,11 15,6 11,6 11,11 6,11 6,15 11,15 11,20 15,20 15,15 20,15"/>
 </svg>

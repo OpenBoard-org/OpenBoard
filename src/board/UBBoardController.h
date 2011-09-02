@@ -25,7 +25,6 @@ class UBApplication;
 class UBBoardView;
 
 class UBDocumentController;
-class UBLibraryController;
 class UBMessageWindow;
 class UBGraphicsScene;
 class UBDocumentProxy;
@@ -81,6 +80,11 @@ class UBBoardController : public QObject
             return mDisplayView;
         }
 
+        UBGraphicsScene* activeScene()
+        {
+            return mActiveScene;
+        }
+
         void setPenColorOnDarkBackground(const QColor& pColor)
         {
             if (mPenColorOnDarkBackground == pColor)
@@ -127,11 +131,6 @@ class UBBoardController : public QObject
         QColor markerColorOnLightBackground()
         {
             return mMarkerColorOnLightBackground;
-        }
-
-        UBLibraryController* libraryController()
-        {
-            return mLibraryController;
         }
 
         qreal systemScaleFactor()
@@ -285,7 +284,6 @@ class UBBoardController : public QObject
         UBGraphicsScene* mActiveScene;
         int mActiveSceneIndex;
 
-        UBLibraryController* mLibraryController;
         UBBoardPaletteManager *mPaletteManager;
 
         UBSoftwareUpdateDialog *mSoftwareUpdateDialog;

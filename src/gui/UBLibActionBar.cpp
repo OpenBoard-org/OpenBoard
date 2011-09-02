@@ -16,9 +16,9 @@
 #include <QSize>
 #include <QDebug>
 
+#include "UBLibWidget.h"
 #include "UBLibActionBar.h"
 #include "core/UBApplication.h"
-#include "board/UBBoardController.h"
 
 #include "core/memcheck.h"
 
@@ -361,7 +361,8 @@ void UBLibActionBar::onSelectionChanged(QList<UBLibElement *> itemList, bool isI
  */
 UBLibraryController* UBLibActionBar::libraryController()
 {
-    return UBApplication::boardController->libraryController();
+    UBLibWidget* libWidget = dynamic_cast<UBLibWidget*>(parentWidget());
+    return libWidget->libNavigator()->libraryWidget()->libraryController();
 }
 
 /**

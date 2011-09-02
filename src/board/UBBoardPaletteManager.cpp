@@ -49,7 +49,6 @@
 
 #include "document/UBDocumentProxy.h"
 #include "podcast/UBPodcastController.h"
-#include "board/UBLibraryController.h"
 #include "board/UBDrawingController.h"
 
 #include "tools/UBToolsManager.h"
@@ -65,8 +64,8 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mBoardControler(pBoardController)
     , mStylusPalette(0)
     , mZoomPalette(0)
-    , mNavigPalette(NULL)
-    , mLibPalette(NULL)
+    , mLeftPalette(NULL)
+    , mRightPalette(NULL)
     , mBackgroundsPalette(0)
     , mToolsPalette(0)
     , mAddItemPalette(0)
@@ -86,16 +85,16 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
 UBBoardPaletteManager::~UBBoardPaletteManager()
 {
     delete mAddItemPalette;
-    if(NULL != mNavigPalette)
+    if(NULL != mLeftPalette)
     {
-	delete mNavigPalette;
-	mNavigPalette = NULL;
+        delete mLeftPalette;
+        mLeftPalette = NULL;
     }
 
-    if(NULL != mLibPalette)
+    if(NULL != mRightPalette)
     {
-	delete mLibPalette;
-	mLibPalette = NULL;
+        delete mRightPalette;
+        mRightPalette = NULL;
     }
 
     if(NULL != mStylusPalette)
@@ -119,10 +118,10 @@ void UBBoardPaletteManager::setupLayout()
 void UBBoardPaletteManager::setupPalettes()
 {
     // Add the dock palettes
-    mNavigPalette = new UBNavigatorPalette(mContainer);
+    mLeftPalette = new UBLeftPalette(mContainer);
 
     // We disable the lib palette for the moment because it is not yet available
-    mLibPalette = new UBLibPalette(mContainer);
+    mRightPalette = new UBRightPalette(mContainer);
 
     // Add the other palettes
     mStylusPalette = new UBStylusPalette(mContainer, UBSettings::settings()->appToolBarOrientationVertical->get().toBool() ? Qt::Vertical : Qt::Horizontal);
@@ -375,8 +374,8 @@ void UBBoardPaletteManager::containerResized()
             mKeyboardPalette->adjustSizeAndPosition();
     }
 
-    mNavigPalette->resize(mNavigPalette->width(), mContainer->height());
-    mLibPalette->resize(mLibPalette->width(), mContainer->height());
+    mLeftPalette->resize(mLeftPalette->width(), mContainer->height());
+    mRightPalette->resize(mRightPalette->width(), mContainer->height());
 }
 
 
@@ -403,9 +402,9 @@ void UBBoardPaletteManager::activeSceneChanged()
     if (mStylusPalette)
         connect(mStylusPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideEraser()));
 
-    if (mNavigPalette)
+    if (mLeftPalette)
     {
-        mNavigPalette->setPageNumber(pageIndex + 1, activeScene->document()->pageCount());
+        mLeftPalette->pageNavigator()->setPageNumber(pageIndex + 1, activeScene->document()->pageCount());
     }
 
     if (mZoomPalette)
@@ -569,7 +568,8 @@ void UBBoardPaletteManager::addItemToLibrary()
                      , Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
         QImage image = mPixmap.toImage();
-        UBApplication::boardController->libraryController()->importImageOnLibrary(image);
+        //UBApplication::boardController->libraryController()->importImageOnLibrary(image);
+
     }
     else
     {
@@ -578,29 +578,6 @@ void UBBoardPaletteManager::addItemToLibrary()
 
     mAddItemPalette->hide();
 }
-
-//void UBBoardPaletteManager::shareItemOnWeb()
-//{
-//    QPixmap pixmap = mPixmap;
-
-//    if(mPixmap.isNull())
-//    {
-//       pixmap = QPixmap(mItemUrl.toLocalFile());
-//    }
-
-//    if(!pixmap.isNull())
-//    {
-//        UBCapturePublisher* publisher = new UBCapturePublisher(pixmap, this);
-//        publisher->publish();
-//    }
-//    else
-//    {
-//        UBApplication::showMessage(tr("Error Publishing Image to the Web"));
-//    }
-
-//    mAddItemPalette->hide();
-//}
-
 
 void UBBoardPaletteManager::zoomButtonPressed()
 {

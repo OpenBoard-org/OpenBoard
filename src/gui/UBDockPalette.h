@@ -24,6 +24,12 @@
 #include <QTime>
 #include <QPoint>
 #include <QPixmap>
+#include <QMap>
+#include <QStackedWidget>
+#include <QVBoxLayout>
+#include <QVector>
+
+#include "UBDockPaletteWidget.h"
 
 #define TABSIZE	    50
 #define CLICKTIME   1000000
@@ -66,6 +72,9 @@ public:
     void setBackgroundBrush(const QBrush& brush);
 
 protected:
+    void addTabWidget(UBDockPaletteWidget* widget);
+    void removeTab(const QString& widgetName);
+
     virtual int border();
     virtual int radius();
     virtual int customMargin();
@@ -93,19 +102,33 @@ protected:
     QTime mClickTime;
     /** The mouse pressed position */
     QPoint mMousePressPos;
-    /** The palette icon */
-    QPixmap mIcon;
-    QPixmap mCollapsedIcon;
+//    /** The palette icon */
+//    QPixmap mIcon;
+//    QPixmap mCollapsedIcon;
     /** The tab orientation */
     eUBDockTabOrientation mTabsOrientation;
     /** The h position of the tab */
     int mHTab;
+    /** The tab widgets */
+    //QMap<QString, UBDockPaletteWidget*> mTabWidgets;
+    /** The stacked widget */
+    QStackedWidget* mpStackWidget;
+    /** The layout */
+    QVBoxLayout* mpLayout;
+    /** The current tab index */
+    int mCurrentTab;
+    /** The tab widgets */
+    QVector<UBDockPaletteWidget*> mTabWidgets;
 
 private slots:
     void onToolbarPosUpdated();
+    void onResizeRequest(QResizeEvent* event);
 
 private:
-    void tabClicked();
+    void tabClicked(int tabIndex);
+    int tabSpacing();
+    void showTabWidget(int tabIndex);
+    void toggleCollapseExpand();
 };
 
 #endif // UBDOCKPALETTE_H

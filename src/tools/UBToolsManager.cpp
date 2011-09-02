@@ -58,6 +58,13 @@ UBToolsManager::UBToolsManager(QObject *parent)
     mToolsIcon.insert(triangle.id,":/images/toolPalette/triangleTool.png");
     mDescriptors << triangle;
 
+    magnifier.id = "uniboardTool://uniboard.mnemis.com/magnifier";
+    magnifier.icon = QPixmap(":/images/toolPalette/magnifierTool.png");
+    magnifier.label = tr("Magnifier");
+    magnifier.version = "1.0";
+    mToolsIcon.insert(magnifier.id,":/images/toolPalette/magnifierTool.png");
+    mDescriptors << magnifier;
+
 }
 
 UBToolsManager::~UBToolsManager()
