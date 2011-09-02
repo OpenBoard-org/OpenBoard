@@ -51,16 +51,10 @@ class XPDFRenderer : public PDFRenderer
         QImage* createPDFImage(int pageNumber, const qreal xscale = 0.5, const qreal yscale = 0.5, const QRectF &bounds = QRectF());
 
         PDFDoc *mDocument;
-        QList<QImage*> mThumbs;
-        QMap<int, bool> mPagesMap;
-        QMap<int, bool> mThumbMap;
-        QMap<int, QImage*> mNumPageToPageMap;
         static QAtomicInt sInstancesCount;
         qreal mSliceX;
         qreal mSliceY;
-        int bPD;
-        bool bThumbGenerated;
-        bool bPagesGenerated;
+
         SplashBitmap* mpSplashBitmap;
         SplashOutputDev* mSplash;
         qreal mScaleX;
