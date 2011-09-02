@@ -28,33 +28,23 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
     , mpSplashBitmap(0)
     , mSplash(0)
 {
+    Q_UNUSED(importingFile);
     if (!globalParams)
     {
         // globalParams must be allocated once and never be deleted
         // note that this is *not* an instance variable of this XPDFRenderer class
         globalParams = new GlobalParams(0);
         globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
-        //globalParams->setPrintCommands(gTrue);
     }
 
     mDocument = new PDFDoc(new GString(filename.toUtf8().data()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
     sInstancesCount.ref();
-    bThumbGenerated = !importingFile;
-    mPagesMap.clear();
-    mThumbs.clear();
-    mThumbMap.clear();
     mScaleX = 0.0;
     mScaleY = 0.0;
 }
 
 XPDFRenderer::~XPDFRenderer()
 {
-    qDeleteAll(mThumbs);
-    mThumbs.clear();
-
-    qDeleteAll(mNumPageToPageMap);
-    mNumPageToPageMap.clear();
-
     if(mSplash){
         delete mSplash;
         mSplash = NULL;
@@ -161,40 +151,12 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
             bZoomChanged = true;
         }
 
-        QImage *pdfImage;
-
-        // First verify if the thumbnails and the pages are generated
-        if(!bThumbGenerated)
-        {
-            if(!mThumbMap[pageNumber - 1])
-            {
-                // Generate the thumbnail
-                mThumbs << createPDFImage(pageNumber, xscale, yscale, bounds);
-                mThumbMap[pageNumber - 1] = true;
-                pdfImage = mThumbs.at(pageNumber - 1);
-                if(pageNumber == mDocument->getNumPages())
-                {
-                    bThumbGenerated = true;
-                }
-            }
-        }
-        else
-        {
-            if(!mPagesMap[pageNumber - 1] || bZoomChanged)
-            {
-                // Generate the page
-                if (mPagesMap[pageNumber - 1])
-                    delete mNumPageToPageMap[pageNumber];
-                mNumPageToPageMap[pageNumber] = createPDFImage(pageNumber, xscale, yscale, bounds);
-                mPagesMap[pageNumber - 1] = true;
-                pdfImage = mNumPageToPageMap[pageNumber];
-            }
-        }
-
+        QImage *pdfImage = createPDFImage(pageNumber, xscale, yscale, bounds);
         QTransform savedTransform = p->worldTransform();
         p->resetTransform();
         p->drawImage(QPointF(savedTransform.dx() + mSliceX, savedTransform.dy() + mSliceY), *pdfImage);
         p->setWorldTransform(savedTransform);
+        delete pdfImage;
     }
 }
 
