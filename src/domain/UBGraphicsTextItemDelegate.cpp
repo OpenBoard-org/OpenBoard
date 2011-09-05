@@ -31,7 +31,7 @@
 const int UBGraphicsTextItemDelegate::sMinPixelSize = 8;
 
 UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject * parent)
-    : UBGraphicsItemDelegate(pDelegated,0, parent, false)
+    : UBGraphicsItemDelegate(pDelegated,0, parent, true)
     , mLastFontPixelSize(-1)
 {
     // NOOP
