@@ -73,3 +73,8 @@ linux-g++ {
    LIBS += -lz
 
 }
+linux-g++-32 {
+
+   LIBS += -lz
+
+}
