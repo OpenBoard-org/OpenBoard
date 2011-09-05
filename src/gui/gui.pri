@@ -4,8 +4,6 @@ HEADERS      += src/gui/UBThumbnailView.h \
                 src/gui/UBToolbarButtonGroup.h \
                 src/gui/UBStylusPalette.h \
                 src/gui/UBIconButton.h \
-                src/gui/UBClockPalette.h \
-                src/gui/UBPageNumberPalette.h \
                 src/gui/UBThumbnailWidget.h \
                 src/gui/UBCircleFrame.h \
                 src/gui/UBColorPicker.h \
@@ -50,8 +48,6 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBToolbarButtonGroup.cpp \
                 src/gui/UBStylusPalette.cpp \
                 src/gui/UBIconButton.cpp \
-                src/gui/UBClockPalette.cpp \
-                src/gui/UBPageNumberPalette.cpp \
                 src/gui/UBThumbnailWidget.cpp \
                 src/gui/UBCircleFrame.cpp \
                 src/gui/UBColorPicker.cpp \
