@@ -104,6 +104,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool))); 
 #ifdef Q_WS_X11
         connect(mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
+        connect(mDesktopPalette,SIGNAL(refreshMask()), this, SLOT(refreshMask()));
 #endif
     }
 
