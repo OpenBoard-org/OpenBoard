@@ -562,7 +562,9 @@ void UBBoardPaletteManager::addItemToLibrary()
                      , Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
         QImage image = mPixmap.toImage();
-        //UBApplication::boardController->libraryController()->importImageOnLibrary(image);
+        // TODO:Claudio
+        // This is a wrong way of calling importImageOnLibrary but for the moment it works because element on mRightPalette are predefined.
+        mRightPalette->libWidget()->libNavigator()->libraryWidget()->libraryController()->importImageOnLibrary(image);
 
     }
     else
