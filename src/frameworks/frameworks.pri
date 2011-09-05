@@ -39,3 +39,8 @@ linux-g++ {
     SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp \
                 src/frameworks/UBDesktopServices_linux.cpp
 }         
+linux-g++-32 {
+
+    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp \
+                src/frameworks/UBDesktopServices_linux.cpp
+}
