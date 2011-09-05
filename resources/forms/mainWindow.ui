@@ -1551,21 +1551,6 @@
     <enum>QAction::TextHeuristicRole</enum>
    </property>
   </action>
-  <action name="actionDesktopTools">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../sankore.qrc">
-     <normaloff>:/images/toolbar/tools.png</normaloff>:/images/toolbar/tools.png</iconset>
-   </property>
-   <property name="text">
-    <string>Tools</string>
-   </property>
-   <property name="toolTip">
-    <string>Define Drawing Options</string>
-   </property>
-  </action>
   <action name="actionEraseDesktopAnnotations">
    <property name="icon">
     <iconset resource="../sankore.qrc">
