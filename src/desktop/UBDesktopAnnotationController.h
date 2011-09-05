@@ -23,7 +23,6 @@
 #include "gui/UBRightPalette.h"
 
 class UBDesktopPalette;
-class UBDesktopToolsPalette;
 class UBBoardView;
 class UBGraphicsScene;
 class UBDesktopPenPalette;
@@ -89,7 +88,6 @@ class UBDesktopAnnotationController : public QObject
         UBGraphicsScene* mTransparentDrawingScene;
 
     private slots:
-        void desktopToolsActionToogled(bool);
         void desktopPenActionToggled(bool checked);
         void desktopMarkerActionToggled(bool checked);
         void desktopEraserActionToggled(bool checked);
@@ -112,7 +110,6 @@ class UBDesktopAnnotationController : public QObject
 
         UBDesktopPalette *mDesktopPalette;
         UBKeyboardPalette *mKeyboardPalette;
-        UBDesktopToolsPalette *mDesktopToolsPalette;
         UBDesktopPenPalette* mDesktopPenPalette;
         UBDesktopMarkerPalette* mDesktopMarkerPalette;
         UBDesktopEraserPalette* mDesktopEraserPalette;

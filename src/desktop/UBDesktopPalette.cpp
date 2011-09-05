@@ -159,8 +159,6 @@ void UBDesktopPalette::maximizeMe()
     actions << mDisplaySelectAction;
     actions << mShowHideAction;
 
-    //actions << UBApplication::mainWindow->actionDesktopTools;
-
     setActions(actions);
 
     QSize newSize = preferredSize();
