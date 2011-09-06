@@ -78,6 +78,7 @@ class UBApplication : public QtSingleApplication
         static void setDisabled(bool disable);
 
         static QObject* staticMemoryCleaner;
+        static QString globalStyleSheet();
 
         void decorateActionMenu(QAction* action);
         void insertSpaceToToolbarBeforeAction(QToolBar* toolbar, QAction* action, int width = -1);

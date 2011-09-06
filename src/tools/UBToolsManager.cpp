@@ -65,6 +65,17 @@ UBToolsManager::UBToolsManager(QObject *parent)
     mToolsIcon.insert(magnifier.id,":/images/toolPalette/magnifierTool.png");
     mDescriptors << magnifier;
 
+//  --------------------------------------------------------------------------------
+//  DO NOT ERASE THIS COMMENTED CODE! IT WILL BE UNCOMMENTED DURING THE NEXT DAYS!!!
+//  --------------------------------------------------------------------------------
+    cache.id = "uniboardTool://uniboard.mnemis.com/cache";
+    cache.icon = QPixmap(":/images/toolPalette/cacheTool.png");
+    cache.label = tr("Cache");
+    cache.version = "1.0";
+    mToolsIcon.insert(cache.id, ":/images/toolPalette/cacheTool.png");
+    mDescriptors << cache;
+//  --------------------------------------------------------------------------------
+
 }
 
 UBToolsManager::~UBToolsManager()

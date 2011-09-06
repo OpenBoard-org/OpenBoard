@@ -46,6 +46,7 @@ class UBGraphicsCurtainItem;
 class UBGraphicsStroke;
 class UBMagnifierParams;
 class UBMagnifier;
+class UBGraphicsCache;
 
 const double PI = 4.0 * atan(1.0);
 
@@ -172,6 +173,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void addMagnifier(UBMagnifierParams params);
 
         void addMask();
+        void addCache();
 
         class SceneViewState
         {
@@ -247,6 +249,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         static qreal toolOffsetCompass;
         static qreal toolOffsetCurtain;
         static qreal toolOffsetTriangle;
+        static qreal toolOffsetCache;
 
         QSet<QGraphicsItem*> tools(){ return mTools;}
 
@@ -358,6 +361,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         //int mMesure1Ms, mMesure2Ms;
 
+        bool mHasCache;
         UBMagnifier *magniferControlViewWidget;
         UBMagnifier *magniferDisplayViewWidget;
 };

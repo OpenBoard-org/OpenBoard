@@ -12,7 +12,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "core/UBApplication.h"
+#include "board/UBBoardController.h"
+
 #include "UBRightPalette.h"
+
 
 UBRightPalette::UBRightPalette(QWidget *parent, const char *name):UBDockPalette(parent)
   , mpLibWidget(NULL)
@@ -25,8 +29,16 @@ UBRightPalette::UBRightPalette(QWidget *parent, const char *name):UBDockPalette(
     resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());
     mpLayout->setContentsMargins(2*border() + customMargin(), customMargin(), customMargin(), customMargin());
 
+    // Add the tab widgets
     mpLibWidget = new UBLibWidget(this);
     addTabWidget(mpLibWidget);
+
+    mpCachePropWidget = new UBCachePropertiesWidget(this);
+    mpCachePropWidget->hide();
+
+    // Connect signals/slots
+    connect(UBApplication::boardController, SIGNAL(cacheEnabled()), this, SLOT(onCacheEnabled()));
+    connect(mpCachePropWidget, SIGNAL(cacheListEmpty()), this, SLOT(onCacheDisabled()));
 }
 
 UBRightPalette::~UBRightPalette()
@@ -35,6 +47,11 @@ UBRightPalette::~UBRightPalette()
     {
         delete mpLibWidget;
         mpLibWidget = NULL;
+    }
+    if(NULL != mpCachePropWidget)
+    {
+        delete mpCachePropWidget;
+        mpCachePropWidget = NULL;
     }
 }
 
@@ -62,12 +79,39 @@ void UBRightPalette::resizeEvent(QResizeEvent *event)
     emit resized();
 }
 
-/**
- * \brief Update the maximum width
- */
 void UBRightPalette::updateMaxWidth()
 {
     setMaximumWidth((int)((parentWidget()->width() * 2)/3));
     setMaximumHeight(parentWidget()->height());
     setMinimumHeight(parentWidget()->height());
+}
+
+void UBRightPalette::onCacheEnabled()
+{
+    if(mpCachePropWidget->isHidden())
+    {
+        mpCachePropWidget->setVisible(true);
+        // Add the cache tab
+        addTabWidget(mpCachePropWidget);
+    }
+
+    // Set the cache of the current page as the active one for the properties widget
+    mpCachePropWidget->updateCurrentCache();
+
+    // Show the cache properties widget
+    for(int i = 0; i < mTabWidgets.size(); i++)
+    {
+        if((NULL != mTabWidgets.at(i)) && ("CachePropWidget" == mTabWidgets.at(i)->name()))
+        {
+            showTabWidget(i);
+            break;
+        }
+    }
+
+}
+
+void UBRightPalette::onCacheDisabled()
+{
+    removeTab(mpCachePropWidget->name());
+    mpCachePropWidget->hide();
 }

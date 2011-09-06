@@ -48,6 +48,7 @@
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
+#include "core/UBApplication.h"
 
 #include "pdf/PDFRenderer.h"
 
@@ -672,6 +673,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     scene->addItem(cache);
                     scene->registerTool(cache);
+                    UBApplication::boardController->notifyCache(true);
                 }
             }
             else if (mXmlReader.name() == "foreignObject")
@@ -2680,7 +2682,24 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 UBGraphicsCache* UBSvgSubsetAdaptor::UBSvgSubsetReader::cacheFromSvg()
 {
     UBGraphicsCache* pCache = new UBGraphicsCache();
+    //pCache->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCache);
     pCache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
+    graphicsItemFromSvg(pCache);
+
+    QStringRef colorR = mXmlReader.attributes().value("colorR");
+    QStringRef colorG = mXmlReader.attributes().value("colorG");
+    QStringRef colorB = mXmlReader.attributes().value("colorB");
+    QStringRef colorA = mXmlReader.attributes().value("colorA");
+    QStringRef shape = mXmlReader.attributes().value("shape");
+    QStringRef shapeSize = mXmlReader.attributes().value("shapeSize");
+
+    QColor color(colorR.toString().toInt(), colorG.toString().toInt(), colorB.toString().toInt(), colorA.toString().toInt());
+
+    pCache->setMaskColor(color);
+    pCache->setShapeWidth(shapeSize.toString().toInt());
+    pCache->setMaskShape(static_cast<eMaskShape>(shape.toString().toInt()));
+
     pCache->setVisible(true);
 
     return pCache;
@@ -2694,6 +2713,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::cacheToSvg(UBGraphicsCache* item)
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->rect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->rect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->rect().height()));
+    mXmlWriter.writeAttribute("colorR", QString("%1").arg(item->maskColor().red()));
+    mXmlWriter.writeAttribute("colorG", QString("%1").arg(item->maskColor().green()));
+    mXmlWriter.writeAttribute("colorB", QString("%1").arg(item->maskColor().blue()));
+    mXmlWriter.writeAttribute("colorA", QString("%1").arg(item->maskColor().alpha()));
+    mXmlWriter.writeAttribute("shape", QString("%1").arg(item->maskshape()));
+    mXmlWriter.writeAttribute("shapeSize", QString("%1").arg(item->shapeWidth()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision

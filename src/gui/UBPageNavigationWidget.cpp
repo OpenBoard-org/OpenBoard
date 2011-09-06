@@ -127,6 +127,9 @@ void UBPageNavigationWidget::changeCurrentPage()
     {
         // Display the selected page
         UBApplication::boardController->setActiveDocumentScene(mNavigator->currentDoc(), iPage);
+
+        // emit here the signal to indicate that page change
+        UBApplication::boardController->notifyPageChanged();
     }
 }
 

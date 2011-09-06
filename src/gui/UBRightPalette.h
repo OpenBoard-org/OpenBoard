@@ -17,6 +17,7 @@
 
 #include "UBDockPalette.h"
 #include "UBLibWidget.h"
+#include "UBCachePropertiesWidget.h"
 
 class UBRightPalette : public UBDockPalette
 {
@@ -35,8 +36,13 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *event);
 
+private slots:
+    void onCacheEnabled();
+    void onCacheDisabled();
+
 private:
     UBLibWidget* mpLibWidget;
+    UBCachePropertiesWidget* mpCachePropWidget;
 };
 
 #endif // UBRIGHTPALETTE_H

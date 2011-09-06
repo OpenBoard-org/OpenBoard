@@ -41,7 +41,8 @@ HEADERS      += src/gui/UBThumbnailView.h \
     src/gui/UBRightPalette.h \
     src/gui/UBPageNavigationWidget.h \
     src/gui/UBLibWidget.h \
-    src/gui/UBMagnifer.h
+    src/gui/UBMagnifer.h \
+    src/gui/UBCachePropertiesWidget.h
                 
 SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBFloatingPalette.cpp \
@@ -85,7 +86,8 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
     src/gui/UBRightPalette.cpp \
     src/gui/UBPageNavigationWidget.cpp \
     src/gui/UBLibWidget.cpp \
-    src/gui/UBMagnifer.cpp
+    src/gui/UBMagnifer.cpp \
+    src/gui/UBCachePropertiesWidget.cpp
 
 win32 {
 

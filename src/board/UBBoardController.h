@@ -157,6 +157,9 @@ class UBBoardController : public QObject
             return mPaletteManager;
         }
 
+        void notifyCache(bool visible);
+        void notifyPageChanged();
+
     public slots:
 
         void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0);
@@ -255,6 +258,9 @@ class UBBoardController : public QObject
         void controlViewportChanged();
 
         void backgroundChanged();
+        void cacheEnabled();
+        void cacheDisabled();
+        void pageChanged();
 
     protected:
 

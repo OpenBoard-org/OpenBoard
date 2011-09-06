@@ -484,6 +484,7 @@ void UBBoardController::addScene(UBDocumentProxy* proxy, int sceneIndex, bool re
     if (scene)
     {
         addScene(scene, replaceActiveIfEmpty);
+        emit pageChanged();
     }
 }
 
@@ -501,6 +502,8 @@ void UBBoardController::duplicateScene()
 
     setActiveDocumentScene(mActiveDocument, mActiveSceneIndex + 1);
     QApplication::restoreOverrideCursor();
+
+    emit pageChanged();
 }
 
 
@@ -669,6 +672,7 @@ void UBBoardController::previousScene()
     }
 
     updateActionStates();
+    emit pageChanged();
 }
 
 
@@ -683,7 +687,7 @@ void UBBoardController::nextScene()
     }
 
     updateActionStates();
-
+    emit pageChanged();
 }
 
 
@@ -698,6 +702,7 @@ void UBBoardController::firstScene()
     }
 
     updateActionStates();
+    emit pageChanged();
 }
 
 
@@ -712,6 +717,7 @@ void UBBoardController::lastScene()
     }
 
     updateActionStates();
+    emit pageChanged();
 }
 
 
@@ -1015,6 +1021,11 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         else if (sourceUrl.toString() == UBToolsManager::manager()->triangle.id)
         {
             mActiveScene->addTriangle(pPos);
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        }
+        else if (sourceUrl.toString() == UBToolsManager::manager()->cache.id)
+        {
+            mActiveScene->addCache();
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
         else if (sourceUrl.toString() == UBToolsManager::manager()->magnifier.id)
@@ -1516,6 +1527,17 @@ void UBBoardController::setPageSize(QSize newSize)
     }
 }
 
+void UBBoardController::notifyCache(bool visible)
+{
+    if(visible)
+    {
+        emit cacheEnabled();
+    }
+    else
+    {
+        emit cacheDisabled();
+    }
+}
 
 void UBBoardController::updatePageSizeState()
 {
@@ -1928,7 +1950,6 @@ void UBBoardController::addItem()
     }
 }
 
-
 void UBBoardController::importPage()
 {
     int pageCount = mActiveDocument->pageCount();
@@ -1939,7 +1960,10 @@ void UBBoardController::importPage()
     }
 }
 
-
+void UBBoardController::notifyPageChanged()
+{
+    emit pageChanged();
+}
 
 
 
