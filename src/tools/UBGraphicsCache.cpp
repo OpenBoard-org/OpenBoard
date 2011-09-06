@@ -105,7 +105,7 @@ void UBGraphicsCache::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
         }
         else if(eMaskShap_Rectangle == mMaskShape)
         {
-            path.addRect(mShapePos.x(), mShapePos.y(), mShapeWidth, mShapeWidth);
+            path.addRect(mShapePos.x() - mShapeWidth / 2, mShapePos.y() - mShapeWidth / 2, mShapeWidth, mShapeWidth);
         }
         path.setFillRule(Qt::OddEvenFill);
     }
