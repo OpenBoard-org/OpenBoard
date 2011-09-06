@@ -43,7 +43,6 @@ public slots:
     void setPageNumber(int current, int total);
 
 protected:
-    virtual void resizeEvent(QResizeEvent *event);
     virtual void timerEvent(QTimerEvent *event);
 
 private:

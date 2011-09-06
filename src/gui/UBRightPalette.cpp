@@ -23,7 +23,6 @@ UBRightPalette::UBRightPalette(QWidget *parent, const char *name):UBDockPalette(
 {
     setObjectName(name);
     setOrientation(eUBDockOrientation_Right);
-    setOrientation(eUBDockOrientation_Right);
     mCollapseWidth = 180;
     mLastWidth = 300;
     resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());

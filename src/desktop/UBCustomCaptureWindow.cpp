@@ -62,7 +62,10 @@ int UBCustomCaptureWindow::execute(const QPixmap &pScreenPixmap)
     showFullScreen();
     setWindowOpacity(1.0);
 
-    return exec();
+    qDebug() << ">>>>>>>>>>>>>< BEFORE";
+    int retVal = exec();
+    qDebug() << "------------------ AFTER";
+    return retVal;
 }
 
 
