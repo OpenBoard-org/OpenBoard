@@ -210,7 +210,6 @@ const KEYBT RUSSIAN_LOCALE [] =
         /* ю Ю */ KEYBT(0x44e, XK_Cyrillic_yu, 0x42e, XK_Cyrillic_YU),
         /* . , */ KEYBT(0x2e, 0x2c)};
 
-
 const KEYBT FRENCH_LOCALE[] = {
         /* ? ? */ KEYBT(0xb2, XK_twosuperior, 0xb2, XK_twosuperior),
         /* & 1 */ KEYBT(0x26, 0x31),
@@ -262,7 +261,6 @@ const KEYBT FRENCH_LOCALE[] = {
         /* ; . */ KEYBT(0x3b, 0x2e),
         /* : / */ KEYBT(0x3a, 0x2f),
         /* ! ? */ KEYBT(0x21, 0xa7)};
-
 
 const KEYBT GERMAN_LOCALE[] = {
         /* ^ ? */ KEYBT(0x5f, 0xb0),
