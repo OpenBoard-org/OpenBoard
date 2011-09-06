@@ -856,6 +856,7 @@ void UBDesktopAnnotationController::refreshMask()
 {
     if(mIsFullyTransparent
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector
+            //Needed to work correctly when another actions on stylus are checked
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Eraser
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pointer
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen

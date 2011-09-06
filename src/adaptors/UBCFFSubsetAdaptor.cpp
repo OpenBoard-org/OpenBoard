@@ -42,6 +42,7 @@ static QString tMeta            = "meta";
 static QString tPage            = "page";
 static QString tPageset         = "pageset";
 static QString tPolygon         = "polygon";
+static QString tPolyline        = "polyline";
 static QString tRect            = "rect";
 static QString tSvg             = "svg";
 static QString tText            = "text";
@@ -70,6 +71,7 @@ static QString aFontstretch     = "font-stretch";
 static QString aFontstyle       = "font-style";
 static QString aFontweight      = "font-weight";
 static QString aTextalign       = "text-align";
+static QString aPoints          = "points";
 
 
 UBCFFSubsetAdaptor::UBCFFSubsetAdaptor()
@@ -226,6 +228,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseCurrentElementStart()
     if ( elName == tPolygon)
     {
         if (!parsePolygon())
+            return false;
+    }
+    else
+    if ( elName == tPolyline)
+    {
+        if (!parsePolyline())
             return false;
     }
     else
@@ -748,6 +756,135 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parsePolygon()
     //create new scene if it's not created yet (for one page document case)
     if (currentState == SVG && mCurrentScene == NULL)
         createNewScene();
+
+    QStringRef svgPoints = mReader.attributes().value("points");
+    QPolygonF polygon;
+
+    if (!svgPoints.isNull()) {
+        QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
+                                                    QString::SkipEmptyParts);
+
+        foreach(const QString sPoint, ts) {
+            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            if (sCoord.size() == 2) {
+                QPointF point;
+                point.setX(sCoord.at(0).toFloat());
+                point.setY(sCoord.at(1).toFloat());
+                polygon << point;
+            }
+            else {
+                qWarning() << "cannot make sense of a 'point' value" << sCoord;
+            }
+        }
+    }
+
+    //bounding rect lef top corner coordinates
+    qreal x1 = polygon.boundingRect().topLeft().x();
+    qreal y1 = polygon.boundingRect().topLeft().y();
+    //bounding rect dimensions
+    qreal width = polygon.boundingRect().width();
+    qreal height = polygon.boundingRect().height();
+
+    QPen pen;
+    if (mReader.attributes().hasAttribute(aStroke))
+        pen.setColor(colorFromString(mReader.attributes().value(aStroke).toString()));
+    if (mReader.attributes().hasAttribute(aStrokewidth))
+        pen.setWidth(mReader.attributes().value(aStrokewidth).toString().toInt());
+
+    QBrush brush;
+    if (mReader.attributes().hasAttribute(aFill)) {
+        brush.setColor(colorFromString(mReader.attributes().value(aFill).toString()));
+        brush.setStyle(Qt::SolidPattern);
+    }
+
+    QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
+    QPainter painter;
+
+    painter.begin(generator); //drawing to svg tmp file
+
+    painter.translate(pen.widthF() / 2 - x1, pen.widthF() / 2 - y1);
+    painter.setBrush(brush);
+    painter.setPen(pen);
+    painter.drawPolygon(polygon);
+
+    painter.end();
+
+    //add resulting svg file to scene
+    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+    QTransform transform;
+    bool hastransform = getCurElementTransorm(transform);
+    repositionSvgItem(svgItem, width + 10, height + 10, x1 - 5, y1 - 5, hastransform, transform);
+    delete generator;
+
+    return true;
+}
+
+bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parsePolyline()
+{
+    if (currentState != SVG && currentState != PAGE)
+    {
+        qWarning() << "iwb content parse error, unexpected polyline tag at line" << mReader.lineNumber();
+        return false;
+    }
+
+    //create new scene if it's not created yet (for one page document case)
+    if (currentState == SVG && mCurrentScene == NULL)
+        createNewScene();
+
+    QStringRef svgPoints = mReader.attributes().value("points");
+    QPolygonF polygon;
+
+    if (!svgPoints.isNull()) {
+        QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
+                                                    QString::SkipEmptyParts);
+
+        foreach(const QString sPoint, ts) {
+            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            if (sCoord.size() == 2) {
+                QPointF point;
+                point.setX(sCoord.at(0).toFloat());
+                point.setY(sCoord.at(1).toFloat());
+                polygon << point;
+            }
+            else {
+                qWarning() << "cannot make sense of a 'point' value" << sCoord;
+            }
+        }
+        polygon.translate(-polygon.boundingRect().topLeft());
+    }
+
+    //bounding rect lef top corner coordinates
+    qreal x1 = polygon.boundingRect().topLeft().x();
+    qreal y1 = polygon.boundingRect().topLeft().y();
+    //bounding rect dimensions
+    qreal width = polygon.boundingRect().width();
+    qreal height = polygon.boundingRect().height();
+
+    QPen pen;
+    if (mReader.attributes().hasAttribute(aStroke))
+        pen.setColor(colorFromString(mReader.attributes().value(aStroke).toString()));
+    if (mReader.attributes().hasAttribute(aStrokewidth))
+        pen.setWidth(mReader.attributes().value(aStrokewidth).toString().toInt());
+
+    pen.setColor(Qt::yellow);
+
+    QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
+    QPainter painter;
+
+    painter.begin(generator); //drawing to svg tmp file
+
+    painter.translate(pen.widthF() / 2, pen.widthF() / 2);
+    painter.setPen(pen);
+    painter.drawPolyline(polygon);
+
+    painter.end();
+
+    //add resulting svg file to scene
+    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+    QTransform transform;
+    bool hastransform = getCurElementTransorm(transform);
+    repositionSvgItem(svgItem, width + 10, height + 10, x1 - 5, y1 - 5, hastransform, transform);
+    delete generator;
 
     return true;
 }
