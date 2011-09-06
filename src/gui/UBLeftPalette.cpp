@@ -20,11 +20,16 @@ UBLeftPalette::UBLeftPalette(QWidget *parent, const char *name):UBDockPalette(pa
     setObjectName(name);
     setOrientation(eUBDockOrientation_Left);
     mLastWidth = 300;
-    setMaximumWidth(300);
-    resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), height());
+    mCollapseWidth = 180;
+/*
+    resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());
+    mpLayout->setContentsMargins(2*border() + customMargin(), customMargin(), customMargin(), customMargin());
+*/
 
+    resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), parentWidget()->height());
     mpLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());
 
+    // Add the widgets here
     mpPageNavigator = new UBPageNavigationWidget(this);
     addTabWidget(mpPageNavigator);
 }
@@ -36,6 +41,21 @@ UBLeftPalette::~UBLeftPalette()
         delete mpPageNavigator;
         mpPageNavigator = NULL;
     }
+}
+
+void UBLeftPalette::updateMaxWidth()
+{
+    setMaximumWidth(300);
+}
+
+void UBLeftPalette::resizeEvent(QResizeEvent *event)
+{
+    UBDockPalette::resizeEvent(event);
+    if(NULL != mpPageNavigator)
+    {
+        mpPageNavigator->setMinimumHeight(height() - 2*border());
+    }
+    UBSettings::settings()->navigPaletteWidth->set(width());
 }
 
 UBPageNavigationWidget* UBLeftPalette::pageNavigator()

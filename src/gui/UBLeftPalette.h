@@ -26,6 +26,10 @@ public:
 
     UBPageNavigationWidget* pageNavigator();
 
+protected:
+    void updateMaxWidth();
+    void resizeEvent(QResizeEvent *event);
+
 private:
     UBPageNavigationWidget* mpPageNavigator;
 

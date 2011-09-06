@@ -142,21 +142,6 @@ void UBPageNavigationWidget::refresh()
 }
 
 /**
- * \brief Handle the resize event
- * @param event as the resize event
- */
-void UBPageNavigationWidget::resizeEvent(QResizeEvent *event)
-{
-    emit resizeRequest(event);
-    //UBDockPalette::resizeEvent(event);
-    if(NULL != mNavigator)
-    {
-        mNavigator->setMinimumHeight(height() - 2*border());
-    }
-    UBSettings::settings()->navigPaletteWidth->set(width());
-}
-
-/**
  * \brief Notify a timer event
  * @param event as the timer event
  */
