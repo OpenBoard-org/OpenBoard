@@ -855,7 +855,11 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
 void UBDesktopAnnotationController::refreshMask()
 {
     if(mIsFullyTransparent
-            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
+            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector
+            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Eraser
+            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pointer
+            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen
+            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Marker)
     {
         updateMask(true);
     }

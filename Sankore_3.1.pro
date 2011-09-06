@@ -110,7 +110,7 @@ win32 {
    QMAKE_CXXFLAGS_RELEASE += /Od \
        /Zi
    QMAKE_LFLAGS_RELEASE += /DEBUG
-   UB_LIBRARY.path = DESTDIR
+   UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
    UB_ETC.path = $$DESTDIR
    UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
