@@ -33,7 +33,10 @@ class UBDesktopPalette : public UBActionPalette
         void customClick();
         void windowClick();
         void screenClick();
-//        void showVirtualKeyboard(bool);
+
+#ifdef Q_WS_X11
+        void refreshMask();
+#endif
 
     public slots:
 

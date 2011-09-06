@@ -515,9 +515,12 @@ int UBDockPalette::customMargin()
 
 void UBDockPalette::addTabWidget(UBDockPaletteWidget *widget)
 {
-    mTabWidgets.append(widget);
-    mpStackWidget->addWidget(widget);
-    update();
+    if(!mTabWidgets.contains(widget))
+    {
+        mTabWidgets.append(widget);
+        mpStackWidget->addWidget(widget);
+        update();
+    }
 }
 
 void UBDockPalette::removeTab(const QString &widgetName)

@@ -25,9 +25,7 @@
 
 #include "gui/UBMainWindow.h"
 #include "gui/UBStylusPalette.h"
-#include "gui/UBClockPalette.h"
 #include "gui/UBKeyboardPalette.h"
-#include "gui/UBPageNumberPalette.h"
 #include "gui/UBToolWidget.h"
 #include "gui/UBZoomPalette.h"
 #include "gui/UBActionPalette.h"
@@ -137,10 +135,6 @@ void UBBoardPaletteManager::setupPalettes()
     }
 
     mZoomPalette = new UBZoomPalette(mContainer);
-
-    //mClockPalette->addAssociatedPalette(mKeyboardPalette);
-    //mKeyboardPalette->addAssociatedPalette(mClockPalette);
-
 
     QList<QAction*> backgroundsActions;
 
@@ -568,7 +562,9 @@ void UBBoardPaletteManager::addItemToLibrary()
                      , Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
         QImage image = mPixmap.toImage();
-        //UBApplication::boardController->libraryController()->importImageOnLibrary(image);
+        // TODO:Claudio
+        // This is a wrong way of calling importImageOnLibrary but for the moment it works because element on mRightPalette are predefined.
+        mRightPalette->libWidget()->libNavigator()->libraryWidget()->libraryController()->importImageOnLibrary(image);
 
     }
     else

@@ -37,7 +37,6 @@
 #include "UBCustomCaptureWindow.h"
 #include "UBWindowCapture.h"
 #include "UBDesktopPalette.h"
-#include "UBDesktopToolsPalette.h"
 #include "UBDesktopPenPalette.h"
 #include "UBDesktopMarkerPalette.h"
 #include "UBDesktopEraserPalette.h"
@@ -52,7 +51,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mTransparentDrawingScene(0)
         , mDesktopPalette(NULL)
         , mKeyboardPalette(0)
-        , mDesktopToolsPalette(NULL)
         , mDesktopPenPalette(NULL)
         , mDesktopMarkerPalette(NULL)
         , mDesktopEraserPalette(NULL)
@@ -106,6 +104,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool))); 
 #ifdef Q_WS_X11
         connect(mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
+        connect(mDesktopPalette,SIGNAL(refreshMask()), this, SLOT(refreshMask()));
 #endif
     }
 
@@ -124,7 +123,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
             , this, SLOT(stylusToolChanged(int)));
 
     // Add the desktop associated palettes
-    mDesktopToolsPalette = new UBDesktopToolsPalette(mTransparentDrawingView);
     mDesktopPenPalette = new UBDesktopPenPalette(mTransparentDrawingView);
 
     connect(mDesktopPalette, SIGNAL(maximized()), mDesktopPenPalette, SLOT(onParentMaximized()));
@@ -134,12 +132,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView);
 
     mDesktopPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
-    mDesktopToolsPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopPenPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopMarkerPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopEraserPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
 
-    mDesktopToolsPalette->setVisible(UBApplication::mainWindow->actionDesktopTools->isChecked());
 
     // Hack : the size of the property palettes is computed the first time the palette is visible
     //        In order to prevent palette overlap on if the desktop palette is on the right of the
@@ -151,7 +147,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mDesktopMarkerPalette->setVisible(false);
     mDesktopEraserPalette->setVisible(false);
 
-    connect(UBApplication::mainWindow->actionDesktopTools, SIGNAL(triggered(bool)), this, SLOT(desktopToolsActionToogled(bool)));
     connect(UBApplication::mainWindow->actionEraseDesktopAnnotations, SIGNAL(triggered()), this, SLOT(eraseDesktopAnnotations()));
 
     connect(&mHoldTimerPen, SIGNAL(timeout()), this, SLOT(penActionReleased()));
@@ -224,23 +219,6 @@ UBDesktopAnnotationController::~UBDesktopAnnotationController()
 UBDesktopPalette* UBDesktopAnnotationController::desktopPalette()
 {
     return mDesktopPalette;
-}
-
-
-void UBDesktopAnnotationController::desktopToolsActionToogled(bool checked)
-{
-    if (!mDesktopToolsPalettePositioned)
-    {
-        QPoint pos = mDesktopPalette->geometry().bottomLeft();
-        pos += QPoint(0, 10);
-
-        mDesktopToolsPalette->setCustomPosition(true);
-        mDesktopToolsPalette->move(pos);
-
-        mDesktopToolsPalettePositioned = true;
-    }
-
-    mDesktopToolsPalette->setVisible(checked);
 }
 
 /**

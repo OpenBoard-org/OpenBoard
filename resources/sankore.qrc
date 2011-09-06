@@ -317,5 +317,10 @@
         <file>images/library_open.png</file>
         <file>images/pages_close.png</file>
         <file>images/pages_open.png</file>
+        <file>images/cache_close.png</file>
+        <file>images/cache_open.png</file>
+        <file>style.qss</file>
+        <file>images/cache_circle.png</file>
+        <file>images/cache_square.png</file>
     </qresource>
 </RCC>

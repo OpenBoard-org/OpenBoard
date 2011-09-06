@@ -33,6 +33,7 @@ UBGraphicsCache::UBGraphicsCache():QGraphicsRectItem()
     QRect boardRect = UBApplication::boardController->displayView()->rect();
     setRect(-15*boardRect.width(), -15*boardRect.height(), 30*boardRect.width(), 30*boardRect.height());
     setZValue(CACHE_ZVALUE);
+    setData(Qt::UserRole, QVariant("Cache"));
 }
 
 UBGraphicsCache::~UBGraphicsCache()
@@ -62,6 +63,7 @@ QColor UBGraphicsCache::maskColor()
 void UBGraphicsCache::setMaskColor(QColor color)
 {
     mMaskColor = color;
+    update();
 }
 
 eMaskShape UBGraphicsCache::maskshape()
@@ -72,6 +74,7 @@ eMaskShape UBGraphicsCache::maskshape()
 void UBGraphicsCache::setMaskShape(eMaskShape shape)
 {
     mMaskShape = shape;
+    update();
 }
 
 void UBGraphicsCache::init()
@@ -102,7 +105,7 @@ void UBGraphicsCache::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
         }
         else if(eMaskShap_Rectangle == mMaskShape)
         {
-            path.addRect(mShapePos.x(), mShapePos.y(), mShapeWidth, mShapeWidth);
+            path.addRect(mShapePos.x() - mShapeWidth / 2, mShapePos.y() - mShapeWidth / 2, mShapeWidth, mShapeWidth);
         }
         path.setFillRule(Qt::OddEvenFill);
     }
@@ -139,4 +142,5 @@ int UBGraphicsCache::shapeWidth()
 void UBGraphicsCache::setShapeWidth(int width)
 {
     mShapeWidth = width;
+    update();
 }

@@ -61,6 +61,7 @@ public:
     eUBDockOrientation orientation();
     void setOrientation(eUBDockOrientation orientation);
     void setTabsOrientation(eUBDockTabOrientation orientation);
+    void showTabWidget(int tabIndex);
 
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
@@ -127,7 +128,7 @@ private slots:
 private:
     void tabClicked(int tabIndex);
     int tabSpacing();
-    void showTabWidget(int tabIndex);
+
     void toggleCollapseExpand();
 };
 

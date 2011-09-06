@@ -1,0 +1,52 @@
+QWidget#DockPaletteWidgetBox
+{
+	background: #EEEEEE;
+	border-radius: 10px;
+	border: 2px solid #999999;
+}
+
+QColorDialog
+{
+	background: #EEEEEE;
+}
+
+QLabel#DockPaletteWidgetTitle
+{
+	color: #FFFFFF;
+	font-size : 18px;
+	font-weight:bold;
+}
+
+QPushButton#DockPaletteWidgetButton
+{
+	background-color : #DDDDDD;
+	color : #555555;
+	border-radius : 6px;
+	padding : 5px;
+	font-weight : bold;
+	font-size : 12px;
+}
+
+QPushButton#DockPaletteWidgetButton::checked
+{
+	background-color: #BBBBBB;
+}
+
+QSlider::handle::horizontal
+{
+	background-color:#EEEEEE;
+	margin-top:-5px;
+	margin-bottom:-5px;
+	height:20px;
+	width:18px;
+	border-radius:10px;
+	border:1px solid #555555;
+}
+
+QSlider::groove::horizontal
+{
+	background-color:#999999;
+	height:10px;
+	border-radius:5px;
+	border:1px solid #555555;
+}

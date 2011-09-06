@@ -2,7 +2,6 @@ HEADERS += src/desktop/UBDesktopPalette.h \
            src/desktop/UBDesktopAnnotationController.h \
            src/desktop/UBCustomCaptureWindow.h \
            src/desktop/UBWindowCapture.h \
-           src/desktop/UBDesktopToolsPalette.h \
     src/desktop/UBDesktopPenPalette.h \
     src/desktop/UBDesktopMarkerPalette.h \
     src/desktop/UBDesktopEraserPalette.h
@@ -10,7 +9,6 @@ HEADERS += src/desktop/UBDesktopPalette.h \
 SOURCES += src/desktop/UBDesktopPalette.cpp \
            src/desktop/UBDesktopAnnotationController.cpp \
            src/desktop/UBCustomCaptureWindow.cpp \
-           src/desktop/UBDesktopToolsPalette.cpp \
     src/desktop/UBDesktopPenPalette.cpp \
     src/desktop/UBDesktopMarkerPalette.cpp \
     src/desktop/UBDesktopEraserPalette.cpp

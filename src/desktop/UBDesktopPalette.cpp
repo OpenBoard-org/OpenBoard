@@ -136,8 +136,11 @@ void UBDesktopPalette::minimizeMe(eMinimizedLocation location)
     actions << mMaximizeAction;
     setActions(actions);
 
-    QSize newSize = preferredSize();
-    this->resize(newSize);
+    adjustSizeAndPosition();
+
+#ifdef Q_WS_X11
+        emit refreshMask();
+#endif
 }
 
 //  Called when the user wants to maximize the palette
@@ -159,15 +162,15 @@ void UBDesktopPalette::maximizeMe()
     actions << mDisplaySelectAction;
     actions << mShowHideAction;
 
-    //actions << UBApplication::mainWindow->actionDesktopTools;
-
     setActions(actions);
 
-    QSize newSize = preferredSize();
-    this->resize(newSize);
+    adjustSizeAndPosition();
 
     // Notify that the maximization has been done
     emit maximized();
+#ifdef Q_WS_X11
+        emit refreshMask();
+#endif
 }
 
 void UBDesktopPalette::showEvent(QShowEvent *event)

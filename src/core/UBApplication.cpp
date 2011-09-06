@@ -600,3 +600,19 @@ void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, 
     if (textRole != QPalette::NoRole)
         painter->setPen(savedPen);
 }
+
+QString UBApplication::globalStyleSheet()
+{
+    QString style;
+
+    QFile f(":style.qss");
+    if(f.exists())
+    {
+        if(f.open(QIODevice::ReadOnly))
+        {
+            style = QString(f.readAll());
+        }
+    }
+
+    return style;
+}
