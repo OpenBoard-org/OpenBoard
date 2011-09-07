@@ -811,11 +811,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         scene->setModified(false);
     }
 
-	if (annotationGroup)
-	{
-		if (annotationGroup->polygons().empty())
-			delete annotationGroup;
-	}
+    if (annotationGroup)
+    {
+            if (annotationGroup->polygons().empty())
+                    delete annotationGroup;
+    }
 
     return scene;
 }
