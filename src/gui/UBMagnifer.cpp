@@ -1,4 +1,17 @@
-
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <QtGui>
 #include "UBMagnifer.h"
@@ -7,25 +20,15 @@
 #include "board/UBBoardController.h"
 #include "domain/UBGraphicsScene.h"
 
-// #include <QPainter>
-// #include <QPixmap>
-// #include <QDebug>
-// #include <QWidget>
-// #include <QGraphicsView>
-// #include <QTimerEvent>
-// #include <QBitmap>
-// #include <QPen>
-
 
 UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive) 
     : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))
-    , gView(0)
-    , mView(0)
-    , inTimer(false)
-    , borderPen(Qt::darkGray)
     , mShouldMoveWidget(false)
     , mShouldResizeWidget(false)
-
+    , inTimer(false)
+    , borderPen(Qt::darkGray)
+    , gView(0)
+    , mView(0)
 {
     isCusrsorAlreadyStored = false;
     setMouseTracking(true);
@@ -134,9 +137,8 @@ void UBMagnifier::setZoom(qreal zoom)
 
 void UBMagnifier::paintEvent(QPaintEvent * event)
 {
+    Q_UNUSED(event);
     QPainter painter(this);
-
-//    painter.drawRect(0,0,size().width()-1, size().height()-1);
 
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
