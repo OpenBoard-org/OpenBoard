@@ -61,8 +61,6 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     mpColorLabel = new QLabel(tr("Color:"), mpProperties);
     mpColor = new QPushButton(mpProperties);
     mpColor->setObjectName("DockPaletteWidgetButton");
-    // TODO:    Check in the document if the page has a color and assign it to this cache
-    //          else set the black color by default
     updateCacheColor(Qt::black);
     mpColorLayout->addWidget(mpColorLabel, 0);
     mpColorLayout->addWidget(mpColor, 0);
@@ -86,7 +84,6 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     mpShapeLayout->addStretch(1);
     mpPropertiesLayout->addLayout(mpShapeLayout, 0);
 
-    // TODO:    Check in the document which shape is saved and check the corresponding button
     mpCircleButton->setChecked(true);
 
     // Shape Size
@@ -110,6 +107,9 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
 
     // Fill the empty space
     mpPropertiesLayout->addStretch(1);
+
+    // Get the infos from the current cache
+    // ...
 
     // Connect signals / slots
     connect(mpCloseButton, SIGNAL(clicked()), this, SLOT(onCloseClicked()));
@@ -277,6 +277,7 @@ void UBCachePropertiesWidget::updateCurrentCache()
     {
         if("Cache" == it->data(Qt::UserRole).toString())
         {
+            qDebug() << ">>> Setting cache parameters";
             setEnabled(true);
             mpCurrentCache = dynamic_cast<UBGraphicsCache*>(it);
             if((NULL != mpCurrentCache) && (!mCaches.contains(mpCurrentCache)))
