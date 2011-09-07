@@ -143,8 +143,6 @@ class WBTabWidget : public QTabWidget
     signals:
         // tab widget signals
         void loadPage(const QString &url);
-        void tabsChanged();
-        void lastTabClosed();
 
         // current tab signals
         void setCurrentTitle(const QString &url);
