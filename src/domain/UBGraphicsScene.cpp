@@ -343,7 +343,6 @@ bool UBGraphicsScene::inputDeviceRelease()
     }
 
     UBDrawingController *dc = UBDrawingController::drawingController();
-    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)dc->stylusTool();
     if (dc->isDrawingTool()) 
     {
         mCurrentStroke = 0;

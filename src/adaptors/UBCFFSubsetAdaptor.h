@@ -84,6 +84,7 @@ private:
         bool parseTextArea();
         bool parseText();
         bool parsePolygon();
+        bool parsePolyline();
         bool parsePage();
         bool parsePageSet();
         bool parseIwbElementRef();
