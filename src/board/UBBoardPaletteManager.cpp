@@ -73,7 +73,9 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mPendingZoomButtonPressed(false)
     , mPendingPanButtonPressed(false)
     , mPendingEraseButtonPressed(false)
-
+    , mpPageNavigWidget(NULL)
+    , mpLibWidget(NULL)
+    , mpCachePropWidget(NULL)
 {
     setupPalettes();
     connectPalettes();
@@ -82,6 +84,21 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
 
 UBBoardPaletteManager::~UBBoardPaletteManager()
 {
+    if(NULL != mpPageNavigWidget)
+    {
+        delete mpPageNavigWidget;
+        mpPageNavigWidget = NULL;
+    }
+    if(NULL != mpLibWidget)
+    {
+        delete mpLibWidget;
+        mpLibWidget = NULL;
+    }
+    if(NULL != mpCachePropWidget)
+    {
+        delete mpCachePropWidget;
+        mpCachePropWidget = NULL;
+    }
     delete mAddItemPalette;
     if(NULL != mLeftPalette)
     {
@@ -112,14 +129,36 @@ void UBBoardPaletteManager::setupLayout()
 
 }
 
+/**
+ * \brief Set up the dock palette widgets
+ */
+void UBBoardPaletteManager::setupDockPaletteWidgets()
+{
+    // LEFT palette widgets
+    mLeftPalette->registerWidget(mpPageNavigWidget);
+    mLeftPalette->addTabWidget(mpPageNavigWidget);
+    mLeftPalette->connectSignals();
+
+    // RIGHT palette widgets
+    mRightPalette->registerWidget(mpLibWidget);
+    mRightPalette->registerWidget(mpCachePropWidget);
+    mRightPalette->addTabWidget(mpLibWidget);
+    mRightPalette->connectSignals();
+}
 
 void UBBoardPaletteManager::setupPalettes()
 {
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
-
-    // We disable the lib palette for the moment because it is not yet available
     mRightPalette = new UBRightPalette(mContainer);
+
+    // Create the widgets for the dock palettes
+    mpPageNavigWidget = new UBPageNavigationWidget();
+    mpLibWidget = new UBLibWidget();
+    mpCachePropWidget = new UBCachePropertiesWidget();
+
+    setupDockPaletteWidgets();
+
 
     // Add the other palettes
     mStylusPalette = new UBStylusPalette(mContainer, UBSettings::settings()->appToolBarOrientationVertical->get().toBool() ? Qt::Vertical : Qt::Horizontal);
@@ -396,9 +435,9 @@ void UBBoardPaletteManager::activeSceneChanged()
     if (mStylusPalette)
         connect(mStylusPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideEraser()));
 
-    if (mLeftPalette)
+    if (mpPageNavigWidget)
     {
-        mLeftPalette->pageNavigator()->setPageNumber(pageIndex + 1, activeScene->document()->pageCount());
+        mpPageNavigWidget->setPageNumber(pageIndex + 1, activeScene->document()->pageCount());
     }
 
     if (mZoomPalette)
@@ -562,10 +601,11 @@ void UBBoardPaletteManager::addItemToLibrary()
                      , Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
         QImage image = mPixmap.toImage();
-        // TODO:Claudio
-        // This is a wrong way of calling importImageOnLibrary but for the moment it works because element on mRightPalette are predefined.
-        mRightPalette->libWidget()->libNavigator()->libraryWidget()->libraryController()->importImageOnLibrary(image);
 
+        if(NULL != mpLibWidget)
+        {
+            mpLibWidget->libNavigator()->libraryWidget()->libraryController()->importImageOnLibrary(image);
+        }
     }
     else
     {

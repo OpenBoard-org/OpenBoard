@@ -260,6 +260,10 @@ void UBDockPalette::mouseReleaseEvent(QMouseEvent *event)
     mCanResize = false;
 }
 
+/**
+ * \brief Handle the resize event
+ * @param event as the resize event
+ */
 void UBDockPalette::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
@@ -461,6 +465,10 @@ void UBDockPalette::tabClicked(int tabIndex)
     }
 }
 
+/**
+ * \brief Show the tab widget related to the given index
+ * @param tabIndex as the given index
+ */
 void UBDockPalette::showTabWidget(int tabIndex)
 {
     mpStackWidget->setCurrentIndex(tabIndex);
@@ -473,6 +481,9 @@ void UBDockPalette::showTabWidget(int tabIndex)
     }
 }
 
+/**
+ * \brief Toggle the collapse / expand state
+ */
 void UBDockPalette::toggleCollapseExpand()
 {
     if(mLastWidth == -1)
@@ -489,11 +500,18 @@ void UBDockPalette::toggleCollapseExpand()
     }
 }
 
+/**
+ * \brief Set the tabs orientation
+ * @param orientation as the given tabs orientation
+ */
 void UBDockPalette::setTabsOrientation(eUBDockTabOrientation orientation)
 {
     mTabsOrientation = orientation;
 }
 
+/**
+ * \brief Update the tab position regarding the toolbar position (up or down)
+ */
 void UBDockPalette::onToolbarPosUpdated()
 {
     // Get the position of the tab
@@ -508,11 +526,19 @@ void UBDockPalette::onToolbarPosUpdated()
     update();
 }
 
+/**
+ * \brief Get the custom margin
+ * @return the custom margin value
+ */
 int UBDockPalette::customMargin()
 {
     return 5;
 }
 
+/**
+ * \brief Add the given tab widget
+ * @param widget as the given widget
+ */
 void UBDockPalette::addTabWidget(UBDockPaletteWidget *widget)
 {
     if(!mTabWidgets.contains(widget))
@@ -525,6 +551,10 @@ void UBDockPalette::addTabWidget(UBDockPaletteWidget *widget)
     }
 }
 
+/**
+ * \brief Remove the given tab
+ * @param widgetName as the tab widget name
+ */
 void UBDockPalette::removeTab(const QString &widgetName)
 {
     for(int i = 0; i < mTabWidgets.size(); i++)
@@ -541,17 +571,28 @@ void UBDockPalette::removeTab(const QString &widgetName)
     }
 }
 
+/**
+ * \brief Handle the resize request
+ * @param event as the given resize request
+ */
 void UBDockPalette::onResizeRequest(QResizeEvent *event)
 {
     resizeEvent(event);
 }
 
+/**
+ * \brief Get the tab spacing
+ * @return the tab spacing
+ */
 int UBDockPalette::tabSpacing()
 {
     return 2;
 }
 
-// This method is used to show the tab widget
+/**
+ * \brief Show the given widget
+ * @param widgetName as the given widget name
+ */
 void UBDockPalette::onShowTabWidget(const QString &widgetName)
 {
     for(int i = 0; i < mRegisteredWidgets.size(); i++)
@@ -565,12 +606,18 @@ void UBDockPalette::onShowTabWidget(const QString &widgetName)
     }
 }
 
-// This method is used to hide the tab widget
+/**
+ * \brief Hide the given widget
+ * @param widgetName as the given widget name
+ */
 void UBDockPalette::onHideTabWidget(const QString &widgetName)
 {
     removeTab(widgetName);
 }
 
+/**
+ * \brief Connect the show / hide signals of the widget related to this dock palette
+ */
 void UBDockPalette::connectSignals()
 {
     for(int i=0; i < mRegisteredWidgets.size(); i++)
@@ -580,10 +627,16 @@ void UBDockPalette::connectSignals()
     }
 }
 
+/**
+ * \brief Register the given widget
+ * @param widget as the given widget
+ */
 void UBDockPalette::registerWidget(UBDockPaletteWidget *widget)
 {
     if(!mRegisteredWidgets.contains(widget))
     {
+        // Update the parent of this widget
+        widget->setParent(this);
         mRegisteredWidgets.append(widget);
 
         // By default, the widget is hidden
