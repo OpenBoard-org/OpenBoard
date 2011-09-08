@@ -87,8 +87,7 @@ WBTabBar::WBTabBar(QWidget *parent)
         connect(shortCut, SIGNAL(activated()), this, SLOT(selectTabAction()));
     }
     setTabsClosable(true);
-    connect(this, SIGNAL(tabCloseRequested(int)),
-            this, SIGNAL(closeTab(int)));
+    connect(this, SIGNAL(tabCloseRequested(int)), this, SIGNAL(closeTab(int)));
     setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
     setMovable(true);
     setDocumentMode(false);
@@ -116,26 +115,23 @@ void WBTabBar::contextMenuRequested(const QPoint &position)
     menu.addAction(tr("New &Tab"), this, SIGNAL(newTab()), QKeySequence::AddTab);
     int index = tabAt(position);
     if (-1 != index) {
-        QAction *action = menu.addAction(tr("Clone Tab"),
-                this, SLOT(cloneTab()));
+        QAction *action = menu.addAction(tr("Clone Tab"), this, SLOT(cloneTab()));
         action->setData(index);
 
         menu.addSeparator();
 
-        action = menu.addAction(tr("&Close Tab"),
-                this, SLOT(closeTab()), QKeySequence::Close);
+        action = menu.addAction(tr("&Close Tab"), this, SLOT(closeTab()), QKeySequence::Close);
         action->setData(index);
 
-        action = menu.addAction(tr("Close &Other Tabs"),
-                this, SLOT(closeOtherTabs()));
+        action = menu.addAction(tr("Close &Other Tabs"), this, SLOT(closeOtherTabs()));
         action->setData(index);
 
         menu.addSeparator();
 
-        action = menu.addAction(tr("Reload Tab"),
-                this, SLOT(reloadTab()), QKeySequence::Refresh);
+        action = menu.addAction(tr("Reload Tab"), this, SLOT(reloadTab()), QKeySequence::Refresh);
         action->setData(index);
-    } else {
+    }
+    else {
         menu.addSeparator();
     }
     menu.addAction(tr("Reload All Tabs"), this, SIGNAL(reloadAllTabs()));
@@ -412,45 +408,30 @@ WBWebView *WBTabWidget::newTab(bool makeCurrent)
         p.setColor(QPalette::Window, palette().color(QPalette::Base));
         emptyWidget->setPalette(p);
         emptyWidget->setAutoFillBackground(true);
-        disconnect(this, SIGNAL(currentChanged(int)),
-            this, SLOT(currentChanged(int)));
+        disconnect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
         addTab(emptyWidget, tr("(Untitled)"));
-        connect(this, SIGNAL(currentChanged(int)),
-            this, SLOT(currentChanged(int)));
+        connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
         return 0;
     }
 
     // webview
     WBWebView *webView = new WBWebView;
     urlLineEdit->setWebView(webView);
-    connect(webView, SIGNAL(loadStarted()),
-            this, SLOT(webViewLoadStarted()));
-    connect(webView, SIGNAL(loadFinished(bool)),
-            this, SLOT(webViewIconChanged()));
-    connect(webView, SIGNAL(iconChanged()),
-            this, SLOT(webViewIconChanged()));
-    connect(webView, SIGNAL(titleChanged(const QString &)),
-            this, SLOT(webViewTitleChanged(const QString &)));
-    connect(webView, SIGNAL(urlChanged(const QUrl &)),
-            this, SLOT(webViewUrlChanged(const QUrl &)));
-    connect(webView->page(), SIGNAL(windowCloseRequested()),
-            this, SLOT(windowCloseRequested()));
-    connect(webView->page(), SIGNAL(geometryChangeRequested(const QRect &)),
-            this, SIGNAL(geometryChangeRequested(const QRect &)));
-    connect(webView->page(), SIGNAL(printRequested(QWebFrame *)),
-            this, SIGNAL(printRequested(QWebFrame *)));
-    connect(webView->page(), SIGNAL(menuBarVisibilityChangeRequested(bool)),
-            this, SIGNAL(menuBarVisibilityChangeRequested(bool)));
-    connect(webView->page(), SIGNAL(statusBarVisibilityChangeRequested(bool)),
-            this, SIGNAL(statusBarVisibilityChangeRequested(bool)));
-    connect(webView->page(), SIGNAL(toolBarVisibilityChangeRequested(bool)),
-            this, SIGNAL(toolBarVisibilityChangeRequested(bool)));
+    connect(webView, SIGNAL(loadStarted()), this, SLOT(webViewLoadStarted()));
+    connect(webView, SIGNAL(loadFinished(bool)), this, SLOT(webViewIconChanged()));
+    connect(webView, SIGNAL(iconChanged()), this, SLOT(webViewIconChanged()));
+    connect(webView, SIGNAL(titleChanged(const QString &)), this, SLOT(webViewTitleChanged(const QString &)));
+    connect(webView, SIGNAL(urlChanged(const QUrl &)), this, SLOT(webViewUrlChanged(const QUrl &)));
+    connect(webView->page(), SIGNAL(windowCloseRequested()), this, SLOT(windowCloseRequested()));
+    connect(webView->page(), SIGNAL(geometryChangeRequested(const QRect &)), this, SIGNAL(geometryChangeRequested(const QRect &)));
+    connect(webView->page(), SIGNAL(printRequested(QWebFrame *)), this, SIGNAL(printRequested(QWebFrame *)));
+    connect(webView->page(), SIGNAL(menuBarVisibilityChangeRequested(bool)), this, SIGNAL(menuBarVisibilityChangeRequested(bool)));
+    connect(webView->page(), SIGNAL(statusBarVisibilityChangeRequested(bool)), this, SIGNAL(statusBarVisibilityChangeRequested(bool)));
+    connect(webView->page(), SIGNAL(toolBarVisibilityChangeRequested(bool)), this, SIGNAL(toolBarVisibilityChangeRequested(bool)));
 
-    connect(webView, SIGNAL(pixmapCaptured(const QPixmap&, bool)),
-            UBApplication::applicationController, SLOT(addCapturedPixmap(const QPixmap &, bool)));
+    connect(webView, SIGNAL(pixmapCaptured(const QPixmap&, bool)), UBApplication::applicationController, SLOT(addCapturedPixmap(const QPixmap &, bool)));
 
-    connect(webView, SIGNAL(embedCodeCaptured(const QString&)),
-            UBApplication::applicationController, SLOT(addCapturedEmbedCode(const QString&)));
+    connect(webView, SIGNAL(embedCodeCaptured(const QString&)), UBApplication::applicationController, SLOT(addCapturedEmbedCode(const QString&)));
 
     addTab(webView, tr("(Untitled)"));
     if (makeCurrent)
@@ -465,7 +446,6 @@ WBWebView *WBTabWidget::newTab(bool makeCurrent)
 
     if (count() == 1)
         currentChanged(currentIndex());
-    emit tabsChanged();
 
     return webView;
 }
@@ -553,13 +533,13 @@ void WBTabWidget::closeTab(int index)
     removeTab(index);
     webView->deleteLater();
 
-    emit tabsChanged();
-
     if (hasFocus && count() > 0)
         currentWebView()->setFocus();
 
-    if (count() == 0)
-        emit lastTabClosed();
+    if (count() == 0){
+        newTab();
+        emit currentChanged(0);
+    }
 }
 
 void WBTabWidget::webViewLoadStarted()
@@ -616,7 +596,6 @@ void WBTabWidget::webViewUrlChanged(const QUrl &url)
     {
         mTabBar->setTabData(index, url);
     }
-    emit tabsChanged();
 
     //  web view does not reload sometime on OSX ... force it
     webView->show();

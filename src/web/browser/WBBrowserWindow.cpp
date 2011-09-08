@@ -85,15 +85,12 @@ WBHistoryManager *WBBrowserWindow::sHistoryManager = 0;
 
 WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWindow, bool isViewerWebInstance)
         : QWidget(parent)
+        , mWebToolBar(0)
         , mSearchToolBar(0)
         , mTabWidget(new WBTabWidget(this))
         , mSearchAction(0)
         , mUniboardMainWindow(uniboardMainWindow)
-        , mWebToolBar(0)
 {
-    qDebug() << "Height: " << this->height();
-    qDebug() << "width: " << this->width();
-
     QWebSettings *defaultSettings = QWebSettings::globalSettings();
     defaultSettings->setAttribute(QWebSettings::JavascriptEnabled, true);
     defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -110,11 +107,10 @@ WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWi
 
     this->setLayout(layout);
 
-    connect(mTabWidget, SIGNAL(loadPage(const QString &)),
-                this, SLOT(loadPage(const QString &)));
+    connect(mTabWidget, SIGNAL(loadPage(const QString &)), this, SLOT(loadPage(const QString &)));
 
 
-    connect(mTabWidget, SIGNAL(setCurrentTitle(const QString &)), this,             SLOT(slotUpdateWindowTitle(const QString &)));
+    connect(mTabWidget, SIGNAL(setCurrentTitle(const QString &)), this, SLOT(slotUpdateWindowTitle(const QString &)));
 
     if (!isViewerWebInstance) {
         connect(mTabWidget, SIGNAL(loadProgress(int)), this, SLOT(slotLoadProgress(int)));
@@ -122,12 +118,7 @@ WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWi
 
     connect(mTabWidget, SIGNAL(loadFinished(bool)), this, SIGNAL(activeViewPageChanged()));
 
-    connect(mTabWidget, SIGNAL(lastTabClosed()),
-                mTabWidget, SLOT(newTab()));
-
-
-    connect(mTabWidget, SIGNAL(geometryChangeRequested(const QRect &)),
-            this, SLOT(geometryChangeRequested(const QRect &)));
+    connect(mTabWidget, SIGNAL(geometryChangeRequested(const QRect &)), this, SLOT(geometryChangeRequested(const QRect &)));
 
     slotUpdateWindowTitle();
 
@@ -141,7 +132,15 @@ WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWi
 
 WBBrowserWindow::~WBBrowserWindow()
 {
-    // NOOP
+    if(mTabWidget){
+        delete mTabWidget;
+        mTabWidget = NULL;
+    }
+
+    if(mSearchToolBar){
+        delete mSearchToolBar;
+        mSearchToolBar = NULL;
+    }
 }
 
 
