@@ -72,16 +72,15 @@ public:
 
     void setBackgroundBrush(const QBrush& brush);
     void registerWidget(UBDockPaletteWidget* widget);
+    void addTabWidget(UBDockPaletteWidget* widget);
+    void removeTab(const QString& widgetName);
+    void connectSignals();
 
 public slots:
     void onShowTabWidget(const QString& widgetName);
     void onHideTabWidget(const QString& widgetName);
 
 protected:
-    void addTabWidget(UBDockPaletteWidget* widget);
-    void removeTab(const QString& widgetName);
-    void connectSignals();
-
     virtual int border();
     virtual int radius();
     virtual int customMargin();
@@ -109,15 +108,10 @@ protected:
     QTime mClickTime;
     /** The mouse pressed position */
     QPoint mMousePressPos;
-//    /** The palette icon */
-//    QPixmap mIcon;
-//    QPixmap mCollapsedIcon;
     /** The tab orientation */
     eUBDockTabOrientation mTabsOrientation;
     /** The h position of the tab */
     int mHTab;
-    /** The tab widgets */
-    //QMap<QString, UBDockPaletteWidget*> mTabWidgets;
     /** The stacked widget */
     QStackedWidget* mpStackWidget;
     /** The layout */
@@ -136,7 +130,6 @@ private slots:
 private:
     void tabClicked(int tabIndex);
     int tabSpacing();
-
     void toggleCollapseExpand();
 };
 

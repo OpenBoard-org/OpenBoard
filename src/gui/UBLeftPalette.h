@@ -16,7 +16,6 @@
 #define UBLEFTPALETTE_H
 
 #include "UBDockPalette.h"
-#include "UBPageNavigationWidget.h"
 
 class UBLeftPalette : public UBDockPalette
 {
@@ -24,15 +23,9 @@ public:
     UBLeftPalette(QWidget* parent=0, const char* name="UBLeftPalette");
     ~UBLeftPalette();
 
-    UBPageNavigationWidget* pageNavigator();
-
 protected:
     void updateMaxWidth();
     void resizeEvent(QResizeEvent *event);
-
-private:
-    UBPageNavigationWidget* mpPageNavigator;
-
 };
 
 #endif // UBLEFTPALETTE_H

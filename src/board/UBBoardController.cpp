@@ -1155,7 +1155,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     }
 
     // Notify the navigator palette that the document has changed
-    mPaletteManager->leftPalette()->pageNavigator()->setDocument(pDocumentProxy);
+    emit setDocOnPageNavigator(pDocumentProxy);
 
     if (sceneChange)
     {

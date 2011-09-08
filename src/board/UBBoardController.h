@@ -261,6 +261,7 @@ class UBBoardController : public QObject
         void cacheEnabled();
         void cacheDisabled();
         void pageChanged();
+        void setDocOnPageNavigator(UBDocumentProxy* doc);
 
     protected:
 

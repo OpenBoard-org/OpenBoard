@@ -45,6 +45,9 @@ public slots:
 protected:
     virtual void timerEvent(QTimerEvent *event);
 
+private slots:
+    void onSetDocOnPageNavigator(UBDocumentProxy* doc);
+
 private:
     void updateTime();
     int customMargin();

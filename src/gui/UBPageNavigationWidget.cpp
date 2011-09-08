@@ -68,6 +68,7 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
     mTimerID = startTimer(1000);
 
     connect(mNavigator, SIGNAL(changeCurrentPage()), this, SLOT(changeCurrentPage()));
+    connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(onSetDocOnPageNavigator(UBDocumentProxy*)));
 }
 
 /**
@@ -173,12 +174,29 @@ void UBPageNavigationWidget::setPageNumber(int current, int total)
     mPageNbr->setText(QString("%1 / %2").arg(current).arg(total));
 }
 
+/**
+ * \brief Get the custom margin value
+ * @return the custom margin value
+ */
 int UBPageNavigationWidget::customMargin()
 {
     return 5;
 }
 
+/**
+ * \brief Get the border value
+ * @return the border value
+ */
 int UBPageNavigationWidget::border()
 {
     return 15;
+}
+
+/**
+ * \brief Set the current document
+ * @param doc as the current document
+ */
+void UBPageNavigationWidget::onSetDocOnPageNavigator(UBDocumentProxy *doc)
+{
+    setDocument(doc);
 }

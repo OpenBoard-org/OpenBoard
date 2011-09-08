@@ -16,8 +16,6 @@
 #define UBRIGHTPALETTE_H
 
 #include "UBDockPalette.h"
-#include "UBLibWidget.h"
-#include "UBCachePropertiesWidget.h"
 
 class UBRightPalette : public UBDockPalette
 {
@@ -26,8 +24,6 @@ public:
     UBRightPalette(QWidget* parent=0, const char* name="UBRightPalette");
     ~UBRightPalette();
 
-    UBLibWidget* libWidget();
-
 signals:
     void resized();
 
@@ -35,14 +31,6 @@ protected:
     void updateMaxWidth();
     void mouseMoveEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *event);
-
-private slots:
-//    void onCacheEnabled();
-//    void onCacheDisabled();
-
-private:
-    UBLibWidget* mpLibWidget;
-    UBCachePropertiesWidget* mpCachePropWidget;
 };
 
 #endif // UBRIGHTPALETTE_H

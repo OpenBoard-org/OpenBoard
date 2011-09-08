@@ -13,52 +13,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "UBLeftPalette.h"
+#include "core/UBSettings.h"
 
+/**
+ * \brief The constructor
+ */
 UBLeftPalette::UBLeftPalette(QWidget *parent, const char *name):UBDockPalette(parent)
-  , mpPageNavigator(NULL)
 {
     setObjectName(name);
     setOrientation(eUBDockOrientation_Left);
     mLastWidth = 300;
     mCollapseWidth = 180;
-/*
-    resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());
-    mpLayout->setContentsMargins(2*border() + customMargin(), customMargin(), customMargin(), customMargin());
-*/
 
     resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), parentWidget()->height());
     mpLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());
 
-    // Add the widgets here
-    mpPageNavigator = new UBPageNavigationWidget(this);
-    addTabWidget(mpPageNavigator);
 }
 
+/**
+ * \brief The destructor
+ */
 UBLeftPalette::~UBLeftPalette()
 {
-    if(NULL != mpPageNavigator)
-    {
-        delete mpPageNavigator;
-        mpPageNavigator = NULL;
-    }
+
 }
 
+/**
+ * \brief Update the maximum width
+ */
 void UBLeftPalette::updateMaxWidth()
 {
     setMaximumWidth(300);
 }
 
+/**
+ * \brief Handle the resize event
+ * @param event as the resize event
+ */
 void UBLeftPalette::resizeEvent(QResizeEvent *event)
 {
     UBDockPalette::resizeEvent(event);
-    if(NULL != mpPageNavigator)
-    {
-        mpPageNavigator->setMinimumHeight(height() - 2*border());
-    }
     UBSettings::settings()->navigPaletteWidth->set(width());
-}
-
-UBPageNavigationWidget* UBLeftPalette::pageNavigator()
-{
-    return mpPageNavigator;
 }

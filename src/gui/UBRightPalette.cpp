@@ -17,9 +17,10 @@
 
 #include "UBRightPalette.h"
 
-
+/**
+ * \brief The constructor
+ */
 UBRightPalette::UBRightPalette(QWidget *parent, const char *name):UBDockPalette(parent)
-  , mpLibWidget(NULL)
 {
     setObjectName(name);
     setOrientation(eUBDockOrientation_Right);
@@ -27,50 +28,32 @@ UBRightPalette::UBRightPalette(QWidget *parent, const char *name):UBDockPalette(
     mLastWidth = 300;
     resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());
     mpLayout->setContentsMargins(2*border() + customMargin(), customMargin(), customMargin(), customMargin());
-
-    // Create and register the widgets
-    mpLibWidget = new UBLibWidget(this);
-    mpCachePropWidget = new UBCachePropertiesWidget(this);
-    registerWidget(mpLibWidget);
-    registerWidget(mpCachePropWidget);
-
-    // Add the visible widgets
-    addTabWidget(mpLibWidget);
-
-    connectSignals();
 }
 
+/**
+ * \brief The destructor
+ */
 UBRightPalette::~UBRightPalette()
 {
-    if(NULL != mpLibWidget)
-    {
-        delete mpLibWidget;
-        mpLibWidget = NULL;
-    }
-    if(NULL != mpCachePropWidget)
-    {
-        delete mpCachePropWidget;
-        mpCachePropWidget = NULL;
-    }
+
 }
 
-UBLibWidget* UBRightPalette::libWidget()
-{
-    return mpLibWidget;
-}
-
+/**
+ * \brief Handle the mouse move event
+ * @event as the mouse move event
+ */
 void UBRightPalette::mouseMoveEvent(QMouseEvent *event)
 {
     if(mCanResize)
     {
         UBDockPalette::mouseMoveEvent(event);
     }
-    else
-    {
-        //qDebug() << "Mouse move event detected!" ;
-    }
 }
 
+/**
+ * \brief Handle the resize event
+ * @param event as the resize event
+ */
 void UBRightPalette::resizeEvent(QResizeEvent *event)
 {
     UBDockPalette::resizeEvent(event);
@@ -78,39 +61,12 @@ void UBRightPalette::resizeEvent(QResizeEvent *event)
     emit resized();
 }
 
+/**
+ * \brief Update the maximum width
+ */
 void UBRightPalette::updateMaxWidth()
 {
     setMaximumWidth((int)((parentWidget()->width() * 2)/3));
     setMaximumHeight(parentWidget()->height());
     setMinimumHeight(parentWidget()->height());
 }
-
-//void UBRightPalette::onCacheEnabled()
-//{
-//    if(mpCachePropWidget->isHidden())
-//    {
-//        mpCachePropWidget->setVisible(true);
-//        // Add the cache tab
-//        addTabWidget(mpCachePropWidget);
-//    }
-
-//    // Set the cache of the current page as the active one for the properties widget
-//    mpCachePropWidget->updateCurrentCache();
-
-//    // Show the cache properties widget
-//    for(int i = 0; i < mTabWidgets.size(); i++)
-//    {
-//        if((NULL != mTabWidgets.at(i)) && ("CachePropWidget" == mTabWidgets.at(i)->name()))
-//        {
-//            showTabWidget(i);
-//            break;
-//        }
-//    }
-
-//}
-
-//void UBRightPalette::onCacheDisabled()
-//{
-//    removeTab(mpCachePropWidget->name());
-//    mpCachePropWidget->hide();
-//}

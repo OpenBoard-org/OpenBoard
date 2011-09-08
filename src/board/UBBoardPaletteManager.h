@@ -22,6 +22,9 @@
 #include "web/UBRoutedMouseEventWebView.h"
 #include "gui/UBLeftPalette.h"
 #include "gui/UBRightPalette.h"
+#include "gui/UBPageNavigationWidget.h"
+#include "gui/UBLibWidget.h"
+#include "gui/UBCachePropertiesWidget.h"
 
 class UBStylusPalette;
 class UBClockPalette;
@@ -61,6 +64,7 @@ class UBBoardPaletteManager : public QObject
         void setupPalettes();
         void connectPalettes();
         void positionFreeDisplayPalette();
+        void setupDockPaletteWidgets();
 
         QWidget* mContainer;
         UBBoardController *mBoardControler;
@@ -69,7 +73,9 @@ class UBBoardPaletteManager : public QObject
 
         UBZoomPalette *mZoomPalette;
 
+        /** The left dock palette */
         UBLeftPalette* mLeftPalette;
+        /** The right dock palette */
         UBRightPalette* mRightPalette;
 
         UBActionPalette *mBackgroundsPalette;
@@ -94,6 +100,13 @@ class UBBoardPaletteManager : public QObject
 
         QTime mEraseButtonPressedTime;
         bool mPendingEraseButtonPressed;
+
+        /** The page navigator widget */
+        UBPageNavigationWidget* mpPageNavigWidget;
+        /** The library widget */
+        UBLibWidget* mpLibWidget;
+        /** The cache properties widget */
+        UBCachePropertiesWidget* mpCachePropWidget;
 
     private slots:
 
