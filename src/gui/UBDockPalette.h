@@ -71,10 +71,16 @@ public:
     virtual void leaveEvent(QEvent *);
 
     void setBackgroundBrush(const QBrush& brush);
+    void registerWidget(UBDockPaletteWidget* widget);
+
+public slots:
+    void onShowTabWidget(const QString& widgetName);
+    void onHideTabWidget(const QString& widgetName);
 
 protected:
     void addTabWidget(UBDockPaletteWidget* widget);
     void removeTab(const QString& widgetName);
+    void connectSignals();
 
     virtual int border();
     virtual int radius();
@@ -118,8 +124,10 @@ protected:
     QVBoxLayout* mpLayout;
     /** The current tab index */
     int mCurrentTab;
-    /** The tab widgets */
+    /** The visible tab widgets */
     QVector<UBDockPaletteWidget*> mTabWidgets;
+    /** The current widget */
+    QVector<UBDockPaletteWidget*> mRegisteredWidgets;
 
 private slots:
     void onToolbarPosUpdated();

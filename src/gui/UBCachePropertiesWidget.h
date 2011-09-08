@@ -33,6 +33,7 @@ private slots:
     void onColorClicked();
     void updateShapeButtons();
     void onSizeChanged(int newSize);
+    void onCacheEnabled();
 
 private:
     QVBoxLayout* mpLayout;

@@ -484,7 +484,6 @@ void UBBoardController::addScene(UBDocumentProxy* proxy, int sceneIndex, bool re
     if (scene)
     {
         addScene(scene, replaceActiveIfEmpty);
-        emit pageChanged();
     }
 }
 
@@ -1159,7 +1158,10 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     mPaletteManager->leftPalette()->pageNavigator()->setDocument(pDocumentProxy);
 
     if (sceneChange)
+    {
         emit activeSceneChanged();
+        emit pageChanged();
+    }
 }
 
 

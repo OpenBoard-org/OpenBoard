@@ -7,6 +7,7 @@
 
 class UBDockPaletteWidget : public QWidget
 {
+    Q_OBJECT
 public:
     UBDockPaletteWidget(QWidget* parent=0, const char* name="UBDockPaletteWidget");
     ~UBDockPaletteWidget();
@@ -14,6 +15,10 @@ public:
     QPixmap iconToRight();
     QPixmap iconToLeft();
     QString name();
+
+signals:
+    void hideTab(const QString& widgetName);
+    void showTab(const QString& widgetName);
 
 protected:
     QPixmap mIconToRight;   // arrow like this: >

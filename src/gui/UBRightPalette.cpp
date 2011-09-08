@@ -28,16 +28,16 @@ UBRightPalette::UBRightPalette(QWidget *parent, const char *name):UBDockPalette(
     resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());
     mpLayout->setContentsMargins(2*border() + customMargin(), customMargin(), customMargin(), customMargin());
 
-    // Add the tab widgets
+    // Create and register the widgets
     mpLibWidget = new UBLibWidget(this);
+    mpCachePropWidget = new UBCachePropertiesWidget(this);
+    registerWidget(mpLibWidget);
+    registerWidget(mpCachePropWidget);
+
+    // Add the visible widgets
     addTabWidget(mpLibWidget);
 
-    mpCachePropWidget = new UBCachePropertiesWidget(this);
-    mpCachePropWidget->hide();
-
-    // Connect signals/slots
-    connect(UBApplication::boardController, SIGNAL(cacheEnabled()), this, SLOT(onCacheEnabled()));
-    connect(mpCachePropWidget, SIGNAL(cacheListEmpty()), this, SLOT(onCacheDisabled()));
+    connectSignals();
 }
 
 UBRightPalette::~UBRightPalette()
@@ -85,32 +85,32 @@ void UBRightPalette::updateMaxWidth()
     setMinimumHeight(parentWidget()->height());
 }
 
-void UBRightPalette::onCacheEnabled()
-{
-    if(mpCachePropWidget->isHidden())
-    {
-        mpCachePropWidget->setVisible(true);
-        // Add the cache tab
-        addTabWidget(mpCachePropWidget);
-    }
+//void UBRightPalette::onCacheEnabled()
+//{
+//    if(mpCachePropWidget->isHidden())
+//    {
+//        mpCachePropWidget->setVisible(true);
+//        // Add the cache tab
+//        addTabWidget(mpCachePropWidget);
+//    }
 
-    // Set the cache of the current page as the active one for the properties widget
-    mpCachePropWidget->updateCurrentCache();
+//    // Set the cache of the current page as the active one for the properties widget
+//    mpCachePropWidget->updateCurrentCache();
 
-    // Show the cache properties widget
-    for(int i = 0; i < mTabWidgets.size(); i++)
-    {
-        if((NULL != mTabWidgets.at(i)) && ("CachePropWidget" == mTabWidgets.at(i)->name()))
-        {
-            showTabWidget(i);
-            break;
-        }
-    }
+//    // Show the cache properties widget
+//    for(int i = 0; i < mTabWidgets.size(); i++)
+//    {
+//        if((NULL != mTabWidgets.at(i)) && ("CachePropWidget" == mTabWidgets.at(i)->name()))
+//        {
+//            showTabWidget(i);
+//            break;
+//        }
+//    }
 
-}
+//}
 
-void UBRightPalette::onCacheDisabled()
-{
-    removeTab(mpCachePropWidget->name());
-    mpCachePropWidget->hide();
-}
+//void UBRightPalette::onCacheDisabled()
+//{
+//    removeTab(mpCachePropWidget->name());
+//    mpCachePropWidget->hide();
+//}

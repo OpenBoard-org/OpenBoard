@@ -37,8 +37,8 @@ protected:
     void resizeEvent(QResizeEvent *event);
 
 private slots:
-    void onCacheEnabled();
-    void onCacheDisabled();
+//    void onCacheEnabled();
+//    void onCacheDisabled();
 
 private:
     UBLibWidget* mpLibWidget;

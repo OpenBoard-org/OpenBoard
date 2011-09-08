@@ -517,8 +517,10 @@ void UBDockPalette::addTabWidget(UBDockPaletteWidget *widget)
 {
     if(!mTabWidgets.contains(widget))
     {
+        widget->setVisible(true);
         mTabWidgets.append(widget);
         mpStackWidget->addWidget(widget);
+        mpStackWidget->setCurrentWidget(widget);
         update();
     }
 }
@@ -532,6 +534,7 @@ void UBDockPalette::removeTab(const QString &widgetName)
         {
             mpStackWidget->removeWidget(pCrntWidget);
             mTabWidgets.remove(i);
+            pCrntWidget->hide();
             update();
             break;
         }
@@ -546,4 +549,44 @@ void UBDockPalette::onResizeRequest(QResizeEvent *event)
 int UBDockPalette::tabSpacing()
 {
     return 2;
+}
+
+// This method is used to show the tab widget
+void UBDockPalette::onShowTabWidget(const QString &widgetName)
+{
+    for(int i = 0; i < mRegisteredWidgets.size(); i++)
+    {
+        UBDockPaletteWidget* pCrntWidget = mRegisteredWidgets.at(i);
+        if(NULL != pCrntWidget && (pCrntWidget->name() == widgetName))
+        {
+            addTabWidget(pCrntWidget);
+            break;
+        }
+    }
+}
+
+// This method is used to hide the tab widget
+void UBDockPalette::onHideTabWidget(const QString &widgetName)
+{
+    removeTab(widgetName);
+}
+
+void UBDockPalette::connectSignals()
+{
+    for(int i=0; i < mRegisteredWidgets.size(); i++)
+    {
+        connect(mRegisteredWidgets.at(i), SIGNAL(showTab(QString)), this, SLOT(onShowTabWidget(QString)));
+        connect(mRegisteredWidgets.at(i), SIGNAL(hideTab(QString)), this, SLOT(onHideTabWidget(QString)));
+    }
+}
+
+void UBDockPalette::registerWidget(UBDockPaletteWidget *widget)
+{
+    if(!mRegisteredWidgets.contains(widget))
+    {
+        mRegisteredWidgets.append(widget);
+
+        // By default, the widget is hidden
+        widget->hide();
+    }
 }

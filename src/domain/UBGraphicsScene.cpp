@@ -1644,6 +1644,7 @@ void UBGraphicsScene::addCache()
     cache->setVisible(true);
     cache->setSelected(true);
     UBApplication::boardController->notifyCache(true);
+    UBApplication::boardController->notifyPageChanged();
 }
 
 void UBGraphicsScene::addMask()

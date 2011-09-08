@@ -108,9 +108,6 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     // Fill the empty space
     mpPropertiesLayout->addStretch(1);
 
-    // Get the infos from the current cache
-    // ...
-
     // Connect signals / slots
     connect(mpCloseButton, SIGNAL(clicked()), this, SLOT(onCloseClicked()));
     connect(mpColor, SIGNAL(clicked()), this, SLOT(onColorClicked()));
@@ -118,6 +115,7 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     connect(mpSquareButton, SIGNAL(clicked()), this, SLOT(updateShapeButtons()));
     connect(mpSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(onSizeChanged(int)));
     connect(UBApplication::boardController, SIGNAL(pageChanged()), this, SLOT(updateCurrentCache()));
+    connect(UBApplication::boardController, SIGNAL(cacheEnabled()), this, SLOT(onCacheEnabled()));
 }
 
 UBCachePropertiesWidget::~UBCachePropertiesWidget()
@@ -277,8 +275,8 @@ void UBCachePropertiesWidget::updateCurrentCache()
     {
         if("Cache" == it->data(Qt::UserRole).toString())
         {
-            qDebug() << ">>> Setting cache parameters";
             setEnabled(true);
+            emit showTab(name());
             mpCurrentCache = dynamic_cast<UBGraphicsCache*>(it);
             if((NULL != mpCurrentCache) && (!mCaches.contains(mpCurrentCache)))
             {
@@ -305,6 +303,7 @@ void UBCachePropertiesWidget::updateCurrentCache()
     }
 
     // If we fall here, that means that this page has no cache
+    emit hideTab(name());
     mpCurrentCache = NULL;
     setDisabled(true);
 }
@@ -315,4 +314,9 @@ void UBCachePropertiesWidget::onSizeChanged(int newSize)
     {
         mpCurrentCache->setShapeWidth(newSize);
     }
+}
+
+void UBCachePropertiesWidget::onCacheEnabled()
+{
+    emit showTab(name());
 }
