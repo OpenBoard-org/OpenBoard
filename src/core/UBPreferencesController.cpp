@@ -110,9 +110,7 @@ void UBPreferencesController::wire()
     for(int i = 0; i < settings->supportedKeyboardSizes->size(); i++)
         mPreferencesUI->keyboardPaletteKeyButtonSize->addItem(settings->supportedKeyboardSizes->at(i));
 
-//    mPreferencesUI->keyboardPaletteKeyButtonSize->addItem("29x29");
-//    mPreferencesUI->keyboardPaletteKeyButtonSize->addItem("30x30");
-//    mPreferencesUI->keyboardPaletteKeyButtonSize->addItem("41x41");
+
     connect(mPreferencesUI->keyboardPaletteKeyButtonSize, SIGNAL(currentIndexChanged(const QString &)), settings->boardKeyboardPaletteKeyBtnSize, SLOT(setString(const QString &)));
 
 

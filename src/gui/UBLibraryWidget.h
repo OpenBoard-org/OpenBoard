@@ -60,6 +60,7 @@ signals:
     void itemsSelected(QList<UBLibElement*> elemList, bool inTrash);
     void propertiesRequested(UBLibElement* pElem);
     void favoritesEntered(bool bFav);
+    void itemClicked();
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);

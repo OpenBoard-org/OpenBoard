@@ -1058,6 +1058,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
                 continue;
             }
 
+            qDebug() << item;
             UBGraphicsCache* cache = qgraphicsitem_cast<UBGraphicsCache*>(item);
             if(cache && cache->isVisible())
             {

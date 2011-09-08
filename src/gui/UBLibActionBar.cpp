@@ -501,6 +501,13 @@ void UBLibActionBar::onNavigbarUpdate(UBLibElement *crntElem)
     }
 }
 
+
+void UBLibActionBar::onItemChanged()
+{
+    mSearchBar->setText("");
+    mpSearchBtn->setEnabled(false);
+}
+
 /**
  * \brief Construtor
  * @param parent as the parent widget

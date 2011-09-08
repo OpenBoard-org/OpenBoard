@@ -237,16 +237,13 @@ WBTabWidget::WBTabWidget(QWidget *parent)
     setDocumentMode(false);
 
     mRecentlyClosedTabsMenu = new QMenu(this);
-    connect(mRecentlyClosedTabsMenu, SIGNAL(aboutToShow()),
-            this, SLOT(aboutToShowRecentTabsMenu()));
-    connect(mRecentlyClosedTabsMenu, SIGNAL(triggered(QAction *)),
-            this, SLOT(aboutToShowRecentTriggeredAction(QAction *)));
+    connect(mRecentlyClosedTabsMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowRecentTabsMenu()));
+    connect(mRecentlyClosedTabsMenu, SIGNAL(triggered(QAction *)), this, SLOT(aboutToShowRecentTriggeredAction(QAction *)));
     mRecentlyClosedTabsAction = new QAction(tr("Recently Closed Tabs"), this);
     mRecentlyClosedTabsAction->setMenu(mRecentlyClosedTabsMenu);
     mRecentlyClosedTabsAction->setEnabled(false);
 
-    connect(this, SIGNAL(currentChanged(int)),
-            this, SLOT(currentChanged(int)));
+    connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChanged(int)));
 
     mLineEdits = new QStackedWidget(this);
     mLineEdits->setMinimumWidth(200);

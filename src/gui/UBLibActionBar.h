@@ -66,6 +66,7 @@ public slots:
     void onSelectionChanged(QList<UBLibElement*> itemList, bool isInTrash);
     void onFavoritesEntered(bool bFav);
     void onNavigbarUpdate(UBLibElement* crntElem);
+    void onItemChanged();
 
 protected:
     void enterEvent(QEvent *event);

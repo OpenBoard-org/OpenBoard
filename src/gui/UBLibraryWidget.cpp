@@ -167,6 +167,7 @@ void UBLibraryWidget::onItemClicked(QGraphicsItem *item, int index)
                     emit propertiesRequested(pElem);
                 }
             }
+            emit itemClicked();
         }
     }
 }

@@ -443,11 +443,6 @@ QList<UBLibElement*> UBLibraryController::getContent(UBLibElement *element)
         break;
     }
 
-//    qDebug() << "getContent()";
-//    qDebug() << this;
-//    foreach(UBLibElement*eachElement, mElementsList)
-//        qDebug() << eachElement;
-
     return mElementsList;
 }
 

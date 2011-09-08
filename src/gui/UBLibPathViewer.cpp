@@ -58,16 +58,16 @@ UBLibPathViewer::UBLibPathViewer(QWidget *parent, const char *name):QGraphicsVie
  */
 UBLibPathViewer::~UBLibPathViewer()
 {
+//    if(NULL != mpLayout)
+//    {
+//        delete mpLayout;
+//        mpLayout = NULL;
+//    }
     if(NULL != mpContainer)
     {
         delete mpContainer;
         mpContainer = NULL;
     }
-    //if(NULL != mpLayout)
-    //{
-    //    delete mpLayout;
-    //    mpLayout = NULL;
-    //}
     if(NULL != mpElems)
     {
         delete mpElems;
