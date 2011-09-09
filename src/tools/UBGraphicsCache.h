@@ -19,6 +19,7 @@
 #include <QGraphicsSceneMouseEvent>
 
 #include "domain/UBItem.h"
+#include "core/UB.h"
 
 #define CACHE_ZVALUE    100000
 
@@ -33,6 +34,11 @@ class UBGraphicsCache : public QGraphicsRectItem, public UBItem
 public:
     UBGraphicsCache();
     ~UBGraphicsCache();
+
+    enum { Type = UBGraphicsItemType::cacheItemType };
+
+    virtual int type() const{ return Type;}
+
     virtual UBItem* deepCopy() const;
 
     QColor maskColor();

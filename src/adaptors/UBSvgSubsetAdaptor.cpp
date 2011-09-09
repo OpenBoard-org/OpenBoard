@@ -1052,13 +1052,12 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
 
             UBGraphicsRuler *ruler = qgraphicsitem_cast<UBGraphicsRuler*> (item);
 
-            if (ruler  && ruler->isVisible())
+            if (ruler && ruler->isVisible())
             {
                 rulerToSvg(ruler);
                 continue;
             }
 
-            qDebug() << item;
             UBGraphicsCache* cache = qgraphicsitem_cast<UBGraphicsCache*>(item);
             if(cache && cache->isVisible())
             {
@@ -1068,7 +1067,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
 
             UBGraphicsCompass *compass = qgraphicsitem_cast<UBGraphicsCompass*> (item);
 
-            if (compass  && compass->isVisible())
+            if (compass && compass->isVisible())
             {
                 compassToSvg(compass);
                 continue;
@@ -1076,7 +1075,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
 
             UBGraphicsProtractor *protractor = qgraphicsitem_cast<UBGraphicsProtractor*> (item);
 
-            if (protractor  && protractor->isVisible())
+            if (protractor && protractor->isVisible())
             {
                 protractorToSvg(protractor);
                 continue;
@@ -1084,7 +1083,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
 
             UBGraphicsTriangle *triangle = qgraphicsitem_cast<UBGraphicsTriangle*> (item);
 
-            if (triangle  && triangle->isVisible())
+            if (triangle && triangle->isVisible())
             {
                 triangleToSvg(triangle);
                 continue;

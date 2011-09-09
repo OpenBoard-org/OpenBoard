@@ -99,6 +99,7 @@ struct UBGraphicsItemType
 		StrokeItemType,
 		TriangleItemType,
         MagnifierItemType,
+        cacheItemType
     };
 };
 

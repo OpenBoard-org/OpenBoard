@@ -73,6 +73,8 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
     connect(libWidget->actionBar(), SIGNAL(searchElement(QString)), mLibWidget, SLOT(onSearchElement(QString)));
     connect(libWidget->actionBar(), SIGNAL(newFolderToCreate()), mLibWidget, SLOT(onNewFolderToCreate()));
 
+
+    /*** to update the search bar **/
     connect(mLibWidget, SIGNAL(itemClicked()),libWidget->actionBar(), SLOT(onItemChanged()));
     connect(mPathViewer, SIGNAL(mouseClick(UBChainedLibElement*)),libWidget->actionBar(), SLOT(onItemChanged()));
 
