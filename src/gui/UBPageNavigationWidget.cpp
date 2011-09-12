@@ -31,17 +31,17 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
 {
     setObjectName(name);
     mName = "PageNavigator";
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(UBApplication::globalStyleSheet());
 
     mIconToRight = QPixmap(":images/pages_open.png");
     mIconToLeft = QPixmap(":images/pages_close.png");
 
     // Build the gui
     mLayout = new QVBoxLayout(this);
-    //mLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());
     setLayout(mLayout);
 
     mNavigator = new UBDocumentNavigator(this);
-    mNavigator->setStyleSheet(QString("background-color : transparent;"));
     mLayout->addWidget(mNavigator, 1);
 
     mHLayout = new QHBoxLayout();

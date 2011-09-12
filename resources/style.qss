@@ -1,4 +1,4 @@
-QWidget#DockPaletteWidgetBox
+QWidget#DockPaletteWidgetBox, QWidget#documentNavigator
 {
 	background: #EEEEEE;
 	border-radius: 10px;
