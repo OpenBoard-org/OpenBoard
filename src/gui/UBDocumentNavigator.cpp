@@ -37,13 +37,13 @@
  * @param name as the object name
  */
 UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGraphicsView(parent)
-    , mScene(NULL)
-    , mCrntItem(NULL)
-    , mCrntDoc(NULL)
-    , mNbColumns(1)
-    , mThumbnailWidth(0)
-    , mThumbnailMinWidth(100)
-    , bNavig(false)
+  , mScene(NULL)
+  , mCrntItem(NULL)
+  , mCrntDoc(NULL)
+  , mNbColumns(1)
+  , mThumbnailWidth(0)
+  , mThumbnailMinWidth(100)
+  , bNavig(false)
 {
     setObjectName(name);
     mScene = new QGraphicsScene(this);
@@ -52,6 +52,7 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
     mThumbnailWidth = width() - 2*border();
 
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(addNewPage()));
+    connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(generateThumbnails()));
     connect(mScene, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
 }
 
@@ -62,14 +63,14 @@ UBDocumentNavigator::~UBDocumentNavigator()
 {
     if(NULL != mCrntItem)
     {
-	delete mCrntItem;
-	mCrntItem = NULL;
+        delete mCrntItem;
+        mCrntItem = NULL;
     }
 
     if(NULL != mScene)
     {
-	delete mScene;
-	mScene = NULL;
+        delete mScene;
+        mScene = NULL;
     }
 }
 
@@ -83,8 +84,8 @@ void UBDocumentNavigator::setDocument(UBDocumentProxy *document)
     // content and add all the pages of the given document.
     if(document)
     {
-	mCrntDoc = document;
-	generateThumbnails();
+        mCrntDoc = document;
+        generateThumbnails();
     }
 }
 
@@ -103,20 +104,19 @@ void UBDocumentNavigator::generateThumbnails()
 
     for(int i = 0; i < thumbs.count(); i++)
     {
-	QPixmap pix = thumbs.at(i);
-	QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailPixmap(pix, mCrntDoc, i);
+        QPixmap pix = thumbs.at(i);
+        QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailPixmap(pix, mCrntDoc, i);
 
-	// Get the selected item
+        // Get the selected item
         if(UBApplication::boardController->activeSceneIndex() == i)
-	{
-	    selection = pixmapItem;
-	    mCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(pixmapItem);
-	    mCrntItem->setSelected(true);
-	}
+        {
+            selection = pixmapItem;
+            mCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(pixmapItem);
+            mCrntItem->setSelected(true);
+        }
 
-	items << pixmapItem;
-	labels << tr("Page %0").arg(i + 1);
-        //itemsPath.append(QUrl::fromLocalFile(mCrntDoc->persistencePath() + QString("/pages/%0").arg(i + 1)));
+        items << pixmapItem;
+        labels << tr("Page %0").arg(i + 1);
     }
 
     // Draw the items
@@ -134,27 +134,27 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
 
     if(NULL != pScene)
     {
-	// Save the current state of the scene
-	pScene->setModified(true);
-	UBSvgSubsetAdaptor::persistScene(mCrntDoc,pScene, iPage);
+        // Save the current state of the scene
+        pScene->setModified(true);
+        UBSvgSubsetAdaptor::persistScene(mCrntDoc,pScene, iPage);
 
-	UBThumbnailAdaptor::persistScene(mCrntDoc->persistencePath(), pScene, iPage);
+        UBThumbnailAdaptor::persistScene(mCrntDoc->persistencePath(), pScene, iPage);
 
-	// Load it
-	QList<QPixmap> thumbs = UBThumbnailAdaptor::load(mCrntDoc);
-	QPixmap pix = thumbs.at(iPage);
-	QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailPixmap(pix, mCrntDoc, iPage);
-	if(pixmapItem)
-	{
-	    // Get the old thumbnail
-	    QGraphicsItem* pItem = mThumbnails.at(iPage);
-	    if(NULL != pItem)
-	    {
-		mScene->removeItem(pItem);
-		mScene->addItem(pixmapItem);
-		mThumbnails.replace(iPage, pixmapItem);
-	    }
-	}
+        // Load it
+        QList<QPixmap> thumbs = UBThumbnailAdaptor::load(mCrntDoc);
+        QPixmap pix = thumbs.at(iPage);
+        QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailPixmap(pix, mCrntDoc, iPage);
+        if(pixmapItem)
+        {
+            // Get the old thumbnail
+            QGraphicsItem* pItem = mThumbnails.at(iPage);
+            if(NULL != pItem)
+            {
+                mScene->removeItem(pItem);
+                mScene->addItem(pixmapItem);
+                mThumbnails.replace(iPage, pixmapItem);
+            }
+        }
     }
 }
 
@@ -169,10 +169,10 @@ void UBDocumentNavigator::addNewPage()
     if(!bNavig)
     {
         generateThumbnails();
-	if(NULL != mCrntItem)
-	{
+        if(NULL != mCrntItem)
+        {
             mCrntItem->setSelected(true);
-	}
+        }
     }
 }
 
@@ -188,24 +188,24 @@ void UBDocumentNavigator::setGraphicsItems(QList<QGraphicsItem *> items, QString
     // First, clear the actual thumbnails
     foreach(QGraphicsItem* it, mScene->items())
     {
-	mScene->removeItem(it);
-	delete it;
+        mScene->removeItem(it);
+        delete it;
     }
 
     // Add the new thumbnails
     foreach(QGraphicsItem* it, items)
     {
-	mScene->addItem(it);
+        mScene->addItem(it);
     }
 
     // Add the labels
     mLabels.clear();
     foreach(QString lb, labels)
     {
-	UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(lb);
-	mScene->addItem(labelItem);
+        UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(lb);
+        mScene->addItem(labelItem);
 
-	mLabels << labelItem;
+        mLabels << labelItem;
     }
 
     // Refresh the scene
@@ -221,71 +221,71 @@ void UBDocumentNavigator::refreshScene()
 
     if(mLabels.size() > 0)
     {
-	QFontMetrics fm(mLabels.at(0)->font());
-	labelSpacing = UBSettings::thumbnailSpacing + fm.height();
+        QFontMetrics fm(mLabels.at(0)->font());
+        labelSpacing = UBSettings::thumbnailSpacing + fm.height();
     }
 
     qreal thumbnailHeight = mThumbnailWidth / UBSettings::minScreenRatio;
 
     for(int i = 0; i < mThumbnails.size(); i++)
     {
-	// Get the item
-	QGraphicsItem* item = mThumbnails.at(i);
+        // Get the item
+        QGraphicsItem* item = mThumbnails.at(i);
 
-	// Compute the scale factor
-	qreal scaleWidth = mThumbnailWidth / item->boundingRect().width();
-	qreal scaleHeight = thumbnailHeight / item->boundingRect().height();
-	qreal scaleFactor = qMin(scaleWidth, scaleHeight);
-	UBThumbnail* pix = dynamic_cast<UBThumbnail*>(item);
+        // Compute the scale factor
+        qreal scaleWidth = mThumbnailWidth / item->boundingRect().width();
+        qreal scaleHeight = thumbnailHeight / item->boundingRect().height();
+        qreal scaleFactor = qMin(scaleWidth, scaleHeight);
+        UBThumbnail* pix = dynamic_cast<UBThumbnail*>(item);
 
-	if(pix)
-	{
-	 scaleFactor = qMin(scaleFactor, 1.0);
-	}
+        if(pix)
+        {
+            scaleFactor = qMin(scaleFactor, 1.0);
+        }
 
-	QTransform transform;
-	transform.scale(scaleFactor, scaleFactor);
+        QTransform transform;
+        transform.scale(scaleFactor, scaleFactor);
 
-	// Apply the scaling
-	item->setTransform(transform);
-	item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        // Apply the scaling
+        item->setTransform(transform);
+        item->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-	int columnIndex = i % mNbColumns;
-	int rowIndex = i / mNbColumns;
+        int columnIndex = i % mNbColumns;
+        int rowIndex = i / mNbColumns;
 
-	if(pix)
-	{
-	    pix->setColumn(columnIndex);
-	    pix->setRow(rowIndex);
-	}
+        if(pix)
+        {
+            pix->setColumn(columnIndex);
+            pix->setRow(rowIndex);
+        }
 
-	int w = item->boundingRect().width();
-	int h = item->boundingRect().height();
+        int w = item->boundingRect().width();
+        int h = item->boundingRect().height();
 
-	QPointF pos( border() + (mThumbnailWidth - w * scaleFactor) / 2 + columnIndex * (mThumbnailWidth + border()),
-		     border() + rowIndex * (thumbnailHeight + border() + labelSpacing) + (thumbnailHeight - h * scaleFactor) / 2);
+        QPointF pos( border() + (mThumbnailWidth - w * scaleFactor) / 2 + columnIndex * (mThumbnailWidth + border()),
+                     border() + rowIndex * (thumbnailHeight + border() + labelSpacing) + (thumbnailHeight - h * scaleFactor) / 2);
 
-	item->setPos(pos);
+        item->setPos(pos);
 
-	// Add the labels "Page x"
-	if(mLabels.size() > i)
-	{
-	    QFontMetrics fm(mLabels.at(i)->font(), this);
-	    QString elidedText = fm.elidedText(mLab.at(i), Qt::ElideRight, mThumbnailWidth);
+        // Add the labels "Page x"
+        if(mLabels.size() > i)
+        {
+            QFontMetrics fm(mLabels.at(i)->font(), this);
+            QString elidedText = fm.elidedText(mLab.at(i), Qt::ElideRight, mThumbnailWidth);
 
-	    mLabels.at(i)->setPlainText(elidedText);
-	    mLabels.at(i)->setWidth(fm.width(elidedText) + 2 * mLabels.at(i)->document()->documentMargin());
-	    pos.setY(pos.y() + (thumbnailHeight + h * scaleFactor) / 2 + 5); // What is this 5 ??
-	    qreal labelWidth = fm.width(elidedText);
-	    pos.setX(border() + (mThumbnailWidth - labelWidth) / 2 + columnIndex * (mThumbnailWidth + border()));
-	    mLabels.at(i)->setPos(pos);
-	}
+            mLabels.at(i)->setPlainText(elidedText);
+            mLabels.at(i)->setWidth(fm.width(elidedText) + 2 * mLabels.at(i)->document()->documentMargin());
+            pos.setY(pos.y() + (thumbnailHeight + h * scaleFactor) / 2 + 5); // What is this 5 ??
+            qreal labelWidth = fm.width(elidedText);
+            pos.setX(border() + (mThumbnailWidth - labelWidth) / 2 + columnIndex * (mThumbnailWidth + border()));
+            mLabels.at(i)->setPos(pos);
+        }
     }
 
     QScrollBar *vertScrollBar = verticalScrollBar();
     int scrollBarThickness = 0;
     if (vertScrollBar && vertScrollBar->isVisible())
-	scrollBarThickness = vertScrollBar->width();
+        scrollBarThickness = vertScrollBar->width();
 }
 
 /**
@@ -345,12 +345,12 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
     mThumbnailWidth = (width() > mThumbnailMinWidth) ? width() - 2*border() : mThumbnailMinWidth;
 
     // Update the scene rect
-//    QRect sceneRect;
-//    sceneRect.setWidth(width() - 2*border());
-//    sceneRect.setHeight(height() - 2*border());
-//    sceneRect.moveLeft(border());
-//    sceneRect.moveTop(border());
-//    scene()->setSceneRect(sceneRect);
+    //    QRect sceneRect;
+    //    sceneRect.setWidth(width() - 2*border());
+    //    sceneRect.setHeight(height() - 2*border());
+    //    sceneRect.moveLeft(border());
+    //    sceneRect.moveTop(border());
+    //    scene()->setSceneRect(sceneRect);
 
     // Refresh the scene
     refreshScene();
@@ -365,20 +365,20 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
     QGraphicsItem* pClickedItem = itemAt(event->pos());
     if(NULL != pClickedItem)
     {
-	bNavig = true;
+        bNavig = true;
 
-	// First, select the clicked item
-	UBSceneThumbnailPixmap* pCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(pClickedItem);
+        // First, select the clicked item
+        UBSceneThumbnailPixmap* pCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(pClickedItem);
 
-	if(NULL == pCrntItem)
-	{
-	    // If we fall here we may have clicked on the label instead of the thumbnail
-	    UBThumbnailTextItem* pTextItem = dynamic_cast<UBThumbnailTextItem*>(pClickedItem);
-	    if(NULL != pTextItem)
-	    {
-		pCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(mThumbnails.at(mLabels.indexOf(pTextItem)));
-	    }
-	}
+        if(NULL == pCrntItem)
+        {
+            // If we fall here we may have clicked on the label instead of the thumbnail
+            UBThumbnailTextItem* pTextItem = dynamic_cast<UBThumbnailTextItem*>(pClickedItem);
+            if(NULL != pTextItem)
+            {
+                pCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(mThumbnails.at(mLabels.indexOf(pTextItem)));
+            }
+        }
         else
         {
             if(NULL != mCrntItem && mCrntItem != pCrntItem)
@@ -396,7 +396,7 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
             emit changeCurrentPage();
             refreshScene();
         }
-	bNavig = false;
+        bNavig = false;
     }
 }
 
@@ -410,7 +410,7 @@ int UBDocumentNavigator::selectedPageNumber()
 
     if(NULL != mCrntItem)
     {
-	nbr = mThumbnails.indexOf(mCrntItem);
+        nbr = mThumbnails.indexOf(mCrntItem);
     }
 
     return nbr;
@@ -430,6 +430,6 @@ UBDocumentProxy* UBDocumentNavigator::currentDoc()
  */
 void UBDocumentNavigator::onSelectionChanged()
 {
-//    QList<QGraphicsItem*> qlItems = mScene->selectedItems();
-//    qDebug() << "The number of selected items is " << qlItems.count();
+    //    QList<QGraphicsItem*> qlItems = mScene->selectedItems();
+    //    qDebug() << "The number of selected items is " << qlItems.count();
 }

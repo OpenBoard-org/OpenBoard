@@ -51,13 +51,14 @@ protected:
 private slots:
     void addNewPage();
     void onSelectionChanged();
+    void generateThumbnails();
 
 private:
     void setGraphicsItems(QList<QGraphicsItem*> items, QStringList labels);
     void refreshScene();
     void updateSpecificThumbnail(int iPage);
     int border();
-    void generateThumbnails();
+
 
     /** The scene */
     QGraphicsScene* mScene;
