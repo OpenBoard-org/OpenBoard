@@ -101,13 +101,23 @@ body{
 #toolbar-button-languages{ background-image:url(../images/toolbarButtonLanguages.png) }
 
 #toolbar-button-search{
-  width:22px;
-  height:22px;
-  position:relative;
-  margin-left:-22px;
-  background-image:url(../images/toolbarButtonSearch.png);
-  background-repeat:no-repeat;
-  background-position:center center;
+    float: left;
+    width:22px;
+    height:22px;
+    position:relative;
+    margin-left:-32px;
+    background-image:url(../images/toolbarButtonSearch.png);
+    background-repeat:no-repeat;
+    background-position:center center;
+    border: 1px solid #B9B9B9;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: #dadada -1px 0 4px;
+    box-shadow: #dadada -1px 0 4px;
+}
+
+#toolbar-button-search:hover{
+    border: 1px solid #666666;
 }
 
 #toolbar-button-languages{
@@ -116,4 +126,24 @@ body{
 
 #toolbar-button-back{
   margin-right:0px;
+}
+
+.popupWordInfo{
+    position: absolute;
+    display: none;
+    width: 100px;
+    height: 17px;
+    top: 0;
+    left: 0;
+    text-align: center;
+    border: 1px solid #B9B9B9;
+    background-color: #eaebeb;
+    color: black;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: #dadada -1px 0 4px;
+    box-shadow: #dadada -1px 0 4px;
+    z-index: 100;
+    font-family: Arial,Helvetica,sans-serif;
 }

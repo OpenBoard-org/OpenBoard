@@ -1,70 +1,70 @@
 body{
-  font-family:helvetica, arial, sans-serif;
-  font-size:12px;
+    font-family:helvetica, arial, sans-serif;
+    font-size:12px;
 }
 
 .on-the-right{
-  width:0px;
-  position:absolute;
-  top:0;
-  overflow:visible;
-  margin-left:100%;
+    width:0px;
+    position:absolute;
+    top:0;
+    overflow:visible;
+    margin-left:100%;
 }
 
 .toolbar{
-  background-image:url(../images/toolbarBody.png);
-  padding-left:4px;
-  border:1px solid #cccccc;
-  border-bottom:1px solid #ffffff;
-  position:relative;
+    background-image:url(../images/toolbarBody.png);
+    padding-left:4px;
+    border:1px solid #cccccc;
+    border-bottom:1px solid #ffffff;
+    position:relative;
 }
 
 .toolbar>div>.button{
-  width:29px;
-  height:24px;
-  float:left;
-  margin-right:4px;
-  margin-top:0px;
-  cursor:pointer;
+    width:29px;
+    height:24px;
+    float:left;
+    margin-right:4px;
+    margin-top:0px;
+    cursor:pointer;
 }
 
 #toolbar-down{
-  font-size:18px;
-  font-weight:bold;
-  color:#333333;
-  text-align:center;
-  font-family:helvetica, arial, sans-serif;
-  text-shadow: #ffffff 0px 1px 1px;
+    font-size:18px;
+    font-weight:bold;
+    color:#333333;
+    text-align:center;
+    font-family:helvetica, arial, sans-serif;
+    text-shadow: #ffffff 0px 1px 1px;
 }
 
 #url{
-  height:20px;
-  float:left;
-  border:1px solid #b9b9b9;
-  padding-right:4%;
-  width:80%;
+    height:20px;
+    float:left;
+    border:1px solid #b9b9b9;
+    padding-right:4%;
+    width:80%;
 }
 
 #left-field{
-  float:left;
+    float:left;
 }
 
 #right-field{
-  float:right;
+    float:right;
 }
 
 #center-field{
-  display:block-inline;
-  position:relative;
+    display:block-inline;
+    position:relative;
 }
 
 #center-field.min{
-  margin-right:6px;
+    margin-right:6px;
 }
 
 #center-field.full{
-  margin-right:78px;
-  margin-left:65px;
+    margin-right:78px;
+    margin-left:65px;
 }
 
 #web-canevas { 
@@ -79,20 +79,20 @@ body{
 }
 
 .toolbar-body {
-  display: table;
-  width: 100%;
-  height: 37px;
+    display: table;
+    width: 100%;
+    height: 37px;
 
-  /* IE hacks */
-  position: relative !ie7;
+    /* IE hacks */
+    position: relative !ie7;
 }
 .toolbar-body>div {
-  display: table-cell;
-  vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
 
-  /* IE hacks */
-  position: absolute !ie7;
-  top: 50% !ie7;
+    /* IE hacks */
+    position: absolute !ie7;
+    top: 50% !ie7;
 }
 
 #toolbar-button-back{ background-image:url(../images/toolbarButtonBack.png) }
@@ -101,19 +101,49 @@ body{
 #toolbar-button-languages{ background-image:url(../images/toolbarButtonLanguages.png) }
 
 #toolbar-button-search{
-  width:22px;
-  height:22px;
-  position:relative;
-  margin-left:-22px;
-  background-image:url(../images/toolbarButtonSearch.png);
-  background-repeat:no-repeat;
-  background-position:center center;
+    float: left;
+    width:22px;
+    height:22px;
+    position:relative;
+    margin-left:-32px;
+    background-image:url(../images/toolbarButtonSearch.png);
+    background-repeat:no-repeat;
+    background-position:center center;
+    border: 1px solid #B9B9B9;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: #dadada -1px 0 4px;
+    box-shadow: #dadada -1px 0 4px;
+}
+
+#toolbar-button-search:hover{
+    border: 1px solid #666666;
 }
 
 #toolbar-button-languages{
-  width:66px;
+    width:66px;
 }
 
 #toolbar-button-back{
-  margin-right:0px;
+    margin-right:0px;
+}
+
+.popupWordInfo{
+    position: absolute;
+    display: none;
+    width: 100px;
+    height: 17px;
+    top: 0;
+    left: 0;
+    text-align: center;
+    border: 1px solid #B9B9B9;
+    background-color: #eaebeb;
+    color: black;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: #dadada -1px 0 4px;
+    box-shadow: #dadada -1px 0 4px;
+    z-index: 100;
+    font-family: Arial,Helvetica,sans-serif;
 }

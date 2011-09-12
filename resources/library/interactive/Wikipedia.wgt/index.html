@@ -13,7 +13,8 @@
         <script type="text/javascript" src="script/superfish.js"></script> 
 
         <script type="text/javascript"> 
-		
+            
+            var popupFlag = false
             var browsing = false;
             var lang = 'en';
             var internalChange = false;
@@ -37,24 +38,26 @@
                 },
                 index:-1
             }
-            
+
             $(document).ready(function() {
-			
+
                 var ubHistoryList = "";
                 var ubHistoryIndex = "";
-              
+
+                var popupText = $("<div id='popupWordInfo' class='popupWordInfo'></div>").appendTo("body");
+
                 lang = navigator.userAgent.split(";");
 
                 lang = (navigator.language || navigator.systemLanguage || 
                     navigator.userLanguage || 'en').substr(0, 2).toLowerCase();
                 $("#current-language").text(lang.charAt(0).toUpperCase() + lang.substr(1));
-              
+
                 if(window.sankore){
                     toolbar.state = loadPref("historyState", "begin");
                     ubHistoryList = loadPref("historyList", "");
                     ubHistoryIndex = loadPref("historyIndex", "-1");
                 }
-              
+
                 if(ubHistoryList !== "") {
                     appHistory.list = ubHistoryList.split(",");
                     appHistory.index = parseInt(ubHistoryIndex);
@@ -62,22 +65,22 @@
                 } else {
                     wikiReq("");
                 }
-              
+
                 $(window).resize();
-              
+
                 $("#languages-dropdown>li>ul>li").each(function(){
                     $(this).click(function(){
                         languagesHandler($(this).text());
                         $("#current-language").text(lang.charAt(0).toUpperCase() + lang.substr(1));
                     });
                 });
-              
+
                 $("#languages-dropdown").superfish({ 
                     dropShadows:false,
                     speed:1,
                     delay:100
                 });
-              
+
                 $("#url")
                 .change(function(){
                     if(!toolbar.loading){
@@ -90,42 +93,92 @@
                         $("#url").change();
                     };
                 });
-              
-                $("#url").val(appHistory.list[appHistory.index]);
                 
+                $("#toolbar-button-search").click(function(){
+                    $("#url").trigger("change");
+                });
+                
+                $("#toolbar-button-search").mouseover(function(evt){
+                    popupFlag = true;
+                    popupText.text("Search")
+                    .css("top", evt.pageY + 5)
+                    .css("left", evt.pageX + 13)
+                    .css({width:"70px"})
+                    .show("fast", function(){
+                        if(!popupFlag)
+                            popupText.hide();
+                    });
+                });
+                
+                $("#toolbar-button-search, #toolbar-button-back, #toolbar-button-forward").mousemove(function(evt){
+                    popupText.css("top", evt.pageY + 5)
+                    .css("left", evt.pageX + 13);
+                });
+                
+                $("#toolbar-button-search, #toolbar-button-back, #toolbar-button-forward").mouseout(function(evt){
+                    popupFlag = false;
+                    popupText.hide();
+                });
+
+                $("#url").val(appHistory.list[appHistory.index]);
+
                 if($("#url").val().length > 0)
                     $("#url").change();
-              
+
                 $("#toolbar-button-back").click(function(){
                     browsing = true;
                     appHistory.back();
                 });
-              
+                
+                $("#toolbar-button-back").mouseover(function(evt){
+                    popupFlag = true;
+                    popupText.text("Previous word")
+                    .css("top", evt.pageY + 5)
+                    .css("left", evt.pageX + 13)
+                    .css({width:"100px"})
+                    .show("fast", function(){
+                        if(!popupFlag)
+                            popupText.hide();
+                    });
+                });
+                
                 $("#toolbar-button-forward").click(function(){
                     browsing = true;
                     appHistory.forward();
                 });
-              
+
+                $("#toolbar-button-forward").mouseover(function(evt){
+                    popupFlag = true;
+                    popupText.text("Next word")
+                    .css("top", evt.pageY + 5)
+                    .css("left", evt.pageX + 13)
+                    .css({width:"70px"})
+                    .show("fast", function(){
+                        if(!popupFlag)
+                            popupText.hide();
+                    });
+                });
+                
                 $("#toolbar-button-home").click(function(){
                 });
             });
-            
+
             $(window).resize(function(){
                 $("#web-browser").height($(window).height() - $("#toolbar").height() - 2);
                 $("#web-browser").width($(window).width() - 2);
-              
+
                 if($(window).width() < 280){
                     window.resizeTo(280, $(window).height());
                 }
-              
+
             });
-            
+
             function wikiReq(kword){
-                
+
                 var textBoxInput = "";
- 
+
                 textBoxInput = remacc(kword.replace(/ /g,'+'));	
- 
+
                 textBoxInput = textBoxInput.replace(textBoxInput.charAt(0),textBoxInput.charAt(0).toUpperCase());          
                 if(toolbar.state == "begin"){
                     $('#web-browser').attr('src',"");
@@ -137,25 +190,25 @@
                 $('#toolbar-button-search').css("background-image", "url(images/toolbarLoading.jpg)");
                 toolbar.loading = true;
             }
-          	
+
             function hideLoading(){
                 $('#toolbar-button-search').css("background-image", "url(images/toolbarButtonSearch.png)");
                 toolbar.loading = false;
-          	  
+
                 // History
                 if(appHistory.list[appHistory.index] !== $("#url").val() && !browsing && $("#url").val().length > 0){
                     appHistory.list = appHistory.list.slice(0, appHistory.index+1);
                     appHistory.list[appHistory.index+1] = $("#url").val();
                     appHistory.index = appHistory.list.length-1;
                 }
-        	            	    
+
                 if(window.sankore && $("#web-browser").attr("src") !== ""){
                     savePref("historyState", "started");
                     savePref("historyList", appHistory.list.toString());
                     savePref("historyIndex", appHistory.index)
                 }
             }
-          	
+
             String.prototype.accnt = function(){
                 var cnt = 0;
                 var acnt = this;
@@ -167,7 +220,7 @@
                         cnt++;
                 return cnt;
             }
-            
+
             String.prototype.renlacc = function(){
                 var torem = this;
                 torem = torem.split('');
@@ -184,9 +237,9 @@
                 document.title = toascout;
                 return toascout;
             }
- 
+
             function remacc(kword){
-                
+
                 var countarr = new Array();
                 var c = '';
                 var text=kword;
@@ -201,21 +254,21 @@
                 textout = textout.join('\n');
                 return textout;
             }
-            
+
             function loadPref(name, defaultValue){
                 var pref = defaultValue;
- 
+
                 if (sankore.preference(name) !== "") {
                     pref = sankore.preference(name);
                 };
- 
+
                 return pref;
             };
- 
+
             function savePref(name, value){
                 sankore.setPreference(name, String(value));
             };
-        		
+
             function languagesHandler(language){
                 switch(language){
                     case "Deutsch":
@@ -250,7 +303,7 @@
                         break;
                 }
             };
- 
+
         </script> 
     </head> 
     <body style="overflow:hidden; margin: 0px; width:100%; height:100%; position:absolute; background:#ffffff"> 
@@ -274,9 +327,9 @@
                     </div> 
                     <div id="center-field" class="full"> 
                         <input type="text" id="url" alt="url"/> 
-                            <div class="on-the-right"> 
-                                <div id="toolbar-button-search"></div> 
-                            </div> 
+                        <div class="on-the-right"> 
+                            <div id="toolbar-button-search"></div> 
+                        </div> 
                     </div> <!--center-field--> 
                     <div id="right-field"> 
                         <div id="toolbar-button-languages" class="button" alt="languages button"> 

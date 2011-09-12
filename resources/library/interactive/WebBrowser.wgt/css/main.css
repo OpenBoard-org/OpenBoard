@@ -180,3 +180,19 @@ body{
 	background-image:url(../imgs/right.png);
 	background-repeat:no-repeat;
 }
+
+.popupWordInfo{
+    position: absolute;
+    display: none;
+    width: 100px;
+    height: 17px;
+    top: 0;
+    left: 0;
+    text-align: center;
+    border: 1px solid #B9B9B9;
+    background-color: #eaebeb;
+    color: black;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: small;
+    z-index: 100;
+}
