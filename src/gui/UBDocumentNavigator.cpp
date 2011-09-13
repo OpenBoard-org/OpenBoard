@@ -51,6 +51,8 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
     setScene(mScene);
     mThumbnailWidth = width() - 2*border();
 
+    setFrameShadow(QFrame::Plain);
+
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(addNewPage()));
     connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(generateThumbnails()));
     connect(mScene, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));

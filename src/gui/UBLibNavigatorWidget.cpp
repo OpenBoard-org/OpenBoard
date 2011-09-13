@@ -50,7 +50,6 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
 
     mSlider = new QSlider(Qt::Horizontal, this);
     mSlider->setMinimumHeight(20);
-    mSlider->setStyleSheet(QString("QSlider::handle::horizontal{background-color:#EEEEEE; margin-top:-5px; margin-bottom:-5px; height:20px; width:18px; border-radius:10px; border:1px solid #555555;} QSlider::groove::horizontal{background-color:#999999; height:10px; border-radius:5px; border:1px solid #555555;}"));
     mSlider->setRange(lowBoundForSlider, topBoundForSlider);
     mSliderWidthSetting = new UBSetting(UBSettings::settings(), "Library", "LibWidgetWidth", topBoundForSlider);
     int defaultWidth = mSliderWidthSetting->get().toInt();

@@ -37,7 +37,6 @@ UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailW
 {
     setObjectName(name);
     setSpacing(5);
-    setStyleSheet(QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;"));
     mLibraryController = new UBLibraryController(parentWidget());
 }
 
