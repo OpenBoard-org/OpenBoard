@@ -520,7 +520,7 @@ void UBApplicationController::ftpCommandFinished(int id, bool error)
    }
    else{
        QString responseString =  QString(mFtp->readAll());
-       if (!responseString.isEmpty() && responseString.contains("version:") && responseString.contains("url:")){
+       if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
            mFtp->close();
            downloadJsonFinished(responseString);
        }
@@ -539,23 +539,9 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
     UBVersion jsonVersion (scriptValue.property("version").toString().left(4));
 
     if (installedVersion.isValid() &&  jsonVersion.isValid() && jsonVersion > installedVersion) {
-            QMessageBox msgBox;
-            msgBox.setText (tr ("New update available, would you go to the web page ?"));
-            msgBox.setStandardButtons (QMessageBox::Ok | QMessageBox::Cancel);
-            msgBox.setDefaultButton (QMessageBox::Ok);
-            int ret = msgBox.exec();
-            switch (ret) {
-                case QMessageBox::Ok: {
+            if (UBApplication::mainWindow->yesNoQuestion(tr("Update available"), tr ("New update available, would you go to the web page ?"))){
                     QUrl url(scriptValue.property ("url").toString());
                     QDesktopServices::openUrl (url);
-                    break;
-                }
-                case QMessageBox::Cancel:
-                    // do nothing
-                    break;
-                 default:
-                    // should never be reached
-                    break;
             }
     }
     else {

@@ -476,7 +476,6 @@ void UBDocumentController::showKeyboard(bool show)
         mKeyboardPalette->setVisible(show);
     }
 
-//    mPaletteManager->showVirtualKeyboard(show);
 }
 
 void UBDocumentController::setupPalettes()
@@ -640,10 +639,7 @@ void UBDocumentController::deleteSelectedItem()
                 }
             }
 
-            if (QMessageBox::question( 0, tr("Remove Page"),
-                    tr("Are you sure you want to remove %n page(s) from the selected document '%1'?", "", sceneIndexes.count())
-                        .arg(proxy->metaData(UBSettings::documentName).toString()),
-                    QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+            if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Page"), tr("Are you sure you want to remove %n page(s) from the selected document '%1'?", "", sceneIndexes.count()).arg(proxy->metaData(UBSettings::documentName).toString())))
             {
                 UBPersistenceManager::persistenceManager()->deleteDocumentScenes(proxy, sceneIndexes);
                 proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -668,9 +664,7 @@ void UBDocumentController::deleteSelectedItem()
 
         if (proxyTi && proxyTi->proxy() && proxyTi->parent())
         {
-            if (QMessageBox::question( 0, tr("Remove Document"),
-                    tr("Are you sure you want to remove the document '%1'?").arg(proxyTi->proxy()->metaData(UBSettings::documentName).toString()),
-                    QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+            if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Document"), tr("Are you sure you want to remove the document '%1'?").arg(proxyTi->proxy()->metaData(UBSettings::documentName).toString())))
             {
                 if (proxyTi->parent() == mTrashTi)
                 {
@@ -737,9 +731,7 @@ void UBDocumentController::deleteSelectedItem()
         {
             if (groupTi == mTrashTi)
             {
-                if (QMessageBox::question( 0, tr("Empty Trash"),
-                        tr("Are you sure you want to empty trash?"),
-                        QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+                if(UBApplication::mainWindow->yesNoQuestion(tr("Empty Trash"), tr("Are you sure you want to empty trash?")))
                 {
                     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
                     QList<UBDocumentProxyTreeItem*> toBeDeleted;
@@ -769,9 +761,7 @@ void UBDocumentController::deleteSelectedItem()
             }
             else
             {
-                if (QMessageBox::question( 0, tr("Remove Folder"),
-                        tr("Are you sure you want to remove the folder '%1' and all its content?").arg(groupTi->groupName()),
-                        QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+                if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Folder"), tr("Are you sure you want to remove the folder '%1' and all its content?").arg(groupTi->groupName())))
                 {
                     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -1483,11 +1473,10 @@ bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
     }
     else
     {
-        if (QMessageBox::question( 0, tr("Open Document"),
+        if (UBApplication::mainWindow->yesNoQuestion(tr("Open Document"),
                 tr("The document '%1' has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?")
                     .arg(proxy->metaData(UBSettings::documentName).toString())
-                    .arg(docVersion),
-                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+                    .arg(docVersion)))
         {
             return true;
         }

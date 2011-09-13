@@ -41,6 +41,7 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
 
         void addDocumentsWidget(QWidget *pWidget);
         void switchToDocumentsWidget();
+        bool yesNoQuestion(QString windowTitle, QString text);
 
     signals:
         void closeEvent_Signal( QCloseEvent *event );

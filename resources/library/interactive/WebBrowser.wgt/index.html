@@ -22,6 +22,7 @@
             $(document).ready(function(){
                 //var resizer; // Timer
                 //var resizerIndex;
+                var popupFlag = false;
                 var currentHistory = 0;
                 var references = new Array();
                 var globalWidth = 850;
@@ -37,7 +38,8 @@
                 var resizer; // Timer
                 var resizerIndex;
                 
-			
+                var popupText = $("<div id='popupWordInfo' class='popupWordInfo'></div>").appendTo("body");
+                
                 resizerIndex = 0;
 									
                 if(window.sankore){
@@ -66,7 +68,53 @@
                         $("#search-button").trigger("click");
                     }
                 });
-			
+		
+                $("#search-button").mouseover(function(evt){
+                    popupFlag = true;
+                    popupText.css("top", evt.pageY + 5)
+                    .css("left", evt.pageX + 13)
+                    .css({width:"100px"})
+                    .text("Go to the site")
+                    .show("fast", function(){
+                        if(!popupFlag)
+                            popupText.hide();
+                    });
+                });
+                
+                $("#back-button").mouseover(function(evt){
+                    popupFlag = true;
+                    popupText.css("top", evt.pageY + 5)
+                    .css("left", evt.pageX + 13)
+                    .css({width:"90px"})
+                    .text("Previous site")
+                    .show("fast", function(){
+                        if(!popupFlag)
+                            popupText.hide();
+                    });
+                });
+                
+                $("#forward-button").mouseover(function(evt){
+                    popupFlag = true;
+                    popupText.css("top", evt.pageY + 5)
+                    .css("left", evt.pageX + 13)
+                    .css({width:"70px"})
+                    .text("Next site")
+                    .show("fast", function(){
+                        if(!popupFlag)
+                            popupText.hide();
+                    });
+                });
+                
+                $("#search-button, #back-button, #forward-button").mousemove(function(evt){
+                    popupText.css("top", evt.pageY + 5)
+                    .css("left", evt.pageX + 13);
+                });
+                
+                $("#search-button, #back-button, #forward-button").mouseout(function(evt){
+                    popupText.hide();
+                    popupFlag = false;
+                });
+                
                 $("#textbox").keypress(function(e) {
                     if(e.keyCode == 13) {
                         $("#search-button").trigger("click");

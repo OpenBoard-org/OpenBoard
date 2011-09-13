@@ -138,3 +138,18 @@ void UBMainWindow::onExportDone()
     actionOpen->setEnabled(true);
     actionDocumentAdd->setEnabled(true);
 }
+
+bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text)
+{
+    QMessageBox messageBox;
+    messageBox.setParent(this);
+    messageBox.setWindowFlags(Qt::Dialog);
+    messageBox.setWindowTitle(windowTitle);
+    messageBox.setText(text);
+    QPushButton* yesButton = messageBox.addButton(tr("Yes"),QMessageBox::YesRole);
+    messageBox.addButton(tr("No"),QMessageBox::NoRole);
+    messageBox.setIcon(QMessageBox::Question);
+    messageBox.exec();
+
+    return messageBox.clickedButton() == yesButton;
+}

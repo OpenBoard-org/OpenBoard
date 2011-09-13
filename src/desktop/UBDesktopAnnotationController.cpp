@@ -433,7 +433,10 @@ void UBDesktopAnnotationController::customCapture()
     UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
 
     // need to show the window before execute it to avoid some glitch on windows.
+
+#ifndef Q_WS_WIN // Working only without this call on win32 desktop mode
     customCaptureWindow.show();
+#endif
 
     if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
     {
