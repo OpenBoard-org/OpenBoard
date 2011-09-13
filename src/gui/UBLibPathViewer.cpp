@@ -37,7 +37,6 @@ UBLibPathViewer::UBLibPathViewer(QWidget *parent, const char *name):QGraphicsVie
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setAcceptDrops(true);
-    setStyleSheet(QString("QGraphicsView{background:#EEEEEE; border-radius:10px; border:2px solid #999999;}"));
 
     mpScene = new UBPathScene(this);
     setScene(mpScene);

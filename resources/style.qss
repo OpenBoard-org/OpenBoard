@@ -1,8 +1,12 @@
-QWidget#DockPaletteWidgetBox, QWidget#documentNavigator
+QWidget#DockPaletteWidgetBox,
+QWidget#documentNavigator,
+QWidget#UBLibraryWidget,
+QWidget#UBLibPathViewer
 {
 	background: #EEEEEE;
 	border-radius: 10px;
 	border: 2px solid #999999;
+/*	padding-bottom: -2px; */
 }
 
 QColorDialog
@@ -31,6 +35,95 @@ QPushButton#DockPaletteWidgetButton::checked
 {
 	background-color: #BBBBBB;
 }
+
+QScrollBar::vertical
+{
+	background:transparent;
+	margin: 23px 1px 25px 1px;
+}
+
+QScrollBar::handle:vertical
+{
+	border: 2px solid #999999;
+	border-radius:6px;
+	background:#BBBBBB;
+	min-height:40px;
+}
+
+QScrollBar::add-line:vertical
+{
+	image:url(:/images/down_arrow.png);
+	height:16px;
+	background:#BBBBBB;
+	border:2px solid #999999;
+	border-radius:6px;
+	margin: 1px 1px 4px 1px;
+	subcontrol-position:bottom;
+	subcontrol-origin:margin;
+}
+
+QScrollBar::sub-line:vertical
+{
+	image:url(:/images/up_arrow.png);
+	height:16px;
+	background:#BBBBBB;
+	border:2px solid #999999;
+	border-radius:6px;
+	margin: 2px 1px 1px 1px;
+	subcontrol-position:top;
+	subcontrol-origin:margin;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+{
+	background:transparent;
+}
+
+
+
+QScrollBar::horizontal
+{
+	background:transparent;
+	margin: 1px 23px 1px 25px;
+}
+
+QScrollBar::handle:horizontal
+{
+	border: 2px solid #999999;
+	border-radius:6px;
+	background:#BBBBBB;
+	min-width:40px;
+}
+
+QScrollBar::add-line:horizontal
+{
+	image:url(:/images/right_arrow.png);
+	width:16px;
+	background:#BBBBBB;
+	border:2px solid #999999;
+	border-radius:6px;
+	margin: 1px 1px 1px 4px;
+	subcontrol-position:right;
+	subcontrol-origin:margin;
+}
+
+QScrollBar::sub-line:horizontal
+{
+	image:url(:/images/left_arrow.png);
+	width:16px;
+	background:#BBBBBB;
+	border:2px solid #999999;
+	border-radius:6px;
+	margin: 1px 2px 1px 1px;
+	subcontrol-position:left;
+	subcontrol-origin:margin;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
+{
+	background:transparent;
+}
+
 
 QSlider::handle::horizontal
 {

@@ -322,5 +322,9 @@
         <file>style.qss</file>
         <file>images/cache_circle.png</file>
         <file>images/cache_square.png</file>
+        <file>images/down_arrow.png</file>
+        <file>images/up_arrow.png</file>
+        <file>images/left_arrow.png</file>
+        <file>images/right_arrow.png</file>
     </qresource>
 </RCC>
