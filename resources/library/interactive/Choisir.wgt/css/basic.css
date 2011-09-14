@@ -15,7 +15,7 @@ body{
     padding: 3px;
     margin: 0 auto;
     height: auto;
-
+    background-color: white;
 }
 
 .toggleButton{
@@ -30,7 +30,7 @@ body{
 }
 
 .buttonDiv{
-    position: absolute;
+    position: fixed;
     float: right;
     z-index: 1;
 }
@@ -47,7 +47,7 @@ body{
     margin: 0;
     border: none;
     background: none;
-    color: #E6E3DC;
+    color: #99ccff;
     cursor: pointer;
 }
 
@@ -103,7 +103,7 @@ body{
     background-position: 0 50%;
     width: auto;
     padding-left: 18px;
-    color: #E6E3DC;
+    color: #00C6FF;
     cursor: pointer;
 }
 
@@ -115,7 +115,7 @@ body{
     background-position: 0 50%;
     width: auto;
     padding-left: 18px;
-    color: #E6E3DC;
+    color: #00C6FF;
     cursor: pointer;
 }
 
@@ -169,7 +169,7 @@ body{
     width: auto;
     padding-left: 20px;
     line-height: 24px;
-    color: #E6E3DC;
+    color: #99ccff;
     cursor: pointer;
 }
 
@@ -217,7 +217,7 @@ body{
     margin-left: 5px;
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-size: small;
-    width: 80%;
+    width: 90%;
     float: left;
 }
 
@@ -269,7 +269,7 @@ body{
 .optDescText{
     text-align: center;
     width: 70%;
-    color: #CCC;
+    color: #666666;
     float: left;
     font-size: small;
     font-family: Verdana,Arial,Helvetica,sans-serif;
@@ -321,7 +321,7 @@ body{
     width: 160px;
     font-size: small;    
     font-family: Verdana,Arial,Helvetica,sans-serif;
-    color: #AAA;
+    color: #666;
     padding: 3px;
     margin-left: 20px;
 }
@@ -341,4 +341,22 @@ body{
     float: right;
     margin: 2px;
     padding: 3px;
+}
+
+.popupWordInfo{
+    position: absolute;
+    display: none;
+    width: 100px;
+    height: 20px;
+    top: 0;
+    left: 0;
+    text-align: center;
+    border: 1px solid #B9B9B9;
+    background-color: #eaebeb;
+    color: #666;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: #dadada -1px 0 4px;
+    box-shadow: #dadada -1px 0 4px;
+    z-index: 100;
 }

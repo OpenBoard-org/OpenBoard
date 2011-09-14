@@ -17,12 +17,13 @@ var questionArray;
 var currentQstId = "";
 
 function init(){
-    
+
     //variables
     var toggleFlag = false;
     var endFlag = false;
     var mode = false;
-    questionArray = new Array();    
+    questionArray = new Array();  
+    var popupFlag = false
     
     // toggle button
     var buttonDiv = $("<div id='buttonDiv' class='buttonDiv'>").appendTo("body");
@@ -31,6 +32,9 @@ function init(){
         top:"10px",
         right:0
     });
+    
+    //popup message
+    var popupText = $("<div id='popupWordInfo' class='popupWordInfo'></div>").appendTo("body");
     
     // adding question block
     var addQstDiv = $("<div id='addQstDiv' class='addQstDiv'>").appendTo("body");
@@ -170,6 +174,7 @@ function init(){
     
     //delete answer
     $(".ansDelete").live('click', function(){
+        popupText.hide();
         var id = this.id.replace("ansDelete","");
         $("#" + id).remove();
         for(var i in questionArray)
@@ -185,6 +190,7 @@ function init(){
     
     //delete question
     $(".qstDelete").live('click', function(){
+        popupText.hide();
         $("#" + currentQstId).remove();
         for(var i in questionArray)
             if(questionArray[i].id == currentQstId){
@@ -210,11 +216,51 @@ function init(){
     
     //select option
     $("input:radio").live('click', function(event){
-        $("#" + currentQstId + " input:radio").removeAttr("checked");
-        $(event.target).attr("checked", "checked");
-        getNeededElement(questionArray, currentQstId).type = $(event.target).attr("value");
+        if(!mode){
+            $("#" + currentQstId + " input:radio").removeAttr("checked");
+            $(event.target).attr("checked", "checked");
+            getNeededElement(questionArray, currentQstId).type = $(event.target).attr("value");
+        }
     });
     
+    //popup messages
+    $(".qstDelete").live('mouseover', function(evt){
+        popupFlag = true;
+        popupText.text("Delete question")
+        .css("top", evt.pageY + 15)
+        .css("left", evt.pageX - 40)
+        .css({
+            width:"120px"
+        })
+        .show("fast", function(){
+            if(!popupFlag)
+                popupText.hide();
+        });
+    });
+    
+    $(".ansDelete").live('mouseover', function(evt){
+        popupFlag = true;
+        popupText.text("Delete answer")
+        .css("top", evt.pageY + 15)
+        .css("left", evt.pageX - 40)
+        .css({
+            width:"110px"
+        })
+        .show("fast", function(){
+            if(!popupFlag)
+                popupText.hide();
+        });
+    });
+    
+    $(".qstDelete, .ansDelete").live('mousemove', function(evt){
+        popupText.css("top", evt.pageY + 15)
+        .css("left", evt.pageX - 40)
+    });
+    
+    $(".qstDelete, .ansDelete").live('mouseout', function(evt){
+        popupFlag = false;
+        popupText.hide();
+    });
 
     
     //toggle button click trigger
