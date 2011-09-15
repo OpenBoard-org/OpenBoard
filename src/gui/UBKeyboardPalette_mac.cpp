@@ -102,7 +102,10 @@ void UBKeyboardPalette::onActivated(bool activated)
 			SetMacLocaleByIdentifier(activeLocale);
 	}
 }
-
+void UBKeyboardPalette::onDeactivated()
+{
+    SetMacLocaleByIdentifier(activeLocale);
+}
 void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)
 {
 	SetMacLocaleByIdentifier(locale->id);

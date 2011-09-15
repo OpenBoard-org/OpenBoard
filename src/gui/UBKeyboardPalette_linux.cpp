@@ -154,15 +154,28 @@ void UBKeyboardPalette::onActivated(bool activated)
 
             XChangeKeyboardMapping(display, min_keycodes, byte_per_code,
                                    keySyms, max_keycodes - min_keycodes);
-            XFree(keySyms);
-        }
 
+            XFree(keySyms);
+         }
 
         XCloseDisplay(display);
     }
 
 }
+void UBKeyboardPalette::onDeactivated()
+{
+    Display *display = XOpenDisplay(0);
 
+    if(display == NULL)
+       return;
+
+    KeySym* keySyms = (KeySym*)storage;
+    if (keySyms!=NULL) {
+        XChangeKeyboardMapping(display, min_keycodes, byte_per_code,
+                               keySyms, max_keycodes - min_keycodes);
+    }
+    XCloseDisplay(display);
+}
 
 void setSymbolsFromButton(Display *display,
                           const UBKeyboardLocale& locale,

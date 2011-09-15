@@ -92,6 +92,7 @@ private slots:
     void syncLocale(int nLocale);
     void keyboardPaletteButtonSizeChanged(QVariant size);
     void onActivated(bool b);
+    void onDeactivated();
     void showKeyboard(bool show);
     void hideKeyboard();
 

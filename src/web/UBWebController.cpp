@@ -370,6 +370,10 @@ void UBWebController::setupPalettes()
 		(*mToolsCurrentPalette) = new UBWebToolsPalette((*mCurrentWebBrowser),false);
 
 		(*mKeyboardCurrentPalette) = UBKeyboardPalette::create(*mCurrentWebBrowser);
+#ifndef Q_WS_WIN
+            if (*mKeyboardCurrentPalette)
+                connect(*mKeyboardCurrentPalette, SIGNAL(closed()), *mKeyboardCurrentPalette, SLOT(onDeactivated()));
+#endif
 
 		connect(mMainWindow->actionWebTrapFlash, SIGNAL(triggered()), this, SLOT(trapFlash()));
 	    connect(mMainWindow->actionWebCustomCapture, SIGNAL(triggered()), this, SLOT(customCapture()));

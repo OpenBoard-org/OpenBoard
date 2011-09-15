@@ -70,7 +70,10 @@ void UBKeyboardPalette::createCtrlButtons()
 void UBKeyboardPalette::onActivated(bool)
 {
 }
+void UBKeyboardPalette::onDeactivated()
+{
 
+}
 void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* )
 {}
 
