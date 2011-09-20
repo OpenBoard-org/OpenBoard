@@ -90,28 +90,20 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
     //end compatibility with older format
 
     bool moreToProcess = true;
-
     int pageCount = 0;
 
-    while (moreToProcess)
-    {
+    while (moreToProcess) {
         pageCount++;
-
         QString fileName = proxy->persistencePath() +
                 UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageCount);
 
         QFile file(fileName);
-
-        if (file.exists())
-        {
+        if (file.exists()) {
             QPixmap pix;
-
-            pix.load(fileName);
-
+            //Warning. Works only with modified Qt
+            pix.load(fileName, 0, Qt::AutoColor, false);
             thumbnails.append(pix);
-        }
-        else
-        {
+        } else {
             moreToProcess = false;
         }
     }

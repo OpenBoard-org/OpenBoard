@@ -270,7 +270,7 @@ void UBDocumentController::refreshDocumentThumbnailsView()
 
     if (proxy)
     {
-	mCurrentDocument = proxy;
+        mCurrentDocument = proxy;
         QList<QPixmap> thumbs = UBThumbnailAdaptor::load(proxy);
 
         for (int i = 0; i < thumbs.count(); i++)
