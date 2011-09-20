@@ -136,7 +136,7 @@ body{
     padding: 3px;
     margin-left: 10px;
     margin-bottom: 10px;
-    width: 100%;
+    width: 95%;
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-size: small;
     border: 3px solid #ccc;
@@ -177,17 +177,17 @@ body{
     float: left;
     width: 100%;
     margin: 3px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .ansSpan{
-    border: none;
-    background: url(../images/point.png) -0px -0px no-repeat;
+    border: none;    
     background-color: white;
-    background-position: 0 50%;
     color: #00C6FF;
     font-size: 14px;
     float: left;
-    padding-left: 35px;
+    margin: 0 3px;
     width: 20px;
 }
 
@@ -213,22 +213,25 @@ body{
 }
 
 .ansContentDisplay{
-   padding: 1px 3px 3px 3px;
+    padding: 1px 3px 3px 3px;
     margin-left: 5px;
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-size: small;
     width: 90%;
     float: left;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;    
 }
 
 .ansDelete{
-    float: right;
+    float: left;
     border: none;
     background-image: url(../images/boldGreyClose.png);
     background-color: white;
     background-repeat: no-repeat;
     background-position: 0 50%;
     cursor: pointer;
+    margin: 0 5px;
 }
 
 .qstOptChoice{    

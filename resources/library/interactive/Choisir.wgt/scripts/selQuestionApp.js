@@ -24,6 +24,7 @@ function init(){
     var mode = false;
     questionArray = new Array();  
     var popupFlag = false
+    var flagForSelect = false;
     
     // toggle button
     var buttonDiv = $("<div id='buttonDiv' class='buttonDiv'>").appendTo("body");
@@ -49,11 +50,19 @@ function init(){
             for(var i in questionArray){
                 addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
                 for(var j in questionArray[i].answers)
-                    addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text);
+                    addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text, true, questionArray[i].rightAns, questionArray[i].type);
             }
+        /*for(var i in questionArray)
+                setInputSelected(questionArray[i].id, questionArray[i].type, questionArray[i].rightAns);
+            alert(2); */          
         }
     }
     
+    //saving widget data into sankore object for a correct import
+    $("body").mouseout(function(){
+        if(window.sankore)
+            sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
+    })
     // add question
     addQstButton.click(function(){        
         //question block
@@ -119,6 +128,12 @@ function init(){
     $(".qstDiv").live('mouseover', function() {
         currentQstId = this.id;
     });
+    
+    //set used at this moment question id into the variable 
+    $(".qstDivDisplay").live('mouseover', function() {
+        if(!flagForSelect)
+            currentQstId = this.id.replace("qstDivDisplay","");
+    });
        
     //adding new answer
     $(".ansAdd").live('click', function(){
@@ -176,9 +191,10 @@ function init(){
     $(".ansDelete").live('click', function(){
         popupText.hide();
         var id = this.id.replace("ansDelete","");
-        $("#" + id).remove();
+        $("#" + currentQstId + " #" + id).remove();
         for(var i in questionArray)
             if(questionArray[i].id == currentQstId){
+                questionArray[i].rightAns = questionArray[i].rightAns.replace($("#" + currentQstId + " #" + id + " input:checkbox").val(),"");
                 for(var j in questionArray[i].answers)
                     if(questionArray[i].answers[j].id == id){
                         delete questionArray[i].answers[j];
@@ -215,11 +231,45 @@ function init(){
     });
     
     //select option
-    $("input:radio").live('click', function(event){
+    $(".qstOptChoice input:radio").live('click', function(event){
         if(!mode){
-            $("#" + currentQstId + " input:radio").removeAttr("checked");
+            $("#" + currentQstId + "qstOptChoice input:radio").removeAttr("checked");
             $(event.target).attr("checked", "checked");
             getNeededElement(questionArray, currentQstId).type = $(event.target).attr("value");
+        }
+    });
+    
+    //select right ansver in edit mode and answer question in display mode
+    $(".newAnswer input").live('click', function(event){
+
+        if(!mode){
+            if(getNeededElement(questionArray, currentQstId).type == "1" || getNeededElement(questionArray, currentQstId).type == "3"){
+                $("#" + currentQstId + "ansDiv input").removeAttr("checked");
+                $(event.target).attr("checked", "checked");
+                getNeededElement(questionArray, currentQstId).rightAns = $(event.target).attr("value");
+            //alert(getNeededElement(questionArray, currentQstId).rightAns);
+            } else {
+                //alert(event.target.checked)
+                (event.target.checked) ? $(event.target).attr("checked", "checked") : $(event.target).removeAttr("checked", "checked");
+                getNeededElement(questionArray, currentQstId).rightAns = "";
+                for(var i in $("#" + currentQstId + "ansDiv input")){
+                    if($("#" + currentQstId + "ansDiv input")[i].checked)
+                        getNeededElement(questionArray, currentQstId).rightAns += $("#" + currentQstId + "ansDiv input")[i].value + ", ";
+                }
+            }
+        } else {
+            if(event.target.type == "radio"){
+                if(event.target.value == getNeededElement(questionArray, currentQstId).rightAns)
+                    $(event.target).next().next().css("background-color","#6c0");
+                else
+                    $(event.target).next().next().css("background-color","#f66");
+            } else {
+                //alert(event.target.value + " | " + getNeededElement(questionArray, currentQstId).rightAns + " | " + getNeededElement(questionArray, currentQstId).rightAns.replace(/,/g,"") + " | " + getNeededElement(questionArray, currentQstId).rightAns.replace(",","").indexOf(event.target.value + " ", 0) )
+                if(getNeededElement(questionArray, currentQstId).rightAns.replace(/,/g,"").indexOf(event.target.value + " ", 0) != -1)
+                    $(event.target).next().next().css("background-color","#6c0");
+                else
+                    $(event.target).next().next().css("background-color","#f66");
+            }
         }
     });
     
@@ -252,16 +302,54 @@ function init(){
         });
     });
     
-    $(".qstDelete, .ansDelete").live('mousemove', function(evt){
-        popupText.css("top", evt.pageY + 15)
-        .css("left", evt.pageX - 40)
+    $(".newAnswer input").live('mouseover', function(evt){
+        if(!mode){
+            popupFlag = true;
+            popupText.text("Right answer")
+            .css("top", evt.pageY + 15)
+            .css("left", evt.pageX - 40)
+            .css({
+                width:"105px"
+            })
+            .show("fast", function(){
+                if(!popupFlag)
+                    popupText.hide();
+            });
+        }
     });
     
-    $(".qstDelete, .ansDelete").live('mouseout', function(evt){
-        popupFlag = false;
-        popupText.hide();
+    $(".qstDelete, .ansDelete, .newAnswer input").live('mousemove', function(evt){
+        if(!mode){
+            popupText.css("top", evt.pageY + 15)
+            .css("left", evt.pageX - 40);
+        }
+    });
+    
+    $(".qstDelete, .ansDelete, .newAnswer input").live('mouseout', function(evt){
+        if(!mode){
+            popupFlag = false;
+            popupText.hide();
+        }
     });
 
+    //answer the questions
+    
+    $("select").live('change', function(evt){
+        if(mode){
+            //alert(currentQstId + " | " + event.target.value + " | " + getNeededElement(questionArray, currentQstId).rightAns)
+            if(event.target.value == getNeededElement(questionArray, currentQstId).rightAns)
+                $(event.target).parent().css("background-color","#6c0");
+            else
+                $(event.target).parent().css("background-color","#f66");
+            flagForSelect = false;
+        }
+    });
+    
+    $("select").live('mousedown', function(evt){
+        if(mode){
+            flagForSelect = true;
+        }
+    });
     
     //toggle button click trigger
     toggleButton.trigger("click");
@@ -286,11 +374,11 @@ function init(){
             var counter = 1;
             for(var i in array){
 
-                var qstDiv = $("<div class='qstDivDisplay'>");        
+                var qstDiv = $("<div class='qstDivDisplay' id='" + array[i].id + "qstDivDisplay'>");        
                 var spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
                 var qstNumber = $("<span class='qstNumber'>Question " + counter + "</span>").appendTo(spanOptConn);        
                 var qstContent = $("<div class='qstContentDisplay'>" + array[i].text + "</div>").appendTo(qstDiv);        
-                var ansDiv = $("<div class='ansDiv'>").appendTo(qstDiv);
+                var ansDiv = $("<div class='ansDiv' id='" + array[i].id + "ansDiv'>").appendTo(qstDiv);
 
                 var ansCount = 1;
                 var type = array[i].type;
@@ -305,26 +393,26 @@ function init(){
                     switch(type){
                         case "1":
                             newAnswer = $("<div class='newAnswer'>");
-                            var ansInput = $("<input type='radio' name='" + counter + "' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
+                            var ansInput = $("<input type='radio' name='" + counter + "' value='" + array[i].answers[j].value + "' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             var ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
                             var ansContent = $("<div class='ansContentDisplay'>" + array[i].answers[j].text + "</div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "2":
                             newAnswer = $("<div class='newAnswer'>");
-                            ansInput = $("<input type='checkbox' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
+                            ansInput = $("<input type='checkbox' value='" + array[i].answers[j].value + "' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
                             ansContent = $("<div class='ansContentDisplay'>" + array[i].answers[j].text + "</div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "3":
-                            ansInput = $("<option value='" + ansCount + "'>" + array[i].answers[j].text + "</option>").appendTo(selInput);
+                            ansInput = $("<option value='" + array[i].answers[j].value + "'>" + array[i].answers[j].text + "</option>").appendTo(selInput);
                             break;
                     }               
                     ansCount++;
                 }
                 qstDiv.appendTo("body");
-                counter ++;
+                counter++;
             }
         } else {
             counter = 1;
@@ -413,13 +501,32 @@ function addQstBlock(id, text, type, style){
 }
 
 //add answers
-function addAnsBlock(id, currId, text){
+function addAnsBlock(id, currId, text, stage, rightAns, type){
     var newAnswer = $("<div class='newAnswer' id='" + id + "'>");
+    var value;
+    var check = "";
+    if(stage){
+        value = getNeededElement(getNeededElement(questionArray, currId).answers,id).value;
+        if(type != "2"){
+            if(rightAns == value)
+                check = "checked='true'";
+        }
+        else {
+            rightAns = rightAns.replace(/,/g,"");
+            if(rightAns.indexOf(value + " ", 0) != -1)
+                check = "checked='true'";                
+        }
+    }
+    else {
+        value = ($("#" + currId + " .newAnswer input:checkbox").last().val()) ? parseInt($("#" + currId + " .newAnswer input:checkbox").last().val()) + 1 : 1;
+        getNeededElement(getNeededElement(questionArray, currId).answers,id).value = value;
+    }
     var count = $("#" + currId + " .newAnswer").size() + 1;
+    var input = $("<input type='checkbox' style='float: left;' value='" + value + "' " + check + ">").appendTo(newAnswer);
     var ansSpan = $("<span class='ansSpan'>A" + count + "</span>").appendTo(newAnswer);
     var ansContent = $("<div class='ansContent' id='" + id +"ansContent' contenteditable='true'>" + text + "</div>").appendTo(newAnswer);
     var ansDelete = $("<button class='ansDelete' id='" + id + "ansDelete'>").appendTo(newAnswer);
-    newAnswer.insertBefore("#" + currId + "ansDiv .ansAdd");
+    newAnswer.insertBefore("#" + currId + "ansDiv .ansAdd");    
         
     if(window.sankore)
         sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
@@ -466,7 +573,7 @@ function Question(){
     
     this.id = "";
     
-    this.rightAns = 1;
+    this.rightAns = "";
     
     this.answers = new Array();
 
@@ -479,4 +586,5 @@ function Answer(){
     
     this.text = "";
     
+    this.value = "";
 }
