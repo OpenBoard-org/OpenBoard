@@ -2,11 +2,11 @@
 <context>
     <name>BlackoutWidget</name>
     <message>
-        <source>Click to Return to Application</source>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>background: url(:/images/bigUniboard.png); border: none;</source>
+        <source>Click to Return to Application</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -32,6 +32,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Ico</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Filename</source>
         <translation type="unfinished"></translation>
     </message>
@@ -45,10 +49,6 @@
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ico</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -90,6 +90,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Stylus</source>
         <translation type="unfinished"></translation>
     </message>
@@ -102,39 +106,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add To Current Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add To New Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add To Library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Page</source>
+        <source>Change Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -190,6 +166,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Small Line</source>
         <translation type="unfinished"></translation>
     </message>
@@ -199,6 +179,18 @@
     </message>
     <message>
         <source>Large Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit Uniboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Eraser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -214,7 +206,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Reload Current Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -222,7 +242,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -234,7 +262,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Ctrl+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Erase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Erase Content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -242,7 +282,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>Sankoré 3.1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sankore 3.1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -254,7 +314,39 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Bigger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zoom In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl++</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smaller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zoom Out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Create a New Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -262,7 +354,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Import a Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -270,7 +370,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Open in Board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Open Page in Board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -278,7 +390,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete Selected Content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Del</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to Working Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Selected Content to Open Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -286,7 +418,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Rename Content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -294,7 +434,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Multi Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wide Size (16/9)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Use Document Wide Size (16/9)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Regular Size (4/3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -302,7 +454,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Custom Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Use Custom Document Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Loading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -310,7 +470,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sleep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Put Presentation to Sleep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Virtual Keyboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -318,7 +498,43 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Plain Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plain Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Record Presentation to Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Screen Recording</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -335,6 +551,10 @@
     </message>
     <message>
         <source>Erase All Annotations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -390,262 +610,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Custom Capture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture a Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Embed Web Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture Embeddable Web Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Main Screen on Display Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase all Annotations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>eduMedia</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import eduMedia simulation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <source>Sankoré Editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Sankore Widgets Editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <source>Hide Sankoré</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <source>Hide Sankoré Application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Zoom In</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Eraser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Forward</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reload</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bookmarks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bookmark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+B</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Preferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Quit Uniboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sankore 3.1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bigger</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Smaller</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open in Board</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Del</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to Working Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Selected Content to Open Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid Light Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid Dark Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Screen Recording</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Scroll Page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -670,6 +634,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Write Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -678,7 +646,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Capture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Part of the Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add To Current Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add Item To Current Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add To New Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -686,11 +670,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Add To Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add Item To Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Create a New Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -742,7 +738,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Custom Capture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Window Capture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture a Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Embed Web Content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Embeddable Web Content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -750,59 +762,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sleep</source>
+        <source>Show Main Screen on Display Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Virtual Keyboard</source>
+        <source>Erase all Annotations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Plain Light Background</source>
+        <source>eduMedia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Light</source>
+        <source>Import eduMedia simulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Plain Dark Background</source>
+        <source>Open the tutorial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Dark</source>
+        <source>Check Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>Sankoré Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Podcast</source>
+        <source>Show Sankore Widgets Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>Hide Sankoré</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>Hide Sankoré Application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Multi Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Custom Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Loading</source>
+        <source>Ctrl+H</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -813,14 +813,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Username:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DUMMY ICON</source>
         <translation type="unfinished"></translation>
     </message>
@@ -828,11 +820,23 @@
         <source>INTRO TEXT DUMMY</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Username:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ICON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -851,21 +855,17 @@
         <source>Save username and password for future use</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>ICON</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
+        <source>/Home</source>
+        <comment>Category list label on navigation tool bar</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
+        <source>Trash</source>
+        <comment>Pictures category element</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -913,15 +913,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Update available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>New update available, would you go to the web page ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No update available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Update available</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -944,15 +944,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Unknown content type %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add Item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown content type %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1120,6 +1120,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add all Images to Document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1129,10 +1133,6 @@
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1181,6 +1181,14 @@
 <context>
     <name>UBDocumentPublisher</name>
     <message>
+        <source>Credentials has to not been filled out yet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploading Sankore File on Web.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export failed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1190,14 +1198,6 @@
     </message>
     <message>
         <source>Converting page %1/%2 ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credentials has to not been filled out yet.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Uploading Sankore File on Web.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1258,11 +1258,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Export to PDF</source>
+        <source>Export successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Export successful.</source>
+        <source>Export to PDF</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1273,7 +1273,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Exporting page %1 of %2</source>
+        <source>Exporting document...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1281,7 +1281,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Exporting document...</source>
+        <source>Exporting page %1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1382,19 +1382,19 @@
 <context>
     <name>UBImportDocument</name>
     <message>
-        <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import successful.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sankore 3.1 (*.ubz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Importing file %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Import of file %1 failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import successful.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1507,6 +1507,10 @@
 <context>
     <name>UBLibraryController</name>
     <message>
+        <source>ImportedImage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Added 1 Image to Library</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1541,25 +1545,21 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Interactivities</source>
         <comment>Interactives category element</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ImportedImage</source>
+        <source>Animations</source>
+        <comment>Animations category element</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
+        <source>Creating image thumbnail for %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Adding to page failed for item %1.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1624,6 +1624,10 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBPodcastController</name>
     <message>
+        <source>Sankore Cast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed to start encoder ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1677,10 +1681,6 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Publish to Youtube</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sankore Cast</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1762,7 +1762,7 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBToolsManager</name>
     <message>
-        <source>Compass</source>
+        <source>Mask</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1770,11 +1770,11 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Protractor</source>
+        <source>Compass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mask</source>
+        <source>Protractor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1828,6 +1828,10 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Please wait the import process will start soon...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
         <translation type="unfinished"></translation>
@@ -1842,10 +1846,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Updating file </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please wait the import process will start soon...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2032,12 +2032,12 @@ Please reboot the application to access the updated documents.</source>
 <context>
     <name>WBDownloadManager</name>
     <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
+        <source>1 Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>1 Download</source>
+        <source>%1 Downloads</source>
+        <comment>always &gt;= 2</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2130,6 +2130,10 @@ Please reboot the application to access the updated documents.</source>
 <context>
     <name>WBWebPage</name>
     <message>
+        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Download</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2143,10 +2147,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Error loading page: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2203,15 +2203,15 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>brushProperties</name>
     <message>
-        <source>Opacity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>On Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2310,6 +2310,10 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
+    <message encoding="UTF-8">
+        <source>version : …</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Default Settings</source>
         <translation type="unfinished"></translation>
@@ -2323,7 +2327,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Internet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show Page with External Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home Page:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy User/Pass:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mirroring</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show main display immediately on secondary screen or projector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2332,6 +2356,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2359,51 +2387,11 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Software Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check software update at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Internet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Home Page:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Proxy User/Pass:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mirroring</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show main display immediately on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Pen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <source>version : …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2412,22 +2400,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenSSl</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>zlib</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>xpdf</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Quazip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <source>Sankoré 3.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2440,11 +2412,19 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>zlib</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>xpdf</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2456,11 +2436,19 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Quazip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;GNU Library or Lesser General Public License (LGPL), zlib/libpng License&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>Sankoré 3.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2641,6 +2629,10 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -2661,6 +2653,14 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;GIPENA&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;20 Avenue Ségur Paris 75007&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Téléphone : 01 43 17 68 08&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Software Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check software update at launch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<!DOCTYPE TS><TS>
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -380,10 +378,6 @@
         <translation>Effacer le contenu sélectionné</translation>
     </message>
     <message>
-        <source>Define Drawing Options</source>
-        <translation>Définir les options de dessin</translation>
-    </message>
-    <message>
         <source>Add Content to Document</source>
         <translation>Ajouter un contenu au document</translation>
     </message>
@@ -391,7 +385,7 @@
         <source>Tutorial</source>
         <translation>Tutoriel</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -583,7 +577,7 @@
         <source>Check Update</source>
         <translation>Contrôler les mises à jour</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré Editor</source>
         <translation>Editeur Sankoré</translation>
     </message>
@@ -591,11 +585,11 @@
         <source>Show Sankore Widgets Editor</source>
         <translation>Afficher l&apos;éditeur d&apos;Apps Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré</source>
         <translation>Cacher Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré Application</source>
         <translation>Cacher l&apos;application Sankoré</translation>
     </message>
@@ -926,6 +920,10 @@
         <source>No update available</source>
         <translation>Pas de nouvelle mise à jour disponible</translation>
     </message>
+    <message>
+        <source>Update available</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -963,6 +961,29 @@
     <message>
         <source>Error Adding Image to Library</source>
         <translation>Erreur lors de l&apos;ajout d&apos;images à la bibliothèque</translation>
+    </message>
+</context>
+<context>
+    <name>UBCachePropertiesWidget</name>
+    <message>
+        <source>Cache Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shape:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
     </message>
 </context>
 <context>
@@ -1197,13 +1218,6 @@
     <message>
         <source>Copying page %1/%2</source>
         <translation>Copie de la page %1/%2 en cours</translation>
-    </message>
-</context>
-<context>
-    <name>UBDropMeWidget</name>
-    <message>
-        <source>Drop here</source>
-        <translation>Déposer ici</translation>
     </message>
 </context>
 <context>
@@ -1550,6 +1564,17 @@
     </message>
 </context>
 <context>
+    <name>UBMainWindow</name>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
@@ -1761,6 +1786,14 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <source>Triangle</source>
         <translation>Equerre</translation>
+    </message>
+    <message>
+        <source>Magnifier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2344,7 +2377,7 @@ p, li { white-space: pre-wrap; }
         <source>Show main display immediately on secondary screen or projector</source>
         <translation>Afficher immédiatement l&apos;écran principal sur l&apos;écran secondaire ou le projecteur</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>version : …</source>
         <translation>version:...</translation>
     </message>
@@ -2400,7 +2433,7 @@ p, li { white-space: pre-wrap; }
         <source>Quazip</source>
         <translation>Quazip</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -2615,7 +2648,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2628,7 +2661,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }

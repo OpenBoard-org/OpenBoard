@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<!DOCTYPE TS><TS>
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
         <translation>Click per tornare all&apos;applicazione</translation>
+    </message>
+    <message>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -44,6 +46,10 @@
     <message>
         <source>Open</source>
         <translation>Apri</translation>
+    </message>
+    <message>
+        <source>Ico</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -287,7 +293,7 @@
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -760,10 +766,6 @@
         <translation>Visualizza Lo Schermo Principale Sullo Schermo</translation>
     </message>
     <message>
-        <source>Define Drawing Options</source>
-        <translation>Definisci Opzioni Di Disegno</translation>
-    </message>
-    <message>
         <source>Erase all Annotations</source>
         <translation>Cancella Tutte Le Annotazioni</translation>
     </message>
@@ -783,7 +785,7 @@
         <source>Check Update</source>
         <translation>Cerca Aggiornamenti</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré Editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -791,11 +793,11 @@
         <source>Show Sankore Widgets Editor</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré Application</source>
         <translation type="unfinished"></translation>
     </message>
@@ -817,6 +819,14 @@
     <message>
         <source>Password:</source>
         <translation>Password</translation>
+    </message>
+    <message>
+        <source>DUMMY ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTRO TEXT DUMMY</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -841,6 +851,10 @@
         <source>Save username and password for future use</source>
         <translation>Salva username e password per usi futuri</translation>
     </message>
+    <message>
+        <source>ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -852,13 +866,6 @@
     <message>
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -913,6 +920,10 @@
         <source>No update available</source>
         <translation>Nessun aggiornamento disponibile</translation>
     </message>
+    <message>
+        <source>Update available</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -950,6 +961,29 @@
     <message>
         <source>Error Adding Image to Library</source>
         <translation>Errore mentre si aggiungeva un&apos;immagine alla Biblioteca</translation>
+    </message>
+</context>
+<context>
+    <name>UBCachePropertiesWidget</name>
+    <message>
+        <source>Cache Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shape:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">chiudi</translation>
     </message>
 </context>
 <context>
@@ -1097,12 +1131,6 @@
         <source>Selection does not contain any image files!</source>
         <translation>La selezione non contiene nessun file immagine!</translation>
     </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
@@ -1190,19 +1218,6 @@
     <message>
         <source>Copying page %1/%2</source>
         <translation>Sto copiando pagina %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-</context>
-<context>
-    <name>UBDropMeWidget</name>
-    <message>
-        <source>Drop here</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1549,6 +1564,17 @@
     </message>
 </context>
 <context>
+    <name>UBMainWindow</name>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
@@ -1761,6 +1787,14 @@ Vuoi ignorare l&apos;errore per questo host?</translation>
         <source>Triangle</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Magnifier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
@@ -1814,6 +1848,10 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Updating file </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please wait the import process will start soon...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2271,6 +2309,10 @@ p, li { white-space: pre-wrap; }
         <source>Uniboard Documents</source>
         <translation>Documento Uniboard</translation>
     </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>preferencesDialog</name>
@@ -2278,7 +2320,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Preferenze</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>version : …</source>
         <translation>versione: ...</translation>
     </message>
@@ -2394,7 +2436,7 @@ p, li { white-space: pre-wrap; }
         <source>Quazip</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2609,7 +2651,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2622,7 +2664,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
