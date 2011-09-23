@@ -31,6 +31,9 @@
 #include "UBThumbnailAdaptor.h"
 #include "UBSvgSubsetAdaptor.h"
 
+#include "core/UBApplication.h"
+#include "QFile"
+
 //enum of xmlparse status
 
 //tag names definition
@@ -92,6 +95,9 @@ bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentP
         return false;
     }
 
+//    QTextStream out(&file);
+//    out.setCodec("UTF-8");
+//    QString dta = out.readAll();
     QByteArray data = file.readAll();
     if (data.length() == 0)
     {
@@ -110,6 +116,11 @@ bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentP
 UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(UBDocumentProxy *proxy, QByteArray &content):
     mReader(content), mProxy(proxy), currentState(NONE)
 {
+//    QFile tfile("/home/ilia/Documents/tmp/2/out.xml");
+//    tfile.open(QIODevice::ReadWr  ite | QIODevice::Text);
+//    QTextStream out(&tfile);
+//    out << content;
+//    tfile.close();
 }
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parse()
@@ -170,6 +181,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseDoc()
                         return false;
                 }
     }
+    if (!mReader.error() == QXmlStreamReader::NoError)
+        UBApplication::showMessage(mReader.errorString());
     return true;
 }
 

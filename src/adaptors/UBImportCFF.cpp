@@ -47,7 +47,8 @@ UBImportCFF::~UBImportCFF()
 
 QStringList UBImportCFF::supportedExtentions()
 {
-    return QStringList("iwb");
+//    return QStringList("iwb");
+    return QStringList();
 }
 
 
@@ -124,8 +125,7 @@ QString UBImportCFF::expandFileToDir(const QFile& pZipFile, const QString& pDir)
 {
     QuaZip zip(pZipFile.fileName());
 
-    if(!zip.open(QuaZip::mdUnzip))
-    {
+    if(!zip.open(QuaZip::mdUnzip)) {
         qWarning() << "Import failed. Cause zip.open(): " << zip.getZipError();
         return "";
     }
@@ -139,123 +139,96 @@ QString UBImportCFF::expandFileToDir(const QFile& pZipFile, const QString& pDir)
     QString documentRootFolder;
     int tmpNumber = 0;
     QDir rootDir;
-    while (true)
-    {
+    while (true) {
         QString tempPath = QString("%1/sank%2.%3")
                 .arg(pDir)
                 .arg(QDateTime::currentDateTime().toString("dd_MM_yyyy_HH-mm"))
                 .arg(tmpNumber);
-        if (!rootDir.exists(tempPath))
-        {
+        if (!rootDir.exists(tempPath)) {
             documentRootFolder = tempPath;
             break;
         }
         tmpNumber++;
-        if (tmpNumber == 100000)
-        {
+        if (tmpNumber == 100000) {
             qWarning() << "Import failed. Failed to create temporary directory for iwb file";
             return "";
         }
     }
-
-    if (!rootDir.mkdir(documentRootFolder))
-    {
+    if (!rootDir.mkdir(documentRootFolder)) {
         qWarning() << "Import failed. Couse: failed to create temp folder for cff package";
     }
 
-    // first we search the metadata.rdf to check the document properties
-    for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())
-    {
-        if(!zip.getCurrentFileInfo(&info))
-        {
-            qWarning() << "Import failed. Cause: getCurrentFileInfo(): " << zip.getZipError();
-            return "";
-        }
-
-        QFileInfo currentFileInfo(pDir + "/" + file.getActualFileName());
-    }
-
-
+    QStringList lst = zip.getFileNameList();
     QFile out;
     char c;
-    for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile())
-    {
-        if(!zip.getCurrentFileInfo(&info))
-        {
+    for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile()) {
+        if(!zip.getCurrentFileInfo(&info)) {
             //TOD UB 4.3 O display error to user or use crash reporter
             qWarning() << "Import failed. Cause: getCurrentFileInfo(): " << zip.getZipError();
             return "";
         }
-
-        if(!file.open(QIODevice::ReadOnly))
-        {
-            qWarning() << "Import failed. Cause: file.open(): " << zip.getZipError();
-            return "";
-        }
-
-        if(file.getZipError()!= UNZ_OK)
-        {
+//        if(!file.open(QIODevice::ReadOnly)) {
+//            qWarning() << "Import failed. Cause: file.open(): " << zip.getZipError();
+//            return "";
+//        }
+        file.open(QIODevice::ReadOnly);
+        if(file.getZipError()!= UNZ_OK) {
             qWarning() << "Import failed. Cause: file.getFileName(): " << zip.getZipError();
             return "";
         }
 
         QString newFileName = documentRootFolder + "/" + file.getActualFileName();
-        QFileInfo newFileInfo(newFileName);
-        rootDir.mkpath(newFileInfo.absolutePath());
+        bool ends = newFileName.endsWith('/');
+        if (!ends)  {
 
-        out.setFileName(newFileName);
-        out.open(QIODevice::WriteOnly);
+            QFileInfo newFileInfo(newFileName);
+            rootDir.mkpath(newFileInfo.absolutePath());
 
-        // Slow like hell (on GNU/Linux at least), but it is not my fault.
-        // Not ZIP/UNZIP package's fault either.
-        // The slowest thing here is out.putChar(c).
-        QByteArray outFileContent = file.readAll();
-        if (out.write(outFileContent) == -1)
-        {
-            qWarning() << "Import failed. Cause: Unable to write file";
+            out.setFileName(newFileName);
+            out.open(QIODevice::WriteOnly);
+
+            // Slow like hell (on GNU/Linux at least), but it is not my fault.
+            // Not ZIP/UNZIP package's fault either.
+            // The slowest thing here is out.putChar(c).
+            QByteArray outFileContent = file.readAll();
+            if (out.write(outFileContent) == -1)
+            {
+                qWarning() << "Import failed. Cause: Unable to write file";
+                out.close();
+                return "";
+            }
+            while(file.getChar(&c))
+                out.putChar(c);
+
             out.close();
-            return "";
+
+            if(file.getZipError()!=UNZ_OK) {
+                qWarning() << "Import failed. Cause: " << zip.getZipError();
+                return "";
+            }
+            if(!file.atEnd()) {
+                qWarning() << "Import failed. Cause: read all but not EOF";
+                return "";
+            }
+
+            file.close();
+
+            if(file.getZipError()!=UNZ_OK) {
+                qWarning() << "Import failed. Cause: file.close(): " <<  file.getZipError();
+                return "";
+            }
         }
-
-        while(file.getChar(&c))
-            out.putChar(c);
-
-        out.close();
-
-        if(file.getZipError()!=UNZ_OK)
-        {
-            qWarning() << "Import failed. Cause: " << zip.getZipError();
-            return "";
-        }
-
-        if(!file.atEnd())
-        {
-            qWarning() << "Import failed. Cause: read all but not EOF";
-            return "";
-        }
-
-        file.close();
-
-        if(file.getZipError()!=UNZ_OK)
-        {
-            qWarning() << "Import failed. Cause: file.close(): " <<  file.getZipError();
-            return "";
-        }
-
     }
 
     zip.close();
 
-    if(zip.getZipError()!=UNZ_OK)
-    {
-      qWarning() << "Import failed. Cause: zip.close(): " << zip.getZipError();
-      return "";
+    if(zip.getZipError()!=UNZ_OK) {
+        qWarning() << "Import failed. Cause: zip.close(): " << zip.getZipError();
+        return "";
     }
-
 
     return documentRootFolder;
 }
-
 
 UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGroup)
 {
