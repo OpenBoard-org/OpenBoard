@@ -170,32 +170,9 @@ void UBSettings::ValidateKeyboardPaletteKeyBtnSize()
 
 void UBSettings::init()
 {
-    uniboardWebUrl = new UBSetting(this, "App", "UniboardWebAddress", "http://web.getuniboard.com");
     productWebUrl =  new UBSetting(this, "App", "ProductWebAddress", "http://www.sankore.org");
 
-    softwareUpdatesUrl = uniboardWebUrl->get().toString() + "/software/installer/";
-    softwareLibrariesUrl = uniboardWebUrl->get().toString() + "/software/library/";
     softwareHomeUrl = productWebUrl->get().toString();
-
-    softwarePurchaseUrl = uniboardWebUrl->get().toString() + "/software/purchase/";
-
-    oEmbedJsLibraryUrl = uniboardWebUrl->get().toString() + "/widgets/videopicker/scripts/jquery.oembed.js";
-
-    documentsPublishingUrl = uniboardWebUrl->get().toString() + "/documents/publish";
-    capturesPublishingUrl = uniboardWebUrl->get().toString() + "/captures/publish";
-    publishingAuthenticationUrl = uniboardWebUrl->get().toString() + "/publish/token";
-
-    documentPlayerScriptUrl = uniboardWebUrl->get().toString() + "/uniboard-player/scripts/ubplayer.js";
-    documentPlayerPageScriptUrl = uniboardWebUrl->get().toString() + "/uniboard-player/scripts/ubplayer.page.js";
-    documentPlayerCssUrl = uniboardWebUrl->get().toString() + QLatin1String("/uniboard-player/stylesheets/viewer.css");
-
-#ifdef Q_WS_MAC
-    appRssUrl = softwareUpdatesUrl + "appcast-mac.xml";
-#elif defined(Q_WS_WIN)
-    appRssUrl = softwareUpdatesUrl + "appcast-win.xml";
-#else
-    appRssUrl = ""; // TODO Linux
-#endif
 
     appToolBarPositionedAtTop = new UBSetting(this, "App", "ToolBarPositionedAtTop", true);
     appToolBarDisplayText = new UBSetting(this, "App", "ToolBarDisplayText", true);
@@ -223,7 +200,6 @@ void UBSettings::init()
 
     boardUseHighResTabletEvent = new UBSetting(this, "Board", "UseHighResTabletEvent", true);
 
-//    boardKeyboardPaletteAutoMinimize = new UBSetting(this, "Board", "KeyboardPaletteAutoMinimize", true);
     boardKeyboardPaletteKeyBtnSize = new UBSetting(this, "Board", "KeyboardPaletteKeyBtnSize", "16x16");
     ValidateKeyboardPaletteKeyBtnSize();
 

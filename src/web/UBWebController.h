@@ -119,17 +119,12 @@ class UBWebController : public QObject
 
     private slots:
 
-        void getOEmbedProviderList();
-
         void activePageChanged();
         void trapFlash();
 
         void toggleWebTrap(bool checked);
 
 		void showKeyboard(bool checked);
-
-
-        void getOEmbedProviderListResponse(bool success, const QByteArray& payload);
 
     signals:
         /**

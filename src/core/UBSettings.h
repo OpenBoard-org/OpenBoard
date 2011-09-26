@@ -192,21 +192,9 @@ class UBSettings : public QObject
         static QString defaultDocumentGroupName;
         static QString documentTrashGroupName;
 
-        UBSetting* uniboardWebUrl;
         UBSetting* productWebUrl;
 
-        QString softwareUpdatesUrl;
-        QString appRssUrl;
-        QString softwareLibrariesUrl;
         QString softwareHomeUrl;
-        QString oEmbedJsLibraryUrl;
-        QString softwarePurchaseUrl;
-        QString documentsPublishingUrl;
-        QString capturesPublishingUrl;
-        QString publishingAuthenticationUrl;
-        QString documentPlayerScriptUrl;
-        QString documentPlayerPageScriptUrl;
-        QString documentPlayerCssUrl;
 
         UBSetting* appToolBarPositionedAtTop;
         UBSetting* appToolBarDisplayText;
@@ -233,7 +221,6 @@ class UBSettings : public QObject
 
         UBSetting* boardUseHighResTabletEvent;
 
-//        UBSetting* boardKeyboardPaletteAutoMinimize;
         UBSetting* boardKeyboardPaletteKeyBtnSize;
 
         UBColorListSetting* boardPenLightBackgroundColors;
@@ -307,8 +294,6 @@ class UBSettings : public QObject
         UBSetting* intranetPodcastAuthor;
 
         UBSetting* favoritesNativeToolUris;
-
-        //UBSetting* shouldShowBundleMessage;
 
         UBSetting* replyWWSerialPort;
         UBSetting* replyPlusConnectionURL;

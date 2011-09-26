@@ -17,7 +17,6 @@ HEADERS      += src/adaptors/UBExportAdaptor.h\
                 src/adaptors/UBCFFSubsetAdaptor.h
 
 HEADERS      += src/adaptors/publishing/UBDocumentPublisher.h \
-                src/adaptors/publishing/UBAbstractPublisher.h \
                 src/adaptors/publishing/UBSvgSubsetRasterizer.h
                
 HEADERS      += src/adaptors/voting/UBAbstractVotingSystem.h
@@ -38,10 +37,10 @@ SOURCES      += src/adaptors/UBExportAdaptor.cpp\
                 src/adaptors/UBExportWeb.cpp \
                 src/adaptors/UBWebPublisher.cpp \
                 src/adaptors/UBImportCFF.cpp \
-                src/adaptors/UBCFFSubsetAdaptor.cpp
+                src/adaptors/UBCFFSubsetAdaptor.cpp \
+    src/adaptors/publishing/UBDocumentPublisher.cpp
 
-SOURCES      += src/adaptors/publishing/UBDocumentPublisher.cpp \
-                src/adaptors/publishing/UBAbstractPublisher.cpp \
+SOURCES      += \
                 src/adaptors/publishing/UBSvgSubsetRasterizer.cpp
                 
 SOURCES      += src/adaptors/voting/UBAbstractVotingSystem.cpp   

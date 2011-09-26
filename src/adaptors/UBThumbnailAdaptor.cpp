@@ -101,7 +101,11 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
         if (file.exists()) {
             QPixmap pix;
             //Warning. Works only with modified Qt
+#ifdef Q_WS_X11
+            pix.load(fileName, 0, Qt::AutoColor);
+#else
             pix.load(fileName, 0, Qt::AutoColor, false);
+#endif
             thumbnails.append(pix);
         } else {
             moreToProcess = false;

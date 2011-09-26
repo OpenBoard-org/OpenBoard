@@ -48,14 +48,14 @@
 
 
 UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *parent)
-        : UBAbstractPublisher(parent)
+        : QObject(parent)
         , mSourceDocument(pDocument)
         , mPublishingDocument(0)
         , mUsername("")
         , mPassword("")
         , bLoginCookieSet(false)
 {
-    init();
+	//NOOP
 }
 
 

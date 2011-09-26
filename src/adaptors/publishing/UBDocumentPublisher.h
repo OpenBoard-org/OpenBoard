@@ -19,7 +19,6 @@
 #include <QtNetwork>
 
 #include "ui_webPublishing.h"
-#include "UBAbstractPublisher.h"
 
 #define DOCPUBLICATION_URL     "http://planete.sankore.org/xwiki/bin/view/CreateResources/UniboardUpload?xpage=plain&outputSyntax=plain"
 
@@ -79,7 +78,7 @@ private:
 };
 
 
-class UBDocumentPublisher : public UBAbstractPublisher
+class UBDocumentPublisher : public QObject
 {
     Q_OBJECT;
 

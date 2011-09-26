@@ -602,54 +602,6 @@ void UBWebController::captureEduMedia()
     }
 }
 
-
-void UBWebController::getOEmbedProviderList()
-{
-    QUrl url(UBSettings::settings()->oEmbedJsLibraryUrl);
-
-    mGetOEmbedProviderListRequest = new UBServerXMLHttpRequest(UBNetworkAccessManager::defaultAccessManager()); // destroyed in getOEmbedProviderListResponse
-
-    connect(mGetOEmbedProviderListRequest, SIGNAL(finished(bool, const QByteArray&)), this, SLOT(getOEmbedProviderListResponse(bool, const QByteArray&)));
-
-    mGetOEmbedProviderListRequest->get(url);
-}
-
-
-void UBWebController::getOEmbedProviderListResponse(bool success, const QByteArray& payload)
-{
-
-    if (success)
-    {
-        QString js(payload);
-        QStringList lines = js.split("\n");
-
-        foreach(QString line, lines)
-        {
-            if (line.contains("new OEmbedProvider("))
-            {
-                int start = line.indexOf("(");
-                int end = line.indexOf(")", start);
-
-                QString provider = line.mid(start, end - start);
-                provider = provider.replace(" ", "");
-                provider = provider.replace("\"", "");
-
-                QStringList providerInfo = provider.split(",");
-
-                if (providerInfo.length() >= 2)
-                {
-                    mOEmbedProviders << providerInfo.at(1);
-                }
-            }
-        }
-
-        qDebug() << "oEmbed provider list" << mOEmbedProviders;
-    }
-
-    mGetOEmbedProviderListRequest->deleteLater();
-}
-
-
 bool UBWebController::isOEmbedable(const QUrl& pUrl)
 {
     QString urlAsString = pUrl.toString();
