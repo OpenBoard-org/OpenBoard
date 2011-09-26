@@ -72,7 +72,9 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget) :
 
 bool UBLibraryController::canItemsOnElementBeDeleted(UBLibElement *pElement)
 {
-    return !pElement->path().toLocalFile().startsWith(UBSettings::settings()->uniboardShapeLibraryDirectory());
+    return !pElement->path().toLocalFile().startsWith(UBSettings::settings()->uniboardShapeLibraryDirectory()) &&
+            !pElement->path().toLocalFile().startsWith(UBSettings::settings()->sankoreDistributedInteractiveDirectory()) &&
+            pElement->isDeletable();
 }
 
 void UBLibraryController::createInternalWidgetItems()
@@ -696,6 +698,7 @@ UBLibElement::UBLibElement() {
     mType = eUBLibElementType_Category;
     mName = QObject::tr("/Home", "Category list label on navigation tool bar");
     mbMoveable = false;
+    mbDeletable = true;
 }
 
 UBLibElement::UBLibElement(UBLibElement* element)
@@ -707,6 +710,7 @@ UBLibElement::UBLibElement(UBLibElement* element)
     mName = element->name();
     mExtension = element->extension();
     mbMoveable = element->isMoveable();
+    mbDeletable = element->isDeletable();
 }
 
 
@@ -717,6 +721,7 @@ UBLibElement::UBLibElement(eUBLibElementType type, const QUrl &path, const QStri
     mName = name;
     mInfo = "";
     mbMoveable = true;
+    mbDeletable = true;
 
     if (type == eUBLibElementType_Folder)
         mThumbnail = QImage(":images/libpalette/folder.svg");

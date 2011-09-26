@@ -61,6 +61,8 @@ public:
     void setExtension(QString &extension){ mExtension = extension;}
     bool isMoveable(){return mbMoveable;}
     void setMoveable(bool bState){mbMoveable = bState;}
+    bool isDeletable() const {return mbDeletable;}
+    void setDeletable(bool mState) {mbDeletable = mState;}
 
 private:
     eUBLibElementType mType;
@@ -70,6 +72,7 @@ private:
     QString mName;
     QString mExtension;
     bool mbMoveable;
+    bool mbDeletable;
 };
 
 class UBChainedLibElement
