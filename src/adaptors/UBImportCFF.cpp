@@ -158,7 +158,6 @@ QString UBImportCFF::expandFileToDir(const QFile& pZipFile, const QString& pDir)
         qWarning() << "Import failed. Couse: failed to create temp folder for cff package";
     }
 
-    QStringList lst = zip.getFileNameList();
     QFile out;
     char c;
     for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile()) {
