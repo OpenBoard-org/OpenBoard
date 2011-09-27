@@ -267,7 +267,6 @@ void UBGraphicsItemDelegate::positionHandles()
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
     QGraphicsScene* scene = mDelegated->scene();
-
     if (scene)
     {
         foreach(DelegateButton* button, mButtons)
@@ -278,9 +277,7 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
 
         if (canUndo)
         {
-            UBGraphicsItemUndoCommand *uc =
-                    new UBGraphicsItemUndoCommand((UBGraphicsScene*) scene, mDelegated, 0);
-
+            UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand((UBGraphicsScene*) scene, mDelegated, 0);
             UBApplication::undoStack->push(uc);
         }
     }

@@ -1711,10 +1711,19 @@ UBGraphicsAudioItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
 
 void UBBoardController::cut()
 {
-    QList<UBItem*> selected;
+    //---------------------------------------------------------//
 
+    QList<QGraphicsItem*> selectedItems;
     foreach(QGraphicsItem* gi, mActiveScene->selectedItems())
+        selectedItems << gi;
+
+    //---------------------------------------------------------//
+
+    QList<UBItem*> selected;
+    foreach(QGraphicsItem* gi, selectedItems)
     {
+        gi->setSelected(false);
+
         UBItem* ubItem = dynamic_cast<UBItem*>(gi);
         UBGraphicsItem *ubGi =  dynamic_cast<UBGraphicsItem*>(gi);
 
@@ -1724,6 +1733,8 @@ void UBBoardController::cut()
             ubGi->remove();
         }
     }
+
+    //---------------------------------------------------------//
 
     if (selected.size() > 0)
     {
@@ -1736,6 +1747,8 @@ void UBBoardController::cut()
 
         mActiveDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
     }
+
+    //---------------------------------------------------------//
 }
 
 
