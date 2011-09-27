@@ -533,6 +533,8 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
 
     connect(mpButtons->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this, SLOT(accept()));
     connect(mpButtons->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), this, SLOT(reject()));
+    connect(mpLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(text_Changed(const QString &)));
+    connect(mpLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(text_Edited(const QString &)));
 
     setMaximumHeight(100);
     setMinimumHeight(100);
@@ -577,4 +579,57 @@ UBNewFolderDlg::~UBNewFolderDlg()
 QString UBNewFolderDlg::folderName()
 {
     return mpLineEdit->text();
+}
+
+void UBNewFolderDlg::text_Changed(const QString &newText)
+{
+
+}
+
+/*
+http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
+
+< (less than)
+> (greater than)
+: (colon)
+" (double quote)
+/ (forward slash)
+\ (backslash) // Note: The C++ compiler transforms backslashes in strings. To include a \ in a regexp, enter it twice, i.e. \\. To match the backslash character itself, enter it four times, i.e. \\\\.
+| (vertical bar or pipe)
+? (question mark)
+* (asterisk)
+
+*/
+
+void UBNewFolderDlg::text_Edited(const QString &newText)
+{
+
+    QString new_text = newText;
+
+#ifdef Q_WS_WIN // Defined on Windows.
+    QString illegalCharList("      < > : \" / \\ | ? * ");
+    QRegExp regExp("[<>:\"/\\\\|?*]");
+#endif
+
+#ifdef Q_WS_QWS // Defined on Qt for Embedded Linux.
+    QString illegalCharList("      < > : \" / \\ | ? * ");
+    QRegExp regExp("[<>:\"/\\\\|?*]");
+#endif
+
+#ifdef Q_WS_MAC // Defined on Mac OS X.
+    QString illegalCharList("      < > : \" / \\ | ? * ");
+    QRegExp regExp("[<>:\"/\\\\|?*]");
+#endif
+
+#ifdef Q_WS_X11 // Defined on X11.
+    QString illegalCharList("      < > : \" / \\ | ? * ");
+    QRegExp regExp("[<>:\"/\\\\|?*]");
+#endif
+
+    if(new_text.indexOf(regExp) > -1)
+    {
+        new_text.remove(regExp);
+        mpLineEdit->setText(new_text);
+        QToolTip::showText(mpLineEdit->mapToGlobal(QPoint()), "A file name can`t contain any of the following characters:\r\n"+illegalCharList);
+    }
 }

@@ -72,6 +72,7 @@ private slots:
     void onSelectionChanged();
 
 private:
+
     void refreshView();
     void generateItems();
     void appendChainedElement(UBChainedLibElement* element, UBChainedLibElement* toElem);
@@ -89,11 +90,18 @@ private:
 
 class UBNewFolderDlg : public QDialog
 {
+    Q_OBJECT
+
 public:
     UBNewFolderDlg(QWidget* parent=0, const char* name="NewFolderDlg");
     ~UBNewFolderDlg();
 
     QString folderName();
+
+public slots:
+    void text_Changed(const QString &);
+    void text_Edited(const QString &);
+
 
 private:
     QLabel* mpLabel;
