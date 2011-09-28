@@ -62,6 +62,8 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         void removeAllDatastoreEntries();
 
         virtual void remove();
+        void removeScript();
+
 
     protected:
 

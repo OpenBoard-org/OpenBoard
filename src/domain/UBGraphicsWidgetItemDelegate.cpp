@@ -105,7 +105,6 @@ UBGraphicsWidgetItem* UBGraphicsWidgetItemDelegate::delegated()
 
 void UBGraphicsWidgetItemDelegate::remove(bool canundo)
 {
-    delegated()->remove();
+    delegated()->removeScript();
     UBGraphicsItemDelegate::remove(canundo);
-
 }

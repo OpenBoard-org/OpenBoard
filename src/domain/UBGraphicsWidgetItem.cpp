@@ -232,6 +232,14 @@ void UBGraphicsWidgetItem::removeAllDatastoreEntries()
 
 void UBGraphicsWidgetItem::remove()
 {
+
+    if (mDelegate)
+        mDelegate->remove();
+
+}
+
+void UBGraphicsWidgetItem::removeScript()
+{
     if (mWebKitWidget && mWebKitWidget->page() && mWebKitWidget->page()->mainFrame())
     {
         mWebKitWidget->page()->mainFrame()->evaluateJavaScript("if(widget && widget.onremove) { widget.onremove();}");
