@@ -68,7 +68,7 @@ function init(){
 		
 		if(/<object/.test(embed)){
 			loadWindow.append(embed);
-			loadWindow.find("embed").attr("wmode","transparent");
+			loadWindow.find("embed").attr("wmode","opaque");
 			var loadWindow_content = loadWindow.html();
 			loadWindow.empty().html(loadWindow_content);
 		}

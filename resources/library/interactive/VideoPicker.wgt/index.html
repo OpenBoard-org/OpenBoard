@@ -100,7 +100,7 @@
 							
 			function checkcontent(){
 				if($("#embeded-content").html().length != 0 && $("#embeded-content").children(":first").width() > 0){
-					$("#embeded-content embed").attr("wmode", "transparent");
+					$("#embeded-content embed").attr("wmode", "opaque");
 					var embeded_content_html = $("#embeded-content").html();
 					$("#embeded-content").empty().html(embeded_content_html);
 					
@@ -119,8 +119,6 @@
 						})
 						.width($("#embeded-content").children(":first").width())
 						.height($("#embeded-content").children(":first").height());
-						//alert(html);
-						//alert($("#embeded-content").children(":first").width() + " | " + $("#embeded-content").children(":first").height());
 					$("#container").removeClass("load").addClass("show");
 					$("#show-area").fadeIn(2000).css({
 							left:$("#embeded-content").children(":first").width()-25,
@@ -160,9 +158,6 @@
 				var widgetWidth = $("#embeded-content").width() + margins.right + margins.left + adjustmentX;
 				var widgetHeight = $("#embeded-content").position().top + $("#embeded-content").height() + margins.bottom + adjustmentY;
 				
-				//alert(widgetWidth + " | " + widgetHeight);
-				
-				//window.resizeTo(widgetWidth, $(window).height());
 				window.resizeTo(widgetWidth, widgetHeight);
 				window.sankore.resize(widgetWidth, widgetHeight);
 			};
@@ -170,15 +165,6 @@
 			function cssToInt(cssvalue){
 				return(parseInt(cssvalue.replace("px", "")));
 			};
-			
-			/*if (window.widget) {
-			   window.widget.onremove = function(){
-			   		//$("#show-inputfield-button").trigger("click");
-					$("#embeded-content")
-						.empty()
-						.oembed($("#textbox").val());
-			   }
-			}*/
 			
 			initialize();
 		});

@@ -166,13 +166,16 @@
 
             $(window).resize(function(){
 
-                if($(window).width() < 300){
-                    window.resizeTo(300, $(window).height());
+                if($(window).width() < 370){
+                    window.resizeTo(370, $(window).height());
                 } else if($(window).width() > 755){
                     $("#web-browser").height($(window).height() - $("#toolbar").height() - 2);
                     $("#web-browser").width($(window).width() - 2);
                 } else 
                     $("#web-browser").height($(window).height() - $("#toolbar").height() - 2);
+                
+                if($(window).height() < 150)
+                    window.resizeTo($(window).width(), 150);
 
             });
 
