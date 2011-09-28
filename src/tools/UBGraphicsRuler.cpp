@@ -323,6 +323,10 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			QPointF delta = event->pos() - event->lastPos();
 			if (rect().width() + delta.x() < sMinLength)
 				delta.setX(sMinLength - rect().width());
+
+            if (rect().width() + delta.x() > sMaxLength)
+                delta.setX(sMaxLength - rect().width());
+
 			setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
         }
         else

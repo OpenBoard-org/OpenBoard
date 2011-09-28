@@ -90,7 +90,8 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
         // Constants
         static const QRect               sDefaultRect;
 
-		static const int	sMinLength = 150;
+		static const int	sMinLength = 150;   // 3sm
+        static const int	sMaxLength = 35000; // 700sm
 };
 
 #endif /* UBGRAPHICSRULER_H_ */
