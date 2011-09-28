@@ -49,6 +49,8 @@
 
 #include "podcast/UBPodcastController.h"
 
+#include "network/UBNetworkAccessManager.h"
+
 #include "ui_mainWindow.h"
 
 #ifdef Q_WS_MAC
@@ -70,6 +72,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
     , mAutomaticCheckForUpdates(false)
     , mCheckingForUpdates(false)
     , mIsShowingDesktop(false)
+    , mHttp(0)
 
 {
     mDisplayManager = new UBDisplayManager(this);
@@ -121,6 +124,7 @@ UBApplicationController::~UBApplicationController()
     delete mBlackScene;
     delete mMirror;
 	if (mFtp) delete mFtp;
+    if (mHttp) delete mHttp;
 }
 
 
@@ -499,17 +503,29 @@ void UBApplicationController::showSankoreEditor()
     emit mainModeChanged(mMainMode);
 }
 
+void UBApplicationController::runCheckUpdate(int id, bool error)
+{
+    if(!error){
+        if(mFtp!=NULL)
+            delete mFtp;
+        mFtp = new QFtp(this);
+        connect(mFtp, SIGNAL(commandFinished(int,bool)), this, SLOT(ftpCommandFinished(int,bool)));
+        mFtp->connectToHost("91.121.248.138",21);
+        mFtp->login("anonymous", "anonymous");
+        mFtp->get("update.json",0);
+    }
+}
 
 void UBApplicationController::checkUpdate()
 {
-	if (mFtp!=NULL)
-		delete mFtp;
-    mFtp = new QFtp(this);
-    connect(mFtp, SIGNAL(commandFinished(int,bool)), this, SLOT(ftpCommandFinished(int,bool)));
-
-    mFtp->connectToHost("91.121.248.138",21);
-    mFtp->login("anonymous", "anonymous");
-    mFtp->get("update.json",0);
+    //TODO change this when upgrade the qt version
+    // networkAccessible : NetworkAccessibility not yet available
+    if(mHttp)
+        delete mHttp;
+    QUrl url("http://www.google.com");
+    mHttp = new QHttp(url.host());
+    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(runCheckUpdate(int,bool)));
+    mHttp->get(url.path());
 }
 
 void UBApplicationController::ftpCommandFinished(int id, bool error)

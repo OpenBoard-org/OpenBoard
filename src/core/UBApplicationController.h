@@ -30,6 +30,7 @@ class UBVersion;
 class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
+class QHttp;
 
 
 class UBApplicationController : public QObject
@@ -135,6 +136,7 @@ class UBApplicationController : public QObject
 
     private slots:
         void ftpCommandFinished(int id, bool error);
+        void runCheckUpdate(int id, bool error);
 
     protected:
 
@@ -171,6 +173,7 @@ class UBApplicationController : public QObject
         QNetworkAccessManager *networkAccessManager;
 
         void downloadJsonFinished(QString updateString);
+        QHttp* mHttp;
 };
 
 #endif /* UBAPPLICATIONCONTROLLER_H_ */

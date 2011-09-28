@@ -173,4 +173,3 @@ void UBNetworkAccessManager::sslErrors(QNetworkReply *reply, const QList<QSslErr
         }
     }
 }
-
