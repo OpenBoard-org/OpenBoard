@@ -33,7 +33,7 @@ void *originalSetSystemUIMode = 0;
 
 void UBPlatformUtils::init()
 {
-	initializeKeyboardLayouts();
+        initializeKeyboardLayouts();
 
     // qwidget_mac.mm qt_mac_set_fullscreen_mode uses kUIModeAllSuppressed which is unfortunate in our case
     //
@@ -333,11 +333,66 @@ void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivabl
     Q_UNUSED(nonAcivable);
 }
 
+QPixmap qpixmapFromIconRef(IconRef iconRef, int size) {
+      OSErr result;
+      int iconSize;
+      OSType elementType;
+
+      // Determine elementType and iconSize
+      if (size <= 16) {
+            elementType = kSmall32BitData;
+            iconSize = 16;
+      } else if (size <= 32) {
+            elementType = kLarge32BitData;
+            iconSize = 32;
+      } else {
+            elementType = kThumbnail32BitData;
+            iconSize = 128;
+      }
+
+      // Get icon into an IconFamily
+      IconFamilyHandle hIconFamily = 0;
+      IconRefToIconFamily(iconRef, kSelectorAllAvailableData, &hIconFamily);
+
+      // Extract data
+      Handle hRawBitmapData = NewHandle(iconSize * iconSize * 4);
+      result = GetIconFamilyData( hIconFamily, elementType, hRawBitmapData );
+      if (result != noErr) {
+            DisposeHandle(hRawBitmapData);
+            return QPixmap();
+      }
+
+      // Convert data to QImage
+      QImage image(iconSize, iconSize, QImage::Format_ARGB32);
+      HLock(hRawBitmapData);
+      unsigned long* data = (unsigned long*) *hRawBitmapData;
+      for (int posy=0; posy<iconSize; ++posy, data+=iconSize) {
+      #ifdef __BIG_ENDIAN__
+            uchar* line = image.scanLine(posy);
+            memcpy(line, data, iconSize * 4);
+      #else
+            uchar* src = (uchar*) data;
+            uchar* dst = image.scanLine(posy);
+            for (int posx=0; posx<iconSize; src+=4, dst+=4, ++posx) {
+                  dst[0] = src[3];
+                  dst[1] = src[2];
+                  dst[2] = src[1];
+                  dst[3] = src[0];
+            }
+      #endif
+      }
+      HUnlock(hRawBitmapData);
+      DisposeHandle( hRawBitmapData );
+
+      // Scale to wanted size
+      image = image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+      return QPixmap::fromImage(image);
+}
 
 QString QStringFromStringRef(CFStringRef stringRef)
 {
-	if (stringRef!=NULL)
-	{
+   if (stringRef!=NULL)
+        {
 		char tmp[1024];
 		CFStringGetCString(stringRef, tmp, 1024, 0);
 		return QString(tmp);
@@ -446,20 +501,23 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 		sr = (CFStringRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyLocalizedName);
 		QString fullName = QStringFromStringRef(sr);
 
-		CFArrayRef langs = (CFArrayRef) TISGetInputSourceProperty(keyLayoutRef,
-													  kTISPropertyInputSourceLanguages);
+                CFArrayRef langs = (CFArrayRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyInputSourceLanguages);
 
-		QString name = "??";
+                QString name = "??";
 		if (CFArrayGetCount(langs)>0)
 		{
 			CFStringRef langRef = (CFStringRef)CFArrayGetValueAtIndex(langs, 0);
 			name = QStringFromStringRef(langRef);
+                        qDebug() << "name is " + name;
+
 		}
 
-		//IconRef iconRef = (IconRef)TISGetInputSourceProperty(kTISPropertyIconRef,
-		//											  kTISPropertyInputSourceLanguages);
+                //IconRef iconRef = (IconRef)TISGetInputSourceProperty(kTISPropertyIconRef, kTISPropertyInputSourceLanguages);
 
-		result.append(new UBKeyboardLocale(fullName, name, ID, NULL, keybt));
+                const QString resName = ":/images/flags/" + name + ".png";
+                QIcon *iconLang = new QIcon(resName);
+
+                result.append(new UBKeyboardLocale(fullName, name, ID, iconLang, keybt));
 	}
 
 	if (result.size()==0)
