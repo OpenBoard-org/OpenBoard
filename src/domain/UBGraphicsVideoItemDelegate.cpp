@@ -145,47 +145,33 @@ UBGraphicsVideoItem* UBGraphicsVideoItemDelegate::delegated()
 
 void UBGraphicsVideoItemDelegate::togglePlayPause()
 {
-    if (delegated() && delegated()->mediaObject())
-    {
-        Phonon::MediaObject* media = delegated()->mediaObject();
+    if (delegated() && delegated()->mediaObject()) {
 
-        if (media->state() == Phonon::StoppedState)
-        {
+        Phonon::MediaObject* media = delegated()->mediaObject();
+        if (media->state() == Phonon::StoppedState) {
             media->play();
-        }
-        else if (media->state() == Phonon::PlayingState)
-        {
-            if (media->remainingTime() <= 0)
-            {
+        } else if (media->state() == Phonon::PlayingState) {
+            if (media->remainingTime() <= 0) {
                 media->stop();
                 media->play();
-            }
-            else
-            {
+            } else {
                 media->pause();
                 if(delegated()->scene())
                         delegated()->scene()->setModified(true);
             }
-        }
-        else if (media->state() == Phonon::PausedState)
-        {
-            if (media->remainingTime() <= 0)
-            {
+        } else if (media->state() == Phonon::PausedState) {
+            if (media->remainingTime() <= 0) {
                 media->stop();
             }
-
             media->play();
-        }
-		else  if ( media->state() == Phonon::LoadingState ){
+        } else  if ( media->state() == Phonon::LoadingState ) {
             delegated()->mediaObject()->setCurrentSource(delegated()->mediaFileUrl());
             media->play();
-        }
-        else{
-          qDebug() << "Media state "<< media->state() << " not supported";
+        } else if (media->state() == Phonon::ErrorState){
+            qDebug() << "Error appeared." << media->errorString();
         }
     }
 }
-
 
 void UBGraphicsVideoItemDelegate::mediaStateChanged ( Phonon::State newstate, Phonon::State oldstate )
 {
@@ -337,7 +323,6 @@ void DelegateVideoControl::seekToMousePos(QPointF mousePos)
         updateTicker(tickPos);
     }
 }
-
 
 void DelegateVideoControl::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {

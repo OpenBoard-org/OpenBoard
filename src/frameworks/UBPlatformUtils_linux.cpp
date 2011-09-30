@@ -26,7 +26,6 @@ void UBPlatformUtils::init()
 	initializeKeyboardLayouts();
 }
 
-
 QString UBPlatformUtils::applicationResourcesDirectory()
 {
     return QApplication::applicationDirPath();

@@ -91,7 +91,6 @@ void UBLibraryController::createInternalWidgetItems()
 
         mInternalLibElements << newTool;
     }
-
 }
 
 void UBLibraryController::createNewFolder(QString name, UBLibElement *parentElem)

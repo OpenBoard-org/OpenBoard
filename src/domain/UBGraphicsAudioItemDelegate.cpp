@@ -66,39 +66,27 @@ void UBGraphicsAudioItemDelegate::togglePlayPause()
     {
         Phonon::MediaObject* media = mDelegated->mediaObject();
 
-        if ( media->state() == Phonon::StoppedState )
-        {
+        if ( media->state() == Phonon::StoppedState ) {
             media->play();
-        }
-        else if ( media->state() == Phonon::PlayingState )
-        {
-            if ( media->remainingTime() <= 0 )
-            {
+        } else if ( media->state() == Phonon::PlayingState ) {
+            if ( media->remainingTime() <= 0 ) {
                 media->stop();
                 media->play();
-            }
-            else
-            {
+            } else {
                 media->pause();
                 if ( mDelegated->scene() )
                     mDelegated->scene()->setModified ( true );
             }
-        }
-        else if ( media->state() == Phonon::PausedState )
-        {
-            if ( media->remainingTime() <= 0 )
-            {
+        } else if ( media->state() == Phonon::PausedState ) {
+            if ( media->remainingTime() <= 0 ) {
                 media->stop();
             }
-
             media->play();
-        }
-        else  if ( media->state() == Phonon::LoadingState ){
+        } else  if ( media->state() == Phonon::LoadingState ) {
             mDelegated->mediaObject()->setCurrentSource(mDelegated->mediaFileUrl());
             media->play();
-        }
-        else{
-          qDebug() << "Media state "<< media->state() << " not supported";
+        } else if (media->state() == Phonon::ErrorState){
+            qDebug() << "Error appeared." << media->errorString();
         }
     }
 }
