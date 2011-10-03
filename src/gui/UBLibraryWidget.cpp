@@ -604,7 +604,7 @@ QString UBNewFolderDlg::folderName()
 
 void UBNewFolderDlg::text_Changed(const QString &newText)
 {
-
+	Q_UNUSED(newText);
 }
 
 /*

@@ -505,6 +505,7 @@ void UBApplicationController::showSankoreEditor()
 
 void UBApplicationController::runCheckUpdate(int id, bool error)
 {
+	Q_UNUSED(id);
     if(!error){
         if(mFtp!=NULL)
             delete mFtp;
