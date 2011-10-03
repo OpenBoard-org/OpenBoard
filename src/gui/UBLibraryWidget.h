@@ -107,6 +107,8 @@ private:
     QLabel* mpLabel;
     QLineEdit* mpLineEdit;
     QDialogButtonBox* mpButtons;
+    QPushButton* mpAddButton;
+    QPushButton* mpCancelButton;
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpHLayout;
 };

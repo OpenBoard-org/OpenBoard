@@ -513,6 +513,8 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
     , mpLabel(NULL)
     , mpLineEdit(NULL)
     , mpButtons(NULL)
+    , mpAddButton(NULL)
+    , mpCancelButton(NULL)
     , mpLayout(NULL)
     , mpHLayout(NULL)
 {
@@ -521,18 +523,26 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
 
     mpLabel = new QLabel(tr("New Folder name:"),this);
     mpLineEdit = new QLineEdit(this);
-    mpButtons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    mpAddButton = new QPushButton(tr("Add"));
+    mpAddButton->setDefault(true);
+
+    mpCancelButton = new QPushButton(tr("Cancel"));
+    mpCancelButton->setAutoDefault(false);
+
+    mpButtons = new QDialogButtonBox(Qt::Horizontal, this);
     mpLayout = new QVBoxLayout(this);
     mpHLayout = new QHBoxLayout(this);
-
     setLayout(mpLayout);
     mpLayout->addLayout(mpHLayout, 0);
     mpHLayout->addWidget(mpLabel, 0);
     mpHLayout->addWidget(mpLineEdit, 1);
+
+    mpButtons->addButton(mpAddButton,QDialogButtonBox::ActionRole);
+    mpButtons->addButton(mpCancelButton,QDialogButtonBox::ActionRole);
     mpLayout->addWidget(mpButtons);
 
-    connect(mpButtons->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this, SLOT(accept()));
-    connect(mpButtons->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), this, SLOT(reject()));
+    connect(mpAddButton, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(mpCancelButton, SIGNAL(clicked()), this, SLOT(reject()));
     connect(mpLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(text_Changed(const QString &)));
     connect(mpLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(text_Edited(const QString &)));
 
@@ -545,6 +555,17 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
  */
 UBNewFolderDlg::~UBNewFolderDlg()
 {
+    if(NULL != mpAddButton)
+    {
+        delete mpAddButton;
+        mpAddButton = NULL;
+    }
+
+    if(NULL != mpCancelButton)
+    {
+        delete mpCancelButton;
+        mpCancelButton = NULL;
+    }
     if(NULL != mpButtons)
     {
         delete mpButtons;
