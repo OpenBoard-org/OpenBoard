@@ -111,7 +111,7 @@ class UBWebController : public QObject
 
         QStringList mOEmbedProviders;
 
-        UBServerXMLHttpRequest* mGetOEmbedProviderListRequest;
+        void initialiazemOEmbedProviders();
 
         void tutorialWebInstance();
         void webBrowserInstance();

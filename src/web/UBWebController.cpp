@@ -55,7 +55,7 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     , mBrowserWidget(0)
     , mTrapFlashController(0)
     , mToolsCurrentPalette(0)
-	, mKeyboardCurrentPalette(0)
+    , mKeyboardCurrentPalette(0)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
 
@@ -70,12 +70,34 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
         mToolsPalettePositionnedList[i] = false;
     }
 
+    initialiazemOEmbedProviders();
+
 }
 
 
 UBWebController::~UBWebController()
 {
     // NOOP
+}
+
+void UBWebController::initialiazemOEmbedProviders()
+{
+    mOEmbedProviders << "5min.com";
+    mOEmbedProviders << "amazon.com";
+    mOEmbedProviders << "flickr";
+    mOEmbedProviders << "video.google.";
+    mOEmbedProviders << "hulu.com";
+    mOEmbedProviders << "imdb.com";
+    mOEmbedProviders << "metacafe.com";
+    mOEmbedProviders << "qik.com";
+    mOEmbedProviders << "slideshare";
+    mOEmbedProviders << "5min.com";
+    mOEmbedProviders << "twitpic.com";
+    mOEmbedProviders << "viddler.com";
+    mOEmbedProviders << "vimeo.com";
+    mOEmbedProviders << "wikipedia.org";
+    mOEmbedProviders << "wordpress.com";
+    mOEmbedProviders << "youtube.com";
 }
 
 void UBWebController::webBrowserInstance()
@@ -91,7 +113,7 @@ void UBWebController::webBrowserInstance()
     {
         mCurrentWebBrowser = &mWebBrowserList[WebBrowser];
         mToolsCurrentPalette = &mToolsPaletteList[WebBrowser];
-		mKeyboardCurrentPalette = &mKeyboardPaletteList[WebBrowser];
+        mKeyboardCurrentPalette = &mKeyboardPaletteList[WebBrowser];
         mToolsPalettePositionned = mToolsPalettePositionnedList[WebBrowser];
         if (!(*mCurrentWebBrowser))
         {
@@ -102,7 +124,7 @@ void UBWebController::webBrowserInstance()
             WBBrowserWindow::downloadManager()->setParent((*mCurrentWebBrowser), Qt::Tool);
 
             UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar,
-                    mMainWindow->actionBoard, 32);
+                                                                   mMainWindow->actionBoard, 32);
 
             UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
@@ -124,23 +146,23 @@ void UBWebController::webBrowserInstance()
 
             (*mCurrentWebBrowser)->tabWidget()->tabBar()->show();
             (*mCurrentWebBrowser)->tabWidget()->lineEdits()->show();
-		}
+        }
 
         UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
 
         mStackedWidget->setCurrentIndex(WebBrowser);
         mMainWindow->switchToWebWidget();
 
-		setupPalettes();
-		screenLayoutChanged();
+        setupPalettes();
+        screenLayoutChanged();
 
         bool mirroring = UBSettings::settings()->webShowPageImmediatelyOnMirroredScreen->get().toBool();
         UBApplication::mainWindow->actionWebShowHideOnDisplay->setChecked(mirroring);
-		(*mToolsCurrentPalette)->show();
-	}
+        (*mToolsCurrentPalette)->show();
+    }
 
     if (mDownloadViewIsVisible)
-       WBBrowserWindow::downloadManager()->show();
+        WBBrowserWindow::downloadManager()->show();
 
 }
 
@@ -169,7 +191,7 @@ void UBWebController::tutorialWebInstance()
     {
         mCurrentWebBrowser = &mWebBrowserList[Tutorial];
         mToolsCurrentPalette = &mToolsPaletteList[Tutorial];
-		mKeyboardCurrentPalette = &mKeyboardPaletteList[Tutorial];
+        mKeyboardCurrentPalette = &mKeyboardPaletteList[Tutorial];
         mToolsPalettePositionned = &mToolsPalettePositionnedList[Tutorial];
         if (!(*mCurrentWebBrowser))
         {
@@ -211,13 +233,13 @@ void UBWebController::paraschoolWebInstance()
     QString language = "_" + locale.name().left(2);
     QString editorPath = "/etc/SankoreEditor/editor" + language + "/index.html";
     QString editorHtmlIndexFile;
-    #if defined(Q_WS_MAC)
-        editorHtmlIndexFile = QApplication::applicationDirPath() + "/../Resources" + editorPath;
-    #elif defined(Q_WS_WIN)
-        editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
-    #else
-        editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
-    #endif
+#if defined(Q_WS_MAC)
+    editorHtmlIndexFile = QApplication::applicationDirPath() + "/../Resources" + editorPath;
+#elif defined(Q_WS_WIN)
+    editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
+#else
+    editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
+#endif
 
     QUrl currentUrl = QUrl::fromLocalFile(editorHtmlIndexFile);
 
@@ -227,7 +249,7 @@ void UBWebController::paraschoolWebInstance()
     else {
         mCurrentWebBrowser = &mWebBrowserList[Paraschool];
         mToolsCurrentPalette = &mToolsPaletteList[Paraschool];
-		mKeyboardCurrentPalette = &mKeyboardPaletteList[Paraschool];
+        mKeyboardCurrentPalette = &mKeyboardPaletteList[Paraschool];
         mToolsPalettePositionned = &mToolsPalettePositionnedList[Paraschool];
         if (!(*mCurrentWebBrowser)){
             (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow, true);
@@ -263,17 +285,17 @@ void UBWebController::show(WebInstance type)
 {
     switch(type)
     {
-        case WebBrowser:
-            webBrowserInstance();
-            break;
-        case Tutorial:
-            tutorialWebInstance();
-            break;
-        case Paraschool:
-            paraschoolWebInstance();
-        default:
-            qCritical() << __FILE__ << " non supported web instance type " << QString::number(type) ;
-            break;
+    case WebBrowser:
+        webBrowserInstance();
+        break;
+    case Tutorial:
+        tutorialWebInstance();
+        break;
+    case Paraschool:
+        paraschoolWebInstance();
+    default:
+        qCritical() << __FILE__ << " non supported web instance type " << QString::number(type) ;
+        break;
     }
 }
 
@@ -316,10 +338,10 @@ QPixmap UBWebController::captureCurrentPage()
     QPixmap pix;
 
     if (mCurrentWebBrowser
-        && (*mCurrentWebBrowser)
-        && (*mCurrentWebBrowser)->currentTabWebView()
-        && (*mCurrentWebBrowser)->currentTabWebView()->page()
-        && (*mCurrentWebBrowser)->currentTabWebView()->page()->mainFrame())
+            && (*mCurrentWebBrowser)
+            && (*mCurrentWebBrowser)->currentTabWebView()
+            && (*mCurrentWebBrowser)->currentTabWebView()->page()
+            && (*mCurrentWebBrowser)->currentTabWebView()->page()->mainFrame())
     {
         QWebFrame* frame = (*mCurrentWebBrowser)->currentTabWebView()->page()->mainFrame();
         QSize size = frame->contentsSize();
@@ -365,49 +387,49 @@ QPixmap UBWebController::captureCurrentPage()
 
 void UBWebController::setupPalettes()
 {
-	if(!(*mToolsCurrentPalette))
-	{
-		(*mToolsCurrentPalette) = new UBWebToolsPalette((*mCurrentWebBrowser),false);
+    if(!(*mToolsCurrentPalette))
+    {
+        (*mToolsCurrentPalette) = new UBWebToolsPalette((*mCurrentWebBrowser),false);
 
-		(*mKeyboardCurrentPalette) = UBKeyboardPalette::create(*mCurrentWebBrowser);
+        (*mKeyboardCurrentPalette) = UBKeyboardPalette::create(*mCurrentWebBrowser);
 #ifndef Q_WS_WIN
-            if (*mKeyboardCurrentPalette)
-                connect(*mKeyboardCurrentPalette, SIGNAL(closed()), *mKeyboardCurrentPalette, SLOT(onDeactivated()));
+        if (*mKeyboardCurrentPalette)
+            connect(*mKeyboardCurrentPalette, SIGNAL(closed()), *mKeyboardCurrentPalette, SLOT(onDeactivated()));
 #endif
 
-		connect(mMainWindow->actionWebTrapFlash, SIGNAL(triggered()), this, SLOT(trapFlash()));
-	    connect(mMainWindow->actionWebCustomCapture, SIGNAL(triggered()), this, SLOT(customCapture()));
-		connect(mMainWindow->actionWebWindowCapture, SIGNAL(triggered()), this, SLOT(captureWindow()));
-		connect(mMainWindow->actionWebOEmbed, SIGNAL(triggered()), this, SLOT(captureoEmbed()));
-		connect(mMainWindow->actionEduMedia, SIGNAL(triggered()), this, SLOT(captureEduMedia()));
+        connect(mMainWindow->actionWebTrapFlash, SIGNAL(triggered()), this, SLOT(trapFlash()));
+        connect(mMainWindow->actionWebCustomCapture, SIGNAL(triggered()), this, SLOT(customCapture()));
+        connect(mMainWindow->actionWebWindowCapture, SIGNAL(triggered()), this, SLOT(captureWindow()));
+        connect(mMainWindow->actionWebOEmbed, SIGNAL(triggered()), this, SLOT(captureoEmbed()));
+        connect(mMainWindow->actionEduMedia, SIGNAL(triggered()), this, SLOT(captureEduMedia()));
 
-		connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));
-		connect(mMainWindow->actionWebTrap, SIGNAL(toggled(bool)), this, SLOT(toggleWebTrap(bool)));
+        connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));
+        connect(mMainWindow->actionWebTrap, SIGNAL(toggled(bool)), this, SLOT(toggleWebTrap(bool)));
 
-		connect(mMainWindow->actionVirtualKeyboard, SIGNAL(toggled(bool)), this, SLOT(showKeyboard(bool)));
+        connect(mMainWindow->actionVirtualKeyboard, SIGNAL(toggled(bool)), this, SLOT(showKeyboard(bool)));
 
-		(*mToolsCurrentPalette)->hide();
-		(*mToolsCurrentPalette)->adjustSizeAndPosition();
+        (*mToolsCurrentPalette)->hide();
+        (*mToolsCurrentPalette)->adjustSizeAndPosition();
 
-		(*mKeyboardCurrentPalette)->adjustSizeAndPosition();
+        (*mKeyboardCurrentPalette)->adjustSizeAndPosition();
 
-		if (controlView()){
-			int left = controlView()->width() - 20 - (*mToolsCurrentPalette)->width();
-			int top = (controlView()->height() - (*mToolsCurrentPalette)->height()) / 2;
-			mToolsPalettePositionnedList[mStackedWidget->currentIndex()] = true;
-			(*mToolsCurrentPalette)->setCustomPosition(true);
-			(*mToolsCurrentPalette)->move(left, top);
-		}
-		mMainWindow->actionWebTools->trigger();
-	}
+        if (controlView()){
+            int left = controlView()->width() - 20 - (*mToolsCurrentPalette)->width();
+            int top = (controlView()->height() - (*mToolsCurrentPalette)->height()) / 2;
+            mToolsPalettePositionnedList[mStackedWidget->currentIndex()] = true;
+            (*mToolsCurrentPalette)->setCustomPosition(true);
+            (*mToolsCurrentPalette)->move(left, top);
+        }
+        mMainWindow->actionWebTools->trigger();
+    }
 }
 
 
 void UBWebController::toggleWebTrap(bool checked)
 {
     if (mCurrentWebBrowser
-        && (*mCurrentWebBrowser)
-        && (*mCurrentWebBrowser)->currentTabWebView())
+            && (*mCurrentWebBrowser)
+            && (*mCurrentWebBrowser)->currentTabWebView())
     {
         (*mCurrentWebBrowser)->currentTabWebView()->setIsTrapping(checked);
     }
@@ -415,10 +437,10 @@ void UBWebController::toggleWebTrap(bool checked)
 
 void UBWebController::showKeyboard(bool checked)
 {
-	if (mKeyboardCurrentPalette
-        && (*mKeyboardCurrentPalette))
+    if (mKeyboardCurrentPalette
+            && (*mKeyboardCurrentPalette))
     {
-		(*mKeyboardCurrentPalette)->setVisible(checked);
+        (*mKeyboardCurrentPalette)->setVisible(checked);
     }
 }
 
@@ -473,16 +495,16 @@ QPixmap UBWebController::getScreenPixmap()
     QCoreApplication::flush ();
 
     return QPixmap::grabWindow(desktop->winId(),
-            primaryScreenRect.x(), primaryScreenRect.y(),
-            primaryScreenRect.width(), primaryScreenRect.height());
+                               primaryScreenRect.x(), primaryScreenRect.y(),
+                               primaryScreenRect.width(), primaryScreenRect.height());
 }
 
 
 void UBWebController::screenLayoutChanged()
 {
     bool hasDisplay = (UBApplication::applicationController &&
-            UBApplication::applicationController->displayManager() &&
-            UBApplication::applicationController->displayManager()->hasDisplay());
+                       UBApplication::applicationController->displayManager() &&
+                       UBApplication::applicationController->displayManager()->hasDisplay());
 
     UBApplication::mainWindow->actionWebShowHideOnDisplay->setVisible(hasDisplay);
 }
@@ -516,7 +538,7 @@ void UBWebController::showTabAtTop(bool attop)
 void UBWebController::captureoEmbed()
 {
     if ( mCurrentWebBrowser  && (*mCurrentWebBrowser)
-        && (*mCurrentWebBrowser)->currentTabWebView())
+         && (*mCurrentWebBrowser)->currentTabWebView())
     {
         QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
         QUrl currentUrl = webView->url();
@@ -538,7 +560,7 @@ void UBWebController::captureoEmbed()
 void UBWebController::captureEduMedia()
 {
     if (mCurrentWebBrowser && (*mCurrentWebBrowser)
-        && (*mCurrentWebBrowser)->currentTabWebView())
+            && (*mCurrentWebBrowser)->currentTabWebView())
     {
         QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
         QUrl currentUrl = webView->url();
