@@ -5,8 +5,8 @@
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
         width="550"
-        height="325" 
-		ub:resizable="true">
+        height="325"
+		ub:resizable="false">
 		
 		<name>Rich Note</name>
 		<description>Allows the teacher to attach a rich note to the page.</description>

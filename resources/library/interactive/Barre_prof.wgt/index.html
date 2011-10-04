@@ -9,13 +9,24 @@
         <link type="text/css" rel="stylesheet" href="css/hideButton.css"/>
         <script type="text/javascript">
             var flag = false;
+            var downUpFlag = false;
             var tempButton = $('<button style="z-index: 99999;" class="down"></button>');
             var customDiv = $('<div id="customDiv" class="customIcon"></div>');
             var widgetHeight = 0;
             var widgetWidth = 0;
+            var globalWidth = 550;
+            var globalHeight = 325;
+            var lang = "";
+            
+            lang = navigator.userAgent.split(";");
+
+            lang = (navigator.language || navigator.systemLanguage || 
+                navigator.userLanguage || 'en').substr(0, 2).toLowerCase();
+    
             tinyMCE.init({
                 // General options
                 mode : "textareas",
+                language : lang,
                 theme : "advanced",
                 plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave",
 
@@ -88,7 +99,21 @@
                                 tempButton.removeClass("up");
                                 tempButton.addClass("down");
                                 $('#elm1_parent').show("slow");
-                                window.resizeTo(widgetWidth + 55, widgetHeight + 18);                                
+                                window.resizeTo(widgetWidth + 60, widgetHeight + 18);                                
+                            }
+                        });
+                        
+                        $("#elm1_resize").mousedown(function(){
+                            downUpFlag = true;
+                        });
+                        
+                        $("html").mouseup(function(){
+                            downUpFlag = false;
+                        });
+                        
+                        $("html").mousemove(function(){                            
+                            if(downUpFlag){
+                                window.resizeTo($("#elm1_tbl").width() + 60, $("#elm1_tbl").height() + 20);
                             }
                         });
                     }
