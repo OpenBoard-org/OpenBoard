@@ -51,10 +51,7 @@ function init(){
                 addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
                 for(var j in questionArray[i].answers)
                     addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text, true, questionArray[i].rightAns, questionArray[i].type);
-            }
-        /*for(var i in questionArray)
-                setInputSelected(questionArray[i].id, questionArray[i].type, questionArray[i].rightAns);
-            alert(2); */          
+            }      
         }
     }
     
@@ -260,15 +257,14 @@ function init(){
         } else {
             if(event.target.type == "radio"){
                 if(event.target.value == getNeededElement(questionArray, currentQstId).rightAns)
-                    $(event.target).next().next().css("background-color","#6c0");
+                    $(event.target).next().next().find("span").css("background-color","#6c0");
                 else
-                    $(event.target).next().next().css("background-color","#f66");
+                    $(event.target).next().next().find("span").css("background-color","red");
             } else {
-                //alert(event.target.value + " | " + getNeededElement(questionArray, currentQstId).rightAns + " | " + getNeededElement(questionArray, currentQstId).rightAns.replace(/,/g,"") + " | " + getNeededElement(questionArray, currentQstId).rightAns.replace(",","").indexOf(event.target.value + " ", 0) )
                 if(getNeededElement(questionArray, currentQstId).rightAns.replace(/,/g,"").indexOf(event.target.value + " ", 0) != -1)
-                    $(event.target).next().next().css("background-color","#6c0");
+                    $(event.target).next().next().find("span").css("background-color","#6c0");
                 else
-                    $(event.target).next().next().css("background-color","#f66");
+                    $(event.target).next().next().find("span").css("background-color","red");
             }
         }
     });
@@ -336,11 +332,10 @@ function init(){
     
     $("select").live('change', function(evt){
         if(mode){
-            //alert(currentQstId + " | " + event.target.value + " | " + getNeededElement(questionArray, currentQstId).rightAns)
             if(event.target.value == getNeededElement(questionArray, currentQstId).rightAns)
                 $(event.target).parent().css("background-color","#6c0");
             else
-                $(event.target).parent().css("background-color","#f66");
+                $(event.target).parent().css("background-color","red");
             flagForSelect = false;
         }
     });
@@ -386,7 +381,8 @@ function init(){
                 if(type == 3){
                     var newAnswer = $("<div class='newAnswer'>"); 
                     newAnswer.appendTo(ansDiv);
-                    selInput.appendTo(newAnswer);
+                    var selectSpan = $("<span id='answerText'>").appendTo(newAnswer);
+                    selInput.appendTo(selectSpan);
                     $("<option value='0'>Choise the right answer</option>").appendTo(selInput);
                 }
                 for(var j in array[i].answers){  
@@ -395,14 +391,14 @@ function init(){
                             newAnswer = $("<div class='newAnswer'>");
                             var ansInput = $("<input type='radio' name='" + counter + "' value='" + array[i].answers[j].value + "' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             var ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                            var ansContent = $("<div class='ansContentDisplay'>" + array[i].answers[j].text + "</div>").appendTo(newAnswer);
+                            var ansContent = $("<div class='ansContentDisplay'><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "2":
                             newAnswer = $("<div class='newAnswer'>");
                             ansInput = $("<input type='checkbox' value='" + array[i].answers[j].value + "' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                            ansContent = $("<div class='ansContentDisplay'>" + array[i].answers[j].text + "</div>").appendTo(newAnswer);
+                            ansContent = $("<div class='ansContentDisplay'><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "3":

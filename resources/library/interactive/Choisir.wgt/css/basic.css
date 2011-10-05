@@ -217,7 +217,7 @@ body{
     margin-left: 5px;
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-size: small;
-    width: 90%;
+    width: 80%;
     float: left;
     -webkit-border-radius: 5px;
     border-radius: 5px;    
@@ -362,4 +362,10 @@ body{
     -webkit-box-shadow: #dadada -1px 0 4px;
     box-shadow: #dadada -1px 0 4px;
     z-index: 100;
+}
+
+#answerText{
+    padding: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
