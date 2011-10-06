@@ -299,7 +299,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             QSizeF newSize = resizableItem->size() + incVector;
 
-            if (newSize.width() < 0 || newSize.height() < 0)
+            if (newSize.width() < 50 /*0*/ || newSize.height() < /*0*/ 50)
                 return;
 
             resizableItem->resize(newSize);
