@@ -297,8 +297,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void initPolygonItem(UBGraphicsPolygonItem*);
 
-        void drawEraser(const QPointF& pEndPoint);
-        void drawPointer(const QPointF& pEndPoint);
+        void drawEraser(const QPointF& pEndPoint, bool isFirstDraw = false);
+        void drawPointer(const QPointF& pEndPoint, bool isFirstDraw = false);
         void DisposeMagnifierQWidgets();
 
 
