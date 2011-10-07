@@ -168,8 +168,6 @@ void UBDockPalette::mouseMoveEvent(QMouseEvent *event)
                 mResized = true;
 	    }
 
-            qDebug() << ">>>>> UBRightPalette x=" << this->x() << ", y=" << this->y();
-
 	    break;
 	case eUBDockOrientation_Top:
 	case eUBDockOrientation_Bottom:
