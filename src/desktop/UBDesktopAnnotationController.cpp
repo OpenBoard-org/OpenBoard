@@ -31,6 +31,7 @@
 #include "board/UBBoardView.h"
 #include "board/UBDrawingController.h"
 #include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
 
 #include "domain/UBGraphicsScene.h"
 
@@ -87,7 +88,8 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingScene = new UBGraphicsScene(0);
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
 
-    mRightPalette = new UBRightPalette(mTransparentDrawingView);
+    mRightPalette = UBApplication::boardController->paletteManager()->createDesktopRightPalette(mTransparentDrawingView);
+    //mRightPalette = new UBRightPalette(mTransparentDrawingView);
 
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView);
 
@@ -810,6 +812,7 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
         }
         if(mRightPalette->isVisible())
         {
+            qDebug() << ">>>>>> Drawing the mask for the right palette";
             p.drawRect(mRightPalette->geometry().x(), mRightPalette->geometry().y(), mRightPalette->width(), mRightPalette->height());
         }
 

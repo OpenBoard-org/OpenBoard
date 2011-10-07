@@ -51,6 +51,7 @@ class UBBoardPaletteManager : public QObject
         void initPalettesPosAtStartup();
 
         UBKeyboardPalette *mKeyboardPalette;
+        UBRightPalette* createDesktopRightPalette(QWidget* parent);
 
     public slots:
 
@@ -77,6 +78,11 @@ class UBBoardPaletteManager : public QObject
         UBLeftPalette* mLeftPalette;
         /** The right dock palette */
         UBRightPalette* mRightPalette;
+
+        // HACK: here we duplicate the right palette for the desktop mode
+        //       we MUST refactor the architecture in order to use only one
+        //       right palette!
+        UBRightPalette* mDesktopRightPalette;
 
         UBActionPalette *mBackgroundsPalette;
         UBActionPalette *mToolsPalette;
@@ -107,6 +113,11 @@ class UBBoardPaletteManager : public QObject
         UBLibWidget* mpLibWidget;
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
+
+        // HACK: here we duplicate the lib widget for the desktop mode
+        //       we MUST refactor the architecture in order to use only one
+        //       lib widget!
+        UBLibWidget* mpDesktopLibWidget;
 
     private slots:
 
