@@ -110,7 +110,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     mEraser->setRect(QRect(0, 0, 0, 0));
     mEraser->setVisible(false);
 
-    mEraser->setZValue(toolLayerStart + toolOffsetEraser);
+    mEraser->setZValue(/*toolLayerStart + toolOffsetEraser*/2);
     mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
     mTools << mEraser;
@@ -123,7 +123,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     mPointer->setPen(Qt::NoPen);
     mPointer->setBrush(QBrush(QColor(255, 0, 0, 186)));
 
-    mPointer->setZValue(toolLayerStart + toolOffsetPointer);
+    mPointer->setZValue( /*toolLayerStart + toolOffsetPointer*/ 2);
     mPointer->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     mTools << mPointer;
@@ -230,11 +230,13 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             eraserWidth /= UBApplication::boardController->currentZoom();
 
             eraseLineTo(scenePos, eraserWidth);
+            drawEraser(scenePos, true);
+
             accepted = true;
         }
         else if (currentTool == UBStylusTool::Pointer)
         {
-            drawPointer(scenePos);
+            drawPointer(scenePos, true);
             accepted = true;
         }
     }
@@ -369,7 +371,7 @@ bool UBGraphicsScene::inputDeviceRelease()
 
 // MARK: -
 
-void UBGraphicsScene::drawEraser(const QPointF &pPoint)
+void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool isFirstDraw)
 {
     qreal eraserWidth = UBSettings::settings()->currentEraserWidth();
     eraserWidth /= UBApplication::boardController->systemScaleFactor();
@@ -381,12 +383,27 @@ void UBGraphicsScene::drawEraser(const QPointF &pPoint)
     if (mEraser)
     {
         mEraser->setRect(QRectF(pPoint.x() - eraserRadius, pPoint.y() - eraserRadius, eraserWidth, eraserWidth));
-        mEraser->show();
+
+        if(isFirstDraw)
+        {
+            QList<QGraphicsItem *> allItemsList = items();
+            for( int i = 0; i < allItemsList.size(); i++ )
+            {
+                QGraphicsItem *nextItem = allItemsList.at(i);
+                qreal zValue = nextItem->zValue();
+                nextItem->setZValue(qreal(1));
+                qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+            }
+
+            mEraser->setZValue(2);
+            mEraser->show();
+        }
+
     }
 }
 
 
-void UBGraphicsScene::drawPointer(const QPointF &pPoint)
+void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 {
     qreal pointerDiameter = UBSettings::pointerDiameter / UBApplication::boardController->currentZoom();
     qreal pointerRadius = pointerDiameter / 2;
@@ -399,7 +416,21 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint)
                 pointerDiameter,
                 pointerDiameter));
 
-        mPointer->show();
+        if(isFirstDraw)
+        {
+            QList<QGraphicsItem *> allItemsList = items();
+            for( int i = 0; i < allItemsList.size(); i++ )
+            {
+                QGraphicsItem *nextItem = allItemsList.at(i);
+                qreal zValue = nextItem->zValue();
+                nextItem->setZValue(qreal(1));
+                qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+            }
+
+            mPointer->setZValue(2);
+            mPointer->show();
+        }
+
     }
 }
 
