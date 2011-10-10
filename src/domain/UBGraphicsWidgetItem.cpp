@@ -246,7 +246,6 @@ void UBGraphicsWidgetItem::removeScript()
     }
 }
 
-
 UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
     : UBGraphicsWidgetItem(parent)
 {

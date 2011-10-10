@@ -267,6 +267,7 @@ void UBGraphicsItemDelegate::positionHandles()
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
     QGraphicsScene* scene = mDelegated->scene();
+
     if (scene)
     {
         foreach(DelegateButton* button, mButtons)
