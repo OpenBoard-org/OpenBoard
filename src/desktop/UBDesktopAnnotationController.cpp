@@ -42,6 +42,7 @@
 #include "UBDesktopEraserPalette.h"
 
 #include "gui/UBKeyboardPalette.h"
+#include "gui/UBResources.h"
 
 #include "core/memcheck.h"
 
@@ -583,59 +584,8 @@ void UBDesktopAnnotationController::penActionReleased()
         mPendingPenButtonPressed = false;
     }
     UBApplication::mainWindow->actionPen->setChecked(true);
-}
 
-/**
- * \brief Handles the marker action pressed event
- */
-void UBDesktopAnnotationController::markerActionPressed()
-{
-    mbArrowClicked = false;
-    mDesktopPenPalette->hide();
-    mDesktopEraserPalette->hide();
-    UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Marker);
-    mMarkerHoldTimer = QTime::currentTime();
-    mPendingMarkerButtonPressed = true;
-
-    // Check if the mouse cursor is on the little arrow
-    QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->pos();
-    QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionMarker);
-
-    int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
-    int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
-
-    if(iX >= 37 && iX <= 44 && iY >= 37 && iY <= 44)
-    {
-        mbArrowClicked = true;
-        markerActionReleased();
-    }
-    else
-    {
-        mHoldTimerMarker.start(PROPERTY_PALETTE_TIMER);
-    }
-}
-
-/**
- * \brief Handles the marker action released event
- */
-void UBDesktopAnnotationController::markerActionReleased()
-{
-    qDebug() << "markerActionReleased()";
-    mHoldTimerMarker.stop();
-    if(mPendingMarkerButtonPressed)
-    {
-        if(mbArrowClicked || mMarkerHoldTimer.msecsTo(QTime::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
-        {
-            togglePropertyPalette(mDesktopMarkerPalette);
-        }
-        else
-        {
-            UBApplication::mainWindow->actionMarker->trigger();
-        }
-        mPendingMarkerButtonPressed = false;
-    }
-    UBApplication::mainWindow->actionMarker->setChecked(true);
+    switchCursor(UBStylusTool::Pen);
 }
 
 /**
@@ -689,10 +639,91 @@ void UBDesktopAnnotationController::eraserActionReleased()
         mPendingEraserButtonPressed = false;
     }
     UBApplication::mainWindow->actionEraser->setChecked(true);
+
+    switchCursor(UBStylusTool::Eraser);
 }
 
+
 /**
- * \brief Toggle the given palette visiblity
+ * \brief Handles the marker action pressed event
+ */
+void UBDesktopAnnotationController::markerActionPressed()
+{
+    mbArrowClicked = false;
+    mDesktopPenPalette->hide();
+    mDesktopEraserPalette->hide();
+    UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Marker);
+    mMarkerHoldTimer = QTime::currentTime();
+    mPendingMarkerButtonPressed = true;
+
+    // Check if the mouse cursor is on the little arrow
+    QPoint cursorPos = QCursor::pos();
+    QPoint palettePos = mDesktopPalette->pos();
+    QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionMarker);
+
+    int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
+    int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
+
+    if(iX >= 37 && iX <= 44 && iY >= 37 && iY <= 44)
+    {
+        mbArrowClicked = true;
+        markerActionReleased();
+    }
+    else
+    {
+        mHoldTimerMarker.start(PROPERTY_PALETTE_TIMER);
+    }
+}
+
+
+/**
+ * \brief Handles the marker action released event
+ */
+void UBDesktopAnnotationController::markerActionReleased()
+{
+    qDebug() << "markerActionReleased()";
+    mHoldTimerMarker.stop();
+    if(mPendingMarkerButtonPressed)
+    {
+        if(mbArrowClicked || mMarkerHoldTimer.msecsTo(QTime::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
+        {
+            togglePropertyPalette(mDesktopMarkerPalette);
+        }
+        else
+        {
+            UBApplication::mainWindow->actionMarker->trigger();
+        }
+        mPendingMarkerButtonPressed = false;
+    }
+    UBApplication::mainWindow->actionMarker->setChecked(true);
+
+    switchCursor(UBStylusTool::Marker);
+}
+
+void UBDesktopAnnotationController::selectorActionPressed()
+{
+
+}
+
+void UBDesktopAnnotationController::selectorActionReleased()
+{
+    switchCursor(UBStylusTool::Selector);
+}
+
+
+void UBDesktopAnnotationController::pointerActionPressed()
+{
+
+}
+
+void UBDesktopAnnotationController::pointerActionReleased()
+{
+    switchCursor(UBStylusTool::Pointer);
+}
+
+
+/**
+ * \brief Toggle the given palette visibility
  * @param palette as the given palette
  */
 void UBDesktopAnnotationController::togglePropertyPalette(UBActionPalette *palette)
@@ -715,17 +746,48 @@ void UBDesktopAnnotationController::togglePropertyPalette(UBActionPalette *palet
     }
 }
 
+
+void UBDesktopAnnotationController::switchCursor(const int tool)
+{
+//     enum Enum
+//     {
+//         Pen = 0, 
+//         Eraser, 
+//         Marker, 
+//         Selector, 
+//         Hand, 
+//         ZoomIn, 
+//         ZoomOut, 
+//         Pointer, 
+//         Line, 
+//         Text, 
+//         Capture
+//     };
+
+    mTransparentDrawingScene->setToolCursor(tool);
+    mTransparentDrawingView->setToolCursor(tool);
+}
+
 /**
  * \brief Reconnect the pressed & released signals of the property palettes
  */
 void UBDesktopAnnotationController::onDesktopPaletteMaximized()
 {
+
     // Pen
     UBActionPaletteButton* pPenButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionPen);
     if(NULL != pPenButton)
     {
         connect(pPenButton, SIGNAL(pressed()), this, SLOT(penActionPressed()));
         connect(pPenButton, SIGNAL(released()), this, SLOT(penActionReleased()));
+    }
+
+    // Eraser
+    UBActionPaletteButton* pEraserButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionEraser);
+    if(NULL != pEraserButton)
+    {
+        connect(pEraserButton, SIGNAL(pressed()), this, SLOT(eraserActionPressed()));
+        connect(pEraserButton, SIGNAL(released()), this, SLOT(eraserActionReleased()));
     }
 
     // Marker
@@ -736,13 +798,32 @@ void UBDesktopAnnotationController::onDesktopPaletteMaximized()
         connect(pMarkerButton, SIGNAL(released()), this, SLOT(markerActionReleased()));
     }
 
-    // Eraser
-    UBActionPaletteButton* pEraserButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionEraser);
-    if(NULL != pEraserButton)
+    // Pointer
+    UBActionPaletteButton* pSelectorButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionSelector);
+    if(NULL != pSelectorButton)
     {
-        connect(pEraserButton, SIGNAL(pressed()), this, SLOT(eraserActionPressed()));
-        connect(pEraserButton, SIGNAL(released()), this, SLOT(eraserActionReleased()));
+        connect(pSelectorButton, SIGNAL(pressed()), this, SLOT(selectorActionPressed()));
+        connect(pSelectorButton, SIGNAL(released()), this, SLOT(selectorActionReleased()));
     }
+
+    // Pointer
+    UBActionPaletteButton* pPointerButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionPointer);
+    if(NULL != pPointerButton)
+    {
+        connect(pPointerButton, SIGNAL(pressed()), this, SLOT(pointerActionPressed()));
+        connect(pPointerButton, SIGNAL(released()), this, SLOT(pointerActionReleased()));
+    }
+
+    //     enum Enum
+    //     {
+    //         Hand, 
+    //         ZoomIn, 
+    //         ZoomOut, 
+    //         Line, 
+    //         Text, 
+    //         Capture
+    //     };
+
 }
 
 /**

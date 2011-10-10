@@ -532,10 +532,10 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
 void
 UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 {
-  UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-  scene ()->setToolCursor (currentTool);
-  setToolCursor (currentTool);
+    scene ()->setToolCursor (currentTool);
+    setToolCursor (currentTool);
 
   // first propagate device release to the scene
   if (scene ())

@@ -315,7 +315,6 @@ void UBDrawingController::penToolSelected(bool checked)
     }
 }
 
-
 void UBDrawingController::eraserToolSelected(bool checked)
 {
     if (checked)
