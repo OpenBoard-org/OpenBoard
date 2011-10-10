@@ -76,6 +76,8 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpPageNavigWidget(NULL)
     , mpLibWidget(NULL)
     , mpCachePropWidget(NULL)
+    , mDesktopRightPalette(NULL)
+    , mpDesktopLibWidget(NULL)
 {
     setupPalettes();
     connectPalettes();
@@ -116,6 +118,17 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
     {
         delete mStylusPalette;
         mStylusPalette = NULL;
+    }
+
+    if(NULL != mpDesktopLibWidget)
+    {
+        delete mpDesktopLibWidget;
+        mpDesktopLibWidget = NULL;
+    }
+    if(NULL != mDesktopRightPalette)
+    {
+        delete mDesktopRightPalette;
+        mDesktopRightPalette = NULL;
     }
 }
 
@@ -692,4 +705,15 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
 
     connect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
     mStylusPalette->setVisible(bVisible); // always show stylus palette at startup
+}
+
+UBRightPalette* UBBoardPaletteManager::createDesktopRightPalette(QWidget* parent)
+{
+    mpDesktopLibWidget = new UBLibWidget();
+    mDesktopRightPalette = new UBRightPalette(parent);
+    mDesktopRightPalette->registerWidget(mpDesktopLibWidget);
+    mDesktopRightPalette->addTabWidget(mpDesktopLibWidget);
+    mDesktopRightPalette->connectSignals();
+
+    return mDesktopRightPalette;
 }

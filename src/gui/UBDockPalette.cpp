@@ -167,6 +167,7 @@ void UBDockPalette::mouseMoveEvent(QMouseEvent *event)
 		resize(parentWidget()->width() - (this->x() + p.x()), height());
                 mResized = true;
 	    }
+
 	    break;
 	case eUBDockOrientation_Top:
 	case eUBDockOrientation_Bottom:
