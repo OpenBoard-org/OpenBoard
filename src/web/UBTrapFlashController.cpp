@@ -73,12 +73,50 @@ void UBTrapFlashController::showTrapFlash()
                 , viewHeight);
 
         connect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
+        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(text_Changed(const QString &)));
+        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(text_Edited(const QString &)));
         connect(mTrapFlashUi->createWidgetButton, SIGNAL(clicked(bool)), this, SLOT(createWidget()));
     }
 
     mTrapFlashDialog->show();
 }
 
+void UBTrapFlashController::text_Changed(const QString &newText)
+{
+    QString new_text = newText;
+
+#ifdef Q_WS_WIN // Defined on Windows.
+    QString illegalCharList("      < > : \" / \\ | ? * ");
+    QRegExp regExp("[<>:\"/\\\\|?*]");
+#endif
+
+#ifdef Q_WS_QWS // Defined on Qt for Embedded Linux.
+    QString illegalCharList("      < > : \" / \\ | ? * ");
+    QRegExp regExp("[<>:\"/\\\\|?*]");
+#endif
+
+#ifdef Q_WS_MAC // Defined on Mac OS X.
+    QString illegalCharList("      < > : \" / \\ | ? * ");
+    QRegExp regExp("[<>:\"/\\\\|?*]");
+#endif
+
+#ifdef Q_WS_X11 // Defined on X11.
+    QString illegalCharList("      < > : \" / \\ | ? * ");
+    QRegExp regExp("[<>:\"/\\\\|?*]");
+#endif
+
+    if(new_text.indexOf(regExp) > -1)
+    {
+        new_text.remove(regExp);
+        mTrapFlashUi->widgetNameLineEdit->setText(new_text);
+        QToolTip::showText(mTrapFlashUi->widgetNameLineEdit->mapToGlobal(QPoint()), "Application name can`t contain any of the following characters:\r\n"+illegalCharList);
+    }
+}
+
+void UBTrapFlashController::text_Edited(const QString &newText)
+{
+
+}
 
 void UBTrapFlashController::hideTrapFlash()
 {
