@@ -56,6 +56,7 @@ UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *pa
         , bLoginCookieSet(false)
 {
 	//NOOP
+    init();
 }
 
 
@@ -555,8 +556,8 @@ void UBDocumentPublisher::init()
     mDocInfos.title = "";
     mDocInfos.description = "";
 
-    mpNetworkMgr = new QNetworkAccessManager(this);
     mpCookieJar = new QNetworkCookieJar();
+    mpNetworkMgr = new QNetworkAccessManager(this);
 
     connect(mpNetworkMgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(onFinished(QNetworkReply*)));
 }

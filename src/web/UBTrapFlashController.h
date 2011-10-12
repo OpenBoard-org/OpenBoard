@@ -37,6 +37,9 @@ class UBTrapFlashController : public QObject
 
     public slots:
         void updateTrapFlashFromPage(QWebFrame* pCurrentWebFrame);
+        void text_Changed(const QString &);
+        void text_Edited(const QString &);
+
 
     private slots:
         void selectFlash(int pFlashIndex);
