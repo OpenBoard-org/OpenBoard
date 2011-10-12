@@ -319,15 +319,15 @@ QString UBTrapFlashController::generateFullPageHtml(const QString& pDirPath, boo
 
     QString htmlContentString;
 
-    htmlContentString += "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
-    htmlContentString += "<html>\n";
-    htmlContentString += "<head>\n";
-    htmlContentString += "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
-    htmlContentString += "</head>\n";
-    htmlContentString += "    <frameset cols=\"100%\">\n";
-    htmlContentString += "       <frame src=\"" + mCurrentWebFrame->url().toString() + "\"/>\n";
-    htmlContentString += "     </frameset>\n";
-    htmlContentString += "</html>\n";
+    htmlContentString += "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\r\n";
+    htmlContentString += "<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n";
+    htmlContentString += "  <head>\r\n";
+    htmlContentString += "    <meta http-equiv=\"refresh\" content=\"0; " + mCurrentWebFrame->url().toString() + "\">\r\n";
+    htmlContentString += "  </head>\r\n";
+    htmlContentString += "  <body>\r\n";
+    htmlContentString += "    Redirect to target...\r\n";
+    htmlContentString += "  </body>\r\n";
+    htmlContentString += "</html>\r\n";
 
     if (!pGenerateFile)
     {
