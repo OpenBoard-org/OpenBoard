@@ -102,6 +102,7 @@ class UBGraphicsItemDelegate : public QObject
         virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual bool weelEvent(QGraphicsSceneWheelEvent *event);
 
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);

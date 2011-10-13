@@ -191,6 +191,19 @@ bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         return false;
 }
 
+bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
+{
+    if( mDelegated->isSelected() )
+    {
+        event->accept();
+        return true;
+    }
+    else
+    {
+        event->ignore();
+        return false;
+    }
+}
 
 bool UBGraphicsItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {

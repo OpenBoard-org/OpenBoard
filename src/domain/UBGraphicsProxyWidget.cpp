@@ -99,8 +99,13 @@ void UBGraphicsProxyWidget::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void UBGraphicsProxyWidget::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     mDelegate->mouseReleaseEvent(event);
-
     QGraphicsProxyWidget::mouseReleaseEvent(event);
+}
+
+void UBGraphicsProxyWidget::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+    if( mDelegate->weelEvent(event) )
+        QGraphicsProxyWidget::wheelEvent(event);
 }
 
 
