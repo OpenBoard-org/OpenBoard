@@ -48,6 +48,8 @@ class UBGraphicsProxyWidget: public QGraphicsProxyWidget, public UBItem, public 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void wheelEvent(QGraphicsSceneWheelEvent *event);
+
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 

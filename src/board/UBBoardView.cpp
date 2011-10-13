@@ -641,7 +641,8 @@ UBBoardView::wheelEvent (QWheelEvent *event)
       // Too many wheelEvent are sent, how should we handle them to "smoothly" zoom ?
       // something like zoom( pow(zoomFactor, event->delta() / 120) )
     }
-  event->accept ();
+//  event->accept ();
+  QGraphicsView::wheelEvent(event);
 }
 
 void
