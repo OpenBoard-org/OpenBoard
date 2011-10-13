@@ -102,7 +102,6 @@ class UBApplicationController : public QObject
 
     signals:
         void mainModeChanged(UBApplicationController::MainMode pMode);
-
         void desktopMode(bool displayed);
 
     public slots:

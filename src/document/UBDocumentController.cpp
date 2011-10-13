@@ -620,40 +620,42 @@ void UBDocumentController::deleteSelectedItem()
     {
         QList<QGraphicsItem*> selectedItems = mDocumentUI->thumbnailWidget->selectedItems();
 
-        if (selectedItems.count() > 0)
-        {
-            QList<int> sceneIndexes;
-            UBDocumentProxy* proxy = 0;
+        deletePages(selectedItems);
 
-            foreach (QGraphicsItem* item, selectedItems)
-            {
-                UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
+//        if (selectedItems.count() > 0)
+//        {
+//            QList<int> sceneIndexes;
+//            UBDocumentProxy* proxy = 0;
 
-                if (thumb)
-                {
-                    proxy = thumb->proxy();
-                    if (proxy)
-                    {
-                        sceneIndexes.append(thumb->sceneIndex());
-                    }
-                }
-            }
+//            foreach (QGraphicsItem* item, selectedItems)
+//            {
+//                UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
 
-            if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Page"), tr("Are you sure you want to remove %n page(s) from the selected document '%1'?", "", sceneIndexes.count()).arg(proxy->metaData(UBSettings::documentName).toString())))
-            {
-                UBPersistenceManager::persistenceManager()->deleteDocumentScenes(proxy, sceneIndexes);
-                proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-                UBMetadataDcSubsetAdaptor::persist(proxy);
-                refreshDocumentThumbnailsView();
+//                if (thumb)
+//                {
+//                    proxy = thumb->proxy();
+//                    if (proxy)
+//                    {
+//                        sceneIndexes.append(thumb->sceneIndex());
+//                    }
+//                }
+//            }
 
-                int minIndex = proxy->pageCount() - 1;
+//            if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Page"), tr("Are you sure you want to remove %n page(s) from the selected document '%1'?", "", sceneIndexes.count()).arg(proxy->metaData(UBSettings::documentName).toString())))
+//            {
+//                UBPersistenceManager::persistenceManager()->deleteDocumentScenes(proxy, sceneIndexes);
+//                proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+//                UBMetadataDcSubsetAdaptor::persist(proxy);
+//                refreshDocumentThumbnailsView();
 
-                foreach (int i, sceneIndexes)
-                     minIndex = qMin(i, minIndex);
+//                int minIndex = proxy->pageCount() - 1;
 
-                mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
-            }
-        }
+//                foreach (int i, sceneIndexes)
+//                     minIndex = qMin(i, minIndex);
+
+//                mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
+//            }
+//        }
     }
     else
     {
@@ -1164,7 +1166,11 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
     UBMetadataDcSubsetAdaptor::persist(proxy);
     refreshDocumentThumbnailsView();
 
+    // NOTE [Didier]: I think that selecting the thumbnail is not the role of the documentController
     mDocumentUI->thumbnailWidget->selectItemAt(target);
+
+    // Notify the move to anyone interested in knowing it
+    emit movedToIndex(target);
 }
 
 
@@ -1630,3 +1636,40 @@ void UBDocumentController::focusChanged(QWidget *old, QWidget *current)
     selectionChanged();
 }
 
+void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
+{
+    if (itemsToDelete.count() > 0)
+    {
+        QList<int> sceneIndexes;
+        UBDocumentProxy* proxy = 0;
+
+        foreach (QGraphicsItem* item, itemsToDelete)
+        {
+            UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
+
+            if (thumb)
+            {
+                proxy = thumb->proxy();
+                if (proxy)
+                {
+                    sceneIndexes.append(thumb->sceneIndex());
+                }
+            }
+        }
+
+        if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Page"), tr("Are you sure you want to remove %n page(s) from the selected document '%1'?", "", sceneIndexes.count()).arg(proxy->metaData(UBSettings::documentName).toString())))
+        {
+            UBPersistenceManager::persistenceManager()->deleteDocumentScenes(proxy, sceneIndexes);
+            proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+            UBMetadataDcSubsetAdaptor::persist(proxy);
+            refreshDocumentThumbnailsView();
+
+            int minIndex = proxy->pageCount() - 1;
+
+            foreach (int i, sceneIndexes)
+                 minIndex = qMin(i, minIndex);
+
+            mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
+        }
+    }
+}

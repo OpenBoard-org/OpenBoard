@@ -39,7 +39,7 @@
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
 #include "board/UBBoardView.h"
-
+#include "board/UBBoardPaletteManager.h"
 #include "web/UBWebController.h"
 
 #include "document/UBDocumentController.h"
@@ -233,12 +233,14 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(showDocument()));
     connect(mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(closing()));
     connect(mainWindow, SIGNAL(closeEvent_Signal(QCloseEvent*)), this, SLOT(closeEvent(QCloseEvent*)));
-     
+
     boardController = new UBBoardController(mainWindow);
     boardController->init();
 
     webController = new UBWebController(mainWindow);
     documentController = new UBDocumentController(mainWindow);
+
+    boardController->paletteManager()->connectToDocumentController();
 
     applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
 
@@ -248,6 +250,8 @@ int UBApplication::exec(const QString& pFileToImport)
 #else
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
 #endif
+
+    connect(documentController, SIGNAL(movedToIndex(int)), boardController, SIGNAL(documentReorganized(int)));
 
     mPreferencesController = new UBPreferencesController(mainWindow);
 

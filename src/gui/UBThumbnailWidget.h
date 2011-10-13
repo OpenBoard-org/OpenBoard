@@ -19,11 +19,14 @@
 #include <QtGui>
 #include <QtSvg>
 #include <QTime>
+#include <QGraphicsSceneHoverEvent>
 
 #include "frameworks/UBCoreGraphicsScene.h"
 #include "core/UBSettings.h"
 
 #define STARTDRAGTIME   1000000
+#define BUTTONSIZE      48
+#define BUTTONSPACING   5
 
 class UBDocumentProxy;
 class UBThumbnailTextItem;
@@ -282,6 +285,31 @@ class UBSceneThumbnailPixmap : public UBThumbnailPixmap
         int mSceneIndex;
 };
 
+class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
+{
+    public:
+        UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex);
+        ~UBSceneThumbnailNavigPixmap();
+        void notifyClick(QPointF clickedScenePos);
+
+    protected:
+        void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+    private:
+        void updateButtonsState();
+        void deletePage();
+        void moveUpPage();
+        void moveDownPage();
+        QPointF clickedPos(QPointF clickedScenePos);
+
+        bool bButtonsVisible;
+        bool bCanDelete;
+        bool bCanMoveUp;
+        bool bCanMoveDown;
+};
 
 class UBThumbnailVideo : public UBThumbnailPixmap
 {

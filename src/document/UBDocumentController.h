@@ -49,10 +49,12 @@ class UBDocumentController : public QObject
         UBDocumentProxyTreeItem* findDocument(UBDocumentProxy* proxy);
         bool addFileToDocument(UBDocumentProxy* document);
         UBDocumentProxy* getCurrentDocument();
+        void deletePages(QList<QGraphicsItem*> itemsToDelete);
 
     signals:
         void refreshThumbnails();
         void exportDone();
+        void movedToIndex(int index);
 
     public slots:
         void createNewDocument();

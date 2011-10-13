@@ -44,6 +44,9 @@ public:
 signals:
     void changeCurrentPage();
 
+public slots:
+    void onMovedToIndex(int index);
+
 protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
@@ -63,7 +66,7 @@ private:
     /** The scene */
     QGraphicsScene* mScene;
     /** The current selected item */
-    UBSceneThumbnailPixmap* mCrntItem;
+    UBSceneThumbnailNavigPixmap* mCrntItem;
     /** The current document */
     UBDocumentProxy* mCrntDoc;
     /** The list of current thumbnails */
