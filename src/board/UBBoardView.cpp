@@ -640,6 +640,9 @@ UBBoardView::wheelEvent (QWheelEvent *event)
     {
       // Too many wheelEvent are sent, how should we handle them to "smoothly" zoom ?
       // something like zoom( pow(zoomFactor, event->delta() / 120) )
+      // use DateTime man, store last event time, and if if less than 300ms than this is one big scroll
+      // and move scroll with one const speed.
+        // so, you no will related with scroll event count
     }
 //  event->accept ();
   QGraphicsView::wheelEvent(event);
