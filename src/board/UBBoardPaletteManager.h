@@ -49,9 +49,13 @@ class UBBoardPaletteManager : public QObject
         UBLeftPalette* leftPalette(){return mLeftPalette;}
         void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
+        void connectToDocumentController();
 
         UBKeyboardPalette *mKeyboardPalette;
         UBRightPalette* createDesktopRightPalette(QWidget* parent);
+
+    signals:
+        void connectToDocController();
 
     public slots:
 

@@ -28,6 +28,8 @@
 #include "adaptors/UBSvgSubsetAdaptor.h"
 #include "document/UBDocumentController.h"
 #include "domain/UBGraphicsScene.h"
+#include "board/UBBoardPaletteManager.h"
+#include "core/UBApplicationController.h"
 
 #include "core/memcheck.h"
 
@@ -56,6 +58,7 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(addNewPage()));
     connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(generateThumbnails()));
     connect(mScene, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
+    connect(UBApplication::boardController, SIGNAL(documentReorganized(int)), this, SLOT(onMovedToIndex(int)));
 }
 
 /**
@@ -107,13 +110,13 @@ void UBDocumentNavigator::generateThumbnails()
     for(int i = 0; i < thumbs.count(); i++)
     {
         QPixmap pix = thumbs.at(i);
-        QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailPixmap(pix, mCrntDoc, i);
+        QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailNavigPixmap(pix, mCrntDoc, i);
 
         // Get the selected item
         if(UBApplication::boardController->activeSceneIndex() == i)
         {
             selection = pixmapItem;
-            mCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(pixmapItem);
+            mCrntItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(pixmapItem);
             mCrntItem->setSelected(true);
         }
 
@@ -145,7 +148,7 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
         // Load it
         QList<QPixmap> thumbs = UBThumbnailAdaptor::load(mCrntDoc);
         QPixmap pix = thumbs.at(iPage);
-        QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailPixmap(pix, mCrntDoc, iPage);
+        QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailNavigPixmap(pix, mCrntDoc, iPage);
         if(pixmapItem)
         {
             // Get the old thumbnail
@@ -370,7 +373,7 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
         bNavig = true;
 
         // First, select the clicked item
-        UBSceneThumbnailPixmap* pCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(pClickedItem);
+        UBSceneThumbnailNavigPixmap* pCrntItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(pClickedItem);
 
         if(NULL == pCrntItem)
         {
@@ -378,7 +381,7 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
             UBThumbnailTextItem* pTextItem = dynamic_cast<UBThumbnailTextItem*>(pClickedItem);
             if(NULL != pTextItem)
             {
-                pCrntItem = dynamic_cast<UBSceneThumbnailPixmap*>(mThumbnails.at(mLabels.indexOf(pTextItem)));
+                pCrntItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(mThumbnails.at(mLabels.indexOf(pTextItem)));
             }
         }
         else
@@ -387,12 +390,14 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
             {
                 // Unselect the previous item
                 int iOldPage = mThumbnails.indexOf(mCrntItem);
-                mCrntItem->setSelected(false);
                 updateSpecificThumbnail(iOldPage);
                 mCrntItem = pCrntItem;
             }
 
-            pCrntItem->setSelected(true);
+            // HACK: for an unknown reason, the mousePressEvent of the item is not
+            //       called when a click occurs on it. So I created this method in
+            //       order to handle the click.
+            mCrntItem->notifyClick(mapToScene(event->pos()));
 
             // Then display the related page
             emit changeCurrentPage();
@@ -434,4 +439,19 @@ void UBDocumentNavigator::onSelectionChanged()
 {
     //    QList<QGraphicsItem*> qlItems = mScene->selectedItems();
     //    qDebug() << "The number of selected items is " << qlItems.count();
+}
+
+/**
+ * \brief Occurs when a page has been moved to another index in the document
+ * @param index as the new index
+ */
+void UBDocumentNavigator::onMovedToIndex(int index)
+{
+    UBSceneThumbnailNavigPixmap* pItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(mThumbnails.at(index));
+    if(NULL != pItem)
+    {
+        mCrntItem = pItem;
+        mCrntItem->setSelected(true);
+        centerOn(mCrntItem);
+    }
 }

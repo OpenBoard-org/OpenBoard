@@ -13,13 +13,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <QString>
+#include <QCursor>
 
 #include "UBThumbnailWidget.h"
 #include "UBRubberBand.h"
 
 #include "core/UBSettings.h"
+#include "core/UBApplication.h"
 
 #include "core/memcheck.h"
+
+#include "document/UBDocumentProxy.h"
+#include "document/UBDocumentController.h"
 
 UBThumbnailWidget::UBThumbnailWidget(QWidget* parent)
     : QGraphicsView(parent)
@@ -680,4 +685,159 @@ UBThumbnail::~UBThumbnail()
 {
     if (mSelectionItem && !mAddedToScene)
         delete mSelectionItem;
+}
+
+
+UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
+    : UBSceneThumbnailPixmap(pix, proxy, pSceneIndex)
+    , bButtonsVisible(false)
+    , bCanDelete(false)
+    , bCanMoveUp(false)
+    , bCanMoveDown(false)
+{
+    setAcceptsHoverEvents(true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+}
+
+UBSceneThumbnailNavigPixmap::~UBSceneThumbnailNavigPixmap()
+{
+
+}
+
+void UBSceneThumbnailNavigPixmap::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    event->accept();
+    updateButtonsState();
+    update();
+}
+
+void UBSceneThumbnailNavigPixmap::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    event->accept();
+    bButtonsVisible = false;
+    update();
+}
+
+void UBSceneThumbnailNavigPixmap::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    UBSceneThumbnailPixmap::paint(painter, option, widget);
+    if(bButtonsVisible)
+    {
+        if(bCanDelete)
+            painter->drawPixmap(0, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/close.svg"));
+        else
+            painter->drawPixmap(0, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/closeDisabled.svg"));
+        if(bCanMoveUp)
+            painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUp.svg"));
+        else
+            painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUpDisabled.svg"));
+        if(bCanMoveDown)
+            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menu.svg"));
+        else
+            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menuDisabled.svg"));
+    }
+}
+
+void UBSceneThumbnailNavigPixmap::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    // INFO: This implementation should work but this method is not called on a mousePressEvent, why?
+    //       PLEASE DO NOT REMOVE THIS METHOD! We should reactivate this code when we will fix
+    //       the mousePressEvent-not-called issue!
+
+//    QPointF p = event->pos();
+
+//    // Here we check the position of the click and verify if it has to trig an action or not.
+//    if(bCanDelete && p.x() >= 0 && p.x() <= BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
+//    {
+//        deletePage();
+//    }
+//    if(bCanMoveUp && p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= 2*BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
+//    {
+//        moveUpPage();
+//    }
+//    if(bCanMoveDown && p.x() >= 2*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 2*(BUTTONSIZE + BUTTONSPACING) + BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
+//    {
+//        moveDownPage();
+//    }
+    event->accept();
+}
+
+void UBSceneThumbnailNavigPixmap::updateButtonsState()
+{
+    bCanDelete = false;
+    bCanMoveUp = false;
+    bCanMoveDown = false;
+
+    UBDocumentProxy* p = proxy();
+    if(NULL != p)
+    {
+        int iNbPages = p->pageCount();
+        if(1 < iNbPages)
+        {
+            bCanDelete = true;
+            if(sceneIndex() > 0)
+            {
+                bCanMoveUp = true;
+            }
+            if(sceneIndex() != iNbPages - 1)
+            {
+                bCanMoveDown = true;
+            }
+        }
+    }
+
+    if(bCanDelete || bCanMoveUp || bCanMoveDown)
+    {
+        bButtonsVisible = true;
+    }
+}
+
+void UBSceneThumbnailNavigPixmap::deletePage()
+{
+    QList<QGraphicsItem*> itemsToDelete;
+    itemsToDelete << this;
+
+    UBApplication::documentController->deletePages(itemsToDelete);
+}
+
+void UBSceneThumbnailNavigPixmap::moveUpPage()
+{
+    UBApplication::documentController->moveSceneToIndex(proxy(), sceneIndex(), sceneIndex() - 1);
+}
+
+void UBSceneThumbnailNavigPixmap::moveDownPage()
+{
+    UBApplication::documentController->moveSceneToIndex(proxy(), sceneIndex(), sceneIndex() + 1);
+}
+
+void UBSceneThumbnailNavigPixmap::notifyClick(QPointF clickedScenePos)
+{
+    QPointF p = clickedPos(clickedScenePos);
+
+    // Here we check the position of the click and verify if it has to trig an action or not.
+    if(bCanDelete && p.x() >= 0 && p.x() <= BUTTONSIZE/2 && p.y() >= 0 && p.y() <= BUTTONSIZE/2)
+    {
+        deletePage();
+    }
+    if(bCanMoveUp && p.x() >= (BUTTONSIZE + BUTTONSPACING)/2 && p.x() <= BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE/2)
+    {
+        moveUpPage();
+    }
+    if(bCanMoveDown && p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= BUTTONSIZE + BUTTONSPACING + BUTTONSIZE/2 && p.y() >= 0 && p.y() <= BUTTONSIZE/2)
+    {
+        moveDownPage();
+    }
+}
+
+QPointF UBSceneThumbnailNavigPixmap::clickedPos(QPointF clickedScenePos)
+{
+    QPointF p;
+
+    p.setX(clickedScenePos.x() - scenePos().x());
+    p.setY(clickedScenePos.y() - scenePos().y());
+
+    return p;
 }

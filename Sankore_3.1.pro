@@ -126,7 +126,7 @@ macx {
        Foundation \
        -lcrypto
 
-   CONFIG(release, debug|release):CONFIG += x86
+   CONFIG(release, debug|release):CONFIG += x86 ppc
 
    # [03-02-2011] We must use the 32bit version for the moment
    # because the Quicktime components used by this application

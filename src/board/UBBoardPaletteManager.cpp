@@ -717,3 +717,8 @@ UBRightPalette* UBBoardPaletteManager::createDesktopRightPalette(QWidget* parent
 
     return mDesktopRightPalette;
 }
+
+void UBBoardPaletteManager::connectToDocumentController()
+{
+    emit connectToDocController();
+}
