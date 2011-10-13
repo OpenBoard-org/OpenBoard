@@ -453,7 +453,16 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
         magniferDisplayViewWidget = NULL;
     }
 
-     UBApplication::app()->restoreOverrideCursor();
+    // some time have crash here on access to app (when call from destructor when close sankore app)
+    // so i just add try/catch section here
+    try
+    {
+        UBApplication::app()->restoreOverrideCursor();
+    }
+    catch (...)
+    {
+    }
+    
 }
 
 void UBGraphicsScene::moveTo(const QPointF &pPoint)

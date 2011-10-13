@@ -106,7 +106,6 @@ void UBGraphicsDelegateFrame::setAntiScale(qreal pAntiScale)
     mRightResizeGripSvgItem->setTransform(tr);
     mTopResizeGripSvgItem->setTransform(tr);
     mRotateButton->setTransform(tr);
-
 }
 
 
@@ -540,7 +539,6 @@ QGraphicsItem* UBGraphicsDelegateFrame::delegated()
 {
     return mDelegate->delegated();
 }
-
 
 UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF pos)
 {

@@ -166,6 +166,15 @@
 				return(parseInt(cssvalue.replace("px", "")));
 			};
 			
+			if (window.widget) {
+			   window.widget.onremove = function(){
+			   		//$("#show-inputfield-button").trigger("click");
+					$("#embeded-content")
+						.empty();
+						//.oembed($("#textbox").val());
+			   }
+			}
+
 			initialize();
 		});
     </script>

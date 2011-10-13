@@ -19,7 +19,7 @@ make clean
 rm -rf build/linux/release/
 rm -rf install
 
-QT_PATH="/usr/local/Trolltech/Qt-4.7.0"
+QT_PATH="/usr/local/Trolltech/Qt-4.7.3"
 PLUGINS_PATH="$QT_PATH/plugins"
 QMAKE_PATH="$QT_PATH/bin/qmake"
 

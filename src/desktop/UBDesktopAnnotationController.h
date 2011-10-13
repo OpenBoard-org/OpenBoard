@@ -98,6 +98,12 @@ class UBDesktopAnnotationController : public QObject
         void penActionReleased();
         void markerActionReleased();
         void eraserActionReleased();
+        void selectorActionPressed();
+        void selectorActionReleased();
+        void pointerActionPressed();
+        void pointerActionReleased();
+
+        void switchCursor(int tool);
         void onDesktopPaletteMaximized();
         void onDesktopPaletteMinimize();
         void onTransparentWidgetResized();
