@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr_CH">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -385,7 +387,7 @@
         <source>Tutorial</source>
         <translation>Tutoriel</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -577,7 +579,7 @@
         <source>Check Update</source>
         <translation>Contrôler les mises à jour</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré Editor</source>
         <translation>Editeur Sankoré</translation>
     </message>
@@ -585,11 +587,11 @@
         <source>Show Sankore Widgets Editor</source>
         <translation>Afficher l&apos;éditeur d&apos;Apps Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré</source>
         <translation>Cacher Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré Application</source>
         <translation>Cacher l&apos;application Sankoré</translation>
     </message>
@@ -873,15 +875,15 @@
     <name>UBAbstractPublisher</name>
     <message>
         <source>Contacting %1</source>
-        <translation>En train de contacter %1</translation>
+        <translation type="obsolete">En train de contacter %1</translation>
     </message>
     <message>
         <source>Found %1</source>
-        <translation>Trouvé %1</translation>
+        <translation type="obsolete">Trouvé %1</translation>
     </message>
     <message>
         <source>Cannot Authenticate with %1</source>
-        <translation>Impossible de s&apos;identifier avec %1</translation>
+        <translation type="obsolete">Impossible de s&apos;identifier avec %1</translation>
     </message>
 </context>
 <context>
@@ -1567,11 +1569,11 @@
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Oui</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Non</translation>
     </message>
 </context>
 <context>
@@ -1610,6 +1612,14 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <source>New Folder name:</source>
         <translation>Nom du dossier:</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Ajouter</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2377,7 +2387,7 @@ p, li { white-space: pre-wrap; }
         <source>Show main display immediately on secondary screen or projector</source>
         <translation>Afficher immédiatement l&apos;écran principal sur l&apos;écran secondaire ou le projecteur</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>version : …</source>
         <translation>version:...</translation>
     </message>
@@ -2433,7 +2443,7 @@ p, li { white-space: pre-wrap; }
         <source>Quazip</source>
         <translation>Quazip</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -2648,7 +2658,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2661,7 +2671,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
