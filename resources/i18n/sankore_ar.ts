@@ -871,18 +871,6 @@
 </context>
 <context>
     <name>UBAbstractPublisher</name>
-    <message>
-        <source>Contacting %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Found %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot Authenticate with %1</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
@@ -1603,6 +1591,14 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>New Folder name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
