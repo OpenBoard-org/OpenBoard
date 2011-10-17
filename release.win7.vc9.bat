@@ -16,10 +16,13 @@ REM ---------------------------------------------------------------------
 set QT_DIR=..\Qt-sankore3.1
 set QT_BIN=%QT_DIR%\bin
 
-set GIT_BIN=C:\Program Files (x86)\Git\bin
-set VS_BIN=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin
-set WIN_SDK_BIN=C:\Program Files (x86)\Microsoft SDKs\Windows\v6.0A\Bin
-set INNO_EXE=C:\Program Files (x86)\Inno Setup 5\iscc.exe 
+set PROGRAM_FILES_PATH=C:\Program Files (x86)
+
+set GIT_BIN=%PROGRAM_FILES_PATH%\Git\bin
+set VS_BIN=%PROGRAM_FILES_PATH%\Microsoft Visual Studio 9.0\VC\bin
+set WIN_SDK_BIN=%PROGRAM_FILES_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
+set INNO_EXE=%PROGRAM_FILES_PATH%\Inno Setup 5\iscc.exe 
+
 set BUILD_DIR=build\win32\release
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
