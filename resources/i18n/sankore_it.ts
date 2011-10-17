@@ -873,15 +873,15 @@
     <name>UBAbstractPublisher</name>
     <message>
         <source>Contacting %1</source>
-        <translation>Contattando %1</translation>
+        <translation type="obsolete">Contattando %1</translation>
     </message>
     <message>
         <source>Found %1</source>
-        <translation>Trovato %1</translation>
+        <translation type="obsolete">Trovato %1</translation>
     </message>
     <message>
         <source>Cannot Authenticate with %1</source>
-        <translation>Non posso autenticare con %1</translation>
+        <translation type="obsolete">Non posso autenticare con %1</translation>
     </message>
 </context>
 <context>
@@ -1609,6 +1609,14 @@ Vuoi ignorare l&apos;errore per questo host?</translation>
     </message>
     <message>
         <source>New Folder name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Aggiungi</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
