@@ -634,18 +634,38 @@ UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 }
 
 void
-UBBoardView::wheelEvent (QWheelEvent *event)
+UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 {
-  if (isInteractive () && event->orientation () == Qt::Vertical)
+  if (isInteractive () && wheelEvent->orientation () == Qt::Vertical)
     {
       // Too many wheelEvent are sent, how should we handle them to "smoothly" zoom ?
       // something like zoom( pow(zoomFactor, event->delta() / 120) )
+
       // use DateTime man, store last event time, and if if less than 300ms than this is one big scroll
       // and move scroll with one const speed.
         // so, you no will related with scroll event count
     }
-//  event->accept ();
-  QGraphicsView::wheelEvent(event);
+
+    QList<QGraphicsItem *> selItemsList = scene()->selectedItems();
+    // if NO have selected items, than no need process mouse wheel. just exist
+    if( selItemsList.count() > 0 ) 
+    {
+        // only one selected item possible, so we will work with first item only
+        QGraphicsItem * selItem = selItemsList[0];
+
+        // get items list under mouse cursor
+        QPointF scenePos = mapToScene(wheelEvent->pos());
+        QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
+        
+        QBool isSlectedAndMouseHower = itemsList.contains(selItem);
+        if(isSlectedAndMouseHower)
+        {
+            wheelEvent->accept();
+            QGraphicsView::wheelEvent(wheelEvent);
+        }
+
+    }
+
 }
 
 void
@@ -894,5 +914,4 @@ UBBoardView::setToolCursor (int tool)
       controlViewport->setCursor (UBResources::resources ()->penCursor);
     }
 }
-
 

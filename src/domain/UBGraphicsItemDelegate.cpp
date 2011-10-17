@@ -195,12 +195,12 @@ bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
 {
     if( mDelegated->isSelected() )
     {
-        event->accept();
+//        event->accept();
         return true;
     }
     else
     {
-        event->ignore();
+//        event->ignore();
         return false;
     }
 }
