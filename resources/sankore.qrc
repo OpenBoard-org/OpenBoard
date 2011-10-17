@@ -330,5 +330,7 @@
         <file>images/closeDisabled.svg</file>
         <file>images/menuDisabled.svg</file>
         <file>images/moveUpDisabled.svg</file>
+        <file>images/teacher_close.png</file>
+        <file>images/teacher_open.png</file>
     </qresource>
 </RCC>
