@@ -25,6 +25,7 @@
 #include "gui/UBPageNavigationWidget.h"
 #include "gui/UBLibWidget.h"
 #include "gui/UBCachePropertiesWidget.h"
+#include "gui/UBTeacherBarWidget.h"
 
 class UBStylusPalette;
 class UBClockPalette;
@@ -117,6 +118,8 @@ class UBBoardPaletteManager : public QObject
         UBLibWidget* mpLibWidget;
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
+        /** The teacher bar widget */
+        UBTeacherBarWidget* mpTeacherBarWidget;
 
         // HACK: here we duplicate the lib widget for the desktop mode
         //       we MUST refactor the architecture in order to use only one

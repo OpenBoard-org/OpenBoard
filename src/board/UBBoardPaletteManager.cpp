@@ -77,6 +77,7 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpLibWidget(NULL)
     , mpCachePropWidget(NULL)
     , mDesktopRightPalette(NULL)
+    , mpTeacherBarWidget(NULL)
     , mpDesktopLibWidget(NULL)
 {
     setupPalettes();
@@ -86,6 +87,11 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
 
 UBBoardPaletteManager::~UBBoardPaletteManager()
 {
+    if(NULL != mpTeacherBarWidget)
+    {
+        delete mpTeacherBarWidget;
+        mpTeacherBarWidget = NULL;
+    }
     if(NULL != mpPageNavigWidget)
     {
         delete mpPageNavigWidget;
@@ -156,7 +162,12 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mRightPalette->registerWidget(mpLibWidget);
     mRightPalette->registerWidget(mpCachePropWidget);
     mRightPalette->addTabWidget(mpLibWidget);
+
+    mRightPalette->registerWidget(mpTeacherBarWidget);
+    //mRightPalette->addTabWidget(mpTeacherBarWidget);
     mRightPalette->connectSignals();
+    mLeftPalette->showTabWidget(0);
+    mRightPalette->showTabWidget(0);
 }
 
 void UBBoardPaletteManager::setupPalettes()
@@ -169,6 +180,7 @@ void UBBoardPaletteManager::setupPalettes()
     mpPageNavigWidget = new UBPageNavigationWidget();
     mpLibWidget = new UBLibWidget();
     mpCachePropWidget = new UBCachePropertiesWidget();
+    mpTeacherBarWidget = new UBTeacherBarWidget();
 
     setupDockPaletteWidgets();
 
