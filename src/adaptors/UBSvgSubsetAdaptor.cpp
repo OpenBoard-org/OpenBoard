@@ -2415,6 +2415,7 @@ UBGraphicsCurtainItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::curtainItemFromSvg
     QRectF rect = curtainItem->rect();
     rect.setWidth(svgWidth.toString().toFloat());
     rect.setHeight(svgHeight.toString().toFloat());
+    rect.translate(-rect.center());
 
     curtainItem->setRect(rect);
 
