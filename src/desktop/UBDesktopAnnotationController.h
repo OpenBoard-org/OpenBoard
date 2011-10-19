@@ -55,6 +55,9 @@ class UBDesktopAnnotationController : public QObject
         UBDesktopPalette *desktopPalette();
         UBBoardView *drawingView();
 
+        void TransparentWidgetResized();
+
+
     public slots:
 
         void screenLayoutChanged();

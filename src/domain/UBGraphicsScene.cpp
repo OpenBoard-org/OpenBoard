@@ -1171,7 +1171,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     if (graphicsWidget->widgetWebView()->canBeContent())
     {
-        graphicsWidget->widgetWebView()->loadMainHtml();
+//        graphicsWidget->widgetWebView()->loadMainHtml();
 
         graphicsWidget->setSelected(true);
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, graphicsWidget);

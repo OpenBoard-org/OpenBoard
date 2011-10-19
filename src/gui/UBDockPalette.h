@@ -123,6 +123,8 @@ protected:
     /** The current widget */
     QVector<UBDockPaletteWidget*> mRegisteredWidgets;
 
+//     QVector<UBDockPaletteWidget*> mVisibleWidgets; // ???
+
 private slots:
     void onToolbarPosUpdated();
     void onResizeRequest(QResizeEvent* event);
