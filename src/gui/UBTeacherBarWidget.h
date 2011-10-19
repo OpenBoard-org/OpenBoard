@@ -20,6 +20,8 @@ public:
     ~UBTeacherStudentAction();
     QString teacherText();
     QString studentText();
+    void setTeacherText(QString text);
+    void setStudentText(QString text);
 
 private:
     int mActionNumber;
@@ -35,9 +37,14 @@ private:
 
 class UBTeacherBarWidget : public UBDockPaletteWidget
 {
+    Q_OBJECT
 public:
     UBTeacherBarWidget(QWidget* parent=0, const char* name="UBTeacherBarWidget");
     ~UBTeacherBarWidget();
+
+private slots:
+    void saveContent();
+    void loadContent();
 
 private:
     void populateCombos();

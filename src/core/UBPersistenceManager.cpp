@@ -592,7 +592,6 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
 {
     if (mSceneCache.contains(proxy, sceneIndex))
     {
-        //qDebug() << "scene" << sceneIndex << "retrieved from cache ...";
         return mSceneCache.value(proxy, sceneIndex);
     }
     else
@@ -618,8 +617,6 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
 
-    qDebug() << "saving page" << pSceneIndex + 1 << pDocumentProxy->persistencePath();
-
     if (pDocumentProxy->isModified())
         UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
 
@@ -638,6 +635,92 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
 }
 
+void UBPersistenceManager::persistTeacherBar(UBDocumentProxy* pDocumentProxy, int page, sTeacherBarInfos infos)
+{
+    if(NULL != pDocumentProxy)
+    {
+        QFile f(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", page + 1));
+        if(f.exists())
+        {
+            if(f.open(QIODevice::ReadOnly))
+            {
+                QDomDocument domDoc;
+                if(domDoc.setContent(f.readAll()))
+                {
+                    f.close();
+                    if(f.open(QIODevice::WriteOnly))
+                    {
+                        QDomElement rootElem = domDoc.documentElement();
+                        QDomNode teacherBarNode = domDoc.namedItem("teacherBar");
+                        if(teacherBarNode.isNull())
+                        {
+                            // Create the element
+                            QDomElement teacherElem = domDoc.createElement("teacherBar");
+                            rootElem.appendChild(teacherElem);
+                            teacherBarNode = teacherElem;
+                        }
+
+                        // Set the <teacherBar> element values
+                        QDomElement teacherBarElem = teacherBarNode.toElement();
+                        teacherBarElem.setAttribute("title", infos.title);
+                        teacherBarElem.setAttribute("phasis", infos.phasis);
+                        teacherBarElem.setAttribute("duration", infos.Duration);
+                        teacherBarElem.setAttribute("equipment", infos.material);
+                        teacherBarElem.setAttribute("activity", infos.activity);
+                        teacherBarElem.setAttribute("action1Teacher", infos.action1Master);
+                        teacherBarElem.setAttribute("action1Student", infos.action1Student);
+                        teacherBarElem.setAttribute("action2Teacher", infos.action2Master);
+                        teacherBarElem.setAttribute("action2Student", infos.action2Student);
+                        teacherBarElem.setAttribute("action3Teacher", infos.action3Master);
+                        teacherBarElem.setAttribute("action3Student", infos.action3Student);
+
+                        //  Save the file
+                        f.write(domDoc.toString().toAscii());
+                        f.close();
+                    }
+                }
+                f.close();
+            }
+        }
+    }
+}
+
+sTeacherBarInfos UBPersistenceManager::getTeacherBarInfos(UBDocumentProxy* pDocumentProxy, int page)
+{
+    sTeacherBarInfos infos;
+
+    if(NULL != pDocumentProxy)
+    {
+        QFile f(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", page + 1));
+        if(f.exists())
+        {
+            if(f.open(QIODevice::ReadWrite))
+            {
+                QDomDocument domDoc;
+                if(domDoc.setContent(f.readAll()))
+                {
+                    QDomElement rootElem = domDoc.documentElement();
+                    QDomNode teacherBarNode = rootElem.namedItem("teacherBar");
+
+                    infos.title = teacherBarNode.toElement().attributeNode("title").value();
+                    infos.phasis = teacherBarNode.toElement().attributeNode("phasis").value().toInt();
+                    infos.Duration = teacherBarNode.toElement().attributeNode("duration").value().toInt();
+                    infos.material = teacherBarNode.toElement().attributeNode("equipment").value();
+                    infos.activity = teacherBarNode.toElement().attributeNode("activity").value().toInt();
+                    infos.action1Master = teacherBarNode.toElement().attributeNode("action1Teacher").value();
+                    infos.action1Student = teacherBarNode.toElement().attributeNode("action1Student").value();
+                    infos.action2Master = teacherBarNode.toElement().attributeNode("action2Teacher").value();
+                    infos.action2Student = teacherBarNode.toElement().attributeNode("action2Student").value();
+                    infos.action3Master = teacherBarNode.toElement().attributeNode("action3Teacher").value();
+                    infos.action3Student = teacherBarNode.toElement().attributeNode("action3Student").value();
+                }
+                f.close();
+            }
+        }
+    }
+
+    return infos;
+}
 
 UBDocumentProxy* UBPersistenceManager::persistDocumentMetadata(UBDocumentProxy* pDocumentProxy)
 {

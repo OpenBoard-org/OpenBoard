@@ -164,7 +164,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mRightPalette->addTabWidget(mpLibWidget);
 
     mRightPalette->registerWidget(mpTeacherBarWidget);
-    //mRightPalette->addTabWidget(mpTeacherBarWidget);
+    mRightPalette->addTabWidget(mpTeacherBarWidget);
     mRightPalette->connectSignals();
     mLeftPalette->showTabWidget(0);
     mRightPalette->showTabWidget(0);
