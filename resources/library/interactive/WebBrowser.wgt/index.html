@@ -201,13 +201,13 @@
 			
                 function checkLoading(){
                     if(loadingState){
-                        
+
                         clearTimeout(resizer);
                         resizerIndex = 0;
                         $("#web-content")
                         .attr("width", globalWidth - 25)
-                        .attr("height", globalHeight - 90);
-                        $("#web-content").show();
+                        .attr("height", globalHeight - 90)
+                        .show();
                         $(window).trigger("resize");
                         return false;
                     };
@@ -241,7 +241,13 @@
                         } else 
                         newArr[j] = arr[i];
                     return newArr;
-                }               
+                }
+				
+			    if (window.widget) {
+					window.widget.onremove = function(){
+						$("#web-content").empty();
+					}
+				}				
 			
             });
         </script>
