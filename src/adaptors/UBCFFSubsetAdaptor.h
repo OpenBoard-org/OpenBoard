@@ -19,12 +19,23 @@
 #include <QtXml>
 #include <QString>
 #include <QStack>
+#include <QDomDocument>
+#include <QHash>
 
 class UBDocumentProxy;
 class UBGraphicsScene;
 class QSvgGenerator;
 class UBGraphicsSvgItem;
 class QTransform;
+
+struct IwbExt {
+    IwbExt() : group(NULL) {;}
+    IwbExt(QDomNode element) : group(NULL), element(element) {;}
+
+    QDomNode *group;
+    QDomNode element;
+    QHash<QString, QString> textAttributes;
+};
 
 class UBCFFSubsetAdaptor
 {
@@ -65,6 +76,15 @@ private:
         QPointF mViewBoxCenter;
         QSize mSize;
 
+    private:
+        QDomDocument mDOMdoc;
+        QHash<QString, IwbExt> extProperties;
+        bool hashElements();
+
+        void hashNode(QDomNode *parent, QString prefix = "");
+
+
+
         //methods to store current xml parse state
         int PopState();
         void PushState(int state);
@@ -92,7 +112,9 @@ private:
         bool createNewScene();
         bool persistCurrentScene();
 
+
         QStack<int> stateStack;
+
         int currentState;
 
         //helper methods

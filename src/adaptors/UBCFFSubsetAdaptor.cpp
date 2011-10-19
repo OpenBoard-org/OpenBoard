@@ -34,6 +34,8 @@
 #include "core/UBApplication.h"
 #include "QFile"
 
+#include "QDomDocument"
+
 //enum of xmlparse status
 
 //tag names definition
@@ -75,10 +77,53 @@ static QString aFontstyle       = "font-style";
 static QString aFontweight      = "font-weight";
 static QString aTextalign       = "text-align";
 static QString aPoints          = "points";
+static QString svgNS            = "http://www.w3.org/2000/svg";
+static QString tId              = "id";
+
 
 
 UBCFFSubsetAdaptor::UBCFFSubsetAdaptor()
 {
+}
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::hashNode(QDomNode *parent, QString prefix)
+{
+    QDomNode n = parent->firstChild();
+    while (!n.isNull()) {
+        QDomElement e = n.toElement();
+        QString id = e.attribute(tId);
+        if(!id.isNull()) {
+            extProperties.insert(id, IwbExt(e));
+            qDebug() << prefix + e.prefix() + ":" + e.tagName();
+        }
+        if (n.hasChildNodes()) {
+            hashNode(&n, QString("| %1").arg(prefix));
+        }
+        n = n.nextSibling();
+    }
+}
+
+bool UBCFFSubsetAdaptor::UBCFFSubsetReader::hashElements()
+{
+    QDomElement svgSection = mDOMdoc.elementsByTagNameNS(svgNS, tSvg).at(0).toElement();
+    Q_ASSERT(!svgSection.isNull());
+
+    hashNode(&svgSection);
+
+    qDebug() << "ext properties count " << extProperties.count();
+    qDebug() << extProperties.value("link1").element.toElement().tagName();
+
+
+    //     QDomNode n = docElem.firstChild();
+//     int i = 0;
+//     while(!n.isNull()) {
+//         QDomElement e = n.toElement(); // try to convert the node to an element.
+//         if(!e.isNull()) {
+//             qDebug() << e.prefix() << ":" << e.tagName() ; // the node really is an element.
+//             i++;
+//         }
+//         n = n.nextSibling();
+//     }
+    return false;
 }
 
 bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentProxy* pDocument)
@@ -116,6 +161,14 @@ bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentP
 UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(UBDocumentProxy *proxy, QByteArray &content):
     mReader(content), mProxy(proxy), currentState(NONE)
 {
+    int errorLine, errorColumn;
+    QString errorStr;
+    if(!mDOMdoc.setContent(content, true, &errorStr, &errorLine, &errorColumn)){
+        qWarning() << "Error:Parseerroratline" << errorLine << ","
+                  << "column" << errorColumn << ":" << errorStr;
+    } else {
+        qDebug() << "well parsed to DOM";
+    }
 //    QFile tfile("/home/ilia/Documents/tmp/2/out.xml");
 //    tfile.open(QIODevice::ReadWr  ite | QIODevice::Text);
 //    QTextStream out(&tfile);
@@ -129,6 +182,9 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parse()
 
     mIndent = "";
     if (!getTempFileName())
+        return false;
+
+    if (mDOMdoc.isNull())
         return false;
 
     bool result = parseDoc();
@@ -160,29 +216,31 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::PushState(int state)
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseDoc()
 {
-    while (!mReader.atEnd())
-    {
-        mReader.readNext();
-        if (mReader.isStartElement())
-        {
-            if (!parseCurrentElementStart())
-                return false;
-        }
-        else
-            if (mReader.isCharacters())
-            {
-                if (!parseCurrentElementCharacters())
-                    return false;
-            }
-        else
-                if (mReader.isEndElement())
-                {
-                    if (!parseCurrentElementEnd())
-                        return false;
-                }
-    }
-    if (!mReader.error() == QXmlStreamReader::NoError)
-        UBApplication::showMessage(mReader.errorString());
+//    while (!mReader.atEnd())
+//    {
+//        mReader.readNext();
+//        if (mReader.isStartElement())
+//        {
+//            if (!parseCurrentElementStart())
+//                return false;
+//        }
+//        else
+//            if (mReader.isCharacters())
+//            {
+//                if (!parseCurrentElementCharacters())
+//                    return false;
+//            }
+//        else
+//                if (mReader.isEndElement())
+//                {
+//                    if (!parseCurrentElementEnd())
+//                        return false;
+//                }
+//    }
+//    if (!mReader.error() == QXmlStreamReader::NoError)
+//        UBApplication::showMessage(mReader.errorString());
+    if (!hashElements()) return false;
+
     return true;
 }
 
