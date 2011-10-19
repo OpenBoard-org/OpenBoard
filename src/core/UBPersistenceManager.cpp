@@ -14,6 +14,7 @@
  */
 
 #include "UBPersistenceManager.h"
+#include "gui/UBMainWindow.h"
 
 #include <QtXml>
 
@@ -1005,11 +1006,7 @@ void UBPersistenceManager::checkIfDocumentRepositoryExists()
         QString humanPath = QDir::cleanPath(mDocumentRepositoryPath);
         humanPath = QDir::toNativeSeparators(humanPath);
 
-        QMessageBox::question(
-            QApplication::activeWindow(),
-            tr("Document Repository Loss"),
-            tr("Sankore has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.").arg(humanPath),
-            QMessageBox::Yes);
+        UBApplication::mainWindow->warning(tr("Document Repository Loss"),tr("Sankore has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.").arg(humanPath));
 
         UBApplication::quit();
     }
