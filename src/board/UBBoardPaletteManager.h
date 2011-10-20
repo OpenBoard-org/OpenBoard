@@ -25,6 +25,7 @@
 #include "gui/UBPageNavigationWidget.h"
 #include "gui/UBLibWidget.h"
 #include "gui/UBCachePropertiesWidget.h"
+#include "gui/UBTeacherBarWidget.h"
 
 class UBStylusPalette;
 class UBClockPalette;
@@ -49,6 +50,7 @@ class UBBoardPaletteManager : public QObject
         UBLeftPalette* leftPalette(){return mLeftPalette;}
         void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
+        void refreshPalettes();
 
         UBKeyboardPalette *mKeyboardPalette;
         UBRightPalette* createDesktopRightPalette(QWidget* parent);
@@ -113,6 +115,8 @@ class UBBoardPaletteManager : public QObject
         UBLibWidget* mpLibWidget;
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
+        /** The teacherbar widget */
+        UBTeacherBarWidget* mpTeacherBarWidget;
 
         // HACK: here we duplicate the lib widget for the desktop mode
         //       we MUST refactor the architecture in order to use only one

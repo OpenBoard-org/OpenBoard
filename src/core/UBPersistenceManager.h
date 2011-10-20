@@ -20,6 +20,21 @@
 
 #include "UBSceneCache.h"
 
+struct sTeacherBarInfos
+{
+    QString title;
+    int phasis;
+    int Duration;
+    QString material;
+    int activity;
+    QString action1Master;
+    QString action1Student;
+    QString action2Master;
+    QString action2Student;
+    QString action3Master;
+    QString action3Student;
+};
+
 class UBDocument;
 class UBDocumentProxy;
 class UBGraphicsScene;
@@ -59,6 +74,9 @@ class UBPersistenceManager : public QObject
 
         virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy,
                 UBGraphicsScene* pScene, const int pSceneIndex);
+        virtual void persistTeacherBar(UBDocumentProxy* pDocumentProxy, int page, sTeacherBarInfos infos);
+
+        sTeacherBarInfos getTeacherBarInfos(UBDocumentProxy* pDocumentProxy, int page);
 
         virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index);
 

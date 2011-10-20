@@ -1,7 +1,8 @@
 QWidget#DockPaletteWidgetBox,
 QWidget#documentNavigator,
 QWidget#UBLibraryWidget,
-QWidget#UBLibPathViewer
+QWidget#UBLibPathViewer,
+QWidget#UBTeacherStudentAction
 {
 	background: #EEEEEE;
 	border-radius: 10px;
@@ -21,6 +22,40 @@ QLabel#DockPaletteWidgetTitle
 	font-weight:bold;
 }
 
+QLineEdit#DockPaletteWidgetLineEdit
+{
+	background: white;
+	border-radius : 10px;
+	padding: 2px;
+}
+
+QComboBox#DockPaletteWidgetComboBox
+{
+	background: white;
+	border-radius : 10px;
+	padding: 2px;
+}
+
+QComboBox#DockPaletteWidgetComboBox:drop-down
+{
+	background: white;
+	width:1px;
+	height:1px;
+	margin: 9px 5px 0px 0px;
+}
+
+QComboBox#DockPaletteWidgetComboBox::down-arrow
+{
+	image:url(:/images/down_arrow.png);
+	background:#BBBBBB;
+	border: 2px solid #999999;
+	height:16px;
+	width:16px;
+	padding: 0px 0px 0px 0px;
+	margin: 5px 10px 0px 0px;
+	border-radius: 10px;
+}
+
 QPushButton#DockPaletteWidgetButton
 {
 	background-color : #DDDDDD;
@@ -29,6 +64,13 @@ QPushButton#DockPaletteWidgetButton
 	padding : 5px;
 	font-weight : bold;
 	font-size : 12px;
+}
+
+QTextEdit#TeacherStudentBox
+{
+	background: white;
+	border: 2px solid #999999;
+	border-radius: 10px;
 }
 
 QPushButton#DockPaletteWidgetButton::checked
