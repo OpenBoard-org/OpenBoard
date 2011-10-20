@@ -5,12 +5,12 @@
 
 function startEditing()
 {
-	modeEdit();
+    modeEdit();
 }
 
 function stopEditing()
 {
-	modeView();
+    modeView();
 }
 
 function initialize()
@@ -20,7 +20,7 @@ function initialize()
 
 function checkResponse()
 {
-	checkWord();
+    checkWord();
 }
 /*
 	/ END sankore api
@@ -28,7 +28,16 @@ function checkResponse()
 
 
 
-var sentence = "this is\nan example\nsentence";
+var sentence = "";
+var curSentence = "";
+
+if(window.sankore){
+    sentence = (sankore.preference("rightOrdPhrases", ""))?sankore.preference("rightOrdPhrases", ""):"this is\nan example\nsentence";
+    curSentence = (sankore.preference("currentOrdPhrases", ""))?sankore.preference("currentOrdPhrases", ""):"";
+} else {
+    sentence = "this is\nan example\nsentence";
+}
+
 var doCheck = true;
 
 // array of dom elements
@@ -47,10 +56,10 @@ var widget_padding = 100;
 
 
 function str_replace( w, b, s ){
-	while( s.indexOf( w ) != -1 ){
-		s = s.replace( w, b );
-	}
-	return s;
+    while( s.indexOf( w ) != -1 ){
+        s = s.replace( w, b );
+    }
+    return s;
 }
 
 /*
@@ -61,16 +70,16 @@ shuffles an array
 */
 function shuffle( arr )
 {
-	var pos, tmp;
+    var pos, tmp;
 	
-	for( var i = 0; i < arr.length; i++ )
-	{
-		pos = Math.round( Math.random() * ( arr.length - 1 ) );
-		tmp = arr[pos];
-		arr[pos] = arr[i];
-		arr[i] = tmp;
-	}
-	return arr;
+    for( var i = 0; i < arr.length; i++ )
+    {
+        pos = Math.round( Math.random() * ( arr.length - 1 ) );
+        tmp = arr[pos];
+        arr[pos] = arr[i];
+        arr[i] = tmp;
+    }
+    return arr;
 }
 
 /*
@@ -81,34 +90,34 @@ returns array of dom elements
 */
 function createElements( sentence )
 {
-	var el;
-	var elements = [];
-	var phrases = sentence.split( "\n" );
+    var el;
+    var elements = [];
+    var phrases = sentence.split( "\n" );
 	
-	for( i in phrases )
-	{
-		el = document.createElement( "div" );
-		$( el ).addClass( "phrase" ).text( phrases[i] );
-		elements.push( el );
-	}
-	return elements;
+    for( i in phrases )
+    {
+        el = document.createElement( "div" );
+        $( el ).addClass( "phrase" ).text( phrases[i] );
+        elements.push( el );
+    }
+    return elements;
 }
 
 
 function checkSentence()
 {
-	if( !doCheck )
-		return;
+    if( !doCheck )
+        return;
 		
-	var ph = [];
-	$( "#mp_word .phrase" ).each( function()
-	{
-		ph.push( $( this ).text() );
-	});
+    var ph = [];
+    $( "#mp_word .phrase" ).each( function()
+    {
+        ph.push( $( this ).text() );
+    });
 	
-	if( ph.join( "\n" ) == str_replace( "\r", "", sentence ) ){
-		$( "#mp_word .phrase" ).addClass( "right" );
-	}
+    if( ph.join( "\n" ) == str_replace( "\r", "", sentence ) ){
+        $( "#mp_word .phrase" ).addClass( "right" );
+    }
 }
 
 /*
@@ -119,49 +128,56 @@ turns the widget into the view mode
 */
 function modeView()
 {
-	if( editMode ){
-		sentence = str_replace( "\r", "", $( "#mp_word textarea" ).attr( "value" ) );
-		var p = sentence.split( "\n" );
-		var p2 = [];
-		var t;
-		for( var i in p )
-		{
-			t = jQuery.trim( p[i] );
-			if( t ) p2.push( t );
-		}
-		sentence = p2.join( "\n" );
-	}
+    if( editMode ){
+        sentence = str_replace( "\r", "", $( "#mp_word textarea" ).attr( "value" ) );
+        var p = sentence.split( "\n" );
+        var p2 = [];
+        var t;
+        for( var i in p )
+        {
+            t = jQuery.trim( p[i] );
+            if( t ) p2.push( t );
+        }
+        sentence = p2.join( "\n" );
+    }
 	
-	// if no sankore api, insert edit button
-	if( !isSankore ){
-		$( "#mp_setup" ).empty().append( '<input type="button" value="Edit">' );
-		$( "#mp_setup input:button" ).click( function(){
-			modeEdit();
-		});
-	}
+    // if no sankore api, insert edit button
+    if( !isSankore ){
+        $( "#mp_setup" ).empty().append( '<input type="button" value="Edit">' );
+        $( "#mp_setup input:button" ).click( function(){
+            modeEdit();
+        });
+    }
 	
-	// clean the previous word
-	$( "#mp_word" ).empty();
+    // clean the previous word
+    $( "#mp_word" ).empty();
 	
-	// create new set of elements
-	var phrases = shuffle( createElements( sentence ) );
-	for( i in phrases ){
-		$("#mp_word").append( phrases[i] );
-	}
+    var phrases;
+    // create new set of elements
+    if(window.sankore && curSentence && !editMode)
+        phrases = createElements( curSentence );
+    else
+        phrases = shuffle( createElements( sentence ) );
+    
+    for( i in phrases ){
+        $("#mp_word").append( phrases[i] );
+    }
 	
-	// in sankore api there would be a function to check 
-	// the answer, so no update parameter would be needed
-	$( "#mp_word" ).sortable();
-	if( !isSankore ){
-		$( "#mp_word" ).sortable( { update: checkSentence } );
-	} else 
-		$( "#mp_word" ).sortable();
+    // in sankore api there would be a function to check 
+    // the answer, so no update parameter would be needed
+    $( "#mp_word" ).sortable();
+    if( !isSankore ){
+        $( "#mp_word" ).sortable( {
+            update: checkSentence
+        } );
+    } else 
+        $( "#mp_word" ).sortable();
 
-	// adjustHeight
-	var aHeight = $( phrases[0] ).outerHeight( true );
+    // adjustHeight
+    var aHeight = $( phrases[0] ).outerHeight( true );
 	
-	// apply new width
-	adjust( aHeight * phrases.length );
+    // apply new width
+    adjust( aHeight * phrases.length );
 	
 }
 
@@ -172,11 +188,13 @@ adjust width or height
 */
 function adjust( height )
 {
-	$( "#mp_word" ).animate( {height: height } );
-	// if viewed as a widget, resize the window
-	if( !isBrowser ){
-		window.resizeTo( widget.width, height + widget_padding );
-	}
+    $( "#mp_word" ).animate( {
+        height: height
+    } );
+    // if viewed as a widget, resize the window
+    if( !isBrowser ){
+        window.resizeTo( widget.width, height + widget_padding );
+    }
 }
 
 /*
@@ -186,26 +204,39 @@ modeEdit
 */
 function modeEdit()
 {
-	editMode = true;
-	// if no sankore api, insert ok button
-	if( !isSankore )
-	{
-		$( "#mp_setup" ).empty().append( '<input type="button" value="OK">' );
-		$( "#mp_setup input:button" ).click( function(){
-			modeView();
-		});
-	}
-	$( "#mp_word").css( "margin-left", 0 ).empty()
-	.append('<textarea cols="50" rows="5">'+sentence+'</textarea>');
-	adjust( $( "#mp_word textarea" ).outerHeight() );
+    editMode = true;
+    // if no sankore api, insert ok button
+    if( !isSankore )
+    {
+        $( "#mp_setup" ).empty().append( '<input type="button" value="OK">' );
+        $( "#mp_setup input:button" ).click( function(){
+            modeView();
+        });
+    }
+    $( "#mp_word").css( "margin-left", 0 ).empty()
+    .append('<textarea cols="50" rows="5">'+sentence+'</textarea>');
+    adjust( $( "#mp_word textarea" ).outerHeight() );
 }
 
+$(window).mouseout(function(){
+    if(window.sankore){
+        var ph = [];
+        $( "#mp_word .phrase" ).each( function()
+        {
+            ph.push( $( this ).text() );
+        });
+		
+        sankore.setPreference("currentOrdPhrases", ph.join( "\n" ));
+        sankore.setPreference("rightOrdPhrases", sentence);
+
+    }
+});
 
 $(document).ready(function()
 {
-	$("#ub-widget").append( '\
+    $("#ub-widget").append( '\
 		<div id="mp_setup"></div>\
 		<div id="mp_word"></div>\
 	');
-	modeView();
+    modeView();
 });
