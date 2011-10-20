@@ -41,6 +41,7 @@
 //tag names definition
 //use them everiwhere!
 static QString tElement         = "element";
+static QString tGroup           = "group";
 static QString tEllipse         = "ellipse";
 static QString tIwb             = "iwb";
 static QString tMeta            = "meta";
@@ -78,25 +79,72 @@ static QString aFontweight      = "font-weight";
 static QString aTextalign       = "text-align";
 static QString aPoints          = "points";
 static QString svgNS            = "http://www.w3.org/2000/svg";
-static QString tId              = "id";
-
+static QString iwbNS            = "http://www.becta.org.uk/iwb";
+static QString aId              = "id";
 
 
 UBCFFSubsetAdaptor::UBCFFSubsetAdaptor()
 {
 }
-void UBCFFSubsetAdaptor::UBCFFSubsetReader::hashNode(QDomNode *parent, QString prefix)
+
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::hashSiblingIwbElements(QDomElement *parent, QDomElement *topGroup) {
+
+    QDomElement curExt = parent->firstChildElement(tElement);
+    while (!curExt.isNull()) {
+        QDomElement n = curExt;
+        if (curExt.namespaceURI() != iwbNS)
+            continue;
+        QHash<QString, IwbExt>::iterator iSvgElement = extProperties.find(curExt.attribute("ref"));
+        if (iSvgElement != extProperties.end()) {
+            IwbExt &svgElement = *iSvgElement;
+            svgElement.extAttr.push_back(curExt);
+            if (topGroup)
+            qDebug() << "made";
+        }
+        curExt = curExt.nextSiblingElement(tElement);
+    }
+}
+
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::addExtentionsToHash(QDomElement *parent)
+{
+
+    //add top level elements
+    QDomElement curGroup = parent->firstChildElement(tGroup);
+    QDomElement topGroup;
+    while (!curGroup.isNull()) {
+        if (curGroup.namespaceURI() != iwbNS)
+            continue;
+
+//        if (parent == mDOMdoc.documentElement())
+//            topGroup = curGroup;
+//        QHash<QString, IwbExt>::iterator iSvgElement = extProperties.find(curExt.attribute("ref"));
+//        if (iSvgElement != extProperties.end()) {
+//            IwbExt &svgElement = *iSvgElement;
+//            svgElement.group = curGroup;
+//            qDebug() << "made";
+//        }
+        hashSiblingIwbElements(&curGroup, &topGroup);
+        if (curGroup.hasChildNodes()) {
+            addExtentionsToHash(&curGroup);
+        }
+
+        curGroup = curGroup.nextSiblingElement(tGroup);
+    }
+    //add groups
+}
+
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::hashSvg(QDomNode *parent, QString prefix)
 {
     QDomNode n = parent->firstChild();
     while (!n.isNull()) {
         QDomElement e = n.toElement();
-        QString id = e.attribute(tId);
+        QString id = e.attribute(aId);
         if(!id.isNull()) {
             extProperties.insert(id, IwbExt(e));
             qDebug() << prefix + e.prefix() + ":" + e.tagName();
         }
         if (n.hasChildNodes()) {
-            hashNode(&n, QString("| %1").arg(prefix));
+            hashSvg(&n, QString("| %1").arg(prefix));
         }
         n = n.nextSibling();
     }
@@ -107,11 +155,21 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::hashElements()
     QDomElement svgSection = mDOMdoc.elementsByTagNameNS(svgNS, tSvg).at(0).toElement();
     Q_ASSERT(!svgSection.isNull());
 
-    hashNode(&svgSection);
+    hashSvg(&svgSection);
 
-    qDebug() << "ext properties count " << extProperties.count();
-    qDebug() << extProperties.value("link1").element.toElement().tagName();
+    QDomElement parElement = mDOMdoc.documentElement();
+    Q_ASSERT(!parElement.isNull());
 
+    addExtentionsToHash(&parElement);
+
+//    qDebug() << "ext properties count " << extProperties.count();
+//    qDebug() << extProperties.value("link1").element.toElement().tagName();
+    foreach (IwbExt cur, extProperties) {
+        qDebug() << (cur.extAttr.count() ? cur.extAttr.first().toElement().tagName() : "count < 0") ;
+    }
+//    for (int i = 0; i < extProperties.count(); i++) {
+
+//    }
 
     //     QDomNode n = docElem.firstChild();
 //     int i = 0;

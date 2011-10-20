@@ -29,12 +29,14 @@ class UBGraphicsSvgItem;
 class QTransform;
 
 struct IwbExt {
-    IwbExt() : group(NULL) {;}
-    IwbExt(QDomNode element) : group(NULL), element(element) {;}
+    IwbExt() {;}
+    IwbExt(QDomNode element) : element(element), extAttr(*(new QVector<QDomNode>())) {;}
 
-    QDomNode *group;
+    QDomNode group;
     QDomNode element;
+    QVector<QDomNode> extAttr;
     QHash<QString, QString> textAttributes;
+    operator bool() const {return group.isNull() || !element.isNull();}
 };
 
 class UBCFFSubsetAdaptor
@@ -80,9 +82,10 @@ private:
         QDomDocument mDOMdoc;
         QHash<QString, IwbExt> extProperties;
         bool hashElements();
+        void addExtentionsToHash(QDomElement *parent);
 
-        void hashNode(QDomNode *parent, QString prefix = "");
-
+        void hashSvg(QDomNode *parent, QString prefix = "");
+        void hashSiblingIwbElements(QDomElement *parent, QDomElement *topGroup = 0);
 
 
         //methods to store current xml parse state

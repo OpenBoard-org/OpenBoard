@@ -167,15 +167,16 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mpLibWidget = new UBLibWidget();
     mpLibWidget ->registerMode(eUBDockPaletteWidget_BOARD);
     mpLibWidget ->registerMode(eUBDockPaletteWidget_DESKTOP);
+
     connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpLibWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
 //     mpCachePropWidget = new UBCachePropertiesWidget();
 //     mpCachePropWidget->registerMode(eUBDockPaletteWidget_BOARD);
 //     connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpCachePropWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
-//     mpTeacherBarWidget = new UBTeacherBarWidget();
-//     mpTeacherBarWidget->registerMode(eUBDockPaletteWidget_BOARD);
-//     connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpTeacherBarWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
+     mpTeacherBarWidget = new UBTeacherBarWidget();
+     mpTeacherBarWidget->registerMode(eUBDockPaletteWidget_BOARD);
+     connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpTeacherBarWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     //------------------------------------------------//
     // Add the dock palettes
@@ -200,8 +201,8 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 //     mRightPalette->addTabWidget(mpCachePropWidget);
 
 //     // ???
-//     mRightPalette->registerWidget(mpTeacherBarWidget);
-//     mRightPalette->addTabWidget(mpTeacherBarWidget);
+     mRightPalette->registerWidget(mpTeacherBarWidget);
+     mRightPalette->addTabWidget(mpTeacherBarWidget);
 
     mRightPalette->connectSignals();
 
@@ -442,8 +443,6 @@ void UBBoardPaletteManager::connectPalettes()
     }
 
 }
-
-
 
 void UBBoardPaletteManager::containerResized()
 {
