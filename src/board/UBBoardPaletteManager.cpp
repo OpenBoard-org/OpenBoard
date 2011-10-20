@@ -196,7 +196,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mRightPalette->addTabWidget(mpLibWidget);
 
 //     // ???
-//     mRightPalette->registerWidget(mpCachePropWidget); 
+//     mRightPalette->registerWidget(mpCachePropWidget);
 //     mRightPalette->addTabWidget(mpCachePropWidget);
 
 //     // ???
