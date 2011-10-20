@@ -125,7 +125,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(mpDuration, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
     connect(mpEquipment, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
     connect(mpActivity, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
-    connect(mpAction1->teacher(), SIGNAL(textChanged()), dynamic_cast<UBTeacherBarWidget*>(this), SLOT(onValueChanged()));
+    connect(mpAction1->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
     connect(mpAction1->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
     connect(mpAction2->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
     connect(mpAction2->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
