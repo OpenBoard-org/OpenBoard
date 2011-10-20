@@ -22,6 +22,8 @@ public:
     QString studentText();
     void setTeacherText(QString text);
     void setStudentText(QString text);
+    QTextEdit* teacher();
+    QTextEdit* student();
 
 private:
     int mActionNumber;
@@ -45,6 +47,7 @@ public:
 private slots:
     void saveContent();
     void loadContent();
+    void onValueChanged();
 
 private:
     void populateCombos();

@@ -51,6 +51,7 @@ class UBBoardPaletteManager : public QObject
         void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
         void connectToDocumentController();
+        void refreshPalettes();
 
         UBKeyboardPalette *mKeyboardPalette;
         UBRightPalette* createDesktopRightPalette(QWidget* parent);
