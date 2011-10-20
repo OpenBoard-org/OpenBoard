@@ -1,6 +1,13 @@
 #include "UBTeacherBarWidget.h"
 
 #include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
+
+#include "document/UBDocumentController.h"
+#include "document/UBDocumentProxy.h"
+
+#include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
 
 UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
     , mpLayout(NULL)
@@ -110,6 +117,20 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpLayout->addWidget(mpAction3);
 
     populateCombos();
+
+    connect(UBApplication::boardController, SIGNAL(activeSceneWillChange()), this, SLOT(saveContent()));
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContent()));
+    connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
+    connect(mpPhasis, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
+    connect(mpDuration, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
+    connect(mpEquipment, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
+    connect(mpActivity, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
+    connect(mpAction1->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction1->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction2->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction2->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction3->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction3->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
@@ -219,16 +240,42 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
 void UBTeacherBarWidget::populateCombos()
 {
     QStringList qslPhasis;
-    qslPhasis << tr("I discover") << tr("I experiment") << tr("I train myself") << tr("I play") << tr("I memorize");
+    qslPhasis << tr("") << tr("I discover") << tr("I experiment") << tr("I train myself") << tr("I play") << tr("I memorize");
     mpPhasis->insertItems(0, qslPhasis);
 
     QStringList qslDuration;
-    qslDuration << tr("Short") << tr("Middle") << tr("Long");
+    qslDuration << tr("") << tr("Short") << tr("Middle") << tr("Long");
     mpDuration->insertItems(0, qslDuration);
 
     QStringList qslActivity;
-    qslActivity  << tr("Alone") << tr("By Group") << tr("All together");
+    qslActivity << tr("") << tr("Alone") << tr("By Group") << tr("All together");
     mpActivity->insertItems(0, qslActivity);
+}
+
+void UBTeacherBarWidget::onValueChanged()
+{
+    if( mpTitle->text() == ""
+        && mpDuration->currentIndex() == 0
+        && mpPhasis->currentIndex() == 0
+        && mpEquipment->text() == ""
+        && mpActivity->currentIndex() == 0
+        && mpAction1->teacherText() == ""
+        && mpAction1->studentText() == ""
+        && mpAction2->teacherText() == ""
+        && mpAction2->studentText() == ""
+        && mpAction3->teacherText() == ""
+        && mpAction3->studentText() == "")
+    {
+        mIconToLeft = QPixmap(":images/teacher_open_disabled.png");
+        mIconToRight = QPixmap(":images/teacher_close_disabled.png");
+    }
+    else
+    {
+        mIconToLeft = QPixmap(":images/teacher_open.png");
+        mIconToRight = QPixmap(":images/teacher_close.png");
+    }
+
+    UBApplication::boardController->paletteManager()->refreshPalettes();
 }
 
 UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent, const char *name):QWidget(parent)
@@ -327,3 +374,22 @@ QString UBTeacherStudentAction::studentText()
     return mpStudent->document()->toPlainText();
 }
 
+void UBTeacherStudentAction::setTeacherText(QString text)
+{
+    mpTeacher->setText(text);
+}
+
+void UBTeacherStudentAction::setStudentText(QString text)
+{
+    mpStudent->setText(text);
+}
+
+QTextEdit* UBTeacherStudentAction::teacher()
+{
+    return mpTeacher;
+}
+
+QTextEdit* UBTeacherStudentAction::student()
+{
+    return mpStudent;
+}

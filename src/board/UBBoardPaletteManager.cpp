@@ -894,3 +894,9 @@ void UBBoardPaletteManager::connectToDocumentController()
 {
     emit connectToDocController();
 }
+
+void UBBoardPaletteManager::refreshPalettes()
+{
+    mRightPalette->update();
+    mLeftPalette->update();
+}
