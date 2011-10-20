@@ -72,9 +72,12 @@ public:
 
     void setBackgroundBrush(const QBrush& brush);
     void registerWidget(UBDockPaletteWidget* widget);
-    void addTabWidget(UBDockPaletteWidget* widget);
+    void addTab(UBDockPaletteWidget* widget);
     void removeTab(const QString& widgetName);
+
     void connectSignals();
+
+    QVector<UBDockPaletteWidget*> GetWidgetsList() { return mRegisteredWidgets; };
 
 public slots:
     void onShowTabWidget(const QString& widgetName);
@@ -90,7 +93,7 @@ protected:
 
     /** The current dock orientation */
     eUBDockOrientation mOrientation;
-    /** The current baclground brush */
+    /** The current background brush */
     QBrush mBackgroundBrush;
     /** The preferred width */
     int mPreferredWidth;
@@ -123,7 +126,6 @@ protected:
     /** The current widget */
     QVector<UBDockPaletteWidget*> mRegisteredWidgets;
 
-//     QVector<UBDockPaletteWidget*> mVisibleWidgets; // ???
 
 private slots:
     void onToolbarPosUpdated();

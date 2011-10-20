@@ -27,9 +27,7 @@ public:
 
     void registerMode(eUBDockPaletteWidgetMode mode);
 
-    /* The current widget available mode list */
-    QVector<eUBDockPaletteWidgetMode> mRegisteredModes;
-
+    QVector<eUBDockPaletteWidgetMode> GetRegisteredModes() { return mRegisteredModes; };
 
 
 signals:
@@ -44,6 +42,9 @@ protected:
     QPixmap mIconToRight;   // arrow like this: >
     QPixmap mIconToLeft;    // arrow like this: <
     QString mName;
+
+    /* The current widget available mode list */
+    QVector<eUBDockPaletteWidgetMode> mRegisteredModes;
 
 };
 

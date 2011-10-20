@@ -1,6 +1,13 @@
 #include "UBTeacherBarWidget.h"
 
 #include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
+
+#include "document/UBDocumentController.h"
+#include "document/UBDocumentProxy.h"
+
+#include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
 
 UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
     , mpLayout(NULL)
@@ -110,6 +117,20 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpLayout->addWidget(mpAction3);
 
     populateCombos();
+
+    connect(UBApplication::boardController, SIGNAL(activeSceneWillChange()), this, SLOT(saveContent()));
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContent()));
+    connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
+    connect(mpPhasis, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
+    connect(mpDuration, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
+    connect(mpEquipment, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
+    connect(mpActivity, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
+    connect(mpAction1->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction1->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction2->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction2->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction3->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpAction3->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
@@ -219,16 +240,78 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
 void UBTeacherBarWidget::populateCombos()
 {
     QStringList qslPhasis;
-    qslPhasis << tr("I discover") << tr("I experiment") << tr("I train myself") << tr("I play") << tr("I memorize");
+    qslPhasis << tr("") << tr("I discover") << tr("I experiment") << tr("I train myself") << tr("I play") << tr("I memorize");
     mpPhasis->insertItems(0, qslPhasis);
+    mpPhasis->setCurrentIndex(0);
 
     QStringList qslDuration;
-    qslDuration << tr("Short") << tr("Middle") << tr("Long");
+    qslDuration << tr("") << tr("Short") << tr("Middle") << tr("Long");
     mpDuration->insertItems(0, qslDuration);
+    mpDuration->setCurrentIndex(0);
 
     QStringList qslActivity;
-    qslActivity  << tr("Alone") << tr("By Group") << tr("All together");
+    qslActivity << tr("") << tr("Alone") << tr("By Group") << tr("All together");
     mpActivity->insertItems(0, qslActivity);
+    mpActivity->setCurrentIndex(0);
+}
+
+void UBTeacherBarWidget::onValueChanged()
+{
+    if( mpTitle->text() == ""
+        && mpDuration->currentIndex() == 0
+        && mpPhasis->currentIndex() == 0
+        && mpEquipment->text() == ""
+        && mpActivity->currentIndex() == 0
+        && mpAction1->teacherText() == ""
+        && mpAction1->studentText() == ""
+        && mpAction2->teacherText() == ""
+        && mpAction2->studentText() == ""
+        && mpAction3->teacherText() == ""
+        && mpAction3->studentText() == "")
+    {
+        mIconToLeft = QPixmap(":images/teacher_open_disabled.png");
+        mIconToRight = QPixmap(":images/teacher_close_disabled.png");
+    }
+    else
+    {
+        mIconToLeft = QPixmap(":images/teacher_open.png");
+        mIconToRight = QPixmap(":images/teacher_close.png");
+    }
+
+    UBApplication::boardController->paletteManager()->refreshPalettes();
+}
+
+void UBTeacherBarWidget::saveContent()
+{
+    sTeacherBarInfos infos;
+    infos.title = mpTitle->text();
+    infos.phasis = mpPhasis->currentIndex();
+    infos.Duration = mpDuration->currentIndex();
+    infos.material = mpEquipment->text();
+    infos.activity = mpActivity->currentIndex();
+    infos.action1Master = mpAction1->teacherText();
+    infos.action1Student = mpAction1->studentText();
+    infos.action2Master = mpAction2->teacherText();
+    infos.action2Student = mpAction2->studentText();
+    infos.action3Master = mpAction3->teacherText();
+    infos.action3Student = mpAction3->studentText();
+    UBPersistenceManager::persistenceManager()->persistTeacherBar(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex(), infos);
+}
+
+void UBTeacherBarWidget::loadContent()
+{
+    sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
+    mpTitle->setText(nextInfos.title);
+    mpPhasis->setCurrentIndex(nextInfos.phasis);
+    mpDuration->setCurrentIndex(nextInfos.Duration);
+    mpEquipment->setText(nextInfos.material);
+    mpActivity->setCurrentIndex(nextInfos.activity);
+    mpAction1->setTeacherText(nextInfos.action1Master);
+    mpAction1->setStudentText(nextInfos.action1Student);
+    mpAction2->setTeacherText(nextInfos.action2Master);
+    mpAction2->setStudentText(nextInfos.action2Student);
+    mpAction3->setTeacherText(nextInfos.action3Master);
+    mpAction3->setStudentText(nextInfos.action3Student);
 }
 
 UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent, const char *name):QWidget(parent)
@@ -327,3 +410,22 @@ QString UBTeacherStudentAction::studentText()
     return mpStudent->document()->toPlainText();
 }
 
+void UBTeacherStudentAction::setTeacherText(QString text)
+{
+    mpTeacher->setText(text);
+}
+
+void UBTeacherStudentAction::setStudentText(QString text)
+{
+    mpStudent->setText(text);
+}
+
+QTextEdit* UBTeacherStudentAction::teacher()
+{
+    return mpTeacher;
+}
+
+QTextEdit* UBTeacherStudentAction::student()
+{
+    return mpStudent;
+}

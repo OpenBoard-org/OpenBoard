@@ -19,6 +19,7 @@
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "core/UBApplication.h"
+#include "core/UBApplicationController.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBDisplayManager.h"
@@ -162,21 +163,20 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mpPageNavigWidget = new UBPageNavigationWidget();
     mpPageNavigWidget->registerMode(eUBDockPaletteWidget_BOARD);
-    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpPageNavigWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
+//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpPageNavigWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpLibWidget = new UBLibWidget();
     mpLibWidget ->registerMode(eUBDockPaletteWidget_BOARD);
     mpLibWidget ->registerMode(eUBDockPaletteWidget_DESKTOP);
+//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpLibWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
-    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpLibWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
+    mpCachePropWidget = new UBCachePropertiesWidget();
+    mpCachePropWidget->registerMode(eUBDockPaletteWidget_BOARD);
+//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpCachePropWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
-//     mpCachePropWidget = new UBCachePropertiesWidget();
-//     mpCachePropWidget->registerMode(eUBDockPaletteWidget_BOARD);
-//     connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpCachePropWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
-
-     mpTeacherBarWidget = new UBTeacherBarWidget();
-     mpTeacherBarWidget->registerMode(eUBDockPaletteWidget_BOARD);
-     connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpTeacherBarWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
+    mpTeacherBarWidget = new UBTeacherBarWidget();
+    mpTeacherBarWidget->registerMode(eUBDockPaletteWidget_BOARD);
+//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpTeacherBarWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     //------------------------------------------------//
     // Add the dock palettes
@@ -184,7 +184,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     // LEFT palette widgets
     mLeftPalette->registerWidget(mpPageNavigWidget);
-    mLeftPalette->addTabWidget(mpPageNavigWidget);
+    mLeftPalette->addTab(mpPageNavigWidget);
 
     mLeftPalette->connectSignals();
 
@@ -194,24 +194,62 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     // RIGHT palette widgets
     mRightPalette->registerWidget(mpLibWidget);
-    mRightPalette->addTabWidget(mpLibWidget);
+    mRightPalette->addTab(mpLibWidget);
 
-//     // ???
-//     mRightPalette->registerWidget(mpCachePropWidget); 
-//     mRightPalette->addTabWidget(mpCachePropWidget);
+    // ???
+    mRightPalette->registerWidget(mpCachePropWidget); 
+//    mRightPalette->addTab(mpCachePropWidget);
 
-//     // ???
-     mRightPalette->registerWidget(mpTeacherBarWidget);
-     mRightPalette->addTabWidget(mpTeacherBarWidget);
+    // ???
+    mRightPalette->registerWidget(mpTeacherBarWidget);
+    mRightPalette->addTab(mpTeacherBarWidget);
 
     mRightPalette->connectSignals();
 
     //------------------------------------------------//
 
-    mLeftPalette->showTabWidget(0);
-    mRightPalette->showTabWidget(0);
+    changeMode(eUBDockPaletteWidget_BOARD, true);
 
     //------------------------------------------------//
+
+//     mLeftPalette->showTabWidget(0);
+//     mRightPalette->showTabWidget(0);
+// 
+//     //------------------------------------------------//
+}
+
+void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMode mainMode)
+{
+    switch( mainMode )
+    {
+        case UBApplicationController::Board:
+            // call changeMode only when switch NOT from desktop mode
+            if(!UBApplication::applicationController->isShowingDesktop())
+                changeMode(eUBDockPaletteWidget_BOARD);
+            break;
+
+        default:
+            break;
+    }
+}
+
+void UBBoardPaletteManager::slot_changeDesktopMode(bool isDesktop)
+{
+    UBApplicationController::MainMode currMode = UBApplication::applicationController->displayMode();
+    if(!isDesktop) 
+    {
+        switch( currMode )
+        {
+            case UBApplicationController::Board:
+                changeMode(eUBDockPaletteWidget_BOARD);
+                break;
+
+            default:
+                break;
+        }
+    }
+    else
+        changeMode(eUBDockPaletteWidget_DESKTOP);
 }
 
 void UBBoardPaletteManager::setupPalettes()
@@ -444,6 +482,8 @@ void UBBoardPaletteManager::connectPalettes()
 
 }
 
+
+
 void UBBoardPaletteManager::containerResized()
 {
     int innerMargin = UBSettings::boardMargin;
@@ -604,8 +644,39 @@ void UBBoardPaletteManager::addItem(const QUrl& pUrl)
 
 }
 
-void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode)
+void UBBoardPaletteManager::processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode)
 {
+    //-------------------------------//
+    // get full right palette widgets list, parse it, show all widgets for BOARD mode, and hide all other
+    QVector<UBDockPaletteWidget*> widgetsList = paletter->GetWidgetsList();
+    for(int i = 0; i < widgetsList.size(); i++)
+    {
+        UBDockPaletteWidget* pNextWidget = widgetsList.at(i);
+        if( pNextWidget != NULL )
+        {
+            if( pNextWidget->GetRegisteredModes().contains(mode) ) 
+            {
+                paletter->addTab(pNextWidget);
+            }
+            else
+            {
+                paletter->removeTab(pNextWidget->name());
+            }
+        }
+    }
+    //-------------------------------//
+
+    if(widgetsList.size() > 0)
+        paletter->showTabWidget(0);
+    
+    paletter->update();
+}
+
+void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool isInit)
+{
+    processPalettersWidget(mRightPalette, newMode);
+    processPalettersWidget(mLeftPalette, newMode);
+
     switch( newMode )
     {
         case eUBDockPaletteWidget_BOARD:
@@ -616,7 +687,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode)
                 mLeftPalette->setVisible(true);
                 mRightPalette->setVisible(true);
 
-                containerResized();
+                if( !isInit )
+                    containerResized();
             }
             break;
 
@@ -628,7 +700,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode)
                 mLeftPalette->setVisible(false);
                 mRightPalette->setVisible(true);
 
-                UBApplication::applicationController->uninotesController()->TransparentWidgetResized();
+                if( !isInit )
+                    UBApplication::applicationController->uninotesController()->TransparentWidgetResized();
             }
             break;
 
@@ -641,6 +714,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode)
             }
             break;
     }
+
+    if( !isInit )
+        UBApplication::boardController->notifyPageChanged();
 
     emit signal_changeMode(newMode);
 }
@@ -817,4 +893,10 @@ UBRightPalette* UBBoardPaletteManager::createDesktopRightPalette(QWidget* parent
 void UBBoardPaletteManager::connectToDocumentController()
 {
     emit connectToDocController();
+}
+
+void UBBoardPaletteManager::refreshPalettes()
+{
+    mRightPalette->update();
+    mLeftPalette->update();
 }
