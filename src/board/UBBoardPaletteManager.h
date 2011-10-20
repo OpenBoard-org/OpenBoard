@@ -27,6 +27,9 @@
 #include "gui/UBCachePropertiesWidget.h"
 #include "gui/UBTeacherBarWidget.h"
 
+#include "core/UBApplicationController.h"
+
+
 class UBStylusPalette;
 class UBClockPalette;
 class UBPageNumberPalette;
@@ -37,6 +40,7 @@ class UBFloatingPalette;
 class UBServerXMLHttpRequest;
 class UBKeyboardPalette;
 class UBMainWindow;
+class UBApplicationController;
 
 class UBBoardPaletteManager : public QObject
 {
@@ -56,7 +60,9 @@ class UBBoardPaletteManager : public QObject
         UBKeyboardPalette *mKeyboardPalette;
 //        UBRightPalette* createDesktopRightPalette(QWidget* parent);
 
-        void changeMode(eUBDockPaletteWidgetMode newMode);
+        void processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode);
+        void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
+
 
     signals:
         void connectToDocController();
@@ -70,6 +76,8 @@ class UBBoardPaletteManager : public QObject
         void addItem(const QPixmap& pPixmap, const QPointF& p = QPointF(0.0, 0.0), qreal scale = 1.0, const QUrl& sourceUrl = QUrl());
 
 //        void slot_changeMode(eUBDockPaletteWidgetMode newMode);
+        void slot_changeMainMode(UBApplicationController::MainMode);
+        void slot_changeDesktopMode(bool);
 
     private:
 

@@ -57,15 +57,15 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
 
     if (parent)
     {
-	setAttribute(Qt::WA_NoMousePropagation);
-	setAttribute(Qt::WA_TranslucentBackground);
+        setAttribute(Qt::WA_NoMousePropagation);
+        setAttribute(Qt::WA_TranslucentBackground);
     }
     else
     {
-	// standalone window
-	setAttribute(Qt::WA_TranslucentBackground);
+        // standalone window
+        setAttribute(Qt::WA_TranslucentBackground);
 
-	// !!!! Should be included into Windows after QT recompilation
+        // !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
         //setAttribute(Qt::WA_MacNoShadow);
 #endif
@@ -540,7 +540,7 @@ int UBDockPalette::customMargin()
  * \brief Add the given tab widget
  * @param widget as the given widget
  */
-void UBDockPalette::addTabWidget(UBDockPaletteWidget *widget)
+void UBDockPalette::addTab(UBDockPaletteWidget *widget)
 {
     if(!mTabWidgets.contains(widget))
     {
@@ -551,7 +551,6 @@ void UBDockPalette::addTabWidget(UBDockPaletteWidget *widget)
         update();
     }
 }
-
 /**
  * \brief Remove the given tab
  * @param widgetName as the tab widget name
@@ -601,7 +600,7 @@ void UBDockPalette::onShowTabWidget(const QString &widgetName)
         UBDockPaletteWidget* pCrntWidget = mRegisteredWidgets.at(i);
         if(NULL != pCrntWidget && (pCrntWidget->name() == widgetName))
         {
-            addTabWidget(pCrntWidget);
+            addTab(pCrntWidget);
             break;
         }
     }
