@@ -48,16 +48,20 @@ class UBBoardPaletteManager : public QObject
 
         void setupLayout();
         UBLeftPalette* leftPalette(){return mLeftPalette;}
+        UBRightPalette* rightPalette(){return mRightPalette;}
         void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
         void connectToDocumentController();
         void refreshPalettes();
 
         UBKeyboardPalette *mKeyboardPalette;
-        UBRightPalette* createDesktopRightPalette(QWidget* parent);
+//        UBRightPalette* createDesktopRightPalette(QWidget* parent);
+
+        void changeMode(eUBDockPaletteWidgetMode newMode);
 
     signals:
         void connectToDocController();
+        void signal_changeMode(eUBDockPaletteWidgetMode newMode);
 
     public slots:
 
@@ -65,6 +69,8 @@ class UBBoardPaletteManager : public QObject
         void containerResized();
         void addItem(const QUrl& pUrl);
         void addItem(const QPixmap& pPixmap, const QPointF& p = QPointF(0.0, 0.0), qreal scale = 1.0, const QUrl& sourceUrl = QUrl());
+
+//        void slot_changeMode(eUBDockPaletteWidgetMode newMode);
 
     private:
 
@@ -85,10 +91,10 @@ class UBBoardPaletteManager : public QObject
         /** The right dock palette */
         UBRightPalette* mRightPalette;
 
-        // HACK: here we duplicate the right palette for the desktop mode
-        //       we MUST refactor the architecture in order to use only one
-        //       right palette!
-        UBRightPalette* mDesktopRightPalette;
+//         // HACK: here we duplicate the right palette for the desktop mode
+//         //       we MUST refactor the architecture in order to use only one
+//         //       right palette!
+//         UBRightPalette* mDesktopRightPalette;
 
         UBActionPalette *mBackgroundsPalette;
         UBActionPalette *mToolsPalette;

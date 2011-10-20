@@ -336,6 +336,7 @@ void UBApplicationController::showBoard()
     mMainWindow->boardToolBar->show();
 
     mMainMode = Board;
+    UBApplication::boardController->paletteManager()->changeMode(eUBDockPaletteWidget_BOARD);
 
     adaptToolBar();
 
@@ -352,6 +353,8 @@ void UBApplicationController::showBoard()
     mUninoteController->hideWindow();
     mMainWindow->show();
 
+//     UBApplication::boardController->paletteManager()->changeMode(eUBDockPaletteWidget_BOARD);
+
     emit mainModeChanged(Board);
 }
 
@@ -364,6 +367,8 @@ void UBApplicationController::showInternet()
         UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->hide();
     }
+
+    UBApplication::boardController->paletteManager()->changeMode(eUBDockPaletteWidget_WEB);
 
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
@@ -384,8 +389,10 @@ void UBApplicationController::showInternet()
         mUninoteController->hideWindow();
         emit mainModeChanged(Internet);
     }
-    UBApplication::webController->show(UBWebController::WebBrowser);
 
+//    UBApplication::boardController->paletteManager()->changeMode(eUBDockPaletteWidget_WEB);
+
+    UBApplication::webController->show(UBWebController::WebBrowser);
 }
 
 
@@ -397,6 +404,7 @@ void UBApplicationController::showDocument()
     mMainWindow->documentToolBar->show();
 
     mMainMode = Document;
+    UBApplication::boardController->paletteManager()->changeMode(eUBDockPaletteWidget_DOCUMENT);
 
     adaptToolBar();
 
@@ -418,6 +426,8 @@ void UBApplicationController::showDocument()
 
     mUninoteController->hideWindow();
 
+//    UBApplication::boardController->paletteManager()->changeMode(eUBDockPaletteWidget_DOCUMENT);
+
     emit mainModeChanged(Document);
 }
 
@@ -429,6 +439,8 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
         UBApplication::boardController->hide();
 
     mMainWindow->hide();
+    UBApplication::boardController->paletteManager()->changeMode(eUBDockPaletteWidget_DESKTOP);
+
     mUninoteController->showWindow();
 
     if (mMirror)
@@ -443,6 +455,8 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
     if (!dontSwitchFrontProcess) {
         UBPlatformUtils::bringPreviousProcessToFront();
     }
+
+//    UBApplication::boardController->paletteManager()->changeMode(eUBDockPaletteWidget_DESKTOP);
 
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 }

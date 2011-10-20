@@ -39,7 +39,6 @@ private:
 
 class UBTeacherBarWidget : public UBDockPaletteWidget
 {
-    Q_OBJECT
 public:
     UBTeacherBarWidget(QWidget* parent=0, const char* name="UBTeacherBarWidget");
     ~UBTeacherBarWidget();

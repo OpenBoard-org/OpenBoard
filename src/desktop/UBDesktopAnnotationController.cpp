@@ -56,7 +56,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mDesktopPenPalette(NULL)
         , mDesktopMarkerPalette(NULL)
         , mDesktopEraserPalette(NULL)
-        , mRightPalette(NULL)
+//        , mRightPalette(NULL)
         , mWindowPositionInitialized(0)
         , mIsFullyTransparent(false)
         , mDesktopToolsPalettePositioned(false)
@@ -89,7 +89,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingScene = new UBGraphicsScene(0);
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
 
-    mRightPalette = UBApplication::boardController->paletteManager()->createDesktopRightPalette(mTransparentDrawingView);
+//    mRightPalette = UBApplication::boardController->paletteManager()->createDesktopRightPalette(mTransparentDrawingView);
     //mRightPalette = new UBRightPalette(mTransparentDrawingView);
 
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView);
@@ -158,7 +158,8 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
 #ifdef Q_WS_X11
     connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
-    connect(mRightPalette, SIGNAL(resized()), this, SLOT(refreshMask()));
+//    connect(mRightPalette, SIGNAL(resized()), this, SLOT(refreshMask()));
+    connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
 #endif
     onDesktopPaletteMaximized();
 }
@@ -859,12 +860,34 @@ void UBDesktopAnnotationController::onDesktopPaletteMinimize()
     }
 }
 
+void UBDesktopAnnotationController::TransparentWidgetResized()
+{
+/*
+    int rW = UBApplication::boardController->paletteManager()->rightPalette()->width();
+    int rH_ = UBApplication::boardController->paletteManager()->rightPalette()->height();
+    int rH = mTransparentDrawingView->height();
+
+    UBApplication::boardController->paletteManager()->rightPalette()->resize(rW+1, rH);
+
+  //  UBApplication::boardController->paletteManager()->rightPalette()->resize(500, 500);
+*/
+
+    onTransparentWidgetResized();
+}
+
 /**
  * \brief Resize the library palette.
  */
 void UBDesktopAnnotationController::onTransparentWidgetResized()
 {
-      mRightPalette->resize(mRightPalette->width(), mTransparentDrawingView->height());
+    int rW = UBApplication::boardController->paletteManager()->rightPalette()->width();
+    int rH_ = UBApplication::boardController->paletteManager()->rightPalette()->height();
+    int rH = mTransparentDrawingView->height();
+
+    UBApplication::boardController->paletteManager()->rightPalette()->resize(rW+1, rH);
+    UBApplication::boardController->paletteManager()->rightPalette()->resize(rW, rH);
+
+//      mRightPalette->resize(mRightPalette->width(), mTransparentDrawingView->height());
 }
 
 void UBDesktopAnnotationController::updateMask(bool bTransparent)
@@ -891,10 +914,15 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
         {
             p.drawRect(mKeyboardPalette->geometry().x(), mKeyboardPalette->geometry().y(), mKeyboardPalette->width(), mKeyboardPalette->height());
         }
-        if(mRightPalette->isVisible())
+
+//        UBApplication::boardController->paletteManager()->mDesktopRightPalette
+        if(UBApplication::boardController->paletteManager()->rightPalette()->isVisible())
         {
             qDebug() << ">>>>>> Drawing the mask for the right palette";
-            p.drawRect(mRightPalette->geometry().x(), mRightPalette->geometry().y(), mRightPalette->width(), mRightPalette->height());
+            p.drawRect(UBApplication::boardController->paletteManager()->rightPalette()->geometry().x(), 
+                UBApplication::boardController->paletteManager()->rightPalette()->geometry().y(), 
+                UBApplication::boardController->paletteManager()->rightPalette()->width(), 
+                UBApplication::boardController->paletteManager()->rightPalette()->height());
         }
 
         p.end();

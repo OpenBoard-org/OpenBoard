@@ -660,8 +660,8 @@ UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
         QBool isSlectedAndMouseHower = itemsList.contains(selItem);
         if(isSlectedAndMouseHower)
         {
-            wheelEvent->accept();
             QGraphicsView::wheelEvent(wheelEvent);
+            wheelEvent->accept();
         }
 
     }
