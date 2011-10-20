@@ -244,6 +244,15 @@ int UBApplication::exec(const QString& pFileToImport)
 
     applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
 
+
+    connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)), 
+            boardController->paletteManager(), SLOT(slot_changeMainMode(UBApplicationController::MainMode)));
+
+    connect(applicationController, SIGNAL(desktopMode(bool)), 
+            boardController->paletteManager(), SLOT(slot_changeDesktopMode(bool)));
+
+
+
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
 #ifndef Q_WS_MAC
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
