@@ -918,7 +918,6 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
 //        UBApplication::boardController->paletteManager()->mDesktopRightPalette
         if(UBApplication::boardController->paletteManager()->rightPalette()->isVisible())
         {
-            qDebug() << ">>>>>> Drawing the mask for the right palette";
             p.drawRect(UBApplication::boardController->paletteManager()->rightPalette()->geometry().x(), 
                 UBApplication::boardController->paletteManager()->rightPalette()->geometry().y(), 
                 UBApplication::boardController->paletteManager()->rightPalette()->width(), 
