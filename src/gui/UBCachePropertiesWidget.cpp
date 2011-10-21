@@ -92,7 +92,7 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     mpSizeLabel = new QLabel(tr("Size:"), mpProperties);
     mpSizeSlider = new QSlider(Qt::Horizontal, mpProperties);
     mpSizeSlider->setMinimumHeight(20);
-    mpSizeSlider->setMinimum(0);
+    mpSizeSlider->setMinimum(50);
     mpSizeSlider->setMaximum(MAX_SHAPE_WIDTH);
     mpSizeLayout->addWidget(mpSizeLabel, 0);
     mpSizeLayout->addWidget(mpSizeSlider, 1);
