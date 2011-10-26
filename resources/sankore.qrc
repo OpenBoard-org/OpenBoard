@@ -319,7 +319,6 @@
         <file>images/pages_open.png</file>
         <file>images/cache_close.png</file>
         <file>images/cache_open.png</file>
-        <file>style.qss</file>
         <file>images/cache_circle.png</file>
         <file>images/cache_square.png</file>
         <file>images/down_arrow.png</file>
@@ -333,6 +332,7 @@
         <file>images/teacher_close.png</file>
         <file>images/teacher_open.png</file>
         <file>images/teacher_close_disabled.png</file>
+        <file>style.qss</file>
         <file>images/teacher_open_disabled.png</file>
     </qresource>
 </RCC>

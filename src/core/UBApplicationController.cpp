@@ -563,9 +563,7 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
     }
     else {
         if (isNoUpdateDisplayed) {
-            QMessageBox msgBox;
-            msgBox.setText (tr ("No update available"));
-            msgBox.exec();
+            mMainWindow->information(tr("Update"), tr("No update available"));
         }
     }
 }

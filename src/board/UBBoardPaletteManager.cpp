@@ -106,6 +106,11 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
         delete mpLibWidget;
         mpLibWidget = NULL;
     }
+    if(NULL != mpTeacherBarWidget)
+    {
+        delete mpTeacherBarWidget;
+        mpTeacherBarWidget = NULL;
+    }
     if(NULL != mpCachePropWidget)
     {
         delete mpCachePropWidget;

@@ -12,28 +12,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QMessageBox>
 #include <QFileDialog>
 
 #include "UBUpdateDlg.h"
+#include "core/UBApplication.h"
+#include "UBMainWindow.h"
 
 #include "core/memcheck.h"
 
 UBUpdateDlg::UBUpdateDlg(QWidget *parent, int nbFiles, const QString& bkpPath)
-        : QDialog(parent)
-        , mMainLayout(NULL)
-        , mNbFilesLabel(NULL)
-        , mBkpLabel(NULL)
-        , mBkpPath(NULL)
-        , mBrowseBttn(NULL)
-        , mpDlgBttn(NULL)
-        , mLayout(NULL)
-        , mHLayout(NULL)
-        , mStackedWidget(NULL)
-        , mDialogWidget(NULL)
-        , mProgressWidget(NULL)
-        , mProgressLayout(NULL)
-        , mProgressLabel(NULL)
+    : QDialog(parent)
+    , mMainLayout(NULL)
+    , mNbFilesLabel(NULL)
+    , mBkpLabel(NULL)
+    , mBkpPath(NULL)
+    , mBrowseBttn(NULL)
+    , mpDlgBttn(NULL)
+    , mLayout(NULL)
+    , mHLayout(NULL)
+    , mStackedWidget(NULL)
+    , mDialogWidget(NULL)
+    , mProgressWidget(NULL)
+    , mProgressLayout(NULL)
+    , mProgressLabel(NULL)
 
 {
     mDialogWidget = new QWidget(this);
@@ -178,18 +179,16 @@ void UBUpdateDlg::onUpdate()
 
 void UBUpdateDlg::onFilesUpdated(bool bResult)
 {
-	this->hide();
+    this->hide();
     QString qsMsg;
 
-    if (bResult)
-    {
+    if (bResult) {
         qsMsg = tr("Files update successful!\nPlease reboot the application to access the updated documents.");
     }
-    else
-    {
+    else {
         qsMsg = tr("An error occured during the update. The files have not been affected.");
     }
-    QMessageBox::information(this, tr("Files update results"), qsMsg, QMessageBox::Ok);
+    UBApplication::mainWindow->information(tr("Files update results"), qsMsg);
 }
 
 QString UBUpdateDlg::backupPath()
