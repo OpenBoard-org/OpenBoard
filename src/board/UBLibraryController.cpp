@@ -345,7 +345,6 @@ QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPat
         UBLibElement *element = new UBLibElement(fileType, QUrl::fromLocalFile(fileInfo->absoluteFilePath()), itemName);
 
         if (fileType == eUBLibElementType_Folder) {
-//            QImage* directoryImage = new QImage(":images/libpalette/folder.svg");
             element->setThumbnail(QImage(":images/libpalette/folder.svg"));
         }
         else if (fileType == eUBLibElementType_Item) {
