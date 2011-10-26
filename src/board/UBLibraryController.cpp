@@ -222,7 +222,6 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     element->setMoveable(false);
     categories << element;
 
-
     element = new UBLibElement(eUBLibElementType_Folder, mInteractiveUserDirectoryPath, tr("Applications", "Applications category element"));
     element->setThumbnail(QImage(":images/libpalette/ApplicationsCategory.svg"));
     element->setMoveable(false);
@@ -239,10 +238,19 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     element->setMoveable(false);
     categories << element;
 
+//  Note : FEATURE IN DEVELOPMENT, DO NOT ERASE (or you will get problems) !!!!
+//    mSearchCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardSearchDirectory());
+//    element = new UBLibElement(eUBLibElementType_Folder, mSearchCategoryPath, tr("Web Search", "Web search category element"));
+//    element->setThumbnail(QImage(":images/libpalette/WebSearchCategory.svg"));
+//    element->setMoveable(false);
+//    categories << element;
+
     element = new UBLibElement(eUBLibElementType_Folder, mAnimationUserDirectoryPath, tr("Animations", "Animations category element"));
     element->setThumbnail(QImage(":images/libpalette/FlashCategory.svg"));
     element->setMoveable(false);
     categories << element;
+
+
 
     categories << UBLibElement::trashElement();
 
@@ -757,6 +765,31 @@ UBChainedLibElement::~UBChainedLibElement()
 void UBChainedLibElement::setNextElement(UBChainedLibElement *nextElem)
 {
     mpNextElem = nextElem;
+}
+
+UBChainedLibElement* UBChainedLibElement::lastElement()
+{
+    UBChainedLibElement* pElem = NULL;
+
+    if(NULL != mpNextElem)
+    {
+        UBChainedLibElement* pLast = mpNextElem->lastElement();
+        if(NULL != pLast)
+        {
+            pElem = pLast;
+        }
+        else
+        {
+            pElem = mpNextElem;
+        }
+    }
+
+    return pElem;
+}
+
+QUrl UBChainedLibElement::lastItemPath()
+{
+    lastElement()->element()->path();
 }
 
 UBLibElement* UBLibElement::trashElement()

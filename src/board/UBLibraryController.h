@@ -82,8 +82,10 @@ public:
     ~UBChainedLibElement();
 
     UBChainedLibElement* nextElement(){return mpNextElem;}
+    UBChainedLibElement* lastElement();
     void setNextElement(UBChainedLibElement* nextElem);
     UBLibElement* element(){return mpElem;}
+    QUrl lastItemPath();
 
 private:
     UBLibElement* mpElem;
@@ -160,6 +162,7 @@ class UBLibraryController : public QObject
         QUrl mInteractiveUserDirectoryPath;
         QUrl mInteractiveCategoryPath;
         QUrl mAnimationUserDirectoryPath;
+        QUrl mSearchCategoryPath;
 
         QStringList addItemsToCurrentLibrary(const QDir& pSelectedFolder, const QStringList& pExtensions);
 

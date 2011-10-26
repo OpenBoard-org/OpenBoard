@@ -1,0 +1,102 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	margin:0px;
+}
+
+.ubw-container{
+	float:left;
+	margin:3px;
+	margin-right:0px;
+	margin-top: 2px;
+	background-image:url(../images/back_small.png);
+	overflow: hidden;
+}
+
+.ubw-body{
+	margin:5px;
+	margin-left: 9px;
+	margin-right: 0px;
+}
+
+.ubw-inspector{
+	position:absolute;
+	background-color:rgb(252, 252, 252);
+	border:1px solid #cccccc;	
+	line-height:20px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:normal;
+	font-size:20px;
+	color:#333333;
+}
+
+.ubw-inpubox{
+	min-width:28px;
+	min-height:37px;
+	color:#333333;
+	background-image: url(../images/button_out.png);
+	border-left:1px solid rgb(231, 231, 231);
+	border-right:1px solid rgb(231, 231, 231);
+	border-bottom:1px solid rgb(221, 221, 221);
+	border-top:1px solid rgb(241, 241, 241);
+}
+
+/*BUTTONS*/
+
+.ubw-button-wrapper{
+	float:left;
+	position:relative;
+	/*border:solid 1px yellow;*/
+	margin-right:-7px;
+	z-index:0;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:normal;
+	font-size:30px;
+	overflow:visible;
+}
+
+.ubw-button-canvas{
+	width:auto;
+	float:left;
+	position:relative;
+	overflow:visible;
+}
+
+table{
+	line-height:90%;
+}
+
+.ubw-button-body{
+	position:relative;
+	float:left;
+	
+	width:auto;
+	height:auto;
+	overflow:visible
+	
+	text-align:center;
+	vertical-align:middle;		
+			
+	cursor:pointer;		
+}
+
+.ubw-button-content{
+	height:auto;
+	width:auto;
+	text-align:center;
+	overflow:visible;
+}
+
+
+.ubw-button-over{
+}
+
+.ubw-button-out{
+}
+
+span.colored{
+	color: #0080ff;
+}

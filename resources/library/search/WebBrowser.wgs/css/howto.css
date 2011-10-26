@@ -1,0 +1,44 @@
+
+#content{
+	width:90%;
+	margin:5%;
+}
+
+#content table{
+	width:100%;
+}
+
+#info-ico{
+	float:right;
+}
+
+.column{
+	width:55%;
+}
+
+#f{
+	margin-top:-20px;
+}
+
+.img{
+	margin-left:30px;
+}
+
+.spacer{
+	margin-bottom:30px;
+}
+
+.lspacer{
+	margin-bottom:12px;
+}
+
+h1{
+	font-size:20px;
+	color:rgb(30,50,230);
+}
+
+p.small{
+	margin-top:-8px;
+	font-size:10px;
+	font-weight:bold;
+}
