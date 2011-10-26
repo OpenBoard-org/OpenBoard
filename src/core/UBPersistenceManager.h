@@ -74,8 +74,8 @@ class UBPersistenceManager : public QObject
 
         virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy,
                 UBGraphicsScene* pScene, const int pSceneIndex);
-
         virtual void persistTeacherBar(UBDocumentProxy* pDocumentProxy, int page, sTeacherBarInfos infos);
+
         sTeacherBarInfos getTeacherBarInfos(UBDocumentProxy* pDocumentProxy, int page);
 
         virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index);

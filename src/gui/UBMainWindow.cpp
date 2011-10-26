@@ -16,7 +16,6 @@
 #include <QtGui>
 
 #include "UBMainWindow.h"
-
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
 #include "board/UBBoardController.h"
@@ -160,3 +159,26 @@ bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text)
 
     return messageBox.clickedButton() == yesButton;
 }
+
+void UBMainWindow::oneButtonMessageBox(QString windowTitle, QString text, QMessageBox::Icon type)
+{
+    QMessageBox messageBox;
+    messageBox.setParent(this);
+    messageBox.setWindowFlags(Qt::Dialog);
+    messageBox.setWindowTitle(windowTitle);
+    messageBox.setText(text);
+    messageBox.addButton(tr("Ok"),QMessageBox::YesRole);
+    messageBox.setIcon(type);
+    messageBox.exec();
+}
+
+void UBMainWindow::warning(QString windowTitle, QString text)
+{
+    oneButtonMessageBox(windowTitle,text, QMessageBox::Warning);
+}
+
+void UBMainWindow::information(QString windowTitle, QString text)
+{
+    oneButtonMessageBox(windowTitle, text, QMessageBox::Information);
+}
+

@@ -160,14 +160,18 @@ void UBNetworkAccessManager::sslErrors(QNetworkReply *reply, const QList<QSslErr
 
         QString errors = errorStrings.join(QLatin1String("\n"));
 
-        int ret = QMessageBox::warning(mainWindow, QCoreApplication::applicationName(),
-                tr("SSL Errors:\n\n%1\n\n%2\n\n"
-                        "Do you want to ignore these errors for this host?").arg(reply->url().toString()).arg(errors),
-                        QMessageBox::Yes | QMessageBox::No,
-                        QMessageBox::No);
+        QMessageBox messageBox;
+        messageBox.setParent(mainWindow);
+        messageBox.setWindowFlags(Qt::Dialog);
+        messageBox.setWindowTitle(QCoreApplication::applicationName());
+        messageBox.setText(tr("SSL Errors:\n\n%1\n\n%2\n\n"
+                              "Do you want to ignore these errors for this host?").arg(reply->url().toString()).arg(errors));
+        QPushButton* yesButton = messageBox.addButton(tr("Yes"),QMessageBox::YesRole);
+        messageBox.addButton(tr("No"),QMessageBox::NoRole);
+        messageBox.setIcon(QMessageBox::Question);
+        messageBox.exec();
 
-        if (ret == QMessageBox::Yes)
-        {
+        if(messageBox.clickedButton() == yesButton) {
             reply->ignoreSslErrors();
             sslTrustedHostList.append(replyHost);
         }

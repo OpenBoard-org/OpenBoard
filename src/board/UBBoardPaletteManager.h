@@ -26,7 +26,6 @@
 #include "gui/UBLibWidget.h"
 #include "gui/UBCachePropertiesWidget.h"
 #include "gui/UBTeacherBarWidget.h"
-
 #include "core/UBApplicationController.h"
 
 
