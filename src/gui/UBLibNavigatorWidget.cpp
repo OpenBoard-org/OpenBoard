@@ -15,6 +15,7 @@
 #include "UBLibNavigatorWidget.h"
 #include "UBLibWidget.h"
 
+#include "core/UBApplication.h"
 #include "core/memcheck.h"
 
 static int lowBoundForSlider = 40;
@@ -29,21 +30,19 @@ static int tickIntervalForSlider = 10;
 UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QWidget(parent)
   , mLayout(NULL)
   , mLibWidget(NULL)
-  , mPathViewer(NULL)
   , mSlider(NULL)
   , mSliderWidthSetting(NULL)
 {
     setObjectName(name);
+
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(UBApplication::globalStyleSheet());
+
     setAcceptDrops(true);
 
     UBLibWidget* libWidget = dynamic_cast<UBLibWidget*>(parentWidget());
-
     mLayout = new QVBoxLayout(this);
     setLayout(mLayout);
-
-    mPathViewer = new UBLibPathViewer(this);
-    mPathViewer->setMaximumHeight(62);
-    mLayout->addWidget(mPathViewer, 0);
 
     mLibWidget = new UBLibraryWidget(this);
     mLayout->addWidget(mLibWidget, 1);
@@ -56,27 +55,25 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
     mSlider->setValue(defaultWidth);
     mSlider->setTickInterval(tickIntervalForSlider);
     mLayout->addWidget(mSlider, 0);
-    mLibWidget->updateThumbnailsSize(defaultWidth);
 
     connect(mLibWidget, SIGNAL(navigBarUpdate(UBLibElement*)), this, SLOT(onNavigbarUpate(UBLibElement*)));
+    connect(this, SIGNAL(updateNavigBar(UBChainedLibElement*)), libWidget, SLOT(onUpdateNavigBar(UBChainedLibElement*)));
+    mLibWidget->updateThumbnailsSize(defaultWidth);
+
+
     connect(mLibWidget, SIGNAL(propertiesRequested(UBLibElement*)), this, SLOT(onPropertiesRequested(UBLibElement*)));
-    connect(mPathViewer, SIGNAL(mouseClick(UBChainedLibElement*)), this, SLOT(onPathItemClicked(UBChainedLibElement*)));
+    connect(mLibWidget, SIGNAL(displaySearchEngine(UBLibElement*)), this, SLOT(onDisplaySearchEngine(UBLibElement*)));    
     connect(mSlider,SIGNAL(valueChanged(int)),this,SLOT(updateThumbnailsSize(int)));
-    connect(mPathViewer, SIGNAL(elementsDropped(QList<QString>,UBLibElement*)), mLibWidget, SLOT(onElementsDropped(QList<QString>,UBLibElement*)));
-
-
+    connect(libWidget->pathViewer(), SIGNAL(mouseClick(UBChainedLibElement*)), this, SLOT(onPathItemClicked(UBChainedLibElement*)));
+    connect(libWidget->pathViewer(), SIGNAL(elementsDropped(QList<QString>,UBLibElement*)), mLibWidget, SLOT(onElementsDropped(QList<QString>,UBLibElement*)));
     connect(mLibWidget, SIGNAL(navigBarUpdate(UBLibElement*)), libWidget->actionBar(), SLOT(onNavigbarUpdate(UBLibElement*)));
     connect(mLibWidget, SIGNAL(itemsSelected(QList<UBLibElement*>, bool)), libWidget->actionBar(), SLOT(onSelectionChanged(QList<UBLibElement*>, bool)));
     connect(libWidget->actionBar(), SIGNAL(deleteDone()), mLibWidget, SLOT(onRefreshCurrentFolder()));
     connect(mLibWidget, SIGNAL(favoritesEntered(bool)), libWidget->actionBar(), SLOT(onFavoritesEntered(bool)));
     connect(libWidget->actionBar(), SIGNAL(searchElement(QString)), mLibWidget, SLOT(onSearchElement(QString)));
     connect(libWidget->actionBar(), SIGNAL(newFolderToCreate()), mLibWidget, SLOT(onNewFolderToCreate()));
-
-
-    /*** to update the search bar **/
     connect(mLibWidget, SIGNAL(itemClicked()),libWidget->actionBar(), SLOT(onItemChanged()));
-    connect(mPathViewer, SIGNAL(mouseClick(UBChainedLibElement*)),libWidget->actionBar(), SLOT(onItemChanged()));
-
+    connect(libWidget->pathViewer(), SIGNAL(mouseClick(UBChainedLibElement*)),libWidget->actionBar(), SLOT(onItemChanged()));
     mLibWidget->init();
 }
 
@@ -85,10 +82,10 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
  */
 UBLibNavigatorWidget::~UBLibNavigatorWidget()
 {
-    if(NULL != mPathViewer)
+    if(NULL != mLibWidget)
     {
-        delete mPathViewer;
-        mPathViewer = NULL;
+        delete mLibWidget;
+        mLibWidget = NULL;
     }
     if(NULL != mSlider)
     {
@@ -99,6 +96,11 @@ UBLibNavigatorWidget::~UBLibNavigatorWidget()
     {
         delete mSliderWidthSetting;
         mSliderWidthSetting = NULL;
+    }
+    if(NULL != mLayout)
+    {
+        delete mLayout;
+        mLayout = NULL;
     }
 }
 
@@ -114,14 +116,8 @@ void UBLibNavigatorWidget::dropMe(const QMimeData *_data)
  */
 void UBLibNavigatorWidget::onNavigbarUpate(UBLibElement *pElem)
 {
-    if(NULL != pElem)
-    {
-		// Refresh the path navigator
-		mPathViewer->displayPath(mLibWidget->chainedElements);
-
-		// Show the path navigator
-		mPathViewer->show();
-    }
+    Q_UNUSED(pElem);
+    emit updateNavigBar(mLibWidget->chainedElements);
 }
 
 /**
@@ -157,11 +153,20 @@ void UBLibNavigatorWidget::removeNextChainedElements(UBChainedLibElement *fromEl
 
 /**
  * \brief Handles the properties requested event
- * @param elem as tje related element
+ * @param elem as the related element
  */
 void UBLibNavigatorWidget::onPropertiesRequested(UBLibElement *elem)
 {
     emit propertiesRequested(elem);
+}
+
+/**
+ * \brief Handles the display search engine requested event
+ * @param elem as the related element
+ */
+void UBLibNavigatorWidget::onDisplaySearchEngine(UBLibElement *elem)
+{
+    emit displaySearchEngine(elem);
 }
 
 /**

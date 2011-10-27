@@ -30,9 +30,12 @@
 #include "UBLibNavigatorWidget.h"
 #include "UBLibItemProperties.h"
 #include "UBLibActionBar.h"
+#include "UBLibWebView.h"
+#include "UBLibPathViewer.h"
 
 #define ID_NAVIGATOR    0
 #define ID_PROPERTIES   1
+#define ID_WEBVIEW      2
 
 class UBLibWidget : public UBDockPaletteWidget
 {
@@ -42,10 +45,13 @@ public:
     ~UBLibWidget();
 
     UBLibActionBar* actionBar(){return mActionBar;}
-    UBLibNavigatorWidget* libNavigator() {return mNavigator;};
+    UBLibNavigatorWidget* libNavigator() {return mNavigator;}
+    UBLibPathViewer* pathViewer() {return mpPathViewer;}
 
 signals:
     void resized();
+    void showLibElemProperties();
+    void showLibSearchEngine();
 
 protected:
     void dragEnterEvent(QDragEnterEvent* pEvent);
@@ -55,7 +61,9 @@ protected:
 
 private slots:
     void showProperties(UBLibElement* elem);
+    void showSearchEngine(UBLibElement* elem);
     void showFolder();
+    void onUpdateNavigBar(UBChainedLibElement* elem);
 
 private:
     void processMimeData(const QMimeData* pData);
@@ -74,6 +82,10 @@ private:
     UBLibActionBar* mActionBar;
     /** The current stack widget index*/
     int miCrntStackWidget;
+    /** The webview used to display the search engines */
+    UBLibWebView* mpWebView;
+    /** The path navigation widget */
+    UBLibPathViewer* mpPathViewer;
 };
 
 #endif // UBLIBWIDGET_H

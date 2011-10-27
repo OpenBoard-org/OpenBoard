@@ -20,6 +20,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QWebView>
+#include <QMessageBox>
 
 class QStackedLayout;
 
@@ -41,7 +42,10 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
 
         void addDocumentsWidget(QWidget *pWidget);
         void switchToDocumentsWidget();
+
         bool yesNoQuestion(QString windowTitle, QString text);
+        void warning(QString windowTitle, QString text);
+        void information(QString windowTitle, QString text);
 
     signals:
         void closeEvent_Signal( QCloseEvent *event );
@@ -50,6 +54,7 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         void onExportDone();
 
     protected:
+        void oneButtonMessageBox(QString windowTitle, QString text, QMessageBox::Icon type);
 
         virtual void keyPressEvent(QKeyEvent *event);
         virtual void closeEvent (QCloseEvent *event);

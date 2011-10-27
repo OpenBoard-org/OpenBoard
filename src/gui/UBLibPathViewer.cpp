@@ -29,14 +29,20 @@
  */
 UBLibPathViewer::UBLibPathViewer(QWidget *parent, const char *name):QGraphicsView(parent)
     , mpElems(NULL)
+    , mpElemsBackup(NULL)
     , mpScene(NULL)
     , mpLayout(NULL)
     , mpContainer(NULL)
+    , mpBackElem(NULL)
 {
     setObjectName(name);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setAcceptDrops(true);
+
+    mpBackElem = new UBLibElement();
+    mpBackElem->setThumbnail(QPixmap(":images/libpalette/back.png").toImage());
+    mpBackElem->setDeletable(false);
 
     mpScene = new UBPathScene(this);
     setScene(mpScene);
@@ -57,20 +63,30 @@ UBLibPathViewer::UBLibPathViewer(QWidget *parent, const char *name):QGraphicsVie
  */
 UBLibPathViewer::~UBLibPathViewer()
 {
-//    if(NULL != mpLayout)
-//    {
-//        delete mpLayout;
-//        mpLayout = NULL;
-//    }
     if(NULL != mpContainer)
     {
         delete mpContainer;
         mpContainer = NULL;
     }
+    if(NULL != mpBackElem)
+    {
+        delete mpBackElem;
+        mpBackElem = NULL;
+    }
     if(NULL != mpElems)
     {
         delete mpElems;
         mpElems = NULL;
+    }
+    if(NULL != mpElemsBackup)
+    {
+        delete mpElemsBackup;
+        mpElemsBackup = NULL;
+    }
+    if(NULL != mpLayout)
+    {
+        delete mpLayout;
+        mpLayout = NULL;
     }
     if(NULL != mpScene)
     {
@@ -255,6 +271,24 @@ void UBLibPathViewer::onElementsDropped(QList<QString> elements, UBLibElement *t
     emit elementsDropped(elements, target);
 }
 
+void UBLibPathViewer::showBack()
+{
+    // Backup the current path so we can go back by clicking on the back button
+    mpElemsBackup = mpElems;
+
+    // Set the correct path to the backElem
+    UBChainedLibElement* pLastElem = mpElemsBackup->lastElement();
+
+    if(NULL != pLastElem)
+    {
+        mpBackElem->setPath(pLastElem->element()->path());
+        mpBackElem->setType(eUBLibElementType_Folder);
+        mpBackElem->setName(pLastElem->element()->name());
+    }
+
+    // Display the 'back' element
+    displayPath(new UBChainedLibElement(mpBackElem));
+}
 
 UBFolderPath::UBFolderPath():QGraphicsProxyWidget()
 {
@@ -422,7 +456,6 @@ void UBPathScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     const QMimeData* pMimeData = event->mimeData();
-    qDebug() << " Drop source : " << event->source()->metaObject()->className();
 
     if(0 == QString::compare(event->source()->metaObject()->className(), "UBLibraryWidget"))
     {

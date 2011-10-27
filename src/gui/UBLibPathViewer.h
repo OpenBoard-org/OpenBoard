@@ -79,6 +79,10 @@ public:
     void displayPath(UBChainedLibElement* elementsChain);
     int widgetAt(QPointF p);
     void updateScrolls();
+
+public slots:
+    void showBack();
+
 signals:
     void mouseClick(UBChainedLibElement* elem);
     void elementsDropped(QList<QString> elements, UBLibElement* target);
@@ -99,6 +103,8 @@ private:
 
     /** The chained path elements */
     UBChainedLibElement* mpElems;
+    /** The backup chained path elements */
+    UBChainedLibElement* mpElemsBackup;
     /** The scene */
     UBPathScene* mpScene;
     //QGraphicsScene* mpScene;
@@ -110,6 +116,8 @@ private:
     QVector<QGraphicsWidget*> mVItems;
     /** The total width of the element in the scene */
     int mSceneWidth;
+    /** The back element */
+    UBLibElement* mpBackElem;
 };
 
 

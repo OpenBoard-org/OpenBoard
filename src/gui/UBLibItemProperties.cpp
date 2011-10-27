@@ -38,37 +38,15 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
     , mpThumbnail(NULL)
     , mpOrigPixmap(NULL)
     , mpElement(NULL)
-    , mpNavigBar(NULL)
-    , mpNavigLayout(NULL)
-    , mpNavigBack(NULL)
-    , mpNavigBackAction(NULL)
 {
     setObjectName(name);
+
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(UBApplication::globalStyleSheet());
 
     // Create the GUI
     mpLayout = new QVBoxLayout(this);
     setLayout(mpLayout);
-
-    mpNavigBar = new QWidget(this);
-    mpNavigLayout = new QHBoxLayout(mpNavigBar);
-    mpNavigBar->setLayout(mpNavigLayout);
-    mpNavigBar->setStyleSheet(QString("background-color : white; border-radius : 10px;"));
-    mpNavigBar->setMaximumHeight(42);
-    mpNavigBackAction = new QAction(QIcon(":/images/libpalette/back.png"), tr("Back"), mpNavigBar);
-    mpNavigBack = new QToolButton(mpNavigBar);
-    mpNavigBar->addAction(mpNavigBackAction);
-    mpNavigBack->setDefaultAction(mpNavigBackAction);
-    mpNavigBack->setIconSize(QSize(32,32));
-    mpNavigBack->setToolButtonStyle(Qt::ToolButtonIconOnly);
-    mpNavigBack->setStyleSheet(QString("QToolButton {color: white; font-weight: bold; font-family: Arial; background-color: transparent; border: none}"));
-    mpNavigBack->setFocusPolicy(Qt::NoFocus);
-
-    mpNavigLayout->addWidget(mpNavigBack, 0);
-    connect(mpNavigBackAction, SIGNAL(triggered()), this, SLOT(onBack()));
-
-    mpNavigLayout->addStretch(1);
-
-    mpLayout->addWidget(mpNavigBar);
 
     maxThumbHeight = height() / 4;
 
@@ -77,7 +55,8 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
     icon.scaledToWidth(THUMBNAIL_WIDTH);
 
     mpThumbnail->setPixmap(icon);
-    mpThumbnail->setStyleSheet(QString("background-color : white; padding : 10 px; border-radius : 10px;"));
+    mpThumbnail->setObjectName("DockPaletteWidgetBox");
+    mpThumbnail->setStyleSheet("background:white;");
     mpThumbnail->setAlignment(Qt::AlignHCenter);
     mpLayout->addWidget(mpThumbnail, 0);
 
@@ -104,7 +83,8 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
 
     mpObjInfos = new QTextEdit(this);
     mpObjInfos->setReadOnly(true);
-    mpObjInfos->setStyleSheet(QString("background-color: white; border-radius : 10px;"));
+    mpObjInfos->setObjectName("DockPaletteWidgetBox");
+    mpObjInfos->setStyleSheet("background:white;");
     mpLayout->addWidget(mpObjInfos, 1);
 
     connect(mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()));
@@ -118,26 +98,6 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
  */
 UBLibItemProperties::~UBLibItemProperties()
 {
-    if(NULL != mpNavigBackAction)
-    {
-        delete mpNavigBackAction;
-        mpNavigBackAction = NULL;
-    }
-    if(NULL != mpNavigBack)
-    {
-        delete mpNavigBack;
-        mpNavigBack = NULL;
-    }
-    if(NULL != mpNavigLayout)
-    {
-        delete mpNavigLayout;
-        mpNavigLayout = NULL;
-    }
-    if(NULL != mpNavigBar)
-    {
-        delete mpNavigLayout;
-        mpNavigLayout = NULL;
-    }
     if(NULL != mpOrigPixmap)
     {
         delete mpOrigPixmap;
@@ -148,11 +108,6 @@ UBLibItemProperties::~UBLibItemProperties()
         delete mpLayout;
         mpLayout = NULL;
     }
-    //if(NULL != mpButtonLayout)
-    //{
-    //    delete mpButtonLayout;
-    //    mpButtonLayout = NULL;
-    //}
     if(NULL != mpSetAsBackgroundButton)
     {
         delete mpSetAsBackgroundButton;
@@ -210,10 +165,6 @@ void UBLibItemProperties::adaptSize()
         {
             mpThumbnail->setPixmap(mpOrigPixmap->scaledToWidth(THUMBNAIL_WIDTH));
         }
-    }
-    if(NULL != mpNavigBar)
-    {
-        mpNavigBar->resize(width(), mpNavigBar->height());
     }
 }
 

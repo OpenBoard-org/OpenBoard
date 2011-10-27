@@ -21,7 +21,6 @@
 #include <QDropEvent>
 
 #include "UBLibraryWidget.h"
-#include "UBLibPathViewer.h"
 #include "core/UBSetting.h"
 
 class UBLibNavigatorWidget : public QWidget
@@ -32,24 +31,25 @@ public:
     ~UBLibNavigatorWidget();
     void dropMe(const QMimeData* _data);
 
-    UBLibraryWidget* libraryWidget(){return mLibWidget;};
+    UBLibraryWidget* libraryWidget(){return mLibWidget;}
 
 signals:
     void propertiesRequested(UBLibElement* elem);
+    void displaySearchEngine(UBLibElement* elem);
+    void updateNavigBar(UBChainedLibElement* elem);
 
 private slots:
     void onNavigbarUpate(UBLibElement* pElem);
     void onPathItemClicked(UBChainedLibElement *elem);
     void onPropertiesRequested(UBLibElement* elem);
     void updateThumbnailsSize(int newSize);
+    void onDisplaySearchEngine(UBLibElement* elem);
 
 private:
     void removeNextChainedElements(UBChainedLibElement* fromElem);
 
-
     QVBoxLayout* mLayout;
     UBLibraryWidget* mLibWidget;
-    UBLibPathViewer* mPathViewer;
     QSlider* mSlider;
     UBSetting* mSliderWidthSetting;
 };

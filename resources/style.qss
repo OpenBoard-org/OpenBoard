@@ -1,13 +1,25 @@
 QWidget#DockPaletteWidgetBox,
 QWidget#documentNavigator,
-QWidget#UBLibraryWidget,
 QWidget#UBLibPathViewer,
-QWidget#UBTeacherStudentAction
+QWidget#UBTeacherStudentAction,
+QWidget#UBLibNavigatorWidget,
+QWidget#UBLibItemProperties
 {
 	background: #EEEEEE;
 	border-radius: 10px;
 	border: 2px solid #999999;
-/*	padding-bottom: -2px; */
+}
+
+QWidget#UBLibWebView
+{
+	background: #EEEEEE;
+	border-radius : 10px;
+	border: 2px solid #999999;
+}
+
+QWebView#SearchEngineView
+{
+	background:#EEEEEE;
 }
 
 QColorDialog
@@ -121,8 +133,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 	background:transparent;
 }
 
-
-
 QScrollBar::horizontal
 {
 	background:transparent;
@@ -165,7 +175,6 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
 {
 	background:transparent;
 }
-
 
 QSlider::handle::horizontal
 {

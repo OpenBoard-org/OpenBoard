@@ -1020,6 +1020,15 @@ QString UBSettings::uniboardGipLibraryDirectory()
     return dirPath;
 }
 
+QString UBSettings::uniboardSearchDirectory()
+{
+    QString dirPath = UBPlatformUtils::applicationResourcesDirectory() + "/library/search";
+    if (!QDir(dirPath).exists())
+        QDir().mkpath(dirPath);
+
+    return dirPath;
+}
+
 QString UBSettings::uniboardImageLibraryDirectory()
 {
     QString defaultRelativePath = QString("./library/image");
