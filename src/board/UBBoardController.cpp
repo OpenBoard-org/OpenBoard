@@ -1693,7 +1693,7 @@ UBGraphicsAudioItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-    concreteUrl = QUrl(UBPersistenceManager::persistenceManager()
+    concreteUrl = QUrl::fromLocalFile(mActiveDocument->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
                        ->addAudioFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
 
     UBGraphicsAudioItem* vi = mActiveScene->addAudio(concreteUrl, startPlay, pos);
