@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QWebView>
+#include <QWebSettings>
 #include <QVBoxLayout>
 
 #include "board/UBLibraryController.h"
@@ -19,6 +20,7 @@ public:
 
 private:
     QWebView* mpView;
+    QWebSettings* mpWebSettings;
     QVBoxLayout* mpLayout;
 };
 

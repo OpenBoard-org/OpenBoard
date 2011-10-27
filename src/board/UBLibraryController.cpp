@@ -789,7 +789,7 @@ UBChainedLibElement* UBChainedLibElement::lastElement()
 
 QUrl UBChainedLibElement::lastItemPath()
 {
-    lastElement()->element()->path();
+    return lastElement()->element()->path();
 }
 
 UBLibElement* UBLibElement::trashElement()

@@ -15,6 +15,7 @@
 #include "UBLibNavigatorWidget.h"
 #include "UBLibWidget.h"
 
+#include "core/UBApplication.h"
 #include "core/memcheck.h"
 
 static int lowBoundForSlider = 40;
@@ -33,6 +34,10 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
   , mSliderWidthSetting(NULL)
 {
     setObjectName(name);
+
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(UBApplication::globalStyleSheet());
+
     setAcceptDrops(true);
 
     UBLibWidget* libWidget = dynamic_cast<UBLibWidget*>(parentWidget());

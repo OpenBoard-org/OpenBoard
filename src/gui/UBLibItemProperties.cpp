@@ -41,6 +41,9 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
 {
     setObjectName(name);
 
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(UBApplication::globalStyleSheet());
+
     // Create the GUI
     mpLayout = new QVBoxLayout(this);
     setLayout(mpLayout);
@@ -52,7 +55,8 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
     icon.scaledToWidth(THUMBNAIL_WIDTH);
 
     mpThumbnail->setPixmap(icon);
-    mpThumbnail->setStyleSheet(QString("background-color : white; padding : 10 px; border-radius : 10px;"));
+    mpThumbnail->setObjectName("DockPaletteWidgetBox");
+    mpThumbnail->setStyleSheet("background:white;");
     mpThumbnail->setAlignment(Qt::AlignHCenter);
     mpLayout->addWidget(mpThumbnail, 0);
 
@@ -79,7 +83,8 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
 
     mpObjInfos = new QTextEdit(this);
     mpObjInfos->setReadOnly(true);
-    mpObjInfos->setStyleSheet(QString("background-color: white; border-radius : 10px;"));
+    mpObjInfos->setObjectName("DockPaletteWidgetBox");
+    mpObjInfos->setStyleSheet("background:white;");
     mpLayout->addWidget(mpObjInfos, 1);
 
     connect(mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()));
