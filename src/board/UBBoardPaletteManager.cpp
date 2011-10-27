@@ -756,7 +756,11 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     if(mKeyboardPalette->m_isVisible)
                     {
                         mKeyboardPalette->hide();
+#ifndef Q_WS_X11
                         mKeyboardPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+#else
+                        mKeyboardPalette->setParent(0);
+#endif
                         mKeyboardPalette->show();
                     }
                     else
