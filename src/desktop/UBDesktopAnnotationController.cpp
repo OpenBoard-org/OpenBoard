@@ -52,7 +52,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mTransparentDrawingView(0)
         , mTransparentDrawingScene(0)
         , mDesktopPalette(NULL)
-        , mKeyboardPalette(0)
+//        , mKeyboardPalette(0)
         , mDesktopPenPalette(NULL)
         , mDesktopMarkerPalette(NULL)
         , mDesktopEraserPalette(NULL)
@@ -64,7 +64,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mPendingMarkerButtonPressed(false)
         , mPendingEraserButtonPressed(false)
         , mbArrowClicked(false)
-        , mBoardStylusTool(UBStylusTool::Pen)
+        , mBoardStylusTool(UBStylusTool::Selector /*UBStylusTool::Pen*/)
         , mDesktopStylusTool(UBStylusTool::Selector)
 {
 
@@ -101,10 +101,15 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         connect(mTransparentDrawingView, SIGNAL(hidden()), mKeyboardPalette, SLOT(hide()));
         connect(mTransparentDrawingView, SIGNAL(shown()), this, SLOT(showKeyboard()));
 #else
-        mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
-        mKeyboardPalette->setParent(mTransparentDrawingView);
+//        mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
+//        mKeyboardPalette->setParent(mTransparentDrawingView);
 #endif
-        connect(mKeyboardPalette, SIGNAL(keyboardActivated(bool)), mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool))); 
+        connect( UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(keyboardActivated(bool)), 
+                 mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
+
+//         connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), 
+//                 mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
+
 #ifdef Q_WS_X11
         connect(mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
         connect(mDesktopPalette,SIGNAL(refreshMask()), this, SLOT(refreshMask()));
@@ -117,7 +122,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
-    connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
+//    connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 
@@ -164,31 +169,32 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     onDesktopPaletteMaximized();
 }
 
-void UBDesktopAnnotationController::showKeyboard(bool show)
-{
-    #ifdef Q_WS_X11
-        if (!mTransparentDrawingView->isVisible())
-            return;
-    #endif
+// void UBDesktopAnnotationController::showKeyboard(bool show)
+// {
+//     #ifdef Q_WS_X11
+//         if (!mTransparentDrawingView->isVisible())
+//             return;
+//     #endif
+// 
+//     if(mKeyboardPalette)
+//     {
+//         if(show)
+//             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+//         mKeyboardPalette->setVisible(show);
+// 
+//         #ifdef Q_WS_X11
+//             updateMask(true);
+//         #endif
+//         
+//     }
+// 
+// }
 
-    if(mKeyboardPalette)
-    {
-        if(show)
-            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-        mKeyboardPalette->setVisible(show);
-
-        #ifdef Q_WS_X11
-            updateMask(true);
-        #endif
-        
-    }
-
-}
-void UBDesktopAnnotationController::showKeyboard()
-{
-    if (UBApplication::mainWindow->actionVirtualKeyboard->isChecked())
-        mKeyboardPalette->show();
-}
+// void UBDesktopAnnotationController::showKeyboard()
+// {
+//     if (UBApplication::mainWindow->actionVirtualKeyboard->isChecked())
+//         mKeyboardPalette->show();
+// }
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
 {
@@ -366,12 +372,12 @@ void UBDesktopAnnotationController::close()
 
 void UBDesktopAnnotationController::stylusToolChanged(int tool)
 {
-    UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
-    if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
-    {
-        if(mKeyboardPalette->m_isVisible)
-            UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
-    }
+//     UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
+//     if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
+//     {
+//         if(mKeyboardPalette->m_isVisible)
+//             UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+//     }
 
     updateBackground();
 }
@@ -910,9 +916,10 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
         {
             p.drawRect(mDesktopPalette->geometry().x(), mDesktopPalette->geometry().y(), mDesktopPalette->width(), mDesktopPalette->height());
         }
-        if(mKeyboardPalette->isVisible())
+        if(UBApplication::boardController->paletteManager()->mKeyboardPalette->isVisible())
         {
-            p.drawRect(mKeyboardPalette->geometry().x(), mKeyboardPalette->geometry().y(), mKeyboardPalette->width(), mKeyboardPalette->height());
+            p.drawRect(UBApplication::boardController->paletteManager()->mKeyboardPalette->geometry().x(), UBApplication::boardController->paletteManager()->mKeyboardPalette->geometry().y(), 
+                UBApplication::boardController->paletteManager()->mKeyboardPalette->width(), UBApplication::boardController->paletteManager()->mKeyboardPalette->height());
         }
 
 //        UBApplication::boardController->paletteManager()->mDesktopRightPalette

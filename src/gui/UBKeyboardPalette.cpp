@@ -27,6 +27,9 @@
 UBKeyboardPalette::UBKeyboardPalette(QWidget *parent)
         : UBActionPalette(Qt::TopRightCorner, parent)
 {
+
+  //  setWindowFlags(/*Qt::CustomizeWindowHint|*/Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);
+
     setCustomCloseProcessing(true);
     setCustomPosition(true);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -56,57 +59,25 @@ UBKeyboardPalette::UBKeyboardPalette(QWidget *parent)
 
     setContentsMargins( 22, 22, 22, 22 );
 
-    connect(this, SIGNAL(keyboardActivated(bool)), this, SLOT(onActivated(bool)));
+    init();
 }
 
-QList<UBKeyboardPalette*> UBKeyboardPalette::instances;
-UBKeyboardPalette* UBKeyboardPalette::create(QWidget *parent)
+//QList<UBKeyboardPalette*> UBKeyboardPalette::instances;
+void UBKeyboardPalette::init()
 {
-    //------------------------------//
+    m_isVisible = false;
+    setVisible(false);
 
-    if (!UBPlatformUtils::hasVirtualKeyboard())
-        return NULL;
+    setKeyButtonSize(UBSettings::settings()->boardKeyboardPaletteKeyBtnSize->get().toString());
 
-    //------------------------------//
-
-    UBKeyboardPalette* firstKeyboard = NULL;
-    // if we already have keyboards inside, get it position and show/hide status, for new keyboard
-    if(instances.size() > 0)
-        firstKeyboard = instances.at(0);
+    connect(this, SIGNAL(keyboardActivated(bool)), this, SLOT(onActivated(bool)));
+    connect(UBSettings::settings()->boardKeyboardPaletteKeyBtnSize, SIGNAL(changed(QVariant)), this, SLOT(keyboardPaletteButtonSizeChanged(QVariant)));
+    connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
+    connect(this, SIGNAL(closed()), this, SLOT(hideKeyboard()));
 
     //------------------------------//
 
-    UBKeyboardPalette* instance = new UBKeyboardPalette(parent);
-    instance->setKeyButtonSize(UBSettings::settings()->boardKeyboardPaletteKeyBtnSize->get().toString());
-
-    instance->m_isVisible = firstKeyboard ? firstKeyboard->m_isVisible : false;
-    instance->setVisible(instance->m_isVisible);
-
-    if( firstKeyboard )
-        instance->move(firstKeyboard->m_pos);
-
-    connect(UBSettings::settings()->boardKeyboardPaletteKeyBtnSize, SIGNAL(changed(QVariant)), instance, SLOT(keyboardPaletteButtonSizeChanged(QVariant)));
-    connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), instance, SLOT(showKeyboard(bool)));
-//    connect(instance, SIGNAL(moved(const QPoint&)), instance, SLOT(syncPosition(const QPoint&)));
-    connect(instance, SIGNAL(closed()), instance, SLOT(hideKeyboard()));
-
-    //------------------------------//
-
-    instances.append(instance);
-    foreach(UBKeyboardPalette* inst, instances)
-    {
-        connect(inst, SIGNAL(moved(const QPoint&)), instance, SLOT(syncPosition(const QPoint&)));
-        connect(instance, SIGNAL(moved(const QPoint&)), inst, SLOT(syncPosition(const QPoint&)));
-
-        connect(inst, SIGNAL(localeChanged(int)), instance, SLOT(syncLocale(int)));
-        connect(instance, SIGNAL(localeChanged(int)), inst, SLOT(syncLocale(int)));
-
-//        connect(instance, SIGNAL(closed()), inst, )
-    }
-
-    //------------------------------//
-
-    return instance;
+    UBPlatformUtils::setWindowNonActivableFlag(this, true);
 }
 
 void UBKeyboardPalette::showKeyboard(bool show)

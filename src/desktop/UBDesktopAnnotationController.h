@@ -29,7 +29,7 @@ class UBDesktopPenPalette;
 class UBDesktopMarkerPalette;
 class UBDesktopEraserPalette;
 class UBActionPalette;
-class UBKeyboardPalette;
+//class UBKeyboardPalette;
 class UBMainWindow;
 
 #define PROPERTY_PALETTE_TIMER      1000
@@ -72,8 +72,8 @@ class UBDesktopAnnotationController : public QObject
         void stylusToolChanged(int tool);
         void updateBackground();
 
-        void showKeyboard(bool show);
-        void showKeyboard(); //X11 virtual keyboard working only needed
+//         void showKeyboard(bool show);
+//         void showKeyboard(); //X11 virtual keyboard working only needed
 
     signals:
         /**
@@ -118,7 +118,7 @@ class UBDesktopAnnotationController : public QObject
         void updateMask(bool bTransparent);
 
         UBDesktopPalette *mDesktopPalette;
-        UBKeyboardPalette *mKeyboardPalette;
+        //UBKeyboardPalette *mKeyboardPalette;
         UBDesktopPenPalette* mDesktopPenPalette;
         UBDesktopMarkerPalette* mDesktopMarkerPalette;
         UBDesktopEraserPalette* mDesktopEraserPalette;

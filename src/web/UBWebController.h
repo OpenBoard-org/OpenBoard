@@ -28,7 +28,7 @@ class UBMainWindow;
 class UBWebToolsPalette;
 class WBWebView;
 class UBServerXMLHttpRequest;
-class UBKeyboardPalette;
+//class UBKeyboardPalette;
 
 
 class UBWebController : public QObject
@@ -57,6 +57,12 @@ class UBWebController : public QObject
         };
 
         void show(WebInstance type = UBWebController::WebBrowser);
+
+        WBBrowserWindow* GetCurrentWebBrowser() 
+        { 
+            if( mCurrentWebBrowser != NULL ) return *mCurrentWebBrowser; 
+            else return NULL;
+        };
 
 
     protected:
@@ -101,8 +107,8 @@ class UBWebController : public QObject
         UBTrapFlashController* mTrapFlashController;
         UBWebToolsPalette** mToolsCurrentPalette;
         UBWebToolsPalette* mToolsPaletteList[TotalNumberOfWebInstances];
-		UBKeyboardPalette** mKeyboardCurrentPalette;
-		UBKeyboardPalette* mKeyboardPaletteList[TotalNumberOfWebInstances];
+// 		UBKeyboardPalette** mKeyboardCurrentPalette;
+// 		UBKeyboardPalette* mKeyboardPaletteList[TotalNumberOfWebInstances];
 
         bool mToolsPalettePositionned;
         bool mToolsPalettePositionnedList[TotalNumberOfWebInstances];
@@ -124,7 +130,7 @@ class UBWebController : public QObject
 
         void toggleWebTrap(bool checked);
 
-		void showKeyboard(bool checked);
+//		void showKeyboard(bool checked);
 
     signals:
         /**
