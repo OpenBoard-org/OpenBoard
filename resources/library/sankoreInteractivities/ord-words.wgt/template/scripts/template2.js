@@ -5,12 +5,12 @@
 
 function startEditing()
 {
-	modeEdit();
+    modeEdit();
 }
 
 function stopEditing()
 {
-	modeView();
+    modeView();
 }
 
 function initialize()
@@ -20,7 +20,7 @@ function initialize()
 
 function checkResponse()
 {
-	checkWord();
+    checkWord();
 }
 /*
 	/ END sankore api
@@ -28,7 +28,16 @@ function checkResponse()
 
 
 
-var word = "a*long*,*long*time*ago*...";
+var word = "";
+var curWord = "";
+
+if(window.sankore){
+    word = (sankore.preference("rightOrdWords", ""))?sankore.preference("rightOrdWords", ""):"a*long*,*long*time*ago*...";
+    curWord = (sankore.preference("currentOrdWords", ""))?sankore.preference("currentOrdWords", ""):"";
+} else {
+    word = "a*long*,*long*time*ago*...";
+}
+
 var img = "template/images/horse.png";
 var doCheckWord = true;
 
@@ -55,31 +64,31 @@ returns array of dom elements
 */
 function createWordLetters( word )
 {
-	var ch, el;
-	var letters = [];
+    var ch, el;
+    var letters = [];
 	
-	if( word.indexOf( '*' ) != -1 )
-	{
-		var tmp = word.split( '*' );
-		for( i in tmp )
-		{
-			ch = tmp[i];
-			el = document.createElement( "div" );
-			$(el).addClass( "letter" ).text( ch );
-			letters.push( el );
-		}
-	}
-	else
-	{
-		for( var i = 0; i < word.length; i++ )
-		{
-			ch = word.charAt( i );
-			el = document.createElement( "div" );
-			$(el).addClass( "letter" ).text( ch );
-			letters.push( el );
-		}
-	}
-	return letters;
+    if( word.indexOf( '*' ) != -1 )
+    {
+        var tmp = word.split( '*' );
+        for( i in tmp )
+        {
+            ch = tmp[i];
+            el = document.createElement( "div" );
+            $(el).addClass( "letter" ).text( ch );
+            letters.push( el );
+        }
+    }
+    else
+    {
+        for( var i = 0; i < word.length; i++ )
+        {
+            ch = word.charAt( i );
+            el = document.createElement( "div" );
+            $(el).addClass( "letter" ).text( ch );
+            letters.push( el );
+        }
+    }
+    return letters;
 }
 
 
@@ -92,22 +101,22 @@ if they are in the right order
 */
 function checkWord()
 {
-	if( !doCheckWord )
-		return;
+    if( !doCheckWord )
+        return;
 		
-	var str = "";
-	$( "#mp_word .letter" ).each( function(){
-		str += $(this).text();
-	});
-	var w = word;
-	while( w.indexOf( '*' ) != -1 )
-	{
-		w = w.replace( '*', '' );
-	}
-	if( str == w ){
-		$( "#mp_word .letter" ).addClass( "right" );
-		//message( "Right!" );
-	}
+    var str = "";
+    $( "#mp_word .letter" ).each( function(){
+        str += $(this).text();
+    });
+    var w = word;
+    while( w.indexOf( '*' ) != -1 )
+    {
+        w = w.replace( '*', '' );
+    }
+    if( str == w ){
+        $( "#mp_word .letter" ).addClass( "right" );
+    //message( "Right!" );
+    }
 }
 
 /*
@@ -118,16 +127,16 @@ shuffles an array
 */
 function shuffle( arr )
 {
-	var pos, tmp;
+    var pos, tmp;
 	
-	for( var i = 0; i < arr.length; i++ )
-	{
-		pos = Math.round( Math.random() * ( arr.length - 1 ) );
-		tmp = arr[pos];
-		arr[pos] = arr[i];
-		arr[i] = tmp;
-	}
-	return arr;
+    for( var i = 0; i < arr.length; i++ )
+    {
+        pos = Math.round( Math.random() * ( arr.length - 1 ) );
+        tmp = arr[pos];
+        arr[pos] = arr[i];
+        arr[i] = tmp;
+    }
+    return arr;
 }
 
 
@@ -140,56 +149,63 @@ turns the widget into the view mode
 */
 function modeView()
 {
-	if( editMode ){
-		word = $( "#mp_word input:text" ).attr( "value" );
-	}
+    if( editMode ){
+        word = $( "#mp_word input:text" ).attr( "value" );
+    }
 	
-	// if no sankore api, insert edit button
-	if( !isSankore ){
-		$( "#mp_setup" ).empty().append( '<input type="button" value="Edit">' );
-		$( "#mp_setup input:button" ).click( function(){
-			modeEdit();
-		});
-	}
+    // if no sankore api, insert edit button
+    if( !isSankore ){
+        $( "#mp_setup" ).empty().append( '<input type="button" value="Edit">' );
+        $( "#mp_setup input:button" ).click( function(){
+            modeEdit();
+        });
+    }
 	
-	// clean the previous word
-	$( "#mp_word" ).empty();
+    // clean the previous word
+    $( "#mp_word" ).empty();
 	
-	// create new set of letters
-	var letters = shuffle( createWordLetters( word ) );
-	for( i in letters ){
-		$("#mp_word").append( letters[i] );
-	}
+    // create new set of letters
+    var letters;
+    if(window.sankore && curWord && !editMode)
+        letters = createWordLetters( curWord );
+    else
+        letters = shuffle( createWordLetters( word ) );
+    
+    for( i in letters ){
+        $("#mp_word").append( letters[i] );
+    }
 	
-	// in sankore api there would be a function to check 
-	// the answer, so no update parameter would be needed
-	if( !isSankore ){
-		$( "#mp_word" ).sortable( { update: checkWord } );
-	} else $( "#mp_word" ).sortable();
+    // in sankore api there would be a function to check 
+    // the answer, so no update parameter would be needed
+    if( !isSankore ){
+        $( "#mp_word" ).sortable( {
+            update: checkWord
+        } );
+    } else $( "#mp_word" ).sortable();
 
-	// adjustWidth
-	var totalLettersWidth = 0;
-	for( i in letters ){
-		var currentWidth = $( letters[i] ).outerWidth( true );
-		totalLettersWidth += currentWidth;
-	}
-	totalLettersWidth += 1;
+    // adjustWidth
+    var totalLettersWidth = 0;
+    for( i in letters ){
+        var currentWidth = $( letters[i] ).outerWidth( true );
+        totalLettersWidth += currentWidth;
+    }
+    totalLettersWidth += 1;
 
-	var width = Math.max(
-		totalLettersWidth,
-		min_view_width
-	);
+    var width = Math.max(
+        totalLettersWidth,
+        min_view_width
+        );
 	
-	// shift the words to the right to center them
-	if( width > totalLettersWidth ){
-		$( "#mp_word" ).css( "margin-left", Math.round( (width - totalLettersWidth)/2 ) );
-	}
-	else{
-		$( "#mp_word" ).css( "margin-left", 0 );
-	}
+    // shift the words to the right to center them
+    if( width > totalLettersWidth ){
+        $( "#mp_word" ).css( "margin-left", Math.round( (width - totalLettersWidth)/2 ) );
+    }
+    else{
+        $( "#mp_word" ).css( "margin-left", 0 );
+    }
 	
-	// apply new width
-	adjustWidth( width );
+    // apply new width
+    adjustWidth( width );
 	
 }
 
@@ -200,11 +216,13 @@ adjustWidth
 */
 function adjustWidth( width )
 {
-	$( "#ub-widget" ).animate( {width: width } );
-	// if viewed as a widget, resize the window
-	if( !isBrowser ){
-		window.resizeTo( width + widget_padding, widget.height );
-	}
+    $( "#ub-widget" ).animate( {
+        width: width
+    } );
+    // if viewed as a widget, resize the window
+    if( !isBrowser ){
+        window.resizeTo( width + widget_padding, widget.height );
+    }
 }
 
 /*
@@ -214,25 +232,36 @@ modeEdit
 */
 function modeEdit()
 {
-	editMode = true;
-	// if no sankore api, insert ok button
-	if( !isSankore )
-	{
-		$( "#mp_setup" ).empty().append( '<input type="button" value="OK">' );
-		$( "#mp_setup input:button" ).click( function(){
-			modeView();
-		});
-	}
-	$( "#mp_word").css( "margin-left", 0 ).empty().append('<input value="'+word+'">');
-	adjustWidth( input_width );
+    editMode = true;
+    // if no sankore api, insert ok button
+    if( !isSankore )
+    {
+        $( "#mp_setup" ).empty().append( '<input type="button" value="OK">' );
+        $( "#mp_setup input:button" ).click( function(){
+            modeView();
+        });
+    }
+    $( "#mp_word").css( "margin-left", 0 ).empty().append('<input value="'+word+'">');
+    adjustWidth( input_width );
 }
 
+$(window).mouseout(function(){
+    if(window.sankore){
+        var str = "";
+        $( "#mp_word .letter" ).each( function(){
+            str += $(this).text();
+        });
+		
+        sankore.setPreference("currentOrdWords", str);
+        sankore.setPreference("rightOrdWords", word);
+    }
+});
 
 $(document).ready(function()
 {
-	$("#ub-widget").append( '\
+    $("#ub-widget").append( '\
 		<div id="mp_setup"></div>\
 		<div id="mp_word"></div>\
 	');
-	modeView();
+    modeView();
 });

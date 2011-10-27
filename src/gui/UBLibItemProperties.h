@@ -73,12 +73,6 @@ private:
     QPixmap* mpOrigPixmap;
     int maxThumbHeight;
     UBLibElement* mpElement;
-
-    // Navigation bar
-    QWidget* mpNavigBar;
-    QHBoxLayout* mpNavigLayout;
-    QToolButton* mpNavigBack;
-    QAction* mpNavigBackAction;
 };
 
 

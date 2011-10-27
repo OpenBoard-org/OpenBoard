@@ -25,15 +25,18 @@
 
 #include "core/memcheck.h"
 
+#include "frameworks/UBFileSystemUtils.h"
+
 /**
  * \brief Constructor
  * @param parent as the parent widget
  * @param name as the widget object name
  */
 UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailWidget(parent)
-        , chainedElements(NULL)
-        , mpCrntDir(NULL)
-        , mpCrntElem(NULL)
+    , chainedElements(NULL)
+    , mpCrntDir(NULL)
+    , mpCrntElem(NULL)
+    , mLibraryController(NULL)
 {
     setObjectName(name);
     setSpacing(5);
@@ -45,7 +48,8 @@ UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailW
  */
 UBLibraryWidget::~UBLibraryWidget()
 {
-    if(mLibraryController){
+    if(NULL != mLibraryController)
+    {
         delete mLibraryController;
         mLibraryController = NULL;
     }
@@ -148,7 +152,8 @@ void UBLibraryWidget::onItemClicked(QGraphicsItem *item, int index)
             {
                 delete mpCrntElem;
                 mpCrntElem = new UBLibElement(pElem);
-                if(eUBLibElementType_Folder == pElem->type() || eUBLibElementType_VirtualFolder == pElem->type()) {
+                if(eUBLibElementType_Folder == pElem->type() || eUBLibElementType_VirtualFolder == pElem->type())
+                {
                     // Add the clicked element to the end of the elements list
                     // (at this level, the user can only go down in the path)
                     UBChainedLibElement* pNextElem = new UBChainedLibElement(pElem);
@@ -162,8 +167,15 @@ void UBLibraryWidget::onItemClicked(QGraphicsItem *item, int index)
                 }
                 else
                 {
-                    // Display the properties view
-                    emit propertiesRequested(pElem);
+                    if ("application/search" == UBFileSystemUtils::mimeTypeFromFileName(pElem->path().toLocalFile()))
+                    {
+                        emit displaySearchEngine(pElem);
+                    }
+                    else
+                    {
+                        // Display the properties view
+                        emit propertiesRequested(pElem);
+                    }
                 }
             }
             emit itemClicked();

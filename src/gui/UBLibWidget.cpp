@@ -29,6 +29,8 @@ UBLibWidget::UBLibWidget(QWidget *parent, const char *name):UBDockPaletteWidget(
   , mNavigator(NULL)
   , mProperties(NULL)
   , mActionBar(NULL)
+  , mpWebView(NULL)
+  , mpPathViewer(NULL)
 {
     setObjectName(name);
     mName = "LibWidget";
@@ -43,23 +45,37 @@ UBLibWidget::UBLibWidget(QWidget *parent, const char *name):UBDockPaletteWidget(
     mLayout = new QVBoxLayout(this);
     setLayout(mLayout);
 
+    // -------------
     // Build the GUI
+    // -------------
+    // The 'global' widgets
     mStackedWidget = new QStackedWidget(this);
     mActionBar = new UBLibActionBar(this);
+    mpPathViewer = new UBLibPathViewer(this);
+    mpPathViewer->setMaximumHeight(62);
+
+    // The internal widgets
     mNavigator = new UBLibNavigatorWidget(this);
     mProperties = new UBLibItemProperties(this);
+    mpWebView = new UBLibWebView(this);
 
+    mLayout->addWidget(mpPathViewer, 0);
     mLayout->addWidget(mStackedWidget, 1);
     mLayout->addWidget(mActionBar, 0);
 
     mStackedWidget->addWidget(mNavigator);
     mStackedWidget->addWidget(mProperties);
+    mStackedWidget->addWidget(mpWebView);
 
     mStackedWidget->setCurrentIndex(ID_NAVIGATOR);
     miCrntStackWidget = ID_NAVIGATOR;
 
+    connect(mNavigator, SIGNAL(updateNavigBar(UBChainedLibElement*)), this, SLOT(onUpdateNavigBar(UBChainedLibElement*)));
     connect(mNavigator, SIGNAL(propertiesRequested(UBLibElement*)), this, SLOT(showProperties(UBLibElement*)));
+    connect(mNavigator, SIGNAL(displaySearchEngine(UBLibElement*)), this, SLOT(showSearchEngine(UBLibElement*)));
     connect(mProperties, SIGNAL(showFolderContent()), this, SLOT(showFolder()));
+    connect(this, SIGNAL(showLibElemProperties()), mpPathViewer, SLOT(showBack()));
+    connect(this, SIGNAL(showLibSearchEngine()), mpPathViewer, SLOT(showBack()));
 }
 
 /**
@@ -67,15 +83,40 @@ UBLibWidget::UBLibWidget(QWidget *parent, const char *name):UBDockPaletteWidget(
  */
 UBLibWidget::~UBLibWidget()
 {
+    if(NULL != mpPathViewer)
+    {
+        delete mpPathViewer;
+        mpPathViewer = NULL;
+    }
+    if(NULL != mNavigator)
+    {
+        delete mNavigator;
+        mNavigator = NULL;
+    }
+    if(NULL != mpWebView)
+    {
+        delete mpWebView;
+        mpWebView = NULL;
+    }
     if(NULL != mProperties)
     {
         delete mProperties;
         mProperties = NULL;
     }
+    if(NULL != mStackedWidget)
+    {
+        delete mStackedWidget;
+        mStackedWidget = NULL;
+    }
     if(NULL != mActionBar)
     {
         delete mActionBar;
         mActionBar = NULL;
+    }
+    if(NULL != mLayout)
+    {
+        delete mLayout;
+        mLayout = NULL;
     }
 }
 
@@ -133,11 +174,23 @@ void UBLibWidget::showProperties(UBLibElement *elem)
 {
     if(NULL != elem)
     {
+        emit showLibElemProperties();
         mActionBar->setButtons(eButtonSet_Properties);
-        // Show the properties of this object
         mProperties->showElement(elem);
         mStackedWidget->setCurrentIndex(ID_PROPERTIES);
         miCrntStackWidget = ID_PROPERTIES;
+    }
+}
+
+void UBLibWidget::showSearchEngine(UBLibElement *elem)
+{
+    if(NULL != elem)
+    {
+        emit showLibSearchEngine();
+        mActionBar->hide();
+        mpWebView->setElement(elem);
+        mStackedWidget->setCurrentIndex(ID_WEBVIEW);
+        miCrntStackWidget = ID_WEBVIEW;
     }
 }
 
@@ -156,4 +209,15 @@ int UBLibWidget::customMargin()
 int UBLibWidget::border()
 {
     return 15;
+}
+
+void UBLibWidget::onUpdateNavigBar(UBChainedLibElement *elem)
+{
+    mpPathViewer->displayPath(elem);
+    mpPathViewer->show();
+
+    if(ID_NAVIGATOR != miCrntStackWidget)
+    {
+        showFolder();
+    }
 }

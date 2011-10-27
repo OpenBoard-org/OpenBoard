@@ -38,7 +38,7 @@
 #include "board/UBBoardPaletteManager.h"
 #include "board/UBDrawingController.h"
 
-#include "gui/UBKeyboardPalette.h"
+//#include "gui/UBKeyboardPalette.h"
 
 #include "gui/UBThumbnailView.h"
 #include "gui/UBDocumentTreeWidget.h"
@@ -70,7 +70,7 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
    , mToolsPalette(0)
    , mToolsPalettePositionned(false)
    , mTrashTi(0)
-   , mKeyboardPalette(0)
+//   , mKeyboardPalette(0)
 {
     setupViews();
     setupToolbar();
@@ -444,12 +444,12 @@ void UBDocumentController::setupViews()
         mMessageWindow = new UBMessageWindow(mDocumentUI->thumbnailWidget);
         mMessageWindow->hide();
 
-        if (UBPlatformUtils::hasVirtualKeyboard())
-        {
-            mKeyboardPalette = UBKeyboardPalette::create(0);
-            mKeyboardPalette->setParent(controlView());
-            connect(mMainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
-        }
+//         if (UBPlatformUtils::hasVirtualKeyboard())
+//         {
+//             mKeyboardPalette = UBKeyboardPalette::create(0);
+//             mKeyboardPalette->setParent(controlView());
+//             connect(mMainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
+//         }
 
     }
 }
@@ -467,6 +467,7 @@ void UBDocumentController::setupToolbar()
     connect(mMainWindow->actionDocumentTools, SIGNAL(triggered()), this, SLOT(toggleDocumentToolsPalette()));
 }
 
+/*
 void UBDocumentController::showKeyboard(bool show)
 {
     if(mKeyboardPalette)
@@ -477,6 +478,7 @@ void UBDocumentController::showKeyboard(bool show)
     }
 
 }
+*/
 
 void UBDocumentController::setupPalettes()
 {

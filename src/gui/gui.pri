@@ -43,7 +43,8 @@ HEADERS      += src/gui/UBThumbnailView.h \
     src/gui/UBLibWidget.h \
     src/gui/UBMagnifer.h \
     src/gui/UBCachePropertiesWidget.h \
-    src/gui/UBTeacherBarWidget.h
+    src/gui/UBTeacherBarWidget.h \
+    src/gui/UBLibWebView.h
                 
 SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBFloatingPalette.cpp \
@@ -89,7 +90,8 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
     src/gui/UBLibWidget.cpp \
     src/gui/UBMagnifer.cpp \
     src/gui/UBCachePropertiesWidget.cpp \
-    src/gui/UBTeacherBarWidget.cpp
+    src/gui/UBTeacherBarWidget.cpp \
+    src/gui/UBLibWebView.cpp
 
 win32 {
 

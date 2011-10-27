@@ -92,7 +92,7 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     mpSizeLabel = new QLabel(tr("Size:"), mpProperties);
     mpSizeSlider = new QSlider(Qt::Horizontal, mpProperties);
     mpSizeSlider->setMinimumHeight(20);
-    mpSizeSlider->setMinimum(0);
+    mpSizeSlider->setMinimum(50);
     mpSizeSlider->setMaximum(MAX_SHAPE_WIDTH);
     mpSizeLayout->addWidget(mpSizeLabel, 0);
     mpSizeLayout->addWidget(mpSizeSlider, 1);
@@ -205,16 +205,21 @@ UBCachePropertiesWidget::~UBCachePropertiesWidget()
 
 void UBCachePropertiesWidget::onCloseClicked()
 {
-    // Remove the current cache from the list
-    mCaches.remove(mCaches.indexOf(mpCurrentCache));
-
-    // Remove the cache from the board
-    UBApplication::boardController->activeScene()->removeItem(mpCurrentCache);
-    mpCurrentCache = NULL;
-
-    if(mCaches.empty())
+    if(!mCaches.empty())
     {
-        emit cacheListEmpty();
+        // Remove the current cache from the list
+        mCaches.remove(mCaches.indexOf(mpCurrentCache));
+
+        // Remove the cache from the board
+        UBApplication::boardController->activeScene()->removeItem(mpCurrentCache);
+        mpCurrentCache = NULL;
+
+        if(mCaches.empty())
+        {
+            emit cacheListEmpty();
+        }
+
+        emit hideTab(name());
     }
 }
 
@@ -321,8 +326,8 @@ void UBCachePropertiesWidget::updateCurrentCache()
 
     // If we fall here, that means:
     // 1 - that this page has no cache
-    // 2 - we do not on Board page
-    // 3 - we in board mode, but show desktop (as really - desktop mode)
+    // 2 - we are not in Board mode
+    // 3 - we are in Board mode, but show desktop (as really - Desktop mode)
     emit hideTab(name());
     mpCurrentCache = NULL;
     setDisabled(true);

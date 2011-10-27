@@ -168,8 +168,7 @@ void WBWebPage::handleUnsupportedContent(QNetworkReply *reply)
         messageBox.setText(tr("Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?"));
 
         messageBox.addButton(tr("Download"), QMessageBox::AcceptRole);
-        QAbstractButton *addButton =
-            messageBox.addButton(tr("Add to Current Document"), QMessageBox::AcceptRole);
+        QAbstractButton *addButton = messageBox.addButton(tr("Add to Current Document"), QMessageBox::AcceptRole);
 
         messageBox.exec();
         if (messageBox.clickedButton() == addButton)

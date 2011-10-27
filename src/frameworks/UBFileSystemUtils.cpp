@@ -334,7 +334,7 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
 {
     QString ext = extension(fileName);
 
-	if (ext == "xls" || ext == "xlsx") return "application/msexcel";
+    if (ext == "xls" || ext == "xlsx") return "application/msexcel";
     if (ext == "ppt" || ext == "pptx") return "application/mspowerpoint";
     if (ext == "ief") return "image/ief";
     if (ext == "m3u") return "audio/x-mpegurl";
@@ -396,6 +396,7 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
     if (ext == "m4v") return "video/x-m4v";
     // W3C widget
     if (ext == "wgt") return "application/widget";
+    if (ext == "wgs") return "application/search";
     // Apple widget
     if (ext == "wdgt") return "application/vnd.apple-widget"; //mime type invented by us :-(
     if (ext == "swf") return "application/x-shockwave-flash";

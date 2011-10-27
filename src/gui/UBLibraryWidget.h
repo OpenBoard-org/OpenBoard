@@ -47,7 +47,7 @@ public:
     void updateThumbnailsSize(int newSize);
     void init();
 
-    UBLibraryController* libraryController() {return mLibraryController;};
+    UBLibraryController* libraryController() {return mLibraryController;}
 
 public slots:
     void onRefreshCurrentFolder();
@@ -59,6 +59,7 @@ signals:
     void navigBarUpdate(UBLibElement* pElem);
     void itemsSelected(QList<UBLibElement*> elemList, bool inTrash);
     void propertiesRequested(UBLibElement* pElem);
+    void displaySearchEngine(UBLibElement* pElem);
     void favoritesEntered(bool bFav);
     void itemClicked();
 

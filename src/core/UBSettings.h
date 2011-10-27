@@ -112,6 +112,7 @@ class UBSettings : public QObject
         QString uniboardImageLibraryDirectory();
         QString uniboardUserImageDirectory();
         QString defaultUserImagesDirectory();
+        QString uniboardSearchDirectory();
 
         QString uniboardUserVideoDirectory();
         QString uniboardDefaultUserImageLibraryDirectory();

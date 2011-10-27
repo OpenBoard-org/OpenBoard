@@ -67,6 +67,7 @@ friend class UBCapsLockButton;
 friend class UBLocaleButton;
 
 public:
+    UBKeyboardPalette(QWidget *parent);
     ~UBKeyboardPalette();
 
     BTNImages *currBtnImages;
@@ -77,8 +78,6 @@ public:
     QString getKeyButtonSize() const {QString res; res.sprintf("%dx%d", btnWidth, btnHeight); return res;}
     void setKeyButtonSize(const QString& strSize);
 
-    static UBKeyboardPalette* create(QWidget *parent);
-    static QList<UBKeyboardPalette*> instances;
     bool m_isVisible;
     QPoint m_pos;
 
@@ -119,10 +118,10 @@ protected:
     void setLocale(int nLocale);
 
     const QString* getLocaleName();
-	
-private:
 
-    UBKeyboardPalette(QWidget *parent);
+    void init();
+
+private:
 
     QRect originalRect;
 

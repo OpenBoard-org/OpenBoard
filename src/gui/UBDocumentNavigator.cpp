@@ -141,7 +141,10 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
     {
         // Save the current state of the scene
         pScene->setModified(true);
-        UBSvgSubsetAdaptor::persistScene(mCrntDoc,pScene, iPage);
+        if(UBApplication::boardController)
+        {
+            UBApplication::boardController->persistCurrentScene();
+        }
 
         UBThumbnailAdaptor::persistScene(mCrntDoc->persistencePath(), pScene, iPage);
 
