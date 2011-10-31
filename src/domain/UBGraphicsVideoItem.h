@@ -40,6 +40,7 @@ public:
     {
         return mVideoWidget;
     }
+    virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
 
 public slots:

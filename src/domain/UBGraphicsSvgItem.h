@@ -59,6 +59,7 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBItem, public UBGraphi
         virtual void remove();
 
         virtual UBGraphicsPixmapItem* toPixmapItem() const;
+        virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
     protected:
 
@@ -70,7 +71,7 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBItem, public UBGraphi
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-        UBGraphicsItemDelegate* mDelegate;
+//        UBGraphicsItemDelegate* mDelegate;
 
         QByteArray mFileData;
 };

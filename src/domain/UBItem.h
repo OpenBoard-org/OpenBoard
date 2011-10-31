@@ -16,6 +16,7 @@
 #define UBITEM_H
 
 #include <QtGui>
+#include "domain/UBGraphicsItemDelegate.h"
 
 class UBGraphicsScene;
 
@@ -84,21 +85,23 @@ class UBItem
 
 class UBGraphicsItem
 {
-    protected:
+protected:
 
-        UBGraphicsItem()
-        {
-            // NOOP
-        }
+    UBGraphicsItem() : mDelegate(0)
+    {
+        // NOOP
+    }
+    UBGraphicsItemDelegate* mDelegate;
 
-        virtual ~UBGraphicsItem()
-        {
-            // NOOP
-        }
+    virtual ~UBGraphicsItem()
+    {
+        // NOOP
+    }
 
-    public:
+public:
+    virtual UBGraphicsItemDelegate *Delegate() const {return 0;}
+    virtual void remove() = 0;
 
-        virtual void remove() = 0;
 };
 
 #endif // UBITEM_H

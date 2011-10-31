@@ -30,6 +30,7 @@ class UBGraphicsPixmapItem;
 class UBGraphicsItemDelegate;
 class QTransform;
 class QPainter;
+class UBGraphicsItem;
 
 struct IwbExt {
     IwbExt() {;}
@@ -87,7 +88,7 @@ private:
         QDomDocument mDOMdoc;
         QDomNode mCurrentDOMElement;
         QHash<QString, IwbExt> iwbExtProperties;
-        QHash<QString, UBGraphicsItemDelegate*> persistedItems;
+        QHash<QString, UBGraphicsItem*> persistedItems;
 
         bool hashElements();
         void addExtentionsToHash(QDomElement *parent, QDomElement *topGroup);
@@ -109,7 +110,7 @@ private:
         inline bool parseSvgImage(const QDomElement &element);
 //        inline bool parseSvgTSpan(const QDomElement)
         bool parseIwbGroup(QDomNode *element);
-        inline void hashSceneItem(QDomNode *element, UBGraphicsItemDelegate *item);
+        inline void hashSceneItem(const QDomElement &element, UBGraphicsItem *item);
 
         // to kill
         void parseTextAttributes(const QDomElement &element, qreal &fontSize, QColor &fontColor,

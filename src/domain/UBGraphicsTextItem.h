@@ -78,6 +78,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         {
             mColorOnLightBackground = pColorOnLightBackground;
         }
+        virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
     signals:
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
@@ -96,7 +97,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
     private:
-        UBGraphicsItemDelegate *mDelegate;
+//        UBGraphicsItemDelegate *mDelegate;
         qreal mTextHeight;
 
         int mMultiClickState;

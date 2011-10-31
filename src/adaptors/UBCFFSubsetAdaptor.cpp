@@ -818,8 +818,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
    }
 //   repositionSvgItem(svgItem, rx * 2 + 10, ry * 2 + 10, cx - rx - 5, cy - ry -5, hastransform, transform);
    repositionPixmapItem(pixItem, width, height, x, y, hastransform, transform);
-//   hashSceneItem(element, pixItem->);
-
+   hashSceneItem(element, pixItem);
+   pixItem->Delegate()->lock(true);
     return true;
 }
 
@@ -852,13 +852,13 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGroup(QDomNode *group)
     return true;
 }
 
-//void UBCFFSubsetAdaptor::UBCFFSubsetReader::hashSceneItem(QDomNode &element, UBGraphicsItemDelegate *item)
-//{
-////    adding element pointer to hash to refer if needed
-//    QString key = element.attribute(aId);
-//    if (!key.isNull())
-//        persistedItems.insert(key, item);
-//}
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::hashSceneItem(const QDomElement &element, UBGraphicsItem *item)
+{
+//    adding element pointer to hash to refer if needed
+    QString key = element.attribute(aId);
+    if (!key.isNull())
+        persistedItems.insert(key, item);
+}
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgElement(const QDomElement &parent)
 {
@@ -867,7 +867,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgElement(const QDomElement &p
         qDebug() << "Incorrect namespace, error at content file, line number" << parent.lineNumber();
         return false;
     }
-
 
     if      (tagName == tRect       &&  !parseSvgRect(parent))      return false;
     else if (tagName == tEllipse    &&  !parseSvgEllipse(parent))   return false;

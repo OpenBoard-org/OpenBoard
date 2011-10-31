@@ -30,7 +30,7 @@ class UBGraphicsWidgetItem;
 
 class DelegateButton: public QGraphicsSvgItem
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent = 0)
@@ -90,7 +90,7 @@ class DelegateButton: public QGraphicsSvgItem
 
 class UBGraphicsItemDelegate : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0,  bool respectRatio = true, bool canRotate = false);
@@ -129,17 +129,19 @@ class UBGraphicsItemDelegate : public QObject
         void setMimeData(QMimeData* mimeData);
 
     signals:
-
         void showOnDisplayChanged(bool shown);
         void lockChanged(bool locked);
 
     public slots:
-
         virtual void remove(bool canUndo = true);
         void showMenu();
 
+        virtual void showHide(bool show);
+        virtual void lock(bool lock);
+        virtual void duplicate();
+
     protected:
-        virtual void buildButtons() {};
+        virtual void buildButtons() {;}
         virtual void decorateMenu(QMenu *menu);
         virtual void updateMenuActionState();
 
@@ -164,9 +166,7 @@ class UBGraphicsItemDelegate : public QObject
     protected slots:
 
         virtual void gotoContentSource(bool checked);
-        virtual void showHide(bool show);
-        virtual void lock(bool lock);
-        virtual void duplicate();
+
 
      private:
 

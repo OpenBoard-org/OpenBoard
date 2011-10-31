@@ -65,7 +65,7 @@ class UBGraphicsCurtainItem : public QObject, public QGraphicsRectItem, public U
         QColor  drawColor() const;
         QColor  opaqueControlColor() const;
 
-        UBGraphicsItemDelegate* mDelegate;
+//        UBGraphicsItemDelegate* mDelegate;
 
         static const QColor sDrawColor;
         static const QColor sDarkBackgroundDrawColor;
