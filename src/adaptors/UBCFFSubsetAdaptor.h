@@ -27,6 +27,7 @@ class UBGraphicsScene;
 class QSvgGenerator;
 class UBGraphicsSvgItem;
 class UBGraphicsPixmapItem;
+class UBGraphicsItemDelegate;
 class QTransform;
 class QPainter;
 
@@ -86,6 +87,7 @@ private:
         QDomDocument mDOMdoc;
         QDomNode mCurrentDOMElement;
         QHash<QString, IwbExt> iwbExtProperties;
+        QHash<QString, UBGraphicsItemDelegate*> persistedItems;
 
         bool hashElements();
         void addExtentionsToHash(QDomElement *parent, QDomElement *topGroup);
@@ -107,7 +109,7 @@ private:
         inline bool parseSvgImage(const QDomElement &element);
 //        inline bool parseSvgTSpan(const QDomElement)
         bool parseIwbGroup(QDomNode *element);
-
+        inline void hashSceneItem(QDomNode *element, UBGraphicsItemDelegate *item);
 
         // to kill
         void parseTextAttributes(const QDomElement &element, qreal &fontSize, QColor &fontColor,

@@ -240,6 +240,7 @@ UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(UBDocumentProxy *proxy,
 //    QTextStream out(&tfile);
 //    out << content;
 //    tfile.close();
+    qDebug() << "tmp path is" << pwdContent;
 }
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parse()
@@ -798,6 +799,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
         if (!QFile::exists(imagePath)) {
             qDebug() << "can't load file" << pwdContent + "/" + itemRefPath << "maybe file corrupted";
             return false;
+        } else {
+            qDebug() << "size of file" << itemRefPath << QFileInfo(itemRefPath).size();
         }
         pix.load(imagePath);
         if (pix.isNull()) {
@@ -814,7 +817,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
        hastransform = true;
    }
 //   repositionSvgItem(svgItem, rx * 2 + 10, ry * 2 + 10, cx - rx - 5, cy - ry -5, hastransform, transform);
-repositionPixmapItem(pixItem, width, height, x, y, hastransform, transform);
+   repositionPixmapItem(pixItem, width, height, x, y, hastransform, transform);
+//   hashSceneItem(element, pixItem->);
 
     return true;
 }
@@ -848,6 +852,14 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGroup(QDomNode *group)
     return true;
 }
 
+//void UBCFFSubsetAdaptor::UBCFFSubsetReader::hashSceneItem(QDomNode &element, UBGraphicsItemDelegate *item)
+//{
+////    adding element pointer to hash to refer if needed
+//    QString key = element.attribute(aId);
+//    if (!key.isNull())
+//        persistedItems.insert(key, item);
+//}
+
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgElement(const QDomElement &parent)
 {
     QString tagName = parent.tagName();
@@ -855,6 +867,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgElement(const QDomElement &p
         qDebug() << "Incorrect namespace, error at content file, line number" << parent.lineNumber();
         return false;
     }
+
 
     if      (tagName == tRect       &&  !parseSvgRect(parent))      return false;
     else if (tagName == tEllipse    &&  !parseSvgEllipse(parent))   return false;
