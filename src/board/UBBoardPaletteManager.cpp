@@ -68,6 +68,7 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mZoomPalette(0)
     , mLeftPalette(NULL)
     , mRightPalette(NULL)
+    , mDesktopRightPalette(NULL)
     , mBackgroundsPalette(0)
     , mToolsPalette(0)
     , mAddItemPalette(0)
