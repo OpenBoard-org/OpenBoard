@@ -68,7 +68,6 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mZoomPalette(0)
     , mLeftPalette(NULL)
     , mRightPalette(NULL)
-    , mDesktopRightPalette(NULL)
     , mBackgroundsPalette(0)
     , mToolsPalette(0)
     , mAddItemPalette(0)
@@ -81,7 +80,6 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpPageNavigWidget(NULL)
     , mpLibWidget(NULL)
     , mpCachePropWidget(NULL)
-//    , mDesktopRightPalette(NULL)
     , mpTeacherBarWidget(NULL)
     , mpDesktopLibWidget(NULL)
 {
