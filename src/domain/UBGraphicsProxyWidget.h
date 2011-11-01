@@ -41,7 +41,7 @@ class UBGraphicsProxyWidget: public QGraphicsProxyWidget, public UBItem, public 
 
         virtual void remove();
 
-        virtual UBGraphicsItemDelegate* delegate() const { return mDelegate;}
+        virtual UBGraphicsItemDelegate* Delegate() const { return mDelegate;}
 
     protected:
 

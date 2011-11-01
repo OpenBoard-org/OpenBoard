@@ -29,10 +29,12 @@ class UBGraphicsScene;
 class UBAbstractWidget;
 class UBW3CWidgetAPI;
 class UBW3CWidgetWebStorageAPI;
+class UBGraphiscItem;
+class UBGraphiscItemDelegate;
 
 class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsWidgetItem(QGraphicsItem *parent = 0, int widgetType = 0);
@@ -60,9 +62,11 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         QMap<QString, QString> datastoreEntries() const;
         void removeDatastoreEntry(const QString& key);
         void removeAllDatastoreEntries();
+        virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate;}
 
         virtual void remove();
         void removeScript();
+
 
 
     protected:
@@ -89,7 +93,7 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
 
 class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
@@ -109,7 +113,7 @@ class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
 
 class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0, int widgetType = UBGraphicsItemType::W3CWidgetItemType);

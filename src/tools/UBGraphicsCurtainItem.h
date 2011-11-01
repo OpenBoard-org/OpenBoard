@@ -28,7 +28,7 @@ class UBGraphicsItemDelegate;
 class UBGraphicsCurtainItem : public QObject, public QGraphicsRectItem, public UBItem, public UBGraphicsItem
 {
 
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsCurtainItem(QGraphicsItem* parent = 0);
@@ -47,6 +47,7 @@ class UBGraphicsCurtainItem : public QObject, public QGraphicsRectItem, public U
 
         //TODO UB 4.x not nice ...
         void triggerRemovedSignal();
+        virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate;}
 
      signals:
 

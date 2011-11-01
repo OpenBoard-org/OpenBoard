@@ -917,8 +917,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseDoc()
         } else if (currentSvg.tagName() == tPageset){
             parseSvgPageset(currentSvg);
         }
-
-
 //    while (!mReader.atEnd())
 //    {
 //        mReader.readNext();
@@ -942,7 +940,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseDoc()
 //    }
 //    if (!mReader.error() == QXmlStreamReader::NoError)
 //        UBApplication::showMessage(mReader.errorString());
-
     return true;
 }
 

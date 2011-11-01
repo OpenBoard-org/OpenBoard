@@ -24,7 +24,7 @@
 
 class UBGraphicsWidgetItemDelegate : public UBGraphicsItemDelegate
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType = 0);
