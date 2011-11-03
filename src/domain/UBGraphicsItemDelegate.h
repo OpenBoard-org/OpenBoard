@@ -107,6 +107,8 @@ class UBGraphicsItemDelegate : public QObject
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);
 
+        void printMessage(const QString &mess) {qDebug() << mess;}
+
         QGraphicsItem* delegated()
         {
             return mDelegated;
