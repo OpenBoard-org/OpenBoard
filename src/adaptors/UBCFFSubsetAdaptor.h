@@ -19,12 +19,28 @@
 #include <QtXml>
 #include <QString>
 #include <QStack>
+#include <QDomDocument>
+#include <QHash>
 
 class UBDocumentProxy;
 class UBGraphicsScene;
 class QSvgGenerator;
 class UBGraphicsSvgItem;
+class UBGraphicsPixmapItem;
+class UBGraphicsItemDelegate;
 class QTransform;
+class QPainter;
+
+struct IwbExt {
+    IwbExt() {;}
+    IwbExt(QDomNode element) : element(element), extAttr(*(new QVector<QDomNode>())) {;}
+
+    QDomNode group;
+    QDomNode element;
+    QVector<QDomNode> extAttr;
+    QHash<QString, QString> textAttributes;
+    operator bool() const {return !group.isNull() || !element.isNull();}
+};
 
 class UBCFFSubsetAdaptor
 {
@@ -49,10 +65,11 @@ private:
         };
 
     public:
-        UBCFFSubsetReader(UBDocumentProxy *proxy, QByteArray &content);
+        UBCFFSubsetReader(UBDocumentProxy *proxy, QFile *content);
 
         QXmlStreamReader mReader;
         UBDocumentProxy *mProxy;
+        QString pwdContent;
 
         bool parse();
 
@@ -64,6 +81,41 @@ private:
         QRectF mViewBox;
         QPointF mViewBoxCenter;
         QSize mSize;
+
+    private:
+        // to kill
+        QDomDocument mDOMdoc;
+        QDomNode mCurrentDOMElement;
+        QHash<QString, IwbExt> iwbExtProperties;
+        QHash<QString, UBGraphicsItemDelegate*> persistedItems;
+
+        bool hashElements();
+        void addExtentionsToHash(QDomElement *parent, QDomElement *topGroup);
+
+        void hashSvg(QDomNode *parent, QString prefix = "");
+        void hashSiblingIwbElements(QDomElement *parent, QDomElement *topGroup = 0);
+
+        inline void parseSvgSectionAttr(const QDomElement &);
+        bool parseSvgPage(const QDomElement &parent);
+        bool parseSvgPageset(const QDomElement &parent);
+        bool parseSvgElement(const QDomElement &parent);
+
+        inline bool parseSvgRect(const QDomElement &element);
+        inline bool parseSvgEllipse(const QDomElement &element);
+        inline bool parseSvgPolygon(const QDomElement &element);
+        inline bool parseSvgPolyline(const QDomElement &element);
+        inline bool parseSvgText(const QDomElement &element);
+        inline bool parseSvgTextarea(const QDomElement &element);
+        inline bool parseSvgImage(const QDomElement &element);
+//        inline bool parseSvgTSpan(const QDomElement)
+        bool parseIwbGroup(QDomNode *element);
+        inline void hashSceneItem(QDomNode *element, UBGraphicsItemDelegate *item);
+
+        // to kill
+        void parseTextAttributes(const QDomElement &element, qreal &fontSize, QColor &fontColor,
+                                 QString &fontFamily, QString &fontStretch, bool &italic,
+                                 int &fontWeight, int &textAlign, QTransform &fontTransform);
+
 
         //methods to store current xml parse state
         int PopState();
@@ -92,12 +144,16 @@ private:
         bool createNewScene();
         bool persistCurrentScene();
 
+
         QStack<int> stateStack;
+
         int currentState;
 
         //helper methods
         bool getCurElementTransorm(QTransform &transform);
         void repositionSvgItem(UBGraphicsSvgItem *item, qreal width, qreal height, qreal x, qreal y, bool useTransform, QTransform &transform);
+        void repositionPixmapItem(UBGraphicsPixmapItem *item, qreal width, qreal height, qreal x, qreal y
+                                  , bool useTransform, QTransform &transform);
         QColor colorFromString(const QString& clrString);
         QTransform transformFromString(const QString trString);
         bool getViewBoxDimenstions(const QString& viewBox);

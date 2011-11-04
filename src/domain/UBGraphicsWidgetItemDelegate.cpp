@@ -17,8 +17,6 @@
 #include <QtSvg>
 
 #include "UBGraphicsWidgetItemDelegate.h"
-
-
 #include "UBGraphicsScene.h"
 
 #include "core/UBApplication.h"

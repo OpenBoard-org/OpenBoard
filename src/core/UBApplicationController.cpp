@@ -368,6 +368,8 @@ void UBApplicationController::showInternet()
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
         showDesktop(true);
+        UBApplication::webController->show(UBWebController::WebBrowser); 
+        // really no have emit mainModeChanged here ? potential problem with virtual keyboard ?
     }
     else
     {
@@ -382,10 +384,11 @@ void UBApplicationController::showInternet()
 
         mMainWindow->show();
         mUninoteController->hideWindow();
+
+        UBApplication::webController->show(UBWebController::WebBrowser);
+
         emit mainModeChanged(Internet);
     }
-
-    UBApplication::webController->show(UBWebController::WebBrowser);
 }
 
 

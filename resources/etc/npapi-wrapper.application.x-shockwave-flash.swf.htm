@@ -7,6 +7,15 @@
             html, body, #content    { height:100%; }
             body                    { margin:0; padding:0; overflow:hidden; }
         </style>
+		<script type="text/javascript">
+		window.onload = function(){
+			if (window.widget) {
+				window.widget.onremove = function(){
+					document.getElementById("content").innerHTML = "";
+				}
+			}
+		}
+		</script>
     </head>
     <body>
         <div id="content">
