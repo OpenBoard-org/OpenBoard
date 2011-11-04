@@ -306,8 +306,6 @@ void UBPersistenceManager::deleteDocument(UBDocumentProxy* pDocumentProxy)
 
     emit documentWillBeDeleted(pDocumentProxy);
 
-    qDebug() << "Deleting document" << pDocumentProxy->persistencePath();
-
     UBFileSystemUtils::deleteDir(pDocumentProxy->persistencePath());
 
     documentProxies.removeAll(QPointer<UBDocumentProxy>(pDocumentProxy));
@@ -618,8 +616,6 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
-
-    qDebug() << "saving page" << pSceneIndex + 1 << pDocumentProxy->persistencePath();
 
     if (pDocumentProxy->isModified())
         UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);

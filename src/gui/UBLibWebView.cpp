@@ -19,7 +19,6 @@ UBLibWebView::UBLibWebView(QWidget* parent, const char* name):QWidget(parent)
 
     mpView = new QWebView(this);
     mpView->setObjectName("SearchEngineView");
-    //mpView->setStyleSheet(QString("background-color:white;"));
 
     mpWebSettings = QWebSettings::globalSettings();
     mpWebSettings->setAttribute(QWebSettings::JavaEnabled, true);

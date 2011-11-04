@@ -27,9 +27,12 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     , mBoardWidget(0)
     , mWebWidget(0)
     , mDocumentsWidget(0)
+    , mpDownloadWidget(NULL)
 {
     Ui::MainWindow::setupUi(this);
 
+    mpDownloadWidget = new UBDownloadWidget();
+    mpDownloadWidget->setWindowModality(Qt::ApplicationModal);
 
     //Setting tooltip colors staticly, since they look not quite well on different color themes
     QPalette toolTipPalette;
@@ -55,7 +58,11 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
 
 UBMainWindow::~UBMainWindow()
 {
-    // NOOP
+    if(NULL != mpDownloadWidget)
+    {
+        delete mpDownloadWidget;
+        mpDownloadWidget = NULL;
+    }
 }
 
 void UBMainWindow::addBoardWidget(QWidget *pWidget)
@@ -77,7 +84,6 @@ void UBMainWindow::switchToBoardWidget()
 
 void UBMainWindow::addWebWidget(QWidget *pWidget)
 {
-    qDebug() << "add to StackedLayout size height: " << pWidget->height() << " width: " << pWidget->width();
     if (!mWebWidget)
     {
         mWebWidget = pWidget;
@@ -182,3 +188,18 @@ void UBMainWindow::information(QString windowTitle, QString text)
     oneButtonMessageBox(windowTitle, text, QMessageBox::Information);
 }
 
+void UBMainWindow::showDownloadWidget()
+{
+    if(NULL != mpDownloadWidget)
+    {
+        mpDownloadWidget->show();
+    }
+}
+
+void UBMainWindow::hideDownloadWidget()
+{
+    if(NULL != mpDownloadWidget)
+    {
+        mpDownloadWidget->hide();
+    }
+}

@@ -27,6 +27,7 @@
 #include "core/UBApplicationController.h"
 #include "core/UBDocumentManager.h"
 #include "core/UBMimeData.h"
+#include "core/UBDownloadManager.h"
 
 #include "network/UBHttpGet.h"
 
@@ -127,6 +128,9 @@ void UBBoardController::init()
 
     connect(UBApplication::app(), SIGNAL(lastWindowClosed())
             , this, SLOT(lastWindowClosed()));
+
+    connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
+    connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QString,QByteArray,QPointF,QSize,bool)));
 
     UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createDocument();
 
@@ -751,13 +755,24 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
     }
     else
     {
+        // When we fall there, it means that we are dropping something from the web to the board
+        sDownloadFileDesc desc;
+        desc.modal = true;
+        desc.url = url.toString();
+        desc.currentSize = 0;
+        desc.name = QFileInfo(url.toString()).fileName();
+        desc.totalSize = 0; // The total size will be retrieved during the download
+        desc.pos = pPos;
+        desc.size = pSize;
+        desc.isBackground = isBackground;
+
+        // INFO: DO NOT UNCOMMENT THE NEXT LINE! DEVELOPMENT IN PROGRESS
+//        UBDownloadManager::downloadManager()->addFileToDownload(desc);
+
         UBHttpGet *http = new UBHttpGet(mActiveScene);
-
         showMessage(tr("Downloading content from %1").arg(url.toString()), true);
-
         connect(http, SIGNAL(downloadFinished(bool, QUrl, QString, QByteArray, QPointF, QSize, bool)),
                 this, SLOT(downloadFinished(bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
-
         http->get(url, pPos, pSize, isBackground);
     }
 }
@@ -1980,5 +1995,8 @@ void UBBoardController::notifyPageChanged()
     emit pageChanged();
 }
 
+void UBBoardController::onDownloadModalFinished()
+{
 
+}
 

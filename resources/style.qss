@@ -19,7 +19,7 @@ QWidget#UBLibWebView
 
 QWebView#SearchEngineView
 {
-	background:#EEEEEE;
+	background:white;
 }
 
 QColorDialog

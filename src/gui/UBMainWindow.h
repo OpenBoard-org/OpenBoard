@@ -21,6 +21,7 @@
 #include <QWidget>
 #include <QWebView>
 #include <QMessageBox>
+#include "UBDownloadWidget.h"
 
 class QStackedLayout;
 
@@ -47,6 +48,9 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         void warning(QString windowTitle, QString text);
         void information(QString windowTitle, QString text);
 
+        void showDownloadWidget();
+        void hideDownloadWidget();
+
     signals:
         void closeEvent_Signal( QCloseEvent *event );
 
@@ -70,6 +74,9 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         QWidget *mBoardWidget;
         QWidget *mWebWidget;
         QWidget *mDocumentsWidget;
+
+private:
+        UBDownloadWidget* mpDownloadWidget;
 };
 
 #endif /* UBMAINWINDOW_H_ */

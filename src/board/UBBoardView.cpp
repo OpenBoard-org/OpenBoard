@@ -726,11 +726,12 @@ UBBoardView::dragMoveEvent (QDragMoveEvent *event)
 void
 UBBoardView::dropEvent (QDropEvent *event)
 {
-  if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()))
-  {
+    qDebug() << event->source();
+    if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()))
+    {
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction ();
-  }
+    }
 }
 
 void
