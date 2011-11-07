@@ -239,11 +239,11 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     categories << element;
 
 //  Note : FEATURE IN DEVELOPMENT, DO NOT ERASE (or you will get problems) !!!!
-//    mSearchCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardSearchDirectory());
-//    element = new UBLibElement(eUBLibElementType_Folder, mSearchCategoryPath, tr("Web Search", "Web search category element"));
-//    element->setThumbnail(QImage(":images/libpalette/WebSearchCategory.svg"));
-//    element->setMoveable(false);
-//    categories << element;
+    mSearchCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardSearchDirectory());
+    element = new UBLibElement(eUBLibElementType_Folder, mSearchCategoryPath, tr("Web Search", "Web search category element"));
+    element->setThumbnail(QImage(":images/libpalette/WebSearchCategory.svg"));
+    element->setMoveable(false);
+    categories << element;
 
     element = new UBLibElement(eUBLibElementType_Folder, mAnimationUserDirectoryPath, tr("Animations", "Animations category element"));
     element->setThumbnail(QImage(":images/libpalette/FlashCategory.svg"));

@@ -49,6 +49,7 @@ public:
 signals:
     void downloadProgress(int id, qint64 current,qint64 total);
     void downloadFinished(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
+    void downloadError(int id);
 
 private slots:
     void onDownloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
@@ -83,6 +84,7 @@ private slots:
     void onUpdateDownloadLists();
     void onDownloadProgress(int id, qint64 received, qint64 total);
     void onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
+    void onDownloadError(int id);
 
 private:
     void init();
@@ -101,6 +103,8 @@ private:
     int mLastID;
     /** The current download availability (-1 = free, otherwise the file ID is recorded)*/
     QVector<int> mDLAvailability;
+    /** A map containing the replies of the GET operations */
+    QMap<int, QNetworkReply*> mReplies;
 };
 
 #endif // UBDOWNLOADMANAGER_H

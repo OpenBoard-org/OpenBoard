@@ -29,7 +29,7 @@ class UBHttpGet : public QObject
         UBHttpGet(QObject* parent = 0);
         virtual ~UBHttpGet();
 
-        void get(QUrl pUrl, QPointF pPoint = QPointF(0, 0), QSize pSize = QSize(0, 0), bool isBackground = false);
+        QNetworkReply* get(QUrl pUrl, QPointF pPoint = QPointF(0, 0), QSize pSize = QSize(0, 0), bool isBackground = false);
 
     signals:
 

@@ -84,7 +84,9 @@ void UBDownloadManager::init()
 {
     mCrntDL.clear();
     mPendingDL.clear();
+    mReplies.clear();
     mLastID = 1;
+    mDLAvailability.clear();
     for(int i=0; i<SIMULTANEOUS_DOWNLOAD; i++)
     {
         mDLAvailability.append(-1);
@@ -228,6 +230,9 @@ void UBDownloadManager::updateFileCurrentSize(int id, qint64 received, qint64 to
                 // Remove the finished file from the current download list
                 mCrntDL.remove(i);
 
+                // Here we don't forget to remove the reply related to the finished download
+                mReplies.remove(id);
+
                 // Free the download slot used by the finished file
                 for(int j=0; j<mDLAvailability.size();j++)
                 {
@@ -265,7 +270,9 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
     UBDownloadHttpFile* http = new UBDownloadHttpFile(desc.id, this);
     connect(http, SIGNAL(downloadProgress(int, qint64,qint64)), this, SLOT(onDownloadProgress(int,qint64,qint64)));
     connect(http, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
-    http->get(QUrl(desc.url));
+
+    // We send here the request and store its reply in order to be able to cancel it if needed
+    mReplies[desc.id] = http->get(QUrl(desc.url));
 }
 
 /**
@@ -295,7 +302,7 @@ void UBDownloadManager::checkIfModalRemains()
         }
     }
 
-    if(bModal)
+    if(bModal || (mCrntDL.empty() && mPendingDL.empty()))
     {
         // Close the modal window
         UBApplication::mainWindow->hideDownloadWidget();
@@ -311,10 +318,38 @@ void UBDownloadManager::checkIfModalRemains()
 void UBDownloadManager::cancelDownloads()
 {
     // Stop the current downloads
+    QMap<int, QNetworkReply*>::iterator it = mReplies.begin();
+    for(; it!=mReplies.end();it++)
+    {
+        dynamic_cast<QNetworkReply*>(it.value())->abort();
+    }
 
+    // Clear all the lists
+    init();
+
+    checkIfModalRemains();
 
     // Notify everyone that the downloads have been canceled.
     emit cancelAllDownloads();
+}
+
+void UBDownloadManager::onDownloadError(int id)
+{
+    QNetworkReply* pReply = mReplies.value(id);
+    if(NULL != pReply)
+    {
+        // Check which error occured:
+        switch(pReply->error())
+        {
+            case QNetworkReply::OperationCanceledError:
+                // For futur developments: do something in case of download aborting (message? remove the download?)
+            break;
+
+            default:
+                // Check the documentation of QNetworkReply in Qt Assistant for the different error cases
+            break;
+        }
+    }
 }
 
 // ------------------------------------------------------------------------------
@@ -361,6 +396,15 @@ void UBDownloadHttpFile::onDownloadProgress(qint64 bytesReceived, qint64 bytesTo
  */
 void UBDownloadHttpFile::onDownloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
-    emit downloadFinished(mId, pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
+    if(pSuccess)
+    {
+        // Notify the end of the download
+        emit downloadFinished(mId, pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
+    }
+    else
+    {
+        // Notify the fact that and error occured during the download
+        emit downloadError(mId);
+    }
 }
 

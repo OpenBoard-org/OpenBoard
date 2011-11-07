@@ -43,7 +43,7 @@ UBHttpGet::~UBHttpGet()
 }
 
 
-void UBHttpGet::get(QUrl pUrl, QPointF pPos, QSize pSize, bool isBackground)
+QNetworkReply* UBHttpGet::get(QUrl pUrl, QPointF pPos, QSize pSize, bool isBackground)
 {
     mPos = pPos;
     mSize = pSize;
@@ -61,6 +61,7 @@ void UBHttpGet::get(QUrl pUrl, QPointF pPos, QSize pSize, bool isBackground)
     connect(mReply, SIGNAL(readyRead()), this, SLOT(readyRead()));
     connect(mReply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgressed(qint64, qint64)));
 
+    return mReply;
 }
 
 
@@ -111,7 +112,7 @@ void UBHttpGet::requestFinished()
 
 void UBHttpGet::downloadProgressed(qint64 bytesReceived, qint64 bytesTotal)
 {
-    qDebug() << "received: " << bytesReceived << ", / " << bytesTotal << " bytes";
+//    qDebug() << "received: " << bytesReceived << ", / " << bytesTotal << " bytes";
     if (-1 != bytesTotal)
     {
         emit downloadProgress(bytesReceived, bytesTotal);

@@ -767,13 +767,13 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
         desc.isBackground = isBackground;
 
         // INFO: DO NOT UNCOMMENT THE NEXT LINE! DEVELOPMENT IN PROGRESS
-//        UBDownloadManager::downloadManager()->addFileToDownload(desc);
+        UBDownloadManager::downloadManager()->addFileToDownload(desc);
 
-        UBHttpGet *http = new UBHttpGet(mActiveScene);
-        showMessage(tr("Downloading content from %1").arg(url.toString()), true);
-        connect(http, SIGNAL(downloadFinished(bool, QUrl, QString, QByteArray, QPointF, QSize, bool)),
-                this, SLOT(downloadFinished(bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
-        http->get(url, pPos, pSize, isBackground);
+//        UBHttpGet *http = new UBHttpGet(mActiveScene);
+//        showMessage(tr("Downloading content from %1").arg(url.toString()), true);
+//        connect(http, SIGNAL(downloadFinished(bool, QUrl, QString, QByteArray, QPointF, QSize, bool)),
+//                this, SLOT(downloadFinished(bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+//        http->get(url, pPos, pSize, isBackground);
     }
 }
 

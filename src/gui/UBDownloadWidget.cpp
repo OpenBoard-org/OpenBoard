@@ -109,6 +109,7 @@ void UBDownloadWidget::onFileAddedToDownload()
 void UBDownloadWidget::addCurrentDownloads()
 {
     QVector<sDownloadFileDesc> actualDL = UBDownloadManager::downloadManager()->currentDownloads();
+    qDebug() << "Actual downloads size: " << actualDL.size();
     for(int i=0; i<actualDL.size();i++)
     {
         mpItem = new QTreeWidgetItem(mpTree);
@@ -130,6 +131,7 @@ void UBDownloadWidget::addCurrentDownloads()
 void UBDownloadWidget::addPendingDownloads()
 {
     QVector<sDownloadFileDesc> pendingDL = UBDownloadManager::downloadManager()->pendingDownloads();
+    qDebug() << "Pending downloads size: " << pendingDL.size();
     for(int i=0; i<pendingDL.size(); i++)
     {
         mpItem = new QTreeWidgetItem(mpTree);
@@ -182,7 +184,7 @@ void UBDownloadWidget::onDownloadFinished(int id)
  */
 void UBDownloadWidget::onCancelClicked()
 {
-
+    UBDownloadManager::downloadManager()->cancelDownloads();
 }
 
 // ---------------------------------------------------------------------------------------------
