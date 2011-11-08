@@ -1,859 +1,843 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="es" sourcelanguage="en">
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>background: url(:/images/bigUniboard.png); border: none;</source>
-        <translation type="unfinished"></translation>
+        <translation>Haga clic para regresar a la aplicación</translation>
     </message>
 </context>
 <context>
     <name>DownloadDialog</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Descargas</translation>
     </message>
     <message>
         <source>Clean Up</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Not clear whether it&apos;s a noun or an action (it could be translated as &quot;limpia&quot; or &quot;limpieza</translatorcomment>
+        <translation>Limpiar</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished"></translation>
+        <translation>0 Elementos</translation>
     </message>
 </context>
 <context>
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formulario</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de archivo</translation>
     </message>
     <message>
         <source>Try Again</source>
-        <translation type="unfinished"></translation>
+        <translation>Vuelva a intentarlo</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Parar</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ico</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir</translation>
     </message>
 </context>
 <context>
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar Podcast en YouTube</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Título</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Needs contents</translatorcomment>
+        <translation>Pizarra</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Web</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentos</translation>
     </message>
     <message>
         <source>Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutorial</translation>
     </message>
     <message>
         <source>Stylus</source>
-        <translation type="unfinished"></translation>
+        <translation>Lápiz</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+T</translation>
     </message>
     <message>
         <source>Backgrounds</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondos</translation>
     </message>
     <message>
         <source>Change Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar Fondo</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Deshacer</translation>
     </message>
     <message>
         <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Z</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Repetir</translation>
     </message>
     <message>
         <source>Ctrl+Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Y</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>Anterior</translation>
     </message>
     <message>
         <source>Previous Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Página anterior</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation>PgArriba</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>Siguiente</translation>
     </message>
     <message>
         <source>Next Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Página siguiente</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation>PgAbajo</translation>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestionar documentos</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation type="unfinished"></translation>
+        <translation>Exploración web</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <source>Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Línea</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Línea pequeña</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Línea media</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Línea grande</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Salir</translation>
     </message>
     <message>
         <source>Quit Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Salir del Uniboard</translation>
     </message>
     <message>
         <source>Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrador</translation>
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrador pequeño</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrador medio</translation>
     </message>
     <message>
         <source>Large Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrador grande</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Color</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Atrás</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Izquierda</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Hacia delante</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Derecha</translation>
     </message>
     <message>
         <source>Reload</source>
-        <translation type="unfinished"></translation>
+        <translation>Volver a cargar</translation>
     </message>
     <message>
         <source>Reload Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Volver a cargar página actual</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Inicio</translation>
     </message>
     <message>
         <source>Load Home Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargar página de inicio</translation>
     </message>
     <message>
         <source>Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Marcadores</translation>
     </message>
     <message>
         <source>Show Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar marcadores</translation>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Marcador</translation>
     </message>
     <message>
         <source>Add Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir marcador</translation>
     </message>
     <message>
         <source>Display Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar marcador</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+B</translation>
     </message>
     <message>
         <source>Erase</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>Erase Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar contenido</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferencias</translation>
     </message>
     <message>
         <source>Display Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar preferencias</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Biblioteca</translation>
     </message>
     <message>
         <source>Show Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar biblioteca</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+L</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1</translation>
     </message>
     <message>
         <source>Sankore 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1</translation>
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar escritorio</translation>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar escritorio del ordenador</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+H</translation>
     </message>
     <message>
         <source>Bigger</source>
-        <translation type="unfinished"></translation>
+        <translation>Más grande</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Acercar</translation>
     </message>
     <message>
         <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl++</translation>
     </message>
     <message>
         <source>Smaller</source>
-        <translation type="unfinished"></translation>
+        <translation>Más pequeño</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Alejar</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Nueva carpeta</translation>
     </message>
     <message>
         <source>Create a New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear una nueva carpeta</translation>
     </message>
     <message>
         <source>New Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuevo documento</translation>
     </message>
     <message>
         <source>Create a New Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear un nuevo documento</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar</translation>
     </message>
     <message>
         <source>Import a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar un documento</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar</translation>
     </message>
     <message>
         <source>Export a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar un Documento</translation>
     </message>
     <message>
         <source>Open in Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir en la pizarra</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir la página en la pizarra</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicar</translation>
     </message>
     <message>
         <source>Duplicate Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicar el contenido seleccionado</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Delete Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar el contenido seleccionado</translation>
     </message>
     <message>
         <source>Del</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir al documento de trabajo</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir el contenido seleccionado al documento abierto</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir</translation>
     </message>
     <message>
         <source>Add Content to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir contenido al documento</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar nombre</translation>
     </message>
     <message>
         <source>Rename Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar nombre al documento</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Herramientas</translation>
     </message>
     <message>
         <source>Display Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar Herramientas</translation>
     </message>
     <message>
         <source>Multi Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Multipantalla</translation>
     </message>
     <message>
         <source>Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaña ancho (16/9)</translation>
     </message>
     <message>
         <source>Use Document Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar tamaño ancho de documento (16/9)</translation>
     </message>
     <message>
         <source>Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño regular (4/3)</translation>
     </message>
     <message>
         <source>Use Document Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar tamaño regular de documento (4/3)</translation>
     </message>
     <message>
         <source>Custom Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño personalizado</translation>
     </message>
     <message>
         <source>Use Custom Document Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar tamaño personalizado de documento</translation>
     </message>
     <message>
         <source>Stop Loading</source>
-        <translation type="unfinished"></translation>
+        <translation>Detener carga</translation>
     </message>
     <message>
         <source>Stop Loading Web Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Detener carga de la página web</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Cortar</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiar</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Pegar</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"></translation>
+        <translation>Dormir</translation>
     </message>
     <message>
         <source>Put Presentation to Sleep</source>
-        <translation type="unfinished"></translation>
+        <translation>Poner la presentación en modo dormir</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Teclado virtual</translation>
     </message>
     <message>
         <source>Display Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar teclado virtual</translation>
     </message>
     <message>
         <source>Plain Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondo claro liso</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"></translation>
+        <translation>Claro</translation>
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondo claro cuadriculado</translation>
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondo oscuro liso</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>Oscuro</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondo oscuro cuadriculado</translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast</translation>
     </message>
     <message>
         <source>Record Presentation to Video</source>
-        <translation type="unfinished"></translation>
+        <translation>Grabar presentación en vídeo</translation>
     </message>
     <message>
         <source>Record</source>
-        <translation type="unfinished"></translation>
+        <translation>Grabar</translation>
     </message>
     <message>
         <source>Start Screen Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar grabación de pantalla</translation>
     </message>
     <message>
         <source>Erase Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar elementos</translation>
     </message>
     <message>
         <source>Erase All Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar todos los elementos</translation>
     </message>
     <message>
         <source>Erase Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar anotaciones</translation>
     </message>
     <message>
         <source>Erase All Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar todas las anotaciones</translation>
     </message>
     <message>
         <source>Clear Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar página</translation>
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar todos los elementos</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Bolígrafo</translation>
     </message>
     <message>
         <source>Annotate Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Anotar documento</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
         <source>Erase Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar anotación</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
+        <translation>Marcador</translation>
     </message>
     <message>
         <source>Highlight </source>
-        <translation type="unfinished"></translation>
+        <translation>Destacar</translation>
     </message>
     <message>
         <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+M</translation>
     </message>
     <message>
         <source>Selector</source>
-        <translation type="unfinished"></translation>
+        <translation>Selector</translation>
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar y modificar objetos</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Hand</source>
-        <translation type="unfinished"></translation>
+        <translation>Mano</translation>
     </message>
     <message>
         <source>Scroll Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Desplazar página</translation>
     </message>
     <message>
         <source>Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Puntero láser</translation>
     </message>
     <message>
         <source>Virtual Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Puntero láser virtual</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+G</translation>
     </message>
     <message>
         <source>Draw Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Dibujar líneas</translation>
     </message>
     <message>
         <source>Ctrl+J</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+J</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Texto</translation>
     </message>
     <message>
         <source>Write Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Escribir texto</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
         <source>Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Captura</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturar parte de la pantalla</translation>
     </message>
     <message>
         <source>Add To Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir a la página actual</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir elemento a la página actual</translation>
     </message>
     <message>
         <source>Add To New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir a la nueva página</translation>
     </message>
     <message>
         <source>Add Item To New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir elemento a la nueva página</translation>
     </message>
     <message>
         <source>Add To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir a la biblioteca</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir elemento a la biblioteca</translation>
     </message>
     <message>
         <source>Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Páginas</translation>
     </message>
     <message>
         <source>Create a New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear una nueva página</translation>
     </message>
     <message>
         <source>New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Nueva página</translation>
     </message>
     <message>
         <source>Duplicate Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicar página</translation>
     </message>
     <message>
         <source>Duplicate the Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicar la página actual</translation>
     </message>
     <message>
         <source>Import Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar página</translation>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar una página externa</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pausa</translation>
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Poner en pausa la grabación de Podcast</translation>
     </message>
     <message>
         <source>Podcast Config</source>
-        <translation type="unfinished"></translation>
+        <translation>Config de podcast</translation>
     </message>
     <message>
         <source>Configure Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar grabación de podcast</translation>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation type="unfinished"></translation>
+        <translation>Trampa flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Contenido de la trampa de flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation type="unfinished"></translation>
+        <translation>Trampa web</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Contenido de la trampa web</translation>
     </message>
     <message>
         <source>Custom Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Captura personalizada</translation>
     </message>
     <message>
         <source>Window Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Captura de ventana</translation>
     </message>
     <message>
         <source>Capture a Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturar una ventana</translation>
     </message>
     <message>
         <source>Embed Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Integrar contenido web</translation>
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturar contenido web integrable</translation>
     </message>
     <message>
         <source>Show on Display</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar en pantalla</translation>
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar pantalla principal en la pantalla del monitor</translation>
     </message>
     <message>
         <source>Erase all Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar todas las anotaciones</translation>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation type="unfinished"></translation>
+        <translation>eduMedia</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar simulación eduMedia</translation>
     </message>
     <message>
         <source>Open the tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir el tutorial</translation>
     </message>
     <message>
         <source>Check Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Comprobar actualizaciones</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor Sankoré</translation>
     </message>
     <message>
         <source>Show Sankore Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar editor Sankore Widgets</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar aplicación Sankoré</translation>
     </message>
     <message>
         <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+H</translation>
     </message>
 </context>
 <context>
     <name>PasswordDialog</name>
     <message>
         <source>Authentication Required</source>
-        <translation type="unfinished"></translation>
+        <translation>Se requiere autentificación</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de usuario:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DUMMY ICON</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>INTRO TEXT DUMMY</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña:</translation>
     </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentificación de proxy</translation>
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectar al Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de usuario:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña:</translation>
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ICON</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar nombre de usuario y contraseña para uso futuro</translation>
     </message>
 </context>
 <context>
@@ -861,728 +845,742 @@
     <message>
         <source>Trash</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Papelera</translation>
     </message>
     <message>
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>/Inicio</translation>
     </message>
 </context>
 <context>
-    <name>UBAbstractPublisher</name>
+    <name>QuaZipFile</name>
     <message>
-        <source>Contacting %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Found %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot Authenticate with %1</source>
-        <translation type="unfinished"></translation>
+        <source>ZIP/UNZIP API error %1</source>
+        <translation>ZIP/UNZIP API error %1</translation>
     </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
     <message>
         <source>Cannot load content</source>
-        <translation type="unfinished"></translation>
+        <translation>No se puede cargar contenido</translation>
     </message>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargando...</translation>
     </message>
 </context>
 <context>
     <name>UBApplication</name>
     <message>
         <source>Page Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño de  página</translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast</translation>
     </message>
 </context>
 <context>
     <name>UBApplicationController</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Web</translation>
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Nueva actualización disponible, ¿desea visitar la página web?</translation>
     </message>
     <message>
         <source>No update available</source>
-        <translation type="unfinished"></translation>
+        <translation>Ninguna actualización disponible</translation>
     </message>
     <message>
         <source>Update available</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualización disponible</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Actualización</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content from %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Descargando contenido de %1</translation>
     </message>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo de descarga de  contenido %1</translation>
     </message>
     <message>
         <source>Download finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Descarga terminada</translation>
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de herramienta desconocida %1</translation>
     </message>
     <message>
         <source>Unknown content type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de contenido desconocido %1</translation>
     </message>
     <message>
         <source>Add Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir elemento</translation>
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos compatibles (%1)</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Error al añadir la imagen a la biblioteca</translation>
     </message>
 </context>
 <context>
     <name>UBCachePropertiesWidget</name>
     <message>
         <source>Cache Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Almacenar propiedades en caché</translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Color:</translation>
     </message>
     <message>
         <source>Shape:</source>
-        <translation type="unfinished"></translation>
+        <translation>Forma:</translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño:</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar</translation>
     </message>
 </context>
 <context>
     <name>UBDesktopPalette</name>
     <message>
         <source>Show Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar Uniboard</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturar parte de la pantalla</translation>
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturar la pantalla</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar la paleta del lápiz</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar la pizarra en la pantalla secundaria</translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar escritorio en la pantalla secundaria</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentController</name>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Nueva carpeta</translation>
     </message>
     <message>
         <source>Page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Página %1</translation>
     </message>
     <message>
         <source>Add Folder of Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir carpeta de imágenes</translation>
     </message>
     <message>
         <source>Add Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir imágenes</translation>
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir página desde archivo</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicando documento %1</translation>
     </message>
     <message>
         <source>Document %1 copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Documento %1 copiado</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar página</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar documento</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Está seguro de que desea eliminar el documento &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaciar papelera</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Está seguro de que desea vaciar la papelera?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaciando papelera</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Papelera vaciada</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar carpeta</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Está seturo de que desea eliminar la carpeta &apos;%1&apos; y todo su contenido?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡Ningún documento seleccionado!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir archivo compatible</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importando archivo %1</translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo de la importación de archivo...</translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar todas las imágenes desde la carpeta</translation>
     </message>
     <message>
         <source>Folder does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡La carpeta no contiene ningún archivo de imagen!</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaciar</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Papelera</translation>
     </message>
     <message>
         <source>Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir documento</translation>
     </message>
     <message>
         <source>Add all Images to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir todas las imágenes al documento</translation>
     </message>
     <message>
         <source>All Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Todas las imágenes (%1)</translation>
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡La selección no contiene ningún archivo de imágenes!</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>El documento &apos;%1&apos; ha sido generado con una nueva versión de Sankore (%2). Al abrirlo puede perder información.¿Desea continuar?</translation>
+    </message>
+    <message numerus="yes">
+        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
+        <translation>
+            <numerusform>¿Está seguro de que desea eliminar %n página(s) del documento seleccionado &apos;%1&apos;?</numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
     <message>
         <source>images</source>
-        <translation type="unfinished"></translation>
+        <translation>imágenes</translation>
     </message>
     <message>
         <source>videos</source>
-        <translation type="unfinished"></translation>
+        <translation>vídeos</translation>
     </message>
     <message>
         <source>objects</source>
-        <translation type="unfinished"></translation>
+        <translation>objetos</translation>
     </message>
     <message>
         <source>widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>widgets</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos los archivos compatibles (*.%1)</translation>
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivo %1 guardado</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Importando página %1 de %2</translation>
     </message>
     <message>
         <source>Erronous image data, skipping file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Datos de imagen erróneos, archivo omitido %1</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished"></translation>
+        <translation>Página %0</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentPublisher</name>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo en la exportación.</translation>
     </message>
     <message>
         <source>Export canceled ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportación cancelada...</translation>
     </message>
     <message>
         <source>Converting page %1/%2 ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Convirtiendo página %1/%2...</translation>
     </message>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Todavía no se han rellenado las credenciales.</translation>
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargando archivo Sankore en la web.</translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Documento cargado correctamente en la web.</translation>
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo de la carga del documento en la web.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (copia)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiando página %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation>
+            <numerusform>%1 páginas copiadas</numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>UBExportDocument</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Página</translation>
     </message>
     <message>
         <source>Export as UBZ File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar como archivo UBZ</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportando documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportación satisfactoria.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportando %1 %2 de %3</translation>
     </message>
     <message>
         <source>Export to Sankore Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar al formato Sankore</translation>
     </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar como archivo PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportando documento</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportación satisfactoria.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar a PDF</translation>
     </message>
 </context>
 <context>
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar como archivo PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportando documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportación satisfactoria.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportando página %1 de %2</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportación a PDF</translation>
     </message>
 </context>
 <context>
     <name>UBExportWeb</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Página</translation>
     </message>
     <message>
         <source>Export as Web data</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar como datos web</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportando documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportación satisfactoria.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo de la exportación.</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar al explorador web</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished"></translation>
+        <translation>Bloqueado</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Visible en pantalla extendida</translation>
     </message>
     <message>
         <source>Go to Content Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Ir a fuente de contenido</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Teclear Texto aquí&gt;</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItemDelegate</name>
     <message>
         <source>Text Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Color de texto</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>Congelado</translation>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation type="unfinished"></translation>
+        <translation>Transformar como herramienta</translation>
     </message>
 </context>
 <context>
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato de archivo común (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importando archivo %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo en la importanción del archivo %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importación satisfactoria.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo de la importación.</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importando archivo %1...</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importación satisfactoria.</translation>
     </message>
     <message>
         <source>Sankore 3.1 (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1 (*.ubz)</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo de la importación del archivo %1.</translation>
     </message>
 </context>
 <context>
     <name>UBImportImage</name>
     <message>
         <source>Image Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato de imagen (</translation>
     </message>
     <message>
         <source>Image import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo de la importación de la imagen.</translation>
     </message>
     <message>
         <source>Image import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importación de imagen satisfactoria.</translation>
     </message>
 </context>
 <context>
     <name>UBImportPDF</name>
     <message>
         <source>Portable Document Format (*.pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato de documento portátil (*.pdf)</translation>
     </message>
     <message>
         <source>PDF import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo de la importación de PDF.</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Importando página %1 de %2</translation>
     </message>
     <message>
         <source>PDF import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importación de PDF satisfactoria.</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Error mientras se publicaba vídeo en intranet (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicación en Intranet en progreso %1 %</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar</translation>
     </message>
 </context>
 <context>
     <name>UBLibActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir a favoritos</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Compartir</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Regresar a la carpeta</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar de favoritos</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear nueva carpeta</translation>
     </message>
 </context>
 <context>
     <name>UBLibItemProperties</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Atrás</translation>
     </message>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir a la página</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished"></translation>
+        <translation>Definir como fondo</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir a biblioteca</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Información del objeto</translation>
     </message>
 </context>
 <context>
     <name>UBLibraryController</name>
     <message>
         <source>Added 1 Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Se añadió una imagen a la biblioteca</translation>
     </message>
     <message>
         <source>Audios</source>
         <comment>Audio category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Audios</translation>
     </message>
     <message>
         <source>Movies</source>
         <comment>Movies category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Películas</translation>
     </message>
     <message>
         <source>Pictures</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imágenes</translation>
     </message>
     <message>
         <source>Shapes</source>
         <comment>Shapes category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Formas</translation>
     </message>
     <message>
         <source>Applications</source>
         <comment>Applications category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicaciones</translation>
     </message>
     <message>
         <source>Favorite</source>
         <comment>Favorite category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favorito</translation>
     </message>
     <message>
         <source>Creating image thumbnail for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Creando miniatura de imagen para %1.</translation>
     </message>
     <message>
         <source>Adding to page failed for item %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>La adición a la página falló para el elemento %1.</translation>
     </message>
     <message>
         <source>Interactivities</source>
         <comment>Interactives category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Interactividades</translation>
     </message>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished"></translation>
+        <translation>Imagen importada</translation>
     </message>
     <message>
         <source>Animations</source>
         <comment>Animations category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Animaciones</translation>
     </message>
 </context>
 <context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Sí</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;qt&gt;Introduzca el nombre de usuario y la contraseña para &quot;%1&quot; en %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo al iniciar sesión en proxy</translation>
     </message>
     <message>
         <source>SSL Errors:
@@ -1592,159 +1590,263 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
-        <translation type="unfinished"></translation>
+        <translation>Errores SSL:
+
+%1
+
+%2
+
+¿Desea ignorar estos errores para este servidor?</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Sí</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>No</translation>
     </message>
 </context>
 <context>
     <name>UBNewFolderDlg</name>
     <message>
         <source>Add new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir nueva carpeta</translation>
     </message>
     <message>
         <source>New Folder name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de la nueva carpeta:</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Añadir</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
     <name>UBPersistenceManager</name>
     <message>
         <source>(copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>(copiar)</translation>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation type="unfinished"></translation>
+        <translation>Pérdida de depósito de documentos</translation>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore ha perdido acceso al depósito de documentos &apos;%1&apos;. Desafortunadamente la aplicación debe cerrarse para evitar la corrupción de los datos. También se podrían perder los últimos cambios.</translation>
     </message>
 </context>
 <context>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo al iniciar el codificador...</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ningún condificador de Podcast disponible...</translation>
     </message>
     <message>
         <source>Part %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Parte %1</translation>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation type="unfinished"></translation>
+        <translation>en su escritorio...</translation>
     </message>
     <message>
         <source>in folder %1</source>
-        <translation type="unfinished"></translation>
+        <translation>en carpeta %1</translation>
     </message>
     <message>
         <source>Podcast created %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast creado %1</translation>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Error de grabación de podcast (%1)</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrada de audio predeterminada</translation>
     </message>
     <message>
         <source>No Audio Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Ninguna grabación de audio</translation>
     </message>
     <message>
         <source>Small</source>
-        <translation type="unfinished"></translation>
+        <translation>Pequeño</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>Medio</translation>
     </message>
     <message>
         <source>Full</source>
-        <translation type="unfinished"></translation>
+        <translation>Completo</translation>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar en Intranet</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar en Youtube</translation>
     </message>
     <message>
         <source>Sankore Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>Presentación Sankore</translation>
     </message>
 </context>
 <context>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation type="unfinished"></translation>
+        <translation>versión:</translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>El marcador es sensible a la presión</translation>
     </message>
 </context>
 <context>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Inicio de sesión en proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de usuario:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar documento en la web</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="unfinished"></translation>
+        <translation>Título:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar</translation>
     </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentos sin título</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Papelera</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Imágenes</translation>
     </message>
     <message>
         <source>My Movies</source>
+        <translation>Mis películas</translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Título</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1752,444 +1854,445 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Generando miniaturas de previsualización...</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 miniaturas generadas...</translation>
     </message>
 </context>
 <context>
     <name>UBToolsManager</name>
     <message>
         <source>Mask</source>
-        <translation type="unfinished"></translation>
+        <translation>Máscara</translation>
     </message>
     <message>
         <source>Ruler</source>
-        <translation type="unfinished"></translation>
+        <translation>Regla</translation>
     </message>
     <message>
         <source>Compass</source>
-        <translation type="unfinished"></translation>
+        <translation>Brújula</translation>
     </message>
     <message>
         <source>Protractor</source>
-        <translation type="unfinished"></translation>
+        <translation>Transportador</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Triángulo</translation>
     </message>
     <message>
         <source>Magnifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Lupa</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation type="unfinished"></translation>
+        <translation>Caché</translation>
     </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
     <message>
         <source>Whole page</source>
-        <translation type="unfinished"></translation>
+        <translation>Página completa</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizador de documento</translation>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation type="unfinished"></translation>
+        <translation>los archivos requieren una actualización.</translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ruta de la copia de seguridad:</translation>
     </message>
     <message>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Explorar</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizar</translation>
     </message>
     <message>
         <source>Select a backup folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccione una carpeta para la copia de seguridad</translation>
     </message>
     <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>¡Actualización de archivos satisfactoria!
+Por favor reinicie la aplicación para acceder a los documentos actualizados.</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ha ocurrido un error durante la actualización. Los archivos no se han afectado.</translation>
     </message>
     <message>
         <source>Files update results</source>
-        <translation type="unfinished"></translation>
+        <translation>Resultados de la actualización de archivos</translation>
     </message>
     <message>
         <source>Updating file </source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizando archivo</translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor espere, el proceso de importación comenzará pronto...</translation>
     </message>
 </context>
 <context>
     <name>UBW3CWidget</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBWebPluginWidget</name>
     <message>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargando...</translation>
     </message>
 </context>
 <context>
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar Documento en la web Sankore</translation>
     </message>
 </context>
 <context>
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%0 llamado (método=%1, estado=%2)</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo en la autentificación de YouTube</translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Error mientras se cargaba el vídeo a YouTube (%1)</translation>
     </message>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>Carga a YoutTube en progreso %1 %</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublishingDialog</name>
     <message>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargar</translation>
     </message>
     <message>
         <source>Autos &amp; Vehicles</source>
-        <translation type="unfinished"></translation>
+        <translation>Autos &amp; Vehículos</translation>
     </message>
     <message>
         <source>Music</source>
-        <translation type="unfinished"></translation>
+        <translation>Música</translation>
     </message>
     <message>
         <source>Pets &amp; Animals</source>
-        <translation type="unfinished"></translation>
+        <translation>Mascotas &amp; Animales</translation>
     </message>
     <message>
         <source>Sports</source>
-        <translation type="unfinished"></translation>
+        <translation>Deportes</translation>
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Viaje &amp; Eventos</translation>
     </message>
     <message>
         <source>Gaming</source>
-        <translation type="unfinished"></translation>
+        <translation>Juego</translation>
     </message>
     <message>
         <source>Comedy</source>
-        <translation type="unfinished"></translation>
+        <translation>Comedia</translation>
     </message>
     <message>
         <source>People &amp; Blogs</source>
-        <translation type="unfinished"></translation>
+        <translation>Personas &amp; Blogs</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation type="unfinished"></translation>
+        <translation>Noticias &amp; Política</translation>
     </message>
     <message>
         <source>Entertainment</source>
-        <translation type="unfinished"></translation>
+        <translation>Entretenimiento</translation>
     </message>
     <message>
         <source>Education</source>
-        <translation type="unfinished"></translation>
+        <translation>Educación</translation>
     </message>
     <message>
         <source>Howto &amp; Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Howto &amp; estilo</translation>
     </message>
     <message>
         <source>Nonprofits &amp; Activism</source>
-        <translation type="unfinished"></translation>
+        <translation>Sin fines de lucro &amp; Activismo</translation>
     </message>
     <message>
         <source>Science &amp; Technology</source>
-        <translation type="unfinished"></translation>
+        <translation>Ciencia &amp; Tecnología</translation>
     </message>
 </context>
 <context>
     <name>UBZoomPalette</name>
     <message>
         <source>%1 x</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 x</translation>
     </message>
 </context>
 <context>
     <name>WBClearButton</name>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar archivo</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Descarga cancelada: %1</translation>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Error al abrir el archivo guardado: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Error al guardar: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Error de red: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>segundos</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>minutos</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished"></translation>
+        <translation>- %4 %5 restante</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 de %2 (%3/seg) %4</translation>
     </message>
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation type="unfinished"></translation>
+        <translation>¿?</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 de %2 - Detenido</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished"></translation>
+        <translation>bytes</translation>
     </message>
     <message>
         <source>KB</source>
-        <translation type="unfinished"></translation>
+        <translation>KB</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished"></translation>
+        <translation>MB</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadManager</name>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished"></translation>
+        <translation>1 Descarga</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 Descargas</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Título</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Dirección</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryTreeModel</name>
     <message>
         <source>Earlier Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Anteriormente hoy</translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elementos</translation>
     </message>
 </context>
 <context>
     <name>WBSearchLineEdit</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda</translation>
     </message>
 </context>
 <context>
     <name>WBTabBar</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Nueva &amp;Ficha</translation>
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Ficha Clon</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Ficha &amp;Cerrar</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Ficha Cerrar &amp; Otros</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Ficha Recargar</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Volver a cargar todas las fichas</translation>
     </message>
 </context>
 <context>
     <name>WBTabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichas cerradas recientemente</translation>
     </message>
     <message>
         <source>(Untitled)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Sin título)</translation>
     </message>
 </context>
 <context>
     <name>WBToolbarSearch</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsqueda</translation>
     </message>
     <message>
         <source>No Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>Ninguna búsqueda reciente</translation>
     </message>
     <message>
         <source>Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>Búsquedas recientes</translation>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar búsquedas recientes</translation>
     </message>
 </context>
 <context>
     <name>WBWebPage</name>
     <message>
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation>Descargar</translation>
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir al documento reciente</translation>
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Error loading page: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Error al cargar la página: %1</translation>
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Descargar documento PDF: ¿Prefiere descargar el archivo PDF o añadirlo al documento Sankore actual?</translation>
     </message>
 </context>
 <context>
     <name>WBWebView</name>
     <message>
         <source>Open in New Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir en nueva ficha</translation>
     </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar Podcast en YouTube</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Título</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
     <message>
         <source>Keywords</source>
-        <translation type="unfinished"></translation>
+        <translation>Palabras clave</translation>
     </message>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard</translation>
     </message>
     <message>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Categoría</translation>
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de usuario de YouTube</translation>
     </message>
     <message>
         <source>YouTube Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña de Youtube</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2197,238 +2300,239 @@ Please reboot the application to access the updated documents.</source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Al hacer clic en &apos;Descargar&apos; usted certifica que posee todos los derechos sobre el contenido o que está autorizado por el propietario a publicar el contenido en YouTube, y que éste  cumple con los términos de servicio de YouTube que aparecen en&lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
     <name>brushProperties</name>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobre fondo claro</translation>
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobre fondo oscuro</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacidad</translation>
     </message>
     <message>
         <source>Line Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Ancho de línea</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>Medio</translation>
     </message>
     <message>
         <source>Strong</source>
-        <translation type="unfinished"></translation>
+        <translation>Fuerte</translation>
     </message>
     <message>
         <source>Fine</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Not enough context</translatorcomment>
+        <translation>Fino</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>El bolígrafo es sensible a la presión</translation>
     </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Diálogo</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Título</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Correo-e</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
 </context>
 <context>
     <name>documentPublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Diálogo</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Título</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Correo-e</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
     <message>
         <source>Attach Downloadable PDF Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Adjuntarla versión del PDF descargable</translation>
     </message>
     <message>
         <source>Attach Downloadable Uniboard File (UBZ)</source>
-        <translation type="unfinished"></translation>
+        <translation>Adjuntar archivo uniboard descargable (UBZ)</translation>
     </message>
     <message>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Advertencia: este documento contiene vídeo, el cual no se mostrará adecuadamente en la web</translation>
     </message>
 </context>
 <context>
     <name>documents</name>
     <message>
         <source>Uniboard Documents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentos Uniboard</translation>
     </message>
 </context>
 <context>
     <name>preferencesDialog</name>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferencias</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>version : …</source>
-        <translation type="unfinished"></translation>
+        <translation>versión : …</translation>
     </message>
     <message>
         <source>Default Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuración predeterminada</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar</translation>
     </message>
     <message>
         <source>Internet</source>
-        <translation type="unfinished"></translation>
+        <translation>Internet</translation>
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar página con explorador externo</translation>
     </message>
     <message>
         <source>Home Page:</source>
-        <translation type="unfinished"></translation>
+        <translation>Página de inicio:</translation>
     </message>
     <message>
         <source>Proxy User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuario de proxy</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Teclado virtual</translation>
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño de los botones del teclado:</translation>
     </message>
     <message>
         <source>Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Barra de herramientas</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation type="unfinished"></translation>
+        <translation>Posicionado en la parte superior (recomendado para la tabletas)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation type="unfinished"></translation>
+        <translation>Posicionado en la parte inferior (recomendado para pizarras blancas)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar texto debajo del botón</translation>
     </message>
     <message>
         <source>Mirroring</source>
-        <translation type="unfinished"></translation>
+        <translation>Reflejar</translation>
     </message>
     <message>
         <source>Show main display immediately on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar la pantalla principal inmediatamente en la pantalla secundaria o en el proyector</translation>
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Paleta del lápiz</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>Horizontal</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertical</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Bolígrafo</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
+        <translation>Marcador</translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca de</translation>
     </message>
     <message>
         <source>Software Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualización del software</translation>
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Comprobar si hay actualizaciones del software al iniciarse</translation>
     </message>
     <message>
         <source>Licences</source>
-        <translation type="unfinished"></translation>
+        <translation>Licencias</translation>
     </message>
     <message>
         <source>OpenSSl</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenSSl</translation>
     </message>
     <message>
         <source>zlib</source>
-        <translation type="unfinished"></translation>
+        <translation>zlib</translation>
     </message>
     <message>
         <source>xpdf</source>
-        <translation type="unfinished"></translation>
+        <translation>xpdf</translation>
     </message>
     <message>
         <source>Quazip</source>
-        <translation type="unfinished"></translation>
+        <translation>Quazip</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2437,7 +2541,12 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;The OpenSSL toolkit stays under a dual license, i.e. both the conditions of the OpenSSL License and the original SSLeay license apply to the toolkit.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;See below for the actual license texts. Actually both licenses are BSD-style Open Source licenses. In case of any license issues related to OpenSSL please contact &lt;/span&gt;&lt;a href=&quot;mailto:openssl-core@openssl.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;openssl-core@openssl.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;The OpenSSL toolkit stays under a dual license, i.e. both the conditions of the OpenSSL License and the original SSLeay license apply to the toolkit.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;See below for the actual license texts. Actually both licenses are BSD-style Open Source licenses. In case of any license issues related to OpenSSL please contact &lt;/span&gt;&lt;a href=&quot;mailto:openssl-core@openssl.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;openssl-core@openssl.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2445,7 +2554,11 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2453,7 +2566,11 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#000000;&quot;&gt;Xpdf is licensed under the GNU General Public License (GPL), version 2.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#000000;&quot;&gt;Xpdf is licensed under the GNU General Public License (GPL), version 2.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2461,7 +2578,11 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;GNU Library or Lesser General Public License (LGPL), zlib/libpng License&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;GNU Library or Lesser General Public License (LGPL), zlib/libpng License&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2639,9 +2760,183 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;apply, that proxy&apos;s public statement of acceptance of any version is&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;permanent authorization for you to choose that version for the&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;SANKORE3.1 is free software: you can redistribute it and/or modify it under the terms of the Lesser GNU General Public License as published by  the Free Software Foundation, either version 3 of the License, or any later version. You can find the source code of this software at &amp;lt;https://adullact.net/projects/sankore/&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;SANKORE3.1 is distributed in the hope that it will be useful,  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Lesser GNU General Public License below for more details.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;                   GNU LESSER GENERAL PUBLIC LICENSE&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;                       Version 3, 29 June 2007&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; Copyright (C) 2007 Free Software Foundation, Inc. &amp;lt;http://fsf.org/&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; Everyone is permitted to copy and distribute verbatim copies&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; of this license document, but changing it is not allowed.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  This version of the GNU Lesser General Public License incorporates&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;the terms and conditions of version 3 of the GNU General Public&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;License, supplemented by the additional permissions listed below.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  0. Additional Definitions.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  As used herein, &amp;quot;this License&amp;quot; refers to version 3 of the GNU Lesser&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;General Public License, and the &amp;quot;GNU GPL&amp;quot; refers to version 3 of the GNU&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;General Public License.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  &amp;quot;The Library&amp;quot; refers to a covered work governed by this License,&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;other than an Application or a Combined Work as defined below.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  An &amp;quot;Application&amp;quot; is any work that makes use of an interface provided&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;by the Library, but which is not otherwise based on the Library.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Defining a subclass of a class defined by the Library is deemed a mode&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;of using an interface provided by the Library.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  A &amp;quot;Combined Work&amp;quot; is a work produced by combining or linking an&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Application with the Library.  The particular version of the Library&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;with which the Combined Work was made is also called the &amp;quot;Linked&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Version&amp;quot;.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  The &amp;quot;Minimal Corresponding Source&amp;quot; for a Combined Work means the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Corresponding Source for the Combined Work, excluding any source code&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;for portions of the Combined Work that, considered in isolation, are&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;based on the Application, and not on the Linked Version.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  The &amp;quot;Corresponding Application Code&amp;quot; for a Combined Work means the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;object code and/or source code for the Application, including any data&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;and utility programs needed for reproducing the Combined Work from the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Application, but excluding the System Libraries of the Combined Work.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  1. Exception to Section 3 of the GNU GPL.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  You may convey a covered work under sections 3 and 4 of this License&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;without being bound by section 3 of the GNU GPL.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  2. Conveying Modified Versions.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  If you modify a copy of the Library, and, in your modifications, a&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;facility refers to a function or data to be supplied by an Application&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;that uses the facility (other than as an argument passed when the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;facility is invoked), then you may convey a copy of the modified&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;version:&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   a) under this License, provided that you make a good faith effort to&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   ensure that, in the event an Application does not supply the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   function or data, the facility still operates, and performs&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   whatever part of its purpose remains meaningful, or&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   b) under the GNU GPL, with none of the additional permissions of&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   this License applicable to that copy.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  3. Object Code Incorporating Material from Library Header Files.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  The object code form of an Application may incorporate material from&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;a header file that is part of the Library.  You may convey such object&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;code under terms of your choice, provided that, if the incorporated&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;material is not limited to numerical parameters, data structure&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;layouts and accessors, or small macros, inline functions and templates&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;(ten or fewer lines in length), you do both of the following:&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   a) Give prominent notice with each copy of the object code that the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   Library is used in it and that the Library and its use are&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   covered by this License.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   b) Accompany the object code with a copy of the GNU GPL and this license&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   document.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  4. Combined Works.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  You may convey a Combined Work under terms of your choice that,&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;taken together, effectively do not restrict modification of the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;portions of the Library contained in the Combined Work and reverse&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;engineering for debugging such modifications, if you also do each of&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;the following:&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   a) Give prominent notice with each copy of the Combined Work that&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   the Library is used in it and that the Library and its use are&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   covered by this License.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   b) Accompany the Combined Work with a copy of the GNU GPL and this license&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   document.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   c) For a Combined Work that displays copyright notices during&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   execution, include the copyright notice for the Library among&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   these notices, as well as a reference directing the user to the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   copies of the GNU GPL and this license document.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   d) Do one of the following:&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       0) Convey the Minimal Corresponding Source under the terms of this&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       License, and the Corresponding Application Code in a form&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       suitable for, and under terms that permit, the user to&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       recombine or relink the Application with a modified version of&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       the Linked Version to produce a modified Combined Work, in the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       manner specified by section 6 of the GNU GPL for conveying&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       Corresponding Source.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       1) Use a suitable shared library mechanism for linking with the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       Library.  A suitable mechanism is one that (a) uses at run time&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       a copy of the Library already present on the user&apos;s computer&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       system, and (b) will operate properly with a modified version&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       of the Library that is interface-compatible with the Linked&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;       Version.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   e) Provide Installation Information, but only if you would otherwise&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   be required to provide such information under section 6 of the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   GNU GPL, and only to the extent that such information is&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   necessary to install and execute a modified version of the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   Combined Work produced by recombining or relinking the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   Application with a modified version of the Linked Version. (If&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   you use option 4d0, the Installation Information must accompany&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   the Minimal Corresponding Source and Corresponding Application&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   Code. If you use option 4d1, you must provide the Installation&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   Information in the manner specified by section 6 of the GNU GPL&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   for conveying Corresponding Source.)&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  5. Combined Libraries.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  You may place library facilities that are a work based on the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library side by side in a single library together with other library&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;facilities that are not Applications and are not covered by this&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;License, and convey such a combined library under terms of your&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;choice, if you do both of the following:&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   a) Accompany the combined library with a copy of the same work based&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   on the Library, uncombined with any other library facilities,&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   conveyed under the terms of this License.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   b) Give prominent notice with the combined library that part of it&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   is a work based on the Library, and explaining where to find the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;   accompanying uncombined form of the same work.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  6. Revised Versions of the GNU Lesser General Public License.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  The Free Software Foundation may publish revised and/or new versions&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;of the GNU Lesser General Public License from time to time. Such new&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;versions will be similar in spirit to the present version, but may&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;differ in detail to address new problems or concerns.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  Each version is given a distinguishing version number. If the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library as you received it specifies that a certain numbered version&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;of the GNU Lesser General Public License &amp;quot;or any later version&amp;quot;&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;applies to it, you have the option of following the terms and&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;conditions either of that published version or of any later version&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;published by the Free Software Foundation. If the Library as you&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;received it does not specify a version number of the GNU Lesser&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;General Public License, you may choose any version of the GNU Lesser&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;General Public License ever published by the Free Software Foundation.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;  If the Library as you received it specifies that a proxy can decide&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;whether future versions of the GNU Lesser General Public License shall&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;apply, that proxy&apos;s public statement of acceptance of any version is&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;permanent authorization for you to choose that version for the&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2652,51 +2947,65 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Sankoré 3.1 version , Copyright (C) 2010  Sankoré 3.1 comes with ABSOLUTELY NO WARRANTY.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;GIPENA&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;20 Avenue Ségur Paris 75007&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Téléphone : 01 43 17 68 08&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;GIPENA&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;20 Avenue Ségur Paris 75007&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Téléphone : 01 43 17 68 08&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Red</translation>
     </message>
     <message>
         <source>Community</source>
-        <translation type="unfinished"></translation>
+        <translation>Comunidad</translation>
     </message>
     <message>
         <source>User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuario/Contraseña:</translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation type="unfinished"></translation>
+        <translation>Atrapar flash</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar un flash para atrapar</translation>
     </message>
     <message>
         <source>about:blank</source>
-        <translation type="unfinished"></translation>
+        <translation>about:blank</translation>
     </message>
     <message>
         <source>Application name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de la aplicación</translation>
     </message>
     <message>
         <source>Create Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear aplicación</translation>
     </message>
 </context>
 </TS>

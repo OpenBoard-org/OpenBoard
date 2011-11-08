@@ -1,859 +1,841 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="ja_JP" sourcelanguage="en">
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>background: url(:/images/bigUniboard.png); border: none;</source>
-        <translation type="unfinished"></translation>
+        <translation>クリックしてアプリケーションに戻る</translation>
     </message>
 </context>
 <context>
     <name>DownloadDialog</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>ダウンロード</translation>
     </message>
     <message>
         <source>Clean Up</source>
-        <translation type="unfinished"></translation>
+        <translation>クリーンアップ</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished"></translation>
+        <translation>0アイテム </translation>
     </message>
 </context>
 <context>
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>フォーム</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル名</translation>
     </message>
     <message>
         <source>Try Again</source>
-        <translation type="unfinished"></translation>
+        <translation>再度試みてください</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>停止</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ico</source>
-        <translation type="unfinished"></translation>
+        <translation>開く</translation>
     </message>
 </context>
 <context>
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTubeにポッドキャストを公開</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>タイトル</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>説明</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>作成者</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard </translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished"></translation>
+        <translation>ボード</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブ</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメント</translation>
     </message>
     <message>
         <source>Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>チュートリアル</translation>
     </message>
     <message>
         <source>Stylus</source>
-        <translation type="unfinished"></translation>
+        <translation>スタイラス</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+T </translation>
     </message>
     <message>
         <source>Backgrounds</source>
-        <translation type="unfinished"></translation>
+        <translation>背景</translation>
     </message>
     <message>
         <source>Change Background</source>
-        <translation type="unfinished"></translation>
+        <translation>背景を変える</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>取り消し</translation>
     </message>
     <message>
         <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Z</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>やり直し</translation>
     </message>
     <message>
         <source>Ctrl+Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Y</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>前</translation>
     </message>
     <message>
         <source>Previous Page</source>
-        <translation type="unfinished"></translation>
+        <translation>前のページ</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation>ページアップ</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>次</translation>
     </message>
     <message>
         <source>Next Page</source>
-        <translation type="unfinished"></translation>
+        <translation>次のページ</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation>ページダウン</translation>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメント管理</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブ閲覧 </translation>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <source>Line</source>
-        <translation type="unfinished"></translation>
+        <translation>ライン</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation type="unfinished"></translation>
+        <translation>スモールライン</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translation type="unfinished"></translation>
+        <translation>ミディアムライン</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translation type="unfinished"></translation>
+        <translation>ラージライン</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>終了</translation>
     </message>
     <message>
         <source>Quit Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard終了</translation>
     </message>
     <message>
         <source>Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>消しゴム</translation>
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>消しゴム（小）</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>消しゴム（中）</translation>
     </message>
     <message>
         <source>Large Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>消しゴム（大）</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation>カラー</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>戻る</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>左</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>前へ</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>右</translation>
     </message>
     <message>
         <source>Reload</source>
-        <translation type="unfinished"></translation>
+        <translation>リロード</translation>
     </message>
     <message>
         <source>Reload Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のページをリロード</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>ホーム</translation>
     </message>
     <message>
         <source>Load Home Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ホームページをロード</translation>
     </message>
     <message>
         <source>Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>ブックマーク</translation>
     </message>
     <message>
         <source>Show Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>ブックマーク表示</translation>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>ブックマーク</translation>
     </message>
     <message>
         <source>Add Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>ブックマークを追加</translation>
     </message>
     <message>
         <source>Display Board</source>
-        <translation type="unfinished"></translation>
+        <translation>ボードを表示</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+B </translation>
     </message>
     <message>
         <source>Erase</source>
-        <translation type="unfinished"></translation>
+        <translation>消去</translation>
     </message>
     <message>
         <source>Erase Content</source>
-        <translation type="unfinished"></translation>
+        <translation>コンテンツを消去</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
     <message>
         <source>Display Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>表示設定</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation type="unfinished"></translation>
+        <translation>ライブラリ</translation>
     </message>
     <message>
         <source>Show Library</source>
-        <translation type="unfinished"></translation>
+        <translation>ライブラリ表示</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+L </translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1 </translation>
     </message>
     <message>
         <source>Sankore 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1 </translation>
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>デスクトップを表示</translation>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>コンピュータデスクトップを表示</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+H </translation>
     </message>
     <message>
         <source>Bigger</source>
-        <translation type="unfinished"></translation>
+        <translation>より大きく</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>ズームイン</translation>
     </message>
     <message>
         <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl++ </translation>
     </message>
     <message>
         <source>Smaller</source>
-        <translation type="unfinished"></translation>
+        <translation>より小さく</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>ズームアウト</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+- </translation>
     </message>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>新規フォルダー</translation>
     </message>
     <message>
         <source>Create a New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>新規フォルダーを作成</translation>
     </message>
     <message>
         <source>New Document</source>
-        <translation type="unfinished"></translation>
+        <translation>新規ドキュメント</translation>
     </message>
     <message>
         <source>Create a New Document</source>
-        <translation type="unfinished"></translation>
+        <translation>新規ドキュメントを作成</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>インポート</translation>
     </message>
     <message>
         <source>Import a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントをインポート</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスポート</translation>
     </message>
     <message>
         <source>Export a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントをエクスポート</translation>
     </message>
     <message>
         <source>Open in Board</source>
-        <translation type="unfinished"></translation>
+        <translation>ボード内に開く</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translation type="unfinished"></translation>
+        <translation>ボード内にページを開く</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>複製する</translation>
     </message>
     <message>
         <source>Duplicate Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>選択したコンテンツを複製する</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>削除</translation>
     </message>
     <message>
         <source>Delete Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>選択したコンテンツを削除する</translation>
     </message>
     <message>
         <source>Del</source>
-        <translation type="unfinished"></translation>
+        <translation>削除</translation>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation type="unfinished"></translation>
+        <translation>作業中のドキュメントに追加</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>開かれたドキュメントに選択されたコンテンツを追加 </translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>追加</translation>
     </message>
     <message>
         <source>Add Content to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>コンテンツをドキュメントに追加</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>名前の変更</translation>
     </message>
     <message>
         <source>Rename Content</source>
-        <translation type="unfinished"></translation>
+        <translation>コンテンツの名前を変更</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>ツール</translation>
     </message>
     <message>
         <source>Display Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>表示ツール</translation>
     </message>
     <message>
         <source>Multi Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>マルチスクリーン</translation>
     </message>
     <message>
         <source>Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
+        <translation>ワイドサイズ (16/9) </translation>
     </message>
     <message>
         <source>Use Document Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
+        <translation>ワイドサイズ (16/9) ドキュメントの使用</translation>
     </message>
     <message>
         <source>Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
+        <translation>レギュラーサイズ (4/3) </translation>
     </message>
     <message>
         <source>Use Document Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
+        <translation>レギュラーサイズ (4/3) ドキュメントの使用</translation>
     </message>
     <message>
         <source>Custom Size</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタムサイズ</translation>
     </message>
     <message>
         <source>Use Custom Document Size</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタムドキュメントサイズを使用</translation>
     </message>
     <message>
         <source>Stop Loading</source>
-        <translation type="unfinished"></translation>
+        <translation>ローディングを中止</translation>
     </message>
     <message>
         <source>Stop Loading Web Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブページのローディングを中止</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>カット</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>コピー</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>貼り付け</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"></translation>
+        <translation>スリープ</translation>
     </message>
     <message>
         <source>Put Presentation to Sleep</source>
-        <translation type="unfinished"></translation>
+        <translation>プレゼンをスリープにする</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>バーチャルキーボード</translation>
     </message>
     <message>
         <source>Display Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>バーチャルキーボード表示</translation>
     </message>
     <message>
         <source>Plain Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>プレーンライトの背景 </translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"></translation>
+        <translation>ライト</translation>
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>グリッドライトの背景 </translation>
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>プレーンダークの背景 </translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>ダーク</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>グリッドダークの背景 </translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="unfinished"></translation>
+        <translation>ポッドキャスト </translation>
     </message>
     <message>
         <source>Record Presentation to Video</source>
-        <translation type="unfinished"></translation>
+        <translation>プレゼンをビデオに記録 </translation>
     </message>
     <message>
         <source>Record</source>
-        <translation type="unfinished"></translation>
+        <translation>記録</translation>
     </message>
     <message>
         <source>Start Screen Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>スクリーンレコーディングを開始</translation>
     </message>
     <message>
         <source>Erase Items</source>
-        <translation type="unfinished"></translation>
+        <translation>アイテムを消去</translation>
     </message>
     <message>
         <source>Erase All Items</source>
-        <translation type="unfinished"></translation>
+        <translation>全アイテムを消去</translation>
     </message>
     <message>
         <source>Erase Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>注釈を消去</translation>
     </message>
     <message>
         <source>Erase All Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>全注釈を消去</translation>
     </message>
     <message>
         <source>Clear Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ページをクリア</translation>
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation type="unfinished"></translation>
+        <translation>全ページをクリア</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>ペン </translation>
     </message>
     <message>
         <source>Annotate Document</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントに注釈を加える</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+I </translation>
     </message>
     <message>
         <source>Erase Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>注釈を消去</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E </translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
+        <translation>マーカー</translation>
     </message>
     <message>
         <source>Highlight </source>
-        <translation type="unfinished"></translation>
+        <translation>強調表示</translation>
     </message>
     <message>
         <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+M </translation>
     </message>
     <message>
         <source>Selector</source>
-        <translation type="unfinished"></translation>
+        <translation>セレクタ </translation>
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>オブジェクトを選択して変更 </translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F </translation>
     </message>
     <message>
         <source>Hand</source>
-        <translation type="unfinished"></translation>
+        <translation>ハンド</translation>
     </message>
     <message>
         <source>Scroll Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ページをスクロール</translation>
     </message>
     <message>
         <source>Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>レーザーポインター</translation>
     </message>
     <message>
         <source>Virtual Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>バーチャルレーザーポインター</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+G </translation>
     </message>
     <message>
         <source>Draw Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>線を描出 </translation>
     </message>
     <message>
         <source>Ctrl+J</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+J </translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>テキスト</translation>
     </message>
     <message>
         <source>Write Text</source>
-        <translation type="unfinished"></translation>
+        <translation>テキストを作成</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+K </translation>
     </message>
     <message>
         <source>Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>キャプチャ</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>画面の一部をキャプチャ </translation>
     </message>
     <message>
         <source>Add To Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のページに追加</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のページにアイテムを追加</translation>
     </message>
     <message>
         <source>Add To New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>新規ページに追加</translation>
     </message>
     <message>
         <source>Add Item To New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>新規ページにアイテムを追加</translation>
     </message>
     <message>
         <source>Add To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>ライブラリに追加</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>ライブラリにアイテムを追加</translation>
     </message>
     <message>
         <source>Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>ページ</translation>
     </message>
     <message>
         <source>Create a New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>新規ページ作成</translation>
     </message>
     <message>
         <source>New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>新規ページ</translation>
     </message>
     <message>
         <source>Duplicate Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ページを複製</translation>
     </message>
     <message>
         <source>Duplicate the Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のページを複製</translation>
     </message>
     <message>
         <source>Import Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ページをインポート</translation>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation type="unfinished"></translation>
+        <translation>外部のページをインポート</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>一時停止</translation>
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>ポッドキャストのレコーディングを一時停止 </translation>
     </message>
     <message>
         <source>Podcast Config</source>
-        <translation type="unfinished"></translation>
+        <translation>ポッドキャスト設定</translation>
     </message>
     <message>
         <source>Configure Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>ポッドキャストレコーディング設定 </translation>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation type="unfinished"></translation>
+        <translation>フラッシュトラップ</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation type="unfinished"></translation>
+        <translation>トラップフラッシュコンテンツ</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブトラップ </translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>トラップウェブコンテンツ</translation>
     </message>
     <message>
         <source>Custom Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタムキャプチャ</translation>
     </message>
     <message>
         <source>Window Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィンドウキャプチャ</translation>
     </message>
     <message>
         <source>Capture a Window</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィンドウをキャプチャ</translation>
     </message>
     <message>
         <source>Embed Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブコンテンツを埋め込む</translation>
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>埋め込み可能ウェブコンテンツをキャプチャ</translation>
     </message>
     <message>
         <source>Show on Display</source>
-        <translation type="unfinished"></translation>
+        <translation>ディスプレイ上に表示</translation>
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>ディスプレイ画面にメインスクリーンを表示</translation>
     </message>
     <message>
         <source>Erase all Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>全注釈を消去</translation>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation type="unfinished"></translation>
+        <translation>eduMedia </translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>eduMediaシミュレーションのインポート</translation>
     </message>
     <message>
         <source>Open the tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>チュートリアルを開く</translation>
     </message>
     <message>
         <source>Check Update</source>
-        <translation type="unfinished"></translation>
+        <translation>更新をチェック</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré エディタ </translation>
     </message>
     <message>
         <source>Show Sankore Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore ウィジェットエディタを表示</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoréを隠す</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoréアプリケーションを隠す</translation>
     </message>
     <message>
         <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+H </translation>
     </message>
 </context>
 <context>
     <name>PasswordDialog</name>
     <message>
         <source>Authentication Required</source>
-        <translation type="unfinished"></translation>
+        <translation>認証が必要</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー名:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DUMMY ICON</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>INTRO TEXT DUMMY</source>
-        <translation type="unfinished"></translation>
+        <translation>パスワード:</translation>
     </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>プロキシ認証</translation>
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>プロキシに接続</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー名:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>パスワード： </translation>
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ICON</source>
-        <translation type="unfinished"></translation>
+        <translation>今後の使用のためにユーザー名とパスワードを保存</translation>
     </message>
 </context>
 <context>
@@ -861,728 +843,740 @@
     <message>
         <source>Trash</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>ゴミ箱</translation>
     </message>
     <message>
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>/ホーム</translation>
     </message>
 </context>
 <context>
-    <name>UBAbstractPublisher</name>
+    <name>QuaZipFile</name>
     <message>
-        <source>Contacting %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Found %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot Authenticate with %1</source>
-        <translation type="unfinished"></translation>
+        <source>ZIP/UNZIP API error %1</source>
+        <translation>圧縮/解凍 API エラー%1 </translation>
     </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
     <message>
         <source>Cannot load content</source>
-        <translation type="unfinished"></translation>
+        <translation>コンテンツをロードできません</translation>
     </message>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished"></translation>
+        <translation>ローディング中… </translation>
     </message>
 </context>
 <context>
     <name>UBApplication</name>
     <message>
         <source>Page Size</source>
-        <translation type="unfinished"></translation>
+        <translation>ページサイズ</translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="unfinished"></translation>
+        <translation>ポッドキャスト </translation>
     </message>
 </context>
 <context>
     <name>UBApplicationController</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブ</translation>
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation type="unfinished"></translation>
+        <translation>新しい更新が利用可能です。ウェブページへ移動しますか？ </translation>
     </message>
     <message>
         <source>No update available</source>
-        <translation type="unfinished"></translation>
+        <translation>利用可能な更新はありません </translation>
     </message>
     <message>
         <source>Update available</source>
-        <translation type="unfinished"></translation>
+        <translation>更新が利用可能です</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>更新</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content from %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 からコンテンツをダウンロード</translation>
     </message>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation type="unfinished"></translation>
+        <translation>コンテンツ%1のダウンロードに失敗 </translation>
     </message>
     <message>
         <source>Download finished</source>
-        <translation type="unfinished"></translation>
+        <translation>ダウンロード終了</translation>
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>不明のツールタイプ%1 </translation>
     </message>
     <message>
         <source>Unknown content type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>不明のコンテンツタイプ%1 </translation>
     </message>
     <message>
         <source>Add Item</source>
-        <translation type="unfinished"></translation>
+        <translation>アイテムの追加</translation>
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>全てサポート(%1) </translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>ライブラリに画像追加中にエラー</translation>
     </message>
 </context>
 <context>
     <name>UBCachePropertiesWidget</name>
     <message>
         <source>Cache Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>キャッシュプロパティ </translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation>カラー: </translation>
     </message>
     <message>
         <source>Shape:</source>
-        <translation type="unfinished"></translation>
+        <translation>形状： </translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>サイズ： </translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
     <name>UBDesktopPalette</name>
     <message>
         <source>Show Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard表示 </translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>画面の一部をキャプチャ </translation>
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>画面をキャプチャ</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation type="unfinished"></translation>
+        <translation>スタイラスパレットを表示</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>サブスクリーンにボードを表示 </translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>サブスクリーンにデスクトップを表示 </translation>
     </message>
 </context>
 <context>
     <name>UBDocumentController</name>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>新規フォルダー</translation>
     </message>
     <message>
         <source>Page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1ページ</translation>
     </message>
     <message>
         <source>Add Folder of Images</source>
-        <translation type="unfinished"></translation>
+        <translation>画像フィルダーを追加</translation>
     </message>
     <message>
         <source>Add Images</source>
-        <translation type="unfinished"></translation>
+        <translation>画像を追加</translation>
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルからページを追加</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメント%1の複製</translation>
     </message>
     <message>
         <source>Document %1 copied</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメント%1コピー済み</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ページ削除</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメント削除 </translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>本当にドキュメント%1を削除しますか？</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>ゴミ箱を空にする</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation type="unfinished"></translation>
+        <translation>本当にこのゴミ箱を空にしますか？</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation type="unfinished"></translation>
+        <translation>ゴミ箱を空にしています</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation type="unfinished"></translation>
+        <translation>ゴミ箱を空にしました</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>フォルダーを削除</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="unfinished"></translation>
+        <translation>本当にフォルダー%1とそのコンテンツを削除しますか？</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントが選択されていません！</translation>
     </message>
     <message>
         <source>Open Supported File</source>
-        <translation type="unfinished"></translation>
+        <translation>サポートされたファイルを開く</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル%1のインポート中... </translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルのインポートに失敗…  </translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>フォルダーから全ての画像をインポート</translation>
     </message>
     <message>
         <source>Folder does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>フィルダーには画像ファイルが含まれていません！ </translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>削除</translation>
     </message>
     <message>
         <source>Empty</source>
-        <translation type="unfinished"></translation>
+        <translation>空</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>ゴミ箱</translation>
     </message>
     <message>
         <source>Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントを開く</translation>
     </message>
     <message>
         <source>Add all Images to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>すべての画像をドキュメントに追加</translation>
     </message>
     <message>
         <source>All Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>全画像(%1) </translation>
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>選択には画像ファイルが含まれていません！ </translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメント%1は、Sankore (%2)の新しいバージョンで作成されています。それを開くと、情報の一部が失われる可能性があります。それでも続行しますか？</translation>
+    </message>
+    <message numerus="yes">
+        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
+        <translation>
+            <numerusform>本当に選択されたドキュメント%1から %nページを削除しますか？</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
     <message>
         <source>images</source>
-        <translation type="unfinished"></translation>
+        <translation>画像</translation>
     </message>
     <message>
         <source>videos</source>
-        <translation type="unfinished"></translation>
+        <translation>ビデオ</translation>
     </message>
     <message>
         <source>objects</source>
-        <translation type="unfinished"></translation>
+        <translation>オブジェクト</translation>
     </message>
     <message>
         <source>widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>ウィジェット</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>全てサポートされているファイル(*.%1) </translation>
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル%1保存済み </translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation> %1 / %2 ページをインポート</translation>
     </message>
     <message>
         <source>Erronous image data, skipping file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>画像データエラー、ファイル%1をスキップ</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished"></translation>
+        <translation>%0ページ</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentPublisher</name>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスポートに失敗 </translation>
     </message>
     <message>
         <source>Export canceled ...</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスポートがキャンセルされました... </translation>
     </message>
     <message>
         <source>Converting page %1/%2 ...</source>
-        <translation type="unfinished"></translation>
+        <translation> %1 / %2 ページを変換中 </translation>
     </message>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>クレデンシャルがまだ記入されていません </translation>
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore ファイルをウェブ上にアップロード中 </translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントは間違いなくウェブにアップロード済み </translation>
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブへのドキュメントのアップロードに失敗</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (コピー) </translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1/%2 ページ コピー中</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation>
+            <numerusform>%1 ページ コピー済み</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>UBExportDocument</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ページ</translation>
     </message>
     <message>
         <source>Export as UBZ File</source>
-        <translation type="unfinished"></translation>
+        <translation>UBZ ファイルとしてエクスポート</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントのエクスポート中... </translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスポートに成功 </translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2 / %3 をエクスポート中</translation>
     </message>
     <message>
         <source>Export to Sankore Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore フォーマットへエクスポート</translation>
     </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>PDFファイルとしてエクスポート</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントのエクスポート中... </translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスポートに成功 </translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDFへエクスポート</translation>
     </message>
 </context>
 <context>
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>PDFファイルとしてエクスポート</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントのエクスポート中... </translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスポートに成功。</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 / %2 ページのエクスポート中</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDFへエクスポート</translation>
     </message>
 </context>
 <context>
     <name>UBExportWeb</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ページ</translation>
     </message>
     <message>
         <source>Export as Web data</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブデータとしてエクスポート</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントのエクスポート中... </translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスポートに成功。</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスポートに失敗。</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブブラウザへエクスポート</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished"></translation>
+        <translation>ロック</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>拡張画面でみることができます </translation>
     </message>
     <message>
         <source>Go to Content Source</source>
-        <translation type="unfinished"></translation>
+        <translation>コンテンツのソースへ移動 </translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>〈ここへテキストを入力〉 </translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItemDelegate</name>
     <message>
         <source>Text Color</source>
-        <translation type="unfinished"></translation>
+        <translation>テキストカラー</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>凍結</translation>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation type="unfinished"></translation>
+        <translation>ツールとして変換  </translation>
     </message>
 </context>
 <context>
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>共通ファイルフォーマット ( </translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル%1のインポート中... </translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル%1のインポート失敗。</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>インポートに成功。</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>インポート失敗。</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル%1のインポート中... </translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>インポートに成功。</translation>
     </message>
     <message>
         <source>Sankore 3.1 (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1 (*.ubz) </translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル%1のインポート失敗。</translation>
     </message>
 </context>
 <context>
     <name>UBImportImage</name>
     <message>
         <source>Image Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>画像フォーマット（</translation>
     </message>
     <message>
         <source>Image import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>画像インポートに失敗 </translation>
     </message>
     <message>
         <source>Image import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>画像インポートに成功 </translation>
     </message>
 </context>
 <context>
     <name>UBImportPDF</name>
     <message>
         <source>Portable Document Format (*.pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>ポータブル・ドキュメント・フォーマット (*.pdf) </translation>
     </message>
     <message>
         <source>PDF import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>PDFインポートに失敗。</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 / %2 ページをインポート</translation>
     </message>
     <message>
         <source>PDF import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>PDFインポートに成功</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>ビデオをイントラネットに公開中にエラー(%1) </translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>イントラネットに公開進行中%1 % </translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>公開</translation>
     </message>
 </context>
 <context>
     <name>UBLibActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>お気に入りに追加</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>シェアする</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>検索</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>削除</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished"></translation>
+        <translation>フォルダーに戻る</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>お気に入りから削除</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>新規フォルダーを作成</translation>
     </message>
 </context>
 <context>
     <name>UBLibItemProperties</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>戻る</translation>
     </message>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished"></translation>
+        <translation>ページに追加 </translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished"></translation>
+        <translation>背景として設定</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished"></translation>
+        <translation>ライブラリに追加</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished"></translation>
+        <translation>オブジェクトインフォーメーション</translation>
     </message>
 </context>
 <context>
     <name>UBLibraryController</name>
     <message>
         <source>Added 1 Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>ライブラリに1画像追加</translation>
     </message>
     <message>
         <source>Audios</source>
         <comment>Audio category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>オーディオ</translation>
     </message>
     <message>
         <source>Movies</source>
         <comment>Movies category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>ムービー</translation>
     </message>
     <message>
         <source>Pictures</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>写真</translation>
     </message>
     <message>
         <source>Shapes</source>
         <comment>Shapes category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>形状</translation>
     </message>
     <message>
         <source>Applications</source>
         <comment>Applications category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>アプリケーション</translation>
     </message>
     <message>
         <source>Favorite</source>
         <comment>Favorite category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>お気に入り</translation>
     </message>
     <message>
         <source>Creating image thumbnail for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1のサムネイル画像を作成</translation>
     </message>
     <message>
         <source>Adding to page failed for item %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1のページへの追加に失敗 </translation>
     </message>
     <message>
         <source>Interactivities</source>
         <comment>Interactives category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>インタラクティブ</translation>
     </message>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished"></translation>
+        <translation>インポートされた画像</translation>
     </message>
     <message>
         <source>Animations</source>
         <comment>Animations category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>動画</translation>
     </message>
 </context>
 <context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>はい</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>いいえ</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;qt&gt;&quot;%1&quot;の %2におけるユーザー名とパスワードを入力&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>プロキシへのログインに失敗</translation>
     </message>
     <message>
         <source>SSL Errors:
@@ -1592,159 +1586,264 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
-        <translation type="unfinished"></translation>
+        <translation>SSLエラー:
+
+%1
+
+%2
+
+このホストのエラーは無視しますか？ 
+</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>はい</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>いいえ</translation>
     </message>
 </context>
 <context>
     <name>UBNewFolderDlg</name>
     <message>
         <source>Add new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>新規フォルダー追加</translation>
     </message>
     <message>
         <source>New Folder name:</source>
-        <translation type="unfinished"></translation>
+        <translation>新規フォルダー名： </translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>追加</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
     <name>UBPersistenceManager</name>
     <message>
         <source>(copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>(コピー)</translation>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメント・リポジトリ･ロス</translation>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoreはドキュメント・リポジトリ&apos;%1&apos;へのアクセスを失いました。データ崩壊を避けるために残念ながらアプリケーションはシャットダウンします。したがって最後の変更は失われます。</translation>
     </message>
 </context>
 <context>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation type="unfinished"></translation>
+        <translation>エンコーダ開始に失敗 ... </translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation type="unfinished"></translation>
+        <translation>利用可能なポッドキャストエンコーダーがありません </translation>
     </message>
     <message>
         <source>Part %1</source>
-        <translation type="unfinished"></translation>
+        <translation>パート%1 </translation>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation type="unfinished"></translation>
+        <translation>デスクトップ上 ... </translation>
     </message>
     <message>
         <source>in folder %1</source>
-        <translation type="unfinished"></translation>
+        <translation>フォルダー%1内</translation>
     </message>
     <message>
         <source>Podcast created %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ポッドキャスト作成 %1 </translation>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>ポッドキャスト記録エラー(%1) </translation>
     </message>
     <message>
         <source>Default Audio Input</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルトオーディオインプット</translation>
     </message>
     <message>
         <source>No Audio Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>オーディオ記録がありません</translation>
     </message>
     <message>
         <source>Small</source>
-        <translation type="unfinished"></translation>
+        <translation>スモール</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>ミディアム</translation>
     </message>
     <message>
         <source>Full</source>
-        <translation type="unfinished"></translation>
+        <translation>フル</translation>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation type="unfinished"></translation>
+        <translation>イントラネットに公開</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
-        <translation type="unfinished"></translation>
+        <translation>Youtubeに公開</translation>
     </message>
     <message>
         <source>Sankore Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore キャスト</translation>
     </message>
 </context>
 <context>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation type="unfinished"></translation>
+        <translation>バージョン: </translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>感圧性マーカー</translation>
     </message>
 </context>
 <context>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="unfinished"></translation>
+        <translation>プロキシログイン</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー名： </translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>パスワード： </translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントをウェブに公開</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="unfinished"></translation>
+        <translation>タイトル： </translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>説明： </translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>公開</translation>
     </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>タイトルなしドキュメント</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>ゴミ箱</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>画像</translation>
     </message>
     <message>
         <source>My Movies</source>
+        <translation>マイ・ムービー </translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">タイトル</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1752,444 +1851,445 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation type="unfinished"></translation>
+        <translation>プレビュー･サムネイル作成中 ... </translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 サムネイル作成済み ... </translation>
     </message>
 </context>
 <context>
     <name>UBToolsManager</name>
     <message>
         <source>Mask</source>
-        <translation type="unfinished"></translation>
+        <translation>マスク</translation>
     </message>
     <message>
         <source>Ruler</source>
-        <translation type="unfinished"></translation>
+        <translation>ルーラ</translation>
     </message>
     <message>
         <source>Compass</source>
-        <translation type="unfinished"></translation>
+        <translation>コンパス</translation>
     </message>
     <message>
         <source>Protractor</source>
-        <translation type="unfinished"></translation>
+        <translation>分度器</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>三角定規</translation>
     </message>
     <message>
         <source>Magnifier</source>
-        <translation type="unfinished"></translation>
+        <translation>拡大鏡</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation type="unfinished"></translation>
+        <translation>キャッシュ</translation>
     </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
     <message>
         <source>Whole page</source>
-        <translation type="unfinished"></translation>
+        <translation>ページ全体</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブ</translation>
     </message>
 </context>
 <context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントアップデータ</translation>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルは更新を必要としています </translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation type="unfinished"></translation>
+        <translation>バックアップパス:  </translation>
     </message>
     <message>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>ブラウズ</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>更新</translation>
     </message>
     <message>
         <source>Select a backup folder</source>
-        <translation type="unfinished"></translation>
+        <translation>バックアップフォルダーを選択 </translation>
     </message>
     <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル更新に成功!
+アプリケーションを再起動して更新ファイルにアクセスしてください。</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>更新中にエラーが発生しました。ファイルに影響はありません。 </translation>
     </message>
     <message>
         <source>Files update results</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル更新結果</translation>
     </message>
     <message>
         <source>Updating file </source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル更新中  </translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation type="unfinished"></translation>
+        <translation>少々お待ちください、インポート処理を開始します...</translation>
     </message>
 </context>
 <context>
     <name>UBW3CWidget</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>ウェブ</translation>
     </message>
 </context>
 <context>
     <name>UBWebPluginWidget</name>
     <message>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>ロード中… </translation>
     </message>
 </context>
 <context>
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation type="unfinished"></translation>
+        <translation>ドキュメントをSankoreウェブに公開</translation>
     </message>
 </context>
 <context>
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%0 コール(メソッド=%1, ステータス=%2) </translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTube 認証に失敗 </translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>ビデオをYouTubeへアップロード中にエラー(%1) </translation>
     </message>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTubeへアップロード進行中%1 % </translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublishingDialog</name>
     <message>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>アップロード</translation>
     </message>
     <message>
         <source>Autos &amp; Vehicles</source>
-        <translation type="unfinished"></translation>
+        <translation>自動車 &amp; 乗り物</translation>
     </message>
     <message>
         <source>Music</source>
-        <translation type="unfinished"></translation>
+        <translation>音楽 </translation>
     </message>
     <message>
         <source>Pets &amp; Animals</source>
-        <translation type="unfinished"></translation>
+        <translation>ペット &amp; 動物</translation>
     </message>
     <message>
         <source>Sports</source>
-        <translation type="unfinished"></translation>
+        <translation>スポーツ </translation>
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation type="unfinished"></translation>
+        <translation>旅行 &amp; イベント</translation>
     </message>
     <message>
         <source>Gaming</source>
-        <translation type="unfinished"></translation>
+        <translation>ゲーム</translation>
     </message>
     <message>
         <source>Comedy</source>
-        <translation type="unfinished"></translation>
+        <translation>コメディー </translation>
     </message>
     <message>
         <source>People &amp; Blogs</source>
-        <translation type="unfinished"></translation>
+        <translation>人々 &amp; ブログ</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation type="unfinished"></translation>
+        <translation>ニュース &amp; 政治 </translation>
     </message>
     <message>
         <source>Entertainment</source>
-        <translation type="unfinished"></translation>
+        <translation>エンタテイメント </translation>
     </message>
     <message>
         <source>Education</source>
-        <translation type="unfinished"></translation>
+        <translation>教育</translation>
     </message>
     <message>
         <source>Howto &amp; Style</source>
-        <translation type="unfinished"></translation>
+        <translation>ハウツー &amp; スタイル</translation>
     </message>
     <message>
         <source>Nonprofits &amp; Activism</source>
-        <translation type="unfinished"></translation>
+        <translation>非営利団体 &amp; アクティビズム</translation>
     </message>
     <message>
         <source>Science &amp; Technology</source>
-        <translation type="unfinished"></translation>
+        <translation>科学 &amp; 技術</translation>
     </message>
 </context>
 <context>
     <name>UBZoomPalette</name>
     <message>
         <source>%1 x</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 x </translation>
     </message>
 </context>
 <context>
     <name>WBClearButton</name>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>クリア</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルを保存</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>キャンセルされたダウンロード: %1 </translation>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>保存されたファイルを開く時にエラー: %1 </translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>保存時にエラー: %1 </translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ネットワークエラー: %1 </translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>秒</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>分</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished"></translation>
+        <translation>残り - %4 %5 </translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 / %2 (%3/秒) %4 </translation>
     </message>
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation type="unfinished"></translation>
+        <translation> ? </translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 / %2 – 中止</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished"></translation>
+        <translation>バイト</translation>
     </message>
     <message>
         <source>KB</source>
-        <translation type="unfinished"></translation>
+        <translation> KB </translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished"></translation>
+        <translation> MB </translation>
     </message>
 </context>
 <context>
     <name>WBDownloadManager</name>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished"></translation>
+        <translation>1 ダウンロード</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1ダウンロード</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>タイトル</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>アドレス</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryTreeModel</name>
     <message>
         <source>Earlier Today</source>
-        <translation type="unfinished"></translation>
+        <translation>今日</translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 アイテム </translation>
     </message>
 </context>
 <context>
     <name>WBSearchLineEdit</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>検索</translation>
     </message>
 </context>
 <context>
     <name>WBTabBar</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>新規 &amp; タブ</translation>
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>クローンタブ</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp; タブを閉じる</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>他のタブを&amp;閉じる</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>タブをリロード</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>全タブをリロード</translation>
     </message>
 </context>
 <context>
     <name>WBTabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>最近閉じたタブ</translation>
     </message>
     <message>
         <source>(Untitled)</source>
-        <translation type="unfinished"></translation>
+        <translation>（タイトルなし）</translation>
     </message>
 </context>
 <context>
     <name>WBToolbarSearch</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>検索</translation>
     </message>
     <message>
         <source>No Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>最近の検索なし</translation>
     </message>
     <message>
         <source>Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>最近の検索</translation>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>最近の検索のクリア</translation>
     </message>
 </context>
 <context>
     <name>WBWebPage</name>
     <message>
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation>ダウンロード</translation>
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のドキュメントに追加</translation>
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Error loading page: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ページのロード中にエラー: %1 </translation>
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF ドキュメントのダウンロード:PDFのダウンロードを希望ですか、それともそれを現在のSankoreドキュメントに追加しますか？ </translation>
     </message>
 </context>
 <context>
     <name>WBWebView</name>
     <message>
         <source>Open in New Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>新規タブ内で開く</translation>
     </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTubeにポッドキャストを公開</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>タイトル</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>説明</translation>
     </message>
     <message>
         <source>Keywords</source>
-        <translation type="unfinished"></translation>
+        <translation>キーワード</translation>
     </message>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard </translation>
     </message>
     <message>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>カテゴリー</translation>
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTubeユーザー名</translation>
     </message>
     <message>
         <source>YouTube Password</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTubeパスワード</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2197,238 +2297,234 @@ Please reboot the application to access the updated documents.</source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>brushProperties</name>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>明るい背景で</translation>
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>暗い背景で</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>不透明性 </translation>
     </message>
     <message>
         <source>Line Width</source>
-        <translation type="unfinished"></translation>
+        <translation>線の幅</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>中</translation>
     </message>
     <message>
         <source>Strong</source>
-        <translation type="unfinished"></translation>
+        <translation>太</translation>
     </message>
     <message>
         <source>Fine</source>
-        <translation type="unfinished"></translation>
+        <translation>細</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>ペンは感圧性です。</translation>
     </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>ダイアログ</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>タイトル</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Eメール</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>作成者</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>説明</translation>
     </message>
 </context>
 <context>
     <name>documentPublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>ダイアログ</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>タイトル</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>Eメール</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>作成者</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>説明</translation>
     </message>
     <message>
         <source>Attach Downloadable PDF Version</source>
-        <translation type="unfinished"></translation>
+        <translation>ダウンロード可能なPDFバージョンを添付</translation>
     </message>
     <message>
         <source>Attach Downloadable Uniboard File (UBZ)</source>
-        <translation type="unfinished"></translation>
+        <translation>ダウンロード可能なUniboard ファイル(UBZ)を添付</translation>
     </message>
     <message>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
-        <translation type="unfinished"></translation>
+        <translation>警告：このドキュメントはウェブ上では適切に表示されない可能性のあるビデオを含んでいます。</translation>
     </message>
 </context>
 <context>
     <name>documents</name>
     <message>
         <source>Uniboard Documents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard ドキュメント</translation>
     </message>
 </context>
 <context>
     <name>preferencesDialog</name>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>version : …</source>
-        <translation type="unfinished"></translation>
+        <translation>バージョン: …</translation>
     </message>
     <message>
         <source>Default Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルト設定 </translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished"></translation>
+        <translation>表示</translation>
     </message>
     <message>
         <source>Internet</source>
-        <translation type="unfinished"></translation>
+        <translation>インターネット</translation>
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>外部ブラウザでページを表示 </translation>
     </message>
     <message>
         <source>Home Page:</source>
-        <translation type="unfinished"></translation>
+        <translation>ホームページ:</translation>
     </message>
     <message>
         <source>Proxy User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>プロキシユーザー/パス: </translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>バーチャルキーボード</translation>
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>キーボードボタンサイズ: </translation>
     </message>
     <message>
         <source>Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>ツールバー</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation type="unfinished"></translation>
+        <translation>上部に配置 (タブレット向け) </translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation type="unfinished"></translation>
+        <translation>下部に配置 (ホワイトボード向け) </translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
-        <translation type="unfinished"></translation>
+        <translation>ボタン下にテキストを表示</translation>
     </message>
     <message>
         <source>Mirroring</source>
-        <translation type="unfinished"></translation>
+        <translation>ミラーリング</translation>
     </message>
     <message>
         <source>Show main display immediately on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>メインディスプレーを即座にサブスクリーンあるいはプロジェクターに表示 </translation>
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>スタイラスパレット </translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>水平方向</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>垂直方向</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>ペン </translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>情報</translation>
     </message>
     <message>
         <source>Software Update</source>
-        <translation type="unfinished"></translation>
+        <translation>ソフトウェア更新</translation>
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>起動時にソフトウェア更新をチェックする </translation>
     </message>
     <message>
         <source>Licences</source>
-        <translation type="unfinished"></translation>
+        <translation>ライセンス</translation>
     </message>
     <message>
         <source>OpenSSl</source>
-        <translation type="unfinished"></translation>
+        <translation>オープンSSl </translation>
     </message>
     <message>
         <source>zlib</source>
-        <translation type="unfinished"></translation>
+        <translation>zlib </translation>
     </message>
     <message>
         <source>xpdf</source>
-        <translation type="unfinished"></translation>
+        <translation>xpdf </translation>
     </message>
     <message>
         <source>Quazip</source>
-        <translation type="unfinished"></translation>
+        <translation>Quazip </translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1 </translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2641,7 +2737,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2654,7 +2750,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2665,38 +2761,38 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>ネットワーク</translation>
     </message>
     <message>
         <source>Community</source>
-        <translation type="unfinished"></translation>
+        <translation>コミュニティ</translation>
     </message>
     <message>
         <source>User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>ユーザー/パス: </translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation type="unfinished"></translation>
+        <translation>トラップフラッシュ</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation type="unfinished"></translation>
+        <translation>フラッシュを選択してトラップする</translation>
     </message>
     <message>
         <source>about:blank</source>
-        <translation type="unfinished"></translation>
+        <translation>情報:ブランク</translation>
     </message>
     <message>
         <source>Application name</source>
-        <translation type="unfinished"></translation>
+        <translation>アプリケーション名</translation>
     </message>
     <message>
         <source>Create Application</source>
-        <translation type="unfinished"></translation>
+        <translation>アプリケーションを作成</translation>
     </message>
 </context>
 </TS>

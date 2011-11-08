@@ -1,859 +1,841 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="ro_RO">
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>background: url(:/images/bigUniboard.png); border: none;</source>
-        <translation type="unfinished"></translation>
+        <translation>Faceţi clic pe Înapoi la Aplicaţie</translation>
     </message>
 </context>
 <context>
     <name>DownloadDialog</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Descărcări</translation>
     </message>
     <message>
         <source>Clean Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Curăţare</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished"></translation>
+        <translation>0 articole</translation>
     </message>
 </context>
 <context>
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Denumire fişier</translation>
     </message>
     <message>
         <source>Try Again</source>
-        <translation type="unfinished"></translation>
+        <translation>Încercaţi din nou</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Oprire</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ico</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschidere</translation>
     </message>
 </context>
 <context>
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicare podcast pe YouTube</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titlu</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descriere</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Tablă</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Web</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Documente</translation>
     </message>
     <message>
         <source>Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutorial</translation>
     </message>
     <message>
         <source>Stylus</source>
-        <translation type="unfinished"></translation>
+        <translation>Stilou</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+T</translation>
     </message>
     <message>
         <source>Backgrounds</source>
-        <translation type="unfinished"></translation>
+        <translation>Fundaluri</translation>
     </message>
     <message>
         <source>Change Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare fundal</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulare</translation>
     </message>
     <message>
         <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Z</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Repetare</translation>
     </message>
     <message>
         <source>Ctrl+Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Y</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>Precedent</translation>
     </message>
     <message>
         <source>Previous Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina precedentă</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>Următor</translation>
     </message>
     <message>
         <source>Next Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina următoare</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrare documente</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation type="unfinished"></translation>
+        <translation>Navigare pe web</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <source>Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Linie</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Linie subţire</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Linie medie</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Linie groasă</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieşire</translation>
     </message>
     <message>
         <source>Quit Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieşire din Uniboard</translation>
     </message>
     <message>
         <source>Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Gumă</translation>
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Gumă mică</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Gumă medie</translation>
     </message>
     <message>
         <source>Large Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Gumă mare</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Culoare</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Înapoi</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Stânga</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>Înainte</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Dreapta</translation>
     </message>
     <message>
         <source>Reload</source>
-        <translation type="unfinished"></translation>
+        <translation>Reîncărcare</translation>
     </message>
     <message>
         <source>Reload Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Reîncărcare pagina curentă</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Acasă</translation>
     </message>
     <message>
         <source>Load Home Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare pagina de start</translation>
     </message>
     <message>
         <source>Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Semne de carte</translation>
     </message>
     <message>
         <source>Show Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare semne de carte</translation>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Semn de carte</translation>
     </message>
     <message>
         <source>Add Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare semn de carte</translation>
     </message>
     <message>
         <source>Display Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare tablă</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+B</translation>
     </message>
     <message>
         <source>Erase</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere</translation>
     </message>
     <message>
         <source>Erase Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere conţinut</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferinţe</translation>
     </message>
     <message>
         <source>Display Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare preferinţe</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Bibliotecă</translation>
     </message>
     <message>
         <source>Show Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare bibliotecă</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+L</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1</translation>
     </message>
     <message>
         <source>Sankore 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1</translation>
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare desktop</translation>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare desktop computer</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+H</translation>
     </message>
     <message>
         <source>Bigger</source>
-        <translation type="unfinished"></translation>
+        <translation>Mai mare</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Mărire</translation>
     </message>
     <message>
         <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl++</translation>
     </message>
     <message>
         <source>Smaller</source>
-        <translation type="unfinished"></translation>
+        <translation>Mai mic</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Micşorare</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Folder nou</translation>
     </message>
     <message>
         <source>Create a New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Creare folder nou</translation>
     </message>
     <message>
         <source>New Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Document nou</translation>
     </message>
     <message>
         <source>Create a New Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Creare document nou</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare</translation>
     </message>
     <message>
         <source>Import a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare document</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare</translation>
     </message>
     <message>
         <source>Export a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare document</translation>
     </message>
     <message>
         <source>Open in Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschidere în tablă</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschidere pagină în tablă</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicare</translation>
     </message>
     <message>
         <source>Duplicate Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicare conţinut selectat</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere</translation>
     </message>
     <message>
         <source>Delete Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere conţinut selectat</translation>
     </message>
     <message>
         <source>Del</source>
-        <translation type="unfinished"></translation>
+        <translation>Del</translation>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare la documente de lucru</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare conţinut selectat în Open document</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare</translation>
     </message>
     <message>
         <source>Add Content to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare conţinut în document</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>Redenumire</translation>
     </message>
     <message>
         <source>Rename Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Redenumire conţinut</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Instrumente</translation>
     </message>
     <message>
         <source>Display Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare instrumente</translation>
     </message>
     <message>
         <source>Multi Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Ecran multiplu</translation>
     </message>
     <message>
         <source>Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
+        <translation>Format lat (16/9)</translation>
     </message>
     <message>
         <source>Use Document Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizare format document lat (16/9)</translation>
     </message>
     <message>
         <source>Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Format normal (4/3)</translation>
     </message>
     <message>
         <source>Use Document Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizare format document normal (4/3)</translation>
     </message>
     <message>
         <source>Custom Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Format particularizat</translation>
     </message>
     <message>
         <source>Use Custom Document Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizare format document particularizat</translation>
     </message>
     <message>
         <source>Stop Loading</source>
-        <translation type="unfinished"></translation>
+        <translation>Oprire încărcare</translation>
     </message>
     <message>
         <source>Stop Loading Web Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Oprire încărcare pagină web</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Decupare</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiere</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Lipire</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"></translation>
+        <translation>Oprire automată</translation>
     </message>
     <message>
         <source>Put Presentation to Sleep</source>
-        <translation type="unfinished"></translation>
+        <translation>Punere prezentare pe oprire automată</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Tastatură virtuală</translation>
     </message>
     <message>
         <source>Display Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare tastatură virtuală</translation>
     </message>
     <message>
         <source>Plain Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fundal deschis simplu</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschis</translation>
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fundal deschis cu grilă</translation>
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fundal închis simplu</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>Închis</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fundal închis cu grilă</translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast</translation>
     </message>
     <message>
         <source>Record Presentation to Video</source>
-        <translation type="unfinished"></translation>
+        <translation>Înregistrare prezentare pe video</translation>
     </message>
     <message>
         <source>Record</source>
-        <translation type="unfinished"></translation>
+        <translation>Înregistrare</translation>
     </message>
     <message>
         <source>Start Screen Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Pornire înregistrare ecran</translation>
     </message>
     <message>
         <source>Erase Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere articole</translation>
     </message>
     <message>
         <source>Erase All Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere toate articolele</translation>
     </message>
     <message>
         <source>Erase Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere adnotări</translation>
     </message>
     <message>
         <source>Erase All Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere toate adnotările</translation>
     </message>
     <message>
         <source>Clear Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere pagină</translation>
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere toate elementele</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Stilou</translation>
     </message>
     <message>
         <source>Annotate Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Adnotare document</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
         <source>Erase Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere adnotare</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker</translation>
     </message>
     <message>
         <source>Highlight </source>
-        <translation type="unfinished"></translation>
+        <translation>Evidenţiere</translation>
     </message>
     <message>
         <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+M</translation>
     </message>
     <message>
         <source>Selector</source>
-        <translation type="unfinished"></translation>
+        <translation>Selector</translation>
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectare şi modificare obiecte</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Hand</source>
-        <translation type="unfinished"></translation>
+        <translation>Mână</translation>
     </message>
     <message>
         <source>Scroll Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Derulare pagină</translation>
     </message>
     <message>
         <source>Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Indicator laser</translation>
     </message>
     <message>
         <source>Virtual Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Indicator laser virtual</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+G</translation>
     </message>
     <message>
         <source>Draw Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Desenare linii</translation>
     </message>
     <message>
         <source>Ctrl+J</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+J</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Text</translation>
     </message>
     <message>
         <source>Write Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Scriere text</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
         <source>Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Captuare</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturare parte ecran</translation>
     </message>
     <message>
         <source>Add To Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare la pagina curentă</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare articol la pagina curentă</translation>
     </message>
     <message>
         <source>Add To New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare la pagină nouă</translation>
     </message>
     <message>
         <source>Add Item To New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare articol la pagină nouă</translation>
     </message>
     <message>
         <source>Add To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare la bibliotecă</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare articol la bibliotecă</translation>
     </message>
     <message>
         <source>Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagini</translation>
     </message>
     <message>
         <source>Create a New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Creare pagină nouă</translation>
     </message>
     <message>
         <source>New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagină nouă</translation>
     </message>
     <message>
         <source>Duplicate Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicare pagină</translation>
     </message>
     <message>
         <source>Duplicate the Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicare pagină curentă</translation>
     </message>
     <message>
         <source>Import Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare pagină</translation>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare pagină externă</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pauză</translation>
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Pauză înregistrare podcast</translation>
     </message>
     <message>
         <source>Podcast Config</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast Config</translation>
     </message>
     <message>
         <source>Configure Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurare înregistrare podcast</translation>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocare  flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocare conţinut flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocare web</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocare conţinut web</translation>
     </message>
     <message>
         <source>Custom Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturare particularizată</translation>
     </message>
     <message>
         <source>Window Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturare fereastră</translation>
     </message>
     <message>
         <source>Capture a Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturare fereastră</translation>
     </message>
     <message>
         <source>Embed Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Incorporare conţinut web</translation>
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturare conţinut web incorporabil</translation>
     </message>
     <message>
         <source>Show on Display</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare pe ecran</translation>
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare ecran principal pe ecran de afişare</translation>
     </message>
     <message>
         <source>Erase all Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere toate adnotările</translation>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation type="unfinished"></translation>
+        <translation>eduMedia</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare simulare eduMedia</translation>
     </message>
     <message>
         <source>Open the tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschidere tutorial</translation>
     </message>
     <message>
         <source>Check Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificare actualizare</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor Sankoré</translation>
     </message>
     <message>
         <source>Show Sankore Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare Editor widget-uri Sankore</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Ascundere Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Ascundere aplicaţie Sankoré</translation>
     </message>
     <message>
         <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+H</translation>
     </message>
 </context>
 <context>
     <name>PasswordDialog</name>
     <message>
         <source>Authentication Required</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentificare obligatorie</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume de utilizator:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DUMMY ICON</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>INTRO TEXT DUMMY</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă:</translation>
     </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentificare Proxy</translation>
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectare pe Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume de utilizator:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă:</translation>
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ICON</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvare nume de utilizator şi parolă pentru utilizare ulterioară</translation>
     </message>
 </context>
 <context>
@@ -861,728 +843,744 @@
     <message>
         <source>Trash</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Coş de gunoi</translation>
     </message>
     <message>
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>/Acasă</translation>
     </message>
 </context>
 <context>
-    <name>UBAbstractPublisher</name>
+    <name>QuaZipFile</name>
     <message>
-        <source>Contacting %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Found %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot Authenticate with %1</source>
-        <translation type="unfinished"></translation>
+        <source>ZIP/UNZIP API error %1</source>
+        <translation>eroare ZIPARE/DEZIPARE API %1</translation>
     </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
     <message>
         <source>Cannot load content</source>
-        <translation type="unfinished"></translation>
+        <translation>Conţinutul nu poate fi încărcat</translation>
     </message>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare ...</translation>
     </message>
 </context>
 <context>
     <name>UBApplication</name>
     <message>
         <source>Page Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensiune pagină</translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast</translation>
     </message>
 </context>
 <context>
     <name>UBApplicationController</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Web</translation>
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizare nouă disponibilă, doriţi să accesaţi pagina web?</translation>
     </message>
     <message>
         <source>No update available</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu este disponibilă nicio actualizare</translation>
     </message>
     <message>
         <source>Update available</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizare disponibilă</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Actualizare</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content from %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Descărcare conţinut din %1</translation>
     </message>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Descărcare conţinut %1 nereuşită</translation>
     </message>
     <message>
         <source>Download finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Descărcare terminată</translation>
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tip de instrument necunoscut %1</translation>
     </message>
     <message>
         <source>Unknown content type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tip de conţinut necunoscut %1</translation>
     </message>
     <message>
         <source>Add Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare articol</translation>
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tot ce se suportă (%1)</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare adăugare imagine la bibliotecă</translation>
     </message>
 </context>
 <context>
     <name>UBCachePropertiesWidget</name>
     <message>
         <source>Cache Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Caracteristici cache</translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Culoare:</translation>
     </message>
     <message>
         <source>Shape:</source>
-        <translation type="unfinished"></translation>
+        <translation>Formă:</translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensiune:</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Închidere</translation>
     </message>
 </context>
 <context>
     <name>UBDesktopPalette</name>
     <message>
         <source>Show Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare Uniboard</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturare parte de ecran</translation>
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturare ecran</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare paletă stilou</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare tablă pe ecran secundar</translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare desktop pe ecran secundar</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentController</name>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Folder nou</translation>
     </message>
     <message>
         <source>Page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina %1</translation>
     </message>
     <message>
         <source>Add Folder of Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare folder de imagini</translation>
     </message>
     <message>
         <source>Add Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Afăugare imagini</translation>
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare pagini din fişier</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Duplicare document %1</translation>
     </message>
     <message>
         <source>Document %1 copied</source>
-        <translation type="unfinished"></translation>
+        <translation>Document %1 copiat</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminare pagină</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminare document</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sunteţi siguri că doriţi să eliminaţi documentul %1?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Golire coş de gunoi</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sunteţi siguri că doriţi să goliţi coşul de gunoi?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Golire coş de gunoi</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Coş de gunoi golit</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminare folder</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sunteţi siguri că doriţi să eliminaţi folderul &apos;%1&apos; şi toate conţinuturile sale?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu s-a selectat niciun document!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschidere fişier suportat</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare fişier %1...</translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation type="unfinished"></translation>
+        <translation>Importare fişier nereuşită ...</translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare toate imaginile din folder</translation>
     </message>
     <message>
         <source>Folder does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>Folderul nu conţine nicio imagine!</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere</translation>
     </message>
     <message>
         <source>Empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Golire</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Coş de gunoi</translation>
     </message>
     <message>
         <source>Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschidere document</translation>
     </message>
     <message>
         <source>Add all Images to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare toate imaginile la document</translation>
     </message>
     <message>
         <source>All Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Toate imaginile (%1)</translation>
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecţia nu conţine nicio imagine!</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentul &apos;%1&apos; a fost generat cu o versiune mai nouă de Sankore (%2). Dacă îl deschideţi, este posibil să pierdeţi unele date. Doriţi să continuaţi?</translation>
+    </message>
+    <message numerus="yes">
+        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
+        <translation>
+            <numerusform>Sunteţi siguri că doriţi să eliminaţi %n pagină din documentul &apos;%1&apos; selectat?</numerusform>
+            <numerusform>Sunteţi siguri că doriţi să eliminaţi %n pagini din documentul &apos;%1&apos; selectat?</numerusform>
+            <numerusform>Sunteţi siguri că doriţi să eliminaţi %n pagini din documentul &apos;%1&apos; selectat?</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
     <message>
         <source>images</source>
-        <translation type="unfinished"></translation>
+        <translation>imagini</translation>
     </message>
     <message>
         <source>videos</source>
-        <translation type="unfinished"></translation>
+        <translation>înregistrări video</translation>
     </message>
     <message>
         <source>objects</source>
-        <translation type="unfinished"></translation>
+        <translation>obiecte</translation>
     </message>
     <message>
         <source>widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>widget-uri</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Toate fişierele suportate (*.%1)</translation>
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Fişier %1 salvat</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare pagina %1 din %2</translation>
     </message>
     <message>
         <source>Erronous image data, skipping file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Dată imagine eronată, salt peste fişier %1</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina %0</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentPublisher</name>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare nereuşită.</translation>
     </message>
     <message>
         <source>Export canceled ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare anulată ...</translation>
     </message>
     <message>
         <source>Converting page %1/%2 ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Convertire pagina %1/%2 ...</translation>
     </message>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Datele de identificare nu au fost completate încă.</translation>
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare fişier Sankore pe web.</translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Document încărcat corect pe web.</translation>
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare document pe web nereuşită.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (copie)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiere pagina %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation>
+            <numerusform>%1 pagină copiată</numerusform>
+            <numerusform>%1 pagini copiate</numerusform>
+            <numerusform>%1 pagini copiate</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>UBExportDocument</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagină</translation>
     </message>
     <message>
         <source>Export as UBZ File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare ca fişier UBZ</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare document ...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare reuşită.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare %1 %2 din %3</translation>
     </message>
     <message>
         <source>Export to Sankore Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare în format Sankore</translation>
     </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare ca fişier PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exoprtare document ...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare reuşită.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare în PDF</translation>
     </message>
 </context>
 <context>
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare ca fişier PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare document...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare reuşită.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare pagina %1 din %2</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare în PDF</translation>
     </message>
 </context>
 <context>
     <name>UBExportWeb</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina</translation>
     </message>
     <message>
         <source>Export as Web data</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare ca dată web</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare document...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare reuşită.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare nereuşită.</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportare în browser web</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocat</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Vizibil pe ecran extins</translation>
     </message>
     <message>
         <source>Go to Content Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Accesare sursă conţinut</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Tipărire text aici&gt;</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItemDelegate</name>
     <message>
         <source>Text Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Culoare text</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>Îngheţat</translation>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation type="unfinished"></translation>
+        <translation>Transformare în instrument</translation>
     </message>
 </context>
 <context>
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>Format de fişier comun (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare fişier %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare fişier %1 nereuşită.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare reuşită.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare nereuşită.</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare fişier %1...</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare reuşită.</translation>
     </message>
     <message>
         <source>Sankore 3.1 (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1 (*.ubz)</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare fişier %1 nereuşită.</translation>
     </message>
 </context>
 <context>
     <name>UBImportImage</name>
     <message>
         <source>Image Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>Format imagine (</translation>
     </message>
     <message>
         <source>Image import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare imagine nereuşită.</translation>
     </message>
     <message>
         <source>Image import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare imagine reuşită.</translation>
     </message>
 </context>
 <context>
     <name>UBImportPDF</name>
     <message>
         <source>Portable Document Format (*.pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Document în format portabil (*.pdf)</translation>
     </message>
     <message>
         <source>PDF import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare PDF nereuşită.</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare pagina %1 din %2</translation>
     </message>
     <message>
         <source>PDF import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare PDF reuşită.</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare în timpul publicării înregistrării video pe intranet (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicare pe intranet în curs %1 %</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicare</translation>
     </message>
 </context>
 <context>
     <name>UBLibActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare la favorite</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Distribuire</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Căutare</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Înapoi la folder</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminare din favorite</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Creare folder nou</translation>
     </message>
 </context>
 <context>
     <name>UBLibItemProperties</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Înapoi</translation>
     </message>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare la pagină</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished"></translation>
+        <translation>Setare ca fundal</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare la bibliotecă</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Informaţii despre obiect</translation>
     </message>
 </context>
 <context>
     <name>UBLibraryController</name>
     <message>
         <source>Added 1 Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>S-a adăugat 1 imagine la bibliotecă</translation>
     </message>
     <message>
         <source>Audios</source>
         <comment>Audio category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Înregistrări audio</translation>
     </message>
     <message>
         <source>Movies</source>
         <comment>Movies category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Filme</translation>
     </message>
     <message>
         <source>Pictures</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagini</translation>
     </message>
     <message>
         <source>Shapes</source>
         <comment>Shapes category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <source>Applications</source>
         <comment>Applications category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicaţii</translation>
     </message>
     <message>
         <source>Favorite</source>
         <comment>Favorite category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Favorit</translation>
     </message>
     <message>
         <source>Creating image thumbnail for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Creare miniatură imagine pentru %1.</translation>
     </message>
     <message>
         <source>Adding to page failed for item %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare la pagină nereuşită pentru articol %1.</translation>
     </message>
     <message>
         <source>Interactivities</source>
         <comment>Interactives category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Interactivităţi</translation>
     </message>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished"></translation>
+        <translation>ImportedImage</translation>
     </message>
     <message>
         <source>Animations</source>
         <comment>Animations category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Animaţii</translation>
     </message>
 </context>
 <context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Da</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;qt&gt;Introduceţi numele de utilizator şi parola pentru &quot;%1&quot; la %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectare nereuşită pe Proxy</translation>
     </message>
     <message>
         <source>SSL Errors:
@@ -1592,159 +1590,263 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
-        <translation type="unfinished"></translation>
+        <translation>Erori SSL:
+
+%1
+
+%2
+
+Doriţi să ignoraţi aceste erori pentru acest host?</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Da</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Nu</translation>
     </message>
 </context>
 <context>
     <name>UBNewFolderDlg</name>
     <message>
         <source>Add new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare fişier nou</translation>
     </message>
     <message>
         <source>New Folder name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume fişier nou:</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Adăugare</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anulare</translation>
     </message>
 </context>
 <context>
     <name>UBPersistenceManager</name>
     <message>
         <source>(copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>(copie)</translation>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation type="unfinished"></translation>
+        <translation>Pierdere depozit de documente</translation>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore a pierdut accesul la depozitul de documente &apos;%1&apos;. Din păcate, aplicaţia trebuie închisă pentru a evita coruperea datelor. Este posibil şi ca ultimele modificări să fie pierdute.</translation>
     </message>
 </context>
 <context>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pornire codificator nereuşită ...</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu este disponibil niciun codificator de podcast ...</translation>
     </message>
     <message>
         <source>Part %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Partea %1</translation>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation type="unfinished"></translation>
+        <translation>pe desktopul dumneavoastră ...</translation>
     </message>
     <message>
         <source>in folder %1</source>
-        <translation type="unfinished"></translation>
+        <translation>în folderul %1</translation>
     </message>
     <message>
         <source>Podcast created %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast creat %1</translation>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare înregistrare podcast (%1)</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
-        <translation type="unfinished"></translation>
+        <translation>Intrare audio implicită</translation>
     </message>
     <message>
         <source>No Audio Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicio înregistrare audio</translation>
     </message>
     <message>
         <source>Small</source>
-        <translation type="unfinished"></translation>
+        <translation>Mic</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>Mediu</translation>
     </message>
     <message>
         <source>Full</source>
-        <translation type="unfinished"></translation>
+        <translation>Mare</translation>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicare pe Intranet</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicare pe YouTube</translation>
     </message>
     <message>
         <source>Sankore Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>Podcast Sankore</translation>
     </message>
 </context>
 <context>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation type="unfinished"></translation>
+        <translation>versiune:</translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>Markerul este sensibil la apăsare</translation>
     </message>
 </context>
 <context>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectare Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume de utilizator:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicare document pe web</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="unfinished"></translation>
+        <translation>Titlu:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Descriere:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicare</translation>
     </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Documente fără titlu</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Coş de gunoi</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Imagini</translation>
     </message>
     <message>
         <source>My Movies</source>
+        <translation>Filmele mele</translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Titlu</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1752,444 +1854,445 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Generare previzualizare miniaturi ...</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 miniaturi generate ...</translation>
     </message>
 </context>
 <context>
     <name>UBToolsManager</name>
     <message>
         <source>Mask</source>
-        <translation type="unfinished"></translation>
+        <translation>Mască</translation>
     </message>
     <message>
         <source>Ruler</source>
-        <translation type="unfinished"></translation>
+        <translation>Riglă</translation>
     </message>
     <message>
         <source>Compass</source>
-        <translation type="unfinished"></translation>
+        <translation>Compas</translation>
     </message>
     <message>
         <source>Protractor</source>
-        <translation type="unfinished"></translation>
+        <translation>Raportor</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Echer</translation>
     </message>
     <message>
         <source>Magnifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Lupă</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation type="unfinished"></translation>
+        <translation>Cache</translation>
     </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
     <message>
         <source>Whole page</source>
-        <translation type="unfinished"></translation>
+        <translation>Toată pagina</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizator documente</translation>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation type="unfinished"></translation>
+        <translation>fişiere necesită o actualizare.</translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation type="unfinished"></translation>
+        <translation>Cale de acces pentru copii de rezervă:</translation>
     </message>
     <message>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Navigare</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizare</translation>
     </message>
     <message>
         <source>Select a backup folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectare fişier cu copii de rezervă</translation>
     </message>
     <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fişiere actualizate cu succes!
+Vă rugăm să reporniţi aplicaţia pentru a accesa documentele actualizate.</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>O eroare a intervenit în timpul actualizării. Fişierele nu au fost afectate.</translation>
     </message>
     <message>
         <source>Files update results</source>
-        <translation type="unfinished"></translation>
+        <translation>Rezultate actualizare fişiere</translation>
     </message>
     <message>
         <source>Updating file </source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizare fişier</translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation type="unfinished"></translation>
+        <translation>Vă rugăm să aşteptaţi, procesul de importare va începe în curând...</translation>
     </message>
 </context>
 <context>
     <name>UBW3CWidget</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBWebPluginWidget</name>
     <message>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare...</translation>
     </message>
 </context>
 <context>
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicare document pe web Sankore</translation>
     </message>
 </context>
 <context>
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%0 apelate (metodă=%1, status=%2)</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentificare YouTube nereuşită.</translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare în timpul încărcării înregistrării video pe YouTube (%1)</translation>
     </message>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare pe YouTube în curs %1 %</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublishingDialog</name>
     <message>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>Încărcare</translation>
     </message>
     <message>
         <source>Autos &amp; Vehicles</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoturisme &amp; vehicule</translation>
     </message>
     <message>
         <source>Music</source>
-        <translation type="unfinished"></translation>
+        <translation>Muzică</translation>
     </message>
     <message>
         <source>Pets &amp; Animals</source>
-        <translation type="unfinished"></translation>
+        <translation>Animale de companie &amp; Animale</translation>
     </message>
     <message>
         <source>Sports</source>
-        <translation type="unfinished"></translation>
+        <translation>Sporturi</translation>
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Călătorie &amp; Evenimente</translation>
     </message>
     <message>
         <source>Gaming</source>
-        <translation type="unfinished"></translation>
+        <translation>Jocuri</translation>
     </message>
     <message>
         <source>Comedy</source>
-        <translation type="unfinished"></translation>
+        <translation>Comedie</translation>
     </message>
     <message>
         <source>People &amp; Blogs</source>
-        <translation type="unfinished"></translation>
+        <translation>Oameni &amp; Bloguri</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation type="unfinished"></translation>
+        <translation>Noutăţi &amp; Politică</translation>
     </message>
     <message>
         <source>Entertainment</source>
-        <translation type="unfinished"></translation>
+        <translation>Divertisment</translation>
     </message>
     <message>
         <source>Education</source>
-        <translation type="unfinished"></translation>
+        <translation>Educaţie</translation>
     </message>
     <message>
         <source>Howto &amp; Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Cum se face &amp; Stil</translation>
     </message>
     <message>
         <source>Nonprofits &amp; Activism</source>
-        <translation type="unfinished"></translation>
+        <translation>Non-profituri &amp; Activism</translation>
     </message>
     <message>
         <source>Science &amp; Technology</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştiinţă &amp; Tehnologie</translation>
     </message>
 </context>
 <context>
     <name>UBZoomPalette</name>
     <message>
         <source>%1 x</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 x</translation>
     </message>
 </context>
 <context>
     <name>WBClearButton</name>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvare fişier</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Descărcare anulată: %1</translation>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare deschidere fişier salvat: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare salvare: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare de reţea: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>secunde</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>minute</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished"></translation>
+        <translation>- %4 %5 rămase</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 din %2 (%3/sec) %4</translation>
     </message>
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation type="unfinished"></translation>
+        <translation>?</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 din %2 - Întrerupte</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished"></translation>
+        <translation>biţi</translation>
     </message>
     <message>
         <source>KB</source>
-        <translation type="unfinished"></translation>
+        <translation>KB</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished"></translation>
+        <translation>MB</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadManager</name>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished"></translation>
+        <translation>1 descărcare</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 descărcări</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titlu</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresă</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryTreeModel</name>
     <message>
         <source>Earlier Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Astăzi mai devreme</translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 articole</translation>
     </message>
 </context>
 <context>
     <name>WBSearchLineEdit</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Căutare</translation>
     </message>
 </context>
 <context>
     <name>WBTabBar</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Nou &amp;Tab</translation>
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Clonare tab</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Închidere tab</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Închidere &amp;Alte taburi</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Reîncărcare tab</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Reîncărcare toate tab-urile</translation>
     </message>
 </context>
 <context>
     <name>WBTabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Tab-uri recent închise</translation>
     </message>
     <message>
         <source>(Untitled)</source>
-        <translation type="unfinished"></translation>
+        <translation>(fără titlu)</translation>
     </message>
 </context>
 <context>
     <name>WBToolbarSearch</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Căutare</translation>
     </message>
     <message>
         <source>No Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicio căutare recentă</translation>
     </message>
     <message>
         <source>Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>Căutări recente</translation>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>Ştergere toate căutările recente</translation>
     </message>
 </context>
 <context>
     <name>WBWebPage</name>
     <message>
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation>Descărcare</translation>
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation type="unfinished"></translation>
+        <translation>Adăugare la documentul curent</translation>
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Error loading page: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare încărcare pagină: %1</translation>
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Descărcare document PDF: preferaţi să descărcaţi fişierul PDF sau să îl adăugaţi la documentul Sankore curent?</translation>
     </message>
 </context>
 <context>
     <name>WBWebView</name>
     <message>
         <source>Open in New Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschidere în tab nou</translation>
     </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicare podcast pe YouTube</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titlu</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descriere</translation>
     </message>
     <message>
         <source>Keywords</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuvinte cheie</translation>
     </message>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard</translation>
     </message>
     <message>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Categorie</translation>
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume de utilizator YouTube</translation>
     </message>
     <message>
         <source>YouTube Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă YouTube</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2197,238 +2300,238 @@ Please reboot the application to access the updated documents.</source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Făcând clic pe&apos;Încărcare,&apos; certificaţi faptul că deţineţi toate drepturile asupra conţinutului sau că sunteţi autorizat de titular să faceţi public conţinutul pe YouTube şi că este conform în celelalte privinţe cu Termenii de utilizare pentru YouTube de pe&lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
     <name>brushProperties</name>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Pe fundal deschis</translation>
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Pe fundal închis</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Opacitate</translation>
     </message>
     <message>
         <source>Line Width</source>
-        <translation type="unfinished"></translation>
+        <translation>Grosime linie</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>Medie</translation>
     </message>
     <message>
         <source>Strong</source>
-        <translation type="unfinished"></translation>
+        <translation>Groasă</translation>
     </message>
     <message>
         <source>Fine</source>
-        <translation type="unfinished"></translation>
+        <translation>Subţire</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>Stiloul este sensibil la apăsare</translation>
     </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titlu</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descriere</translation>
     </message>
 </context>
 <context>
     <name>documentPublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titlu</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descriere</translation>
     </message>
     <message>
         <source>Attach Downloadable PDF Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Ataşare versiune PDF descărcabilă</translation>
     </message>
     <message>
         <source>Attach Downloadable Uniboard File (UBZ)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ataşare fişier Uniboard descărcabil (UBZ)</translation>
     </message>
     <message>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Atenţie: Acest document conţine înregistrări video, care nu vor fi redate corect pe Web</translation>
     </message>
 </context>
 <context>
     <name>documents</name>
     <message>
         <source>Uniboard Documents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>Documente Uniboard</translation>
     </message>
 </context>
 <context>
     <name>preferencesDialog</name>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferinţe</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>version : …</source>
-        <translation type="unfinished"></translation>
+        <translation>versiune : ...</translation>
     </message>
     <message>
         <source>Default Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Setări implicite</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Închidere</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare</translation>
     </message>
     <message>
         <source>Internet</source>
-        <translation type="unfinished"></translation>
+        <translation>Internet</translation>
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare pagină cu browser extern</translation>
     </message>
     <message>
         <source>Home Page:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina de start:</translation>
     </message>
     <message>
         <source>Proxy User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume de utilizator/parolă Proxy:</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Tastatură virtuală</translation>
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensiune buton tastatură:</translation>
     </message>
     <message>
         <source>Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Bară de instrumente</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation type="unfinished"></translation>
+        <translation>Poziţionat în partea de sus (recomandat pentru tablete)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation type="unfinished"></translation>
+        <translation>Poziţionat în partea de jos (recomandat pentru table albe)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare text sub buton</translation>
     </message>
     <message>
         <source>Mirroring</source>
-        <translation type="unfinished"></translation>
+        <translation>Simetrizare</translation>
     </message>
     <message>
         <source>Show main display immediately on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare ecran principal imediat pe ecran secundar sau proiector</translation>
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>Paletă stilou</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>Orizontal</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertical</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Stilou</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
+        <translation>Marker</translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Despre</translation>
     </message>
     <message>
         <source>Software Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualizare software</translation>
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificare actualizare software la lansare</translation>
     </message>
     <message>
         <source>Licences</source>
-        <translation type="unfinished"></translation>
+        <translation>Licenţe</translation>
     </message>
     <message>
         <source>OpenSSl</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenSSl</translation>
     </message>
     <message>
         <source>zlib</source>
-        <translation type="unfinished"></translation>
+        <translation>zlib</translation>
     </message>
     <message>
         <source>xpdf</source>
-        <translation type="unfinished"></translation>
+        <translation>xpdf</translation>
     </message>
     <message>
         <source>Quazip</source>
-        <translation type="unfinished"></translation>
+        <translation>Quazip</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2437,7 +2540,7 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;The OpenSSL toolkit stays under a dual license, i.e. both the conditions of the OpenSSL License and the original SSLeay license apply to the toolkit.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;See below for the actual license texts. Actually both licenses are BSD-style Open Source licenses. In case of any license issues related to OpenSSL please contact &lt;/span&gt;&lt;a href=&quot;mailto:openssl-core@openssl.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;openssl-core@openssl.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2445,7 +2548,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2453,7 +2556,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#000000;&quot;&gt;Xpdf is licensed under the GNU General Public License (GPL), version 2.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2461,7 +2564,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;GNU Library or Lesser General Public License (LGPL), zlib/libpng License&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2639,9 +2742,9 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;apply, that proxy&apos;s public statement of acceptance of any version is&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;permanent authorization for you to choose that version for the&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2652,51 +2755,51 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;GIPENA&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;20 Avenue Ségur Paris 75007&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Téléphone : 01 43 17 68 08&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Reţea</translation>
     </message>
     <message>
         <source>Community</source>
-        <translation type="unfinished"></translation>
+        <translation>Comunitate</translation>
     </message>
     <message>
         <source>User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume de utilizator/Parolă:</translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation type="unfinished"></translation>
+        <translation>Blocare flash</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation type="unfinished"></translation>
+        <translation>Selectaţi un flash pentru blocare</translation>
     </message>
     <message>
         <source>about:blank</source>
-        <translation type="unfinished"></translation>
+        <translation>about:blank</translation>
     </message>
     <message>
         <source>Application name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume aplicaţie</translation>
     </message>
     <message>
         <source>Create Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Creare aplicaţie</translation>
     </message>
 </context>
 </TS>

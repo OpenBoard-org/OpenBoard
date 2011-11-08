@@ -1,13 +1,11 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr_FR">
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation>Cliquer pour activer Sankoré</translation>
-    </message>
-    <message>
-        <source>background: url(:/images/bigUniboard.png); border: none;</source>
-        <translation type="unfinished"></translation>
+        <translation>Cliquer pour revenir à l&apos;application</translation>
     </message>
 </context>
 <context>
@@ -47,10 +45,6 @@
         <source>Open</source>
         <translation>Ouvrir</translation>
     </message>
-    <message>
-        <source>Ico</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>IntranetPodcastPublishingDialog</name>
@@ -75,7 +69,7 @@
     <name>MainWindow</name>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished">Sankoré</translation>
+        <translation>Sankoré</translation>
     </message>
     <message>
         <source>Board</source>
@@ -385,7 +379,7 @@
         <source>Tutorial</source>
         <translation>Tutoriel</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -577,7 +571,7 @@
         <source>Check Update</source>
         <translation>Contrôler les mises à jour</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré Editor</source>
         <translation>Editeur Sankoré</translation>
     </message>
@@ -585,11 +579,11 @@
         <source>Show Sankore Widgets Editor</source>
         <translation>Afficher l&apos;éditeur d&apos;Apps Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré</source>
         <translation>Cacher Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Sankoré Application</source>
         <translation>Cacher l&apos;application Sankoré</translation>
     </message>
@@ -820,14 +814,6 @@
         <source>Password:</source>
         <translation>Mot de passe:</translation>
     </message>
-    <message>
-        <source>DUMMY ICON</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>INTRO TEXT DUMMY</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ProxyDialog</name>
@@ -849,11 +835,7 @@
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation>Sauver nom utilisateur &amp; mot de passe</translation>
-    </message>
-    <message>
-        <source>ICON</source>
-        <translation type="unfinished"></translation>
+        <translation>Sauver nom d&apos;utilisateur et mot de passe pour une utilisation future</translation>
     </message>
 </context>
 <context>
@@ -861,27 +843,19 @@
     <message>
         <source>Trash</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished">Corbeille</translation>
+        <translation>Corbeille</translation>
     </message>
     <message>
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
-        <translation type="unfinished">Accueil</translation>
+        <translation>/Accueil</translation>
     </message>
 </context>
 <context>
-    <name>UBAbstractPublisher</name>
+    <name>QuaZipFile</name>
     <message>
-        <source>Contacting %1</source>
-        <translation>En train de contacter %1</translation>
-    </message>
-    <message>
-        <source>Found %1</source>
-        <translation>Trouvé %1</translation>
-    </message>
-    <message>
-        <source>Cannot Authenticate with %1</source>
-        <translation>Impossible de s&apos;identifier avec %1</translation>
+        <source>ZIP/UNZIP API error %1</source>
+        <translation>ZIP/UNZIP API erreur %1</translation>
     </message>
 </context>
 <context>
@@ -922,7 +896,11 @@
     </message>
     <message>
         <source>Update available</source>
-        <translation type="unfinished"></translation>
+        <translation>Mise à jour indisponible</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>Mettre à jour</translation>
     </message>
 </context>
 <context>
@@ -967,23 +945,23 @@
     <name>UBCachePropertiesWidget</name>
     <message>
         <source>Cache Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriétés cache</translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur :</translation>
     </message>
     <message>
         <source>Shape:</source>
-        <translation type="unfinished"></translation>
+        <translation>Forme :</translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille :</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -1057,19 +1035,19 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="unfinished">Vider la corbeille</translation>
+        <translation>Vider la corbeille</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation type="unfinished">Êtes-vous sûr de vouloir vider la corbeille ?</translation>
+        <translation>Êtes-vous sûr de vouloir vider la corbeille ?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation type="unfinished">Supression du contenu de la corbeille</translation>
+        <translation>Supression du contenu de la corbeille</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation type="unfinished">Corbeille vidée</translation>
+        <translation>Corbeille vidée</translation>
     </message>
     <message>
         <source>Remove Folder</source>
@@ -1105,7 +1083,7 @@
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Corbeille</translation>
+        <translation>Corbeille</translation>
     </message>
     <message>
         <source>Open Document</source>
@@ -1135,6 +1113,13 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Ce document &apos;%1&apos; a été créé avec une version plus récente de Sankoré (%2). En l&apos;ouvrant, vous risquez de perdre certains éléments. Désirez-vous continuer?</translation>
     </message>
+    <message numerus="yes">
+        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
+        <translation>
+            <numerusform>Souhaitez-vous supprimer %n page(s) du document sélectionné &apos;%1&apos; ?</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1160,7 +1145,7 @@
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished">Importation de la page %1 sur %2</translation>
+        <translation>Importation de la page %1 sur %2</translation>
     </message>
     <message>
         <source>Erronous image data, skipping file %1</source>
@@ -1218,6 +1203,13 @@
     <message>
         <source>Copying page %1/%2</source>
         <translation>Copie de la page %1/%2 en cours</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation>
+            <numerusform>%1 pages copiées</numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -1360,7 +1352,7 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>Format de fichier courant (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
@@ -1555,7 +1547,7 @@
     </message>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished"></translation>
+        <translation>ImageImportée</translation>
     </message>
     <message>
         <source>Animations</source>
@@ -1567,11 +1559,15 @@
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Oui</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Non</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -1600,6 +1596,14 @@ Do you want to ignore these errors for this host?</source>
 
 Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
+    <message>
+        <source>Yes</source>
+        <translation>Oui</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Non</translation>
+    </message>
 </context>
 <context>
     <name>UBNewFolderDlg</name>
@@ -1610,6 +1614,14 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <source>New Folder name:</source>
         <translation>Nom du dossier:</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Ajouter</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -1755,6 +1767,88 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
 </context>
 <context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Titre</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
@@ -1789,11 +1883,11 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
     <message>
         <source>Magnifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Loupe</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation type="unfinished"></translation>
+        <translation>Cache</translation>
     </message>
 </context>
 <context>
@@ -1881,7 +1975,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%0 appelé (méthode=%1, statut=%2)</translation>
     </message>
 </context>
 <context>
@@ -1907,7 +2001,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Autos &amp; Vehicles</source>
-        <translation>Véhicules</translation>
+        <translation>Autos et Véhicules</translation>
     </message>
     <message>
         <source>Music</source>
@@ -2306,10 +2400,6 @@ p, li { white-space: pre-wrap; }
         <source>Uniboard Documents</source>
         <translation>Documents Uniboard</translation>
     </message>
-    <message>
-        <source>1</source>
-        <translation></translation>
-    </message>
 </context>
 <context>
     <name>preferencesDialog</name>
@@ -2377,7 +2467,7 @@ p, li { white-space: pre-wrap; }
         <source>Show main display immediately on secondary screen or projector</source>
         <translation>Afficher immédiatement l&apos;écran principal sur l&apos;écran secondaire ou le projecteur</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>version : …</source>
         <translation>version:...</translation>
     </message>
@@ -2433,7 +2523,7 @@ p, li { white-space: pre-wrap; }
         <source>Quazip</source>
         <translation>Quazip</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -2648,7 +2738,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2661,7 +2751,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
