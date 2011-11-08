@@ -6,6 +6,7 @@
 #include "UBCachePropertiesWidget.h"
 
 #include "core/UBApplication.h"
+#include "core/UBApplicationController.h"
 #include "board/UBBoardController.h"
 #include "domain/UBGraphicsScene.h"
 
@@ -91,7 +92,7 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     mpSizeLabel = new QLabel(tr("Size:"), mpProperties);
     mpSizeSlider = new QSlider(Qt::Horizontal, mpProperties);
     mpSizeSlider->setMinimumHeight(20);
-    mpSizeSlider->setMinimum(0);
+    mpSizeSlider->setMinimum(50);
     mpSizeSlider->setMaximum(MAX_SHAPE_WIDTH);
     mpSizeLayout->addWidget(mpSizeLabel, 0);
     mpSizeLayout->addWidget(mpSizeSlider, 1);
@@ -204,16 +205,21 @@ UBCachePropertiesWidget::~UBCachePropertiesWidget()
 
 void UBCachePropertiesWidget::onCloseClicked()
 {
-    // Remove the current cache from the list
-    mCaches.remove(mCaches.indexOf(mpCurrentCache));
-
-    // Remove the cache from the board
-    UBApplication::boardController->activeScene()->removeItem(mpCurrentCache);
-    mpCurrentCache = NULL;
-
-    if(mCaches.empty())
+    if(!mCaches.empty())
     {
-        emit cacheListEmpty();
+        // Remove the current cache from the list
+        mCaches.remove(mCaches.indexOf(mpCurrentCache));
+
+        // Remove the cache from the board
+        UBApplication::boardController->activeScene()->removeItem(mpCurrentCache);
+        mpCurrentCache = NULL;
+
+        if(mCaches.empty())
+        {
+            emit cacheListEmpty();
+        }
+
+        emit hideTab(name());
     }
 }
 
@@ -269,40 +275,59 @@ void UBCachePropertiesWidget::updateShapeButtons()
 
 void UBCachePropertiesWidget::updateCurrentCache()
 {
-    // Get the current page cache
-    QList<QGraphicsItem*> items = UBApplication::boardController->activeScene()->items();
-    foreach(QGraphicsItem* it, items)
+    bool isBoardMode = false;
+    // this widget can work only on Board mode
+    if( UBApplication::applicationController != NULL )
     {
-        if("Cache" == it->data(Qt::UserRole).toString())
+        // if app controller is available, and current mode is Board, and no show desktop, than all ok, just process
+        if( UBApplication::applicationController->displayMode() == UBApplicationController::Board && 
+            !UBApplication::applicationController->isShowingDesktop())
+            isBoardMode = true;
+    }
+    // if app controller == null, than we do not know what mode now, so just process
+    else
+        isBoardMode = true;
+
+    if(isBoardMode)
+    {
+        // Get the current page cache
+        QList<QGraphicsItem*> items = UBApplication::boardController->activeScene()->items();
+        foreach(QGraphicsItem* it, items)
         {
-            setEnabled(true);
-            emit showTab(name());
-            mpCurrentCache = dynamic_cast<UBGraphicsCache*>(it);
-            if((NULL != mpCurrentCache) && (!mCaches.contains(mpCurrentCache)))
+            if("Cache" == it->data(Qt::UserRole).toString())
             {
-                mCaches.append(mpCurrentCache);
-            }
+                setEnabled(true);
+                emit showTab(name());
+                mpCurrentCache = dynamic_cast<UBGraphicsCache*>(it);
+                if((NULL != mpCurrentCache) && (!mCaches.contains(mpCurrentCache)))
+                {
+                    mCaches.append(mpCurrentCache);
+                }
 
-            // Update the values of the cache properties
-            mpSizeSlider->setValue(mpCurrentCache->shapeWidth());
-            updateCacheColor(mpCurrentCache->maskColor());
-            switch(mpCurrentCache->maskshape())
-            {
-                case eMaskShape_Circle:
-                    mpCircleButton->setChecked(true);
-                    mpSquareButton->setChecked(false);
-                    break;
-                case eMaskShap_Rectangle:
-                    mpCircleButton->setChecked(false);
-                    mpSquareButton->setChecked(true);
-                    break;
-            }
+                // Update the values of the cache properties
+                mpSizeSlider->setValue(mpCurrentCache->shapeWidth());
+                updateCacheColor(mpCurrentCache->maskColor());
+                switch(mpCurrentCache->maskshape())
+                {
+                    case eMaskShape_Circle:
+                        mpCircleButton->setChecked(true);
+                        mpSquareButton->setChecked(false);
+                        break;
+                    case eMaskShap_Rectangle:
+                        mpCircleButton->setChecked(false);
+                        mpSquareButton->setChecked(true);
+                        break;
+                }
 
-            return;
+                return;
+            }
         }
     }
 
-    // If we fall here, that means that this page has no cache
+    // If we fall here, that means:
+    // 1 - that this page has no cache
+    // 2 - we are not in Board mode
+    // 3 - we are in Board mode, but show desktop (as really - Desktop mode)
     emit hideTab(name());
     mpCurrentCache = NULL;
     setDisabled(true);
@@ -320,3 +345,4 @@ void UBCachePropertiesWidget::onCacheEnabled()
 {
     emit showTab(name());
 }
+ 
