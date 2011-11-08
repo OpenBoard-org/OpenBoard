@@ -182,7 +182,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
     int strokeWidth = !textStrokeWidth.isNull() ? textStrokeWidth.toInt() : 0;
 
     //init svg generator with temp file
-    QSvgGenerator *generator = createSvgGenerator(width + 10, height + 10);
+    QSvgGenerator *generator = createSvgGenerator(width, height);
 
     //init painter to paint to svg
     QPainter painter;
@@ -192,7 +192,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
     //fill rect
     if (fillColor.isValid()) {
         painter.setBrush(QBrush(fillColor));
-        painter.fillRect(5, 5, width, height, fillColor);
+        painter.fillRect(0, 0, width, height, fillColor);
     }
     QPen pen;
     if (strokeColor.isValid()) {
@@ -201,7 +201,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
     if (strokeWidth)
         pen.setWidth(strokeWidth);
     painter.setPen(pen);
-    painter.drawRect(5, 5, width, height);
+    painter.drawRect(0, 0, width, height);
 
     painter.end();
 
@@ -213,7 +213,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
         transform = transformFromString(textTransform);
         hastransform = true;
     }
-    repositionSvgItem(svgItem, width + 10, height + 10, x1 - 5, y1 - 5, hastransform, transform);
+    repositionSvgItem(svgItem, width, height, x1, y1, hastransform, transform);
     delete generator;
 
     return true;
@@ -663,7 +663,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
 
     //add resulting svg file to scene
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
-    repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
+    repositionSvgItem(svgItem, width, height, x + 5, y + 5, hasTransform, transform);
     delete generator;
 
     return true;
@@ -700,7 +700,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
        transform = transformFromString(textTransform);
        hastransform = true;
    }
-   repositionSvgItem(pixItem, width, height, x - 5, y - 5, hastransform, transform);
+   repositionSvgItem(pixItem, width, height, x, y, hastransform, transform);
+//   experimentalReposition(pixItem, width, height, x, y, hastransform, transform);
    hashSceneItem(element, pixItem);
 
    return true;
@@ -741,7 +742,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
         transform = transformFromString(textTransform);
         hastransform = true;
     }
-    repositionSvgItem(flashItem, width, height, x - 5, y - 5, true, transform);
+    repositionSvgItem(flashItem, width, height, x, y, true, transform);
     hashSceneItem(element, flashItem);
 
     return true;
@@ -961,23 +962,80 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
     qreal hScale = itemBounds.width() / width * curTrans.m11();
     qreal vScale = itemBounds.height() / height * curTrans.m22();
     
+    qreal xScale = width  / itemBounds.width();
+    qreal yScale = height / itemBounds.height();
+
     if (useTransform)
     {
         QPointF oldVector((x - transform.dx()), (y - transform.dy()));
         QTransform rTransform(transform.m11(), transform.m12(), transform.m21(), transform.m22(), 0, 0);
         QPointF newVector = rTransform.map(oldVector);
         rTransform.scale(curTrans.m11(), curTrans.m22());
-        item->setTransform(QTransform(rTransform.m11(), rTransform.m12(), rTransform.m21(), rTransform.m22(), 0, 0));
-        item->setPos((x - mViewBoxCenter.x() + (newVector - oldVector).x()) * hScale, (y - mViewBoxCenter.y() + (newVector - oldVector).y()) * vScale );
+        item->setTransform(QTransform(rTransform.m11() * mVBTransFactor,
+                                      rTransform.m12() * mVBTransFactor,
+                                      rTransform.m21(), rTransform.m22(), 0, 0));
+        item->setPos((x - mViewBoxCenter.x() + (newVector - oldVector).x()) * xScale * mVBTransFactor,
+                     (y - mViewBoxCenter.y() + (newVector - oldVector).y()) * yScale * mVBTransFactor);
     }
     else
     {
-        item->setPos((x - mViewBoxCenter.x()) * hScale, (y  - mViewBoxCenter.y()) * vScale);
+        qreal fullScaleX = mVBTransFactor * xScale;
+        qreal fullScaleY = mVBTransFactor * yScale;
+        item->setTransform(QTransform(fullScaleX, 0, 0, fullScaleY, 0, 0));
+        itemBounds = item->boundingRect();
+        item->setPos((int)((x - mViewBoxCenter.x()) * mVBTransFactor),
+                     (int)((y - mViewBoxCenter.y()) * mVBTransFactor));
+        QPointF newPos = item->pos();
+        qDebug();
     }
 
     QTransform newTrans = item->transform();
 //    qWarning() << QString("Item new transform = %3 0 0 %4 %1 %2, position %5, %6").arg(newTrans.dx()).arg(newTrans.dy()).arg(newTrans.m11()).arg(newTrans.m22()).arg(item->x()).arg(item->y());
 
+}
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::experimentalReposition(QGraphicsItem *item, qreal width, qreal height,
+                                                                   qreal x, qreal y,
+                                                                   bool useTransform, QTransform &transform)
+{
+    Q_UNUSED(useTransform)
+    Q_UNUSED(transform)
+
+    QRectF itemBounds = item->boundingRect();
+
+    qreal xScale = width  / itemBounds.width();
+    qreal yScale = height / itemBounds.height();
+
+    qreal newX = (x - mViewBox.center().x()) * xScale * mVBTransFactor;
+    qreal newY = (y - mViewBox.center().y()) * yScale * mVBTransFactor;
+
+//    qDebug() << item->transform();
+//    QTransform transform1(1, 0, 0, 1, mCurrentSceneRect.center().x(), mCurrentSceneRect.center().y());
+//    QPointF newPos = QTransform(xScale * mVBTransFactor, 0, 0, yScale * mVBTransFactor,
+//                                mCurrentSceneRect.center().x(), mCurrentSceneRect.center().y()).map(QPointF(x, y));
+
+    QPointF newPos(newX, newY);
+
+    item->setTransform(QTransform(xScale * mVBTransFactor, 0, 0, yScale * mVBTransFactor, 0, 0));
+    item->setPos(newPos);
+
+    item->setPos(newPos);
+
+    qDebug();
+
+
+
+    //    QTransform transform;
+
+//    QTransform newTransform(mVBTransFactor, 0, 0,
+//                            mVBTransFactor, mViewPort.center().x(), mViewPort.center().y());
+//    QRectF newItemRect = newTransform.mapRect(itemRect);
+//    item->setPos(newItemRect.topLeft());
+//    item->setBou
+
+
+//    QTransform translateTransform(width * mVBTransFactor, 0, 0, height * mVBTransFactor,
+//                                  mViewPort.center().x(), mViewPort.center().y());
+//    item->setTransform(translateTransform);
 }
 
 //bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseText()
@@ -1146,6 +1204,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createNewScene()
 {
     mCurrentScene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, mProxy->pageCount());
     mCurrentSceneRect = mCurrentScene->normalizedSceneRect();
+    mVBTransFactor = qMin(mCurrentSceneRect.width()  / mViewPort.width(),
+                          mCurrentSceneRect.height() / mViewPort.height());
     return true;
 }
 
@@ -1228,8 +1288,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::getViewBoxDimenstions(const QString&
         if (capturesCount == 5 && regexp.capturedTexts().at(0).length() == viewBox.length())
         {
             mViewBox = QRectF(0, 0, regexp.capturedTexts().at(3).toDouble(), regexp.capturedTexts().at(4).toDouble());
+            mViewPort = mViewBox;
+            mViewPort.translate(- mViewPort.center());
             mViewBoxCenter.setX(mViewBox.width() / 2);
             mViewBoxCenter.setY(mViewBox.height() / 2);
+
             return true;
         }
     }

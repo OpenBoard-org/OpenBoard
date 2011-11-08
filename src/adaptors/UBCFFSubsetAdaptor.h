@@ -58,6 +58,8 @@ private:
         QRectF mCurrentSceneRect;
         QString mIndent;
         QRectF mViewBox;
+        QRectF mViewPort;
+        qreal mVBTransFactor;
         QPointF mViewBoxCenter;
         QSize mSize;
 
@@ -111,6 +113,9 @@ private:
         void repositionSvgItem(QGraphicsItem *item, qreal width, qreal height,
                                qreal x, qreal y,
                                bool useTransform, QTransform &transform);
+        void experimentalReposition(QGraphicsItem *item, qreal width, qreal height,
+                                    qreal x, qreal y,
+                                    bool useTransform, QTransform &transform);
         QColor colorFromString(const QString& clrString);
         QTransform transformFromString(const QString trString);
         bool getViewBoxDimenstions(const QString& viewBox);
