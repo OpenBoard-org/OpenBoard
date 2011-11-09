@@ -422,9 +422,9 @@ void UBPathScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     const QMimeData* pMimeData = event->mimeData();
-    qDebug() << " Drop source : " << event->source()->metaObject()->className();
+    //qDebug() << " Drop source : " << event->source()->metaObject()->className();
 
-    if(0 == QString::compare(event->source()->metaObject()->className(), "UBLibraryWidget"))
+    if(NULL != event->source() && 0 == QString::compare(event->source()->metaObject()->className(), "UBLibraryWidget"))
     {
         UBLibElement* pTargetElement = elementFromPos(event->scenePos());
         if(NULL != pTargetElement)
