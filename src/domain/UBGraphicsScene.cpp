@@ -139,7 +139,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
 }
 
-
 UBGraphicsScene::~UBGraphicsScene()
 {
     // NOOP

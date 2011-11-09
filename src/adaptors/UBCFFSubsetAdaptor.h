@@ -95,7 +95,12 @@ private:
         inline bool parseSvgVideo(const QDomElement &element);
         inline bool parseIwbGroup(QDomElement &parent);
         inline bool parseIwbElement(QDomElement &element);
+        inline void parseTSpan(const QDomElement &parent, QPainter &painter
+                               , qreal &curX, qreal &curY, qreal &width, qreal &height, qreal &linespacing, QRectF &lastDrawnTextBoundingRect
+                               , qreal &fontSize, QColor &fontColor, QString &fontFamily, QString &fontStretch, bool &italic
+                               , int &fontWeight, int &textAlign, QTransform &fontTransform);
         inline void hashSceneItem(const QDomElement &element, UBGraphicsItem *item);
+
 
         // to kill
         void parseTextAttributes(const QDomElement &element, qreal &fontSize, QColor &fontColor,

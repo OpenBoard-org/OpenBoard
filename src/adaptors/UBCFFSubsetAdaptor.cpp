@@ -223,7 +223,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgEllipse(const QDomElement &e
     //ellipse horisontal and vertical radius
     qreal rx = element.attribute(aRx).toDouble();
     qreal ry = element.attribute(aRy).toDouble();
-    QSvgGenerator *generator = createSvgGenerator(rx * 2 + 10, ry * 2 + 10);
+    QSvgGenerator *generator = createSvgGenerator(rx * 2, ry * 2);
 
     //fill and stroke color
     QColor fillColor = colorFromString(element.attribute(aFill));
@@ -243,7 +243,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgEllipse(const QDomElement &e
     painter.setPen(pen);
     painter.setBrush(QBrush(fillColor));
 
-    painter.drawEllipse(5, 5, rx * 2, ry * 2);
+    painter.drawEllipse(0, 0, rx * 2, ry * 2);
 
     painter.end();
 
@@ -255,7 +255,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgEllipse(const QDomElement &e
         transform = transformFromString(textTransform);
         hastransform = true;
     }
-    repositionSvgItem(svgItem, rx * 2 + 10, ry * 2 + 10, cx - rx - 5, cy - ry -5, hastransform, transform);
+    repositionSvgItem(svgItem, rx * 2, ry * 2, cx - rx , cy - ry, hastransform, transform);
     delete generator;
 
     return true;
@@ -440,166 +440,13 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTextAttributes(const QDomElemen
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &element)
 {
-//    qreal x = element.attribute(aX).toDouble();
-//    qreal y = element.attribute(aY).toDouble();;
-
-//    qreal width = 0;
-//    qreal height = 0;
-
-//    QList<QRectF> textRects;
-//    QList<QFont> textFonts;
-//    QList<QString> textLines;
-//    QList<int> textAligns;
-//    QList<QColor> textColors;
-
-//    qWarning() << QString().sprintf("Text coordinates : %f,%f. Text size %f,%f", x, y, width, height);
-
-//    qreal fontSize = 12.0;
-//    QFont textFont;
-//    QColor fontColor;
-//    QString fontFamily = "Arial";
-//    QString fontStretch = "normal";
-
-//    bool italic = false;
-//    int fontWeight = QFont::Normal;
-//    int textAlign = Qt::AlignLeft;
-//    QTransform fontTransform;
-//    parseTextAttributes(element, fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
-//    textFont = QFont(fontFamily, fontSize, fontWeight, italic);
-
-//    QFontMetricsF metrics = QFontMetricsF(textFont);
-//    qreal curHeight = metrics.height();
-
-//    qreal curY = 0.0;
-//    qreal curX = 0.0;
-
-//    qreal linespacing = QFontMetrics(textFont).leading();
-
-//    //remember if text area has transform
-//    QTransform transform;
-////    bool hasTransform = getCurElementTransorm(transform);
-
-//    QRectF lastDrawnTextBoundingRect;
-
-//    QStack<QFont> fontStack;
-//    QStack<QColor> colorStack;
-//    QStack<int> alignStack;
-
-//    // first extimate desired text area size
-//    // to do that, parse text area tags
-//    while(true)
-//    {
-//        mReader.readNext();
-//        QStringRef elementName = mReader.name();
-//        if (mReader.isEndDocument())
-//            break;
-//        if (mReader.isEndElement())
-//        {
-//            if (elementName == tBreak)
-//            {
-//                //when tbreak appers, move down by the drawn rect height
-//                //TODO: line spacing is not calculated yet, probably additional code is required
-//                curY += lastDrawnTextBoundingRect.height() + linespacing;
-//                curX = 0.0;
-//                height += lastDrawnTextBoundingRect.height();
-//                lastDrawnTextBoundingRect = QRectF(0,0,0,0);
-//                continue;
-//            }
-//            if (elementName == tTspan)
-//            {
-//                textFont = fontStack.pop();
-//                fontColor = colorStack.pop();
-//                textAlign = alignStack.pop();
-//                continue;
-//            }
-//        }
-//        if (mReader.isEndElement() && elementName == tText)
-//            break;
-//        if (mReader.isStartElement() && elementName == tTspan)
-//        {
-//            fontStack.push(textFont);
-//            colorStack.push(fontColor);
-//            alignStack.push(textAlign);
-
-//            parseTextAttributes(fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
-//            textFont = QFont(fontFamily, fontSize, fontWeight, italic);
-//            metrics = QFontMetricsF(textFont);
-//            curHeight = metrics.height();
-//            linespacing = QFontMetricsF(textFont).leading();
-//            continue;
-//        }
-//        if (mReader.isCharacters() || mReader.isCDATA())
-//        {
-//            QString text = mReader.text().toString();
-
-//            //skip empty text
-//            if (text.trimmed().length() == 0)
-//                continue;
-//            //get bounding rect to obtain desired text height
-//            lastDrawnTextBoundingRect = metrics.boundingRect(QRectF(), textAlign, text);
-//            QString log = QString().sprintf(" at rect  %f, %f, %f, %f. Bounding rect is %f, %f, %f, %f", 0.0, curY, width, height - curY, lastDrawnTextBoundingRect.x(), lastDrawnTextBoundingRect.y(), lastDrawnTextBoundingRect.width(), lastDrawnTextBoundingRect.height());
-//            qWarning() << "Text " << text << log;
-//            textFonts.append(textFont);
-//            textRects.append(QRectF(curX, curY, lastDrawnTextBoundingRect.width(), lastDrawnTextBoundingRect.height()));
-//            textLines.append(text);
-//            textAligns.append(textAlign);
-//            textColors.append(fontColor);
-//            curX += lastDrawnTextBoundingRect.width();
-//            if (width < curX)
-//                width = curX;
-//            if (height == 0)
-//                height = curHeight;
-
-//            continue;
-//        }
-//    }
-
-//    QSvgGenerator *generator = createSvgGenerator(width, height);
-//    QPainter painter;
-//    painter.begin(generator);
-
-//    if (textRects.count() != 0)
-//    {
-//        QListIterator<QRectF> textRectsIter(textRects);
-//        QListIterator<QFont> textFontsIter(textFonts);
-//        QListIterator<QString> textLinesIter(textLines);
-//        QListIterator<int> textAlignsIter(textAligns);
-//        QListIterator<QColor> textColorsIter(textColors);
-
-//        while (textRectsIter.hasNext())
-//        {
-//            QRectF rt = textRectsIter.next();
-//            QFont font = textFontsIter.next();
-//            QString line = textLinesIter.next();
-//            int align = textAlignsIter.next();
-//            QColor color = textColorsIter.next();
-//            painter.setFont(font);
-//            painter.setPen(color);
-//            painter.drawText(rt.x(), rt.y(), rt.width(), rt.height(), align, line);
-//        }
-//    }
-
-//    painter.end();
-
-//    //add resulting svg file to scene
-//    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
-//    repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
-
-//    delete generator;
-
-    return true;
-
-}
-bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &element)
-{
-    //TODO textarea node
     qreal x = element.attribute(aX).toDouble();
     qreal y = element.attribute(aY).toDouble();
     qreal width = element.attribute(aWidth).toDouble();
     qreal height = element.attribute(aHeight).toDouble();
 
     qreal fontSize = 12;
-    QColor fontColor;
+    QColor fontColor(qApp->palette().foreground().color());
     QString fontFamily = "Arial";
     QString fontStretch = "normal";
     bool italic = false;
@@ -625,47 +472,106 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     QRectF lastDrawnTextBoundingRect;
     //parse text area tags
 
-    QDomElement curTextElement = element.firstChildElement();
-    while (!curTextElement.isNull()) {
-        QString tagName = curTextElement.tagName();
-        if (tagName == tTspan) {
-            parseTextAttributes(curTextElement, fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
-            painter.setFont(QFont(fontFamily, fontSize, fontWeight, italic));
-            painter.setPen(fontColor);
-            linespacing = QFontMetricsF(painter.font()).leading();
-
-            QDomNode tspanNode = curTextElement.firstChild();
-            while (!tspanNode.isNull()) {
-                if (tspanNode.nodeType() == QDomNode::CharacterDataNode
-                        || tspanNode.nodeType() == QDomNode::CDATASectionNode) {
-                    QDomCharacterData textData = tspanNode.toCharacterData();
-                    QString text = textData.data().trimmed();
-                    //get bounding rect to obtain desired text height
-                    lastDrawnTextBoundingRect = painter.boundingRect(QRectF(curX, curY, width, height - curY), textAlign|Qt::TextWordWrap, text);
-                    painter.drawText(curX, curY, width, lastDrawnTextBoundingRect.height(), textAlign|Qt::TextWordWrap, text);
-                    curX += lastDrawnTextBoundingRect.x() + lastDrawnTextBoundingRect.width();
-                } else if (tspanNode.nodeType() == QDomNode::ElementNode) {
-                    //when tbreak appers, move down by the drawn rect height
-                    //TODO: line spacing is not calculated yet, additional code is required
-                    curY += lastDrawnTextBoundingRect.height() + linespacing;
-                    curX = 0.0;
-                    lastDrawnTextBoundingRect = QRectF(0,0,0,0);
-                }
-                tspanNode = tspanNode.nextSibling();
-            }
-        } else if (tagName == tBreak) {
-
-        }
-        curTextElement = curTextElement.nextSiblingElement();
-    }
+    //recursive call any tspan in text svg element
+    parseTSpan(element, painter
+               , curX, curY, width, height, linespacing, lastDrawnTextBoundingRect
+               , fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
 
     painter.end();
 
     //add resulting svg file to scene
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
-    repositionSvgItem(svgItem, width, height, x + 5, y + 5, hasTransform, transform);
-    delete generator;
+    repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
 
+    delete generator;
+    return true;
+}
+
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &parent, QPainter &painter
+                , qreal &curX, qreal &curY, qreal &width, qreal &height, qreal &linespacing, QRectF &lastDrawnTextBoundingRect
+                , qreal &fontSize, QColor &fontColor, QString &fontFamily, QString &fontStretch, bool &italic
+                , int &fontWeight, int &textAlign, QTransform &fontTransform)
+{
+    QDomNode curNode = parent.firstChild();
+    while (!curNode.isNull()) {
+        if (curNode.toElement().tagName() == tTspan) {
+
+            QDomElement curTSpan = curNode.toElement();
+            parseTextAttributes(curTSpan, fontSize, fontColor, fontFamily, fontStretch, italic
+                                , fontWeight, textAlign, fontTransform);
+            painter.setFont(QFont(fontFamily, fontSize, fontWeight, italic));
+            painter.setPen(fontColor);
+            linespacing = QFontMetricsF(painter.font()).leading();
+            parseTSpan(curTSpan, painter
+                       , curX, curY, width, height, linespacing, lastDrawnTextBoundingRect
+                       , fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
+        } else if (curNode.nodeType() == QDomNode::CharacterDataNode
+                   || curNode.nodeType() == QDomNode::CDATASectionNode
+                   || curNode.nodeType() == QDomNode::TextNode) {
+
+            QDomCharacterData textData = curNode.toCharacterData();
+            QString text = textData.data().trimmed();
+            //get bounding rect to obtain desired text height
+            lastDrawnTextBoundingRect = painter.boundingRect(QRectF(curX, curY, width, height - curY), textAlign|Qt::TextWordWrap, text);
+            painter.drawText(curX, curY, width, lastDrawnTextBoundingRect.height(), textAlign|Qt::TextWordWrap, text);
+            curX += lastDrawnTextBoundingRect.x() + lastDrawnTextBoundingRect.width();
+        } else if (curNode.nodeType() == QDomNode::ElementNode
+                   && curNode.toElement().tagName() == tBreak) {
+
+            curY += lastDrawnTextBoundingRect.height() + linespacing;
+            curX = 0.0;
+            lastDrawnTextBoundingRect = QRectF(0,0,0,0);
+        }
+        curNode = curNode.nextSibling();
+    }
+}
+
+bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &element)
+{
+    qreal x = element.attribute(aX).toDouble();
+    qreal y = element.attribute(aY).toDouble();
+    qreal width = element.attribute(aWidth).toDouble();
+    qreal height = element.attribute(aHeight).toDouble();
+
+    qreal fontSize = 12;
+    QColor fontColor(qApp->palette().foreground().color());
+    QString fontFamily = "Arial";
+    QString fontStretch = "normal";
+    bool italic = false;
+    int fontWeight = QFont::Normal;
+    int textAlign = Qt::AlignLeft;
+    QTransform fontTransform;
+    parseTextAttributes(element, fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
+
+    QSvgGenerator *generator = createSvgGenerator(width, height);
+    QPainter painter;
+    painter.begin(generator);
+    painter.setFont(QFont(fontFamily, fontSize, fontWeight, italic));
+
+    qreal curY = 0.0;
+    qreal curX = 0.0;
+    qreal linespacing = QFontMetricsF(painter.font()).leading();
+
+//    remember if text area has transform
+//    QString transformString;
+    QTransform transform = fontTransform;
+    bool hasTransform = !fontTransform.isIdentity();
+
+    QRectF lastDrawnTextBoundingRect;
+    //parse text area tags
+
+    //recursive call any tspan in text svg element
+    parseTSpan(element, painter
+               , curX, curY, width, height, linespacing, lastDrawnTextBoundingRect
+               , fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
+
+    painter.end();
+
+    //add resulting svg file to scene
+    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+    repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
+
+    delete generator;
     return true;
 }
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &element)
@@ -750,6 +656,34 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &element)
 {
+    qreal x = element.attribute(aX).toDouble();
+    qreal y = element.attribute(aY).toDouble();
+    qreal width = element.attribute(aWidth).toDouble();
+    qreal height = element.attribute(aHeight).toDouble();
+
+    QString itemRefPath = element.attribute(aHref);
+
+    QUrl urlPath;
+    if (!itemRefPath.isNull()) {
+        QString videoPath = pwdContent + "/" + itemRefPath;
+        if (!QFile::exists(videoPath)) {
+            qDebug() << "can't load file" << pwdContent + "/" + itemRefPath << "maybe file corrupted";
+            return false;
+        }
+        urlPath = QUrl::fromLocalFile(videoPath);
+    }
+
+    UBGraphicsAudioItem *audioItem = mCurrentScene->addAudio(urlPath, false);
+    QTransform transform;
+    QString textTransform = element.attribute(aTransform);
+    bool hastransform = false;
+    if (!textTransform.isNull()) {
+        transform = transformFromString(textTransform);
+        hastransform = true;
+    }
+    repositionSvgItem(audioItem, width, height, x, y, hastransform, transform);
+    hashSceneItem(element, audioItem);
+
     return true;
 }
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &element)
@@ -927,8 +861,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbElement(QDomElement &element
 
     }
 
-
-
     return true;
 }
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseDoc()
@@ -943,7 +875,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseDoc()
 
         currentTopElement = currentTopElement.nextSiblingElement();
     }
-
     return true;
 }
 
@@ -951,47 +882,30 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
                                                               qreal x, qreal y,
                                                               bool useTransform, QTransform &transform)
 {
-    QTransform curTrans = item->transform();
-//    qWarning() << QString().sprintf("Item current transform = %f 0 0 %f %f %f, position %f, %f", curTrans.m11(), curTrans.m22(), curTrans.dx(), curTrans.dy(), item->x(), item->y());
-    //check if rect is rotated
-    //rotate svg item itself
+    //First using viebox coordinates, then translate them to scene coordinates
+
     QRectF itemBounds = item->boundingRect();
-    //first, svg is mapped to svg item bound
-    //second, svg item is mapped to scene
-    //so, get svg to svg item scale and multiple by scene scale
-    qreal hScale = itemBounds.width() / width * curTrans.m11();
-    qreal vScale = itemBounds.height() / height * curTrans.m22();
-    
+
     qreal xScale = width  / itemBounds.width();
     qreal yScale = height / itemBounds.height();
 
-    if (useTransform)
-    {
+    qreal fullScaleX = mVBTransFactor * xScale;
+    qreal fullScaleY = mVBTransFactor * yScale;
+
+    if (useTransform) { //if rotation or translation specified
         QPointF oldVector((x - transform.dx()), (y - transform.dy()));
         QTransform rTransform(transform.m11(), transform.m12(), transform.m21(), transform.m22(), 0, 0);
         QPointF newVector = rTransform.map(oldVector);
-        rTransform.scale(curTrans.m11(), curTrans.m22());
-        item->setTransform(QTransform(rTransform.m11() * mVBTransFactor,
-                                      rTransform.m12() * mVBTransFactor,
-                                      rTransform.m21(), rTransform.m22(), 0, 0));
-        item->setPos((x - mViewBoxCenter.x() + (newVector - oldVector).x()) * xScale * mVBTransFactor,
-                     (y - mViewBoxCenter.y() + (newVector - oldVector).y()) * yScale * mVBTransFactor);
-    }
-    else
-    {
-        qreal fullScaleX = mVBTransFactor * xScale;
-        qreal fullScaleY = mVBTransFactor * yScale;
+
+        item->setTransform(rTransform.scale(fullScaleX, fullScaleY));
+        item->setPos((x - mViewBoxCenter.x() + (newVector - oldVector).x()) * mVBTransFactor,
+                     (y - mViewBoxCenter.y() + (newVector - oldVector).y()) * mVBTransFactor);
+    }  else  { //item is't rotated or translated
         item->setTransform(QTransform(fullScaleX, 0, 0, fullScaleY, 0, 0));
         itemBounds = item->boundingRect();
         item->setPos((int)((x - mViewBoxCenter.x()) * mVBTransFactor),
                      (int)((y - mViewBoxCenter.y()) * mVBTransFactor));
-        QPointF newPos = item->pos();
-        qDebug();
     }
-
-    QTransform newTrans = item->transform();
-//    qWarning() << QString("Item new transform = %3 0 0 %4 %1 %2, position %5, %6").arg(newTrans.dx()).arg(newTrans.dy()).arg(newTrans.m11()).arg(newTrans.m22()).arg(item->x()).arg(item->y());
-
 }
 void UBCFFSubsetAdaptor::UBCFFSubsetReader::experimentalReposition(QGraphicsItem *item, qreal width, qreal height,
                                                                    qreal x, qreal y,
