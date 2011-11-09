@@ -139,7 +139,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
 }
 
-
 UBGraphicsScene::~UBGraphicsScene()
 {
     // NOOP
@@ -165,8 +164,6 @@ void UBGraphicsScene::selectionChangedProcessing()
         nextItem->setZValue(2);
         qDebug() << QString(" >>> %1 <<< ").arg(i) << QString(" >>> %1 <<< ").arg(zValue);
     }
-
-
 }
 
 // MARK: -

@@ -37,6 +37,7 @@ public:
     }
 
     virtual UBItem* deepCopy () const;
+    virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
 
 private slots:
