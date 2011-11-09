@@ -17,6 +17,7 @@
 
 #include <QtGui>
 #include <QtWebKit>
+#include <QtXml>
 
 #if defined(Q_WS_MACX)
 #include <Carbon/Carbon.h>
@@ -628,4 +629,19 @@ QString UBApplication::globalStyleSheet()
     }
 
     return style;
+}
+
+QString UBApplication::urlFromHtml(QString html)
+{
+    QString url;
+
+    QDomDocument domDoc;
+    domDoc.setContent(html);
+    QDomElement rootElem = domDoc.documentElement();
+
+    url = rootElem.attribute("src");
+
+    qDebug() << url;
+
+    return url;
 }

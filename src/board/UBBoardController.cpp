@@ -1841,6 +1841,18 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         }
     }
 
+    if(pMimeData->hasHtml())
+    {
+        QString qsHtml = pMimeData->html();
+        QString url = UBApplication::urlFromHtml(qsHtml);
+
+        if(!("" == url))
+        {
+            downloadURL(url, pPos);
+            return;
+        }
+    }
+
     if (pMimeData->hasUrls())
     {
         QList<QUrl> urls = pMimeData->urls();
