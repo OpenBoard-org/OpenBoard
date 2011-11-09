@@ -45,7 +45,8 @@ HEADERS      += src/gui/UBThumbnailView.h \
     src/gui/UBCachePropertiesWidget.h \
     src/gui/UBTeacherBarWidget.h \
     src/gui/UBLibWebView.h \
-    src/gui/UBDownloadWidget.h
+    src/gui/UBDownloadWidget.h \
+    src/gui/UBDockDownloadWidget.h
                 
 SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBFloatingPalette.cpp \
@@ -93,7 +94,8 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
     src/gui/UBCachePropertiesWidget.cpp \
     src/gui/UBTeacherBarWidget.cpp \
     src/gui/UBLibWebView.cpp \
-    src/gui/UBDownloadWidget.cpp
+    src/gui/UBDownloadWidget.cpp \
+    src/gui/UBDockDownloadWidget.cpp
 
 win32 {
 

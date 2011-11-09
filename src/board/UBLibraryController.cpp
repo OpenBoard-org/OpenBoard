@@ -110,6 +110,7 @@ void UBLibraryController::createDirectory(QUrl& pDirPath)
 
 void UBLibraryController::routeItem(QString& pItem, QString pMiddleDirectory)
 {
+    qDebug() << "routeItem: " << pItem;
     QFileInfo itemToRoute(pItem);
     QString mimetype = UBFileSystemUtils::mimeTypeFromFileName(itemToRoute.fileName());
     QString destination("");

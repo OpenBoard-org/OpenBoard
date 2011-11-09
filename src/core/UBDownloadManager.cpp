@@ -251,6 +251,13 @@ void UBDownloadManager::updateFileCurrentSize(int id, qint64 received, qint64 to
                 onUpdateDownloadLists();
 
                 emit downloadFinished(id);
+
+                // Verify if all downloads are finished
+                if(mCrntDL.empty() && mPendingDL.empty())
+                {
+                    emit allDownloadsFinished();
+                }
+
                 break;
             }
 

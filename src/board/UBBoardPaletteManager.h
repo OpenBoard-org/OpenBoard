@@ -26,6 +26,7 @@
 #include "gui/UBLibWidget.h"
 #include "gui/UBCachePropertiesWidget.h"
 #include "gui/UBTeacherBarWidget.h"
+#include "gui/UBDockDownloadWidget.h"
 #include "core/UBApplicationController.h"
 
 
@@ -62,6 +63,8 @@ class UBBoardPaletteManager : public QObject
 
         void processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode);
         void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
+        void startDownloads();
+        void stopDownloads();
 
 
     signals:
@@ -134,7 +137,8 @@ class UBBoardPaletteManager : public QObject
         UBCachePropertiesWidget* mpCachePropWidget;
         /** The teacher bar widget */
         UBTeacherBarWidget* mpTeacherBarWidget;
-
+        /** The download widget */
+        UBDockDownloadWidget* mpDownloadWidget;
         // HACK: here we duplicate the lib widget for the desktop mode
         //       we MUST refactor the architecture in order to use only one
         //       lib widget!

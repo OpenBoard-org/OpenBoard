@@ -335,5 +335,7 @@
         <file>style.qss</file>
         <file>images/teacher_open_disabled.png</file>
         <file>images/libpalette/WebSearchCategory.svg</file>
+        <file>images/download_close.png</file>
+        <file>images/download_open.png</file>
     </qresource>
 </RCC>

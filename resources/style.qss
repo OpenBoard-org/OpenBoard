@@ -3,7 +3,8 @@ QWidget#documentNavigator,
 QWidget#UBLibPathViewer,
 QWidget#UBTeacherStudentAction,
 QWidget#UBLibNavigatorWidget,
-QWidget#UBLibItemProperties
+QWidget#UBLibItemProperties,
+QWidget#UBDownloadWidget
 {
 	background: #EEEEEE;
 	border-radius: 10px;

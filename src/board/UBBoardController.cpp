@@ -726,6 +726,7 @@ void UBBoardController::lastScene()
 
 void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const QSize& pSize, bool isBackground)
 {
+    qDebug() << "something has been dropped on the board! Url is: " << url.toString();
     QString sUrl = url.toString();
 
     if(sUrl.startsWith("uniboardTool://"))
@@ -766,14 +767,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
         desc.size = pSize;
         desc.isBackground = isBackground;
 
-        // INFO: DO NOT UNCOMMENT THE NEXT LINE! DEVELOPMENT IN PROGRESS
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
-
-//        UBHttpGet *http = new UBHttpGet(mActiveScene);
-//        showMessage(tr("Downloading content from %1").arg(url.toString()), true);
-//        connect(http, SIGNAL(downloadFinished(bool, QUrl, QString, QByteArray, QPointF, QSize, bool)),
-//                this, SLOT(downloadFinished(bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
-//        http->get(url, pPos, pSize, isBackground);
     }
 }
 

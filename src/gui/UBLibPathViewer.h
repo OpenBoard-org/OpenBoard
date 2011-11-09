@@ -59,6 +59,9 @@ protected:
     void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
     void dropEvent(QGraphicsSceneDragDropEvent *event);
 
+private slots:
+    void onAllDownloadsFinished();
+
 private:
     UBLibElement* elementFromPos(QPointF p);
     /** The drag start position */

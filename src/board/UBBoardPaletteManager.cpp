@@ -82,6 +82,7 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpCachePropWidget(NULL)
     , mpTeacherBarWidget(NULL)
     , mpDesktopLibWidget(NULL)
+    , mpDownloadWidget(NULL)
 {
     setupPalettes();
     connectPalettes();
@@ -90,6 +91,11 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
 
 UBBoardPaletteManager::~UBBoardPaletteManager()
 {
+    if(NULL != mpDownloadWidget)
+    {
+        delete mpDownloadWidget;
+        mpDownloadWidget = NULL;
+    }
     if(NULL != mpTeacherBarWidget)
     {
         delete mpTeacherBarWidget;
@@ -182,7 +188,9 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mpTeacherBarWidget->registerMode(eUBDockPaletteWidget_BOARD);
 //    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpTeacherBarWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
-    //------------------------------------------------//
+    mpDownloadWidget = new UBDockDownloadWidget();
+    mpDownloadWidget->registerMode(eUBDockPaletteWidget_BOARD);
+
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
 
@@ -192,29 +200,24 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mLeftPalette->connectSignals();
 
-    //------------------------------------------------//
-
     mRightPalette = new UBRightPalette(mContainer);
-
     // RIGHT palette widgets
     mRightPalette->registerWidget(mpLibWidget);
     mRightPalette->addTab(mpLibWidget);
-
-    // ???
-    mRightPalette->registerWidget(mpCachePropWidget); 
-//    mRightPalette->addTab(mpCachePropWidget);
-
-    // ???
+    // The cache widget will be visible only if a cache is put on the page
+    mRightPalette->registerWidget(mpCachePropWidget);
+    // The teacher bar widget will always be there
     mRightPalette->registerWidget(mpTeacherBarWidget);
     mRightPalette->addTab(mpTeacherBarWidget);
-
+    //  The download widget will be part of the right palette but
+    //  will become visible only when the first download starts
+    mRightPalette->registerWidget(mpDownloadWidget);
     mRightPalette->connectSignals();
-
-    //------------------------------------------------//
-
     changeMode(eUBDockPaletteWidget_BOARD, true);
 
-    //------------------------------------------------//
+    // Hide the tabs that must be hidden
+    mRightPalette->removeTab(mpDownloadWidget->name());
+    mRightPalette->removeTab(mpCachePropWidget->name());
 
 //     mLeftPalette->showTabWidget(0);
 //     mRightPalette->showTabWidget(0);
@@ -1002,4 +1005,20 @@ void UBBoardPaletteManager::refreshPalettes()
 {
     mRightPalette->update();
     mLeftPalette->update();
+}
+
+void UBBoardPaletteManager::startDownloads()
+{
+    if(!mpDownloadWidget->isVisible())
+    {
+        mRightPalette->addTab(mpDownloadWidget);
+    }
+}
+
+void UBBoardPaletteManager::stopDownloads()
+{
+    if(mpDownloadWidget->isVisible())
+    {
+        mRightPalette->removeTab(mpDownloadWidget->name());
+    }
 }

@@ -49,6 +49,7 @@ UBDownloadWidget::UBDownloadWidget(QWidget *parent, const char *name):QWidget(pa
     mpBttnLayout = new QHBoxLayout();
     mpBttnLayout->addStretch(1);
     mpCancelBttn = new QPushButton(tr("Cancel"), this);
+    mpCancelBttn->setObjectName("DockPaletteWidgetButton");
     mpBttnLayout->addWidget(mpCancelBttn, 0);
     mpLayout->addLayout(mpBttnLayout);
 
@@ -175,6 +176,7 @@ void UBDownloadWidget::onDownloadUpdated(int id, qint64 crnt, qint64 total)
  */
 void UBDownloadWidget::onDownloadFinished(int id)
 {
+    Q_UNUSED(id);
     // Refresh the file's list
     onFileAddedToDownload();
 }

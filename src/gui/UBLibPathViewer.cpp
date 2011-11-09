@@ -21,6 +21,8 @@
 #include "board/UBBoardController.h"
 
 #include "core/memcheck.h"
+#include "core/UBDownloadManager.h"
+#include "board/UBBoardPaletteManager.h"
 
 /**
  * \brief Constructor
@@ -367,7 +369,7 @@ void UBFolderPath::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 UBPathScene::UBPathScene(QWidget* parent):QGraphicsScene(parent)
 {
-
+    connect(UBDownloadManager::downloadManager(), SIGNAL(allDownloadsFinished()), this, SLOT(onAllDownloadsFinished()));
 }
 
 UBPathScene::~UBPathScene()
@@ -457,7 +459,7 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     const QMimeData* pMimeData = event->mimeData();
 
-    if(0 == QString::compare(event->source()->metaObject()->className(), "UBLibraryWidget"))
+    if(NULL != event->source() && 0 == QString::compare(event->source()->metaObject()->className(), "UBLibraryWidget"))
     {
         UBLibElement* pTargetElement = elementFromPos(event->scenePos());
         if(NULL != pTargetElement)
@@ -479,6 +481,33 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
         }
 
         event->accept();
+    }
+    else if(NULL != event->mimeData() && event->mimeData()->hasUrls())
+    {
+        QList<QUrl> urls = event->mimeData()->urls();
+        foreach(QUrl eachUrl, urls)
+        {
+            QString sUrl = eachUrl.toString();
+            if(!sUrl.startsWith("uniboardTool://") && !sUrl.startsWith("file://") && !sUrl.startsWith("/"))
+            {
+                // The dropped URL comes from the web
+                qDebug() << "Dropped url: " << sUrl;
+
+                // Show the download palette if it is hidden
+                UBApplication::boardController->paletteManager()->startDownloads();
+
+                // Add the dropped url to the download list
+                sDownloadFileDesc desc;
+                desc.currentSize = 0;
+                desc.id = 0;
+                desc.isBackground = false;
+                desc.modal = false;
+                desc.name = QFileInfo(sUrl).fileName();
+                desc.totalSize = 0;
+                desc.url = sUrl;
+                UBDownloadManager::downloadManager()->addFileToDownload(desc);
+            }
+        }
     }
     else
     {
@@ -506,4 +535,10 @@ UBLibElement* UBPathScene::elementFromPos(QPointF p)
     }
 
     return pElem;
+}
+
+void UBPathScene::onAllDownloadsFinished()
+{
+    // Hide the download tab
+    UBApplication::boardController->paletteManager()->stopDownloads();
 }
