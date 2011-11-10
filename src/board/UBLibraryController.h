@@ -120,6 +120,7 @@ class UBLibraryController : public QObject
 
         void createNewFolder(QString name, UBLibElement* parentElem);
         bool canItemsOnElementBeDeleted(UBLibElement *pElement);
+        void routeItem(QString& pItem, QString pMiddleDirectory = QString());
 
     signals:
         void dialogClosed(int state);
@@ -153,7 +154,6 @@ class UBLibraryController : public QObject
         QList<UBLibElement*> addVirtualElementsForItemPath(const QString& pPath);
 
         void createInternalWidgetItems();
-        void routeItem(QString& pItem, QString pMiddleDirectory = QString());
         void createDirectory(QUrl& pDirPath);
 
         QUrl mAudioStandardDirectoryPath;

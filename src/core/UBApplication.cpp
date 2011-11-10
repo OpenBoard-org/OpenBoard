@@ -633,15 +633,14 @@ QString UBApplication::globalStyleSheet()
 
 QString UBApplication::urlFromHtml(QString html)
 {
+    qDebug() << "HTML: " << html.remove(QRegExp("[\\0]"));
     QString url;
 
     QDomDocument domDoc;
-    domDoc.setContent(html);
+    domDoc.setContent(html.remove(QRegExp("[\\0]")));
     QDomElement rootElem = domDoc.documentElement();
 
     url = rootElem.attribute("src");
-
-    qDebug() << url;
 
     return url;
 }

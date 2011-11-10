@@ -84,11 +84,10 @@ QNetworkReply* UBNetworkAccessManager::createRequest(Operation op, const QNetwor
 
 QNetworkReply *UBNetworkAccessManager::get(const QNetworkRequest &request)
 {
-	qDebug() << "request url: " << request.url();
-	QTime loadStartTime;
+    QTime loadStartTime;
     loadStartTime.start();
-	QNetworkReply *networkReply = QNetworkAccessManager::get(request);
-	return networkReply;
+    QNetworkReply *networkReply = QNetworkAccessManager::get(request);
+    return networkReply;
 }
 
 void UBNetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthenticator *auth)

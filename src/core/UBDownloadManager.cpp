@@ -15,6 +15,8 @@
 #include "UBDownloadManager.h"
 #include "core/UBApplication.h"
 #include "gui/UBMainWindow.h"
+#include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
 
 /** The unique instance of the download manager */
 static UBDownloadManager* pInstance = NULL;
@@ -72,6 +74,10 @@ void UBDownloadManager::addFileToDownload(sDownloadFileDesc desc)
         // Update the download order (priority to modal files)
         updateDownloadOrder();
         UBApplication::mainWindow->showDownloadWidget();
+    }
+    else
+    {
+        UBApplication::boardController->paletteManager()->startDownloads();
     }
 
     emit fileAddedToDownload();
@@ -189,6 +195,10 @@ void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl
             {
                 // The downloaded file is modal so we must put it on the board
                 emit addDownloadedFileToBoard(pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
+            }
+            else
+            {
+                emit addDownloadedFileToLibrary(pSuccess, sourceUrl, pContentTypeHeader, pData);
             }
             break;
         }

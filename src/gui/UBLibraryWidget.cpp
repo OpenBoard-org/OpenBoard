@@ -14,6 +14,7 @@
  */
 #include <QList>
 #include <QFileInfo>
+#include <QDir>
 
 #include "UBLibraryWidget.h"
 #include "core/UBSettings.h"
@@ -24,6 +25,7 @@
 #include "board/UBLibraryController.h"
 
 #include "core/memcheck.h"
+#include "core/UBDownloadManager.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 
@@ -87,6 +89,7 @@ void UBLibraryWidget::init()
 
     connect(this, SIGNAL(mouseClick(QGraphicsItem*,int)), this, SLOT(onItemClicked(QGraphicsItem*,int)));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
+    connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToLibrary(bool,QUrl,QString,QByteArray)), this, SLOT(onAddDownloadedFileToLibrary(bool,QUrl,QString,QByteArray)));
 }
 
 /**
@@ -362,7 +365,14 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
         }
         else if (pMimeData->hasHtml())
         {
-            qDebug() << "hasHtml  Unsupported yet";
+            qDebug() << "hasHtml";
+            QString html = pMimeData->html();
+            QString url = UBApplication::urlFromHtml(html);
+            if("" != url)
+            {
+                mLibraryController->importItemOnLibrary(url);
+                bDropAccepted = true;
+            }
         }
         else if (pMimeData->hasText())
         {
@@ -664,5 +674,26 @@ void UBNewFolderDlg::text_Edited(const QString &newText)
         new_text.remove(regExp);
         mpLineEdit->setText(new_text);
         QToolTip::showText(mpLineEdit->mapToGlobal(QPoint()), "A file name can`t contain any of the following characters:\r\n"+illegalCharList);
+    }
+}
+
+void UBLibraryWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData)
+{
+    Q_UNUSED(pContentHeader);
+    if(pSuccess)
+    {
+        QDir dir;
+        dir.mkdir("tmp");
+        QString qsFileName = QFileInfo(sourceUrl.toString()).fileName();
+        QString qsFilePath = UBFileSystemUtils::normalizeFilePath(QString("tmp/%0").arg(qsFileName));
+        QFile f(qsFilePath);
+        if(f.open(QIODevice::WriteOnly))
+        {
+            f.write(pData);
+            f.close();
+        }
+        mLibraryController->routeItem(qsFilePath);
+        dir.remove(qsFileName);
+        dir.rmdir("tmp");       // Due to Qt, the directoy will be removed only if it's empty :)
     }
 }
