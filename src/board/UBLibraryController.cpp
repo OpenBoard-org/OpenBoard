@@ -476,7 +476,9 @@ QList<UBLibElement*> UBLibraryController::getContent(UBLibElement *element)
 UBLibraryController::~UBLibraryController()
 {
     cleanElementsList();
-	//NOOP
+	
+    qDeleteAll(mInternalLibElements);
+    mInternalLibElements.clear();
 }
 
 void UBLibraryController::setItemAsBackground(UBLibElement* image)
@@ -778,6 +780,7 @@ UBChainedLibElement::~UBChainedLibElement()
         delete mpNextElem;
         mpNextElem = NULL;
     }
+    delete mpElem;
 }
 
 void UBChainedLibElement::setNextElement(UBChainedLibElement *nextElem)

@@ -25,19 +25,24 @@ class UBGraphicsPolygonItem;
 
 class UBGraphicsStroke
 {
+    friend class UBGraphicsPolygonItem;
+
     public:
         UBGraphicsStroke();
         virtual ~UBGraphicsStroke();
 
         bool hasPressure();
 
-        void addPolygon(UBGraphicsPolygonItem* pol);
-
         QList<UBGraphicsPolygonItem*> polygons() const;
+
+        void remove(UBGraphicsPolygonItem* polygonItem); 
 
         UBGraphicsStroke *deepCopy();
 
         bool hasAlpha() const;
+
+    protected:
+        void addPolygon(UBGraphicsPolygonItem* pol);
 
     private:
 

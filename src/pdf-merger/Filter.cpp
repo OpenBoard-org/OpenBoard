@@ -24,6 +24,8 @@
 #include "JBIG2Decode.h"
 #include "DCTDecode.h"
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 std::map<std::string, Decoder *> Filter::_allDecoders;
 

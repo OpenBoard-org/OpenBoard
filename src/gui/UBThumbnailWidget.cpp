@@ -21,10 +21,10 @@
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
 
-#include "core/memcheck.h"
-
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
+
+#include "core/memcheck.h"
 
 UBThumbnailWidget::UBThumbnailWidget(QWidget* parent)
     : QGraphicsView(parent)

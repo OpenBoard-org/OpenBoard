@@ -14,6 +14,8 @@
  */
 #include "AnnotsHandler.h"
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 void AnnotsHandler::_processObjectContent(unsigned int startOfPageElement)
 {

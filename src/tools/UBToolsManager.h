@@ -38,12 +38,8 @@ class UBToolsManager : public QObject
         };
 
 
-        static UBToolsManager* manager()
-        {
-            if (!sManager)
-                sManager = new UBToolsManager(UBApplication::staticMemoryCleaner);
-            return sManager;
-        }
+        static UBToolsManager* manager();
+        static void destroy();
 
         QList<UBToolDescriptor> allTools()
         {

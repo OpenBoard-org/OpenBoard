@@ -28,6 +28,8 @@
 
 #include "gui/UBMainWindow.h"
 
+#include "core/memcheck.h"
+
 
 UBIntranetPodcastPublisher::UBIntranetPodcastPublisher(QObject* pParent)
     : QObject(pParent)

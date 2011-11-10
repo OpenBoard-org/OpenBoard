@@ -66,6 +66,8 @@
 
 #include <math.h>
 
+#include "core/memcheck.h"
+
 /*!
     DownloadItem is a widget that is displayed in the download manager list.
     It moves the data from the QNetworkReply into the QFile as well

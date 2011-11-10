@@ -20,6 +20,8 @@
 #include "UBDownloadWidget.h"
 #include "core/UBApplication.h"
 
+#include "core/memcheck.h"
+
 /**
  * \brief Constructor
  * @param parent as the parent widget

@@ -24,10 +24,11 @@
 #include "board/UBBoardController.h"
 #include "board/UBLibraryController.h"
 
-#include "core/memcheck.h"
 #include "core/UBDownloadManager.h"
 
 #include "frameworks/UBFileSystemUtils.h"
+
+#include "core/memcheck.h"
 
 /**
  * \brief Constructor
@@ -55,12 +56,6 @@ UBLibraryWidget::~UBLibraryWidget()
         delete mLibraryController;
         mLibraryController = NULL;
     }
-
-//     if(NULL != chainedElements)
-//     {
-//        delete chainedElements;
-//        chainedElements = NULL;
-//     }
      if(NULL != mpCrntDir)
      {
         delete mpCrntDir;

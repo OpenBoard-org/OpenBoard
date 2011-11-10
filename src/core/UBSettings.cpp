@@ -97,6 +97,23 @@ QString UBSettings::appPingMessage = "__uniboard_ping";
 QString UBSettings::defaultDocumentGroupName;
 QString UBSettings::documentTrashGroupName;
 
+UBSettings* UBSettings::settings()
+{
+    if (!sSingleton)
+        sSingleton = new UBSettings(qApp);
+    return sSingleton;
+}
+
+void UBSettings::destroy()
+{
+    if (sSingleton)
+        delete sSingleton;
+    sSingleton = NULL;
+}
+
+
+
+
 QSettings* UBSettings::getAppSettings()
 {
     if (!UBSettings::sAppSettings)

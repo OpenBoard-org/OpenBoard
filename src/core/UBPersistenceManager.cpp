@@ -68,6 +68,13 @@ UBPersistenceManager* UBPersistenceManager::persistenceManager()
     return sSingleton;
 }
 
+void UBPersistenceManager::destroy()
+{
+    if (sSingleton)
+        delete sSingleton;
+    sSingleton = NULL;
+}
+
 UBPersistenceManager::~UBPersistenceManager()
 {
     foreach(QPointer<UBDocumentProxy> proxyGuard, documentProxies)

@@ -15,6 +15,8 @@
 
 #include "UBWebKitUtils.h"
 
+#include "core/memcheck.h"
+
 UBWebKitUtils::UBWebKitUtils()
 {
     // NOOP

@@ -20,6 +20,8 @@
 
 #include "UBDownloadThread.h"
 
+#include "core/memcheck.h"
+
 /**
  * \brief Constructor
  * @param parent as the parent object

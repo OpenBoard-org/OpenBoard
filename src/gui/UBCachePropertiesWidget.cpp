@@ -10,6 +10,8 @@
 #include "board/UBBoardController.h"
 #include "domain/UBGraphicsScene.h"
 
+#include "core/memcheck.h"
+
 static QVector<UBGraphicsCache*> mCaches;
 
 UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)

@@ -471,7 +471,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     if (annotationGroup)
                     {
-                        annotationGroup->addPolygon(polygonItem);
                         polygonItem->setStroke(annotationGroup);
                     }
 
@@ -492,7 +491,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     if (annotationGroup)
                     {
-                        annotationGroup->addPolygon(polygonItem);
                         polygonItem->setStroke(annotationGroup);
                     }
 

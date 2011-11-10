@@ -17,6 +17,8 @@
 #include <string>
 #include "Utils.h"
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 
 const std::string WHITESPACES(" \t\f\v\n\r");

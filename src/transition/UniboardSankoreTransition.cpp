@@ -20,6 +20,8 @@
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
 
+#include "core/memcheck.h"
+
 UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     QObject(parent)
     , mTransitionDlg(NULL)

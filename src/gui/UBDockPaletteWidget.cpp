@@ -1,5 +1,7 @@
 #include "UBDockPaletteWidget.h"
 
+#include "core/memcheck.h"
+
 UBDockPaletteWidget::UBDockPaletteWidget(QWidget *parent, const char *name):QWidget(parent)
 {
     setObjectName(name);

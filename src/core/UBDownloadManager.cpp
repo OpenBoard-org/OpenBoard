@@ -18,6 +18,8 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
 
+#include "core/memcheck.h"
+
 /** The unique instance of the download manager */
 static UBDownloadManager* pInstance = NULL;
 
@@ -53,6 +55,15 @@ UBDownloadManager* UBDownloadManager::downloadManager()
         pInstance = new UBDownloadManager();
     }
     return pInstance;
+}
+
+void UBDownloadManager::destroy()
+{
+    if(pInstance)
+    {
+        delete pInstance;
+    }
+    pInstance = NULL;
 }
 
 /**

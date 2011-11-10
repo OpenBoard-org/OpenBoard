@@ -9,6 +9,8 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
 
+#include "core/memcheck.h"
+
 UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
     , mpLayout(NULL)
     , mpTitleLayout(NULL)

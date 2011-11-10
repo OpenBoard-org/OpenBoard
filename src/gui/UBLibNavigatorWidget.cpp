@@ -143,8 +143,9 @@ void UBLibNavigatorWidget::removeNextChainedElements(UBChainedLibElement *fromEl
     {
         if(NULL != fromElem->nextElement())
         {
-            removeNextChainedElements(fromElem->nextElement());
-            delete fromElem->nextElement()->element();
+            //removeNextChainedElements(fromElem->nextElement());
+            //delete fromElem->nextElement()->element();
+            //delete fromElem->nextElement();
             delete fromElem->nextElement();
             fromElem->setNextElement(NULL);
         }

@@ -60,6 +60,8 @@
 
 #include "network/UBAutoSaver.h"
 
+#include "core/memcheck.h"
+
 /*
     ToolbarSearch is a very basic search widget that also contains a small history.
     Searches are turned into urls that use Google to perform search

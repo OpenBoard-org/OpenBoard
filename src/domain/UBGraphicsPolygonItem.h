@@ -116,6 +116,9 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
 
     private:
+
+        void clearStroke();
+
         bool mHasAlpha;
 
         QLineF mOriginalLine;

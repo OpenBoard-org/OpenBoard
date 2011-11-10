@@ -53,6 +53,9 @@
 
 #include "ui_mainWindow.h"
 
+#include "frameworks/UBCryptoUtils.h"
+#include "tools/UBToolsManager.h"
+
 #include "core/memcheck.h"
 
 QPointer<QUndoStack> UBApplication::undoStack;
@@ -182,21 +185,26 @@ UBApplication::~UBApplication()
 
     UBFileSystemUtils::deleteAllTempDirCreatedDuringSession();
 
-//    delete mainWindow;
+    delete mainWindow;
     mainWindow = 0;
-
-//    delete staticMemoryCleaner;
-    staticMemoryCleaner = 0;
-
 
     delete mUniboardSankoreTransition;
     mUniboardSankoreTransition = 0;
 
-    if (mPreferencesController)
-    {
-        delete mPreferencesController;
-        mPreferencesController = 0;
-    }
+    UBPersistenceManager::destroy();
+
+    UBDownloadManager::destroy();
+
+    UBDrawingController::destroy();
+
+    UBSettings::destroy();
+
+    UBCryptoUtils::destroy();
+
+    UBToolsManager::destroy();
+
+    delete staticMemoryCleaner;
+    staticMemoryCleaner = 0;
 }
 
 int UBApplication::exec(const QString& pFileToImport)

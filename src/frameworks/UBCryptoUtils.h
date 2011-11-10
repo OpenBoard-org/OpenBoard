@@ -28,13 +28,9 @@ class UBCryptoUtils : public QObject
 
     public:
 
-        static UBCryptoUtils* instance()
-        {
-            if(!sInstance)
-                sInstance = new UBCryptoUtils(UBApplication::staticMemoryCleaner);
+        static UBCryptoUtils* instance();
+        static void destroy();
 
-            return sInstance;
-        }
 
         QString symetricEncrypt(const QString& clear);
         QString symetricDecrypt(const QString& encrypted);

@@ -33,9 +33,16 @@ UBGraphicsStroke::~UBGraphicsStroke()
 
 void UBGraphicsStroke::addPolygon(UBGraphicsPolygonItem* pol)
 {
+    remove(pol);
     mPolygons << pol;
 }
 
+void UBGraphicsStroke::remove(UBGraphicsPolygonItem* polygonItem)
+{
+    int n = mPolygons.indexOf(polygonItem);
+    if (n>=0)
+        mPolygons.removeAt(n);
+}
 
 QList<UBGraphicsPolygonItem*> UBGraphicsStroke::polygons() const
 {

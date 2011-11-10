@@ -21,6 +21,8 @@
 #include "Object.h"
 #include "Parser.h"
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 
 const std::string FilterPredictor::PREDICTOR_TOKEN = "/Predictor";

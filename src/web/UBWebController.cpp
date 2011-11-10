@@ -48,6 +48,7 @@
 #include "desktop/UBCustomCaptureWindow.h"
 #include "board/UBBoardPaletteManager.h"
 
+#include "core/memcheck.h"
 
 UBWebController::UBWebController(UBMainWindow* mainWindow)
     : QObject(mainWindow->centralWidget())

@@ -141,8 +141,11 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 
 UBGraphicsScene::~UBGraphicsScene()
 {
-    // NOOP
     DisposeMagnifierQWidgets();
+
+    if (mCurrentStroke)
+        if (mCurrentStroke->polygons().empty())
+            delete mCurrentStroke;
 }
 
 void UBGraphicsScene::selectionChangedProcessing()
@@ -190,6 +193,12 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
         if (UBDrawingController::drawingController()->isDrawingTool())
         {
             qreal width = 0;
+
+            // delete current stroke, if not assigned to any polygon
+            if (mCurrentStroke)
+                if (mCurrentStroke->polygons().empty())
+                    delete mCurrentStroke;
+
             mCurrentStroke = new UBGraphicsStroke();
 
             if (currentTool != UBStylusTool::Line)
@@ -344,7 +353,12 @@ bool UBGraphicsScene::inputDeviceRelease()
     UBDrawingController *dc = UBDrawingController::drawingController();
     if (dc->isDrawingTool()) 
     {
-        mCurrentStroke = 0;
+        if (mCurrentStroke)
+        {
+            if (mCurrentStroke->polygons().empty())
+                delete mCurrentStroke;
+            mCurrentStroke = 0;
+        } 
     } 
    
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
@@ -503,7 +517,6 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
 
     if (mCurrentStroke)
     {
-        mCurrentStroke->addPolygon(polygonItem);
         polygonItem->setStroke(mCurrentStroke);
     }
 

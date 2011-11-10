@@ -25,6 +25,8 @@ class UBRubberBand : public QRubberBand
     public:
         UBRubberBand(Shape s, QWidget * p = 0);
         virtual ~UBRubberBand();
+    private:
+        QStyle* customStyle;
 };
 
 #endif /* UBRUBBERBAND_H_ */

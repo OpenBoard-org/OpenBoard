@@ -58,6 +58,7 @@ class UBPersistenceManager : public QObject
         static const QString widgetDirectory;
 
         static UBPersistenceManager* persistenceManager();
+        static void destroy();
 
         virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "");
         virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory);

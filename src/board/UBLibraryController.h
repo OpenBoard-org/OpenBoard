@@ -43,7 +43,7 @@ public:
     UBLibElement();
     UBLibElement(eUBLibElementType type, const QUrl& path, const QString& name);
     UBLibElement(UBLibElement* element);
-    ~UBLibElement();
+    virtual ~UBLibElement();
 
     static UBLibElement* trashElement();
 
@@ -79,7 +79,7 @@ class UBChainedLibElement
 {
 public:
     UBChainedLibElement(UBLibElement* pElem, UBChainedLibElement* pNextElem=NULL);
-    ~UBChainedLibElement();
+    virtual ~UBChainedLibElement();
 
     UBChainedLibElement* nextElement(){return mpNextElem;}
     UBChainedLibElement* lastElement();

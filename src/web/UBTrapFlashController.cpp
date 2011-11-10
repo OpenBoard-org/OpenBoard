@@ -33,6 +33,7 @@
 
 #include "ui_trapFlash.h"
 
+#include "core/memcheck.h"
 
 UBTrapFlashController::UBTrapFlashController(QWidget* parent)
     : QObject(parent)

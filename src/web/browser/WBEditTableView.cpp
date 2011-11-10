@@ -56,6 +56,8 @@
 #include "WBEditTableView.h"
 #include <QtGui/QKeyEvent>
 
+#include "core/memcheck.h"
+
 WBEditTableView::WBEditTableView(QWidget *parent)
     : QTableView(parent)
 {
