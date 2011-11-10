@@ -37,8 +37,9 @@
 #include "UBSettings.h"
 #include "UBPersistenceManager.h"
 
-#include "core/memcheck.h"
 #include "../adaptors/UBExportWeb.h"
+
+#include "core/memcheck.h"
 
 UBDocumentManager* UBDocumentManager::sDocumentManager = 0;
 

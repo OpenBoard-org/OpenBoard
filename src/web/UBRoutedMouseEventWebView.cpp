@@ -19,6 +19,8 @@
 #include <QtWebKit>
 #include <QtGui>
 
+#include "core/memcheck.h"
+
 UBRoutedMouseEventWebView::UBRoutedMouseEventWebView(QWidget * parent)
     : QWebView(parent)
 {

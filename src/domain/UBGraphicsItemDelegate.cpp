@@ -100,6 +100,7 @@ void UBGraphicsItemDelegate::init()
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
+    qDeleteAll(mButtons);
     // do not release mMimeData.
     // the mMimeData is owned by QDrag since the setMimeData call as specified in the documentation
 }

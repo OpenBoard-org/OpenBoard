@@ -21,6 +21,8 @@
 #include "UBApplication.h"
 #include "UBSettings.h"
 
+/* Uncomment this for memory leaks detection */
+/*
 #if defined(WIN32) && defined(_DEBUG)
      #define _CRTDBG_MAP_ALLOC
      #include <stdlib.h>
@@ -28,7 +30,7 @@
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
      #define new DEBUG_NEW
 #endif
-
+*/
 
 void ub_message_output(QtMsgType type, const char *msg) {
 	// We must temporarily remove the handler to avoid the infinite recursion of

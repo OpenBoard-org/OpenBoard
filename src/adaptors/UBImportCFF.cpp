@@ -18,7 +18,6 @@
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBDocumentManager.h"
-#include "core/memcheck.h"
 #include "core/UBPersistenceManager.h"
 #include "document/UBDocumentProxy.h"
 #include "domain/UBGraphicsPDFItem.h"
@@ -31,6 +30,8 @@
 #include "quazip.h"
 #include "quazipfile.h"
 #include "quazipfileinfo.h"
+
+#include "core/memcheck.h"
 
 UBImportCFF::UBImportCFF(QObject *parent)
     : UBImportAdaptor(parent)

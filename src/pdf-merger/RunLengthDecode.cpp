@@ -14,6 +14,8 @@
  */
 #include "RunLengthDecode.h"
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 
 /* The encoded data is a sequence of

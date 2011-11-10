@@ -66,6 +66,8 @@
 #include <QtGui>
 #include <QSvgWidget>
 
+#include "core/memcheck.h"
+
 WBTabBar::WBTabBar(QWidget *parent)
     : QTabBar(parent)
 {

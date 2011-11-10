@@ -22,13 +22,8 @@ class UBSettings : public QObject
 
     public:
 
-        static UBSettings* settings()
-        {
-            if (!sSingleton)
-                sSingleton = new UBSettings(qApp);
-
-            return sSingleton;
-        }
+        static UBSettings* settings();
+        static void destroy();
 
     private:
 

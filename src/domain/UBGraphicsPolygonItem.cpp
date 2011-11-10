@@ -53,25 +53,29 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pWidth)
     // NOOP
 }
 
-
-UBGraphicsPolygonItem::~UBGraphicsPolygonItem()
+void UBGraphicsPolygonItem::clearStroke()
 {
 	if (mStroke!=NULL)
 	{
-		QList<UBGraphicsPolygonItem*> pp = mStroke->polygons();
-		int n = pp.indexOf(this);
-		if (n>=0)
-			pp.removeAt(n);
-		if (pp.empty())
-			delete mStroke;
+        mStroke->remove(this);
+        if (mStroke->polygons().empty())
+            delete mStroke;
+        mStroke = NULL;
 	}
+}
+
+UBGraphicsPolygonItem::~UBGraphicsPolygonItem()
+{
+    clearStroke();
 }
 
 
 void UBGraphicsPolygonItem::setStroke(UBGraphicsStroke* stroke)
 {
-    mStroke = stroke;
+    clearStroke();
 
+    mStroke = stroke;
+    mStroke->addPolygon(this);
 }
 
 UBGraphicsStroke* UBGraphicsPolygonItem::stroke() const

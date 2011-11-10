@@ -33,6 +33,7 @@ class UBDrawingController : public QObject
     public:
 
         static UBDrawingController* drawingController();
+        static void destroy();
 
         int stylusTool();
         int latestDrawingTool();

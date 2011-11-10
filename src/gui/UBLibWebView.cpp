@@ -4,6 +4,8 @@
 
 #include "UBLibWebView.h"
 
+#include "core/memcheck.h"
+
 UBLibWebView::UBLibWebView(QWidget* parent, const char* name):QWidget(parent)
     , mpView(NULL)
     , mpWebSettings(NULL)

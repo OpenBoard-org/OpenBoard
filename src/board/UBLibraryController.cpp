@@ -23,6 +23,7 @@
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBApplicationController.h"
+#include "core/UBDownloadManager.h"
 
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsScene.h"
@@ -110,7 +111,6 @@ void UBLibraryController::createDirectory(QUrl& pDirPath)
 
 void UBLibraryController::routeItem(QString& pItem, QString pMiddleDirectory)
 {
-    qDebug() << "routeItem: " << pItem;
     QFileInfo itemToRoute(pItem);
     QString mimetype = UBFileSystemUtils::mimeTypeFromFileName(itemToRoute.fileName());
     QString destination("");
@@ -138,6 +138,7 @@ void UBLibraryController::routeItem(QString& pItem, QString pMiddleDirectory)
             createDirectory(url);
         }
         destination = UBFileSystemUtils::normalizeFilePath(destination + "/" + itemToRoute.fileName());
+
         QFile::copy(pItem, destination);
     }
 }
@@ -187,7 +188,24 @@ void UBLibraryController::importItemOnLibrary(QString& pItemString)
         }
     }
     else{
-        routeItem(pItemString);
+        if(pItemString.startsWith("uniboardTool://") || pItemString.startsWith("file://") || pItemString.startsWith("/"))
+        {
+            // The user dropped a local file
+            routeItem(pItemString);
+        }
+        else
+        {
+            // The user dropped a file from the web. We must download it.
+            sDownloadFileDesc desc;
+            desc.currentSize = 0;
+            desc.id = 0;
+            desc.isBackground = false;
+            desc.modal = false;
+            desc.name = QFileInfo(pItemString).fileName();
+            desc.totalSize = 0;
+            desc.url = pItemString;
+            UBDownloadManager::downloadManager()->addFileToDownload(desc);
+        }
     }
 
 }
@@ -458,7 +476,9 @@ QList<UBLibElement*> UBLibraryController::getContent(UBLibElement *element)
 UBLibraryController::~UBLibraryController()
 {
     cleanElementsList();
-	//NOOP
+	
+    qDeleteAll(mInternalLibElements);
+    mInternalLibElements.clear();
 }
 
 void UBLibraryController::setItemAsBackground(UBLibElement* image)
@@ -760,6 +780,7 @@ UBChainedLibElement::~UBChainedLibElement()
         delete mpNextElem;
         mpNextElem = NULL;
     }
+    delete mpElem;
 }
 
 void UBChainedLibElement::setNextElement(UBChainedLibElement *nextElem)

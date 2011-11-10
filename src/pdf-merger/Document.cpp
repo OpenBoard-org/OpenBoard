@@ -23,6 +23,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 const std::string firstObj("%PDF-1.4\n1 0 obj\n<<\n/Title ()/Creator ()/Producer (Qt 4.5.0 (C) 1992-2009 Nokia Corporation and/or its subsidiary(-ies))/CreationDate (D:20090424120829)\n>>\nendobj\n");
 const std::string zeroStr("0000000000");

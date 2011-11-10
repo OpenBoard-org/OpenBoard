@@ -41,6 +41,8 @@
 
 #include <QDomDocument>
 
+#include "core/memcheck.h"
+
 //enum of xmlparse status
 
 //tag names definition

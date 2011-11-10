@@ -15,6 +15,9 @@
 #include <iostream>
 
 #include "ASCII85Decode.h"
+
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 static const unsigned long pow85[] = {
    85*85*85*85, 85*85*85, 85*85, 85, 1

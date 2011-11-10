@@ -17,6 +17,8 @@
 
 #include "UBSoftwareUpdate.h"
 
+#include "core/memcheck.h"
+
 UBSoftwareUpdate::UBSoftwareUpdate()
 {
     // NOOP

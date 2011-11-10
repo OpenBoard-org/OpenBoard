@@ -57,6 +57,8 @@
 
 #include <QtCore>
 
+#include "core/memcheck.h"
+
 WBModelMenu::WBModelMenu(QWidget * parent)
     : QMenu(parent)
     , m_maxRows(7)

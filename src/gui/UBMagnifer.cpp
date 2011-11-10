@@ -20,6 +20,8 @@
 #include "board/UBBoardController.h"
 #include "domain/UBGraphicsScene.h"
 
+#include "core/memcheck.h"
+
 
 UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive) 
     : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))

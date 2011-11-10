@@ -26,17 +26,20 @@
 UBRubberBand::UBRubberBand(Shape s, QWidget * p)
     : QRubberBand(s, p)
 {
-    QStyle* rubberBandStyle = QRubberBand::style();
+    customStyle = NULL;
 
 #ifdef Q_WS_WIN
-    rubberBandStyle = new QWindowsXPStyle();
+    customStyle = new QWindowsXPStyle();
 #elif defined(Q_WS_MAC)
-    rubberBandStyle = new QMacStyle();
+    customStyle = new QMacStyle();
 #endif
-    QRubberBand::setStyle(rubberBandStyle);
+
+    if (customStyle)
+        QRubberBand::setStyle(customStyle);
 }
 
 UBRubberBand::~UBRubberBand()
 {
-    // NOOP
+    if (customStyle)
+        delete customStyle;
 }

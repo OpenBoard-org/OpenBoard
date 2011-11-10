@@ -15,8 +15,9 @@
 #include <QDebug>
 
 #include "UBLibWidget.h"
-#include "core/memcheck.h"
 #include "core/UBApplication.h"
+
+#include "core/memcheck.h"
 
 /**
  * \brief Constructor

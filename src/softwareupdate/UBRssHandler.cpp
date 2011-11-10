@@ -18,6 +18,8 @@
 #include "UBRssHandler.h"
 #include "UBSoftwareUpdate.h"
 
+#include "core/memcheck.h"
+
 const QString UBRssHandler::sRssItemElementName = "item";
 const QString UBRssHandler::sRssLinkElementName = "link";
 const QString UBRssHandler::sUniboardVersionElementName = "ub:version";  // TODO UB 4.x map properly ub namespace

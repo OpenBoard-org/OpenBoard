@@ -14,6 +14,8 @@
  */
 #include "RemoveHimSelfHandler.h"
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 
 void RemoveHimselfHandler::_changeObjectContent(unsigned int startOfPageElement)

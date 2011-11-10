@@ -55,6 +55,8 @@ public slots:
     void onSearchElement(QString elem);
     void onNewFolderToCreate();
     void onDropMe(const QMimeData* _data);
+    void onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData);
+
 signals:
     void navigBarUpdate(UBLibElement* pElem);
     void itemsSelected(QList<UBLibElement*> elemList, bool inTrash);

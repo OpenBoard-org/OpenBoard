@@ -29,6 +29,8 @@
 #include "network/UBNetworkAccessManager.h"
 #include "network/UBServerXMLHttpRequest.h"
 
+#include "core/memcheck.h"
+
 // API key linked to account dev.mnemis@gmail.com
 const QString UBYouTubePublisher::sYouTubeDeveloperKey("AI39si62ga82stA4YBr5JjkfuRsFT-QyC4UYsFn7yYQFMe_dzg8xOc0r91BOhxSEhEr0gdWJGNnDsYbv9wvpyROd2Yre-6Zh7g");
 

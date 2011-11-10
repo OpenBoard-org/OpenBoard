@@ -19,6 +19,8 @@
 #include <QtCore/qglobal.h>
 #include <QDesktopServices>
 
+#include "core/memcheck.h"
+
 // TODO Qt 4.6 #error Delete this UBDesktopServices class,
 // it was used to work around a bug in Qt 4.4 that was fixed in Qt 4.5 and another that should be fixed
 // in 4.5.1

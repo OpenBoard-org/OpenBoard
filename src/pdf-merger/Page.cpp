@@ -32,6 +32,8 @@
 #include <string.h>
 #include "Parser.h"
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 
 

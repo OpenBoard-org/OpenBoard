@@ -22,6 +22,7 @@
 #include "board/UBBoardView.h"
 #include "domain/UBGraphicsScene.h"
 
+#include "core/memcheck.h"
 
 UBGraphicsCache::UBGraphicsCache():QGraphicsRectItem()
   , mMaskColor(Qt::black)

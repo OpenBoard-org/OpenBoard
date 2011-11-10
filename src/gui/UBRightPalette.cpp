@@ -17,6 +17,8 @@
 
 #include "UBRightPalette.h"
 
+#include "core/memcheck.h"
+
 /**
  * \brief The constructor
  */

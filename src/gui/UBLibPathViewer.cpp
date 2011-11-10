@@ -80,16 +80,16 @@ UBLibPathViewer::~UBLibPathViewer()
         delete mpElems;
         mpElems = NULL;
     }
-    if(NULL != mpElemsBackup)
-    {
-        delete mpElemsBackup;
-        mpElemsBackup = NULL;
-    }
-    if(NULL != mpLayout)
-    {
-        delete mpLayout;
-        mpLayout = NULL;
-    }
+    //if(NULL != mpElemsBackup)
+    //{
+    //    delete mpElemsBackup;
+    //    mpElemsBackup = NULL;
+    //}
+    //if(NULL != mpLayout)
+    //{
+    //    delete mpLayout;
+    //    mpLayout = NULL;
+    //}
     if(NULL != mpScene)
     {
         delete mpScene;

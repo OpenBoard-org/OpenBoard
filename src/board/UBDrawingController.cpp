@@ -33,6 +33,13 @@ UBDrawingController* UBDrawingController::drawingController()
     return sDrawingController;
 }
 
+void UBDrawingController::destroy()
+{
+    if(sDrawingController)
+        delete sDrawingController;
+    sDrawingController = NULL;
+}
+
 UBDrawingController::UBDrawingController(QObject * parent)
     : QObject(parent)
     , mActiveRuler(NULL)

@@ -19,6 +19,21 @@
 
 UBToolsManager* UBToolsManager::sManager = 0;
 
+UBToolsManager* UBToolsManager::manager()
+{
+    if (!sManager)
+        sManager = new UBToolsManager(UBApplication::staticMemoryCleaner);
+    return sManager;
+}
+
+void UBToolsManager::destroy()
+{
+    if (sManager)
+        delete sManager;
+    sManager = NULL;
+}
+
+
 UBToolsManager::UBToolsManager(QObject *parent)
     : QObject(parent)
 {

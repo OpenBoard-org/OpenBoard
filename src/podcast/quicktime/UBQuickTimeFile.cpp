@@ -22,6 +22,8 @@
 #include "UBAudioQueueRecorder.h"
 #include <QtGui>
 
+#include "core/memcheck.h"
+
 QQueue<UBQuickTimeFile::VideoFrame> UBQuickTimeFile::frameQueue;
 QMutex UBQuickTimeFile::frameQueueMutex;
 QWaitCondition UBQuickTimeFile::frameBufferNotEmpty;
