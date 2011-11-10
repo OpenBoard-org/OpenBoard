@@ -228,7 +228,6 @@ void UBW3CWidget::javaScriptWindowObjectCleared()
 void UBW3CWidget::votingSystemError(const QString& error)
 {
     page()->mainFrame()->evaluateJavaScript("if(voting.onerror) { voting.onerror('" + error +"');}");
-
 }
 
 

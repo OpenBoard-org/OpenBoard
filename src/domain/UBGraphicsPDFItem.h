@@ -48,6 +48,7 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
         virtual void remove();
 
         virtual UBGraphicsPixmapItem* toPixmapItem() const;
+        virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
     protected:
 
@@ -57,7 +58,7 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-        UBGraphicsItemDelegate* mDelegate;
+//        UBGraphicsItemDelegate* mDelegate;
 };
 
 #endif /* UBGRAPHICSPDFITEM_H_ */
