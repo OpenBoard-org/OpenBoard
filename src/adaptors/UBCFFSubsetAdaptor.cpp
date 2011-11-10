@@ -637,7 +637,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
         return false;
     }
 
-    QString flashUrl = UBW3CWidget::createNPAPIWrapperInDir(flashPath, tmpFlashDir, "application/x-shockwave-flash");
+    QString flashUrl = UBW3CWidget::createNPAPIWrapperInDir(flashPath, tmpFlashDir, "application/x-shockwave-flash"
+                                                            ,QSize(mCurrentSceneRect.width(), mCurrentSceneRect.height()));
     UBGraphicsWidgetItem *flashItem = mCurrentScene->addW3CWidget(QUrl::fromLocalFile(flashUrl));
     flashItem->setSourceUrl(urlPath);
 

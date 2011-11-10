@@ -64,7 +64,6 @@ private:
         QSize mSize;
 
     private:
-        // to kill
         QDomDocument mDOMdoc;
         QDomNode mCurrentDOMElement;
         QHash<QString, UBGraphicsItem*> persistedItems;
@@ -101,7 +100,6 @@ private:
                                , int &fontWeight, int &textAlign, QTransform &fontTransform);
         inline void hashSceneItem(const QDomElement &element, UBGraphicsItem *item);
 
-
         // to kill
         void parseTextAttributes(const QDomElement &element, qreal &fontSize, QColor &fontColor,
                                  QString &fontFamily, QString &fontStretch, bool &italic,
@@ -114,7 +112,6 @@ private:
         bool persistCurrentScene();
 
 //        helper methods
-//        bool getCurElementTransorm(QTransform &transform);
         void repositionSvgItem(QGraphicsItem *item, qreal width, qreal height,
                                qreal x, qreal y,
                                bool useTransform, QTransform &transform);
