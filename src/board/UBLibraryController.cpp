@@ -149,9 +149,6 @@ void UBLibraryController::importImageOnLibrary(QImage& pImage)
         QDateTime now = QDateTime::currentDateTime();
         QString filePath = mPicturesStandardDirectoryPath.toLocalFile() + "/" + tr("ImportedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss") + ".png";
         filePath = UBFileSystemUtils::normalizeFilePath(filePath);
-
-        qDebug() << "Importing image file from: " << filePath;
-
         pImage.save(filePath);
         UBApplication::showMessage(tr("Added 1 Image to Library"));
     }
