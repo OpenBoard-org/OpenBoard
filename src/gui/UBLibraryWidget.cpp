@@ -351,13 +351,29 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
     else
     {
         bool bDropAccepted = false;
-        if (pMimeData->hasImage())
+
+        //  We must check the URLs first because an image dropped from the web can contains the image datas, as well as the URLs
+        //  and if we want to display the download widget in order to make the user wait for the end of the download, we need
+        //  to check the URLs first!
+        if (pMimeData->hasUrls())
         {
-            qDebug() << "hasImage";
-            QImage image = qvariant_cast<QImage>(pMimeData->imageData());
-            mLibraryController->importImageOnLibrary(image);
-            bDropAccepted = true;
+            qDebug() << "hasUrls";
+            QList<QUrl> urlList = pMimeData->urls();
+            for (int i = 0; i < urlList.size() && i < 32; ++i)
+            {
+                QString filePath;
+#ifdef Q_WS_MACX
+                filePath = QUrl(urlList.at(i)).toString();
+#else
+                filePath = QUrl(urlList.at(i).path()).toLocalFile();
+#endif
+                mLibraryController->importItemOnLibrary(filePath);
+                bDropAccepted = true;
+            }
         }
+        //  When an HTML is present, it means that we dropped something from the web. Normally, the HTML contains the element
+        //  of the webpage and has a 'src' attribute containing the URL of the web ressource. Here we are looking for this
+        //  'src' attribute, get its value and download the ressource from this URL.
         else if (pMimeData->hasHtml())
         {
             qDebug() << "hasHtml";
@@ -377,16 +393,12 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
             mLibraryController->importItemOnLibrary(filePath);
             bDropAccepted = true;
         }
-        else if (pMimeData->hasUrls())
+        else if (pMimeData->hasImage())
         {
-            qDebug() << "hasUrls";
-            QList<QUrl> urlList = pMimeData->urls();
-            for (int i = 0; i < urlList.size() && i < 32; ++i)
-            {
-                QString filePath = QUrl(urlList.at(i).path()).toLocalFile();
-                mLibraryController->importItemOnLibrary(filePath);
-                bDropAccepted = true;
-            }
+            qDebug() << "hasImage";
+            QImage image = qvariant_cast<QImage>(pMimeData->imageData());
+            mLibraryController->importImageOnLibrary(image);
+            bDropAccepted = true;
         }
         else
         {
