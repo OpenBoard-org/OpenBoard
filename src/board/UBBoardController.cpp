@@ -1846,7 +1846,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         QString qsHtml = pMimeData->html();
         QString url = UBApplication::urlFromHtml(qsHtml);
 
-        if(!("" == url))
+        if("" != url)
         {
             downloadURL(url, pPos);
             return;
@@ -1883,7 +1883,9 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
     if (pMimeData->hasText())
     {
-        mActiveScene->addText(pMimeData->text(), pPos);
+        if("" != pMimeData->text()){
+            mActiveScene->addText(pMimeData->text(), pPos);
+        }
     }
 }
 

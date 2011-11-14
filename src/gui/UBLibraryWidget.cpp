@@ -348,19 +348,16 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
             }
         }
     }
-    else
-    {
+    else{
         bool bDropAccepted = false;
 
         //  We must check the URLs first because an image dropped from the web can contains the image datas, as well as the URLs
         //  and if we want to display the download widget in order to make the user wait for the end of the download, we need
         //  to check the URLs first!
-        if (pMimeData->hasUrls())
-        {
+        if (pMimeData->hasUrls()){
             qDebug() << "hasUrls";
             QList<QUrl> urlList = pMimeData->urls();
-            for (int i = 0; i < urlList.size() && i < 32; ++i)
-            {
+            for (int i = 0; i < urlList.size() && i < 32; ++i){
                 QString filePath;
 #ifdef Q_WS_MACX
                 filePath = QUrl(urlList.at(i)).toString();
@@ -374,8 +371,7 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
         //  When an HTML is present, it means that we dropped something from the web. Normally, the HTML contains the element
         //  of the webpage and has a 'src' attribute containing the URL of the web ressource. Here we are looking for this
         //  'src' attribute, get its value and download the ressource from this URL.
-        else if (pMimeData->hasHtml())
-        {
+        else if (pMimeData->hasHtml()){
             qDebug() << "hasHtml";
             QString html = pMimeData->html();
             QString url = UBApplication::urlFromHtml(html);
@@ -385,33 +381,34 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
                 bDropAccepted = true;
             }
         }
-        else if (pMimeData->hasText())
-        {
+        else if (pMimeData->hasText()){
             // On linux external dragged element are considered as text;
             qDebug()  << "hasText: " << pMimeData->text();
             QString filePath = QUrl(pMimeData->text()).toLocalFile();
-            mLibraryController->importItemOnLibrary(filePath);
-            bDropAccepted = true;
+            if("" != filePath){
+                mLibraryController->importItemOnLibrary(filePath);
+                bDropAccepted = true;
+            }
         }
-        else if (pMimeData->hasImage())
-        {
+        else if (pMimeData->hasImage()){
             qDebug() << "hasImage";
             QImage image = qvariant_cast<QImage>(pMimeData->imageData());
             mLibraryController->importImageOnLibrary(image);
             bDropAccepted = true;
         }
-        else
-        {
+        else{
             qWarning() << "Cannot import data";
         }
 
-        if(bDropAccepted)
-        {
+        if(bDropAccepted){
             onRefreshCurrentFolder();
+#ifdef Q_WS_MACX
+            event->acceptProposedAction();
+#else
             event->accept();
+#endif
         }
-        else
-        {
+        else{
             event->ignore();
         }
     }
