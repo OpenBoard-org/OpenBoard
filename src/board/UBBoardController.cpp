@@ -1886,6 +1886,19 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         if("" != pMimeData->text()){
             mActiveScene->addText(pMimeData->text(), pPos);
         }
+        else{
+#ifdef Q_WS_MACX
+                //  With Safari, in 95% of the drops, the mime datas are hidden in Apple Web Archive pasteboard type.
+                //  This is due to the way Safari is working so we have to dig into the pasteboard in order to retrieve
+                //  the data.
+                QString qsUrl = UBPlatformUtils::urlFromClipboard();
+                if("" != qsUrl){
+                    // We finally got the url of the dropped ressource! Let's import it!
+                    downloadURL(qsUrl, pPos);
+                    return;
+                }
+#endif
+        }
     }
 }
 

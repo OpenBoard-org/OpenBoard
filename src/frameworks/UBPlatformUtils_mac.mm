@@ -12,6 +12,8 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Carbon/Carbon.h>
 #import <APELite.h>
+#import <WebKit/WebKit.h>
+#import <AppKit/AppKit.h>
 
 
 NSString* bundleShortVersion(NSBundle *bundle)
@@ -537,3 +539,17 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 
 void UBPlatformUtils::destroyKeyboardLayouts()
 {}
+
+QString UBPlatformUtils::urlFromClipboard()
+{
+    QString qsRet;
+
+    NSPasteboard* pPasteboard = [NSPasteboard pasteboardWithName:@"Apple CFPasteboard drag"];
+    WebArchive* pArchive = [[WebArchive alloc] initWithData:[pPasteboard dataForType:@"com.apple.webarchive"]];
+
+    qsRet = [[[[pArchive mainResource] URL] absoluteString] UTF8String];
+
+    [pArchive release];
+
+    return qsRet;
+}

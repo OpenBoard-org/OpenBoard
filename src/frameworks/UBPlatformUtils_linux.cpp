@@ -331,3 +331,12 @@ void UBPlatformUtils::destroyKeyboardLayouts()
 	delete [] keyboardLayouts;
 	keyboardLayouts = NULL;
 }
+
+QString UBPlatformUtils::urlFromClipboard()
+{
+    QString qsRet;
+
+    // Not used on Linux
+
+    return qsRet;
+}

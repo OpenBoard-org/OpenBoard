@@ -27,6 +27,7 @@
 #include "core/UBDownloadManager.h"
 
 #include "frameworks/UBFileSystemUtils.h"
+#include "frameworks/UBPlatformUtils.h"
 
 #include "core/memcheck.h"
 
@@ -388,6 +389,19 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
             if("" != filePath){
                 mLibraryController->importItemOnLibrary(filePath);
                 bDropAccepted = true;
+            }
+            else{
+#ifdef Q_WS_MACX
+                //  With Safari, in 95% of the drops, the mime datas are hidden in Apple Web Archive pasteboard type.
+                //  This is due to the way Safari is working so we have to dig into the pasteboard in order to retrieve
+                //  the data.
+                QString qsUrl = UBPlatformUtils::urlFromClipboard();
+                if("" != qsUrl){
+                    // We finally got the url of the dropped ressource! Let's import it!
+                    mLibraryController->importItemOnLibrary(qsUrl);
+                    bDropAccepted = true;
+                }
+#endif
             }
         }
         else if (pMimeData->hasImage()){
