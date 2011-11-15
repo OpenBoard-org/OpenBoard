@@ -27,6 +27,7 @@
 #include "core/UBDownloadManager.h"
 
 #include "frameworks/UBFileSystemUtils.h"
+#include "frameworks/UBPlatformUtils.h"
 
 #include "core/memcheck.h"
 
@@ -348,18 +349,30 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
             }
         }
     }
-    else
-    {
+    else{
         bool bDropAccepted = false;
-        if (pMimeData->hasImage())
-        {
-            qDebug() << "hasImage";
-            QImage image = qvariant_cast<QImage>(pMimeData->imageData());
-            mLibraryController->importImageOnLibrary(image);
-            bDropAccepted = true;
+
+        //  We must check the URLs first because an image dropped from the web can contains the image datas, as well as the URLs
+        //  and if we want to display the download widget in order to make the user wait for the end of the download, we need
+        //  to check the URLs first!
+        if (pMimeData->hasUrls()){
+            qDebug() << "hasUrls";
+            QList<QUrl> urlList = pMimeData->urls();
+            for (int i = 0; i < urlList.size() && i < 32; ++i){
+                QString filePath;
+#ifdef Q_WS_MACX
+                filePath = QUrl(urlList.at(i)).toString();
+#else
+                filePath = QUrl(urlList.at(i).path()).toLocalFile();
+#endif
+                mLibraryController->importItemOnLibrary(filePath);
+                bDropAccepted = true;
+            }
         }
-        else if (pMimeData->hasHtml())
-        {
+        //  When an HTML is present, it means that we dropped something from the web. Normally, the HTML contains the element
+        //  of the webpage and has a 'src' attribute containing the URL of the web ressource. Here we are looking for this
+        //  'src' attribute, get its value and download the ressource from this URL.
+        else if (pMimeData->hasHtml()){
             qDebug() << "hasHtml";
             QString html = pMimeData->html();
             QString url = UBApplication::urlFromHtml(html);
@@ -369,37 +382,47 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
                 bDropAccepted = true;
             }
         }
-        else if (pMimeData->hasText())
-        {
+        else if (pMimeData->hasText()){
             // On linux external dragged element are considered as text;
             qDebug()  << "hasText: " << pMimeData->text();
             QString filePath = QUrl(pMimeData->text()).toLocalFile();
-            mLibraryController->importItemOnLibrary(filePath);
-            bDropAccepted = true;
-        }
-        else if (pMimeData->hasUrls())
-        {
-            qDebug() << "hasUrls";
-            QList<QUrl> urlList = pMimeData->urls();
-            for (int i = 0; i < urlList.size() && i < 32; ++i)
-            {
-                QString filePath = QUrl(urlList.at(i).path()).toLocalFile();
+            if("" != filePath){
                 mLibraryController->importItemOnLibrary(filePath);
                 bDropAccepted = true;
             }
+            else{
+#ifdef Q_WS_MACX
+                //  With Safari, in 95% of the drops, the mime datas are hidden in Apple Web Archive pasteboard type.
+                //  This is due to the way Safari is working so we have to dig into the pasteboard in order to retrieve
+                //  the data.
+                QString qsUrl = UBPlatformUtils::urlFromClipboard();
+                if("" != qsUrl){
+                    // We finally got the url of the dropped ressource! Let's import it!
+                    mLibraryController->importItemOnLibrary(qsUrl);
+                    bDropAccepted = true;
+                }
+#endif
+            }
         }
-        else
-        {
+        else if (pMimeData->hasImage()){
+            qDebug() << "hasImage";
+            QImage image = qvariant_cast<QImage>(pMimeData->imageData());
+            mLibraryController->importImageOnLibrary(image);
+            bDropAccepted = true;
+        }
+        else{
             qWarning() << "Cannot import data";
         }
 
-        if(bDropAccepted)
-        {
+        if(bDropAccepted){
             onRefreshCurrentFolder();
+#ifdef Q_WS_MACX
+            event->acceptProposedAction();
+#else
             event->accept();
+#endif
         }
-        else
-        {
+        else{
             event->ignore();
         }
     }

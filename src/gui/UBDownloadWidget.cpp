@@ -66,11 +66,6 @@ UBDownloadWidget::UBDownloadWidget(QWidget *parent, const char *name):QWidget(pa
  */
 UBDownloadWidget::~UBDownloadWidget()
 {
-    if(NULL != mpItem)
-    {
-        delete mpItem;
-        mpItem = NULL;
-    }
     if(NULL != mpCancelBttn)
     {
         delete mpCancelBttn;

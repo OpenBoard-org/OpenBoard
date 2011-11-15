@@ -79,6 +79,7 @@ private:
     void refreshView();
     void generateItems();
     void appendChainedElement(UBChainedLibElement* element, UBChainedLibElement* toElem);
+
     UBLibElement* elementAt(QPoint p);
     UBLibElement* elementFromFilePath(const QString& filePath);
     UBLibraryController* mLibraryController;

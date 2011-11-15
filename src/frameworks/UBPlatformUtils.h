@@ -90,44 +90,31 @@ class UBPlatformUtils
         UBPlatformUtils();
         virtual ~UBPlatformUtils();
 
-		static void initializeKeyboardLayouts();
-		static void destroyKeyboardLayouts();
-		static int nKeyboardLayouts;
-		static UBKeyboardLocale** keyboardLayouts;
+        static void initializeKeyboardLayouts();
+        static void destroyKeyboardLayouts();
+        static int nKeyboardLayouts;
+        static UBKeyboardLocale** keyboardLayouts;
 
     public:
         static void init();
-		static void destroy();
-
+        static void destroy();
         static QString applicationResourcesDirectory();
-
         static void hideFile(const QString &filePath);
         static void setFileType(const QString &filePath, unsigned long fileType);
-
         static void fadeDisplayOut();
         static void fadeDisplayIn();
-
         static QString preferredTranslation();
         static QString preferredLanguage();
-
         static bool hasVirtualKeyboard();
         //static void showVirtualKeyboard();
-
         static void runInstaller(const QString &installerFilePath);
-
         static void bringPreviousProcessToFront();
-
         static QString osUserLoginName();
-
         static void setDesktopMode(bool desktop);
-
-		static void setWindowNonActivableFlag(QWidget* widget, bool nonAcivable);
-
+        static void setWindowNonActivableFlag(QWidget* widget, bool nonAcivable);
         static QString computerName();
-
-		static UBKeyboardLocale** getKeyboardLayouts(int& nCount);
-
-
+        static UBKeyboardLocale** getKeyboardLayouts(int& nCount);
+        static QString urlFromClipboard();
 };
 
 
