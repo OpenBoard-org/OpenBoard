@@ -52,7 +52,7 @@ const double PI = 4.0 * atan(1.0);
 
 class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
 

@@ -26,7 +26,7 @@ class UBGraphicsItemDelegate;
 
 class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public UBItem, public UBGraphicsItem
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsPixmapItem(QGraphicsItem* parent = 0);
@@ -38,7 +38,6 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
         {
             return Type;
         }
-
         virtual UBItem* deepCopy() const;
 
         virtual UBGraphicsScene* scene();

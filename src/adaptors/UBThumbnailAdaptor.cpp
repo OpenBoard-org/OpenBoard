@@ -111,7 +111,6 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
             moreToProcess = false;
         }
     }
-
     return thumbnails;
 }
 

@@ -26,7 +26,7 @@ class UBGraphicsScene;
 
 class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsTextItem(QGraphicsItem * parent = 0);
@@ -97,7 +97,6 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
     private:
-//        UBGraphicsItemDelegate *mDelegate;
         qreal mTextHeight;
 
         int mMultiClickState;
@@ -106,8 +105,6 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         QColor mColorOnDarkBackground;
         QColor mColorOnLightBackground;
-
-
 };
 
 #endif /* UBGRAPHICSTEXTITEM_H_ */

@@ -43,10 +43,7 @@
 
 #include "core/memcheck.h"
 
-//enum of xmlparse status
-
-//tag names definition
-//use them everiwhere!
+//tag names definition. Use them everiwhere!
 static QString tElement         = "element";
 static QString tGroup           = "group";
 static QString tEllipse         = "ellipse";
@@ -66,7 +63,6 @@ static QString tImage           = "image";
 static QString tFlash           = "flash";
 static QString tAudio           = "audio";
 static QString tVideo           = "video";
-
 
 //attribute names definition
 static QString aFill            = "fill";
@@ -126,7 +122,6 @@ bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentP
 
     return result;
 }
-
 UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(UBDocumentProxy *proxy, QFile *content):
     mProxy(proxy)
 {
@@ -141,7 +136,6 @@ UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(UBDocumentProxy *proxy,
     }
     qDebug() << "tmp path is" << pwdContent;
 }
-
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parse()
 {
     UBMetadataDcSubsetAdaptor::persist(mProxy);
@@ -149,7 +143,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parse()
     mIndent = "";
     if (!getTempFileName() || !createTempFlashPath())
         return false;
-
 
     if (mDOMdoc.isNull())
         return false;
@@ -166,7 +159,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parse()
 
     return result;
 }
-
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &element)
 {
     qreal x1 = element.attribute(aX).toDouble();
@@ -215,7 +207,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
         transform = transformFromString(textTransform);
         hastransform = true;
     }
+
     repositionSvgItem(svgItem, width, height, x1, y1, hastransform, transform);
+    hashSceneItem(element, svgItem);
+
     delete generator;
 
     return true;
@@ -257,7 +252,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgEllipse(const QDomElement &e
         transform = transformFromString(textTransform);
         hastransform = true;
     }
+
     repositionSvgItem(svgItem, rx * 2, ry * 2, cx - rx , cy - ry, hastransform, transform);
+    hashSceneItem(element, svgItem);
+
     delete generator;
 
     return true;
@@ -329,6 +327,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         hastransform = true;
     }
     repositionSvgItem(svgItem, width + 10, height + 10, x1 - 5, y1 - 5, hastransform, transform);
+    hashSceneItem(element, svgItem);
+
     delete generator;
 
     return true;
@@ -394,11 +394,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
         hastransform = true;
     }
     repositionSvgItem(svgItem, width + 10, height + 10, x1 - 5, y1 - 5, hastransform, transform);
+    hashSceneItem(element, svgItem);
+
     delete generator;
 
     return true;
 }
-
 void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTextAttributes(const QDomElement &element,
                                                                 qreal &fontSize, QColor &fontColor, QString &fontFamily,
                                                                 QString &fontStretch, bool &italic, int &fontWeight,
@@ -439,13 +440,13 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTextAttributes(const QDomElemen
     if (!element.attribute(aTransform).isNull())
         fontTransform = transformFromString(element.attribute(aTransform));
 }
-
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &element)
 {
     qreal x = element.attribute(aX).toDouble();
     qreal y = element.attribute(aY).toDouble();
     qreal width = element.attribute(aWidth).toDouble();
     qreal height = element.attribute(aHeight).toDouble();
+
 
     qreal fontSize = 12;
     QColor fontColor(qApp->palette().foreground().color());
@@ -457,10 +458,14 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
     QTransform fontTransform;
     parseTextAttributes(element, fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
 
+    QFont startFont(fontFamily, fontSize, fontWeight, italic);
+    height = QFontMetrics(startFont).height();
+    width = QFontMetrics(startFont).width(element.text()) + 5;
+
     QSvgGenerator *generator = createSvgGenerator(width, height);
     QPainter painter;
     painter.begin(generator);
-    painter.setFont(QFont(fontFamily, fontSize, fontWeight, italic));
+    painter.setFont(startFont);
 
     qreal curY = 0.0;
     qreal curX = 0.0;
@@ -483,7 +488,9 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
     //add resulting svg file to scene
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+
     repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
+    hashSceneItem(element, svgItem);
 
     delete generator;
     return true;
@@ -513,6 +520,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &parent
 
             QDomCharacterData textData = curNode.toCharacterData();
             QString text = textData.data().trimmed();
+//            width = painter.fontMetrics().width(text);
             //get bounding rect to obtain desired text height
             lastDrawnTextBoundingRect = painter.boundingRect(QRectF(curX, curY, width, height - curY), textAlign|Qt::TextWordWrap, text);
             painter.drawText(curX, curY, width, lastDrawnTextBoundingRect.height(), textAlign|Qt::TextWordWrap, text);
@@ -548,6 +556,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     QSvgGenerator *generator = createSvgGenerator(width, height);
     QPainter painter;
     painter.begin(generator);
+
     painter.setFont(QFont(fontFamily, fontSize, fontWeight, italic));
 
     qreal curY = 0.0;
@@ -571,7 +580,9 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
 
     //add resulting svg file to scene
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+
     repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
+    hashSceneItem(element, svgItem);
 
     delete generator;
     return true;
@@ -609,7 +620,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
        hastransform = true;
    }
    repositionSvgItem(pixItem, width, height, x, y, hastransform, transform);
-//   experimentalReposition(pixItem, width, height, x, y, hastransform, transform);
    hashSceneItem(element, pixItem);
 
    return true;
@@ -739,12 +749,6 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::hashSceneItem(const QDomElement &ele
     QString key = element.attribute(aId);
     if (!key.isNull()) {
         persistedItems.insert(key, item);
-
-    QHash<QString, UBGraphicsItem*>::iterator iter;
-    iter = persistedItems.find(key);
-    UBGraphicsItem *itered = *iter;
-    if (key == "background")
-        itered->Delegate()->lock(true);
     }
 }
 
@@ -780,7 +784,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPage(const QDomElement &pare
 
         currentSvgElement = currentSvgElement.nextSiblingElement();
     }
-    persistCurrentScene();
+
     return true;
 }
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPageset(const QDomElement &parent)
@@ -824,6 +828,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvg(const QDomElement &svgSecti
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGroup(QDomElement &parent)
 {
+    //TODO. Create groups from elements parsed by parseIwbElement() function
     if (parent.namespaceURI() != iwbNS) {
         qDebug() << "incorrect iwb group namespace, incorrect document";
         return false;
@@ -852,16 +857,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbElement(QDomElement &element
 
         QHash<QString, UBGraphicsItem*>::iterator iReferedItem;
         iReferedItem = persistedItems.find(IDRef);
-        if (iReferedItem != persistedItems.end() && IDRef == "background") {
+        if (iReferedItem != persistedItems.end()) {
             UBGraphicsItem *referedItem = *iReferedItem;
-//            UBGraphicsPixmapItem *item = dynamic_cast<UBGraphicsPixmapItem*>(referedItem);
-            referedItem->Delegate()->lock(false);
-            referedItem->Delegate()->printMessage("called from extended");
+            referedItem->Delegate()->lock(locked);
         }
-
-//       UBGraphicsItem *referedItem = *(persistedItems.find(IDRef));
-//       referedItem->Delegate()->lock(locked);
-
     }
 
     return true;
@@ -878,6 +877,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseDoc()
 
         currentTopElement = currentTopElement.nextSiblingElement();
     }
+    if (!persistScenes()) return false;
+
     return true;
 }
 
@@ -910,212 +911,6 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
                      (int)((y - mViewBoxCenter.y()) * mVBTransFactor));
     }
 }
-void UBCFFSubsetAdaptor::UBCFFSubsetReader::experimentalReposition(QGraphicsItem *item, qreal width, qreal height,
-                                                                   qreal x, qreal y,
-                                                                   bool useTransform, QTransform &transform)
-{
-    Q_UNUSED(useTransform)
-    Q_UNUSED(transform)
-
-    QRectF itemBounds = item->boundingRect();
-
-    qreal xScale = width  / itemBounds.width();
-    qreal yScale = height / itemBounds.height();
-
-    qreal newX = (x - mViewBox.center().x()) * xScale * mVBTransFactor;
-    qreal newY = (y - mViewBox.center().y()) * yScale * mVBTransFactor;
-
-//    qDebug() << item->transform();
-//    QTransform transform1(1, 0, 0, 1, mCurrentSceneRect.center().x(), mCurrentSceneRect.center().y());
-//    QPointF newPos = QTransform(xScale * mVBTransFactor, 0, 0, yScale * mVBTransFactor,
-//                                mCurrentSceneRect.center().x(), mCurrentSceneRect.center().y()).map(QPointF(x, y));
-
-    QPointF newPos(newX, newY);
-
-    item->setTransform(QTransform(xScale * mVBTransFactor, 0, 0, yScale * mVBTransFactor, 0, 0));
-    item->setPos(newPos);
-
-    item->setPos(newPos);
-
-    qDebug();
-
-
-
-    //    QTransform transform;
-
-//    QTransform newTransform(mVBTransFactor, 0, 0,
-//                            mVBTransFactor, mViewPort.center().x(), mViewPort.center().y());
-//    QRectF newItemRect = newTransform.mapRect(itemRect);
-//    item->setPos(newItemRect.topLeft());
-//    item->setBou
-
-
-//    QTransform translateTransform(width * mVBTransFactor, 0, 0, height * mVBTransFactor,
-//                                  mViewPort.center().x(), mViewPort.center().y());
-//    item->setTransform(translateTransform);
-}
-
-//bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseText()
-//{
-//    if (currentState != SVG && currentState != PAGE)
-//    {
-//        qWarning() << "iwb content parse error, unexpected textarea tag at line" << mReader.lineNumber();
-//        return false;
-//    }
-
-//    //create new scene if it's not created yet (for one page document case)
-//    if (currentState == SVG && mCurrentScene == NULL)
-//        createNewScene();
-
-//    qreal x = mReader.attributes().value(aX).toString().toDouble();
-//    qreal y = mReader.attributes().value(aY).toString().toDouble();
-
-//    qreal width = 0;
-//    qreal height = 0;
-
-//    QList<QRectF> textRects;
-//    QList<QFont> textFonts;
-//    QList<QString> textLines;
-//    QList<int> textAligns;
-//    QList<QColor> textColors;
-
-//    qWarning() << QString().sprintf("Text coordinates : %f,%f. Text size %f,%f", x, y, width, height);
-
-//    qreal fontSize = 12.0;
-//    QFont textFont;
-//    QColor fontColor;
-//    QString fontFamily = "Arial";
-//    QString fontStretch = "normal";
-
-//    bool italic = false;
-//    int fontWeight = QFont::Normal;
-//    int textAlign = Qt::AlignLeft;
-//    QTransform fontTransform;
-//    parseTextAttributes(fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
-//    textFont = QFont(fontFamily, fontSize, fontWeight, italic);
-
-//    QFontMetricsF metrics = QFontMetricsF(textFont);
-//    qreal curHeight = metrics.height();
-
-//    qreal curY = 0.0;
-//    qreal curX = 0.0;
-
-//    qreal linespacing = QFontMetrics(textFont).leading();
-
-//    //remember if text area has transform
-//    QTransform transform;
-//    bool hasTransform = getCurElementTransorm(transform);
-
-//    QRectF lastDrawnTextBoundingRect;
-
-//    QStack<QFont> fontStack;
-//    QStack<QColor> colorStack;
-//    QStack<int> alignStack;
-
-//    // first extimate desired text area size
-//    // to do that, parse text area tags
-//    while(true)
-//    {
-//        mReader.readNext();
-//        QStringRef elementName = mReader.name();
-//        if (mReader.isEndDocument())
-//            break;
-//        if (mReader.isEndElement())
-//        {
-//            if (elementName == tBreak)
-//            {
-//                //when tbreak appers, move down by the drawn rect height
-//                //TODO: line spacing is not calculated yet, probably additional code is required
-//                curY += lastDrawnTextBoundingRect.height() + linespacing;
-//                curX = 0.0;
-//                height += lastDrawnTextBoundingRect.height();
-//                lastDrawnTextBoundingRect = QRectF(0,0,0,0);
-//                continue;
-//            }
-//            if (elementName == tTspan)
-//            {
-//                textFont = fontStack.pop();
-//                fontColor = colorStack.pop();
-//                textAlign = alignStack.pop();
-//                continue;
-//            }
-//        }
-//        if (mReader.isEndElement() && elementName == tText)
-//            break;
-//        if (mReader.isStartElement() && elementName == tTspan)
-//        {
-//            fontStack.push(textFont);
-//            colorStack.push(fontColor);
-//            alignStack.push(textAlign);
-
-//            parseTextAttributes(fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
-//            textFont = QFont(fontFamily, fontSize, fontWeight, italic);
-//            metrics = QFontMetricsF(textFont);
-//            curHeight = metrics.height();
-//            linespacing = QFontMetricsF(textFont).leading();
-//            continue;
-//        }
-//        if (mReader.isCharacters() || mReader.isCDATA())
-//        {
-//            QString text = mReader.text().toString();
-
-//            //skip empty text
-//            if (text.trimmed().length() == 0)
-//                continue;
-//            //get bounding rect to obtain desired text height
-//            lastDrawnTextBoundingRect = metrics.boundingRect(QRectF(), textAlign, text);
-//            QString log = QString().sprintf(" at rect  %f, %f, %f, %f. Bounding rect is %f, %f, %f, %f", 0.0, curY, width, height - curY, lastDrawnTextBoundingRect.x(), lastDrawnTextBoundingRect.y(), lastDrawnTextBoundingRect.width(), lastDrawnTextBoundingRect.height());
-//            qWarning() << "Text " << text << log;
-//            textFonts.append(textFont);
-//            textRects.append(QRectF(curX, curY, lastDrawnTextBoundingRect.width(), lastDrawnTextBoundingRect.height()));
-//            textLines.append(text);
-//            textAligns.append(textAlign);
-//            textColors.append(fontColor);
-//            curX += lastDrawnTextBoundingRect.width();
-//            if (width < curX)
-//                width = curX;
-//            if (height == 0)
-//                height = curHeight;
-            
-//            continue;
-//        }
-//    }
-
-//    QSvgGenerator *generator = createSvgGenerator(width, height);
-//    QPainter painter;
-//    painter.begin(generator);
-
-//    if (textRects.count() != 0)
-//    {
-//        QListIterator<QRectF> textRectsIter(textRects);
-//        QListIterator<QFont> textFontsIter(textFonts);
-//        QListIterator<QString> textLinesIter(textLines);
-//        QListIterator<int> textAlignsIter(textAligns);
-//        QListIterator<QColor> textColorsIter(textColors);
-
-//        while (textRectsIter.hasNext())
-//        {
-//            QRectF rt = textRectsIter.next();
-//            QFont font = textFontsIter.next();
-//            QString line = textLinesIter.next();
-//            int align = textAlignsIter.next();
-//            QColor color = textColorsIter.next();
-//            painter.setFont(font);
-//            painter.setPen(color);
-//            painter.drawText(rt.x(), rt.y(), rt.width(), rt.height(), align, line);
-//        }
-//    }
-
-//    painter.end();
-
-//    //add resulting svg file to scene
-//    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
-//    repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
-
-//    delete generator;
-
-//    return true;
-//}
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createNewScene()
 {
@@ -1136,6 +931,30 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistCurrentScene()
         mCurrentScene->setModified(false);
         mCurrentScene = 0;
     }
+    return true;
+}
+bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
+{
+    if (!mProxy->pageCount()) {
+        qDebug() << "No pages created";
+        return false;
+    }
+    for (int i = 0; i < mProxy->pageCount(); i++) {
+        mCurrentScene = UBPersistenceManager::persistenceManager()->getDocumentScene(mProxy, i);
+        if (!mCurrentScene) {
+            qDebug() << "can't allocate scene, loading failed";
+            return false;
+        }
+                UBSvgSubsetAdaptor::persistScene(mProxy, mCurrentScene, i);
+                UBGraphicsScene *tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
+                tmpScene->setModified(true);
+                UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), tmpScene, i);
+                delete tmpScene;
+
+
+        mCurrentScene->setModified(false);
+    }
+
     return true;
 }
 
@@ -1276,4 +1095,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createTempFlashPath()
     }
 
     return true;
+}
+UBCFFSubsetAdaptor::UBCFFSubsetReader::~UBCFFSubsetReader()
+{
+//    QList<int> pages;
+//    for (int i = 0; i < mProxy->pageCount(); i++) {
+//        pages << i;
+//    }
+//    UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mProxy, pages);
 }

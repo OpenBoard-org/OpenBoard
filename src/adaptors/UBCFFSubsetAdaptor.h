@@ -38,7 +38,6 @@ class UBCFFSubsetAdaptor
 {
 public:
     UBCFFSubsetAdaptor();
-
     static bool ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentProxy* pDocument);
 
 private:
@@ -46,6 +45,7 @@ private:
     {
     public:
         UBCFFSubsetReader(UBDocumentProxy *proxy, QFile *content);
+        ~UBCFFSubsetReader();
 
         UBDocumentProxy *mProxy;
         QString pwdContent;
@@ -101,7 +101,7 @@ private:
         inline void hashSceneItem(const QDomElement &element, UBGraphicsItem *item);
 
         // to kill
-        void parseTextAttributes(const QDomElement &element, qreal &fontSize, QColor &fontColor,
+        inline void parseTextAttributes(const QDomElement &element, qreal &fontSize, QColor &fontColor,
                                  QString &fontFamily, QString &fontStretch, bool &italic,
                                  int &fontWeight, int &textAlign, QTransform &fontTransform);
 
@@ -110,14 +110,12 @@ private:
 
         bool createNewScene();
         bool persistCurrentScene();
+        bool persistScenes();
 
 //        helper methods
         void repositionSvgItem(QGraphicsItem *item, qreal width, qreal height,
                                qreal x, qreal y,
                                bool useTransform, QTransform &transform);
-        void experimentalReposition(QGraphicsItem *item, qreal width, qreal height,
-                                    qreal x, qreal y,
-                                    bool useTransform, QTransform &transform);
         QColor colorFromString(const QString& clrString);
         QTransform transformFromString(const QString trString);
         bool getViewBoxDimenstions(const QString& viewBox);
