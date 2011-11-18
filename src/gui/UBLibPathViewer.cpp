@@ -457,39 +457,33 @@ void UBPathScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 
 void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
+    bool bAccept = false;
     const QMimeData* pMimeData = event->mimeData();
 
-    if(NULL != event->source() && 0 == QString::compare(event->source()->metaObject()->className(), "UBLibraryWidget"))
-    {
+    if(NULL != event->source() && 0 == QString::compare(event->source()->metaObject()->className(), "UBLibraryWidget")){
         UBLibElement* pTargetElement = elementFromPos(event->scenePos());
-        if(NULL != pTargetElement)
-        {
-            if(eUBLibElementType_Folder == pTargetElement->type())
-            {
+        if(NULL != pTargetElement){
+            if(eUBLibElementType_Folder == pTargetElement->type()){
                 // The drag comes from this application, we have now to get the list of UBLibElements*
                 QList<QString> qlDroppedElems;
 
                 foreach(QUrl url, pMimeData->urls())
                     qlDroppedElems << url.toString();
 
-                if(!qlDroppedElems.empty())
-                {
+                if(!qlDroppedElems.empty()){
                     // Send a signal with the target dir and the list of ublibelement*
                     emit elementsDropped(qlDroppedElems, pTargetElement);
                 }
             }
         }
 
-        event->accept();
+        bAccept = true;
     }
-    else if(NULL != event->mimeData() && event->mimeData()->hasUrls())
-    {
+    else if(NULL != event->mimeData() && event->mimeData()->hasUrls()){
         QList<QUrl> urls = event->mimeData()->urls();
-        foreach(QUrl eachUrl, urls)
-        {
+        foreach(QUrl eachUrl, urls){
             QString sUrl = eachUrl.toString();
-            if(!sUrl.startsWith("uniboardTool://") && !sUrl.startsWith("file://") && !sUrl.startsWith("/"))
-            {
+            if(!sUrl.startsWith("uniboardTool://") && !sUrl.startsWith("file://") && !sUrl.startsWith("/")){
                 // The dropped URL comes from the web
                 qDebug() << "Dropped url: " << sUrl;
 
@@ -508,9 +502,33 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
                 UBDownloadManager::downloadManager()->addFileToDownload(desc);
             }
         }
+        bAccept = true;
     }
-    else
-    {
+    else if(NULL != event->mimeData() && event->mimeData()->hasText()){
+        //  The user can only drop an Url in this location so if the text is not an Url,
+        //  we discard it.
+        QString qsTxt = event->mimeData()->text().remove(QRegExp("[\\0]"));
+        if(qsTxt.startsWith("http")){
+            // Show the download palette if it is hidden
+            UBApplication::boardController->paletteManager()->startDownloads();
+
+            // Add the dropped url to the download list
+            sDownloadFileDesc desc;
+            desc.currentSize = 0;
+            desc.id = 0;
+            desc.isBackground = false;
+            desc.modal = false;
+            desc.name = QFileInfo(qsTxt).fileName();
+            desc.totalSize = 0;
+            desc.url = qsTxt;
+            UBDownloadManager::downloadManager()->addFileToDownload(desc);
+            bAccept = true;
+        }
+    }
+    if(bAccept){
+        event->accept();
+    }
+    else{
         event->ignore();
     }
 }
