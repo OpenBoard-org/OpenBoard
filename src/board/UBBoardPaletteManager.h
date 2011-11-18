@@ -144,6 +144,8 @@ class UBBoardPaletteManager : public QObject
         //       lib widget!
         UBLibWidget* mpDesktopLibWidget;
 
+        bool mDownloadInProgress;
+
     private slots:
 
         void changeBackground();

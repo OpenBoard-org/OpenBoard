@@ -45,6 +45,11 @@ UBDownloadWidget::UBDownloadWidget(QWidget *parent, const char *name):QWidget(pa
 
     mpTree = new QTreeWidget(this);
     mpTree->setRootIsDecorated(false);
+    mpTree->setColumnCount(2);
+    mpTree->header()->setStretchLastSection(false);
+    mpTree->header()->setResizeMode(eItemColumn_Desc, QHeaderView::Stretch);
+    mpTree->header()->setResizeMode(eItemColumn_Close, QHeaderView::Custom);
+    mpTree->resizeColumnToContents(eItemColumn_Close);
     mpTree->header()->close();
     mpLayout->addWidget(mpTree, 1);
 
@@ -59,6 +64,7 @@ UBDownloadWidget::UBDownloadWidget(QWidget *parent, const char *name):QWidget(pa
     connect(UBDownloadManager::downloadManager(), SIGNAL(downloadUpdated(int,qint64,qint64)), this, SLOT(onDownloadUpdated(int,qint64,qint64)));
     connect(UBDownloadManager::downloadManager(), SIGNAL(downloadFinished(int)), this, SLOT(onDownloadFinished(int)));
     connect(mpCancelBttn, SIGNAL(clicked()), this, SLOT(onCancelClicked()));
+    connect(mpTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(onItemClicked(QTreeWidgetItem*,int)));
 }
 
 /**
@@ -111,13 +117,14 @@ void UBDownloadWidget::addCurrentDownloads()
     for(int i=0; i<actualDL.size();i++)
     {
         mpItem = new QTreeWidgetItem(mpTree);
-        mpItem->setText(0, actualDL.at(i).name);
-        mpItem->setData(0, Qt::UserRole, QVariant(actualDL.at(i).id));
+        mpItem->setText(eItemColumn_Desc, actualDL.at(i).name);
+        mpItem->setData(eItemColumn_Desc, Qt::UserRole, QVariant(actualDL.at(i).id));
+        mpItem->setIcon(eItemColumn_Close, QIcon(":images/close.svg"));
         mpTree->addTopLevelItem(mpItem);
         mpItem = new QTreeWidgetItem(mpTree);
-        mpItem->setData(0, Qt::UserRole, actualDL.at(i).currentSize);
-        mpItem->setData(0, Qt::UserRole + 1, actualDL.at(i).totalSize);
-        mpItem->setData(0, Qt::UserRole + 2, actualDL.at(i).id);
+        mpItem->setData(eItemColumn_Desc, Qt::UserRole, actualDL.at(i).currentSize);
+        mpItem->setData(eItemColumn_Desc, Qt::UserRole + 1, actualDL.at(i).totalSize);
+        mpItem->setData(eItemColumn_Desc, Qt::UserRole + 2, actualDL.at(i).id);
         mpTree->addTopLevelItem(mpItem);
         mpTree->setItemDelegateForRow(((i+1)*2)-1, &mProgressBarDelegate);
     }
@@ -129,12 +136,11 @@ void UBDownloadWidget::addCurrentDownloads()
 void UBDownloadWidget::addPendingDownloads()
 {
     QVector<sDownloadFileDesc> pendingDL = UBDownloadManager::downloadManager()->pendingDownloads();
-    qDebug() << "Pending downloads size: " << pendingDL.size();
     for(int i=0; i<pendingDL.size(); i++)
     {
         mpItem = new QTreeWidgetItem(mpTree);
-        mpItem->setText(0, pendingDL.at(i).name);
-        mpItem->setData(0, Qt::UserRole, QVariant(pendingDL.at(i).id));
+        mpItem->setText(eItemColumn_Desc, pendingDL.at(i).name);
+        mpItem->setData(eItemColumn_Desc, Qt::UserRole, QVariant(pendingDL.at(i).id));
         mpTree->addTopLevelItem(mpItem);
     }
 }
@@ -154,7 +160,7 @@ void UBDownloadWidget::onDownloadUpdated(int id, qint64 crnt, qint64 total)
         {
             for(int i=0; i< model->rowCount(); i++)
             {
-                QModelIndex currentIndex = model->index(i, 0);
+                QModelIndex currentIndex = model->index(i, eItemColumn_Desc);
                 if(id == currentIndex.data(Qt::UserRole + 2))
                 {
                     // We found the right item, now we update the progress bar
@@ -186,6 +192,21 @@ void UBDownloadWidget::onCancelClicked()
     UBDownloadManager::downloadManager()->cancelDownloads();
 }
 
+/**
+ * \brief Handles the item click notification
+ * @param pItem as the item clicked
+ * @param col as the column containing the item clicked
+ */
+void UBDownloadWidget::onItemClicked(QTreeWidgetItem *pItem, int col)
+{
+    if( eItemColumn_Close == col
+            && "" != pItem->text(eItemColumn_Desc)){
+
+        // Stop the download of the clicked item and remove it from the list
+        UBDownloadManager::downloadManager()->cancelDownload(pItem->data(eItemColumn_Desc, Qt::UserRole).toInt());
+    }
+}
+
 // ---------------------------------------------------------------------------------------------
 UBDownloadProgressDelegate::UBDownloadProgressDelegate(QObject *parent):QItemDelegate(parent)
 {
@@ -200,5 +221,7 @@ void UBDownloadProgressDelegate::paint(QPainter *painter, const QStyleOptionView
     opt.maximum = index.data(Qt::UserRole + 1).toInt();
     opt.progress = index.data(Qt::UserRole).toInt();
 
-    QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, 0);
+    if(0 == index.column()){
+        QApplication::style()->drawControl(QStyle::CE_ProgressBar, &opt, painter, 0);
+    }
 }

@@ -86,10 +86,7 @@ void UBDownloadManager::addFileToDownload(sDownloadFileDesc desc)
         updateDownloadOrder();
         UBApplication::mainWindow->showDownloadWidget();
     }
-    else
-    {
-        UBApplication::boardController->paletteManager()->startDownloads();
-    }
+    UBApplication::boardController->paletteManager()->startDownloads();
 
     emit fileAddedToDownload();
 }
@@ -276,7 +273,7 @@ void UBDownloadManager::updateFileCurrentSize(int id, qint64 received, qint64 to
                 // Verify if all downloads are finished
                 if(mCrntDL.empty() && mPendingDL.empty())
                 {
-                    emit allDownloadsFinished();
+                    finishDownloads();
                 }
 
                 break;
@@ -357,8 +354,7 @@ void UBDownloadManager::cancelDownloads()
 
     checkIfModalRemains();
 
-    // Notify everyone that the downloads have been canceled.
-    emit cancelAllDownloads();
+    finishDownloads(true);
 }
 
 void UBDownloadManager::onDownloadError(int id)
@@ -377,6 +373,64 @@ void UBDownloadManager::onDownloadError(int id)
                 // Check the documentation of QNetworkReply in Qt Assistant for the different error cases
             break;
         }
+    }
+}
+
+void UBDownloadManager::finishDownloads(bool cancel)
+{
+    UBApplication::boardController->paletteManager()->stopDownloads();
+    if(cancel){
+        emit cancelAllDownloads();
+    }
+    else{
+        emit allDownloadsFinished();
+    }
+}
+
+void UBDownloadManager::cancelDownload(int id)
+{
+    // Stop the download
+    mReplies[id]->abort();
+    mReplies.remove(id);
+
+    // Remove the canceled download from the download lists
+    bool bFound = false;
+    for(int i=0; i<mCrntDL.size(); i++){
+        if(id == mCrntDL.at(i).id){
+            mCrntDL.remove(i);
+            bFound = true;
+            break;
+        }
+    }
+    if(!bFound){
+        for(int j=0; j<mPendingDL.size(); j++){
+            if(id == mPendingDL.at(j).id){
+                mPendingDL.remove(j);
+                bFound = true;
+                break;
+            }
+        }
+    }
+
+    // Free the download slot used by the finished file
+    for(int h=0; h<mDLAvailability.size();h++){
+        if(id == mDLAvailability.at(h)){
+            mDLAvailability.remove(h);
+            mDLAvailability.insert(h, -1);
+            break;
+        }
+    }
+
+    // Here we check if some modal downloads remain
+    checkIfModalRemains();
+
+    // Then we update the list of downloads
+    onUpdateDownloadLists();
+
+    // Verify if all downloads are finished
+    if(mCrntDL.empty() && mPendingDL.empty())
+    {
+        finishDownloads();
     }
 }
 
