@@ -27,6 +27,7 @@
 #include "core/UBDisplayManager.h" // TODO UB 4.x clean that dependency
 
 #include "core/memcheck.h"
+#include "board/UBBoardController.h"
 
 const int UBGraphicsTextItemDelegate::sMinPixelSize = 8;
 
@@ -139,15 +140,20 @@ void UBGraphicsTextItemDelegate::pickFont()
             UBSettings::settings()->setFontPixelSize(mLastFontPixelSize);
             UBSettings::settings()->setBoldFont(selectedFont.bold());
             UBSettings::settings()->setItalicFont(selectedFont.italic());
-            delegated()->setFont(selectedFont);
-            delegated()->setSelected(true);
 
+            //setting format for selected item
+            QTextCursor curCursor = delegated()->textCursor();
+            QTextCharFormat format;
+            format.setFont(selectedFont);
+            curCursor.mergeCharFormat(format);
+            delegated()->setTextCursor(curCursor);
+
+            delegated()->setSelected(true);
             delegated()->document()->adjustSize();
             delegated()->contentsChanged();
         }
     }
 }
-
 
 void UBGraphicsTextItemDelegate::pickColor()
 {
@@ -164,8 +170,17 @@ void UBGraphicsTextItemDelegate::pickColor()
         {
             QColor selectedColor = colorDialog.selectedColor();
             delegated()->setDefaultTextColor(selectedColor);
-            delegated()->setColorOnDarkBackground(selectedColor);
-            delegated()->setColorOnLightBackground(selectedColor);
+//            delegated()->setColorOnDarkBackground(selectedColor);
+//            delegated()->setColorOnLightBackground(selectedColor);
+            QTextCursor curCursor = delegated()->textCursor();
+            QTextCharFormat format;
+            format.setForeground(QBrush(selectedColor));
+//            format.setBackground(Qt::yellow);
+            curCursor.mergeCharFormat(format);
+            QTextBlockFormat blFormat;
+            blFormat.setAlignment(Qt::AlignCenter);
+            curCursor.setBlockFormat(blFormat);
+            delegated()->setTextCursor(curCursor);
 
             UBGraphicsTextItem::lastUsedTextColor = selectedColor;
 
@@ -174,7 +189,6 @@ void UBGraphicsTextItemDelegate::pickColor()
         }
     }
 }
-
 
 void UBGraphicsTextItemDelegate::decreaseSize()
 {
@@ -203,7 +217,6 @@ void UBGraphicsTextItemDelegate::decreaseSize()
 
 }
 
-
 void UBGraphicsTextItemDelegate::increaseSize()
 {
     QFontInfo fi(delegated()->font());
@@ -229,8 +242,38 @@ void UBGraphicsTextItemDelegate::increaseSize()
     qDebug() << newPixelSize;
 }
 
-
 UBGraphicsTextItem* UBGraphicsTextItemDelegate::delegated()
 {
     return static_cast<UBGraphicsTextItem*>(mDelegated);
+}
+void UBGraphicsTextItemDelegate::setEditable(bool editable)
+{
+    if (editable) {
+        delegated()->setTextInteractionFlags(Qt::TextEditorInteraction);
+        mDelegated->setData(UBGraphicsItemData::ItemEditable, QVariant(true));
+    } else {
+        QTextCursor cursor(delegated()->document());
+        cursor.clearSelection();
+        delegated()->setTextCursor(cursor);
+
+        delegated()->setTextInteractionFlags(Qt::NoTextInteraction);
+        mDelegated->setData(UBGraphicsItemData::ItemEditable, QVariant(false));
+    }
+}
+bool UBGraphicsTextItemDelegate::isEditable()
+{
+    return mDelegated->data(UBGraphicsItemData::ItemEditable).toBool();
+}
+void UBGraphicsTextItemDelegate::decorateMenu(QMenu *menu)
+{
+    UBGraphicsItemDelegate::decorateMenu(menu);
+
+    mEditableAction = menu->addAction(tr("Editable"), this, SLOT(setEditable(bool)));
+    mEditableAction->setCheckable(true);
+    mEditableAction->setChecked(true);
+
+}
+void UBGraphicsTextItemDelegate::updateMenuActionState()
+{
+    UBGraphicsItemDelegate::updateMenuActionState();
 }

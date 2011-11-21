@@ -1311,7 +1311,27 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 
     return textItem;
 }
+UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString)
+{
+    UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
+    textItem->setPlainText("");
+    textItem->setHtml(pString);
 
+    addItem(textItem);
+    textItem->show();
+
+    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
+    UBApplication::undoStack->push(uc);
+
+    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
+
+    textItem->setSelected(true);
+    textItem->setFocus();
+
+    setDocumentUpdated();
+
+    return textItem;
+}
 
 void UBGraphicsScene::addItem(QGraphicsItem* item)
 {

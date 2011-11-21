@@ -46,8 +46,8 @@ class UBSvgSubsetAdaptor
 {
     private:
 
-        UBSvgSubsetAdaptor() {};
-        virtual ~UBSvgSubsetAdaptor() {};
+        UBSvgSubsetAdaptor() {;}
+        virtual ~UBSvgSubsetAdaptor() {;}
 
     public:
 

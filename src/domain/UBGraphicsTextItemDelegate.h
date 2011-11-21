@@ -27,17 +27,21 @@ class UBGraphicsTextItem;
 
 class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject * parent = 0);
         virtual ~UBGraphicsTextItemDelegate();
+        bool isEditable();
 
     public slots:
         void contentsChanged();
+        virtual void setEditable(bool);
 
     protected:
         virtual void buildButtons();
+        virtual void decorateMenu(QMenu *menu);
+        virtual void updateMenuActionState();
 
     private:
 
@@ -54,6 +58,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 
     private:
         void customize(QFontDialog &fontDialog);
+        QAction *mEditableAction;
 
     private slots:
 
