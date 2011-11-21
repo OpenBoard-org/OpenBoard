@@ -83,6 +83,7 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpTeacherBarWidget(NULL)
     , mpDesktopLibWidget(NULL)
     , mpDownloadWidget(NULL)
+    , mDownloadInProgress(false)
 {
     setupPalettes();
     connectPalettes();
@@ -1009,16 +1010,18 @@ void UBBoardPaletteManager::refreshPalettes()
 
 void UBBoardPaletteManager::startDownloads()
 {
-    if(!mpDownloadWidget->isVisible())
+    if(!mDownloadInProgress)
     {
+        mDownloadInProgress = true;
         mRightPalette->addTab(mpDownloadWidget);
     }
 }
 
 void UBBoardPaletteManager::stopDownloads()
 {
-    if(mpDownloadWidget->isVisible())
+    if(mDownloadInProgress)
     {
+        mDownloadInProgress = false;
         mRightPalette->removeTab(mpDownloadWidget->name());
     }
 }

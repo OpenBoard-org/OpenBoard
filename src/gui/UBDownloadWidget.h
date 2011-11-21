@@ -25,6 +25,11 @@
 
 #include "core/UBDownloadManager.h"
 
+typedef enum{
+    eItemColumn_Desc,
+    eItemColumn_Close
+}eItemColumn;
+
 class UBDownloadProgressDelegate : public QItemDelegate
 {
     Q_OBJECT
@@ -47,6 +52,7 @@ private slots:
     void onDownloadUpdated(int id, qint64 crnt, qint64 total);
     void onDownloadFinished(int id);
     void onCancelClicked();
+    void onItemClicked(QTreeWidgetItem* pItem, int col);
 
 private:
     void addCurrentDownloads();

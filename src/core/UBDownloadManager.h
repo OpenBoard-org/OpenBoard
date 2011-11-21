@@ -63,11 +63,14 @@ class UBDownloadManager : public QObject
 {
     Q_OBJECT
 public:
+    UBDownloadManager(QObject* parent=0, const char* name="UBDownloadManager");
+    ~UBDownloadManager();
     static UBDownloadManager* downloadManager();
     void addFileToDownload(sDownloadFileDesc desc);
     QVector<sDownloadFileDesc> currentDownloads();
     QVector<sDownloadFileDesc> pendingDownloads();
     void cancelDownloads();
+    void cancelDownload(int id);
 
     static void destroy();
 
@@ -88,14 +91,12 @@ private slots:
     void onDownloadError(int id);
 
 private:
-    UBDownloadManager(QObject* parent=0, const char* name="UBDownloadManager");
-    ~UBDownloadManager();
-
     void init();
     void updateDownloadOrder();
     void updateFileCurrentSize(int id, qint64 received=-1, qint64 total=-1);
     void startFileDownload(sDownloadFileDesc desc);
     void checkIfModalRemains();
+    void finishDownloads(bool cancel=false);
 
     /** The current downloads */
     QVector<sDownloadFileDesc> mCrntDL;
