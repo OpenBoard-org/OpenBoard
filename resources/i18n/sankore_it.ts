@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="it_IT" sourcelanguage="en">
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation>Click per tornare all&apos;applicazione</translation>
+        <translation>Clicca per tornare all&apos;applicazione</translation>
     </message>
 </context>
 <context>
     <name>DownloadDialog</name>
     <message>
         <source>Downloads</source>
-        <translation>Scaricati</translation>
+        <translation>Download</translation>
     </message>
     <message>
         <source>Clean Up</source>
@@ -27,7 +27,8 @@
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translation>Form</translation>
+        <translatorcomment>CONTEXT NEEDED!!!</translatorcomment>
+        <translation>Modulo</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -73,7 +74,8 @@
     </message>
     <message>
         <source>Board</source>
-        <translation>Scheda</translation>
+        <translatorcomment>Context needed! I am sticking to the previous translation!</translatorcomment>
+        <translation>Lavagna</translation>
     </message>
     <message>
         <source>Web</source>
@@ -89,7 +91,8 @@
     </message>
     <message>
         <source>Stylus</source>
-        <translation>Stili</translation>
+        <translatorcomment>Context needed</translatorcomment>
+        <translation>Stilo</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
@@ -101,11 +104,11 @@
     </message>
     <message>
         <source>Change Background</source>
-        <translation>Cambia Sfondo</translation>
+        <translation>Cambia sfondo</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation>Passo indietro</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>Ctrl+Z</source>
@@ -113,7 +116,7 @@
     </message>
     <message>
         <source>Redo</source>
-        <translation>Passo avanti</translation>
+        <translation>Ripeti</translation>
     </message>
     <message>
         <source>Ctrl+Y</source>
@@ -145,7 +148,7 @@
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation>Organizza Documenti</translation>
+        <translation>Organizza documenti</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -153,7 +156,7 @@
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation>Browser Web</translation>
+        <translation>Browser web</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -161,19 +164,23 @@
     </message>
     <message>
         <source>Line</source>
-        <translation>Linea</translation>
+        <translatorcomment>Are we talking about the line of the pen or marker? Then &quot;tratto&quot; is better. Context needed.</translatorcomment>
+        <translation>Tratto</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation>Linea Fine</translation>
+        <translatorcomment>Are we talking about the line of the pen or marker? Then &quot;tratto sottile&quot; is better. Context needed.</translatorcomment>
+        <translation>Tratto fine</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translation>Linea Media</translation>
+        <translatorcomment>Are we talking about the line of the pen or marker? Then &quot;tratto medio&quot; is better. Context needed.</translatorcomment>
+        <translation>Tratto medio</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translation>Linea Grossa</translation>
+        <translatorcomment>Are we talking about the line of the pen or marker? Then &quot;tratto grosso&quot; is better. Context needed.</translatorcomment>
+        <translation>Tratto grosso</translation>
     </message>
     <message>
         <source>Quit</source>
@@ -189,15 +196,15 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Gomma Piccola</translation>
+        <translation>Gomma piccola</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
-        <translation>Gomma Media</translation>
+        <translation>Gomma media</translation>
     </message>
     <message>
         <source>Large Eraser</source>
-        <translation>Gomma Grande</translation>
+        <translation>Gomma grande</translation>
     </message>
     <message>
         <source>Color</source>
@@ -225,15 +232,15 @@
     </message>
     <message>
         <source>Reload Current Page</source>
-        <translation>Ricarica Pagina Corrente</translation>
+        <translation>Ricarica pagina corrente</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Casa</translation>
+        <translation>Home</translation>
     </message>
     <message>
         <source>Load Home Page</source>
-        <translation>Carica Pagina Home</translation>
+        <translation>Carica homepage</translation>
     </message>
     <message>
         <source>Bookmarks</source>
@@ -241,7 +248,7 @@
     </message>
     <message>
         <source>Show Bookmarks</source>
-        <translation>Visualizza Segnalibri</translation>
+        <translation>Visualizza segnalibri</translation>
     </message>
     <message>
         <source>Bookmark</source>
@@ -249,11 +256,12 @@
     </message>
     <message>
         <source>Add Bookmark</source>
-        <translation>Aggiungi Segnalibro</translation>
+        <translation>Aggiungi segnalibro</translation>
     </message>
     <message>
         <source>Display Board</source>
-        <translation>Visualizza Lavagna</translation>
+        <translatorcomment>See comments about &quot;board&quot;.</translatorcomment>
+        <translation>Visualizza lavagna</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
@@ -265,7 +273,7 @@
     </message>
     <message>
         <source>Erase Content</source>
-        <translation>Cancella Contenuto</translation>
+        <translation>Cancella contenuto</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -273,15 +281,17 @@
     </message>
     <message>
         <source>Display Preferences</source>
-        <translation>Visualizza Preferenze</translation>
+        <translation>Visualizza preferenze</translation>
     </message>
     <message>
         <source>Library</source>
+        <translatorcomment>Are we talking about a software library? In such case, it&apos;s &quot;library&quot; also in Italian. Or are we talking about a virtual library for e-books? I need context!</translatorcomment>
         <translation>Biblioteca</translation>
     </message>
     <message>
         <source>Show Library</source>
-        <translation>Visualizza Biblioteca</translation>
+        <translatorcomment>Are we talking about a software library? In such case, it&apos;s &quot;library&quot; also in Italian. Or are we talking about a virtual library for e-books? I need context!</translatorcomment>
+        <translation>Visualizza libreria</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
@@ -289,7 +299,7 @@
     </message>
     <message utf8="true">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1</translation>
     </message>
     <message>
         <source>Sankore 3.1</source>
@@ -297,11 +307,11 @@
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra desktop</translation>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>Visualizza Il Desktop</translation>
+        <translation>Mostra il desktop del computer</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -309,23 +319,23 @@
     </message>
     <message>
         <source>Bigger</source>
-        <translation>Più Grande</translation>
+        <translation>Più grande</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation>Zoom Avanti</translation>
+        <translation>Zoom avanti</translation>
     </message>
     <message>
         <source>Ctrl++</source>
-        <translation></translation>
+        <translation>Ctrl++</translation>
     </message>
     <message>
         <source>Smaller</source>
-        <translation>Più Piccolo</translation>
+        <translation>Più piccolo</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation>Zoom Indietro</translation>
+        <translation>Zoom indietro</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
@@ -333,19 +343,19 @@
     </message>
     <message>
         <source>New Folder</source>
-        <translation>Nuova Cartella</translation>
+        <translation>Nuova cartella</translation>
     </message>
     <message>
         <source>Create a New Folder</source>
-        <translation>Crea Nuova Cartella</translation>
+        <translation>Crea nuova cartella</translation>
     </message>
     <message>
         <source>New Document</source>
-        <translation>Nuovo Documento</translation>
+        <translation>Nuovo documento</translation>
     </message>
     <message>
         <source>Create a New Document</source>
-        <translation>Crea Nuovo Documento</translation>
+        <translation>Crea nuovo documento</translation>
     </message>
     <message>
         <source>Import</source>
@@ -353,7 +363,7 @@
     </message>
     <message>
         <source>Import a Document</source>
-        <translation>Importa Un Documento</translation>
+        <translation>Importa un documento</translation>
     </message>
     <message>
         <source>Export</source>
@@ -361,15 +371,17 @@
     </message>
     <message>
         <source>Export a Document</source>
-        <translation>Esporta Un Documento</translation>
+        <translation>Esporta un documento</translation>
     </message>
     <message>
         <source>Open in Board</source>
-        <translation>Apri Nella Scheda</translation>
+        <translatorcomment>Board has been translated in two different ways. I need context to understand.</translatorcomment>
+        <translation>Apri nella scheda</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translation>Apri La Pagina Nella Scheda</translation>
+        <translatorcomment>Board has been translated in two different ways. I need context to understand.</translatorcomment>
+        <translation>Apri la pagina nella scheda</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -381,7 +393,7 @@
     </message>
     <message>
         <source>Duplicate Selected Content</source>
-        <translation>Duplica Il Contenuto Selezionato</translation>
+        <translation>Duplica il contenuto selezionato</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -389,7 +401,7 @@
     </message>
     <message>
         <source>Delete Selected Content</source>
-        <translation>Cancella Il Contenuto Selezionato</translation>
+        <translation>Cancella il contenuto selezionato</translation>
     </message>
     <message>
         <source>Del</source>
@@ -397,11 +409,11 @@
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>Aggiungi Al Documento Di Lavoro</translation>
+        <translation>Aggiungi al documento di lavoro</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
-        <translation>Aggiungi Il Contenuto Selezionato Al documento Aperto</translation>
+        <translation>Aggiungi il contenuto selezionato al documento aperto</translation>
     </message>
     <message>
         <source>Add</source>
@@ -409,7 +421,7 @@
     </message>
     <message>
         <source>Add Content to Document</source>
-        <translation>Aggiungi Il Contenuto Al Documento</translation>
+        <translation>Aggiungi il contenuto al documento</translation>
     </message>
     <message>
         <source>Rename</source>
@@ -417,7 +429,7 @@
     </message>
     <message>
         <source>Rename Content</source>
-        <translation>Rinomina Il Contenuto</translation>
+        <translation>Rinomina il contenuto</translation>
     </message>
     <message>
         <source>Tools</source>
@@ -425,43 +437,43 @@
     </message>
     <message>
         <source>Display Tools</source>
-        <translation>Visualizza Strumenti</translation>
+        <translation>Visualizza strumenti</translation>
     </message>
     <message>
         <source>Multi Screen</source>
-        <translation>Multi Schermo</translation>
+        <translation>Multischermo</translation>
     </message>
     <message>
         <source>Wide Size (16/9)</source>
-        <translation>Wide Size (16/9)</translation>
+        <translation>Formato largo (16/9)</translation>
     </message>
     <message>
         <source>Use Document Wide Size (16/9)</source>
-        <translation>Usa la dimensione Wide (16/9)</translation>
+        <translation>Usa il formato largo (16/9)</translation>
     </message>
     <message>
         <source>Regular Size (4/3)</source>
-        <translation>Regular Size (4/3)</translation>
+        <translation>Formato normale (4/3)</translation>
     </message>
     <message>
         <source>Use Document Regular Size (4/3)</source>
-        <translation>Usa la dimensione Regular (4/3)</translation>
+        <translation>Usa il formato normale (4/3)</translation>
     </message>
     <message>
         <source>Custom Size</source>
-        <translation>Dimensione Personalizzata</translation>
+        <translation>Formato personalizzato</translation>
     </message>
     <message>
         <source>Use Custom Document Size</source>
-        <translation>Usa La Dimensione Personalizzata</translation>
+        <translation>Usa il formato personalizzato</translation>
     </message>
     <message>
         <source>Stop Loading</source>
-        <translation>Ferma Il Caricamento</translation>
+        <translation>Ferma il caricamento</translation>
     </message>
     <message>
         <source>Stop Loading Web Page</source>
-        <translation>Ferma Il Caricamento Della Pagina Web</translation>
+        <translation>Ferma il caricamento della pagina web</translation>
     </message>
     <message>
         <source>Cut</source>
@@ -481,31 +493,31 @@
     </message>
     <message>
         <source>Put Presentation to Sleep</source>
-        <translation>Metti la Presentazione in modo Sleep</translation>
+        <translation>Metti la presentazione in modalità sleep</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation>Tastiera Virtuale</translation>
+        <translation>Tastiera virtuale</translation>
     </message>
     <message>
         <source>Display Virtual Keyboard</source>
-        <translation>Visualizza La Tastiera Virtuale</translation>
+        <translation>Visualizza la tastiera virtuale</translation>
     </message>
     <message>
         <source>Plain Light Background</source>
-        <translation>Sfondo Leggero</translation>
+        <translation>Sfondo chiaro</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation>Leggeto</translation>
+        <translation>Chiaro</translation>
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation>Sfondo Leggero Con Griglia</translation>
+        <translation>Sfondo chiaro con griglia</translation>
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translation>Sfondo Scuro</translation>
+        <translation>Sfondo scuro</translation>
     </message>
     <message>
         <source>Dark</source>
@@ -513,7 +525,7 @@
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Sfondo Scuro Con Griglia</translation>
+        <translation>Sfondo scuro con griglia</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -521,7 +533,7 @@
     </message>
     <message>
         <source>Record Presentation to Video</source>
-        <translation>Registra Presentazione Come Video</translation>
+        <translation>Registra presentazione come video</translation>
     </message>
     <message>
         <source>Record</source>
@@ -529,31 +541,31 @@
     </message>
     <message>
         <source>Start Screen Recording</source>
-        <translation>Inizia Registrazione Schermata</translation>
+        <translation>Inizia registrazione schermata</translation>
     </message>
     <message>
         <source>Erase Items</source>
-        <translation>Elimina Oggetti</translation>
+        <translation>Elimina oggetti</translation>
     </message>
     <message>
         <source>Erase All Items</source>
-        <translation>Elimina Tutti Gli Oggetti</translation>
+        <translation>Elimina tutti gli oggetti</translation>
     </message>
     <message>
         <source>Erase Annotations</source>
-        <translation>Elimina Annotazioni</translation>
+        <translation>Elimina annotazioni</translation>
     </message>
     <message>
         <source>Erase All Annotations</source>
-        <translation>Elimina Tutte Le Annotazioni</translation>
+        <translation>Elimina tutte le annotazioni</translation>
     </message>
     <message>
         <source>Clear Page</source>
-        <translation>Pulisci Pagina</translation>
+        <translation>Pulisci pagina</translation>
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation>Pulisci Tutti Gli Elementi</translation>
+        <translation>Cancella tutti gli elementi</translation>
     </message>
     <message>
         <source>Pen</source>
@@ -561,7 +573,7 @@
     </message>
     <message>
         <source>Annotate Document</source>
-        <translation>Annota Documento</translation>
+        <translation>Commenta documento</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
@@ -569,7 +581,7 @@
     </message>
     <message>
         <source>Erase Annotation</source>
-        <translation>Pulisci Annotazioni</translation>
+        <translation>Cancella annotazioni</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
@@ -577,11 +589,12 @@
     </message>
     <message>
         <source>Marker</source>
-        <translation>Marcatore</translation>
+        <translation>Evidenziatore</translation>
     </message>
     <message>
         <source>Highlight </source>
-        <translation>Evidenziatore</translation>
+        <translatorcomment>Do you use the MARKER to HIGHLIGHT? Need context!</translatorcomment>
+        <translation>Evidenzia</translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -593,7 +606,7 @@
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation>Seleziona E Modifica Oggetti</translation>
+        <translation>Seleziona e modifica oggetti</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
@@ -605,15 +618,15 @@
     </message>
     <message>
         <source>Scroll Page</source>
-        <translation>Scorri Pagina</translation>
+        <translation>Scorri pagina</translation>
     </message>
     <message>
         <source>Laser Pointer</source>
-        <translation>Puntatore Laser</translation>
+        <translation>Puntatore laser</translation>
     </message>
     <message>
         <source>Virtual Laser Pointer</source>
-        <translation>Puntatore Laser Virtuale</translation>
+        <translation>Puntatore laser virtuale</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
@@ -621,7 +634,7 @@
     </message>
     <message>
         <source>Draw Lines</source>
-        <translation>Disegna Linee</translation>
+        <translation>Disegna linee</translation>
     </message>
     <message>
         <source>Ctrl+J</source>
@@ -633,7 +646,7 @@
     </message>
     <message>
         <source>Write Text</source>
-        <translation>Scrivi Testo</translation>
+        <translation>Scrivi testo</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
@@ -645,31 +658,33 @@
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>Cattura Parte Dello Schermo</translation>
+        <translation>Cattura parte dello schermo</translation>
     </message>
     <message>
         <source>Add To Current Page</source>
-        <translation>Aggiungi Alla Pagina Corrente</translation>
+        <translation>Aggiungi alla pagina corrente</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
-        <translation>Aggiungi Oggetto Alla Pagina Corrente</translation>
+        <translation>Aggiungi oggetto alla pagina corrente</translation>
     </message>
     <message>
         <source>Add To New Page</source>
-        <translation>Aggiungi A Nuova Pagina</translation>
+        <translation>Aggiungi a nuova pagina</translation>
     </message>
     <message>
         <source>Add Item To New Page</source>
-        <translation>Aggiungi Oggetto A Nuova Pagina</translation>
+        <translation>Aggiungi oggetto a nuova pagina</translation>
     </message>
     <message>
         <source>Add To Library</source>
-        <translation>Aggiungi Alla Biblioteca</translation>
+        <translatorcomment>PC library or library for something like e-books? See previous comment about &quot;library&quot;.</translatorcomment>
+        <translation>Aggiungi alla libreria</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translation>Aggiungi Oggetto Alla Biblioteca</translation>
+        <translatorcomment>Context for Library!</translatorcomment>
+        <translation>Aggiungi oggetto alla libreria</translation>
     </message>
     <message>
         <source>Pages</source>
@@ -677,27 +692,27 @@
     </message>
     <message>
         <source>Create a New Page</source>
-        <translation>Crea Una Nuova Pagina</translation>
+        <translation>Crea una nuova pagina</translation>
     </message>
     <message>
         <source>New Page</source>
-        <translation>Nuova Pagina</translation>
+        <translation>Nuova pagina</translation>
     </message>
     <message>
         <source>Duplicate Page</source>
-        <translation>Duplica Pagina</translation>
+        <translation>Duplica pagina</translation>
     </message>
     <message>
         <source>Duplicate the Current Page</source>
-        <translation>Duplica La Pagina Corrente</translation>
+        <translation>Duplica la pagina corrente</translation>
     </message>
     <message>
         <source>Import Page</source>
-        <translation>Importa Pagina</translation>
+        <translation>Importa pagina</translation>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation>Importa Una Pagina Esterna</translation>
+        <translation>Importa una pagina esterna</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -705,7 +720,7 @@
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation>Ferma La Registrazione Podcast</translation>
+        <translation>Ferma la registrazione del Podcast</translation>
     </message>
     <message>
         <source>Podcast Config</source>
@@ -713,55 +728,58 @@
     </message>
     <message>
         <source>Configure Podcast Recording</source>
-        <translation>Configura La Registrazione Podcast</translation>
+        <translation>Configura la registrazione del Podcast</translation>
     </message>
     <message>
         <source>Flash Trap</source>
+        <translatorcomment>Context needed</translatorcomment>
         <translation>Cattura Flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Cattura Contenuto Flash</translation>
+        <translatorcomment>context needed</translatorcomment>
+        <translation>Cattura contenuto flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
+        <translatorcomment>Context needed</translatorcomment>
         <translation>Cattura Web</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>Cattura Un Contenuto Web</translation>
+        <translation>Cattura un contenuto web</translation>
     </message>
     <message>
         <source>Custom Capture</source>
-        <translation>Cattura Personalizzata</translation>
+        <translation>Cattura personalizzata</translation>
     </message>
     <message>
         <source>Window Capture</source>
-        <translation>Cattura Finestra</translation>
+        <translation>Cattura della finestra</translation>
     </message>
     <message>
         <source>Capture a Window</source>
-        <translation>Cattura Una Finestra</translation>
+        <translation>Cattura una finestra</translation>
     </message>
     <message>
         <source>Embed Web Content</source>
-        <translation>Incorpora Contenuto Web</translation>
+        <translation>Incorpora contenuto web</translation>
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation>Cattura Un Contenuto Web Incorporabile</translation>
+        <translation>Cattura un contenuto web incorporabile</translation>
     </message>
     <message>
         <source>Show on Display</source>
-        <translation>Visualizza Sullo Schermo</translation>
+        <translation>Visualizza sullo schermo</translation>
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translation>Visualizza Lo Schermo Principale Sullo Schermo</translation>
+        <translation>Visualizza lo schermo principale sullo schermo</translation>
     </message>
     <message>
         <source>Erase all Annotations</source>
-        <translation>Cancella Tutte Le Annotazioni</translation>
+        <translation>Cancella tutte le annotazioni</translation>
     </message>
     <message>
         <source>eduMedia</source>
@@ -773,61 +791,61 @@
     </message>
     <message>
         <source>Open the tutorial</source>
-        <translation>Apri Il Tutorial</translation>
+        <translation>Apri il tutorial</translation>
     </message>
     <message>
         <source>Check Update</source>
-        <translation>Cerca Aggiornamenti</translation>
+        <translation>Cerca aggiornamenti</translation>
     </message>
     <message utf8="true">
         <source>Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor Sankoré</translation>
     </message>
     <message>
         <source>Show Sankore Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra editor widget Sankore</translation>
     </message>
     <message utf8="true">
         <source>Hide Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Nascondi Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Nascondi applicazione Sankoré</translation>
     </message>
     <message>
         <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+H</translation>
     </message>
 </context>
 <context>
     <name>PasswordDialog</name>
     <message>
         <source>Authentication Required</source>
-        <translation>Autenticazione Richiesta</translation>
+        <translation>Autenticazione richiesta</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nome Utente</translation>
+        <translation>Nome utente</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Password</translation>
+        <translation>Password:</translation>
     </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
-        <translation>Autenticazione Con Proxy</translation>
+        <translation>Autenticazione con Proxy</translation>
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation>Connessione Con Proxy</translation>
+        <translation>Connessione con Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nome Utente:</translation>
+        <translation>Nome utente:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -843,19 +861,19 @@
     <message>
         <source>Trash</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished">Cestino</translation>
+        <translation>Cestino</translation>
     </message>
     <message>
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>/Home</translation>
     </message>
 </context>
 <context>
     <name>QuaZipFile</name>
     <message>
         <source>ZIP/UNZIP API error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore API COMPRIMI/DECOMPRIMI %1</translation>
     </message>
 </context>
 <context>
@@ -866,14 +884,14 @@
     </message>
     <message>
         <source>Loading ...</source>
-        <translation>Caricamento...</translation>
+        <translation>Caricamento in corso...</translation>
     </message>
 </context>
 <context>
     <name>UBApplication</name>
     <message>
         <source>Page Size</source>
-        <translation>Dimensione Pagina</translation>
+        <translation>Dimensione pagina</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -884,11 +902,11 @@
     <name>UBApplicationController</name>
     <message>
         <source>Web</source>
-        <translation>Internet</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation>Nuovi aggiornamenti disponibili, vuoi andare alla pagina internet?</translation>
+        <translation>Nuovo aggiornamento disponibile, vuoi andare alla pagina web?</translation>
     </message>
     <message>
         <source>No update available</source>
@@ -896,30 +914,32 @@
     </message>
     <message>
         <source>Update available</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiornamento disponibile</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Is it a verb or a noun here? I translated it as a noun.</translatorcomment>
+        <translation>Aggiornamento</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content from %1</source>
-        <translation>Scaricamento contenuto da %1</translation>
+        <translation>Download del contenuto da %1 in corso</translation>
     </message>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation>caricamento contenuto %1 fallito</translation>
+        <translation>Download contenuto %1 fallito</translation>
     </message>
     <message>
         <source>Download finished</source>
-        <translation>Scaricamento Terminato</translation>
+        <translation>Download completato</translation>
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translation>Tipo di strumento non conosciuto %1</translation>
+        <translatorcomment>What does %1 stand for?</translatorcomment>
+        <translation>Tipo di strumento sconosciuto %1</translation>
     </message>
     <message>
         <source>Unknown content type %1</source>
@@ -927,41 +947,42 @@
     </message>
     <message>
         <source>Add Item</source>
-        <translation>Aggiungi Oggetto</translation>
+        <translation>Aggiungi oggetto</translation>
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation>Tutto Supportato (%1)</translation>
+        <translation>Tutto supportato (%1)</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation>Errore mentre si aggiungeva un&apos;immagine alla Biblioteca</translation>
+        <translatorcomment>See comments abour &quot;library&quot;.</translatorcomment>
+        <translation>Errore durante l&apos;aggiunta dell&apos;immagine alla libreria</translation>
     </message>
 </context>
 <context>
     <name>UBCachePropertiesWidget</name>
     <message>
         <source>Cache Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Proprietà della cache</translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore:</translation>
     </message>
     <message>
         <source>Shape:</source>
-        <translation type="unfinished"></translation>
+        <translation>Forma:</translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione:</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">chiudi</translation>
+        <translation>Chiudi</translation>
     </message>
 </context>
 <context>
@@ -972,30 +993,32 @@
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>Cattura Parte Dello Schermo</translation>
+        <translation>Cattura parte della schermata</translation>
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation>Cattura la Schermata</translation>
+        <translation>Cattura la schermata</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>&quot;Stylus&quot; is literally translate. Some context would help!</translatorcomment>
+        <translation>Mostra la palette stilo</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation>Mostra la Lavagna sullo schermo Secondario</translation>
+        <translatorcomment>What is the board exactly?</translatorcomment>
+        <translation>Mostra la lavagna sullo schermo secondario</translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
-        <translation>Mostra la Scrivania sullo schermo Secondario</translation>
+        <translation>Mostra il desktop sullo schermo secondario</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentController</name>
     <message>
         <source>New Folder</source>
-        <translation>Nuova Cartella</translation>
+        <translation>Nuova cartella</translation>
     </message>
     <message>
         <source>Page %1</source>
@@ -1003,15 +1026,15 @@
     </message>
     <message>
         <source>Add Folder of Images</source>
-        <translation>Aggiungi un cartella di Immagini</translation>
+        <translation>Aggiungi una cartella di immagini</translation>
     </message>
     <message>
         <source>Add Images</source>
-        <translation>Aggiungi Immagini</translation>
+        <translation>Aggiungi immagini</translation>
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation>Aggiungi pagine da File</translation>
+        <translation>Aggiungi pagine da file</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
@@ -1023,19 +1046,19 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Rimuovi Pagina</translation>
+        <translation>Elimina pagina</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Rimuovi Documento</translation>
+        <translation>Elimina documento</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>sei sicuro di voler rimuovere il documento &apos;%1&apos;?</translation>
+        <translation>Sei sicuro di voler eliminare il documento &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Svuota il Cestino</translation>
+        <translation>Svuota il cestino</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1051,11 +1074,11 @@
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Rimuovi Cartella</translation>
+        <translation>Elimina cartella</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Sei sicuro di voler rimuovere la cartella &apos;%1&apos;  e tutto il suo contenuto?</translation>
+        <translation>Sei sicuro di voler eliminare la cartella &apos;%1&apos; e tutto il suo contenuto?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1071,11 +1094,11 @@
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation>Importazione del file fallita</translation>
+        <translation>Importazione del file fallita... </translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
-        <translation>Importa tutte le immagini della Cartella</translation>
+        <translation>Importa tutte le immagini della cartella</translation>
     </message>
     <message>
         <source>Folder does not contain any image files!</source>
@@ -1087,6 +1110,7 @@
     </message>
     <message>
         <source>Empty</source>
+        <translatorcomment>What is empty? The folder? Then it should be &quot;vuota&quot;... need more context.</translatorcomment>
         <translation>Vuoto</translation>
     </message>
     <message>
@@ -1095,7 +1119,7 @@
     </message>
     <message>
         <source>Open Document</source>
-        <translation>Apri Documento</translation>
+        <translation>Apri documento</translation>
     </message>
     <message>
         <source>Add all Images to Document</source>
@@ -1111,11 +1135,12 @@
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Il documento &apos;%1&apos; è stato generato con una versione più recente di Sankore (%2). Aprendolo, si potrebbero perdere alcune informazioni. Vuoi continuare?</translation>
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
+        <translation>
+            <numerusform>Sei sicuro di voler rimuovere%n pagina (pagine) dal documento selezionato &apos;%1&apos;?</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1136,7 +1161,7 @@
     </message>
     <message>
         <source>widgets</source>
-        <translation>widgets</translation>
+        <translation>widget</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
@@ -1152,7 +1177,7 @@
     </message>
     <message>
         <source>Erronous image data, skipping file %1</source>
-        <translation>Dati dell&apos;immagine errati salto il file %1</translation>
+        <translation>Dati dell&apos;immagine errati, salto il file %1</translation>
     </message>
 </context>
 <context>
@@ -1170,27 +1195,27 @@
     </message>
     <message>
         <source>Export canceled ...</source>
-        <translation>Esportazione cancellata ...</translation>
+        <translation>Esportazione annullata ...</translation>
     </message>
     <message>
         <source>Converting page %1/%2 ...</source>
-        <translation>Conversione pagina %1/%2 ...</translation>
+        <translation>Conversione pagina %1/%2 in corso...</translation>
     </message>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le credenziali non sono ancora state inserite.</translation>
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;upload in rete del file Sankore è in corso.</translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>Documento caricato correttamente in rete.</translation>
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;upload del documento in rete è fallito.</translation>
     </message>
 </context>
 <context>
@@ -1205,7 +1230,8 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
+            <numerusform>Pagine %1 copiate</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1234,7 +1260,7 @@
     </message>
     <message>
         <source>Export to Sankore Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta nel formato Sankore</translation>
     </message>
 </context>
 <context>
@@ -1276,7 +1302,7 @@
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation>Escporta in PDF</translation>
+        <translation>Esporta in PDF</translation>
     </message>
 </context>
 <context>
@@ -1303,7 +1329,7 @@
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation>Esporta nel Web Browser</translation>
+        <translation>Esporta nel browser web</translation>
     </message>
 </context>
 <context>
@@ -1314,7 +1340,7 @@
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation>Visibile sulla schermata estesa</translation>
+        <translation>Visibile sullo schermo esteso</translation>
     </message>
     <message>
         <source>Go to Content Source</source>
@@ -1325,21 +1351,22 @@
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation>&lt;Inserisci del testo qui&gt;</translation>
+        <translation>&lt;Inserisci il testo qui&gt;</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItemDelegate</name>
     <message>
         <source>Text Color</source>
-        <translation>Colore Testo</translation>
+        <translation>Colore testo</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translation>Congela</translation>
+        <translatorcomment>&quot;Congela&quot; - previous translation - was almost certainly wrong. My translation is literal. I need context here!</translatorcomment>
+        <translation>Congelato</translation>
     </message>
     <message>
         <source>Transform as Tool </source>
@@ -1350,23 +1377,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>Common File Format (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Importazione del file %1 in corso...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;importazione del file %1 è fallita.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">Importazione completata con successo.</translation>
+        <translation>Importazione completata con successo.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importazione fallita.</translation>
     </message>
 </context>
 <context>
@@ -1381,11 +1408,11 @@
     </message>
     <message>
         <source>Sankore 3.1 (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1 (*.ubz)</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;importazione del file%1 è fallita.</translation>
     </message>
 </context>
 <context>
@@ -1444,128 +1471,132 @@
     <name>UBLibActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi ai preferiti</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Condividi</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerca</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Torna alla cartella</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi dai preferiti</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Crea nuova cartella</translation>
     </message>
 </context>
 <context>
     <name>UBLibItemProperties</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished">Indietro</translation>
+        <translation>Indietro</translation>
     </message>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi alla pagina</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta come sfondo</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>We need to know what is this Library. In Italian &quot;library&quot; is &quot;biblioteca&quot;, but in computer terms we use &quot;libreria&quot;. But if we are referring to a virtual library, maybe it is better to put &quot;biblioteca&quot;. I need context!</translatorcomment>
+        <translation>Aggiungi alla libreria</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Informazioni sull&apos;oggetto</translation>
     </message>
 </context>
 <context>
     <name>UBLibraryController</name>
     <message>
         <source>Added 1 Image to Library</source>
-        <translation type="unfinished">Aggiungi un immagine alla Biblioteca</translation>
+        <translatorcomment>We need to know what is this Library. In Italian &quot;library&quot; is &quot;biblioteca&quot;, but in computer terms we use &quot;libreria&quot;. But if we are referring to a virtual library, maybe it is better to put &quot;biblioteca&quot;. I need context!</translatorcomment>
+        <translation>Aggiungi un&apos;immagine alla libreria</translation>
     </message>
     <message>
         <source>Audios</source>
         <comment>Audio category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Audio</translation>
     </message>
     <message>
         <source>Movies</source>
         <comment>Movies category element</comment>
-        <translation type="unfinished">Film</translation>
+        <translatorcomment>Film</translatorcomment>
+        <translation>Film</translation>
     </message>
     <message>
         <source>Pictures</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagini</translation>
     </message>
     <message>
         <source>Shapes</source>
         <comment>Shapes category element</comment>
-        <translation type="unfinished">Forme</translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <source>Applications</source>
         <comment>Applications category element</comment>
-        <translation type="unfinished">Applicazioni</translation>
+        <translation>Applicazioni</translation>
     </message>
     <message>
         <source>Favorite</source>
         <comment>Favorite category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Preferiti</translation>
     </message>
     <message>
         <source>Creating image thumbnail for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Generazione della miniatura di anteprima per %1 in corso.</translation>
     </message>
     <message>
         <source>Adding to page failed for item %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;aggiunta alla pagina per l&apos;elemento %1 è fallita.</translation>
     </message>
     <message>
         <source>Interactivities</source>
         <comment>Interactives category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Interattività</translation>
     </message>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Space between words added</translatorcomment>
+        <translation>Immagine importata</translation>
     </message>
     <message>
         <source>Animations</source>
         <comment>Animations category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Animazioni</translation>
     </message>
 </context>
 <context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Sì</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>No</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -1586,40 +1617,40 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
-        <translation>SSL Errors:
+        <translation>Errori SSL:
 
 %1
 
 %2
 
-Vuoi ignorare l&apos;errore per questo host?</translation>
+Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Sì</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>No</translation>
     </message>
 </context>
 <context>
     <name>UBNewFolderDlg</name>
     <message>
         <source>Add new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi nuova cartella</translation>
     </message>
     <message>
         <source>New Folder name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome nuova cartella:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Aggiungi</translation>
+        <translation>Aggiungi</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
@@ -1630,18 +1661,18 @@ Vuoi ignorare l&apos;errore per questo host?</translation>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation>Document Repository Loss</translation>
+        <translation>Perdita archivio documenti</translation>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore ha perso l&apos;accesso all&apos;archivio dei documenti &apos;%1&apos;. Purtroppo l&apos;applicazione deve chiudere per evitare la corruzione dei dati. Potrebbero essere andate perse anche le ultime modifiche.</translation>
     </message>
 </context>
 <context>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation>Partenza del codificatore fallita ...</translation>
+        <translation>Impossibile avviare il codificatore...</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
@@ -1653,7 +1684,7 @@ Vuoi ignorare l&apos;errore per questo host?</translation>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation>sul suo desktop ...</translation>
+        <translation>sul tuo desktop ...</translation>
     </message>
     <message>
         <source>in folder %1</source>
@@ -1665,26 +1696,29 @@ Vuoi ignorare l&apos;errore per questo host?</translation>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation>Registrazione Podcast fallita (%1)</translation>
+        <translation>Errore registrazione Podcast (%1)</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
-        <translation>Entrata Audio Predefinita</translation>
+        <translation>Entrata audio predefinita</translation>
     </message>
     <message>
         <source>No Audio Recording</source>
-        <translation>Nessun registratore Audio</translation>
+        <translation>Nessuna registrazione audio</translation>
     </message>
     <message>
         <source>Small</source>
+        <translatorcomment>What are we referring to? In Italian we need to know to pick the correct adjective form.</translatorcomment>
         <translation>Piccolo</translation>
     </message>
     <message>
         <source>Medium</source>
+        <translatorcomment>What are we referring to? In Italian we need to know to pick the correct adjective form.</translatorcomment>
         <translation>Medio</translation>
     </message>
     <message>
         <source>Full</source>
+        <translatorcomment>What are we referring to? In Italian we need to know to pick the correct adjective form.</translatorcomment>
         <translation>Pieno</translation>
     </message>
     <message>
@@ -1697,7 +1731,8 @@ Vuoi ignorare l&apos;errore per questo host?</translation>
     </message>
     <message>
         <source>Sankore Cast</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Need context!</translatorcomment>
+        <translation>Sankore Cast</translation>
     </message>
 </context>
 <context>
@@ -1708,48 +1743,49 @@ Vuoi ignorare l&apos;errore per questo host?</translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translation>Il marcatore è sensibile alla pressione</translation>
+        <translatorcomment>&quot;Marker&quot; was the choice of the other translator. Elsewhere it is translated with &quot;marcatore&quot;. I don&apos;t have any context, but I guess it is wrong.</translatorcomment>
+        <translation>L&apos;evidenziatore è sensibile alla pressione</translation>
     </message>
 </context>
 <context>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Login Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome utente:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Password:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation type="unfinished"></translation>
+        <translation>Pubblica documento sul web</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="unfinished"></translation>
+        <translation>Titolo:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Descrizione:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation type="unfinished">Pubblica</translation>
+        <translation>Pubblica</translation>
     </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>Untitled Documents</source>
-        <translation>Documento senza titolo</translation>
+        <translation>Documenti senza titolo</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1761,89 +1797,7 @@ Vuoi ignorare l&apos;errore per questo host?</translation>
     </message>
     <message>
         <source>My Movies</source>
-        <translation>Film personali</translation>
-    </message>
-</context>
-<context>
-    <name>UBTeacherBarWidget</name>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished">Titolo</translation>
-    </message>
-    <message>
-        <source>Phasis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Equipment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Activity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>I discover</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>I experiment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>I train myself</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>I play</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>I memorize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Short</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Middle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Long</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>By Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All together</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UBTeacherStudentAction</name>
-    <message>
-        <source>Action %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Teacher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Student</source>
-        <translation type="unfinished"></translation>
+        <translation>I miei film</translation>
     </message>
 </context>
 <context>
@@ -1873,113 +1827,119 @@ Vuoi ignorare l&apos;errore per questo host?</translation>
     </message>
     <message>
         <source>Protractor</source>
+        <translatorcomment>Need some context. &quot;Rapportatore&quot; is also possible.</translatorcomment>
         <translation>Gognometro</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Literally translated. Don&apos;t know the context...</translatorcomment>
+        <translation>Triangolo</translation>
     </message>
     <message>
         <source>Magnifier</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Literally translated. Don&apos;t know the context...</translatorcomment>
+        <translation>Lente di ingrandimento</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation type="unfinished"></translation>
+        <translation>Cache</translation>
     </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
     <message>
         <source>Whole page</source>
-        <translation>Pagina Intera</translation>
+        <translation>Pagina intera</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation>Internet</translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiornamento documento</translation>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation type="unfinished"></translation>
+        <translation>I file necessitano di un aggiornamento.</translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso di backup: </translation>
     </message>
     <message>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfoglia</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiorna</translation>
     </message>
     <message>
         <source>Select a backup folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona una cartella di backup</translation>
     </message>
     <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiornamento file eseguito!
+Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si è verificato un errore durante l&apos;aggiornamento. I file non sono stati intaccati.</translation>
     </message>
     <message>
         <source>Files update results</source>
-        <translation type="unfinished"></translation>
+        <translation>Risultati dell&apos;aggiornamento dei file</translation>
     </message>
     <message>
         <source>Updating file </source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiornamento file in corso</translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Guess some punctuation is required here: &quot;Please wait. the import process will start soon...&quot;</translatorcomment>
+        <translation>Si prega di attendere. Il processo di importazione sta per iniziare...</translation>
     </message>
 </context>
 <context>
     <name>UBW3CWidget</name>
     <message>
         <source>Web</source>
-        <translation>Internet</translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBWebPluginWidget</name>
     <message>
         <source>Loading...</source>
-        <translation>Caricamento ...</translation>
+        <translation>Caricamento in corso...</translation>
     </message>
 </context>
 <context>
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Pubblica documento sulla rete Sankore</translation>
     </message>
 </context>
 <context>
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>I have no clue of the context!</translatorcomment>
+        <translation type="unfinished">%0 chiamati (metodo=%1, stato=%2)</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation>Autenticazione fallita su YouTube.</translation>
+        <translation>Autenticazione su YouTube fallita.</translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
@@ -1998,7 +1958,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Autos &amp; Vehicles</source>
-        <translation>Auto e Veicoli</translation>
+        <translation>Auto &amp; Veicoli</translation>
     </message>
     <message>
         <source>Music</source>
@@ -2014,7 +1974,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation>Viaggi ed Eventi</translation>
+        <translation>Viaggi &amp; Eventi</translation>
     </message>
     <message>
         <source>Gaming</source>
@@ -2026,11 +1986,11 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>People &amp; Blogs</source>
-        <translation>Persone e Blog</translation>
+        <translation>Persone &amp; Blog</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation>Novità e Politica</translation>
+        <translation>Attualità &amp; Politica</translation>
     </message>
     <message>
         <source>Entertainment</source>
@@ -2038,19 +1998,20 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Education</source>
-        <translation>Educazione</translation>
+        <translation>Istruzione</translation>
     </message>
     <message>
         <source>Howto &amp; Style</source>
+        <translatorcomment>I do not understand the context! The previous translate, anyway, is not complete.</translatorcomment>
         <translation>Stile</translation>
     </message>
     <message>
         <source>Nonprofits &amp; Activism</source>
-        <translation>Noprofit e Attivismo</translation>
+        <translation>Non profit &amp; Attivismo</translation>
     </message>
     <message>
         <source>Science &amp; Technology</source>
-        <translation>Scienza e Tecnologia</translation>
+        <translation>Scienza &amp; Tecnologia</translation>
     </message>
 </context>
 <context>
@@ -2064,18 +2025,18 @@ Please reboot the application to access the updated documents.</source>
     <name>WBClearButton</name>
     <message>
         <source>Clear</source>
-        <translation>Pulisci</translation>
+        <translation>Cancella</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation>Salva File</translation>
+        <translation>Salva file</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation>Scaricamento cancellato %1</translation>
+        <translation>Download annullato: %1</translation>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
@@ -2083,7 +2044,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation>Errore nel salvataggio di: %1</translation>
+        <translation>Errore nel salvataggio: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
@@ -2099,7 +2060,8 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 rimanenti</translation>
+        <translatorcomment>Does it refer to the download? I guess so.</translatorcomment>
+        <translation>- %4 %5 ancora da scaricare</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
@@ -2112,11 +2074,11 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation>%1 di %2 - Fermato</translation>
+        <translation>%1 di %2 - Interrotto</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation>bytes</translation>
+        <translation>byte</translation>
     </message>
     <message>
         <source>KB</source>
@@ -2131,12 +2093,12 @@ Please reboot the application to access the updated documents.</source>
     <name>WBDownloadManager</name>
     <message>
         <source>1 Download</source>
-        <translation>1 Scaricamento</translation>
+        <translation>1 Download</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
-        <translation>%1 Scaricamenti</translation>
+        <translation>%1 Download</translation>
     </message>
 </context>
 <context>
@@ -2154,17 +2116,19 @@ Please reboot the application to access the updated documents.</source>
     <name>WBHistoryTreeModel</name>
     <message>
         <source>Earlier Today</source>
-        <translation>Più presto oggi</translation>
+        <translation>Oggi</translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation>%1 oggetto</translation>
+        <translatorcomment>I do not understand if %1 stands for some numeration or for some name. The translation depends on this.</translatorcomment>
+        <translation>%1 oggetti</translation>
     </message>
 </context>
 <context>
     <name>WBSearchLineEdit</name>
     <message>
         <source>Search</source>
+        <translatorcomment>Verb or noun? It was already translated as a noun. Guess it is right.</translatorcomment>
         <translation>Ricerca</translation>
     </message>
 </context>
@@ -2172,34 +2136,34 @@ Please reboot the application to access the updated documents.</source>
     <name>WBTabBar</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation>Nuovo &amp;Tab</translation>
+        <translation>Nuova &amp;Scheda</translation>
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation>Clona Tab</translation>
+        <translation>Clona scheda</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation>&amp;Chiudi Tab</translation>
+        <translation>&amp;Chiudi scheda</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation>Chiudi &amp;Altri Tab</translation>
+        <translation>Chiudi &amp;Altre schede</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation>Ricarica Tab</translation>
+        <translation>Ricarica scheda</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
-        <translation>Ricarica tutti i Tab</translation>
+        <translation>Ricarica tutte le schede</translation>
     </message>
 </context>
 <context>
     <name>WBTabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
-        <translation>Tab chiusi di recente</translation>
+        <translation>Schede chiuse di recente</translation>
     </message>
     <message>
         <source>(Untitled)</source>
@@ -2210,7 +2174,8 @@ Please reboot the application to access the updated documents.</source>
     <name>WBToolbarSearch</name>
     <message>
         <source>Search</source>
-        <translation>Ricarca</translation>
+        <translatorcomment>Noun or verb? I translated it as a noun.</translatorcomment>
+        <translation>Cerca</translation>
     </message>
     <message>
         <source>No Recent Searches</source>
@@ -2222,7 +2187,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation>Pulisci le ricerche recenti</translation>
+        <translation>Cancella le ricerche recenti</translation>
     </message>
 </context>
 <context>
@@ -2233,7 +2198,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation>Aggiungi al Documento Corrente</translation>
+        <translation>Aggiungi al documento corrente</translation>
     </message>
     <message>
         <source>PDF</source>
@@ -2245,14 +2210,14 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Scarica documento PDF: preferisci scaricare il file PDF o aggiungerlo al documento Sankore corrente?</translation>
     </message>
 </context>
 <context>
     <name>WBWebView</name>
     <message>
         <source>Open in New Tab</source>
-        <translation>Apri in un nuovo Tab</translation>
+        <translation>Apri in una nuova scheda</translation>
     </message>
 </context>
 <context>
@@ -2283,7 +2248,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation>Nome Utente Youtube</translation>
+        <translation>Nome utente Youtube</translation>
     </message>
     <message>
         <source>YouTube Password</source>
@@ -2299,18 +2264,18 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Premendo &apos;Upload,&apos;  certifichi che possiedi tutti i diritti sul contenuto o che sei autorizzato dal proprietario a rendere questi contenuti pubblici su Youtube, e che in ogni modo siano conformi ai termini di utilizzo di Youtube che puoi trovare a: &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Premendo &apos;Upload&apos;,  certifichi di possedere tutti i diritti sul contenuto o di essere stato autorizzato dal proprietario a rendere questi contenuti pubblici su Youtube, e che in ogni modo siano conformi ai termini di utilizzo di Youtube che puoi trovare all&apos;indirizzo: &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
     <name>brushProperties</name>
     <message>
         <source>On Light Background</source>
-        <translation>Su Sfondo Chiaro</translation>
+        <translation>Su sfondo chiaro</translation>
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation>Su Sfondo Scuro</translation>
+        <translation>Su sfondo scuro</translation>
     </message>
     <message>
         <source>Opacity</source>
@@ -2318,23 +2283,24 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Line Width</source>
-        <translation>Larghezza Linea</translation>
+        <translatorcomment>See previous comments abour &quot;line&quot;</translatorcomment>
+        <translation>Larghezza tratto</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation>Media</translation>
+        <translation>Medio</translation>
     </message>
     <message>
         <source>Strong</source>
-        <translation>Forte</translation>
+        <translation>Grosso</translation>
     </message>
     <message>
         <source>Fine</source>
-        <translation>Leggera</translation>
+        <translation>Sottile</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
-        <translation>La Penna è sensibile alla pressione</translation>
+        <translation>La penna è sensibile alla pressione</translation>
     </message>
 </context>
 <context>
@@ -2349,7 +2315,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>E-mail</source>
-        <translation>Email</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Author</source>
@@ -2372,7 +2338,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>E-mail</source>
-        <translation>Email</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Author</source>
@@ -2392,7 +2358,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
-        <translation>Attenzione: Questi docuementi contengono video i quali non posso esse visualizzati correttamente su Internet</translation>
+        <translation>Attenzione: questi documenti contengono video che non possono essere visualizzati correttamente sul web</translation>
     </message>
 </context>
 <context>
@@ -2414,11 +2380,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Default Settings</source>
-        <translation>Settaggio Predefinito</translation>
+        <translation>Settaggio predefinito</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>chiudi</translation>
+        <translation>Chiudi</translation>
     </message>
     <message>
         <source>Display</source>
@@ -2430,31 +2396,31 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation>Visualizza le pagine su un browser esterno</translation>
+        <translation>Visualizza la pagina con un browser esterno</translation>
     </message>
     <message>
         <source>Home Page:</source>
-        <translation>Home Page:</translation>
+        <translation>Homepage:</translation>
     </message>
     <message>
         <source>Proxy User/Pass:</source>
-        <translation>Proxy Utente/Password:</translation>
+        <translation>Utente Proxy/Password:</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished">Tastiera Virtuale</translation>
+        <translation>Tastiera virtuale</translation>
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione pulsanti tastiera:</translation>
     </message>
     <message>
         <source>Toolbar</source>
-        <translation>Barra degli Strumenti</translation>
+        <translation>Barra degli strumenti</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation>Posiziona in cima (consigliato per tablet)</translation>
+        <translation>Posiziona in alto (consigliato per tablet)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
@@ -2474,15 +2440,16 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Stylus? More context needed.</translatorcomment>
+        <translation>Palette stilo</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>Orizzontale</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>Verticale</translation>
     </message>
     <message>
         <source>Pen</source>
@@ -2490,7 +2457,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Marker</source>
-        <translation>Marcatore</translation>
+        <translatorcomment>Again, context is needed.</translatorcomment>
+        <translation>Evidenziatore</translation>
     </message>
     <message>
         <source>About</source>
@@ -2498,35 +2466,35 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Software Update</source>
-        <translation>Aggirna il programma</translation>
+        <translation>Aggiorna il software</translation>
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation>Controlla aggiornamenti disponibili all&apos;avvio</translation>
+        <translation>All&apos;avvio controlla gli aggiornamenti del software disponibili</translation>
     </message>
     <message>
         <source>Licences</source>
-        <translation type="unfinished"></translation>
+        <translation>Licenze</translation>
     </message>
     <message>
         <source>OpenSSl</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenSSL</translation>
     </message>
     <message>
         <source>zlib</source>
-        <translation type="unfinished"></translation>
+        <translation>zlib</translation>
     </message>
     <message>
         <source>xpdf</source>
-        <translation type="unfinished"></translation>
+        <translation>xpdf</translation>
     </message>
     <message>
         <source>Quazip</source>
-        <translation type="unfinished"></translation>
+        <translation>Quazip</translation>
     </message>
     <message utf8="true">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2763,26 +2731,28 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Rete</translation>
     </message>
     <message>
         <source>Community</source>
-        <translation type="unfinished"></translation>
+        <translation>Community</translation>
     </message>
     <message>
         <source>User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Utente/Password:</translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>Cattura Flash</translation>
+        <translatorcomment>With no context I cannot understand if this translation is correct.</translatorcomment>
+        <translation>Cattura flash</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Seleziona un applicazione flash da catturare</translation>
+        <translatorcomment>With no context I cannot understand if this translation is correct.</translatorcomment>
+        <translation>Seleziona un&apos;applicazione flash da catturare</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2790,11 +2760,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Application name</source>
-        <translation>Nome Applicazione</translation>
+        <translation>Nome applicazione</translation>
     </message>
     <message>
         <source>Create Application</source>
-        <translation>Crea Applicazione</translation>
+        <translation>Crea applicazione</translation>
     </message>
 </context>
 </TS>
