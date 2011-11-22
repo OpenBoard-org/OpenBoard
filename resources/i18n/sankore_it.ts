@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it_IT" sourcelanguage="en">
+<!DOCTYPE TS><TS>
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
         <translation>Clicca per tornare all&apos;applicazione</translation>
+    </message>
+    <message>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -27,7 +29,6 @@
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translatorcomment>CONTEXT NEEDED!!!</translatorcomment>
         <translation>Modulo</translation>
     </message>
     <message>
@@ -45,6 +46,10 @@
     <message>
         <source>Open</source>
         <translation>Apri</translation>
+    </message>
+    <message>
+        <source>Ico</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -74,7 +79,6 @@
     </message>
     <message>
         <source>Board</source>
-        <translatorcomment>Context needed! I am sticking to the previous translation!</translatorcomment>
         <translation>Lavagna</translation>
     </message>
     <message>
@@ -91,7 +95,6 @@
     </message>
     <message>
         <source>Stylus</source>
-        <translatorcomment>Context needed</translatorcomment>
         <translation>Stilo</translation>
     </message>
     <message>
@@ -164,22 +167,18 @@
     </message>
     <message>
         <source>Line</source>
-        <translatorcomment>Are we talking about the line of the pen or marker? Then &quot;tratto&quot; is better. Context needed.</translatorcomment>
         <translation>Tratto</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translatorcomment>Are we talking about the line of the pen or marker? Then &quot;tratto sottile&quot; is better. Context needed.</translatorcomment>
         <translation>Tratto fine</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translatorcomment>Are we talking about the line of the pen or marker? Then &quot;tratto medio&quot; is better. Context needed.</translatorcomment>
         <translation>Tratto medio</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translatorcomment>Are we talking about the line of the pen or marker? Then &quot;tratto grosso&quot; is better. Context needed.</translatorcomment>
         <translation>Tratto grosso</translation>
     </message>
     <message>
@@ -260,7 +259,6 @@
     </message>
     <message>
         <source>Display Board</source>
-        <translatorcomment>See comments about &quot;board&quot;.</translatorcomment>
         <translation>Visualizza lavagna</translation>
     </message>
     <message>
@@ -285,19 +283,17 @@
     </message>
     <message>
         <source>Library</source>
-        <translatorcomment>Are we talking about a software library? In such case, it&apos;s &quot;library&quot; also in Italian. Or are we talking about a virtual library for e-books? I need context!</translatorcomment>
         <translation>Biblioteca</translation>
     </message>
     <message>
         <source>Show Library</source>
-        <translatorcomment>Are we talking about a software library? In such case, it&apos;s &quot;library&quot; also in Italian. Or are we talking about a virtual library for e-books? I need context!</translatorcomment>
         <translation>Visualizza libreria</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -375,12 +371,10 @@
     </message>
     <message>
         <source>Open in Board</source>
-        <translatorcomment>Board has been translated in two different ways. I need context to understand.</translatorcomment>
         <translation>Apri nella scheda</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translatorcomment>Board has been translated in two different ways. I need context to understand.</translatorcomment>
         <translation>Apri la pagina nella scheda</translation>
     </message>
     <message>
@@ -593,7 +587,6 @@
     </message>
     <message>
         <source>Highlight </source>
-        <translatorcomment>Do you use the MARKER to HIGHLIGHT? Need context!</translatorcomment>
         <translation>Evidenzia</translation>
     </message>
     <message>
@@ -678,12 +671,10 @@
     </message>
     <message>
         <source>Add To Library</source>
-        <translatorcomment>PC library or library for something like e-books? See previous comment about &quot;library&quot;.</translatorcomment>
         <translation>Aggiungi alla libreria</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translatorcomment>Context for Library!</translatorcomment>
         <translation>Aggiungi oggetto alla libreria</translation>
     </message>
     <message>
@@ -732,17 +723,14 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translatorcomment>Context needed</translatorcomment>
         <translation>Cattura Flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translatorcomment>context needed</translatorcomment>
         <translation>Cattura contenuto flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translatorcomment>Context needed</translatorcomment>
         <translation>Cattura Web</translation>
     </message>
     <message>
@@ -797,7 +785,7 @@
         <source>Check Update</source>
         <translation>Cerca aggiornamenti</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré Editor</source>
         <translation>Editor Sankoré</translation>
     </message>
@@ -805,11 +793,11 @@
         <source>Show Sankore Widgets Editor</source>
         <translation>Mostra editor widget Sankore</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré</source>
         <translation>Nascondi Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré Application</source>
         <translation>Nascondi applicazione Sankoré</translation>
     </message>
@@ -831,6 +819,14 @@
     <message>
         <source>Password:</source>
         <translation>Password:</translation>
+    </message>
+    <message>
+        <source>DUMMY ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTRO TEXT DUMMY</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -855,6 +851,10 @@
         <source>Save username and password for future use</source>
         <translation>Salva username e password per usi futuri</translation>
     </message>
+    <message>
+        <source>ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -867,13 +867,6 @@
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
         <translation>/Home</translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>Errore API COMPRIMI/DECOMPRIMI %1</translation>
     </message>
 </context>
 <context>
@@ -918,7 +911,6 @@
     </message>
     <message>
         <source>Update</source>
-        <translatorcomment>Is it a verb or a noun here? I translated it as a noun.</translatorcomment>
         <translation>Aggiornamento</translation>
     </message>
 </context>
@@ -938,7 +930,6 @@
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translatorcomment>What does %1 stand for?</translatorcomment>
         <translation>Tipo di strumento sconosciuto %1</translation>
     </message>
     <message>
@@ -958,7 +949,6 @@
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translatorcomment>See comments abour &quot;library&quot;.</translatorcomment>
         <translation>Errore durante l&apos;aggiunta dell&apos;immagine alla libreria</translation>
     </message>
 </context>
@@ -1001,12 +991,10 @@
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translatorcomment>&quot;Stylus&quot; is literally translate. Some context would help!</translatorcomment>
         <translation>Mostra la palette stilo</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translatorcomment>What is the board exactly?</translatorcomment>
         <translation>Mostra la lavagna sullo schermo secondario</translation>
     </message>
     <message>
@@ -1110,7 +1098,6 @@
     </message>
     <message>
         <source>Empty</source>
-        <translatorcomment>What is empty? The folder? Then it should be &quot;vuota&quot;... need more context.</translatorcomment>
         <translation>Vuoto</translation>
     </message>
     <message>
@@ -1136,13 +1123,6 @@
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Il documento &apos;%1&apos; è stato generato con una versione più recente di Sankore (%2). Aprendolo, si potrebbero perdere alcune informazioni. Vuoi continuare?</translation>
-    </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
-            <numerusform>Sei sicuro di voler rimuovere%n pagina (pagine) dal documento selezionato &apos;%1&apos;?</numerusform>
-            <numerusform></numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1227,13 +1207,6 @@
     <message>
         <source>Copying page %1/%2</source>
         <translation>Sto copiando pagina %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation>
-            <numerusform>Pagine %1 copiate</numerusform>
-            <numerusform></numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1365,7 +1338,6 @@
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translatorcomment>&quot;Congela&quot; - previous translation - was almost certainly wrong. My translation is literal. I need context here!</translatorcomment>
         <translation>Congelato</translation>
     </message>
     <message>
@@ -1514,7 +1486,6 @@
     </message>
     <message>
         <source>Add to library</source>
-        <translatorcomment>We need to know what is this Library. In Italian &quot;library&quot; is &quot;biblioteca&quot;, but in computer terms we use &quot;libreria&quot;. But if we are referring to a virtual library, maybe it is better to put &quot;biblioteca&quot;. I need context!</translatorcomment>
         <translation>Aggiungi alla libreria</translation>
     </message>
     <message>
@@ -1526,7 +1497,6 @@
     <name>UBLibraryController</name>
     <message>
         <source>Added 1 Image to Library</source>
-        <translatorcomment>We need to know what is this Library. In Italian &quot;library&quot; is &quot;biblioteca&quot;, but in computer terms we use &quot;libreria&quot;. But if we are referring to a virtual library, maybe it is better to put &quot;biblioteca&quot;. I need context!</translatorcomment>
         <translation>Aggiungi un&apos;immagine alla libreria</translation>
     </message>
     <message>
@@ -1537,7 +1507,6 @@
     <message>
         <source>Movies</source>
         <comment>Movies category element</comment>
-        <translatorcomment>Film</translatorcomment>
         <translation>Film</translation>
     </message>
     <message>
@@ -1575,7 +1544,6 @@
     </message>
     <message>
         <source>ImportedImage</source>
-        <translatorcomment>Space between words added</translatorcomment>
         <translation>Immagine importata</translation>
     </message>
     <message>
@@ -1708,17 +1676,14 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Small</source>
-        <translatorcomment>What are we referring to? In Italian we need to know to pick the correct adjective form.</translatorcomment>
         <translation>Piccolo</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translatorcomment>What are we referring to? In Italian we need to know to pick the correct adjective form.</translatorcomment>
         <translation>Medio</translation>
     </message>
     <message>
         <source>Full</source>
-        <translatorcomment>What are we referring to? In Italian we need to know to pick the correct adjective form.</translatorcomment>
         <translation>Pieno</translation>
     </message>
     <message>
@@ -1731,7 +1696,6 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Sankore Cast</source>
-        <translatorcomment>Need context!</translatorcomment>
         <translation>Sankore Cast</translation>
     </message>
 </context>
@@ -1743,7 +1707,6 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translatorcomment>&quot;Marker&quot; was the choice of the other translator. Elsewhere it is translated with &quot;marcatore&quot;. I don&apos;t have any context, but I guess it is wrong.</translatorcomment>
         <translation>L&apos;evidenziatore è sensibile alla pressione</translation>
     </message>
 </context>
@@ -1801,6 +1764,92 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
 </context>
 <context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Titolo</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
@@ -1827,17 +1876,14 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Protractor</source>
-        <translatorcomment>Need some context. &quot;Rapportatore&quot; is also possible.</translatorcomment>
         <translation>Gognometro</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translatorcomment>Literally translated. Don&apos;t know the context...</translatorcomment>
         <translation>Triangolo</translation>
     </message>
     <message>
         <source>Magnifier</source>
-        <translatorcomment>Literally translated. Don&apos;t know the context...</translatorcomment>
         <translation>Lente di ingrandimento</translation>
     </message>
     <message>
@@ -1902,7 +1948,6 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translatorcomment>Guess some punctuation is required here: &quot;Please wait. the import process will start soon...&quot;</translatorcomment>
         <translation>Si prega di attendere. Il processo di importazione sta per iniziare...</translation>
     </message>
 </context>
@@ -1931,7 +1976,6 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translatorcomment>I have no clue of the context!</translatorcomment>
         <translation type="unfinished">%0 chiamati (metodo=%1, stato=%2)</translation>
     </message>
 </context>
@@ -2002,7 +2046,6 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>Howto &amp; Style</source>
-        <translatorcomment>I do not understand the context! The previous translate, anyway, is not complete.</translatorcomment>
         <translation>Stile</translation>
     </message>
     <message>
@@ -2060,7 +2103,6 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translatorcomment>Does it refer to the download? I guess so.</translatorcomment>
         <translation>- %4 %5 ancora da scaricare</translation>
     </message>
     <message>
@@ -2120,7 +2162,6 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>%1 items</source>
-        <translatorcomment>I do not understand if %1 stands for some numeration or for some name. The translation depends on this.</translatorcomment>
         <translation>%1 oggetti</translation>
     </message>
 </context>
@@ -2128,7 +2169,6 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <name>WBSearchLineEdit</name>
     <message>
         <source>Search</source>
-        <translatorcomment>Verb or noun? It was already translated as a noun. Guess it is right.</translatorcomment>
         <translation>Ricerca</translation>
     </message>
 </context>
@@ -2174,7 +2214,6 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <name>WBToolbarSearch</name>
     <message>
         <source>Search</source>
-        <translatorcomment>Noun or verb? I translated it as a noun.</translatorcomment>
         <translation>Cerca</translation>
     </message>
     <message>
@@ -2283,7 +2322,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Line Width</source>
-        <translatorcomment>See previous comments abour &quot;line&quot;</translatorcomment>
         <translation>Larghezza tratto</translation>
     </message>
     <message>
@@ -2367,6 +2405,10 @@ p, li { white-space: pre-wrap; }
         <source>Uniboard Documents</source>
         <translation>Documento Uniboard</translation>
     </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>preferencesDialog</name>
@@ -2374,7 +2416,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Preferenze</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>version : …</source>
         <translation>versione: ...</translation>
     </message>
@@ -2440,7 +2482,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translatorcomment>Stylus? More context needed.</translatorcomment>
         <translation>Palette stilo</translation>
     </message>
     <message>
@@ -2457,7 +2498,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Marker</source>
-        <translatorcomment>Again, context is needed.</translatorcomment>
         <translation>Evidenziatore</translation>
     </message>
     <message>
@@ -2492,7 +2532,7 @@ p, li { white-space: pre-wrap; }
         <source>Quazip</source>
         <translation>Quazip</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankore 3.1</translation>
     </message>
@@ -2707,7 +2747,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2720,7 +2760,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2746,12 +2786,10 @@ p, li { white-space: pre-wrap; }
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translatorcomment>With no context I cannot understand if this translation is correct.</translatorcomment>
         <translation>Cattura flash</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translatorcomment>With no context I cannot understand if this translation is correct.</translatorcomment>
         <translation>Seleziona un&apos;applicazione flash da catturare</translation>
     </message>
     <message>

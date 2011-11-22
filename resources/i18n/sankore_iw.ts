@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="he_IL" sourcelanguage="en_US">
+<!DOCTYPE TS><TS>
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translatorcomment>Should be right to left</translatorcomment>
         <translation>לחץ כאן כדי לחזור ליישום</translation>
+    </message>
+    <message>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -45,6 +46,10 @@
     <message>
         <source>Open</source>
         <translation>פתח</translation>
+    </message>
+    <message>
+        <source>Ico</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -162,7 +167,6 @@
     </message>
     <message>
         <source>Line</source>
-        <translatorcomment>a line you draw or a line in a table ? I put here a line in a table</translatorcomment>
         <translation>שורה</translation>
     </message>
     <message>
@@ -211,7 +215,6 @@
     </message>
     <message>
         <source>Left</source>
-        <translatorcomment>if it means &quot;to the left&quot; then the word is שמאלה</translatorcomment>
         <translation>שמאל</translation>
     </message>
     <message>
@@ -220,7 +223,6 @@
     </message>
     <message>
         <source>Right</source>
-        <translatorcomment>if it means &quot;to the Rightt&quot; then the word is  ימינה</translatorcomment>
         <translation>ימין</translation>
     </message>
     <message>
@@ -233,7 +235,6 @@
     </message>
     <message>
         <source>Home</source>
-        <translatorcomment>if the meaning is homepage then the translation is דף הבית</translatorcomment>
         <translation>דף הבית</translation>
     </message>
     <message>
@@ -292,7 +293,7 @@
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -498,34 +499,22 @@
     </message>
     <message>
         <source>Plain Light Background</source>
-        <translatorcomment>please specify the meaning of &quot;light&quot;here</translatorcomment>
         <translation>רקע בהיר פשוט</translation>
     </message>
     <message>
         <source>Light</source>
-        <translatorcomment>SM:Traduction:
-Clair</translatorcomment>
         <translation>בהיר</translation>
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translatorcomment>light can mean sunlight or clear? 
-SM:Traduction:
-Fond clair uni</translatorcomment>
         <translation>רקע אחיד בהיר</translation>
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translatorcomment>please specify if dark is like a dark color or like night dark 
-SM:Traduction:
-Fond sombre uni</translatorcomment>
         <translation>רקע אחיד כהה</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translatorcomment>???
-SM:Traduction:
-Sombre</translatorcomment>
         <translation>כהה</translation>
     </message>
     <message>
@@ -774,9 +763,6 @@ Sombre</translatorcomment>
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translatorcomment>??? 
-SM:Traduction:
-Afficher l&apos;écran principal sur l&apos;écran d&apos;affichage</translatorcomment>
         <translation>הצג את המסך המרכזי על מסך התצוגה</translation>
     </message>
     <message>
@@ -799,7 +785,7 @@ Afficher l&apos;écran principal sur l&apos;écran d&apos;affichage</translatorc
         <source>Check Update</source>
         <translation>בדוק עדכונים</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré Editor</source>
         <translation>עורך Sankoré</translation>
     </message>
@@ -807,11 +793,11 @@ Afficher l&apos;écran principal sur l&apos;écran d&apos;affichage</translatorc
         <source>Show Sankore Widgets Editor</source>
         <translation>הצג את עורך הוויג&apos;טים של Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré</source>
         <translation>הסתר Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré Application</source>
         <translation>הסתר את יישום Sankoré</translation>
     </message>
@@ -833,6 +819,14 @@ Afficher l&apos;écran principal sur l&apos;écran d&apos;affichage</translatorc
     <message>
         <source>Password:</source>
         <translation>סיסמא</translation>
+    </message>
+    <message>
+        <source>DUMMY ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTRO TEXT DUMMY</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -857,6 +851,10 @@ Afficher l&apos;écran principal sur l&apos;écran d&apos;affichage</translatorc
         <source>Save username and password for future use</source>
         <translation>שמור את שם המשתמש והסיסמא לשימוש עתידי</translation>
     </message>
+    <message>
+        <source>ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -869,13 +867,6 @@ Afficher l&apos;écran principal sur l&apos;écran d&apos;affichage</translatorc
         <source>Trash</source>
         <comment>Pictures category element</comment>
         <translation>סל אשפה</translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>ZIP/UNZIP API שגיאה %1</translation>
     </message>
 </context>
 <context>
@@ -951,9 +942,6 @@ Afficher l&apos;écran principal sur l&apos;écran d&apos;affichage</translatorc
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translatorcomment>???????
-SM:Traduction:
-Tous (%1)</translatorcomment>
         <translation>הכל )%1(</translation>
     </message>
 </context>
@@ -1003,9 +991,6 @@ Tous (%1)</translatorcomment>
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translatorcomment>???? im not sure what stylus palette means here
-SM:Traduction:
-Afficher la barre d&apos;outil du stylet</translatorcomment>
         <translation>הצג את סרגל הכלים הגראפיים</translation>
     </message>
     <message>
@@ -1089,9 +1074,6 @@ Afficher la barre d&apos;outil du stylet</translatorcomment>
     </message>
     <message>
         <source>Open Supported File</source>
-        <translatorcomment>what is a supported file?
-SM:Traduction:
-Ouvrir un fichier compatible</translatorcomment>
         <translation>פתח קובץ מתאים</translation>
     </message>
     <message>
@@ -1142,13 +1124,6 @@ Ouvrir un fichier compatible</translatorcomment>
         <source>Selection does not contain any image files!</source>
         <translation>בקטע שנבחר אין כל קבצי תמונות!</translation>
     </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
-            <numerusform>האם אתה בטוח שברצונך להסיר %n עמוד(ים) מהמסמך שנבחר %1?</numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1196,9 +1171,6 @@ Ouvrir un fichier compatible</translatorcomment>
     <name>UBDocumentPublisher</name>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translatorcomment>???????????
-SM:Traduction:
-Les informations n&apos;ont pas encore été remplies.</translatorcomment>
         <translation>המידע עדיין לא הוכנס.</translation>
     </message>
     <message>
@@ -1235,13 +1207,6 @@ Les informations n&apos;ont pas encore été remplies.</translatorcomment>
     <message>
         <source>Copying page %1/%2</source>
         <translation>מעתיק עמוד %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation>
-            <numerusform>דף %1 הועתק</numerusform>
-            <numerusform>%1 דפים הועתקו</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1441,9 +1406,6 @@ Les informations n&apos;ont pas encore été remplies.</translatorcomment>
     <name>UBImportPDF</name>
     <message>
         <source>Portable Document Format (*.pdf)</source>
-        <translatorcomment>?????????? je voulais dire, que veut dire un document portable?
-SM/traduction:
-Portable Document Format (*.pdf)</translatorcomment>
         <translation>Portable Document Format (*.pdf)</translation>
     </message>
     <message>
@@ -1602,7 +1564,6 @@ Portable Document Format (*.pdf)</translatorcomment>
     </message>
     <message>
         <source>Ok</source>
-        <translatorcomment>this is the term used in the OK or &quot;send&quot;key.</translatorcomment>
         <translation>אישור</translation>
     </message>
 </context>
@@ -1673,9 +1634,6 @@ Do you want to ignore these errors for this host?</source>
     <name>UBPodcastController</name>
     <message>
         <source>Sankore Cast</source>
-        <translatorcomment>????
-SM:Traduction:
-Sankore Cast</translatorcomment>
         <translation>Sankore Cast</translation>
     </message>
     <message>
@@ -1797,6 +1755,92 @@ Sankore Cast</translatorcomment>
     <message>
         <source>My Movies</source>
         <translation>הסרטים שלי</translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">שם</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1926,9 +1970,6 @@ Please reboot the application to access the updated documents.</source>
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translatorcomment>?????????????
-SM:Traduction:
-%0 appelé (méthode=%1, statut=%2)</translatorcomment>
         <translation>%0 נקרא )שיטה=%1, מצב = %2(</translation>
     </message>
 </context>
@@ -2141,7 +2182,6 @@ SM:Traduction:
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translatorcomment>the underscore is not in the right place, it should be under א</translatorcomment>
         <translation>סגור &amp;לשוניות אחרות </translation>
     </message>
     <message>
@@ -2355,6 +2395,10 @@ p, li { white-space: pre-wrap; }
         <source>Uniboard Documents</source>
         <translation>מסמכי Uniboard</translation>
     </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>preferencesDialog</name>
@@ -2362,7 +2406,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>העדפות</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>version : …</source>
         <translation>גרסא:...</translation>
     </message>
@@ -2428,9 +2472,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translatorcomment>??? Sorry but I dont understand exactly what it means here
-SM:Traduction:
-Barre d&apos;outil du stylet</translatorcomment>
         <translation>סרגל הכלים הגראפיים</translation>
     </message>
     <message>
@@ -2502,7 +2543,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;GNU Library or Lesser General Public License (LGPL), zlib/libpng License&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -2688,7 +2729,7 @@ p, li { white-space: pre-wrap; }
         <source>About</source>
         <translation>אודות</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2701,7 +2742,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }

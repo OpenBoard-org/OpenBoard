@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.0" language="en_US">
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
         <translation>Cliquer pour revenir à l&apos;application</translation>
+    </message>
+    <message>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -44,6 +48,10 @@
     <message>
         <source>Open</source>
         <translation>Ouvrir</translation>
+    </message>
+    <message>
+        <source>Ico</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -814,6 +822,14 @@
         <source>Password:</source>
         <translation>Mot de passe:</translation>
     </message>
+    <message>
+        <source>DUMMY ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTRO TEXT DUMMY</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyDialog</name>
@@ -837,6 +853,10 @@
         <source>Save username and password for future use</source>
         <translation>Sauver nom d&apos;utilisateur et mot de passe pour une utilisation future</translation>
     </message>
+    <message>
+        <source>ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -849,13 +869,6 @@
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
         <translation>/Accueil</translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>ZIP/UNZIP API erreur %1</translation>
     </message>
 </context>
 <context>
@@ -1113,13 +1126,6 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Ce document &apos;%1&apos; a été créé avec une version plus récente de Sankoré (%2). En l&apos;ouvrant, vous risquez de perdre certains éléments. Désirez-vous continuer?</translation>
     </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
-            <numerusform>Souhaitez-vous supprimer %n page(s) du document sélectionné &apos;%1&apos; ?</numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1203,13 +1209,6 @@
     <message>
         <source>Copying page %1/%2</source>
         <translation>Copie de la page %1/%2 en cours</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation>
-            <numerusform>%1 pages copiées</numerusform>
-            <numerusform></numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1767,6 +1766,92 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     </message>
 </context>
 <context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation>Titre</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation>Phase</translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation>Durée</translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation>Équipement</translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation>Activité</translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation>Je découvre</translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation>J&apos;expérimente</translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation>Je m&apos;entraîne</translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation>Je joue</translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation>Je mémorise</translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation>Courte</translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation>Moyenne</translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation>Longue</translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation>Individuelle</translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation>Par groupe</translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation>Tous ensemble</translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation>Action %0</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation>Enseignant</translation>
+    </message>
+    <message>
+        <source>Student</source>
+        <translation>Étudiant</translation>
+    </message>
+</context>
+<context>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
@@ -2317,6 +2402,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Uniboard Documents</source>
         <translation>Documents Uniboard</translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation>1</translation>
     </message>
 </context>
 <context>

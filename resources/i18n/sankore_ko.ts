@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="ko_KR" sourcelanguage="en">
+<!DOCTYPE TS><TS>
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
         <translation>클릭하면 응용 프로그램으로 복귀합니다</translation>
+    </message>
+    <message>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -44,6 +46,10 @@
     <message>
         <source>Open</source>
         <translation>열기</translation>
+    </message>
+    <message>
+        <source>Ico</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -273,7 +279,6 @@
     </message>
     <message>
         <source>Display Preferences</source>
-        <translatorcomment>Does this mean 1) preferences for the display, or 2) show the preferences on the display? I translated as 1).</translatorcomment>
         <translation>디스플레이 기본 설정</translation>
     </message>
     <message>
@@ -288,7 +293,7 @@
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -454,7 +459,6 @@
     </message>
     <message>
         <source>Use Custom Document Size</source>
-        <translatorcomment>translated as &quot;Use Document Custom Size&quot; to remain consistent with other sentences (&quot;Use Document Wide Size&quot; and &quot;Use Document Reguar Size&quot;).</translatorcomment>
         <translation>사용자 정의 크기 문서 사용</translation>
     </message>
     <message>
@@ -687,7 +691,6 @@
     </message>
     <message>
         <source>Duplicate Page</source>
-        <translatorcomment>Does this mean 1) to duplicate a page, or 2) a duplicated page? Translated as 1).</translatorcomment>
         <translation>페이지 복제</translation>
     </message>
     <message>
@@ -782,7 +785,7 @@
         <source>Check Update</source>
         <translation>업데이트 확인</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré Editor</source>
         <translation>Sankoré 편집기</translation>
     </message>
@@ -790,11 +793,11 @@
         <source>Show Sankore Widgets Editor</source>
         <translation>Sankoré 위젯 편집기 보이기</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré</source>
         <translation>Sankoré 숨기기</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré Application</source>
         <translation>Sankoré 응용 프로그램 숨기기</translation>
     </message>
@@ -816,6 +819,14 @@
     <message>
         <source>Password:</source>
         <translation>암호:</translation>
+    </message>
+    <message>
+        <source>DUMMY ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTRO TEXT DUMMY</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -840,6 +851,10 @@
         <source>Save username and password for future use</source>
         <translation>향후 사용을 위해 사용자명과 암호 저장</translation>
     </message>
+    <message>
+        <source>ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -852,13 +867,6 @@
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
         <translation>/홈</translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>ZIP/UNZIP API 오류 %1</translation>
     </message>
 </context>
 <context>
@@ -1116,12 +1124,6 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>&apos;%1&apos; 문서는 새로운 버전의  Sankore(%2)에서 생성된 문서입니다. 이 문서를 열면 일부 정보가 손실될 수 있습니다. 계속 진행하시겠습니까?</translation>
     </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
-            <numerusform>정말로 선택된 &apos;%1&apos; 문서에서 %n 페이지를 제거하시겠습니까?</numerusform>
-        </translation>
-    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1205,12 +1207,6 @@
     <message>
         <source>Copying page %1/%2</source>
         <translation>%1/%2 페이지 복사 중</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation>
-            <numerusform>%1 페이지 복사됨</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1765,6 +1761,92 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>내 동영상</translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">제목</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2323,6 +2405,10 @@ p, li { white-space: pre-wrap; }
         <source>Uniboard Documents</source>
         <translation>유니보드 문서</translation>
     </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>preferencesDialog</name>
@@ -2330,7 +2416,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>기본 설정</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>version : …</source>
         <translation>버전 : …</translation>
     </message>
@@ -2446,7 +2532,7 @@ p, li { white-space: pre-wrap; }
         <source>Quazip</source>
         <translation>Quazip</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1</translation>
     </message>
@@ -2457,7 +2543,6 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;The OpenSSL toolkit stays under a dual license, i.e. both the conditions of the OpenSSL License and the original SSLeay license apply to the toolkit.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;See below for the actual license texts. Actually both licenses are BSD-style Open Source licenses. In case of any license issues related to OpenSSL please contact &lt;/span&gt;&lt;a href=&quot;mailto:openssl-core@openssl.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;openssl-core@openssl.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translatorcomment>As requested.</translatorcomment>
         <translation></translation>
     </message>
     <message>
@@ -2466,7 +2551,6 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translatorcomment>As requested.</translatorcomment>
         <translation></translation>
     </message>
     <message>
@@ -2475,7 +2559,6 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#000000;&quot;&gt;Xpdf is licensed under the GNU General Public License (GPL), version 2.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translatorcomment>As requested.</translatorcomment>
         <translation></translation>
     </message>
     <message>
@@ -2484,7 +2567,6 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;GNU Library or Lesser General Public License (LGPL), zlib/libpng License&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translatorcomment>As requested.</translatorcomment>
         <translation></translation>
     </message>
     <message>
@@ -2663,10 +2745,9 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;apply, that proxy&apos;s public statement of acceptance of any version is&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;permanent authorization for you to choose that version for the&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translatorcomment>As requested.</translatorcomment>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2677,17 +2758,15 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translatorcomment>As requested.</translatorcomment>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;GIPENA&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;20 Avenue Ségur Paris 75007&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Téléphone : 01 43 17 68 08&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translatorcomment>As requested.</translatorcomment>
         <translation></translation>
     </message>
     <message>
@@ -2715,7 +2794,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>about:blank</source>
-        <translatorcomment>Looks like an internal code to return a blank HTML document.</translatorcomment>
         <translation>about:blank</translation>
     </message>
     <message>

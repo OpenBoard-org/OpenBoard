@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="ja_JP" sourcelanguage="en">
+<!DOCTYPE TS><TS>
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
         <translation>クリックしてアプリケーションに戻る</translation>
+    </message>
+    <message>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -44,6 +46,10 @@
     <message>
         <source>Open</source>
         <translation>開く</translation>
+    </message>
+    <message>
+        <source>Ico</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -287,7 +293,7 @@
         <source>Ctrl+L</source>
         <translation>Ctrl+L </translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1 </translation>
     </message>
@@ -779,7 +785,7 @@
         <source>Check Update</source>
         <translation>更新をチェック</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré Editor</source>
         <translation>Sankoré エディタ </translation>
     </message>
@@ -787,11 +793,11 @@
         <source>Show Sankore Widgets Editor</source>
         <translation>Sankore ウィジェットエディタを表示</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré</source>
         <translation>Sankoréを隠す</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré Application</source>
         <translation>Sankoréアプリケーションを隠す</translation>
     </message>
@@ -813,6 +819,14 @@
     <message>
         <source>Password:</source>
         <translation>パスワード:</translation>
+    </message>
+    <message>
+        <source>DUMMY ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTRO TEXT DUMMY</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -837,6 +851,10 @@
         <source>Save username and password for future use</source>
         <translation>今後の使用のためにユーザー名とパスワードを保存</translation>
     </message>
+    <message>
+        <source>ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -849,13 +867,6 @@
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
         <translation>/ホーム</translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation>圧縮/解凍 API エラー%1 </translation>
     </message>
 </context>
 <context>
@@ -1113,12 +1124,6 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>ドキュメント%1は、Sankore (%2)の新しいバージョンで作成されています。それを開くと、情報の一部が失われる可能性があります。それでも続行しますか？</translation>
     </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
-            <numerusform>本当に選択されたドキュメント%1から %nページを削除しますか？</numerusform>
-        </translation>
-    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1202,12 +1207,6 @@
     <message>
         <source>Copying page %1/%2</source>
         <translation>%1/%2 ページ コピー中</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation>
-            <numerusform>%1 ページ コピー済み</numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1766,6 +1765,92 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">タイトル</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
@@ -2317,6 +2402,10 @@ p, li { white-space: pre-wrap; }
         <source>Uniboard Documents</source>
         <translation>Uniboard ドキュメント</translation>
     </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>preferencesDialog</name>
@@ -2324,7 +2413,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>設定</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>version : …</source>
         <translation>バージョン: …</translation>
     </message>
@@ -2440,7 +2529,7 @@ p, li { white-space: pre-wrap; }
         <source>Quazip</source>
         <translation>Quazip </translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation>Sankoré 3.1 </translation>
     </message>
@@ -2655,7 +2744,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2668,7 +2757,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }

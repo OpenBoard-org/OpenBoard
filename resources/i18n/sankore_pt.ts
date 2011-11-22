@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<!DOCTYPE TS><TS>
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -43,6 +45,10 @@
     </message>
     <message>
         <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ico</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -287,7 +293,7 @@
         <source>Ctrl+L</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -779,7 +785,7 @@
         <source>Check Update</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré Editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -787,11 +793,11 @@
         <source>Show Sankore Widgets Editor</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Sankoré Application</source>
         <translation type="unfinished"></translation>
     </message>
@@ -812,6 +818,14 @@
     </message>
     <message>
         <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DUMMY ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTRO TEXT DUMMY</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -837,6 +851,10 @@
         <source>Save username and password for future use</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -848,13 +866,6 @@
     <message>
         <source>Trash</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1113,12 +1124,6 @@
         <source>Selection does not contain any image files!</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1202,12 +1207,6 @@
     <message>
         <source>Copying page %1/%2</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
     </message>
 </context>
 <context>
@@ -1824,6 +1823,10 @@ Do you want to ignore these errors for this host?</source>
         <source>All together</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTeacherStudentAction</name>
@@ -2391,6 +2394,10 @@ p, li { white-space: pre-wrap; }
         <source>Uniboard Documents</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>preferencesDialog</name>
@@ -2398,7 +2405,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>version : …</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2535,7 +2542,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;GNU Library or Lesser General Public License (LGPL), zlib/libpng License&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2721,7 +2728,7 @@ p, li { white-space: pre-wrap; }
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -2734,7 +2741,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
