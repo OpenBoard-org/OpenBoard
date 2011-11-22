@@ -56,8 +56,10 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
     }
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
+//    setData(UBGraphicsItemData::ItemEditable, QVariant(true));
 
     setFlag(QGraphicsItem::ItemIsSelectable, true);
+//    setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     setTextInteractionFlags(Qt::TextEditorInteraction);
@@ -65,10 +67,10 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
     connect(document(), SIGNAL(contentsChanged()), mDelegate, SLOT(contentsChanged()));
     connect(document(), SIGNAL(undoCommandAdded()), this, SLOT(undoCommandAdded()));
 
-    connect(document()->documentLayout(), SIGNAL(documentSizeChanged(const QSizeF &)), this, SLOT(documentSizeChanged(const QSizeF &)));
+    connect(document()->documentLayout(), SIGNAL(documentSizeChanged(const QSizeF &)),
+            this, SLOT(documentSizeChanged(const QSizeF &)));
 
 }
-
 
 UBGraphicsTextItem::~UBGraphicsTextItem()
 {
@@ -77,7 +79,6 @@ UBGraphicsTextItem::~UBGraphicsTextItem()
         delete mDelegate;
     }
 }
-
 
 QVariant UBGraphicsTextItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
@@ -106,9 +107,14 @@ QVariant UBGraphicsTextItem::itemChange(GraphicsItemChange change, const QVarian
     return QGraphicsTextItem::itemChange(change, newValue);
 }
 
-
 void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (mDelegate)
+        mDelegate->mousePressEvent(event);
+
+    if (!data(UBGraphicsItemData::ItemEditable).toBool())
+        return;
+
     int elapsed = mLastMousePressTime.msecsTo(QTime::currentTime());
 
     if (elapsed < UBApplication::app()->doubleClickInterval())
@@ -126,12 +132,8 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     if (mMultiClickState == 1)
     {
-        if (mDelegate)
-            mDelegate->mousePressEvent(event);
-
+//        setTextInteractionFlags(Qt::TextEditorInteraction);
         QGraphicsTextItem::mousePressEvent(event);
-        setTextInteractionFlags(Qt::TextEditorInteraction);
-
         setFocus();
     }
     else if (mMultiClickState == 2)
@@ -152,7 +154,6 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-
 void UBGraphicsTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (!mDelegate || !mDelegate->mouseMoveEvent(event))
@@ -160,7 +161,6 @@ void UBGraphicsTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsTextItem::mouseMoveEvent(event);
     }
 }
-
 
 void UBGraphicsTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -176,7 +176,6 @@ void UBGraphicsTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         event->accept();
     }
 }
-
 
 void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

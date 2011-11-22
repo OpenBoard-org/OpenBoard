@@ -27,6 +27,7 @@
 #include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsAudioItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
+#include "domain/UBGraphicsTextItem.h"
 #include "domain/UBW3CWidget.h"
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -440,6 +441,49 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTextAttributes(const QDomElemen
     if (!element.attribute(aTransform).isNull())
         fontTransform = transformFromString(element.attribute(aTransform));
 }
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::readTextBlockAttr(const QDomElement &element, QTextBlockFormat &format)
+{
+    QString fontStretchText = element.attribute(aFontstretch);
+    if (!fontStretchText.isNull()) format.setAlignment(Qt::AlignJustify);
+
+    QString align = element.attribute(aTextalign);
+    if (!align.isNull()) {
+        if      (align == "middle" || align == "center") format.setAlignment(Qt::AlignHCenter);
+        else if (align == "start")                       format.setAlignment(Qt::AlignLeft);
+        else if (align == "end")                         format.setAlignment(Qt::AlignRight);
+        else if (align == "justify")                     format.setAlignment(Qt::AlignJustify);
+    }
+}
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::readTextCharAttr(const QDomElement &element, QTextCharFormat &format)
+{
+    QString fontSz = element.attribute(aFontSize);
+    if (!fontSz.isNull()) {
+        qreal fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->physicalDpiY();
+        format.setFontPointSize(fontSize);
+    }
+    QString fontColorText = element.attribute(aFill);
+    if (!fontColorText.isNull()) {
+        QColor fontColor = colorFromString(fontColorText);
+        if (fontColor.isValid()) format.setForeground(fontColor);
+    }
+    QString fontFamilyText = element.attribute(aFontfamily);
+    if (!fontFamilyText.isNull()) {
+        format.setFontFamily(fontFamilyText);
+    }
+    if (!element.attribute(aFontstyle).isNull()) {
+        bool italic = (element.attribute(aFontstyle) == "italic");
+        format.setFontItalic(italic);
+    }
+    QString weight = element.attribute(aFontweight);
+    if (!weight.isNull())  {
+        if      (weight == "normal")   format.setFontWeight(QFont::Normal);
+        else if (weight == "light")    format.setFontWeight(QFont::Light);
+        else if (weight == "demibold") format.setFontWeight(QFont::DemiBold);
+        else if (weight == "bold")     format.setFontWeight(QFont::Bold);
+        else if (weight == "black")    format.setFontWeight(QFont::Black);
+    }
+}
+
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &element)
 {
     qreal x = element.attribute(aX).toDouble();
@@ -538,53 +582,70 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &parent
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &element)
 {
+
     qreal x = element.attribute(aX).toDouble();
     qreal y = element.attribute(aY).toDouble();
     qreal width = element.attribute(aWidth).toDouble();
     qreal height = element.attribute(aHeight).toDouble();
 
-    qreal fontSize = 12;
-    QColor fontColor(qApp->palette().foreground().color());
-    QString fontFamily = "Arial";
-    QString fontStretch = "normal";
-    bool italic = false;
-    int fontWeight = QFont::Normal;
-    int textAlign = Qt::AlignLeft;
+
+
+//    qreal fontSize = 12;
+//    QColor fontColor(qApp->palette().foreground().color());
+//    QString fontFamily = "Arial";
+//    QString fontStretch = "normal";
+//    bool italic = false;
+//    int fontWeight = QFont::Normal;
+//    int textAlign = Qt::AlignLeft;
     QTransform fontTransform;
-    parseTextAttributes(element, fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
+//    parseTextAttributes(element, fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
 
-    QSvgGenerator *generator = createSvgGenerator(width, height);
-    QPainter painter;
-    painter.begin(generator);
+//    QSvgGenerator *generator = createSvgGenerator(width, height);
+//    QPainter painter;
+//    painter.begin(generator);
 
-    painter.setFont(QFont(fontFamily, fontSize, fontWeight, italic));
+//    painter.setFont(QFont(fontFamily, fontSize, fontWeight, italic));
 
-    qreal curY = 0.0;
-    qreal curX = 0.0;
-    qreal linespacing = QFontMetricsF(painter.font()).leading();
+//    qreal curY = 0.0;
+//    qreal curX = 0.0;
+//    qreal linespacing = QFontMetricsF(painter.font()).leading();
 
-//    remember if text area has transform
-//    QString transformString;
+////    remember if text area has transform
+////    QString transformString;
     QTransform transform = fontTransform;
-    bool hasTransform = !fontTransform.isIdentity();
+    bool hasTransform = false;//!fontTransform.isIdentity();
 
-    QRectF lastDrawnTextBoundingRect;
-    //parse text area tags
+//    QRectF lastDrawnTextBoundingRect;
+//    //parse text area tags
 
-    //recursive call any tspan in text svg element
-    parseTSpan(element, painter
-               , curX, curY, width, height, linespacing, lastDrawnTextBoundingRect
-               , fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
+//    //recursive call any tspan in text svg element
+//    parseTSpan(element, painter
+//               , curX, curY, width, height, linespacing, lastDrawnTextBoundingRect
+//               , fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
 
-    painter.end();
+//    painter.end();
 
     //add resulting svg file to scene
-    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+//    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
 
+    QFile file("/home/ilia/Documents/tmp/1/index.html");
+    file.open(QIODevice::ReadOnly);
+    QByteArray barr = file.readAll();
+    file.close();
+    QString str(barr);
+    UBGraphicsTextItem *svgItem = mCurrentScene->addTextHtml(str);
+    svgItem->resize(width * mVBTransFactor, height * mVBTransFactor);
+
+//    QTextCursor cursor;
+//    cursor.insertBlock();
+//    cursor.insertText("way away");
+//    cursor.insertBlock();
+//    cursor.insertText("for the right");
+//    svgItem->setTextCursor(cursor);
     repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
-    hashSceneItem(element, svgItem);
+//    hashSceneItem(element, svgItem);
 
-    delete generator;
+//    delete generator;
     return true;
 }
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &element)

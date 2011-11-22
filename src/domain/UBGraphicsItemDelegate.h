@@ -165,12 +165,11 @@ class UBGraphicsItemDelegate : public QObject
 
         QList<DelegateButton*> mButtons;
 
-    protected slots:
+protected slots:
 
         virtual void gotoContentSource(bool checked);
 
-
-     private:
+private:
 
         QPointF mOffset;
         QTransform mPreviousTransform;

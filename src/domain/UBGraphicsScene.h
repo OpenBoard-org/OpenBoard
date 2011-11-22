@@ -91,6 +91,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         UBGraphicsTextItem* addTextWithFont(const QString& pString, const QPointF& pTopLeft = QPointF(0, 0)
                 , int pointSize = -1, const QString& fontFamily = "", bool bold = false, bool italic = false);
+        UBGraphicsTextItem* addTextHtml(const QString &pString = QString());
 
         UBGraphicsW3CWidgetItem* addOEmbed(const QUrl& pContentUrl, const QPointF& pPos = QPointF(0, 0));
 

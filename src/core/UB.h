@@ -75,7 +75,9 @@ struct UBGraphicsItemData
 {
     enum Enum
     {
-        ItemLayerType, ItemLocked
+        ItemLayerType
+        , ItemLocked
+        , ItemEditable//for text only
     };
 };
 

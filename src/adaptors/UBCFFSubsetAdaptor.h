@@ -32,6 +32,8 @@ class QTransform;
 class QPainter;
 class UBGraphicsItem;
 class QGraphicsItem;
+class QTextBlockFormat;
+class QTextCharFormat;
 
 
 class UBCFFSubsetAdaptor
@@ -104,6 +106,9 @@ private:
         inline void parseTextAttributes(const QDomElement &element, qreal &fontSize, QColor &fontColor,
                                  QString &fontFamily, QString &fontStretch, bool &italic,
                                  int &fontWeight, int &textAlign, QTransform &fontTransform);
+        inline void parseTextAttributes(const QDomElement &element, QFont &font, QColor);
+        inline void readTextBlockAttr(const QDomElement &element, QTextBlockFormat &format);
+        inline void readTextCharAttr(const QDomElement &element, QTextCharFormat &format);
 
         //elements parsing methods
         bool parseDoc();

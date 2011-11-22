@@ -76,7 +76,6 @@ QString UBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
            .arg(matrix.m22(), 0 , 'g')
            .arg(matrix.dx(), 0 , 'g')
            .arg(matrix.dy(), 0 , 'g');
-
 }
 
 
