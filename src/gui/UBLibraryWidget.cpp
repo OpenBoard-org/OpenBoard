@@ -23,6 +23,7 @@
 
 #include "board/UBBoardController.h"
 #include "board/UBLibraryController.h"
+#include "board/UBBoardPaletteManager.h"
 
 #include "core/UBDownloadManager.h"
 
@@ -41,6 +42,7 @@ UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailW
     , mpCrntDir(NULL)
     , mpCrntElem(NULL)
     , mLibraryController(NULL)
+    , mpTmpElem(NULL)
 {
     setObjectName(name);
     setSpacing(5);
@@ -52,21 +54,22 @@ UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailW
  */
 UBLibraryWidget::~UBLibraryWidget()
 {
-    if(NULL != mLibraryController)
-    {
+    if(NULL != mLibraryController){
         delete mLibraryController;
         mLibraryController = NULL;
     }
-     if(NULL != mpCrntDir)
-     {
+    if(NULL != mpCrntDir){
         delete mpCrntDir;
         mpCrntDir = NULL;
-     }
-     if(NULL != mpCrntElem)
-     {
+    }
+    if(NULL != mpCrntElem){
         delete mpCrntElem;
         mpCrntElem = NULL;
-     }
+    }
+    if(NULL != mpTmpElem){
+         delete mpTmpElem;
+         mpTmpElem = NULL;
+    }
 }
 
 /**
@@ -86,6 +89,7 @@ void UBLibraryWidget::init()
     connect(this, SIGNAL(mouseClick(QGraphicsItem*,int)), this, SLOT(onItemClicked(QGraphicsItem*,int)));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToLibrary(bool,QUrl,QString,QByteArray)), this, SLOT(onAddDownloadedFileToLibrary(bool,QUrl,QString,QByteArray)));
+    connect(UBApplication::boardController, SIGNAL(displayMetadata(QMap<QString,QString>)), this, SLOT(onDisplayMetadata(QMap<QString,QString>)));
 }
 
 /**
@@ -714,4 +718,17 @@ void UBLibraryWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl
         dir.remove(qsFileName);
         dir.rmdir("tmp");       // Due to Qt, the directoy will be removed only if it's empty :)
     }
+}
+
+void UBLibraryWidget::onDisplayMetadata(QMap<QString, QString> metadatas)
+{
+    mpTmpElem = new UBLibElement();
+    mpTmpElem->setMetadata(metadatas);
+    mpTmpElem->setPath(QUrl(metadatas["Url"]));
+
+    // As the content comes from the web (and need a download), we will not display its thumbnail.
+    mpTmpElem->setThumbnail(QImage(":images/libpalette/notFound.png"));
+
+    // Display the properties view
+    emit propertiesRequested(mpTmpElem);
 }

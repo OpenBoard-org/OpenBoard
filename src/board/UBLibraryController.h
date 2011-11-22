@@ -63,6 +63,8 @@ public:
     void setMoveable(bool bState){mbMoveable = bState;}
     bool isDeletable() const {return mbDeletable;}
     void setDeletable(bool mState) {mbDeletable = mState;}
+    void setMetadata(QMap<QString, QString> metadatas){mMetadata = metadatas;}
+    QMap<QString, QString> metadatas(){return mMetadata;}
 
 private:
     eUBLibElementType mType;
@@ -73,6 +75,7 @@ private:
     QString mExtension;
     bool mbMoveable;
     bool mbDeletable;
+    QMap<QString, QString> mMetadata;
 };
 
 class UBChainedLibElement

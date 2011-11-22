@@ -2028,3 +2028,7 @@ void UBBoardController::onDownloadModalFinished()
 
 }
 
+void UBBoardController::displayMetaData(QMap<QString, QString> metadatas)
+{
+    emit displayMetadata(metadatas);
+}

@@ -224,6 +224,16 @@ class UBWidgetUniboardAPI : public QObject
         void returnStatus(const QString& method, const QString& status);
         void usedMethods(QStringList methods);
         void response(bool correct);
+
+        /**
+          * Give the file metadata to Sankore. The format must be
+          * <metbadata>
+          *     <key>File Size</<key>
+          *     <value>1024</value>
+          * </metadata>
+          */
+        void sendFileMetadata(QString metaData);
+
     private:
 
         QString uuid();

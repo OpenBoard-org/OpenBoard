@@ -652,3 +652,16 @@ QString UBApplication::urlFromHtml(QString html)
 
     return url;
 }
+
+bool UBApplication::isFromWeb(QString url)
+{
+    bool res = true;
+
+    if( url.startsWith("uniboardTool://") ||
+        url.startsWith("file://") ||
+        url.startsWith("/")){
+        res = false;
+    }
+
+    return res;
+}
