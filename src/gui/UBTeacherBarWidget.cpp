@@ -338,7 +338,10 @@ UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent
     mpLayout->addWidget(mpActionLabel, 0);
 
     mpTeacherLayout = new QHBoxLayout();
-    mpTeacherLabel = new QLabel(tr("Teacher"), this);
+
+    //TODO: I'm not able to translate this string using the normal way *qm file why?
+   // mpTeacherLabel = new QLabel(tr("Teacher"), this);
+    mpTeacherLabel = new QLabel(tr("Enseignant"), this);
     mpTeacherLabel->setAlignment(Qt::AlignTop);
     mpTeacher = new QTextEdit(this);
     mpTeacher->setObjectName("TeacherStudentBox");
@@ -347,7 +350,8 @@ UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent
     mpLayout->addLayout(mpTeacherLayout, 1);
 
     mpStudentLayout = new QHBoxLayout();
-    mpStudentLabel = new QLabel(tr("Student"), this);
+//    mpStudentLabel = new QLabel(tr("Student"), this);
+    mpStudentLabel = new QLabel(tr("Étudiant"), this);
     mpStudentLabel->setAlignment(Qt::AlignTop);
     mpStudent = new QTextEdit(this);
     mpStudent->setObjectName("TeacherStudentBox");
