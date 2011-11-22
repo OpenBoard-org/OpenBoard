@@ -66,7 +66,6 @@ class UBBoardPaletteManager : public QObject
         void startDownloads();
         void stopDownloads();
 
-
     signals:
         void connectToDocController();
         void signal_changeMode(eUBDockPaletteWidgetMode newMode);

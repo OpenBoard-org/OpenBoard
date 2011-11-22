@@ -148,6 +148,7 @@ class UBBoardController : public QObject
 
         void notifyCache(bool visible);
         void notifyPageChanged();
+        void displayMetaData(QMap<QString, QString> metadatas);
 
     public slots:
         void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0);
@@ -218,6 +219,7 @@ class UBBoardController : public QObject
         void pageChanged();
         void setDocOnPageNavigator(UBDocumentProxy* doc);
         void documentReorganized(int index);
+        void displayMetadata(QMap<QString, QString> metadata);
 
     protected:
         void setupViews();

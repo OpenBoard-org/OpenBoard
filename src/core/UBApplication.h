@@ -89,6 +89,7 @@ class UBApplication : public QtSingleApplication
         bool isVerbose() { return mIsVerbose;}
         void setVerbose(bool verbose){mIsVerbose = verbose;}
         static QString urlFromHtml(QString html);
+        static bool isFromWeb(QString url);
 
     signals:
 

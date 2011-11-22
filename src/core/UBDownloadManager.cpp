@@ -297,7 +297,7 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
     connect(http, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
 
     // We send here the request and store its reply in order to be able to cancel it if needed
-    mReplies[desc.id] = http->get(QUrl(desc.url));
+    mReplies[desc.id] = http->get(QUrl(desc.url), desc.pos, desc.size, desc.isBackground);
 }
 
 /**

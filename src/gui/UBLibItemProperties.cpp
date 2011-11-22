@@ -17,6 +17,7 @@
 #include "UBLibItemProperties.h"
 
 #include "core/UBApplication.h"
+#include "core/UBDownloadManager.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 
@@ -38,6 +39,7 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
     , mpThumbnail(NULL)
     , mpOrigPixmap(NULL)
     , mpElement(NULL)
+    , mpItem(NULL)
 {
     setObjectName(name);
 
@@ -81,8 +83,11 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
     mpObjInfoLabel->setStyleSheet(QString("color: #888888; font-size : 18px; font-weight:bold;"));
     mpLayout->addWidget(mpObjInfoLabel, 0);
 
-    mpObjInfos = new QTextEdit(this);
-    mpObjInfos->setReadOnly(true);
+    mpObjInfos = new QTreeWidget(this);
+    mpObjInfos->setColumnCount(2);
+    mpObjInfos->header()->hide();
+    mpObjInfos->setAlternatingRowColors(true);
+    mpObjInfos->setRootIsDecorated(false);
     mpObjInfos->setObjectName("DockPaletteWidgetBox");
     mpObjInfos->setStyleSheet("background:white;");
     mpLayout->addWidget(mpObjInfos, 1);
@@ -173,8 +178,18 @@ void UBLibItemProperties::adaptSize()
  */
 void UBLibItemProperties::onAddToPage()
 {
-    UBLibWidget* libWidget = dynamic_cast<UBLibWidget*>(parentWidget()->parentWidget());
-    libWidget->libNavigator()->libraryWidget()->libraryController()->addItemToPage(mpElement);
+    if(UBApplication::isFromWeb(mpElement->path().toString())){
+        sDownloadFileDesc desc;
+        desc.isBackground = false;
+        desc.modal = true;
+        desc.name = QFileInfo(mpElement->path().toString()).fileName();
+        desc.url = mpElement->path().toString();
+        UBDownloadManager::downloadManager()->addFileToDownload(desc);
+
+    }else{
+        UBLibWidget* libWidget = dynamic_cast<UBLibWidget*>(parentWidget()->parentWidget());
+        libWidget->libNavigator()->libraryWidget()->libraryController()->addItemToPage(mpElement);
+    }
 }
 
 /**
@@ -182,7 +197,14 @@ void UBLibItemProperties::onAddToPage()
  */
 void UBLibItemProperties::onAddToLib()
 {
-
+    if(UBApplication::isFromWeb(mpElement->path().toString())){
+        sDownloadFileDesc desc;
+        desc.isBackground = false;
+        desc.modal = false;
+        desc.name = QFileInfo(mpElement->path().toString()).fileName();
+        desc.url = mpElement->path().toString();
+        UBDownloadManager::downloadManager()->addFileToDownload(desc);
+    }
 }
 
 /**
@@ -190,8 +212,18 @@ void UBLibItemProperties::onAddToLib()
  */
 void UBLibItemProperties::onSetAsBackground()
 {
-    UBLibWidget* libWidget = dynamic_cast<UBLibWidget*>(parentWidget()->parentWidget());
-    libWidget->libNavigator()->libraryWidget()->libraryController()->setItemAsBackground(mpElement);
+    if(UBApplication::isFromWeb(mpElement->path().toString())){
+        sDownloadFileDesc desc;
+        desc.isBackground = true;
+        desc.modal = true;
+        desc.name = QFileInfo(mpElement->path().toString()).fileName();
+        desc.url = mpElement->path().toString();
+        UBDownloadManager::downloadManager()->addFileToDownload(desc);
+
+    }else{
+        UBLibWidget* libWidget = dynamic_cast<UBLibWidget*>(parentWidget()->parentWidget());
+        libWidget->libNavigator()->libraryWidget()->libraryController()->setItemAsBackground(mpElement);
+    }
 }
 
 /**
@@ -210,20 +242,23 @@ void UBLibItemProperties::showElement(UBLibElement *elem)
         mpElement = elem;
         mpOrigPixmap = new QPixmap(QPixmap::fromImage(*elem->thumbnail()));
         mpThumbnail->setPixmap(QPixmap::fromImage(*elem->thumbnail()).scaledToWidth(THUMBNAIL_WIDTH));
-        mpObjInfos->setText(elem->information());
+        populateMetadata();
     }
 
-    if(UBFileSystemUtils::mimeTypeFromFileName(elem->path().toLocalFile()).contains("image"))
-    {
-        // Show the Set as background button
+    if(UBApplication::isFromWeb(elem->path().toString())){
+        mpAddToLibButton->show();
+        if(elem->metadatas()["Type"].toLower().contains("image")){
+            mpSetAsBackgroundButton->show();
+        }else{
+            mpSetAsBackgroundButton->hide();
+        }
+    }else{
         mpAddToLibButton->hide();
-        mpSetAsBackgroundButton->show();
-    }
-    else
-    {
-        // TODO: if we are browsing ONLINE objects, we must show mpAddToLibButton !
-        mpSetAsBackgroundButton->hide();
-        mpAddToLibButton->hide();
+        if(UBFileSystemUtils::mimeTypeFromFileName(elem->path().toLocalFile()).contains("image")){
+            mpSetAsBackgroundButton->show();
+        }else{
+            mpSetAsBackgroundButton->hide();
+        }
     }
 }
 
@@ -243,6 +278,25 @@ void UBLibItemProperties::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
     adaptSize();
+}
+
+void UBLibItemProperties::populateMetadata()
+{
+    if(NULL != mpObjInfos){
+        mpObjInfos->clear();
+        QMap<QString, QString> metas = mpElement->metadatas();
+        QList<QString> lKeys = metas.keys();
+        QList<QString> lValues = metas.values();
+
+        for(int i=0; i< metas.size(); i++){
+            QStringList values;
+            values << lKeys.at(i);
+            values << lValues.at(i);
+            mpItem = new QTreeWidgetItem(values);
+            mpObjInfos->addTopLevelItem(mpItem);
+        }
+        mpObjInfos->resizeColumnToContents(0);
+    }
 }
 
 /**

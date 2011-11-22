@@ -15,6 +15,7 @@
 #include "UBWidgetUniboardAPI.h"
 
 #include <QWebView>
+#include <QDomDocument>
 
 #include "core/UB.h"
 #include "core/UBApplication.h"
@@ -24,6 +25,7 @@
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
+#include "board/UBBoardPaletteManager.h"
 
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsWidgetItem.h"
@@ -410,6 +412,22 @@ void UBWidgetUniboardAPI::response(bool correct)
     // TODO: Implement this method
 }
 
+void UBWidgetUniboardAPI::sendFileMetadata(QString metaData)
+{
+    //  Build the QMap of metadata and send it to application
+    QMap<QString, QString> qmMetaDatas;
+    QDomDocument domDoc;
+    domDoc.setContent(metaData);
+    QDomElement rootElem = domDoc.documentElement();
+    QDomNodeList children = rootElem.childNodes();
+    for(int i=0; i<children.size(); i++){
+        QDomNode dataNode = children.at(i);
+        QDomElement keyElem = dataNode.firstChildElement("key");
+        QDomElement valueElem = dataNode.firstChildElement("value");
+        qmMetaDatas[keyElem.text()] = valueElem.text();
+    }
+    UBApplication::boardController->displayMetaData(qmMetaDatas);
+}
 
 UBDocumentDatastoreAPI::UBDocumentDatastoreAPI(UBGraphicsW3CWidgetItem *graphicsWidget)
     : UBW3CWebStorage(graphicsWidget)

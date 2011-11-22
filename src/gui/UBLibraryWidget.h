@@ -73,6 +73,8 @@ protected:
 private slots:
     void onItemClicked(QGraphicsItem* pItem, int index);
     void onSelectionChanged();
+    void onDisplayMetadata(QMap<QString,QString> metadatas);
+
 
 private:
 
@@ -86,6 +88,7 @@ private:
 
     UBLibElement* mpCrntDir;
     UBLibElement* mpCrntElem;
+    UBLibElement* mpTmpElem;
     QList<UBLibElement*> mCurrentElems;
     QList<UBLibElement*> mOrigCurrentElems;
     QList<QGraphicsItem*> mItems;

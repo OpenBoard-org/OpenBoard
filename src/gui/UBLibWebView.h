@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 
 #include "board/UBLibraryController.h"
+#include "api/UBWidgetUniboardAPI.h"
 
 class UBLibWebView : public QWidget
 {
@@ -18,10 +19,14 @@ public:
 
     void setElement(UBLibElement* elem);
 
+private slots:
+    void onLoadFinished(bool ok);
+
 private:
     QWebView* mpView;
     QWebSettings* mpWebSettings;
     QVBoxLayout* mpLayout;
+    UBWidgetUniboardAPI* mpSankoreAPI;
 };
 
 #endif // UBLIBWEBVIEW_H

@@ -25,6 +25,7 @@
 #include <QToolButton>
 #include <QAction>
 #include <QShowEvent>
+#include <QTreeWidget>
 
 #include "board/UBLibraryController.h"
 
@@ -61,6 +62,7 @@ private slots:
 
 private:
     void adaptSize();
+    void populateMetadata();
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonLayout;
@@ -68,11 +70,12 @@ private:
     UBLibItemButton* mpAddToLibButton;
     UBLibItemButton* mpSetAsBackgroundButton;
     QLabel* mpObjInfoLabel;
-    QTextEdit* mpObjInfos;
+    QTreeWidget* mpObjInfos;
     QLabel* mpThumbnail;
     QPixmap* mpOrigPixmap;
     int maxThumbHeight;
     UBLibElement* mpElement;
+    QTreeWidgetItem* mpItem;
 };
 
 
