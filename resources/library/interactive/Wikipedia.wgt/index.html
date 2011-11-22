@@ -11,6 +11,7 @@
         <!-- jQuery --> 
         <script type="text/javascript" src="script/jquery.min.js"></script> 
         <script type="text/javascript" src="script/superfish.js"></script> 
+        <script type="text/javascript" src="script/languages.js"></script> 
 
         <script type="text/javascript"> 
             
@@ -18,6 +19,18 @@
             var browsing = false;
             var lang = 'en';
             var internalChange = false;
+            var syslang = "en";
+            
+            if(window.sankore){
+                try{
+                    syslang = sankore.locale().substr(0,2);
+                    sankoreLang[syslang].search;
+                } catch(e){
+                    syslang = "en";
+                }
+            } else 
+                syslang = "en";
+            
             var toolbar = {
                 state:"begin",
                 loading:false
@@ -43,7 +56,9 @@
 
                 var ubHistoryList = "";
                 var ubHistoryIndex = "";
-
+                
+                $("#toolbar-down").html(sankoreLang[syslang].wikipedia);
+                
                 var popupText = $("<div id='popupWordInfo' class='popupWordInfo'></div>").appendTo("body");
 
                 lang = navigator.userAgent.split(";");
@@ -100,10 +115,10 @@
                 
                 $("#toolbar-button-search").mouseover(function(evt){
                     popupFlag = true;
-                    popupText.text("Search")
+                    popupText.text(sankoreLang[syslang].search)
                     .css("top", evt.pageY + 5)
                     .css("left", evt.pageX + 13)
-                    .css({width:"70px"})
+                    .css({width:"100px"})
                     .show("fast", function(){
                         if(!popupFlag)
                             popupText.hide();
@@ -132,10 +147,10 @@
                 
                 $("#toolbar-button-back").mouseover(function(evt){
                     popupFlag = true;
-                    popupText.text("Previous word")
+                    popupText.text(sankoreLang[syslang].prev_word)
                     .css("top", evt.pageY + 5)
                     .css("left", evt.pageX + 13)
-                    .css({width:"100px"})
+                    .css({width:"110px"})
                     .show("fast", function(){
                         if(!popupFlag)
                             popupText.hide();
@@ -149,10 +164,10 @@
 
                 $("#toolbar-button-forward").mouseover(function(evt){
                     popupFlag = true;
-                    popupText.text("Next word")
+                    popupText.text(sankoreLang[syslang].next_word)
                     .css("top", evt.pageY + 5)
                     .css("left", evt.pageX + 13)
-                    .css({width:"70px"})
+                    .css({width:"100px"})
                     .show("fast", function(){
                         if(!popupFlag)
                             popupText.hide();

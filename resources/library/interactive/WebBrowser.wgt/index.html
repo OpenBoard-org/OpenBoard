@@ -8,18 +8,32 @@
         <title>Web Browser</title>
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <script src="scripts/jquery-1.3.2.min.js" type="text/javascript"></script>
+        <script src="scripts/languages.js" type="text/javascript"></script>
         <script type="text/javascript">
 
             var loadingState = false;
+            var lang = "en";
+            if(window.sankore){
+                try{
+                    lang = sankore.locale().substr(0,2);
+                    sankoreLang[lang].next;
+                } catch(e){
+                    lang = "en";
+                }
+            } else 
+                lang = "en";
             
             function changeLoadingState(){
                 loadingState = true;
             }
                
             $(document).ready(function(){
-                //var resizer; // Timer
-                //var resizerIndex;
+
                 $("body").css({height: $(window).height() - 40});
+                
+                $("#back-button").html(sankoreLang[lang].previous);
+                $("#forward-button").html(sankoreLang[lang].next);
+                $("#search-button").html(sankoreLang[lang].show);
                 
                 var popupFlag = false;
                 var currentHistory = 0;
@@ -72,8 +86,8 @@
                     popupFlag = true;
                     popupText.css("top", evt.pageY + 5)
                     .css("left", evt.pageX + 13)
-                    .css({width:"100px"})
-                    .text("Go to the site")
+                    .css({width:"110px"})
+                    .text(sankoreLang[lang].open)
                     .show("fast", function(){
                         if(!popupFlag)
                             popupText.hide();
@@ -84,8 +98,8 @@
                     popupFlag = true;
                     popupText.css("top", evt.pageY + 5)
                     .css("left", evt.pageX + 13)
-                    .css({width:"90px"})
-                    .text("Previous site")
+                    .css({width:"130px"})
+                    .text(sankoreLang[lang].prev_page)
                     .show("fast", function(){
                         if(!popupFlag)
                             popupText.hide();
@@ -96,8 +110,8 @@
                     popupFlag = true;
                     popupText.css("top", evt.pageY + 5)
                     .css("left", evt.pageX + 13)
-                    .css({width:"70px"})
-                    .text("Next site")
+                    .css({width:"130px"})
+                    .text(sankoreLang[lang].next_page)
                     .show("fast", function(){
                         if(!popupFlag)
                             popupText.hide();
@@ -149,7 +163,7 @@
                         checkcontent();
                         checkLoading();
                     } else {
-                        $("#embeded-content").load("locales/" + "en" + "/howto.html"); // Welcome screen with some explanations
+                        $("#embeded-content").load("locales/" + lang + "/howto.html"); // Welcome screen with some explanations
                         $("#container")
                         .addClass("welcome")
                         .addClass("change")
@@ -175,7 +189,7 @@
                     $("#textbox").val(url);	
                     $("#search-button").trigger("click");
                 }else{
-                    $("#embeded-content").load("locales/" + "en" + "/howto.html"); // Welcome screen with some explanations
+                    $("#embeded-content").load("locales/" + lang + "/howto.html"); // Welcome screen with some explanations
                 };
 		
                 $(window).resize(function(){
@@ -201,13 +215,13 @@
 			
                 function checkLoading(){
                     if(loadingState){
-                        
+
                         clearTimeout(resizer);
                         resizerIndex = 0;
                         $("#web-content")
                         .attr("width", globalWidth - 25)
-                        .attr("height", globalHeight - 90);
-                        $("#web-content").show();
+                        .attr("height", globalHeight - 90)
+                        .show();
                         $(window).trigger("resize");
                         return false;
                     };
@@ -241,7 +255,13 @@
                         } else 
                         newArr[j] = arr[i];
                     return newArr;
-                }               
+                }
+				
+                if (window.widget) {
+                    window.widget.onremove = function(){
+                        $("#web-content").empty();
+                    }
+                }				
 			
             });
         </script>

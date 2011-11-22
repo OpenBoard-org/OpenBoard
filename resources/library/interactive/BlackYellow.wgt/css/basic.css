@@ -109,8 +109,7 @@ body{
     height: 28px;
     margin: 4px 5px;
     border: none;
-    background-image: url(../images/greySquare.png);
-    font-weight: bold;
+    background-image: url(../images/greySquare2.png);
     font-family: Verdana;
     color: yellow;
     cursor: pointer;

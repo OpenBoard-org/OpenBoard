@@ -8,22 +8,22 @@
         <meta name="revised" content="2010/09/25"/>
         <title>Graphics</title>
         <link rel="stylesheet" type="text/css" href="Style/default.css"/>
-        <script type="text/javascript" src="JavaScript/ColorPicker.js"></script>
-        <script type="text/javascript" src="JavaScript/Etude.js"></script>
+        <script type="text/javascript" src="JavaScript/ColorPicker.js"></script>        
         <script type="text/javascript" src="JavaScript/Interface.js"></script>
         <script type="text/javascript" src="JavaScript/Outils.js"></script>
-        <script type="text/javascript" src="JavaScript/Sauvegardes.js"></script>
         <script type="text/javascript" src="JavaScript/AffichageStandard.js"></script>
         <script type="text/javascript" src="JavaScript/Affichage3D.js"></script>
         <script type="text/javascript" src="JavaScript/AffichageUniboard.js"></script>
         <script type="text/javascript" src="JavaScript/AffichageXPM.js"></script>
-
+        <script type="text/javascript" src="JavaScript/languages.js"></script>
+        <script type="text/javascript" src="JavaScript/Etude.js"></script>
+        <script type="text/javascript" src="JavaScript/Sauvegardes.js"></script>
         <script src="JavaScript/jquery-1.3.2.min.js" type="text/javascript"></script>
         <script src="JavaScript/jquery.disable.text.select.js" type="text/javascript"></script>
         <script type="text/javascript">
 // <![CDATA[
         // --- Variables nécessaires au fonctionnement du widget ---
-		
+                var lang = ""; //locale language
                 var loadingFlag = false
                 var largeur = 500
                 var hauteur = 400
@@ -57,6 +57,16 @@
                 var decalageY = 0
 
                 var lineWidth = 3
+                
+                if(window.sankore){
+                    try{
+                        lang = sankore.locale().substr(0,2);
+                        sankoreLang[lang].display;
+                    } catch(e){
+                        lang = "en";
+                    }
+                } else 
+                    lang = "en";
                 
                 $(document).ready(function(){
                     
@@ -159,6 +169,507 @@
                         }
                         actualiserGraph();
                         loadingFlag = true;
+                        
+                        ////////////////////////////////////// languages suppot
+                        
+                        document.getElementById("texteFonction").innerHTML = sankoreLang[lang].fnc;
+                        $("#xAxis").html(sankoreLang[lang].x_axis);
+                        $("#yAxis").html(sankoreLang[lang].y_axis);
+                        $("#scaleZoom").html(sankoreLang[lang].zoom);
+                        $("#graphColor").html(sankoreLang[lang].color);
+                        $("#menuCouleur .contenuMenu em").text(sankoreLang[lang].choosing_color);
+                        $("#colorValues tr").eq(0).find("td").eq(0).html(sankoreLang[lang].color + ":");
+                        $("#colorValues tr").eq(1).find("td").eq(0).html(sankoreLang[lang].value);
+                        $("#colorValues tr").eq(2).find("td").eq(0).html(sankoreLang[lang].saturation);
+                        $("#colorValues tr").eq(3).find("td").eq(0).html(sankoreLang[lang].red);
+                        $("#colorValues tr").eq(4).find("td").eq(0).html(sankoreLang[lang].green);
+                        $("#colorValues tr").eq(5).find("td").eq(0).html(sankoreLang[lang].blue);
+                        $("#colorValues tr").eq(6).find("td").eq(0).html(sankoreLang[lang].opacity);
+                        $("#menuOutils .contenuMenu h3").eq(0).text(sankoreLang[lang].tools);
+                        $("#menuOutils .contenuMenu span").each(function(){
+                            switch($(this).html()){
+                                case "Mouse events:":
+                                    $(this).html(sankoreLang[lang].mouse_events);
+                                    break;
+                                case "Derivative:":
+                                    $(this).html(sankoreLang[lang].derivative);
+                                    break;
+                                case "Square under function:":
+                                    $(this).html(sankoreLang[lang].square_under_func);
+                                    break;
+                                case "Calculate the point on the function:":
+                                    $(this).html(sankoreLang[lang].point_calculate);
+                                    break;
+                                case "Analysis of function:":
+                                    $(this).html(sankoreLang[lang].analysis_of_func);
+                                    break;
+                                case "Display test:":
+                                    $(this).html(sankoreLang[lang].display_test);
+                                    break;
+                                case "From":
+                                    $(this).html(sankoreLang[lang].from);
+                                    break;
+                                case "to":
+                                    $(this).html(sankoreLang[lang].to);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return true;
+                        });
+                        $("label[for*='checkAire']").text(sankoreLang[lang].draw);
+                        $("label[for*='checkMaJ']").text(sankoreLang[lang].auto_update);
+                        $("#menuOptions td").eq(0).html(sankoreLang[lang].widget);
+                        $("#menuOptions h3").eq(0).text(sankoreLang[lang].widget_options);
+                        $("#menuOptions2D h3").eq(0).text(sankoreLang[lang].options + " 2D");
+                        $("#menuOptions2D span").each(function(){
+                            switch($(this).html()){
+                                case "The graphical method displaying:":
+                                    $(this).html(sankoreLang[lang].the_graphical);
+                                    break;
+                                case "Zoom default:":
+                                    $(this).html(sankoreLang[lang].zoom_def);
+                                    break;
+                                case "Thickness:":
+                                    $(this).html(sankoreLang[lang].thickness);
+                                    break;
+                                case "Offset diagram:":
+                                    $(this).html(sankoreLang[lang].offset_diagram);
+                                    break;
+                                case "Accuracy graph:":
+                                    $(this).html(sankoreLang[lang].accuracy_graph);
+                                    break;
+                            }
+                            return true;
+                        });
+                        $("#selectMethodeAffichage option").eq(0).text("canvas (" + sankoreLang[lang].lines + ")")
+                        .next().text("canvas (" + sankoreLang[lang].points + ")")
+                        .next().next().text("svg (1 " + sankoreLang[lang].image + ")");
+                        $("label[for*='checkGrille']").text(sankoreLang[lang].show_grid);
+                        $("label[for*='checkAxes']").text(sankoreLang[lang].show_axis);
+                        $("label[for*='checkEchelle']").text(sankoreLang[lang].scale);
+                        $("#menuOptions3D h3").eq(0).text(sankoreLang[lang].options + " 3D");
+                        $("#menuOptions3D span").each(function(){
+                            switch($(this).html()){
+                                case "Show the style:":
+                                    $(this).html(sankoreLang[lang].show_the_style);
+                                    break;
+                                case "Accuracy function:":
+                                    $(this).html(sankoreLang[lang].accuracy_func);
+                                    break;
+                                case "Use the color":
+                                    $(this).html(sankoreLang[lang].use_the_color);
+                                    break;
+                                case "red:":
+                                    $(this).html(sankoreLang[lang].red);
+                                    break;
+                                case "green:":
+                                    $(this).html(sankoreLang[lang].green);
+                                    break;
+                                case "blue:":
+                                    $(this).html(sankoreLang[lang].blue);
+                                    break;
+                                case "General value:":
+                                    $(this).html(sankoreLang[lang].general_value);
+                                    break;
+                                case "from":
+                                    $(this).html(sankoreLang[lang].from);
+                                    break;
+                                case "to":
+                                    $(this).html(sankoreLang[lang].to);
+                                    break;
+                            }
+                            return true;
+                        });
+                        
+                        $("#selectAffichage3D option").eq(0).text(sankoreLang[lang].surfaces)
+                        .next().text(sankoreLang[lang].points);
+                        
+                        $("#selectRouge3D option").eq(0).text(sankoreLang[lang].positive_value)
+                        .next().text(sankoreLang[lang].negative_value)
+                        .next().text(sankoreLang[lang].general_value);
+                        
+                        $("#selectVert3D option").eq(0).text(sankoreLang[lang].negative_value)
+                        .next().text(sankoreLang[lang].positive_value)
+                        .next().text(sankoreLang[lang].general_value);
+                        
+                        $("#selectBleu3D option").eq(0).text(sankoreLang[lang].general_value)
+                        .next().text(sankoreLang[lang].positive_value)
+                        .next().text(sankoreLang[lang].negative_value);
+                        
+                        $("#menuAide .ongletMenu td, #menuAideExemples .ongletMenu td, #menuAideAutres .ongletMenu td").each(function(){
+                            switch($(this).html()){
+                                case "Using":
+                                    $(this).html(sankoreLang[lang].using);
+                                    break;
+                                case "Examples":
+                                    $(this).html(sankoreLang[lang].examples);
+                                    break;
+                                case "Other":
+                                    $(this).html(sankoreLang[lang].other);
+                                    break;
+                            }
+                        });
+                        
+                        $("#menuAide h1").each(function(){
+                            switch($(this).html()){
+                                case "How it work.":
+                                    $(this).html(sankoreLang[lang].how_it_work);
+                                    break;
+                                case "Constants":
+                                    $(this).html(sankoreLang[lang].consts);
+                                    break;
+                                case "Keyboard keys":
+                                    $(this).html(sankoreLang[lang].keys);
+                                    break;
+                            }
+                            return true;
+                        });
+                        
+                        $("#menuAide h2").each(function(){
+                            switch($(this).html()){
+                                case "Basic operations":
+                                    $(this).html(sankoreLang[lang].basic_operations);
+                                    break;
+                                case "Trigonometric functions":
+                                    $(this).html(sankoreLang[lang].trigonometric);
+                                    break;
+                                case "Hyperbolic functions":
+                                    $(this).html(sankoreLang[lang].hyperbolic_func);
+                                    break;
+                                case "Square roots and degrees":
+                                    $(this).html(sankoreLang[lang].square_roots_and_degrees);
+                                    break;
+                                case "Exponential and logarithm":
+                                    $(this).html(sankoreLang[lang].exponential);
+                                    break;
+                                case "Absolute number value":
+                                    $(this).html(sankoreLang[lang].abs);
+                                    break;
+                                case "Rounding":
+                                    $(this).html(sankoreLang[lang].rounding);
+                                    break;
+                            }
+                            return true;
+                        });
+                        
+                        $("#menuAide span").each(function(){
+                            switch($(this).html()){
+                                case "This widget allow to draw mathematical function. Enter function in the field in the top part of widget and press \"Show\".":
+                                    $(this).html(sankoreLang[lang].this_widget_allow);
+                                    break;
+                                case "You can enter following mathematical function:":
+                                    $(this).html(sankoreLang[lang].you_can_enter);
+                                    break;
+                                case "Plus":
+                                    $(this).html(sankoreLang[lang].plus);
+                                    break;
+                                case "Minus":
+                                    $(this).html(sankoreLang[lang].minus);
+                                    break;
+                                case "Multiplication":
+                                    $(this).html(sankoreLang[lang].multi);
+                                    break;
+                                case "Division":
+                                    $(this).html(sankoreLang[lang].division);
+                                    break;
+                                case "Mod":
+                                    $(this).html(sankoreLang[lang].mod);
+                                    break;
+                                case "Sine":
+                                    $(this).html(sankoreLang[lang].sine);
+                                    break;
+                                case "Cosine":
+                                    $(this).html(sankoreLang[lang].cosine);
+                                    break;
+                                case "Tangent":
+                                    $(this).html(sankoreLang[lang].tangent);
+                                    break;
+                                case "Cotangent":
+                                    $(this).html(sankoreLang[lang].cotangent);
+                                    break;
+                                case "Secant":
+                                    $(this).html(sankoreLang[lang].secant);
+                                    break;
+                                case "Cosecant":
+                                    $(this).html(sankoreLang[lang].cosecant);
+                                    break;
+                                case "Arc sine":
+                                    $(this).html(sankoreLang[lang].arc_sine);
+                                    break;
+                                case "Arc cosine":
+                                    $(this).html(sankoreLang[lang].arc_cosine);
+                                    break;
+                                case "Arc tangent":
+                                    $(this).html(sankoreLang[lang].arc_tangent);
+                                    break;
+                                case "Arc cotangent":
+                                    $(this).html(sankoreLang[lang].arc_cotangent);
+                                    break;
+                                case "Hyperbolic sine":
+                                    $(this).html(sankoreLang[lang].hyp_sine);
+                                    break;
+                                case "Hyperbolic cosine":
+                                    $(this).html(sankoreLang[lang].hyp_cosine);
+                                    break;
+                                case "Hyperbolic tangent":
+                                    $(this).html(sankoreLang[lang].hyp_tangent);
+                                    break;
+                                case "Hyperbolic cotangent":
+                                    $(this).html(sankoreLang[lang].hyp_cotangent);
+                                    break;
+                                case "Hyperbolic secant":
+                                    $(this).html(sankoreLang[lang].hyp_secant);
+                                    break;
+                                case "Hyperbolic cosecant":
+                                    $(this).html(sankoreLang[lang].hyp_cosecant);
+                                    break;
+                                case "Hyperbolic arc sine":
+                                    $(this).html(sankoreLang[lang].hyp_arc_sine);
+                                    break;
+                                case "Hyperbolic arc cosine":
+                                    $(this).html(sankoreLang[lang].hyp_arc_cosine);
+                                    break;
+                                case "Hyperbolic arc tangent":
+                                    $(this).html(sankoreLang[lang].hyp_arc_tangent);
+                                    break;
+                                case "Hyperbolic arc cotangent":
+                                    $(this).html(sankoreLang[lang].hyp_arc_cotangent);
+                                    break;
+                                case "Square root":
+                                    $(this).html(sankoreLang[lang].square_root);
+                                    break;
+                                case "Degree":
+                                    $(this).html(sankoreLang[lang].degree);
+                                    break;
+                                case "Root":
+                                    $(this).html(sankoreLang[lang].root);
+                                    break;
+                                case "Variable x to the power y":
+                                    $(this).html(sankoreLang[lang].variable_x);
+                                    break;
+                                case "Root y of x":
+                                    $(this).html(sankoreLang[lang].root_y);
+                                    break;
+                                case "Natural logarithm":
+                                    $(this).html(sankoreLang[lang].natural_log);
+                                    break;
+                                case "Decimal logarithm":
+                                    $(this).html(sankoreLang[lang].decimal_log);
+                                    break;
+                                case "rounding to the nearest whole number":
+                                    $(this).html(sankoreLang[lang].round_nearest);
+                                    break;
+                                case "rounding to the nearest whole number in a big way":
+                                    $(this).html(sankoreLang[lang].round_nearest_big);
+                                    break;
+                                case "rounding to the nearest whole number the smaller side":
+                                    $(this).html(sankoreLang[lang].round_nearest_small);
+                                    break;
+                                case "Also are available some constants:":
+                                    $(this).html(sankoreLang[lang].available_const);
+                                    break;
+                                case "reset widget":
+                                    $(this).html(sankoreLang[lang].reload_widget);
+                                    break;
+                                case "left arrow":
+                                    $(this).html(sankoreLang[lang].left_arrow);
+                                    break;
+                                case "top arrow":
+                                    $(this).html(sankoreLang[lang].top_arrow);
+                                    break;
+                                case "right arrow":
+                                    $(this).html(sankoreLang[lang].right_arrow);
+                                    break;
+                                case "bottom arrow":
+                                    $(this).html(sankoreLang[lang].bottom_arrow);
+                                    break;
+                                case "graph will be moved left":
+                                    $(this).html(sankoreLang[lang].moved_left);
+                                    break;
+                                case "graph will be moved top":
+                                    $(this).html(sankoreLang[lang].moved_top);
+                                    break;
+                                case "graph will be moved right":
+                                    $(this).html(sankoreLang[lang].moved_right);
+                                    break;
+                                case "graph will be moved bottom":
+                                    $(this).html(sankoreLang[lang].moved_bottom);
+                                    break;
+                                case "or":
+                                    $(this).html(sankoreLang[lang].or);
+                                    break;
+                            }
+                            return true;
+                        });
+                        
+                        $("#menuAideExemples h1").each(function(){
+                            if($(this).text() == "Functions 2D")
+                                $(this).text(sankoreLang[lang].funcs + " 2D");
+                            else
+                                $(this).text(sankoreLang[lang].funcs + " 3D");
+                        });
+                    
+                        $("#menuAideExemples span").eq(0).html("(" + sankoreLang[lang].you_can_view + ")");
+                        
+                        $("#menuAideAutres h4").eq(0).text(sankoreLang[lang].save_graph);
+                        $("#menuAideAutres h4").eq(1).text(sankoreLang[lang].offset);
+                        $("#menuAideAutres span").eq(0).text(sankoreLang[lang].in_some_browsers);
+                        $("#menuAideAutres span").eq(1).text(sankoreLang[lang].if_graph_isnt);
+                        $("#credits h3").eq(0).text(sankoreLang[lang].widget_is_developed);
+                        $("#menuCredits .texteSecondaire span").eq(0).html(sankoreLang[lang].if_you_want_to);
+                        $("#menuCredits .texteSecondaire span").eq(1).html(sankoreLang[lang].if_you_want_to_change);
+                        $("#menuFonctions td").eq(0).text(sankoreLang[lang].funcs);
+                        $("#menuFonctions td").eq(1).text(sankoreLang[lang].history);
+                        $("#menuFonctions em").eq(0).text(sankoreLang[lang].current);
+                        $("#menuFonctions em").eq(1).text(sankoreLang[lang].additional);
+                        $("#menuHistorique td").eq(0).text(sankoreLang[lang].funcs);
+                        $("#menuHistorique td").eq(1).text(sankoreLang[lang].history);
+                        
+                        $("#menuEtude h3").text(sankoreLang[lang].analysis_of_func);
+                        $("#menuEtude span").each(function(){
+                            switch($(this).html()){
+                                case "Set of definitions:":
+                                    $(this).html(sankoreLang[lang].set_of_def);
+                                    break;
+                                case "Parity:":
+                                    $(this).html(sankoreLang[lang].parity);
+                                    break;
+                                case "Zeros of functions:":
+                                    $(this).html(sankoreLang[lang].zeros);
+                                    break;
+                                case "Signe:":
+                                    $(this).html(sankoreLang[lang].signe);
+                                    break;
+                                case "Asymptotes":
+                                    $(this).html(sankoreLang[lang].asympt);
+                                    break;
+                                case "AH left:":
+                                    $(this).html(sankoreLang[lang].ah_left);
+                                    break;
+                                case "AH right:":
+                                    $(this).html(sankoreLang[lang].ah_right);
+                                    break;
+                                case "AV:":
+                                    $(this).html(sankoreLang[lang].av);
+                                    break;
+                                case "Tool for analysis of function is not reliable on 100%. Don't forget check results of analysis before use it.":
+                                    $(this).html(sankoreLang[lang].tool_for);
+                                    break;
+                            }
+                            return true;
+                        });
+                        
+                        $("#infoSauvegarde h1").text(sankoreLang[lang].options_saved);
+                        $("#mAj h1").text(sankoreLang[lang].update);
+                        $("#mAj span").each(function(){
+                            switch($(this).html()){
+                                case "Current version:":
+                                    $(this).html(sankoreLang[lang].cur_version);
+                                    break;
+                                case "The last on-line version:":
+                                    $(this).html(sankoreLang[lang].last_version);
+                                    break;
+                                case "This widget is available to using on web-site:":
+                                    $(this).html(sankoreLang[lang].using_web);
+                                    break;
+                            }
+                        });
+                        
+                        $("#menuOptions span").each(function(){
+                            switch($(this).html()){
+                                case "Themes of widget:":
+                                    $(this).html(sankoreLang[lang].themes_of_widget);
+                                    break;
+                                case "Control options:":
+                                    $(this).html(sankoreLang[lang].control_options);
+                                    break;
+                                case "Save a widget options in cookies or load an options from cookies or delete a registered options.":
+                                    $(this).html(sankoreLang[lang].save_a_widget_options);
+                                    break;
+                            }
+                            return true;
+                        });
+                        $("#selectTheme option").eq(0).text(sankoreLang[lang].black).next().text(sankoreLang[lang].blue).next().text(sankoreLang[lang].white);
+                        $("input:button").each(function(){
+                            switch($(this).val()){
+                                case "Check":
+                                    $(this).val(sankoreLang[lang].check);
+                                    break;
+                                case "Cancel":
+                                    $(this).val(sankoreLang[lang].quit);
+                                    break;
+                                case "Tools":
+                                    $(this).val(sankoreLang[lang].tools);
+                                    break;
+                                case "Options":
+                                    $(this).val(sankoreLang[lang].options);
+                                    break;
+                                case "Help":
+                                    $(this).val(sankoreLang[lang].help);
+                                    break;
+                                case "About":
+                                    $(this).val(sankoreLang[lang].about);
+                                    break;
+                                case "Moving":
+                                    $(this).val(sankoreLang[lang].moving);
+                                    break;
+                                case "Tangente":
+                                    $(this).val(sankoreLang[lang].tangente);
+                                    break;
+                                case "Point":
+                                    $(this).val(sankoreLang[lang].point);
+                                    break;
+                                case "Calculate":
+                                    $(this).val(sankoreLang[lang].calculate);
+                                    break;
+                                case "Estimate":
+                                    $(this).val(sankoreLang[lang].estimate);
+                                    break;
+                                case "Start to analysis":
+                                    $(this).val(sankoreLang[lang].start_to_analysis);
+                                    break;
+                                case "Test XPM":
+                                    $(this).val(sankoreLang[lang].test + " XPM");
+                                    break;
+                                case "Test SVG":
+                                    $(this).val(sankoreLang[lang].test + " SVG");
+                                    break;
+                                case "Test Canvas":
+                                    $(this).val(sankoreLang[lang].test + " Canvas");
+                                    break;
+                                case "Save":
+                                    $(this).val(sankoreLang[lang].save);
+                                    break;
+                                case "Load":
+                                    $(this).val(sankoreLang[lang].load);
+                                    break;
+                                case "Delete":
+                                    $(this).val(sankoreLang[lang].del);
+                                    break;
+                                case "Display":
+                                    $(this).val(sankoreLang[lang].display);
+                                    break;
+                                case "Reload widget":
+                                    $(this).val(sankoreLang[lang].reload_widget);
+                                    break;
+                                case "Updated":
+                                    $(this).val(sankoreLang[lang].update);
+                                    break;
+                                case "Update zoom":
+                                    $(this).val(sankoreLang[lang].update_zoom);
+                                    break;
+                                case "Reset display":
+                                    $(this).val(sankoreLang[lang].reset_display);
+                                    break;
+                                case "User's guide":
+                                    $(this).val(sankoreLang[lang].guide);
+                                    break;
+                                default:
+                                    break;                                                                                                                                
+                            }
+                            return true;
+                        });
                     }
                     
                     $(document).disableTextSelect();
@@ -469,13 +980,13 @@
         <div id="affichage" onmousedown="sourisDown()" onmouseup="sourisUp()" onmousemove="sourisMove(event)" ondblclick="doubleClick(event.ctrlKey)"></div>
         <!-- Zone de boutons gauche -->
         <div id="gauche">
-            X-axis: <br/>
-            <input id="borneXGauche" class="smallInput" value="-5" onkeypress='if(event.keyCode==13) actualiserGraph()'/> à <input id="borneXDroite" class="smallInput" value="5" onkeypress='if(event.keyCode==13) actualiserGraph()'/> <br/>
-            Y-axis: <br/>
-            <input id="borneYGauche" class="smallInput" value="-5" onkeypress='if(event.keyCode==13) actualiserGraph()'/> à <input id="borneYDroite" class="smallInput" value="5" onkeypress='if(event.keyCode==13) actualiserGraph()'/>
-            <br/>Zoom: <br/>
+            <span id="xAxis">X-axis:</span> <br/>
+            <input id="borneXGauche" class="smallInput" value="-5" onkeypress='if(event.keyCode==13) actualiserGraph()'/> ... <input id="borneXDroite" class="smallInput" value="5" onkeypress='if(event.keyCode==13) actualiserGraph()'/> <br/>
+            <span id="yAxis">Y-axis:</span> <br/>
+            <input id="borneYGauche" class="smallInput" value="-5" onkeypress='if(event.keyCode==13) actualiserGraph()'/> ... <input id="borneYDroite" class="smallInput" value="5" onkeypress='if(event.keyCode==13) actualiserGraph()'/>
+            <br/><span id="scaleZoom">Zoom:</span> <br/>
             <input type="button" style="width:45%;" onclick='zoom(1.25)' value="-"/><input type="button" style="width:45%; position:relative; left: 9px;" onclick='zoom(0.8)' value="+"/><br/><br/>
-            Color: <br/>
+            <span id="graphColor">Color:</span> <br/>
             <div id="buttonColor" title="couleurFonction" onclick="colorPicker(this.id); afficherMenu('menuCouleur')"></div>
             <br/><br/>
             <hr/>
@@ -513,7 +1024,7 @@
             <div class="contenuMenu avecBordures">
                 <h3>Widget options</h3>
 
-                Themes of widget: <select id="selectTheme" onchange="changerTheme(this.value)">
+                <span>Themes of widget:</span> <select id="selectTheme" onchange="changerTheme(this.value)">
                     <option value="noir">Black</option>
                     <option value="bleu">Blue</option>
                     <option value="blanc">White</option>
@@ -543,7 +1054,7 @@
             </table>
             <div class="contenuMenu avecBordures">
                 <h3>Options 2D</h3>
-                The graphical method displaying:<select id="selectMethodeAffichage">
+                <span>The graphical method displaying:</span><select id="selectMethodeAffichage">
                     <option value="canvas">canvas (lines)</option>
                     <option value="canvas2">canvas (points)</option>
                     <option value="svg">svg</option>
@@ -551,21 +1062,21 @@
                     <option value="xpm">xpm</option>
                     <option value="sankore">sankore</option>
                 </select> <br/>
-                Zoom default: 
+                <span>Zoom default:</span> 
                 <input value="5" class="smallInput" id="zoomDefaut"/>
                 <input type="button" onclick='reinitialiserZoom(document.getElementById("zoomDefaut").value)' value="Update zoom"/> <br/>
                 <br/>
                 <input type="checkbox" id="checkGrille" checked="true" onclick="actualiserGraph()"/><label for="checkGrille">Show grid</label> <br/>
                 <input type="checkbox" id="checkAxes" checked="true" onclick="actualiserGraph()"/><label for="checkAxes">Show axis</label> <br/>
                 <input type="checkbox" id="checkEchelle" checked="true" onclick="actualiserGraph()"/><label for="checkEchelle">Scale</label> <br/>
-                Thickness: <input id="inputTaille" class="smallInput" value="3" onkeypress='if(event.keyCode==13) actualiserGraph()' style=""/>
+                <span>Thickness:</span> <input id="inputTaille" class="smallInput" value="3" onkeypress='if(event.keyCode==13) actualiserGraph()' style=""/>
                 <div class="boutonPlus" type="button" onclick="boutonPlus('inputTaille', 1); actualiserGraph()">+</div><div class="boutonMoins" type="button" onclick="boutonMoins('inputTaille', 1); actualiserGraph()">-</div> <br/>
                 <br/>
-                Offset diagram: 
+                <span>Offset diagram:</span> 
                 x=<input value="0" class="smallInput" id="inputDecalageX" onkeyup="decalageX = parseFloat(this.value)"/>
                 y=<input value="0" class="smallInput" id="inputDecalageY" onkeyup="decalageY = parseFloat(this.value)"/>
                 <br/>
-                Accuracy graph:
+                <span>Accuracy graph:</span>
                 <input value="0.02" class="smallInput" id="inputPrecision" onkeyup="precision = parseFloat(this.value)"/>
                 <div class="boutonPlus" type="button" onclick="boutonPlus('inputPrecision', 0.01); precision = parseFloat(document.getElementById('inputPrecision').value); actualiserGraph()">+</div><div class="boutonMoins" type="button" onclick="boutonMoins('inputPrecision', 0.01); precision = parseFloat(document.getElementById('inputPrecision').value); actualiserGraph()">-</div> <br/>
                 <br/>
@@ -583,38 +1094,38 @@
             </table>
             <div class="contenuMenu avecBordures">
                 <h3>Options 3D</h3>
-                Show the style: 
+                <span>Show the style:</span> 
                 <select id="selectAffichage3D">
                     <option value="surfaces"> surfaces </option>
                     <option value="points"> points </option>
                 </select> <input type="button" onclick='reinitialiserZoom(5)' value="Reset display"/> <br/>
                 <br/>
-                Accuracy function: <input value="0.2" class="smallInput" id="inputPrecision3D" onkeyup="precisionFonction3D = parseFloat(this.value)"/>
+                <span>Accuracy function:</span> <input value="0.2" class="smallInput" id="inputPrecision3D" onkeyup="precisionFonction3D = parseFloat(this.value)"/>
                 <div class="boutonPlus" type="button" onclick="boutonPlus('inputPrecision3D', 0.1); precisionFonction3D = parseFloat(document.getElementById('inputPrecision3D').value); actualiserGraph()">+</div><div class="boutonMoins" type="button" onclick="boutonMoins('inputPrecision3D', 0.1); precisionFonction3D = parseFloat(document.getElementById('inputPrecision3D').value); actualiserGraph()">-</div> <br/>
                 <br/>
-                Use the color:<br/>
-                red:
+                <span>Use the color:</span><br/>
+                <span>red:</span>
                 <select onchange="checkCouleurs3D()" id="selectRouge3D">
                     <option value="plus">positive value</option>
                     <option value="moins">negative value</option>
                     <option value="tout">general value</option>
                 </select>
                 <br/>
-                green :
+                <span>green:</span>
                 <select onchange="checkCouleurs3D()" id="selectVert3D">
                     <option value="moins">negative value</option>
                     <option value="plus">positive value</option>					
                     <option value="tout">general value</option>
                 </select>
                 <br/>
-                blue :
+                <span>blue:</span>
                 <select onchange="checkCouleurs3D()" id="selectBleu3D">
                     <option value="tout">general value</option>
                     <option value="plus">positive value</option>
                     <option value="moins">negative value</option>					
                 </select>
                 <br/>
-                General value : <input class="smallInput" id="couleur3Dgenerale" type="texte" value="0" onkeyup="checkCouleurs3D()"/> (from 0 to 255)
+                <span>General value:</span> <input class="smallInput" id="couleur3Dgenerale" type="texte" value="0" onkeyup="checkCouleurs3D()"/> (<span>from</span> 0 <span>to</span> 255)
                 <br/>
                 <span id="apercuCouleur3D"></span>
             </div>
@@ -632,57 +1143,57 @@
             </table>
             <div class="contenuMenu avecBordures">
                 <h1>How it work.</h1>
-                <p>This widget allow to draw mathematical function. Enter function in the field in the top part of widget and press "Show".</p>
-                <p>You can enter following mathematical function:<br/>
+                <p><span>This widget allow to draw mathematical function. Enter function in the field in the top part of widget and press "Show".</span></p>
+                <p><span>You can enter following mathematical function:</span><br/>
                     <h2>Basic operations</h2>
                     <ul>
-                        <li>Plus -> <span class="gras">+</span></li>
-                        <li>Minus -> <span class="gras">-</span></li>
-                        <li>Multiplication -> <span class="gras">*</span></li>
-                        <li>Division -> <span class="gras">/</span></li>
-                        <li>Mod -> <span class="gras">%</span></li>
+                        <li><span>Plus</span> -> <span class="gras">+</span></li>
+                        <li><span>Minus</span> -> <span class="gras">-</span></li>
+                        <li><span>Multiplication</span> -> <span class="gras">*</span></li>
+                        <li><span>Division</span> -> <span class="gras">/</span></li>
+                        <li><span>Mod</span> -> <span class="gras">%</span></li>
                     </ul>
                     <h2>Trigonometric functions</h2>
                     <ul>
-                        <li>Sine -> <span class="gras">sin(x)</span></li>
-                        <li>Cosine -> <span class="gras">cos(x)</span></li>
-                        <li>Tangent -> <span class="gras">tan(x)</span></li>
-                        <li>Cotangent -> <span class="gras">cot(x)</span></li>
-                        <li>Secant -> <span class="gras">sec(x)</span></li>
-                        <li>Cosecant -> <span class="gras">csc(x)</span></li>
+                        <li><span>Sine</span> -> <span class="gras">sin(x)</span></li>
+                        <li><span>Cosine</span> -> <span class="gras">cos(x)</span></li>
+                        <li><span>Tangent</span> -> <span class="gras">tan(x)</span></li>
+                        <li><span>Cotangent</span> -> <span class="gras">cot(x)</span></li>
+                        <li><span>Secant</span> -> <span class="gras">sec(x)</span></li>
+                        <li><span>Cosecant</span> -> <span class="gras">csc(x)</span></li>
                     </ul>
                     <ul>
-                        <li>Arc sine -> <span class="gras">arcsin(x)</span> ou <span class="gras">asin(x)</span></li>
-                        <li>Arc cosine -> <span class="gras">arccos(x)</span> ou <span class="gras">acos(x)</span></li>
-                        <li>Arc tangent -> <span class="gras">arctan(x)</span> ou <span class="gras">atan(x)</span></li>
-                        <li>Arc cotangent -> <span class="gras">arccot(x)</span> ou <span class="gras">acot(x)</span></li>
+                        <li><span>Arc sine</span> -> <span class="gras">arcsin(x)</span> <span>or</span> <span class="gras">asin(x)</span></li>
+                        <li><span>Arc cosine</span> -> <span class="gras">arccos(x)</span> <span>or</span> <span class="gras">acos(x)</span></li>
+                        <li><span>Arc tangent</span> -> <span class="gras">arctan(x)</span> <span>or</span> <span class="gras">atan(x)</span></li>
+                        <li><span>Arc cotangent</span> -> <span class="gras">arccot(x)</span> <span>or</span> <span class="gras">acot(x)</span></li>
                     </ul>
                     <h2>Hyperbolic functions</h2>
                     <ul>
-                        <li>Hyperbolic sine -> <span class="gras">sinh(x)</span></li>
-                        <li>Hyperbolic cosine -> <span class="gras">cosh(x)</span></li>
-                        <li>Hyperbolic tangent -> <span class="gras">tanh(x)</span></li>
-                        <li>Hyperbolic cotangent -> <span class="gras">coth(x)</span></li>
-                        <li>Hyperbolic secant -> <span class="gras">sech(x)</span></li>
-                        <li>Hyperbolic cosecant -> <span class="gras">csch(x)</span></li>
+                        <li><span>Hyperbolic sine</span> -> <span class="gras">sinh(x)</span></li>
+                        <li><span>Hyperbolic cosine</span> -> <span class="gras">cosh(x)</span></li>
+                        <li><span>Hyperbolic tangent</span> -> <span class="gras">tanh(x)</span></li>
+                        <li><span>Hyperbolic cotangent</span> -> <span class="gras">coth(x)</span></li>
+                        <li><span>Hyperbolic secant</span> -> <span class="gras">sech(x)</span></li>
+                        <li><span>Hyperbolic cosecant</span> -> <span class="gras">csch(x)</span></li>
                     </ul>
                     <ul>
-                        <li>Hyperbolic arc sine -> <span class="gras">arcsinh(x)</span> or <span class="gras">asinh(x)</span></li>
-                        <li>Hyperbolic arc cosine -> <span class="gras">arccosh(x)</span> or <span class="gras">acosh(x)</span></li>
-                        <li>Hyperbolic arc tangent -> <span class="gras">arctanh(x)</span> or <span class="gras">atanh(x)</span></li>
-                        <li>Hyperbolic arc cotangent -> <span class="gras">arccoth(x)</span> or <span class="gras">acoth(x)</span></li>
+                        <li><span>Hyperbolic arc sine</span> -> <span class="gras">arcsinh(x)</span> <span>or</span> <span class="gras">asinh(x)</span></li>
+                        <li><span>Hyperbolic arc cosine</span> -> <span class="gras">arccosh(x)</span> <span>or</span> <span class="gras">acosh(x)</span></li>
+                        <li><span>Hyperbolic arc tangent</span> -> <span class="gras">arctanh(x)</span> <span>or</span> <span class="gras">atanh(x)</span></li>
+                        <li><span>Hyperbolic arc cotangent</span> -> <span class="gras">arccoth(x)</span> <span>or</span> <span class="gras">acoth(x)</span></li>
                     </ul>
                     <h2>Square roots and degrees</h2>
                     <ul>
-                        <li>Square root -> <span class="gras">sqrt(x)</span></li>
-                        <li>Degree -> <span class="gras">pow(x, y)</span> <span class="texteSecondaire">Variable x to the power y</span></li>
-                        <li>Root -> <span class="gras">root(x, y)</span> <span class="texteSecondaire">Root y of x</span></li>
+                        <li><span>Square root</span> -> <span class="gras">sqrt(x)</span></li>
+                        <li><span>Degree</span> -> <span class="gras">pow(x, y)</span> <span class="texteSecondaire">Variable x to the power y</span></li>
+                        <li><span>Root</span> -> <span class="gras">root(x, y)</span> <span class="texteSecondaire">Root y of x</span></li>
                     </ul>
                     <h2>Exponential and logarithm</h2>
                     <ul>
                         <li>e<span style="vertical-align:super;">x</span> -> <span class="gras">exp(x)</span></li>
-                        <li>Natural logarithm -> <span class="gras">ln(x)</span></li>
-                        <li>Decimal logarithm -> <span class="gras">log(x)</span></li>
+                        <li><span>Natural logarithm</span> -> <span class="gras">ln(x)</span></li>
+                        <li><span>Decimal logarithm</span> -> <span class="gras">log(x)</span></li>
                     </ul>
                     <h2>Absolute number value</h2>
                     <ul>
@@ -690,14 +1201,14 @@
                     </ul>
                     <h2>Rounding</h2>
                     <ul>
-                        <li><span class="gras">round(x)</span> -> rounding to the nearest whole number</li>
-                        <li><span class="gras">ceil(x)</span> -> rounding to the nearest whole number in a big way</li>
-                        <li><span class="gras">floor(x)</span> -> rounding to the nearest whole number the smaller side</li>
+                        <li><span class="gras">round(x)</span> -> <span>rounding to the nearest whole number</span></li>
+                        <li><span class="gras">ceil(x)</span> -> <span>rounding to the nearest whole number in a big way</span></li>
+                        <li><span class="gras">floor(x)</span> -> <span>rounding to the nearest whole number the smaller side</span></li>
                     </ul>					
                 </p> <br/>
                 <hr/>
                 <h1>Constants</h1>
-                <p>Also are available some constants:<br/>
+                <p><span>Also are available some constants:</span><br/>
                     <ul>
                         <li><span class="gras">pi</span> = 4 * atan(1) ≈  3,141592653589793</li>
                         <li><span class="gras">e</span> = exp(1) ≈ 2.718281828459045</li>
@@ -707,11 +1218,11 @@
                 <hr/>
                 <h1>Keyboard keys</h1>
                 <p style="font-size:90%;">
-                    esc -> reset widget <br/>
-                    ctrl + left arrow -> graph will be moved left<br/>
-                    ctrl + top arrow -> graph will be moved top<br/>
-                    ctrl + right arrow -> graph will be moved right<br/>
-                    ctrl + bottom arrow -> graph will be moved bottom<br/>
+                    esc -> <span>reset widget</span> <br/>
+                    ctrl + <span>left arrow</span> -> <span>graph will be moved left</span><br/>
+                    ctrl + <span>top arrow</span> -> <span>graph will be moved top</span><br/>
+                    ctrl + <span>right arrow</span> -> <span>graph will be moved right</span><br/>
+                    ctrl + <span>bottom arrow</span> -> <span>graph will be moved bottom</span><br/>
                     <br/>
                 </p>
                 <br/>
@@ -768,10 +1279,10 @@
             </table>
             <div class="contenuMenu avecBordures">
                 <h4>Save graph</h4>
-                In some browsers when used display method "Canvas" you can save graph by clicking it with right mouse button and selecting "Save image". Also you can save 3D-graphs.
+                <span>In some browsers when used display method "Canvas" you can save graph by clicking it with right mouse button and selecting "Save image". Also you can save 3D-graphs.</span>
                 <br/><br/>
                 <h4>Offset</h4>
-                If graph isn't in the right place (larger than canvas) then can you set necessary parameters graph displaying in settings menu. 
+                <span>If graph isn't in the right place (larger than canvas) then can you set necessary parameters graph displaying in settings menu.</span> 
             </div>
             <div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
         </div>
@@ -792,9 +1303,9 @@
                 </table>
                 <span class="texteSecondaire">
                     <br/><br/>
-                    If you want to inform about bug, make a proposal or just ask some questions then you can  contact to me at the following e-mail: <a href='mailto:yannick.vessaz@gmail.com'>e-mail</a>.
+                    <span>If you want to inform about bug, make a proposal or just ask some questions then you can  contact to me at the following e-mail:</span> <a href='mailto:yannick.vessaz@gmail.com'>e-mail</a>.
                     <br/><br/>
-                    If you want to change background design then you can contact at following address: <a href="http://kde.org">KDE</a>.
+                    <span>If you want to change background design then you can contact at following address:</span> <a href="http://kde.org">KDE</a>.
                 </span>
                 <span id="version" class="texteSecondaire" style="position:absolute;bottom:10px;left:15px;">version 1.3</span>
             </div>
@@ -805,27 +1316,27 @@
         <div id="menuOutils" class="menu">
             <div class="contenuMenu">
                 <h3 style="margin-top:0px; margin-bottom:15px;">Tools</h3> 
-                Mouse events:<br/>
+                <span>Mouse events:</span><br/>
                 <input type="button" class="choixOutil" onclick="choixOutil('deplacement');cacherMenu()" value="Moving"/>
                 <input type="button" class="choixOutil" onclick="choixOutil('tangente');cacherMenu()" value="Tangente"/>
                 <input type="button" class="choixOutil" onclick="choixOutil('point');cacherMenu()" value="Point"/>
                 <br/><br/>
-                Derivative:<br/>
+                <span>Derivative:</span><br/>
                 <label for="checkDerivee"> f'(x) </label><input type="checkbox" id="checkDerivee" onclick="actualiserGraph()"/><label for="checkDerivee2"> f''(x) </label><input type="checkbox" id="checkDerivee2" onclick="actualiserGraph()"/>
                 <br/><br/>
-                Square under function:<br/>
-                From <input value="-5" class="smallInput" id="aireG"/> to <input value="5" class="smallInput" id="aireD"/> <input type="button" onclick='calculerAire()' value="Calculate"/> <span id="outputAire"></span>
+                <span>Square under function:</span><br/>
+                <span>From</span> <input value="-5" class="smallInput" id="aireG"/> <span>to</span> <input value="5" class="smallInput" id="aireD"/> <input type="button" onclick='calculerAire()' value="Calculate"/> <span id="outputAire"></span>
                 <div style="float: right;"><label for="checkAire">Draw </label><input type="checkbox" id="checkAire" onclick="actualiserGraph()"/></div>
                 <br/><br/>
-                Calculate the point on the function:<br/>
+                <span>Calculate the point on the function:</span><br/>
                 x=<input value="0" class="smallInput" id="inputX" onkeypress='if(event.keyCode==13) execute(document.getElementById("inputEq").value)'/>
                 <input type="button" onclick='execute(document.getElementById("inputEq").value)' value="Estimate"/>
                 <span id="outputX"></span>
                 <br/><br/>
-                Analysis of function: <br/>
+                <span>Analysis of function:</span> <br/>
                 f(x) = <span id="etudeFct"></span> <input type="button" value="Start to analysis" onclick='etudier(document.getElementById("inputEq").value);afficherMenu("menuEtude")'/>
                 <br/><br/>
-                Display test:<br/>
+                <span>Display test:</span><br/>
                 <input type="button" onclick='cacherMenu(); testXPM()' value="Test XPM"/><input type="button" onclick='cacherMenu(); testSVG()' value="Test SVG"/><input type="button" onclick='cacherMenu(); testCanvas()' value="Test Canvas"/>
             </div>
             <div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
@@ -834,25 +1345,25 @@
         <!--Etude de fonction -->
         <div id="menuEtude" class="menu">
             <div class="contenuMenu">
-                <h3>Analysis of function in the</h3>
-                Set of definitions : <span id="etudeEDF">...</span> <br/>
-                Parity : <span id="etudeParite">...</span> <br/>
-                Zeros of functions : <span id="etudeZeros">...</span> <br/>
+                <h3>Analysis of function</h3>
+                <span>Set of definitions:</span> <span id="etudeEDF">...</span> <br/>
+                <span>Parity:</span> <span id="etudeParite">...</span> <br/>
+                <span>Zeros of functions:</span> <span id="etudeZeros">...</span> <br/>
                 <table>
                     <tr id="etudeSigne">
                         <td>Sign : ...</td>
                     </tr>
                 </table>
-                Asymptotes <br/>
-                AH left : <span id="etudeAHG">...</span> <br/>
-                AH right : <span id="etudeAHD">...</span> <br/>
-                AV : <span id="etudeAV">...</span>
+                <span>Asymptotes</span> <br/>
+                <span>AH left:</span> : <span id="etudeAHG">...</span> <br/>
+                <span>AH right:</span> <span id="etudeAHD">...</span> <br/>
+                <span>AV:</span> <span id="etudeAV">...</span>
                 <span id="etudeMin">...</span>
                 <span id="etudeMax">...</span>
                 <span id="etudeI">...</span> <br/><br/>
                 <span class="texteSecondaire" style="font-size:10px;">Tool for analysis of function is not reliable on 100%. Don't forget check results of analysis before use it.</span>
             </div>
-            <div class="barreBasMenu"><input type="button" onclick="etudier(document.getElementById('inputEq').value)" value="Actualize" style="position:relative;right:310px;"/> <input type="button" onclick='cacherMenu()' value="Cancel"/></div>
+            <div class="barreBasMenu"><input type="button" onclick='cacherMenu()' value="Cancel"/></div>
         </div>
 
         <!-- Fonctions multiples -->
@@ -1035,10 +1546,10 @@
         <!-- Menu des mises à jour -->
         <div id="mAj" class="menu">
             <h1>Updated</h1>
-            Current version: <br/><span id="thisVersion"></span><br/>
-            The last on-line version: <br/><span id="newVersion"></span><br/>
+            <span>Current version:</span> <br/><span id="thisVersion"></span><br/>
+            <span>The last on-line version:</span> <br/><span id="newVersion"></span><br/>
             <br/>
-            This widget is available to using on web-site: <em>http://gyb.educanet2.ch/tm-widgets/yannick</em><br/>
+            <span>This widget is available to using on web-site:</span> <em>http://gyb.educanet2.ch/tm-widgets/yannick</em><br/>
             <br/>			
         </div>
 

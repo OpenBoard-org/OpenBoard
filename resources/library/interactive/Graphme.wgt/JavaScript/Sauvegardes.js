@@ -115,5 +115,5 @@ function checkOptions(){
 }
 
 function alertOptions(){
-	alert("Now parameters will be saved\n------------------------------------------------------------\n"+document.cookie);
+	alert(sankoreLang[lang].show_saved + "\n------------------------------------------------------------\n"+document.cookie);
 }

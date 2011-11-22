@@ -15,19 +15,19 @@
 
 function init(){
 	
-	var tempHours;
-	var tempMinutes;
-	var tempSeconds;
+    var tempHours;
+    var tempMinutes;
+    var tempSeconds;
 	
-	if(window.sankore){
-		tempHours = window.sankore.preference("hours","00");
-		tempMinutes = window.sankore.preference("minutes","00");
-		tempSeconds = window.sankore.preference("seconds","00");
-	} else {
-		tempHours = "00";
-		tempMinutes = "00";
-		tempSeconds = "00";
-	}
+    if(window.sankore){
+        tempHours = window.sankore.preference("hours","00");
+        tempMinutes = window.sankore.preference("minutes","00");
+        tempSeconds = window.sankore.preference("seconds","00");
+    } else {
+        tempHours = "00";
+        tempMinutes = "00";
+        tempSeconds = "00";
+    }
 	
     var ubwidget = $("#ubwidget").ubwidget({
         width:252,
@@ -268,22 +268,22 @@ function init(){
     }	
 				
     function timeButtonDownHandler(m){
-		var button = m.data.button;
-		var content = button.find(".ubw-button-content");
-		if(window.sankore){
-			var temp = button.attr("id");
-			switch(temp){
-				case "seconds":
-					window.sankore.setPreference("seconds", content.text());
-					break;
-				case "minutes":
-					window.sankore.setPreference("minutes", content.text());
-					break;
-				case "hours":
-					window.sankore.setPreference("hours", content.text());
-					break;
-			}
-		}
+        var button = m.data.button;
+        var content = button.find(".ubw-button-content");
+        if(window.sankore){
+            var temp = button.attr("id");
+            switch(temp){
+                case "seconds":
+                    window.sankore.setPreference("seconds", content.text());
+                    break;
+                case "minutes":
+                    window.sankore.setPreference("minutes", content.text());
+                    break;
+                case "hours":
+                    window.sankore.setPreference("hours", content.text());
+                    break;
+            }
+        }
         /*var mouseStart = {
             pageX:m.pageX, 
             pageY:m.pageY
@@ -353,9 +353,9 @@ function init(){
             updateChronometerReverse(seconds-1)
         }, 1000);
         if (seconds < 6 && seconds > 0){
-            DHTMLSound('beep.wav');
+            DHTMLSound(1);
         }else if(seconds === 0){
-            DHTMLSound('finalbeep.wav');
+            DHTMLSound(2);
         }
 		
         if(seconds < 1){
@@ -375,11 +375,11 @@ function init(){
         minutesValue.text(formatTime(currentMinute));
         secondsValue.text(formatTime(currentSecond));
 		
-		if(window.sankore){
-			window.sankore.setPreference("hours", hoursValue.text());
-			window.sankore.setPreference("minutes", minutesValue.text());
-			window.sankore.setPreference("seconds", secondsValue.text());
-		}
+        if(window.sankore){
+            window.sankore.setPreference("hours", hoursValue.text());
+            window.sankore.setPreference("minutes", minutesValue.text());
+            window.sankore.setPreference("seconds", secondsValue.text());
+        }
 		
     }	
 	
@@ -398,8 +398,8 @@ function init(){
         return time;		
     }
 	
-    function DHTMLSound(surl) {
-        document.getElementById("audio").innerHTML= 
-        "<audio src='"+surl+"' autoplay=true >";
+    function DHTMLSound(type) {
+        var ad = document.getElementById("audio" + type);
+        ad.play();
     }
 }
