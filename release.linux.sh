@@ -66,16 +66,15 @@ mkdir $QT_LIBRARY_DEST_PATH
 QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
 
 copyQtLibrary(){
-    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4" ]; then
+    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.3" ]; then
         echo "library not found: $QT_LIBRARY_SOURCE_PATH"
         exit 1;
     fi
     cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4" "$QT_LIBRARY_DEST_PATH/"
-    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.0" "$QT_LIBRARY_DEST_PATH/"
+    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.3" "$QT_LIBRARY_DEST_PATH/"
 }
 
 copyQtLibrary libQtWebKit
-copyQtLibrary libphonon
 copyQtLibrary libQtDBus
 copyQtLibrary libQtScript
 copyQtLibrary libQtSvg
@@ -85,6 +84,8 @@ copyQtLibrary libQtXml
 copyQtLibrary libQtGui
 copyQtLibrary libQtCore
 
+cp "$QT_LIBRARY_SOURCE_PATH/phonon.so.4" "$QT_LIBRARY_DEST_PATH/"
+cp "$QT_LIBRARY_SOURCE_PATH/phonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
 
 rm -rf install/linux
 mkdir -p install/linux
@@ -95,4 +96,4 @@ cd build/linux/release
 # "Removing .svn directories ..."
 find . -name .svn -exec rm -rf {} \; 2> /dev/null
 tar cvzf ../../../install/linux/Sankore\ 3.1.tar.gz Sankore_3.1.$VERSION -C . 
-echo "Build Finished"; alert
+notify-send "Sankore"  "Build Finished"
