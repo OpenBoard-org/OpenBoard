@@ -9,7 +9,7 @@ CONFIG += debug_and_release \
 VERSION_MAJ = 1
 VERSION_MIN = 30 
 VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 01
+VERSION_PATCH = 02
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
