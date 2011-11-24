@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Uniboard</string>
+   <string>Sankoré</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../sankore.qrc">
