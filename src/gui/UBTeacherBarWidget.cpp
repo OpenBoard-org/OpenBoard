@@ -2,6 +2,7 @@
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+#include "UBMainWindow.h"
 
 #include "document/UBDocumentController.h"
 #include "document/UBDocumentProxy.h"
@@ -123,6 +124,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
 
     connect(UBApplication::boardController, SIGNAL(activeSceneWillChange()), this, SLOT(saveContent()));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContent()));
+    connect(UBApplication::mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(saveContent()));
     connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
     connect(mpPhasis, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
     connect(mpDuration, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
