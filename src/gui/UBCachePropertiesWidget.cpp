@@ -38,6 +38,7 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     setStyleSheet(UBApplication::globalStyleSheet());
 
     mName = "CachePropWidget";
+    mVisibleState = false;
     mIconToLeft = QPixmap(":images/cache_open.png");
     mIconToRight = QPixmap(":images/cache_close.png");
     setContentsMargins(10, 10, 10, 10);

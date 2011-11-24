@@ -35,6 +35,7 @@ UBLibWidget::UBLibWidget(QWidget *parent, const char *name):UBDockPaletteWidget(
 {
     setObjectName(name);
     mName = "LibWidget";
+    mVisibleState = true;
 
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());

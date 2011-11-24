@@ -20,6 +20,7 @@ UBDockDownloadWidget::UBDockDownloadWidget(QWidget *parent, const char *name):UB
   , mpDLWidget(NULL)
 {
     mName = "DownloadWidget";
+    mVisibleState = false;
 
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());

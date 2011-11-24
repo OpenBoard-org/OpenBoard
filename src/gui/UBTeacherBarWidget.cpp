@@ -36,6 +36,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
 {
     setObjectName(name);
     mName = "TeacherBarWidget";
+    mVisibleState = true;
 
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());

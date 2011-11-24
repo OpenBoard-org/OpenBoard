@@ -542,7 +542,7 @@ int UBDockPalette::customMargin()
  */
 void UBDockPalette::addTab(UBDockPaletteWidget *widget)
 {
-    if(!mTabWidgets.contains(widget))
+    if(!mTabWidgets.contains(widget) && widget->visibleState())
     {
         widget->setVisible(true);
         mTabWidgets.append(widget);
@@ -600,6 +600,7 @@ void UBDockPalette::onShowTabWidget(const QString &widgetName)
         UBDockPaletteWidget* pCrntWidget = mRegisteredWidgets.at(i);
         if(NULL != pCrntWidget && (pCrntWidget->name() == widgetName))
         {
+            pCrntWidget->setVisibleState(true);
             addTab(pCrntWidget);
             break;
         }
@@ -612,6 +613,13 @@ void UBDockPalette::onShowTabWidget(const QString &widgetName)
  */
 void UBDockPalette::onHideTabWidget(const QString &widgetName)
 {
+    for(int i = 0; i < mRegisteredWidgets.size(); i++){
+        UBDockPaletteWidget* pCrntWidget = mRegisteredWidgets.at(i);
+        if(NULL != pCrntWidget && (pCrntWidget->name() == widgetName)){
+            pCrntWidget->setVisibleState(false);
+            break;
+        }
+    }
     removeTab(widgetName);
 }
 

@@ -27,8 +27,9 @@ public:
 
     void registerMode(eUBDockPaletteWidgetMode mode);
 
-    QVector<eUBDockPaletteWidgetMode> GetRegisteredModes() { return mRegisteredModes; };
-
+    QVector<eUBDockPaletteWidgetMode> GetRegisteredModes() { return mRegisteredModes; }
+    bool visibleState(){return mVisibleState;}
+    void setVisibleState(bool state){mVisibleState = state;}
 
 signals:
     void hideTab(const QString& widgetName);
@@ -46,6 +47,7 @@ protected:
     /* The current widget available mode list */
     QVector<eUBDockPaletteWidgetMode> mRegisteredModes;
 
+    bool mVisibleState;
 };
 
 #endif // UBDOCKPALETTEWIDGET_H

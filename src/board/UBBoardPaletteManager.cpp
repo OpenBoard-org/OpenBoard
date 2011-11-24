@@ -1013,6 +1013,7 @@ void UBBoardPaletteManager::startDownloads()
     if(!mDownloadInProgress)
     {
         mDownloadInProgress = true;
+        mpDownloadWidget->setVisibleState(true);
         mRightPalette->addTab(mpDownloadWidget);
     }
 }
@@ -1022,6 +1023,7 @@ void UBBoardPaletteManager::stopDownloads()
     if(mDownloadInProgress)
     {
         mDownloadInProgress = false;
+        mpDownloadWidget->setVisibleState(false);
         mRightPalette->removeTab(mpDownloadWidget->name());
     }
 }

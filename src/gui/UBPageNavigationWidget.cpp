@@ -31,6 +31,7 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
 {
     setObjectName(name);
     mName = "PageNavigator";
+    mVisibleState = true;
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
 
