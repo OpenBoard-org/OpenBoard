@@ -33,6 +33,17 @@ var imageEurope = "<img src='images/Cartes/EuropeOuest.bmp' usemap='#europe'/>";
 var imageEurope2 = "<img src='images/Cartes/Eurasie2.bmp' usemap='#eurasie'/>";
 var imageAsie2 = "<img src='images/Cartes/EuropeOuestAsie.bmp' usemap='#europe'/>";
 
+var lang = ""; //locale language
+if(window.sankore){
+    try{
+        lang = sankore.locale().substr(0,2);
+        sankoreLang[lang].europe;
+    } catch(e){
+        lang = "en";
+    }
+} else 
+    lang = "en";
+
 // adresse du serveur
 var url = "http://bapsot.dyndns.org/GeoInfo-GeoInfoServer/GeoInfoService";
 
@@ -182,6 +193,25 @@ function recevoirPaysReponse(resultat, soapResponse)
 // permet l'affichage de la description lors du passage de la souris
 function writeText(txt)
 {
+    switch(txt){
+        case "North America":
+            txt = sankoreLang[lang].north_america;
+            break;
+        case "Eurasia":
+            txt = sankoreLang[lang].eurasia;
+            break;
+        case "South America":
+            txt = sankoreLang[lang].south_america;
+            break;
+        case "Africa":
+            txt = sankoreLang[lang].africa;
+            break;
+        case "Oceania":
+            txt = sankoreLang[lang].oceania;
+            break;
+        default:
+            break;
+    }
     document.getElementById("description").innerHTML = txt;
 }
 
@@ -222,7 +252,8 @@ function fondu(carte)
 // permet de faire apparaître les infos du pays dans la petite fenêtre
 function afficheInfoPays(pays) 
 {
-    //$("area[alt=" + pays + "]").css("z-index","9999");
+    $("#" + pays + " .nomPays").html(sankoreLang[lang][pays].country);
+    $("#" + pays + " .capitalePays").html(sankoreLang[lang].capital + ": " + sankoreLang[lang][pays].city);
     document.getElementById("infoPays").innerHTML = "<div id='customCursor' class='customCursor'></div>" + document.getElementById(pays).innerHTML;
 }
 

@@ -26,6 +26,7 @@ function init(){
     var popupFlag = false
     var flagForSelect = false;
     var dragElement = null; //the element that must be dragging
+    var lang = ""; //locale language
     var coords = {
         left:0,
         top:0
@@ -36,7 +37,17 @@ function init(){
         x:false,
         width:0,
         height:0
-    }
+    }  
+    
+    if(window.sankore){
+        try{
+            lang = sankore.locale().substr(0,2);
+            sankoreLang[lang].edit;
+        } catch(e){
+            lang = "en";
+        }
+    } else 
+        lang = "en";
     
     var opacityChanged = false;
     
@@ -133,13 +144,13 @@ function init(){
             if(!toggleFlag && !endFlag){
                 endFlag = true;
                 toggleButton.animate({
-                    width:"72px"
+                    width:"115px"
                 },"fast",function(){
                     toggleFlag = true;
                     if(!mode)
-                        toggleButton.text("Edit");
+                        toggleButton.text(sankoreLang[lang].edit);
                     else
-                        toggleButton.text("Display");
+                        toggleButton.text(sankoreLang[lang].display);
                 });
             }
         }
@@ -182,10 +193,10 @@ function init(){
             if(!addToggleStart && !addToggleEnd){
                 addToggleEnd = true;
                 addButton.animate({
-                    width:"72px"
+                    width:"115px"
                 },"fast",function(){
                     addToggleStart = true;
-                    addButton.text("Add");
+                    addButton.text(sankoreLang[lang].add);
                 });
             }
         }
@@ -217,16 +228,16 @@ function init(){
     
     //input fields and buttons for a popup window
     var expressionDiv = $("<div id='expressionDiv' class='popupContainers'>").appendTo(popupBack);
-    var experssionLabel = $("<span id='experssionLabel' class='popupLabels'><b>Enter data:</b></span>").appendTo(expressionDiv);
+    var experssionLabel = $("<span id='experssionLabel' class='popupLabels'><b>" + sankoreLang[lang].enter_data + "</b></span>").appendTo(expressionDiv);
     var expresionText = $("<input type='text' id='expresionText' class='expresionInput'/>").appendTo(expressionDiv);
     
     var resultDiv = $("<div id='resultDiv' class='popupContainers'>").appendTo(popupBack);
-    var resultLabel = $("<span id='resultLabel' class='popupLabels'><b>Enter result:</b></span>").appendTo(resultDiv);
+    var resultLabel = $("<span id='resultLabel' class='popupLabels'><b>" + sankoreLang[lang].enter_result + "</b></span>").appendTo(resultDiv);
     var resultText = $("<input type='text' id='resultText' class='expresionInput'/>").appendTo(resultDiv);
     
     var popupButtonsDiv= $("<div id='popupButtonsDiv' class='popupContainers'>").appendTo(popupBack);
-    var cancelButton = $("<input type='button' id='cancelButton' class='popupButtons' value='Cancel'/>").appendTo(popupButtonsDiv);
-    var okButton = $("<input type='button' id='okButton' class='popupButtons' value='Ok'/>").appendTo(popupButtonsDiv);
+    var cancelButton = $("<input type='button' id='cancelButton' class='popupButtons' value='" + sankoreLang[lang].cancel + "'/>").appendTo(popupButtonsDiv);
+    var okButton = $("<input type='button' id='okButton' class='popupButtons' value='" + sankoreLang[lang].ok + "'/>").appendTo(popupButtonsDiv);
     
     /* -------------- A WORK WITH POPUP BUTTONS AND FIELDS ---------------*/
     

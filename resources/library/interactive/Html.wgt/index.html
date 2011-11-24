@@ -1,23 +1,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>markItUp! Universal markup editor</title>
         <link rel="stylesheet" type="text/css" href="images/style.css" />
-        <!-- jQuery -->
         <script type="text/javascript" src="jquery.pack.js"></script>
-        <!-- markItUp! -->
+        <script type="text/javascript" src="languages.js"></script>
         <script type="text/javascript" src="markitup/jquery.markitup.js"></script>
-        <!-- markItUp! toolbar settings -->
         <script type="text/javascript" src="markitup/sets/html/set.js"></script>
-        <!--  markItUp! toolbar skin -->
         <link rel="stylesheet" type="text/css" href="markitup/skins/markitup/style.css" />
         <link rel="stylesheet" type="text/css" href="markitup/sets/html/style.css" />
 
     </head>
     <body>
         <script type="text/javascript" >
-            $(document).ready(function()	{
+            var lang = "";
+
+            if(window.sankore){
+                try{
+                    lang = sankore.locale().substr(0,2);
+                    sankoreLang[lang].welcome;
+                } catch(e){
+                    lang = "en";
+                }
+            } else 
+                lang = "en";
+            
+            $(document).ready(function(){
 
                 $("#reset-btn").hide();
 
@@ -27,7 +36,7 @@
                 $('iframe').width($(window).width()-24)
                 .height($(window).height()-46);
                 if(window.sankore){
-                    var html = window.sankore.preference("iHtml", "Welcome to HTML EDITOR");
+                    var html = window.sankore.preference("iHtml", sankoreLang[lang].welcome);
                     $("#markItUp").val(html);
                 };
 
@@ -59,6 +68,7 @@
                 .height($(window).height()-46);	
                 $('#markItUpFooter').width($(window).width()-30);
 
+                $("#markitUp").html(sankoreLang[lang].welcome);
             });
         </script>
 

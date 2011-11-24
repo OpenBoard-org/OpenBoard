@@ -15,6 +15,7 @@
 
 var questionArray;
 var currentQstId = "";
+var lang = ""; //locale language
 
 function init(){
 
@@ -24,7 +25,17 @@ function init(){
     var mode = false;
     questionArray = new Array();  
     var popupFlag = false
-    var flagForSelect = false;
+    var flagForSelect = false;    
+    
+    if(window.sankore){
+        try{
+            lang = sankore.locale().substr(0,2);
+            sankoreLang[lang].edit;
+        } catch(e){
+            lang = "en";
+        }
+    } else 
+        lang = "en";
     
     // toggle button
     var buttonDiv = $("<div id='buttonDiv' class='buttonDiv'>").appendTo("body");
@@ -40,8 +51,8 @@ function init(){
     // adding question block
     var addQstDiv = $("<div id='addQstDiv' class='addQstDiv'>").appendTo("body");
     var addQstButton = $("<button id='addQstButton' class='addQstButton'>").appendTo("#addQstDiv");    
-    var addQsqSpan1 = $("<span id='addQsqSpan1'>Q1</span>").appendTo("#addQstButton");
-    var addQsqSpan2 = $("<span id='addQsqSpan2'>Add new question ... </span>").appendTo("#addQstButton");
+    var addQsqSpan1 = $("<span id='addQsqSpan1'>" + sankoreLang[lang].q + "1</span>").appendTo("#addQstButton");
+    var addQsqSpan2 = $("<span id='addQsqSpan2'>" + sankoreLang[lang].add_new_question + "</span>").appendTo("#addQstButton");
     
     //import saved data
     if(window.sankore){
@@ -68,7 +79,7 @@ function init(){
         obj.id = id;
         questionArray.push(obj);
         
-        addQstBlock(id, "Enter your question here ...", "","");
+        addQstBlock(id, sankoreLang[lang].template_question, "","");
                 
         if(window.sankore)
             sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
@@ -98,13 +109,13 @@ function init(){
         if(!toggleFlag && !endFlag){
             endFlag = true;
             toggleButton.animate({
-                width:"72px"
+                width:"115px"
             },"fast",function(){
                 toggleFlag = true;
                 if(!mode)
-                    toggleButton.text("Display");
+                    toggleButton.text(sankoreLang[lang].display);
                 else
-                    toggleButton.text("Edit");
+                    toggleButton.text(sankoreLang[lang].edit);
             });
         }
     });
@@ -140,14 +151,13 @@ function init(){
         obj.id = id;
         getNeededElement(questionArray, currentQstId).answers.push(obj);
         
-        addAnsBlock(id, currentQstId, "Enter the answer here ...");
+        addAnsBlock(id, currentQstId, sankoreLang[lang].template_answer);
     });
     
     //set answer text
     $(".ansContent").live('keyup', function(event){
         var id = $(event.target).attr("id").replace("ansContent","");
         getNeededElement(getNeededElement(questionArray, currentQstId).answers,id).text = $(event.target).text();
-    //questionArray[currentQstId].answers[id].text = $(event.target).text();
     });
     
     //set question text
@@ -244,9 +254,7 @@ function init(){
                 $("#" + currentQstId + "ansDiv input").removeAttr("checked");
                 $(event.target).attr("checked", "checked");
                 getNeededElement(questionArray, currentQstId).rightAns = $(event.target).attr("value");
-            //alert(getNeededElement(questionArray, currentQstId).rightAns);
             } else {
-                //alert(event.target.checked)
                 (event.target.checked) ? $(event.target).attr("checked", "checked") : $(event.target).removeAttr("checked", "checked");
                 getNeededElement(questionArray, currentQstId).rightAns = "";
                 for(var i in $("#" + currentQstId + "ansDiv input")){
@@ -272,11 +280,11 @@ function init(){
     //popup messages
     $(".qstDelete").live('mouseover', function(evt){
         popupFlag = true;
-        popupText.text("Delete question")
+        popupText.text(sankoreLang[lang].delete_question)
         .css("top", evt.pageY + 15)
         .css("left", evt.pageX - 40)
         .css({
-            width:"120px"
+            width:"130px"
         })
         .show("fast", function(){
             if(!popupFlag)
@@ -286,11 +294,11 @@ function init(){
     
     $(".ansDelete").live('mouseover', function(evt){
         popupFlag = true;
-        popupText.text("Delete answer")
+        popupText.text(sankoreLang[lang].delete_answer)
         .css("top", evt.pageY + 15)
         .css("left", evt.pageX - 40)
         .css({
-            width:"110px"
+            width:"130px"
         })
         .show("fast", function(){
             if(!popupFlag)
@@ -301,11 +309,11 @@ function init(){
     $(".newAnswer input").live('mouseover', function(evt){
         if(!mode){
             popupFlag = true;
-            popupText.text("Right answer")
+            popupText.text(sankoreLang[lang].right_answer)
             .css("top", evt.pageY + 15)
             .css("left", evt.pageX - 40)
             .css({
-                width:"105px"
+                width:"130px"
             })
             .show("fast", function(){
                 if(!popupFlag)
@@ -371,7 +379,7 @@ function init(){
 
                 var qstDiv = $("<div class='qstDivDisplay' id='" + array[i].id + "qstDivDisplay'>");        
                 var spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
-                var qstNumber = $("<span class='qstNumber'>Question " + counter + "</span>").appendTo(spanOptConn);        
+                var qstNumber = $("<span class='qstNumber'>" + sankoreLang[lang].question + " " + counter + "</span>").appendTo(spanOptConn);        
                 var qstContent = $("<div class='qstContentDisplay'>" + array[i].text + "</div>").appendTo(qstDiv);        
                 var ansDiv = $("<div class='ansDiv' id='" + array[i].id + "ansDiv'>").appendTo(qstDiv);
 
@@ -383,7 +391,7 @@ function init(){
                     newAnswer.appendTo(ansDiv);
                     var selectSpan = $("<span id='answerText'>").appendTo(newAnswer);
                     selInput.appendTo(selectSpan);
-                    $("<option value='0'>Choise the right answer</option>").appendTo(selInput);
+                    $("<option value='0'>" + sankoreLang[lang].select_text + "</option>").appendTo(selInput);
                 }
                 for(var j in array[i].answers){  
                     switch(type){
@@ -414,8 +422,8 @@ function init(){
             counter = 1;
             qstDiv = $("<div class='qstDivDisplay'>");        
             spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
-            qstNumber = $("<span class='qstNumber'>Question " + counter + "</span>").appendTo(spanOptConn);        
-            qstContent = $("<div class='qstContentDisplay'>This is an example of the question.</div>").appendTo(qstDiv);        
+            qstNumber = $("<span class='qstNumber'>" + sankoreLang[lang].question + " " + counter + "</span>").appendTo(spanOptConn);        
+            qstContent = $("<div class='qstContentDisplay'>" + sankoreLang[lang].example_question + "</div>").appendTo(qstDiv);        
             ansDiv = $("<div class='ansDiv'>").appendTo(qstDiv);
             
             ansCount = 1;
@@ -423,7 +431,7 @@ function init(){
                 newAnswer = $("<div class='newAnswer'>");
                 ansInput = $("<input type='radio' name='1' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                 ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                ansContent = $("<div class='ansContentDisplay'>This is an example of the answer " + ansCount + ".</div>").appendTo(newAnswer);
+                ansContent = $("<div class='ansContentDisplay'>" + sankoreLang[lang].answer + " " + ansCount + ".</div>").appendTo(newAnswer);
                 newAnswer.appendTo(ansDiv);                        
                 ansCount++;
             }
@@ -438,32 +446,32 @@ function addQstBlock(id, text, type, style){
     var spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);
         
     var count = $(".qstNumber").size();       
-    var qstNumber = $("<span class='qstNumber'>Q" + (count + 1) + "</span>").appendTo(spanOptConn);
+    var qstNumber = $("<span class='qstNumber'>" + sankoreLang[lang].q + (count + 1) + "</span>").appendTo(spanOptConn);
         
     var qstOptions = $("<div class='qstOptions' id='" + id + "qstOptions'>").appendTo(spanOptConn);
-    var changeOptions = $("<button class='changeOptions'>Options</button>").appendTo(qstOptions);
-    var applyChanges = $("<button class='applyChanges' style='display: none;'>Close</button>").appendTo(qstOptions);
+    var changeOptions = $("<button class='changeOptions'>" + sankoreLang[lang].options + "</button>").appendTo(qstOptions);
+    var applyChanges = $("<button class='applyChanges' style='display: none;'>" + sankoreLang[lang].close + "</button>").appendTo(qstOptions);
     var qstDelete = $("<button class='qstDelete'>").appendTo(qstOptions);
         
     var qstOptChoice = $("<div class='qstOptChoice' id='" + id + "qstOptChoice' style='display: none;'>").appendTo(qstDiv);
     var optDesc = $("<div style='height: 65px;'>").appendTo(qstOptChoice);
     var optDescImg = $("<div class='optDescImg'>").appendTo(optDesc);
-    var optDescText = $("<div class='optDescText'>You can choose any of these three options of displaying your answers. See a short their description.</div>").appendTo(optDesc);
+    var optDescText = $("<div class='optDescText'>" + sankoreLang[lang].options_desc + "</div>").appendTo(optDesc);
         
     var type1 = $("<div class='type'>").appendTo(qstOptChoice);
     var contentType1 = $("<div class='contentType'>").appendTo(type1);
     var divType1 = $("<div class='divType1'>").appendTo(contentType1);
-    var textType1 = $("<div class='textType'>This option allow to choose one answer only and the answers are displayed as radio buttons.</div>").appendTo(contentType1);
+    var textType1 = $("<div class='textType'>" + sankoreLang[lang].radio_desc + "</div>").appendTo(contentType1);
         
     var type2 = $("<div class='type'>").appendTo(qstOptChoice);
     var contentType2 = $("<div class='contentType'>").appendTo(type2);
     var divType2 = $("<div class='divType2'>").appendTo(contentType2);
-    var textType2 = $("<div class='textType'>This option allow to choose several answers and the answers are displayed as checkboxes.</div>").appendTo(contentType2);
+    var textType2 = $("<div class='textType'>" + sankoreLang[lang].checkbox_desc + "</div>").appendTo(contentType2);
         
     var type3 = $("<div class='type'>").appendTo(qstOptChoice);
     var contentType3 = $("<div class='contentType'>").appendTo(type3);
     var divType3 = $("<div class='divType3'>").appendTo(contentType3);
-    var textType3 = $("<div class='textType'>This option allow to choose one answer only and the answers are displayed as pull-down menu.</div>").appendTo(contentType3);
+    var textType3 = $("<div class='textType'>" + sankoreLang[lang].select_desc + "</div>").appendTo(contentType3);
 
     switch(type){
         case "1":
@@ -491,9 +499,9 @@ function addQstBlock(id, text, type, style){
     var qstContent = $("<div class='qstContent' id='" + id + "qstContent' contenteditable='true'>" + text + "</div>").appendTo(qstDiv);
         
     var ansDiv = $("<div class='ansDiv' id='" + id + "ansDiv'>").appendTo(qstDiv);
-    var ansAdd = $("<button class='ansAdd'>Add answer</button>").appendTo(ansDiv);
+    var ansAdd = $("<button class='ansAdd'>" + sankoreLang[lang].add_answer + "</button>").appendTo(ansDiv);
     qstDiv.insertBefore("#addQstDiv");
-    $("#addQsqSpan1").text("Q" + (count + 2));
+    $("#addQsqSpan1").text(sankoreLang[lang].q + (count + 2));
 }
 
 //add answers
@@ -519,7 +527,7 @@ function addAnsBlock(id, currId, text, stage, rightAns, type){
     }
     var count = $("#" + currId + " .newAnswer").size() + 1;
     var input = $("<input type='checkbox' style='float: left;' value='" + value + "' " + check + ">").appendTo(newAnswer);
-    var ansSpan = $("<span class='ansSpan'>A" + count + "</span>").appendTo(newAnswer);
+    var ansSpan = $("<span class='ansSpan'>" + sankoreLang[lang].a + count + "</span>").appendTo(newAnswer);
     var ansContent = $("<div class='ansContent' id='" + id +"ansContent' contenteditable='true'>" + text + "</div>").appendTo(newAnswer);
     var ansDelete = $("<button class='ansDelete' id='" + id + "ansDelete'>").appendTo(newAnswer);
     newAnswer.insertBefore("#" + currId + "ansDiv .ansAdd");    
@@ -549,15 +557,15 @@ function checkArrayOnFill(array){
 function refreshAns(){
     var count = $("#" + currentQstId + " .newAnswer").size();        
     for(var i = 0; i < count; i ++)
-        $($("#" + currentQstId + " .newAnswer span")[i]).text("A" + (i+1));
+        $($("#" + currentQstId + " .newAnswer span")[i]).text(sankoreLang[lang].a + (i+1));
 }
 
 //refresh questions numbers
 function refreshQst(){
     var count = $(".qstNumber").size();        
     for(var i = 0; i < count; i ++)
-        $($(".qstNumber")[i]).text("Q" + (i+1));
-    $("#addQsqSpan1").text("Q" + ++count);
+        $($(".qstNumber")[i]).text(sankoreLang[lang].q + (i+1));
+    $("#addQsqSpan1").text(sankoreLang[lang].q + ++count);
 }
 
 //question constructor
