@@ -100,10 +100,18 @@ Root: HKLM; Subkey: "SOFTWARE\Sankore 3.1"; ValueType: dword; ValueName: "Transf
 Root: HKLM; Subkey: "SOFTWARE\Sankore 3.1"; ValueType: dword; ValueName: "EMF: Hide page"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorNotX64
 Root: HKLM; Subkey: "SOFTWARE\Sankore 3.1\Defaults"; ValueType: dword; ValueName: "PDF: Enabled"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorNotX64
 
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: dword; ValueName: "Policy"; ValueData: "3"; Flags: uninsdeletevalue; Check: isProcessorNotX64
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppName"; ValueData: "Sankore 3.1.exe"; Flags: uninsdeletevalue; Check: isProcessorNotX64
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppPath"; ValueData: "{app}"; Flags: uninsdeletevalue; Check: isProcessorNotX64
+
 Root: HKLM64; Subkey: "SOFTWARE\Sankore 3.1"; ValueType: string; ValueName: "Client application"; ValueData: "{app}\Sankore 3.1.exe"; Flags: uninsdeletevalue; Check: isProcessorX64
 Root: HKLM64; Subkey: "SOFTWARE\Sankore 3.1"; ValueType: dword; ValueName: "Transfer mode"; ValueData: "0"; Flags: uninsdeletevalue; Check: isProcessorX64
 Root: HKLM64; Subkey: "SOFTWARE\Sankore 3.1"; ValueType: dword; ValueName: "EMF: Hide page"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorX64
 Root: HKLM64; Subkey: "SOFTWARE\Sankore 3.1\Defaults"; ValueType: dword; ValueName: "PDF: Enabled"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorX64
+
+Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: dword; ValueName: "Policy"; ValueData: "3"; Flags: uninsdeletevalue; Check: isProcessorX64
+Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppName"; ValueData: "Sankore 3.1.exe"; Flags: uninsdeletevalue; Check: isProcessorX64
+Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppPath"; ValueData: "{app}"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 [Run]
 Filename: "{tmp}\vcredist_x86.exe";WorkingDir:"{tmp}"
@@ -123,3 +131,4 @@ function isProcessorNotX64: Boolean;
 begin
 	Result := not isProcessorX64;
 end;
+
