@@ -1316,6 +1316,7 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString)
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText("");
     textItem->setHtml(pString);
+    textItem->setZValue(getNextObjectZIndex());
 
     addItem(textItem);
     textItem->show();
@@ -1323,9 +1324,10 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString)
     UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
     UBApplication::undoStack->push(uc);
 
-    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
+    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)),
+            this,     SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
 
-    textItem->setSelected(true);
+//    textItem->setSelected(true);
     textItem->setFocus();
 
     setDocumentUpdated();

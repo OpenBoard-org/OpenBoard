@@ -112,8 +112,6 @@ void UBSettings::destroy()
 }
 
 
-
-
 QSettings* UBSettings::getAppSettings()
 {
     if (!UBSettings::sAppSettings)
@@ -689,6 +687,15 @@ void UBSettings::setFontPixelSize(int pixelSize)
     setValue("Board/FontPixelSize", pixelSize);
 }
 
+int UBSettings::fontPointSize()
+{
+    return value("Board/FontPointSize", 12).toInt();
+}
+
+void UBSettings::setFontPointSize(int pointSize)
+{
+    setValue("Board/FontPointSize", pointSize);
+}
 
 bool UBSettings::isBoldFont()
 {

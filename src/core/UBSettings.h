@@ -75,6 +75,8 @@ class UBSettings : public QObject
         void setFontFamily(const QString &family);
         int fontPixelSize();
         void setFontPixelSize(int pixelSize);
+        int fontPointSize();
+        void setFontPointSize(int pointSize);
         bool isBoldFont();
         void setBoldFont(bool bold);
         bool isItalicFont();
