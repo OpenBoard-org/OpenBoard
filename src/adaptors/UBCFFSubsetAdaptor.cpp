@@ -43,7 +43,7 @@
 #include <QDomDocument>
 
 #include "core/memcheck.h"
-#include "qtlogger.h"
+//#include "qtlogger.h"
 
 //tag names definition. Use them everiwhere!
 static QString tElement         = "element";

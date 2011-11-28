@@ -53,7 +53,7 @@
 #include "pdf/PDFRenderer.h"
 
 #include "core/memcheck.h"
-#include "qtlogger.h"
+//#include "qtlogger.h"
 
 const QString UBSvgSubsetAdaptor::nsSvg = "http://www.w3.org/2000/svg";
 const QString UBSvgSubsetAdaptor::nsXHtml = "http://www.w3.org/1999/xhtml";
@@ -2259,9 +2259,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
 
     mXmlWriter.writeEndElement(); //foreignObject
 
-    QtLogger::start("/home/ilia/Documents/tmp/10/log.log");
-    QtLogger::appendl(item->toHtml());
-    QtLogger::finish();
+//    QtLogger::start("/home/ilia/Documents/tmp/10/log.log");
+//    QtLogger::appendl(item->toHtml());
+//    QtLogger::finish();
 }
 
 UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
