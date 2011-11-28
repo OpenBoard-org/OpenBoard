@@ -87,7 +87,7 @@ void UBGraphicsCache::init()
 
 void UBGraphicsCache::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option);
+    //Q_UNUSED(option);
     Q_UNUSED(widget);
 
     setZValue(CACHE_ZVALUE);
@@ -95,6 +95,7 @@ void UBGraphicsCache::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     painter->setBrush(mMaskColor);
     painter->setPen(mMaskColor);
 
+    // Draw the hole
     QPainterPath path;
     path.addRect(rect());
 
@@ -119,20 +120,32 @@ void UBGraphicsCache::mousePressEvent(QGraphicsSceneMouseEvent *event)
     Q_UNUSED(event);
     mShapePos = event->pos();
     mDrawMask = true;
-    update();
+
+    // Note: if refresh issues occure, replace the following 3 lines by: update();
+    update(updateRect(event->pos()));
+    mOldShapeWidth = mShapeWidth;
+    mOldShapePos = event->pos();
 }
 
 void UBGraphicsCache::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     mShapePos = event->pos();
-    update();
+
+    // Note: if refresh issues occure, replace the following 3 lines by: update();
+    update(updateRect(event->pos()));
+    mOldShapeWidth = mShapeWidth;
+    mOldShapePos = event->pos();
 }
 
 void UBGraphicsCache::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     mDrawMask = false;
-    update();
+
+    // Note: if refresh issues occure, replace the following 3 lines by: update();
+    update(updateRect(event->pos()));
+    mOldShapeWidth = mShapeWidth;
+    mOldShapePos = event->pos();
 }
 
 int UBGraphicsCache::shapeWidth()
@@ -144,4 +157,19 @@ void UBGraphicsCache::setShapeWidth(int width)
 {
     mShapeWidth = width;
     update();
+}
+
+QRectF UBGraphicsCache::updateRect(QPointF currentPoint)
+{
+    QRectF r;
+    int x;
+    int y;
+
+    x = qMin(currentPoint.x() - mShapeWidth, mOldShapePos.x() - mOldShapeWidth);
+    y = qMin(currentPoint.y() - mShapeWidth, mOldShapePos.y() - mOldShapeWidth);
+    r = QRect(  x,
+                y,
+                qAbs(currentPoint.x() - mOldShapePos.x()) + 2*mShapeWidth,
+                qAbs(currentPoint.y() - mOldShapePos.y()) + 2*mShapeWidth);
+    return r;
 }
