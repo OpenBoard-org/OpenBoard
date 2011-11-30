@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	QApplication::setGraphicsSystem("raster");
 #endif
 
-	UBApplication app("Sankore 3.1", argc, argv);
+        UBApplication app("Sankore", argc, argv);
 	
 	//BUGFIX:
 	//when importing a sankore file that contains a non standard character

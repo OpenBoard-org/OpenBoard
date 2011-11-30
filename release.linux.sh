@@ -46,8 +46,8 @@ else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
         echo creating a tag with the version $VERSION
-#        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
-#        git push origin --tags 
+        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
+        git push origin --tags 
     fi
 fi
 
@@ -93,10 +93,10 @@ copyQtLibrary libQtCore
 rm -rf install/linux
 mkdir -p install/linux
 
-mv build/linux/release/product build/linux/release/Sankore_3.1.$VERSION
+mv build/linux/release/product build/linux/release/Sankore.$VERSION
 cd build/linux/release
 
 # "Removing .svn directories ..."
 find . -name .svn -exec rm -rf {} \; 2> /dev/null
-tar cvzf ../../../install/linux/Sankore\ 3.1.tar.gz Sankore_3.1.$VERSION -C . 
+tar cvzf ../../../install/linux/Sankore.tar.gz Sankore.$VERSION -C . 
 echo "Build Finished"
