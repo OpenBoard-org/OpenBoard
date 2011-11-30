@@ -763,7 +763,7 @@ QString UBSettings::uniboardDataDirectory()
         }
     }
     QString qtDataPath = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
-    qtDataPath.replace("/Sankore 3.1", "");
+    qtDataPath.replace("/Sankore", "");
     return qtDataPath;
 }
 

@@ -1,4 +1,4 @@
-TARGET = "Sankore 3.1"
+TARGET = "Sankore"
 TEMPLATE = app
 
 THIRD_PARTY_PATH=../Sankore-ThirdParty
@@ -7,7 +7,7 @@ CONFIG += debug_and_release \
    no_include_pwd
 
 VERSION_MAJ = 1
-VERSION_MIN = 35 
+VERSION_MIN = 40 
 VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
 VERSION_PATCH = 00
 

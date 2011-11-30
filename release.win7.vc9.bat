@@ -57,13 +57,13 @@ if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
 nmake release-install
 
-del ".\build\win32\release\product\Sankore 3.1.pdb"
+del ".\build\win32\release\product\Sankore.pdb"
 
-set INSTALLER_NAME=Sankore-3.1
+set INSTALLER_NAME=Sankore
 
 set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 
-call "%INNO_EXE%" "Sankore 3.1.iss" /F"%INSTALLER_NAME%"
+call "%INNO_EXE%" "Sankore.iss" /F"%INSTALLER_NAME%"
 
 :EXIT_WITH_ERROR
 	echo ERROR
