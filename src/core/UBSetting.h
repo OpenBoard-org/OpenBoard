@@ -22,7 +22,7 @@ class UBSettings;
 
 class UBSetting : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBSetting(UBSettings* parent = 0);
@@ -71,7 +71,7 @@ class UBSetting : public QObject
 
 class UBColorListSetting : public UBSetting
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBColorListSetting(UBSettings* parent = 0);

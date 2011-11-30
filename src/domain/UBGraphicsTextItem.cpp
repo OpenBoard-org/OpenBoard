@@ -40,20 +40,20 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
 
     mTypeTextHereLabel = tr("<Type Text Here>");
 
-    if (lastUsedTextColor.isValid())
-    {
-        setDefaultTextColor(lastUsedTextColor);
-        setColorOnDarkBackground(lastUsedTextColor);
-        setColorOnLightBackground(lastUsedTextColor);
-    }
-    else
-    {
-        QColor colorOnDarkBG = UBApplication::boardController->penColorOnDarkBackground();
-        QColor colorOnLightBG = UBApplication::boardController->penColorOnLightBackground();
+//    if (lastUsedTextColor.isValid())
+//    {
+//        setDefaultTextColor(lastUsedTextColor);
+//        setColorOnDarkBackground(lastUsedTextColor);
+//        setColorOnLightBackground(lastUsedTextColor);
+//    }
+//    else
+//    {
+//        QColor colorOnDarkBG = UBApplication::boardController->penColorOnDarkBackground();
+//        QColor colorOnLightBG = UBApplication::boardController->penColorOnLightBackground();
 
-        setColorOnDarkBackground(colorOnDarkBG);
-        setColorOnLightBackground(colorOnLightBG);
-    }
+//        setColorOnDarkBackground(colorOnDarkBG);
+//        setColorOnLightBackground(colorOnLightBG);
+//    }
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 //    setData(UBGraphicsItemData::ItemEditable, QVariant(true));

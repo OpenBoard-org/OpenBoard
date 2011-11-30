@@ -43,6 +43,7 @@
 #include <QDomDocument>
 
 #include "core/memcheck.h"
+//#include "qtlogger.h"
 
 //tag names definition. Use them everiwhere!
 static QString tElement         = "element";
@@ -548,7 +549,6 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &parent
     QDomNode curNode = parent.firstChild();
     while (!curNode.isNull()) {
         if (curNode.toElement().tagName() == tTspan) {
-
             QDomElement curTSpan = curNode.toElement();
             parseTextAttributes(curTSpan, fontSize, fontColor, fontFamily, fontStretch, italic
                                 , fontWeight, textAlign, fontTransform);
@@ -579,73 +579,77 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &parent
         curNode = curNode.nextSibling();
     }
 }
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &element, QTextCursor &cursor
+                                                       , QTextBlockFormat &blockFormat, QTextCharFormat &charFormat)
+{
+    QDomNode curNode = element.firstChild();
+    while (!curNode.isNull()) {
+        if (curNode.toElement().tagName() == tTspan) {
+            QDomElement curTspan = curNode.toElement();
+            readTextBlockAttr(curTspan, blockFormat);
+            readTextCharAttr(curTspan, charFormat);
+            cursor.setBlockFormat(blockFormat);
+            cursor.setCharFormat(charFormat);
+            parseTSpan(curTspan, cursor, blockFormat, charFormat);
+
+        } else if (curNode.nodeType() == QDomNode::CharacterDataNode
+                   || curNode.nodeType() == QDomNode::CDATASectionNode
+                   || curNode.nodeType() == QDomNode::TextNode) {
+
+            QDomCharacterData textData = curNode.toCharacterData();
+            QString text = textData.data().trimmed();
+            cursor.insertText(text, charFormat);
+
+        } else if (curNode.nodeType() == QDomNode::ElementNode
+                   && curNode.toElement().tagName() == tBreak) {
+            cursor.insertBlock();
+        }
+        curNode = curNode.nextSibling();
+    }
+}
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &element)
 {
-
     qreal x = element.attribute(aX).toDouble();
     qreal y = element.attribute(aY).toDouble();
     qreal width = element.attribute(aWidth).toDouble();
     qreal height = element.attribute(aHeight).toDouble();
 
+    QTextBlockFormat blockFormat;
+    blockFormat.setAlignment(Qt::AlignLeft);
 
+    QTextCharFormat textFormat;
+    textFormat.setFontPointSize(12 * 72 / QApplication::desktop()->physicalDpiY());
+    textFormat.setForeground(qApp->palette().foreground().color());
+    textFormat.setFontFamily("Arial");
+    textFormat.setFontItalic(false);
+    textFormat.setFontWeight(QFont::Normal);
 
-//    qreal fontSize = 12;
-//    QColor fontColor(qApp->palette().foreground().color());
-//    QString fontFamily = "Arial";
-//    QString fontStretch = "normal";
-//    bool italic = false;
-//    int fontWeight = QFont::Normal;
-//    int textAlign = Qt::AlignLeft;
-    QTransform fontTransform;
-//    parseTextAttributes(element, fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
+    readTextBlockAttr(element, blockFormat);
+    readTextCharAttr(element, textFormat);
 
-//    QSvgGenerator *generator = createSvgGenerator(width, height);
-//    QPainter painter;
-//    painter.begin(generator);
+    QTextDocument doc;
+    doc.setPlainText("");
+    QTextCursor tCursor(&doc);
+    tCursor.setBlockFormat(blockFormat);
+    tCursor.setCharFormat(textFormat);
 
-//    painter.setFont(QFont(fontFamily, fontSize, fontWeight, italic));
+    parseTSpan(element, tCursor, blockFormat, textFormat);
 
-//    qreal curY = 0.0;
-//    qreal curX = 0.0;
-//    qreal linespacing = QFontMetricsF(painter.font()).leading();
+    UBGraphicsTextItem *svgItem = mCurrentScene->addTextHtml(doc.toHtml());
+    svgItem->resize(width, height);
 
-////    remember if text area has transform
-////    QString transformString;
-    QTransform transform = fontTransform;
-    bool hasTransform = false;//!fontTransform.isIdentity();
+    QTransform transform;
+    QString textTransform = element.attribute(aTransform);
+    bool hastransform = false;
+    if (!textTransform.isNull()) {
+        transform = transformFromString(textTransform);
+        hastransform = true;
+    }
 
-//    QRectF lastDrawnTextBoundingRect;
-//    //parse text area tags
+    repositionSvgItem(svgItem, width, height, x, y, hastransform, transform);
+    hashSceneItem(element, svgItem);
 
-//    //recursive call any tspan in text svg element
-//    parseTSpan(element, painter
-//               , curX, curY, width, height, linespacing, lastDrawnTextBoundingRect
-//               , fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight, textAlign, fontTransform);
-
-//    painter.end();
-
-    //add resulting svg file to scene
-//    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
-
-    QFile file("/home/ilia/Documents/tmp/1/index.html");
-    file.open(QIODevice::ReadOnly);
-    QByteArray barr = file.readAll();
-    file.close();
-    QString str(barr);
-    UBGraphicsTextItem *svgItem = mCurrentScene->addTextHtml(str);
-    svgItem->resize(width * mVBTransFactor, height * mVBTransFactor);
-
-//    QTextCursor cursor;
-//    cursor.insertBlock();
-//    cursor.insertText("way away");
-//    cursor.insertBlock();
-//    cursor.insertText("for the right");
-//    svgItem->setTextCursor(cursor);
-    repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
-//    hashSceneItem(element, svgItem);
-
-//    delete generator;
     return true;
 }
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &element)

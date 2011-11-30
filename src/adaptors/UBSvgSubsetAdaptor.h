@@ -92,7 +92,7 @@ class UBSvgSubsetAdaptor
 
                 UBSvgSubsetReader(UBDocumentProxy* proxy, const QByteArray& pXmlData);
 
-                virtual ~UBSvgSubsetReader(){};
+                virtual ~UBSvgSubsetReader(){}
 
                 UBGraphicsScene* loadScene();
 
@@ -155,7 +155,7 @@ class UBSvgSubsetAdaptor
 
                 bool persistScene();
 
-                virtual ~UBSvgSubsetWriter(){};
+                virtual ~UBSvgSubsetWriter(){}
 
             private:
 

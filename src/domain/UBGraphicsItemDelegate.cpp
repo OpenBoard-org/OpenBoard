@@ -163,8 +163,9 @@ bool UBGraphicsItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
         qDebug() << mDelegated->zValue();
         qDebug() << scene->currentObjectZIndex();
 
-        if (mDelegated->zValue() < scene->currentObjectZIndex() && !isLocked())
-            mDelegated->setZValue(scene->getNextObjectZIndex());
+// To investigate. Z value behavior
+//                if (mDelegated->zValue() < scene->currentObjectZIndex() && !isLocked())
+//            mDelegated->setZValue(scene->getNextObjectZIndex());
 
         positionHandles();
 

@@ -34,6 +34,7 @@ class UBGraphicsItem;
 class QGraphicsItem;
 class QTextBlockFormat;
 class QTextCharFormat;
+class QTextCursor;
 
 
 class UBCFFSubsetAdaptor
@@ -100,6 +101,8 @@ private:
                                , qreal &curX, qreal &curY, qreal &width, qreal &height, qreal &linespacing, QRectF &lastDrawnTextBoundingRect
                                , qreal &fontSize, QColor &fontColor, QString &fontFamily, QString &fontStretch, bool &italic
                                , int &fontWeight, int &textAlign, QTransform &fontTransform);
+        inline void parseTSpan(const QDomElement &element, QTextCursor &cursor
+                               , QTextBlockFormat &blockFormat, QTextCharFormat &charFormat);
         inline void hashSceneItem(const QDomElement &element, UBGraphicsItem *item);
 
         // to kill
