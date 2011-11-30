@@ -309,7 +309,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     UBGraphicsWidgetItem *currentWidget = 0;
 
-    int mFileVersion = 40100; // default to 4.1.0
+    mFileVersion = 40100; // default to 4.1.0
 
     UBGraphicsStroke* annotationGroup = 0;
 
@@ -878,7 +878,8 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
         buffer.open(QBuffer::WriteOnly);
         mXmlWriter.setDevice(&buffer);
 
-        QTime timer = QTime::currentTime();
+        //Unused variable
+        //QTime timer = QTime::currentTime();
 
         mXmlWriter.setAutoFormatting(true);
 
@@ -1383,8 +1384,6 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
 }
 
-
-
 UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLineSvg(const QColor& pDefaultColor)
 {
     QStringRef svgX1 = mXmlReader.attributes().value("x1");
@@ -1491,11 +1490,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
     }
 
     return polygonItem;
-
 }
-
-
-
 
 QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemsFromPolylineSvg(const QColor& pDefaultColor)
 {
@@ -1966,6 +1961,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
         gItem->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked));
     }
 
+    QStringRef ubEditable = mXmlReader.attributes().value(mNamespaceUri, "editable");
+
+    if (!ubEditable.isNull())
+    {
+        bool isEditable = (ubEditable.toString() == xmlTrue || ubEditable.toString() == "1");
+        gItem->setData(UBGraphicsItemData::ItemEditable, QVariant(isEditable));
+    }
+
     //deprecated as of 4.4.a.12
     QStringRef ubLayer = mXmlReader.attributes().value(mNamespaceUri, "layer");
     if (!ubLayer.isNull())
@@ -2020,7 +2023,16 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     if (!locked.isNull() && locked.toBool())
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
 
+    QVariant editable = item->data(UBGraphicsItemData::ItemEditable);
+    if (!editable.isNull()) {
+        if (editable.toBool())
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "editable", xmlTrue);
+        else
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "editable", xmlFalse);
+    }
 }
+
+
 
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsAppleWidgetToSvg(UBGraphicsAppleWidgetItem* item)
@@ -2290,13 +2302,9 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         if (mXmlReader.isStartElement())
         {
             //for new documents from version 4.5.0
-            if (true) {
+            if (mFileVersion >= 40500) {
                 if (mXmlReader.name() == "itemTextContent") {
                     QString text = mXmlReader.readElementText();
-                    //                QtLogger::start("/home/ilia/Documents/tmp/10/log.log");
-                    //                QtLogger::appendl(text);
-                    //                QtLogger::finish();
-                    //                textItem->setPlainText("");
                     textItem->setHtml(text);
                     break;
                 }

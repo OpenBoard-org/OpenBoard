@@ -28,6 +28,7 @@
 #include "domain/UBGraphicsAudioItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsTextItem.h"
+#include "domain/UBGraphicsTextItemDelegate.h"
 #include "domain/UBW3CWidget.h"
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -95,6 +96,7 @@ static QString aRef             = "ref";
 static QString aHref            = "href";
 static QString aBackground      = "background";
 static QString aLocked          = "locked";
+static QString aEditable        = "editable";
 
 //attributes part names
 static QString apRotate         = "rotate";
@@ -647,6 +649,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
         hastransform = true;
     }
 
+    //by default all the textAreas are not editable
+    UBGraphicsTextItemDelegate *curDelegate = dynamic_cast<UBGraphicsTextItemDelegate*>(svgItem->Delegate());
+    if (curDelegate) {
+        curDelegate->setEditable(false);
+    }
+
     repositionSvgItem(svgItem, width, height, x, y, hastransform, transform);
     hashSceneItem(element, svgItem);
 
@@ -914,17 +922,31 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbElement(QDomElement &element
         return false;
     }
 
-    bool locked = false, isBackground = false;
+    bool locked = false;
+    bool isBackground = false;
+    bool isEditableItem = false;
+    bool isEditable = false; //Text items to convert to UBGraphicsTextItem only
+
     QString IDRef = element.attribute(aRef);
     if (!IDRef.isNull()) {
         isBackground = element.hasAttribute(aBackground) ? strToBool(element.attribute(aBackground)) : false;
         locked = element.hasAttribute(aBackground) ? strToBool(element.attribute(aBackground)) : false;
+        isEditableItem = element.hasAttribute(aEditable);
+        if (isEditableItem)
+            isEditable = strToBool(element.attribute(aEditable));
 
+        UBGraphicsItem *referedItem(0);
         QHash<QString, UBGraphicsItem*>::iterator iReferedItem;
         iReferedItem = persistedItems.find(IDRef);
         if (iReferedItem != persistedItems.end()) {
-            UBGraphicsItem *referedItem = *iReferedItem;
+            referedItem = *iReferedItem;
             referedItem->Delegate()->lock(locked);
+        }
+        if (isEditableItem) {
+            UBGraphicsTextItemDelegate *textDelegate = dynamic_cast<UBGraphicsTextItemDelegate*>(referedItem->Delegate());
+            if (textDelegate) {
+                textDelegate->setEditable(isEditable);
+            }
         }
     }
 

@@ -50,6 +50,7 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
     delegated()->adjustSize();
     delegated()->contentsChanged();
 
+
 //    QTextCursor defcursor(createDefaultCursor());
 //    defcursor.movePosition(QTextCursor::Start);
 //    delegated()->setTextCursor(defcursor);
@@ -229,11 +230,7 @@ void UBGraphicsTextItemDelegate::pickColor()
             QTextCursor curCursor = delegated()->textCursor();
             QTextCharFormat format;
             format.setForeground(QBrush(selectedColor));
-//            format.setBackground(Qt::yellow);
             curCursor.mergeCharFormat(format);
-            QTextBlockFormat blFormat;
-            blFormat.setAlignment(Qt::AlignCenter);
-            curCursor.setBlockFormat(blFormat);
             delegated()->setTextCursor(curCursor);
 
             UBGraphicsTextItem::lastUsedTextColor = selectedColor;
