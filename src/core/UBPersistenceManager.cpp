@@ -1121,7 +1121,6 @@ sTeacherBarInfos UBPersistenceManager::getTeacherBarInfos(UBDocumentProxy* pDocu
                 QDomDocument domDoc;
                 if(domDoc.setContent(f.readAll()))
                 {
-                    qDebug() << domDoc.toString();
                     QDomElement rootElem = domDoc.documentElement();
                     QDomNode teacherBarNode = rootElem.namedItem("teacherBar");
 
