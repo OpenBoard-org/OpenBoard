@@ -1,4 +1,4 @@
-#include "UBTeacherBarWidget.h"
+ #include "UBTeacherBarWidget.h"
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
@@ -259,6 +259,7 @@ void UBTeacherBarWidget::saveContent()
 {
     sTeacherBarInfos infos;
     infos.title = mpTitle->text();
+    qDebug() << "Title read: " << infos.title;
     infos.phasis = mpPhasis->currentIndex();
     infos.Duration = mpDuration->currentIndex();
     infos.material = mpEquipment->text();
@@ -276,6 +277,7 @@ void UBTeacherBarWidget::loadContent()
 {
     sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
     mpTitle->setText(nextInfos.title);
+    qDebug() << "Title loaded: " << nextInfos.title << ", Title set: " << mpTitle->text();
     mpPhasis->setCurrentIndex(nextInfos.phasis);
     mpDuration->setCurrentIndex(nextInfos.Duration);
     mpEquipment->setText(nextInfos.material);
