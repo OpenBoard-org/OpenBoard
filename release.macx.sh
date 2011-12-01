@@ -1,3 +1,4 @@
+#!/bin/bash
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,8 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
-
-#!/bin/bash
 
 # Executables
 QMAKE="/usr/local/Trolltech/Qt-4.7.3/bin/qmake"
@@ -103,11 +102,11 @@ if [ $? != 0 ]; then
 fi
 
 
-NAME="Open-Sankoré"
+NAME="Open-Sankore"
 
 DMG="$NAME.dmg"
 VOLUME="/Volumes/$NAME"
-APP="$PRODUCT_DIR/Open-Sankoré.app"
+APP="$PRODUCT_DIR/Open-Sankore.app"
 DSYM_NAME="$NAME (r$SVN_REVISION).dSYM"
 DSYM="$PRODUCT_DIR/$DSYM_NAME"
 GSYM_i386="$PRODUCT_DIR/$NAME i386.sym"
@@ -128,8 +127,8 @@ notify "Bulding frameworks ..."
 $MACDEPLOYQT "$APP"
 
 notify "Extracting debug information ..."
-$DSYMUTIL "$APP/Contents/MacOS/Open-Sankoré" -o "$DSYM"
-$STRIP -S "$APP/Contents/MacOS/Open-Sankoré"
+$DSYMUTIL "$APP/Contents/MacOS/Open-Sankore" -o "$DSYM"
+$STRIP -S "$APP/Contents/MacOS/Open-Sankore"
 
 notify "Creating dmg ..."
 umount "$VOLUME" 2> /dev/null
