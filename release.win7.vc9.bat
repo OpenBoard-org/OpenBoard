@@ -16,10 +16,12 @@ REM ---------------------------------------------------------------------
 set QT_DIR=..\Qt-sankore3.1
 set QT_BIN=%QT_DIR%\bin
 
-set GIT_BIN=C:\Program Files (x86)\Git\bin
-set VS_BIN=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin
-set WIN_SDK_BIN=C:\Program Files (x86)\Microsoft SDKs\Windows\v6.0A\Bin
-set INNO_EXE=C:\Program Files (x86)\Inno Setup 5\iscc.exe 
+set PROGRAMS_FILE_PATH=C:\Program Files
+
+set GIT_BIN=%PROGRAMS_FILE_PATH%\Git\bin
+set VS_BIN=%PROGRAMS_FILE_PATH%\Microsoft Visual Studio 9.0\VC\bin
+set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
+set INNO_EXE=%PROGRAMS_FILE_PATH%\Inno Setup 5\iscc.exe 
 set BUILD_DIR=build\win32\release
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
@@ -33,7 +35,7 @@ REM is correct. This is important because installer
 REM pick up dll from this directory
 IF NOT EXIST "..\Qt-sankore3.1\lib\QtCore4.dll" GOTO EXIT_WITH_ERROR
 
-rmdir /S /Q %BUILD_DIR%
+REM rmdir /S /Q %BUILD_DIR%
 
 set EDITION=MNEMIS_EDITION
 
@@ -56,7 +58,7 @@ nmake release-install
 
 del ".\build\win32\release\product\Sankore 3.1.pdb"
 
-set INSTALLER_NAME=Open-Sankoré
+set INSTALLER_NAME=Open-Sankore
 
 set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 

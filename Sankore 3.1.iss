@@ -6,19 +6,19 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{E63D17F8-D9DA-479D-B9B5-0D101A03703B}
-AppName=Open-Sankoré
-AppVerName=Open-Sankoré
-AppPublisher=Sankore
+AppName=Open-Sankore
+AppVerName=Open-Sankore
+AppPublisher=Open-Sankore
 
 AppPublisherURL=http://dev.open-sankore.org
 AppSupportURL=http://dev.open-sankore.org
 AppUpdatesURL=http://dev.open-sankore.org
 
-DefaultDirName={pf}\Open-Sankoré
-DefaultGroupName=Open-Sankoré
+DefaultDirName={pf}\Open-Sankore
+DefaultGroupName=Open-Sankore
 
 OutputDir=.\install\win32\
-OutputBaseFilename=Open-Sankoré
+OutputBaseFilename=Open-Sankore
 SetupIconFile=.\resources\win\uniboard.ico
 Compression=lzma
 SolidCompression=yes
@@ -36,7 +36,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [InstallDelete]
 
-Type: files ; Name: "{app}\Open-Sankoré.pdb"
+Type: files ; Name: "{app}\Open-Sankore.pdb"
 Type: filesandordirs ; Name: "{app}\library"
 Type: filesandordirs ; Name: "{app}\Microsoft.VC90.CRT"
 Type: filesandordirs ; Name: "{app}\plugins"
@@ -83,31 +83,31 @@ Source: "..\Qt-sankore3.1\plugins\phonon_backend\phonon_ds94.dll"; DestDir: "{ap
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Open-Sankoré"; Filename: "{app}\Open-Sankoré.exe"
+Name: "{group}\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"
 Name: "{group}\{cm:UninstallProgram,Sankore 3.1}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\Open-Sankoré"; Filename: "{app}\Open-Sankoré.exe"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Open-Sankoré"; Filename: "{app}\Open-Sankoré.exe"; Tasks: quicklaunchicon
+Name: "{commondesktop}\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"; Tasks: desktopicon
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"; Tasks: quicklaunchicon
 ;Name: "{group}\Printing Preferences"; Filename: "{app}\properties.exe"; WorkingDir: {app}
 
 [Registry]
 Root: HKCR; Subkey: ".ubz"; ValueType: string; ValueName: ""; ValueData: "SankoreFile"; Flags: uninsdeletevalue
-Root: HKCR; Subkey: "SankoreFile"; ValueType: string; ValueName: ""; ValueData: "Open-Sankoré document"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "SankoreFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\Open-Sankoré.exe,1"
-Root: HKCR; Subkey: "SankoreFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\Open-Sankoré.exe"" ""%1"""
+Root: HKCR; Subkey: "SankoreFile"; ValueType: string; ValueName: ""; ValueData: "Open-Sankore document"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "SankoreFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\Open-Sankore.exe,1"
+Root: HKCR; Subkey: "SankoreFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\Open-Sankore.exe"" ""%1"""
 
-Root: HKLM; Subkey: "SOFTWARE\Open-Sankoré"; ValueType: string; ValueName: "Client application"; ValueData: "{app}\Open-Sankoré.exe"; Flags: uninsdeletevalue; Check: isProcessorNotX64
-Root: HKLM; Subkey: "SOFTWARE\Open-Sankoré"; ValueType: dword; ValueName: "Transfer mode"; ValueData: "0"; Flags: uninsdeletevalue; Check: isProcessorNotX64
-Root: HKLM; Subkey: "SOFTWARE\Open-Sankoré"; ValueType: dword; ValueName: "EMF: Hide page"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorNotX64
-Root: HKLM; Subkey: "SOFTWARE\Open-Sankoré\Defaults"; ValueType: dword; ValueName: "PDF: Enabled"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorNotX64
+Root: HKLM; Subkey: "SOFTWARE\Open-Sankore"; ValueType: string; ValueName: "Client application"; ValueData: "{app}\Open-Sankore.exe"; Flags: uninsdeletevalue; Check: isProcessorNotX64
+Root: HKLM; Subkey: "SOFTWARE\Open-Sankore"; ValueType: dword; ValueName: "Transfer mode"; ValueData: "0"; Flags: uninsdeletevalue; Check: isProcessorNotX64
+Root: HKLM; Subkey: "SOFTWARE\Open-Sankore"; ValueType: dword; ValueName: "EMF: Hide page"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorNotX64
+Root: HKLM; Subkey: "SOFTWARE\Open-Sankore\Defaults"; ValueType: dword; ValueName: "PDF: Enabled"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorNotX64
 
-Root: HKLM64; Subkey: "SOFTWARE\Open-Sankoré"; ValueType: string; ValueName: "Client application"; ValueData: "{app}\Open-Sankoré.exe"; Flags: uninsdeletevalue; Check: isProcessorX64
-Root: HKLM64; Subkey: "SOFTWARE\Open-Sankoré"; ValueType: dword; ValueName: "Transfer mode"; ValueData: "0"; Flags: uninsdeletevalue; Check: isProcessorX64
-Root: HKLM64; Subkey: "SOFTWARE\Open-Sankoré"; ValueType: dword; ValueName: "EMF: Hide page"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorX64
-Root: HKLM64; Subkey: "SOFTWARE\Open-Sankoré\Defaults"; ValueType: dword; ValueName: "PDF: Enabled"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorX64
+Root: HKLM64; Subkey: "SOFTWARE\Open-Sankore"; ValueType: string; ValueName: "Client application"; ValueData: "{app}\Open-Sankore.exe"; Flags: uninsdeletevalue; Check: isProcessorX64
+Root: HKLM64; Subkey: "SOFTWARE\Open-Sankore"; ValueType: dword; ValueName: "Transfer mode"; ValueData: "0"; Flags: uninsdeletevalue; Check: isProcessorX64
+Root: HKLM64; Subkey: "SOFTWARE\Open-Sankore"; ValueType: dword; ValueName: "EMF: Hide page"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorX64
+Root: HKLM64; Subkey: "SOFTWARE\Open-Sankore\Defaults"; ValueType: dword; ValueName: "PDF: Enabled"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 [Run]
 Filename: "{tmp}\vcredist_x86.exe";WorkingDir:"{tmp}"
-Filename: "{app}\Open-Sankoré.exe"; Description: "{cm:LaunchProgram,Sankore 3.1}"; Flags: nowait postinstall
+Filename: "{app}\Open-Sankore.exe"; Description: "{cm:LaunchProgram,Open-Sankore}"; Flags: nowait postinstall
 
 [UninstallDelete]
 ; cleanup and delete whole installation directory
