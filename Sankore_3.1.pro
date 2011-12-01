@@ -1,4 +1,4 @@
-TARGET = "Open-Sankore"
+TARGET = "Open-Sankoré"
 TEMPLATE = app
 
 THIRD_PARTY_PATH=../Sankore-ThirdParty
