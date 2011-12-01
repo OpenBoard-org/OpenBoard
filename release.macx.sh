@@ -103,11 +103,11 @@ if [ $? != 0 ]; then
 fi
 
 
-NAME="Sankore 3.1"
+NAME="Open-Sankoré"
 
 DMG="$NAME.dmg"
 VOLUME="/Volumes/$NAME"
-APP="$PRODUCT_DIR/Sankore 3.1.app"
+APP="$PRODUCT_DIR/Open-Sankoré.app"
 DSYM_NAME="$NAME (r$SVN_REVISION).dSYM"
 DSYM="$PRODUCT_DIR/$DSYM_NAME"
 GSYM_i386="$PRODUCT_DIR/$NAME i386.sym"
@@ -128,8 +128,8 @@ notify "Bulding frameworks ..."
 $MACDEPLOYQT "$APP"
 
 notify "Extracting debug information ..."
-$DSYMUTIL "$APP/Contents/MacOS/Sankore 3.1" -o "$DSYM"
-$STRIP -S "$APP/Contents/MacOS/Sankore 3.1"
+$DSYMUTIL "$APP/Contents/MacOS/Open-Sankoré" -o "$DSYM"
+$STRIP -S "$APP/Contents/MacOS/Open-Sankoré"
 
 notify "Creating dmg ..."
 umount "$VOLUME" 2> /dev/null

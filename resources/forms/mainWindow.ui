@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Uniboard</string>
+   <string>Open-Sankoré</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../sankore.qrc">
@@ -388,7 +388,7 @@
     <string>Quit</string>
    </property>
    <property name="toolTip">
-    <string>Quit Uniboard</string>
+    <string>Quit Open-Sankoré</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::WindowShortcut</enum>
@@ -628,10 +628,10 @@
      <normaloff>:/images/toolbar/menu.png</normaloff>:/images/toolbar/menu.png</iconset>
    </property>
    <property name="text">
-    <string>Sankoré 3.1</string>
+    <string>Open-Sankoré</string>
    </property>
    <property name="toolTip">
-    <string>Sankore 3.1</string>
+    <string>Open-Sankoré</string>
    </property>
   </action>
   <action name="actionDesktop">
@@ -1602,10 +1602,10 @@
      <normaloff>:/images/toolbar/paraschool.png</normaloff>:/images/toolbar/paraschool.png</iconset>
    </property>
    <property name="text">
-    <string>Sankoré Editor</string>
+    <string>Open-Sankoré Editor</string>
    </property>
    <property name="toolTip">
-    <string>Show Sankore Widgets Editor</string>
+    <string>Show Open-Sankoré Widgets Editor</string>
    </property>
   </action>
   <action name="actionHideApplication">
@@ -1614,10 +1614,10 @@
      <normaloff>:/images/toolbar/hide.png</normaloff>:/images/toolbar/hide.png</iconset>
    </property>
    <property name="text">
-    <string>Hide Sankoré</string>
+    <string>Hide Open-Sankoré</string>
    </property>
    <property name="toolTip">
-    <string>Hide Sankoré Application</string>
+    <string>Hide Open-Sankoré Application</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
