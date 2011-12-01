@@ -15,9 +15,9 @@
 # ---------------------------------------------------------------------
 
 
-make clean
-rm -rf build/linux/release/
-rm -rf install
+#make clean
+#rm -rf build/linux/release/
+#rm -rf install
 
 QT_PATH="../Qt-sankore3.1"
 PLUGINS_PATH="$QT_PATH/plugins"
