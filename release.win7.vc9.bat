@@ -50,13 +50,13 @@ erase tmp
 echo %VERSION%
 echo %LAST_TAG_VERSION%
 
-if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
+REM if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
 nmake release-install
 
 del ".\build\win32\release\product\Sankore 3.1.pdb"
 
-set INSTALLER_NAME=Sankore-3.1
+set INSTALLER_NAME=Open-Sankoré
 
 set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 

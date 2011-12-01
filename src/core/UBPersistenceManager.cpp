@@ -1072,7 +1072,8 @@ void UBPersistenceManager::persistTeacherBar(UBDocumentProxy* pDocumentProxy, in
                     if(f.open(QIODevice::WriteOnly))
                     {
                         QDomElement rootElem = domDoc.documentElement();
-                        QDomNode teacherBarNode = domDoc.namedItem("teacherBar");
+                        QDomNode teacherBarNode = rootElem.namedItem("teacherBar");
+
                         if(teacherBarNode.isNull())
                         {
                             // Create the element

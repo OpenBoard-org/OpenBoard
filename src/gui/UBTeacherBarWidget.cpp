@@ -1,4 +1,4 @@
-#include "UBTeacherBarWidget.h"
+ #include "UBTeacherBarWidget.h"
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
