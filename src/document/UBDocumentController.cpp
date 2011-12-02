@@ -448,7 +448,9 @@ void UBDocumentController::setupViews()
         {
             mKeyboardPalette = UBKeyboardPalette::create(0);
             mKeyboardPalette->setParent(controlView());
+#ifndef Q_WS_MACX
             connect(mMainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
+#endif
         }
 
     }
