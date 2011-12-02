@@ -57,6 +57,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         int mLastFontPixelSize;
 
         static const int sMinPixelSize;
+        static const int sMinPointSize;
 
     private:
         void customize(QFontDialog &fontDialog);

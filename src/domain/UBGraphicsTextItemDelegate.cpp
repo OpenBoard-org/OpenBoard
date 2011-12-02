@@ -30,6 +30,7 @@
 #include "board/UBBoardController.h"
 
 const int UBGraphicsTextItemDelegate::sMinPixelSize = 8;
+const int UBGraphicsTextItemDelegate::sMinPointSize = 8;
 
 UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated,0, parent, true)
@@ -46,23 +47,11 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
     format.setFont(font);
     curCursor.mergeCharFormat(format);
     delegated()->setTextCursor(curCursor);
+    delegated()->setFont(font);
 
     delegated()->adjustSize();
     delegated()->contentsChanged();
 
-
-//    QTextCursor defcursor(createDefaultCursor());
-//    defcursor.movePosition(QTextCursor::Start);
-//    delegated()->setTextCursor(defcursor);
-
-
-    //    QFont selectedFont = fontDialog.selectedFont();
-//    UBSettings::settings()->setFontFamily(selectedFont.family());
-//    QFontInfo fi(selectedFont);
-//    mLastFontPixelSize = fi.pixelSize();
-//    UBSettings::settings()->setFontPixelSize(mLastFontPixelSize);
-//    UBSettings::settings()->setBoldFont(selectedFont.bold());
-//    UBSettings::settings()->setItalicFont(selectedFont.italic());
     // NOOP
 }
 
@@ -70,7 +59,6 @@ UBGraphicsTextItemDelegate::~UBGraphicsTextItemDelegate()
 {
     // NOOP
 }
-
 
 QFont UBGraphicsTextItemDelegate::createDefaultFont()
 {
@@ -89,10 +77,15 @@ QFont UBGraphicsTextItemDelegate::createDefaultFont()
         textFormat.setFontItalic(true);
 
     QFont font(fFamily, -1, bold ? QFont::Bold : -1, italic);
-    int pixSize = UBSettings::settings()->fontPixelSize();
-    if (pixSize > 0) {
-        mLastFontPixelSize = pixSize;
-        font.setPixelSize(pixSize);
+//    int pixSize = UBSettings::settings()->fontPixelSize();
+//    if (pixSize > 0) {
+//        mLastFontPixelSize = pixSize;
+//        font.setPixelSize(pixSize);
+//    }
+    int pointSize = UBSettings::settings()->fontPointSize();
+    if (pointSize > 0) {
+//        mLastFontPixelSize = pointSize;
+        font.setPointSize(pointSize);
     }
 
     return font;
@@ -115,7 +108,6 @@ void UBGraphicsTextItemDelegate::buildButtons()
     mButtons << mFontButton << mColorButton << mDecreaseSizeButton << mIncreaseSizeButton;
 }
 
-
 void UBGraphicsTextItemDelegate::contentsChanged()
 {
     positionHandles();
@@ -128,8 +120,7 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
 {
     fontDialog.setOption(QFontDialog::DontUseNativeDialog);
 
-    if (UBSettings::settings()->isDarkBackground())
-    {
+    if (UBSettings::settings()->isDarkBackground()) {
         fontDialog.setStyleSheet("background-color: white;");
     }
 
@@ -171,7 +162,6 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
             }
         }
     }
-
     QList<QComboBox*> comboBoxes = fontDialog.findChildren<QComboBox*>();
     if (comboBoxes.count() > 0)
         comboBoxes.at(0)->setEnabled(false);
@@ -189,9 +179,6 @@ void UBGraphicsTextItemDelegate::pickFont()
         {
             QFont selectedFont = fontDialog.selectedFont();
             UBSettings::settings()->setFontFamily(selectedFont.family());
-            QFontInfo fi(selectedFont);
-            mLastFontPixelSize = fi.pixelSize();
-            UBSettings::settings()->setFontPixelSize(mLastFontPixelSize);
             UBSettings::settings()->setBoldFont(selectedFont.bold());
             UBSettings::settings()->setItalicFont(selectedFont.italic());
             UBSettings::settings()->setFontPointSize(selectedFont.pointSize());
@@ -201,8 +188,9 @@ void UBGraphicsTextItemDelegate::pickFont()
             QTextCharFormat format;
             format.setFont(selectedFont);
             curCursor.mergeCharFormat(format);
-            delegated()->setTextCursor(curCursor);
 
+            delegated()->setTextCursor(curCursor);
+            delegated()->setFont(selectedFont);
             delegated()->setSelected(true);
             delegated()->document()->adjustSize();
             delegated()->contentsChanged();
@@ -243,6 +231,15 @@ void UBGraphicsTextItemDelegate::pickColor()
 
 void UBGraphicsTextItemDelegate::decreaseSize()
 {
+    QTextCursor cursor = delegated()->textCursor();
+    QTextCharFormat textFormat;
+
+    QFont curFont = cursor.charFormat().font();
+
+    int pointSize =  curFont.pointSize();
+    pointSize -= 5;
+
+
 //    QFontInfo fi(delegated()->font());
 //    int pixelSize = fi.pixelSize();
 //    if (-1 == mLastFontPixelSize)
@@ -265,11 +262,28 @@ void UBGraphicsTextItemDelegate::decreaseSize()
 //        delegated()->document()->adjustSize();
 //        delegated()->contentsChanged();dddd
 //    }
+    curFont.setPointSize(pointSize);
+    textFormat.setFont(curFont);
+    cursor.mergeCharFormat(textFormat);
+    delegated()->setTextCursor(cursor);
+    UBSettings::settings()->setFontPixelSize(curFont.pixelSize());
+    UBSettings::settings()->setFontPointSize(pointSize);
+
+    delegated()->document()->adjustSize();
+    delegated()->setFont(curFont);
 }
 
 void UBGraphicsTextItemDelegate::increaseSize()
 {
-//    QFontInfo fi(delegated()->font());
+    QTextCursor cursor = delegated()->textCursor();
+    QTextCharFormat textFormat;
+
+    QFont curFont = cursor.charFormat().font();
+
+    int pointSize =  curFont.pointSize();
+    pointSize += 5;
+
+//    QFontInfo fi(cursor.charFormat().font());
 //    int pixelSize = fi.pixelSize();
 //    if (-1 == mLastFontPixelSize)
 //        mLastFontPixelSize = pixelSize;
@@ -281,16 +295,18 @@ void UBGraphicsTextItemDelegate::increaseSize()
 //    if (pixelSize < mLastFontPixelSize && mLastFontPixelSize < newPixelSize)
 //        newPixelSize = mLastFontPixelSize;
 
-//    QFont font = delegated()->font();
-//    font.setPixelSize(newPixelSize);
-//    delegated()->setFont(font);
-//    UBSettings::settings()->setFontPixelSize(newPixelSize);
 
-//    delegated()->document()->adjustSize();
+    curFont.setPointSize(pointSize);
+    textFormat.setFont(curFont);
+    cursor.mergeCharFormat(textFormat);
+    delegated()->setTextCursor(cursor);
+//    UBSettings::settings()->setFontPixelSize(curFont.pixelSize());
+    UBSettings::settings()->setFontPointSize(pointSize);
+
+    delegated()->document()->adjustSize();
+    delegated()->setFont(curFont);
 //    delegated()->contentsChanged();
 
-//    qDebug() << newPixelSize;
-    delegated()->document()->adjustSize();
 }
 
 UBGraphicsTextItem* UBGraphicsTextItemDelegate::delegated()
