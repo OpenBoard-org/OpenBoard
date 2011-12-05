@@ -21,6 +21,7 @@
 #include "frameworks/UBPlatformUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBPreferencesController.h"
+#include "core/UBDownloadManager.h"
 
 #include "core/memcheck.h"
 
@@ -80,6 +81,7 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
     // Set the position of the tab
     onToolbarPosUpdated();
     connect(UBSettings::settings()->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(onToolbarPosUpdated()));
+    connect(UBDownloadManager::downloadManager(), SIGNAL(allDownloadsFinished()), this, SLOT(onAllDownloadsFinished()));
 }
 
 /**
@@ -480,6 +482,12 @@ void UBDockPalette::showTabWidget(int tabIndex)
     {
         toggleCollapseExpand();
     }
+
+    // Update the current tab index
+    if(NULL != (dynamic_cast<UBDockPaletteWidget*>(mpStackWidget->widget(tabIndex)))){
+        mCrntTabWidget = dynamic_cast<UBDockPaletteWidget*>(mpStackWidget->widget(tabIndex))->name();
+    }
+
 }
 
 /**
@@ -649,5 +657,18 @@ void UBDockPalette::registerWidget(UBDockPaletteWidget *widget)
 
         // By default, the widget is hidden
         widget->hide();
+    }
+}
+
+/**
+  * \brief Handles the 'all download finished' notification
+  */
+void UBDockPalette::onAllDownloadsFinished()
+{
+    for(int i=0; i<mTabWidgets.size(); i++){
+        UBDockPaletteWidget* pW = mTabWidgets.at(i);
+        if(NULL != pW && mCrntTabWidget == pW->name()){
+            mpStackWidget->setCurrentWidget(pW);
+        }
     }
 }
