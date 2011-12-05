@@ -285,6 +285,7 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionMultiScreen, SIGNAL(triggered(bool)), applicationController, SLOT(useMultiScreen(bool)));
     connect(mainWindow->actionWidePageSize, SIGNAL(triggered(bool)), boardController, SLOT(setWidePageSize(bool)));
     connect(mainWindow->actionRegularPageSize, SIGNAL(triggered(bool)), boardController, SLOT(setRegularPageSize(bool)));
+    connect(mainWindow->actionImportUniboardDocuments, SIGNAL(triggered()), this, SLOT(importUniboardFiles()));
 
     connect(mainWindow->actionCut, SIGNAL(triggered()), applicationController, SLOT(actionCut()));
     connect(mainWindow->actionCopy, SIGNAL(triggered()), applicationController, SLOT(actionCopy()));
@@ -330,15 +331,15 @@ int UBApplication::exec(const QString& pFileToImport)
         }
     }
 
-    // SANKORE-47: Deactivate the Uniboard to Sankore transition if
-    // EnableUniboardTransition is set at false in Uniboard.config
-    if(UBSettings::settings()->appEnableUniboardTransition->get().toBool())
-    {
-        mUniboardSankoreTransition = new UniboardSankoreTransition();
-        mUniboardSankoreTransition->documentTransition();
-    }
+
 
     return QApplication::exec();
+}
+
+void UBApplication::importUniboardFiles()
+{
+    mUniboardSankoreTransition = new UniboardSankoreTransition();
+    mUniboardSankoreTransition->documentTransition();
 }
 
 #ifdef Q_WS_MAC
@@ -486,6 +487,7 @@ void UBApplication::decorateActionMenu(QAction* action)
             mainWindow->actionPodcast->setText(tr("Podcast"));
 #endif
             menu->addAction(mainWindow->actionMultiScreen);
+            menu->addAction(mainWindow->actionImportUniboardDocuments);
             menu->addSeparator();
             menu->addAction(mainWindow->actionQuit);
 
@@ -580,14 +582,14 @@ void UBApplication::cleanup()
 	if (boardController) delete boardController;
 	if (webController) delete webController;
 	if (documentController) delete documentController;
-	if (mUniboardSankoreTransition) delete mUniboardSankoreTransition;
+        if (mUniboardSankoreTransition) delete mUniboardSankoreTransition;
 
 
 	applicationController = NULL;
 	boardController = NULL;
 	webController = NULL;
 	documentController = NULL;
-	mUniboardSankoreTransition = NULL;
+        mUniboardSankoreTransition = NULL;
 }
 
 void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,

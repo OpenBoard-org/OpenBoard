@@ -66,17 +66,12 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
         {
             QString absoluteMediaFilename;
 
-//            if (mMediaFileUrl.isRelative() && scene()->document())
-//            {
-                absoluteMediaFilename =
-                    scene()->document()->persistencePath()
-                    + "/"  + mMediaFileUrl.toLocalFile();
-//            }
-//            else if (!mMediaFileUrl.isRelative())
-//            {
-//                absoluteMediaFilename = mMediaFileUrl.toLocalFile();
-//            }
-
+            if(mMediaFileUrl.toLocalFile().startsWith("audios/") || mMediaFileUrl.toLocalFile().startsWith("videos/")){
+                absoluteMediaFilename = scene()->document()->persistencePath() + "/"  + mMediaFileUrl.toLocalFile();
+            }
+            else{
+                absoluteMediaFilename = mMediaFileUrl.toLocalFile();
+            }
 
             if (absoluteMediaFilename.length() > 0)
                 mMediaObject->setCurrentSource(Phonon::MediaSource(absoluteMediaFilename));

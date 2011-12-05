@@ -1,3 +1,4 @@
+#!/bin/bash
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,11 +14,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
-#!/bin/bash
-
 # Executables
 QMAKE="/usr/local/Trolltech/Qt-4.7.3/bin/qmake"
-MACDEPLOYQT="`pwd`/../Qt-sankore3.1/bin/macdeployqt"
+MACDEPLOYQT=/usr/local/Trolltech/Qt-4.7.3/bin/macdeployqt
 DMGUTIL="`pwd`/../Sankore-ThirdParty/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
 STRIP=/usr/bin/strip
@@ -103,11 +102,11 @@ if [ $? != 0 ]; then
 fi
 
 
-NAME="Sankore"
+NAME="Open-Sankore"
 
 DMG="$NAME.dmg"
 VOLUME="/Volumes/$NAME"
-APP="$PRODUCT_DIR/Sankore.app"
+APP="$PRODUCT_DIR/Open-Sankore.app"
 DSYM_NAME="$NAME (r$SVN_REVISION).dSYM"
 DSYM="$PRODUCT_DIR/$DSYM_NAME"
 GSYM_i386="$PRODUCT_DIR/$NAME i386.sym"
@@ -125,11 +124,13 @@ $PLISTBUDDY -c "Set :CFBundleGetInfoString $NAME" "$INFO_PLIST"
 
 # bundle Qt Frameworks into the app bundle
 notify "Bulding frameworks ..."
-$MACDEPLOYQT "$APP"
+cd "`pwd`/build/macx/release/product/"
+$MACDEPLOYQT "`pwd`/Open-Sankore.app"
+cd -
 
 notify "Extracting debug information ..."
-$DSYMUTIL "$APP/Contents/MacOS/Sankore" -o "$DSYM"
-$STRIP -S "$APP/Contents/MacOS/Sankore"
+$DSYMUTIL "$APP/Contents/MacOS/Open-Sankore" -o "$DSYM"
+$STRIP -S "$APP/Contents/MacOS/Open-Sankore"
 
 notify "Creating dmg ..."
 umount "$VOLUME" 2> /dev/null

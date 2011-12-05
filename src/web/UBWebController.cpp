@@ -408,9 +408,9 @@ void UBWebController::setupPalettes()
 
         connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));
         connect(mMainWindow->actionWebTrap, SIGNAL(toggled(bool)), this, SLOT(toggleWebTrap(bool)));
-
+#ifndef Q_WS_MACX
         connect(mMainWindow->actionVirtualKeyboard, SIGNAL(toggled(bool)), this, SLOT(showKeyboard(bool)));
-
+#endif
         (*mToolsCurrentPalette)->hide();
         (*mToolsCurrentPalette)->adjustSizeAndPosition();
 
