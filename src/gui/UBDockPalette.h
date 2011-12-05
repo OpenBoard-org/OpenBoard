@@ -125,11 +125,13 @@ protected:
     QVector<UBDockPaletteWidget*> mTabWidgets;
     /** The current widget */
     QVector<UBDockPaletteWidget*> mRegisteredWidgets;
-
+    /** The current tab widget */
+    QString mCrntTabWidget;
 
 private slots:
     void onToolbarPosUpdated();
     void onResizeRequest(QResizeEvent* event);
+    void onAllDownloadsFinished();
 
 private:
     void tabClicked(int tabIndex);
