@@ -122,9 +122,10 @@ win32 {
 }
 
 macx {
-   LIBS += -framework \
-       Foundation \
-       -lcrypto
+   LIBS += -framework Foundation 
+   LIBS += -lcrypto
+   LIBS += -framework AppKit 
+   LIBS += -framework WebKit
 
    CONFIG(release, debug|release):CONFIG += x86 ppc
 
