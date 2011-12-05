@@ -114,7 +114,7 @@ class UBApplication : public QtSingleApplication
 #ifdef Q_WS_MAC
         void showMinimized();
 #endif
-
+        void importUniboardFiles();
     private:
 
         void updateProtoActionsState();
