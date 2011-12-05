@@ -21,6 +21,7 @@ DMGUTIL="`pwd`/../Sankore-ThirdParty/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
 STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
+ICEBERG=/usr/local/bin/freeze
 
 # Directories
 BUILD_DIR="build/macx/release"
@@ -67,6 +68,7 @@ checkExecutable "$DMGUTIL"
 checkExecutable "$DSYMUTIL"
 checkExecutable "$STRIP"
 checkExecutable "$PLISTBUDDY"
+checkExecutable "$ICEBERG"
 
 
 # delete the build directory
@@ -97,9 +99,9 @@ else
     fi
 fi
   
-if [ $? != 0 ]; then
-    abort "compilation failed"
-fi
+#if [ $? != 0 ]; then
+#    abort "compilation failed"
+#fi
 
 
 NAME="Open-Sankore"
@@ -118,7 +120,7 @@ notify "Removing .svn directories ..."
 find "$APP" -name .svn -exec rm -rf {} \; 2> /dev/null
 
 # set various version infomration in Info.plist
-$PLISTBUDDY -c "Set :CFBundleVersion $SVN_REVISION" "$INFO_PLIST"
+$PLISTBUDDY -c "Set :CFBundleVersion $VERSION" "$INFO_PLIST"
 $PLISTBUDDY -c "Set :CFBundleShortVersionString $VERSION" "$INFO_PLIST"
 $PLISTBUDDY -c "Set :CFBundleGetInfoString $NAME" "$INFO_PLIST"
 
@@ -131,6 +133,24 @@ cd -
 notify "Extracting debug information ..."
 $DSYMUTIL "$APP/Contents/MacOS/Open-Sankore" -o "$DSYM"
 $STRIP -S "$APP/Contents/MacOS/Open-Sankore"
+
+if [ "$1" == "pkg" ]; then
+    ICEBERG_CONFIG_FILE="Open-Sankore.packproj"
+    # set version information
+    $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Description:International:IFPkgDescriptionVersion $VERSION" "$ICEBERG_CONFIG_FILE"
+    $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Display\ Information:CFBundleShortVersionString $VERSION" "$ICEBERG_CONFIG_FILE"
+    $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Version:IFMajorVersion `echo $VERSION | awk 'BEGIN { FS = "." }; { print $1 }'`" "$ICEBERG_CONFIG_FILE"
+    $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Version:IFMinorVersion `echo $VERSION | awk 'BEGIN { FS = "." }; { print $2 }'`" "$ICEBERG_CONFIG_FILE"
+
+
+    PRODUCT_DIR="install/mac/"
+
+    if [ ! -d "${PRODUCT_DIR}" ]; then
+	mkdir -p "${PRODUCT_DIR}"
+    fi
+    $ICEBERG $ICEBERG_CONFIG_FILE 
+    exit 0
+fi
 
 notify "Creating dmg ..."
 umount "$VOLUME" 2> /dev/null
