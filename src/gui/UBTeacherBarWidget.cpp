@@ -1,4 +1,4 @@
-#include "UBTeacherBarWidget.h"
+ #include "UBTeacherBarWidget.h"
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
@@ -343,19 +343,25 @@ UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent
     mpLayout->addWidget(mpActionLabel, 0);
 
     mpTeacherLayout = new QHBoxLayout();
-    mpTeacherLabel = new QLabel(tr("Teacher"), this);
+
+    //TODO: I'm not able to translate this string using the normal way *qm file why?
+    //mpTeacherLabel = new QLabel(tr("Teacher"), this);
+    mpTeacherLabel = new QLabel(tr("Enseignant"), this);
     mpTeacherLabel->setAlignment(Qt::AlignTop);
     mpTeacher = new QTextEdit(this);
     mpTeacher->setObjectName("TeacherStudentBox");
+    mpTeacher->setStyleSheet("background-color:#FF9F6D");
     mpTeacherLayout->addWidget(mpTeacherLabel, 0);
     mpTeacherLayout->addWidget(mpTeacher, 1);
     mpLayout->addLayout(mpTeacherLayout, 1);
 
     mpStudentLayout = new QHBoxLayout();
-    mpStudentLabel = new QLabel(tr("Student"), this);
+//    mpStudentLabel = new QLabel(tr("Student"), this);
+    mpStudentLabel = new QLabel(tr("Élève"), this);
     mpStudentLabel->setAlignment(Qt::AlignTop);
     mpStudent = new QTextEdit(this);
     mpStudent->setObjectName("TeacherStudentBox");
+    mpStudent->setStyleSheet("background-color:#06E983");
     mpStudentLayout->addWidget(mpStudentLabel, 0);
     mpStudentLayout->addWidget(mpStudent, 1);
     mpLayout->addLayout(mpStudentLayout, 1);

@@ -2,11 +2,11 @@
 <context>
     <name>BlackoutWidget</name>
     <message>
-        <source>background: url(:/images/bigUniboard.png); border: none;</source>
+        <source>Click to Return to Application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Click to Return to Application</source>
+        <source>background: url(:/images/bigUniboard.png); border: none;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -32,10 +32,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ico</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Filename</source>
         <translation type="unfinished"></translation>
     </message>
@@ -49,6 +45,10 @@
     </message>
     <message>
         <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ico</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -813,14 +813,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DUMMY ICON</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>INTRO TEXT DUMMY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Username:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -828,15 +820,19 @@
         <source>Password:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>DUMMY ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTRO TEXT DUMMY</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ICON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -855,6 +851,10 @@
         <source>Save username and password for future use</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>ICON</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -868,9 +868,6 @@
         <comment>Pictures category element</comment>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>UBAbstractPublisher</name>
 </context>
 <context>
     <name>UBAbstractWidget</name>
@@ -910,6 +907,10 @@
     </message>
     <message>
         <source>No update available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1561,6 +1562,10 @@
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBNetworkAccessManager</name>
@@ -1580,6 +1585,14 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1741,6 +1754,92 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>My Movies</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

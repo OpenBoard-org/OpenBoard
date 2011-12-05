@@ -82,6 +82,7 @@ public:
 public slots:
     void onShowTabWidget(const QString& widgetName);
     void onHideTabWidget(const QString& widgetName);
+    void onAllDownloadsFinished();
 
 protected:
     virtual int border();
@@ -131,12 +132,12 @@ protected:
 private slots:
     void onToolbarPosUpdated();
     void onResizeRequest(QResizeEvent* event);
-    void onAllDownloadsFinished();
 
 private:
     void tabClicked(int tabIndex);
     int tabSpacing();
     void toggleCollapseExpand();
+
 };
 
 #endif // UBDOCKPALETTE_H

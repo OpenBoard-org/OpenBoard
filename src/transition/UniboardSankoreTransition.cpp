@@ -19,6 +19,7 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+#include "gui/UBMainWindow.h"
 
 #include "core/memcheck.h"
 
@@ -38,6 +39,7 @@ UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
 #endif
     connect(this, SIGNAL(docAdded(UBDocumentProxy*)), UBPersistenceManager::persistenceManager(), SIGNAL(documentCreated(UBDocumentProxy*)));
 }
+
 UniboardSankoreTransition::~UniboardSankoreTransition()
 {
     if(NULL != mTransitionDlg)
@@ -92,6 +94,9 @@ void UniboardSankoreTransition::documentTransition()
             connect(this, SIGNAL(transitionFinished(bool)), mTransitionDlg, SLOT(onFilesUpdated(bool)));
             mTransitionDlg->show();
         }
+    }
+    else{
+        UBApplication::mainWindow->information(tr("Import old Uniboard/Sankore documents"), tr("There are no documents that should be imported"));
     }
 }
 
@@ -256,7 +261,7 @@ void UniboardSankoreTransition::executeTransition()
     }
 
     if (!result){
-        qWarning() << "The transaction has failed";
+        qWarning() << "The transition has failed";
         rollbackDocumentsTransition(fileInfoList);
         UBFileSystemUtils::deleteDir(backupDestinationPath);
     }

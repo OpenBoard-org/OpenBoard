@@ -65,12 +65,6 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
     {
         // standalone window
         setAttribute(Qt::WA_TranslucentBackground);
-
-        // !!!! Should be included into Windows after QT recompilation
-#ifdef Q_WS_MAC
-        //setAttribute(Qt::WA_MacNoShadow);
-#endif
-
     }
 
     mBackgroundBrush = QBrush(UBSettings::paletteColor);
