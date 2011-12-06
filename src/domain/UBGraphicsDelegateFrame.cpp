@@ -92,7 +92,6 @@ UBGraphicsDelegateFrame::~UBGraphicsDelegateFrame()
     // NOOP
 }
 
-
 void UBGraphicsDelegateFrame::setAntiScale(qreal pAntiScale)
 {
     mFrameWidth = mNominalFrameWidth * pAntiScale;
@@ -298,8 +297,8 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             QSizeF newSize = resizableItem->size() + incVector;
 
-            if (newSize.width() < 50 /*0*/ || newSize.height() < /*0*/ 50)
-                return;
+//          if (newSize.width() < 50 /*0*/ || newSize.height() < /*0*/ 50)
+//              return;
 
             resizableItem->resize(newSize);
         }
@@ -595,5 +594,4 @@ QRectF UBGraphicsDelegateFrame::rotateButtonBounds() const
 {
     return QRectF(rect().right()- mFrameWidth, rect().top(), mFrameWidth, mFrameWidth);
 }
-
 
