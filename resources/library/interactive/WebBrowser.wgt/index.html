@@ -225,10 +225,12 @@
                         $(window).trigger("resize");
                         return false;
                     };
-                    if(resizerIndex > 100){
+                    if(resizerIndex > 80){
                         resizerIndex = 0;
-                        $("#textbox").val("http://www.google.com/search?q=" + $("#textbox").val().replace("http://", ""));
-                        $("#search-button").trigger("click");
+                        $("#back-button").trigger("click");
+                        alert(sankoreLang[lang].alert);
+                        //$("#textbox").val("http://www.google.com/search?q=" + $("#textbox").val().replace("http://", ""));
+                        //$("#search-button").trigger("click");
                     }else{
                         resizer = setTimeout(function(){checkLoading()}, 100);
                         resizerIndex++;
