@@ -43,6 +43,8 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         virtual void decorateMenu(QMenu *menu);
         virtual void updateMenuActionState();
 
+        virtual void positionHandles();
+
     private:
 
         UBGraphicsTextItem* delegated();
@@ -55,9 +57,11 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         int mLastFontPixelSize;
 
         static const int sMinPixelSize;
+        static const int sMinPointSize;
 
     private:
         void customize(QFontDialog &fontDialog);
+        QFont createDefaultFont();
         QAction *mEditableAction;
 
     private slots:

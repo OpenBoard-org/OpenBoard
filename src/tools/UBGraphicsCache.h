@@ -56,12 +56,15 @@ protected:
 
 private:
     void init();
+    QRectF updateRect(QPointF currentPoint);
 
     QColor mMaskColor;
     eMaskShape mMaskShape;
     int mShapeWidth;
     bool mDrawMask;
     QPointF mShapePos;
+    int mOldShapeWidth;
+    QPointF mOldShapePos;
 };
 
 #endif // UBGRAPHICSCACHE_H

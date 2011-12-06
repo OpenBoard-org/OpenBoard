@@ -1,0 +1,94 @@
+
+body { font:75%/1.5em "lucida grande","lucida sans unicode", sans-serif;}
+
+p { padding:0 0  1em 0;color:#111;}
+
+
+p.first:first-letter{ float:left;font-family: Palatino,'Palatino Linotype',Georgia, sans-serif;font-size:3em;font-weight:700;line-height:1em;margin-bottom:-0.2em;padding:0.2em 0.1em 0 0; }
+p img       { float: left; margin: 0.3em 0.833em 0.833em 0; padding: 0; }
+p img.right { float: right; margin: 0.3em  0 0.833em 0.833em;  }
+
+
+h1,h2{ line-height: normal; font-family: Helvetica, Verdana, Arial, sans-serif; font-weight:normal; color: #333;  }
+h3,h4,h5,h6 { font-family: Helvetica, Verdana, Arial, sans-serif; text-align: left; line-height: normal; font-weight: normal; color: #333; }
+
+
+h1 { font-size: 2.2em;  margin-bottom: 0.682em; }
+h2 { font-size: 1.9em;  margin-bottom: 0.79em; }
+h3 { font-size: 1.7em;  margin-bottom: 0.882em; }
+h4 { font-size: 1.4em;  margin-bottom: 1.071em; }
+h5,h6 { font-size: 1.2em;  margin-bottom: 1.154em; }
+
+/* Color palete */
+.water { color:#5582d1; }
+.earth { color:#4e3e2c; }
+.air { color:#f1fff7; }
+.fire { color:#ff8a19; }
+.wine { color:#4a040a; }
+.beer { color:#F0C030; }
+.caffe { color:#473523; }
+.caffe-cream { color:#b68d3d; }
+.espresso { color:#2c1901; }
+.caramel{ color:#ab671f; }
+.chocolate { color:#290200; }
+.black-pepper { color:#444334; }
+.pepper-lite { color:#8d8a72; }
+.lipstick { color:#c20c0c; }
+
+
+li ul, 
+li ol  { margin:0 1.5em; }
+ul, ol { margin: 0 1.5em 1.5em 1.5em; }
+
+
+dl { margin: 0 0 1.5em 0; }
+dl dt { font-weight: bold; }
+dl dd { margin-left: 1.5em; }
+
+a { color:#035292; text-decoration:none; }
+a:hover { text-decoration: underline; }
+
+
+table { margin-bottom:1.5em; border-collapse: collapse; }
+th { font-weight:bold; }
+tr,th,td { margin:0; padding:0 1.5em 0 1em; height:18px; }
+tfoot { font-style: italic; }
+caption { text-align:center; font-family:Georgia, serif; }
+
+
+abbr, acronym { border-bottom:1px dotted #000; }
+address { margin-top:1.5em; font-style: italic; }
+del {color:#000;}
+
+
+blockquote { padding:1em 1em 1em 1.5em; font-family:baskerville,"palatino linotype",serif; }
+blockquote > *:first-child:before { content:"\201C";font-size:2.5em;margin-left:-.62em;font-family:georgia,serif;padding-right:.2em;color:#aaa;line-height:0; }/* From Tripoli  */
+
+strong { ont-weight: bold; }
+em, dfn { font-style: italic; }
+dfn { font-weight: bold; }
+pre, code { margin: 1.5em 0; white-space: pre; }
+pre, code, tt { font: 1em monospace; line-height: 1.5; } 
+tt { display: block; margin: 1.5em 0; }
+hr { margin-bottom:1.5em; }
+
+/*other small things */
+
+.tc { text-align:center; }
+.tr { text-align:right; }
+.tl { text-align:left; }
+.b { font-weight:bold; }
+.i { font-style:italic; }
+
+.indent { text-indent:1.5em;}
+.open { font-variant: small-caps; }
+p.break { text-align:center;text-indent:0;line-height:0; }
+p.zero{padding:0; margin:0}
+p.one { padding:0 1em  1em 1em;color:#111;}
+p img.right10 { float: right; margin:0.833em;  }
+
+.oldbook { font-family:"Book Antiqua","Warnock Pro","Goudy Old Style","Palatino",Georgia,serif; }
+.note { font-family:Georgia, "Times New Roman", Times, serif; font-style:italic; font-size:0.9em; margin:0.1em; color:#333; } 
+.mono { font-family:"Courier New", Courier, monospace; }
+
+

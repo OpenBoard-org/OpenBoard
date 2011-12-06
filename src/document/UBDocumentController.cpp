@@ -444,13 +444,6 @@ void UBDocumentController::setupViews()
         mMessageWindow = new UBMessageWindow(mDocumentUI->thumbnailWidget);
         mMessageWindow->hide();
 
-//         if (UBPlatformUtils::hasVirtualKeyboard())
-//         {
-//             mKeyboardPalette = UBKeyboardPalette::create(0);
-//             mKeyboardPalette->setParent(controlView());
-//             connect(mMainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
-//         }
-
     }
 }
 
@@ -466,19 +459,6 @@ void UBDocumentController::setupToolbar()
     UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->documentToolBar, mMainWindow->actionBoard);
     connect(mMainWindow->actionDocumentTools, SIGNAL(triggered()), this, SLOT(toggleDocumentToolsPalette()));
 }
-
-/*
-void UBDocumentController::showKeyboard(bool show)
-{
-    if(mKeyboardPalette)
-    {
-        if(show)
-            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-        mKeyboardPalette->setVisible(show);
-    }
-
-}
-*/
 
 void UBDocumentController::setupPalettes()
 {

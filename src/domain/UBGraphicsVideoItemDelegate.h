@@ -68,7 +68,7 @@ class DelegateVideoControl: public QGraphicsRectItem
 
 class UBGraphicsVideoItemDelegate : public UBGraphicsItemDelegate
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsVideoItemDelegate(UBGraphicsVideoItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent = 0);

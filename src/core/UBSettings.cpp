@@ -47,7 +47,7 @@ QString UBSettings::uniboardApplicationNamespaceUri = "http://uniboard.mnemis.co
 const int UBSettings::sDefaultFontPixelSize = 36;
 const char *UBSettings::sDefaultFontFamily = "Arial";
 
-QString UBSettings::currentFileVersion = "4.4.0";
+QString UBSettings::currentFileVersion = "4.5.0";
 
 QColor UBSettings::crossDarkBackground = QColor(44, 44, 44, 200);
 QColor UBSettings::crossLightBackground = QColor(165, 225, 255);
@@ -110,8 +110,6 @@ void UBSettings::destroy()
         delete sSingleton;
     sSingleton = NULL;
 }
-
-
 
 
 QSettings* UBSettings::getAppSettings()
@@ -198,7 +196,6 @@ void UBSettings::init()
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
     navigPaletteWidth = new UBSetting(this, "Board", "NavigPaletteWidth", 300);
     libPaletteWidth = new UBSetting(this, "Board", "LibPaletteWidth", 300);
-    appEnableUniboardTransition = new UBSetting(this, "App", "EnableUniboardTransition", true);
 
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
@@ -689,6 +686,15 @@ void UBSettings::setFontPixelSize(int pixelSize)
     setValue("Board/FontPixelSize", pixelSize);
 }
 
+int UBSettings::fontPointSize()
+{
+    return value("Board/FontPointSize", 12).toInt();
+}
+
+void UBSettings::setFontPointSize(int pointSize)
+{
+    setValue("Board/FontPointSize", pointSize);
+}
 
 bool UBSettings::isBoldFont()
 {
@@ -756,7 +762,7 @@ QString UBSettings::uniboardDataDirectory()
         }
     }
     QString qtDataPath = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
-    qtDataPath.replace("/Sankore 3.1", "");
+    qtDataPath.replace("/Sankore", "");
     return qtDataPath;
 }
 

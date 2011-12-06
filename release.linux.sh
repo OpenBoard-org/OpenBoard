@@ -1,3 +1,4 @@
+#!/bin/bash
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,13 +14,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
-#!/bin/sh
 
 make clean
 rm -rf build/linux/release/
 rm -rf install
 
-QT_PATH="../Qt-sankore3.1"
+QT_PATH="/usr/local/Trolltech/Qt-4.7.3"
 PLUGINS_PATH="$QT_PATH/plugins"
 QMAKE_PATH="$QT_PATH/bin/qmake"
 
@@ -27,6 +27,7 @@ if [ ! -e "$QMAKE_PATH" ]; then
     echo "qmake command not found at $QMAKE_PATH"
     exit 1
 fi
+
 
 if [ ! -e "$PLUGINS_PATH" ]; then
     echo "plugins path not found at $PLUGINS_PATH"
@@ -44,9 +45,9 @@ if [ ! -f build/linux/release/version ]; then
 else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
-	echo creating a tag with the version $VERSION
+        echo creating a tag with the version $VERSION
         git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
-	git push origin --tags 
+        git push origin --tags 
     fi
 fi
 
@@ -66,16 +67,19 @@ mkdir $QT_LIBRARY_DEST_PATH
 QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
 
 copyQtLibrary(){
-    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4" ]; then
+    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.3" ]; then
         echo "library not found: $QT_LIBRARY_SOURCE_PATH"
-        exit 1;
+        exit 1
     fi
     cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4" "$QT_LIBRARY_DEST_PATH/"
-    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.0" "$QT_LIBRARY_DEST_PATH/"
+    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.3" "$QT_LIBRARY_DEST_PATH/"
 }
 
+
+cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4" "$QT_LIBRARY_DEST_PATH/"
+cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
+
 copyQtLibrary libQtWebKit
-copyQtLibrary libphonon
 copyQtLibrary libQtDBus
 copyQtLibrary libQtScript
 copyQtLibrary libQtSvg
@@ -85,14 +89,16 @@ copyQtLibrary libQtXml
 copyQtLibrary libQtGui
 copyQtLibrary libQtCore
 
+cp "$QT_LIBRARY_SOURCE_PATH/phonon.so.4" "$QT_LIBRARY_DEST_PATH/"
+cp "$QT_LIBRARY_SOURCE_PATH/phonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
 
 rm -rf install/linux
 mkdir -p install/linux
 
-mv build/linux/release/product build/linux/release/Sankore_3.1.$VERSION
+mv build/linux/release/product build/linux/release/Open-Sankore.$VERSION
 cd build/linux/release
 
 # "Removing .svn directories ..."
 find . -name .svn -exec rm -rf {} \; 2> /dev/null
-tar cvzf ../../../install/linux/Sankore\ 3.1.tar.gz Sankore_3.1.$VERSION -C . 
-echo "Build Finished"; alert
+tar cvzf ../../../install/linux/Open-Sankore.tar.gz Open-Sankore.$VERSION -C . 
+notify-send "Open-Sankore"  "Build Finished"

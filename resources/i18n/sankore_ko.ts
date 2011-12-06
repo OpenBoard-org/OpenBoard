@@ -3,7 +3,7 @@
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation type="unfinished"></translation>
+        <translation>클릭하면 응용 프로그램으로 복귀합니다</translation>
     </message>
     <message>
         <source>background: url(:/images/bigUniboard.png); border: none;</source>
@@ -14,38 +14,38 @@
     <name>DownloadDialog</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드</translation>
     </message>
     <message>
         <source>Clean Up</source>
-        <translation type="unfinished"></translation>
+        <translation>정리</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished"></translation>
+        <translation>0 항목</translation>
     </message>
 </context>
 <context>
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>양식</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>파일명</translation>
     </message>
     <message>
         <source>Try Again</source>
-        <translation type="unfinished"></translation>
+        <translation>재시도</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>중지</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>열기</translation>
     </message>
     <message>
         <source>Ico</source>
@@ -56,769 +56,769 @@
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTube에 팟캐스트 게시</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>제목</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>설명</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>저자</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>유니보드</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished"></translation>
+        <translation>보드</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>웹</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>문서</translation>
     </message>
     <message>
         <source>Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>자습서</translation>
     </message>
     <message>
         <source>Stylus</source>
-        <translation type="unfinished"></translation>
+        <translation>스타일러스</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+T</translation>
     </message>
     <message>
         <source>Backgrounds</source>
-        <translation type="unfinished"></translation>
+        <translation>배경</translation>
     </message>
     <message>
         <source>Change Background</source>
-        <translation type="unfinished"></translation>
+        <translation>배경 바꾸기</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>실행 취소</translation>
     </message>
     <message>
         <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Z</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>다시 실행</translation>
     </message>
     <message>
         <source>Ctrl+Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Y</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>이전</translation>
     </message>
     <message>
         <source>Previous Page</source>
-        <translation type="unfinished"></translation>
+        <translation>이전 페이지</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>다음</translation>
     </message>
     <message>
         <source>Next Page</source>
-        <translation type="unfinished"></translation>
+        <translation>다음 페이지</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>문서 관리</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation type="unfinished"></translation>
+        <translation>웹 검색</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <source>Line</source>
-        <translation type="unfinished"></translation>
+        <translation>줄</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation type="unfinished"></translation>
+        <translation>작은 줄</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translation type="unfinished"></translation>
+        <translation>중간 줄</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translation type="unfinished"></translation>
+        <translation>큰 줄</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>종료</translation>
     </message>
     <message>
         <source>Quit Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>유니보드 종료</translation>
     </message>
     <message>
         <source>Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>지우개</translation>
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>작은 지우개</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>중간 지우개</translation>
     </message>
     <message>
         <source>Large Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>큰 지우개</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation>색상</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>뒤로</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>왼쪽</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>앞으로</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>오른쪽</translation>
     </message>
     <message>
         <source>Reload</source>
-        <translation type="unfinished"></translation>
+        <translation>다시보기</translation>
     </message>
     <message>
         <source>Reload Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>현재 페이지 다시보기</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>홈</translation>
     </message>
     <message>
         <source>Load Home Page</source>
-        <translation type="unfinished"></translation>
+        <translation>홈페이지 불러오기</translation>
     </message>
     <message>
         <source>Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>북마크</translation>
     </message>
     <message>
         <source>Show Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>북마크 보이기</translation>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>북마크</translation>
     </message>
     <message>
         <source>Add Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>북마크 추가</translation>
     </message>
     <message>
         <source>Display Board</source>
-        <translation type="unfinished"></translation>
+        <translation>보드 표시</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+B</translation>
     </message>
     <message>
         <source>Erase</source>
-        <translation type="unfinished"></translation>
+        <translation>지우기</translation>
     </message>
     <message>
         <source>Erase Content</source>
-        <translation type="unfinished"></translation>
+        <translation>콘텐츠 지우기</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 설정</translation>
     </message>
     <message>
         <source>Display Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>디스플레이 기본 설정</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation type="unfinished"></translation>
+        <translation>라이브러리</translation>
     </message>
     <message>
         <source>Show Library</source>
-        <translation type="unfinished"></translation>
+        <translation>라이브러리 보이기</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+L</translation>
     </message>
     <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1</translation>
     </message>
     <message>
         <source>Sankore 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1</translation>
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>바탕 화면 보이기</translation>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>컴퓨터 바탕 화면 보이기</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+H</translation>
     </message>
     <message>
         <source>Bigger</source>
-        <translation type="unfinished"></translation>
+        <translation>크게</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>확대</translation>
     </message>
     <message>
         <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl++</translation>
     </message>
     <message>
         <source>Smaller</source>
-        <translation type="unfinished"></translation>
+        <translation>작게</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>축소</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>새 폴더</translation>
     </message>
     <message>
         <source>Create a New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>새 폴더 만들기</translation>
     </message>
     <message>
         <source>New Document</source>
-        <translation type="unfinished"></translation>
+        <translation>새 문서</translation>
     </message>
     <message>
         <source>Create a New Document</source>
-        <translation type="unfinished"></translation>
+        <translation>새 문서 만들기</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation>가져오기</translation>
     </message>
     <message>
         <source>Import a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>문서 가져오기</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기</translation>
     </message>
     <message>
         <source>Export a Document</source>
-        <translation type="unfinished"></translation>
+        <translation>문서 내보내기</translation>
     </message>
     <message>
         <source>Open in Board</source>
-        <translation type="unfinished"></translation>
+        <translation>보드에서 열기</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translation type="unfinished"></translation>
+        <translation>보드에서 페이지 열기</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>복제</translation>
     </message>
     <message>
         <source>Duplicate Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>선택된 콘텐츠 복제</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>삭제</translation>
     </message>
     <message>
         <source>Delete Selected Content</source>
-        <translation type="unfinished"></translation>
+        <translation>선택된 콘텐츠 삭제</translation>
     </message>
     <message>
         <source>Del</source>
-        <translation type="unfinished"></translation>
+        <translation>Del</translation>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation type="unfinished"></translation>
+        <translation>작업 문서에 추가</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>열린 문서에 선택된 콘텐츠 추가</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>추가</translation>
     </message>
     <message>
         <source>Add Content to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>문서에 콘텐츠 추가</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>이름 바꾸기</translation>
     </message>
     <message>
         <source>Rename Content</source>
-        <translation type="unfinished"></translation>
+        <translation>콘텐츠 이름 바꾸기</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>도구</translation>
     </message>
     <message>
         <source>Display Tools</source>
-        <translation type="unfinished"></translation>
+        <translation>도구 표시</translation>
     </message>
     <message>
         <source>Multi Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>다중 화면</translation>
     </message>
     <message>
         <source>Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
+        <translation>와이드 크기 (16/9)</translation>
     </message>
     <message>
         <source>Use Document Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
+        <translation>와이드 크기 문서 사용 (16/9)</translation>
     </message>
     <message>
         <source>Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
+        <translation>일반 크기 (4/3)</translation>
     </message>
     <message>
         <source>Use Document Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
+        <translation>일반 크기 문서 사용 (4/3)</translation>
     </message>
     <message>
         <source>Custom Size</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 정의 크기</translation>
     </message>
     <message>
         <source>Use Custom Document Size</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 정의 크기 문서 사용</translation>
     </message>
     <message>
         <source>Stop Loading</source>
-        <translation type="unfinished"></translation>
+        <translation>불러오기 중지</translation>
     </message>
     <message>
         <source>Stop Loading Web Page</source>
-        <translation type="unfinished"></translation>
+        <translation>웹 페이지 불러오기 중지</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>잘라내기</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>복사하기</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>붙여넣기</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"></translation>
+        <translation>대기모드</translation>
     </message>
     <message>
         <source>Put Presentation to Sleep</source>
-        <translation type="unfinished"></translation>
+        <translation>프레젠테이션 대기모드 전환</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>가상 키보드</translation>
     </message>
     <message>
         <source>Display Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>가상 키보드 표시</translation>
     </message>
     <message>
         <source>Plain Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>밝은 단색 배경</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"></translation>
+        <translation>밝은 색</translation>
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>밝은 체크무늬 배경</translation>
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>어두운 단색 배경</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>어두운 색</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>어두운 체크무늬 배경</translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="unfinished"></translation>
+        <translation>팟캐스트</translation>
     </message>
     <message>
         <source>Record Presentation to Video</source>
-        <translation type="unfinished"></translation>
+        <translation>프레젠테이션을 동영상으로 레코딩</translation>
     </message>
     <message>
         <source>Record</source>
-        <translation type="unfinished"></translation>
+        <translation>레코딩</translation>
     </message>
     <message>
         <source>Start Screen Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>화면 레코딩 시작</translation>
     </message>
     <message>
         <source>Erase Items</source>
-        <translation type="unfinished"></translation>
+        <translation>항목 지우기</translation>
     </message>
     <message>
         <source>Erase All Items</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 항목 지우기</translation>
     </message>
     <message>
         <source>Erase Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>주석 지우기</translation>
     </message>
     <message>
         <source>Erase All Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 주석 지우기</translation>
     </message>
     <message>
         <source>Clear Page</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지 지우기</translation>
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 요소 지우기</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>펜</translation>
     </message>
     <message>
         <source>Annotate Document</source>
-        <translation type="unfinished"></translation>
+        <translation>문서에 주석 달기</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
         <source>Erase Annotation</source>
-        <translation type="unfinished"></translation>
+        <translation>주석 지우기</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
+        <translation>마커</translation>
     </message>
     <message>
         <source>Highlight </source>
-        <translation type="unfinished"></translation>
+        <translation>강조</translation>
     </message>
     <message>
         <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+M</translation>
     </message>
     <message>
         <source>Selector</source>
-        <translation type="unfinished"></translation>
+        <translation>선택자</translation>
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>객체 선택 및 수정</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Hand</source>
-        <translation type="unfinished"></translation>
+        <translation>손</translation>
     </message>
     <message>
         <source>Scroll Page</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지 스크롤</translation>
     </message>
     <message>
         <source>Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>레이저 포인터</translation>
     </message>
     <message>
         <source>Virtual Laser Pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>가상 레이저 포인터</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+G</translation>
     </message>
     <message>
         <source>Draw Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>줄 그리기</translation>
     </message>
     <message>
         <source>Ctrl+J</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+J</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>텍스트</translation>
     </message>
     <message>
         <source>Write Text</source>
-        <translation type="unfinished"></translation>
+        <translation>텍스트 쓰기</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
         <source>Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>캡처</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>화면 일부 캡처</translation>
     </message>
     <message>
         <source>Add To Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>현재 페이지에 추가</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>현재 페이지에 항목 추가</translation>
     </message>
     <message>
         <source>Add To New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>새 페이지에 추가</translation>
     </message>
     <message>
         <source>Add Item To New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>새 페이지에 항목 추가</translation>
     </message>
     <message>
         <source>Add To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>라이브러리에 추가</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translation type="unfinished"></translation>
+        <translation>라이브러리에 항목 추가</translation>
     </message>
     <message>
         <source>Pages</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지</translation>
     </message>
     <message>
         <source>Create a New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>새 페이지 만들기</translation>
     </message>
     <message>
         <source>New Page</source>
-        <translation type="unfinished"></translation>
+        <translation>새 페이지</translation>
     </message>
     <message>
         <source>Duplicate Page</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지 복제</translation>
     </message>
     <message>
         <source>Duplicate the Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>현재 페이지 복제</translation>
     </message>
     <message>
         <source>Import Page</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지 가져오기</translation>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation type="unfinished"></translation>
+        <translation>외부 페이지 가져오기</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>일시 중지</translation>
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>팟캐스트 레코딩 일시 중지</translation>
     </message>
     <message>
         <source>Podcast Config</source>
-        <translation type="unfinished"></translation>
+        <translation>팟캐스트 설정</translation>
     </message>
     <message>
         <source>Configure Podcast Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>팟캐스트 레코딩 설정</translation>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation type="unfinished"></translation>
+        <translation>플래시 트랩</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation type="unfinished"></translation>
+        <translation>플래시 콘텐츠 트랩</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation type="unfinished"></translation>
+        <translation>웹 트랩</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>웹 콘텐츠 트랩</translation>
     </message>
     <message>
         <source>Custom Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 정의 캡처</translation>
     </message>
     <message>
         <source>Window Capture</source>
-        <translation type="unfinished"></translation>
+        <translation>창 캡처</translation>
     </message>
     <message>
         <source>Capture a Window</source>
-        <translation type="unfinished"></translation>
+        <translation>창 캡처하기</translation>
     </message>
     <message>
         <source>Embed Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>웹 콘텐츠 포함</translation>
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>포함 가능한 웹 콘텐츠 캡처</translation>
     </message>
     <message>
         <source>Show on Display</source>
-        <translation type="unfinished"></translation>
+        <translation>디스플레이에 보이기</translation>
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>디스플레이 화면에 메인 화면 보이기</translation>
     </message>
     <message>
         <source>Erase all Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 주석 지우기</translation>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation type="unfinished"></translation>
+        <translation>eduMedia</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation type="unfinished"></translation>
+        <translation>eduMedia 시뮬레이션 가져오기</translation>
     </message>
     <message>
         <source>Open the tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>자습서 열기</translation>
     </message>
     <message>
         <source>Check Update</source>
-        <translation type="unfinished"></translation>
+        <translation>업데이트 확인</translation>
     </message>
     <message encoding="UTF-8">
         <source>Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 편집기</translation>
     </message>
     <message>
         <source>Show Sankore Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 위젯 편집기 보이기</translation>
     </message>
     <message encoding="UTF-8">
         <source>Hide Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 숨기기</translation>
     </message>
     <message encoding="UTF-8">
         <source>Hide Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 응용 프로그램 숨기기</translation>
     </message>
     <message>
         <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+H</translation>
     </message>
 </context>
 <context>
     <name>PasswordDialog</name>
     <message>
         <source>Authentication Required</source>
-        <translation type="unfinished"></translation>
+        <translation>인증이 필요합니다</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자명:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>암호:</translation>
     </message>
     <message>
         <source>DUMMY ICON</source>
@@ -833,23 +833,23 @@
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>프록시 인증</translation>
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>프록시에 연결</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자명:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>암호:</translation>
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation type="unfinished"></translation>
+        <translation>향후 사용을 위해 사용자명과 암호 저장</translation>
     </message>
     <message>
         <source>ICON</source>
@@ -861,716 +861,721 @@
     <message>
         <source>Trash</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>휴지통</translation>
     </message>
     <message>
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>/홈</translation>
     </message>
-</context>
-<context>
-    <name>UBAbstractPublisher</name>
 </context>
 <context>
     <name>UBAbstractWidget</name>
     <message>
         <source>Cannot load content</source>
-        <translation type="unfinished"></translation>
+        <translation>콘텐츠를 불러올 수 없습니다</translation>
     </message>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished"></translation>
+        <translation>불러오는 중 ...</translation>
     </message>
 </context>
 <context>
     <name>UBApplication</name>
     <message>
         <source>Page Size</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지 크기</translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="unfinished"></translation>
+        <translation>팟캐스트</translation>
     </message>
 </context>
 <context>
     <name>UBApplicationController</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>웹</translation>
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation type="unfinished"></translation>
+        <translation>새로운 업데이트가 있습니다. 웹 페이지로 이동하시겠습니까?</translation>
     </message>
     <message>
         <source>No update available</source>
-        <translation type="unfinished"></translation>
+        <translation>업데이트가 없습니다</translation>
     </message>
     <message>
         <source>Update available</source>
-        <translation type="unfinished"></translation>
+        <translation>새 업데이트가 있습니다</translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation>업데이트</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content from %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1에서 콘텐츠 다운로드 중</translation>
     </message>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 콘텐츠 다운로드 실패</translation>
     </message>
     <message>
         <source>Download finished</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드 완료</translation>
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 도구 유형 %1</translation>
     </message>
     <message>
         <source>Unknown content type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 콘텐츠 유형 %1</translation>
     </message>
     <message>
         <source>Add Item</source>
-        <translation type="unfinished"></translation>
+        <translation>항목 추가</translation>
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 지원 형식 (%1)</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>이미지를 라이브러리에 추가하는 도중 오류가 발생했습니다</translation>
     </message>
 </context>
 <context>
     <name>UBCachePropertiesWidget</name>
     <message>
         <source>Cache Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>캐시 속성</translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation>색상:</translation>
     </message>
     <message>
         <source>Shape:</source>
-        <translation type="unfinished"></translation>
+        <translation>모양:</translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>크기:</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>닫기</translation>
     </message>
 </context>
 <context>
     <name>UBDesktopPalette</name>
     <message>
         <source>Show Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>유니보드 보이기</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>화면 일부 캡처</translation>
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>화면 캡처</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation type="unfinished"></translation>
+        <translation>스타일러스 팔레트 보이기</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>보조 화면에 보드 보이기</translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>보조 화면에 바탕 화면 보이기</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentController</name>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>새 폴더</translation>
     </message>
     <message>
         <source>Page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 페이지</translation>
     </message>
     <message>
         <source>Add Folder of Images</source>
-        <translation type="unfinished"></translation>
+        <translation>이미지 폴더 추가</translation>
     </message>
     <message>
         <source>Add Images</source>
-        <translation type="unfinished"></translation>
+        <translation>이미지 추가</translation>
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation type="unfinished"></translation>
+        <translation>파일에서 페이지 추가</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 문서 복제 중</translation>
     </message>
     <message>
         <source>Document %1 copied</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 문서 복사됨</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지 제거</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation type="unfinished"></translation>
+        <translation>문서 제거</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>정말로 &apos;%1&apos; 문서를 제거하시겠습니까?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>휴지통 비우기</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation type="unfinished"></translation>
+        <translation>정말로 휴지통을 비우시겠습니까?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation type="unfinished"></translation>
+        <translation>휴지통 비우는 중</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation type="unfinished"></translation>
+        <translation>휴지통 비우기 완료</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>폴더 제거</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="unfinished"></translation>
+        <translation>정말로 &apos;%1&apos; 폴더와 해당 내용을 모두 제거하시겠습니까?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation type="unfinished"></translation>
+        <translation>선택된 문서가 없습니다!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
-        <translation type="unfinished"></translation>
+        <translation>지원되는 파일 열기</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 파일 가져오는 중...</translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation type="unfinished"></translation>
+        <translation>파일 가져오기 실패 ...</translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>폴더에서 모든 이미지 가져오기</translation>
     </message>
     <message>
         <source>Folder does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>폴더에 이미지 파일이 없습니다!</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>삭제</translation>
     </message>
     <message>
         <source>Empty</source>
-        <translation type="unfinished"></translation>
+        <translation>비우기</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>휴지통</translation>
     </message>
     <message>
         <source>Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>문서 열기</translation>
     </message>
     <message>
         <source>Add all Images to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>문서에 모든 이미지 추가</translation>
     </message>
     <message>
         <source>All Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 이미지 (%1)</translation>
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>선택된 영역에 이미지 파일이 없습니다!</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; 문서는 새로운 버전의  Sankore(%2)에서 생성된 문서입니다. 이 문서를 열면 일부 정보가 손실될 수 있습니다. 계속 진행하시겠습니까?</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
     <message>
         <source>images</source>
-        <translation type="unfinished"></translation>
+        <translation>이미지</translation>
     </message>
     <message>
         <source>videos</source>
-        <translation type="unfinished"></translation>
+        <translation>동영상</translation>
     </message>
     <message>
         <source>objects</source>
-        <translation type="unfinished"></translation>
+        <translation>객체</translation>
     </message>
     <message>
         <source>widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>위젯</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>지원되는 모든 파일 (*.%1)</translation>
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 파일 저장됨</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1/%2 페이지 가져오는 중</translation>
     </message>
     <message>
         <source>Erronous image data, skipping file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>잘못된 이미지 데이터, %1 파일 건너뜀</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished"></translation>
+        <translation>%0 페이지</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentPublisher</name>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 실패.</translation>
     </message>
     <message>
         <source>Export canceled ...</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 취소됨 ...</translation>
     </message>
     <message>
         <source>Converting page %1/%2 ...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1/%2 페이지 변환 중 ...</translation>
     </message>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>아직 자격 증명을 완료하지 않았습니다.</translation>
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation type="unfinished"></translation>
+        <translation>웹에 Sankore 파일 업로드 중.</translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>문서가 웹에 정상적으로 업로드되었습니다.</translation>
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>웹에 문서 업로드 실패.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (사본)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1/%2 페이지 복사 중</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocument</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지</translation>
     </message>
     <message>
         <source>Export as UBZ File</source>
-        <translation type="unfinished"></translation>
+        <translation>UBZ 파일로 내보내기</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>문서를 내보내는 중...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 완료.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 내보내는 중 %2/%3</translation>
     </message>
     <message>
         <source>Export to Sankore Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 형식으로 내보내기</translation>
     </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF 파일로 내보내기</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>문서를 내보내는 중...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 완료.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF로 내보내기</translation>
     </message>
 </context>
 <context>
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF 파일로 내보내기</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>문서를 내보내는 중...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 완료.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1/%2 페이지 내보내는 중</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF로 내보내기</translation>
     </message>
 </context>
 <context>
     <name>UBExportWeb</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지</translation>
     </message>
     <message>
         <source>Export as Web data</source>
-        <translation type="unfinished"></translation>
+        <translation>웹 데이터로 내보내기</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>문서를 내보내는 중...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 완료.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 실패.</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>웹 브라우저로 내보내기</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished"></translation>
+        <translation>잠김</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>확장 화면에 보이기</translation>
     </message>
     <message>
         <source>Go to Content Source</source>
-        <translation type="unfinished"></translation>
+        <translation>콘텐츠 소스로 이동</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;이곳에 텍스트를 입력하십시오&gt;</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItemDelegate</name>
     <message>
         <source>Text Color</source>
-        <translation type="unfinished"></translation>
+        <translation>텍스트 색상</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>동결됨</translation>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation type="unfinished"></translation>
+        <translation>도구로 변환</translation>
     </message>
 </context>
 <context>
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>일반 파일 형식 (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 파일 가져오는 중...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 파일 가져오기 실패.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>가져오기 완료.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>가져오기 실패.</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 파일 가져오는 중...</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>가져오기 완료.</translation>
     </message>
     <message>
         <source>Sankore 3.1 (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1 (*.ubz)</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 파일 가져오기 실패.</translation>
     </message>
 </context>
 <context>
     <name>UBImportImage</name>
     <message>
         <source>Image Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>이미지 형식 (</translation>
     </message>
     <message>
         <source>Image import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>이미지 가져오기 실패.</translation>
     </message>
     <message>
         <source>Image import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>이미지 가져오기 완료.</translation>
     </message>
 </context>
 <context>
     <name>UBImportPDF</name>
     <message>
         <source>Portable Document Format (*.pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Portable Document Format (*.pdf)</translation>
     </message>
     <message>
         <source>PDF import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF 가져오기 실패.</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1/%2 페이지 가져오는 중</translation>
     </message>
     <message>
         <source>PDF import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF 가져오기 완료.</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>동영상을 인트라넷에 게시하는 도중 오류가 발생했습니다 (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>인트라넷 게시 진행 중 %1 %</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>게시</translation>
     </message>
 </context>
 <context>
     <name>UBLibActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>즐겨찾기에 추가</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>공유</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>검색</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>삭제</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished"></translation>
+        <translation>폴더로 돌아가기</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>즐겨찾기에서 제거</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>새 폴더 만들기</translation>
     </message>
 </context>
 <context>
     <name>UBLibItemProperties</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>뒤로</translation>
     </message>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지에 추가</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished"></translation>
+        <translation>배경으로 지정</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished"></translation>
+        <translation>라이브러리에 추가</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished"></translation>
+        <translation>객체 정보</translation>
     </message>
 </context>
 <context>
     <name>UBLibraryController</name>
     <message>
         <source>Added 1 Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>라이브러리에 이미지 1개 추가됨</translation>
     </message>
     <message>
         <source>Audios</source>
         <comment>Audio category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>오디오</translation>
     </message>
     <message>
         <source>Movies</source>
         <comment>Movies category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>동영상</translation>
     </message>
     <message>
         <source>Pictures</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>사진</translation>
     </message>
     <message>
         <source>Shapes</source>
         <comment>Shapes category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>도형</translation>
     </message>
     <message>
         <source>Applications</source>
         <comment>Applications category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>응용 프로그램</translation>
     </message>
     <message>
         <source>Favorite</source>
         <comment>Favorite category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>즐겨찾기</translation>
     </message>
     <message>
         <source>Creating image thumbnail for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1의 이미지 썸네일 생성 중.</translation>
     </message>
     <message>
         <source>Adding to page failed for item %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 항목의 페이지 추가 실패.</translation>
     </message>
     <message>
         <source>Interactivities</source>
         <comment>Interactives category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>대화형 작업</translation>
     </message>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished"></translation>
+        <translation>가져온 이미지</translation>
     </message>
     <message>
         <source>Animations</source>
         <comment>Animations category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>애니메이션</translation>
     </message>
 </context>
 <context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>예</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>아니요</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>확인</translation>
     </message>
 </context>
 <context>
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;qt&gt;%2에 &quot;%1&quot;의 사용자명과 암호를 입력하십시오&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>프록시 연결 실패</translation>
     </message>
     <message>
         <source>SSL Errors:
@@ -1580,167 +1585,267 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
-        <translation type="unfinished"></translation>
+        <translation>SSL 오류:
+
+%1
+
+%2
+
+해당 호스트에 대해 이 오류들을 무시하시겠습니까?</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>예</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>아니요</translation>
     </message>
 </context>
 <context>
     <name>UBNewFolderDlg</name>
     <message>
         <source>Add new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>새 폴더 추가</translation>
     </message>
     <message>
         <source>New Folder name:</source>
-        <translation type="unfinished"></translation>
+        <translation>새 폴더 이름:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>추가</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>취소</translation>
     </message>
 </context>
 <context>
     <name>UBPersistenceManager</name>
     <message>
         <source>(copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>(사본)</translation>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation type="unfinished"></translation>
+        <translation>문서 저장소 손실</translation>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore가 &apos;%1&apos; 문서 저장소에 액세스할 수 없습니다. 데이터 손상을 방지하기 위해 응용 프로그램을 종료해야 합니다. 최종 변경된 내용도 손실되었을 수 있습니다.</translation>
     </message>
 </context>
 <context>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation type="unfinished"></translation>
+        <translation>인코더 실행 실패 ...</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation type="unfinished"></translation>
+        <translation>사용 가능한 팟캐스트 인코더가 없습니다 ...</translation>
     </message>
     <message>
         <source>Part %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 파트</translation>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation type="unfinished"></translation>
+        <translation>바탕 화면에</translation>
     </message>
     <message>
         <source>in folder %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 폴더에</translation>
     </message>
     <message>
         <source>Podcast created %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 팟캐스트가 생성되었습니다</translation>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>팟캐스트 레코딩 오류 (%1)</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 오디오 입력</translation>
     </message>
     <message>
         <source>No Audio Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 레코딩 없음</translation>
     </message>
     <message>
         <source>Small</source>
-        <translation type="unfinished"></translation>
+        <translation>작게</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>중간</translation>
     </message>
     <message>
         <source>Full</source>
-        <translation type="unfinished"></translation>
+        <translation>전체</translation>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation type="unfinished"></translation>
+        <translation>인트라넷에 게시</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTube에 게시</translation>
     </message>
     <message>
         <source>Sankore Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 캐스트</translation>
     </message>
 </context>
 <context>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation type="unfinished"></translation>
+        <translation>버전:</translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>마커는 압력 감지식입니다</translation>
     </message>
 </context>
 <context>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="unfinished"></translation>
+        <translation>프록시 로그인</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자명:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>암호:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation type="unfinished"></translation>
+        <translation>웹에 문서 게시</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="unfinished"></translation>
+        <translation>제목:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>설명:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>게시</translation>
     </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>무제 문서</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>휴지통</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>이미지</translation>
     </message>
     <message>
         <source>My Movies</source>
+        <translation>내 동영상</translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">제목</translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1748,444 +1853,445 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation type="unfinished"></translation>
+        <translation>미리보기 썸네일 생성 중 ...</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 썸네일 생성됨 ...</translation>
     </message>
 </context>
 <context>
     <name>UBToolsManager</name>
     <message>
         <source>Mask</source>
-        <translation type="unfinished"></translation>
+        <translation>마스크</translation>
     </message>
     <message>
         <source>Ruler</source>
-        <translation type="unfinished"></translation>
+        <translation>눈금자</translation>
     </message>
     <message>
         <source>Compass</source>
-        <translation type="unfinished"></translation>
+        <translation>나침반</translation>
     </message>
     <message>
         <source>Protractor</source>
-        <translation type="unfinished"></translation>
+        <translation>각도기</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>삼각자</translation>
     </message>
     <message>
         <source>Magnifier</source>
-        <translation type="unfinished"></translation>
+        <translation>돋보기</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation type="unfinished"></translation>
+        <translation>캐시</translation>
     </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
     <message>
         <source>Whole page</source>
-        <translation type="unfinished"></translation>
+        <translation>전체 페이지</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>웹</translation>
     </message>
 </context>
 <context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
-        <translation type="unfinished"></translation>
+        <translation>문서 업데이터</translation>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 업데이트가 필요합니다.</translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation type="unfinished"></translation>
+        <translation>백업 경로:</translation>
     </message>
     <message>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>찾아보기</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>업데이트</translation>
     </message>
     <message>
         <source>Select a backup folder</source>
-        <translation type="unfinished"></translation>
+        <translation>백업 폴더를 선택하십시오</translation>
     </message>
     <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 업데이트가 완료되었습니다!
+업데이트된 문서에 액세스하려면 응용 프로그램을 재시작하십시오.</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation type="unfinished"></translation>
+        <translation>업데이트 도중 오류가 발생했습니다. 파일은 영향 받지 않았습니다.</translation>
     </message>
     <message>
         <source>Files update results</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 업데이트 결과</translation>
     </message>
     <message>
         <source>Updating file </source>
-        <translation type="unfinished"></translation>
+        <translation>파일 업데이트 중</translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation type="unfinished"></translation>
+        <translation>잠시 후 가져오기가 시작됩니다...</translation>
     </message>
 </context>
 <context>
     <name>UBW3CWidget</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>웹</translation>
     </message>
 </context>
 <context>
     <name>UBWebPluginWidget</name>
     <message>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>불러오는 중...</translation>
     </message>
 </context>
 <context>
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 웹에 문서 게시</translation>
     </message>
 </context>
 <context>
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%0 호출됨 (메소드=%1, 상태=%2)</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTube 인증 실패.</translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>동영상을 YouTube에 업로드하는 도중 오류가 발생했습니다 (%1)</translation>
     </message>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTube 업로드 진행 중 %1 %</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublishingDialog</name>
     <message>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
+        <translation>업로드</translation>
     </message>
     <message>
         <source>Autos &amp; Vehicles</source>
-        <translation type="unfinished"></translation>
+        <translation>자동차 &amp; 차량</translation>
     </message>
     <message>
         <source>Music</source>
-        <translation type="unfinished"></translation>
+        <translation>음악</translation>
     </message>
     <message>
         <source>Pets &amp; Animals</source>
-        <translation type="unfinished"></translation>
+        <translation>애완동물 &amp; 동물</translation>
     </message>
     <message>
         <source>Sports</source>
-        <translation type="unfinished"></translation>
+        <translation>스포츠</translation>
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation type="unfinished"></translation>
+        <translation>여행 &amp; 이벤트</translation>
     </message>
     <message>
         <source>Gaming</source>
-        <translation type="unfinished"></translation>
+        <translation>게임</translation>
     </message>
     <message>
         <source>Comedy</source>
-        <translation type="unfinished"></translation>
+        <translation>코미디</translation>
     </message>
     <message>
         <source>People &amp; Blogs</source>
-        <translation type="unfinished"></translation>
+        <translation>사람 &amp; 블로그</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation type="unfinished"></translation>
+        <translation>뉴스 &amp; 정치</translation>
     </message>
     <message>
         <source>Entertainment</source>
-        <translation type="unfinished"></translation>
+        <translation>오락</translation>
     </message>
     <message>
         <source>Education</source>
-        <translation type="unfinished"></translation>
+        <translation>교육</translation>
     </message>
     <message>
         <source>Howto &amp; Style</source>
-        <translation type="unfinished"></translation>
+        <translation>요령 &amp; 스타일</translation>
     </message>
     <message>
         <source>Nonprofits &amp; Activism</source>
-        <translation type="unfinished"></translation>
+        <translation>비영리 &amp; 운동</translation>
     </message>
     <message>
         <source>Science &amp; Technology</source>
-        <translation type="unfinished"></translation>
+        <translation>과학 &amp; 기술</translation>
     </message>
 </context>
 <context>
     <name>UBZoomPalette</name>
     <message>
         <source>%1 x</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 x</translation>
     </message>
 </context>
 <context>
     <name>WBClearButton</name>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>지우기</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 저장</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드 취소됨: %1</translation>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>저장된 파일 열기 오류: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>저장 오류: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>네트워크 오류: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>초</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>분</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished"></translation>
+        <translation>- %4 %5 남았습니다</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1/%2 (%3/초) %4</translation>
     </message>
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation type="unfinished"></translation>
+        <translation>?</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>%1/%2 - 중지됨</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished"></translation>
+        <translation>바이트</translation>
     </message>
     <message>
         <source>KB</source>
-        <translation type="unfinished"></translation>
+        <translation>KB</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished"></translation>
+        <translation>MB</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadManager</name>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished"></translation>
+        <translation>1 다운로드</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 다운로드</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>제목</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>주소</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryTreeModel</name>
     <message>
         <source>Earlier Today</source>
-        <translation type="unfinished"></translation>
+        <translation>오늘 이전 시간</translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 항목</translation>
     </message>
 </context>
 <context>
     <name>WBSearchLineEdit</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>검색</translation>
     </message>
 </context>
 <context>
     <name>WBTabBar</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>새 탭(&amp;T)</translation>
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>탭 복제</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>탭 닫기(&amp;C)</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>다른 탭 닫기(&amp;O)</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>탭 다시보기</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 탭 다시보기</translation>
     </message>
 </context>
 <context>
     <name>WBTabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>최근 닫은 탭</translation>
     </message>
     <message>
         <source>(Untitled)</source>
-        <translation type="unfinished"></translation>
+        <translation>(무제)</translation>
     </message>
 </context>
 <context>
     <name>WBToolbarSearch</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>검색</translation>
     </message>
     <message>
         <source>No Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>최근 검색 없음</translation>
     </message>
     <message>
         <source>Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>최근 검색</translation>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>최근 검색 지우기</translation>
     </message>
 </context>
 <context>
     <name>WBWebPage</name>
     <message>
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드</translation>
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation type="unfinished"></translation>
+        <translation>현재 문서에 추가</translation>
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Error loading page: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>페이지 불러오기 오류: %1</translation>
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF 문서 다운로드: PDF 파일을 다운로드하시겠습니까, 아니면 현재 Sankore 문서에 추가하시겠습니까?</translation>
     </message>
 </context>
 <context>
     <name>WBWebView</name>
     <message>
         <source>Open in New Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>새 탭에서 열기</translation>
     </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTube에 팟캐스트 게시</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>제목</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>설명</translation>
     </message>
     <message>
         <source>Keywords</source>
-        <translation type="unfinished"></translation>
+        <translation>키워드</translation>
     </message>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>유니보드</translation>
     </message>
     <message>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>범주</translation>
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTube 사용자명</translation>
     </message>
     <message>
         <source>YouTube Password</source>
-        <translation type="unfinished"></translation>
+        <translation>YouTube 암호</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2193,107 +2299,111 @@ Please reboot the application to access the updated documents.</source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;귀하는 &apos;Upload&apos;를 클릭함으로써 귀하가 해당 콘텐츠에 대한 모든 권한을 소유하거나 소유자로부터 해당 콘텐츠를 YouTube에 공개할 수 있도록 허락받았으며, 해당 콘텐츠가 YouTube 이용약관 (&lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;)을 준수함을 보증합니다.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
     <name>brushProperties</name>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>밝은 배경</translation>
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>어두운 배경</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>불투명도</translation>
     </message>
     <message>
         <source>Line Width</source>
-        <translation type="unfinished"></translation>
+        <translation>줄 너비</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>중간</translation>
     </message>
     <message>
         <source>Strong</source>
-        <translation type="unfinished"></translation>
+        <translation>강렬한</translation>
     </message>
     <message>
         <source>Fine</source>
-        <translation type="unfinished"></translation>
+        <translation>가는</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>펜은 압력 감지식입니다</translation>
     </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>대화</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>제목</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>이메일</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>저자</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>설명</translation>
     </message>
 </context>
 <context>
     <name>documentPublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>대화</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>제목</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>이메일</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>저자</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>설명</translation>
     </message>
     <message>
         <source>Attach Downloadable PDF Version</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드용 PDF 버전 첨부</translation>
     </message>
     <message>
         <source>Attach Downloadable Uniboard File (UBZ)</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드용 유니보드 파일(UBZ) 첨부 </translation>
     </message>
     <message>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
-        <translation type="unfinished"></translation>
+        <translation>주의: 이 문서에 포함된 동영상은 웹에서 정상적으로 표시되지 않을 수 있습니다</translation>
     </message>
 </context>
 <context>
     <name>documents</name>
     <message>
         <source>Uniboard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>유니보드 문서</translation>
     </message>
     <message>
         <source>1</source>
@@ -2304,127 +2414,127 @@ p, li { white-space: pre-wrap; }
     <name>preferencesDialog</name>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 설정</translation>
     </message>
     <message encoding="UTF-8">
         <source>version : …</source>
-        <translation type="unfinished"></translation>
+        <translation>버전 : …</translation>
     </message>
     <message>
         <source>Default Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 설정</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished"></translation>
+        <translation>디스플레이</translation>
     </message>
     <message>
         <source>Internet</source>
-        <translation type="unfinished"></translation>
+        <translation>인터넷</translation>
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>외부 브라우저에 페이지 보이기</translation>
     </message>
     <message>
         <source>Home Page:</source>
-        <translation type="unfinished"></translation>
+        <translation>홈페이지:</translation>
     </message>
     <message>
         <source>Proxy User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>프록시 사용자/암호:</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>가상 키보드</translation>
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>키보드 버튼 크기:</translation>
     </message>
     <message>
         <source>Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>툴바</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation type="unfinished"></translation>
+        <translation>상단에 위치 (타블렛 권장사항)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation type="unfinished"></translation>
+        <translation>하단에 위치 (화이트보드 권장사항)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
-        <translation type="unfinished"></translation>
+        <translation>버튼 아래에 텍스트 표시</translation>
     </message>
     <message>
         <source>Mirroring</source>
-        <translation type="unfinished"></translation>
+        <translation>미러링</translation>
     </message>
     <message>
         <source>Show main display immediately on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>보조 화면 또는 프로젝터에 즉시 메인 디스플레이 보이기</translation>
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>스타일러스 팔레트</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>가로</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>세로</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>펜</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
+        <translation>마커</translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>소개</translation>
     </message>
     <message>
         <source>Software Update</source>
-        <translation type="unfinished"></translation>
+        <translation>소프트웨어 업데이트</translation>
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>실행시 소프트웨어 업데이트 확인</translation>
     </message>
     <message>
         <source>Licences</source>
-        <translation type="unfinished"></translation>
+        <translation>라이선스</translation>
     </message>
     <message>
         <source>OpenSSl</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenSSl</translation>
     </message>
     <message>
         <source>zlib</source>
-        <translation type="unfinished"></translation>
+        <translation>zlib</translation>
     </message>
     <message>
         <source>xpdf</source>
-        <translation type="unfinished"></translation>
+        <translation>xpdf</translation>
     </message>
     <message>
         <source>Quazip</source>
-        <translation type="unfinished"></translation>
+        <translation>Quazip</translation>
     </message>
     <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankoré 3.1</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2433,7 +2543,7 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;The OpenSSL toolkit stays under a dual license, i.e. both the conditions of the OpenSSL License and the original SSLeay license apply to the toolkit.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;See below for the actual license texts. Actually both licenses are BSD-style Open Source licenses. In case of any license issues related to OpenSSL please contact &lt;/span&gt;&lt;a href=&quot;mailto:openssl-core@openssl.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;openssl-core@openssl.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2441,7 +2551,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2449,7 +2559,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#000000;&quot;&gt;Xpdf is licensed under the GNU General Public License (GPL), version 2.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2457,7 +2567,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;GNU Library or Lesser General Public License (LGPL), zlib/libpng License&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2635,7 +2745,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;apply, that proxy&apos;s public statement of acceptance of any version is&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;permanent authorization for you to choose that version for the&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;Library.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2648,7 +2758,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2657,42 +2767,42 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;GIPENA&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;20 Avenue Ségur Paris 75007&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;Téléphone : 01 43 17 68 08&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#3c3c3c;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>네트워크</translation>
     </message>
     <message>
         <source>Community</source>
-        <translation type="unfinished"></translation>
+        <translation>커뮤니티</translation>
     </message>
     <message>
         <source>User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자/암호:</translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation type="unfinished"></translation>
+        <translation>플래시 트랩</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation type="unfinished"></translation>
+        <translation>플래시를 트랩으로 저장</translation>
     </message>
     <message>
         <source>about:blank</source>
-        <translation type="unfinished"></translation>
+        <translation>about:blank</translation>
     </message>
     <message>
         <source>Application name</source>
-        <translation type="unfinished"></translation>
+        <translation>응용 프로그램 이름</translation>
     </message>
     <message>
         <source>Create Application</source>
-        <translation type="unfinished"></translation>
+        <translation>응용 프로그램 만들기</translation>
     </message>
 </context>
 </TS>

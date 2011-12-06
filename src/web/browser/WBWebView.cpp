@@ -366,9 +366,14 @@ QString WBWebView::lastStatusBarText() const
 
 QUrl WBWebView::url() const
 {
-    QUrl url = QWebView::url();
+    QUrl url;
+    try{
+        url = QWebView::url();
+    } catch(...)
+    {}
+    
     if (!url.isEmpty())
-        return url;
+       return url;
 
     return mInitialUrl;
 }

@@ -198,6 +198,9 @@ void UBLibWidget::showSearchEngine(UBLibElement *elem)
 
 void UBLibWidget::showFolder()
 {
+    if(!mActionBar->isVisible()){
+        mActionBar->setVisible(true);
+    }
     mActionBar->setButtons(mActionBar->previousButtonSet());
     mStackedWidget->setCurrentIndex(ID_NAVIGATOR);
     miCrntStackWidget = ID_NAVIGATOR;

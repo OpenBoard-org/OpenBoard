@@ -53,6 +53,7 @@
 #include "pdf/PDFRenderer.h"
 
 #include "core/memcheck.h"
+//#include "qtlogger.h"
 
 const QString UBSvgSubsetAdaptor::nsSvg = "http://www.w3.org/2000/svg";
 const QString UBSvgSubsetAdaptor::nsXHtml = "http://www.w3.org/1999/xhtml";
@@ -308,7 +309,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     UBGraphicsWidgetItem *currentWidget = 0;
 
-    int mFileVersion = 40100; // default to 4.1.0
+    mFileVersion = 40100; // default to 4.1.0
 
     UBGraphicsStroke* annotationGroup = 0;
 
@@ -877,7 +878,8 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
         buffer.open(QBuffer::WriteOnly);
         mXmlWriter.setDevice(&buffer);
 
-        QTime timer = QTime::currentTime();
+        //Unused variable
+        //QTime timer = QTime::currentTime();
 
         mXmlWriter.setAutoFormatting(true);
 
@@ -1382,8 +1384,6 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
 }
 
-
-
 UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLineSvg(const QColor& pDefaultColor)
 {
     QStringRef svgX1 = mXmlReader.attributes().value("x1");
@@ -1490,11 +1490,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
     }
 
     return polygonItem;
-
 }
-
-
-
 
 QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemsFromPolylineSvg(const QColor& pDefaultColor)
 {
@@ -1965,6 +1961,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
         gItem->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked));
     }
 
+    QStringRef ubEditable = mXmlReader.attributes().value(mNamespaceUri, "editable");
+
+    if (!ubEditable.isNull())
+    {
+        bool isEditable = (ubEditable.toString() == xmlTrue || ubEditable.toString() == "1");
+        gItem->setData(UBGraphicsItemData::ItemEditable, QVariant(isEditable));
+    }
+
     //deprecated as of 4.4.a.12
     QStringRef ubLayer = mXmlReader.attributes().value(mNamespaceUri, "layer");
     if (!ubLayer.isNull())
@@ -2019,7 +2023,16 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     if (!locked.isNull() && locked.toBool())
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
 
+    QVariant editable = item->data(UBGraphicsItemData::ItemEditable);
+    if (!editable.isNull()) {
+        if (editable.toBool())
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "editable", xmlTrue);
+        else
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "editable", xmlFalse);
+    }
 }
+
+
 
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsAppleWidgetToSvg(UBGraphicsAppleWidgetItem* item)
@@ -2216,38 +2229,51 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                               , "fill-on-light-background", colorLightBg.name());
 
-    mXmlWriter.writeStartElement(nsXHtml, "body");
-    mXmlWriter.writeStartElement(nsXHtml, "div");
-    mXmlWriter.writeStartElement(nsXHtml, "font");
+    //for new documents from version 4.5.0
+    if (true) {
+        mXmlWriter.writeStartElement("itemTextContent");
+        mXmlWriter.writeCDATA(item->toHtml());
+        mXmlWriter.writeEndElement(); //itemTextContent
 
-    QFont font = item->font();
+    //tracking for back capability with older versions
+    } else if (false) {
+        mXmlWriter.writeStartElement(nsXHtml, "body");
+        mXmlWriter.writeStartElement(nsXHtml, "div");
+        mXmlWriter.writeStartElement(nsXHtml, "font");
 
-    mXmlWriter.writeAttribute("face", font.family());
+        QFont font = item->font();
 
-    QFontInfo fi(font);
-    int pixelSize = fi.pixelSize();
+        mXmlWriter.writeAttribute("face", font.family());
 
-    mXmlWriter.writeAttribute("style", sFontSizePrefix + QString(" %1").arg(pixelSize) + sPixelUnit + "; " +
-                              sFontWeightPrefix + " " + (fi.bold() ? "bold" : "normal") + "; " +
-                              sFontStylePrefix + " " + (fi.italic() ? "italic" : "normal") + ";");
-    mXmlWriter.writeAttribute("color", item->defaultTextColor().name());
+        QFontInfo fi(font);
+        int pixelSize = fi.pixelSize();
 
-    QString text = item->toPlainText();
-    QStringList lines = text.split("\n");
+        mXmlWriter.writeAttribute("style", sFontSizePrefix + QString(" %1").arg(pixelSize) + sPixelUnit + "; " +
+                                  sFontWeightPrefix + " " + (fi.bold() ? "bold" : "normal") + "; " +
+                                  sFontStylePrefix + " " + (fi.italic() ? "italic" : "normal") + ";");
+        mXmlWriter.writeAttribute("color", item->defaultTextColor().name());
 
-    for (int i = 0; i < lines.length() ; i++)
-    {
-        mXmlWriter.writeCharacters(lines.at(i));
+        QString text = item->toPlainText();
+        QStringList lines = text.split("\n");
 
-        if (i < lines.length() - 1)
-            mXmlWriter.writeEmptyElement(nsXHtml, "br");
+        for (int i = 0; i < lines.length() ; i++)
+        {
+            mXmlWriter.writeCharacters(lines.at(i));
+
+            if (i < lines.length() - 1)
+                mXmlWriter.writeEmptyElement(nsXHtml, "br");
+        }
+
+        mXmlWriter.writeEndElement(); //font
+        mXmlWriter.writeEndElement(); //div
+        mXmlWriter.writeEndElement(); //body
     }
 
-    mXmlWriter.writeEndElement(); //font
-    mXmlWriter.writeEndElement(); //div
-    mXmlWriter.writeEndElement(); //body
-
     mXmlWriter.writeEndElement(); //foreignObject
+
+//    QtLogger::start("/home/ilia/Documents/tmp/10/log.log");
+//    QtLogger::appendl(item->toHtml());
+//    QtLogger::finish();
 }
 
 UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
@@ -2275,39 +2301,44 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         mXmlReader.readNext();
         if (mXmlReader.isStartElement())
         {
-            if (mXmlReader.name() == "font")
-            {
+            //for new documents from version 4.5.0
+            if (mFileVersion >= 40500) {
+                if (mXmlReader.name() == "itemTextContent") {
+                    text = mXmlReader.readElementText();
+                    textItem->setHtml(text);
+                    textItem->resize(width, height);
+
+                    if (textItem->toPlainText().isEmpty()) {
+                        delete textItem;
+                        textItem = 0;
+                    }
+                    return textItem;
+                }
+
+            //tracking for backward capability with older versions
+            } else if (mXmlReader.name() == "font")  {
                 QFont font = textItem->font();
 
                 QStringRef fontFamily = mXmlReader.attributes().value("face");
 
-                if (!fontFamily.isNull())
-                {
+                if (!fontFamily.isNull()) {
                     font.setFamily(fontFamily.toString());
                 }
-
                 QStringRef fontStyle = mXmlReader.attributes().value("style");
-                if (!fontStyle.isNull())
-                {
-                    foreach (QString styleToken, fontStyle.toString().split(";"))
-                    {
+                if (!fontStyle.isNull()) {
+                    foreach (QString styleToken, fontStyle.toString().split(";")) {
                         styleToken = styleToken.trimmed();
-                        if (styleToken.startsWith(sFontSizePrefix) && styleToken.endsWith(sPixelUnit))
-                        {
+                        if (styleToken.startsWith(sFontSizePrefix) && styleToken.endsWith(sPixelUnit)) {
                             int fontSize = styleToken.mid(
                                                sFontSizePrefix.length(),
                                                styleToken.length() - sFontSizePrefix.length() - sPixelUnit.length()).toInt();
                             font.setPixelSize(fontSize);
-                        }
-                        else if (styleToken.startsWith(sFontWeightPrefix))
-                        {
+                        } else if (styleToken.startsWith(sFontWeightPrefix)) {
                             QString fontWeight = styleToken.mid(
                                                      sFontWeightPrefix.length(),
                                                      styleToken.length() - sFontWeightPrefix.length());
                             font.setBold(fontWeight.contains("bold"));
-                        }
-                        else if (styleToken.startsWith(sFontStylePrefix))
-                        {
+                        } else if (styleToken.startsWith(sFontStylePrefix)) {
                             QString fontStyle = styleToken.mid(
                                                     sFontStylePrefix.length(),
                                                     styleToken.length() - sFontStylePrefix.length());
@@ -2319,15 +2350,13 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                 textItem->setFont(font);
 
                 QStringRef fill = mXmlReader.attributes().value("color");
-                if (!fill.isNull())
-                {
+                if (!fill.isNull()) {
                     QColor textColor;
                     textColor.setNamedColor(fill.toString());
                     textItem->setDefaultTextColor(textColor);
                 }
 
-                if (!ubFillOnDarkBackground.isNull())
-                {
+                if (!ubFillOnDarkBackground.isNull()) {
                     QColor color;
                     color.setNamedColor(ubFillOnDarkBackground.toString());
                     if (!color.isValid())
@@ -2335,8 +2364,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     textItem->setColorOnDarkBackground(color);
                 }
 
-                if (!ubFillOnLightBackground.isNull())
-                {
+                if (!ubFillOnLightBackground.isNull()) {
                     QColor color;
                     color.setNamedColor(ubFillOnLightBackground.toString());
                     if (!color.isValid())
@@ -2344,20 +2372,16 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     textItem->setColorOnLightBackground(color);
                 }
 
-                while (!(mXmlReader.isEndElement() && mXmlReader.name() == "font"))
-                {
-                    if (mXmlReader.hasError())
-                    {
+                while (!(mXmlReader.isEndElement() && mXmlReader.name() == "font")) {
+                    if (mXmlReader.hasError()) {
                         break;
                     }
                     QXmlStreamReader::TokenType tt = mXmlReader.readNext();
-                    if (tt == QXmlStreamReader::Characters)
-                    {
+                    if (tt == QXmlStreamReader::Characters) {
                         text += mXmlReader.text().toString();
                     }
 
-                    if (mXmlReader.isStartElement() && mXmlReader.name() == "br")
-                    {
+                    if (mXmlReader.isStartElement() && mXmlReader.name() == "br") {
                         text += "\n";
                     }
                 }
@@ -2365,16 +2389,15 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         }
     }
 
-    if (text.isEmpty())
-    {
+    if (text.isEmpty()) {
         delete textItem;
         textItem = 0;
-    }
-    else
-    {
+    } else {
         textItem->setPlainText(text);
         textItem->resize(width, height);
     }
+
+    textItem->resize(width, height);
 
     return textItem;
 }
@@ -2412,6 +2435,7 @@ UBGraphicsCurtainItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::curtainItemFromSvg
     QRectF rect = curtainItem->rect();
     rect.setWidth(svgWidth.toString().toFloat());
     rect.setHeight(svgHeight.toString().toFloat());
+    rect.translate(- rect.center());
 
     curtainItem->setRect(rect);
 

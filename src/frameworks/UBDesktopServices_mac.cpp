@@ -96,7 +96,7 @@ QString UBDesktopServices::storageLocation(StandardLocation type)
     QString path = getFullPath(ref);
 
     if (QDesktopServices::DataLocation == type || QDesktopServices::CacheLocation == type)
-        path += "/Sankore/Sankore 3.1";
+        path += "/Sankore/Sankore";
 
     return path;
 }

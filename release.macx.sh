@@ -1,3 +1,4 @@
+#!/bin/bash
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,15 +14,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
-#!/bin/bash
-
 # Executables
 QMAKE="/usr/local/Trolltech/Qt-4.7.3/bin/qmake"
-MACDEPLOYQT="`pwd`/../Qt-sankore3.1/bin/macdeployqt"
+MACDEPLOYQT=/usr/local/Trolltech/Qt-4.7.3/bin/macdeployqt
 DMGUTIL="`pwd`/../Sankore-ThirdParty/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
 STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
+ICEBERG=/usr/local/bin/freeze
 
 # Directories
 BUILD_DIR="build/macx/release"
@@ -68,6 +68,7 @@ checkExecutable "$DMGUTIL"
 checkExecutable "$DSYMUTIL"
 checkExecutable "$STRIP"
 checkExecutable "$PLISTBUDDY"
+checkExecutable "$ICEBERG"
 
 
 # delete the build directory
@@ -98,16 +99,16 @@ else
     fi
 fi
   
-if [ $? != 0 ]; then
-    abort "compilation failed"
-fi
+#if [ $? != 0 ]; then
+#    abort "compilation failed"
+#fi
 
 
-NAME="Sankore 3.1"
+NAME="Open-Sankore"
 
 DMG="$NAME.dmg"
 VOLUME="/Volumes/$NAME"
-APP="$PRODUCT_DIR/Sankore 3.1.app"
+APP="$PRODUCT_DIR/Open-Sankore.app"
 DSYM_NAME="$NAME (r$SVN_REVISION).dSYM"
 DSYM="$PRODUCT_DIR/$DSYM_NAME"
 GSYM_i386="$PRODUCT_DIR/$NAME i386.sym"
@@ -119,17 +120,37 @@ notify "Removing .svn directories ..."
 find "$APP" -name .svn -exec rm -rf {} \; 2> /dev/null
 
 # set various version infomration in Info.plist
-$PLISTBUDDY -c "Set :CFBundleVersion $SVN_REVISION" "$INFO_PLIST"
+$PLISTBUDDY -c "Set :CFBundleVersion $VERSION" "$INFO_PLIST"
 $PLISTBUDDY -c "Set :CFBundleShortVersionString $VERSION" "$INFO_PLIST"
 $PLISTBUDDY -c "Set :CFBundleGetInfoString $NAME" "$INFO_PLIST"
 
 # bundle Qt Frameworks into the app bundle
 notify "Bulding frameworks ..."
-$MACDEPLOYQT "$APP"
+cd "`pwd`/build/macx/release/product/"
+$MACDEPLOYQT "`pwd`/Open-Sankore.app"
+cd -
 
 notify "Extracting debug information ..."
-$DSYMUTIL "$APP/Contents/MacOS/Sankore 3.1" -o "$DSYM"
-$STRIP -S "$APP/Contents/MacOS/Sankore 3.1"
+$DSYMUTIL "$APP/Contents/MacOS/Open-Sankore" -o "$DSYM"
+$STRIP -S "$APP/Contents/MacOS/Open-Sankore"
+
+if [ "$1" == "pkg" ]; then
+    ICEBERG_CONFIG_FILE="Open-Sankore.packproj"
+    # set version information
+    $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Description:International:IFPkgDescriptionVersion $VERSION" "$ICEBERG_CONFIG_FILE"
+    $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Display\ Information:CFBundleShortVersionString $VERSION" "$ICEBERG_CONFIG_FILE"
+    $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Version:IFMajorVersion `echo $VERSION | awk 'BEGIN { FS = "." }; { print $1 }'`" "$ICEBERG_CONFIG_FILE"
+    $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Version:IFMinorVersion `echo $VERSION | awk 'BEGIN { FS = "." }; { print $2 }'`" "$ICEBERG_CONFIG_FILE"
+
+
+    PRODUCT_DIR="install/mac/"
+
+    if [ ! -d "${PRODUCT_DIR}" ]; then
+	mkdir -p "${PRODUCT_DIR}"
+    fi
+    $ICEBERG $ICEBERG_CONFIG_FILE 
+    exit 0
+fi
 
 notify "Creating dmg ..."
 umount "$VOLUME" 2> /dev/null

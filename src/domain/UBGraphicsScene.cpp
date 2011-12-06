@@ -150,6 +150,9 @@ UBGraphicsScene::~UBGraphicsScene()
 
 void UBGraphicsScene::selectionChangedProcessing()
 {
+
+    if (selectedItems().count())
+        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
     QList<QGraphicsItem *> allItemsList = items();
     for( int i = 0; i < allItemsList.size(); i++ )
     {
@@ -1263,7 +1266,7 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
     textItem->setPlainText(pString);
     textItem->setZValue(getNextObjectZIndex());
 
-    QFont font;
+    QFont font = textItem->font();
 
     if (fontFamily == "")
     {
@@ -1280,7 +1283,7 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
     }
     else
     {
-        font.setPixelSize(pointSize);
+        font.setPointSize(pointSize);
     }
 
     font.setBold(bold);
@@ -1316,6 +1319,7 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString)
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText("");
     textItem->setHtml(pString);
+    textItem->setZValue(getNextObjectZIndex());
 
     addItem(textItem);
     textItem->show();
@@ -1323,9 +1327,10 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString)
     UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
     UBApplication::undoStack->push(uc);
 
-    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
+    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)),
+            this,     SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
 
-    textItem->setSelected(true);
+//    textItem->setSelected(true);
     textItem->setFocus();
 
     setDocumentUpdated();
