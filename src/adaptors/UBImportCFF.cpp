@@ -178,45 +178,32 @@ QString UBImportCFF::expandFileToDir(const QFile& pZipFile, const QString& pDir)
         }
 
         QString newFileName = documentRootFolder + "/" + file.getActualFileName();
-        bool ends = newFileName.endsWith('/');
-        if (!ends)  {
 
-            QFileInfo newFileInfo(newFileName);
-            rootDir.mkpath(newFileInfo.absolutePath());
+        QFileInfo newFileInfo(newFileName);
+        rootDir.mkpath(newFileInfo.absolutePath());
 
-            out.setFileName(newFileName);
-            out.open(QIODevice::WriteOnly);
+        out.setFileName(newFileName);
+        out.open(QIODevice::WriteOnly);
 
-            // Slow like hell (on GNU/Linux at least), but it is not my fault.
-            // Not ZIP/UNZIP package's fault either.
-            // The slowest thing here is out.putChar(c).
-            QByteArray outFileContent = file.readAll();
-            if (out.write(outFileContent) == -1)
-            {
-                qWarning() << "Import failed. Cause: Unable to write file";
-                out.close();
-                return "";
-            }
-            while(file.getChar(&c))
-                out.putChar(c);
+        while(file.getChar(&c))
+            out.putChar(c);
 
-            out.close();
+        out.close();
 
-            if(file.getZipError()!=UNZ_OK) {
-                qWarning() << "Import failed. Cause: " << zip.getZipError();
-                return "";
-            }
-            if(!file.atEnd()) {
-                qWarning() << "Import failed. Cause: read all but not EOF";
-                return "";
-            }
+        if(file.getZipError()!=UNZ_OK) {
+            qWarning() << "Import failed. Cause: " << zip.getZipError();
+            return "";
+        }
+        if(!file.atEnd()) {
+            qWarning() << "Import failed. Cause: read all but not EOF";
+            return "";
+        }
 
-            file.close();
+        file.close();
 
-            if(file.getZipError()!=UNZ_OK) {
-                qWarning() << "Import failed. Cause: file.close(): " <<  file.getZipError();
-                return "";
-            }
+        if(file.getZipError()!=UNZ_OK) {
+            qWarning() << "Import failed. Cause: file.close(): " <<  file.getZipError();
+            return "";
         }
     }
 

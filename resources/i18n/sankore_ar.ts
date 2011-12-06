@@ -3,794 +3,798 @@
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation type="unfinished"></translation>
+        <translation>النقر للعودة الى التطبيق </translation>
     </message>
     <message>
         <source>background: url(:/images/bigUniboard.png); border: none;</source>
-        <translation type="unfinished"></translation>
+        <translation>الخلفية: url(:/images/bigUniboard.png); border: none;</translation>
     </message>
 </context>
 <context>
     <name>DownloadDialog</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>التنزيلات</translation>
     </message>
     <message>
         <source>Clean Up</source>
-        <translation type="unfinished"></translation>
+        <translation>تنظيف</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished"></translation>
+        <translation>0 عنصر</translation>
     </message>
 </context>
 <context>
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>استمارة</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>اسم الملف</translation>
     </message>
     <message>
         <source>Try Again</source>
-        <translation type="unfinished"></translation>
+        <translation>المحاولة مرة أخرى</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>توقف</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>فتح</translation>
     </message>
     <message>
         <source>Ico</source>
-        <translation type="unfinished"></translation>
+        <translation>Ico</translation>
     </message>
 </context>
 <context>
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>نشر البودكاست على يوتيوب</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>العنوان</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>الوصف</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>الناشر</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished"></translation>
+        <translation>لوحة</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>الويب</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>وثائق</translation>
     </message>
     <message>
         <source>Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>برنامج تعليمي</translation>
     </message>
     <message>
         <source>Stylus</source>
-        <translation type="unfinished"></translation>
+        <translation>قلم الراسمة</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+T</translation>
     </message>
     <message>
         <source>Backgrounds</source>
-        <translation type="unfinished"></translation>
+        <translation>الخلفيات</translation>
     </message>
     <message>
         <source>Change Background</source>
-        <translation type="unfinished"></translation>
+        <translation>تغيير الخلفية</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>تراجع</translation>
     </message>
     <message>
         <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Z</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation> إعادة</translation>
     </message>
     <message>
         <source>Ctrl+Y</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Y</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>السابق</translation>
     </message>
     <message>
         <source>Previous Page</source>
-        <translation type="unfinished"></translation>
+        <translation>الصفحة السابقة</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation type="unfinished"></translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>التالي</translation>
     </message>
     <message>
         <source>Next Page</source>
-        <translation type="unfinished"></translation>
+        <translation>الصفحة التالية</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation type="unfinished"></translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>إدارة الوثائق</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation type="unfinished"></translation>
+        <translation>تصفح مواقع الإنترنت</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
         <source>Line</source>
-        <translation type="unfinished"></translation>
+        <translation>سطر</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation type="unfinished"></translation>
+        <translation>سطر صغير</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translation type="unfinished"></translation>
+        <translation>سطر متوسط</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translation type="unfinished"></translation>
+        <translation>سطر كبير</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>مغادرة</translation>
     </message>
     <message>
         <source>Quit Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>مغادرة Uniboard</translation>
     </message>
     <message>
         <source>Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>ممحاة</translation>
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>ممحاة صغيرة</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>ممحاة متوسطة </translation>
     </message>
     <message>
         <source>Large Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>ممحاة كبيرة</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation>لون</translation>
     </message>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>العودة</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>يسار</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>أمام</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>يمين </translation>
     </message>
     <message>
         <source>Reload</source>
-        <translation type="unfinished"></translation>
+        <translation>تحديث</translation>
     </message>
     <message>
         <source>Reload Current Page</source>
-        <translation type="unfinished"></translation>
+        <translation>تحديث الصفحة الحالية</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>الصفحة البدء</translation>
     </message>
     <message>
         <source>Load Home Page</source>
-        <translation type="unfinished"></translation>
+        <translation>تحديث الصفحة البدء</translation>
     </message>
     <message>
         <source>Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>اشارات مرجعية</translation>
     </message>
     <message>
         <source>Show Bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>اظهار الاشارات المرجعية</translation>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>اشارة مرجعية</translation>
     </message>
     <message>
         <source>Add Bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>اضافة اشارة مرجعية</translation>
     </message>
     <message>
         <source>Display Board</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض اللوحة</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+B</translation>
     </message>
     <message>
         <source>Erase</source>
-        <translation type="unfinished"></translation>
+        <translation>مسح</translation>
     </message>
     <message>
         <source>Erase Content</source>
-        <translation type="unfinished"></translation>
+        <translation>مسح المحتوى</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>تفضيلات</translation>
     </message>
     <message>
         <source>Display Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض التفضيلات </translation>
     </message>
     <message>
         <source>Library</source>
-        <translation type="unfinished"></translation>
+        <translation>المكتبة</translation>
     </message>
     <message>
         <source>Show Library</source>
-        <translation type="unfinished"></translation>
+        <translation>اظهار المكتبة</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+L</translation>
+    </message>
+    <message>
+        <source>Sankore 3.1</source>
+        <translation>Sankore 3.1</translation>
+    </message>
+    <message>
+        <source>Show Desktop</source>
+        <translation>اظهار سطح المكتب</translation>
+    </message>
+    <message>
+        <source>Show Computer Desktop</source>
+        <translation>اظهار سطح مكتب الحاسوب</translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+H</source>
+        <translation>Ctrl+Shift+H</translation>
+    </message>
+    <message>
+        <source>Bigger</source>
+        <translation>حجم أكبر</translation>
+    </message>
+    <message>
+        <source>Zoom In</source>
+        <translation>تكبير</translation>
+    </message>
+    <message>
+        <source>Ctrl++</source>
+        <translation>Ctrl++</translation>
+    </message>
+    <message>
+        <source>Smaller</source>
+        <translation>حجم أصغر</translation>
+    </message>
+    <message>
+        <source>Zoom Out</source>
+        <translation>تصغير</translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation>Ctrl+-</translation>
+    </message>
+    <message>
+        <source>New Folder</source>
+        <translation>مجلد جديد</translation>
+    </message>
+    <message>
+        <source>Create a New Folder</source>
+        <translation>انشاء مجلد جديد</translation>
+    </message>
+    <message>
+        <source>New Document</source>
+        <translation>وثيقة جديدة</translation>
+    </message>
+    <message>
+        <source>Create a New Document</source>
+        <translation>انشاء وثيقة جديدة</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation>استيراد</translation>
+    </message>
+    <message>
+        <source>Import a Document</source>
+        <translation>استيراد وثيقة</translation>
+    </message>
+    <message>
+        <source>Export</source>
+        <translation>تصدير</translation>
+    </message>
+    <message>
+        <source>Export a Document</source>
+        <translation>تصدير وثيقة</translation>
+    </message>
+    <message>
+        <source>Open in Board</source>
+        <translation>الفتح في اللوحة</translation>
+    </message>
+    <message>
+        <source>Open Page in Board</source>
+        <translation>فتح الصفحة في اللوحة</translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation>Ctrl+O</translation>
+    </message>
+    <message>
+        <source>Duplicate</source>
+        <translation>تكرار</translation>
+    </message>
+    <message>
+        <source>Duplicate Selected Content</source>
+        <translation>تكرار المحتوى المحدد</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>حذف</translation>
+    </message>
+    <message>
+        <source>Delete Selected Content</source>
+        <translation>حذف المحتوى المحدد</translation>
+    </message>
+    <message>
+        <source>Del</source>
+        <translation>حذف</translation>
+    </message>
+    <message>
+        <source>Add to Working Document</source>
+        <translation>اضافة الى وثيقة العمل</translation>
+    </message>
+    <message>
+        <source>Add Selected Content to Open Document</source>
+        <translation>اضافة المحتوى المحدد الى الوثيقة المفتوحة </translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>اضافة</translation>
+    </message>
+    <message>
+        <source>Add Content to Document</source>
+        <translation>اضافة المحتوى الى الوثيقة</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation>إعادة تسمية</translation>
+    </message>
+    <message>
+        <source>Rename Content</source>
+        <translation>إعادة تسمية المحتوى</translation>
+    </message>
+    <message>
+        <source>Tools</source>
+        <translation>أدوات</translation>
+    </message>
+    <message>
+        <source>Display Tools</source>
+        <translation>عرض الأدوات</translation>
+    </message>
+    <message>
+        <source>Multi Screen</source>
+        <translation>شاشات متعددة</translation>
+    </message>
+    <message>
+        <source>Wide Size (16/9)</source>
+        <translation>حجم كبير (16/9)</translation>
+    </message>
+    <message>
+        <source>Use Document Wide Size (16/9)</source>
+        <translation>استعمال الوثيقة في حجم كبير (16/9)</translation>
+    </message>
+    <message>
+        <source>Regular Size (4/3)</source>
+        <translation>حجم عادي (4/3)</translation>
+    </message>
+    <message>
+        <source>Use Document Regular Size (4/3)</source>
+        <translation>استعمال الوثيقة في حجم عادي(4/3)</translation>
+    </message>
+    <message>
+        <source>Custom Size</source>
+        <translation>حجم مخصص</translation>
+    </message>
+    <message>
+        <source>Use Custom Document Size</source>
+        <translation>استعمال حجم الوثيقة المخصص</translation>
+    </message>
+    <message>
+        <source>Stop Loading</source>
+        <translation>توقيف التحميل</translation>
+    </message>
+    <message>
+        <source>Stop Loading Web Page</source>
+        <translation>توقيف تحميل صفحة الويب</translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation>قص</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation>نسخ</translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation>الصاق</translation>
+    </message>
+    <message>
+        <source>Sleep</source>
+        <translation>سكون</translation>
+    </message>
+    <message>
+        <source>Put Presentation to Sleep</source>
+        <translation>وضع التقديم في وضع السكون</translation>
+    </message>
+    <message>
+        <source>Virtual Keyboard</source>
+        <translation>لوحة مفاتيح افتراضية</translation>
+    </message>
+    <message>
+        <source>Display Virtual Keyboard</source>
+        <translation>عرض مفاتيح افتراضية</translation>
+    </message>
+    <message>
+        <source>Plain Light Background</source>
+        <translation>خلفية بضوء عادي</translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation>ضوء</translation>
+    </message>
+    <message>
+        <source>Grid Light Background</source>
+        <translation>خلفية بضوء شبكي</translation>
+    </message>
+    <message>
+        <source>Plain Dark Background</source>
+        <translation>خلفية داكنة عادية</translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation>داكن</translation>
+    </message>
+    <message>
+        <source>Grid Dark Background</source>
+        <translation>خلفية داكنة شبكية</translation>
+    </message>
+    <message>
+        <source>Podcast</source>
+        <translation>بودكاست</translation>
+    </message>
+    <message>
+        <source>Record Presentation to Video</source>
+        <translation>تسجيل التقديم بالفيديو</translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <translation>تسجيل</translation>
+    </message>
+    <message>
+        <source>Start Screen Recording</source>
+        <translation>بدء تسجيل الشاشة</translation>
+    </message>
+    <message>
+        <source>Erase Items</source>
+        <translation>فسخ العناصر</translation>
+    </message>
+    <message>
+        <source>Erase All Items</source>
+        <translation>فسخ كل العناصر</translation>
+    </message>
+    <message>
+        <source>Erase Annotations</source>
+        <translation>فسخ الملاحظات</translation>
+    </message>
+    <message>
+        <source>Erase All Annotations</source>
+        <translation>فسخ كل الملاحظات</translation>
+    </message>
+    <message>
+        <source>Clear Page</source>
+        <translation>مسح الصفحة</translation>
+    </message>
+    <message>
+        <source>Clear All Elements</source>
+        <translation>مسح كل المكونات</translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation>قلم</translation>
+    </message>
+    <message>
+        <source>Annotate Document</source>
+        <translation>تعليم الوثيقة</translation>
+    </message>
+    <message>
+        <source>Ctrl+I</source>
+        <translation>Ctrl+I</translation>
+    </message>
+    <message>
+        <source>Erase Annotation</source>
+        <translation>فسخ الملاحظة</translation>
+    </message>
+    <message>
+        <source>Ctrl+E</source>
+        <translation>Ctrl+E</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation>علامة</translation>
+    </message>
+    <message>
+        <source>Highlight </source>
+        <translation>تمييز </translation>
+    </message>
+    <message>
+        <source>Ctrl+M</source>
+        <translation>Ctrl+M</translation>
+    </message>
+    <message>
+        <source>Selector</source>
+        <translation>أداء انتقاء </translation>
+    </message>
+    <message>
+        <source>Select And Modify Objects</source>
+        <translation>انتقاء وتغيير أشياء</translation>
+    </message>
+    <message>
+        <source>Ctrl+F</source>
+        <translation>Ctrl+F</translation>
+    </message>
+    <message>
+        <source>Hand</source>
+        <translation>يد</translation>
+    </message>
+    <message>
+        <source>Scroll Page</source>
+        <translation>الانتقال ضمن الصفحة</translation>
+    </message>
+    <message>
+        <source>Laser Pointer</source>
+        <translation>مؤشر ليزر</translation>
+    </message>
+    <message>
+        <source>Virtual Laser Pointer</source>
+        <translation>مؤشر ليزر افتراضي</translation>
+    </message>
+    <message>
+        <source>Ctrl+G</source>
+        <translation>Ctrl+G</translation>
+    </message>
+    <message>
+        <source>Draw Lines</source>
+        <translation>رسم خطوط</translation>
+    </message>
+    <message>
+        <source>Ctrl+J</source>
+        <translation>Ctrl+J</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation>نص</translation>
+    </message>
+    <message>
+        <source>Write Text</source>
+        <translation>كتابة نص</translation>
+    </message>
+    <message>
+        <source>Ctrl+K</source>
+        <translation>Ctrl+K</translation>
+    </message>
+    <message>
+        <source>Capture</source>
+        <translation>التقاط</translation>
+    </message>
+    <message>
+        <source>Capture Part of the Screen</source>
+        <translation>التقاط جزء من الشاشة</translation>
+    </message>
+    <message>
+        <source>Add To Current Page</source>
+        <translation>الاضافة الى الصفحة الحالية </translation>
+    </message>
+    <message>
+        <source>Add Item To Current Page</source>
+        <translation>اضافة العنصر الى الصفحة الحالية </translation>
+    </message>
+    <message>
+        <source>Add To New Page</source>
+        <translation>الاضافة الى الصفحة الجديدة</translation>
+    </message>
+    <message>
+        <source>Add Item To New Page</source>
+        <translation>اضافة العنصر الى الصفحة الجديدة</translation>
+    </message>
+    <message>
+        <source>Add To Library</source>
+        <translation>الاضافة الى المكتبة</translation>
+    </message>
+    <message>
+        <source>Add Item To Library</source>
+        <translation>اضافة العنصر الى المكتبة</translation>
+    </message>
+    <message>
+        <source>Pages</source>
+        <translation>صفحات</translation>
+    </message>
+    <message>
+        <source>Create a New Page</source>
+        <translation>انشاء صفحة جديدة</translation>
+    </message>
+    <message>
+        <source>New Page</source>
+        <translation>صفحة جديدة</translation>
+    </message>
+    <message>
+        <source>Duplicate Page</source>
+        <translation>تكرار صفحة</translation>
+    </message>
+    <message>
+        <source>Duplicate the Current Page</source>
+        <translation>تكرار الصفحة الحالية</translation>
+    </message>
+    <message>
+        <source>Import Page</source>
+        <translation>استيراد صفحة</translation>
+    </message>
+    <message>
+        <source>Import an External Page</source>
+        <translation>استيراد صفحة خارجية</translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation>وقفة قصيرة</translation>
+    </message>
+    <message>
+        <source>Pause Podcast Recording</source>
+        <translation>ايقاف تسجيل البودكاست مؤقتا</translation>
+    </message>
+    <message>
+        <source>Podcast Config</source>
+        <translation>تكوين البودكاست</translation>
+    </message>
+    <message>
+        <source>Configure Podcast Recording</source>
+        <translation>ضبط تسجيل البودكاست</translation>
+    </message>
+    <message>
+        <source>Flash Trap</source>
+        <translation>قلاش تراب</translation>
+    </message>
+    <message>
+        <source>Trap Flash Content</source>
+        <translation>محتوى فلاش تراب</translation>
+    </message>
+    <message>
+        <source>Web Trap</source>
+        <translation>ويب تراب</translation>
+    </message>
+    <message>
+        <source>Trap Web Content</source>
+        <translation>محتوى ويب تراب</translation>
+    </message>
+    <message>
+        <source>Custom Capture</source>
+        <translation>التقاط مخصص</translation>
+    </message>
+    <message>
+        <source>Window Capture</source>
+        <translation>التقاط نافذة</translation>
+    </message>
+    <message>
+        <source>Capture a Window</source>
+        <translation>التقاط نافذة</translation>
+    </message>
+    <message>
+        <source>Embed Web Content</source>
+        <translation>تضمين محتوى ويب</translation>
+    </message>
+    <message>
+        <source>Capture Embeddable Web Content</source>
+        <translation>التقاط محتوى ويب قابل للتضمين</translation>
+    </message>
+    <message>
+        <source>Show on Display</source>
+        <translation>اظهار العرض</translation>
+    </message>
+    <message>
+        <source>Show Main Screen on Display Screen</source>
+        <translation>اظهار الشاشة الرئيسية على شاشة العرض</translation>
+    </message>
+    <message>
+        <source>Erase all Annotations</source>
+        <translation>فسخ كل الملاحظات</translation>
+    </message>
+    <message>
+        <source>eduMedia</source>
+        <translation>eduMedia</translation>
+    </message>
+    <message>
+        <source>Import eduMedia simulation</source>
+        <translation>استيراد محاكاة eduMedia</translation>
+    </message>
+    <message>
+        <source>Open the tutorial</source>
+        <translation>فتح البرنامج التعليمي</translation>
+    </message>
+    <message>
+        <source>Check Update</source>
+        <translation>البحث عن تحديث</translation>
+    </message>
+    <message>
+        <source>Show Sankore Widgets Editor</source>
+        <translation>اظهار محرر النماذج المصغرة Sankore</translation>
+    </message>
+    <message>
+        <source>Ctrl+H</source>
+        <translation>Ctrl+H</translation>
     </message>
     <message encoding="UTF-8">
         <source>Sankoré 3.1</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Sankore 3.1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Computer Desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+H</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bigger</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Zoom In</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Smaller</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create a New Folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create a New Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import a Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export a Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open in Board</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open Page in Board</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate Selected Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Selected Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Del</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to Working Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Selected Content to Open Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Content to Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rename Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Multi Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use Document Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use Document Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Custom Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use Custom Document Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Loading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Loading Web Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sleep</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Put Presentation to Sleep</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Plain Light Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid Light Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Plain Dark Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Dark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid Dark Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Podcast</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Record Presentation to Video</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Screen Recording</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase All Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase Annotations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase All Annotations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear All Elements</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Annotate Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+I</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase Annotation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Highlight </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+M</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Selector</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select And Modify Objects</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hand</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Scroll Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Laser Pointer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Virtual Laser Pointer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+G</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Draw Lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+J</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Write Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+K</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add To Current Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Item To Current Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add To New Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Item To New Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add To Library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Item To Library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create a New Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate the Current Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import an External Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Podcast Recording</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Podcast Config</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Configure Podcast Recording</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Flash Trap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trap Flash Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Web Trap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trap Web Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Custom Capture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Window Capture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture a Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Embed Web Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture Embeddable Web Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show on Display</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Main Screen on Display Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase all Annotations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>eduMedia</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import eduMedia simulation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check Update</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message encoding="UTF-8">
         <source>Sankoré Editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Sankore Widgets Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
@@ -801,59 +805,55 @@
         <source>Hide Sankoré Application</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
     <message>
         <source>Authentication Required</source>
-        <translation type="unfinished"></translation>
+        <translation>مطلوب مصادقة</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>اسم المتخدم:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>كلمة السر:</translation>
     </message>
     <message>
         <source>DUMMY ICON</source>
-        <translation type="unfinished"></translation>
+        <translation>DUMMY ICON</translation>
     </message>
     <message>
         <source>INTRO TEXT DUMMY</source>
-        <translation type="unfinished"></translation>
+        <translation>INTRO TEXT DUMMY</translation>
     </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>مصادقة بروكسي</translation>
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>الاتصال ببروكسي</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>اسم المتخدم:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>كلمة السر:</translation>
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation type="unfinished"></translation>
+        <translation>تسجيل اسم المستخدم وكلمة السر للاستعمالات المقبلة</translation>
     </message>
     <message>
         <source>ICON</source>
-        <translation type="unfinished"></translation>
+        <translation>ICON</translation>
     </message>
 </context>
 <context>
@@ -861,94 +861,95 @@
     <message>
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
-        <translation type="unfinished"></translation>
+        <translation>/الصفحة البدء</translation>
     </message>
     <message>
         <source>Trash</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>سلة المهملات</translation>
     </message>
-</context>
-<context>
-    <name>UBAbstractPublisher</name>
 </context>
 <context>
     <name>UBAbstractWidget</name>
     <message>
         <source>Cannot load content</source>
-        <translation type="unfinished"></translation>
+        <translation>لا يمكن تحميل المحتوى</translation>
     </message>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished"></translation>
+        <translation>تحميل...</translation>
     </message>
 </context>
 <context>
     <name>UBApplication</name>
     <message>
         <source>Page Size</source>
-        <translation type="unfinished"></translation>
+        <translation>حجم الصفحة</translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="unfinished"></translation>
+        <translation>بودكاست</translation>
     </message>
 </context>
 <context>
     <name>UBApplicationController</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>الويب</translation>
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation type="unfinished"></translation>
+        <translation>تحديث جديد متوفر، هل تريدون الذهاب الى صفحة الويب؟</translation>
     </message>
     <message>
         <source>No update available</source>
-        <translation type="unfinished"></translation>
+        <translation>ليس هناك تحديثات</translation>
     </message>
     <message>
         <source>Update available</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update</source>
+        <translation type="unfinished">التحيين</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content from %1</source>
-        <translation type="unfinished"></translation>
+        <translation>تنزيل المحتوى من 1%</translation>
     </message>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل تنزيل المحتوى 1%</translation>
     </message>
     <message>
         <source>Download finished</source>
-        <translation type="unfinished"></translation>
+        <translation>انتهاء التنزيل</translation>
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>نوع أداة مجهول 1%</translation>
     </message>
     <message>
         <source>Unknown content type %1</source>
-        <translation type="unfinished"></translation>
+        <translation>نوع محتوى مجهول 1%</translation>
     </message>
     <message>
         <source>Add Item</source>
-        <translation type="unfinished"></translation>
+        <translation>اضافة عنصر</translation>
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>دعم الجميع (1%)</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>خطأ عند اضافة الصورة الى المكتبة</translation>
     </message>
 </context>
 <context>
@@ -971,584 +972,584 @@
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Close</translation>
     </message>
 </context>
 <context>
     <name>UBDesktopPalette</name>
     <message>
         <source>Show Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>اظهار Uniboard</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>التقاط جزء من الشاشة</translation>
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>التقاط الشاشة</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation type="unfinished"></translation>
+        <translation>اظهار لوحة قلم الراسمة</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>اظهار اللوحة على الشاشة الثانوية</translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>اظهار سطح المكتب على الشاشة الثانوية</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentController</name>
     <message>
         <source>New Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>مجلد جديد</translation>
     </message>
     <message>
         <source>Page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>صفحة 1%</translation>
     </message>
     <message>
         <source>Add Folder of Images</source>
-        <translation type="unfinished"></translation>
+        <translation>اضافة مجلد صور</translation>
     </message>
     <message>
         <source>Add Images</source>
-        <translation type="unfinished"></translation>
+        <translation>اضافة صور</translation>
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation type="unfinished"></translation>
+        <translation>اضافة صفخات من ملف</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
-        <translation type="unfinished"></translation>
+        <translation>تكرار الوثيقة 1%</translation>
     </message>
     <message>
         <source>Document %1 copied</source>
-        <translation type="unfinished"></translation>
+        <translation>وقع نسخ الوثيقة 1%</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished"></translation>
+        <translation>ازالة الصفحة</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation type="unfinished"></translation>
+        <translation>ازالة الوثيقة</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>هل تريدون حقا ازالة الوثيقة &apos;1%&apos;؟</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>إفراغ سلة المهملات</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation type="unfinished"></translation>
+        <translation>هل تريدون حقا إفراغ سلة المهملات؟</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation type="unfinished"></translation>
+        <translation>يجري افراغ سلة المهملات</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation type="unfinished"></translation>
+        <translation>تمّ افراغ سلة المهملات</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>ازالة مجلد</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="unfinished"></translation>
+        <translation>هل تريدون حقا ازالة المجلد &apos;1%&apos; وكل محتوياته؟</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation type="unfinished"></translation>
+        <translation>لم يقع اختيار وثيقة!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
-        <translation type="unfinished"></translation>
+        <translation>فتح الملف المدعوم</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد ملف 1%...</translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation type="unfinished"></translation>
+        <translation>فشل في استيراد الملف... </translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد كل الصور من المجلد</translation>
     </message>
     <message>
         <source>Folder does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>المجلد لا يحتوي على ملفات صور!</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>حذف</translation>
     </message>
     <message>
         <source>Empty</source>
-        <translation type="unfinished"></translation>
+        <translation>افراغ</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>سلة المهملات</translation>
     </message>
     <message>
         <source>Open Document</source>
-        <translation type="unfinished"></translation>
+        <translation>فتح وثيقة</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>وقع انشاء الوثيقة &apos;1%&apos; عبر نسخة أحدث من (2%) Sankore بفتحها، يمكن أن تخسروا بعض المعلومات. هل تريدون المواصلة؟</translation>
     </message>
     <message>
         <source>Add all Images to Document</source>
-        <translation type="unfinished"></translation>
+        <translation>اضافة كل الصور الى الوثيقة</translation>
     </message>
     <message>
         <source>All Images (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>كل الصور (1%)</translation>
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation type="unfinished"></translation>
+        <translation>الاختيار لا يحتوي على ملفات صور!</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
     <message>
         <source>images</source>
-        <translation type="unfinished"></translation>
+        <translation>صور</translation>
     </message>
     <message>
         <source>videos</source>
-        <translation type="unfinished"></translation>
+        <translation>فيديو</translation>
     </message>
     <message>
         <source>objects</source>
-        <translation type="unfinished"></translation>
+        <translation>أشياء</translation>
     </message>
     <message>
         <source>widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>نماذج مصغرة</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>كل الملفات المدعومة (*.1%)</translation>
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation type="unfinished"></translation>
+        <translation>حفظ الملف 1%</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد الصفحة 1% من 2%</translation>
     </message>
     <message>
         <source>Erronous image data, skipping file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>بيانات صور خاطئة، تخطي الملف 1%</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished"></translation>
+        <translation>صفحة 0%</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentPublisher</name>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation type="unfinished"></translation>
+        <translation>تحميل ملف Sankore على الويب </translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل التصدير.</translation>
     </message>
     <message>
         <source>Export canceled ...</source>
-        <translation type="unfinished"></translation>
+        <translation>إلغاء التصدير...</translation>
     </message>
     <message>
         <source>Converting page %1/%2 ...</source>
-        <translation type="unfinished"></translation>
+        <translation>تحويل الصفحة 1% / 2%</translation>
     </message>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translation type="unfinished"></translation>
+        <translation>لم يقع بعد ملء بيانات الاعتماد.</translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>وقع تحميل الوثيقة على الويب بشكل صحيح.</translation>
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل تحميل الوثيقة على الويب.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>1 % (نسخ)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished"></translation>
+        <translation>نسخ الصفحة 1% / 2%</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocument</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>صفحة</translation>
     </message>
     <message>
         <source>Export as UBZ File</source>
-        <translation type="unfinished"></translation>
+        <translation>التصدير كملف UBZ</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير الوثيقة...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير ناجح.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير 1% 2% من 3%</translation>
     </message>
     <message>
         <source>Export to Sankore Format</source>
-        <translation type="unfinished"></translation>
+        <translation>التصدير الى شكل Sankore</translation>
     </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>التصدير كملف PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير الوثيقة...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير ناجح.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>التصدير للـPDF</translation>
     </message>
 </context>
 <context>
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
+        <translation>التصدير كملف PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير الوثيقة...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير ناجح.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير الصفحة 1% من 2%</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>التصدير للـPDF</translation>
     </message>
 </context>
 <context>
     <name>UBExportWeb</name>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>صفحة</translation>
     </message>
     <message>
         <source>Export as Web data</source>
-        <translation type="unfinished"></translation>
+        <translation>التصدير كبيانات ويب</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير الوثيقة...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>تصدير ناجح.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل التصدير.</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>التصدير لمتصفح الويب</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished"></translation>
+        <translation>مقفل</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>مرئي على الشاشة الكبيرة</translation>
     </message>
     <message>
         <source>Go to Content Source</source>
-        <translation type="unfinished"></translation>
+        <translation>الذهاب الى مصدر المحتوى</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Type Text Here&gt;</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItemDelegate</name>
     <message>
         <source>Text Color</source>
-        <translation type="unfinished"></translation>
+        <translation>لون النص</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translation type="unfinished"></translation>
+        <translation>مجمد</translation>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation type="unfinished"></translation>
+        <translation>التحويل كأداة </translation>
     </message>
 </context>
 <context>
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>شكل ملف مشترك (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد ملف 1%...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل تصدير الملف 1%</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد ناجح</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد فاشل.</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocument</name>
     <message>
         <source>Sankore 3.1 (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore 3.1 (*.ubz)</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد ملف 1%...</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد ناجح</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل تصدير الملف 1%</translation>
     </message>
 </context>
 <context>
     <name>UBImportImage</name>
     <message>
         <source>Image Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>شكل الصورة (</translation>
     </message>
     <message>
         <source>Image import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل استيراد صورة</translation>
     </message>
     <message>
         <source>Image import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد صورة ناجح.</translation>
     </message>
 </context>
 <context>
     <name>UBImportPDF</name>
     <message>
         <source>Portable Document Format (*.pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Portable Document Format (*.pdf)</translation>
     </message>
     <message>
         <source>PDF import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل استيراد PDF.</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>استيراد الصفحة 1% من 2%</translation>
     </message>
     <message>
         <source>PDF import successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>نجاح استيراد PDF.</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>خطأ عند نشر الفيديو على الشبكة الداخلية (1%)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>يجري النشر على الشبكة الداخلية %1 %</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>نشر</translation>
     </message>
 </context>
 <context>
     <name>UBLibActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>الاضافة الى المفضلة</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>تقاسم</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>بحث</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>حذف</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished"></translation>
+        <translation>العودة الى المجلد</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>الحذف المفضلة</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>انشاء مجلد جديد</translation>
     </message>
 </context>
 <context>
     <name>UBLibItemProperties</name>
     <message>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>العودة</translation>
     </message>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished"></translation>
+        <translation>الاضافة الى الصفحة</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished"></translation>
+        <translation>تعيين كخلفية</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished"></translation>
+        <translation>الاضافة الى المكتبة</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished"></translation>
+        <translation>معلومات حول الأشياء</translation>
     </message>
 </context>
 <context>
     <name>UBLibraryController</name>
     <message>
         <source>Added 1 Image to Library</source>
-        <translation type="unfinished"></translation>
+        <translation>اضافة 1 صورة الى المكتبة</translation>
     </message>
     <message>
         <source>Audios</source>
         <comment>Audio category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>ملفات صوتية</translation>
     </message>
     <message>
         <source>Movies</source>
         <comment>Movies category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>أفلام</translation>
     </message>
     <message>
         <source>Pictures</source>
         <comment>Pictures category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>صور</translation>
     </message>
     <message>
         <source>Shapes</source>
         <comment>Shapes category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>أشكال</translation>
     </message>
     <message>
         <source>Applications</source>
         <comment>Applications category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>تطبيقات</translation>
     </message>
     <message>
         <source>Favorite</source>
         <comment>Favorite category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>مفضل</translation>
     </message>
     <message>
         <source>Interactivities</source>
         <comment>Interactives category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>تفاعلات</translation>
     </message>
     <message>
         <source>Creating image thumbnail for %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>انشاء صور مصغرة لـ 1%.</translation>
     </message>
     <message>
         <source>Adding to page failed for item %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل الاضافة للصفحة بالنسبة للعنصر 1%.</translation>
     </message>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished"></translation>
+        <translation>الصورة المستوردة</translation>
     </message>
     <message>
         <source>Animations</source>
         <comment>Animations category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>حركات</translation>
     </message>
 </context>
 <context>
@@ -1561,16 +1562,16 @@
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBNetworkAccessManager</name>
     <message>
-        <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Failed to log to Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل الاتصال ببروكسي</translation>
     </message>
     <message>
         <source>SSL Errors:
@@ -1580,6 +1581,18 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
+        <translation>أخطاء SSL: %1 %2 هل تريدون تجاهل هذه الأخطاء بالنسبة لهذا المضيف؟</translation>
+    </message>
+    <message>
+        <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1587,15 +1600,15 @@ Do you want to ignore these errors for this host?</source>
     <name>UBNewFolderDlg</name>
     <message>
         <source>Add new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>اضافة مجلد جديد</translation>
     </message>
     <message>
         <source>New Folder name:</source>
-        <translation type="unfinished"></translation>
+        <translation>اسم المجلد الجديد:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">اضافة</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1606,141 +1619,227 @@ Do you want to ignore these errors for this host?</source>
     <name>UBPersistenceManager</name>
     <message>
         <source>(copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>(نسخ)</translation>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation type="unfinished"></translation>
+        <translation>خسارة سجل الوثيقة</translation>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>لم يستطع Sankore الدخول الى سجل الوثيقة &apos;1%&apos;. للأسف، يجب اغلاق التطبيق لتفادي فساد البيانات.  يمكن أيضا فقدان التغييرات الأخيرة.</translation>
     </message>
 </context>
 <context>
     <name>UBPodcastController</name>
     <message>
         <source>Sankore Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>Sankore Cast</translation>
     </message>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation type="unfinished"></translation>
+        <translation>فشل بدء التشفير...</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation type="unfinished"></translation>
+        <translation>لا يوجد مشفر بودكاست...</translation>
     </message>
     <message>
         <source>Part %1</source>
-        <translation type="unfinished"></translation>
+        <translation>جزء 1%</translation>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation type="unfinished"></translation>
+        <translation>على سطح مكتبكم</translation>
     </message>
     <message>
         <source>in folder %1</source>
-        <translation type="unfinished"></translation>
+        <translation>في المجلد 1%</translation>
     </message>
     <message>
         <source>Podcast created %1</source>
-        <translation type="unfinished"></translation>
+        <translation>انشاء البودكاست 1%</translation>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>خطأ تسجيل البودكاست (1%)</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
-        <translation type="unfinished"></translation>
+        <translation>مدخل الصوت الافتراضي</translation>
     </message>
     <message>
         <source>No Audio Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>لا توجد تسجيلات صوتية</translation>
     </message>
     <message>
         <source>Small</source>
-        <translation type="unfinished"></translation>
+        <translation>صغير</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>متوسط</translation>
     </message>
     <message>
         <source>Full</source>
-        <translation type="unfinished"></translation>
+        <translation>كامل</translation>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation type="unfinished"></translation>
+        <translation>النشر على الشبكة الداخلية</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
-        <translation type="unfinished"></translation>
+        <translation>النشر على اليوتوب</translation>
     </message>
 </context>
 <context>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation type="unfinished"></translation>
+        <translation>نسخة: </translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>العلامة حساسة للضغط</translation>
     </message>
 </context>
 <context>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="unfinished"></translation>
+        <translation>دخول بروكسي</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished"></translation>
+        <translation>اسم المتخدم:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>كلمة السر:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation type="unfinished"></translation>
+        <translation>نشر الوثيقة على الويب</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="unfinished"></translation>
+        <translation>العنوان:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>الوصف:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation type="unfinished"></translation>
+        <translation>نشر</translation>
     </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>وثائق غير معنونة</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>سلة المهملات</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>صور</translation>
     </message>
     <message>
         <source>My Movies</source>
+        <translation>أفلامي</translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherBarWidget</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phasis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Equipment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source></source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I discover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I experiment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I train myself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I memorize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All together</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherStudentAction</name>
+    <message>
+        <source>Action %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Student</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1748,34 +1847,34 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation type="unfinished"></translation>
+        <translation>توليد صور معاينة مصغرة...</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation type="unfinished"></translation>
+        <translation>1 % صور مصغرة مولّدة</translation>
     </message>
 </context>
 <context>
     <name>UBToolsManager</name>
     <message>
         <source>Mask</source>
-        <translation type="unfinished"></translation>
+        <translation>قناع</translation>
     </message>
     <message>
         <source>Ruler</source>
-        <translation type="unfinished"></translation>
+        <translation>مسطرة</translation>
     </message>
     <message>
         <source>Compass</source>
-        <translation type="unfinished"></translation>
+        <translation>بوصلة</translation>
     </message>
     <message>
         <source>Protractor</source>
-        <translation type="unfinished"></translation>
+        <translation>منقلة</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>مثلث</translation>
     </message>
     <message>
         <source>Magnifier</source>
@@ -1790,58 +1889,58 @@ Do you want to ignore these errors for this host?</source>
     <name>UBTrapFlashController</name>
     <message>
         <source>Whole page</source>
-        <translation type="unfinished"></translation>
+        <translation>صفحة كاملة</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>الويب</translation>
     </message>
 </context>
 <context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
-        <translation type="unfinished"></translation>
+        <translation>محدّث الوثيقة</translation>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation type="unfinished"></translation>
+        <translation> تحتاج الملفات الى تحديث.</translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation type="unfinished"></translation>
+        <translation>مسار النسخ الاحتياطي:  </translation>
     </message>
     <message>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>تصفح</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>التحيين</translation>
     </message>
     <message>
         <source>Select a backup folder</source>
-        <translation type="unfinished"></translation>
+        <translation>اختيار مجلد النسخ الاحتياطي</translation>
+    </message>
+    <message>
+        <source>An error occured during the update. The files have not been affected.</source>
+        <translation>حدث خطأ أثناء التحديث. لم يقع التأثير على الملفات.</translation>
+    </message>
+    <message>
+        <source>Files update results</source>
+        <translation>نتائج تحديث الملفات</translation>
+    </message>
+    <message>
+        <source>Updating file </source>
+        <translation>تحديث الملف </translation>
+    </message>
+    <message>
+        <source>Please wait the import process will start soon...</source>
+        <translation>يرجى الانتظار، ستبدأ عملية الاستيراد عن قريب...</translation>
     </message>
     <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>An error occured during the update. The files have not been affected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Files update results</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Updating file </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please wait the import process will start soon...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1849,57 +1948,77 @@ Please reboot the application to access the updated documents.</source>
     <name>UBW3CWidget</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished"></translation>
+        <translation>الويب</translation>
     </message>
 </context>
 <context>
     <name>UBWebPluginWidget</name>
     <message>
         <source>Loading...</source>
-        <translation type="unfinished"></translation>
+        <translation>تحميل...</translation>
     </message>
 </context>
 <context>
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation type="unfinished"></translation>
+        <translation>نشر الوثيقة على شبكة Sankore</translation>
     </message>
 </context>
 <context>
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%0 called (method=%1, status=%2)</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>فشلت المصادقة في اليوتوب</translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>خطأ عند تحميل الفيديو على اليوتوب (1%)</translation>
     </message>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>يجري التحميل على الشبكة اليوتوب %1 %</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublishingDialog</name>
     <message>
         <source>Upload</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Autos &amp; Vehicles</source>
-        <translation type="unfinished"></translation>
+        <translation>التحميل</translation>
     </message>
     <message>
         <source>Music</source>
+        <translation>موسيقى</translation>
+    </message>
+    <message>
+        <source>Sports</source>
+        <translation>رياضة</translation>
+    </message>
+    <message>
+        <source>Gaming</source>
+        <translation>لعب فيديو</translation>
+    </message>
+    <message>
+        <source>Comedy</source>
+        <translation>كوميديا</translation>
+    </message>
+    <message>
+        <source>Entertainment</source>
+        <translation>ترفيه</translation>
+    </message>
+    <message>
+        <source>Education</source>
+        <translation>تعليم</translation>
+    </message>
+    <message>
+        <source>Autos &amp; Vehicles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1907,19 +2026,7 @@ Please reboot the application to access the updated documents.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Travel &amp; Events</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Gaming</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Comedy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1928,14 +2035,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Entertainment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Education</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1955,141 +2054,141 @@ Please reboot the application to access the updated documents.</source>
     <name>UBZoomPalette</name>
     <message>
         <source>%1 x</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 x</translation>
     </message>
 </context>
 <context>
     <name>WBClearButton</name>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>مسح</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished"></translation>
+        <translation>حفظ الملف</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>الغاء التنزيل: %1</translation>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>خطأ فتح الملف المسجل:  %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>خطأ تسجيل: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>خطأ شبكة: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>ثواني</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>دقائق</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished"></translation>
+        <translation>- %4 %5 متبقية</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 من %2 (%3/ثواني) %4</translation>
     </message>
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation type="unfinished"></translation>
+        <translation>?</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 من %2 - متوقف</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished"></translation>
+        <translation>بايت</translation>
     </message>
     <message>
         <source>KB</source>
-        <translation type="unfinished"></translation>
+        <translation>كيلوبايت</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished"></translation>
+        <translation>ميجابايت</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadManager</name>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished"></translation>
+        <translation>1 تنزيل</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 تنزيلات </translation>
     </message>
 </context>
 <context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>الاسم</translation>
     </message>
     <message>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>العنوان</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryTreeModel</name>
     <message>
         <source>Earlier Today</source>
-        <translation type="unfinished"></translation>
+        <translation>في وقت سابق اليوم</translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 عناصر </translation>
     </message>
 </context>
 <context>
     <name>WBSearchLineEdit</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>بحث</translation>
     </message>
 </context>
 <context>
     <name>WBTabBar</name>
     <message>
-        <source>New &amp;Tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Clone Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>استنساخ علامة التبويب</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>واغلاق علامة التبويب</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>اغلاق وعلامات تبويب أخرى</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>تحديث علامة التبويب</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
+        <translation>تحديث كل علامات التبويب</translation>
+    </message>
+    <message>
+        <source>New &amp;Tab</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2097,95 +2196,95 @@ Please reboot the application to access the updated documents.</source>
     <name>WBTabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>علامات التبويب التي تم فتحها مؤخرا</translation>
     </message>
     <message>
         <source>(Untitled)</source>
-        <translation type="unfinished"></translation>
+        <translation>(دون عنوان)</translation>
     </message>
 </context>
 <context>
     <name>WBToolbarSearch</name>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>بحث</translation>
     </message>
     <message>
         <source>No Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>لا توجد عمليات بحث حديثة</translation>
     </message>
     <message>
         <source>Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>عمليات بحث حديثة</translation>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation type="unfinished"></translation>
+        <translation>مسح عمليات البحث الحديثة</translation>
     </message>
 </context>
 <context>
     <name>WBWebPage</name>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?</source>
-        <translation type="unfinished"></translation>
+        <translation>تحميل وثيقة PDF:  هل تفضلون تنزيل ملف PDF أو اضافته الى وثيقة Sankore الحالية؟</translation>
     </message>
     <message>
         <source>Download</source>
-        <translation type="unfinished"></translation>
+        <translation>تنزيل</translation>
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation type="unfinished"></translation>
+        <translation>اضافة الى الوثيقة الحالية</translation>
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Error loading page: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>خطأ تحميل الصفحة: %1</translation>
     </message>
 </context>
 <context>
     <name>WBWebView</name>
     <message>
         <source>Open in New Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>فتح في علامة تبويب جديدة</translation>
     </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished"></translation>
+        <translation>نشر البودكاست على يوتيوب</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>العنوان</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>الوصف</translation>
     </message>
     <message>
         <source>Keywords</source>
-        <translation type="unfinished"></translation>
+        <translation>الكلمات الرئيسية</translation>
     </message>
     <message>
         <source>Uniboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboard</translation>
     </message>
     <message>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>فئة</translation>
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation type="unfinished"></translation>
+        <translation>اسم مستخدم اليوتوب</translation>
     </message>
     <message>
         <source>YouTube Password</source>
-        <translation type="unfinished"></translation>
+        <translation>كلمة سر اليوتوب</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2200,242 +2299,238 @@ p, li { white-space: pre-wrap; }
     <name>brushProperties</name>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>في خلفية مضيئة</translation>
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>في خلفية داكنة</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>معدل الشفافية</translation>
     </message>
     <message>
         <source>Line Width</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض الخط</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>متوسط</translation>
     </message>
     <message>
         <source>Strong</source>
-        <translation type="unfinished"></translation>
+        <translation>قوي</translation>
     </message>
     <message>
         <source>Fine</source>
-        <translation type="unfinished"></translation>
+        <translation>دقيق</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>القلم حساس للضغط </translation>
     </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>حوار</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>الاسم</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>البريد الالكتروني</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>الناشر</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>الوصف</translation>
     </message>
 </context>
 <context>
     <name>documentPublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>حوار</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>الاسم</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="unfinished"></translation>
+        <translation>البريد الالكتروني</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>الناشر</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>الوصف</translation>
     </message>
     <message>
         <source>Attach Downloadable PDF Version</source>
-        <translation type="unfinished"></translation>
+        <translation>الحاق نسخة PDF قابلة للتنزيل</translation>
     </message>
     <message>
         <source>Attach Downloadable Uniboard File (UBZ)</source>
-        <translation type="unfinished"></translation>
+        <translation>الحاق ملف Uniboard قابل للتنزيل (UBZ)</translation>
     </message>
     <message>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
-        <translation type="unfinished"></translation>
+        <translation>تحذير: تحتوي هذه الوثيقة على فيديو لا يمكن عرضه بشكل صحيح على الويب </translation>
     </message>
 </context>
 <context>
     <name>documents</name>
     <message>
         <source>Uniboard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>وثائق Uniboard</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>1</translation>
     </message>
 </context>
 <context>
     <name>preferencesDialog</name>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <source>version : …</source>
-        <translation type="unfinished"></translation>
+        <translation>تفضيلات</translation>
     </message>
     <message>
         <source>Default Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Default Settings</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Close</translation>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished"></translation>
+        <translation>Display</translation>
     </message>
     <message>
         <source>Internet</source>
-        <translation type="unfinished"></translation>
+        <translation>Internet</translation>
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض الصفحة على متصفح خارجي</translation>
     </message>
     <message>
         <source>Home Page:</source>
-        <translation type="unfinished"></translation>
+        <translation>الصفحة الرئيسية:</translation>
     </message>
     <message>
         <source>Proxy User/Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>مستعمل/كلمة سر بروكسي:</translation>
     </message>
     <message>
         <source>Mirroring</source>
-        <translation type="unfinished"></translation>
+        <translation>انعكاس</translation>
     </message>
     <message>
         <source>Show main display immediately on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>إظهار العرض الرئيسي على الفور على شاشة الثانوية أو عارض فيديو</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>لوحة مفاتيح افتراضية</translation>
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>حجم أزرار لوحة المفاتيح:</translation>
     </message>
     <message>
         <source>Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>شريط الأدوات</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation type="unfinished"></translation>
+        <translation>متمركز في الأعلى (منصوح به للكمبيوتر اللوحي)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation type="unfinished"></translation>
+        <translation>متمركز في الأسفل (منصوح به اللوحات البيضاء)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
-        <translation type="unfinished"></translation>
+        <translation>عرض النص أسفل الزر</translation>
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation type="unfinished"></translation>
+        <translation>لوح الرسم</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>أفقي</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>عمودي</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation>قلم</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation type="unfinished"></translation>
+        <translation>علامة</translation>
     </message>
     <message>
         <source>Licences</source>
-        <translation type="unfinished"></translation>
+        <translation>رخص</translation>
     </message>
     <message>
         <source>OpenSSl</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenSSl</translation>
     </message>
     <message>
         <source>zlib</source>
-        <translation type="unfinished"></translation>
+        <translation>zlib</translation>
     </message>
     <message>
         <source>xpdf</source>
-        <translation type="unfinished"></translation>
+        <translation>xpdf</translation>
     </message>
     <message>
         <source>Quazip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <source>Sankoré 3.1</source>
-        <translation type="unfinished"></translation>
+        <translation>Quazip</translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>حول</translation>
     </message>
     <message>
         <source>Software Update</source>
-        <translation type="unfinished"></translation>
+        <translation>تحيين البرنامج</translation>
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>التحقق من تحيين البرنامج عن الانطلاق</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>شبكة</translation>
     </message>
     <message>
         <source>Community</source>
-        <translation type="unfinished"></translation>
+        <translation>مجموعة</translation>
     </message>
     <message>
         <source>User/Pass:</source>
+        <translation>مستعمل/كلمة سر:</translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>version : …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2469,6 +2564,10 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;GNU Library or Lesser General Public License (LGPL), zlib/libpng License&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <source>Sankoré 3.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2676,23 +2775,23 @@ p, li { white-space: pre-wrap; }
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation type="unfinished"></translation>
+        <translation>إمساك فلاش</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation type="unfinished"></translation>
+        <translation>اختيار فلاش للامساك به</translation>
     </message>
     <message>
         <source>about:blank</source>
-        <translation type="unfinished"></translation>
+        <translation>about:blank</translation>
     </message>
     <message>
         <source>Application name</source>
-        <translation type="unfinished"></translation>
+        <translation>اسم التطبيق</translation>
     </message>
     <message>
         <source>Create Application</source>
-        <translation type="unfinished"></translation>
+        <translation>إنشاء تطبيق</translation>
     </message>
 </context>
 </TS>

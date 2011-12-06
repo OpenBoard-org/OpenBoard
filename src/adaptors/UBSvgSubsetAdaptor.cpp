@@ -2304,11 +2304,18 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
             //for new documents from version 4.5.0
             if (mFileVersion >= 40500) {
                 if (mXmlReader.name() == "itemTextContent") {
-                    QString text = mXmlReader.readElementText();
+                    text = mXmlReader.readElementText();
                     textItem->setHtml(text);
-                    break;
+                    textItem->resize(width, height);
+
+                    if (textItem->toPlainText().isEmpty()) {
+                        delete textItem;
+                        textItem = 0;
+                    }
+                    return textItem;
                 }
-            //tracking for back capability with older versions
+
+            //tracking for backward capability with older versions
             } else if (mXmlReader.name() == "font")  {
                 QFont font = textItem->font();
 
@@ -2382,15 +2389,14 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         }
     }
 
-    if (false) {
-        if (text.isEmpty()) {
-            delete textItem;
-            textItem = 0;
-        } else {
-            textItem->setPlainText(text);
-            textItem->resize(width, height);
-        }
+    if (text.isEmpty()) {
+        delete textItem;
+        textItem = 0;
+    } else {
+        textItem->setPlainText(text);
+        textItem->resize(width, height);
     }
+
     textItem->resize(width, height);
 
     return textItem;

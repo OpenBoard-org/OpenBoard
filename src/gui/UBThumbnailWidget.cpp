@@ -368,7 +368,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
             if (qlElements.size() > 0){
                             mime->setUrls(qlElements);
                             drag->setMimeData(mime);
-                            drag->exec();
+                            drag->exec(Qt::CopyAction);
             }
         }
     }

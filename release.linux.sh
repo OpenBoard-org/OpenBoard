@@ -1,3 +1,4 @@
+#!/bin/bash
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
-#!/bin/sh
 
 make clean
 rm -rf build/linux/release/
@@ -89,14 +89,16 @@ copyQtLibrary libQtXml
 copyQtLibrary libQtGui
 copyQtLibrary libQtCore
 
+cp "$QT_LIBRARY_SOURCE_PATH/phonon.so.4" "$QT_LIBRARY_DEST_PATH/"
+cp "$QT_LIBRARY_SOURCE_PATH/phonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
 
 rm -rf install/linux
 mkdir -p install/linux
 
-mv build/linux/release/product build/linux/release/Sankore.$VERSION
+mv build/linux/release/product build/linux/release/Open-Sankore.$VERSION
 cd build/linux/release
 
 # "Removing .svn directories ..."
 find . -name .svn -exec rm -rf {} \; 2> /dev/null
-tar cvzf ../../../install/linux/Sankore.tar.gz Sankore.$VERSION -C . 
-echo "Build Finished"
+tar cvzf ../../../install/linux/Open-Sankore.tar.gz Open-Sankore.$VERSION -C . 
+notify-send "Open-Sankore"  "Build Finished"

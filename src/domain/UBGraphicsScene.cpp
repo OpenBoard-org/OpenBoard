@@ -150,6 +150,9 @@ UBGraphicsScene::~UBGraphicsScene()
 
 void UBGraphicsScene::selectionChangedProcessing()
 {
+
+    if (selectedItems().count())
+        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
     QList<QGraphicsItem *> allItemsList = items();
     for( int i = 0; i < allItemsList.size(); i++ )
     {
@@ -1263,7 +1266,7 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
     textItem->setPlainText(pString);
     textItem->setZValue(getNextObjectZIndex());
 
-    QFont font;
+    QFont font = textItem->font();
 
     if (fontFamily == "")
     {
@@ -1280,7 +1283,7 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
     }
     else
     {
-        font.setPixelSize(pointSize);
+        font.setPointSize(pointSize);
     }
 
     font.setBold(bold);

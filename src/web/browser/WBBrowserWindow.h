@@ -147,6 +147,7 @@ class WBBrowserWindow : public QWidget
 
         void setupMenu();
         void setupToolBar();
+        void setupToolBarForTutorial();
         void updateStatusbarActionText(bool visible);
 
         QToolBar *mWebToolBar;
