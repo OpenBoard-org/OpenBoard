@@ -643,15 +643,22 @@ QString UBApplication::globalStyleSheet()
 
 QString UBApplication::urlFromHtml(QString html)
 {
-    qDebug() << "HTML: " << html.remove(QRegExp("[\\0]"));
     QString url;
-
     QDomDocument domDoc;
     domDoc.setContent(html.remove(QRegExp("[\\0]")));
     QDomElement rootElem = domDoc.documentElement();
 
-    url = rootElem.attribute("src");
+    //  QUICKFIX: Here we have to check rootElem. Sometimes it can be a <meta> tag
+    //  In such a case we will not be able to retrieve the src value
+    if(rootElem.tagName().toLower().contains("meta")){
+        qDebug() << rootElem.firstChildElement().tagName();
+        //  In that case we get the next element
+        url = rootElem.firstChildElement().attribute("src");
+    }else{
+        url = rootElem.attribute("src");
+    }
 
+    qDebug() << "The URL is: " << url;
     return url;
 }
 

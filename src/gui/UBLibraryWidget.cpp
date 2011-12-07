@@ -385,6 +385,7 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
         else if (pMimeData->hasHtml()){
             qDebug() << "hasHtml";
             QString html = pMimeData->html();
+            qDebug() << html;
             QString url = UBApplication::urlFromHtml(html);
             if("" != url)
             {

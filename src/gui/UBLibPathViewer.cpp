@@ -478,9 +478,8 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
         }
 
         bAccept = true;
-    }
-    else if(NULL != event->mimeData() && event->mimeData()->hasUrls()){
-        QList<QUrl> urls = event->mimeData()->urls();
+    }else if(NULL != pMimeData && pMimeData->hasUrls()){
+        QList<QUrl> urls = pMimeData->urls();
         foreach(QUrl eachUrl, urls){
             QString sUrl = eachUrl.toString();
             if(!sUrl.startsWith("uniboardTool://") && !sUrl.startsWith("file://") && !sUrl.startsWith("/")){
@@ -503,11 +502,10 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
             }
         }
         bAccept = true;
-    }
-    else if(NULL != event->mimeData() && event->mimeData()->hasText()){
+    }else if(NULL != pMimeData && pMimeData->hasText()){
         //  The user can only drop an Url in this location so if the text is not an Url,
         //  we discard it.
-        QString qsTxt = event->mimeData()->text().remove(QRegExp("[\\0]"));
+        QString qsTxt = pMimeData->text().remove(QRegExp("[\\0]"));
         if(qsTxt.startsWith("http")){
             // Show the download palette if it is hidden
             UBApplication::boardController->paletteManager()->startDownloads();
@@ -523,6 +521,27 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
             desc.url = qsTxt;
             UBDownloadManager::downloadManager()->addFileToDownload(desc);
             bAccept = true;
+        }
+    }else if(NULL != pMimeData && pMimeData->hasHtml()){
+        QString html = pMimeData->html();
+        QString url = UBApplication::urlFromHtml(html);
+        if("" != url)
+        {
+            bAccept = true;
+
+            // Show the download palette if it is hidden
+            UBApplication::boardController->paletteManager()->startDownloads();
+
+            // Add the dropped url to the download list
+            sDownloadFileDesc desc;
+            desc.currentSize = 0;
+            desc.id = 0;
+            desc.isBackground = false;
+            desc.modal = false;
+            desc.name = QFileInfo(url).fileName();
+            desc.totalSize = 0;
+            desc.url = url;
+            UBDownloadManager::downloadManager()->addFileToDownload(desc);
         }
     }
     if(bAccept){
