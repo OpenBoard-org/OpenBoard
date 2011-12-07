@@ -14,14 +14,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
+BASE_TROLLTECH_DIRECTORY=/usr/local/Trolltech/Qt-4.7.3
 # Executables
-QMAKE="/usr/local/Trolltech/Qt-4.7.3/bin/qmake"
-MACDEPLOYQT=/usr/local/Trolltech/Qt-4.7.3/bin/macdeployqt
+QMAKE=$BASE_TROLLTECH_DIRECTORY/bin/qmake
+MACDEPLOYQT=$BASE_TROLLTECH_DIRECTORY/bin/macdeployqt
 DMGUTIL="`pwd`/../Sankore-ThirdParty/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
 STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
 ICEBERG=/usr/local/bin/freeze
+LRELEASE=$BASE_TROLLTECH_DIRECTORY/bin/lrelease
 
 # Directories
 BUILD_DIR="build/macx/release"
@@ -69,7 +71,7 @@ checkExecutable "$DSYMUTIL"
 checkExecutable "$STRIP"
 checkExecutable "$PLISTBUDDY"
 checkExecutable "$ICEBERG"
-
+checkExecutable "$LRELEASE"
 
 # delete the build directory
 notify "Cleaning ..."
@@ -85,6 +87,8 @@ $QMAKE_CMD
 # build
 notify "Compiling ..."
 make -j4 release
+
+$LRELEASE "Sankore_3.1.pro"
 
 VERSION=`cat "$BUILD_DIR/version"`
 if [ ! -f "$BUILD_DIR/version" ]; then
