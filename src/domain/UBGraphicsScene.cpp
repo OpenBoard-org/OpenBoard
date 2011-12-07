@@ -151,24 +151,31 @@ UBGraphicsScene::~UBGraphicsScene()
 void UBGraphicsScene::selectionChangedProcessing()
 {
 
-    if (selectedItems().count())
-        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
+//    if (selectedItems().count())
+//        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
+
+
     QList<QGraphicsItem *> allItemsList = items();
     for( int i = 0; i < allItemsList.size(); i++ )
     {
         QGraphicsItem *nextItem = allItemsList.at(i);
-        qreal zValue = nextItem->zValue();
+        //Temporary stub. Due to ugly z-order implementation I need to do this (sankore 360)
+        //z-order behavior should be reimplemented and this stub should be deleted
+        if (nextItem == mBackgroundObject)
+            continue;
+        //Temporary stub end (sankore 360)
+//        qreal zValue = nextItem->zValue();
         nextItem->setZValue(qreal(1));
-        qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+//        qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
     }
 
     QList<QGraphicsItem *> selItemsList = selectedItems();
     for( int i = 0; i < selItemsList.size(); i++ )
     {
         QGraphicsItem *nextItem = selItemsList.at(i);
-        qreal zValue = nextItem->zValue();
+//        qreal zValue = nextItem->zValue();
         nextItem->setZValue(2);
-        qDebug() << QString(" >>> %1 <<< ").arg(i) << QString(" >>> %1 <<< ").arg(zValue);
+//        qDebug() << QString(" >>> %1 <<< ").arg(i) << QString(" >>> %1 <<< ").arg(zValue);
     }
 }
 
@@ -1420,6 +1427,7 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
         item->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::FixedBackground);
 
         item->setZValue(backgroundLayerStart);
+        UBApplication::showMessage("ZValue of the background is " + QString::number(item->zValue(), 'f'));
 
         if (pAdaptTransformation)
         {
