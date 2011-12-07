@@ -450,11 +450,13 @@ void UBDocumentNavigator::onSelectionChanged()
  */
 void UBDocumentNavigator::onMovedToIndex(int index)
 {
-    UBSceneThumbnailNavigPixmap* pItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(mThumbnails.at(index));
-    if(NULL != pItem)
-    {
-        mCrntItem = pItem;
-        mCrntItem->setSelected(true);
-        centerOn(mCrntItem);
+    if(index < mThumbnails.size()){
+        UBSceneThumbnailNavigPixmap* pItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(mThumbnails.at(index));
+        if(NULL != pItem)
+        {
+            mCrntItem = pItem;
+            mCrntItem->setSelected(true);
+            centerOn(mCrntItem);
+        }
     }
 }
