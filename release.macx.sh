@@ -99,9 +99,9 @@ else
     fi
 fi
   
-#if [ $? != 0 ]; then
-#    abort "compilation failed"
-#fi
+if [ $? != 0 ]; then
+    abort "compilation failed"
+fi
 
 
 NAME="Open-Sankore"
@@ -135,7 +135,10 @@ $DSYMUTIL "$APP/Contents/MacOS/Open-Sankore" -o "$DSYM"
 $STRIP -S "$APP/Contents/MacOS/Open-Sankore"
 
 if [ "$1" == "pkg" ]; then
-    ICEBERG_CONFIG_FILE="Open-Sankore.packproj"
+    BASE_ICEBERG_CONFIG_FILE="Open-Sankore.packproj"
+    #copy the standard file for working with
+    ICEBERG_CONFIG_FILE="Open-Sankore-working.packproj"
+    cp -r $BASE_ICEBERG_CONFIG_FILE $ICEBERG_CONFIG_FILE
     # set version information
     $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Description:International:IFPkgDescriptionVersion $VERSION" "$ICEBERG_CONFIG_FILE"
     $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Display\ Information:CFBundleShortVersionString $VERSION" "$ICEBERG_CONFIG_FILE"
@@ -149,6 +152,10 @@ if [ "$1" == "pkg" ]; then
 	mkdir -p "${PRODUCT_DIR}"
     fi
     $ICEBERG $ICEBERG_CONFIG_FILE 
+
+    #clean up mess
+    rm -rf $ICEBERG_CONFIG_FILE
+
     exit 0
 fi
 

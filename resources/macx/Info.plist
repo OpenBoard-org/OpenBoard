@@ -55,7 +55,7 @@
 		<key>CFBundleIconFile</key>
 		<string>Uniboard.icns</string>
 		<key>CFBundleIdentifier</key>
-		<string>com.sankore.open-sankore</string>
+		<string>org.eduxia.open-sankore</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>

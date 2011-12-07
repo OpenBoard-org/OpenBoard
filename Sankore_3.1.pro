@@ -166,7 +166,7 @@ macx {
    UB_THIRDPARTY_INTERACTIVE.path = "$$RESOURCES_DIR/library/interactive"
    UB_MACX_ICNS.files = $$files(resources/macx/*.icns)
    UB_MACX_ICNS.path = "$$RESOURCES_DIR"
-   UB_MACX_EXTRAS.files = "resources/macx/Save PDF to Uniboard.workflow"
+   UB_MACX_EXTRAS.files = "resources/macx/Save PDF to Open-Sankore.workflow"
    UB_MACX_EXTRAS.path = "$$RESOURCES_DIR"
    UB_I18N.path = $$DESTDIR/i18n # not used
 
