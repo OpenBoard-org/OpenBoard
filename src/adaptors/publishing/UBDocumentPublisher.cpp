@@ -63,11 +63,6 @@ UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *pa
 
 UBDocumentPublisher::~UBDocumentPublisher()
 {
-    if(mSourceDocument){
-        delete mSourceDocument;
-        mSourceDocument = NULL;
-    }
-
     if(mPublishingDocument){
         delete mPublishingDocument;
         mPublishingDocument = NULL;
