@@ -77,7 +77,7 @@ UBUpdateDlg::UBUpdateDlg(QWidget *parent, int nbFiles, const QString& bkpPath)
     mLayout->addWidget(mpDlgBttn);
 
     mpDlgBttn->button(QDialogButtonBox::Ok)->setText(tr("Update"));
-    mpDlgBttn->button(QDialogButtonBox::Cancel)->setText("Remind me later");
+    mpDlgBttn->button(QDialogButtonBox::Cancel)->setText(tr("Remind me later"));
 
     QObject::connect(mBrowseBttn, SIGNAL(clicked()), this, SLOT(onBrowse()));
     QObject::connect(mpDlgBttn, SIGNAL(accepted()), this, SLOT(onUpdate()));

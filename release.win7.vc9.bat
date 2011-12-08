@@ -23,6 +23,7 @@ set VS_BIN=%PROGRAMS_FILE_PATH%\Microsoft Visual Studio 9.0\VC\bin
 set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
 set INNO_EXE=%PROGRAMS_FILE_PATH%\Inno Setup 5\iscc.exe 
 set BUILD_DIR=build\win32\release
+set LRELEASE=%QT_DIR%\bin\lrelease
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
 
@@ -40,6 +41,8 @@ REM rmdir /S /Q %BUILD_DIR%
 set EDITION=MNEMIS_EDITION
 
 "%QT_BIN%\qmake.exe" "DEFINES+=%EDITION%"
+
+%LRELEASE% Sankore_3.1.pro
 
 set /p VERSION= < build\win32\release\version
 git rev-list --tags --max-count=1 > tmp
