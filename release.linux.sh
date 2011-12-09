@@ -22,6 +22,7 @@ rm -rf install
 QT_PATH="/usr/local/Trolltech/Qt-4.7.3"
 PLUGINS_PATH="$QT_PATH/plugins"
 QMAKE_PATH="$QT_PATH/bin/qmake"
+LRELEASES="/usr/local/Trolltech/Qt-4.7.3/bin/lrelease"
 
 if [ ! -e "$QMAKE_PATH" ]; then
     echo "qmake command not found at $QMAKE_PATH"
@@ -37,6 +38,8 @@ fi
 $QMAKE_PATH -spec linux-g++
 
 make -j 4 release-install
+
+$LRELEASES "Sankore_3.1.pro"
 
 VERSION=`cat build/linux/release/version`
 if [ ! -f build/linux/release/version ]; then

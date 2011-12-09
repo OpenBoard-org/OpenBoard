@@ -14,14 +14,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
+BASE_TROLLTECH_DIRECTORY=/usr/local/Trolltech/Qt-4.7.3
 # Executables
-QMAKE="/usr/local/Trolltech/Qt-4.7.3/bin/qmake"
-MACDEPLOYQT=/usr/local/Trolltech/Qt-4.7.3/bin/macdeployqt
+QMAKE=$BASE_TROLLTECH_DIRECTORY/bin/qmake
+MACDEPLOYQT=$BASE_TROLLTECH_DIRECTORY/bin/macdeployqt
 DMGUTIL="`pwd`/../Sankore-ThirdParty/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
 STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
 ICEBERG=/usr/local/bin/freeze
+LRELEASE=$BASE_TROLLTECH_DIRECTORY/bin/lrelease
 
 # Directories
 BUILD_DIR="build/macx/release"
@@ -69,7 +71,7 @@ checkExecutable "$DSYMUTIL"
 checkExecutable "$STRIP"
 checkExecutable "$PLISTBUDDY"
 checkExecutable "$ICEBERG"
-
+checkExecutable "$LRELEASE"
 
 # delete the build directory
 notify "Cleaning ..."
@@ -86,6 +88,8 @@ $QMAKE_CMD
 notify "Compiling ..."
 make -j4 release
 
+$LRELEASE "Sankore_3.1.pro"
+
 VERSION=`cat "$BUILD_DIR/version"`
 if [ ! -f "$BUILD_DIR/version" ]; then
     echo "version not found"
@@ -99,9 +103,9 @@ else
     fi
 fi
   
-#if [ $? != 0 ]; then
-#    abort "compilation failed"
-#fi
+if [ $? != 0 ]; then
+    abort "compilation failed"
+fi
 
 
 NAME="Open-Sankore"
@@ -135,7 +139,10 @@ $DSYMUTIL "$APP/Contents/MacOS/Open-Sankore" -o "$DSYM"
 $STRIP -S "$APP/Contents/MacOS/Open-Sankore"
 
 if [ "$1" == "pkg" ]; then
-    ICEBERG_CONFIG_FILE="Open-Sankore.packproj"
+    BASE_ICEBERG_CONFIG_FILE="Open-Sankore.packproj"
+    #copy the standard file for working with
+    ICEBERG_CONFIG_FILE="Open-Sankore-working.packproj"
+    cp -r $BASE_ICEBERG_CONFIG_FILE $ICEBERG_CONFIG_FILE
     # set version information
     $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Description:International:IFPkgDescriptionVersion $VERSION" "$ICEBERG_CONFIG_FILE"
     $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Display\ Information:CFBundleShortVersionString $VERSION" "$ICEBERG_CONFIG_FILE"
@@ -149,6 +156,10 @@ if [ "$1" == "pkg" ]; then
 	mkdir -p "${PRODUCT_DIR}"
     fi
     $ICEBERG $ICEBERG_CONFIG_FILE 
+
+    #clean up mess
+    rm -rf $ICEBERG_CONFIG_FILE
+
     exit 0
 fi
 

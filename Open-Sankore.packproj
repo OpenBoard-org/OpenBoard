@@ -433,6 +433,8 @@
 					<dict>
 						<key>Path</key>
 						<string></string>
+						<key>Path Type</key>
+						<integer>2</integer>
 						<key>Status</key>
 						<false/>
 					</dict>

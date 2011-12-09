@@ -48,8 +48,8 @@ void UBPlatformUtils::init()
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-    NSString *currentPath      = [[NSBundle mainBundle] pathForResource:@"Save PDF to Sankore" ofType:@"workflow"];
-    NSString *installedPath    = [[[@"~/Library/PDF Services" stringByExpandingTildeInPath] stringByAppendingPathComponent:@"Save PDF to Sankore"] stringByAppendingPathExtension:@"workflow"];
+    NSString *currentPath      = [[NSBundle mainBundle] pathForResource:@"Save PDF to Open-Sankore" ofType:@"workflow"];
+    NSString *installedPath    = [[[@"~/Library/PDF Services" stringByExpandingTildeInPath] stringByAppendingPathComponent:@"Save PDF to Open-Sankore"] stringByAppendingPathExtension:@"workflow"];
     NSString *currentVersion   = bundleShortVersion([NSBundle bundleWithPath:currentPath]);
     NSString *installedVersion = bundleShortVersion([NSBundle bundleWithPath:installedPath]);
 
@@ -57,16 +57,17 @@ void UBPlatformUtils::init()
     {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         [fileManager removeFileAtPath:installedPath handler:nil];
+        // removing the old version of the script named Save PDF to Uniboard
+        [fileManager removeFileAtPath:[[[@"~/Library/PDF Services" stringByExpandingTildeInPath] stringByAppendingPathComponent:@"Save PDF to Uniboard"] stringByAppendingPathExtension:@"workflow"] handler:nil];
         [fileManager createDirectoryAtPath:[installedPath stringByDeletingLastPathComponent] attributes:nil];
         BOOL copyOK = [fileManager copyPath:currentPath toPath:installedPath handler:nil];
         if (!copyOK)
         {
-            qWarning("Could not install the 'Save PDF to Sankore' workflow");
+            qWarning("Could not install the 'Save PDF to Open-Sankoré workflow");
         }
     }
 
     [pool drain];
-
 }
 
 

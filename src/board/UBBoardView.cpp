@@ -554,7 +554,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
         {
           QRect rubberRect = mRubberBand->geometry ();
 
-          UBGraphicsTextItem* textItem = scene ()->addText ("", mapToScene (rubberRect.topLeft ()));
+          UBGraphicsTextItem* textItem = scene()->addTextHtml ("", mapToScene (rubberRect.topLeft ()));
           event->accept ();
 
           UBDrawingController::drawingController ()->setStylusTool (UBStylusTool::Selector);

@@ -50,3 +50,8 @@ Thumbs.db
 ###############
 build
 install
+
+# Translation files #
+#####################
+*.qm
+

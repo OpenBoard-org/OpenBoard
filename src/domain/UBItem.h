@@ -99,7 +99,9 @@ protected:
     }
 
 public:
+
     virtual UBGraphicsItemDelegate *Delegate() const  = 0;
+
     virtual void remove() = 0;
 
 };

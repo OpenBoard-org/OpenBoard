@@ -1321,7 +1321,7 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 
     return textItem;
 }
-UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString)
+UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const QPointF& pTopLeft)
 {
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText("");
@@ -1341,6 +1341,7 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString)
     textItem->setFocus();
 
     setDocumentUpdated();
+    textItem->setPos(pTopLeft);
 
     return textItem;
 }
@@ -1356,7 +1357,6 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     mFastAccessItems << item;
 }
 
-
 void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 {
     setModified(true);
@@ -1368,7 +1368,6 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 
     mFastAccessItems += items.toList();
 }
-
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
 {
@@ -1427,7 +1426,6 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
         item->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::FixedBackground);
 
         item->setZValue(backgroundLayerStart);
-        UBApplication::showMessage("ZValue of the background is " + QString::number(item->zValue(), 'f'));
 
         if (pAdaptTransformation)
         {

@@ -203,7 +203,7 @@ UBItem* UBGraphicsTextItem::deepCopy() const
 {
     UBGraphicsTextItem* copy = new UBGraphicsTextItem();
 
-    copy->setPlainText(this->toPlainText());
+    copy->setHtml(toHtml());
     copy->setPos(this->pos());
     copy->setZValue(this->zValue());
     copy->setTransform(this->transform());
@@ -211,10 +211,11 @@ UBItem* UBGraphicsTextItem::deepCopy() const
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
     copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
     copy->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
-    copy->setDefaultTextColor(this->defaultTextColor());
-    copy->setFont(this->font());
-    copy->setColorOnDarkBackground(this->colorOnDarkBackground());
-    copy->setColorOnLightBackground(this->colorOnLightBackground());
+    copy->setData(UBGraphicsItemData::ItemEditable, data(UBGraphicsItemData::ItemEditable).toBool());
+//    copy->setDefaultTextColor(this->defaultTextColor());
+//    copy->setFont(this->font());
+//    copy->setColorOnDarkBackground(this->colorOnDarkBackground());
+//    copy->setColorOnLightBackground(this->colorOnLightBackground());
     copy->setTextWidth(this->textWidth());
     copy->setTextHeight(this->textHeight());
 
