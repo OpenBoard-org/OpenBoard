@@ -70,6 +70,7 @@ private:
     QTime mClickTime;
     /** A map between a widget and a chained element */
     QMap<QGraphicsWidget*, UBChainedLibElement*> mMapWidgetToChainedElem;
+
 };
 
 class UBLibPathViewer : public QGraphicsView

@@ -330,21 +330,17 @@ void UBLibraryWidget::onDropMe(const QMimeData *_data)
 void UBLibraryWidget::dropEvent(QDropEvent *event)
 {
     const QMimeData* pMimeData = event->mimeData();
-    if(event->source() == this)
-    {
+    if(event->source() == this){
         event->accept();
 
         // Get the destination item
         UBLibElement* pElem = elementAt(event->pos());
-        if(NULL != pElem)
-        {
-            if(eUBLibElementType_Folder == pElem->type())
-            {
+        if(NULL != pElem){
+            if(eUBLibElementType_Folder == pElem->type()){
                 // The drag comes from this application, we have now to get the list of UBLibElements*
                 QList<QString> qlDroppedElems;
 
-                foreach(QUrl url, pMimeData->urls())
-                {
+                foreach(QUrl url, pMimeData->urls()){
                     qlDroppedElems << url.toString();
                 }
 
@@ -360,7 +356,6 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
         //  and if we want to display the download widget in order to make the user wait for the end of the download, we need
         //  to check the URLs first!
         if (pMimeData->hasUrls()){
-            qDebug() << "hasUrls";
             QList<QUrl> urlList = pMimeData->urls();
             for (int i = 0; i < urlList.size() && i < 32; ++i){
                 QString filePath;
@@ -382,20 +377,16 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
         //  When an HTML is present, it means that we dropped something from the web. Normally, the HTML contains the element
         //  of the webpage and has a 'src' attribute containing the URL of the web ressource. Here we are looking for this
         //  'src' attribute, get its value and download the ressource from this URL.
-        else if (pMimeData->hasHtml()){
-            qDebug() << "hasHtml";
+        if (!bDropAccepted && pMimeData->hasHtml()){
             QString html = pMimeData->html();
-            qDebug() << html;
             QString url = UBApplication::urlFromHtml(html);
-            if("" != url)
-            {
+            if("" != url){
                 mLibraryController->importItemOnLibrary(url);
                 bDropAccepted = true;
             }
         }
-        else if (pMimeData->hasText()){
+        if (!bDropAccepted && pMimeData->hasText()){
             // On linux external dragged element are considered as text;
-            qDebug()  << "hasText: " << pMimeData->text();
             QString filePath = QUrl(pMimeData->text()).toLocalFile();
             if("" != filePath){
                 mLibraryController->importItemOnLibrary(filePath);
@@ -415,14 +406,10 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
 #endif
             }
         }
-        else if (pMimeData->hasImage()){
-            qDebug() << "hasImage";
+        if (!bDropAccepted && pMimeData->hasImage()){
             QImage image = qvariant_cast<QImage>(pMimeData->imageData());
             mLibraryController->importImageOnLibrary(image);
             bDropAccepted = true;
-        }
-        else{
-            qWarning() << "Cannot import data";
         }
 
         if(bDropAccepted){

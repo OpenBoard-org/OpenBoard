@@ -484,8 +484,6 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
             QString sUrl = eachUrl.toString();
             if(!sUrl.startsWith("uniboardTool://") && !sUrl.startsWith("file://") && !sUrl.startsWith("/")){
                 // The dropped URL comes from the web
-                qDebug() << "Dropped url: " << sUrl;
-
                 // Show the download palette if it is hidden
                 UBApplication::boardController->paletteManager()->startDownloads();
 
@@ -499,10 +497,11 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
                 desc.totalSize = 0;
                 desc.url = sUrl;
                 UBDownloadManager::downloadManager()->addFileToDownload(desc);
+				bAccept = true;
             }
         }
-        bAccept = true;
-    }else if(NULL != pMimeData && pMimeData->hasText()){
+    }
+	if(!bAccept && NULL != pMimeData && pMimeData->hasText()){
         //  The user can only drop an Url in this location so if the text is not an Url,
         //  we discard it.
         QString qsTxt = pMimeData->text().remove(QRegExp("[\\0]"));
@@ -522,13 +521,12 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
             UBDownloadManager::downloadManager()->addFileToDownload(desc);
             bAccept = true;
         }
-    }else if(NULL != pMimeData && pMimeData->hasHtml()){
+    }
+	if(!bAccept && NULL != pMimeData && pMimeData->hasHtml()){
         QString html = pMimeData->html();
         QString url = UBApplication::urlFromHtml(html);
         if("" != url)
         {
-            bAccept = true;
-
             // Show the download palette if it is hidden
             UBApplication::boardController->paletteManager()->startDownloads();
 
@@ -542,6 +540,7 @@ void UBPathScene::dropEvent(QGraphicsSceneDragDropEvent *event)
             desc.totalSize = 0;
             desc.url = url;
             UBDownloadManager::downloadManager()->addFileToDownload(desc);
+			bAccept = true;
         }
     }
     if(bAccept){

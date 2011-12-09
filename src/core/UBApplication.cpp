@@ -643,14 +643,19 @@ QString UBApplication::globalStyleSheet()
 
 QString UBApplication::urlFromHtml(QString html)
 {
-    QString url;
+	QString _html;
+	QRegExp comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
+	QString url;
     QDomDocument domDoc;
-    domDoc.setContent(html.remove(QRegExp("[\\0]")));
+	
+	//	We remove all the comments & CRLF of this html
+	_html = html.remove(comments);
+	domDoc.setContent(_html.remove(QRegExp("[\\0]")));
     QDomElement rootElem = domDoc.documentElement();
 
     //  QUICKFIX: Here we have to check rootElem. Sometimes it can be a <meta> tag
     //  In such a case we will not be able to retrieve the src value
-    if(rootElem.tagName().toLower().contains("meta")){
+	if(rootElem.tagName().toLower().contains("meta")){
         qDebug() << rootElem.firstChildElement().tagName();
         //  In that case we get the next element
         url = rootElem.firstChildElement().attribute("src");
@@ -658,8 +663,7 @@ QString UBApplication::urlFromHtml(QString html)
         url = rootElem.attribute("src");
     }
 
-    qDebug() << "The URL is: " << url;
-    return url;
+	return url;
 }
 
 bool UBApplication::isFromWeb(QString url)
