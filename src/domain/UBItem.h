@@ -100,6 +100,7 @@ protected:
 
 public:
 
+    static void assignZValue(QGraphicsItem*, int value);
     virtual UBGraphicsItemDelegate *Delegate() const  = 0;
 
     virtual void remove() = 0;

@@ -75,6 +75,8 @@ qreal UBGraphicsScene::toolOffsetEraser = 200;
 qreal UBGraphicsScene::toolOffsetCurtain = 1000;
 qreal UBGraphicsScene::toolOffsetPointer = 1100;
 
+qreal UBGraphicsScene::toolOffsetCache = 1000;//Didier please define offset you want
+
 UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
@@ -824,8 +826,8 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
 
     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
-    polygonItem->setZValue(getNextDrawingZIndex());
-
+//    polygonItem->setZValue(getNextDrawingZIndex());
+    UBGraphicsItem::assignZValue(polygonItem, getNextDrawingZIndex());
 }
 
 
@@ -1035,7 +1037,8 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
 
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    pixmapItem->setZValue(getNextObjectZIndex());
+//    pixmapItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(pixmapItem, getNextObjectZIndex());
 
     pixmapItem->setPixmap(pPixmap);
 
@@ -1083,7 +1086,8 @@ UBGraphicsVideoItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool s
 
     videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    videoItem->setZValue(getNextObjectZIndex());
+//    videoItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(videoItem, getNextObjectZIndex());
 
     addItem(videoItem);
 
@@ -1113,7 +1117,8 @@ UBGraphicsAudioItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool s
 
     audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    audioItem->setZValue(getNextObjectZIndex());
+//    audioItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(audioItem, getNextObjectZIndex());
 
     addItem(audioItem);
 
@@ -1178,7 +1183,8 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, c
 void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos)
 {
     graphicsWidget->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    graphicsWidget->setZValue(getNextObjectZIndex());
+//    graphicsWidget->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(graphicsWidget, getNextObjectZIndex());
 
     addItem(graphicsWidget);
 
@@ -1238,7 +1244,8 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    svgItem->setZValue(getNextObjectZIndex());
+//    svgItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(svgItem, getNextObjectZIndex());
 
     qreal sscale = 1 / UBApplication::boardController->systemScaleFactor();
     svgItem->scale(sscale, sscale);
@@ -1271,7 +1278,8 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 {
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText(pString);
-    textItem->setZValue(getNextObjectZIndex());
+//    textItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(textItem, getNextObjectZIndex());
 
     QFont font = textItem->font();
 
@@ -1326,7 +1334,8 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText("");
     textItem->setHtml(pString);
-    textItem->setZValue(getNextObjectZIndex());
+//    textItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(textItem, getNextObjectZIndex());
 
     addItem(textItem);
     textItem->show();
@@ -1337,7 +1346,6 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
     connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)),
             this,     SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
 
-//    textItem->setSelected(true);
     textItem->setFocus();
 
     setDocumentUpdated();
@@ -1425,7 +1433,8 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
         item->setAcceptedMouseButtons(Qt::NoButton);
         item->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::FixedBackground);
 
-        item->setZValue(backgroundLayerStart);
+//        item->setZValue(backgroundLayerStart);
+        UBGraphicsItem::assignZValue(item, backgroundLayerStart);
 
         if (pAdaptTransformation)
         {
@@ -1529,7 +1538,9 @@ void UBGraphicsScene::addRuler(QPointF center)
     QRectF rect = ruler->rect();
     ruler->setRect(center.x() - rect.width()/2, center.y() - rect.height()/2, rect.width(), rect.height());
 
-    ruler->setZValue(toolLayerStart + toolOffsetRuler);
+//    ruler->setZValue(toolLayerStart + toolOffsetRuler);
+    UBGraphicsItem::assignZValue(ruler, toolLayerStart + toolOffsetRuler);
+
     ruler->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     addItem(ruler);
@@ -1546,7 +1557,9 @@ void UBGraphicsScene::addProtractor(QPointF center)
     UBGraphicsProtractor* protractor = new UBGraphicsProtractor(); // mem : owned and destroyed by the scene
     mTools << protractor;
 
-    protractor->setZValue(toolLayerStart + toolOffsetProtractor);
+//    protractor->setZValue(toolLayerStart + toolOffsetProtractor);
+    UBGraphicsItem::assignZValue(protractor, toolLayerStart + toolOffsetProtractor);
+
     protractor->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     addItem(protractor);
@@ -1565,7 +1578,9 @@ void UBGraphicsScene::addTriangle(QPointF center)
     UBGraphicsTriangle* triangle = new UBGraphicsTriangle(); // mem : owned and destroyed by the scene
     mTools << triangle;
 
-    triangle->setZValue(toolLayerStart + toolOffsetProtractor);
+//    triangle->setZValue(toolLayerStart + toolOffsetProtractor);
+    UBGraphicsItem::assignZValue(triangle, toolLayerStart + toolOffsetTriangle);
+
     triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     addItem(triangle);
@@ -1700,7 +1715,9 @@ void UBGraphicsScene::addCompass(QPointF center)
     QRectF rect = compass->rect();
     compass->setRect(center.x() - rect.width() / 2, center.y() - rect.height() / 2, rect.width(), rect.height());
 
-    compass->setZValue(toolLayerStart + toolOffsetCompass);
+//    compass->setZValue(toolLayerStart + toolOffsetCompass);
+    UBGraphicsItem::assignZValue(compass, toolLayerStart + toolOffsetCompass);
+
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     compass->setVisible(true);
@@ -1740,7 +1757,10 @@ void UBGraphicsScene::addMask()
         view = (QGraphicsView*)UBApplication::boardController->controlView();
 
     QPolygonF polygon = view->mapToScene(view->rect());
-    curtain->setZValue(toolLayerStart + toolOffsetCurtain);
+
+//    curtain->setZValue(toolLayerStart + toolOffsetCurtain);
+    UBGraphicsItem::assignZValue(curtain, toolLayerStart + toolOffsetCurtain);
+
     QRectF rect = polygon.boundingRect();
     qreal xScale = view->matrix().m11();
     qreal yScale = view->matrix().m22();

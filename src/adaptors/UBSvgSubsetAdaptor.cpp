@@ -29,6 +29,7 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
+#include "domain/UBItem.h"
 
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsCompass.h"
@@ -1337,11 +1338,13 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     if (!ubZValue.isNull())
     {
-        polygonItem->setZValue(ubZValue.toString().toFloat());
+//        polygonItem->setZValue (ubZValue.toString().toFloat());
+        UBGraphicsItem::assignZValue(polygonItem, ubZValue.toString().toFloat());
     }
     else
     {
-        polygonItem->setZValue(mGroupZIndex);
+//        polygonItem->setZValue(mGroupZIndex);
+        UBGraphicsItem::assignZValue(polygonItem, mGroupZIndex);
     }
 
     QStringRef ubFillOnDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-dark-background");
@@ -1444,11 +1447,13 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
 
     if (!ubZValue.isNull())
     {
-        polygonItem->setZValue(ubZValue.toString().toFloat());
+//        polygonItem->setZValue(ubZValue.toString().toFloat());
+        UBGraphicsItem::assignZValue(polygonItem, ubZValue.toString().toFloat());
     }
     else
     {
-        polygonItem->setZValue(mGroupZIndex);
+//        polygonItem->setZValue(mGroupZIndex);
+        UBGraphicsItem::assignZValue(polygonItem, mGroupZIndex);
     }
 
 
@@ -1587,7 +1592,8 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
         {
             UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem(QLineF(points.at(i), points.at(i + 1)), lineWidth);
             polygonItem->setColor(brushColor);
-            polygonItem->setZValue(zValue);
+//            polygonItem->setZValue(zValue);
+            UBGraphicsItem::assignZValue(polygonItem, zValue);
             polygonItem->setColorOnDarkBackground(colorOnDarkBackground);
             polygonItem->setColorOnLightBackground(colorOnLightBackground);
 
@@ -1931,7 +1937,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
 
     if (!ubZValue.isNull())
     {
-        gItem->setZValue(ubZValue.toString().toFloat());
+//        gItem->setZValue(ubZValue.toString().toFloat());
+        UBGraphicsItem::assignZValue(gItem, ubZValue.toString().toFloat());
     }
 
     UBItem* ubItem = dynamic_cast<UBItem*>(gItem);
@@ -2484,7 +2491,8 @@ UBGraphicsRuler* UBSvgSubsetAdaptor::UBSvgSubsetReader::rulerFromSvg()
 
     graphicsItemFromSvg(ruler);
 
-    ruler->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetRuler);
+//    ruler->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetRuler);
+    UBGraphicsItem::assignZValue(ruler, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetRuler);
     ruler->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     QStringRef svgWidth = mXmlReader.attributes().value("width");
@@ -2542,7 +2550,8 @@ UBGraphicsCompass* UBSvgSubsetAdaptor::UBSvgSubsetReader::compassFromSvg()
 
     graphicsItemFromSvg(compass);
 
-    compass->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCompass);
+    //compass->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCompass);
+    UBGraphicsItem::assignZValue(compass, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCompass);
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     QStringRef svgX = mXmlReader.attributes().value("x");
@@ -2606,7 +2615,8 @@ UBGraphicsProtractor* UBSvgSubsetAdaptor::UBSvgSubsetReader::protractorFromSvg()
 {
     UBGraphicsProtractor* protractor = new UBGraphicsProtractor();
 
-    protractor->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetProtractor);
+//    protractor->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetProtractor);
+    UBGraphicsItem::assignZValue(protractor, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetProtractor);
     protractor->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     graphicsItemFromSvg(protractor);
@@ -2676,7 +2686,8 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 {
     UBGraphicsTriangle* triangle = new UBGraphicsTriangle();
 
-    triangle->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetTriangle);
+//    triangle->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetTriangle);
+    UBGraphicsItem::assignZValue(triangle, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetTriangle);
     triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     graphicsItemFromSvg(triangle);
@@ -2695,7 +2706,6 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
         triangle->setRect(svgX.toString().toFloat(), svgY.toString().toFloat(), svgWidth.toString().toFloat(), svgHeight.toString().toFloat(), orientation);
     }
 
-
     triangle->setVisible(true);
     return triangle;
 }
@@ -2703,7 +2713,8 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 UBGraphicsCache* UBSvgSubsetAdaptor::UBSvgSubsetReader::cacheFromSvg()
 {
     UBGraphicsCache* pCache = new UBGraphicsCache();
-    //pCache->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCache);
+    pCache->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCache);
+//    UBGraphicsItem::assignZValue(pCache, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCache);
     pCache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     graphicsItemFromSvg(pCache);

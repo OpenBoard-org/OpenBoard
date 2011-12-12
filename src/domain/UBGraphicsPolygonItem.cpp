@@ -153,7 +153,9 @@ UBGraphicsPolygonItem* UBGraphicsPolygonItem::deepCopy(const QPolygonF& pol) con
     copy->setPen(this->pen());
     copy->mHasAlpha = this->mHasAlpha;
 
-    copy->setZValue(this->zValue());
+//    copy->setZValue(this->zValue());
+    UBGraphicsItem::assignZValue(copy, this->zValue());
+
 
     copy->setColorOnDarkBackground(this->colorOnDarkBackground());
     copy->setColorOnLightBackground(this->colorOnLightBackground());
