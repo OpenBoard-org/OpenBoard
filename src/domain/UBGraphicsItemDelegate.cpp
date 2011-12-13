@@ -93,8 +93,8 @@ void UBGraphicsItemDelegate::init()
     foreach(DelegateButton* button, mButtons)
     {
         button->hide();
-//        button->setZValue(UBGraphicsScene::toolLayerStart + 2);
-        UBGraphicsItem::assignZValue(button, UBGraphicsScene::toolLayerStart + 2);
+        button->setZValue(UBGraphicsScene::toolLayerStart + 2);
+//        UBGraphicsItem::assignZValue(button, UBGraphicsScene::toolLayerStart + 2);
         button->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
 }

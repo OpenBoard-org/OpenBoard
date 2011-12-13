@@ -148,8 +148,8 @@ class UBThumbnail
                     if (!mSelectionItem->scene())
                     {
                         item->scene()->addItem(mSelectionItem);
-//                        mSelectionItem->setZValue(item->zValue() - 1);
-                        UBGraphicsItem::assignZValue(mSelectionItem, item->zValue() - 1);
+                        mSelectionItem->setZValue(item->zValue() - 1);
+//                        UBGraphicsItem::assignZValue(mSelectionItem, item->zValue() - 1);
                         mAddedToScene = true;
                     }
 
