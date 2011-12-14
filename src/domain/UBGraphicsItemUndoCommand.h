@@ -32,6 +32,9 @@ class UBGraphicsItemUndoCommand : public QUndoCommand
 
         virtual ~UBGraphicsItemUndoCommand();
 
+        QSet<QGraphicsItem*> GetAddedList() { return mAddedItems; };
+        QSet<QGraphicsItem*> GetRemovedList() { return mRemovedItems; };
+
     protected:
         virtual void undo();
         virtual void redo();

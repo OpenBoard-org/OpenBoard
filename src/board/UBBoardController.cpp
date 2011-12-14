@@ -1132,7 +1132,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         if(sceneChange)
             emit activeSceneWillChange();
 
-        UBApplication::undoStack->clear();
+        ClearUndoStack();
 
         mActiveScene = targetScene;
         mActiveDocument = pDocumentProxy;
@@ -1173,6 +1173,49 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     }
 }
 
+void UBBoardController::ClearUndoStack()
+{
+    QSet<QGraphicsItem*> uniqueItems;
+    QUndoStack *stack = UBApplication::undoStack;
+    // go through all stack command
+    for(int i = 0; i < stack->count(); i++)
+    {
+        UBGraphicsItemUndoCommand *cmd = (UBGraphicsItemUndoCommand*)stack->command(i);
+
+        // go through all added and removed objects, for create list of unique objects
+        QSetIterator<QGraphicsItem*> itAdded(cmd->GetAddedList());
+        while (itAdded.hasNext())
+        {
+            QGraphicsItem* item = itAdded.next();
+            if( !uniqueItems.contains(item) )
+                uniqueItems.insert(item);
+        }
+
+        QSetIterator<QGraphicsItem*> itRemoved(cmd->GetRemovedList());
+        while (itRemoved.hasNext())
+        {
+            QGraphicsItem* item = itRemoved.next();
+            if( !uniqueItems.contains(item) )
+                uniqueItems.insert(item);
+        }
+    }
+
+    // clear stack, and command list
+    stack->clear();
+
+    // go through all unique items, and check, ot on scene, or not.
+    // if not on scene, than item can be deleted
+
+    QSetIterator<QGraphicsItem*> itUniq(uniqueItems);
+    while (itUniq.hasNext())
+    {
+        QGraphicsItem* item = itUniq.next();
+        UBGraphicsScene *scene = (UBGraphicsScene*)item->scene();
+        if(!scene)
+            delete item;
+    }
+
+}
 
 void UBBoardController::adjustDisplayViews()
 {
