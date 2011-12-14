@@ -93,8 +93,8 @@ void UBGraphicsItemDelegate::init()
     foreach(DelegateButton* button, mButtons)
     {
         button->hide();
-        button->setZValue(UBGraphicsScene::toolLayerStart + 2);
-//        UBGraphicsItem::assignZValue(button, UBGraphicsScene::toolLayerStart + 2);
+//        button->setZValue(UBGraphicsScene::toolLayerStart + 2);
+        UBGraphicsItem::assignZValue(button, UBGraphicsScene::toolLayerStart + 2);
         button->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
 }
@@ -323,12 +323,10 @@ void UBGraphicsItemDelegate::lock(bool locked)
     if (locked)
     {
         mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
-        qDebug() << "item's data is called for locked"  << mDelegated->data(UBGraphicsItemData::ItemLocked);
     }
     else
     {
         mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(false));
-        qDebug() << "item's data is called for unlocked"  << mDelegated->data(UBGraphicsItemData::ItemLocked);
     }
 
     mDelegated->update();

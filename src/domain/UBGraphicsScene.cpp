@@ -164,6 +164,7 @@ void UBGraphicsScene::selectionChangedProcessing()
 
     QList<QGraphicsItem *> allItemsList = items();
     QtLogger::logger() << "=====all items searching...======" << endl;
+    qreal maxZ = 0.;
     for( int i = 0; i < allItemsList.size(); i++ )
     {
         QGraphicsItem *nextItem = allItemsList.at(i);
@@ -173,27 +174,29 @@ void UBGraphicsScene::selectionChangedProcessing()
             continue;
         //Temporary stub end (sankore 360)
 //        qreal zValue = nextItem->zValue();
-//        nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-        nextItem->setZValue(1);
+        if (nextItem->zValue() > maxZ)
+            maxZ = nextItem->zValue();
+
+        nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+//        nextItem->setZValue(qreal(1));
         QtLogger::logger() << "own Z " << QString::number(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f')
                            << " next Z " << QString::number(nextItem->zValue(), 'f')<< endl;
 //        qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
     }
     QList<QGraphicsItem *> selItemsList = selectedItems();
     QtLogger::logger() << "=====selected items searching...======" << endl;
-    QGraphicsItem *nextItem;
+//    QGraphicsItem *nextItem;
     for( int i = 0; i < selItemsList.size(); i++ )
     {
-        nextItem = selItemsList.at(i);
+        QGraphicsItem *nextItem = selItemsList.at(i);
         QtLogger::logger() << "own Z " << QString::number(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f')
                            << " next Z " << QString::number(nextItem->zValue(), 'f')<< endl;
 //        qreal zValue = nextItem->zValue();
-        nextItem->setZValue(2);
+        nextItem->setZValue(maxZ + 0.0001);
 //        qDebug() << QString(" >>> %1 <<< ").arg(i) << QString(" >>> %1 <<< ").arg(zValue);
     }
     QtLogger::logger()  << "\nselection processing finished" << endl;
     QtLogger::logger().finish();
-
 }
 
 // MARK: -
@@ -424,22 +427,22 @@ void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool isFirstDraw)
 
         if(isFirstDraw)
         {
+            qreal maxZ = 0.;
             QList<QGraphicsItem *> allItemsList = items();
             for( int i = 0; i < allItemsList.size(); i++ )
             {
                 QGraphicsItem *nextItem = allItemsList.at(i);
                 qreal zValue = nextItem->zValue();
-                nextItem->setZValue(qreal(1));
-                qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+                if (zValue > maxZ)
+                    maxZ = zValue;
+                nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
             }
 
-            mEraser->setZValue(2);
+            mEraser->setZValue(maxZ + 0.0001);
             mEraser->show();
         }
-
     }
 }
-
 
 void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 {
@@ -456,19 +459,20 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 
         if(isFirstDraw)
         {
+            qreal maxZ = 0.;
             QList<QGraphicsItem *> allItemsList = items();
             for( int i = 0; i < allItemsList.size(); i++ )
             {
                 QGraphicsItem *nextItem = allItemsList.at(i);
                 qreal zValue = nextItem->zValue();
-                nextItem->setZValue(qreal(1));
-                qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+                if (zValue > maxZ)
+                    maxZ = zValue;
+                nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
             }
 
-            mPointer->setZValue(2);
+            mPointer->setZValue(maxZ + 0.0001);
             mPointer->show();
         }
-
     }
 }
 

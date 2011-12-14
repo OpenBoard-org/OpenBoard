@@ -49,7 +49,7 @@ void UBGraphicsItemTransformUndoCommand::undo()
 {
     mItem->setPos(mPreviousPosition);
     mItem->setTransform(mPreviousTransform);
-//    mItem->setZValue(mPreviousZValue);
+    mItem->setZValue(mPreviousZValue);
 //    UBGraphicsItem::assignZValue(mItem, mPreviousZValue);
 
     UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(mItem);
@@ -62,9 +62,9 @@ void UBGraphicsItemTransformUndoCommand::redo()
 {
     mItem->setPos(mCurrentPosition);
     mItem->setTransform(mCurrentTransform);
-//    mItem->setZValue(mCurrentZValue);
+    mItem->setZValue(mCurrentZValue);
 
-    UBGraphicsItem::assignZValue(mItem, /*mCurrentZValue*/mItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+//    UBGraphicsItem::assignZValue(mItem, /*mCurrentZValue*/mItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
 
     UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(mItem);
 

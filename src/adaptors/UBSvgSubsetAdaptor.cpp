@@ -107,7 +107,8 @@ QMatrix UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 static bool itemZIndexComp(const QGraphicsItem* item1,
                            const QGraphicsItem* item2)
 {
-    return item1->zValue() < item2->zValue();
+//    return item1->zValue() < item2->zValue();
+    return item1->data(UBGraphicsItemData::ItemOwnZValue).toReal() < item2->data(UBGraphicsItemData::ItemOwnZValue).toReal();
 }
 
 
