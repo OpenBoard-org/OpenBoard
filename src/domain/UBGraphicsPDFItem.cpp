@@ -84,7 +84,8 @@ UBItem* UBGraphicsPDFItem::deepCopy() const
     UBGraphicsPDFItem *copy =  new UBGraphicsPDFItem(mRenderer, mPageNumber, parentItem());
 
     copy->setPos(this->pos());
-    copy->setZValue(this->zValue());
+//    copy->setZValue(this->zValue());
+    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -134,7 +135,8 @@ UBGraphicsPixmapItem* UBGraphicsPDFItem::toPixmapItem() const
     pixmapItem->setPixmap(pixmap);
 
     pixmapItem->setPos(this->pos());
-    pixmapItem->setZValue(this->zValue());
+//    pixmapItem->setZValue(this->zValue());
+    UBGraphicsItem::assignZValue(pixmapItem, this->zValue());
     pixmapItem->setTransform(this->transform());
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);

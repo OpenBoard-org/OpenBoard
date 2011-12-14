@@ -132,7 +132,8 @@ UBItem* UBGraphicsSvgItem::deepCopy() const
     UBGraphicsSvgItem* copy = new UBGraphicsSvgItem(this->fileData());
 
     copy->setPos(this->pos());
-    copy->setZValue(this->zValue());
+//    copy->setZValue(this->zValue());
+    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -186,7 +187,8 @@ UBGraphicsPixmapItem* UBGraphicsSvgItem::toPixmapItem() const
     pixmapItem->setPixmap(QPixmap::fromImage(image));
 
     pixmapItem->setPos(this->pos());
-    pixmapItem->setZValue(this->zValue());
+//    pixmapItem->setZValue(this->zValue());
+    UBGraphicsItem::assignZValue(pixmapItem, this->zValue());
     pixmapItem->setTransform(this->transform());
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);

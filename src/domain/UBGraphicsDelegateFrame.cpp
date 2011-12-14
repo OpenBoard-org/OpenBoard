@@ -531,6 +531,9 @@ void UBGraphicsDelegateFrame::positionHandles()
     {
         setBrush(QBrush(UBSettings::paletteColor));
     }
+
+    //make frame interact like delegated item when selected. Maybe should be deleted if selection logic will change
+    setZValue(delegated()->zValue());
 }
 
 

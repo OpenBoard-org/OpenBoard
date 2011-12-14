@@ -52,7 +52,7 @@ bool UBGraphicsCurtainItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *ev
     if (!mDelegated->isSelected())
     {
         mDelegated->setSelected(true);
-        mDelegated->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCurtain);
+//        mDelegated->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCurtain);
         positionHandles();
 
         return true;
@@ -69,13 +69,13 @@ QVariant UBGraphicsCurtainItemDelegate::itemChange(QGraphicsItem::GraphicsItemCh
 {
     if (change == QGraphicsItem::ItemZValueHasChanged)
     {
-        mFrame->setZValue(mDelegated->zValue() + 1);
+//        mFrame->setZValue(mDelegated->zValue() + 1);
 
-        foreach(DelegateButton* button, mButtons)
-        {
-            button->setZValue(mDelegated->zValue() + 2);
-            button->setZValue(mDelegated->zValue() + 2);
-        }
+//        foreach(DelegateButton* button, mButtons)
+//        {
+//            button->setZValue(mDelegated->zValue() + 2);
+//            button->setZValue(mDelegated->zValue() + 2);
+//        }
     }
 
     if (change == QGraphicsItem::ItemVisibleHasChanged)

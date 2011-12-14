@@ -205,7 +205,8 @@ UBItem* UBGraphicsTextItem::deepCopy() const
 
     copy->setHtml(toHtml());
     copy->setPos(this->pos());
-    copy->setZValue(this->zValue());
+//    copy->setZValue(this->zValue());
+    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);

@@ -1887,7 +1887,8 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
                 if (gi)
                 {
-                    gi->setZValue(mActiveScene->getNextObjectZIndex());
+//                    gi->setZValue(mActiveScene->getNextObjectZIndex());
+                    UBGraphicsItem::assignZValue(gi, mActiveScene->getNextObjectZIndex());
                     mActiveScene->addItem(gi);
                     gi->setPos(gi->pos() + QPointF(50, 50));
                 }
