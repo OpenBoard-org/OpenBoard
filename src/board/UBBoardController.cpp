@@ -1212,7 +1212,9 @@ void UBBoardController::ClearUndoStack()
         QGraphicsItem* item = itUniq.next();
         UBGraphicsScene *scene = (UBGraphicsScene*)item->scene();
         if(!scene)
-            delete item;
+        {
+            bool retCode = mActiveScene->deleteItem(item);
+        }
     }
 
 }
