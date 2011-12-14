@@ -78,6 +78,7 @@ struct UBGraphicsItemData
         ItemLayerType
         , ItemLocked
         , ItemEditable//for text only
+        , ItemOwnZValue
     };
 };
 
