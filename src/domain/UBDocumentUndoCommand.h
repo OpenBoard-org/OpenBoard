@@ -17,17 +17,19 @@
 #define UBDOCUMENTUNDOCOMMAND_H_
 
 #include <QtGui>
+#include "UBAbstractUndoCommand.h"
 
 class UBDocumentProxy;
 class UBGraphicsScene;
 
-
-class UBDocumentUndoCommand: public QUndoCommand
+class UBDocumentUndoCommand: public UBAbstractUndoCommand
 {
     public:
         UBDocumentUndoCommand(UBDocumentProxy* pDocument, const QList<UBGraphicsScene*>& pOldScenes,
                 const QList<UBGraphicsScene*>& pNewScenes, const int& pActiveSceneIndex);
         virtual ~UBDocumentUndoCommand();
+
+        virtual UndoType getType() { return undotype_DOCUMENT; };
 
     protected:
 

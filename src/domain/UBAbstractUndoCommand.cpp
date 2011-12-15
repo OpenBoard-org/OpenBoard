@@ -13,29 +13,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UBGRAPHICSTEXTITEMUNDOCOMMAND_H_
-#define UBGRAPHICSTEXTITEMUNDOCOMMAND_H_
-
-#include <QtGui>
 #include "UBAbstractUndoCommand.h"
 
-#include "UBGraphicsTextItem.h"
-
-
-class UBGraphicsTextItemUndoCommand : public UBAbstractUndoCommand
+UBAbstractUndoCommand::UBAbstractUndoCommand()
 {
-    public:
-        UBGraphicsTextItemUndoCommand(UBGraphicsTextItem *textItem);
-        virtual ~UBGraphicsTextItemUndoCommand();
+    // NOOP
+}
 
-        virtual UndoType getType() { return undotype_GRAPHICTEXTITEM; };
+UBAbstractUndoCommand::~UBAbstractUndoCommand()
+{
+    // NOOP
+}
 
-    protected:
-        virtual void undo();
-        virtual void redo();
 
-    private:
-        QPointer<UBGraphicsTextItem> mTextItem;
-};
+void UBAbstractUndoCommand::undo()
+{
+    // NOOP
+}
 
-#endif /* UBGRAPHICSTEXTITEMUNDOCOMMAND_H_ */
+void UBAbstractUndoCommand::redo()
+{
+    // NOOP
+}
+
+//void UBAbstractUndoCommand::UndoType getType(UndoType type);
+

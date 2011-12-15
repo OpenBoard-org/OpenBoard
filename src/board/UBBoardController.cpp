@@ -66,6 +66,7 @@
 #include "UBBoardPaletteManager.h"
 
 #include "core/memcheck.h"
+//#include <typeinfo>
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : QObject(mainWindow->centralWidget())
@@ -1176,11 +1177,16 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 void UBBoardController::ClearUndoStack()
 {
     QSet<QGraphicsItem*> uniqueItems;
-    QUndoStack *stack = UBApplication::undoStack;
     // go through all stack command
-    for(int i = 0; i < stack->count(); i++)
+    int count = UBApplication::undoStack->count();
+    for(int i = 0; i < UBApplication::undoStack->count(); i++)
     {
-        UBGraphicsItemUndoCommand *cmd = (UBGraphicsItemUndoCommand*)stack->command(i);
+
+        UBAbstractUndoCommand *abstractCmd = (UBAbstractUndoCommand*)UBApplication::undoStack->command(i);
+        if(abstractCmd->getType() != UBAbstractUndoCommand::undotype_GRAPHICITEM)
+            continue;
+
+        UBGraphicsItemUndoCommand *cmd = (UBGraphicsItemUndoCommand*)UBApplication::undoStack->command(i);
 
         // go through all added and removed objects, for create list of unique objects
         QSetIterator<QGraphicsItem*> itAdded(cmd->GetAddedList());
@@ -1201,7 +1207,8 @@ void UBBoardController::ClearUndoStack()
     }
 
     // clear stack, and command list
-    stack->clear();
+    UBApplication::undoStack->clear();
+    count = UBApplication::undoStack->count();
 
     // go through all unique items, and check, ot on scene, or not.
     // if not on scene, than item can be deleted
