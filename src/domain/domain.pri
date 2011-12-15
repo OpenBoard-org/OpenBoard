@@ -21,7 +21,8 @@ HEADERS      += src/domain/UBGraphicsScene.h \
                 src/domain/UBGraphicsStroke.h \
     src/domain/UBGraphicsMediaItem.h \
     src/domain/UBGraphicsAudioItem.h \
-    src/domain/UBGraphicsAudioItemDelegate.h
+    src/domain/UBGraphicsAudioItemDelegate.h \
+    src/domain/UBAbstractUndoCommand.h
                 
 HEADERS      += src/domain/UBGraphicsItemDelegate.h \
 				src/domain/UBGraphicsVideoItemDelegate.h \
@@ -52,7 +53,8 @@ SOURCES      += src/domain/UBGraphicsScene.cpp \
                 src/domain/UBGraphicsStroke.cpp \
     src/domain/UBGraphicsMediaItem.cpp \
     src/domain/UBGraphicsAudioItem.cpp \
-    src/domain/UBGraphicsAudioItemDelegate.cpp
+    src/domain/UBGraphicsAudioItemDelegate.cpp \
+    src/domain/UBAbstractUndoCommand.cpp
                 
 SOURCES      += src/domain/UBGraphicsItemDelegate.cpp \
 				src/domain/UBGraphicsVideoItemDelegate.cpp \

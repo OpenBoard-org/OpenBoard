@@ -25,17 +25,17 @@ class UBAbstractUndoCommand : public QUndoCommand
         UBAbstractUndoCommand();
         ~UBAbstractUndoCommand();
 
-        enum UndoType : int
+        enum UndoType
         {
             undotype_UNKNOWN               = 0,
             undotype_DOCUMENT              = 1,
             undotype_GRAPHICITEMTRANSFORM  = 2,
             undotype_GRAPHICITEM           = 3,
             undotype_GRAPHICTEXTITEM       = 4,
-            undotype_PAGESIZE              = 5,
+            undotype_PAGESIZE              = 5
         };
 
-        virtual UndoType getType() { return undotype_UNKNOWN; };
+        virtual UndoType getType() { return undotype_UNKNOWN; }
 
     protected:
         virtual void undo();
