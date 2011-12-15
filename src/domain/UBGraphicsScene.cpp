@@ -60,7 +60,6 @@
 #include "UBGraphicsStroke.h"
 
 #include "core/memcheck.h"
-#include "qtlogger.h"
 
 qreal UBGraphicsScene::backgroundLayerStart = -20000000.0;
 qreal UBGraphicsScene::objectLayerStart = -10000000.0;
@@ -140,8 +139,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     }
 
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
-    QtLogger::logger().start("/home/ilia/Documents/tmp/2/log.txt");
-    QtLogger::logger().finish();
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -155,15 +152,11 @@ UBGraphicsScene::~UBGraphicsScene()
 
 void UBGraphicsScene::selectionChangedProcessing()
 {
-    QtLogger::logger().start("/home/ilia/Documents/tmp/2/log.txt");
-    QtLogger::logger() << "selection processing started\n" << endl;
-
-    if (selectedItems().count())
+   if (selectedItems().count())
         UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
 
 
     QList<QGraphicsItem *> allItemsList = items();
-    QtLogger::logger() << "=====all items searching...======" << endl;
     qreal maxZ = 0.;
     for( int i = 0; i < allItemsList.size(); i++ )
     {
@@ -179,24 +172,15 @@ void UBGraphicsScene::selectionChangedProcessing()
 
         nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
 //        nextItem->setZValue(qreal(1));
-        QtLogger::logger() << "own Z " << QString::number(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f')
-                           << " next Z " << QString::number(nextItem->zValue(), 'f')<< endl;
-//        qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
     }
     QList<QGraphicsItem *> selItemsList = selectedItems();
-    QtLogger::logger() << "=====selected items searching...======" << endl;
 //    QGraphicsItem *nextItem;
     for( int i = 0; i < selItemsList.size(); i++ )
     {
         QGraphicsItem *nextItem = selItemsList.at(i);
-        QtLogger::logger() << "own Z " << QString::number(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f')
-                           << " next Z " << QString::number(nextItem->zValue(), 'f')<< endl;
-//        qreal zValue = nextItem->zValue();
         nextItem->setZValue(maxZ + 0.0001);
 //        qDebug() << QString(" >>> %1 <<< ").arg(i) << QString(" >>> %1 <<< ").arg(zValue);
     }
-    QtLogger::logger()  << "\nselection processing finished" << endl;
-    QtLogger::logger().finish();
 }
 
 // MARK: -
