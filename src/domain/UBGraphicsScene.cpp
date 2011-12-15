@@ -93,8 +93,10 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mCurrentStroke(0)
     , mShouldUseOMP(true)
     , mItemCount(0)
+    , enableUndoRedoStack(true)
     , magniferControlViewWidget(0)
     , magniferDisplayViewWidget(0)
+
 {
 
 #ifdef __ppc__
@@ -139,6 +141,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     }
 
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+
+
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -371,10 +375,13 @@ bool UBGraphicsScene::inputDeviceRelease()
    
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
     {
-        UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(this, mRemovedItems, mAddedItems); //deleted by the undoStack
 
-        if(UBApplication::undoStack)
-            UBApplication::undoStack->push(udcmd);
+        if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(this, mRemovedItems, mAddedItems); //deleted by the undoStack
+
+            if(UBApplication::undoStack)
+                UBApplication::undoStack->push(udcmd);
+        }
 
         mRemovedItems.clear();
         mAddedItems.clear();
@@ -961,8 +968,11 @@ void UBGraphicsScene::clearItemsAndAnnotations()
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     update(sceneRect());
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
+        UBApplication::undoStack->push(uc);
+    }
+
     setDocumentUpdated();
 }
 
@@ -995,8 +1005,12 @@ void UBGraphicsScene::clearItems()
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     update(sceneRect());
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
-    UBApplication::undoStack->push(uc);
+
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
+        UBApplication::undoStack->push(uc);
+    }
+
     setDocumentUpdated();
 }
 
@@ -1022,8 +1036,12 @@ void UBGraphicsScene::clearAnnotations()
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     update(sceneRect());
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
-    UBApplication::undoStack->push(uc);
+
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
+        UBApplication::undoStack->push(uc);
+    }
+
     setDocumentUpdated();
 }
 
@@ -1044,8 +1062,10 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
 
     addItem(pixmapItem);
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, pixmapItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, pixmapItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     pixmapItem->scale(pScaleFactor, pScaleFactor);
 
@@ -1070,8 +1090,10 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
 
 void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
 {
-    UBGraphicsTextItemUndoCommand* uc = new UBGraphicsTextItemUndoCommand(textItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsTextItemUndoCommand* uc = new UBGraphicsTextItemUndoCommand(textItem);
+        UBApplication::undoStack->push(uc);
+    }
 }
 
 
@@ -1090,8 +1112,10 @@ UBGraphicsVideoItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool s
 
     videoItem->show();
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, videoItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, videoItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     videoItem->mediaObject()->play();
 
@@ -1121,8 +1145,10 @@ UBGraphicsAudioItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool s
 
     audioItem->show();
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, audioItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, audioItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     audioItem->mediaObject()->play();
 
@@ -1197,8 +1223,10 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 //        graphicsWidget->widgetWebView()->loadMainHtml();
 
         graphicsWidget->setSelected(true);
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, graphicsWidget);
-        UBApplication::undoStack->push(uc);
+        if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, graphicsWidget);
+            UBApplication::undoStack->push(uc);
+        }
 
         setDocumentUpdated();
     }
@@ -1253,8 +1281,10 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     addItem(svgItem);
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, svgItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, svgItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     setDocumentUpdated();
 
@@ -1314,8 +1344,10 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 
     textItem->show();
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
 
@@ -1337,8 +1369,10 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
     addItem(textItem);
     textItem->show();
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)),
             this,     SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
