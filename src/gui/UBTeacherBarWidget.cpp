@@ -62,6 +62,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpTitleLabel->setAlignment(Qt::AlignRight);
     mpTitle = new QLineEdit(mpContainer);
     mpTitle->setObjectName("DockPaletteWidgetLineEdit");
+	connect(mpTitle, SIGNAL(textChanged(const QString&)), this, SLOT(onTitleTextChanged(const QString&)));
     mpTitleLayout = new QHBoxLayout();
     mpTitleLayout->addWidget(mpTitleLabel, 0);
     mpTitleLayout->addWidget(mpTitle, 1);
@@ -95,6 +96,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpEquipmentLabel->setAlignment(Qt::AlignRight);
     mpEquipment = new QLineEdit(mpContainer);
     mpEquipment->setObjectName("DockPaletteWidgetLineEdit");
+	connect(mpEquipment, SIGNAL(textChanged(const QString&)), this, SLOT(onEquipmentTextChanged(const QString&)));
     mpEquipmentLayout = new QHBoxLayout();
     mpEquipmentLayout->addWidget(mpEquipmentLabel, 0);
     mpEquipmentLayout->addWidget(mpEquipment, 1);
@@ -317,6 +319,16 @@ void UBTeacherBarWidget::loadContent()
     mpAction2->setStudentText(nextInfos.action2Student);
     mpAction3->setTeacherText(nextInfos.action3Master);
     mpAction3->setStudentText(nextInfos.action3Student);
+}
+
+void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
+{
+	mpTitle->setToolTip(text);
+}
+
+void UBTeacherBarWidget::onEquipmentTextChanged(const QString& text)
+{
+	mpEquipment->setToolTip(text);
 }
 
 UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent, const char *name):QWidget(parent)

@@ -152,34 +152,28 @@ UBGraphicsScene::~UBGraphicsScene()
 
 void UBGraphicsScene::selectionChangedProcessing()
 {
-   if (selectedItems().count())
+    if (selectedItems().count())
         UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
 
 
     QList<QGraphicsItem *> allItemsList = items();
     qreal maxZ = 0.;
-    for( int i = 0; i < allItemsList.size(); i++ )
-    {
+    for( int i = 0; i < allItemsList.size(); i++ ) {
         QGraphicsItem *nextItem = allItemsList.at(i);
         //Temporary stub. Due to ugly z-order implementation I need to do this (sankore 360)
         //z-order behavior should be reimplemented and this stub should be deleted
         if (nextItem == mBackgroundObject)
             continue;
         //Temporary stub end (sankore 360)
-//        qreal zValue = nextItem->zValue();
         if (nextItem->zValue() > maxZ)
             maxZ = nextItem->zValue();
-
         nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
 //        nextItem->setZValue(qreal(1));
     }
     QList<QGraphicsItem *> selItemsList = selectedItems();
-//    QGraphicsItem *nextItem;
-    for( int i = 0; i < selItemsList.size(); i++ )
-    {
+    for( int i = 0; i < selItemsList.size(); i++ ) {
         QGraphicsItem *nextItem = selItemsList.at(i);
         nextItem->setZValue(maxZ + 0.0001);
-//        qDebug() << QString(" >>> %1 <<< ").arg(i) << QString(" >>> %1 <<< ").arg(zValue);
     }
 }
 
