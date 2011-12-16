@@ -55,6 +55,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
     Q_OBJECT
 
     public:
+    //        tmp stub for divide addings scene objects from undo mechanism implementation
+    void setURStackEnable(bool set = true) {enableUndoRedoStack = set;}
 
         UBGraphicsScene(UBDocumentProxy *parent);
         virtual ~UBGraphicsScene();
@@ -363,8 +365,13 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         //int mMesure1Ms, mMesure2Ms;
 
         bool mHasCache;
+        //        tmp stub for divide addings scene objects from undo mechanism implementation
+        bool enableUndoRedoStack;
+
         UBMagnifier *magniferControlViewWidget;
         UBMagnifier *magniferDisplayViewWidget;
+
+
 };
 
 #endif /* UBGRAPHICSSCENE_H_ */
