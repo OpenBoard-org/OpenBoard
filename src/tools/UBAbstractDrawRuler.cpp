@@ -35,7 +35,6 @@ const QColor UBAbstractDrawRuler::sDarkBackgroundDrawColor = QColor(0xff, 0xff, 
 const int UBAbstractDrawRuler::sLeftEdgeMargin = 10;
 const int UBAbstractDrawRuler::sDegreeToQtAngleUnit = 16;
 const int UBAbstractDrawRuler::sRotationRadius = 15;
-const int UBAbstractDrawRuler::sPixelsPerMillimeter = 5;
 const int UBAbstractDrawRuler::sFillTransparency = 127;
 const int UBAbstractDrawRuler::sDrawTransparency = 192;
 const int UBAbstractDrawRuler::sRoundingRadius = sLeftEdgeMargin / 2;
@@ -44,7 +43,12 @@ const int UBAbstractDrawRuler::sRoundingRadius = sLeftEdgeMargin / 2;
 UBAbstractDrawRuler::UBAbstractDrawRuler()
 	: mShowButtons(false)
     , mAntiScaleRatio(1.0)
-{}
+{
+	//we actually need to evaluate pixels per millimeter
+	QDesktopWidget* desktop = UBApplication::desktop();
+	int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+	sPixelsPerMillimeter = qRound(dpiCommon / 25.4f);//because 1inch = 25.4 mm
+}
 
 void UBAbstractDrawRuler::create(QGraphicsItem& item)
 {
