@@ -1039,7 +1039,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
                 UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), tmpScene, i);
                 delete tmpScene;
 
-
         mCurrentScene->setModified(false);
     }
 
