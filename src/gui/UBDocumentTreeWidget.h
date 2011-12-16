@@ -23,7 +23,7 @@ class UBDocumentProxyTreeItem;
 
 class UBDocumentTreeWidget : public QTreeWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBDocumentTreeWidget(QWidget *parent = 0);

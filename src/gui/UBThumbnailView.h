@@ -22,7 +22,7 @@ class UBGraphicsScene;
 
 class UBThumbnailView : public QGraphicsView
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBThumbnailView();
