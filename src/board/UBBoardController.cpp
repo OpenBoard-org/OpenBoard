@@ -777,6 +777,12 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
 {
     QString mimeType = pContentTypeHeader;
 
+    // In some cases "image/jpeg;charset=" is retourned by the drag-n-drop. That is
+    // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
+    int position=mimeType.indexOf(";");
+    if(position != -1)
+        mimeType=mimeType.left(position);
+
     if (!pSuccess)
     {
         UBApplication::showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
