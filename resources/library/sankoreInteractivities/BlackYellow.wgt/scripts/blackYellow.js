@@ -346,19 +346,19 @@ function init(){
     
     // export data
     function exportToSankore(){
-                
+        
+        var objToExport = {
+            data1:"",
+            data2:"",
+            width:0,
+            height:0,
+            top:0,
+            left:0
+        }        
         var arrayToExport = new Array();        
         if(mode){            
             if($(".editContainer").size() != 0){
-                $(".editContainer").each(function(index, domElem){
-                    var objToExport = {
-                        data1:"",
-                        data2:"",
-                        width:0,
-                        height:0,
-                        top:0,
-                        left:0
-                    }
+                $(".editContainer").each(function(index, domElem){     
                     objToExport.data1 = $(domElem).find(".readyTask").find(":first-child").text();
                     objToExport.data2 = $(domElem).find(".readyTask").find(":last-child").text();
                     objToExport.width = $(domElem).width();
@@ -371,14 +371,6 @@ function init(){
         } else {      
             if($(".readyTask").size() != 0){
                 $(".readyTask").each(function(index, domElem){
-                    var objToExport = {
-                        data1:"",
-                        data2:"",
-                        width:0,
-                        height:0,
-                        top:0,
-                        left:0
-                    }
                     objToExport.data1 = $(domElem).find(":first-child").text();
                     objToExport.data2 = $(domElem).find(":last-child").text();
                     objToExport.width = $(domElem).width();
