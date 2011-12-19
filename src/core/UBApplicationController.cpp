@@ -368,7 +368,7 @@ void UBApplicationController::showInternet()
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
         showDesktop(true);
-        UBApplication::webController->show(UBWebController::WebBrowser); 
+        UBApplication::webController->show(UBWebController::WebBrowser);
         // really no have emit mainModeChanged here ? potential problem with virtual keyboard ?
     }
     else
@@ -460,6 +460,7 @@ void UBApplicationController::showTutorial()
         UBApplication::boardController->hide();
     }
 
+    // it's needed not to duplicate webbrowser search in web mode. If I've breaked smbd's code let Ivan know
     UBApplication::webController->show(UBWebController::Tutorial);
 
     mMainWindow->webToolBar->hide();
@@ -488,7 +489,8 @@ void UBApplicationController::showSankoreEditor()
         UBApplication::boardController->hide();
     }
 
-    UBApplication::webController->show(UBWebController::Paraschool);
+// it's needed not to duplicate webbrowser search in web mode. If I've breaked smbd's code let Ivan know
+        UBApplication::webController->show(UBWebController::Paraschool);
 
     mMainWindow->webToolBar->hide();
     mMainWindow->boardToolBar->hide();

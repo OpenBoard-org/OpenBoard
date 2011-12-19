@@ -251,7 +251,6 @@ WBTabWidget::WBTabWidget(QWidget *parent)
     mLineEdits->setMinimumWidth(200);
     QSizePolicy spolicy = mLineEdits->sizePolicy();
     mLineEdits->setSizePolicy(QSizePolicy::Maximum, spolicy.verticalPolicy());
-
 }
 
 void WBTabWidget::clear()
