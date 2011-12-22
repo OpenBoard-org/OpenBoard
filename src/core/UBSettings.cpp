@@ -854,8 +854,6 @@ QString UBSettings::uniboardUserVideoDirectory()
     QString valideUserVideoDirectory =
         UBDesktopServices::storageLocation(QDesktopServices::MoviesLocation);
 
-    bool hasCreatedDir = false;
-
     // first look into the application settings
     if (sAppSettings && getAppSettings()->contains("App/UserVideoDirectory"))
     {
@@ -889,7 +887,6 @@ QString UBSettings::uniboardUserVideoDirectory()
         if (!dir.exists())
         {
             dir.mkpath(userVideoDirectory);
-            hasCreatedDir = true;
         }
 
         if (dir.exists())
@@ -898,7 +895,6 @@ QString UBSettings::uniboardUserVideoDirectory()
         }
         else
         {
-            hasCreatedDir = false;
             qWarning() << "Failed to interpret App/UserVideoDirectory config : "
                 + getAppSettings()->value("App/UserVideoDirectory").toString()
                 + ", defaulting to " + valideUserVideoDirectory;
@@ -928,8 +924,6 @@ QString UBSettings::podcastRecordingDirectory()
 {
     QString validePodcastRecordingDirectory =
         UBDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
-
-    bool hasCreatedDir = false;
 
     // first look into the application settings
     if (sAppSettings && getAppSettings()->contains("Podcast/RecordingDirectory"))
@@ -964,7 +958,6 @@ QString UBSettings::podcastRecordingDirectory()
         if (!dir.exists())
         {
             dir.mkpath(userPodcastRecordingDirectory);
-            hasCreatedDir = true;
         }
 
         if (dir.exists())
@@ -973,7 +966,6 @@ QString UBSettings::podcastRecordingDirectory()
         }
         else
         {
-            hasCreatedDir = false;
             qWarning() << "Failed to interpret Podcast/RecordingDirectory config : "
                 + getAppSettings()->value("Podcast/RecordingDirectory").toString()
                 + ", defaulting to user Desktop";
@@ -1099,8 +1091,6 @@ QString UBSettings::uniboardInteractiveUserDirectory()
 {
     QString valideUserInteractiveDirectory = uniboardDataDirectory() + "/interactive content";
 
-    bool hasCreatedDir = false;
-
     // first look into the application settings
     if (sAppSettings && getAppSettings()->contains("App/UserInteractiveContentDirectory"))
     {
@@ -1129,7 +1119,6 @@ QString UBSettings::uniboardInteractiveUserDirectory()
         if (!dir.exists())
         {
             dir.mkpath(userWidgetDirectory);
-            hasCreatedDir = true;
         }
 
         if (dir.exists())
@@ -1138,7 +1127,6 @@ QString UBSettings::uniboardInteractiveUserDirectory()
         }
         else
         {
-            hasCreatedDir = false;
             qWarning() << "Failed to interpret App/UserInteractiveContentDirectory config : "
                 + getAppSettings()->value("App/UserInteractiveContentDirectory").toString()
                 + ", defaulting to " + valideUserInteractiveDirectory;
@@ -1194,8 +1182,6 @@ QString UBSettings::uniboardInteractiveFavoritesDirectory()
 {
     QString valideUserInteractiveDirectory = uniboardDataDirectory() + "/interactive favorites";
 
-    bool hasCreatedDir = false;
-
     // first look into the application settings
     if (sAppSettings && getAppSettings()->contains("App/UserInteractiveFavoritesDirectory"))
     {
@@ -1224,7 +1210,6 @@ QString UBSettings::uniboardInteractiveFavoritesDirectory()
         if (!dir.exists())
         {
             dir.mkpath(userWidgetDirectory);
-            hasCreatedDir = true;
         }
 
         if (dir.exists())
@@ -1233,7 +1218,6 @@ QString UBSettings::uniboardInteractiveFavoritesDirectory()
         }
         else
         {
-            hasCreatedDir = false;
             qWarning() << "Failed to interpret App/UserInteractiveFavoritesDirectory config : "
                 + getAppSettings()->value("App/UserInteractiveFavoritesDirectory").toString()
                 + ", defaulting to " + valideUserInteractiveDirectory;

@@ -1586,8 +1586,6 @@ void UBGraphicsScene::addMagnifier(UBMagnifierParams params)
     QGraphicsView *cView = (QGraphicsView*)UBApplication::boardController->controlView();
     QGraphicsView *dView = (QGraphicsView*)UBApplication::boardController->displayView();
 
-    QPoint ccZeroPoint = cContainer->mapToGlobal(QPoint(0,0));
-    QPoint cvZeroPoint = cView->mapToGlobal(QPoint(0,0));
     QPoint dvZeroPoint = dView->mapToGlobal(QPoint(0,0));
 
     int cvW = cView->width();
@@ -1635,8 +1633,6 @@ void UBGraphicsScene::moveMagnifier(QPoint newPos)
     QGraphicsView *cView = (QGraphicsView*)UBApplication::boardController->controlView();
     QGraphicsView *dView = (QGraphicsView*)UBApplication::boardController->displayView();
 
-    QPoint ccZeroPoint = cContainer->mapToGlobal(QPoint(0,0));
-    QPoint cvZeroPoint = cView->mapToGlobal(QPoint(0,0));
     QPoint dvZeroPoint = dView->mapToGlobal(QPoint(0,0));
 
     int cvW = cView->width();
@@ -1711,16 +1707,7 @@ void UBGraphicsScene::addCache()
 {
     UBGraphicsCache* cache = new UBGraphicsCache();
     mTools << cache;
-    QGraphicsView* view;
 
-    if(UBApplication::applicationController->displayManager()->hasDisplay())
-    {
-        view = (QGraphicsView*)(UBApplication::boardController->displayView());
-    }
-    else
-    {
-        view = (QGraphicsView*)(UBApplication::boardController->controlView());
-    }
     addItem(cache);
     cache->setVisible(true);
     cache->setSelected(true);

@@ -105,7 +105,6 @@ void UBDocumentNavigator::generateThumbnails()
 
     // Get the thumbnails
     QList<QPixmap> thumbs = UBThumbnailAdaptor::load(mCrntDoc);
-    QGraphicsPixmapItem* selection = NULL;
 
     for(int i = 0; i < thumbs.count(); i++)
     {
@@ -115,7 +114,6 @@ void UBDocumentNavigator::generateThumbnails()
         // Get the selected item
         if(UBApplication::boardController->activeSceneIndex() == i)
         {
-            selection = pixmapItem;
             mCrntItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(pixmapItem);
             mCrntItem->setSelected(true);
         }
@@ -289,11 +287,6 @@ void UBDocumentNavigator::refreshScene()
             mLabels.at(i)->setPos(pos);
         }
     }
-
-    QScrollBar *vertScrollBar = verticalScrollBar();
-    int scrollBarThickness = 0;
-    if (vertScrollBar && vertScrollBar->isVisible())
-        scrollBarThickness = vertScrollBar->width();
 }
 
 /**

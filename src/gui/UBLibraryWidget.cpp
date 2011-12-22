@@ -39,9 +39,9 @@
  */
 UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailWidget(parent)
     , chainedElements(NULL)
+    , mLibraryController(NULL)
     , mpCrntDir(NULL)
     , mpCrntElem(NULL)
-    , mLibraryController(NULL)
     , mpTmpElem(NULL)
 {
     setObjectName(name);
