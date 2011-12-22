@@ -13,28 +13,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UBTHUMBNAILVIEW_H_
-#define UBTHUMBNAILVIEW_H_
+#include "UBAbstractUndoCommand.h"
 
-#include <QGraphicsView>
-
-class UBGraphicsScene;
-
-class UBThumbnailView : public QGraphicsView
+UBAbstractUndoCommand::UBAbstractUndoCommand()
 {
-    Q_OBJECT
+    // NOOP
+}
 
-    public:
-        UBThumbnailView();
-        virtual ~UBThumbnailView();
+UBAbstractUndoCommand::~UBAbstractUndoCommand()
+{
+    // NOOP
+}
 
-    signals:
-        void doubleClicked();
 
-    protected:
-        virtual void drawBackground(QPainter *painter, const QRectF &rect);
-        virtual void mouseDoubleClickEvent ( QMouseEvent * event );
+void UBAbstractUndoCommand::undo()
+{
+    // NOOP
+}
 
-};
+void UBAbstractUndoCommand::redo()
+{
+    // NOOP
+}
 
-#endif /* UBTHUMBNAILVIEW_H_ */
+//void UBAbstractUndoCommand::UndoType getType(UndoType type);
+

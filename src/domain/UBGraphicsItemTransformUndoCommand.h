@@ -19,9 +19,10 @@
 #include <QtGui>
 
 #include "UBResizableGraphicsItem.h"
+#include "UBAbstractUndoCommand.h"
 
 
-class UBGraphicsItemTransformUndoCommand : public QUndoCommand
+class UBGraphicsItemTransformUndoCommand : public UBAbstractUndoCommand
 {
     public:
         UBGraphicsItemTransformUndoCommand(QGraphicsItem* pItem,
@@ -30,6 +31,8 @@ class UBGraphicsItemTransformUndoCommand : public QUndoCommand
                                                 const qreal& prevZValue,
                                                 const QSizeF& prevSize = QSizeF());
         virtual ~UBGraphicsItemTransformUndoCommand();
+
+        virtual UndoType getType() { return undotype_GRAPHICITEMTRANSFORM; };
 
     protected:
         virtual void undo();

@@ -17,11 +17,13 @@
 #define UBGRAPHICSITEMUNDOCOMMAND_H_
 
 #include <QtGui>
+#include "UBAbstractUndoCommand.h"
+
 
 class UBGraphicsScene;
 
 
-class UBGraphicsItemUndoCommand : public QUndoCommand
+class UBGraphicsItemUndoCommand : public UBAbstractUndoCommand
 {
     public:
         UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
@@ -31,6 +33,11 @@ class UBGraphicsItemUndoCommand : public QUndoCommand
                         QGraphicsItem* pAddedItem);
 
         virtual ~UBGraphicsItemUndoCommand();
+
+        QSet<QGraphicsItem*> GetAddedList() { return mAddedItems; };
+        QSet<QGraphicsItem*> GetRemovedList() { return mRemovedItems; };
+
+        virtual UndoType getType() { return undotype_GRAPHICITEM; };
 
     protected:
         virtual void undo();

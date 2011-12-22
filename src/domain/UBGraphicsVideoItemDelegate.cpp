@@ -52,7 +52,8 @@ void UBGraphicsVideoItemDelegate::buildButtons()
     mMuteButton->hide();
 
     mVideoControl = new DelegateVideoControl(delegated(), mFrame);
-    mVideoControl->setZValue(UBGraphicsScene::toolLayerStart + 2);
+//    mVideoControl->setZValue(UBGraphicsScene::toolLayerStart + 2);
+    UBGraphicsItem::assignZValue(mVideoControl, UBGraphicsScene::toolLayerStart + 2);
     mVideoControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     connect(mPlayPauseButton, SIGNAL(clicked(bool)), this, SLOT(togglePlayPause()));

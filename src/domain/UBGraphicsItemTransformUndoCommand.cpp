@@ -15,6 +15,7 @@
 
 #include "UBGraphicsItemTransformUndoCommand.h"
 #include "UBResizableGraphicsItem.h"
+#include "domain/UBItem.h"
 
 #include "core/memcheck.h"
 
@@ -49,6 +50,7 @@ void UBGraphicsItemTransformUndoCommand::undo()
     mItem->setPos(mPreviousPosition);
     mItem->setTransform(mPreviousTransform);
     mItem->setZValue(mPreviousZValue);
+//    UBGraphicsItem::assignZValue(mItem, mPreviousZValue);
 
     UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(mItem);
 
@@ -61,6 +63,8 @@ void UBGraphicsItemTransformUndoCommand::redo()
     mItem->setPos(mCurrentPosition);
     mItem->setTransform(mCurrentTransform);
     mItem->setZValue(mCurrentZValue);
+
+//    UBGraphicsItem::assignZValue(mItem, /*mCurrentZValue*/mItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
 
     UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(mItem);
 

@@ -75,6 +75,8 @@ qreal UBGraphicsScene::toolOffsetEraser = 200;
 qreal UBGraphicsScene::toolOffsetCurtain = 1000;
 qreal UBGraphicsScene::toolOffsetPointer = 1100;
 
+qreal UBGraphicsScene::toolOffsetCache = 1000;//Didier please define offset you want
+
 UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
@@ -91,8 +93,10 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mCurrentStroke(0)
     , mShouldUseOMP(true)
     , mItemCount(0)
+    , enableUndoRedoStack(true)
     , magniferControlViewWidget(0)
     , magniferDisplayViewWidget(0)
+
 {
 
 #ifdef __ppc__
@@ -137,6 +141,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     }
 
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+
+
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -150,32 +156,28 @@ UBGraphicsScene::~UBGraphicsScene()
 
 void UBGraphicsScene::selectionChangedProcessing()
 {
-
-//    if (selectedItems().count())
-//        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
+    if (selectedItems().count())
+        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
 
 
     QList<QGraphicsItem *> allItemsList = items();
-    for( int i = 0; i < allItemsList.size(); i++ )
-    {
+    qreal maxZ = 0.;
+    for( int i = 0; i < allItemsList.size(); i++ ) {
         QGraphicsItem *nextItem = allItemsList.at(i);
         //Temporary stub. Due to ugly z-order implementation I need to do this (sankore 360)
         //z-order behavior should be reimplemented and this stub should be deleted
         if (nextItem == mBackgroundObject)
             continue;
         //Temporary stub end (sankore 360)
-//        qreal zValue = nextItem->zValue();
-        nextItem->setZValue(qreal(1));
-//        qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+        if (nextItem->zValue() > maxZ)
+            maxZ = nextItem->zValue();
+        nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+//        nextItem->setZValue(qreal(1));
     }
-
     QList<QGraphicsItem *> selItemsList = selectedItems();
-    for( int i = 0; i < selItemsList.size(); i++ )
-    {
+    for( int i = 0; i < selItemsList.size(); i++ ) {
         QGraphicsItem *nextItem = selItemsList.at(i);
-//        qreal zValue = nextItem->zValue();
-        nextItem->setZValue(2);
-//        qDebug() << QString(" >>> %1 <<< ").arg(i) << QString(" >>> %1 <<< ").arg(zValue);
+        nextItem->setZValue(maxZ + 0.0001);
     }
 }
 
@@ -373,10 +375,13 @@ bool UBGraphicsScene::inputDeviceRelease()
    
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
     {
-        UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(this, mRemovedItems, mAddedItems); //deleted by the undoStack
 
-        if(UBApplication::undoStack)
-            UBApplication::undoStack->push(udcmd);
+        if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(this, mRemovedItems, mAddedItems); //deleted by the undoStack
+
+            if(UBApplication::undoStack)
+                UBApplication::undoStack->push(udcmd);
+        }
 
         mRemovedItems.clear();
         mAddedItems.clear();
@@ -407,22 +412,22 @@ void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool isFirstDraw)
 
         if(isFirstDraw)
         {
+            qreal maxZ = 0.;
             QList<QGraphicsItem *> allItemsList = items();
             for( int i = 0; i < allItemsList.size(); i++ )
             {
                 QGraphicsItem *nextItem = allItemsList.at(i);
                 qreal zValue = nextItem->zValue();
-                nextItem->setZValue(qreal(1));
-                qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+                if (zValue > maxZ)
+                    maxZ = zValue;
+                nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
             }
 
-            mEraser->setZValue(2);
+            mEraser->setZValue(maxZ + 0.0001);
             mEraser->show();
         }
-
     }
 }
-
 
 void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 {
@@ -439,19 +444,20 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 
         if(isFirstDraw)
         {
+            qreal maxZ = 0.;
             QList<QGraphicsItem *> allItemsList = items();
             for( int i = 0; i < allItemsList.size(); i++ )
             {
                 QGraphicsItem *nextItem = allItemsList.at(i);
                 qreal zValue = nextItem->zValue();
-                nextItem->setZValue(qreal(1));
-                qDebug() << QString(" %1 ").arg(i) << QString(" %1 ").arg(zValue);
+                if (zValue > maxZ)
+                    maxZ = zValue;
+                nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
             }
 
-            mPointer->setZValue(2);
+            mPointer->setZValue(maxZ + 0.0001);
             mPointer->show();
         }
-
     }
 }
 
@@ -824,8 +830,8 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
 
     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
-    polygonItem->setZValue(getNextDrawingZIndex());
-
+//    polygonItem->setZValue(getNextDrawingZIndex());
+    UBGraphicsItem::assignZValue(polygonItem, getNextDrawingZIndex());
 }
 
 
@@ -962,8 +968,11 @@ void UBGraphicsScene::clearItemsAndAnnotations()
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     update(sceneRect());
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
+        UBApplication::undoStack->push(uc);
+    }
+
     setDocumentUpdated();
 }
 
@@ -996,8 +1005,12 @@ void UBGraphicsScene::clearItems()
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     update(sceneRect());
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
-    UBApplication::undoStack->push(uc);
+
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
+        UBApplication::undoStack->push(uc);
+    }
+
     setDocumentUpdated();
 }
 
@@ -1023,8 +1036,12 @@ void UBGraphicsScene::clearAnnotations()
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     update(sceneRect());
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
-    UBApplication::undoStack->push(uc);
+
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
+        UBApplication::undoStack->push(uc);
+    }
+
     setDocumentUpdated();
 }
 
@@ -1035,7 +1052,8 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
 
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    pixmapItem->setZValue(getNextObjectZIndex());
+//    pixmapItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(pixmapItem, getNextObjectZIndex());
 
     pixmapItem->setPixmap(pPixmap);
 
@@ -1044,8 +1062,10 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
 
     addItem(pixmapItem);
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, pixmapItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, pixmapItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     pixmapItem->scale(pScaleFactor, pScaleFactor);
 
@@ -1070,8 +1090,10 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
 
 void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
 {
-    UBGraphicsTextItemUndoCommand* uc = new UBGraphicsTextItemUndoCommand(textItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsTextItemUndoCommand* uc = new UBGraphicsTextItemUndoCommand(textItem);
+        UBApplication::undoStack->push(uc);
+    }
 }
 
 
@@ -1083,14 +1105,17 @@ UBGraphicsVideoItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool s
 
     videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    videoItem->setZValue(getNextObjectZIndex());
+//    videoItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(videoItem, getNextObjectZIndex());
 
     addItem(videoItem);
 
     videoItem->show();
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, videoItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, videoItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     videoItem->mediaObject()->play();
 
@@ -1113,14 +1138,17 @@ UBGraphicsAudioItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool s
 
     audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    audioItem->setZValue(getNextObjectZIndex());
+//    audioItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(audioItem, getNextObjectZIndex());
 
     addItem(audioItem);
 
     audioItem->show();
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, audioItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, audioItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     audioItem->mediaObject()->play();
 
@@ -1178,7 +1206,8 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, c
 void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos)
 {
     graphicsWidget->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    graphicsWidget->setZValue(getNextObjectZIndex());
+//    graphicsWidget->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(graphicsWidget, getNextObjectZIndex());
 
     addItem(graphicsWidget);
 
@@ -1194,8 +1223,10 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 //        graphicsWidget->widgetWebView()->loadMainHtml();
 
         graphicsWidget->setSelected(true);
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, graphicsWidget);
-        UBApplication::undoStack->push(uc);
+        if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, graphicsWidget);
+            UBApplication::undoStack->push(uc);
+        }
 
         setDocumentUpdated();
     }
@@ -1238,7 +1269,8 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    svgItem->setZValue(getNextObjectZIndex());
+//    svgItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(svgItem, getNextObjectZIndex());
 
     qreal sscale = 1 / UBApplication::boardController->systemScaleFactor();
     svgItem->scale(sscale, sscale);
@@ -1249,8 +1281,10 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     addItem(svgItem);
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, svgItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, svgItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     setDocumentUpdated();
 
@@ -1271,7 +1305,8 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 {
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText(pString);
-    textItem->setZValue(getNextObjectZIndex());
+//    textItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(textItem, getNextObjectZIndex());
 
     QFont font = textItem->font();
 
@@ -1309,8 +1344,10 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 
     textItem->show();
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
 
@@ -1326,18 +1363,20 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText("");
     textItem->setHtml(pString);
-    textItem->setZValue(getNextObjectZIndex());
+//    textItem->setZValue(getNextObjectZIndex());
+    UBGraphicsItem::assignZValue(textItem, getNextObjectZIndex());
 
     addItem(textItem);
     textItem->show();
 
-    UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
-    UBApplication::undoStack->push(uc);
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
+        UBApplication::undoStack->push(uc);
+    }
 
     connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)),
             this,     SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
 
-//    textItem->setSelected(true);
     textItem->setFocus();
 
     setDocumentUpdated();
@@ -1425,7 +1464,8 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
         item->setAcceptedMouseButtons(Qt::NoButton);
         item->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::FixedBackground);
 
-        item->setZValue(backgroundLayerStart);
+//        item->setZValue(backgroundLayerStart);
+        UBGraphicsItem::assignZValue(item, backgroundLayerStart);
 
         if (pAdaptTransformation)
         {
@@ -1529,7 +1569,9 @@ void UBGraphicsScene::addRuler(QPointF center)
     QRectF rect = ruler->rect();
     ruler->setRect(center.x() - rect.width()/2, center.y() - rect.height()/2, rect.width(), rect.height());
 
-    ruler->setZValue(toolLayerStart + toolOffsetRuler);
+//    ruler->setZValue(toolLayerStart + toolOffsetRuler);
+    UBGraphicsItem::assignZValue(ruler, toolLayerStart + toolOffsetRuler);
+
     ruler->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     addItem(ruler);
@@ -1546,7 +1588,9 @@ void UBGraphicsScene::addProtractor(QPointF center)
     UBGraphicsProtractor* protractor = new UBGraphicsProtractor(); // mem : owned and destroyed by the scene
     mTools << protractor;
 
-    protractor->setZValue(toolLayerStart + toolOffsetProtractor);
+//    protractor->setZValue(toolLayerStart + toolOffsetProtractor);
+    UBGraphicsItem::assignZValue(protractor, toolLayerStart + toolOffsetProtractor);
+
     protractor->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     addItem(protractor);
@@ -1565,7 +1609,9 @@ void UBGraphicsScene::addTriangle(QPointF center)
     UBGraphicsTriangle* triangle = new UBGraphicsTriangle(); // mem : owned and destroyed by the scene
     mTools << triangle;
 
-    triangle->setZValue(toolLayerStart + toolOffsetProtractor);
+//    triangle->setZValue(toolLayerStart + toolOffsetProtractor);
+    UBGraphicsItem::assignZValue(triangle, toolLayerStart + toolOffsetTriangle);
+
     triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     addItem(triangle);
@@ -1696,7 +1742,9 @@ void UBGraphicsScene::addCompass(QPointF center)
     QRectF rect = compass->rect();
     compass->setRect(center.x() - rect.width() / 2, center.y() - rect.height() / 2, rect.width(), rect.height());
 
-    compass->setZValue(toolLayerStart + toolOffsetCompass);
+//    compass->setZValue(toolLayerStart + toolOffsetCompass);
+    UBGraphicsItem::assignZValue(compass, toolLayerStart + toolOffsetCompass);
+
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     compass->setVisible(true);
@@ -1727,7 +1775,10 @@ void UBGraphicsScene::addMask()
         view = (QGraphicsView*)UBApplication::boardController->controlView();
 
     QPolygonF polygon = view->mapToScene(view->rect());
-    curtain->setZValue(toolLayerStart + toolOffsetCurtain);
+
+//    curtain->setZValue(toolLayerStart + toolOffsetCurtain);
+    UBGraphicsItem::assignZValue(curtain, toolLayerStart + toolOffsetCurtain);
+
     QRectF rect = polygon.boundingRect();
     qreal xScale = view->matrix().m11();
     qreal yScale = view->matrix().m22();

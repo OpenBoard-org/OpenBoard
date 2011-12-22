@@ -159,6 +159,7 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
                 mScene->removeItem(pItem);
                 mScene->addItem(pixmapItem);
                 mThumbnails.replace(iPage, pixmapItem);
+                delete pItem;
             }
         }
     }

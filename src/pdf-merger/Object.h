@@ -48,7 +48,7 @@ namespace merge_lib
 		   std::string fileName = "", std::pair<unsigned int, unsigned int> streamBounds = std::make_pair ((unsigned int)0,(unsigned int)0), bool hasStream = false
 	   	       ):
 	   _number(objectNumber), _generationNumber(generationNumber), _oldNumber(objectNumber), _content(objectContent),_parents(),_children(),_isPassed(false),
-	   _fileName(fileName), _streamBounds(streamBounds), _hasStream(hasStream), _hasStreamInContent(false)
+           _streamBounds(streamBounds), _fileName(fileName), _hasStream(hasStream), _hasStreamInContent(false)
 	   {
 	   }
 	   virtual ~Object();

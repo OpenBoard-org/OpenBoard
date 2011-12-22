@@ -138,7 +138,7 @@ class WBWebActionMapper : public QObject
  */
 class WBTabWidget : public QTabWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     signals:
         // tab widget signals
@@ -171,8 +171,10 @@ class WBTabWidget : public QTabWidget
         QByteArray saveState() const;
         bool restoreState(const QByteArray &state);
 
-        WBTabBar* tabBar() { return mTabBar; };
-        QStackedWidget* lineEdits() { return mLineEdits; };
+        WBTabBar* tabBar() { return mTabBar; }
+        QStackedWidget* lineEdits() { return mLineEdits; }
+
+        void setLineEditStackVisible(bool visible) {mLineEdits->setVisible(visible);mLineEdits->hide();}
     protected:
         void mouseDoubleClickEvent(QMouseEvent *event);
         void contextMenuEvent(QContextMenuEvent *event);

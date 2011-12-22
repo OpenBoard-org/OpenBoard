@@ -13,28 +13,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UBTHUMBNAILVIEW_H_
-#define UBTHUMBNAILVIEW_H_
+#ifndef UBABSTRACTUNDOCOMMAND_H_
+#define UBABSTRACTUNDOCOMMAND_H_
 
-#include <QGraphicsView>
+#include <QtGui>
 
-class UBGraphicsScene;
-
-class UBThumbnailView : public QGraphicsView
+class UBAbstractUndoCommand : public QUndoCommand
 {
-    Q_OBJECT
-
     public:
-        UBThumbnailView();
-        virtual ~UBThumbnailView();
 
-    signals:
-        void doubleClicked();
+        UBAbstractUndoCommand();
+        ~UBAbstractUndoCommand();
+
+        enum UndoType
+        {
+            undotype_UNKNOWN               = 0,
+            undotype_DOCUMENT              = 1,
+            undotype_GRAPHICITEMTRANSFORM  = 2,
+            undotype_GRAPHICITEM           = 3,
+            undotype_GRAPHICTEXTITEM       = 4,
+            undotype_PAGESIZE              = 5
+        };
+
+        virtual UndoType getType() { return undotype_UNKNOWN; }
 
     protected:
-        virtual void drawBackground(QPainter *painter, const QRectF &rect);
-        virtual void mouseDoubleClickEvent ( QMouseEvent * event );
+        virtual void undo();
+        virtual void redo();
 
 };
 
-#endif /* UBTHUMBNAILVIEW_H_ */
+#endif /* UBABSTRACTUNDOCOMMAND_H_ */

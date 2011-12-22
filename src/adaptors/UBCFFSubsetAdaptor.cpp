@@ -999,6 +999,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createNewScene()
 {
     mCurrentScene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, mProxy->pageCount());
+    mCurrentScene->setURStackEnable(false);
     mCurrentSceneRect = mCurrentScene->normalizedSceneRect();
     mVBTransFactor = qMin(mCurrentSceneRect.width()  / mViewPort.width(),
                           mCurrentSceneRect.height() / mViewPort.height());
@@ -1034,7 +1035,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
                 tmpScene->setModified(true);
                 UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), tmpScene, i);
                 delete tmpScene;
-
 
         mCurrentScene->setModified(false);
     }

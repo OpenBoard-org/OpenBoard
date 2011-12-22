@@ -150,6 +150,9 @@ class UBBoardController : public QObject
         void notifyPageChanged();
         void displayMetaData(QMap<QString, QString> metadatas);
 
+        void ClearUndoStack();
+
+
     public slots:
         void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0);
         void showDocumentsDialog();

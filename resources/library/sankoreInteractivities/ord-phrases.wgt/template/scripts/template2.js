@@ -208,7 +208,7 @@ function modeEdit()
     // if no sankore api, insert ok button
     if( !isSankore )
     {
-        $( "#mp_setup" ).empty().append( '<input type="button" value="OK">' );
+        $( "#mp_setup" ).empty().append( '<input type="button" value="View">' );
         $( "#mp_setup input:button" ).click( function(){
             modeView();
         });

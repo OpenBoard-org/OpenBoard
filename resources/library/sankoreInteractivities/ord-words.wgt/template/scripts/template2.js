@@ -236,7 +236,7 @@ function modeEdit()
     // if no sankore api, insert ok button
     if( !isSankore )
     {
-        $( "#mp_setup" ).empty().append( '<input type="button" value="OK">' );
+        $( "#mp_setup" ).empty().append( '<input type="button" value="View">' );
         $( "#mp_setup input:button" ).click( function(){
             modeView();
         });
@@ -249,9 +249,11 @@ $(window).mouseout(function(){
     if(window.sankore){
         var str = "";
         $( "#mp_word .letter" ).each( function(){
-            str += $(this).text();
+            str += $(this).text() + "*";
         });
-		
+        
+        str = str.substr(0, str.length - 1);
+        
         sankore.setPreference("currentOrdWords", str);
         sankore.setPreference("rightOrdWords", word);
     }

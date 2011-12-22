@@ -48,6 +48,8 @@ private slots:
     void saveContent();
     void loadContent();
     void onValueChanged();
+	void onTitleTextChanged(const QString& text);
+	void onEquipmentTextChanged(const QString& text);
 
 private:
     void populateCombos();

@@ -23,6 +23,7 @@
 
 #include "frameworks/UBCoreGraphicsScene.h"
 #include "core/UBSettings.h"
+#include "domain/UBItem.h"
 
 #define STARTDRAGTIME   1000000
 #define BUTTONSIZE      48
@@ -148,6 +149,7 @@ class UBThumbnail
                     {
                         item->scene()->addItem(mSelectionItem);
                         mSelectionItem->setZValue(item->zValue() - 1);
+//                        UBGraphicsItem::assignZValue(mSelectionItem, item->zValue() - 1);
                         mAddedToScene = true;
                     }
 
