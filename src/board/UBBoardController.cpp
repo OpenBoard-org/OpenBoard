@@ -1184,7 +1184,6 @@ void UBBoardController::ClearUndoStack()
 {
     QSet<QGraphicsItem*> uniqueItems;
     // go through all stack command
-    int count = UBApplication::undoStack->count();
     for(int i = 0; i < UBApplication::undoStack->count(); i++)
     {
 
@@ -1214,7 +1213,6 @@ void UBBoardController::ClearUndoStack()
 
     // clear stack, and command list
     UBApplication::undoStack->clear();
-    count = UBApplication::undoStack->count();
 
     // go through all unique items, and check, ot on scene, or not.
     // if not on scene, than item can be deleted
@@ -1226,7 +1224,7 @@ void UBBoardController::ClearUndoStack()
         UBGraphicsScene *scene = (UBGraphicsScene*)item->scene();
         if(!scene)
         {
-            bool retCode = mActiveScene->deleteItem(item);
+            mActiveScene->deleteItem(item);
         }
     }
 
