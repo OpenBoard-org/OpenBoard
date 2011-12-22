@@ -48,7 +48,6 @@ UBActionPalette::UBActionPalette(Qt::Corner corner, QWidget * parent, Qt::Orient
 
 void UBActionPalette::init(Qt::Orientation orientation)
 {
-    Q_UNUSED(orientation);
     m_customCloseProcessing = false;
 
     mButtonSize = QSize(32, 32);
@@ -57,6 +56,13 @@ void UBActionPalette::init(Qt::Orientation orientation)
     mButtonGroup = 0;
     mToolButtonStyle = Qt::ToolButtonIconOnly;
     mButtons.clear();
+
+    QBoxLayout *layout = 0;
+
+    if (orientation == Qt::Horizontal)
+        layout = new QHBoxLayout(this);
+    else
+        layout = new QVBoxLayout(this);
 
     updateLayout();
 }
