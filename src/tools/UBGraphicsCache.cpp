@@ -89,10 +89,9 @@ void UBGraphicsCache::init()
 
 void UBGraphicsCache::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    //Q_UNUSED(option);
+    Q_UNUSED(option);
     Q_UNUSED(widget);
 
-//    setZValue(CACHE_ZVALUE);
     UBGraphicsItem::assignZValue(this, CACHE_ZVALUE);
 
     painter->setBrush(mMaskColor);

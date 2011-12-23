@@ -17,7 +17,6 @@
 
 #include "document/UBDocumentProxy.h"
 
-#include "frameworks/UBDesktopServices.h"
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "core/UBSettings.h"

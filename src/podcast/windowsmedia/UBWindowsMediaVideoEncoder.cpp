@@ -17,7 +17,6 @@
 
 #include <QtGui>
 
-#include "frameworks/UBDesktopServices.h"
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "core/UBApplication.h"

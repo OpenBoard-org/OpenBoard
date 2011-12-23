@@ -16,7 +16,6 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBDesktopServices.h"
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
@@ -54,13 +53,13 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget) :
 {
     readFavoriteList();
 
-    mAudioStandardDirectoryPath = QUrl::fromLocalFile(UBDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+    mAudioStandardDirectoryPath = QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
     userPath(mAudioStandardDirectoryPath);
 
-    mVideoStandardDirectoryPath = QUrl::fromLocalFile(UBDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+    mVideoStandardDirectoryPath = QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
     userPath(mVideoStandardDirectoryPath);
 
-    mPicturesStandardDirectoryPath = QUrl::fromLocalFile(UBDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+    mPicturesStandardDirectoryPath = QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
     userPath(mPicturesStandardDirectoryPath);
 
     mInteractiveUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveUserDirectory());

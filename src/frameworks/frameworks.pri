@@ -1,6 +1,5 @@
 
 HEADERS      += src/frameworks/UBGeometryUtils.h \
-                src/frameworks/UBDesktopServices.h \
                 src/frameworks/UBPlatformUtils.h \
                 src/frameworks/UBFileSystemUtils.h \
                 src/frameworks/UBStringUtils.h \
@@ -21,26 +20,22 @@ SOURCES      += src/frameworks/UBGeometryUtils.cpp \
 
 win32 {
 
-    SOURCES  += src/frameworks/UBPlatformUtils_win.cpp \
-                src/frameworks/UBDesktopServices_win.cpp
+    SOURCES  += src/frameworks/UBPlatformUtils_win.cpp
 }            
 
 
 macx {                
 
-    SOURCES  += src/frameworks/UBPlatformUtils_mac.mm \
-                src/frameworks/UBDesktopServices_mac.cpp
+    SOURCES  += src/frameworks/UBPlatformUtils_mac.mm
                 
 }       
 
 
 linux-g++ {
 
-    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp \
-                src/frameworks/UBDesktopServices_linux.cpp
+    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp
 }         
 linux-g++-32 {
 
-    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp \
-                src/frameworks/UBDesktopServices_linux.cpp
+    SOURCES  += src/frameworks/UBPlatformUtils_linux.cpp
 }
