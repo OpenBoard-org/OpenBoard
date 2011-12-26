@@ -205,6 +205,7 @@ void WBBrowserWindow::setupToolBar()
     connect(mSearchToolBar, SIGNAL(search(const QUrl&)), SLOT(loadUrl(const QUrl&)));
 
     mChaseWidget = new WBChaseWidget(this);
+    mWebToolBar->insertWidget(mUniboardMainWindow->actionWebBigger, mChaseWidget);
     mWebToolBar->insertSeparator(mUniboardMainWindow->actionWebBigger);
 
     connect(mUniboardMainWindow->actionHome, SIGNAL(triggered()), this , SLOT(slotHome()));

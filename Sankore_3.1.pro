@@ -4,7 +4,8 @@ TEMPLATE = app
 THIRD_PARTY_PATH=../Sankore-ThirdParty
 
 CONFIG += debug_and_release \
-   no_include_pwd
+          no_include_pwd \
+          link_prl
 
 VERSION_MAJ = 1
 VERSION_MIN = 40 

@@ -111,7 +111,6 @@ void UBDesktopPalette::updateShowHideState(bool pShowEnabled)
         mShowHideAction->setToolTip(tr("Show Board on Secondary Screen"));
     else
         mShowHideAction->setToolTip(tr("Show Desktop on Secondary Screen"));
-
 }
 
 

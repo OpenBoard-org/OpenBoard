@@ -41,6 +41,7 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
     , mpStackWidget(NULL)
     , mpLayout(NULL)
     , mCurrentTab(0)
+    , mTabPalette(new UBTabDockPalete(this, parent))
 {
     setObjectName(name);
 
@@ -54,7 +55,7 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
     mTabWidgets.clear();
 
     // We let 2 pixels in order to keep a small border for the resizing
-    setMinimumWidth(2*border() + 2);
+    setMinimumWidth(/*2*border() + 2*/0);
 
     if (parent)
     {
@@ -93,6 +94,10 @@ UBDockPalette::~UBDockPalette()
         delete mpLayout;
         mpLayout = NULL;
     }
+    if (NULL != mTabPalette) {
+        delete mTabPalette;
+        mTabPalette = NULL;
+    }
 }
 
 /**
@@ -123,139 +128,139 @@ void UBDockPalette::setOrientation(eUBDockOrientation orientation)
 	setMaximumWidth(parentWidget()->width());
 	setMinimumWidth(maximumWidth());
     }
-
 }
 
 /**
  * \brief Handle the mouse move event
  * @param as the mouse event
  */
-void UBDockPalette::mouseMoveEvent(QMouseEvent *event)
-{
-    QPoint p = event->pos();
+//void UBDockPalette::mouseMoveEvent(QMouseEvent *event)
+//{
 
-    if(mCanResize && ((mMousePressPos - p).manhattanLength() > QApplication::startDragDistance()))
-    {
-	switch(mOrientation)
-	{
-	case eUBDockOrientation_Left:
-            if(p.x() < collapseWidth() && p.x() >= minimumWidth())
-            {
-                resize(border(), height());
-                mLastWidth = collapseWidth() + 1;
-                mResized = true;
-            }
-            else if(p.x() <= maximumWidth() && p.x() >= minimumWidth())
-	    {
-		resize(p.x(), height());
-                mResized = true;
-	    }
-	    break;
-	case eUBDockOrientation_Right:
-            if((this->x() + p.x() > parentWidget()->width() - collapseWidth()) && (this->x() + p.x() < parentWidget()->width()))
-            {
-                resize(border(), height());
-                mLastWidth = collapseWidth() + 1;
-                mResized = true;
-            }
-            else if((this->x() + p.x() >= parentWidget()->width() - maximumWidth()) && (this->x() + p.x() <= parentWidget()->width() - this->minimumWidth()))
-	    {
-		resize(parentWidget()->width() - (this->x() + p.x()), height());
-                mResized = true;
-	    }
+//    QPoint p = event->pos();
 
-	    break;
-	case eUBDockOrientation_Top:
-	case eUBDockOrientation_Bottom:
-	    if(p.y() <= maximumHeight())
-	    {
-		resize(width(), p.y());
-                mResized = true;
-	    }
-	    break;
+//    if(mCanResize && ((mMousePressPos - p).manhattanLength() > QApplication::startDragDistance()))
+//    {
+//	switch(mOrientation)
+//	{
+//	case eUBDockOrientation_Left:
+//            if(p.x() < collapseWidth() && p.x() >= minimumWidth())
+//            {
+//                resize(border(), height());
+//                mLastWidth = collapseWidth() + 1;
+//                mResized = true;
+//            }
+//            else if(p.x() <= maximumWidth() && p.x() >= minimumWidth())
+//	    {
+//		resize(p.x(), height());
+//                mResized = true;
+//	    }
+//	    break;
+//	case eUBDockOrientation_Right:
+//            if((this->x() + p.x() > parentWidget()->width() - collapseWidth()) && (this->x() + p.x() < parentWidget()->width()))
+//            {
+//                resize(border(), height());
+//                mLastWidth = collapseWidth() + 1;
+//                mResized = true;
+//            }
+//            else if((this->x() + p.x() >= parentWidget()->width() - maximumWidth()) && (this->x() + p.x() <= parentWidget()->width() - this->minimumWidth()))
+//	    {
+//		resize(parentWidget()->width() - (this->x() + p.x()), height());
+//                mResized = true;
+//	    }
 
-	default:
-	    break;
-	}
-    }
-}
+//	    break;
+//	case eUBDockOrientation_Top:
+//	case eUBDockOrientation_Bottom:
+//	    if(p.y() <= maximumHeight())
+//	    {
+//		resize(width(), p.y());
+//                mResized = true;
+//	    }
+//	    break;
+
+//	default:
+//	    break;
+//	}
+//    }
+//}
 
 /**
  * \brief Handle the mouse press event
  * @param as the mouse event
  */
-void UBDockPalette::mousePressEvent(QMouseEvent *event)
-{
-    mClickTime = QTime::currentTime();
-    // The goal here is to verify if the user can resize the widget.
-    // It is only possible to resize it if the border is selected
-    QPoint p = event->pos();
-    mMousePressPos = p;
-    mResized = false;
+//void UBDockPalette::mousePressEvent(QMouseEvent *event)
+//{
+//    mClickTime = QTime::currentTime();
+//    // The goal here is to verify if the user can resize the widget.
+//    // It is only possible to resize it if the border is selected
+//    QPoint p = event->pos();
+//    mMousePressPos = p;
+//    mResized = false;
 
-    switch(mOrientation)
-    {
-    case eUBDockOrientation_Left:
-        if((p.x() >= width() - 2 * border()) && (p.x() <= width()))
-	{
-	    mCanResize = true;
-	}
-	break;
-    case eUBDockOrientation_Right:
-        if((p.x() >= 0) && (p.x() <= 2 * border()))
-	{
-	    mCanResize = true;
-	}
-	break;
-    case eUBDockOrientation_Top:
-	// Not supported yet
-	break;
-    case eUBDockOrientation_Bottom:
-	// Not supported yet
-	break;
-    default:
-	break;
-    }
-}
+//    switch(mOrientation)
+//    {
+//    case eUBDockOrientation_Left:
+//        if((p.x() >= width() - 2 * border()) && (p.x() <= width()))
+//	{
+//	    mCanResize = true;
+//	}
+//	break;
+//    case eUBDockOrientation_Right:
+//        if((p.x() >= 0) && (p.x() <= 2 * border()))
+//	{
+//	    mCanResize = true;
+//	}
+//	break;
+//    case eUBDockOrientation_Top:
+//	// Not supported yet
+//	break;
+//    case eUBDockOrientation_Bottom:
+//	// Not supported yet
+//	break;
+//    default:
+//	break;
+//    }
+//}
 
 /**
  * \brief Handle the mouse release event
  * @param event as the mouse event
  */
-void UBDockPalette::mouseReleaseEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-    if(!mResized && mClickTime.elapsed() < CLICKTIME)
-    {
-        int nbTabs = mTabWidgets.size();
-        int clickedTab = 0;
-        // If the clicked position is in the tab, perform the related action
-        if(eUBDockOrientation_Left == mOrientation)
-        {
-            if(mMousePressPos.x() >= width() - 2*border() &&
-               mMousePressPos.y() >= mHTab &&
-               mMousePressPos.x() <= width() &&
-               mMousePressPos.y() <= mHTab + nbTabs*TABSIZE + (nbTabs -1)*tabSpacing())
-            {
-                clickedTab = (mMousePressPos.y() - mHTab)/(TABSIZE+tabSpacing());
-                tabClicked(clickedTab);
-            }
-        }
-        else if(eUBDockOrientation_Right == mOrientation)
-        {
-            if(mMousePressPos.x() >= 0 &&
-               mMousePressPos.x() <= 2*border() &&
-               mMousePressPos.y() >= mHTab &&
-               mMousePressPos.y() <= mHTab + nbTabs*TABSIZE + (nbTabs -1)*tabSpacing())
-            {
-                clickedTab = (mMousePressPos.y() - mHTab)/(TABSIZE+tabSpacing());
-                tabClicked(clickedTab);
-            }
-        }
-    }
+//void UBDockPalette::mouseReleaseEvent(QMouseEvent *event)
+//{
+//    Q_UNUSED(event);
+//    if(!mResized && mClickTime.elapsed() < CLICKTIME)
+//    {
+//        int nbTabs = mTabWidgets.size();
+//        int clickedTab = 0;
+//        // If the clicked position is in the tab, perform the related action
+//        if(eUBDockOrientation_Left == mOrientation)
+//        {
+//            if(mMousePressPos.x() >= width() - 2*border() &&
+//               mMousePressPos.y() >= mHTab &&
+//               mMousePressPos.x() <= width() &&
+//               mMousePressPos.y() <= mHTab + nbTabs*TABSIZE + (nbTabs -1)*tabSpacing())
+//            {
+//                clickedTab = (mMousePressPos.y() - mHTab)/(TABSIZE+tabSpacing());
+//                tabClicked(clickedTab);
+//            }
+//        }
+//        else if(eUBDockOrientation_Right == mOrientation)
+//        {
+//            if(mMousePressPos.x() >= 0 &&
+//               mMousePressPos.x() <= 2*border() &&
+//               mMousePressPos.y() >= mHTab &&
+//               mMousePressPos.y() <= mHTab + nbTabs*TABSIZE + (nbTabs -1)*tabSpacing())
+//            {
+//                clickedTab = (mMousePressPos.y() - mHTab)/(TABSIZE+tabSpacing());
+//                tabClicked(clickedTab);
+//            }
+//        }
+//    }
 
-    mCanResize = false;
-}
+//    mCanResize = false;
+//}
 
 /**
  * \brief Handle the resize event
@@ -288,6 +293,7 @@ void UBDockPalette::resizeEvent(QResizeEvent *event)
 	break;
     }
     move(origin.x(), origin.y());
+    moveTabs();
 }
 
 /**
@@ -332,11 +338,11 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
         // First draw the BIG RECTANGLE (I write it big because the rectangle is big...)
         if(mOrientation == eUBDockOrientation_Left)
         {
-            path.addRect(0.0, 0.0, width()-2*border(), height());
+            path.addRect(0.0, 0.0, width(), height());
         }
         else if(mOrientation == eUBDockOrientation_Right)
         {
-            path.addRect(2*border(), 0.0, width()-2*border(), height());
+            path.addRect(0.0, 0.0, width(), height());
         }
 
         // THEN DRAW THE small tabs (yes, the tabs are small...)
@@ -348,52 +354,53 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
         {
             mHTab = height() - border() - nbTabs*TABSIZE - (nbTabs-1)*tabSpacing();
         }
+        painter.drawPath(path);
 
-        for(int i = 0; i < mTabWidgets.size(); i++)
-        {
-            UBDockPaletteWidget* pCrntWidget = mTabWidgets.at(i);
-            if(NULL != pCrntWidget)
-            {
-                if(mOrientation == eUBDockOrientation_Left)
-                {
-                    path.addRoundedRect(width()-4*border(), mHTab + i*TABSIZE + i*tabSpacing(), 4*border(), TABSIZE, radius(), radius());
-                    painter.drawPath(path);
-                    QPixmap iconPixmap;
-                    if(mCollapseWidth >= width())
-                    {
-                        // Get the collapsed icon
-                        iconPixmap = pCrntWidget->iconToRight();
-                    }
-                    else
-                    {
-                        // Get the expanded icon
-                        iconPixmap = pCrntWidget->iconToLeft();
-                    }
-                    painter.drawPixmap(width() - 2*border() + 1, mHTab + i*TABSIZE + i*tabSpacing() + 1 , 2*border() - 4, TABSIZE - 2, iconPixmap);
-                }
-                else if(mOrientation == eUBDockOrientation_Right)
-                {
-                    path.addRoundedRect(0.0, mHTab + i*TABSIZE + i*tabSpacing(), 4*border(), TABSIZE, radius(), radius());
-                    painter.drawPath(path);
-                    QPixmap iconPixmap;
-                    if(mCollapseWidth >= width())
-                    {
-                        // Get the collapsed icon
-                        iconPixmap = pCrntWidget->iconToLeft();
-                    }
-                    else
-                    {
-                        // Get the expanded icon
-                        iconPixmap = pCrntWidget->iconToRight();
-                    }
-                    painter.drawPixmap(2, mHTab + i*TABSIZE + i*tabSpacing() + 1, 2*border() - 4, TABSIZE - 2, iconPixmap);
-                }
-                else
-                {
-                    painter.drawRoundedRect(border(), border(), width() - 2 * border(), height() - 2 * border(), radius(), radius());
-                }
-            }
-        }
+//        for(int i = 0; i < mTabWidgets.size(); i++)
+//        {
+//            UBDockPaletteWidget* pCrntWidget = mTabWidgets.at(i);
+//            if(NULL != pCrntWidget)
+//            {
+//                if(mOrientation == eUBDockOrientation_Left)
+//                {
+//                    path.addRoundedRect(width()-4*border(), mHTab + i*TABSIZE + i*tabSpacing(), 4*border(), TABSIZE, radius(), radius());
+//                    painter.drawPath(path);
+//                    QPixmap iconPixmap;
+//                    if(mCollapseWidth >= width())
+//                    {
+//                        // Get the collapsed icon
+//                        iconPixmap = pCrntWidget->iconToRight();
+//                    }
+//                    else
+//                    {
+//                        // Get the expanded icon
+//                        iconPixmap = pCrntWidget->iconToLeft();
+//                    }
+//                    painter.drawPixmap(width() - 2*border() + 1, mHTab + i*TABSIZE + i*tabSpacing() + 1 , 2*border() - 4, TABSIZE - 2, iconPixmap);
+//                }
+//                else if(mOrientation == eUBDockOrientation_Right)
+//                {
+//                    path.addRoundedRect(0.0, mHTab + i*TABSIZE + i*tabSpacing(), 4*border(), TABSIZE, radius(), radius());
+//                    painter.drawPath(path);
+//                    QPixmap iconPixmap;
+//                    if(mCollapseWidth >= width())
+//                    {
+//                        // Get the collapsed icon
+//                        iconPixmap = pCrntWidget->iconToLeft();
+//                    }
+//                    else
+//                    {
+//                        // Get the expanded icon
+//                        iconPixmap = pCrntWidget->iconToRight();
+//                    }
+//                    painter.drawPixmap(2, mHTab + i*TABSIZE + i*tabSpacing() + 1, 2*border() - 4, TABSIZE - 2, iconPixmap);
+//                }
+//                else
+//                {
+//                    painter.drawRoundedRect(border(), border(), width() - 2 * border(), height() - 2 * border(), radius(), radius());
+//                }
+//            }
+//        }
     }
 }
 
@@ -460,6 +467,7 @@ void UBDockPalette::tabClicked(int tabIndex)
     {
         toggleCollapseExpand();
     }
+    mTabPalette->update();
 }
 
 /**
@@ -493,7 +501,7 @@ void UBDockPalette::toggleCollapseExpand()
     {
         // The palette must be collapsed
         mLastWidth = width();
-        resize(2*border(), height());
+        resize(0, height());
     }
     else
     {
@@ -550,6 +558,7 @@ void UBDockPalette::addTab(UBDockPaletteWidget *widget)
         mTabWidgets.append(widget);
         mpStackWidget->addWidget(widget);
         mpStackWidget->setCurrentWidget(widget);
+        resizeTabs();
         update();
     }
 }
@@ -571,6 +580,8 @@ void UBDockPalette::removeTab(const QString &widgetName)
             break;
         }
     }
+    resizeTabs();
+    mCurrentTab = qMax(mCurrentTab - 1, 0);
 }
 
 /**
@@ -666,3 +677,245 @@ void UBDockPalette::onAllDownloadsFinished()
         }
     }
 }
+
+void UBDockPalette::moveTabs()
+{
+    if (!mHTab) {
+        if(eUBDockTabOrientation_Up == mTabsOrientation) {
+            mHTab = border();
+        } else {
+            mHTab = height() - border() - mTabWidgets.size() * TABSIZE - (mTabWidgets.size() - 1) * tabSpacing();
+        }
+    }
+
+    QPoint origin(width(), mHTab);
+
+    switch (mOrientation) {
+    case eUBDockOrientation_Left:
+        origin.setX(width());
+        break;
+    case eUBDockOrientation_Right:
+        if (parentWidget()) {
+            origin.setX(parentWidget()->width() - width() - mTabPalette->width());
+        }
+        break;
+    case eUBDockOrientation_Top: ;
+    case eUBDockOrientation_Bottom: ;
+    }
+
+    mTabPalette->move(origin.x(), origin.y());
+}
+void UBDockPalette::resizeTabs()
+{
+    int numTabs = mTabWidgets.size();
+    mTabPalette->resize(2 * border(), (numTabs * TABSIZE) + qMax(numTabs - 1, 0) * tabSpacing());
+}
+QRect UBDockPalette::getTabPaletteRect()
+{
+    QRect tabsRect = mTabPalette->rect();
+    QPoint topLeft = mTabPalette->mapToParent(tabsRect.topLeft());
+    QPoint bottomRight = mTabPalette->mapToParent(tabsRect.bottomRight());
+
+    return QRect(topLeft, bottomRight);
+}
+void UBDockPalette::assignParent(QWidget *widget)
+{
+    setParent(widget);
+    mTabPalette->setParent(widget);
+}
+void UBDockPalette::setVisible(bool visible)
+{
+    QWidget::setVisible(visible);
+    mTabPalette->setVisible(visible);
+}
+
+UBTabDockPalete::UBTabDockPalete(UBDockPalette *dockPalette, QWidget *parent) :
+    QWidget(parent)
+  , dock(dockPalette)
+{
+    int numTabs = dock->mTabWidgets.size();
+    resize(2 * dock->border(), (numTabs * TABSIZE) + qMax(numTabs - 1, 0) * dock->tabSpacing());
+//    move(dock->width(), 20);
+
+    setAttribute(Qt::WA_TranslucentBackground);
+}
+
+void UBTabDockPalete::paintEvent(QPaintEvent */*event*/)
+{
+    int nTabs = dock->mTabWidgets.size();
+    if (nTabs <= 0) {
+        qDebug() << "not enough tabs";
+        return;
+    }
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(dock->mBackgroundBrush);
+
+    int yFrom = 0;
+    for (int i = 0; i < nTabs; i++) {
+        UBDockPaletteWidget* pCrntWidget = dock->mTabWidgets.at(i);
+        QPainterPath path;
+        path.setFillRule(Qt::WindingFill);
+        QPixmap iconPixmap;
+
+        switch (dock->mOrientation) {
+        case eUBDockOrientation_Left:
+            path.addRect(0, yFrom, width() / 2, TABSIZE);
+            path.addRoundedRect(0, yFrom, width(), TABSIZE, dock->radius(), dock->radius());
+            if (pCrntWidget) {
+                if(dock->mCollapseWidth >= dock->width()) {
+                    // Get the collapsed icon
+                    iconPixmap = pCrntWidget->iconToRight();
+                } else {
+                    // Get the expanded icon
+                    iconPixmap = pCrntWidget->iconToLeft();
+                }
+
+            }
+            break;
+
+        case eUBDockOrientation_Right:
+            path.addRect(width() /2, yFrom, width() / 2, TABSIZE);
+            path.addRoundedRect(0, yFrom, width(), TABSIZE, dock->radius(), dock->radius());
+            if (pCrntWidget) {
+                if(dock->mCollapseWidth >= dock->width()) {
+                    // Get the collapsed icon
+                    iconPixmap = pCrntWidget->iconToLeft();
+                } else {
+                    // Get the expanded icon
+                    iconPixmap = pCrntWidget->iconToRight();
+                }
+            }
+            break;
+
+        case eUBDockOrientation_Top: ;
+        case eUBDockOrientation_Bottom: ;
+        default:
+            break;
+        }
+
+        painter.save();
+        QPixmap transparencyPix(":/images/tab_mask.png");
+        if (dock->mCurrentTab != i) {
+            iconPixmap.setAlphaChannel(transparencyPix);
+            QColor color(0x7F, 0x7F, 0x7F, 0x3F);
+            painter.setBrush(QBrush(color));
+        }
+
+        painter.drawPath(path);
+        painter.drawPixmap(2, yFrom + 2, width() - 4, TABSIZE - 4, iconPixmap);
+        yFrom += (TABSIZE + dock->tabSpacing());
+        painter.restore();
+    }
+}
+UBTabDockPalete::~UBTabDockPalete()
+{
+}
+
+void UBTabDockPalete::mousePressEvent(QMouseEvent *event)
+{
+    dock->mClickTime = QTime::currentTime();
+    // The goal here is to verify if the user can resize the widget.
+    // It is only possible to resize it if the border is selected
+    QPoint p = event->pos();
+    dock->mMousePressPos = p;
+    dock->mResized = false;
+
+    switch(dock->mOrientation) {
+    case eUBDockOrientation_Left:
+        dock->mCanResize = true;
+        break;
+    case eUBDockOrientation_Right:
+        dock->mCanResize = true;
+        break;
+    case eUBDockOrientation_Top:
+        // Not supported yet
+        break;
+    case eUBDockOrientation_Bottom:
+        // Not supported yet
+        break;
+    default:
+        break;
+    }
+}
+void UBTabDockPalete::mouseMoveEvent(QMouseEvent *event)
+{
+    QPoint p = event->pos();
+
+    if(dock->mCanResize && ((dock->mMousePressPos - p).manhattanLength() > QApplication::startDragDistance()))
+    {
+        switch(dock->mOrientation) {
+
+        case eUBDockOrientation_Left:
+            p.setX(p.x() + dock->width());
+            if(p.x() < dock->collapseWidth() && p.x() >= dock->minimumWidth()) {
+                dock->resize(0, dock->height());
+                dock->mLastWidth = dock->collapseWidth() + 1;
+                dock->mResized = true;
+            } else if (p.x() <= dock->maximumWidth() && p.x() >= dock->minimumWidth()) {
+                dock->resize(p.x(), dock->height());
+                dock->mResized = true;
+            }
+            break;
+
+        case eUBDockOrientation_Right:
+            p.setX(p.x() - 2 * dock->border());
+            if((dock->x() + p.x() > dock->parentWidget()->width() - dock->collapseWidth()) && (dock->x() + p.x() < dock->parentWidget()->width())) {
+                dock->resize(0, dock->height());
+                dock->mLastWidth = dock->collapseWidth() + 1;
+                dock->mResized = true;
+            } else if((dock->x() + p.x() >= dock->parentWidget()->width() - dock->maximumWidth()) && (dock->x() + p.x() <= dock->parentWidget()->width() - dock->minimumWidth())) {
+                dock->resize(dock->parentWidget()->width() - (dock->x() + p.x()), dock->height());
+                dock->mResized = true;
+            }
+            break;
+
+        case eUBDockOrientation_Top:
+        case eUBDockOrientation_Bottom:
+            if(p.y() <= dock->maximumHeight()) {
+                dock->resize(width(), p.y());
+                dock->mResized = true;
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+}
+void UBTabDockPalete::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+    if(!dock->mResized && dock->mClickTime.elapsed() < CLICKTIME) {
+        int nbTabs = dock->mTabWidgets.size();
+        int clickedTab = 0;
+        // If the clicked position is in the tab, perform the related action
+
+        if(eUBDockOrientation_Left == dock->mOrientation) {
+            if(dock->mMousePressPos.y() >= dock->mHTab &&
+                    dock->mMousePressPos.x() <= width() &&
+                    dock->mMousePressPos.y() <= dock->mHTab + nbTabs * TABSIZE + (nbTabs -1)*dock->tabSpacing()) {
+
+                clickedTab = (dock->mMousePressPos.y() - dock->mHTab) / (TABSIZE + dock->tabSpacing());
+                dock->tabClicked(clickedTab);
+            }
+
+        } else if (eUBDockOrientation_Right == dock->mOrientation) {
+            if(dock->mMousePressPos.x() >= 0 &&
+                    dock->mMousePressPos.x() <= width() &&
+                    dock->mMousePressPos.y() >= 0 &&
+                    dock->mMousePressPos.y() <= nbTabs * TABSIZE + (nbTabs -1) * dock->tabSpacing()) {
+
+                clickedTab = (dock->mMousePressPos.y())/(TABSIZE+dock->tabSpacing());
+                dock->tabClicked(clickedTab);
+            }
+        }
+    }
+
+    dock->mCanResize = false;
+}
+
+
+
