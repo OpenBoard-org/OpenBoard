@@ -372,6 +372,7 @@ void UBDesktopAnnotationController::close()
 
 void UBDesktopAnnotationController::stylusToolChanged(int tool)
 {
+    Q_UNUSED(tool);
 //     UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
 //     if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
 //     {

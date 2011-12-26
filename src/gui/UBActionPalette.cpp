@@ -306,9 +306,5 @@ UBActionPaletteButton* UBActionPalette::getButtonFromAction(QAction *action)
 bool UBActionPaletteButton::hitButton(const QPoint &pos) const
 {
     Q_UNUSED(pos);
-//    if(isChecked())
-//    {
-//        return false;
-//    }
     return true;
 }

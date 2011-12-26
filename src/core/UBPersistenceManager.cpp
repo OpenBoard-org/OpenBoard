@@ -20,7 +20,6 @@
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBDesktopServices.h"
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
@@ -171,7 +170,7 @@ QStringList UBPersistenceManager::allGips()
 
 QStringList UBPersistenceManager::allSounds()
 {
-    QString soundLibraryPath = UBDesktopServices::storageLocation(QDesktopServices::MusicLocation);
+    QString soundLibraryPath = QDesktopServices::storageLocation(QDesktopServices::MusicLocation);
 
     QDir dir(soundLibraryPath);
 

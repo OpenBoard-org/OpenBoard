@@ -81,8 +81,8 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpLibWidget(NULL)
     , mpCachePropWidget(NULL)
     , mpTeacherBarWidget(NULL)
-    , mpDesktopLibWidget(NULL)
     , mpDownloadWidget(NULL)
+    , mpDesktopLibWidget(NULL)
     , mDownloadInProgress(false)
 {
     setupPalettes();

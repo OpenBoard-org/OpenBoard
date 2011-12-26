@@ -19,7 +19,6 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
-#include "frameworks/UBDesktopServices.h"
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"

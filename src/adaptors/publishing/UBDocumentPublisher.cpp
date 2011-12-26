@@ -240,8 +240,6 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
     {
         UBGraphicsScene *scene = UBSvgSubsetAdaptor::loadScene(mPublishingDocument, pageIndex);
 
-        bool sceneHasWidget = false;
-
         QList<UBGraphicsW3CWidgetItem*> widgets;
 
         foreach(QGraphicsItem* item, scene->items()){
@@ -249,7 +247,6 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
             if(widgetItem){
                 generateWidgetPropertyScript(widgetItem, pageIndex + 1);
-                sceneHasWidget = true;
                 widgets << widgetItem;
             }
         }

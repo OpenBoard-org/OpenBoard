@@ -15,7 +15,6 @@
 
 #include "UniboardSankoreTransition.h"
 #include "core/UBSettings.h"
-#include "frameworks/UBDesktopServices.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
@@ -28,9 +27,9 @@ UniboardSankoreTransition::UniboardSankoreTransition(QObject *parent) :
     , mTransitionDlg(NULL)
     , mThread(NULL)
 {
-    mOldSankoreDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    mOldSankoreDirectory = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
 
-    mUniboardSourceDirectory = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    mUniboardSourceDirectory = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
 #if defined(Q_WS_MACX)
     mOldSankoreDirectory.replace("Sankore/Sankore 3.1", "Sankore");
     mUniboardSourceDirectory.replace("Sankore/Sankore 3.1", "Uniboard");
@@ -86,7 +85,7 @@ void UniboardSankoreTransition::documentTransition()
         QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(uniboardDocumentDirectory);
         fileInfoList << UBFileSystemUtils::allElementsInDirectory(mOldSankoreDirectory + "/document");
 
-        QString backupDirectoryPath = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+        QString backupDirectoryPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
 
         if (fileInfoList.count() != 0){
             mTransitionDlg = new UBUpdateDlg(NULL, fileInfoList.count(), backupDirectoryPath);

@@ -13,7 +13,6 @@
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBDesktopServices.h"
 #include "frameworks/UBCryptoUtils.h"
 
 #include "UB.h"
@@ -294,15 +293,15 @@ void UBSettings::init()
 
     mirroringRefreshRateInFps = new UBSetting(this, "Mirroring", "RefreshRateInFramePerSecond", QVariant(defaultRefreshRateInFramePerSecond));
 
-    lastImportFilePath = new UBSetting(this, "Import", "LastImportFilePath", QVariant(UBDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastImportFolderPath = new UBSetting(this, "Import", "LastImportFolderPath", QVariant(UBDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastExportFilePath = new UBSetting(this, "Export", "LastExportFilePath", QVariant(UBDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastExportDirPath = new UBSetting(this, "Export", "LastExportDirPath", QVariant(UBDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastImportToLibraryPath = new UBSetting(this, "Library", "LastImportToLibraryPath", QVariant(UBDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
+    lastImportFilePath = new UBSetting(this, "Import", "LastImportFilePath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
+    lastImportFolderPath = new UBSetting(this, "Import", "LastImportFolderPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
+    lastExportFilePath = new UBSetting(this, "Export", "LastExportFilePath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
+    lastExportDirPath = new UBSetting(this, "Export", "LastExportDirPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
+    lastImportToLibraryPath = new UBSetting(this, "Library", "LastImportToLibraryPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
 
-    lastPicturePath = new UBSetting(this, "Library", "LastPicturePath", QVariant(UBDesktopServices::storageLocation(QDesktopServices::PicturesLocation)));
-    lastWidgetPath = new UBSetting(this, "Library", "LastWidgetPath", QVariant(UBDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastVideoPath = new UBSetting(this, "Library", "LastVideoPath", QVariant(UBDesktopServices::storageLocation(QDesktopServices::MoviesLocation)));
+    lastPicturePath = new UBSetting(this, "Library", "LastPicturePath", QVariant(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation)));
+    lastWidgetPath = new UBSetting(this, "Library", "LastWidgetPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
+    lastVideoPath = new UBSetting(this, "Library", "LastVideoPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation)));
 
     defaultDocumentGroupName = tr("Untitled Documents");
     documentTrashGroupName = tr("Trash");
@@ -761,8 +760,8 @@ QString UBSettings::uniboardDataDirectory()
             //    ", defaulting to " + UBDesktopServices::storageLocation(QDesktopServices::DataLocation);
         }
     }
-    QString qtDataPath = UBFileSystemUtils::normalizeFilePath(UBDesktopServices::storageLocation(QDesktopServices::DataLocation));
-    qtDataPath.replace("/Sankore", "");
+    QString qtDataPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+    qtDataPath.replace("/Open-Sankore", "");
     return qtDataPath;
 }
 
@@ -770,7 +769,7 @@ QString UBSettings::uniboardDataDirectory()
 QString UBSettings::uniboardUserImageDirectory()
 {
     QString valideUserImageDirectory =
-        UBDesktopServices::storageLocation(QDesktopServices::PicturesLocation)
+        QDesktopServices::storageLocation(QDesktopServices::PicturesLocation)
         + "/" + QCoreApplication::applicationName();
 
     bool hasCreatedDir = false;
@@ -852,9 +851,7 @@ QString UBSettings::defaultUserImagesDirectory()
 QString UBSettings::uniboardUserVideoDirectory()
 {
     QString valideUserVideoDirectory =
-        UBDesktopServices::storageLocation(QDesktopServices::MoviesLocation);
-
-    bool hasCreatedDir = false;
+        QDesktopServices::storageLocation(QDesktopServices::MoviesLocation);
 
     // first look into the application settings
     if (sAppSettings && getAppSettings()->contains("App/UserVideoDirectory"))
@@ -889,7 +886,6 @@ QString UBSettings::uniboardUserVideoDirectory()
         if (!dir.exists())
         {
             dir.mkpath(userVideoDirectory);
-            hasCreatedDir = true;
         }
 
         if (dir.exists())
@@ -898,7 +894,6 @@ QString UBSettings::uniboardUserVideoDirectory()
         }
         else
         {
-            hasCreatedDir = false;
             qWarning() << "Failed to interpret App/UserVideoDirectory config : "
                 + getAppSettings()->value("App/UserVideoDirectory").toString()
                 + ", defaulting to " + valideUserVideoDirectory;
@@ -927,9 +922,7 @@ QString UBSettings::uniboardUserVideoDirectory()
 QString UBSettings::podcastRecordingDirectory()
 {
     QString validePodcastRecordingDirectory =
-        UBDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
-
-    bool hasCreatedDir = false;
+        QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
 
     // first look into the application settings
     if (sAppSettings && getAppSettings()->contains("Podcast/RecordingDirectory"))
@@ -964,7 +957,6 @@ QString UBSettings::podcastRecordingDirectory()
         if (!dir.exists())
         {
             dir.mkpath(userPodcastRecordingDirectory);
-            hasCreatedDir = true;
         }
 
         if (dir.exists())
@@ -973,7 +965,6 @@ QString UBSettings::podcastRecordingDirectory()
         }
         else
         {
-            hasCreatedDir = false;
             qWarning() << "Failed to interpret Podcast/RecordingDirectory config : "
                 + getAppSettings()->value("Podcast/RecordingDirectory").toString()
                 + ", defaulting to user Desktop";
@@ -1099,8 +1090,6 @@ QString UBSettings::uniboardInteractiveUserDirectory()
 {
     QString valideUserInteractiveDirectory = uniboardDataDirectory() + "/interactive content";
 
-    bool hasCreatedDir = false;
-
     // first look into the application settings
     if (sAppSettings && getAppSettings()->contains("App/UserInteractiveContentDirectory"))
     {
@@ -1129,7 +1118,6 @@ QString UBSettings::uniboardInteractiveUserDirectory()
         if (!dir.exists())
         {
             dir.mkpath(userWidgetDirectory);
-            hasCreatedDir = true;
         }
 
         if (dir.exists())
@@ -1138,7 +1126,6 @@ QString UBSettings::uniboardInteractiveUserDirectory()
         }
         else
         {
-            hasCreatedDir = false;
             qWarning() << "Failed to interpret App/UserInteractiveContentDirectory config : "
                 + getAppSettings()->value("App/UserInteractiveContentDirectory").toString()
                 + ", defaulting to " + valideUserInteractiveDirectory;
@@ -1194,8 +1181,6 @@ QString UBSettings::uniboardInteractiveFavoritesDirectory()
 {
     QString valideUserInteractiveDirectory = uniboardDataDirectory() + "/interactive favorites";
 
-    bool hasCreatedDir = false;
-
     // first look into the application settings
     if (sAppSettings && getAppSettings()->contains("App/UserInteractiveFavoritesDirectory"))
     {
@@ -1224,7 +1209,6 @@ QString UBSettings::uniboardInteractiveFavoritesDirectory()
         if (!dir.exists())
         {
             dir.mkpath(userWidgetDirectory);
-            hasCreatedDir = true;
         }
 
         if (dir.exists())
@@ -1233,7 +1217,6 @@ QString UBSettings::uniboardInteractiveFavoritesDirectory()
         }
         else
         {
-            hasCreatedDir = false;
             qWarning() << "Failed to interpret App/UserInteractiveFavoritesDirectory config : "
                 + getAppSettings()->value("App/UserInteractiveFavoritesDirectory").toString()
                 + ", defaulting to " + valideUserInteractiveDirectory;

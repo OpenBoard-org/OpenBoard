@@ -116,7 +116,7 @@ void UBTrapFlashController::text_Changed(const QString &newText)
 
 void UBTrapFlashController::text_Edited(const QString &newText)
 {
-
+    Q_UNUSED(newText);
 }
 
 void UBTrapFlashController::hideTrapFlash()

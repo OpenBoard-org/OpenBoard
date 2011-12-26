@@ -17,8 +17,6 @@
 #include <QtGui>
 #include <QtNetwork>
 
-#include "frameworks/UBDesktopServices.h"
-
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
 #include "core/UBSettings.h"

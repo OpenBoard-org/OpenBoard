@@ -109,7 +109,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
 
     setOrganizationName("Sankore");
     setOrganizationDomain("sankore.org");
-    setApplicationName("Sankore 3.1");
+    setApplicationName("Open-Sankore");
 
     setApplicationVersion(UBVERSION);
 
@@ -222,7 +222,6 @@ int UBApplication::exec(const QString& pFileToImport)
     QWebSettings *gs = QWebSettings::globalSettings();
     gs->setAttribute(QWebSettings::JavaEnabled, true);
     gs->setAttribute(QWebSettings::PluginsEnabled, true);
-	gs->setAttribute(QWebSettings::JavaEnabled, true);
     gs->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
     gs->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
     gs->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
