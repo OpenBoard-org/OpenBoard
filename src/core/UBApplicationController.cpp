@@ -697,7 +697,7 @@ void UBApplicationController::importFile(const QString& pFilePath)
 
     bool success = false;
 
-    document = UBDocumentManager::documentManager()->importFile(fileToOpen, UBSettings::defaultDocumentGroupName);
+    document = UBDocumentManager::documentManager()->importFile(fileToOpen, "");
 
     success = (document != 0);
 
