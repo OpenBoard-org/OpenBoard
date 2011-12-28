@@ -695,16 +695,20 @@ void UBLibraryController::addVideosToCurrentPage(const QList<QUrl>& videos)
 
 void UBLibraryController::addAudiosToCurrentPage(const QList<QUrl>& sounds)
 {
-    QPointF topLeftPos = visibleSceneRect().topLeft();
+    QPointF centerPos = visibleSceneRect().center();
 
-    QPointF pos = topLeftPos;
+    QPointF pos = centerPos;
+
+    //move it a little higher for convenience
+    centerPos.setX(pos.x() - 200);
+    centerPos.setY(pos.y() - 100);
 
     foreach(const QUrl url, sounds)
     {
         mLastItemOffsetIndex++;
         mLastItemOffsetIndex = qMin(mLastItemOffsetIndex, 5);
-        pos = QPointF(topLeftPos.x() + 50 * mLastItemOffsetIndex,
-                      topLeftPos.y() + 50 * mLastItemOffsetIndex);
+        pos = QPointF(centerPos.x() + 50 * mLastItemOffsetIndex,
+                      centerPos.y() + 50 * mLastItemOffsetIndex);
         UBApplication::boardController->addAudio(url, false, pos);
     }
 }

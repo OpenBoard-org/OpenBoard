@@ -1027,3 +1027,27 @@ void UBBoardPaletteManager::stopDownloads()
         mRightPalette->removeTab(mpDownloadWidget->name());
     }
 }
+
+QRect UBBoardPaletteManager::GetFreeRectGlobalCoords() const
+{
+    QPoint topLeft, bottomRight;
+    if (mLeftPalette) {
+        int x = mLeftPalette->getTabPaletteRect().topRight().x();
+        int y = 0;
+        if (x || y) {
+            topLeft.setX(x);
+            topLeft.setY(y);
+            topLeft = mContainer->mapToGlobal(topLeft);
+        }
+    }
+    if (mRightPalette) {
+        int x = mRightPalette->getTabPaletteRect().topLeft().x();
+        int y = mRightPalette->height();
+        if (x || y) {
+            bottomRight.setX(x);
+            bottomRight.setY(y);
+            bottomRight = mContainer->mapToGlobal(bottomRight);
+        }
+    }
+    return QRect(topLeft, bottomRight);
+}

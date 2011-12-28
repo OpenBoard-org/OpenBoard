@@ -140,6 +140,7 @@ class UBBoardController : public QObject
         void setBoxing(QRect displayRect);
         void setToolbarTexts();
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
+//        static QRect freeRectInGlobalPos() const {return ;}
         void setPageSize(QSize newSize);
         UBBoardPaletteManager *paletteManager()
         {
