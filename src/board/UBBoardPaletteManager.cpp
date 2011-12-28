@@ -743,6 +743,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
                 mLeftPalette->setVisible(true);
                 mRightPalette->setVisible(true);
+#ifdef Q_WS_WIN
+                mRightPalette->setAdditionalVOffset(0);
+#endif
 
                 if( !isInit )
                     containerResized();
@@ -772,6 +775,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
                 mLeftPalette->setVisible(false);
                 mRightPalette->setVisible(true);
+#ifdef Q_WS_WIN
+                mRightPalette->setAdditionalVOffset(30);
+#endif
 
                 if( !isInit )
                     UBApplication::applicationController->uninotesController()->TransparentWidgetResized();

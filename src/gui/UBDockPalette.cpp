@@ -688,7 +688,7 @@ void UBDockPalette::moveTabs()
         }
     }
 
-    QPoint origin(width(), mHTab);
+    QPoint origin(width(), mHTab + mTabPalette->mVerticalOffset);
 
     switch (mOrientation) {
     case eUBDockOrientation_Left:
@@ -732,6 +732,8 @@ void UBDockPalette::setVisible(bool visible)
 UBTabDockPalete::UBTabDockPalete(UBDockPalette *dockPalette, QWidget *parent) :
     QWidget(parent)
   , dock(dockPalette)
+  , mVerticalOffset(0)
+  , mFlotable(false)
 {
     int numTabs = dock->mTabWidgets.size();
     resize(2 * dock->border(), (numTabs * TABSIZE) + qMax(numTabs - 1, 0) * dock->tabSpacing());
@@ -846,6 +848,12 @@ void UBTabDockPalete::mouseMoveEvent(QMouseEvent *event)
 
     if(dock->mCanResize && ((dock->mMousePressPos - p).manhattanLength() > QApplication::startDragDistance()))
     {
+        if (qAbs(dock->mMousePressPos.y() - p.y()) > 10 && mFlotable) {
+            qDebug() << "y differences" << dock->mMousePressPos.y() << p.y();
+            mVerticalOffset += p.y() - dock->mMousePressPos.y();
+            move(this->pos().x(),  p.y());
+        }
+
         switch(dock->mOrientation) {
 
         case eUBDockOrientation_Left:

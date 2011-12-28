@@ -71,6 +71,8 @@ protected:
 
 private:
     UBDockPalette *dock;
+    int mVerticalOffset;
+    bool mFlotable;
 };
 
 class UBDockPalette : public QWidget
@@ -106,6 +108,12 @@ public:
     void connectSignals();
 
     QVector<UBDockPaletteWidget*> GetWidgetsList() { return mRegisteredWidgets; }
+
+public:
+    bool isTabFlotable() {return mTabPalette->mFlotable;}
+    void setTabFlotable(bool newFlotable) {mTabPalette->mFlotable = newFlotable;}
+    int getAdditionalVOffset() const {return mTabPalette->mVerticalOffset;}
+    void setAdditionalVOffset(int newOffset) {mTabPalette->mVerticalOffset = newOffset;}
 
 public slots:
     void onShowTabWidget(const QString& widgetName);
