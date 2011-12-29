@@ -15,6 +15,8 @@
 
 class UBTeacherStudentAction : public QWidget
 {
+    Q_OBJECT
+
 public:
     UBTeacherStudentAction(int actionNumber, QWidget* parent=0, const char* name="UBTeacherStudentAction");
     ~UBTeacherStudentAction();
