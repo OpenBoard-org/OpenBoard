@@ -14,6 +14,8 @@
  */
 
 #include <QtGui>
+#include <QDomDocument>
+#include <QXmlQuery>
 
 #include "frameworks/UBPlatformUtils.h"
 
@@ -60,7 +62,6 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 //    , mKeyboardCurrentPalette(0)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
-
 {
     connect(mMainWindow->actionWebTools, SIGNAL(toggled(bool)), this, SLOT(toggleWebToolsPalette(bool)));
 
@@ -72,10 +73,12 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
         mToolsPalettePositionnedList[i] = false;
     }
 
+    connect(&mOEmbedParser, SIGNAL(oembedParsed(QVector<sOEmbedContent>)), this, SLOT(onOEmbedParsed(QVector<sOEmbedContent>)));
+
+    // TODO : Comment the next line to continue the Youtube button bugfix
     initialiazemOEmbedProviders();
 
 }
-
 
 UBWebController::~UBWebController()
 {
@@ -93,7 +96,6 @@ void UBWebController::initialiazemOEmbedProviders()
     mOEmbedProviders << "metacafe.com";
     mOEmbedProviders << "qik.com";
     mOEmbedProviders << "slideshare";
-    mOEmbedProviders << "5min.com";
     mOEmbedProviders << "twitpic.com";
     mOEmbedProviders << "viddler.com";
     mOEmbedProviders << "vimeo.com";
@@ -324,16 +326,53 @@ void UBWebController::activePageChanged()
             mTrapFlashController->updateTrapFlashFromPage((*mCurrentWebBrowser)->currentTabWebView()->page()->currentFrame());
         }
 
+
+
         mMainWindow->actionWebTrap->setChecked(false);
 
         QUrl latestUrl = (*mCurrentWebBrowser)->currentTabWebView()->url();
+
+        // TODO : Uncomment the next line to continue the youtube button bugfix
+        //UBApplication::mainWindow->actionWebOEmbed->setEnabled(hasEmbeddedContent());
+        // And remove this line once the previous one is uncommented
         UBApplication::mainWindow->actionWebOEmbed->setEnabled(isOEmbedable(latestUrl));
+
         UBApplication::mainWindow->actionEduMedia->setEnabled(isEduMedia(latestUrl));
 
         emit activeWebPageChanged((*mCurrentWebBrowser)->currentTabWebView());
     }
 }
 
+bool UBWebController::hasEmbeddedContent()
+{
+    bool bHasContent = false;
+    if(mCurrentWebBrowser){
+        QString html = (*mCurrentWebBrowser)->currentTabWebView()->webPage()->mainFrame()->toHtml();
+
+        // search the presence of "+oembed"
+        QString query = "\\+oembed([^>]*)>";
+        QRegExp exp(query);
+        exp.indexIn(html);
+        QStringList results = exp.capturedTexts();
+        if(2 <= results.size() && "" != results.at(1)){
+            // An embedded content has been found, no need to check the other ones
+            bHasContent = true;
+        }else{
+            QList<QUrl> contentUrls;
+            lookForEmbedContent(&html, "embed", "src", &contentUrls);
+            lookForEmbedContent(&html, "video", "src", &contentUrls);
+            lookForEmbedContent(&html, "object", "data", &contentUrls);
+
+            // TODO: check the hidden iFrame
+
+            if(!contentUrls.empty()){
+                bHasContent = true;
+            }
+        }
+    }
+
+    return bHasContent;
+}
 
 QPixmap UBWebController::captureCurrentPage()
 {
@@ -539,9 +578,12 @@ void UBWebController::showTabAtTop(bool attop)
 
 void UBWebController::captureoEmbed()
 {
-    if ( mCurrentWebBrowser  && (*mCurrentWebBrowser)
-         && (*mCurrentWebBrowser)->currentTabWebView())
-    {
+    if ( mCurrentWebBrowser  && (*mCurrentWebBrowser) && (*mCurrentWebBrowser)->currentTabWebView()){
+        // TODO : Uncomment the next lines to continue the youtube button bugfix
+        //    getEmbeddableContent();
+
+        // And comment from here
+
         QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
         QUrl currentUrl = webView->url();
 
@@ -555,9 +597,56 @@ void UBWebController::captureoEmbed()
                 UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
             }
         }
+        // --> Until here
     }
 }
 
+void UBWebController::lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl> *pList)
+{
+    if(NULL != pHtml && NULL != pList){
+        QVector<QString> urlsFound;
+        // Check for <embed> content
+        QRegExp exp(QString("<%0(.*)").arg(tag));
+        exp.indexIn(*pHtml);
+        QStringList strl = exp.capturedTexts();
+        if(2 <= strl.size() && strl.at(1) != ""){
+            // Here we call this regular expression:
+            // src\s?=\s?['"]([^'"]*)['"]
+            // It says: give me all characters that are after src=" (or src = ")
+            QRegExp src(QString("%0\\s?=\\s?['\"]([^'\"]*)['\"]").arg(attribute));
+            for(int i=1; i<strl.size(); i++){
+                src.indexIn(strl.at(i));
+                QStringList urls = src.capturedTexts();
+                if(2 <= urls.size() && urls.at(1) != "" && !urlsFound.contains(urls.at(1))){
+                    urlsFound << urls.at(1);
+                    pList->append(QUrl(urls.at(1)));
+                }
+            }
+        }
+    }
+}
+
+void UBWebController::checkForOEmbed(QString *pHtml)
+{
+    mOEmbedParser.parse(*pHtml);
+}
+
+void UBWebController::getEmbeddableContent()
+{
+    // Get the source code of the page
+    if(mCurrentWebBrowser){
+        QNetworkAccessManager* pNam = (*mCurrentWebBrowser)->currentTabWebView()->webPage()->networkAccessManager();
+        if(NULL != pNam){
+            QString html = (*mCurrentWebBrowser)->currentTabWebView()->webPage()->mainFrame()->toHtml();
+            mOEmbedParser.setNetworkAccessManager(pNam);
+
+            // First, we have to check if there is some oembed content
+            checkForOEmbed(&html);
+
+            // Note: The other contents will be verified once the oembed ones have been checked
+        }
+    }
+}
 
 void UBWebController::captureEduMedia()
 {
@@ -716,5 +805,40 @@ void UBWebController::cut()
         QAction *act = webView->pageAction(QWebPage::Cut);
         if(act)
             act->trigger();
+    }
+}
+
+void UBWebController::onOEmbedParsed(QVector<sOEmbedContent> contents)
+{
+    QList<QUrl> urls;
+
+    foreach(sOEmbedContent cnt, contents){
+        urls << QUrl(cnt.url);
+    }
+
+    // TODO : Implement this
+    //lookForEmbedContent(&html, "embed", "src", &urls);
+    //lookForEmbedContent(&html, "video", "src", &contentUrls);
+    //lookForEmbedContent(&html, "object", "data", &contentUrls);
+
+    // TODO: check the hidden iFrame
+
+    if(!urls.empty()){
+        QUrl contentUrl;    // The selected content url
+
+        if(1 == urls.size()){
+            contentUrl = urls.at(0);
+        }else{
+            // TODO : Display a dialog box asking the user which content to get and set contentUrl to the selected content
+
+        }
+
+        UBGraphicsW3CWidgetItem * widget = UBApplication::boardController->activeScene()->addOEmbed(contentUrl);
+
+        if(widget)
+        {
+            UBApplication::applicationController->showBoard();
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        }
     }
 }
