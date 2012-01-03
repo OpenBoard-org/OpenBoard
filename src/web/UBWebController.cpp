@@ -150,6 +150,8 @@ void UBWebController::webBrowserInstance()
 
             (*mCurrentWebBrowser)->tabWidget()->tabBar()->show();
             (*mCurrentWebBrowser)->tabWidget()->lineEdits()->show();
+//            (*mCurrentWebBrowser)->tabWidget()->tabBar()->hide();
+//            (*mCurrentWebBrowser)->tabWidget()->lineEdits()->hide();
         }
 
         UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
@@ -194,7 +196,7 @@ void UBWebController::tutorialWebInstance()
     else
     {
         mCurrentWebBrowser = &mWebBrowserList[Tutorial];
-        mToolsCurrentPalette = &mToolsPaletteList[Tutorial];
+//        mToolsCurrentPalette = &mToolsPaletteList[Tutorial];
 //        mKeyboardCurrentPalette = &mKeyboardPaletteList[Tutorial];
         mToolsPalettePositionned = &mToolsPalettePositionnedList[Tutorial];
         if (!(*mCurrentWebBrowser))

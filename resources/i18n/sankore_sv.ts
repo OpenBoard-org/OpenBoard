@@ -1854,11 +1854,11 @@ Vill du ignorera felen för den här värden?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enseignant</source>
+        <source>Teacher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ÃlÃ¨ve</source>
+        <source>Student</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

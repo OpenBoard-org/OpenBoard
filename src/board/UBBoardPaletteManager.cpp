@@ -81,8 +81,8 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpLibWidget(NULL)
     , mpCachePropWidget(NULL)
     , mpTeacherBarWidget(NULL)
-    , mpDesktopLibWidget(NULL)
     , mpDownloadWidget(NULL)
+    , mpDesktopLibWidget(NULL)
     , mDownloadInProgress(false)
 {
     setupPalettes();
@@ -727,7 +727,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
         case eUBDockPaletteWidget_BOARD:
             {
                 mLeftPalette->setParent(UBApplication::boardController->controlContainer());
-                mRightPalette->setParent(UBApplication::boardController->controlContainer());
+                mRightPalette->assignParent(UBApplication::boardController->controlContainer());
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
 
@@ -743,6 +743,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
                 mLeftPalette->setVisible(true);
                 mRightPalette->setVisible(true);
+#ifdef Q_WS_WIN
+                mRightPalette->setAdditionalVOffset(0);
+#endif
 
                 if( !isInit )
                     containerResized();
@@ -752,7 +755,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
         case eUBDockPaletteWidget_DESKTOP:
             {
                 mLeftPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
-                mRightPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+                mRightPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
 
@@ -772,6 +775,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
                 mLeftPalette->setVisible(false);
                 mRightPalette->setVisible(true);
+#ifdef Q_WS_WIN
+                mRightPalette->setAdditionalVOffset(30);
+#endif
 
                 if( !isInit )
                     UBApplication::applicationController->uninotesController()->TransparentWidgetResized();
@@ -802,7 +808,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mLeftPalette->setVisible(false);
                 mRightPalette->setVisible(false);
                 mLeftPalette->setParent(0);
-                mRightPalette->setParent(0);
+                mRightPalette->assignParent(0);
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
 
@@ -1026,4 +1032,28 @@ void UBBoardPaletteManager::stopDownloads()
         mpDownloadWidget->setVisibleState(false);
         mRightPalette->removeTab(mpDownloadWidget->name());
     }
+}
+
+QRect UBBoardPaletteManager::GetFreeRectGlobalCoords() const
+{
+    QPoint topLeft, bottomRight;
+    if (mLeftPalette) {
+        int x = mLeftPalette->getTabPaletteRect().topRight().x();
+        int y = 0;
+        if (x || y) {
+            topLeft.setX(x);
+            topLeft.setY(y);
+            topLeft = mContainer->mapToGlobal(topLeft);
+        }
+    }
+    if (mRightPalette) {
+        int x = mRightPalette->getTabPaletteRect().topLeft().x();
+        int y = mRightPalette->height();
+        if (x || y) {
+            bottomRight.setX(x);
+            bottomRight.setY(y);
+            bottomRight = mContainer->mapToGlobal(bottomRight);
+        }
+    }
+    return QRect(topLeft, bottomRight);
 }

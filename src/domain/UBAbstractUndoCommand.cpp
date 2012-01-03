@@ -13,22 +13,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UBDESKTOPSERVICES_H_
-#define UBDESKTOPSERVICES_H_
+#include "UBAbstractUndoCommand.h"
 
-#include <QtCore/qglobal.h>
-#include <QDesktopServices>
-
-#include "core/memcheck.h"
-
-// TODO Qt 4.6 #error Delete this UBDesktopServices class,
-// it was used to work around a bug in Qt 4.4 that was fixed in Qt 4.5 and another that should be fixed
-// in 4.5.1
-
-class UBDesktopServices : public QDesktopServices
+UBAbstractUndoCommand::UBAbstractUndoCommand()
 {
-    public:
-        static QString storageLocation(StandardLocation type);
-};
+    // NOOP
+}
 
-#endif /* UBDESKTOPSERVICES_H_ */
+UBAbstractUndoCommand::~UBAbstractUndoCommand()
+{
+    // NOOP
+}
+
+
+void UBAbstractUndoCommand::undo()
+{
+    // NOOP
+}
+
+void UBAbstractUndoCommand::redo()
+{
+    // NOOP
+}
+
+//void UBAbstractUndoCommand::UndoType getType(UndoType type);
+

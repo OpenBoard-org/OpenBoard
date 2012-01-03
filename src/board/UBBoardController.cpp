@@ -66,6 +66,7 @@
 #include "UBBoardPaletteManager.h"
 
 #include "core/memcheck.h"
+//#include <typeinfo>
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : QObject(mainWindow->centralWidget())
@@ -776,6 +777,12 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
 {
     QString mimeType = pContentTypeHeader;
 
+    // In some cases "image/jpeg;charset=" is retourned by the drag-n-drop. That is
+    // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
+    int position=mimeType.indexOf(";");
+    if(position != -1)
+        mimeType=mimeType.left(position);
+
     if (!pSuccess)
     {
         UBApplication::showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
@@ -1132,7 +1139,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         if(sceneChange)
             emit activeSceneWillChange();
 
-        UBApplication::undoStack->clear();
+        ClearUndoStack();
 
         mActiveScene = targetScene;
         mActiveDocument = pDocumentProxy;
@@ -1173,6 +1180,55 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     }
 }
 
+void UBBoardController::ClearUndoStack()
+{
+    QSet<QGraphicsItem*> uniqueItems;
+    // go through all stack command
+    for(int i = 0; i < UBApplication::undoStack->count(); i++)
+    {
+
+        UBAbstractUndoCommand *abstractCmd = (UBAbstractUndoCommand*)UBApplication::undoStack->command(i);
+        if(abstractCmd->getType() != UBAbstractUndoCommand::undotype_GRAPHICITEM)
+            continue;
+
+        UBGraphicsItemUndoCommand *cmd = (UBGraphicsItemUndoCommand*)UBApplication::undoStack->command(i);
+
+        // go through all added and removed objects, for create list of unique objects
+        QSetIterator<QGraphicsItem*> itAdded(cmd->GetAddedList());
+        while (itAdded.hasNext())
+        {
+            QGraphicsItem* item = itAdded.next();
+            if( !uniqueItems.contains(item) )
+                uniqueItems.insert(item);
+        }
+
+        QSetIterator<QGraphicsItem*> itRemoved(cmd->GetRemovedList());
+        while (itRemoved.hasNext())
+        {
+            QGraphicsItem* item = itRemoved.next();
+            if( !uniqueItems.contains(item) )
+                uniqueItems.insert(item);
+        }
+    }
+
+    // clear stack, and command list
+    UBApplication::undoStack->clear();
+
+    // go through all unique items, and check, ot on scene, or not.
+    // if not on scene, than item can be deleted
+
+    QSetIterator<QGraphicsItem*> itUniq(uniqueItems);
+    while (itUniq.hasNext())
+    {
+        QGraphicsItem* item = itUniq.next();
+        UBGraphicsScene *scene = (UBGraphicsScene*)item->scene();
+        if(!scene)
+        {
+            mActiveScene->deleteItem(item);
+        }
+    }
+
+}
 
 void UBBoardController::adjustDisplayViews()
 {
@@ -1842,7 +1898,8 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
                 if (gi)
                 {
-                    gi->setZValue(mActiveScene->getNextObjectZIndex());
+//                    gi->setZValue(mActiveScene->getNextObjectZIndex());
+                    UBGraphicsItem::assignZValue(gi, mActiveScene->getNextObjectZIndex());
                     mActiveScene->addItem(gi);
                     gi->setPos(gi->pos() + QPointF(50, 50));
                 }

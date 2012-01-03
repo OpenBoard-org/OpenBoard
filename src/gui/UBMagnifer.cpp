@@ -204,7 +204,6 @@ void UBMagnifier::mouseMoveEvent ( QMouseEvent * event )
     {
         if(mShouldMoveWidget && (event->buttons() & Qt::LeftButton))
         {
-            QPoint offset = event->pos() - mMousePressPos;
             move(pos() - mMousePressPos + event->pos());
             event->accept();
 

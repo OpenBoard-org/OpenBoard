@@ -26,10 +26,10 @@ UBRightPalette::UBRightPalette(QWidget *parent, const char *name):UBDockPalette(
 {
     setObjectName(name);
     setOrientation(eUBDockOrientation_Right);
-    mCollapseWidth = 180;
-    mLastWidth = 300;
+    mCollapseWidth = 150;
+    mLastWidth = 270;
     resize(UBSettings::settings()->libPaletteWidth->get().toInt(), parentWidget()->height());
-    mpLayout->setContentsMargins(2*border() + customMargin(), customMargin(), customMargin(), customMargin());
+//    mpLayout->setContentsMargins(2*border() + customMargin(), customMargin(), customMargin(), customMargin());
 }
 
 /**
@@ -37,7 +37,6 @@ UBRightPalette::UBRightPalette(QWidget *parent, const char *name):UBDockPalette(
  */
 UBRightPalette::~UBRightPalette()
 {
-
 }
 
 /**

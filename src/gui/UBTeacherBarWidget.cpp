@@ -62,6 +62,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpTitleLabel->setAlignment(Qt::AlignRight);
     mpTitle = new QLineEdit(mpContainer);
     mpTitle->setObjectName("DockPaletteWidgetLineEdit");
+	connect(mpTitle, SIGNAL(textChanged(const QString&)), this, SLOT(onTitleTextChanged(const QString&)));
     mpTitleLayout = new QHBoxLayout();
     mpTitleLayout->addWidget(mpTitleLabel, 0);
     mpTitleLayout->addWidget(mpTitle, 1);
@@ -95,6 +96,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpEquipmentLabel->setAlignment(Qt::AlignRight);
     mpEquipment = new QLineEdit(mpContainer);
     mpEquipment->setObjectName("DockPaletteWidgetLineEdit");
+	connect(mpEquipment, SIGNAL(textChanged(const QString&)), this, SLOT(onEquipmentTextChanged(const QString&)));
     mpEquipmentLayout = new QHBoxLayout();
     mpEquipmentLayout->addWidget(mpEquipmentLabel, 0);
     mpEquipmentLayout->addWidget(mpEquipment, 1);
@@ -319,6 +321,16 @@ void UBTeacherBarWidget::loadContent()
     mpAction3->setStudentText(nextInfos.action3Student);
 }
 
+void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
+{
+	mpTitle->setToolTip(text);
+}
+
+void UBTeacherBarWidget::onEquipmentTextChanged(const QString& text)
+{
+	mpEquipment->setToolTip(text);
+}
+
 UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent, const char *name):QWidget(parent)
     , mpActionLabel(NULL)
     , mpTeacherLabel(NULL)
@@ -345,8 +357,8 @@ UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent
     mpTeacherLayout = new QHBoxLayout();
 
     //TODO: I'm not able to translate this string using the normal way *qm file why?
-    //mpTeacherLabel = new QLabel(tr("Teacher"), this);
-    mpTeacherLabel = new QLabel(tr("Enseignant"), this);
+    mpTeacherLabel = new QLabel(tr("Teacher"), this);
+//    mpTeacherLabel = new QLabel(tr("Enseignant"), this);
     mpTeacherLabel->setAlignment(Qt::AlignTop);
     mpTeacher = new QTextEdit(this);
     mpTeacher->setObjectName("TeacherStudentBox");
@@ -356,8 +368,8 @@ UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent
     mpLayout->addLayout(mpTeacherLayout, 1);
 
     mpStudentLayout = new QHBoxLayout();
-//    mpStudentLabel = new QLabel(tr("Student"), this);
-    mpStudentLabel = new QLabel(tr("Élève"), this);
+    mpStudentLabel = new QLabel(tr("Student"), this);
+//    mpStudentLabel = new QLabel(tr("Élève"), this);
     mpStudentLabel->setAlignment(Qt::AlignTop);
     mpStudent = new QTextEdit(this);
     mpStudent->setObjectName("TeacherStudentBox");

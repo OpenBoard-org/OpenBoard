@@ -140,6 +140,7 @@ class UBBoardController : public QObject
         void setBoxing(QRect displayRect);
         void setToolbarTexts();
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
+//        static QRect freeRectInGlobalPos() const {return ;}
         void setPageSize(QSize newSize);
         UBBoardPaletteManager *paletteManager()
         {
@@ -149,6 +150,9 @@ class UBBoardController : public QObject
         void notifyCache(bool visible);
         void notifyPageChanged();
         void displayMetaData(QMap<QString, QString> metadatas);
+
+        void ClearUndoStack();
+
 
     public slots:
         void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0);

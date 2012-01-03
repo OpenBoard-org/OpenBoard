@@ -1856,11 +1856,11 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
         <translation>Action %0</translation>
     </message>
     <message>
-        <source>Enseignant</source>
+        <source>Teacher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ÃlÃ¨ve</source>
+        <source>Student</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1967,7 +1967,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Remind me later</source>
-        <translation type="Me rappeler ultérieurement"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>

@@ -90,8 +90,6 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
     xmlWriter.writeStartElement("Description");
     xmlWriter.writeAttribute("about", proxy->metaData(UBSettings::documentIdentifer).toString());
 
-    QDate today = QDate::currentDate();
-
     xmlWriter.writeTextElement(nsDc, "title", proxy->metaData(UBSettings::documentName).toString());
     xmlWriter.writeTextElement(nsDc, "type", proxy->metaData(UBSettings::documentGroupName).toString());
     xmlWriter.writeTextElement(nsDc, "date", QDate::currentDate().toString("yyyy-MM-dd"));

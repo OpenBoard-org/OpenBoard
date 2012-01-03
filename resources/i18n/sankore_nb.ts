@@ -1849,11 +1849,11 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enseignant</source>
+        <source>Teacher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ÃlÃ¨ve</source>
+        <source>Student</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -72,7 +72,8 @@ void UBGraphicsItemDelegate::init()
 {
     mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
     mFrame->hide();
-    mFrame->setZValue(UBGraphicsScene::toolLayerStart + 1);
+//    mFrame->setZValue(UBGraphicsScene::toolLayerStart + 1);
+    UBGraphicsItem::assignZValue(mFrame, UBGraphicsScene::toolLayerStart + 1);
     mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame);
@@ -92,7 +93,8 @@ void UBGraphicsItemDelegate::init()
     foreach(DelegateButton* button, mButtons)
     {
         button->hide();
-        button->setZValue(UBGraphicsScene::toolLayerStart + 2);
+//        button->setZValue(UBGraphicsScene::toolLayerStart + 2);
+        UBGraphicsItem::assignZValue(button, UBGraphicsScene::toolLayerStart + 2);
         button->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
 }
@@ -282,8 +284,8 @@ void UBGraphicsItemDelegate::positionHandles()
 
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
-    QGraphicsScene* scene = mDelegated->scene();
-
+//    QGraphicsScene* scene = mDelegated->scene();
+    UBGraphicsScene* scene = (UBGraphicsScene*)(mDelegated->scene());
     if (scene)
     {
         foreach(DelegateButton* button, mButtons)
@@ -321,12 +323,10 @@ void UBGraphicsItemDelegate::lock(bool locked)
     if (locked)
     {
         mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
-        qDebug() << "item's data is called for locked"  << mDelegated->data(UBGraphicsItemData::ItemLocked);
     }
     else
     {
         mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(false));
-        qDebug() << "item's data is called for unlocked"  << mDelegated->data(UBGraphicsItemData::ItemLocked);
     }
 
     mDelegated->update();

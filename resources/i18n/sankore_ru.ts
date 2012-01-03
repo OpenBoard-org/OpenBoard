@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="en_US">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -81,11 +81,11 @@
     </message>
     <message>
         <source>Tutorial</source>
-        <translation>Учебное руководство</translation>
+        <translation>Учебник</translation>
     </message>
     <message>
         <source>Stylus</source>
-        <translation>Инструменты для ввода</translation>
+        <translation>Инструменты</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
@@ -109,7 +109,7 @@
     </message>
     <message>
         <source>Redo</source>
-        <translation>Восстановить</translation>
+        <translation>Вернуть</translation>
     </message>
     <message>
         <source>Ctrl+Y</source>
@@ -281,7 +281,7 @@
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation>Показать рабочий стол</translation>
+        <translation>Рабочий стол</translation>
     </message>
     <message>
         <source>Show Computer Desktop</source>
@@ -757,7 +757,7 @@
     </message>
     <message>
         <source>Open the tutorial</source>
-        <translation>Открыть учебное руководство</translation>
+        <translation>Открыть учебник</translation>
     </message>
     <message>
         <source>Check Update</source>
@@ -976,7 +976,7 @@
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation>Показать панель элементов для ввода</translation>
+        <translation>Показать инструменты</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
@@ -984,7 +984,7 @@
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
-        <translation>Показать рабочий стол на втором экране</translation>
+        <translation>Показать раб. стол на втором экране</translation>
     </message>
 </context>
 <context>
@@ -1111,7 +1111,8 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
+        <translation>
+            <numerusform>Вы уверены, что хотите удалить %n страниц из выбранного документа &apos;%1&apos;?</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1193,7 +1194,7 @@
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation>%1 (копия)</translation>
+        <translation>%1 (копирование)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
@@ -1202,6 +1203,7 @@
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1665,7 +1667,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation>на вашем рабочем столе...</translation>
+        <translation>на вашем раб. столе...</translation>
     </message>
     <message>
         <source>in folder %1</source>
@@ -1780,23 +1782,23 @@ Do you want to ignore these errors for this host?</source>
     <name>UBTeacherBarWidget</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Название</translation>
+        <translation>Название</translation>
     </message>
     <message>
         <source>Phasis</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип урока</translation>
     </message>
     <message>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Длительность</translation>
     </message>
     <message>
         <source>Equipment</source>
-        <translation type="unfinished"></translation>
+        <translation>Оборудование</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Участники</translation>
     </message>
     <message>
         <source></source>
@@ -1804,62 +1806,70 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>I discover</source>
-        <translation type="unfinished"></translation>
+        <translation>Открытие</translation>
     </message>
     <message>
         <source>I experiment</source>
-        <translation type="unfinished"></translation>
+        <translation>Эксперименты</translation>
     </message>
     <message>
         <source>I train myself</source>
-        <translation type="unfinished"></translation>
+        <translation>Самостоятельно</translation>
     </message>
     <message>
         <source>I play</source>
-        <translation type="unfinished"></translation>
+        <translation>Игра</translation>
     </message>
     <message>
         <source>I memorize</source>
-        <translation type="unfinished"></translation>
+        <translation>Заметка</translation>
     </message>
     <message>
         <source>Short</source>
-        <translation type="unfinished"></translation>
+        <translation>Не долго</translation>
     </message>
     <message>
         <source>Middle</source>
-        <translation type="unfinished"></translation>
+        <translation>Средне</translation>
     </message>
     <message>
         <source>Long</source>
-        <translation type="unfinished"></translation>
+        <translation>Долго</translation>
     </message>
     <message>
         <source>Alone</source>
-        <translation type="unfinished"></translation>
+        <translation>Один</translation>
     </message>
     <message>
         <source>By Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Группы</translation>
     </message>
     <message>
         <source>All together</source>
-        <translation type="unfinished"></translation>
+        <translation>Все вместе</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherStudentAction</name>
     <message>
         <source>Action %0</source>
-        <translation type="unfinished"></translation>
+        <translation>Действие %0</translation>
     </message>
     <message>
         <source>Enseignant</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Teacher</translation>
     </message>
     <message>
         <source>ÃlÃ¨ve</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Student</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation>Учитель</translation>
+    </message>
+    <message>
+        <source>Student</source>
+        <translation>Студент</translation>
     </message>
 </context>
 <context>
@@ -1965,7 +1975,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Remind me later</source>
-        <translation type="unfinished"></translation>
+        <translation>Напомнить позже</translation>
     </message>
 </context>
 <context>
@@ -2506,7 +2516,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation>Панель инструментов для ввода</translation>
+        <translation>Инструменты</translation>
     </message>
     <message>
         <source>Horizontal</source>

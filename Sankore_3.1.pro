@@ -4,12 +4,16 @@ TEMPLATE = app
 THIRD_PARTY_PATH=../Sankore-ThirdParty
 
 CONFIG += debug_and_release \
-   no_include_pwd
+          no_include_pwd
+
+linux-g++-64 {
+    CONFIG += link_prl
+}
 
 VERSION_MAJ = 1
 VERSION_MIN = 40 
 VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 00
+VERSION_PATCH = 01
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")

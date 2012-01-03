@@ -15,6 +15,8 @@
 
 class UBTeacherStudentAction : public QWidget
 {
+    Q_OBJECT
+
 public:
     UBTeacherStudentAction(int actionNumber, QWidget* parent=0, const char* name="UBTeacherStudentAction");
     ~UBTeacherStudentAction();
@@ -48,6 +50,8 @@ private slots:
     void saveContent();
     void loadContent();
     void onValueChanged();
+	void onTitleTextChanged(const QString& text);
+	void onEquipmentTextChanged(const QString& text);
 
 private:
     void populateCombos();

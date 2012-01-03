@@ -17,15 +17,18 @@
 #define UBGRAPHICSTEXTITEMUNDOCOMMAND_H_
 
 #include <QtGui>
+#include "UBAbstractUndoCommand.h"
 
 #include "UBGraphicsTextItem.h"
 
 
-class UBGraphicsTextItemUndoCommand: public QUndoCommand
+class UBGraphicsTextItemUndoCommand : public UBAbstractUndoCommand
 {
     public:
         UBGraphicsTextItemUndoCommand(UBGraphicsTextItem *textItem);
         virtual ~UBGraphicsTextItemUndoCommand();
+
+        virtual UndoType getType() { return undotype_GRAPHICTEXTITEM; };
 
     protected:
         virtual void undo();

@@ -65,6 +65,7 @@ class UBBoardPaletteManager : public QObject
         void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
         void startDownloads();
         void stopDownloads();
+        QRect GetFreeRectGlobalCoords() const;
 
     signals:
         void connectToDocController();

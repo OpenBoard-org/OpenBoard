@@ -17,15 +17,18 @@
 #define UBPageSizeUndoCommand_H_
 
 #include <QtGui>
+#include "UBAbstractUndoCommand.h"
 
 class UBGraphicsScene;
 
 
-class UBPageSizeUndoCommand : public QUndoCommand
+class UBPageSizeUndoCommand : public UBAbstractUndoCommand
 {
     public:
         UBPageSizeUndoCommand(UBGraphicsScene* pScene, const QSize& previousSize, const QSize& newSize);
         virtual ~UBPageSizeUndoCommand();
+
+        virtual UndoType getType() { return undotype_PAGESIZE; };
 
     protected:
         virtual void undo();

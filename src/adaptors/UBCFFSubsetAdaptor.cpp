@@ -729,10 +729,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
 
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
-    bool hastransform = false;
     if (!textTransform.isNull()) {
         transform = transformFromString(textTransform);
-        hastransform = true;
     }
     repositionSvgItem(flashItem, width, height, x, y, true, transform);
     hashSceneItem(element, flashItem);
@@ -923,13 +921,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbElement(QDomElement &element
     }
 
     bool locked = false;
-    bool isBackground = false;
     bool isEditableItem = false;
     bool isEditable = false; //Text items to convert to UBGraphicsTextItem only
 
     QString IDRef = element.attribute(aRef);
     if (!IDRef.isNull()) {
-        isBackground = element.hasAttribute(aBackground) ? strToBool(element.attribute(aBackground)) : false;
+        element.hasAttribute(aBackground) ? strToBool(element.attribute(aBackground)) : false;
         locked = element.hasAttribute(aBackground) ? strToBool(element.attribute(aBackground)) : false;
         isEditableItem = element.hasAttribute(aEditable);
         if (isEditableItem)
@@ -1002,6 +999,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createNewScene()
 {
     mCurrentScene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, mProxy->pageCount());
+    mCurrentScene->setURStackEnable(false);
     mCurrentSceneRect = mCurrentScene->normalizedSceneRect();
     mVBTransFactor = qMin(mCurrentSceneRect.width()  / mViewPort.width(),
                           mCurrentSceneRect.height() / mViewPort.height());
@@ -1037,7 +1035,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
                 tmpScene->setModified(true);
                 UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), tmpScene, i);
                 delete tmpScene;
-
 
         mCurrentScene->setModified(false);
     }

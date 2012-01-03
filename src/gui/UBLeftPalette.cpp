@@ -24,11 +24,11 @@ UBLeftPalette::UBLeftPalette(QWidget *parent, const char *name):UBDockPalette(pa
 {
     setObjectName(name);
     setOrientation(eUBDockOrientation_Left);
-    mLastWidth = 300;
-    mCollapseWidth = 180;
+    mLastWidth = 270;
+    mCollapseWidth = 150;
 
     resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), parentWidget()->height());
-    mpLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());
+//    mpLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());
 
 }
 
@@ -45,7 +45,7 @@ UBLeftPalette::~UBLeftPalette()
  */
 void UBLeftPalette::updateMaxWidth()
 {
-    setMaximumWidth(300);
+    setMaximumWidth(270);
 }
 
 /**
@@ -55,5 +55,5 @@ void UBLeftPalette::updateMaxWidth()
 void UBLeftPalette::resizeEvent(QResizeEvent *event)
 {
     UBDockPalette::resizeEvent(event);
-    UBSettings::settings()->navigPaletteWidth->set(width());
+//    UBSettings::settings()->navigPaletteWidth->set(width());
 }

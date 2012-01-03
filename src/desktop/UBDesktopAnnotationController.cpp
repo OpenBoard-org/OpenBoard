@@ -372,6 +372,7 @@ void UBDesktopAnnotationController::close()
 
 void UBDesktopAnnotationController::stylusToolChanged(int tool)
 {
+    Q_UNUSED(tool);
 //     UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
 //     if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
 //     {
@@ -900,7 +901,7 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
 {
     if(bTransparent)
     {
-        // Here we have to generate a new mask. This method is certainly resource
+        // Here we have to generate a new mask This method is certainly resource
         // consuming but for the moment this is the only solution that I found.
         mMask = QPixmap(mTransparentDrawingView->width(), mTransparentDrawingView->height());
 
@@ -922,13 +923,17 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
                 UBApplication::boardController->paletteManager()->mKeyboardPalette->width(), UBApplication::boardController->paletteManager()->mKeyboardPalette->height());
         }
 
-//        UBApplication::boardController->paletteManager()->mDesktopRightPalette
         if(UBApplication::boardController->paletteManager()->rightPalette()->isVisible())
         {
-            p.drawRect(UBApplication::boardController->paletteManager()->rightPalette()->geometry().x(), 
-                UBApplication::boardController->paletteManager()->rightPalette()->geometry().y(), 
-                UBApplication::boardController->paletteManager()->rightPalette()->width(), 
-                UBApplication::boardController->paletteManager()->rightPalette()->height());
+            QRect rightPalette(UBApplication::boardController->paletteManager()->rightPalette()->geometry().x(),
+                        UBApplication::boardController->paletteManager()->rightPalette()->geometry().y(),
+                        UBApplication::boardController->paletteManager()->rightPalette()->width(),
+                        UBApplication::boardController->paletteManager()->rightPalette()->height());
+
+            QRect tabsPalette(UBApplication::boardController->paletteManager()->rightPalette()->getTabPaletteRect());
+
+            p.drawRect(rightPalette);
+            p.drawRect(tabsPalette);
         }
 
         p.end();

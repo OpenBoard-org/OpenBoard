@@ -53,3 +53,16 @@ void UBCoreGraphicsScene::removeItem(QGraphicsItem* item, bool forceDelete)
         delete item;
     }
 }
+
+bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
+{
+    if(mItemsToDelete.contains(item))
+    {
+        mItemsToDelete.remove(item);
+        delete item;
+        return true;
+    }
+    else
+        return false;
+}
+

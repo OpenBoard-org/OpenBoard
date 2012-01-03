@@ -31,8 +31,8 @@
 
 #include "UBDockPaletteWidget.h"
 
-#define TABSIZE	    50
-#define CLICKTIME   1000000
+#define TABSIZE	    50       //Height of the tab of the palette
+#define CLICKTIME   1000000  //Clicktime to expand or collapse paltte
 
 /**
  * \brief The dock positions
@@ -51,9 +51,35 @@ typedef enum
     eUBDockTabOrientation_Down  /** Down tabs */
 }eUBDockTabOrientation;
 
+class UBDockPalette;
+
+class UBTabDockPalete : public QWidget
+{
+    Q_OBJECT
+    friend class UBDockPalette;
+
+public:
+
+    UBTabDockPalete(UBDockPalette *dockPalette, QWidget *parent = 0);
+    ~UBTabDockPalete();
+
+protected:
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void paintEvent(QPaintEvent *event);
+
+private:
+    UBDockPalette *dock;
+    int mVerticalOffset;
+    bool mFlotable;
+};
+
 class UBDockPalette : public QWidget
 {
     Q_OBJECT
+    friend class UBTabDockPalete;
+
 public:
     UBDockPalette(QWidget* parent=0, const char* name="UBDockPalette");
     ~UBDockPalette();
@@ -62,10 +88,14 @@ public:
     void setOrientation(eUBDockOrientation orientation);
     void setTabsOrientation(eUBDockTabOrientation orientation);
     void showTabWidget(int tabIndex);
+    QRect getTabPaletteRect();
 
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void mousePressEvent(QMouseEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void assignParent(QWidget *widget);
+    virtual void setVisible(bool visible);
+
+//    virtual void mouseMoveEvent(QMouseEvent *event);
+//    virtual void mousePressEvent(QMouseEvent *event);
+//    virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void paintEvent(QPaintEvent *event);
     virtual void enterEvent(QEvent *);
     virtual void leaveEvent(QEvent *);
@@ -77,7 +107,13 @@ public:
 
     void connectSignals();
 
-    QVector<UBDockPaletteWidget*> GetWidgetsList() { return mRegisteredWidgets; };
+    QVector<UBDockPaletteWidget*> GetWidgetsList() { return mRegisteredWidgets; }
+
+public:
+    bool isTabFlotable() {return mTabPalette->mFlotable;}
+    void setTabFlotable(bool newFlotable) {mTabPalette->mFlotable = newFlotable;}
+    int getAdditionalVOffset() const {return mTabPalette->mVerticalOffset;}
+    void setAdditionalVOffset(int newOffset) {mTabPalette->mVerticalOffset = newOffset;}
 
 public slots:
     void onShowTabWidget(const QString& widgetName);
@@ -137,6 +173,11 @@ private:
     void tabClicked(int tabIndex);
     int tabSpacing();
     void toggleCollapseExpand();
+    void moveTabs();
+    void resizeTabs();
+
+private:
+    UBTabDockPalete *mTabPalette;
 
 };
 

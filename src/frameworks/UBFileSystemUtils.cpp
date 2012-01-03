@@ -14,7 +14,6 @@
  */
 
 #include "UBFileSystemUtils.h"
-#include "UBDesktopServices.h"
 
 #include <QtGui>
 
@@ -57,12 +56,12 @@ bool UBFileSystemUtils::isAZipFile(QString &filePath)
 
 QString UBFileSystemUtils::defaultTempDirPath()
 {
-    return UBDesktopServices::storageLocation(QDesktopServices::TempLocation) + "/" + defaultTempDirName();
+    return QDesktopServices::storageLocation(QDesktopServices::TempLocation) + "/" + defaultTempDirName();
 }
 
 QString UBFileSystemUtils::createTempDir(const QString& templateString, bool autoDeleteOnExit)
 {
-    QString appTempDir =  UBDesktopServices::storageLocation(QDesktopServices::TempLocation)
+    QString appTempDir =  QDesktopServices::storageLocation(QDesktopServices::TempLocation)
                                   + "/" + templateString;
 
     int index = 0;
@@ -127,7 +126,7 @@ void UBFileSystemUtils::deleteAllTempDirCreatedDuringSession()
 
 void UBFileSystemUtils::cleanupGhostTempFolders(const QString& templateString)
 {
-    QDir dir(UBDesktopServices::storageLocation(QDesktopServices::TempLocation));
+    QDir dir(QDesktopServices::storageLocation(QDesktopServices::TempLocation));
     foreach (QFileInfo dirContent, dir.entryInfoList(QDir::Dirs
           | QDir::NoDotAndDotDot | QDir::Hidden , QDir::Name))
     {
