@@ -26,8 +26,7 @@ HEADERS      += src/web/UBWebController.h \
 			    src/web/browser/WBUrlLineEdit.h \
 			    src/web/browser/WBWebView.h \
 			    src/web/browser/WBHistory.h \
-			    src/web/browser/WBWebTrapWebView.h \
-    src/web/UBOEmbedParser.h
+			    src/web/browser/WBWebTrapWebView.h
 
 SOURCES      += src/web/UBWebController.cpp \
                 src/web/UBTrapFlashController.cpp \
@@ -47,7 +46,8 @@ SOURCES      += src/web/UBWebController.cpp \
 			    src/web/browser/WBUrlLineEdit.cpp \
 			    src/web/browser/WBWebView.cpp \
 			    src/web/browser/WBHistory.cpp \
-			    src/web/browser/WBWebTrapWebView.cpp \
-    src/web/UBOEmbedParser.cpp
+			    src/web/browser/WBWebTrapWebView.cpp
     
     
+
+

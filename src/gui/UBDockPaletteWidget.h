@@ -5,6 +5,10 @@
 #include <QPixmap>
 #include <QString>
 
+
+/**
+  * This enum defines the different mode availables.
+  */
 typedef enum
 {
     eUBDockPaletteWidget_BOARD,

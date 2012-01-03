@@ -32,6 +32,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpAction1(NULL)
     , mpAction2(NULL)
     , mpAction3(NULL)
+    , mpDropMediaZone(NULL)
     , mpContainer(NULL)
     , mpContainerLayout(NULL)
 {
@@ -122,6 +123,10 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpLayout->addWidget(mpAction2);
     mpLayout->addWidget(mpAction3);
 
+    // Media
+    mpDropMediaZone = new UBTeacherBarDropMediaZone();
+    mpLayout->addWidget(mpDropMediaZone);
+
     populateCombos();
 
     connect(UBApplication::boardController, SIGNAL(activeSceneWillChange()), this, SLOT(saveContent()));
@@ -142,6 +147,11 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
 {
+    if(NULL != mpDropMediaZone)
+    {
+        delete mpDropMediaZone;
+        mpDropMediaZone = NULL;
+    }
     if(NULL != mpAction3)
     {
         delete mpAction3;
@@ -356,9 +366,7 @@ UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent
 
     mpTeacherLayout = new QHBoxLayout();
 
-    //TODO: I'm not able to translate this string using the normal way *qm file why?
     mpTeacherLabel = new QLabel(tr("Teacher"), this);
-//    mpTeacherLabel = new QLabel(tr("Enseignant"), this);
     mpTeacherLabel->setAlignment(Qt::AlignTop);
     mpTeacher = new QTextEdit(this);
     mpTeacher->setObjectName("TeacherStudentBox");
@@ -369,7 +377,6 @@ UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent
 
     mpStudentLayout = new QHBoxLayout();
     mpStudentLabel = new QLabel(tr("Student"), this);
-//    mpStudentLabel = new QLabel(tr("Élève"), this);
     mpStudentLabel->setAlignment(Qt::AlignTop);
     mpStudent = new QTextEdit(this);
     mpStudent->setObjectName("TeacherStudentBox");
@@ -451,4 +458,120 @@ QTextEdit* UBTeacherStudentAction::teacher()
 QTextEdit* UBTeacherStudentAction::student()
 {
     return mpStudent;
+}
+
+#include "gui/UBMediaPlayer.h"
+#include "gui/UBVideoPlayer.h"
+#include "frameworks/UBFileSystemUtils.h"
+
+UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char *name):QWidget(parent)
+    , mpTitleLabel(NULL)
+    , mpImageTab(NULL)
+    , mpTabWidget(NULL)
+    , mpLayout(NULL)
+{
+    setObjectName(name);
+    setAcceptDrops(true);
+
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(UBApplication::globalStyleSheet());
+
+    // Create the GUI
+    mpLayout = new QVBoxLayout(this);
+    setLayout(mpLayout);
+
+
+    mpImageTab = new QLabel();
+    mpVideoTab = new UBMediaPlayer();
+    mpAudioTab = new UBMediaPlayer();
+
+    mpTitleLabel = new QLabel(tr("Drop media here"));
+    mpLayout->addWidget(mpTitleLabel);
+    mpTabWidget = new QTabWidget();
+    mpTabWidget->setMinimumHeight(200);
+    mpTabWidget->addTab(mpImageTab,QIcon(":images/toolbar/extraTool.png"),"");
+    mpTabWidget->addTab(mpVideoTab,QIcon(":images/libpalette/movieIcon.svg"),"");
+    mpTabWidget->addTab(mpAudioTab,QIcon(":images/libpalette/soundIcon.svg"),"");
+    mpLayout->addWidget(mpTabWidget);
+}
+
+UBTeacherBarDropMediaZone::~UBTeacherBarDropMediaZone()
+{
+    if(NULL != mpTitleLabel)
+    {
+        delete mpTitleLabel;
+        mpTitleLabel = NULL;
+    }
+    if(NULL != mpImageTab)
+    {
+        delete mpImageTab;
+        mpImageTab = NULL;
+    }
+    if(NULL != mpVideoTab)
+    {
+        delete mpVideoTab;
+        mpVideoTab = NULL;
+    }
+    if(NULL != mpAudioTab)
+    {
+        delete mpAudioTab;
+        mpAudioTab = NULL;
+    }
+    if(NULL != mpTabWidget)
+    {
+        delete mpTabWidget;
+        mpTabWidget = NULL;
+    }
+    if(NULL != mpLayout)
+    {
+        delete mpLayout;
+        mpLayout = NULL;
+    }
+}
+
+
+void UBTeacherBarDropMediaZone::dragEnterEvent(QDragEnterEvent *pEvent)
+{
+    setBackgroundRole(QPalette::Highlight);
+    pEvent->acceptProposedAction();
+}
+
+void UBTeacherBarDropMediaZone::dragLeaveEvent(QDragLeaveEvent *pEvent)
+{
+    setBackgroundRole(QPalette::Dark);
+    pEvent->accept();
+}
+
+void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
+{
+    setBackgroundRole(QPalette::Dark);
+    if(pEvent->mimeData()->hasHtml()) qDebug() << pEvent->mimeData()->html();
+    if(pEvent->mimeData()->hasUrls()) qDebug() << pEvent->mimeData()->urls();
+    if(pEvent->mimeData()->hasText()) qDebug() << pEvent->mimeData()->text();
+    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(pEvent->mimeData()->urls().at(0).toLocalFile());
+    if(mimeType.contains("image")){
+        QPixmap pix = QPixmap(pEvent->mimeData()->urls().at(0).toLocalFile());
+        mpImageTab->setPixmap(pix);
+        mpTabWidget->setCurrentWidget(mpImageTab);
+    }
+    else if(mimeType.contains("video")){
+        mpVideoTab->setFile(pEvent->mimeData()->urls().at(0).toLocalFile());
+        mpVideoTab->playPause();
+
+        mpTabWidget->setCurrentWidget(mpVideoTab);
+    }
+    else if(mimeType.contains("audio")){
+        mpVideoTab->setFile(pEvent->mimeData()->urls().at(0).toLocalFile());
+        mpVideoTab->playPause();
+        mpTabWidget->setCurrentWidget(mpAudioTab);
+    }
+    else{
+        qWarning() << "bad idea to come here";
+    }
+    pEvent->acceptProposedAction();
+}
+
+void UBTeacherBarDropMediaZone::dragMoveEvent(QDragMoveEvent *pEvent)
+{
+    pEvent->acceptProposedAction();
 }

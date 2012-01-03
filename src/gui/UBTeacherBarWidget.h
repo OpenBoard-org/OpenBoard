@@ -1,6 +1,9 @@
 #ifndef UBTEACHERBARWIDGET_H
 #define UBTEACHERBARWIDGET_H
 
+class UBMediaPlayer;
+class UBVideoPlayer;
+
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -39,6 +42,30 @@ private:
     QHBoxLayout* mpStudentLayout;
 };
 
+
+class UBTeacherBarDropMediaZone : public QWidget
+{
+    Q_OBJECT
+
+public:
+    UBTeacherBarDropMediaZone(QWidget* parent=0, const char* name="UBTeacherBarDropMediaZone");
+    ~UBTeacherBarDropMediaZone();
+
+private:
+    QLabel* mpTitleLabel;
+    QLabel* mpImageTab;
+    UBMediaPlayer* mpVideoTab;
+    UBMediaPlayer* mpAudioTab;
+    QTabWidget* mpTabWidget;
+    QVBoxLayout* mpLayout;
+
+protected:
+    void dragEnterEvent(QDragEnterEvent* pEvent);
+    void dropEvent(QDropEvent *pEvent);
+    void dragMoveEvent(QDragMoveEvent* pEvent);
+    void dragLeaveEvent(QDragLeaveEvent* pEvent);
+};
+
 class UBTeacherBarWidget : public UBDockPaletteWidget
 {
     Q_OBJECT
@@ -75,6 +102,7 @@ private:
     UBTeacherStudentAction* mpAction1;
     UBTeacherStudentAction* mpAction2;
     UBTeacherStudentAction* mpAction3;
+    UBTeacherBarDropMediaZone* mpDropMediaZone;
     QWidget* mpContainer;
     QVBoxLayout* mpContainerLayout;
 };

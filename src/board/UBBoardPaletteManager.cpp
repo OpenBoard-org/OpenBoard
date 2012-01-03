@@ -199,6 +199,10 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
 
+    // The teacher bar widget will always be there
+    mLeftPalette->registerWidget(mpTeacherBarWidget);
+    mLeftPalette->addTab(mpTeacherBarWidget);
+
     mLeftPalette->connectSignals();
 
     mRightPalette = new UBRightPalette(mContainer);
@@ -207,9 +211,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mRightPalette->addTab(mpLibWidget);
     // The cache widget will be visible only if a cache is put on the page
     mRightPalette->registerWidget(mpCachePropWidget);
-    // The teacher bar widget will always be there
-    mRightPalette->registerWidget(mpTeacherBarWidget);
-    mRightPalette->addTab(mpTeacherBarWidget);
     //  The download widget will be part of the right palette but
     //  will become visible only when the first download starts
     mRightPalette->registerWidget(mpDownloadWidget);
@@ -820,9 +821,6 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     }
                     else
                         mKeyboardPalette->setParent(0);
-
-//                    mKeyboardPalette->update();
-
                 }
             }
             break;

@@ -27,6 +27,9 @@ QString UBDockPaletteWidget::name()
     return mName;
 }
 
+/**
+  * When a widget registers a mode it means that it would be displayed on that mode
+  */
 void UBDockPaletteWidget::registerMode(eUBDockPaletteWidgetMode mode)
 {
     if(!mRegisteredModes.contains(mode))
