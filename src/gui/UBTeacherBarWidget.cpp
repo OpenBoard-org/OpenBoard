@@ -488,7 +488,7 @@ UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char
     mpTitleLabel = new QLabel(tr("Drop media here"));
     mpLayout->addWidget(mpTitleLabel);
     mpTabWidget = new QTabWidget();
-    mpTabWidget->setMinimumHeight(200);
+    mpTabWidget->setMinimumHeight(120);
     mpTabWidget->addTab(mpImageTab,QIcon(":images/toolbar/extraTool.png"),"");
     mpTabWidget->addTab(mpVideoTab,QIcon(":images/libpalette/movieIcon.svg"),"");
     mpTabWidget->addTab(mpAudioTab,QIcon(":images/libpalette/soundIcon.svg"),"");
