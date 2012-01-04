@@ -322,12 +322,16 @@ QTextEdit* UBTeacherStudentAction::student()
 }
 
 
-UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char *name):UBWidgetList(parent)
+UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char *name):QWidget(parent)
 
 {
     setObjectName(name);
     setAcceptDrops(true);
-    setEmptyText(tr("Drag media here ..."));
+
+    mWidget.setEmptyText(tr("Drag media here ..."));
+    mLayout.addWidget(&mWidget);
+    setLayout(&mLayout);
+
 }
 
 UBTeacherBarDropMediaZone::~UBTeacherBarDropMediaZone()
@@ -348,20 +352,46 @@ void UBTeacherBarDropMediaZone::dragLeaveEvent(QDragLeaveEvent *pEvent)
 
 void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
 {
-    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(pEvent->mimeData()->urls().at(0).toLocalFile());
+    QPixmap pixFromDropEvent;
+    QString mimeType;
+    QString resourcePath;
+    if(pEvent->mimeData()->hasText()){
+        qDebug() << "pEvent->mimeData()->hasText()" << pEvent->mimeData()->text();
+        resourcePath = pEvent->mimeData()->text();
+    }
+    else if(pEvent->mimeData()->hasUrls()){
+        qDebug() << "pEvent->mimeData()->hasUrls()" << pEvent->mimeData()->urls().at(0);
+        resourcePath = pEvent->mimeData()->urls().at(0).toLocalFile();
+    }
+    else if(pEvent->mimeData()->hasImage()){
+        qDebug() << "pEvent->mimeData()->hasImage()";
+        pixFromDropEvent.loadFromData(pEvent->mimeData()->imageData().toByteArray());
+        if(!pixFromDropEvent.isNull())
+            mimeType = "image";
+    }
+
+    if (mimeType.isEmpty() && resourcePath.isEmpty()){
+        pEvent->acceptProposedAction();
+        return;
+    }
+
+    mimeType = mimeType.isEmpty() ?  UBFileSystemUtils::mimeTypeFromFileName(resourcePath) : mimeType;
     if(mimeType.contains("image")){
-        QPixmap pix = QPixmap(pEvent->mimeData()->urls().at(0).toLocalFile());
+        qDebug() << pixFromDropEvent.size();
+        QPixmap pix = pixFromDropEvent.height() ? pixFromDropEvent : QPixmap(resourcePath);
         QLabel* label = new QLabel();
         label->setPixmap(pix);
+        //label->resize(size());
         label->setScaledContents(true);
-        addWidget(label);
+        mWidget.addWidget(label);
         mWidgetList << label;
     }
     else if(mimeType.contains("video") || mimeType.contains("audio")){
         UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
-        mediaPlayer->setFile(pEvent->mimeData()->urls().at(0).toLocalFile());
+        mediaPlayer->setFile(resourcePath);
+        //mediaPlayer->resize(size());
         mediaPlayer->playPause();
-        addWidget(mediaPlayer);
+        mWidget.addWidget(mediaPlayer);
         mWidgetList << mediaPlayer;
     }
     else{

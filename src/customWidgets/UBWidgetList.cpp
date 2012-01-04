@@ -76,15 +76,22 @@ void UBWidgetList::updateSize(bool widgetAdded, QWidget *widget)
     int newWidgetHeight;
 
     if(eWidgetListOrientation_Vertical == mOrientation){
-        scaleFactor = (float)widget->width() / (float)mpContainer->width();
+        scaleFactor = (float)mpContainer->width() / (float)widget->width();
     }else{
-        scaleFactor = (float)widget->height() / (float)mpContainer->height();
+        scaleFactor = (float)mpContainer->height() / (float)widget->height();
     }
 
-    newWidgetWidth = widget->width()*scaleFactor;
-    newWidgetHeight = widget->height()*scaleFactor;
+    newWidgetWidth = (int)((float)widget->width()*scaleFactor);
+    newWidgetHeight = (int)((float)widget->height()*scaleFactor);
+
+    qDebug() << "container size " << mpContainer->size();
+    qDebug() << "widget size " << widget->size();
+    qDebug() << "scale factor " << scaleFactor;
+
 
     widget->resize(newWidgetWidth, newWidgetHeight);
+
+    qDebug() << "widget new value " << newWidgetWidth << "x" << newWidgetHeight;
 
     // Now we have to update the container
     if(eWidgetListOrientation_Vertical == mOrientation){

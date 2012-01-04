@@ -47,7 +47,7 @@ private:
 };
 
 
-class UBTeacherBarDropMediaZone : public UBWidgetList
+class UBTeacherBarDropMediaZone : public QWidget
 {
     Q_OBJECT
 
@@ -57,6 +57,9 @@ public:
 
 private:
     QList<QWidget*>mWidgetList;
+    UBWidgetList mWidget;
+    QVBoxLayout mLayout;
+
 
 protected:
     void dragEnterEvent(QDragEnterEvent* pEvent);
