@@ -351,8 +351,6 @@ void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(pEvent->mimeData()->urls().at(0).toLocalFile());
     if(mimeType.contains("image")){
         QPixmap pix = QPixmap(pEvent->mimeData()->urls().at(0).toLocalFile());
-        float ratio = (float)width()/(float)pix.width();
-        pix.transformed(QTransform::scale((float)pix.width()/ratio,(float)pix.height()/ratio));
         QLabel* label = new QLabel();
         label->setPixmap(pix);
         label->setScaledContents(true);
