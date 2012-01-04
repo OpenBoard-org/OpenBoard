@@ -11,6 +11,8 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
    mOrientation = orientation;
    mpContainer = new QWidget(this);
    mWidgets.clear();
+   mpEmptyLabel = new QLabel(this);
+   mpEmptyLabel->setObjectName("emptyString");
 
    if(eWidgetListOrientation_Vertical == orientation){
        setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -47,6 +49,7 @@ UBWidgetList::~UBWidgetList()
 void UBWidgetList::addWidget(QWidget *widget)
 {
     if(NULL != mpLayout){
+        mpEmptyLabel->setVisible(false);
         updateSize(true, widget);
         mpLayout->addWidget(widget);
         mWidgets << widget;
@@ -60,6 +63,9 @@ void UBWidgetList::removeWidget(QWidget *widget)
         mWidgets.remove(mWidgets.indexOf(widget));
         updateSize(false, widget);
         widget->setVisible(false);
+        if(0 == mpLayout->count()){
+            mpEmptyLabel->setVisible(true);
+        }
     }
 }
 
@@ -98,6 +104,10 @@ void UBWidgetList::updateSize(bool widgetAdded, QWidget *widget)
 
 void UBWidgetList::resizeEvent(QResizeEvent *ev)
 {
+    mpEmptyLabel->setGeometry((width() - mpEmptyLabel->width()) / 2,
+                              (height() - mpEmptyLabel->height()) /2,
+                              mpEmptyLabel->width(),
+                              mpEmptyLabel->height());
     if(ev->oldSize().width() >= 0 && ev->oldSize().height() >= 0){
         float scale;
         if(eWidgetListOrientation_Vertical == mOrientation){
@@ -129,5 +139,11 @@ int UBWidgetList::margin()
     return mMargin;
 }
 
+void UBWidgetList::setEmptyText(const QString &text)
+{
+    if(NULL != mpEmptyLabel){
+        mpEmptyLabel->setText(text);
+    }
+}
+
 // TODO :   - add onHover 'delete' button
-//          - add empty label

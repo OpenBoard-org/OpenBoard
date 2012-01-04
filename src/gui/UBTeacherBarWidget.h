@@ -92,8 +92,6 @@ private:
     QLabel* mpDurationLabel;
     QLineEdit* mpTitle;
     UBTeacherStudentAction* mpAction1;
-    UBTeacherStudentAction* mpAction2;
-    UBTeacherStudentAction* mpAction3;
     UBTeacherBarDropMediaZone* mpDropMediaZone;
     QWidget* mpContainer;
     QVBoxLayout* mpContainerLayout;

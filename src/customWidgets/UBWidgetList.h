@@ -25,6 +25,7 @@ public:
     void addWidget(QWidget* widget);
     void removeWidget(QWidget* widget);
     void setMargin(int margin);
+    void setEmptyText(const QString& text);
     int margin();
 
 protected:

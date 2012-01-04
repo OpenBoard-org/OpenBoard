@@ -20,8 +20,6 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpDurationLabel(NULL)
     , mpTitle(NULL)
     , mpAction1(NULL)
-    , mpAction2(NULL)
-    , mpAction3(NULL)
     , mpDropMediaZone(NULL)
     , mpContainer(NULL)
     , mpContainerLayout(NULL)
@@ -53,11 +51,9 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
 
     // Title
     mpTitleLabel = new QLabel(tr("Title"), mpContainer);
-    mpTitleLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpTitleLabel->setAlignment(Qt::AlignRight);
     mpTitle = new QLineEdit(mpContainer);
     mpTitle->setObjectName("DockPaletteWidgetLineEdit");
-	connect(mpTitle, SIGNAL(textChanged(const QString&)), this, SLOT(onTitleTextChanged(const QString&)));
+    connect(mpTitle, SIGNAL(textChanged(const QString&)), this, SLOT(onTitleTextChanged(const QString&)));
     mpTitleLayout = new QHBoxLayout();
     mpTitleLayout->addWidget(mpTitleLabel, 0);
     mpTitleLayout->addWidget(mpTitle, 1);
@@ -65,7 +61,6 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
 
     // Duration
     mpDurationLabel = new QLabel(tr("Duration"), mpContainer);
-    mpDurationLabel->setMinimumWidth(LABEL_MINWIDHT);
     mpDurationLayout = new QHBoxLayout();
     mpDurationLayout->addWidget(mpDurationLabel, 1);
     mpDuration1 = new QCheckBox(this);
@@ -85,12 +80,8 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
 
     // Actions
     mpAction1 = new UBTeacherStudentAction(1, mpContainer);
-    mpAction2 = new UBTeacherStudentAction(2, mpContainer);
-    mpAction3 = new UBTeacherStudentAction(3, mpContainer);
 
     mpLayout->addWidget(mpAction1);
-    mpLayout->addWidget(mpAction2);
-    mpLayout->addWidget(mpAction3);
 
     // Media
     mpDropMediaZone = new UBTeacherBarDropMediaZone();
@@ -104,10 +95,6 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
     connect(mpAction1->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
     connect(mpAction1->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction2->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction2->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction3->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction3->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
@@ -115,14 +102,6 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
     if(NULL != mpDropMediaZone){
         delete mpDropMediaZone;
         mpDropMediaZone = NULL;
-    }
-    if(NULL != mpAction3){
-        delete mpAction3;
-        mpAction3 = NULL;
-    }
-    if(NULL != mpAction2){
-        delete mpAction2;
-        mpAction2 = NULL;
     }
     if(NULL != mpAction1){
         delete mpAction1;
@@ -187,11 +166,7 @@ void UBTeacherBarWidget::onValueChanged()
 {
     if( mpTitle->text() == ""
         && mpAction1->teacherText() == ""
-        && mpAction1->studentText() == ""
-        && mpAction2->teacherText() == ""
-        && mpAction2->studentText() == ""
-        && mpAction3->teacherText() == ""
-        && mpAction3->studentText() == "")
+        && mpAction1->studentText() == "")
     {
         mIconToLeft = QPixmap(":images/teacher_open_disabled.png");
         mIconToRight = QPixmap(":images/teacher_close_disabled.png");
@@ -211,10 +186,6 @@ void UBTeacherBarWidget::saveContent()
     infos.title = mpTitle->text();
     infos.action1Master = mpAction1->teacherText();
     infos.action1Student = mpAction1->studentText();
-    infos.action2Master = mpAction2->teacherText();
-    infos.action2Student = mpAction2->studentText();
-    infos.action3Master = mpAction3->teacherText();
-    infos.action3Student = mpAction3->studentText();
     UBPersistenceManager::persistenceManager()->persistTeacherBar(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex(), infos);
 }
 
@@ -224,10 +195,6 @@ void UBTeacherBarWidget::loadContent()
     mpTitle->setText(nextInfos.title);
     mpAction1->setTeacherText(nextInfos.action1Master);
     mpAction1->setStudentText(nextInfos.action1Student);
-    mpAction2->setTeacherText(nextInfos.action2Master);
-    mpAction2->setStudentText(nextInfos.action2Student);
-    mpAction3->setTeacherText(nextInfos.action3Master);
-    mpAction3->setStudentText(nextInfos.action3Student);
 }
 
 void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
