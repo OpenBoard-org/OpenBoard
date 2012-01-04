@@ -5,7 +5,8 @@ QWidget#UBTeacherStudentAction,
 QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
 QWidget#UBDownloadWidget,
-QWidget#UBWidgetList
+QWidget#UBWidgetList,
+QWidget#UBTeacherBarDropMediaZone
 {
 	background: #EEEEEE;
 	border-radius: 10px;
