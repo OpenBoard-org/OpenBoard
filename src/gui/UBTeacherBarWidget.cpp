@@ -1,7 +1,8 @@
- #include "UBTeacherBarWidget.h"
+#include "UBTeacherBarWidget.h"
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+
 #include "UBMainWindow.h"
 
 #include "document/UBDocumentController.h"
@@ -9,6 +10,10 @@
 
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
+
+#include "gui/UBMediaPlayer.h"
+
+#include "frameworks/UBFileSystemUtils.h"
 
 #include "core/memcheck.h"
 
@@ -326,110 +331,50 @@ QTextEdit* UBTeacherStudentAction::student()
     return mpStudent;
 }
 
-#include "gui/UBMediaPlayer.h"
-#include "gui/UBVideoPlayer.h"
-#include "frameworks/UBFileSystemUtils.h"
 
-UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char *name):QWidget(parent)
-    , mpTitleLabel(NULL)
-    , mpImageTab(NULL)
-    , mpTabWidget(NULL)
-    , mpLayout(NULL)
+UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char *name):UBWidgetList(parent)
+
 {
     setObjectName(name);
     setAcceptDrops(true);
-
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
-
-    // Create the GUI
-    mpLayout = new QVBoxLayout(this);
-    setLayout(mpLayout);
-
-
-    mpImageTab = new QLabel();
-    mpVideoTab = new UBMediaPlayer();
-    mpAudioTab = new UBMediaPlayer();
-
-    mpTitleLabel = new QLabel(tr("Drop media here"));
-    mpLayout->addWidget(mpTitleLabel);
-    mpTabWidget = new QTabWidget();
-    mpTabWidget->setMinimumHeight(120);
-    mpTabWidget->addTab(mpImageTab,QIcon(":images/toolbar/extraTool.png"),"");
-    mpTabWidget->addTab(mpVideoTab,QIcon(":images/libpalette/movieIcon.svg"),"");
-    mpTabWidget->addTab(mpAudioTab,QIcon(":images/libpalette/soundIcon.svg"),"");
-    mpLayout->addWidget(mpTabWidget);
+    setEmptyText(tr("Drag media here ..."));
 }
 
 UBTeacherBarDropMediaZone::~UBTeacherBarDropMediaZone()
 {
-    if(NULL != mpTitleLabel)
-    {
-        delete mpTitleLabel;
-        mpTitleLabel = NULL;
-    }
-    if(NULL != mpImageTab)
-    {
-        delete mpImageTab;
-        mpImageTab = NULL;
-    }
-    if(NULL != mpVideoTab)
-    {
-        delete mpVideoTab;
-        mpVideoTab = NULL;
-    }
-    if(NULL != mpAudioTab)
-    {
-        delete mpAudioTab;
-        mpAudioTab = NULL;
-    }
-    if(NULL != mpTabWidget)
-    {
-        delete mpTabWidget;
-        mpTabWidget = NULL;
-    }
-    if(NULL != mpLayout)
-    {
-        delete mpLayout;
-        mpLayout = NULL;
-    }
+    qDeleteAll(mWidgetList);
 }
 
 
 void UBTeacherBarDropMediaZone::dragEnterEvent(QDragEnterEvent *pEvent)
 {
-    setBackgroundRole(QPalette::Highlight);
     pEvent->acceptProposedAction();
 }
 
 void UBTeacherBarDropMediaZone::dragLeaveEvent(QDragLeaveEvent *pEvent)
 {
-    setBackgroundRole(QPalette::Dark);
     pEvent->accept();
 }
 
 void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
 {
-    setBackgroundRole(QPalette::Dark);
-    if(pEvent->mimeData()->hasHtml()) qDebug() << pEvent->mimeData()->html();
-    if(pEvent->mimeData()->hasUrls()) qDebug() << pEvent->mimeData()->urls();
-    if(pEvent->mimeData()->hasText()) qDebug() << pEvent->mimeData()->text();
     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(pEvent->mimeData()->urls().at(0).toLocalFile());
     if(mimeType.contains("image")){
         QPixmap pix = QPixmap(pEvent->mimeData()->urls().at(0).toLocalFile());
-        mpImageTab->setPixmap(pix);
-        mpTabWidget->setCurrentWidget(mpImageTab);
+        float ratio = (float)width()/(float)pix.width();
+        pix.transformed(QTransform::scale((float)pix.width()/ratio,(float)pix.height()/ratio));
+        QLabel* label = new QLabel();
+        label->setPixmap(pix);
+        label->setScaledContents(true);
+        addWidget(label);
+        mWidgetList << label;
     }
-    else if(mimeType.contains("video")){
-        mpVideoTab->setFile(pEvent->mimeData()->urls().at(0).toLocalFile());
-        mpVideoTab->playPause();
-
-        mpTabWidget->setCurrentWidget(mpVideoTab);
-    }
-    else if(mimeType.contains("audio")){
-        mpVideoTab->setFile(pEvent->mimeData()->urls().at(0).toLocalFile());
-        mpVideoTab->playPause();
-        mpTabWidget->setCurrentWidget(mpAudioTab);
+    else if(mimeType.contains("video") || mimeType.contains("audio")){
+        UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
+        mediaPlayer->setFile(pEvent->mimeData()->urls().at(0).toLocalFile());
+        mediaPlayer->playPause();
+        addWidget(mediaPlayer);
+        mWidgetList << mediaPlayer;
     }
     else{
         qWarning() << "bad idea to come here";

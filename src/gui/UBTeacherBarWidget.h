@@ -2,7 +2,6 @@
 #define UBTEACHERBARWIDGET_H
 
 class UBMediaPlayer;
-class UBVideoPlayer;
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -13,6 +12,8 @@ class UBVideoPlayer;
 #include <QCheckBox>
 #include <QTabWidget>
 #include <QButtonGroup>
+
+#include "customWidgets/UBWidgetList.h"
 
 #include "UBDockPaletteWidget.h"
 
@@ -45,7 +46,7 @@ private:
 };
 
 
-class UBTeacherBarDropMediaZone : public QWidget
+class UBTeacherBarDropMediaZone : public UBWidgetList
 {
     Q_OBJECT
 
@@ -54,12 +55,7 @@ public:
     ~UBTeacherBarDropMediaZone();
 
 private:
-    QLabel* mpTitleLabel;
-    QLabel* mpImageTab;
-    UBMediaPlayer* mpVideoTab;
-    UBMediaPlayer* mpAudioTab;
-    QTabWidget* mpTabWidget;
-    QVBoxLayout* mpLayout;
+    QList<QWidget*>mWidgetList;
 
 protected:
     void dragEnterEvent(QDragEnterEvent* pEvent);
