@@ -16,6 +16,7 @@ class UBMediaPlayer;
 #include "customWidgets/UBWidgetList.h"
 
 #include "UBDockPaletteWidget.h"
+#include "customWidgets/UBWidgetList.h"
 
 #define LABEL_MINWIDHT      80
 
@@ -75,8 +76,7 @@ private slots:
     void saveContent();
     void loadContent();
     void onValueChanged();
-	void onTitleTextChanged(const QString& text);
-	void onEquipmentTextChanged(const QString& text);
+    void onTitleTextChanged(const QString& text);
 
 private:
     void populateCombos();
@@ -95,6 +95,7 @@ private:
     QCheckBox* mpDuration2;
     QCheckBox* mpDuration3;
     QButtonGroup* mpDurationButtons;
+    UBWidgetList* mpActions;
 };
 
 #endif // UBTEACHERBARWIDGET_H
