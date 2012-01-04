@@ -15,26 +15,20 @@
 UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
     , mpLayout(NULL)
     , mpTitleLayout(NULL)
-    , mpPhasisLayout(NULL)
     , mpDurationLayout(NULL)
-    , mpEquipmentLayout(NULL)
-    , mpActivityLayout(NULL)
     , mpTitleLabel(NULL)
-    , mpPhasisLabel(NULL)
     , mpDurationLabel(NULL)
-    , mpEquipmentLabel(NULL)
-    , mpActivityLabel(NULL)
     , mpTitle(NULL)
-    , mpEquipment(NULL)
-    , mpPhasis(NULL)
-    , mpDuration(NULL)
-    , mpActivity(NULL)
     , mpAction1(NULL)
     , mpAction2(NULL)
     , mpAction3(NULL)
     , mpDropMediaZone(NULL)
     , mpContainer(NULL)
     , mpContainerLayout(NULL)
+    , mpDuration1(NULL)
+    , mpDuration2(NULL)
+    , mpDuration3(NULL)
+    , mpDurationButtons(NULL)
 {
     setObjectName(name);
     mName = "TeacherBarWidget";
@@ -69,50 +63,25 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpTitleLayout->addWidget(mpTitle, 1);
     mpLayout->addLayout(mpTitleLayout);
 
-    // Phasis
-    mpPhasisLabel = new QLabel(tr("Phasis"), mpContainer);
-    mpPhasisLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpPhasisLabel->setAlignment(Qt::AlignRight);
-    mpPhasis = new QComboBox(mpContainer);
-    mpPhasis->setObjectName("DockPaletteWidgetComboBox");
-    mpPhasisLayout = new QHBoxLayout();
-    mpPhasisLayout->addWidget(mpPhasisLabel, 0);
-    mpPhasisLayout->addWidget(mpPhasis, 1);
-    mpLayout->addLayout(mpPhasisLayout);
-
     // Duration
     mpDurationLabel = new QLabel(tr("Duration"), mpContainer);
     mpDurationLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpDurationLabel->setAlignment(Qt::AlignRight);
-    mpDuration = new QComboBox(mpContainer);
-    mpDuration->setObjectName("DockPaletteWidgetComboBox");
     mpDurationLayout = new QHBoxLayout();
-    mpDurationLayout->addWidget(mpDurationLabel, 0);
-    mpDurationLayout->addWidget(mpDuration, 1);
+    mpDurationLayout->addWidget(mpDurationLabel, 1);
+    mpDuration1 = new QCheckBox(this);
+    mpDuration1->setIcon(QIcon(":images/duration1.png"));
+    mpDurationLayout->addWidget(mpDuration1, 0);
+    mpDuration2 = new QCheckBox(this);
+    mpDuration2->setIcon(QIcon(":images/duration2.png"));
+    mpDurationLayout->addWidget(mpDuration2, 0);
+    mpDuration3 = new QCheckBox(this);
+    mpDuration3->setIcon(QIcon(":images/duration3.png"));
+    mpDurationLayout->addWidget(mpDuration3, 0);
+    mpDurationButtons = new QButtonGroup(this);
+    mpDurationButtons->addButton(mpDuration1);
+    mpDurationButtons->addButton(mpDuration2);
+    mpDurationButtons->addButton(mpDuration3);
     mpLayout->addLayout(mpDurationLayout);
-
-    // Equipment
-    mpEquipmentLabel = new QLabel(tr("Equipment"), mpContainer);
-    mpEquipmentLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpEquipmentLabel->setAlignment(Qt::AlignRight);
-    mpEquipment = new QLineEdit(mpContainer);
-    mpEquipment->setObjectName("DockPaletteWidgetLineEdit");
-	connect(mpEquipment, SIGNAL(textChanged(const QString&)), this, SLOT(onEquipmentTextChanged(const QString&)));
-    mpEquipmentLayout = new QHBoxLayout();
-    mpEquipmentLayout->addWidget(mpEquipmentLabel, 0);
-    mpEquipmentLayout->addWidget(mpEquipment, 1);
-    mpLayout->addLayout(mpEquipmentLayout);
-
-    // Activity
-    mpActivityLabel = new QLabel(tr("Activity"), mpContainer);
-    mpActivityLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpActivityLabel->setAlignment(Qt::AlignRight);
-    mpActivity = new QComboBox(mpContainer);
-    mpActivity->setObjectName("DockPaletteWidgetComboBox");
-    mpActivityLayout = new QHBoxLayout();
-    mpActivityLayout->addWidget(mpActivityLabel, 0);
-    mpActivityLayout->addWidget(mpActivity, 1);
-    mpLayout->addLayout(mpActivityLayout);
 
     // Actions
     mpAction1 = new UBTeacherStudentAction(1, mpContainer);
@@ -133,10 +102,6 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContent()));
     connect(UBApplication::mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(saveContent()));
     connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
-    connect(mpPhasis, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
-    connect(mpDuration, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
-    connect(mpEquipment, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
-    connect(mpActivity, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
     connect(mpAction1->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
     connect(mpAction1->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
     connect(mpAction2->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
@@ -147,108 +112,67 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
 {
-    if(NULL != mpDropMediaZone)
-    {
+    if(NULL != mpDropMediaZone){
         delete mpDropMediaZone;
         mpDropMediaZone = NULL;
     }
-    if(NULL != mpAction3)
-    {
+    if(NULL != mpAction3){
         delete mpAction3;
         mpAction3 = NULL;
     }
-    if(NULL != mpAction2)
-    {
+    if(NULL != mpAction2){
         delete mpAction2;
         mpAction2 = NULL;
     }
-    if(NULL != mpAction1)
-    {
+    if(NULL != mpAction1){
         delete mpAction1;
         mpAction1 = NULL;
     }
-    if(NULL != mpActivityLabel)
-    {
-        delete mpActivityLabel;
-        mpActivityLabel = NULL;
-    }
-    if(NULL != mpActivity)
-    {
-        delete mpActivity;
-        mpActivity = NULL;
-    }
-    if(NULL != mpActivityLayout)
-    {
-        delete mpActivityLayout;
-        mpActivityLayout = NULL;
-    }
-    if(NULL != mpEquipmentLabel)
-    {
-        delete mpEquipmentLabel;
-        mpEquipmentLabel = NULL;
-    }
-    if(NULL != mpEquipment)
-    {
-        delete mpEquipment;
-        mpEquipment = NULL;
-    }
-    if(NULL != mpEquipmentLayout)
-    {
-        delete mpEquipmentLayout;
-        mpEquipmentLayout = NULL;
-    }
-    if(NULL != mpDurationLabel)
-    {
+    if(NULL != mpDurationLabel){
         delete mpDurationLabel;
         mpDurationLabel = NULL;
     }
-    if(NULL != mpDuration)
-    {
-        delete mpDuration;
-        mpDuration = NULL;
+    if(NULL != mpDuration1){
+        delete mpDuration1;
+        mpDuration1 = NULL;
     }
-    if(NULL != mpDurationLayout)
-    {
+    if(NULL != mpDuration2){
+        delete mpDuration2;
+        mpDuration2 = NULL;
+    }
+    if(NULL != mpDuration3){
+        delete mpDuration3;
+        mpDuration3 = NULL;
+    }
+    if(NULL != mpDurationButtons){
+        delete mpDurationButtons;
+        mpDurationButtons = NULL;
+    }
+    if(NULL != mpDurationLayout){
         delete mpDurationLayout;
         mpDurationLayout = NULL;
     }
-    if(NULL != mpPhasisLabel)
-    {
-        delete mpPhasisLabel;
-        mpPhasisLabel = NULL;
-    }
-    if(NULL != mpPhasisLayout)
-    {
-        delete mpPhasisLayout;
-        mpPhasisLayout = NULL;
-    }
-    if(NULL != mpTitleLabel)
-    {
+    if(NULL != mpTitleLabel){
         delete mpTitleLabel;
         mpTitleLabel = NULL;
     }
-    if(NULL != mpTitle)
-    {
+    if(NULL != mpTitle){
         delete mpTitle;
         mpTitle = NULL;
     }
-    if(NULL != mpTitleLayout)
-    {
+    if(NULL != mpTitleLayout){
         delete mpTitleLayout;
         mpTitleLayout = NULL;
     }
-    if(NULL != mpLayout)
-    {
+    if(NULL != mpLayout){
         delete mpLayout;
         mpLayout = NULL;
     }
-    if(NULL != mpContainer)
-    {
+    if(NULL != mpContainer){
         delete mpContainer;
         mpContainer = NULL;
     }
-    if(NULL != mpContainerLayout)
-    {
+    if(NULL != mpContainerLayout){
         delete mpContainerLayout;
         mpContainerLayout = NULL;
     }
@@ -256,29 +180,12 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
 
 void UBTeacherBarWidget::populateCombos()
 {
-    QStringList qslPhasis;
-    qslPhasis << tr("") << tr("I discover") << tr("I experiment") << tr("I train myself") << tr("I play") << tr("I memorize");
-    mpPhasis->insertItems(0, qslPhasis);
-    mpPhasis->setCurrentIndex(0);
 
-    QStringList qslDuration;
-    qslDuration << tr("") << tr("Short") << tr("Middle") << tr("Long");
-    mpDuration->insertItems(0, qslDuration);
-    mpDuration->setCurrentIndex(0);
-
-    QStringList qslActivity;
-    qslActivity << tr("") << tr("Alone") << tr("By Group") << tr("All together");
-    mpActivity->insertItems(0, qslActivity);
-    mpActivity->setCurrentIndex(0);
 }
 
 void UBTeacherBarWidget::onValueChanged()
 {
     if( mpTitle->text() == ""
-        && mpDuration->currentIndex() == 0
-        && mpPhasis->currentIndex() == 0
-        && mpEquipment->text() == ""
-        && mpActivity->currentIndex() == 0
         && mpAction1->teacherText() == ""
         && mpAction1->studentText() == ""
         && mpAction2->teacherText() == ""
@@ -302,10 +209,6 @@ void UBTeacherBarWidget::saveContent()
 {
     sTeacherBarInfos infos;
     infos.title = mpTitle->text();
-    infos.phasis = mpPhasis->currentIndex();
-    infos.Duration = mpDuration->currentIndex();
-    infos.material = mpEquipment->text();
-    infos.activity = mpActivity->currentIndex();
     infos.action1Master = mpAction1->teacherText();
     infos.action1Student = mpAction1->studentText();
     infos.action2Master = mpAction2->teacherText();
@@ -319,10 +222,6 @@ void UBTeacherBarWidget::loadContent()
 {
     sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
     mpTitle->setText(nextInfos.title);
-    mpPhasis->setCurrentIndex(nextInfos.phasis);
-    mpDuration->setCurrentIndex(nextInfos.Duration);
-    mpEquipment->setText(nextInfos.material);
-    mpActivity->setCurrentIndex(nextInfos.activity);
     mpAction1->setTeacherText(nextInfos.action1Master);
     mpAction1->setStudentText(nextInfos.action1Student);
     mpAction2->setTeacherText(nextInfos.action2Master);
@@ -338,7 +237,7 @@ void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
 
 void UBTeacherBarWidget::onEquipmentTextChanged(const QString& text)
 {
-	mpEquipment->setToolTip(text);
+
 }
 
 UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent, const char *name):QWidget(parent)

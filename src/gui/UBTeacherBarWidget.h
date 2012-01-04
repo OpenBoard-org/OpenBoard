@@ -10,7 +10,9 @@ class UBVideoPlayer;
 #include <QLabel>
 #include <QTextEdit>
 #include <QLineEdit>
-#include <QComboBox>
+#include <QCheckBox>
+#include <QTabWidget>
+#include <QButtonGroup>
 
 #include "UBDockPaletteWidget.h"
 
@@ -85,26 +87,20 @@ private:
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpTitleLayout;
-    QHBoxLayout* mpPhasisLayout;
     QHBoxLayout* mpDurationLayout;
-    QHBoxLayout* mpEquipmentLayout;
-    QHBoxLayout* mpActivityLayout;
     QLabel* mpTitleLabel;
-    QLabel* mpPhasisLabel;
     QLabel* mpDurationLabel;
-    QLabel* mpEquipmentLabel;
-    QLabel* mpActivityLabel;
     QLineEdit* mpTitle;
-    QLineEdit* mpEquipment;
-    QComboBox* mpPhasis;
-    QComboBox* mpDuration;
-    QComboBox* mpActivity;
     UBTeacherStudentAction* mpAction1;
     UBTeacherStudentAction* mpAction2;
     UBTeacherStudentAction* mpAction3;
     UBTeacherBarDropMediaZone* mpDropMediaZone;
     QWidget* mpContainer;
     QVBoxLayout* mpContainerLayout;
+    QCheckBox* mpDuration1;
+    QCheckBox* mpDuration2;
+    QCheckBox* mpDuration3;
+    QButtonGroup* mpDurationButtons;
 };
 
 #endif // UBTEACHERBARWIDGET_H

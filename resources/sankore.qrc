@@ -338,5 +338,8 @@
         <file>images/download_close.png</file>
         <file>images/download_open.png</file>
         <file>images/tab_mask.png</file>
+        <file>images/duration1.png</file>
+        <file>images/duration2.png</file>
+        <file>images/duration3.png</file>
     </qresource>
 </RCC>
