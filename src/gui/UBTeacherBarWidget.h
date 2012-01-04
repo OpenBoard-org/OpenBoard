@@ -12,7 +12,7 @@ class UBMediaPlayer;
 #include <QCheckBox>
 #include <QTabWidget>
 #include <QButtonGroup>
-
+#include <QPushButton>
 #include "customWidgets/UBWidgetList.h"
 
 #include "UBDockPaletteWidget.h"
@@ -77,10 +77,10 @@ private slots:
     void loadContent();
     void onValueChanged();
     void onTitleTextChanged(const QString& text);
+    void onActionButton();
+    void onLinkButton();
 
 private:
-    void populateCombos();
-
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpTitleLayout;
     QHBoxLayout* mpDurationLayout;
@@ -88,6 +88,7 @@ private:
     QLabel* mpDurationLabel;
     QLineEdit* mpTitle;
     UBTeacherStudentAction* mpAction1;
+    QLabel* mpMediaLabel;
     UBTeacherBarDropMediaZone* mpDropMediaZone;
     QWidget* mpContainer;
     QVBoxLayout* mpContainerLayout;
@@ -95,7 +96,14 @@ private:
     QCheckBox* mpDuration2;
     QCheckBox* mpDuration3;
     QButtonGroup* mpDurationButtons;
+    QLabel* mpActionLabel;
     UBWidgetList* mpActions;
+    QPushButton* mpActionButton;
+    QLabel* mpLinkLabel;
+    UBWidgetList* mpLinks;
+    QPushButton* mpLinkButton;
+    QLabel* mpCommentLabel;
+    QTextEdit* mpComments;
 };
 
 #endif // UBTEACHERBARWIDGET_H

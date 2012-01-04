@@ -25,6 +25,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpDurationLabel(NULL)
     , mpTitle(NULL)
     , mpAction1(NULL)
+    , mpMediaLabel(NULL)
     , mpDropMediaZone(NULL)
     , mpContainer(NULL)
     , mpContainerLayout(NULL)
@@ -32,7 +33,13 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpDuration2(NULL)
     , mpDuration3(NULL)
     , mpDurationButtons(NULL)
+    , mpActionLabel(NULL)
     , mpActions(NULL)
+    , mpActionButton(NULL)
+    , mpCommentLabel(NULL)
+    , mpComments(NULL)
+    , mpLinkLabel(NULL)
+    , mpLinks(NULL)
 {
     setObjectName(name);
     mName = "TeacherBarWidget";
@@ -60,15 +67,13 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpTitle = new QLineEdit(mpContainer);
     mpTitle->setObjectName("DockPaletteWidgetLineEdit");
     connect(mpTitle, SIGNAL(textChanged(const QString&)), this, SLOT(onTitleTextChanged(const QString&)));
-    mpTitleLayout = new QHBoxLayout();
-    mpTitleLayout->addWidget(mpTitleLabel, 0);
-    mpTitleLayout->addWidget(mpTitle, 1);
-    mpLayout->addLayout(mpTitleLayout);
+    mpLayout->addWidget(mpTitleLabel, 0);
+    mpLayout->addWidget(mpTitle, 0);
 
     // Duration
     mpDurationLabel = new QLabel(tr("Duration"), mpContainer);
+    mpLayout->addWidget(mpDurationLabel, 0);
     mpDurationLayout = new QHBoxLayout();
-    mpDurationLayout->addWidget(mpDurationLabel, 1);
     mpDuration1 = new QCheckBox(this);
     mpDuration1->setIcon(QIcon(":images/duration1.png"));
     mpDurationLayout->addWidget(mpDuration1, 0);
@@ -82,34 +87,87 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpDurationButtons->addButton(mpDuration1);
     mpDurationButtons->addButton(mpDuration2);
     mpDurationButtons->addButton(mpDuration3);
-    mpLayout->addLayout(mpDurationLayout);
+    mpLayout->addLayout(mpDurationLayout, 0);
 
     // Actions
+    mpActionLabel = new QLabel(tr("Actions"), this);
+    mpLayout->addWidget(mpActionLabel, 0);
     mpActions = new UBWidgetList(this);
     mpActions->setEmptyText(tr("Add actions"));
-    mpLayout->addWidget(mpActions);
+    mpLayout->addWidget(mpActions, 1);
+    mpActionButton = new QPushButton(this);
+    mpActionButton->setObjectName("DockPaletteWidgetButton");
+    mpActionButton->setText(tr("Add action"));
+    mpLayout->addWidget(mpActionButton, 0);
 
     // Media
+    mpMediaLabel = new QLabel(tr("Media"), this);
+    mpLayout->addWidget(mpMediaLabel, 0);
     mpDropMediaZone = new UBTeacherBarDropMediaZone();
-    mpLayout->addWidget(mpDropMediaZone);
+    mpLayout->addWidget(mpDropMediaZone, 1);
 
-    populateCombos();
+    // Links
+    mpLinkLabel = new QLabel(tr("Links"), this);
+    mpLayout->addWidget(mpLinkLabel, 0);
+    mpLinks = new UBWidgetList(this);
+    mpLayout->addWidget(mpLinks, 1);
+    mpLinkButton = new QPushButton(tr("Add link"), this);
+    mpLinkButton->setObjectName("DockPaletteWidgetButton");
+    mpLayout->addWidget(mpLinkButton);
+
+    // Comments
+    mpCommentLabel = new QLabel(tr("Comments"), this);
+    mpLayout->addWidget(mpCommentLabel, 0);
+    mpComments = new QTextEdit(this);
+    mpComments->setObjectName("DockPaletteWidgetBox");
+    mpComments->setStyleSheet("background:white;");
+    mpLayout->addWidget(mpComments, 1);
 
     connect(UBApplication::boardController, SIGNAL(activeSceneWillChange()), this, SLOT(saveContent()));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContent()));
     connect(UBApplication::mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(saveContent()));
     connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
+    connect(mpActionButton, SIGNAL(clicked()), this, SLOT(onActionButton()));
+    connect(mpLinkButton, SIGNAL(clicked()), this, SLOT(onLinkButton()));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
 {
+    if(NULL != mpComments){
+        delete mpComments;
+        mpComments = NULL;
+    }
+    if(NULL != mpCommentLabel){
+        delete mpCommentLabel;
+        mpCommentLabel = NULL;
+    }
+    if(NULL != mpLinks){
+        delete mpLinks;
+        mpLinks = NULL;
+    }
+    if(NULL != mpLinkLabel){
+        delete mpLinkLabel;
+        mpLinkLabel = NULL;
+    }
     if(NULL != mpDropMediaZone){
         delete mpDropMediaZone;
         mpDropMediaZone = NULL;
     }
+    if(NULL != mpMediaLabel){
+        delete mpMediaLabel;
+        mpMediaLabel = NULL;
+    }
+    if(NULL != mpActionButton){
+        delete mpActionButton;
+        mpActionButton = NULL;
+    }
     if(NULL != mpAction1){
         delete mpAction1;
         mpAction1 = NULL;
+    }
+    if(NULL != mpActionLabel){
+        delete mpActionLabel;
+        mpActionLabel = NULL;
     }
     if(NULL != mpDurationLabel){
         delete mpDurationLabel;
@@ -161,11 +219,6 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
     }
 }
 
-void UBTeacherBarWidget::populateCombos()
-{
-
-}
-
 void UBTeacherBarWidget::onValueChanged()
 {
     if( mpTitle->text() == ""
@@ -200,6 +253,16 @@ void UBTeacherBarWidget::loadContent()
 void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
 {
 	mpTitle->setToolTip(text);
+}
+
+void UBTeacherBarWidget::onActionButton()
+{
+
+}
+
+void UBTeacherBarWidget::onLinkButton()
+{
+
 }
 
 UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent, const char *name):QWidget(parent)
