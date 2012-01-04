@@ -4,7 +4,8 @@ QWidget#UBLibPathViewer,
 QWidget#UBTeacherStudentAction,
 QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
-QWidget#UBDownloadWidget
+QWidget#UBDownloadWidget,
+QWidget#UBWidgetList
 {
 	background: #EEEEEE;
 	border-radius: 10px;

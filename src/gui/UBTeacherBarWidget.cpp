@@ -27,6 +27,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpDuration2(NULL)
     , mpDuration3(NULL)
     , mpDurationButtons(NULL)
+    , mpActions(NULL)
 {
     setObjectName(name);
     mName = "TeacherBarWidget";
@@ -79,9 +80,9 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpLayout->addLayout(mpDurationLayout);
 
     // Actions
-    mpAction1 = new UBTeacherStudentAction(1, mpContainer);
-
-    mpLayout->addWidget(mpAction1);
+    mpActions = new UBWidgetList(this);
+    mpActions->setEmptyText(tr("Add actions"));
+    mpLayout->addWidget(mpActions);
 
     // Media
     mpDropMediaZone = new UBTeacherBarDropMediaZone();
@@ -93,8 +94,6 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContent()));
     connect(UBApplication::mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(saveContent()));
     connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
-    connect(mpAction1->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction1->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
@@ -184,8 +183,6 @@ void UBTeacherBarWidget::saveContent()
 {
     sTeacherBarInfos infos;
     infos.title = mpTitle->text();
-    infos.action1Master = mpAction1->teacherText();
-    infos.action1Student = mpAction1->studentText();
     UBPersistenceManager::persistenceManager()->persistTeacherBar(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex(), infos);
 }
 
@@ -193,18 +190,11 @@ void UBTeacherBarWidget::loadContent()
 {
     sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
     mpTitle->setText(nextInfos.title);
-    mpAction1->setTeacherText(nextInfos.action1Master);
-    mpAction1->setStudentText(nextInfos.action1Student);
 }
 
 void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
 {
 	mpTitle->setToolTip(text);
-}
-
-void UBTeacherBarWidget::onEquipmentTextChanged(const QString& text)
-{
-
 }
 
 UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent, const char *name):QWidget(parent)
