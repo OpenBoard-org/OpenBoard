@@ -27,6 +27,7 @@ public:
     void setMargin(int margin);
     void setEmptyText(const QString& text);
     int margin();
+    bool empty();
 
 protected:
     void resizeEvent(QResizeEvent* ev);

@@ -245,7 +245,11 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
 
 void UBTeacherBarWidget::onValueChanged()
 {
-    if( mpTitle->text() == "")
+    if( mpTitle->text() == "" &&
+        mpLinks->empty() &&
+        mpActions->empty() &&
+        mpDropMediaZone->empty() &&
+        mpComments->document()->toPlainText() == "")
     {
         mIconToLeft = QPixmap(":images/teacher_open_disabled.png");
         mIconToRight = QPixmap(":images/teacher_close_disabled.png");
@@ -291,6 +295,7 @@ void UBTeacherBarWidget::onLinkButton()
     mpLinks->addWidget(pUrl);
 }
 
+// ---------------------------------------------------------------------------------------------
 UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name):QWidget(parent)
   , mpText(NULL)
   , mpLayout(NULL)
@@ -359,11 +364,14 @@ QString UBTeacherStudentAction::comboValue()
 {
     QString str;
 
-    // TODO : Implement this method
+    if(NULL != mpCombo){
+        str = mpCombo->currentText();
+    }
 
     return str;
 }
 
+// ---------------------------------------------------------------------------------------------
 UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char *name):QWidget(parent)
 
 {
@@ -385,6 +393,10 @@ UBTeacherBarDropMediaZone::~UBTeacherBarDropMediaZone()
     }
 }
 
+bool UBTeacherBarDropMediaZone::empty()
+{
+    return mWidget->empty();
+}
 
 void UBTeacherBarDropMediaZone::dragEnterEvent(QDragEnterEvent *pEvent)
 {

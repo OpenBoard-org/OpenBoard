@@ -155,5 +155,10 @@ void UBWidgetList::setEmptyText(const QString &text)
     }
 }
 
+bool UBWidgetList::empty()
+{
+    return mWidgets.empty();
+}
+
 // TODO :   - add onHover 'delete' button
 

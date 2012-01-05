@@ -45,6 +45,7 @@ class UBTeacherBarDropMediaZone : public QWidget
 public:
     UBTeacherBarDropMediaZone(QWidget* parent=0, const char* name="UBTeacherBarDropMediaZone");
     ~UBTeacherBarDropMediaZone();
+    bool empty();
 
 private:
     QList<QWidget*>mWidgetList;
