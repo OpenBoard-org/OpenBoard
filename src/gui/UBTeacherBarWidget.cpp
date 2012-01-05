@@ -24,7 +24,6 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpTitleLabel(NULL)
     , mpDurationLabel(NULL)
     , mpTitle(NULL)
-    , mpAction1(NULL)
     , mpMediaLabel(NULL)
     , mpDropMediaZone(NULL)
     , mpContainer(NULL)
@@ -185,10 +184,6 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
         delete mpActionLayout;
         mpActionLayout = NULL;
     }
-    if(NULL != mpAction1){
-        delete mpAction1;
-        mpAction1 = NULL;
-    }
     if(NULL != mpActionLabel){
         delete mpActionLabel;
         mpActionLabel = NULL;
@@ -297,6 +292,7 @@ void UBTeacherBarWidget::saveContent()
 
 void UBTeacherBarWidget::loadContent()
 {
+    clearWidgetLists();
     sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
     // Title
     mpTitle->setText(nextInfos.title);
@@ -358,6 +354,23 @@ void UBTeacherBarWidget::onLinkButton()
     UBUrlWidget* pUrl = new UBUrlWidget(this);
     mUrlList << pUrl;
     mpLinks->addWidget(pUrl);
+}
+
+void UBTeacherBarWidget::clearWidgetLists()
+{
+    if(NULL != mpActions){
+        for(int i=0; i<mActionList.size(); i++){
+            mpActions->removeWidget(mActionList.at(i));
+        }
+        mActionList.clear();
+    }
+
+    if(NULL != mpLinks){
+        for(int i=0; i<mUrlList.size(); i++){
+            mpLinks->removeWidget(mUrlList.at(i));
+        }
+        mUrlList.clear();
+    }
 }
 
 // ---------------------------------------------------------------------------------------------

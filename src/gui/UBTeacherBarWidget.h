@@ -93,13 +93,13 @@ private slots:
     void onLinkButton();
 
 private:
+    void clearWidgetLists();
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpTitleLayout;
     QHBoxLayout* mpDurationLayout;
     QLabel* mpTitleLabel;
     QLabel* mpDurationLabel;
     QLineEdit* mpTitle;
-    UBTeacherStudentAction* mpAction1;
     QLabel* mpMediaLabel;
     UBTeacherBarDropMediaZone* mpDropMediaZone;
     QWidget* mpContainer;
