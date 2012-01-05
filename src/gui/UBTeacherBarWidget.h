@@ -14,6 +14,7 @@ class UBMediaPlayer;
 #include <QButtonGroup>
 #include <QPushButton>
 #include <QComboBox>
+#include <QStackedWidget>
 
 #include "UBDockPaletteWidget.h"
 #include "customWidgets/UBWidgetList.h"
@@ -118,6 +119,7 @@ private:
     QHBoxLayout* mpLinkLayout;
     QLabel* mpCommentLabel;
     QTextEdit* mpComments;
+    QStackedWidget* mpStackWidget;
 
     QVector<UBTeacherStudentAction*> mActionList;
     QVector<UBUrlWidget*> mUrlList;

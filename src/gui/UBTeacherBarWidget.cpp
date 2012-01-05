@@ -42,6 +42,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpLinks(NULL)
     , mpLinkButton(NULL)
     , mpLinkLayout(NULL)
+    , mpStackWidget(NULL)
 {
     setObjectName(name);
     mName = "TeacherBarWidget";
@@ -88,19 +89,19 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpDuration3 = new QCheckBox(this);
     mpDuration3->setIcon(QIcon(":images/duration3.png"));
     mpDurationLayout->addWidget(mpDuration3, 0);
-    mpDurationButtons = new QButtonGroup(this);
+    mpDurationButtons = new QButtonGroup(mpContainer);
     mpDurationButtons->addButton(mpDuration1);
     mpDurationButtons->addButton(mpDuration2);
     mpDurationButtons->addButton(mpDuration3);
     mpLayout->addLayout(mpDurationLayout, 0);
 
     // Actions
-    mpActionLabel = new QLabel(tr("Actions"), this);
+    mpActionLabel = new QLabel(tr("Actions"), mpContainer);
     mpLayout->addWidget(mpActionLabel, 0);
-    mpActions = new UBWidgetList(this);
+    mpActions = new UBWidgetList(mpContainer);
     mpActions->setEmptyText(tr("Add actions"));
     mpLayout->addWidget(mpActions, 1);
-    mpActionButton = new QPushButton(this);
+    mpActionButton = new QPushButton(mpContainer);
     mpActionButton->setObjectName("DockPaletteWidgetButton");
     mpActionButton->setText(tr("Add action"));
     mpActionLayout = new QHBoxLayout();
@@ -109,17 +110,17 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpLayout->addLayout(mpActionLayout, 0);
 
     // Media
-    mpMediaLabel = new QLabel(tr("Media"), this);
+    mpMediaLabel = new QLabel(tr("Media"), mpContainer);
     mpLayout->addWidget(mpMediaLabel, 0);
-    mpDropMediaZone = new UBTeacherBarDropMediaZone(this);
+    mpDropMediaZone = new UBTeacherBarDropMediaZone(mpContainer);
     mpLayout->addWidget(mpDropMediaZone, 1);
 
     // Links
-    mpLinkLabel = new QLabel(tr("Links"), this);
+    mpLinkLabel = new QLabel(tr("Links"), mpContainer);
     mpLayout->addWidget(mpLinkLabel, 0);
-    mpLinks = new UBWidgetList(this);
+    mpLinks = new UBWidgetList(mpContainer);
     mpLayout->addWidget(mpLinks, 1);
-    mpLinkButton = new QPushButton(tr("Add link"), this);
+    mpLinkButton = new QPushButton(tr("Add link"), mpContainer);
     mpLinkButton->setObjectName("DockPaletteWidgetButton");
     mpLinkLayout = new QHBoxLayout();
     mpLinkLayout->addWidget(mpLinkButton, 0);
@@ -127,7 +128,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpLayout->addLayout(mpLinkLayout, 0);
 
     // Comments
-    mpCommentLabel = new QLabel(tr("Comments"), this);
+    mpCommentLabel = new QLabel(tr("Comments"), mpContainer);
     mpLayout->addWidget(mpCommentLabel, 0);
     mpComments = new QTextEdit(this);
     mpComments->setObjectName("DockPaletteWidgetBox");
@@ -236,6 +237,10 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
         delete mpContainerLayout;
         mpContainerLayout = NULL;
     }
+    if(NULL != mpStackWidget){
+        delete mpStackWidget;
+        mpStackWidget = NULL;
+    }
 }
 
 void UBTeacherBarWidget::onValueChanged()
@@ -311,7 +316,7 @@ void UBTeacherBarWidget::loadContent()
     for(int i=0; i<nextInfos.actions.size(); i++){
         QStringList qslAction = nextInfos.actions.at(i).split(";");
         if(qslAction.size() >= 2){
-            UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
+            UBTeacherStudentAction* pAction = new UBTeacherStudentAction(mpContainer);
             pAction->setComboValue(qslAction.at(0).toInt());
             pAction->setText(qslAction.at(1));
             mActionList << pAction;
@@ -325,7 +330,7 @@ void UBTeacherBarWidget::loadContent()
     for(int j=0; j<nextInfos.urls.size(); j++){
         QString qsUrl = nextInfos.urls.at(j);
         if("" != qsUrl){
-            UBUrlWidget* pLink = new UBUrlWidget(this);
+            UBUrlWidget* pLink = new UBUrlWidget(mpContainer);
             pLink->setUrl(qsUrl);
             mUrlList << pLink;
             mpLinks->addWidget(pLink);
@@ -344,14 +349,14 @@ void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
 
 void UBTeacherBarWidget::onActionButton()
 {
-    UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
+    UBTeacherStudentAction* pAction = new UBTeacherStudentAction(mpContainer);
     mActionList << pAction;
     mpActions->addWidget(pAction);
 }
 
 void UBTeacherBarWidget::onLinkButton()
 {
-    UBUrlWidget* pUrl = new UBUrlWidget(this);
+    UBUrlWidget* pUrl = new UBUrlWidget(mpContainer);
     mUrlList << pUrl;
     mpLinks->addWidget(pUrl);
 }
