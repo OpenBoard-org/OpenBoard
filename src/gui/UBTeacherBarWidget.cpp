@@ -62,7 +62,10 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
 
     mpContainer = new QWidget(this);
     mpContainer->setObjectName("DockPaletteWidgetBox");
-    mpContainerLayout->addWidget(mpContainer);
+
+    mpStackWidget = new QStackedWidget(this);
+    mpContainerLayout->addWidget(mpStackWidget);
+    mpStackWidget->addWidget(mpContainer);
 
     mpLayout = new QVBoxLayout(mpContainer);
     mpContainer->setLayout(mpLayout);
