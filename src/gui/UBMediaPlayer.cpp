@@ -242,7 +242,6 @@ void UBMediaPlayer::setFile(const QString &fileName)
 {
     setWindowTitle(fileName.right(fileName.length() - fileName.lastIndexOf('/') - 1));
     m_MediaObject.setCurrentSource(Phonon::MediaSource(fileName));
-    m_MediaObject.play();
 }
 
 void UBMediaPlayer::setLocation(const QString& location)
