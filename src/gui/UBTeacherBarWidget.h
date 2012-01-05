@@ -29,6 +29,8 @@ public:
     ~UBTeacherStudentAction();
     QString comboValue();
     QString text();
+    void setComboValue(int value);
+    void setText(const QString& text);
 
 private:
     QTextEdit* mpText;
@@ -67,6 +69,7 @@ public:
     ~UBUrlWidget();
 
     QString url();
+    void setUrl(const QString& url);
 
 private:
     QHBoxLayout* mpLayout;

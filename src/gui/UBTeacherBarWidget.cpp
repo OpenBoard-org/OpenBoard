@@ -266,14 +266,79 @@ void UBTeacherBarWidget::onValueChanged()
 void UBTeacherBarWidget::saveContent()
 {
     sTeacherBarInfos infos;
+    // Title
     infos.title = mpTitle->text();
+    // Duration
+    if(mpDuration1->isChecked()){
+        infos.Duration = 0;
+    }else if(mpDuration2->isChecked()){
+        infos.Duration = 1;
+    }else{
+        infos.Duration = 2;
+    }
+    // Actions
+    for(int i=0; i<mActionList.size(); i++){
+        infos.actions << QString("%0;%1").arg(mActionList.at(i)->comboValue()).arg(mActionList.at(i)->text());
+    }
+    // Media
+    // TODO :   Get the url of the dropped medias and store them in infos.medias
+
+    // Links
+    for(int j=0; j<mUrlList.size(); j++){
+        if("" != mUrlList.at(j)->url()){
+            infos.urls << mUrlList.at(j)->url();
+        }
+    }
+    // Comments
+    infos.comments = mpComments->document()->toPlainText();
+
     UBPersistenceManager::persistenceManager()->persistTeacherBar(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex(), infos);
 }
 
 void UBTeacherBarWidget::loadContent()
 {
     sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
+    // Title
     mpTitle->setText(nextInfos.title);
+    // Duration
+    switch(nextInfos.Duration){
+        case 0: mpDuration1->setChecked(true);
+            break;
+        case 1: mpDuration2->setChecked(true);
+            break;
+        case 2: mpDuration3->setChecked(true);
+            break;
+        default: mpDuration1->setChecked(true);
+            break;
+    }
+    // Actions
+    for(int i=0; i<nextInfos.actions.size(); i++){
+        QStringList qslAction = nextInfos.actions.at(i).split(";");
+        if(qslAction.size() >= 2){
+            UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
+            pAction->setComboValue(qslAction.at(0).toInt());
+            pAction->setText(qslAction.at(1));
+            mActionList << pAction;
+            mpActions->addWidget(pAction);
+        }
+    }
+    // Media
+    // TODO : Add the media items here
+
+    // Links
+    for(int j=0; j<nextInfos.urls.size(); j++){
+        QString qsUrl = nextInfos.urls.at(j);
+        if("" != qsUrl){
+            UBUrlWidget* pLink = new UBUrlWidget(this);
+            pLink->setUrl(qsUrl);
+            mUrlList << pLink;
+            mpLinks->addWidget(pLink);
+        }
+    }
+    // Comments
+    if(NULL != mpComments){
+        mpComments->document()->setPlainText(nextInfos.comments);
+    }
 }
 
 void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
@@ -365,10 +430,24 @@ QString UBTeacherStudentAction::comboValue()
     QString str;
 
     if(NULL != mpCombo){
-        str = mpCombo->currentText();
+        str = QString("%0").arg(mpCombo->currentIndex());
     }
 
     return str;
+}
+
+void UBTeacherStudentAction::setComboValue(int value)
+{
+    if(NULL != mpCombo){
+        mpCombo->setCurrentIndex(value);
+    }
+}
+
+void UBTeacherStudentAction::setText(const QString& text)
+{
+    if(NULL != mpText){
+        mpText->document()->setPlainText(text);
+    }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -506,4 +585,11 @@ QString UBUrlWidget::url()
     }
 
     return str;
+}
+
+void UBUrlWidget::setUrl(const QString &url)
+{
+    if(NULL != mpUrl){
+        mpUrl->setText(url);
+    }
 }
