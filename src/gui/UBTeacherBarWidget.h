@@ -68,6 +68,27 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent* pEvent);
 };
 
+
+
+class UBTeacherBarPreviewMedia : public QWidget
+{
+    Q_OBJECT
+public:
+    UBTeacherBarPreviewMedia(QWidget* parent=0, const char* name="UBTeacherBarPreviewMedia");
+    ~UBTeacherBarPreviewMedia();
+    void loadMedia(QStringList pMedias);
+
+private:
+    UBWidgetList* mWidget;
+    QVBoxLayout mLayout;
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
+
+public slots:
+
+};
+
 class UBUrlWidget : public QWidget
 {
 public:
@@ -89,6 +110,7 @@ class UBTeacherBarPreviewWidget : public QWidget
 public:
     UBTeacherBarPreviewWidget(QWidget* parent=0, const char* name="UBTeacherBarPreviewWidget");
     ~UBTeacherBarPreviewWidget();
+    UBTeacherBarPreviewMedia* mediaViewer() {return &mMediaViewer;}
 
 signals:
     void showEditMode();
@@ -99,7 +121,8 @@ private slots:
 private:
     QVBoxLayout* mpLayout;
     QPushButton* mpEditButton;
-    QHBoxLayout* mpEditLayout;
+    QVBoxLayout* mpEditLayout;
+    UBTeacherBarPreviewMedia mMediaViewer;
 };
 
 class UBTeacherBarWidget : public UBDockPaletteWidget

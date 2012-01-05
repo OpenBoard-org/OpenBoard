@@ -333,7 +333,6 @@ void UBTeacherBarWidget::loadContent()
         }
     }
     // Media
-    // TODO : Add the media items here
     mpDropMediaZone->reloadMedia(nextInfos.medias);
 
     // Links
@@ -352,6 +351,7 @@ void UBTeacherBarWidget::loadContent()
     }
 
     if(!isEmpty()){
+        mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
         mpStackWidget->setCurrentWidget(mpPreview);
     }
 }
@@ -685,11 +685,13 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
     setLayout(mpLayout);
 
     mpEditButton = new QPushButton(tr("Edit infos"), this);
-    mpEditLayout = new QHBoxLayout();
+    mpEditLayout = new QVBoxLayout();
     mpEditLayout->addStretch(1);
     mpEditLayout->addWidget(mpEditButton, 0);
     mpEditLayout->addStretch(1);
+    mpEditLayout->addWidget(&mMediaViewer);
     mpLayout->addLayout(mpEditLayout);
+
 
     connect(mpEditButton, SIGNAL(clicked()), this, SLOT(onEdit()));
 }
@@ -714,3 +716,76 @@ void UBTeacherBarPreviewWidget::onEdit()
 {
     emit showEditMode();
 }
+
+
+// ------------------------------------------------------------------------------------
+UBTeacherBarPreviewMedia::UBTeacherBarPreviewMedia(QWidget* parent, const char* name) : QWidget(parent)
+{
+    setObjectName(name);
+    setAcceptDrops(true);
+    mWidget = new UBWidgetList(parent);
+    mWidget->setEmptyText(tr("No media found"));
+    mLayout.addWidget(mWidget);
+    setLayout(&mLayout);
+    //TO TEST only
+//    QStringList mediaPathList;
+//    mediaPathList << "/home/claudio/Desktop/PIPPO.jpg";
+//    loadMedia(mediaPathList);
+}
+
+UBTeacherBarPreviewMedia::~UBTeacherBarPreviewMedia()
+{
+    if(mWidget){
+        delete mWidget;
+        mWidget = NULL;
+    }
+
+}
+
+
+// for test only
+QString tempString;
+
+void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
+{
+    foreach(QString eachString, pMedias){
+        if(!eachString.isEmpty()){
+            tempString = eachString;
+            QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(eachString);
+            if(mimeType.contains("image")){
+                QPixmap pix = QPixmap(eachString);
+                QLabel* label = new QLabel();
+                label->setPixmap(pix);
+                label->setScaledContents(true);
+                mWidget->addWidget(label);
+ //               mWidgetList << label;
+            }
+            else if(mimeType.contains("video") || mimeType.contains("audio")){
+                UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
+                mediaPlayer->setFile(eachString);
+                mWidget->addWidget(mediaPlayer);
+ //               mWidgetList << mediaPlayer;
+            }
+            else{
+                qWarning() << "pMediaPath" << eachString;
+                qWarning() << "bad idea to come here";
+            }
+        }
+    }
+}
+
+void UBTeacherBarPreviewMedia::mousePressEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+    QMimeData *mimeData = new QMimeData;
+    QList<QUrl> urls;
+    urls << QUrl::fromLocalFile(tempString);
+    mimeData->setUrls(urls);
+    mimeData->setText(tempString);
+
+
+    QDrag *drag = new QDrag(this);
+    drag->setMimeData(mimeData);
+    drag->start();
+}
+

@@ -39,7 +39,7 @@ UBMediaPlayer::UBMediaPlayer() :
     setContextMenuPolicy(Qt::CustomContextMenu);
     m_videoWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    QSize buttonSize(34, 28);
+    QSize buttonSize(26, 20);
 
 //    QPushButton *openButton = new QPushButton(this);
 
@@ -67,7 +67,7 @@ UBMediaPlayer::UBMediaPlayer() :
     slider->setMediaObject(&m_MediaObject);
 
     QVBoxLayout *vLayout = new QVBoxLayout(this);
-    vLayout->setContentsMargins(8, 8, 8, 8);
+    vLayout->setContentsMargins(1, 1, 1, 1);
 
 //    QHBoxLayout *layout = new QHBoxLayout();
 
@@ -101,7 +101,7 @@ UBMediaPlayer::UBMediaPlayer() :
     initVideoWindow();
     vLayout->addWidget(&m_videoWindow);
     QVBoxLayout *buttonPanelLayout = new QVBoxLayout();
-    m_videoWindow.hide();
+//    m_videoWindow.hide();
 //    buttonPanelLayout->addLayout(layout);
 
 //    timeLabel = new QLabel(this);
@@ -224,7 +224,7 @@ void UBMediaPlayer::initVideoWindow()
     videoLayout->addWidget(m_videoWidget);
     videoLayout->setContentsMargins(0, 0, 0, 0);
     m_videoWindow.setLayout(videoLayout);
-    m_videoWindow.setMinimumSize(70, 70);
+    m_videoWindow.setMinimumSize(100, 100);
 }
 
 void UBMediaPlayer::playPause()

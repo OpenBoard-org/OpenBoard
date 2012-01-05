@@ -33,6 +33,8 @@
 #include "gui/UBToolWidget.h"
 #include "gui/UBResources.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBTeacherBarWidget.h"
+
 
 #include "board/UBBoardController.h"
 
@@ -725,7 +727,7 @@ void
 UBBoardView::dropEvent (QDropEvent *event)
 {
     qDebug() << event->source();
-    if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()))
+    if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBTeacherBarPreviewMedia *>(event->source()))
     {
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction ();
