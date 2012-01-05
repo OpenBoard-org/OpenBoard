@@ -50,9 +50,9 @@ void UBWidgetList::addWidget(QWidget *widget)
 {
     if(NULL != mpLayout){
         mpEmptyLabel->setVisible(false);
+        mWidgets << widget;
         updateSize(true, widget);
         mpLayout->addWidget(widget);
-        mWidgets << widget;
     }
 }
 
@@ -76,34 +76,31 @@ void UBWidgetList::updateSize(bool widgetAdded, QWidget *widget)
     int newWidgetHeight;
 
     if(eWidgetListOrientation_Vertical == mOrientation){
-        scaleFactor = (float)mpContainer->width() / (float)widget->width();
+        scaleFactor = (float)widget->width() / (float)mpContainer->width();
     }else{
-        scaleFactor = (float)mpContainer->height() / (float)widget->height();
+        scaleFactor = (float)widget->height() / (float)mpContainer->height();
     }
 
-    newWidgetWidth = (int)((float)widget->width()*scaleFactor);
-    newWidgetHeight = (int)((float)widget->height()*scaleFactor);
-
-    qDebug() << "container size " << mpContainer->size();
-    qDebug() << "widget size " << widget->size();
-    qDebug() << "scale factor " << scaleFactor;
-
+    newWidgetWidth = widget->width()/scaleFactor;
+    newWidgetHeight = widget->height()/scaleFactor;
 
     widget->resize(newWidgetWidth, newWidgetHeight);
 
-    qDebug() << "widget new value " << newWidgetWidth << "x" << newWidgetHeight;
 
     // Now we have to update the container
     if(eWidgetListOrientation_Vertical == mOrientation){
         if(widgetAdded){
             mpContainer->resize(mpContainer->width(), mpContainer->height() + newWidgetHeight);
-        }else{
+        }
+        else{
             mpContainer->resize(mpContainer->width(), mpContainer->height() - newWidgetHeight);
         }
-    }else{
+    }
+    else{
         if(widgetAdded){
             mpContainer->resize(mpContainer->width() + newWidgetWidth, mpContainer->height());
-        }else{
+        }
+        else{
             mpContainer->resize(mpContainer->width() - newWidgetWidth, mpContainer->height());
         }
     }
@@ -119,12 +116,17 @@ void UBWidgetList::resizeEvent(QResizeEvent *ev)
         float scale;
         if(eWidgetListOrientation_Vertical == mOrientation){
             scale = (float)ev->size().width() / (float)ev->oldSize().width();
-            updateAllWidgetsize(scale);
-            mpContainer->resize(width() - 2, mpContainer->height()*scale);
-        }else{
+            if(scale != 0 && scale < 10){
+                updateAllWidgetsize(scale);
+                mpContainer->resize(width() - 2, mpContainer->height()*scale);
+            }
+        }
+        else{
             scale = (float)ev->size().height() / (float)ev->oldSize().height();
-            updateAllWidgetsize(scale);
-            mpContainer->resize(mpContainer->width()*scale, height() - 2);
+            if(scale != 0 && scale < 10){
+                updateAllWidgetsize(scale);
+                mpContainer->resize(mpContainer->width()*scale, height() - 2);
+            }
         }
     }
 }
@@ -154,3 +156,4 @@ void UBWidgetList::setEmptyText(const QString &text)
 }
 
 // TODO :   - add onHover 'delete' button
+

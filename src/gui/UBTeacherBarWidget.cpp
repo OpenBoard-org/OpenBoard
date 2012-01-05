@@ -112,7 +112,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     // Media
     mpMediaLabel = new QLabel(tr("Media"), this);
     mpLayout->addWidget(mpMediaLabel, 0);
-    mpDropMediaZone = new UBTeacherBarDropMediaZone();
+    mpDropMediaZone = new UBTeacherBarDropMediaZone(this);
     mpLayout->addWidget(mpDropMediaZone, 1);
 
     // Links
@@ -369,9 +369,9 @@ UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char
 {
     setObjectName(name);
     setAcceptDrops(true);
-
-    mWidget.setEmptyText(tr("Drag media here ..."));
-    mLayout.addWidget(&mWidget);
+    mWidget = new UBWidgetList(parent);
+    mWidget->setEmptyText(tr("Drag media here ..."));
+    mLayout.addWidget(mWidget);
     setLayout(&mLayout);
 
 }
@@ -379,6 +379,10 @@ UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char
 UBTeacherBarDropMediaZone::~UBTeacherBarDropMediaZone()
 {
     qDeleteAll(mWidgetList);
+    if(mWidget){
+        delete mWidget;
+        mWidget = NULL;
+    }
 }
 
 
@@ -423,9 +427,8 @@ void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
         QPixmap pix = pixFromDropEvent.height() ? pixFromDropEvent : QPixmap(resourcePath);
         QLabel* label = new QLabel();
         label->setPixmap(pix);
-        //label->resize(size());
         label->setScaledContents(true);
-        mWidget.addWidget(label);
+        mWidget->addWidget(label);
         mWidgetList << label;
     }
     else if(mimeType.contains("video") || mimeType.contains("audio")){
@@ -433,7 +436,7 @@ void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
         mediaPlayer->setFile(resourcePath);
         //mediaPlayer->resize(size());
         mediaPlayer->playPause();
-        mWidget.addWidget(mediaPlayer);
+        mWidget->addWidget(mediaPlayer);
         mWidgetList << mediaPlayer;
     }
     else{

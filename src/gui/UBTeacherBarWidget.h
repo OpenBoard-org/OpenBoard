@@ -48,7 +48,7 @@ public:
 
 private:
     QList<QWidget*>mWidgetList;
-    UBWidgetList mWidget;
+    UBWidgetList* mWidget;
     QVBoxLayout mLayout;
 
 
