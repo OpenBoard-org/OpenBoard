@@ -311,7 +311,7 @@ UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name
     mpCombo = new QComboBox(this);
     mpCombo->addItem(tr("Teacher"));
     mpCombo->addItem(tr("Student"));
-    mpComboLayout->addWidget(0);
+    mpComboLayout->addWidget(mpCombo, 0);
     mpComboLayout->addStretch(1);
 
     mpLayout->addLayout(mpComboLayout, 0);
