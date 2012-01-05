@@ -36,10 +36,13 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpActionLabel(NULL)
     , mpActions(NULL)
     , mpActionButton(NULL)
+    , mpActionLayout(NULL)
     , mpCommentLabel(NULL)
     , mpComments(NULL)
     , mpLinkLabel(NULL)
     , mpLinks(NULL)
+    , mpLinkButton(NULL)
+    , mpLinkLayout(NULL)
 {
     setObjectName(name);
     mName = "TeacherBarWidget";
@@ -76,6 +79,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpDurationLayout = new QHBoxLayout();
     mpDuration1 = new QCheckBox(this);
     mpDuration1->setIcon(QIcon(":images/duration1.png"));
+    mpDuration1->setChecked(true);
     mpDurationLayout->addWidget(mpDuration1, 0);
     mpDuration2 = new QCheckBox(this);
     mpDuration2->setIcon(QIcon(":images/duration2.png"));
@@ -98,7 +102,10 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpActionButton = new QPushButton(this);
     mpActionButton->setObjectName("DockPaletteWidgetButton");
     mpActionButton->setText(tr("Add action"));
-    mpLayout->addWidget(mpActionButton, 0);
+    mpActionLayout = new QHBoxLayout();
+    mpActionLayout->addWidget(mpActionButton, 0);
+    mpActionLayout->addStretch(1);
+    mpLayout->addLayout(mpActionLayout, 0);
 
     // Media
     mpMediaLabel = new QLabel(tr("Media"), this);
@@ -113,7 +120,10 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpLayout->addWidget(mpLinks, 1);
     mpLinkButton = new QPushButton(tr("Add link"), this);
     mpLinkButton->setObjectName("DockPaletteWidgetButton");
-    mpLayout->addWidget(mpLinkButton);
+    mpLinkLayout = new QHBoxLayout();
+    mpLinkLayout->addWidget(mpLinkButton, 0);
+    mpLinkLayout->addStretch(1);
+    mpLayout->addLayout(mpLinkLayout, 0);
 
     // Comments
     mpCommentLabel = new QLabel(tr("Comments"), this);
@@ -149,6 +159,14 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
         delete mpLinkLabel;
         mpLinkLabel = NULL;
     }
+    if(NULL != mpLinkButton){
+        delete mpLinkButton;
+        mpLinkButton = NULL;
+    }
+    if(NULL != mpLinkLayout){
+        delete mpLinkLayout;
+        mpLinkLayout = NULL;
+    }
     if(NULL != mpDropMediaZone){
         delete mpDropMediaZone;
         mpDropMediaZone = NULL;
@@ -160,6 +178,10 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
     if(NULL != mpActionButton){
         delete mpActionButton;
         mpActionButton = NULL;
+    }
+    if(NULL != mpActionLayout){
+        delete mpActionLayout;
+        mpActionLayout = NULL;
     }
     if(NULL != mpAction1){
         delete mpAction1;

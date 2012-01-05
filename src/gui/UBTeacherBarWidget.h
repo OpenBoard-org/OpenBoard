@@ -102,9 +102,11 @@ private:
     QLabel* mpActionLabel;
     UBWidgetList* mpActions;
     QPushButton* mpActionButton;
+    QHBoxLayout* mpActionLayout;
     QLabel* mpLinkLabel;
     UBWidgetList* mpLinks;
     QPushButton* mpLinkButton;
+    QHBoxLayout* mpLinkLayout;
     QLabel* mpCommentLabel;
     QTextEdit* mpComments;
 };
