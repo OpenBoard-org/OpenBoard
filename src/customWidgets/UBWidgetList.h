@@ -15,6 +15,7 @@ typedef enum{
     eWidgetListOrientation_Horizontal
 }eWidgetListOrientation;
 
+
 class UBWidgetList : public QScrollArea
 {
     Q_OBJECT
@@ -33,13 +34,14 @@ protected:
     void resizeEvent(QResizeEvent* ev);
 
 private:
-    void updateSize(bool widgetAdded, QWidget* widget);
-    void updateAllWidgetsize(float scale);
+    int scaleWidgets(QSize pSize);
+    void scaleContainer(QSize pSize, int updateValue);
+    void updateView(QSize pSize);
     QLayout* mpLayout;
     QWidget* mpContainer;
     eWidgetListOrientation mOrientation;
     int mMargin;
-    QVector<QWidget*> mWidgets;
+    QMap<QWidget*,QSize> mWidgetInfo;
     QLabel* mpEmptyLabel;
 };
 
