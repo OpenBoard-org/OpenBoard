@@ -10,7 +10,6 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
    setObjectName(name);
    mOrientation = orientation;
    mpContainer = new QWidget(this);
-   mWidgets.clear();
    mpEmptyLabel = new QLabel(this);
    mpEmptyLabel->setObjectName("emptyString");
 
@@ -18,12 +17,13 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
        setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
        mpLayout = new QVBoxLayout(mpContainer);
-       mpContainer->resize(width(), mpContainer->height());
-   }else{
+       mpContainer->resize(mpContainer->width(), mpContainer->height());
+   }
+   else{
        setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
        mpLayout = new QHBoxLayout(mpContainer);
-       mpContainer->resize(mpContainer->width(), height());
+       mpContainer->resize(mpContainer->width(), mpContainer->height());
    }
    mpLayout->setContentsMargins(margin(), margin(), margin(), margin());
    mpContainer->setLayout(mpLayout);
@@ -50,8 +50,8 @@ void UBWidgetList::addWidget(QWidget *widget)
 {
     if(NULL != mpLayout){
         mpEmptyLabel->setVisible(false);
-        mWidgets << widget;
-        updateSize(true, widget);
+        mWidgetInfo[widget] = widget->size();
+        updateView(size());
         mpLayout->addWidget(widget);
     }
 }
@@ -60,51 +60,60 @@ void UBWidgetList::removeWidget(QWidget *widget)
 {
     if(NULL != mpLayout){
         mpLayout->removeWidget(widget);
-        mWidgets.remove(mWidgets.indexOf(widget));
-        updateSize(false, widget);
+        mWidgetInfo.remove(widget);
         widget->setVisible(false);
+        updateView(size());
         if(0 == mpLayout->count()){
             mpEmptyLabel->setVisible(true);
         }
     }
 }
 
-void UBWidgetList::updateSize(bool widgetAdded, QWidget *widget)
+
+int UBWidgetList::scaleWidgets(QSize pSize)
 {
-    float scaleFactor;
-    int newWidgetWidth;
-    int newWidgetHeight;
-
-    if(eWidgetListOrientation_Vertical == mOrientation){
-        scaleFactor = (float)widget->width() / (float)mpContainer->width();
-    }else{
-        scaleFactor = (float)widget->height() / (float)mpContainer->height();
-    }
-
-    newWidgetWidth = widget->width()/scaleFactor;
-    newWidgetHeight = widget->height()/scaleFactor;
-
-    widget->resize(newWidgetWidth, newWidgetHeight);
-
-
-    // Now we have to update the container
-    if(eWidgetListOrientation_Vertical == mOrientation){
-        if(widgetAdded){
-            mpContainer->resize(mpContainer->width(), mpContainer->height() + newWidgetHeight);
+    int result = 0;
+    foreach(QWidget* eachWidget, mWidgetInfo.keys()){
+        qDebug() << __FUNCTION__ << "eachWidget : " << eachWidget;
+        qreal scaleFactor = 0;
+        int newWidgetWidth =  pSize.width();
+        int newWidgetHeight = pSize.height();
+        if(eWidgetListOrientation_Vertical == mOrientation){
+            scaleFactor = (float)mWidgetInfo[eachWidget].width() / (float)pSize.width();
+            qDebug() << __FUNCTION__ << "scale factor: " << scaleFactor;
+            newWidgetHeight = mWidgetInfo[eachWidget].height()/scaleFactor;
+            result += newWidgetHeight;
         }
         else{
-            mpContainer->resize(mpContainer->width(), mpContainer->height() - newWidgetHeight);
+            scaleFactor =  (float)mWidgetInfo[eachWidget].height() / (float)pSize.height();
+            newWidgetWidth = mWidgetInfo[eachWidget].width()/scaleFactor;
+            result += newWidgetWidth;
         }
     }
-    else{
-        if(widgetAdded){
-            mpContainer->resize(mpContainer->width() + newWidgetWidth, mpContainer->height());
-        }
-        else{
-            mpContainer->resize(mpContainer->width() - newWidgetWidth, mpContainer->height());
-        }
-    }
+    return result;
 }
+
+void UBWidgetList::scaleContainer(QSize pSize, int updateValue)
+{
+    if(eWidgetListOrientation_Vertical == mOrientation)
+        mpContainer->resize(pSize.width(), updateValue);
+    else
+        mpContainer->resize(updateValue, pSize.height());
+}
+
+
+void UBWidgetList::updateView(QSize pSize)
+{
+    // Widgets on list are resized automatically to fit the mpcontainer.
+    // so if you want to keep the aspect ratio you have to calculate
+    // the sum of the new widget height and give it to the mpContainer.
+    // The container resize will trig the widgets resize and the good
+    // height permits to respect the aspect ratio.
+    int updatedValue = scaleWidgets(pSize);
+    scaleContainer(pSize,updatedValue);
+}
+
+
 
 void UBWidgetList::resizeEvent(QResizeEvent *ev)
 {
@@ -112,30 +121,7 @@ void UBWidgetList::resizeEvent(QResizeEvent *ev)
                               (height() - mpEmptyLabel->height()) /2,
                               mpEmptyLabel->width(),
                               mpEmptyLabel->height());
-    if(ev->oldSize().width() >= 0 && ev->oldSize().height() >= 0){
-        float scale;
-        if(eWidgetListOrientation_Vertical == mOrientation){
-            scale = (float)ev->size().width() / (float)ev->oldSize().width();
-            if(scale != 0 && scale < 10){
-                updateAllWidgetsize(scale);
-                mpContainer->resize(width() - 2, mpContainer->height()*scale);
-            }
-        }
-        else{
-            scale = (float)ev->size().height() / (float)ev->oldSize().height();
-            if(scale != 0 && scale < 10){
-                updateAllWidgetsize(scale);
-                mpContainer->resize(mpContainer->width()*scale, height() - 2);
-            }
-        }
-    }
-}
-
-void UBWidgetList::updateAllWidgetsize(float scale)
-{
-    for(int i=0; i<mWidgets.size(); i++){
-        mWidgets.at(i)->resize(mWidgets.at(i)->width()*scale, mWidgets.at(i)->height()*scale);
-    }
+    updateView(size());
 }
 
 void UBWidgetList::setMargin(int margin)
@@ -157,7 +143,7 @@ void UBWidgetList::setEmptyText(const QString &text)
 
 bool UBWidgetList::empty()
 {
-    return mWidgets.empty();
+    return mWidgetInfo.empty();
 }
 
 // TODO :   - add onHover 'delete' button

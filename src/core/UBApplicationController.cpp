@@ -722,7 +722,6 @@ void UBApplicationController::importFile(const QString& pFilePath)
 void UBApplicationController::useMultiScreen(bool use)
 {
     mDisplayManager->setUseMultiScreen(use);
-
 }
 
 
