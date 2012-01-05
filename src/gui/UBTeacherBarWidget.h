@@ -48,9 +48,14 @@ class UBTeacherBarDropMediaZone : public QWidget
 public:
     UBTeacherBarDropMediaZone(QWidget* parent=0, const char* name="UBTeacherBarDropMediaZone");
     ~UBTeacherBarDropMediaZone();
+    QStringList mediaList() {return mMediaList;}
+    void reloadMedia(QStringList pList);
+    void cleanMedias();
     bool empty();
 
 private:
+    void addMedia(QString pMediaPath);
+    QStringList mMediaList;
     QList<QWidget*>mWidgetList;
     UBWidgetList* mWidget;
     QVBoxLayout mLayout;
