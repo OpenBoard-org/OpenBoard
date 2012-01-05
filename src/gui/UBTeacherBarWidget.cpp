@@ -567,7 +567,6 @@ void UBTeacherBarDropMediaZone::addMedia(QString pMediaPath)
     else if(mimeType.contains("video") || mimeType.contains("audio")){
         UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
         mediaPlayer->setFile(pMediaPath);
-        mediaPlayer->playPause();
         mWidget->addWidget(mediaPlayer);
         mWidgetList << mediaPlayer;
     }
