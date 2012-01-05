@@ -13,7 +13,7 @@ class UBMediaPlayer;
 #include <QTabWidget>
 #include <QButtonGroup>
 #include <QPushButton>
-#include "customWidgets/UBWidgetList.h"
+#include <QComboBox>
 
 #include "UBDockPaletteWidget.h"
 #include "customWidgets/UBWidgetList.h"
@@ -25,25 +25,16 @@ class UBTeacherStudentAction : public QWidget
     Q_OBJECT
 
 public:
-    UBTeacherStudentAction(int actionNumber, QWidget* parent=0, const char* name="UBTeacherStudentAction");
+    UBTeacherStudentAction(QWidget* parent=0, const char* name="UBTeacherStudentAction");
     ~UBTeacherStudentAction();
-    QString teacherText();
-    QString studentText();
-    void setTeacherText(QString text);
-    void setStudentText(QString text);
-    QTextEdit* teacher();
-    QTextEdit* student();
+    QString comboValue();
+    QString text();
 
 private:
-    int mActionNumber;
-    QLabel* mpActionLabel;
-    QLabel* mpTeacherLabel;
-    QLabel* mpStudentLabel;
-    QTextEdit* mpTeacher;
-    QTextEdit* mpStudent;
-    QVBoxLayout* mpLayout;
-    QHBoxLayout* mpTeacherLayout;
-    QHBoxLayout* mpStudentLayout;
+    QTextEdit* mpText;
+    QHBoxLayout* mpLayout;
+    QVBoxLayout* mpComboLayout;
+    QComboBox* mpCombo;
 };
 
 
@@ -109,6 +100,8 @@ private:
     QHBoxLayout* mpLinkLayout;
     QLabel* mpCommentLabel;
     QTextEdit* mpComments;
+
+    QVector<UBTeacherStudentAction*> mActionList;
 };
 
 #endif // UBTEACHERBARWIDGET_H

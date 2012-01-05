@@ -243,9 +243,7 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
 
 void UBTeacherBarWidget::onValueChanged()
 {
-    if( mpTitle->text() == ""
-        && mpAction1->teacherText() == ""
-        && mpAction1->studentText() == "")
+    if( mpTitle->text() == "")
     {
         mIconToLeft = QPixmap(":images/teacher_open_disabled.png");
         mIconToRight = QPixmap(":images/teacher_close_disabled.png");
@@ -279,7 +277,9 @@ void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
 
 void UBTeacherBarWidget::onActionButton()
 {
-
+    UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
+    mActionList << pAction;
+    mpActions->addWidget(pAction);
 }
 
 void UBTeacherBarWidget::onLinkButton()
@@ -287,125 +287,73 @@ void UBTeacherBarWidget::onLinkButton()
 
 }
 
-UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent, const char *name):QWidget(parent)
-    , mpActionLabel(NULL)
-    , mpTeacherLabel(NULL)
-    , mpStudentLabel(NULL)
-    , mpTeacher(NULL)
-    , mpStudent(NULL)
-    , mpLayout(NULL)
-    , mpTeacherLayout(NULL)
-    , mpStudentLayout(NULL)
+UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name):QWidget(parent)
+  , mpText(NULL)
+  , mpLayout(NULL)
+  , mpComboLayout(NULL)
+  , mpCombo(NULL)
 {
     setObjectName(name);
-    mActionNumber = actionNumber;
 
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
 
     // Create the GUI
-    mpLayout = new QVBoxLayout(this);
+    mpLayout = new QHBoxLayout(this);
     setLayout(mpLayout);
 
-    mpActionLabel = new QLabel(tr("Action %0").arg(mActionNumber), this);
-    mpLayout->addWidget(mpActionLabel, 0);
+    mpComboLayout = new QVBoxLayout();
 
-    mpTeacherLayout = new QHBoxLayout();
+    mpCombo = new QComboBox(this);
+    mpCombo->addItem(tr("Teacher"));
+    mpCombo->addItem(tr("Student"));
+    mpComboLayout->addWidget(0);
+    mpComboLayout->addStretch(1);
 
-    mpTeacherLabel = new QLabel(tr("Teacher"), this);
-    mpTeacherLabel->setAlignment(Qt::AlignTop);
-    mpTeacher = new QTextEdit(this);
-    mpTeacher->setObjectName("TeacherStudentBox");
-    mpTeacher->setStyleSheet("background-color:#FF9F6D");
-    mpTeacherLayout->addWidget(mpTeacherLabel, 0);
-    mpTeacherLayout->addWidget(mpTeacher, 1);
-    mpLayout->addLayout(mpTeacherLayout, 1);
+    mpLayout->addLayout(mpComboLayout, 0);
 
-    mpStudentLayout = new QHBoxLayout();
-    mpStudentLabel = new QLabel(tr("Student"), this);
-    mpStudentLabel->setAlignment(Qt::AlignTop);
-    mpStudent = new QTextEdit(this);
-    mpStudent->setObjectName("TeacherStudentBox");
-    mpStudent->setStyleSheet("background-color:#06E983");
-    mpStudentLayout->addWidget(mpStudentLabel, 0);
-    mpStudentLayout->addWidget(mpStudent, 1);
-    mpLayout->addLayout(mpStudentLayout, 1);
+    mpText = new QTextEdit(this);
+    mpLayout->addWidget(mpText, 1);
+
 }
 
 UBTeacherStudentAction::~UBTeacherStudentAction()
 {
-    if(NULL != mpActionLabel)
-    {
-        delete mpActionLabel;
-        mpActionLabel = NULL;
+    if(NULL != mpCombo){
+        delete mpCombo;
+        mpCombo = NULL;
     }
-    if(NULL != mpTeacherLabel)
-    {
-        delete mpTeacherLabel;
-        mpTeacherLabel = NULL;
+    if(NULL != mpText){
+        delete mpText;
+        mpText = NULL;
     }
-    if(NULL != mpTeacher)
-    {
-        delete mpTeacher;
-        mpTeacher = NULL;
+    if(NULL != mpComboLayout){
+        delete mpComboLayout;
+        mpComboLayout = NULL;
     }
-    if(NULL != mpTeacherLayout)
-    {
-        delete mpTeacherLayout;
-        mpTeacherLayout = NULL;
-    }
-    if(NULL != mpStudentLabel)
-    {
-        delete mpStudentLabel;
-        mpStudentLabel = NULL;
-    }
-    if(NULL != mpStudent)
-    {
-        delete mpStudent;
-        mpStudent = NULL;
-    }
-    if(NULL != mpStudentLayout)
-    {
-        delete mpStudentLayout;
-        mpStudentLayout = NULL;
-    }
-    if(NULL != mpLayout)
-    {
+    if(NULL != mpLayout){
         delete mpLayout;
         mpLayout = NULL;
     }
 }
 
-QString UBTeacherStudentAction::teacherText()
+QString UBTeacherStudentAction::text()
 {
-    return mpTeacher->document()->toPlainText();
+    QString str;
+    if(NULL != mpText){
+        str = mpText->document()->toPlainText();
+    }
+    return str;
 }
 
-QString UBTeacherStudentAction::studentText()
+QString UBTeacherStudentAction::comboValue()
 {
-    return mpStudent->document()->toPlainText();
-}
+    QString str;
 
-void UBTeacherStudentAction::setTeacherText(QString text)
-{
-    mpTeacher->setText(text);
-}
+    // TODO : Implement this method
 
-void UBTeacherStudentAction::setStudentText(QString text)
-{
-    mpStudent->setText(text);
+    return str;
 }
-
-QTextEdit* UBTeacherStudentAction::teacher()
-{
-    return mpTeacher;
-}
-
-QTextEdit* UBTeacherStudentAction::student()
-{
-    return mpStudent;
-}
-
 
 UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char *name):QWidget(parent)
 
