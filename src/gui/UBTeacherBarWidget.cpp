@@ -47,6 +47,8 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     setObjectName(name);
     mName = "TeacherBarWidget";
     mVisibleState = true;
+    mActionList.clear();
+    mUrlList.clear();
 
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
@@ -284,7 +286,9 @@ void UBTeacherBarWidget::onActionButton()
 
 void UBTeacherBarWidget::onLinkButton()
 {
-
+    UBUrlWidget* pUrl = new UBUrlWidget(this);
+    mUrlList << pUrl;
+    mpLinks->addWidget(pUrl);
 }
 
 UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name):QWidget(parent)
@@ -436,4 +440,46 @@ void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
 void UBTeacherBarDropMediaZone::dragMoveEvent(QDragMoveEvent *pEvent)
 {
     pEvent->acceptProposedAction();
+}
+
+// ---------------------------------------------------------------------------------------------
+UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
+  , mpLayout(NULL)
+  , mpUrlLabel(NULL)
+  , mpUrl(NULL)
+{
+    setObjectName(name);
+    mpLayout = new QHBoxLayout(this);
+    setLayout(mpLayout);
+    mpUrlLabel = new QLabel(tr("Url"), this);
+    mpLayout->addWidget(mpUrlLabel, 0);
+    mpUrl = new QLineEdit(this);
+    mpLayout->addWidget(mpUrl, 1);
+}
+
+UBUrlWidget::~UBUrlWidget()
+{
+    if(NULL != mpUrlLabel){
+        delete mpUrlLabel;
+        mpUrlLabel = NULL;
+    }
+    if(NULL != mpUrl){
+        delete mpUrl;
+        mpUrl = NULL;
+    }
+    if(NULL != mpLayout){
+        delete mpLayout;
+        mpLayout = NULL;
+    }
+}
+
+QString UBUrlWidget::url()
+{
+    QString str;
+
+    if(NULL != mpUrl){
+        str = mpUrl->text();
+    }
+
+    return str;
 }

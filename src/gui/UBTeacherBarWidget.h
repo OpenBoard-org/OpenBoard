@@ -59,6 +59,20 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent* pEvent);
 };
 
+class UBUrlWidget : public QWidget
+{
+public:
+    UBUrlWidget(QWidget* parent=0, const char* name="UBUrlWidget");
+    ~UBUrlWidget();
+
+    QString url();
+
+private:
+    QHBoxLayout* mpLayout;
+    QLabel* mpUrlLabel;
+    QLineEdit* mpUrl;
+};
+
 class UBTeacherBarWidget : public UBDockPaletteWidget
 {
     Q_OBJECT
@@ -102,6 +116,7 @@ private:
     QTextEdit* mpComments;
 
     QVector<UBTeacherStudentAction*> mActionList;
+    QVector<UBUrlWidget*> mUrlList;
 };
 
 #endif // UBTEACHERBARWIDGET_H
