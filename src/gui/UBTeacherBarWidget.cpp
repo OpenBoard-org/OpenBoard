@@ -43,6 +43,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpLinkButton(NULL)
     , mpLinkLayout(NULL)
     , mpStackWidget(NULL)
+    , mpPreview(NULL)
 {
     setObjectName(name);
     mName = "TeacherBarWidget";
@@ -63,9 +64,12 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpContainer = new QWidget(this);
     mpContainer->setObjectName("DockPaletteWidgetBox");
 
+    mpPreview = new UBTeacherBarPreviewWidget(this);
+
     mpStackWidget = new QStackedWidget(this);
     mpContainerLayout->addWidget(mpStackWidget);
     mpStackWidget->addWidget(mpContainer);
+    mpStackWidget->addWidget(mpPreview);
 
     mpLayout = new QVBoxLayout(mpContainer);
     mpContainer->setLayout(mpLayout);
@@ -144,6 +148,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
     connect(mpActionButton, SIGNAL(clicked()), this, SLOT(onActionButton()));
     connect(mpLinkButton, SIGNAL(clicked()), this, SLOT(onLinkButton()));
+    connect(mpPreview, SIGNAL(showEditMode()), this, SLOT(onShowEditMode()));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
@@ -240,6 +245,10 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
         delete mpContainerLayout;
         mpContainerLayout = NULL;
     }
+    if(NULL != mpPreview){
+        delete mpPreview;
+        mpPreview = NULL;
+    }
     if(NULL != mpStackWidget){
         delete mpStackWidget;
         mpStackWidget = NULL;
@@ -248,11 +257,7 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
 
 void UBTeacherBarWidget::onValueChanged()
 {
-    if( mpTitle->text() == "" &&
-        mpLinks->empty() &&
-        mpActions->empty() &&
-        mpDropMediaZone->empty() &&
-        mpComments->document()->toPlainText() == "")
+    if(isEmpty())
     {
         mIconToLeft = QPixmap(":images/teacher_open_disabled.png");
         mIconToRight = QPixmap(":images/teacher_close_disabled.png");
@@ -345,6 +350,19 @@ void UBTeacherBarWidget::loadContent()
     if(NULL != mpComments){
         mpComments->document()->setPlainText(nextInfos.comments);
     }
+
+    if(!isEmpty()){
+        mpStackWidget->setCurrentWidget(mpPreview);
+    }
+}
+
+bool UBTeacherBarWidget::isEmpty()
+{
+    return  mpTitle->text() == "" &&
+            mpLinks->empty() &&
+            mpActions->empty() &&
+            mpDropMediaZone->empty() &&
+            mpComments->document()->toPlainText() == "";
 }
 
 void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
@@ -383,6 +401,11 @@ void UBTeacherBarWidget::clearWidgetLists()
         }
         mUrlList.clear();
     }
+}
+
+void UBTeacherBarWidget::onShowEditMode()
+{
+    mpStackWidget->setCurrentWidget(mpContainer);
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -649,4 +672,46 @@ void UBUrlWidget::setUrl(const QString &url)
     if(NULL != mpUrl){
         mpUrl->setText(url);
     }
+}
+
+// ------------------------------------------------------------------------------------
+UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char *name):QWidget(parent)
+  , mpLayout(NULL)
+  , mpEditButton(NULL)
+  , mpEditLayout(NULL)
+{
+    setObjectName(name);
+
+    mpLayout =  new QVBoxLayout(this);
+    setLayout(mpLayout);
+
+    mpEditButton = new QPushButton(tr("Edit infos"), this);
+    mpEditLayout = new QHBoxLayout();
+    mpEditLayout->addStretch(1);
+    mpEditLayout->addWidget(mpEditButton, 0);
+    mpEditLayout->addStretch(1);
+    mpLayout->addLayout(mpEditLayout);
+
+    connect(mpEditButton, SIGNAL(clicked()), this, SLOT(onEdit()));
+}
+
+UBTeacherBarPreviewWidget::~UBTeacherBarPreviewWidget()
+{
+    if(NULL != mpEditButton){
+        delete mpEditButton;
+        mpEditButton = NULL;
+    }
+    if(NULL != mpEditLayout){
+        delete mpEditLayout;
+        mpEditLayout = NULL;
+    }
+    if(NULL != mpLayout){
+        delete mpLayout;
+        mpLayout = NULL;
+    }
+}
+
+void UBTeacherBarPreviewWidget::onEdit()
+{
+    emit showEditMode();
 }

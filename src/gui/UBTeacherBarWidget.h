@@ -83,6 +83,25 @@ private:
     QLineEdit* mpUrl;
 };
 
+class UBTeacherBarPreviewWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    UBTeacherBarPreviewWidget(QWidget* parent=0, const char* name="UBTeacherBarPreviewWidget");
+    ~UBTeacherBarPreviewWidget();
+
+signals:
+    void showEditMode();
+
+private slots:
+    void onEdit();
+
+private:
+    QVBoxLayout* mpLayout;
+    QPushButton* mpEditButton;
+    QHBoxLayout* mpEditLayout;
+};
+
 class UBTeacherBarWidget : public UBDockPaletteWidget
 {
     Q_OBJECT
@@ -97,9 +116,11 @@ private slots:
     void onTitleTextChanged(const QString& text);
     void onActionButton();
     void onLinkButton();
+    void onShowEditMode();
 
 private:
     void clearWidgetLists();
+    bool isEmpty();
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpTitleLayout;
     QHBoxLayout* mpDurationLayout;
@@ -125,6 +146,7 @@ private:
     QLabel* mpCommentLabel;
     QTextEdit* mpComments;
     QStackedWidget* mpStackWidget;
+    UBTeacherBarPreviewWidget* mpPreview;
 
     QVector<UBTeacherStudentAction*> mActionList;
     QVector<UBUrlWidget*> mUrlList;
