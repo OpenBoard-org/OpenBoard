@@ -285,6 +285,7 @@ void UBTeacherBarWidget::saveContent()
     }
     // Media
     // TODO :   Get the url of the dropped medias and store them in infos.medias
+     infos.medias = mpDropMediaZone->mediaList();
 
     // Links
     for(int j=0; j<mUrlList.size(); j++){
@@ -328,6 +329,7 @@ void UBTeacherBarWidget::loadContent()
     }
     // Media
     // TODO : Add the media items here
+    mpDropMediaZone->reloadMedia(nextInfos.medias);
 
     // Links
     for(int j=0; j<nextInfos.urls.size(); j++){
@@ -366,6 +368,8 @@ void UBTeacherBarWidget::onLinkButton()
 
 void UBTeacherBarWidget::clearWidgetLists()
 {
+    mpDropMediaZone->cleanMedias();
+
     if(NULL != mpActions){
         for(int i=0; i<mActionList.size(); i++){
             mpActions->removeWidget(mActionList.at(i));
@@ -486,11 +490,23 @@ UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char
 
 UBTeacherBarDropMediaZone::~UBTeacherBarDropMediaZone()
 {
-    qDeleteAll(mWidgetList);
+    cleanMedias();
     if(mWidget){
         delete mWidget;
         mWidget = NULL;
     }
+}
+
+void UBTeacherBarDropMediaZone::cleanMedias()
+{
+    foreach(QWidget* eachWidget,mWidgetList){
+        mWidget->removeWidget(eachWidget);
+        delete eachWidget;
+    }
+
+    mWidgetList.clear();
+
+    mMediaList.clear();
 }
 
 bool UBTeacherBarDropMediaZone::empty()
@@ -506,6 +522,46 @@ void UBTeacherBarDropMediaZone::dragEnterEvent(QDragEnterEvent *pEvent)
 void UBTeacherBarDropMediaZone::dragLeaveEvent(QDragLeaveEvent *pEvent)
 {
     pEvent->accept();
+}
+
+
+void UBTeacherBarDropMediaZone::addMedia(QString pMediaPath)
+{
+    if(!pMediaPath.isEmpty())
+        mMediaList.append(pMediaPath);
+    else
+        qWarning() << __FUNCTION__ <<  "empty path";
+
+    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(pMediaPath);
+    if(mimeType.contains("image")){
+        QPixmap pix = QPixmap(pMediaPath);
+        QLabel* label = new QLabel();
+        label->setPixmap(pix);
+        label->setScaledContents(true);
+        mWidget->addWidget(label);
+        mWidgetList << label;
+    }
+    else if(mimeType.contains("video") || mimeType.contains("audio")){
+        UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
+        mediaPlayer->setFile(pMediaPath);
+        mediaPlayer->playPause();
+        mWidget->addWidget(mediaPlayer);
+        mWidgetList << mediaPlayer;
+    }
+    else{
+        qWarning() << "pMediaPath" << pMediaPath;
+        qWarning() << "bad idea to come here";
+    }
+
+}
+
+void UBTeacherBarDropMediaZone::reloadMedia(QStringList pList)
+{
+    cleanMedias();
+    foreach(QString eachString, pList){
+        addMedia(eachString);
+    }
+
 }
 
 void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
@@ -532,28 +588,8 @@ void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
         pEvent->acceptProposedAction();
         return;
     }
-
-    mimeType = mimeType.isEmpty() ?  UBFileSystemUtils::mimeTypeFromFileName(resourcePath) : mimeType;
-    if(mimeType.contains("image")){
-        qDebug() << pixFromDropEvent.size();
-        QPixmap pix = pixFromDropEvent.height() ? pixFromDropEvent : QPixmap(resourcePath);
-        QLabel* label = new QLabel();
-        label->setPixmap(pix);
-        label->setScaledContents(true);
-        mWidget->addWidget(label);
-        mWidgetList << label;
-    }
-    else if(mimeType.contains("video") || mimeType.contains("audio")){
-        UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
-        mediaPlayer->setFile(resourcePath);
-        //mediaPlayer->resize(size());
-        mediaPlayer->playPause();
-        mWidget->addWidget(mediaPlayer);
-        mWidgetList << mediaPlayer;
-    }
-    else{
-        qWarning() << "bad idea to come here";
-    }
+    if(!resourcePath.isEmpty())
+        addMedia(resourcePath);
     pEvent->acceptProposedAction();
 }
 
