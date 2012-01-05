@@ -1,7 +1,6 @@
 QWidget#DockPaletteWidgetBox,
 QWidget#documentNavigator,
 QWidget#UBLibPathViewer,
-QWidget#UBTeacherStudentAction,
 QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
 QWidget#UBDownloadWidget,

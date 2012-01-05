@@ -309,6 +309,8 @@ UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name
     mpComboLayout = new QVBoxLayout();
 
     mpCombo = new QComboBox(this);
+    mpCombo->setObjectName("DockPaletteWidgetComboBox");
+    mpCombo->setMinimumWidth(80);
     mpCombo->addItem(tr("Teacher"));
     mpCombo->addItem(tr("Student"));
     mpComboLayout->addWidget(mpCombo, 0);
@@ -317,6 +319,9 @@ UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name
     mpLayout->addLayout(mpComboLayout, 0);
 
     mpText = new QTextEdit(this);
+    mpText->setObjectName("DockPaletteWidgetBox");
+    mpText->setStyleSheet("background:white;");
+
     mpLayout->addWidget(mpText, 1);
 
 }
@@ -449,11 +454,15 @@ UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
   , mpUrl(NULL)
 {
     setObjectName(name);
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(UBApplication::globalStyleSheet());
+
     mpLayout = new QHBoxLayout(this);
     setLayout(mpLayout);
     mpUrlLabel = new QLabel(tr("Url"), this);
     mpLayout->addWidget(mpUrlLabel, 0);
     mpUrl = new QLineEdit(this);
+    mpUrl->setObjectName("DockPaletteWidgetLineEdit");
     mpLayout->addWidget(mpUrl, 1);
 }
 
