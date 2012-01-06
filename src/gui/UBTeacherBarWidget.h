@@ -114,6 +114,7 @@ public:
     UBTeacherBarPreviewMedia* mediaViewer() {return &mMediaViewer;}
     void setTitle(const QString& title);
     void setDuration(eDuration duration);
+    void setComments(const QString& comments);
 
 signals:
     void showEditMode();
@@ -129,12 +130,14 @@ private:
     QHBoxLayout mMediaLabelLayout;
     QHBoxLayout mCommentsLabelLayout;
     UBTeacherBarPreviewMedia mMediaViewer;
+
     QPushButton* mpEditButton;
     QLabel* mpTitle;
     QLabel* mpDuration;
     QLabel* mpActionsLabel;
     QLabel* mpMediaLabel;
     QLabel* mpCommentsLabel;
+    QLabel* mpComments;
 };
 
 class UBTeacherBarWidget : public UBDockPaletteWidget

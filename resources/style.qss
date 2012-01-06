@@ -12,6 +12,27 @@ QWidget#UBTeacherBarDropMediaZone
 	border: 2px solid #999999;
 }
 
+QWidget#UBTeacherBarPreviewWidget
+{
+	background: #FFFFFF;
+	border-radius: 10px;
+	border: 2px solid #999999;
+}
+
+QLabel#UBTeacherBarPreviewTitle
+{
+	color: #555555;
+	font-size : 18px;
+	font-weight:bold;
+}
+
+QLabel#UBTeacherBarPreviewSubtitle
+{
+	color: #555555;
+	font-size : 14px;
+	font-weight:bold;
+}
+
 QWidget#UBLibWebView
 {
 	background: #EEEEEE;

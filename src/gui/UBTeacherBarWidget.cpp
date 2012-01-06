@@ -364,7 +364,7 @@ void UBTeacherBarWidget::loadContent()
         }else{
             mpPreview->setDuration(eDuration_ThreeQuarter);
         }
-
+        mpPreview->setComments(mpComments->document()->toPlainText());
     }
 }
 
@@ -692,6 +692,7 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
   , mpActionsLabel(NULL)
   , mpMediaLabel(NULL)
   , mpCommentsLabel(NULL)
+  , mpComments(NULL)
 {
     setObjectName(name);
 
@@ -713,12 +714,14 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
 
     // Actions
     mpActionsLabel = new QLabel(tr("Actions"), this);
+    mpActionsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mActionLabelLayout.addWidget(mpActionsLabel, 0);
     mActionLabelLayout.addStretch(1);
     mLayout.addLayout(&mActionLabelLayout);
 
     // Media
     mpMediaLabel = new QLabel(tr("Medias"), this);
+    mpMediaLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mMediaLabelLayout.addWidget(mpMediaLabel, 0);
     mMediaLabelLayout.addStretch(1);
     mLayout.addLayout(&mMediaLabelLayout);
@@ -729,9 +732,13 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
 
     // Comments
     mpCommentsLabel = new QLabel(tr("Comments"), this);
+    mpCommentsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mCommentsLabelLayout.addWidget(mpCommentsLabel, 0);
     mCommentsLabelLayout.addStretch(1);
     mLayout.addLayout(&mCommentsLabelLayout);
+    mpComments = new QLabel(this);
+    mpComments->setWordWrap(true);
+    mLayout.addWidget(mpComments);
 
     // Edit button
     mpEditButton = new QPushButton(tr("Edit infos"), this);
@@ -747,6 +754,10 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
 
 UBTeacherBarPreviewWidget::~UBTeacherBarPreviewWidget()
 {
+    if(NULL != mpComments){
+        delete mpComments;
+        mpComments = NULL;
+    }
     if(NULL != mpTitle){
         delete mpTitle;
         mpTitle = NULL;
@@ -803,6 +814,13 @@ void UBTeacherBarPreviewWidget::setDuration(eDuration duration)
                 break;
         }
         mpDuration->setPixmap(p.scaledToHeight(16, Qt::SmoothTransformation));
+    }
+}
+
+void UBTeacherBarPreviewWidget::setComments(const QString &comments)
+{
+    if(NULL != mpComments){
+        mpComments->setText(comments);
     }
 }
 
