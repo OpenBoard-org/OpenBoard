@@ -352,6 +352,8 @@ void UBTeacherBarWidget::loadContent()
         mpComments->document()->setPlainText(nextInfos.comments);
     }
 
+    mpPreview->mediaViewer()->cleanMedia();
+
     if(!isEmpty()){
         // Update the fields of the preview widget
         mpPreview->setTitle(mpTitle->text());
@@ -366,9 +368,12 @@ void UBTeacherBarWidget::loadContent()
             mpPreview->setDuration(eDuration_ThreeQuarter);
         }
         mpPreview->setComments(mpComments->document()->toPlainText());
-        mpPreview->mediaViewer()->cleanMedia();
         mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
     }
+    else{
+        mpStackWidget->setCurrentWidget(mpContainer);
+    }
+
 
 }
 
