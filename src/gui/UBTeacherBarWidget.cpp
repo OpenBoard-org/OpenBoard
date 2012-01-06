@@ -386,7 +386,12 @@ void UBTeacherBarWidget::loadContent()
         if(!mUrlList.empty()){
             QStringList links;
             foreach(UBUrlWidget* url, mUrlList){
-                links << url->url();
+                QStringList list = url->url().split(";");
+                QString formedlink = "<a href=";
+                if(!list.at(0).startsWith("http://"))
+                    formedlink += "http://";
+                formedlink += list.at(0) + ">" + list.at(1) + "</a>";
+                links << formedlink;
             }
             mpPreview->setLinks(links);
         }
@@ -674,17 +679,37 @@ UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
 
-    mpLayout = new QHBoxLayout(this);
+    mpLayout = new QVBoxLayout(this);
     setLayout(mpLayout);
+
+    mpLabelLayout = new QHBoxLayout(this);
     mpUrlLabel = new QLabel(tr("Url"), this);
-    mpLayout->addWidget(mpUrlLabel, 0);
+    mpLabelLayout->addWidget(mpUrlLabel, 0);
     mpUrl = new QLineEdit(this);
     mpUrl->setObjectName("DockPaletteWidgetLineEdit");
-    mpLayout->addWidget(mpUrl, 1);
+    mpLabelLayout->addWidget(mpUrl, 1);
+
+    mpTitleLayout = new QHBoxLayout(this);
+    mpTitleLabel = new QLabel(tr("Title"),this);
+    mpTitleLayout->addWidget(mpTitleLabel,0);
+    mpTitle = new QLineEdit(this);
+    mpTitle->setObjectName("DockPaletteWidgetLineEdit");
+    mpTitleLayout->addWidget(mpTitle,1);
+
+    mpLayout->addLayout(mpTitleLayout);
+    mpLayout->addLayout(mpLabelLayout);
 }
 
 UBUrlWidget::~UBUrlWidget()
 {
+    if(NULL != mpTitle){
+        delete mpTitle;
+        mpTitle = NULL;
+    }
+    if(NULL != mpTitleLabel){
+        delete mpTitleLabel;
+        mpTitleLabel = NULL;
+    }
     if(NULL != mpUrlLabel){
         delete mpUrlLabel;
         mpUrlLabel = NULL;
@@ -692,6 +717,14 @@ UBUrlWidget::~UBUrlWidget()
     if(NULL != mpUrl){
         delete mpUrl;
         mpUrl = NULL;
+    }
+    if(NULL != mpTitleLayout){
+        delete mpTitleLayout;
+        mpTitleLayout = NULL;
+    }
+    if(NULL != mpLabelLayout){
+        delete mpLabelLayout;
+        mpLabelLayout = NULL;
     }
     if(NULL != mpLayout){
         delete mpLayout;
@@ -704,7 +737,7 @@ QString UBUrlWidget::url()
     QString str;
 
     if(NULL != mpUrl){
-        str = mpUrl->text();
+        str = mpUrl->text() + ";" + mpTitle->text();
     }
 
     return str;
@@ -712,8 +745,10 @@ QString UBUrlWidget::url()
 
 void UBUrlWidget::setUrl(const QString &url)
 {
+    QStringList list = url.split(";");
     if(NULL != mpUrl){
-        mpUrl->setText(url);
+        mpUrl->setText(list.at(0));
+        mpTitle->setText(list.at(1));
     }
 }
 
