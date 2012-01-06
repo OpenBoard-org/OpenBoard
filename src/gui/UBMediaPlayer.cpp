@@ -343,3 +343,31 @@ void UBMediaPlayer::hasVideoChanged(bool bHasVideo)
 //    info->setVisible(!bHasVideo);
     m_videoWindow.setVisible(bHasVideo);
 }
+
+//*************************************************************************
+UBDraggableMediaPlayer::UBDraggableMediaPlayer():UBMediaPlayer()
+{
+//    setAcceptDrops(true);
+}
+
+void UBDraggableMediaPlayer::setFile(const QString &text)
+{
+    mSourcePath = text;
+    UBMediaPlayer::setFile(text);
+}
+
+void UBDraggableMediaPlayer::mousePressEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+    QMimeData *mimeData = new QMimeData;
+    QList<QUrl> urls;
+    urls << QUrl::fromLocalFile(mSourcePath);
+    mimeData->setUrls(urls);
+    mimeData->setText(mSourcePath);
+
+
+    QDrag *drag = new QDrag(this);
+    drag->setMimeData(mimeData);
+    drag->start();
+}
+
