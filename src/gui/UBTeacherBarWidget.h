@@ -27,6 +27,11 @@ typedef enum{
     eDuration_ThreeQuarter
 }eDuration;
 
+typedef enum{
+    eActionOwner_Teacher,
+    eActionOwner_Student
+}eActionOwner;
+
 class UBTeacherStudentAction : public QWidget
 {
     Q_OBJECT
@@ -107,6 +112,22 @@ private:
     QLineEdit* mpUrl;
 };
 
+class UBActionPreview : public QWidget
+{
+public:
+    UBActionPreview(QWidget* parent=0, const char* name="UBActionPreview");
+    ~UBActionPreview();
+    void setOwner(const QString& owner);
+    void setContent(const QString& content);
+
+private:
+    QLabel* mpOwner;
+    QLabel* mpContent;
+
+    QVBoxLayout mLayout;
+    QHBoxLayout mOwnerLayout;
+};
+
 class UBTeacherBarPreviewWidget : public QWidget
 {
     Q_OBJECT
@@ -145,6 +166,7 @@ private:
     QLabel* mpComments;
     QLabel* mpLinksLabel;
     QLabel* mpTmpLink;
+    UBActionPreview* mpTmpAction;
 };
 
 class UBTeacherBarWidget : public UBDockPaletteWidget

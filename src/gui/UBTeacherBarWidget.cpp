@@ -881,9 +881,10 @@ void UBTeacherBarPreviewWidget::setActions(QStringList actions)
             if(2 <= desc.size()){
                 QString owner = desc.at(0);
                 QString act = desc.at(1);
-
-                // TODO : Create the action widget here and add it to mWidgets
-
+                mpTmpAction = new UBActionPreview(this);
+                mpTmpAction->setOwner(owner);
+                mpTmpAction->setContent(act);
+                mWidgets << mpTmpAction;
             }
         }
         mMediaViewer.loadWidgets(mWidgets);
@@ -965,5 +966,59 @@ void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
                 qWarning() << "bad idea to come here";
             }
         }
+    }
+}
+
+// -----------------------------------------------------------------------------------------------
+UBActionPreview::UBActionPreview(QWidget *parent, const char *name):QWidget(parent)
+  , mpOwner(NULL)
+  , mpContent(NULL)
+{
+    setObjectName(name);
+    setLayout(&mLayout);
+    mpOwner = new QLabel(this);
+    mpOwner->setObjectName("UBActionPreviewOwner");
+    mOwnerLayout.addWidget(mpOwner, 0);
+    mOwnerLayout.addStretch(1);
+    mLayout.addLayout(&mOwnerLayout);
+    mpContent = new QLabel(this);
+    mpContent->setObjectName("UBActionPreviewContent");
+    mpContent->setWordWrap(true);
+    mLayout.addWidget(mpContent);
+}
+
+UBActionPreview::~UBActionPreview()
+{
+    if(NULL != mpOwner){
+        delete mpOwner;
+        mpOwner = NULL;
+    }
+    if(NULL != mpContent){
+        delete mpContent;
+        mpContent = NULL;
+    }
+}
+
+void UBActionPreview::setOwner(const QString &owner)
+{
+    if(NULL != mpOwner && NULL != mpContent){
+        switch(owner.toInt()){
+            case eActionOwner_Teacher:
+                mpOwner->setText(tr("Teacher"));
+                mpContent->setStyleSheet("background:lightblue;");
+                break;
+
+            case eActionOwner_Student:
+                mpOwner->setText(tr("Student"));
+                mpContent->setStyleSheet("background:lightgreen;");
+                break;
+        }
+    }
+}
+
+void UBActionPreview::setContent(const QString &content)
+{
+    if(NULL != mpContent){
+        mpContent->setText(content);
     }
 }
