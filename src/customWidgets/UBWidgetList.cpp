@@ -76,13 +76,11 @@ int UBWidgetList::scaleWidgets(QSize pSize)
 {
     int result = 0;
     foreach(QWidget* eachWidget, mWidgetInfo.keys()){
-        qDebug() << __FUNCTION__ << "eachWidget : " << eachWidget;
         qreal scaleFactor = 0;
         int newWidgetWidth =  pSize.width();
         int newWidgetHeight = pSize.height();
         if(eWidgetListOrientation_Vertical == mOrientation){
             scaleFactor = (float)mWidgetInfo[eachWidget].width() / (float)pSize.width();
-            qDebug() << __FUNCTION__ << "scale factor: " << scaleFactor;
             newWidgetHeight = mWidgetInfo[eachWidget].height()/scaleFactor;
             result += newWidgetHeight;
         }
