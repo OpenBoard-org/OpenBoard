@@ -83,6 +83,7 @@ public:
     UBTeacherBarPreviewMedia(QWidget* parent=0, const char* name="UBTeacherBarPreviewMedia");
     ~UBTeacherBarPreviewMedia();
     void loadMedia(QStringList pMedias);
+    void loadWidgets(QList<QWidget*> pWidgetList);
     void cleanMedia();
 
 private:
