@@ -117,6 +117,9 @@ public:
     void setTitle(const QString& title);
     void setDuration(eDuration duration);
     void setComments(const QString& comments);
+    void setActions(QStringList actions);
+    void setLinks(QStringList links);
+    void clean();
 
 signals:
     void showEditMode();
@@ -125,6 +128,8 @@ private slots:
     void onEdit();
 
 private:
+    void hideElements();
+
     QVBoxLayout mLayout;
     QHBoxLayout mEditLayout;
     QHBoxLayout mTitleDurationLayout;
@@ -132,6 +137,7 @@ private:
     QHBoxLayout mMediaLabelLayout;
     QHBoxLayout mCommentsLabelLayout;
     UBTeacherBarPreviewMedia mMediaViewer;
+    QList<QWidget*> mWidgets;
 
     QPushButton* mpEditButton;
     QLabel* mpTitle;
@@ -140,6 +146,8 @@ private:
     QLabel* mpMediaLabel;
     QLabel* mpCommentsLabel;
     QLabel* mpComments;
+    QLabel* mpLinksLabel;
+    QLabel* mpTmpLink;
 };
 
 class UBTeacherBarWidget : public UBDockPaletteWidget

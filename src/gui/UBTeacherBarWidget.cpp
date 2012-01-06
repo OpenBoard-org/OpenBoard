@@ -365,9 +365,33 @@ void UBTeacherBarWidget::loadContent()
         }else{
             mpPreview->setDuration(eDuration_ThreeQuarter);
         }
-        mpPreview->setComments(mpComments->document()->toPlainText());
-        mpPreview->mediaViewer()->cleanMedia();
+
+        mpPreview->clean();
+
+        // Add the actions
+        if(!mActionList.empty()){
+            QStringList actions;
+            foreach(UBTeacherStudentAction* action, mActionList){
+                QString desc = QString("%0;%1").arg(action->comboValue()).arg(action->text());
+                actions << desc;
+            }
+            mpPreview->setActions(actions);
+        }
+
+        // Add the media
         mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
+
+        // Add the links
+        if(!mUrlList.empty()){
+            QStringList links;
+            foreach(UBUrlWidget* url, mUrlList){
+                links << url->url();
+            }
+            mpPreview->setLinks(links);
+        }
+
+        // Add the comments
+        mpPreview->setComments(mpComments->document()->toPlainText());
     }
 
 }
@@ -697,6 +721,7 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
   , mpMediaLabel(NULL)
   , mpCommentsLabel(NULL)
   , mpComments(NULL)
+  , mpLinksLabel(NULL)
 {
     setObjectName(name);
 
@@ -733,6 +758,8 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
     //mLayout.addLayout(&mMediaLabelLayout, 0);
     mLayout.addWidget(&mMediaViewer, 1);
 
+    mpLinksLabel = new QLabel(tr("Links"), this);
+    mpLinksLabel->setObjectName("UBTeacherBarPreviewSubtitle");
 
     // Comments
     mpCommentsLabel = new QLabel(tr("Comments"), this);
@@ -760,6 +787,10 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
 
 UBTeacherBarPreviewWidget::~UBTeacherBarPreviewWidget()
 {
+    if(NULL != mpLinksLabel){
+        delete mpLinksLabel;
+        mpLinksLabel = NULL;
+    }
     if(NULL != mpComments){
         delete mpComments;
         mpComments = NULL;
@@ -825,8 +856,64 @@ void UBTeacherBarPreviewWidget::setDuration(eDuration duration)
 
 void UBTeacherBarPreviewWidget::setComments(const QString &comments)
 {
-    if(NULL != mpComments){
+    if("" != comments){
+        mWidgets.clear();
         mpComments->setText(comments);
+        mpComments->setVisible(true);
+        mpCommentsLabel->setVisible(true);
+        mWidgets << mpCommentsLabel;
+        mWidgets << mpComments;
+        mMediaViewer.loadWidgets(mWidgets);
+    }
+}
+
+void UBTeacherBarPreviewWidget::clean()
+{
+    mMediaViewer.cleanMedia();
+    hideElements();
+}
+
+void UBTeacherBarPreviewWidget::hideElements()
+{
+    mpActionsLabel->setVisible(false);
+    mpMediaLabel->setVisible(false);
+    mpCommentsLabel->setVisible(false);
+    mpComments->setVisible(false);
+    mpLinksLabel->setVisible(false);
+}
+
+void UBTeacherBarPreviewWidget::setActions(QStringList actions)
+{
+    if(!actions.empty()){
+        mWidgets.clear();
+        mpActionsLabel->setVisible(true);
+        mWidgets << mpActionsLabel;
+        foreach(QString action, actions){
+            QStringList desc = action.split(';');
+            if(2 <= desc.size()){
+                QString owner = desc.at(0);
+                QString act = desc.at(1);
+
+                // TODO : Create the action widget here and add it to mWidgets
+
+            }
+        }
+        mMediaViewer.loadWidgets(mWidgets);
+    }
+}
+
+void UBTeacherBarPreviewWidget::setLinks(QStringList links)
+{
+    if(!links.empty()){
+        mWidgets.clear();
+        mpLinksLabel->setVisible(true);
+        mWidgets << mpLinksLabel;
+        foreach(QString link, links){
+            mpTmpLink = new QLabel(link, this);
+            mpTmpLink->setOpenExternalLinks(true);
+            mWidgets << mpTmpLink;
+        }
+        mMediaViewer.loadWidgets(mWidgets);
     }
 }
 
@@ -853,8 +940,10 @@ UBTeacherBarPreviewMedia::~UBTeacherBarPreviewMedia()
 void UBTeacherBarPreviewMedia::cleanMedia()
 {
     foreach(QWidget* eachWidget, mWidgetList.keys()){
-        delete eachWidget;
-        eachWidget = NULL;
+        if(QString(eachWidget->metaObject()->className()).contains("UBDraggable")){
+            delete eachWidget;
+            eachWidget = NULL;
+        }
     }
     mWidgetList.clear();
 }
