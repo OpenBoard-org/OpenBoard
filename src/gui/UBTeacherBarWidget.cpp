@@ -366,10 +366,10 @@ void UBTeacherBarWidget::loadContent()
             mpPreview->setDuration(eDuration_ThreeQuarter);
         }
         mpPreview->setComments(mpComments->document()->toPlainText());
+        mpPreview->mediaViewer()->cleanMedia();
+        mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
     }
-    // this is always done becasue it allows to clean the media on
-    // changing the page
-    mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
+
 }
 
 bool UBTeacherBarWidget::isEmpty()
@@ -848,10 +848,18 @@ UBTeacherBarPreviewMedia::~UBTeacherBarPreviewMedia()
 
 }
 
+void UBTeacherBarPreviewMedia::cleanMedia()
+{
+    foreach(QWidget* eachWidget, mWidgetList.keys()){
+        delete eachWidget;
+        eachWidget = NULL;
+    }
+    mWidgetList.clear();
+}
+
 
 void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
 {
-    mWidgetList.clear();
     foreach(QString eachString, pMedias){
         if(!eachString.isEmpty()){
             QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(eachString);
