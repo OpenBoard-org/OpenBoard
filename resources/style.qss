@@ -40,6 +40,19 @@ QWidget#UBLibWebView
 	border: 2px solid #999999;
 }
 
+QWidget#UBActionPreviewOwner
+{
+	color: #555555;
+	font-size : 10px;
+	font-weight:bold;
+}
+
+QWidget#UBActionPreviewContent
+{
+	border-radius : 10px;
+	border: 2px solid;
+}
+
 QWebView#SearchEngineView
 {
 	background:white;
