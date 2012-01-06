@@ -1763,8 +1763,8 @@ void UBGraphicsScene::addCache()
     UBApplication::boardController->notifyPageChanged();
 }
 
-void UBGraphicsScene::addMask()
-{
+void UBGraphicsScene::addMask(const QPointF &center)
+{ 
     UBGraphicsCurtainItem* curtain = new UBGraphicsCurtainItem(); // mem : owned and destroyed by the scene
     mTools << curtain;
     QGraphicsView* view;
@@ -1774,17 +1774,16 @@ void UBGraphicsScene::addMask()
     else
         view = (QGraphicsView*)UBApplication::boardController->controlView();
 
-    QPolygonF polygon = view->mapToScene(view->rect());
-
-//    curtain->setZValue(toolLayerStart + toolOffsetCurtain);
+    //    curtain->setZValue(toolLayerStart + toolOffsetCurtain);
     UBGraphicsItem::assignZValue(curtain, toolLayerStart + toolOffsetCurtain);
+	
+    QRectF rect = UBApplication::boardController->activeScene()->normalizedSceneRect();
+    rect.setSize(QSizeF(rect.width()/2, rect.height()/2));
 
-    QRectF rect = polygon.boundingRect();
-    qreal xScale = view->matrix().m11();
-    qreal yScale = view->matrix().m22();
-    rect.adjust(120 / xScale, 80 / yScale, -120 / xScale, -80 / yScale);
-    curtain->setRect(rect);
-    addItem(curtain);
+    QPointF origin = center.isNull() ? rect.bottomRight() : center;
+    curtain->setRect(rect.translated(origin - rect.topLeft() / 2));
+
+	addItem(curtain);
 
     curtain->setVisible(true);
     curtain->setSelected(true);

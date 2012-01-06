@@ -175,7 +175,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void addTriangle(QPointF center);
         void addMagnifier(UBMagnifierParams params);
 
-        void addMask();
+        void addMask(const QPointF &center = QPointF());
         void addCache();
 
         class SceneViewState

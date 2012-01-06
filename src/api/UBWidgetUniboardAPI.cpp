@@ -294,7 +294,6 @@ int UBWidgetUniboardAPI::currentPageNumber()
     return UBApplication::boardController->activeSceneIndex() + 1;
 }
 
-
 void UBWidgetUniboardAPI::showMessage(const QString& message)
 {
     UBApplication::boardController->showMessage(message, false);
@@ -428,6 +427,22 @@ void UBWidgetUniboardAPI::sendFileMetadata(QString metaData)
     }
     UBApplication::boardController->displayMetaData(qmMetaDatas);
 }
+
+void UBWidgetUniboardAPI::enableDropOnWidget()
+{
+    mGraphicsWidget->setAcceptDrops(true);
+}
+
+QString UBWidgetUniboardAPI::downloadUrl(QString objectUrl)
+{
+    qDebug() << "UBWidgetUniboardAPI : " << objectUrl;
+    QUrl widgetUrl = mGraphicsWidget->widgetWebView()->widgetUrl();
+    QString destFileName =widgetUrl.toString()+ "/objects/" + QUuid::createUuid().toString();
+    QFile(objectUrl).copy(destFileName);
+    qDebug() << "destFileName : " << destFileName;
+    return destFileName.remove(widgetUrl.toString());
+}
+
 
 UBDocumentDatastoreAPI::UBDocumentDatastoreAPI(UBGraphicsW3CWidgetItem *graphicsWidget)
     : UBW3CWebStorage(graphicsWidget)

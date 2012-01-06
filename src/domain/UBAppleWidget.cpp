@@ -15,10 +15,7 @@
 
 #include "UBAppleWidget.h"
 
-
 #include <QtNetwork>
-
-#include "api/UBWidgetUniboardAPI.h"
 
 #include "web/UBWebKitUtils.h"
 

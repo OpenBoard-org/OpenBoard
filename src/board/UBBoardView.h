@@ -86,6 +86,7 @@ class UBBoardView : public QGraphicsView
             return (ok && (itemLayerType >= mStartLayer && itemLayerType <= mEndLayer));
         }
 
+        QList<QUrl> processMimeData(const QMimeData* pMimeData);
 
         UBBoardController* mController;
 

@@ -93,4 +93,3 @@ void UBRoutedMouseEventWebView::wheelEvent(QWheelEvent* ev)
         p->event(ev);
     }
 }
-
