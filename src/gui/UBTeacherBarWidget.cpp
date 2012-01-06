@@ -859,6 +859,14 @@ void UBTeacherBarPreviewMedia::cleanMedia()
     mWidgetList.clear();
 }
 
+void UBTeacherBarPreviewMedia::loadWidgets(QList<QWidget*> pWidgetsList)
+{
+    foreach(QWidget*eachWidget, pWidgetsList){
+        mWidget->addWidget(eachWidget);
+        mWidgetList[eachWidget]="DRAG UNAVAILABLE";
+    }
+}
+
 
 void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
 {
