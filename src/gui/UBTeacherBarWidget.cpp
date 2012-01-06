@@ -911,8 +911,9 @@ UBTeacherBarPreviewMedia::UBTeacherBarPreviewMedia(QWidget* parent, const char* 
 {
     setObjectName(name);
     mWidget = new UBWidgetList(parent);
-    mWidget->setEmptyText(tr("No media found"));
+//    mWidget->setEmptyText(tr("No media found"));
     mLayout.addWidget(mWidget);
+    mWidget->setStyleSheet(QString("background-color: red;"));
     setLayout(&mLayout);
     mWidgetList.clear();
 }
@@ -929,8 +930,11 @@ UBTeacherBarPreviewMedia::~UBTeacherBarPreviewMedia()
 void UBTeacherBarPreviewMedia::cleanMedia()
 {
     foreach(QWidget* eachWidget, mWidgetList.keys()){
-        delete eachWidget;
-        eachWidget = NULL;
+        if(QString(eachWidget->metaObject()->className()).contains("UBDraggable")){
+            delete eachWidget;
+            eachWidget = NULL;
+        }
+        mWidget->removeWidget(eachWidget);
     }
     mWidgetList.clear();
 }
