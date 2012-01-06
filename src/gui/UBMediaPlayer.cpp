@@ -123,9 +123,9 @@ UBMediaPlayer::UBMediaPlayer() :
 #ifdef Q_OS_MAC
 //    layout->setSpacing(4);
     buttonPanelLayout->setSpacing(0);
-    info->setMinimumHeight(100);
-    info->setFont(QFont("verdana", 15));
-    openButton->setFocusPolicy(Qt::NoFocus);
+//    info->setMinimumHeight(100);
+//    info->setFont(QFont("verdana", 15));
+//    openButton->setFocusPolicy(Qt::NoFocus);
 #endif
     QWidget *buttonPanelWidget = new QWidget(this);
     buttonPanelWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
