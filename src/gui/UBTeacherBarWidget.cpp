@@ -356,6 +356,7 @@ void UBTeacherBarWidget::loadContent()
         // Update the fields of the preview widget
         mpPreview->setTitle(mpTitle->text());
         mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
+
         mpStackWidget->setCurrentWidget(mpPreview);
         if(mpDuration1->isChecked()){
             mpPreview->setDuration(eDuration_Quarter);
@@ -366,6 +367,9 @@ void UBTeacherBarWidget::loadContent()
         }
 
     }
+    // this is always done becasue it allows to clean the media on
+    // changing the page
+    mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
 }
 
 bool UBTeacherBarWidget::isEmpty()
@@ -829,8 +833,6 @@ UBTeacherBarPreviewMedia::~UBTeacherBarPreviewMedia()
 
 void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
 {
-    foreach(QWidget* eachWidget, mWidgetList.keys())
-        delete eachWidget;
     mWidgetList.clear();
     foreach(QString eachString, pMedias){
         if(!eachString.isEmpty()){
