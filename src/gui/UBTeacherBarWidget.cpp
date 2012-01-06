@@ -278,11 +278,11 @@ void UBTeacherBarWidget::saveContent()
     infos.title = mpTitle->text();
     // Duration
     if(mpDuration1->isChecked()){
-        infos.Duration = 0;
+        infos.Duration = eDuration_Quarter;
     }else if(mpDuration2->isChecked()){
-        infos.Duration = 1;
+        infos.Duration = eDuration_Half;
     }else{
-        infos.Duration = 2;
+        infos.Duration = eDuration_ThreeQuarter;
     }
     // Actions
     for(int i=0; i<mActionList.size(); i++){
@@ -312,11 +312,11 @@ void UBTeacherBarWidget::loadContent()
     mpTitle->setText(nextInfos.title);
     // Duration
     switch(nextInfos.Duration){
-        case 0: mpDuration1->setChecked(true);
+        case eDuration_Quarter: mpDuration1->setChecked(true);
             break;
-        case 1: mpDuration2->setChecked(true);
+        case eDuration_Half: mpDuration2->setChecked(true);
             break;
-        case 2: mpDuration3->setChecked(true);
+        case eDuration_ThreeQuarter: mpDuration3->setChecked(true);
             break;
         default: mpDuration1->setChecked(true);
             break;
@@ -351,8 +351,18 @@ void UBTeacherBarWidget::loadContent()
     }
 
     if(!isEmpty()){
+        // Update the fields of the preview widget
+        mpPreview->setTitle(mpTitle->text());
         mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
         mpStackWidget->setCurrentWidget(mpPreview);
+        if(mpDuration1->isChecked()){
+            mpPreview->setDuration(eDuration_Quarter);
+        }else if(mpDuration2->isChecked()){
+            mpPreview->setDuration(eDuration_Half);
+        }else{
+            mpPreview->setDuration(eDuration_ThreeQuarter);
+        }
+
     }
 }
 
@@ -675,22 +685,60 @@ void UBUrlWidget::setUrl(const QString &url)
 
 // ------------------------------------------------------------------------------------
 UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char *name):QWidget(parent)
-  , mpLayout(NULL)
   , mpEditButton(NULL)
-  , mpEditLayout(NULL)
+  , mpTitle(NULL)
+  , mpDuration(NULL)
+  , mpActionsLabel(NULL)
+  , mpMediaLabel(NULL)
+  , mpCommentsLabel(NULL)
 {
     setObjectName(name);
 
-    mpLayout =  new QVBoxLayout(this);
-    setLayout(mpLayout);
+    setLayout(&mLayout);
 
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(UBApplication::globalStyleSheet());
+
+    // Build the Preview widget
+    // Title + duration
+    mpTitle = new QLabel(this);
+    mpTitle->setObjectName("UBTeacherBarPreviewTitle");
+    mpTitle->setWordWrap(true);
+    mpTitle->setAlignment(Qt::AlignCenter);
+    mpDuration = new QLabel(this);
+    mTitleDurationLayout.addWidget(mpTitle, 0);
+    mTitleDurationLayout.addWidget(mpDuration, 1);
+    mLayout.addLayout(&mTitleDurationLayout, 0);
+
+    // Actions
+    mpActionsLabel = new QLabel(tr("Actions"), this);
+    mActionLabelLayout.addWidget(mpActionsLabel, 0);
+    mActionLabelLayout.addStretch(1);
+    mLayout.addLayout(&mActionLabelLayout);
+
+    // Media
+    mpMediaLabel = new QLabel(tr("Medias"), this);
+    mMediaLabelLayout.addWidget(mpMediaLabel, 0);
+    mMediaLabelLayout.addStretch(1);
+    mLayout.addLayout(&mMediaLabelLayout);
+    mLayout.addWidget(&mMediaViewer, 0);
+
+    // Temporary stretch
+    mLayout.addStretch(1);
+
+    // Comments
+    mpCommentsLabel = new QLabel(tr("Comments"), this);
+    mCommentsLabelLayout.addWidget(mpCommentsLabel, 0);
+    mCommentsLabelLayout.addStretch(1);
+    mLayout.addLayout(&mCommentsLabelLayout);
+
+    // Edit button
     mpEditButton = new QPushButton(tr("Edit infos"), this);
-    mpEditLayout = new QVBoxLayout();
-    mpEditLayout->addStretch(1);
-    mpEditLayout->addWidget(mpEditButton, 0);
-    mpEditLayout->addStretch(1);
-    mpEditLayout->addWidget(&mMediaViewer);
-    mpLayout->addLayout(mpEditLayout);
+    mpEditButton->setObjectName("DockPaletteWidgetButton");
+    mEditLayout.addStretch(1);
+    mEditLayout.addWidget(mpEditButton, 0);
+    mEditLayout.addStretch(1);
+    mLayout.addLayout(&mEditLayout, 0);
 
 
     connect(mpEditButton, SIGNAL(clicked()), this, SLOT(onEdit()));
@@ -698,17 +746,29 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
 
 UBTeacherBarPreviewWidget::~UBTeacherBarPreviewWidget()
 {
+    if(NULL != mpTitle){
+        delete mpTitle;
+        mpTitle = NULL;
+    }
+    if(NULL != mpDuration){
+        delete mpDuration;
+        mpDuration = NULL;
+    }
+    if(NULL != mpActionsLabel){
+        delete mpActionsLabel;
+        mpActionsLabel = NULL;
+    }
+    if(NULL != mpMediaLabel){
+        delete mpMediaLabel;
+        mpMediaLabel =  NULL;
+    }
+    if(NULL != mpCommentsLabel){
+        delete mpCommentsLabel;
+        mpCommentsLabel = NULL;
+    }
     if(NULL != mpEditButton){
         delete mpEditButton;
         mpEditButton = NULL;
-    }
-    if(NULL != mpEditLayout){
-        delete mpEditLayout;
-        mpEditLayout = NULL;
-    }
-    if(NULL != mpLayout){
-        delete mpLayout;
-        mpLayout = NULL;
     }
 }
 
@@ -717,6 +777,33 @@ void UBTeacherBarPreviewWidget::onEdit()
     emit showEditMode();
 }
 
+void UBTeacherBarPreviewWidget::setTitle(const QString &title)
+{
+    if(NULL != mpTitle){
+        mpTitle->setText(title);
+    }
+}
+
+void UBTeacherBarPreviewWidget::setDuration(eDuration duration)
+{
+    if(NULL != mpDuration){
+        QPixmap p;
+        switch(duration){
+            case eDuration_Quarter:
+                p = QPixmap(":images/duration1.png");
+                break;
+            case eDuration_Half:
+                p = QPixmap(":images/duration2.png");
+                break;
+            case eDuration_ThreeQuarter:
+                p = QPixmap(":images/duration3.png");
+                break;
+            default:
+                break;
+        }
+        mpDuration->setPixmap(p.scaledToHeight(16, Qt::SmoothTransformation));
+    }
+}
 
 // ------------------------------------------------------------------------------------
 UBTeacherBarPreviewMedia::UBTeacherBarPreviewMedia(QWidget* parent, const char* name) : QWidget(parent)

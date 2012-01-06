@@ -12,6 +12,8 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
    mpContainer = new QWidget(this);
    mpEmptyLabel = new QLabel(this);
    mpEmptyLabel->setObjectName("emptyString");
+   mpEmptyLabel->setWordWrap(true);
+   mpEmptyLabel->setAlignment(Qt::AlignCenter);
 
    if(eWidgetListOrientation_Vertical == orientation){
        setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);

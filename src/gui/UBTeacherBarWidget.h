@@ -21,6 +21,12 @@ class UBMediaPlayer;
 
 #define LABEL_MINWIDHT      80
 
+typedef enum{
+    eDuration_Quarter,
+    eDuration_Half,
+    eDuration_ThreeQuarter
+}eDuration;
+
 class UBTeacherStudentAction : public QWidget
 {
     Q_OBJECT
@@ -111,6 +117,8 @@ public:
     UBTeacherBarPreviewWidget(QWidget* parent=0, const char* name="UBTeacherBarPreviewWidget");
     ~UBTeacherBarPreviewWidget();
     UBTeacherBarPreviewMedia* mediaViewer() {return &mMediaViewer;}
+    void setTitle(const QString& title);
+    void setDuration(eDuration duration);
 
 signals:
     void showEditMode();
@@ -119,10 +127,19 @@ private slots:
     void onEdit();
 
 private:
-    QVBoxLayout* mpLayout;
-    QPushButton* mpEditButton;
-    QVBoxLayout* mpEditLayout;
+    QVBoxLayout mLayout;
+    QHBoxLayout mEditLayout;
+    QHBoxLayout mTitleDurationLayout;
+    QHBoxLayout mActionLabelLayout;
+    QHBoxLayout mMediaLabelLayout;
+    QHBoxLayout mCommentsLabelLayout;
     UBTeacherBarPreviewMedia mMediaViewer;
+    QPushButton* mpEditButton;
+    QLabel* mpTitle;
+    QLabel* mpDuration;
+    QLabel* mpActionsLabel;
+    QLabel* mpMediaLabel;
+    QLabel* mpCommentsLabel;
 };
 
 class UBTeacherBarWidget : public UBDockPaletteWidget
