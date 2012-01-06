@@ -53,6 +53,7 @@ void UBWidgetList::addWidget(QWidget *widget)
     if(NULL != mpLayout){
         mpEmptyLabel->setVisible(false);
         mWidgetInfo[widget] = widget->size();
+        qDebug() << __FUNCTION__ << "widget->size () " << widget->size();
         updateView(size());
         mpLayout->addWidget(widget);
     }
@@ -75,6 +76,7 @@ void UBWidgetList::removeWidget(QWidget *widget)
 int UBWidgetList::scaleWidgets(QSize pSize)
 {
     int result = 0;
+    int count = 0;
     foreach(QWidget* eachWidget, mWidgetInfo.keys()){
         qreal scaleFactor = 0;
         int newWidgetWidth =  pSize.width();
@@ -89,6 +91,12 @@ int UBWidgetList::scaleWidgets(QSize pSize)
             newWidgetWidth = mWidgetInfo[eachWidget].width()/scaleFactor;
             result += newWidgetWidth;
         }
+        qDebug() << __PRETTY_FUNCTION__ << "widget " << &eachWidget;
+        qDebug() << __PRETTY_FUNCTION__ << "count " << count++;
+        qDebug() << __PRETTY_FUNCTION__ << "widget orignal size " << mWidgetInfo[eachWidget];
+        qDebug() << __PRETTY_FUNCTION__ << "containes size  " << pSize;
+        qDebug() << __PRETTY_FUNCTION__ << "scale factor " << scaleFactor;
+        qDebug() << __PRETTY_FUNCTION__ << "new height " << result;
     }
     return result;
 }
