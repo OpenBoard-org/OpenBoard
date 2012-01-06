@@ -100,14 +100,17 @@ UBMediaPlayer::UBMediaPlayer() :
 //    vLayout->addWidget(info);
     initVideoWindow();
     vLayout->addWidget(&m_videoWindow);
+//    m_videoWidget->setStyleSheet(QString("background:red;"));
     QVBoxLayout *buttonPanelLayout = new QVBoxLayout();
-//    m_videoWindow.hide();
+    //m_videoWindow.hide();
 //    buttonPanelLayout->addLayout(layout);
 
 //    timeLabel = new QLabel(this);
     progressLabel = new QLabel(this);
     QWidget *sliderPanel = new QWidget(this);
+//    sliderPanel->setStyleSheet(QString("background:green;"));
     QHBoxLayout *sliderLayout = new QHBoxLayout();
+//    playButton->setStyleSheet(QString("background:yellow;"));
     sliderLayout->addWidget(playButton);
     sliderLayout->addWidget(slider);
 //    sliderLayout->addWidget(timeLabel);
@@ -130,7 +133,6 @@ UBMediaPlayer::UBMediaPlayer() :
     vLayout->addWidget(buttonPanelWidget);
 
     QHBoxLayout *labelLayout = new QHBoxLayout();
-
     vLayout->addLayout(labelLayout);
     setLayout(vLayout);
 
@@ -224,7 +226,7 @@ void UBMediaPlayer::initVideoWindow()
     videoLayout->addWidget(m_videoWidget);
     videoLayout->setContentsMargins(0, 0, 0, 0);
     m_videoWindow.setLayout(videoLayout);
-    m_videoWindow.setMinimumSize(100, 100);
+    m_videoWindow.setMinimumSize(60, 40);
 }
 
 void UBMediaPlayer::playPause()
