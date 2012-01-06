@@ -1055,7 +1055,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         }
         else if (sourceUrl.toString() == UBToolsManager::manager()->mask.id)
         {
-            mActiveScene->addMask();
+            mActiveScene->addMask(pPos);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
         else

@@ -29,7 +29,6 @@ class UBMainWindow;
 class UBWebToolsPalette;
 class WBWebView;
 class UBServerXMLHttpRequest;
-//class UBKeyboardPalette;
 
 class UBWebController : public QObject
 {
@@ -127,6 +126,7 @@ class UBWebController : public QObject
         void activePageChanged();
         void trapFlash();
         void toggleWebTrap(bool checked);
+
         void onOEmbedParsed(QVector<sOEmbedContent> contents);
 //		void showKeyboard(bool checked);
 

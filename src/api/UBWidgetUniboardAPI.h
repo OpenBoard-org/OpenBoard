@@ -234,6 +234,19 @@ class UBWidgetUniboardAPI : public QObject
           */
         void sendFileMetadata(QString metaData);
 
+
+        // widget download
+        /**
+         * If the widget support a the drop of an object it will notify sankore about this.
+         */
+        void enableDropOnWidget ();
+
+        /**
+         * When an object is dropped on a widget, this one send us the informations to download it locally.
+         * this method download the object on the widget directory and return the path of the downloaded object
+         */
+        QString downloadUrl(QString objectUrl);
+
     private:
 
         QString uuid();

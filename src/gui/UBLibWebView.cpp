@@ -29,7 +29,6 @@ UBLibWebView::UBLibWebView(QWidget* parent, const char* name):QWidget(parent)
     mpWebSettings = QWebSettings::globalSettings();
     mpWebSettings->setAttribute(QWebSettings::JavaEnabled, true);
     mpWebSettings->setAttribute(QWebSettings::PluginsEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::JavaEnabled, true);
     mpWebSettings->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
     mpWebSettings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
     mpWebSettings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);

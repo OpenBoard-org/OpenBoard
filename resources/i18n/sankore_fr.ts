@@ -1111,9 +1111,9 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Êtes-vous sûr de bien vouloir effacer %n page de ce document &apos;%1&apos;?</numerusform>
+            <numerusform>Êtes-vous sûr de bien vouloir effacer %n pages de ce document &apos;%1&apos;?</numerusform>
         </translation>
     </message>
 </context>
@@ -1203,7 +1203,6 @@
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>

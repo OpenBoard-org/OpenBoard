@@ -31,6 +31,7 @@ class UBRoutedMouseEventWebView : public QWebView
     public:
         UBRoutedMouseEventWebView(QWidget * parent = 0 );
         virtual ~UBRoutedMouseEventWebView();
+
     protected:
         virtual void mouseMoveEvent(QMouseEvent* ev);
         virtual void mousePressEvent(QMouseEvent* ev);
@@ -38,7 +39,6 @@ class UBRoutedMouseEventWebView : public QWebView
         virtual void mouseReleaseEvent(QMouseEvent* ev);
         virtual void contextMenuEvent(QContextMenuEvent* ev);
         virtual void wheelEvent(QWheelEvent* ev);
-
 };
 
 #endif /* UBROUTEDMOUSEEVENTWEBVIEW_H_ */

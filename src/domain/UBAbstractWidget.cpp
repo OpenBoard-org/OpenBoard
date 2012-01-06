@@ -26,8 +26,6 @@
 
 #include "network/UBNetworkAccessManager.h"
 
-#include "api/UBWidgetUniboardAPI.h"
-
 #include "web/UBWebPage.h"
 #include "web/UBWebKitUtils.h"
 #include "web/UBWebController.h"
@@ -49,9 +47,15 @@ UBAbstractWidget::UBAbstractWidget(const QUrl& pWidgetUrl, QWidget *parent)
     , mIsFrozen(false)
     , mIsTakingSnapshot(false)
 {
+    setAcceptDrops(true);
     setPage(new UBWebPage(this));
+    QWebView::settings()->setAttribute(QWebSettings::JavaEnabled, true);
     QWebView::settings()->setAttribute(QWebSettings::PluginsEnabled, true);
     QWebView::settings()->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
+    QWebView::settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
+    QWebView::settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
+    QWebView::settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
+    QWebView::settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
 
     QWebView::page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
 
@@ -312,7 +316,6 @@ void UBAbstractWidget::mousePressEvent(QMouseEvent *event)
         event->accept();
         return;
     }
-
     UBRoutedMouseEventWebView::mousePressEvent(event);
     mMouseIsPressed = true;
 }
@@ -352,7 +355,6 @@ void UBAbstractWidget::mouseReleaseEvent(QMouseEvent *event)
     mMouseIsPressed = false;
     mFirstReleaseAfterMove = true;
 }
-
 
 QWebView * UBAbstractWidget::createWindow(QWebPage::WebWindowType type)
 {

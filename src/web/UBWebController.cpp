@@ -59,7 +59,6 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     , mBrowserWidget(0)
     , mTrapFlashController(0)
     , mToolsCurrentPalette(0)
-//    , mKeyboardCurrentPalette(0)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
 {
@@ -117,7 +116,6 @@ void UBWebController::webBrowserInstance()
     {
         mCurrentWebBrowser = &mWebBrowserList[WebBrowser];
         mToolsCurrentPalette = &mToolsPaletteList[WebBrowser];
-//        mKeyboardCurrentPalette = &mKeyboardPaletteList[WebBrowser];
         mToolsPalettePositionned = mToolsPalettePositionnedList[WebBrowser];
         if (!(*mCurrentWebBrowser))
         {
@@ -196,8 +194,6 @@ void UBWebController::tutorialWebInstance()
     else
     {
         mCurrentWebBrowser = &mWebBrowserList[Tutorial];
-//        mToolsCurrentPalette = &mToolsPaletteList[Tutorial];
-//        mKeyboardCurrentPalette = &mKeyboardPaletteList[Tutorial];
         mToolsPalettePositionned = &mToolsPalettePositionnedList[Tutorial];
         if (!(*mCurrentWebBrowser))
         {
@@ -255,7 +251,6 @@ void UBWebController::paraschoolWebInstance()
     else {
         mCurrentWebBrowser = &mWebBrowserList[Paraschool];
         mToolsCurrentPalette = &mToolsPaletteList[Paraschool];
-//        mKeyboardCurrentPalette = &mKeyboardPaletteList[Paraschool];
         mToolsPalettePositionned = &mToolsPalettePositionnedList[Paraschool];
         if (!(*mCurrentWebBrowser)){
             (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow, true);
@@ -434,7 +429,6 @@ void UBWebController::setupPalettes()
     {
         (*mToolsCurrentPalette) = new UBWebToolsPalette((*mCurrentWebBrowser),false);
 
-//        (*mKeyboardCurrentPalette) = UBKeyboardPalette::create(*mCurrentWebBrowser);
 #ifndef Q_WS_WIN
         if (UBPlatformUtils::hasVirtualKeyboard() && UBApplication::boardController->paletteManager()->mKeyboardPalette)
             connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(closed()),
@@ -449,13 +443,9 @@ void UBWebController::setupPalettes()
 
         connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));
         connect(mMainWindow->actionWebTrap, SIGNAL(toggled(bool)), this, SLOT(toggleWebTrap(bool)));
-#ifndef Q_WS_MACX
-        connect(mMainWindow->actionVirtualKeyboard, SIGNAL(toggled(bool)), this, SLOT(showKeyboard(bool)));
-#endif
+
         (*mToolsCurrentPalette)->hide();
         (*mToolsCurrentPalette)->adjustSizeAndPosition();
-
-//        (*mKeyboardCurrentPalette)->adjustSizeAndPosition();
 
         if (controlView()){
             int left = controlView()->width() - 20 - (*mToolsCurrentPalette)->width();
@@ -478,15 +468,6 @@ void UBWebController::toggleWebTrap(bool checked)
         (*mCurrentWebBrowser)->currentTabWebView()->setIsTrapping(checked);
     }
 }
-
-// void UBWebController::showKeyboard(bool checked)
-// {
-//     if (mKeyboardCurrentPalette
-//             && (*mKeyboardCurrentPalette))
-//     {
-//         (*mKeyboardCurrentPalette)->setVisible(checked);
-//     }
-// }
 
 void UBWebController::toggleWebToolsPalette(bool checked)
 {
@@ -662,8 +643,6 @@ void UBWebController::captureEduMedia()
         {
             QWebElementCollection objects = webView->page()->currentFrame()->findAllElements("object");
 
-            bool found = false;
-
             foreach(QWebElement object, objects)
             {
                 foreach(QWebElement param, object.findAll("param"))
@@ -674,8 +653,6 @@ void UBWebController::captureEduMedia()
                         QString midValue;
                         QString langValue;
                         QString hostValue;
-
-                        found = true;
 
                         QStringList flashVars = value.split("&");
 

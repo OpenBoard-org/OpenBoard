@@ -708,23 +708,100 @@ UBBoardView::drawItems (QPainter *painter, int numItems,
     }
 }
 
-void
-UBBoardView::dragEnterEvent (QDragEnterEvent *event)
+void UBBoardView::dragEnterEvent (QDragEnterEvent *event)
 {
-  // TODO UB 4.x be smarter with drag accept code .... we cannot handle everything ...
-  event->acceptProposedAction ();
+    // TODO UB 4.x be smarter with drag accept code .... we cannot handle everything ...
+    event->acceptProposedAction ();
 }
 
-void
-UBBoardView::dragMoveEvent (QDragMoveEvent *event)
+void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
 {
-  event->acceptProposedAction ();
+    QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
+    UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
+
+    if (graphicsWidget && graphicsWidget->acceptDrops()){
+        QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
+        QDragMoveEvent newEvent(newPoint, event->dropAction(), event->mimeData(), event->mouseButtons(), event->keyboardModifiers());
+        QApplication::sendEvent(graphicsWidget->widgetWebView(),&newEvent);
+        return;
+    }
+
+    event->acceptProposedAction();
 }
 
-void
-UBBoardView::dropEvent (QDropEvent *event)
+QList<QUrl> UBBoardView::processMimeData(const QMimeData* pMimeData)
+{
+    QList<QUrl> result;
+    if(pMimeData->hasHtml())
+    {
+        QString qsHtml = pMimeData->html();
+        result.append(QUrl(UBApplication::urlFromHtml(qsHtml)));
+    }
+
+    if (pMimeData->hasUrls())
+    {
+        result.append(pMimeData->urls());
+        return result;
+    }
+
+    if (pMimeData->hasImage())
+    {
+        qWarning() << "Not supported yet";
+    }
+
+    if (pMimeData->hasText())
+    {
+        if("" != pMimeData->text()){
+            // Sometimes, it is possible to have an URL as text. we check here if it is the case
+            QString qsTmp = pMimeData->text().remove(QRegExp("[\\0]"));
+            if(qsTmp.startsWith("http")){
+                result.append(QUrl(qsTmp));
+            }
+            else{
+                qWarning() << "what to do with this : " << pMimeData->text();
+                //mActiveScene->addText(pMimeData->text(), pPos);
+            }
+        }
+        else{
+#ifdef Q_WS_MACX
+                //  With Safari, in 95% of the drops, the mime datas are hidden in Apple Web Archive pasteboard type.
+                //  This is due to the way Safari is working so we have to dig into the pasteboard in order to retrieve
+                //  the data.
+                QString qsUrl = UBPlatformUtils::urlFromClipboard();
+                if("" != qsUrl){
+                    // We finally got the url of the dropped ressource! Let's import it!
+                    result.append(QUrl(qsUrl));
+                }
+#endif
+        }
+    }
+    return result;
+}
+
+
+void UBBoardView::dropEvent (QDropEvent *event)
 {
     qDebug() << event->source();
+    QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
+    UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
+
+    bool acceptDrops(false);
+    if (graphicsWidget) {
+        acceptDrops = graphicsWidget->acceptDrops();
+        graphicsWidget->setAcceptDrops(true);
+    }
+    if (graphicsWidget && graphicsWidget->acceptDrops()){
+        // A new event is build to avoid problem related to different way to pass the mime type
+        // A parsing is done to try to provide a mimeType with only urls.
+        QMimeData mimeData;
+        mimeData.setData("Text",processMimeData(event->mimeData()).at(0).toString().toAscii());
+        QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
+        QDropEvent cleanedEvent(newPoint, event->dropAction(), &mimeData, event->mouseButtons(), event->keyboardModifiers());
+        QApplication::sendEvent(graphicsWidget->widgetWebView(),&cleanedEvent);
+        cleanedEvent.acceptProposedAction();
+        event->acceptProposedAction();
+        return;
+    }
     if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()))
     {
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
