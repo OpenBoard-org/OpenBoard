@@ -721,28 +721,30 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
     mpActionsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mActionLabelLayout.addWidget(mpActionsLabel, 0);
     mActionLabelLayout.addStretch(1);
-    mLayout.addLayout(&mActionLabelLayout);
+    mpActionsLabel->setVisible(false);
+    //mLayout.addLayout(&mActionLabelLayout);
 
     // Media
     mpMediaLabel = new QLabel(tr("Medias"), this);
     mpMediaLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mMediaLabelLayout.addWidget(mpMediaLabel, 0);
     mMediaLabelLayout.addStretch(1);
-    mLayout.addLayout(&mMediaLabelLayout);
-    mLayout.addWidget(&mMediaViewer, 0);
+    mpMediaLabel->setVisible(false);
+    //mLayout.addLayout(&mMediaLabelLayout, 0);
+    mLayout.addWidget(&mMediaViewer, 1);
 
-    // Temporary stretch
-    mLayout.addStretch(1);
 
     // Comments
     mpCommentsLabel = new QLabel(tr("Comments"), this);
     mpCommentsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mCommentsLabelLayout.addWidget(mpCommentsLabel, 0);
     mCommentsLabelLayout.addStretch(1);
-    mLayout.addLayout(&mCommentsLabelLayout);
+    //mLayout.addLayout(&mCommentsLabelLayout);
     mpComments = new QLabel(this);
     mpComments->setWordWrap(true);
-    mLayout.addWidget(mpComments);
+    mpCommentsLabel->setVisible(false);
+    mpComments->setVisible(false);
+    //mLayout.addWidget(mpComments);
 
     // Edit button
     mpEditButton = new QPushButton(tr("Edit infos"), this);
