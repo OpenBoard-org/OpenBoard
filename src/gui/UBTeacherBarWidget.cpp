@@ -746,37 +746,9 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
     mTitleDurationLayout.addWidget(mpDuration, 1);
     mLayout.addLayout(&mTitleDurationLayout, 0);
 
-    // Actions
-    mpActionsLabel = new QLabel(tr("Actions"), this);
-    mpActionsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
-    mActionLabelLayout.addWidget(mpActionsLabel, 0);
-    mActionLabelLayout.addStretch(1);
-    mpActionsLabel->setVisible(false);
-    //mLayout.addLayout(&mActionLabelLayout);
-
-    // Media
-    mpMediaLabel = new QLabel(tr("Medias"), this);
-    mpMediaLabel->setObjectName("UBTeacherBarPreviewSubtitle");
-    mMediaLabelLayout.addWidget(mpMediaLabel, 0);
-    mMediaLabelLayout.addStretch(1);
-    mpMediaLabel->setVisible(false);
-    //mLayout.addLayout(&mMediaLabelLayout, 0);
     mLayout.addWidget(&mMediaViewer, 1);
 
-    mpLinksLabel = new QLabel(tr("Links"), this);
-    mpLinksLabel->setObjectName("UBTeacherBarPreviewSubtitle");
-
-    // Comments
-    mpCommentsLabel = new QLabel(tr("Comments"), this);
-    mpCommentsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
-    mCommentsLabelLayout.addWidget(mpCommentsLabel, 0);
-    mCommentsLabelLayout.addStretch(1);
-    //mLayout.addLayout(&mCommentsLabelLayout);
-    mpComments = new QLabel(this);
-    mpComments->setWordWrap(true);
-    mpCommentsLabel->setVisible(false);
-    mpComments->setVisible(false);
-    //mLayout.addWidget(mpComments);
+    hideElements();
 
     // Edit button
     mpEditButton = new QPushButton(tr("Edit infos"), this);
@@ -880,6 +852,17 @@ void UBTeacherBarPreviewWidget::clean()
 
 void UBTeacherBarPreviewWidget::hideElements()
 {
+    mpActionsLabel = new QLabel(tr("Actions"), this);
+    mpActionsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
+    mpMediaLabel = new QLabel(tr("Media"), this);
+    mpMediaLabel->setObjectName("UBTeacherBarPreviewSubtitle");
+    mpCommentsLabel = new QLabel(tr("Comments"), this);
+    mpCommentsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
+    mpComments = new QLabel(this);
+    mpComments->setWordWrap(true);
+    mpLinksLabel = new QLabel(tr("Links"), this);
+    mpLinksLabel->setObjectName("UBTeacherBarPreviewSubtitle");
+
     mpActionsLabel->setVisible(false);
     mpMediaLabel->setVisible(false);
     mpCommentsLabel->setVisible(false);
@@ -945,10 +928,8 @@ UBTeacherBarPreviewMedia::~UBTeacherBarPreviewMedia()
 void UBTeacherBarPreviewMedia::cleanMedia()
 {
     foreach(QWidget* eachWidget, mWidgetList.keys()){
-        if(QString(eachWidget->metaObject()->className()).contains("UBDraggable")){
-            delete eachWidget;
-            eachWidget = NULL;
-        }
+        delete eachWidget;
+        eachWidget = NULL;
     }
     mWidgetList.clear();
 }

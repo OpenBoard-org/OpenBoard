@@ -133,9 +133,6 @@ private:
     QVBoxLayout mLayout;
     QHBoxLayout mEditLayout;
     QHBoxLayout mTitleDurationLayout;
-    QHBoxLayout mActionLabelLayout;
-    QHBoxLayout mMediaLabelLayout;
-    QHBoxLayout mCommentsLabelLayout;
     UBTeacherBarPreviewMedia mMediaViewer;
     QList<QWidget*> mWidgets;
 
