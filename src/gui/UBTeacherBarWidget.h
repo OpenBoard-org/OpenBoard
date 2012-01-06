@@ -87,12 +87,7 @@ public:
 private:
     UBWidgetList* mWidget;
     QVBoxLayout mLayout;
-
-protected:
-    void mousePressEvent(QMouseEvent *event);
-
-public slots:
-
+    QMap<QWidget*,QString>mWidgetList;
 };
 
 class UBUrlWidget : public QWidget

@@ -19,6 +19,7 @@
 #include "UBDrawingController.h"
 
 #include "frameworks/UBGeometryUtils.h"
+#include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBSettings.h"
 #include "core/UBMimeData.h"
@@ -33,8 +34,8 @@
 #include "gui/UBToolWidget.h"
 #include "gui/UBResources.h"
 #include "gui/UBMainWindow.h"
-#include "gui/UBTeacherBarWidget.h"
-
+#include "gui/UBMediaPlayer.h"
+#include "gui/UBThumbnailWidget.h"
 
 #include "board/UBBoardController.h"
 
@@ -44,9 +45,8 @@
 #include "domain/UBItem.h"
 
 #include "document/UBDocumentProxy.h"
-#include "../gui/UBThumbnailWidget.h"
 
-#include "frameworks/UBPlatformUtils.h"
+#include "customWidgets/UBDraggableLabel.h"
 
 #include "core/memcheck.h"
 
@@ -727,7 +727,7 @@ void
 UBBoardView::dropEvent (QDropEvent *event)
 {
     qDebug() << event->source();
-    if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBTeacherBarPreviewMedia *>(event->source()))
+    if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBDraggableMediaPlayer *>(event->source()) || dynamic_cast<UBDraggableLabel *>(event->source()))
     {
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction ();

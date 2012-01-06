@@ -15,6 +15,8 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 
+#include "customWidgets/UBDraggableLabel.h"
+
 #include "core/memcheck.h"
 
 UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
@@ -593,7 +595,6 @@ void UBTeacherBarDropMediaZone::reloadMedia(QStringList pList)
     foreach(QString eachString, pList){
         addMedia(eachString);
     }
-
 }
 
 void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
@@ -809,15 +810,11 @@ void UBTeacherBarPreviewWidget::setDuration(eDuration duration)
 UBTeacherBarPreviewMedia::UBTeacherBarPreviewMedia(QWidget* parent, const char* name) : QWidget(parent)
 {
     setObjectName(name);
-    setAcceptDrops(true);
     mWidget = new UBWidgetList(parent);
     mWidget->setEmptyText(tr("No media found"));
     mLayout.addWidget(mWidget);
     setLayout(&mLayout);
-    //TO TEST only
-//    QStringList mediaPathList;
-//    mediaPathList << "/home/claudio/Desktop/PIPPO.jpg";
-//    loadMedia(mediaPathList);
+    mWidgetList.clear();
 }
 
 UBTeacherBarPreviewMedia::~UBTeacherBarPreviewMedia()
@@ -830,28 +827,25 @@ UBTeacherBarPreviewMedia::~UBTeacherBarPreviewMedia()
 }
 
 
-// for test only
-QString tempString;
-
 void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
 {
+    foreach(QWidget* eachWidget, mWidgetList.keys())
+        delete eachWidget;
+    mWidgetList.clear();
     foreach(QString eachString, pMedias){
         if(!eachString.isEmpty()){
-            tempString = eachString;
             QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(eachString);
             if(mimeType.contains("image")){
-                QPixmap pix = QPixmap(eachString);
-                QLabel* label = new QLabel();
-                label->setPixmap(pix);
-                label->setScaledContents(true);
+                UBDraggableLabel* label = new UBDraggableLabel();
+                label->loadImage(eachString);
                 mWidget->addWidget(label);
- //               mWidgetList << label;
+                mWidgetList[label]=eachString;
             }
             else if(mimeType.contains("video") || mimeType.contains("audio")){
-                UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
+                UBDraggableMediaPlayer* mediaPlayer = new UBDraggableMediaPlayer();
                 mediaPlayer->setFile(eachString);
                 mWidget->addWidget(mediaPlayer);
- //               mWidgetList << mediaPlayer;
+                mWidgetList[mediaPlayer] = eachString;
             }
             else{
                 qWarning() << "pMediaPath" << eachString;
@@ -860,19 +854,3 @@ void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
         }
     }
 }
-
-void UBTeacherBarPreviewMedia::mousePressEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-    QMimeData *mimeData = new QMimeData;
-    QList<QUrl> urls;
-    urls << QUrl::fromLocalFile(tempString);
-    mimeData->setUrls(urls);
-    mimeData->setText(tempString);
-
-
-    QDrag *drag = new QDrag(this);
-    drag->setMimeData(mimeData);
-    drag->start();
-}
-

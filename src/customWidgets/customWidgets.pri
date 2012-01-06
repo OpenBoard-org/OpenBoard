@@ -1,5 +1,9 @@
 
-HEADERS      += src/customWidgets/UBWidgetList.h
+HEADERS      += src/customWidgets/UBWidgetList.h \
+    src/customWidgets/UBDraggableLabel.h
                 
-SOURCES      += src/customWidgets/UBWidgetList.cpp
+SOURCES      += src/customWidgets/UBWidgetList.cpp \
+    src/customWidgets/UBDraggableLabel.cpp
+
+
 

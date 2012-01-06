@@ -89,4 +89,16 @@ private:
     Phonon::Path m_audioOutputPath;
 };
 
+class UBDraggableMediaPlayer : public UBMediaPlayer
+{
+    Q_OBJECT
+public:
+    UBDraggableMediaPlayer();
+    void setFile(const QString &text);
+protected:
+    QString mSourcePath;
+    void mousePressEvent(QMouseEvent *event);
+};
+
+
 #endif // UBUBMediaPlayer_H
