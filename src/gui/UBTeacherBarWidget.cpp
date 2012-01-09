@@ -558,7 +558,8 @@ UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char
     mWidget->setEmptyText(tr("Drag media here ..."));
     mLayout.addWidget(mWidget);
     setLayout(&mLayout);
-
+    // The next line is disgusting. This is a quickfix that must be reworked later
+    setContentsMargins(-9, -9, -9, -9);
 }
 
 UBTeacherBarDropMediaZone::~UBTeacherBarDropMediaZone()
@@ -687,6 +688,7 @@ UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
     mpLabelLayout->addWidget(mpUrlLabel, 0);
     mpUrl = new QLineEdit(this);
     mpUrl->setObjectName("DockPaletteWidgetLineEdit");
+    mpUrl->setMinimumHeight(20);
     mpLabelLayout->addWidget(mpUrl, 1);
 
     mpTitleLayout = new QHBoxLayout(this);
@@ -694,6 +696,7 @@ UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
     mpTitleLayout->addWidget(mpTitleLabel,0);
     mpTitle = new QLineEdit(this);
     mpTitle->setObjectName("DockPaletteWidgetLineEdit");
+    mpTitle->setMinimumHeight(20);
     mpTitleLayout->addWidget(mpTitle,1);
 
     mpLayout->addLayout(mpTitleLayout);
@@ -782,6 +785,8 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
     mLayout.addLayout(&mTitleDurationLayout, 0);
 
     mLayout.addWidget(&mMediaViewer, 1);
+    // The next line is disgusting. This is a quickfix that must be reworked later
+    mMediaViewer.setContentsMargins(-9, -9, -9, -9);
 
     hideElements();
 

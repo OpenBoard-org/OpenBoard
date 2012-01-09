@@ -29,8 +29,9 @@ QLabel#UBTeacherBarPreviewTitle
 QLabel#UBTeacherBarPreviewSubtitle
 {
 	color: #555555;
-	font-size : 14px;
+	font-size : 15px;
 	font-weight:bold;
+	padding-top: 10px;
 }
 
 QWidget#UBLibWebView
