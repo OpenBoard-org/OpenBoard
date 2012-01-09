@@ -386,7 +386,7 @@ void UBTeacherBarWidget::loadContent()
             mpPreview->mediaViewer()->loadWidgets(widgetList,false);
             int loadedMedia = mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
             if(loadedMedia)
-                mpPreview->mediaLabel()->setVisible(true);
+                    mpPreview->mediaLabel()->setVisible(true);
         }
 
 

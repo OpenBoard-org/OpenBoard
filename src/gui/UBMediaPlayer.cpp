@@ -102,8 +102,8 @@ UBMediaPlayer::UBMediaPlayer() :
     vLayout->addWidget(&m_videoWindow);
 //    m_videoWidget->setStyleSheet(QString("background:red;"));
     QVBoxLayout *buttonPanelLayout = new QVBoxLayout();
-#ifdef Q_WS_MAC
-	m_videoWindow.hide();
+#ifndef Q_WS_WIN
+        m_videoWindow.hide();
 #endif
 //    buttonPanelLayout->addLayout(layout);
 
