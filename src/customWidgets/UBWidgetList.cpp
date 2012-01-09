@@ -53,7 +53,8 @@ void UBWidgetList::addWidget(QWidget *widget, bool isResizable)
 {
     if(NULL != mpLayout){
         mpEmptyLabel->setVisible(false);
-        mWidgetInfo[widget] = {widget->size(), isResizable};
+        sWidgetProperties properties = {widget->size(), isResizable};
+        mWidgetInfo[widget] = properties;
         qDebug() << __FUNCTION__ << "widget : " << widget << " widget->size () " << widget->size() << "  isResizable " << isResizable;
         updateView(size());
         mpLayout->addWidget(widget);
