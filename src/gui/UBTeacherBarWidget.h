@@ -107,9 +107,14 @@ public:
     void setUrl(const QString& url);
 
 private:
-    QHBoxLayout* mpLayout;
+    QVBoxLayout* mpLayout;
+    QHBoxLayout* mpLabelLayout;
+    QHBoxLayout* mpTitleLayout;
     QLabel* mpUrlLabel;
     QLineEdit* mpUrl;
+
+    QLabel* mpTitleLabel;
+    QLineEdit* mpTitle;
 };
 
 class UBActionPreview : public QWidget

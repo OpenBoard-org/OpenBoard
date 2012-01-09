@@ -91,12 +91,14 @@ int UBWidgetList::scaleWidgets(QSize pSize)
             newWidgetWidth = mWidgetInfo[eachWidget].width()/scaleFactor;
             result += newWidgetWidth;
         }
-        qDebug() << __PRETTY_FUNCTION__ << "widget " << &eachWidget;
+#ifndef Q_WS_WIN
+		qDebug() << __PRETTY_FUNCTION__ << "widget " << &eachWidget;
         qDebug() << __PRETTY_FUNCTION__ << "count " << count++;
         qDebug() << __PRETTY_FUNCTION__ << "widget orignal size " << mWidgetInfo[eachWidget];
         qDebug() << __PRETTY_FUNCTION__ << "containes size  " << pSize;
         qDebug() << __PRETTY_FUNCTION__ << "scale factor " << scaleFactor;
         qDebug() << __PRETTY_FUNCTION__ << "new height " << result;
+#endif 
     }
     return result;
 }
