@@ -119,7 +119,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpLayout->addLayout(mpActionLayout, 0);
 
     // Media
-    mpMediaLabel = new QLabel(tr("Media"), mpContainer);
+    mpMediaLabel = new QLabel(tr("Medias"), mpContainer);
     mpLayout->addWidget(mpMediaLabel, 0);
     mpDropMediaZone = new UBTeacherBarDropMediaZone(mpContainer);
     mpLayout->addWidget(mpDropMediaZone, 1);
@@ -380,7 +380,15 @@ void UBTeacherBarWidget::loadContent()
         }
 
         // Add the media
-        mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
+        if(nextInfos.medias.count() > 0){
+            QList<QWidget*> widgetList;
+            widgetList.append(mpPreview->mediaLabel());
+            mpPreview->mediaViewer()->loadWidgets(widgetList,false);
+            int loadedMedia = mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
+            if(loadedMedia)
+                mpPreview->mediaLabel()->setVisible(true);
+        }
+
 
         // Add the links
         if(!mUrlList.empty()){
@@ -879,8 +887,10 @@ void UBTeacherBarPreviewWidget::setComments(const QString &comments)
         mpComments->setVisible(true);
         mpCommentsLabel->setVisible(true);
         mWidgets << mpCommentsLabel;
+        mMediaViewer.loadWidgets(mWidgets, false);
+        mWidgets.clear();
         mWidgets << mpComments;
-        mMediaViewer.loadWidgets(mWidgets);
+        mMediaViewer.loadWidgets(mWidgets, true);
     }
 }
 
@@ -894,7 +904,7 @@ void UBTeacherBarPreviewWidget::hideElements()
 {
     mpActionsLabel = new QLabel(tr("Actions"), this);
     mpActionsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
-    mpMediaLabel = new QLabel(tr("Media"), this);
+    mpMediaLabel = new QLabel(tr("Medias"), this);
     mpMediaLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mpCommentsLabel = new QLabel(tr("Comments"), this);
     mpCommentsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
@@ -917,6 +927,8 @@ void UBTeacherBarPreviewWidget::setActions(QStringList actions)
         mWidgets.clear();
         mpActionsLabel->setVisible(true);
         mWidgets << mpActionsLabel;
+        mediaViewer()->loadWidgets(mWidgets,false);
+        mWidgets.clear();
         foreach(QString action, actions){
             QStringList desc = action.split(';');
             if(2 <= desc.size()){
@@ -928,7 +940,7 @@ void UBTeacherBarPreviewWidget::setActions(QStringList actions)
                 mWidgets << mpTmpAction;
             }
         }
-        mMediaViewer.loadWidgets(mWidgets);
+        mMediaViewer.loadWidgets(mWidgets, true);
     }
 }
 
@@ -938,12 +950,14 @@ void UBTeacherBarPreviewWidget::setLinks(QStringList links)
         mWidgets.clear();
         mpLinksLabel->setVisible(true);
         mWidgets << mpLinksLabel;
+        mMediaViewer.loadWidgets(mWidgets, false);
+        mWidgets.clear();
         foreach(QString link, links){
             mpTmpLink = new QLabel(link, this);
             mpTmpLink->setOpenExternalLinks(true);
             mWidgets << mpTmpLink;
         }
-        mMediaViewer.loadWidgets(mWidgets);
+        mMediaViewer.loadWidgets(mWidgets, true);
     }
 }
 
@@ -983,17 +997,18 @@ void UBTeacherBarPreviewMedia::cleanMedia()
     mWidgetList.clear();
 }
 
-void UBTeacherBarPreviewMedia::loadWidgets(QList<QWidget*> pWidgetsList)
+void UBTeacherBarPreviewMedia::loadWidgets(QList<QWidget*> pWidgetsList, bool isResizable)
 {
     foreach(QWidget*eachWidget, pWidgetsList){
-        mWidget->addWidget(eachWidget);
+        mWidget->addWidget(eachWidget,isResizable);
         mWidgetList[eachWidget]="DRAG UNAVAILABLE";
     }
 }
 
 
-void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
+int UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
 {
+    int addedMedia = 0;
     foreach(QString eachString, pMedias){
         if(!eachString.isEmpty()){
             QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(eachString);
@@ -1002,12 +1017,14 @@ void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
                 label->loadImage(eachString);
                 mWidget->addWidget(label);
                 mWidgetList[label]=eachString;
+                addedMedia += 1;
             }
             else if(mimeType.contains("video") || mimeType.contains("audio")){
                 UBDraggableMediaPlayer* mediaPlayer = new UBDraggableMediaPlayer();
                 mediaPlayer->setFile(eachString);
                 mWidget->addWidget(mediaPlayer);
                 mWidgetList[mediaPlayer] = eachString;
+                addedMedia += 1;
             }
             else{
                 qWarning() << "pMediaPath" << eachString;
@@ -1015,6 +1032,7 @@ void UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
             }
         }
     }
+    return addedMedia;
 }
 
 // -----------------------------------------------------------------------------------------------

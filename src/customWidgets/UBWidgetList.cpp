@@ -49,12 +49,12 @@ UBWidgetList::~UBWidgetList()
     }
 }
 
-void UBWidgetList::addWidget(QWidget *widget)
+void UBWidgetList::addWidget(QWidget *widget, bool isResizable)
 {
     if(NULL != mpLayout){
         mpEmptyLabel->setVisible(false);
-        mWidgetInfo[widget] = widget->size();
-        qDebug() << __FUNCTION__ << "widget->size () " << widget->size();
+        mWidgetInfo[widget] = {widget->size(), isResizable};
+        qDebug() << __FUNCTION__ << "widget : " << widget << " widget->size () " << widget->size() << "  isResizable " << isResizable;
         updateView(size());
         mpLayout->addWidget(widget);
     }
@@ -80,28 +80,45 @@ int UBWidgetList::scaleWidgets(QSize pSize)
     int result = -mListElementsSpacing;
     int count = 0;
     foreach(QWidget* eachWidget, mWidgetInfo.keys()){
-        qreal scaleFactor = 0;
-        int newWidgetWidth =  pSize.width();
-        int newWidgetHeight = pSize.height();
-        if(eWidgetListOrientation_Vertical == mOrientation){
-            scaleFactor = (float)mWidgetInfo[eachWidget].width() / (float)pSize.width();
-            newWidgetHeight = mWidgetInfo[eachWidget].height()/scaleFactor;
-            result += newWidgetHeight;
-            eachWidget->setMinimumHeight(newWidgetHeight);
+        if(mWidgetInfo[eachWidget].isResizable){
+            qreal scaleFactor = 0;
+            int newWidgetWidth =  pSize.width();
+            int newWidgetHeight = pSize.height();
+            if(eWidgetListOrientation_Vertical == mOrientation){
+                scaleFactor = (float)mWidgetInfo[eachWidget].size.width() / (float)pSize.width();
+                newWidgetHeight = mWidgetInfo[eachWidget].size.height()/scaleFactor;
+                result += newWidgetHeight;
+                eachWidget->setMinimumHeight(newWidgetHeight);
+                eachWidget->setMaximumHeight(newWidgetHeight + 1);
+            }
+            else{
+                scaleFactor =  (float)mWidgetInfo[eachWidget].size.height() / (float)pSize.height();
+                newWidgetWidth = mWidgetInfo[eachWidget].size.width()/scaleFactor;
+                result += newWidgetWidth;
+                eachWidget->setMinimumWidth(newWidgetWidth);
+                eachWidget->setMinimumWidth(newWidgetWidth+1);
+            }
+#ifndef Q_WS_WIN
+            qDebug() << __PRETTY_FUNCTION__ << "widget " << &eachWidget;
+            qDebug() << __PRETTY_FUNCTION__ << "count " << count++;
+            qDebug() << __PRETTY_FUNCTION__ << "widget orignal size " << mWidgetInfo[eachWidget].size;
+            qDebug() << __PRETTY_FUNCTION__ << "containes size  " << pSize;
+            qDebug() << __PRETTY_FUNCTION__ << "scale factor " << scaleFactor;
+            qDebug() << __PRETTY_FUNCTION__ << "new height " << result;
+#endif 
         }
         else{
-            scaleFactor =  (float)mWidgetInfo[eachWidget].height() / (float)pSize.height();
-            newWidgetWidth = mWidgetInfo[eachWidget].width()/scaleFactor;
-            result += newWidgetWidth;
+            if(eWidgetListOrientation_Vertical == mOrientation){
+                result += mWidgetInfo[eachWidget].size.height();
+                eachWidget->setMinimumHeight(mWidgetInfo[eachWidget].size.height());
+                eachWidget->setMaximumHeight(mWidgetInfo[eachWidget].size.height() + 1);
+            }
+            else{
+                result += mWidgetInfo[eachWidget].size.width();
+                eachWidget->setMinimumWidth(mWidgetInfo[eachWidget].size.width());
+                eachWidget->setMaximumWidth(mWidgetInfo[eachWidget].size.width() + 1);
+            }
         }
-#ifndef Q_WS_WIN
-		qDebug() << __PRETTY_FUNCTION__ << "widget " << &eachWidget;
-        qDebug() << __PRETTY_FUNCTION__ << "count " << count++;
-        qDebug() << __PRETTY_FUNCTION__ << "widget orignal size " << mWidgetInfo[eachWidget];
-        qDebug() << __PRETTY_FUNCTION__ << "containes size  " << pSize;
-        qDebug() << __PRETTY_FUNCTION__ << "scale factor " << scaleFactor;
-        qDebug() << __PRETTY_FUNCTION__ << "new height " << result;
-#endif 
         //Adding a vertical/horizontal space between each element of the list
         result += mListElementsSpacing;
     }
