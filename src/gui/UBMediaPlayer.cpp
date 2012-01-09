@@ -102,7 +102,9 @@ UBMediaPlayer::UBMediaPlayer() :
     vLayout->addWidget(&m_videoWindow);
 //    m_videoWidget->setStyleSheet(QString("background:red;"));
     QVBoxLayout *buttonPanelLayout = new QVBoxLayout();
-    m_videoWindow.hide();
+#ifdef Q_WS_MAC
+	m_videoWindow.hide();
+#endif
 //    buttonPanelLayout->addLayout(layout);
 
 //    timeLabel = new QLabel(this);
