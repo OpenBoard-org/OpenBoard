@@ -900,6 +900,7 @@ void UBTeacherBarPreviewWidget::hideElements()
     mpCommentsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mpComments = new QLabel(this);
     mpComments->setWordWrap(true);
+    mpComments->setObjectName("UBTeacherBarPreviewComments");
     mpLinksLabel = new QLabel(tr("Links"), this);
     mpLinksLabel->setObjectName("UBTeacherBarPreviewSubtitle");
 
@@ -1032,6 +1033,7 @@ UBActionPreview::UBActionPreview(QWidget *parent, const char *name):QWidget(pare
     mpContent->setObjectName("UBActionPreviewContent");
     mpContent->setWordWrap(true);
     mLayout.addWidget(mpContent);
+    setContentsMargins(-9, -9, -9, -9);
 }
 
 UBActionPreview::~UBActionPreview()
@@ -1052,12 +1054,12 @@ void UBActionPreview::setOwner(const QString &owner)
         switch(owner.toInt()){
             case eActionOwner_Teacher:
                 mpOwner->setText(tr("Teacher"));
-                mpContent->setStyleSheet("background:lightblue;");
+                mpContent->setStyleSheet("background:lightblue; border:lightblue;");
                 break;
 
             case eActionOwner_Student:
                 mpOwner->setText(tr("Student"));
-                mpContent->setStyleSheet("background:lightgreen;");
+                mpContent->setStyleSheet("background:lightgreen; border:lightgreen;");
                 break;
         }
     }

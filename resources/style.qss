@@ -44,14 +44,23 @@ QWidget#UBLibWebView
 QWidget#UBActionPreviewOwner
 {
 	color: #555555;
-	font-size : 10px;
-	font-weight:bold;
+	font-size : 12px;
+	font-weight: bold;
+}
+
+QWidget#UBTeacherBarPreviewComments
+{
+	border-radius: 10px;
+	border: white 2px solid;
+	padding: 5px 5px 5px 5px;
+	background-color: white;
 }
 
 QWidget#UBActionPreviewContent
 {
 	border-radius : 10px;
 	border: 2px solid;
+	padding: 5px 5px 5px 5px;
 }
 
 QWebView#SearchEngineView
