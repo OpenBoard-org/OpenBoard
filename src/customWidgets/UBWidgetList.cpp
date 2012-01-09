@@ -5,6 +5,7 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
   , mpLayout(NULL)
   , mpContainer(NULL)
   , mMargin(5)
+  , mListElementsSpacing(10)
   , mpEmptyLabel(NULL)
 {
    setObjectName(name);
@@ -75,7 +76,8 @@ void UBWidgetList::removeWidget(QWidget *widget)
 
 int UBWidgetList::scaleWidgets(QSize pSize)
 {
-    int result = 0;
+    // to remove the first spacing that shouldn't be there.
+    int result = -mListElementsSpacing;
     int count = 0;
     foreach(QWidget* eachWidget, mWidgetInfo.keys()){
         qreal scaleFactor = 0;
@@ -85,6 +87,7 @@ int UBWidgetList::scaleWidgets(QSize pSize)
             scaleFactor = (float)mWidgetInfo[eachWidget].width() / (float)pSize.width();
             newWidgetHeight = mWidgetInfo[eachWidget].height()/scaleFactor;
             result += newWidgetHeight;
+            eachWidget->setMinimumHeight(newWidgetHeight);
         }
         else{
             scaleFactor =  (float)mWidgetInfo[eachWidget].height() / (float)pSize.height();
@@ -99,6 +102,8 @@ int UBWidgetList::scaleWidgets(QSize pSize)
         qDebug() << __PRETTY_FUNCTION__ << "scale factor " << scaleFactor;
         qDebug() << __PRETTY_FUNCTION__ << "new height " << result;
 #endif 
+        //Adding a vertical/horizontal space between each element of the list
+        result += mListElementsSpacing;
     }
     return result;
 }

@@ -29,6 +29,8 @@ public:
     void setEmptyText(const QString& text);
     int margin();
     bool empty();
+    void setListElementSpacing(int margin) { mListElementsSpacing = margin; }
+    int listElementsSpacing() {return mListElementsSpacing; }
 
 protected:
     void resizeEvent(QResizeEvent* ev);
@@ -41,6 +43,7 @@ private:
     QWidget* mpContainer;
     eWidgetListOrientation mOrientation;
     int mMargin;
+    int mListElementsSpacing;
     QMap<QWidget*,QSize> mWidgetInfo;
     QLabel* mpEmptyLabel;
 };
