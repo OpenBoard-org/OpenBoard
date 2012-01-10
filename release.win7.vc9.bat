@@ -65,7 +65,7 @@ set INSTALLER_NAME=Open-Sankore
 
 set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 
-call "%INNO_EXE%" "Sankore.iss" /F"%INSTALLER_NAME%"
+call "%INNO_EXE%" "Sankore 3.1.iss" /F"%INSTALLER_NAME%"
 
 :EXIT_WITH_ERROR
 	echo ERROR
