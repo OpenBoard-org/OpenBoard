@@ -19,6 +19,8 @@
 #include "phonon/seekslider.h"
 #include "phonon/mediasource.h"
 #include "core/UB.h"
+#include "core/UBApplication.h"
+#include "board/UBBoardController.h"
 
 class UBGraphicsAudioItem : public UBGraphicsMediaItem
 {
@@ -39,6 +41,10 @@ public:
     virtual UBItem* deepCopy () const;
     virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
+    virtual void clearSource()
+    {
+        UBGraphicsMediaItem::clearSource();
+    }
 
 private slots:
 

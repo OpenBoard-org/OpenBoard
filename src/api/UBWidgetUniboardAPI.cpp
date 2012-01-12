@@ -34,8 +34,11 @@
 #include "adaptors/UBThumbnailAdaptor.h"
 
 #include "UBWidgetMessageAPI.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 #include "core/memcheck.h"
+
+const QString objectsPath = "objects";
 
 UBWidgetUniboardAPI::UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidgetItem *widget)
     : QObject(pScene)
@@ -433,14 +436,20 @@ void UBWidgetUniboardAPI::enableDropOnWidget()
     mGraphicsWidget->setAcceptDrops(true);
 }
 
-QString UBWidgetUniboardAPI::downloadUrl(QString objectUrl)
+QString UBWidgetUniboardAPI::downloadUrl(const QString &objectUrl, const QString &extention)
 {
-    qDebug() << "UBWidgetUniboardAPI : " << objectUrl;
+    QString result;
     QUrl widgetUrl = mGraphicsWidget->widgetWebView()->widgetUrl();
-    QString destFileName =widgetUrl.toString()+ "/objects/" + QUuid::createUuid().toString();
-    QFile(objectUrl).copy(destFileName);
-    qDebug() << "destFileName : " << destFileName;
-    return destFileName.remove(widgetUrl.toString());
+    QString destFileName =widgetUrl.toLocalFile() + "/objects/" + QUuid::createUuid().toString() + extention;
+
+    if (UBFileSystemUtils::copyFile(objectUrl, destFileName)) {
+        result = destFileName.remove(widgetUrl.toLocalFile());
+    } else {
+        qDebug() << "can't copy from " << widgetUrl << "to" << destFileName;
+        result = QString();
+    }
+
+    return result;
 }
 
 

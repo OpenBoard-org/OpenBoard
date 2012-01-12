@@ -122,7 +122,7 @@ void UBThumbnailWidget::refreshScene()
     if (mLabelsItems.size() > 0)
     {
         QFontMetrics fm(mLabelsItems.at(0)->font());
-        labelSpacing = UBSettings::thumbnailSpacing + fm.height();  // TODO UB 4.x where is 20 from ??? configure ?? compute based on mSpacing ?? JBA Is it the font height ?
+        labelSpacing = UBSettings::thumbnailSpacing + fm.height();  // TODO UB 4.x where is 20 from ??? configure ?? compute based on mSpacing ?? JBA Is it the font height?
     }
     nbColumns = qMax(nbColumns, 1);
 
@@ -383,11 +383,8 @@ void UBThumbnailWidget::mouseReleaseEvent(QMouseEvent *event)
     deleteLasso();
     QGraphicsView::mouseReleaseEvent(event);
 
-    if(elapsedTimeSincePress < STARTDRAGTIME)
-    {
-        if(!bSelectionInProgress)
-            emit mouseClick(itemAt(event->pos()), 0);
-        bSelectionInProgress = false;
+    if(elapsedTimeSincePress < STARTDRAGTIME) {
+        emit mouseClick(itemAt(event->pos()), 0);
     }
 }
 

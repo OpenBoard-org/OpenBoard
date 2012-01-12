@@ -80,6 +80,8 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         }
         virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
+        virtual void clearSource(){;}
+
     signals:
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 

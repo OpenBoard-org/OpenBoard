@@ -82,6 +82,20 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
     return UBGraphicsProxyWidget::itemChange(change, value);
 }
 
+void UBGraphicsMediaItem::clearSource()
+{
+    QString path = mediaFileUrl().path();
+
+    //if path is absolute clean duplicated path string
+    if (!path.contains(UBApplication::boardController->activeDocument()->persistencePath()))
+        path = UBApplication::boardController->activeDocument()->persistencePath() + "/" + path;
+
+    QFile f(path);
+    f.setPermissions(path, QFile::ReadOwner | QFile::WriteOwner);
+    f.remove();
+
+}
+
 void UBGraphicsMediaItem::toggleMute()
 {
     mMuted = !mMuted;

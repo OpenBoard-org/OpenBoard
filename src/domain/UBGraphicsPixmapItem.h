@@ -50,6 +50,7 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
         qreal opacity() const;
 
         virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate;}
+        virtual void clearSource(){;}
 
 protected:
 

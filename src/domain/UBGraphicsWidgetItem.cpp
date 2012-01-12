@@ -246,6 +246,10 @@ void UBGraphicsWidgetItem::removeScript()
         mWebKitWidget->page()->mainFrame()->evaluateJavaScript("if(widget && widget.onremove) { widget.onremove();}");
     }
 }
+QString UBGraphicsWidgetItem::downloadUrl(const QString &fileUrl, const QString &extention)
+{
+    return mUniboardAPI->downloadUrl(fileUrl, extention);
+}
 
 UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
     : UBGraphicsWidgetItem(parent)

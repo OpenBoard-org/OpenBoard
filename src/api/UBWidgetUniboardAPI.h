@@ -27,26 +27,25 @@ class UBWidgetMessageAPI;
 class UBDatastoreAPI;
 class UBDocumentDatastoreAPI;
 
-
 class UBWidgetUniboardAPI : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     /**
      * The number of pages in the current document
      */
-    Q_PROPERTY(int pageCount READ pageCount SCRIPTABLE true);
+    Q_PROPERTY(int pageCount READ pageCount SCRIPTABLE true)
 
     /**
      * The page number of the current page
      */
-    Q_PROPERTY(int currentPageNumber READ currentPageNumber SCRIPTABLE true);
+    Q_PROPERTY(int currentPageNumber READ currentPageNumber SCRIPTABLE true)
 
     /**
      * instance UUID, return a unique identifier for the widget, this value is guaranted to be unique
      * and constant for a widget, deprecated, use window.widget.uuid instead
      */
-    Q_PROPERTY(QString uuid READ uuid SCRIPTABLE true);
+    Q_PROPERTY(QString uuid READ uuid SCRIPTABLE true)
 
     /**
      * Returns the language and eventually the country of this locale as a string of the form
@@ -63,11 +62,11 @@ class UBWidgetUniboardAPI : public QObject
      * fr-FR
      *
      */
-    Q_PROPERTY(QString lang READ lang SCRIPTABLE true);
+    Q_PROPERTY(QString lang READ lang SCRIPTABLE true)
 
-    Q_PROPERTY(QObject* messages READ messages SCRIPTABLE true);
+    Q_PROPERTY(QObject* messages READ messages SCRIPTABLE true)
 
-    Q_PROPERTY(QObject* datastore READ datastore SCRIPTABLE true);
+    Q_PROPERTY(QObject* datastore READ datastore SCRIPTABLE true)
 
     public:
 
@@ -245,7 +244,7 @@ class UBWidgetUniboardAPI : public QObject
          * When an object is dropped on a widget, this one send us the informations to download it locally.
          * this method download the object on the widget directory and return the path of the downloaded object
          */
-        QString downloadUrl(QString objectUrl);
+        QString downloadUrl(const QString &objectUrl, const QString &extention = "");
 
     private:
 
@@ -272,13 +271,13 @@ class UBWidgetUniboardAPI : public QObject
 
 class UBDatastoreAPI : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
-    Q_PROPERTY(QObject* document READ document SCRIPTABLE true);
+    Q_PROPERTY(QObject* document READ document SCRIPTABLE true)
 
     public:
         UBDatastoreAPI(UBGraphicsW3CWidgetItem *widget);
-        virtual ~UBDatastoreAPI(){};
+        virtual ~UBDatastoreAPI(){;}
 
         QObject* document();
 
@@ -291,7 +290,7 @@ class UBDatastoreAPI : public QObject
 
 class UBDocumentDatastoreAPI : public UBW3CWebStorage
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBDocumentDatastoreAPI(UBGraphicsW3CWidgetItem *graphicsWidget);

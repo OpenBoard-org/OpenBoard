@@ -16,6 +16,9 @@
 #include "UBCoreGraphicsScene.h"
 
 #include "core/memcheck.h"
+#include "domain/UBGraphicsAudioItem.h"
+#include "domain/UBGraphicsVideoItem.h"
+#include "domain/UBGraphicsMediaItem.h"
 
 UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
     : QGraphicsScene ( parent  )
@@ -58,6 +61,20 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
 {
     if(mItemsToDelete.contains(item))
     {
+        UBGraphicsItem* item_casted = 0;
+        switch (item->type())
+        {
+        case UBGraphicsAudioItem::Type:
+                item_casted = dynamic_cast<UBGraphicsAudioItem*>(item);
+                break;
+        case UBGraphicsVideoItem::Type:
+                item_casted = dynamic_cast<UBGraphicsVideoItem*>(item);
+                break;
+        }
+
+        if (0 != item_casted)
+            item_casted->clearSource();
+
         mItemsToDelete.remove(item);
         delete item;
         return true;

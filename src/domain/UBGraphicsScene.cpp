@@ -1442,12 +1442,10 @@ void UBGraphicsScene::deselectAllItems()
     }
 }
 
-
 bool UBGraphicsScene::isEmpty() const
 {
     return mItemCount == 0;
 }
-
 
 QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool pAdaptTransformation, bool pExpand)
 {

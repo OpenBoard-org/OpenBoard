@@ -18,6 +18,8 @@
 #include "UBGraphicsProxyWidget.h"
 #include <phonon/AudioOutput>
 #include <phonon/MediaObject>
+#include "core/UBApplication.h"
+#include "board/UBBoardController.h"
 
 
 class UBGraphicsMediaItem : public UBGraphicsProxyWidget
@@ -64,6 +66,8 @@ public slots:
 protected:
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+    virtual void clearSource();
 
     Phonon::MediaObject *mMediaObject;
     Phonon::AudioOutput *mAudioOutput;

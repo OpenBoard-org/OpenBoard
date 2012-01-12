@@ -362,6 +362,7 @@ void UBSettings::init()
     podcastPublishToIntranet = new UBSetting(this, "IntranetPodcast", "PublishToIntranet", false);
     intranetPodcastPublishingUrl = new UBSetting(this, "IntranetPodcast", "PublishingUrl", "");
     intranetPodcastAuthor = new UBSetting(this, "IntranetPodcast", "Author", "");
+
 }
 
 

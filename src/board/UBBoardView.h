@@ -22,6 +22,7 @@
 class UBBoardController;
 class UBAppleWidget;
 class UBGraphicsScene;
+class UBGraphicsWidgetItem;
 
 class UBBoardView : public QGraphicsView
 {
@@ -87,6 +88,8 @@ class UBBoardView : public QGraphicsView
         }
 
         QList<QUrl> processMimeData(const QMimeData* pMimeData);
+        QString processMimeData(const QMimeData *pMimeData, UBGraphicsWidgetItem *widget);
+        bool isDropableData(const QMimeData *pMimeData);
 
         UBBoardController* mController;
 
@@ -113,6 +116,8 @@ class UBBoardView : public QGraphicsView
         bool isAbsurdPoint(QPoint point);
 
 		bool mVirtualKeyboardActive;
+        QString typeForExtention(const QString &extention);
+        QString fileExtention(const QString &filename);
 
     private slots:
 

@@ -15,6 +15,7 @@
 #include "UBBoardView.h"
 
 #include <QtGui>
+#include <QtXml>
 
 #include "UBDrawingController.h"
 
@@ -47,6 +48,24 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/memcheck.h"
+
+
+//Known extentions for files, add if you know more supported
+const QString audioExtentions = ".mp3.wma.ogg";
+const QString videoExtentions = ".avi.flv";
+const QString imageExtentions = ".png.jpg.tif.bmp.tga";
+const QString htmlExtentions = ".htm.html.xhtml";
+
+//Allways use aliases instead of const char* itself
+const QString imageAlias = "image";
+const QString videoAlias = "video";
+const QString audioAlias = "audio";
+const QString htmlAlias = "html";
+
+//Xml tag names
+const QString tMainSection = "mimedata";
+const QString tType = "type";
+const QString tPath = "path";
 
 UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 : QGraphicsView (pParent)
@@ -720,64 +739,93 @@ void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
     if (graphicsWidget && graphicsWidget->acceptDrops()){
-        QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
-        QDragMoveEvent newEvent(newPoint, event->dropAction(), event->mimeData(), event->mouseButtons(), event->keyboardModifiers());
-        QApplication::sendEvent(graphicsWidget->widgetWebView(),&newEvent);
-        return;
+        if (isDropableData(event->mimeData())) {
+            QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
+            QDragMoveEvent newEvent(newPoint, event->dropAction(), event->mimeData(), event->mouseButtons(), event->keyboardModifiers());
+            QApplication::sendEvent(graphicsWidget->widgetWebView(),&newEvent);
+        } else {
+            event->ignore();
+        }
+    } else {
+        event->acceptProposedAction();
     }
-
-    event->acceptProposedAction();
 }
 
-QList<QUrl> UBBoardView::processMimeData(const QMimeData* pMimeData)
+QString UBBoardView::processMimeData(const QMimeData *pMimeData, UBGraphicsWidgetItem *widget)
 {
-    QList<QUrl> result;
-    if(pMimeData->hasHtml())
-    {
-        QString qsHtml = pMimeData->html();
-        result.append(QUrl(UBApplication::urlFromHtml(qsHtml)));
-    }
+    QString mimeXml;
+    QXmlStreamWriter writer(&mimeXml);
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+    writer.writeStartElement(tMainSection);
 
-    if (pMimeData->hasUrls())
-    {
-        result.append(pMimeData->urls());
-        return result;
-    }
+    if (pMimeData->hasUrls()) {
+        QList<QUrl> urls = pMimeData->urls();
 
-    if (pMimeData->hasImage())
-    {
-        qWarning() << "Not supported yet";
-    }
-
-    if (pMimeData->hasText())
-    {
-        if("" != pMimeData->text()){
-            // Sometimes, it is possible to have an URL as text. we check here if it is the case
-            QString qsTmp = pMimeData->text().remove(QRegExp("[\\0]"));
-            if(qsTmp.startsWith("http")){
-                result.append(QUrl(qsTmp));
-            }
-            else{
-                qWarning() << "what to do with this : " << pMimeData->text();
-                //mActiveScene->addText(pMimeData->text(), pPos);
-            }
+        QString ext = fileExtention(urls.at(0).toLocalFile());
+        if (ext.isNull()) {
+            qDebug() << "unknown file type";
+            return QString();
         }
-        else{
-#ifdef Q_WS_MACX
-                //  With Safari, in 95% of the drops, the mime datas are hidden in Apple Web Archive pasteboard type.
-                //  This is due to the way Safari is working so we have to dig into the pasteboard in order to retrieve
-                //  the data.
-                QString qsUrl = UBPlatformUtils::urlFromClipboard();
-                if("" != qsUrl){
-                    // We finally got the url of the dropped ressource! Let's import it!
-                    result.append(QUrl(qsUrl));
-                }
-#endif
+        QString fileType = typeForExtention(ext);
+        if (fileType.isNull()) {
+            qDebug() << "unknown extention";
+            return QString();
         }
+
+        //writing type of element
+        writer.writeTextElement(tType, fileType);
+
+        QString fileName = urls.at(0).toLocalFile();
+        QString destName = widget->downloadUrl(fileName, ext);
+
+        if (destName.isNull()) {
+            qDebug() << "error at creating destination folder";
+            return QString();
+        }
+
+        //writing path to created object
+        writer.writeTextElement(tPath, destName);
     }
+
+    writer.writeEndElement();
+    writer.writeEndDocument();
+
+    return mimeXml;
+}
+
+QString UBBoardView::fileExtention(const QString &filename)
+{
+    int pos = filename.lastIndexOf(".");
+    if (pos != -1)
+        return filename.right(filename.size() - pos);
+    else
+        return QString();
+}
+QString UBBoardView::typeForExtention(const QString &extention)
+{
+    QString result = QString();
+
+    if (audioExtentions.contains(extention)) {
+        result = audioAlias;
+    } else if (videoExtentions.contains(extention)) {
+        result = videoAlias;
+    } else if (imageExtentions.contains(extention)) {
+        result = imageAlias;
+    } else if (htmlExtentions.contains(extention)) {
+        result = htmlAlias;
+    }
+
     return result;
 }
+bool UBBoardView::isDropableData(const QMimeData *pMimeData)
+{
+    if (pMimeData->hasUrls())
+        if (!typeForExtention(fileExtention(pMimeData->urls().at(0).toLocalFile())).isNull())
+            return true;
 
+    return false;
+}
 
 void UBBoardView::dropEvent (QDropEvent *event)
 {
@@ -785,21 +833,18 @@ void UBBoardView::dropEvent (QDropEvent *event)
     QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
-    bool acceptDrops(false);
-    if (graphicsWidget) {
-        acceptDrops = graphicsWidget->acceptDrops();
-        graphicsWidget->setAcceptDrops(true);
-    }
     if (graphicsWidget && graphicsWidget->acceptDrops()){
         // A new event is build to avoid problem related to different way to pass the mime type
         // A parsing is done to try to provide a mimeType with only urls.
         QMimeData mimeData;
-        mimeData.setData("Text",processMimeData(event->mimeData()).at(0).toString().toAscii());
+        QString str = processMimeData(event->mimeData(), graphicsWidget);
+        mimeData.setData("text/plain", str.toAscii());
         QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
         QDropEvent cleanedEvent(newPoint, event->dropAction(), &mimeData, event->mouseButtons(), event->keyboardModifiers());
         QApplication::sendEvent(graphicsWidget->widgetWebView(),&cleanedEvent);
         cleanedEvent.acceptProposedAction();
         event->acceptProposedAction();
+
         return;
     }
     if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()))

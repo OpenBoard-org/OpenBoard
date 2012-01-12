@@ -18,6 +18,8 @@
 #include <phonon/VideoWidget>
 #include "UBGraphicsMediaItem.h"
 #include "core/UB.h"
+#include "core/UBApplication.h"
+#include "board/UBBoardController.h"
 
 class UBGraphicsVideoItem : public UBGraphicsMediaItem
 {
@@ -42,6 +44,10 @@ public:
     }
     virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
+    virtual void clearSource()
+    {
+        UBGraphicsMediaItem::clearSource();
+    }
 
 public slots:
     void hasVideoChanged(bool hasVideo);

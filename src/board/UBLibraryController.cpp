@@ -649,7 +649,7 @@ QRectF UBLibraryController::visibleSceneRect()
 
 void UBLibraryController::addImagesToCurrentPage(const QList<QUrl>& images)
 {
-    QPointF pos = visibleSceneRect().topLeft();
+    QPointF pos = visibleSceneRect().center();
 
     foreach(const QUrl url, images)
     {

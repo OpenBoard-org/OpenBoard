@@ -105,6 +105,7 @@ public:
 
     virtual void remove() = 0;
 
+    virtual void clearSource(){;}
 };
 
 #endif // UBITEM_H

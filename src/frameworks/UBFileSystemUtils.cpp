@@ -54,6 +54,28 @@ bool UBFileSystemUtils::isAZipFile(QString &filePath)
    return result;
 }
 
+bool UBFileSystemUtils::copyFile(const QString &source, const QString &Destination, bool overwrite)
+{
+    if (!QFile::exists(source)) {
+        qDebug() << "file" << source << "does not present in fs";
+        return false;
+    }
+    if (QFile::exists(Destination)) {
+        if  (QFileInfo(Destination).isFile() && overwrite) {
+            QFile::remove(Destination);
+        }
+    } else {
+        int pos = Destination.lastIndexOf(QDir::separator());
+        if (pos != -1) {
+            QString newpath = Destination.left(pos);
+            if (!QDir().mkpath(newpath)) {
+                qDebug() << "can't create a new path at " << newpath;
+            }
+        }
+    }
+    return QFile::copy(source, Destination);
+}
+
 QString UBFileSystemUtils::defaultTempDirPath()
 {
     return QDesktopServices::storageLocation(QDesktopServices::TempLocation) + "/" + defaultTempDirName();

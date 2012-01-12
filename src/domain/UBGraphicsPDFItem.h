@@ -50,6 +50,8 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
         virtual UBGraphicsPixmapItem* toPixmapItem() const;
         virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
+        virtual void clearSource(){;}
+
     protected:
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

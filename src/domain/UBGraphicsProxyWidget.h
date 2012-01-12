@@ -43,6 +43,8 @@ class UBGraphicsProxyWidget: public QGraphicsProxyWidget, public UBItem, public 
 
         virtual UBGraphicsItemDelegate* Delegate() const { return mDelegate;}
 
+        virtual void clearSource(){;}
+
     protected:
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

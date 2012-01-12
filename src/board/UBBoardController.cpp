@@ -1221,7 +1221,7 @@ void UBBoardController::ClearUndoStack()
     while (itUniq.hasNext())
     {
         QGraphicsItem* item = itUniq.next();
-        UBGraphicsScene *scene = (UBGraphicsScene*)item->scene();
+        UBGraphicsScene *scene = dynamic_cast<UBGraphicsScene*>(item->scene());
         if(!scene)
         {
             mActiveScene->deleteItem(item);
@@ -1365,14 +1365,12 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
     }
 }
 
-
 void UBBoardController::closing()
 {
     mIsClosing = true;
-
+    ClearUndoStack();
     lastWindowClosed();
 }
-
 
 void UBBoardController::lastWindowClosed()
 {

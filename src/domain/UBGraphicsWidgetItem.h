@@ -66,8 +66,10 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
 
         virtual void remove();
         void removeScript();
+        QString downloadUrl(const QString &fileUrl, const QString &extention);
 
 
+        virtual void clearSource(){;}
 
     protected:
 

@@ -65,6 +65,8 @@ class UBFileSystemUtils
 
         static bool isAZipFile(QString &filePath);
 
+        static bool copyFile(const QString &source, const QString &Destination, bool overwrite = false);
+
         /**
          * Compress a source directory in a zip file.
          * @arg pDir the directory to add in zip
