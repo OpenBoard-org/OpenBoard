@@ -88,8 +88,8 @@ class UBTeacherBarPreviewMedia : public QWidget
 public:
     UBTeacherBarPreviewMedia(QWidget* parent=0, const char* name="UBTeacherBarPreviewMedia");
     ~UBTeacherBarPreviewMedia();
-    void loadMedia(QStringList pMedias);
-    void loadWidgets(QList<QWidget*> pWidgetList);
+    int loadMedia(QStringList pMedias);
+    void loadWidgets(QList<QWidget*> pWidgetList, bool isResizable = true);
     void cleanMedia();
 
 private:
@@ -147,6 +147,7 @@ public:
     void setActions(QStringList actions);
     void setLinks(QStringList links);
     void clean();
+    QLabel* mediaLabel() { return mpMediaLabel;}
 
 signals:
     void showEditMode();
