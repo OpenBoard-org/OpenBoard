@@ -185,7 +185,7 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
 
                         if (width == 1024 && height == 768) // move from 1024/768 to 1280/960
                         {
-                            docSize = UBSettings::settings()->defaultDocumentSize;
+                            docSize = UBSettings::settings()->pageSize->get().toSize();
                         }
 
                         metadata.insert(UBSettings::documentSize, QVariant(docSize));

@@ -57,8 +57,6 @@ class XPDFRenderer : public PDFRenderer
 
         SplashBitmap* mpSplashBitmap;
         SplashOutputDev* mSplash;
-        qreal mScaleX;
-        qreal mScaleY;
 };
 
 #endif // XPDFRENDERER_H

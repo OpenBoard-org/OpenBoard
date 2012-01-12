@@ -1589,6 +1589,8 @@ void UBBoardController::setPageSize(QSize newSize)
         updatePageSizeState();
         adjustDisplayViews();
         mActiveDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+
+        UBSettings::settings()->pageSize->set(newSize);
     }
 }
 

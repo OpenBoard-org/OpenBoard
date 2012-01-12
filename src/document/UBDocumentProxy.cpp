@@ -48,7 +48,7 @@ void UBDocumentProxy::init()
 
     setUuid(QUuid::createUuid());
 
-    setDefaultDocumentSize(UBSettings::settings()->defaultDocumentSize);
+    setDefaultDocumentSize(UBSettings::settings()->pageSize->get().toSize());
 }
 
 
@@ -162,7 +162,7 @@ QSize UBDocumentProxy::defaultDocumentSize() const
     if (mMetaDatas.contains(UBSettings::documentSize))
         return metaData(UBSettings::documentSize).toSize();
     else
-        return UBSettings::settings()->defaultDocumentSize;
+        return UBSettings::settings()->pageSize->get().toSize();
 }
 
 void UBDocumentProxy::setDefaultDocumentSize(QSize pSize)

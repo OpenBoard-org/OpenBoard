@@ -39,8 +39,6 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
 
     mDocument = new PDFDoc(new GString(filename.toUtf8().data()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
     sInstancesCount.ref();
-    mScaleX = 0.0;
-    mScaleY = 0.0;
 }
 
 XPDFRenderer::~XPDFRenderer()
@@ -114,16 +112,17 @@ QSizeF XPDFRenderer::pageSizeF(int pageNumber) const
     {
         int rotate = mDocument->getPageRotate(pageNumber);
 
-        cropWidth = mDocument->getPageCropWidth(pageNumber);
-        cropHeight = mDocument->getPageCropHeight(pageNumber);
+		cropWidth = mDocument->getPageCropWidth(pageNumber) * this->dpiForRendering / 72.0;
+        cropHeight = mDocument->getPageCropHeight(pageNumber) * this->dpiForRendering / 72.0;
 
-        if ((rotate == 90) || (rotate == 270))
+        if (rotate == 90 || rotate == 270)
         {
-            cropWidth = mDocument->getPageCropHeight(pageNumber);
-            cropHeight = mDocument->getPageCropWidth(pageNumber);
+            //switching width and height
+			qreal tmpVar = cropWidth;
+			cropWidth = cropHeight;
+			cropHeight = tmpVar;
         }
     }
-
     return QSizeF(cropWidth, cropHeight);
 }
 
@@ -142,14 +141,6 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
     {
         qreal xscale = p->worldTransform().m11();
         qreal yscale = p->worldTransform().m22();
-        bool bZoomChanged = false;
-
-        if(fabs(mScaleX - xscale) > 0.1 || fabs(mScaleY - yscale) > 0.1)
-        {
-            mScaleX = xscale;
-            mScaleY = yscale;
-            bZoomChanged = true;
-        }
 
         QImage *pdfImage = createPDFImage(pageNumber, xscale, yscale, bounds);
         QTransform savedTransform = p->worldTransform();
@@ -162,7 +153,6 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
 
 QImage* XPDFRenderer::createPDFImage(int pageNumber, const qreal xscale, const qreal yscale, const QRectF &bounds)
 {
-    QImage* img = new QImage();
     if (isValid())
     {
         SplashColor paperColor = {0xFF, 0xFF, 0xFF}; // white
@@ -170,36 +160,30 @@ QImage* XPDFRenderer::createPDFImage(int pageNumber, const qreal xscale, const q
             delete mSplash;
         mSplash = new SplashOutputDev(splashModeRGB8, 1, gFalse, paperColor);
         mSplash->startDoc(mDocument->getXRef());
-        int hResolution = 72;
-        int vResolution = 72;
         int rotation = 0; // in degrees (get it from the worldTransform if we want to support rotation)
         GBool useMediaBox = gFalse;
         GBool crop = gTrue;
         GBool printing = gFalse;
-        const qreal xScale = xscale;
-        const qreal yScale = yscale;
         mSliceX = 0.;
         mSliceY = 0.;
 
         if (bounds.isNull())
         {
-            mDocument->displayPage(mSplash, pageNumber, hResolution * xScale, vResolution * yScale,
+			mDocument->displayPage(mSplash, pageNumber, this->dpiForRendering, this->dpiForRendering,
                                    rotation, useMediaBox, crop, printing);
         }
         else
         {
-            mSliceX = bounds.x() * xScale;
-            mSliceY = bounds.y() * yScale;
-            qreal sliceW = bounds.width() * xScale;
-            qreal sliceH = bounds.height() * yScale;
+            mSliceX = bounds.x() * xscale;
+            mSliceY = bounds.y() * yscale;
+            qreal sliceW = bounds.width() * xscale;
+            qreal sliceH = bounds.height() * yscale;
 
-            mDocument->displayPageSlice(mSplash, pageNumber, hResolution * xScale, vResolution * yScale,
+            mDocument->displayPageSlice(mSplash, pageNumber, this->dpiForRendering, this->dpiForRendering,
                                         rotation, useMediaBox, crop, printing, mSliceX, mSliceY, sliceW, sliceH);
         }
 
         mpSplashBitmap = mSplash->getBitmap();
-        delete img;
-        img = new QImage(mpSplashBitmap->getDataPtr(), mpSplashBitmap->getWidth(), mpSplashBitmap->getHeight(), mpSplashBitmap->getWidth() * 3, QImage::Format_RGB888);
     }
-    return img;
+    return new QImage(mpSplashBitmap->getDataPtr(), mpSplashBitmap->getWidth(), mpSplashBitmap->getHeight(), mpSplashBitmap->getWidth() * 3, QImage::Format_RGB888);
 }

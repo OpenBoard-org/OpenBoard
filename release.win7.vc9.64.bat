@@ -16,7 +16,7 @@ REM ---------------------------------------------------------------------
 set QT_DIR=..\Qt-sankore3.1
 set QT_BIN=%QT_DIR%\bin
 
-set PROGRAMS_FILE_PATH=C:\Program Files
+set PROGRAMS_FILE_PATH=C:\Program Files (x86)
 
 set GIT_BIN=%PROGRAMS_FILE_PATH%\Git\bin
 set VS_BIN=%PROGRAMS_FILE_PATH%\Microsoft Visual Studio 9.0\VC\bin

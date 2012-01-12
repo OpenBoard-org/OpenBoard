@@ -29,8 +29,12 @@ UBSetting::UBSetting(UBSettings* parent) :
 
 UBSetting::UBSetting(UBSettings* owner, const QString& pDomain, const QString& pKey,
         const QVariant& pDefaultValue) :
-    QObject(owner), mOwner(owner), mDomain(pDomain), mKey(pKey), mPath(
-            pDomain + "/" + pKey), mDefaultValue(pDefaultValue)
+    QObject(owner), 
+        mOwner(owner), 
+        mDomain(pDomain), 
+        mKey(pKey), 
+        mPath(pDomain + "/" + pKey), 
+        mDefaultValue(pDefaultValue)
 {
     //NOOP
 }

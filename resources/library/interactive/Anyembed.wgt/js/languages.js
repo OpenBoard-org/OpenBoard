@@ -9,4 +9,3 @@ var sankoreLang = {
         "embed": "Intégrer"
     }
 };
-

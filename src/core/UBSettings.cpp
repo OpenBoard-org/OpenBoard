@@ -188,6 +188,9 @@ void UBSettings::init()
 
     softwareHomeUrl = productWebUrl->get().toString();
 
+    documentSizes.insert(DocumentSizeRatio::Ratio4_3, QSize(1280, 960)); // 1.33
+    documentSizes.insert(DocumentSizeRatio::Ratio16_9, QSize((960 / 9 * 16), 960)); // 1.77
+
     appToolBarPositionedAtTop = new UBSetting(this, "App", "ToolBarPositionedAtTop", true);
     appToolBarDisplayText = new UBSetting(this, "App", "ToolBarDisplayText", true);
     appEnableAutomaticSoftwareUpdates = new UBSetting(this, "App", "EnableAutomaticSoftwareUpdates", true);
@@ -216,6 +219,8 @@ void UBSettings::init()
     boardKeyboardPaletteKeyBtnSize = new UBSetting(this, "Board", "KeyboardPaletteKeyBtnSize", "16x16");
     ValidateKeyboardPaletteKeyBtnSize();
 
+    pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
+    
     QStringList penLightBackgroundColors;
     penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A";
     boardPenLightBackgroundColors = new UBColorListSetting(this, "Board", "PenLightBackgroundColors", penLightBackgroundColors, 1.0);
@@ -310,11 +315,6 @@ void UBSettings::init()
 
     boardShowToolsPalette = new UBSetting(this, "Board", "ShowToolsPalette", "false");
 
-    documentSizes.insert(DocumentSizeRatio::Ratio4_3, QSize(1280, 960)); // 1.33
-    documentSizes.insert(DocumentSizeRatio::Ratio16_9, QSize((960 / 9 * 16), 960)); // 1.77
-
-    defaultDocumentSize = documentSizes.value(DocumentSizeRatio::Ratio4_3);
-
     svgViewBoxMargin = new UBSetting(this, "SVG", "ViewBoxMargin", "50");
 
     pdfMargin = new UBSetting(this, "PDF", "Margin", "20");
@@ -372,7 +372,7 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
     {
         sAppSettings->setValue(key, defaultValue);
     }
-
+    
     return mUserSettings->value(key, sAppSettings->value(key, defaultValue));
 }
 

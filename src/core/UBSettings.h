@@ -266,7 +266,7 @@ class UBSettings : public QObject
 
         QMap<DocumentSizeRatio::Enum, QSize> documentSizes;
 
-        QSize defaultDocumentSize;
+        //QSize defaultDocumentSize;
 
         UBSetting* svgViewBoxMargin;
         UBSetting* pdfMargin;
@@ -310,6 +310,8 @@ class UBSettings : public QObject
 
         UBSetting* communityUser;
         UBSetting* communityPsw;
+
+        UBSetting* pageSize;
 
         /*
         static int navigPaletteWidth;

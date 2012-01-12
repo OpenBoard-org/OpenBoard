@@ -1,0 +1,148 @@
+body{
+    width: 100%;
+    padding: 0;
+    height: auto;
+    background-color: white;
+    margin: 0;
+}
+
+.disclaimer{
+    width: 90%;
+    height: 50px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 0px;
+    padding: 5px;
+    text-align: center;
+    background-color: #BBBBBB;
+    -webkit-border-top-left-radius: 15px;
+    -webkit-border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border: solid 4px #EEEEEE;
+    border-bottom: none;
+    z-index: 10;
+}
+
+.search{
+    width: 90%;    
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-top: 0px;
+    padding: 5px;
+    background-color: #BBBBBB;
+    -webkit-border-bottom-left-radius: 15px;
+    -webkit-border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border: solid 4px #EEEEEE;
+    border-top: none;
+    z-index: 10;
+}
+
+.togglePages{
+    padding: 0;
+    position: absolute;
+    bottom: -14px;
+    left: 43%;
+    width: 15%;
+    height: 10px;
+    background-color: #666;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -webkit-box-shadow: #dadada -1px 0 4px;
+    box-shadow: #dadada -1px 0 4px;
+    cursor: pointer;
+}
+
+.toggleIcon{
+    width: 14px;
+    height: 10px;
+    background-image: url(../images/trgUp.png);
+}
+
+.searchInput{
+    margin: 10px 5px 10px 5px;
+    padding: 2px;
+    padding-left: 8px;
+    padding-right:8px;
+    float: left;
+    width: 60%;
+    border-radius: 15px;
+    border-style: none;
+}
+
+.searchButton{
+    width: 32px;
+    height: 32px;
+    margin: 5px 5px;
+    background-image: url(../images/search.png);
+    float: left;
+    cursor: pointer;
+}
+
+.subSearch{
+    margin: 0;
+    float: left;    
+}
+
+#subSearchInput{
+    width: 100%;
+    float: left;
+}
+
+.searchResult{
+    width: 98%;
+    padding: 3px;
+    background-color:#123456;
+}
+
+.videoContainer{
+    float: left;
+    padding: 3px;
+    margin: 3px;
+    text-align: center;
+    overflow: hidden;
+    font-size: small;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    border: 1px solid #666;
+    border-radius: 5px;
+    -webkit-box-shadow: #dadada -1px 0 4px;
+    -webkit-border-radius: 5px;
+    box-shadow: #666 -1px 0 4px;
+}
+
+.resultFooter{
+    float: left;
+    margin: 5px;
+    padding: 3px;
+    width: 100%;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+#branding{
+    position: absolute;
+    top: 0;
+    left: 10px;
+    z-index: 2;
+}
+
+span{    
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    color: #666;
+}
+
+[draggable] {
+  -webkit-user-select: none;
+  user-select: none;
+}
