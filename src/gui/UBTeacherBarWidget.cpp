@@ -1031,7 +1031,7 @@ void UBTeacherBarPreviewMedia::cleanMedia()
 void UBTeacherBarPreviewMedia::loadWidgets(QList<QWidget*> pWidgetsList, bool isResizable)
 {
     foreach(QWidget*eachWidget, pWidgetsList){
-        mWidget->addWidget(eachWidget,isResizable);
+        mWidget->addWidget(eachWidget);
         mWidgetList[eachWidget]="DRAG UNAVAILABLE";
     }
 }

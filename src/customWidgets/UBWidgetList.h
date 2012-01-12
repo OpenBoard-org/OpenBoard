@@ -31,7 +31,7 @@ class UBWidgetList : public QScrollArea
 public:
     UBWidgetList(QWidget* parent=0, eWidgetListOrientation orientation = eWidgetListOrientation_Vertical, const char* name = "UBWidgetList");
     ~UBWidgetList();
-    void addWidget(QWidget* widget, bool isResizable = true);
+    void addWidget(QWidget* widget);
     void removeWidget(QWidget* widget);
     void setMargin(int margin);
     void setEmptyText(const QString& text);
@@ -53,7 +53,7 @@ private:
     eWidgetListOrientation mOrientation;
     int mMargin;
     int mListElementsSpacing;
-    QMap<QWidget*, sWidgetProperties> mWidgetInfo;
+    QMap<QWidget*, QSize> mWidgetInfo;
     QLabel* mpEmptyLabel;
 };
 
