@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Google Image Search</title>
+        <link rel="stylesheet" type="text/css" href="css/basic.css"/>
+        <script type="text/javascript" src="http://www.google.com/uds"></script>
+        <script type="text/javascript" src="scripts/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript">
+            // This code generates a "Raw Searcher" to handle search queries. The Raw Searcher requires
+            // you to handle and draw the search results manually.
+            google.load('search', '1');
+
+            var videoSearch;
+            var minHeight = 180;
+            var minWidht = 150;
+            var filtersDisplayed = false; //display or hide filters
+            
+            function addPaginationLinks() {
+      
+                // To paginate search results, use the cursor function.
+                var cursor = videoSearch.cursor;
+                var curPage = cursor.currentPageIndex; // check what page the app is on
+                var pagesDiv = $("<div id='resultFooter' class='resultFooter'>");
+                for (var i = 0; i < cursor.pages.length; i++) {
+                    var page = cursor.pages[i];
+                    if (curPage == i) { 
+
+                        // If we are on the current page, then don't make a link.
+                        var label = document.createTextNode(' ' + page.label + ' ');
+                        pagesDiv.append($(label));
+                    } else {
+
+                        // Create links to other pages using gotoPage() on the searcher.
+                        var link = document.createElement('a');
+                        link.href = 'javascript:videoSearch.gotoPage('+i+');';
+                        link.innerHTML = page.label;
+                        link.style.marginRight = '2px';
+                        pagesDiv.append($(link));
+                    }
+                }
+
+                pagesDiv.appendTo($('#searchResult'));
+                
+                $(".videoContainer").each(function(){
+                    this.addEventListener("dragstart", imageDragging, false);
+                })
+                
+                $(".videoContainer").each(function(){
+                    this.addEventListener("dragenter", imageDragenter, false);
+                })
+                
+                $(".videoContainer").each(function(){
+                    this.addEventListener("dragleave", imageDragleave, false);
+                })
+                
+                $(".videoContainer").each(function(){
+                    this.addEventListener("dragover", imageDragover, false);
+                })
+            }
+            
+            function searchComplete() {
+
+                // Check that we got results
+                document.getElementById('searchResult').innerHTML = '';
+                if (videoSearch.results && videoSearch.results.length > 0) {
+                    
+                    var contentDiv = $('#searchResult').empty();
+                    var results = videoSearch.results;
+                    for (var i = 0; i < results.length; i++) {
+
+                        // Create HTML elements for search results
+                        var result = results[i];
+                        /*var str = videoSearch.results[i].playUrl.replace("&autoplay=1","").replace("&autoplay=true","");
+                        alert(str)
+                        a.src = str + "&autoPlay=false";
+                        a.type = "application/x-shockwave-flash";*/
+
+                        // Append search results to the HTML nodes
+                        //p.appendChild(a);
+                        //document.body.appendChild(p);
+                        
+                        var videoContainer = $("<div class='videoContainer' draggable='true'>");
+                        var title = document.createElement('div');
+                        var vUrl = $("<input type='hidden'/>");
+                        var vContent = $("<input type='hidden'/>");
+                        var vHeight = $("<input type='hidden'/>");
+                        var vWidth = $("<input type='hidden'/>");
+                        var vTitle = $("<input type='hidden'/>");
+                        var vAuthor = $("<input type='hidden'/>");
+                        var vDuration = $("<input type='hidden'/>");
+                        var vPublished = $("<input type='hidden'/>");
+                        var vPublisher = $("<input type='hidden'/>");
+                        var vRating = $("<input type='hidden'/>");
+                        var vCount = $("<input type='hidden'/>");
+            
+                        // We use titleNoFormatting so that no HTML tags are left in the 
+                        // title
+                        title.innerHTML = result.title;
+                        var newImg = document.createElement('img');
+
+                        // There is also a result.url property which has the escaped version
+                        newImg.src = result.tbUrl;
+                        //var str = videoSearch.results[i].playUrl.replace("&autoplay=1","").replace("&autoplay=true","");
+                        vUrl.attr("value", result.url);
+                        vContent.attr("value", result.content);
+                        vHeight.attr("value", result.tbHeight);
+                        vWidth.attr("value", result.tbWidth);
+                        vTitle.attr("value",result.titleNoFormatting);
+                        vAuthor.attr("value", result.author);
+                        vDuration.attr("value", result.duration);
+                        vPublished.attr("value", result.published);
+                        vPublisher.attr("value", result.publisher);
+                        vRating.attr("value",result.rating);
+                        vCount.attr("value",result.viewCount);
+                        //var imgWidth = (result.tbWidth > minWidht)?result.tbWidth:minWidht;
+                        //var imgHeight = (result.tbHeight > minHeight)?result.tbHeight:minHeight;
+                        videoContainer.width(minWidht).height(minHeight);
+                        videoContainer.append($(newImg));
+                        videoContainer.append($(title));  
+                        videoContainer.append(vUrl);
+                        videoContainer.append(vContent);
+                        videoContainer.append(vHeight);
+                        videoContainer.append(vWidth);
+                        videoContainer.append(vTitle);
+                        videoContainer.append(vAuthor);
+                        videoContainer.append(vDuration);
+                        videoContainer.append(vPublished);
+                        videoContainer.append(vPublisher);
+                        videoContainer.append(vRating);
+                        videoContainer.append(vCount);
+
+                        // Put our title + image in the content
+                        videoContainer.appendTo(contentDiv);
+                    }
+                    
+                    addPaginationLinks(videoSearch);
+                }
+            }
+
+            function onLoad() {
+                // Create a VideoSearch instance.
+                videoSearch = new google.search.VideoSearch();
+
+                // Set searchComplete as the callback function when a search is complete.  The
+                // videoSearch object will have results in it.
+                videoSearch.setSearchCompleteCallback(this, searchComplete, null);
+                
+                videoSearch.setResultSetSize(8);
+
+                // Include the required Google branding
+                google.search.Search.getBranding('branding');
+            }
+
+            // Set a callback to call your code when the page loads
+            google.setOnLoadCallback(onLoad);
+            
+            function imageDragging(e){
+                e.dataTransfer.setData("text/plain",$(this).find("input:hidden").eq(0).val());
+                //alert($(this).find("input:hidden").val());
+            }
+            
+            function imageDragleave(e){
+                return false;
+            }
+            
+            function imageDragover(e){
+                return false;
+            }
+            
+            function imageDragenter(e){
+                return false;
+            }
+            
+            $(document).ready(function(){
+
+                //variables
+                var mode = false; //search or view mode
+                var hide = false; //hide or no main panel
+    
+                //basic containers and elements    
+                var disclaimer = $("<div id='disclaimer' class='disclaimer'>Disclaimer<div>").appendTo("body");    
+                var search = $("<div id='search' class='search'>").appendTo("body");
+                
+                disclaimer.width($("body").width()-20);
+                search.width($("body").width()-20);
+    
+                var togglePages = $("<div id='togglePages' class='togglePages'>").appendTo(search);
+                var toggleIcon = $("<div id='toggleIcon' class='toggleIcon'>").appendTo(togglePages).css("margin-left",(togglePages.width()/2 - 7));
+    
+                var subSearchInput = $("<div id='subSearchInput' class='subSearch'>").appendTo(search);                
+    
+                var searchInput = $("<input id='searchInput' class='searchInput' type='text'/>").appendTo(subSearchInput);
+                var searchButton = $("<div id='searchButton' class='searchButton'>").appendTo(subSearchInput);                
+    
+                togglePages.click(function(event){
+                    if(mode){
+                        hide = false;
+                        $("#search, #disclaimer").slideDown('slow', function(){
+                            toggleIcon.css("background-image","url(images/trgUp.png)");
+                            togglePages.appendTo("#search").css("top","").css("bottom","-14px");                            
+                        });
+                        mode = false;
+                    } else {
+                        hide = true;
+                        $("#search, #disclaimer").slideUp('slow', function(){
+                            toggleIcon.css("background-image","url(images/trgDown.png)");
+                            togglePages.appendTo("body").css("top","0");                            
+                        });
+                        mode = true;
+                    }
+                });
+                
+                searchButton.click(function(){
+                    if(!hide){
+                        videoSearch.execute(searchInput.val());
+                        togglePages.trigger("click");
+                    }
+                });
+                
+                searchInput.keydown(function(event){
+                    if(!hide){
+                        if((event.keyCode == 0xA)||(event.keyCode == 0xD)){
+                            videoSearch.execute(searchInput.val());
+                            togglePages.trigger("click");
+                        }
+                              
+                    }
+                });
+                
+                $(".videoContainer").live("click",function(){
+                    //alert(createMetaData($(this)));
+                    sankore.sendFileMetadata(createMetaData($(this)));
+                });
+                
+                $(window).resize(function(){
+                    disclaimer.width($("body").width()-20);
+                    search.width($("body").width()-20);
+                    toggleIcon.css("margin-left",(togglePages.width()/2 - 7));
+                })
+                
+            });
+            
+            function createMetaData(parent){
+                var meta = "";
+                //alert($(this).find("input:hidden").eq(0).val());
+                meta = "<metadata><data><key>Type</key><value>Video</value></data><data><key>Url</key><value>" + 
+                    parent.find("input:hidden").eq(0).val() + 
+                    "</value></data><data><key>Content</key><value>" + 
+                    parent.find("input:hidden").eq(1).val() +
+                    "</value></data><data><key>tbHeight</key><value>" + 
+                    parent.find("input:hidden").eq(2).val() +
+                    "</value></data><data><key>tbWidth</key><value>" +
+                    parent.find("input:hidden").eq(3).val() +
+                    "</value></data><data><key>Title</key><value>" +
+                    parent.find("input:hidden").eq(4).val() +
+                    "</value></data><data><key>Author</key><value>" + 
+                    parent.find("input:hidden").eq(5).val() +
+                    "</value></data><data><key>Duration</key><value>" +
+                    parent.find("input:hidden").eq(6).val() +
+                    "</value></data><data><key>Published</key><value>" +
+                    parent.find("input:hidden").eq(7).val() +
+                    "</value></data><data><key>Publisher</key><value>" +
+                    parent.find("input:hidden").eq(8).val() +
+                    "</value></data><data><key>Rating</key><value>" +
+                    parent.find("input:hidden").eq(9).val() +
+                    "</value></data><data><key>View count</key><value>" +
+                    parent.find("input:hidden").eq(10).val() +
+                    "</value></data></metadata>";
+                return meta;
+            }
+            
+        </script>
+
+    </head>
+    <body style="font-family: Arial;border: 0 none;">
+        <div id="branding"  style="float: left;"></div><br />
+        <div id="searchResult"></div>
+    </body>
+</html>
