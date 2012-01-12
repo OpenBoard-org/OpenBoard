@@ -54,6 +54,7 @@ include(src/web/web.pri)
 include(src/softwareupdate/softwareupdate.pri)
 include(src/transition/transition.pri)
 include(src/customWidgets/customWidgets.pri)
+include(src/interfaces/interfaces.pri)
 
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger

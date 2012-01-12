@@ -16,6 +16,7 @@
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "customWidgets/UBDraggableLabel.h"
+#include "customWidgets/UBMediaWidget.h"
 
 #include "core/memcheck.h"
 
@@ -27,7 +28,6 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpDurationLabel(NULL)
     , mpTitle(NULL)
     , mpMediaLabel(NULL)
-    , mpDropMediaZone(NULL)
     , mpContainer(NULL)
     , mpContainerLayout(NULL)
     , mpDuration1(NULL)
@@ -46,6 +46,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpLinkLayout(NULL)
     , mpStackWidget(NULL)
     , mpPreview(NULL)
+    , mpMediaContainer(NULL)
 {
     setObjectName(name);
     mName = "TeacherBarWidget";
@@ -121,8 +122,8 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     // Media
     mpMediaLabel = new QLabel(tr("Media"), mpContainer);
     mpLayout->addWidget(mpMediaLabel, 0);
-    mpDropMediaZone = new UBTeacherBarDropMediaZone(mpContainer);
-    mpLayout->addWidget(mpDropMediaZone, 1);
+    mpMediaContainer = new UBTBMediaContainer(this);
+    mpLayout->addWidget(mpMediaContainer, 1);
 
     // Links
     mpLinkLabel = new QLabel(tr("Links"), mpContainer);
@@ -151,10 +152,15 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(mpActionButton, SIGNAL(clicked()), this, SLOT(onActionButton()));
     connect(mpLinkButton, SIGNAL(clicked()), this, SLOT(onLinkButton()));
     connect(mpPreview, SIGNAL(showEditMode()), this, SLOT(onShowEditMode()));
+    connect(mpMediaContainer, SIGNAL(mediaDropped(QString)), this, SLOT(onMediaDropped(QString)));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
 {
+    if(NULL != mpMediaContainer){
+        delete mpMediaContainer;
+        mpMediaContainer = NULL;
+    }
     if(NULL != mpComments){
         delete mpComments;
         mpComments = NULL;
@@ -178,10 +184,6 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
     if(NULL != mpLinkLayout){
         delete mpLinkLayout;
         mpLinkLayout = NULL;
-    }
-    if(NULL != mpDropMediaZone){
-        delete mpDropMediaZone;
-        mpDropMediaZone = NULL;
     }
     if(NULL != mpMediaLabel){
         delete mpMediaLabel;
@@ -291,8 +293,9 @@ void UBTeacherBarWidget::saveContent()
         infos.actions << QString("%0;%1").arg(mActionList.at(i)->comboValue()).arg(mActionList.at(i)->text());
     }
     // Media
-    // TODO :   Get the url of the dropped medias and store them in infos.medias
-     infos.medias = mpDropMediaZone->mediaList();
+    foreach(QString media, mpMediaContainer->mediaUrls()){
+        infos.medias << media;
+    }
 
     // Links
     for(int j=0; j<mUrlList.size(); j++){
@@ -335,7 +338,15 @@ void UBTeacherBarWidget::loadContent()
         }
     }
     // Media
-    mpDropMediaZone->reloadMedia(nextInfos.medias);
+    foreach(QString url, nextInfos.medias){
+        if("" != url){
+            QWidget* pMedia = mpMediaContainer->generateMediaWidget(url);
+            if(NULL != pMedia){
+                mMediaList << pMedia;
+                mpMediaContainer->addWidget(pMedia);
+            }
+        }
+    }
 
     // Links
     for(int j=0; j<nextInfos.urls.size(); j++){
@@ -411,7 +422,7 @@ bool UBTeacherBarWidget::isEmpty()
     return  mpTitle->text() == "" &&
             mpLinks->empty() &&
             mpActions->empty() &&
-            mpDropMediaZone->empty() &&
+            mpMediaContainer->empty() &&
             mpComments->document()->toPlainText() == "";
 }
 
@@ -436,11 +447,19 @@ void UBTeacherBarWidget::onLinkButton()
 
 void UBTeacherBarWidget::clearWidgetLists()
 {
-    mpDropMediaZone->cleanMedias();
+    if(NULL != mpMediaContainer){
+        for(int i=0; i<mMediaList.size(); i++){
+            mpMediaContainer->removeWidget(mMediaList.at(i));
+            delete mMediaList.at(i);
+        }
+        mMediaList.clear();
+        mpMediaContainer->cleanMedias();
+    }
 
     if(NULL != mpActions){
         for(int i=0; i<mActionList.size(); i++){
             mpActions->removeWidget(mActionList.at(i));
+            delete mActionList.at(i);
         }
         mActionList.clear();
     }
@@ -448,6 +467,7 @@ void UBTeacherBarWidget::clearWidgetLists()
     if(NULL != mpLinks){
         for(int i=0; i<mUrlList.size(); i++){
             mpLinks->removeWidget(mUrlList.at(i));
+            delete mUrlList.at(i);
         }
         mUrlList.clear();
     }
@@ -456,6 +476,17 @@ void UBTeacherBarWidget::clearWidgetLists()
 void UBTeacherBarWidget::onShowEditMode()
 {
     mpStackWidget->setCurrentWidget(mpContainer);
+}
+
+void UBTeacherBarWidget::onMediaDropped(const QString &url)
+{
+    if("" != url){
+        QWidget* pMedia = mpMediaContainer->generateMediaWidget(url);
+        if(NULL != pMedia){
+            mMediaList << pMedia;
+            mpMediaContainer->addWidget(pMedia);
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -1070,4 +1101,131 @@ void UBActionPreview::setContent(const QString &content)
     if(NULL != mpContent){
         mpContent->setText(content);
     }
+}
+
+//  ------------------------------------------------------------------------------------------------------------------------------------
+UBTBMediaContainer::UBTBMediaContainer(QWidget *parent, const char *name) : UBWidgetList(parent)
+{
+    setObjectName(name);
+    setAcceptDrops(true);
+}
+
+UBTBMediaContainer::~UBTBMediaContainer()
+{
+
+}
+
+void UBTBMediaContainer::dropEvent(QDropEvent* pEvent)
+{
+    QPixmap pixFromDropEvent;
+    QString mimeType;
+    QString resourcePath;
+    if(pEvent->mimeData()->hasText()){
+        qDebug() << "text dropped";
+        resourcePath = pEvent->mimeData()->text();
+    }
+    else if(pEvent->mimeData()->hasUrls()){
+        qDebug() << "url dropped";
+        resourcePath = pEvent->mimeData()->urls().at(0).toLocalFile();
+    }
+    else if(pEvent->mimeData()->hasImage()){
+        qDebug() << "image dropped";
+        pixFromDropEvent.loadFromData(pEvent->mimeData()->imageData().toByteArray());
+        if(!pixFromDropEvent.isNull())
+            mimeType = "image";
+    }
+
+    if (mimeType.isEmpty() && resourcePath.isEmpty()){
+        pEvent->acceptProposedAction();
+        return;
+    }
+    if(!resourcePath.isEmpty()){
+        qDebug() << "emitting 'mediaDropped'";
+        emit mediaDropped(resourcePath);
+        pEvent->acceptProposedAction();
+    }
+}
+
+void UBTBMediaContainer::dragEnterEvent(QDragEnterEvent* pEvent)
+{
+    pEvent->acceptProposedAction();
+}
+
+void UBTBMediaContainer::dragMoveEvent(QDragMoveEvent* pEvent)
+{
+    pEvent->acceptProposedAction();
+}
+
+void UBTBMediaContainer::dragLeaveEvent(QDragLeaveEvent* pEvent)
+{
+    pEvent->accept();
+}
+
+void UBTBMediaContainer::addMedia(const QString& mediaPath)
+{
+    if(!mediaPath.isEmpty())
+        mMediaList.append(mediaPath);
+    else
+        qWarning() << __FUNCTION__ <<  "empty path";
+
+    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mediaPath);
+    if(mimeType.contains("image")){
+        QPixmap pix = QPixmap(mediaPath);
+        QLabel* label = new QLabel();
+        label->setPixmap(pix);
+        label->setScaledContents(true);
+        addWidget(label);
+    }
+    else if(mimeType.contains("video") || mimeType.contains("audio")){
+        UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
+        mediaPlayer->setFile(mediaPath);
+        addWidget(mediaPlayer);
+    }
+    else{
+        qWarning() << "pMediaPath" << mediaPath;
+        qWarning() << "bad idea to come here";
+    }
+}
+
+QStringList UBTBMediaContainer::mediaUrls()
+{
+    return mMediaList;
+}
+
+void UBTBMediaContainer::cleanMedias()
+{
+    mMediaList.clear();
+}
+
+QWidget* UBTBMediaContainer::generateMediaWidget(const QString& url)
+{
+    QWidget* pW = NULL;
+
+    if(!url.isEmpty())
+        mMediaList.append(url);
+    else
+        qWarning() << __FUNCTION__ <<  "empty path";
+
+    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(url);
+    if(mimeType.contains("image")){
+        QPixmap pix = QPixmap(url);
+        QLabel* label = new QLabel();
+        pix.scaledToWidth(label->width());
+        label->resize(pix.width(), pix.height());
+        label->setPixmap(pix);
+        label->setScaledContents(true);
+        pW = label;
+    }
+    else if(mimeType.contains("video") || mimeType.contains("audio")){
+        UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
+        //UBMediaWidget* mediaPlayer = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
+        mediaPlayer->setFile(url);
+        pW = mediaPlayer;
+    }
+    else{
+        qWarning() << "pMediaPath" << url;
+        qWarning() << "bad idea to come here";
+    }
+
+    return pW;
 }

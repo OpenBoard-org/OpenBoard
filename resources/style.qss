@@ -5,11 +5,21 @@ QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
 QWidget#UBDownloadWidget,
 QWidget#UBWidgetList,
-QWidget#UBTeacherBarDropMediaZone
+QWidget#UBTeacherBarDropMediaZone,
+QWidget#UBTBMediaContainer
 {
 	background: #EEEEEE;
 	border-radius: 10px;
 	border: 2px solid #999999;
+}
+
+QWidget#UBMediaVideoContainer
+{
+	background: #000000;
+	border-radius: 10px;
+	border: 2px solid #999999;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
 }
 
 QWidget#UBTeacherBarPreviewWidget
@@ -24,6 +34,11 @@ QLabel#UBTeacherBarPreviewTitle
 	color: #555555;
 	font-size : 18px;
 	font-weight:bold;
+}
+
+QLabel#UBMediaPlayerButton
+{
+	padding: 0px 0px 0px 0px;
 }
 
 QLabel#UBTeacherBarPreviewSubtitle

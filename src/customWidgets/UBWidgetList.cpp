@@ -1,4 +1,7 @@
 #include <QDebug>
+#include <QScrollBar>
+
+#include "UBGlobals.h"
 #include "UBWidgetList.h"
 
 UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, const char* name):QScrollArea(parent)
@@ -20,13 +23,11 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
        setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
        mpLayout = new QVBoxLayout(mpContainer);
-       mpContainer->resize(mpContainer->width(), mpContainer->height());
    }
    else{
        setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
        mpLayout = new QHBoxLayout(mpContainer);
-       mpContainer->resize(mpContainer->width(), mpContainer->height());
    }
    mpLayout->setContentsMargins(margin(), margin(), margin(), margin());
    mpContainer->setLayout(mpLayout);
@@ -35,28 +36,22 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
 
 UBWidgetList::~UBWidgetList()
 {
-    if(NULL != mpEmptyLabel){
-        delete mpEmptyLabel;
-        mpEmptyLabel = NULL;
-    }
-    if(NULL != mpLayout){
-        delete mpLayout;
-        mpLayout = NULL;
-    }
-    if(NULL != mpContainer){
-        delete mpContainer;
-        mpContainer = NULL;
-    }
+    DELETEPTR(mpEmptyLabel);
+    DELETEPTR(mpLayout);
+    DELETEPTR(mpContainer);
 }
 
 void UBWidgetList::addWidget(QWidget *widget)
 {
-    if(NULL != mpLayout){
+    if(NULL != mpLayout && NULL != widget){
+        widget->setParent(mpContainer);
         mpEmptyLabel->setVisible(false);
         mWidgetInfo[widget] = widget->size();
-        qDebug() << __FUNCTION__ << "widget->size () " << widget->size();
         updateView(size());
         mpLayout->addWidget(widget);
+
+        // This call is used only to refresh the size of the widgets
+        updateSizes();
     }
 }
 
@@ -78,7 +73,6 @@ int UBWidgetList::scaleWidgets(QSize pSize)
 {
     // to remove the first spacing that shouldn't be there.
     int result = -mListElementsSpacing;
-    int count = 0;
     foreach(QWidget* eachWidget, mWidgetInfo.keys()){
         qreal scaleFactor = 0;
         int newWidgetWidth =  pSize.width();
@@ -87,21 +81,12 @@ int UBWidgetList::scaleWidgets(QSize pSize)
             scaleFactor = (float)mWidgetInfo[eachWidget].width() / (float)pSize.width();
             newWidgetHeight = mWidgetInfo[eachWidget].height()/scaleFactor;
             result += newWidgetHeight;
-            eachWidget->setMinimumHeight(newWidgetHeight);
         }
         else{
             scaleFactor =  (float)mWidgetInfo[eachWidget].height() / (float)pSize.height();
             newWidgetWidth = mWidgetInfo[eachWidget].width()/scaleFactor;
             result += newWidgetWidth;
         }
-#ifndef Q_WS_WIN
-		qDebug() << __PRETTY_FUNCTION__ << "widget " << &eachWidget;
-        qDebug() << __PRETTY_FUNCTION__ << "count " << count++;
-        qDebug() << __PRETTY_FUNCTION__ << "widget orignal size " << mWidgetInfo[eachWidget];
-        qDebug() << __PRETTY_FUNCTION__ << "containes size  " << pSize;
-        qDebug() << __PRETTY_FUNCTION__ << "scale factor " << scaleFactor;
-        qDebug() << __PRETTY_FUNCTION__ << "new height " << result;
-#endif 
         //Adding a vertical/horizontal space between each element of the list
         result += mListElementsSpacing;
     }
@@ -132,11 +117,42 @@ void UBWidgetList::updateView(QSize pSize)
 
 void UBWidgetList::resizeEvent(QResizeEvent *ev)
 {
+    Q_UNUSED(ev);
     mpEmptyLabel->setGeometry((width() - mpEmptyLabel->width()) / 2,
                               (height() - mpEmptyLabel->height()) /2,
                               mpEmptyLabel->width(),
                               mpEmptyLabel->height());
     updateView(size());
+    updateSizes();
+}
+
+void UBWidgetList::updateSizes()
+{
+    // Resize all the widgets
+    foreach(QWidget* eachWidget, mWidgetInfo.keys()){
+        if(NULL != eachWidget){
+            QSize originalSize = mWidgetInfo[eachWidget];
+            int currentWidth = mpContainer->width();
+            int currentHeight = mpContainer->height();
+            if(eWidgetListOrientation_Vertical == mOrientation){
+                if(verticalScrollBar()->isVisible()){
+                    currentWidth -= verticalScrollBar()->width();
+                    eachWidget->setStyleSheet(QString("margin-right:%0;").arg(verticalScrollBar()->width()));
+                }
+                float scaleFactor = (float)currentWidth/(float)originalSize.width();
+                currentHeight = originalSize.height()*scaleFactor;
+            }else{
+                if(horizontalScrollBar()->isVisible()){
+                    currentHeight -= horizontalScrollBar()->height();
+                    eachWidget->setStyleSheet(QString("padding-bottom:%0;").arg(horizontalScrollBar()->height()));
+                }
+                float scaleFactor = (float)currentHeight/(float)originalSize.height();
+                currentWidth = originalSize.width()*scaleFactor;
+            }
+
+            eachWidget->resize(currentWidth, currentHeight);
+        }
+    }
 }
 
 void UBWidgetList::setMargin(int margin)

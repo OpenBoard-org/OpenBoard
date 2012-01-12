@@ -18,6 +18,7 @@ class UBMediaPlayer;
 
 #include "UBDockPaletteWidget.h"
 #include "customWidgets/UBWidgetList.h"
+#include "interfaces/IDropable.h"
 
 #define LABEL_MINWIDHT      80
 
@@ -174,6 +175,33 @@ private:
     UBActionPreview* mpTmpAction;
 };
 
+
+class UBTBMediaContainer : public UBWidgetList
+    , public IDropable
+{
+    Q_OBJECT
+public:
+    UBTBMediaContainer(QWidget* parent=0, const char* name="UBTBMediaContainer");
+    ~UBTBMediaContainer();
+    QStringList mediaUrls();
+    QWidget* generateMediaWidget(const QString& url);
+    void cleanMedias();
+
+signals:
+    void mediaDropped(const QString& url);
+
+protected:
+    void dropEvent(QDropEvent* pEvent);
+    void dragEnterEvent(QDragEnterEvent* pEvent);
+    void dragMoveEvent(QDragMoveEvent* pEvent);
+    void dragLeaveEvent(QDragLeaveEvent* pEvent);
+
+private:
+    void addMedia(const QString& mediaPath);
+
+    QStringList mMediaList;
+};
+
 class UBTeacherBarWidget : public UBDockPaletteWidget
 {
     Q_OBJECT
@@ -189,6 +217,7 @@ private slots:
     void onActionButton();
     void onLinkButton();
     void onShowEditMode();
+    void onMediaDropped(const QString& url);
 
 private:
     void clearWidgetLists();
@@ -200,7 +229,6 @@ private:
     QLabel* mpDurationLabel;
     QLineEdit* mpTitle;
     QLabel* mpMediaLabel;
-    UBTeacherBarDropMediaZone* mpDropMediaZone;
     QWidget* mpContainer;
     QVBoxLayout* mpContainerLayout;
     QCheckBox* mpDuration1;
@@ -222,6 +250,9 @@ private:
 
     QVector<UBTeacherStudentAction*> mActionList;
     QVector<UBUrlWidget*> mUrlList;
+    QVector<QWidget*> mMediaList;
+
+    UBTBMediaContainer* mpMediaContainer;
 };
 
 #endif // UBTEACHERBARWIDGET_H

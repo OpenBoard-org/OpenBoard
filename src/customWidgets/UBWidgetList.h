@@ -3,12 +3,14 @@
 
 #include <QWidget>
 #include <QScrollArea>
-#include <QLayout>
+#include <QBoxLayout>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QResizeEvent>
 #include <QVector>
 #include <QLabel>
+
+#include "interfaces/IResizeable.h"
 
 typedef enum{
     eWidgetListOrientation_Vertical,
@@ -39,7 +41,8 @@ private:
     int scaleWidgets(QSize pSize);
     void scaleContainer(QSize pSize, int updateValue);
     void updateView(QSize pSize);
-    QLayout* mpLayout;
+    void updateSizes();
+    QBoxLayout* mpLayout;
     QWidget* mpContainer;
     eWidgetListOrientation mOrientation;
     int mMargin;

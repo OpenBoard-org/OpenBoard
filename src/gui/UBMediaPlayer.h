@@ -62,6 +62,9 @@ public slots:
     void finished();
     void playPause();
 
+protected:
+    void resizeEvent(QResizeEvent* pEvent);
+
 private slots:
     void stateChanged(Phonon::State newstate, Phonon::State oldstate);
     void bufferStatus(int percent);

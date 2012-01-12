@@ -346,6 +346,18 @@ void UBMediaPlayer::hasVideoChanged(bool bHasVideo)
     m_videoWindow.setVisible(bHasVideo);
 }
 
+void UBMediaPlayer::resizeEvent(QResizeEvent* pEvent)
+{
+//    int origWidth = m_videoWindow.width();
+//    int origHeight = m_videoWindow.height();
+
+//    float scaleFactor = (float)origWidth / (float)width();
+//    int newWidth = width();
+//    int newHeigth = origHeight/scaleFactor;
+
+//    m_videoWindow.resize(newWidth, newHeigth);
+}
+
 //*************************************************************************
 UBDraggableMediaPlayer::UBDraggableMediaPlayer():UBMediaPlayer()
 {
