@@ -65,15 +65,26 @@
 			
                 $("#search-button")
                 .click(function(){
-                    window.resizeTo(385, 80);
-                    $("#container").removeClass("welcome").removeClass("change").removeClass("error").addClass("load");
-                    $("#container-shadow").hide();
-                    $("#arrow").hide();
-                    $("#embeded-content").css({
-                        marginLeft:-9000,
-                        marginTop:-9000
-                    }).empty().oembed($("#textbox").val());					
-                    checkcontent();
+                    if($("#textbox").val()){
+                        window.resizeTo(385, 80);
+                        $("#container").removeClass("welcome").removeClass("change").removeClass("error").addClass("load");
+                        $("#container-shadow").hide();
+                        $("#arrow").hide();
+                        $("#embeded-content").css({
+                            marginLeft:-9000,
+                            marginTop:-9000
+                        }).empty().oembed($("#textbox").val());					
+                        checkcontent();
+                    } else {
+                        var sleepTime = 100;
+                        var counter = 0;
+                        var id = setInterval(function(){
+                            $("#textbox").toggleClass("bordered1").toggleClass("bordered2");
+                            counter ++;
+                            if(counter == 10)
+                                clearInterval(id);
+                        }, sleepTime);
+                    }
                 })
                 .mouseenter(function(){
                     $(this)
@@ -187,7 +198,7 @@
             <div id="shadow"></div>
 
             <div id="inputfield">
-                <input id="textbox" type="text">
+                <input id="textbox" type="text" class="bordered2">
                 <div id="search-button" class="button">Show</div>
             </div>
 

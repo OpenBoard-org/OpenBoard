@@ -74,25 +74,35 @@ function init(){
     $("#ubwidget").append(searchWrap);	
 
     submit.click(function(){
-        $("#ubwidget").append(loadWindow)
         embed = inputBox.val();
-        searchWrap.hide();
+        if(embed){
+            $("#ubwidget").append(loadWindow);        
+            searchWrap.hide();
 
-        if(/<object/.test(embed)){
-            loadWindow.append(embed);
-            loadWindow.find("embed").attr("wmode","opaque");
-            var loadWindow_content = loadWindow.html();
-            loadWindow.empty().html(loadWindow_content);
-        }
-        else {
-            loadWindow.append(embed);				
-        }
+            if(/<object/.test(embed)){
+                loadWindow.append(embed);
+                loadWindow.find("embed").attr("wmode","opaque");
+                var loadWindow_content = loadWindow.html();
+                loadWindow.empty().html(loadWindow_content);
+            }
+            else {
+                loadWindow.append(embed);				
+            }
 
-        if(window.sankore){
-            window.sankore.resize($(document).width(),$(document).height());
-            window.sankore.setPreference("embed", escape(embed));
-        }
-		
+            if(window.sankore){
+                window.sankore.resize($(document).width(),$(document).height());
+                window.sankore.setPreference("embed", escape(embed));
+            }
+        } else{
+            var sleepTime = 100;
+            var counter = 0;
+            var id = setInterval(function(){
+                inputBox.toggleClass("bordered");
+                counter ++;
+                if(counter == 10)
+                    clearInterval(id);
+            }, sleepTime);
+        }		
     });
 	
     if(window.sankore){
