@@ -31,7 +31,8 @@
 UBImportPDF::UBImportPDF(QObject *parent)
     : UBImportAdaptor(parent)
 {
-    // NOOP
+    QDesktopWidget* desktop = UBApplication::desktop();
+	this->dpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
 }
 
 
@@ -68,6 +69,7 @@ bool UBImportPDF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFi
         UBApplication::showMessage(tr("PDF import failed."));
         return false;
     }
+	pdfRenderer->setDPI(this->dpi);
 
     int documentPageCount = pDocument->pageCount();
 

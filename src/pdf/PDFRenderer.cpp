@@ -23,6 +23,9 @@
 
 QMap< QUuid, QPointer<PDFRenderer> > PDFRenderer::sRenderers;
 
+PDFRenderer::PDFRenderer() : dpiForRendering(96)
+{
+}
 
 PDFRenderer::~PDFRenderer()
 {

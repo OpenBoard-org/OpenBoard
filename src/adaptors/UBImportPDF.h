@@ -33,6 +33,9 @@ class UBImportPDF : public UBImportAdaptor
         virtual QString importFileFilter();
 
         virtual bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile);
+
+	private:
+		int dpi;
 };
 
 #endif /* UBIMPORTPDF_H_ */
