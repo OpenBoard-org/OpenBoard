@@ -1235,8 +1235,8 @@ QWidget* UBTBMediaContainer::generateMediaWidget(const QString& url)
         pW = label;
     }
     else if(mimeType.contains("video") || mimeType.contains("audio")){
-        //UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
-        UBMediaWidget* mediaPlayer = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
+        UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
+        //UBMediaWidget* mediaPlayer = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
         mediaPlayer->setFile(url);
         pW = mediaPlayer;
     }
