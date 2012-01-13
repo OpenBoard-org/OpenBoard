@@ -81,18 +81,15 @@ int UBWidgetList::scaleWidgets(QSize pSize)
             scaleFactor = (float)mWidgetInfo[eachWidget].width() / (float)pSize.width();
             newWidgetHeight = mWidgetInfo[eachWidget].height()/scaleFactor;
             result += newWidgetHeight;
+            eachWidget->setMinimumHeight(newWidgetHeight- 1);
+            eachWidget->setMaximumHeight(newWidgetHeight);
         }
         else{
-            if(eWidgetListOrientation_Vertical == mOrientation){
-                result += mWidgetInfo[eachWidget].height();
-                eachWidget->setMinimumHeight(mWidgetInfo[eachWidget].height());
-                eachWidget->setMaximumHeight(mWidgetInfo[eachWidget].height() + 1);
-            }
-            else{
-                result += mWidgetInfo[eachWidget].width();
-                eachWidget->setMinimumWidth(mWidgetInfo[eachWidget].width());
-                eachWidget->setMaximumWidth(mWidgetInfo[eachWidget].width() + 1);
-            }
+            scaleFactor = (float)mWidgetInfo[eachWidget].height() / (float)pSize.height();
+            newWidgetWidth = mWidgetInfo[eachWidget].width()/scaleFactor;
+            result += newWidgetWidth;
+            eachWidget->setMinimumWidth(newWidgetWidth - 1);
+            eachWidget->setMaximumWidth(newWidgetWidth);
         }
         //Adding a vertical/horizontal space between each element of the list
         result += mListElementsSpacing;
