@@ -48,7 +48,7 @@ class XPDFRenderer : public PDFRenderer
 
     private:
         void init();
-        QImage* createPDFImage(int pageNumber, const qreal xscale = 0.5, const qreal yscale = 0.5, const QRectF &bounds = QRectF());
+        QImage* createPDFImage(int pageNumber, qreal xscale = 0.5, qreal yscale = 0.5, const QRectF &bounds = QRectF());
 
         PDFDoc *mDocument;
         static QAtomicInt sInstancesCount;

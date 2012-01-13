@@ -148,10 +148,10 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
         p->drawImage(QPointF(savedTransform.dx() + mSliceX, savedTransform.dy() + mSliceY), *pdfImage);
         p->setWorldTransform(savedTransform);
         delete pdfImage;
-    }
+	}
 }
 
-QImage* XPDFRenderer::createPDFImage(int pageNumber, const qreal xscale, const qreal yscale, const QRectF &bounds)
+QImage* XPDFRenderer::createPDFImage(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds)
 {
     if (isValid())
     {
@@ -169,18 +169,18 @@ QImage* XPDFRenderer::createPDFImage(int pageNumber, const qreal xscale, const q
 
         if (bounds.isNull())
         {
-			mDocument->displayPage(mSplash, pageNumber, this->dpiForRendering, this->dpiForRendering,
+			mDocument->displayPage(mSplash, pageNumber, this->dpiForRendering * xscale, this->dpiForRendering *yscale,
                                    rotation, useMediaBox, crop, printing);
         }
         else
         {
-            mSliceX = bounds.x() * xscale;
+			mSliceX = bounds.x() * xscale;
             mSliceY = bounds.y() * yscale;
             qreal sliceW = bounds.width() * xscale;
             qreal sliceH = bounds.height() * yscale;
 
-            mDocument->displayPageSlice(mSplash, pageNumber, this->dpiForRendering, this->dpiForRendering,
-                                        rotation, useMediaBox, crop, printing, mSliceX, mSliceY, sliceW, sliceH);
+            mDocument->displayPageSlice(mSplash, pageNumber, this->dpiForRendering * xscale, this->dpiForRendering * yscale,
+				rotation, useMediaBox, crop, printing, mSliceX, mSliceY, sliceW, sliceH);
         }
 
         mpSplashBitmap = mSplash->getBitmap();
