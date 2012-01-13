@@ -12,7 +12,8 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
   , mAutoUpdate(false)
   , mGeneratingThumbnail(false)
   , mBorder(5)
-  , mpVideoContainer(NULL)
+  , mpMediaContainer(NULL)
+  , mpCover(NULL)
 {
     setObjectName(name);
 
@@ -50,6 +51,7 @@ UBMediaWidget::~UBMediaWidget()
     DELETEPTR(mpAudioOutput);
     DELETEPTR(mpVideoWidget);
     DELETEPTR(mpMediaObject);
+    DELETEPTR(mpCover);
 }
 
 void UBMediaWidget::setFile(const QString &filePath)
@@ -72,30 +74,41 @@ eMediaType UBMediaWidget::mediaType()
 
 void UBMediaWidget::createMediaPlayer()
 {
+    mpMediaContainer = new QWidget(this);
+    mpMediaContainer->setObjectName("UBMediaVideoContainer");
+    mpMediaContainer->setLayout(&mMediaLayout);
+
     if(eMediaType_Video == mType){
+        mMediaLayout.setContentsMargins(10, 10, 25, 10);
         mpVideoWidget = new Phonon::VideoWidget(this);
-        mpVideoContainer = new QWidget(this);
-        mpVideoContainer->setObjectName("UBMediaVideoContainer");
-        mVideoLayout.setContentsMargins(10, 10, 25, 10);
-        mpVideoContainer->setLayout(&mVideoLayout);
-        mVideoLayout.addWidget(mpVideoWidget, 1);
+        mMediaLayout.addStretch(1);
+        mMediaLayout.addWidget(mpVideoWidget, 0);
+        mMediaLayout.addStretch(1);
         Phonon::createPath(mpMediaObject, mpVideoWidget);
         adaptSizeToVideo();
-        mLayout.addWidget(mpVideoContainer, 1);
         mpAudioOutput = new Phonon::AudioOutput(Phonon::VideoCategory, this);
         Phonon::createPath(mpMediaObject, mpAudioOutput);
     }else if(eMediaType_Audio == mType){
+        mMediaLayout.setContentsMargins(10, 10, 10, 10);
+        mpCover = new QLabel(mpMediaContainer);
+        mpMediaContainer->setStyleSheet(QString("background: none;"));
+        setAudioCover(":images/libpalette/soundIcon.svg");
+        mpCover->setScaledContents(true);
+        mMediaLayout.addStretch(1);
+        mMediaLayout.addWidget(mpCover, 0);
+        mMediaLayout.addStretch(1);
         mpAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
         Phonon::createPath(mpMediaObject, mpAudioOutput);
     }
+    mLayout.addWidget(mpMediaContainer, 1);
     mLayout.addLayout(&mSeekerLayout, 0);
 }
 
 void UBMediaWidget::adaptSizeToVideo()
 {
-    if(NULL != mpVideoContainer){
-        int origW = mpVideoContainer->width();
-        int origH = mpVideoContainer->height();
+    if(NULL != mpMediaContainer){
+        int origW = mpMediaContainer->width();
+        int origH = mpMediaContainer->height();
         int newW = width();
         float scaleFactor = (float)origW/(float)newW;
         int newH = origH/scaleFactor;
@@ -177,6 +190,13 @@ int UBMediaWidget::border()
 void UBMediaWidget::resizeEvent(QResizeEvent* ev)
 {
     Q_UNUSED(ev);
+}
+
+void UBMediaWidget::setAudioCover(const QString &coverPath)
+{
+    if(NULL != mpCover){
+        mpCover->setPixmap(QPixmap(coverPath));
+    }
 }
 
 // -----------------------------------------------------------------------------------------------------------

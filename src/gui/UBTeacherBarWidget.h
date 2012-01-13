@@ -52,36 +52,6 @@ private:
     QComboBox* mpCombo;
 };
 
-
-class UBTeacherBarDropMediaZone : public QWidget
-{
-    Q_OBJECT
-
-public:
-    UBTeacherBarDropMediaZone(QWidget* parent=0, const char* name="UBTeacherBarDropMediaZone");
-    ~UBTeacherBarDropMediaZone();
-    QStringList mediaList() {return mMediaList;}
-    void reloadMedia(QStringList pList);
-    void cleanMedias();
-    bool empty();
-
-private:
-    void addMedia(QString pMediaPath);
-    QStringList mMediaList;
-    QList<QWidget*>mWidgetList;
-    UBWidgetList* mWidget;
-    QVBoxLayout mLayout;
-
-
-protected:
-    void dragEnterEvent(QDragEnterEvent* pEvent);
-    void dropEvent(QDropEvent *pEvent);
-    void dragMoveEvent(QDragMoveEvent* pEvent);
-    void dragLeaveEvent(QDragLeaveEvent* pEvent);
-};
-
-
-
 class UBTeacherBarPreviewMedia : public QWidget
 {
     Q_OBJECT
@@ -175,7 +145,6 @@ private:
     QLabel* mpTmpLink;
     UBActionPreview* mpTmpAction;
 };
-
 
 class UBTBMediaContainer : public UBWidgetList
     , public IDropable

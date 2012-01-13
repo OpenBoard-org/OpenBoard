@@ -123,6 +123,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpMediaLabel = new QLabel(tr("Medias"), mpContainer);
     mpLayout->addWidget(mpMediaLabel, 0);
     mpMediaContainer = new UBTBMediaContainer(this);
+    mpMediaContainer->setEmptyText(tr("Drop media here"));
     mpLayout->addWidget(mpMediaContainer, 1);
 
     // Links
@@ -588,128 +589,6 @@ void UBTeacherStudentAction::setText(const QString& text)
 }
 
 // ---------------------------------------------------------------------------------------------
-UBTeacherBarDropMediaZone::UBTeacherBarDropMediaZone(QWidget *parent, const char *name):QWidget(parent)
-
-{
-    setObjectName(name);
-    setAcceptDrops(true);
-    mWidget = new UBWidgetList(parent);
-    mWidget->setEmptyText(tr("Drag media here ..."));
-    mLayout.addWidget(mWidget);
-    setLayout(&mLayout);
-    // The next line is disgusting. This is a quickfix that must be reworked later
-    setContentsMargins(-9, -9, -9, -9);
-}
-
-UBTeacherBarDropMediaZone::~UBTeacherBarDropMediaZone()
-{
-    cleanMedias();
-    if(mWidget){
-        delete mWidget;
-        mWidget = NULL;
-    }
-}
-
-void UBTeacherBarDropMediaZone::cleanMedias()
-{
-    foreach(QWidget* eachWidget,mWidgetList){
-        mWidget->removeWidget(eachWidget);
-        delete eachWidget;
-    }
-
-    mWidgetList.clear();
-
-    mMediaList.clear();
-}
-
-bool UBTeacherBarDropMediaZone::empty()
-{
-    return mWidget->empty();
-}
-
-void UBTeacherBarDropMediaZone::dragEnterEvent(QDragEnterEvent *pEvent)
-{
-    pEvent->acceptProposedAction();
-}
-
-void UBTeacherBarDropMediaZone::dragLeaveEvent(QDragLeaveEvent *pEvent)
-{
-    pEvent->accept();
-}
-
-
-void UBTeacherBarDropMediaZone::addMedia(QString pMediaPath)
-{
-    if(!pMediaPath.isEmpty())
-        mMediaList.append(pMediaPath);
-    else
-        qWarning() << __FUNCTION__ <<  "empty path";
-
-    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(pMediaPath);
-    if(mimeType.contains("image")){
-        QPixmap pix = QPixmap(pMediaPath);
-        QLabel* label = new QLabel();
-        label->setPixmap(pix);
-        label->setScaledContents(true);
-        mWidget->addWidget(label);
-        mWidgetList << label;
-    }
-    else if(mimeType.contains("video") || mimeType.contains("audio")){
-        UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
-        mediaPlayer->setFile(pMediaPath);
-        mWidget->addWidget(mediaPlayer);
-        mWidgetList << mediaPlayer;
-    }
-    else{
-        qWarning() << "pMediaPath" << pMediaPath;
-        qWarning() << "bad idea to come here";
-    }
-
-}
-
-void UBTeacherBarDropMediaZone::reloadMedia(QStringList pList)
-{
-    cleanMedias();
-    foreach(QString eachString, pList){
-        addMedia(eachString);
-    }
-}
-
-void UBTeacherBarDropMediaZone::dropEvent(QDropEvent *pEvent)
-{
-    QPixmap pixFromDropEvent;
-    QString mimeType;
-    QString resourcePath;
-    if(pEvent->mimeData()->hasText()){
-        qDebug() << "pEvent->mimeData()->hasText()" << pEvent->mimeData()->text();
-        resourcePath = pEvent->mimeData()->text();
-    }
-    else if(pEvent->mimeData()->hasUrls()){
-        qDebug() << "pEvent->mimeData()->hasUrls()" << pEvent->mimeData()->urls().at(0);
-        resourcePath = pEvent->mimeData()->urls().at(0).toLocalFile();
-    }
-    else if(pEvent->mimeData()->hasImage()){
-        qDebug() << "pEvent->mimeData()->hasImage()";
-        pixFromDropEvent.loadFromData(pEvent->mimeData()->imageData().toByteArray());
-        if(!pixFromDropEvent.isNull())
-            mimeType = "image";
-    }
-
-    if (mimeType.isEmpty() && resourcePath.isEmpty()){
-        pEvent->acceptProposedAction();
-        return;
-    }
-    if(!resourcePath.isEmpty())
-        addMedia(resourcePath);
-    pEvent->acceptProposedAction();
-}
-
-void UBTeacherBarDropMediaZone::dragMoveEvent(QDragMoveEvent *pEvent)
-{
-    pEvent->acceptProposedAction();
-}
-
-// ---------------------------------------------------------------------------------------------
 UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
   , mpLayout(NULL)
   , mpUrlLabel(NULL)
@@ -997,9 +876,7 @@ UBTeacherBarPreviewMedia::UBTeacherBarPreviewMedia(QWidget* parent, const char* 
 {
     setObjectName(name);
     mWidget = new UBWidgetList(parent);
-//    mWidget->setEmptyText(tr("No media found"));
     mLayout.addWidget(mWidget);
-//    mWidget->setStyleSheet(QString("background-color: red;"));
     setLayout(&mLayout);
     mWidgetList.clear();
 }
@@ -1235,7 +1112,6 @@ QWidget* UBTBMediaContainer::generateMediaWidget(const QString& url)
         pW = label;
     }
     else if(mimeType.contains("video") || mimeType.contains("audio")){
-        //UBMediaPlayer* mediaPlayer = new UBMediaPlayer();
         UBMediaWidget* mediaPlayer = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
         mediaPlayer->setFile(url);
         pW = mediaPlayer;

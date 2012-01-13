@@ -49,6 +49,7 @@ public:
     void setFile(const QString& filePath);
     eMediaType mediaType();
     int border();
+    void setAudioCover(const QString& coverPath);
 
 protected:
     void resizeEvent(QResizeEvent* ev);
@@ -78,8 +79,9 @@ private:
     bool mAutoUpdate;
     bool mGeneratingThumbnail;
     int mBorder;
-    QWidget* mpVideoContainer;
-    QVBoxLayout mVideoLayout;
+    QWidget* mpMediaContainer;
+    QHBoxLayout mMediaLayout;
+    QLabel* mpCover;
 };
 
 #endif // UBMEDIAWIDGET_H
