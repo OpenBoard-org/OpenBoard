@@ -1,7 +1,27 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "core/UBApplication.h"
 #include "UBGlobals.h"
 #include "UBMediaWidget.h"
 
+/**
+  * \brief Constructor
+  * @param type as the media type
+  * @param parent as the parent widget
+  * @param name as the object name
+  */
 UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name):QWidget(parent)
   , mpMediaObject(NULL)
   , mpVideoWidget(NULL)
@@ -43,6 +63,9 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
     connect(mpSlider, SIGNAL(valueChanged(int)), this, SLOT(onSliderChanged(int)));
 }
 
+/**
+  * \brief Destructor
+  */
 UBMediaWidget::~UBMediaWidget()
 {
     DELETEPTR(mpSlider);
@@ -54,6 +77,10 @@ UBMediaWidget::~UBMediaWidget()
     DELETEPTR(mpCover);
 }
 
+/**
+  * \brief Set the media file
+  * @param filePath as the media file path
+  */
 void UBMediaWidget::setFile(const QString &filePath)
 {
     Q_ASSERT("" != filePath);
@@ -67,11 +94,18 @@ void UBMediaWidget::setFile(const QString &filePath)
     createMediaPlayer();
 }
 
+/**
+  * \brief Get the media type
+  * @returns the media type
+  */
 eMediaType UBMediaWidget::mediaType()
 {
     return mType;
 }
 
+/**
+  * \brief Create the media player
+  */
 void UBMediaWidget::createMediaPlayer()
 {
     mpMediaContainer = new QWidget(this);
@@ -104,6 +138,9 @@ void UBMediaWidget::createMediaPlayer()
     mLayout.addLayout(&mSeekerLayout, 0);
 }
 
+/**
+  * \brief Adapt the widget size to the video in order to keep the good aspect ratio
+  */
 void UBMediaWidget::adaptSizeToVideo()
 {
     if(NULL != mpMediaContainer){
@@ -116,6 +153,11 @@ void UBMediaWidget::adaptSizeToVideo()
     }
 }
 
+/**
+  * \brief Handle the media state change notification
+  * @param newState as the new state
+  * @param oldState as the old state
+  */
 void UBMediaWidget::onStateChanged(Phonon::State newState, Phonon::State oldState)
 {
     if(!mGeneratingThumbnail){
@@ -142,11 +184,19 @@ void UBMediaWidget::onStateChanged(Phonon::State newState, Phonon::State oldStat
     }
 }
 
+/**
+  * \brief Handles the total time change notification
+  * @param total as the new total time
+  */
 void UBMediaWidget::onTotalTimeChanged(qint64 total)
 {
     mpSlider->setMaximum(total);
 }
 
+/**
+  * \brief Handles the tick notification
+  * @param currentTime as the current time
+  */
 void UBMediaWidget::onTick(qint64 currentTime)
 {
     mAutoUpdate = true;
@@ -154,6 +204,10 @@ void UBMediaWidget::onTick(qint64 currentTime)
     mAutoUpdate = false;
 }
 
+/**
+  * \brief Handles the seeker value change notification
+  * @param value as the new seeker value
+  */
 void UBMediaWidget::onSliderChanged(int value)
 {
     if(!mAutoUpdate){
@@ -161,6 +215,9 @@ void UBMediaWidget::onSliderChanged(int value)
     }
 }
 
+/**
+  * \brief Toggle Play-Stop
+  */
 void UBMediaWidget::onPlayStopClicked()
 {
     switch(mpMediaObject->state()){
@@ -177,21 +234,36 @@ void UBMediaWidget::onPlayStopClicked()
     }
 }
 
+/**
+  * \brief Pause the media
+  */
 void UBMediaWidget::onPauseClicked()
 {
     mpMediaObject->pause();
 }
 
+/**
+  * Get the border
+  * @returns the actual border
+  */
 int UBMediaWidget::border()
 {
     return mBorder;
 }
 
+/**
+  * \brief Handles the resize event
+  * @param ev as the resize event
+  */
 void UBMediaWidget::resizeEvent(QResizeEvent* ev)
 {
     Q_UNUSED(ev);
 }
 
+/**
+  * \brief Set the audio cover
+  * @param coverPath as the cover image file path
+  */
 void UBMediaWidget::setAudioCover(const QString &coverPath)
 {
     if(NULL != mpCover){
@@ -200,6 +272,11 @@ void UBMediaWidget::setAudioCover(const QString &coverPath)
 }
 
 // -----------------------------------------------------------------------------------------------------------
+/**
+  * \brief Constructor
+  * @param parent as the parent widget
+  * @param name as the object name
+  */
 UBMediaButton::UBMediaButton(QWidget *parent, const char *name):QLabel(parent)
   , mPressed(false)
 {
@@ -208,17 +285,28 @@ UBMediaButton::UBMediaButton(QWidget *parent, const char *name):QLabel(parent)
     setStyleSheet(QString("padding:0px 0px 0px 0px; margin:0px 0px 0px 0px;"));
 }
 
+/**
+  * \brief Destructor
+  */
 UBMediaButton::~UBMediaButton()
 {
 
 }
 
+/**
+  * \brief Handles the mouse press notification
+  * @param ev as the mouse press event
+  */
 void UBMediaButton::mousePressEvent(QMouseEvent* ev)
 {
     Q_UNUSED(ev);
     mPressed = true;
 }
 
+/**
+  * \brief Handles the mouse release notification
+  * @param ev as the mouse release event
+  */
 void UBMediaButton::mouseReleaseEvent(QMouseEvent* ev)
 {
     Q_UNUSED(ev);

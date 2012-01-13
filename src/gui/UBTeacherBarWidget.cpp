@@ -1016,15 +1016,12 @@ void UBTBMediaContainer::dropEvent(QDropEvent* pEvent)
     QString mimeType;
     QString resourcePath;
     if(pEvent->mimeData()->hasText()){
-        qDebug() << "text dropped";
         resourcePath = pEvent->mimeData()->text();
     }
     else if(pEvent->mimeData()->hasUrls()){
-        qDebug() << "url dropped";
         resourcePath = pEvent->mimeData()->urls().at(0).toLocalFile();
     }
     else if(pEvent->mimeData()->hasImage()){
-        qDebug() << "image dropped";
         pixFromDropEvent.loadFromData(pEvent->mimeData()->imageData().toByteArray());
         if(!pixFromDropEvent.isNull())
             mimeType = "image";
@@ -1035,7 +1032,6 @@ void UBTBMediaContainer::dropEvent(QDropEvent* pEvent)
         return;
     }
     if(!resourcePath.isEmpty()){
-        qDebug() << "emitting 'mediaDropped'";
         emit mediaDropped(resourcePath);
         pEvent->acceptProposedAction();
     }
