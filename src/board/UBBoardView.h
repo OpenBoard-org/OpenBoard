@@ -116,6 +116,8 @@ class UBBoardView : public QGraphicsView
         bool isAbsurdPoint(QPoint point);
 
 		bool mVirtualKeyboardActive;
+        bool mOkOnWidget;
+
         QString typeForExtention(const QString &extention);
         QString fileExtention(const QString &filename);
 

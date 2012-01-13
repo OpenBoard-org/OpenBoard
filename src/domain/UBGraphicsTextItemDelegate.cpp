@@ -35,6 +35,7 @@ const int UBGraphicsTextItemDelegate::sMinPointSize = 8;
 UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated,0, parent, true)
     , mLastFontPixelSize(-1)
+    , delta(5)
 {
     delegated()->setData(UBGraphicsItemData::ItemEditable, QVariant(true));
     delegated()->setPlainText("");
@@ -231,82 +232,12 @@ void UBGraphicsTextItemDelegate::pickColor()
 
 void UBGraphicsTextItemDelegate::decreaseSize()
 {
-    QTextCursor cursor = delegated()->textCursor();
-    QTextCharFormat textFormat;
-
-    QFont curFont = cursor.charFormat().font();
-
-    int pointSize =  curFont.pointSize();
-    pointSize -= 5;
-
-
-//    QFontInfo fi(delegated()->font());
-//    int pixelSize = fi.pixelSize();
-//    if (-1 == mLastFontPixelSize)
-//        mLastFontPixelSize = pixelSize;
-
-//    int newPixelSize = sMinPixelSize;
-//    while (newPixelSize * 1.5 < pixelSize)
-//        newPixelSize *= 1.5;
-
-//    if (newPixelSize < mLastFontPixelSize && mLastFontPixelSize < pixelSize)
-//        newPixelSize = mLastFontPixelSize;
-
-//    if (pixelSize > newPixelSize)
-//    {
-//        QFont font = delegated()->font();
-//        font.setPixelSize(newPixelSize);
-//        delegated()->setFont(font);
-//        UBSettings::settings()->setFontPixelSize(newPixelSize);
-
-//        delegated()->document()->adjustSize();
-//        delegated()->contentsChanged();dddd
-//    }
-    curFont.setPointSize(pointSize);
-    textFormat.setFont(curFont);
-    cursor.mergeCharFormat(textFormat);
-    delegated()->setTextCursor(cursor);
-    UBSettings::settings()->setFontPixelSize(curFont.pixelSize());
-    UBSettings::settings()->setFontPointSize(pointSize);
-
-    delegated()->document()->adjustSize();
-    delegated()->setFont(curFont);
+    ChangeTextSize(-delta);
 }
 
 void UBGraphicsTextItemDelegate::increaseSize()
 {
-    QTextCursor cursor = delegated()->textCursor();
-    QTextCharFormat textFormat;
-
-    QFont curFont = cursor.charFormat().font();
-
-    int pointSize =  curFont.pointSize();
-    pointSize += 5;
-
-//    QFontInfo fi(cursor.charFormat().font());
-//    int pixelSize = fi.pixelSize();
-//    if (-1 == mLastFontPixelSize)
-//        mLastFontPixelSize = pixelSize;
-
-//    int newPixelSize = sMinPixelSize;
-//    while (newPixelSize <= pixelSize)
-//        newPixelSize *= 1.5;
-
-//    if (pixelSize < mLastFontPixelSize && mLastFontPixelSize < newPixelSize)
-//        newPixelSize = mLastFontPixelSize;
-
-
-    curFont.setPointSize(pointSize);
-    textFormat.setFont(curFont);
-    cursor.mergeCharFormat(textFormat);
-    delegated()->setTextCursor(cursor);
-//    UBSettings::settings()->setFontPixelSize(curFont.pixelSize());
-    UBSettings::settings()->setFontPointSize(pointSize);
-
-    delegated()->document()->adjustSize();
-    delegated()->setFont(curFont);
-//    delegated()->contentsChanged();
-
+   ChangeTextSize(delta);
 }
 
 UBGraphicsTextItem* UBGraphicsTextItemDelegate::delegated()
@@ -348,4 +279,52 @@ void UBGraphicsTextItemDelegate::positionHandles()
 {
     UBGraphicsItemDelegate::positionHandles();
     setEditable(isEditable());
+}
+
+void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
+{
+    if (0 == delta)
+        return;
+
+    QTextCursor cursor = delegated()->textCursor();
+    QTextCharFormat textFormat;
+
+    int anchorPos = cursor.anchor();
+    int cursorPos = cursor.position();
+
+    if (0 == anchorPos-cursorPos)
+    {
+        cursor.setPosition (0, QTextCursor::MoveAnchor);
+        cursor.setPosition (cursor.document()->characterCount()-1, QTextCursor::KeepAnchor);
+    }
+
+    int startPos = qMin(cursor.anchor(), cursor.position());
+    int endPos = qMax(cursor.anchor(), cursor.position());
+
+    for (int i = startPos; i < endPos ; i++)
+    {
+        // selecting single symbol
+        cursor.setPosition (i, QTextCursor::MoveAnchor);
+        cursor.setPosition (i+1, QTextCursor::KeepAnchor);
+
+        //setting new parameners
+        QFont curFont = cursor.charFormat().font();
+
+        int pointSize =  curFont.pointSize() + delta;
+
+        curFont.setPointSize(pointSize);
+        textFormat.setFont(curFont);
+        cursor.mergeCharFormat(textFormat);
+        delegated()->setTextCursor(cursor);
+        UBSettings::settings()->setFontPointSize(pointSize);
+
+        delegated()->document()->adjustSize();
+        delegated()->setFont(curFont);
+    }
+
+    //returning initial selection
+    cursor.setPosition (anchorPos, QTextCursor::MoveAnchor);
+    cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
+
+    delegated()->setTextCursor(cursor);
 }
