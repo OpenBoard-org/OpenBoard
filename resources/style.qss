@@ -18,8 +18,6 @@ QWidget#UBMediaVideoContainer
 	background: #000000;
 	border-radius: 10px;
 	border: 2px solid #999999;
-	margin: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
 }
 
 QWidget#UBTeacherBarPreviewWidget

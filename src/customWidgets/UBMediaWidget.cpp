@@ -35,6 +35,7 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
     mSeekerLayout.addWidget(mpPlayStopButton, 0);
     mSeekerLayout.addWidget(mpPauseButton, 0);
     mSeekerLayout.addWidget(mpSlider, 1);
+    mSeekerLayout.setContentsMargins(0, 0, 0, 0);
 
     connect(mpPlayStopButton, SIGNAL(clicked()), this, SLOT(onPlayStopClicked()));
     connect(mpPauseButton, SIGNAL(clicked()), this, SLOT(onPauseClicked()));
@@ -74,9 +75,9 @@ void UBMediaWidget::createMediaPlayer()
 {
     if(eMediaType_Video == mType){
         mpVideoWidget = new Phonon::VideoWidget(this);
-        mpVideoWidget->setStyleSheet(QString("margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;"));
         mpVideoContainer = new QWidget(this);
         mpVideoContainer->setObjectName("UBMediaVideoContainer");
+        mVideoLayout.setContentsMargins(10, 10, 25, 10);
         mpVideoContainer->setLayout(&mVideoLayout);
         mVideoLayout.addWidget(mpVideoWidget, 1);
         Phonon::createPath(mpMediaObject, mpVideoWidget);
@@ -93,13 +94,13 @@ void UBMediaWidget::createMediaPlayer()
 
 void UBMediaWidget::adaptSizeToVideo()
 {
-    if(NULL != mpVideoWidget){
-        int origW = mpVideoWidget->width();
-        int origH = mpVideoWidget->height();
+    if(NULL != mpVideoContainer){
+        int origW = mpVideoContainer->width();
+        int origH = mpVideoContainer->height();
         int newW = width();
         float scaleFactor = (float)origW/(float)newW;
         int newH = origH/scaleFactor;
-        resize(width(), height() + newH);
+        resize(newW, height() + newH);
     }
 }
 
@@ -185,7 +186,7 @@ UBMediaButton::UBMediaButton(QWidget *parent, const char *name):QLabel(parent)
 {
     setObjectName(name);
     resize(UBMEDIABUTTON_SIZE, UBMEDIABUTTON_SIZE);
-    setStyleSheet(QString("padding:0px 0px 0px 0px;"));
+    setStyleSheet(QString("padding:0px 0px 0px 0px; margin:0px 0px 0px 0px;"));
 }
 
 UBMediaButton::~UBMediaButton()
