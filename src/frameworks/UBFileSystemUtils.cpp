@@ -60,20 +60,23 @@ bool UBFileSystemUtils::copyFile(const QString &source, const QString &Destinati
         qDebug() << "file" << source << "does not present in fs";
         return false;
     }
-    if (QFile::exists(Destination)) {
-        if  (QFileInfo(Destination).isFile() && overwrite) {
-            QFile::remove(Destination);
+
+    QString normalizedDestination = Destination;
+    if (QFile::exists(normalizedDestination)) {
+        if  (QFileInfo(normalizedDestination).isFile() && overwrite) {
+            QFile::remove(normalizedDestination);
         }
     } else {
-        int pos = Destination.lastIndexOf(QDir::separator());
+        normalizedDestination = normalizedDestination.replace(QString("\\"), QString("/"));
+        int pos = normalizedDestination.lastIndexOf("/");
         if (pos != -1) {
-            QString newpath = Destination.left(pos);
+            QString newpath = normalizedDestination.left(pos);
             if (!QDir().mkpath(newpath)) {
                 qDebug() << "can't create a new path at " << newpath;
             }
         }
     }
-    return QFile::copy(source, Destination);
+    return QFile::copy(source, normalizedDestination);
 }
 
 QString UBFileSystemUtils::defaultTempDirPath()
