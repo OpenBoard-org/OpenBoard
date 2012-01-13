@@ -49,7 +49,6 @@ UBMediaWidget::~UBMediaWidget()
     DELETEPTR(mpPlayStopButton);
     DELETEPTR(mpAudioOutput);
     DELETEPTR(mpVideoWidget);
-    DELETEPTR(mpVideoContainer);
     DELETEPTR(mpMediaObject);
 }
 
