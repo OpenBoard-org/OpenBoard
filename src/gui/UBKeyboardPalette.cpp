@@ -54,7 +54,7 @@ UBKeyboardPalette::UBKeyboardPalette(QWidget *parent)
 
     createCtrlButtons();
 
-    nCurrentLocale = 0;
+    nCurrentLocale = UBSettings::settings()->KeyboardLocale->get().toInt();
     setInput(locales[nCurrentLocale]);
 
     setContentsMargins( 22, 22, 22, 22 );
@@ -166,6 +166,8 @@ void UBKeyboardPalette::setLocale(int nLocale)
         setInput(locales[nCurrentLocale]);
         onLocaleChanged(locales[nCurrentLocale]);
         update();
+
+		UBSettings::settings()->KeyboardLocale->set(nCurrentLocale);
     }
     emit localeChanged(nLocale);
 }

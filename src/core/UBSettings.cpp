@@ -363,6 +363,7 @@ void UBSettings::init()
     intranetPodcastPublishingUrl = new UBSetting(this, "IntranetPodcast", "PublishingUrl", "");
     intranetPodcastAuthor = new UBSetting(this, "IntranetPodcast", "Author", "");
 
+	KeyboardLocale = new UBSetting(this, "Board", "StartupKeyboardLocale", 0);
 }
 
 

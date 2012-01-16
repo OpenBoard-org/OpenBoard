@@ -318,6 +318,8 @@ class UBSettings : public QObject
         static int libPaletteWidth;
         */
 
+        UBSetting* KeyboardLocale;
+
     public slots:
 
         void setPenWidthIndex(int index);

@@ -254,4 +254,6 @@ void UBDocumentThumbnailWidget::hightlightItem(int index)
         if (thumbnail)
             thumbnail->highlight();
     }
+
+    selectItemAt(index);
 }
