@@ -61,6 +61,8 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 
     private:
         void customize(QFontDialog &fontDialog);
+        void ChangeTextSize(int delta);
+
         QFont createDefaultFont();
         QAction *mEditableAction;
 
@@ -71,6 +73,9 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 
         void decreaseSize();
         void increaseSize();
+
+private:
+      const int delta;
 
 };
 

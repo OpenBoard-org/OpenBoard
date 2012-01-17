@@ -1938,7 +1938,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 
     QList<QGraphicsItem*> si = selectedItems();
 
-    if (si.size() > 0 && !keyEvent->isAccepted())
+    if ((si.size() > 0) && (keyEvent->isAccepted()))
     {
 #ifdef Q_OS_MAC
         if (keyEvent->key() == Qt::Key_Backspace)

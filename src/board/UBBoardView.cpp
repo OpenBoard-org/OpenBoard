@@ -72,6 +72,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 , mController (pController)
 , mIsCreatingTextZone (false)
 , mIsCreatingSceneGrabZone (false)
+, mOkOnWidget(false)
 {
   init ();
 
@@ -738,16 +739,27 @@ void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
     QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
-    if (graphicsWidget && graphicsWidget->acceptDrops()){
-        if (isDropableData(event->mimeData())) {
+    if (graphicsWidget) {
+        if (graphicsWidget->acceptDrops()) {
+            if (!mOkOnWidget) {
+                if (!isDropableData(event->mimeData())) {
+                    mOkOnWidget = false;
+                    event->ignore();
+                    return;
+                } else {
+                    mOkOnWidget = true;
+                }
+            }
             QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
             QDragMoveEvent newEvent(newPoint, event->dropAction(), event->mimeData(), event->mouseButtons(), event->keyboardModifiers());
             QApplication::sendEvent(graphicsWidget->widgetWebView(),&newEvent);
         } else {
+            mOkOnWidget = false;
             event->ignore();
         }
-    } else {
+    }  else {
         event->acceptProposedAction();
+        mOkOnWidget = false;
     }
 }
 
@@ -804,6 +816,9 @@ QString UBBoardView::fileExtention(const QString &filename)
 }
 QString UBBoardView::typeForExtention(const QString &extention)
 {
+    if (extention.isEmpty())
+        return QString();
+
     QString result = QString();
 
     if (audioExtentions.contains(extention)) {
@@ -812,24 +827,26 @@ QString UBBoardView::typeForExtention(const QString &extention)
         result = videoAlias;
     } else if (imageExtentions.contains(extention)) {
         result = imageAlias;
-    } else if (htmlExtentions.contains(extention)) {
-        result = htmlAlias;
+//    } else if (htmlExtentions.contains(extention)) {
+//        result = htmlAlias;
     }
 
     return result;
 }
 bool UBBoardView::isDropableData(const QMimeData *pMimeData)
 {
-    if (pMimeData->hasUrls())
-        if (!typeForExtention(fileExtention(pMimeData->urls().at(0).toLocalFile())).isNull())
+    if (pMimeData->hasUrls()) {
+        if (!typeForExtention(fileExtention(pMimeData->urls().at(0).toLocalFile())).isNull()) {
             return true;
+        }
+    }
 
     return false;
 }
 
 void UBBoardView::dropEvent (QDropEvent *event)
 {
-    qDebug() << event->source();
+    mOkOnWidget = false;
     QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
