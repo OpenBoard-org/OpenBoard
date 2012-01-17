@@ -1948,40 +1948,41 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
         {
             foreach(QGraphicsItem* item, si)
             {
-                UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
-                if (ubgi)
+                switch (item->type())
                 {
-                    bool bRemove = true;
-                    switch (item->type())
+                case UBGraphicsW3CWidgetItem::Type:
                     {
-                    case UBGraphicsW3CWidgetItem::Type:
-                        {
-                            UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
-                            if (0 != wc3_widget)
-                            if (wc3_widget->hasFocus())
-                                bRemove = false;                                                             
-                            break;
-                        }
-                    case UBGraphicsAppleWidgetItem::Type:
-                        {
-                            UBGraphicsAppleWidgetItem *Apple_widget = dynamic_cast<UBGraphicsAppleWidgetItem*>(item);
-                            if (0 !=Apple_widget)
-                            if (Apple_widget->hasFocus())
-                                bRemove = false;                                 
-                            break;
-                        }
-                    case UBGraphicsTextItem::Type:
-                        {
-                            UBGraphicsTextItem *text_item = dynamic_cast<UBGraphicsTextItem*>(item);
-                            if (0 != text_item)
-                            if (text_item->hasFocus())
-                                bRemove = false;                                 
-                            break;
-                        }
+                        UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
+                        if (0 != wc3_widget)
+                        if (!wc3_widget->hasFocus())
+                            wc3_widget->remove();                                                             
+                        break;
+                    }
+                case UBGraphicsAppleWidgetItem::Type:
+                    {
+                        UBGraphicsAppleWidgetItem *Apple_widget = dynamic_cast<UBGraphicsAppleWidgetItem*>(item);
+                        if (0 !=Apple_widget)
+                        if (!Apple_widget->hasFocus())
+                            Apple_widget->remove();                          
+                        break;
+                    }
+                case UBGraphicsTextItem::Type:
+                    {
+                        UBGraphicsTextItem *text_item = dynamic_cast<UBGraphicsTextItem*>(item);
+                        if (0 != text_item)
+                        if (!text_item->hasFocus())
+                            text_item->remove();                              
+                        break;
                     }
 
-                    if (bRemove)
-                        ubgi->remove();                    
+                default:
+                    {
+                        UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
+                        if (0 != ubgi)
+                            ubgi->remove();
+                        else
+                            UBCoreGraphicsScene::removeItem(item);      
+                    }
                 }
             }
         }
