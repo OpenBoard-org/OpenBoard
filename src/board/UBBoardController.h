@@ -200,6 +200,8 @@ class UBBoardController : public QObject
         void controlViewShown();
         UBGraphicsVideoItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos);
         UBGraphicsAudioItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos);
+        UBGraphicsWidgetItem *addW3cWidget(const QUrl& pUrl, const QPointF& pos);
+
         void cut();
         void copy();
         void paste();

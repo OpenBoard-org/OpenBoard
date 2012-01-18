@@ -987,7 +987,29 @@ QString UBPersistenceManager::addPdfFileToDocument(UBDocumentProxy* pDocumentPro
 
     return fileName;
 }
+QString UBPersistenceManager::addGraphicsWidgteToDocument(UBDocumentProxy *pDocumentProxy, QString path, QUuid objectUuid)
+{
+    QFileInfo fi(path);
 
+    if (!fi.exists() || !pDocumentProxy || objectUuid.isNull())
+        return "";
+
+    QString widgetRootDir = path;
+    QString extension = QFileInfo(widgetRootDir).suffix();
+
+    QString widgetTargetDir = pDocumentProxy->persistencePath() + "/" + widgetDirectory +  "/" + objectUuid.toString() + "." + extension;
+
+    if (!QFile::exists(widgetTargetDir)) {
+        QDir dir;
+        dir.mkpath(widgetTargetDir);
+        UBFileSystemUtils::copyDir(widgetRootDir, widgetTargetDir);
+    }
+
+    if (!QFile::exists(widgetTargetDir))
+        widgetTargetDir = QString();
+
+    return widgetTargetDir;
+}
 
 
 void UBPersistenceManager::documentRepositoryChanged(const QString& path)

@@ -2105,7 +2105,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         startFileUrl = widgetRootUrl.toString() + "/" + item->widgetWebView()->mainHtmlFileName();
 
     mXmlWriter.writeAttribute("src", startFileUrl);
-
     mXmlWriter.writeEndElement(); //iFrame
 
     //persists widget state

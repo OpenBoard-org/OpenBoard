@@ -439,7 +439,7 @@ void UBWidgetUniboardAPI::enableDropOnWidget()
 QString UBWidgetUniboardAPI::downloadUrl(const QString &objectUrl, const QString &extention)
 {
     QString result;
-    QUrl widgetUrl = mGraphicsWidget->widgetWebView()->widgetUrl();
+    QUrl widgetUrl = mGraphicsWidget->getOwnFolder();
     QString destFileName =widgetUrl.toLocalFile() + "/objects/" + QUuid::createUuid().toString() + extention;
 
     if (UBFileSystemUtils::copyFile(objectUrl, destFileName)) {

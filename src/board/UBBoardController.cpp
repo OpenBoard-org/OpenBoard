@@ -871,9 +871,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             widgetUrl = expandWidgetToTempDir(pData);
         }
 
-        UBGraphicsWidgetItem* w3cWidgetItem = mActiveScene->addW3CWidget(widgetUrl, pPos);
-
-        w3cWidgetItem->setSourceUrl(sourceUrl);
+        UBGraphicsWidgetItem *w3cWidgetItem = addW3cWidget(widgetUrl, pPos);
 
         if (isBackground)
         {
@@ -1647,9 +1645,7 @@ void UBBoardController::updateBackgroundState()
     {
         newBackgroundStyle ="QWidget {background-color: #F1F1F1}";
     }
-
 }
-
 
 void UBBoardController::stylusToolChanged(int tool)
 {
@@ -1784,6 +1780,34 @@ UBGraphicsAudioItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
 
 }
 
+UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QPointF &pos)
+{
+    UBGraphicsWidgetItem* w3cWidgetItem = 0;
+
+    QUuid uuid = QUuid::createUuid();
+    QUrl newUrl = pUrl;
+
+    newUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addGraphicsWidgteToDocument(mActiveDocument, pUrl.toLocalFile(), uuid));
+
+    w3cWidgetItem = mActiveScene->addW3CWidget(pUrl, pos);
+
+    if (w3cWidgetItem) {
+        w3cWidgetItem->setUuid(uuid);
+        w3cWidgetItem->setOwnFolder(newUrl);
+        w3cWidgetItem->setSourceUrl(pUrl);
+
+        QString struuid = UBStringUtils::toCanonicalUuid(uuid);
+        QString snapshotPath = mActiveDocument->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
+        UBGraphicsWidgetItem *tmpItem = dynamic_cast<UBGraphicsWidgetItem*>(w3cWidgetItem);
+        if (tmpItem)
+           tmpItem->widgetWebView()->takeSnapshot().save(snapshotPath, "PNG");
+
+    }
+
+    return 0;
+
+
+}
 
 void UBBoardController::cut()
 {

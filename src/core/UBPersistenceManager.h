@@ -120,6 +120,7 @@ class UBPersistenceManager : public QObject
         virtual QString addAudioFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, QUuid objectUuid);
         virtual QString addAudioFileToDocument(UBDocumentProxy* pDocumentProxy, QUrl sourceUrl, QByteArray pPayload, QUuid objectUuid);
         virtual QString addPdfFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, QUuid objectUuid);
+        virtual QString addGraphicsWidgteToDocument(UBDocumentProxy *mDocumentProxy, QString path, QUuid objectUuid);
 
         bool mayHaveVideo(UBDocumentProxy* pDocumentProxy);
         bool mayHaveAudio(UBDocumentProxy* pDocumentProxy);

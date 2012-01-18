@@ -68,6 +68,9 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         void removeScript();
         QString downloadUrl(const QString &fileUrl, const QString &extention);
 
+        virtual void setOwnFolder(const QUrl &newFolder) {ownFolder = newFolder;}
+        virtual QUrl getOwnFolder() const {return ownFolder;}
+
 
         virtual void clearSource(){;}
 
@@ -91,6 +94,7 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         QPointF mLastMousePos;
         bool mShouldMoveWidget;
         UBWidgetUniboardAPI* mUniboardAPI;
+        QUrl ownFolder;
 };
 
 class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
