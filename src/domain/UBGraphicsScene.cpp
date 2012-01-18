@@ -1765,21 +1765,13 @@ void UBGraphicsScene::addMask(const QPointF &center)
 { 
     UBGraphicsCurtainItem* curtain = new UBGraphicsCurtainItem(); // mem : owned and destroyed by the scene
     mTools << curtain;
-    QGraphicsView* view;
-
-    if(UBApplication::applicationController->displayManager()->hasDisplay())
-        view = (QGraphicsView*)UBApplication::boardController->displayView();
-    else
-        view = (QGraphicsView*)UBApplication::boardController->controlView();
-*/   
-
 
 	addItem(curtain);
 
     QRectF rect = UBApplication::boardController->activeScene()->normalizedSceneRect();
     rect.setRect(center.x() - rect.width()/4, center.y() - rect.height()/4, rect.width()/2 , rect.height()/2);
     QPointF origin = center.isNull() ? rect.bottomRight() : center;
-    curtain->setRect(rect);//rect.translated(origin - rect.topLeft() / 2));
+    curtain->setRect(rect);
     UBGraphicsItem::assignZValue(curtain, toolLayerStart + toolOffsetCurtain);
 
     curtain->setVisible(true);
