@@ -23,6 +23,13 @@ class UBMediaPlayer;
 #define LABEL_MINWIDHT      80
 
 typedef enum{
+    eTeacherBarState_DocumentEdit,
+    eTeacherBarState_DocumentPreview,
+    eTeacherBarState_PageEdit,
+    eTeacherBarState_PagePreview
+}eTeacherBarState;
+
+typedef enum{
     eDuration_Quarter,
     eDuration_Half,
     eDuration_ThreeQuarter
@@ -104,6 +111,13 @@ private:
     QHBoxLayout mOwnerLayout;
 };
 
+class UBTBPreviewContainer : public UBWidgetList
+{
+public:
+    UBTBPreviewContainer(QWidget* parent=0, const char* name="UBTBPreviewContainer");
+    ~UBTBPreviewContainer();
+};
+
 class UBTeacherBarPreviewWidget : public QWidget
 {
     Q_OBJECT
@@ -133,6 +147,7 @@ private:
     QHBoxLayout mTitleDurationLayout;
     UBTeacherBarPreviewMedia mMediaViewer;
     QList<QWidget*> mWidgets;
+    QList<QWidget*> mStoredWidgets;
 
     QPushButton* mpEditButton;
     QLabel* mpTitle;
@@ -144,6 +159,7 @@ private:
     QLabel* mpLinksLabel;
     QLabel* mpTmpLink;
     UBActionPreview* mpTmpAction;
+    UBTBPreviewContainer* mpContentContainer;
 };
 
 class UBTBMediaContainer : public UBWidgetList
@@ -172,6 +188,51 @@ private:
     QStringList mMediaList;
 };
 
+class UBTBDocumentEditWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    UBTBDocumentEditWidget(QWidget* parent=0, const char* name="UBTBDocumentEditWidget");
+    ~UBTBDocumentEditWidget();
+
+signals:
+    void onPreviewClicked();
+    void onPageViewClicked();
+
+private:
+    QVBoxLayout mLayout;
+    QHBoxLayout mPageLayout;
+    QHBoxLayout mPreviewLayout;
+    QPushButton* mpPageViewButton;
+    QPushButton* mpPreviewButton;
+
+    QLabel* mpTitleLabel;
+    QLineEdit* mpTitle;
+    QLabel* mpTargetLabel;
+    QTextEdit* mpTarget;
+    QLabel* mpMetadataLabel;
+    QLabel* mpLicenseLabel;
+};
+
+class UBTBDocumentPreviewWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    UBTBDocumentPreviewWidget(QWidget* parent=0, const char* name="UBTBDocumentPreviewWidget");
+    ~UBTBDocumentPreviewWidget();
+
+signals:
+    void onEditClicked();
+    void onPageViewClicked();
+
+private:
+    QVBoxLayout mLayout;
+    QHBoxLayout mPageLayout;
+    QHBoxLayout mPreviewLayout;
+    QPushButton* mpPageViewButton;
+    QPushButton* mpEditButton;
+};
+
 class UBTeacherBarWidget : public UBDockPaletteWidget
 {
     Q_OBJECT
@@ -188,23 +249,18 @@ private slots:
     void onLinkButton();
     void onShowEditMode();
     void onMediaDropped(const QString& url);
+    void onTBStateChanged(eTeacherBarState state);
 
 private:
     void clearWidgetLists();
     bool isEmpty();
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpTitleLayout;
-    QHBoxLayout* mpDurationLayout;
     QLabel* mpTitleLabel;
-    QLabel* mpDurationLabel;
     QLineEdit* mpTitle;
     QLabel* mpMediaLabel;
     QWidget* mpContainer;
     QVBoxLayout* mpContainerLayout;
-    QCheckBox* mpDuration1;
-    QCheckBox* mpDuration2;
-    QCheckBox* mpDuration3;
-    QButtonGroup* mpDurationButtons;
     QLabel* mpActionLabel;
     UBWidgetList* mpActions;
     QPushButton* mpActionButton;
@@ -223,6 +279,10 @@ private:
     QVector<QWidget*> mMediaList;
 
     UBTBMediaContainer* mpMediaContainer;
+    eTeacherBarState mState;
+
+    UBTBDocumentPreviewWidget* mpDocPreviewWidget;
+    UBTBDocumentEditWidget* mpDocEditWidget;
 };
 
 #endif // UBTEACHERBARWIDGET_H

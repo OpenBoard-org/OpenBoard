@@ -17,23 +17,18 @@
 
 #include "customWidgets/UBDraggableLabel.h"
 #include "customWidgets/UBMediaWidget.h"
+#include "customWidgets/UBGlobals.h"
 
 #include "core/memcheck.h"
 
 UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
     , mpLayout(NULL)
     , mpTitleLayout(NULL)
-    , mpDurationLayout(NULL)
     , mpTitleLabel(NULL)
-    , mpDurationLabel(NULL)
     , mpTitle(NULL)
     , mpMediaLabel(NULL)
     , mpContainer(NULL)
     , mpContainerLayout(NULL)
-    , mpDuration1(NULL)
-    , mpDuration2(NULL)
-    , mpDuration3(NULL)
-    , mpDurationButtons(NULL)
     , mpActionLabel(NULL)
     , mpActions(NULL)
     , mpActionButton(NULL)
@@ -47,6 +42,8 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     , mpStackWidget(NULL)
     , mpPreview(NULL)
     , mpMediaContainer(NULL)
+    , mpDocPreviewWidget(NULL)
+    , mpDocEditWidget(NULL)
 {
     setObjectName(name);
     mName = "TeacherBarWidget";
@@ -68,11 +65,15 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpContainer->setObjectName("DockPaletteWidgetBox");
 
     mpPreview = new UBTeacherBarPreviewWidget(this);
+    mpDocPreviewWidget = new UBTBDocumentPreviewWidget(this);
+    mpDocEditWidget = new UBTBDocumentEditWidget(this);
 
     mpStackWidget = new QStackedWidget(this);
     mpContainerLayout->addWidget(mpStackWidget);
     mpStackWidget->addWidget(mpContainer);
     mpStackWidget->addWidget(mpPreview);
+    mpStackWidget->addWidget(mpDocPreviewWidget);
+    mpStackWidget->addWidget(mpDocEditWidget);
 
     mpLayout = new QVBoxLayout(mpContainer);
     mpContainer->setLayout(mpLayout);
@@ -84,26 +85,6 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(mpTitle, SIGNAL(textChanged(const QString&)), this, SLOT(onTitleTextChanged(const QString&)));
     mpLayout->addWidget(mpTitleLabel, 0);
     mpLayout->addWidget(mpTitle, 0);
-
-    // Duration
-    mpDurationLabel = new QLabel(tr("Duration"), mpContainer);
-    mpLayout->addWidget(mpDurationLabel, 0);
-    mpDurationLayout = new QHBoxLayout();
-    mpDuration1 = new QCheckBox(this);
-    mpDuration1->setIcon(QIcon(":images/duration1.png"));
-    mpDuration1->setChecked(true);
-    mpDurationLayout->addWidget(mpDuration1, 0);
-    mpDuration2 = new QCheckBox(this);
-    mpDuration2->setIcon(QIcon(":images/duration2.png"));
-    mpDurationLayout->addWidget(mpDuration2, 0);
-    mpDuration3 = new QCheckBox(this);
-    mpDuration3->setIcon(QIcon(":images/duration3.png"));
-    mpDurationLayout->addWidget(mpDuration3, 0);
-    mpDurationButtons = new QButtonGroup(mpContainer);
-    mpDurationButtons->addButton(mpDuration1);
-    mpDurationButtons->addButton(mpDuration2);
-    mpDurationButtons->addButton(mpDuration3);
-    mpLayout->addLayout(mpDurationLayout, 0);
 
     // Actions
     mpActionLabel = new QLabel(tr("Actions"), mpContainer);
@@ -154,110 +135,35 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(mpLinkButton, SIGNAL(clicked()), this, SLOT(onLinkButton()));
     connect(mpPreview, SIGNAL(showEditMode()), this, SLOT(onShowEditMode()));
     connect(mpMediaContainer, SIGNAL(mediaDropped(QString)), this, SLOT(onMediaDropped(QString)));
+    connect(mpDocPreviewWidget, SIGNAL(onEditClicked()), this, SLOT(onTBStateChanged(eTeacherBarState)));
+    connect(mpDocPreviewWidget, SIGNAL(onPageViewClicked()), this, SLOT(onTBStateChanged(eTeacherBarState)));
+    connect(mpDocEditWidget, SIGNAL(onPageViewClicked()), this, SLOT(onTBStateChanged(eTeacherBarState)));
+    connect(mpDocEditWidget, SIGNAL(onPreviewClicked()), this, SLOT(onTBStateChanged(eTeacherBarState)));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
 {
-    if(NULL != mpMediaContainer){
-        delete mpMediaContainer;
-        mpMediaContainer = NULL;
-    }
-    if(NULL != mpComments){
-        delete mpComments;
-        mpComments = NULL;
-    }
-    if(NULL != mpCommentLabel){
-        delete mpCommentLabel;
-        mpCommentLabel = NULL;
-    }
-    if(NULL != mpLinks){
-        delete mpLinks;
-        mpLinks = NULL;
-    }
-    if(NULL != mpLinkLabel){
-        delete mpLinkLabel;
-        mpLinkLabel = NULL;
-    }
-    if(NULL != mpLinkButton){
-        delete mpLinkButton;
-        mpLinkButton = NULL;
-    }
-    if(NULL != mpLinkLayout){
-        delete mpLinkLayout;
-        mpLinkLayout = NULL;
-    }
-    if(NULL != mpMediaLabel){
-        delete mpMediaLabel;
-        mpMediaLabel = NULL;
-    }
-    if(NULL != mpActionButton){
-        delete mpActionButton;
-        mpActionButton = NULL;
-    }
-    if(NULL != mpActionLayout){
-        delete mpActionLayout;
-        mpActionLayout = NULL;
-    }
-    if(NULL != mpActionLabel){
-        delete mpActionLabel;
-        mpActionLabel = NULL;
-    }
-    if(NULL != mpDurationLabel){
-        delete mpDurationLabel;
-        mpDurationLabel = NULL;
-    }
-    if(NULL != mpDuration1){
-        delete mpDuration1;
-        mpDuration1 = NULL;
-    }
-    if(NULL != mpDuration2){
-        delete mpDuration2;
-        mpDuration2 = NULL;
-    }
-    if(NULL != mpDuration3){
-        delete mpDuration3;
-        mpDuration3 = NULL;
-    }
-    if(NULL != mpDurationButtons){
-        delete mpDurationButtons;
-        mpDurationButtons = NULL;
-    }
-    if(NULL != mpDurationLayout){
-        delete mpDurationLayout;
-        mpDurationLayout = NULL;
-    }
-    if(NULL != mpTitleLabel){
-        delete mpTitleLabel;
-        mpTitleLabel = NULL;
-    }
-    if(NULL != mpTitle){
-        delete mpTitle;
-        mpTitle = NULL;
-    }
-    if(NULL != mpTitleLayout){
-        delete mpTitleLayout;
-        mpTitleLayout = NULL;
-    }
-    if(NULL != mpLayout){
-        delete mpLayout;
-        mpLayout = NULL;
-    }
-    if(NULL != mpContainer){
-        delete mpContainer;
-        mpContainer = NULL;
-    }
-    if(NULL != mpContainerLayout){
-        delete mpContainerLayout;
-        mpContainerLayout = NULL;
-    }
-    if(NULL != mpPreview){
-        delete mpPreview;
-        mpPreview = NULL;
-    }
-    if(NULL != mpStackWidget){
-        delete mpStackWidget;
-        mpStackWidget = NULL;
-    }
+    DELETEPTR(mpDocPreviewWidget);
+    DELETEPTR(mpDocEditWidget);
+    DELETEPTR(mpMediaContainer);
+    DELETEPTR(mpComments);
+    DELETEPTR(mpCommentLabel);
+    DELETEPTR(mpLinks);
+    DELETEPTR(mpLinkLabel);
+    DELETEPTR(mpLinkButton);
+    DELETEPTR(mpLinkLayout);
+    DELETEPTR(mpMediaLabel);
+    DELETEPTR(mpActionButton);
+    DELETEPTR(mpActionLayout);
+    DELETEPTR(mpActionLabel);
+    DELETEPTR(mpTitleLabel);
+    DELETEPTR(mpTitle);
+    DELETEPTR(mpTitleLayout);
+    DELETEPTR(mpLayout);
+    DELETEPTR(mpContainer);
+    DELETEPTR(mpContainerLayout);
+    DELETEPTR(mpPreview);
+    DELETEPTR(mpStackWidget);
 }
 
 void UBTeacherBarWidget::onValueChanged()
@@ -281,14 +187,7 @@ void UBTeacherBarWidget::saveContent()
     sTeacherBarInfos infos;
     // Title
     infos.title = mpTitle->text();
-    // Duration
-    if(mpDuration1->isChecked()){
-        infos.Duration = eDuration_Quarter;
-    }else if(mpDuration2->isChecked()){
-        infos.Duration = eDuration_Half;
-    }else{
-        infos.Duration = eDuration_ThreeQuarter;
-    }
+
     // Actions
     for(int i=0; i<mActionList.size(); i++){
         infos.actions << QString("%0;%1").arg(mActionList.at(i)->comboValue()).arg(mActionList.at(i)->text());
@@ -316,17 +215,7 @@ void UBTeacherBarWidget::loadContent()
     sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
     // Title
     mpTitle->setText(nextInfos.title);
-    // Duration
-    switch(nextInfos.Duration){
-        case eDuration_Quarter: mpDuration1->setChecked(true);
-            break;
-        case eDuration_Half: mpDuration2->setChecked(true);
-            break;
-        case eDuration_ThreeQuarter: mpDuration3->setChecked(true);
-            break;
-        default: mpDuration1->setChecked(true);
-            break;
-    }
+
     // Actions
     for(int i=0; i<nextInfos.actions.size(); i++){
         QStringList qslAction = nextInfos.actions.at(i).split(";");
@@ -372,13 +261,6 @@ void UBTeacherBarWidget::loadContent()
         mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
 
         mpStackWidget->setCurrentWidget(mpPreview);
-        if(mpDuration1->isChecked()){
-            mpPreview->setDuration(eDuration_Quarter);
-        }else if(mpDuration2->isChecked()){
-            mpPreview->setDuration(eDuration_Half);
-        }else{
-            mpPreview->setDuration(eDuration_ThreeQuarter);
-        }
         mpPreview->clean();
 
         // Add the actions
@@ -498,6 +380,24 @@ void UBTeacherBarWidget::onMediaDropped(const QString &url)
     }
 }
 
+void UBTeacherBarWidget::onTBStateChanged(eTeacherBarState state)
+{
+    switch(state){
+    case eTeacherBarState_DocumentEdit:
+        mpStackWidget->setCurrentWidget(mpDocEditWidget);
+        break;
+    case eTeacherBarState_DocumentPreview:
+        mpStackWidget->setCurrentWidget(mpDocPreviewWidget);
+        break;
+    case eTeacherBarState_PageEdit:
+        mpStackWidget->setCurrentWidget(mpContainer);
+        break;
+    case eTeacherBarState_PagePreview:
+        mpStackWidget->setCurrentWidget(mpPreview);
+        break;
+    }
+}
+
 // ---------------------------------------------------------------------------------------------
 UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name):QWidget(parent)
   , mpText(NULL)
@@ -536,22 +436,10 @@ UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name
 
 UBTeacherStudentAction::~UBTeacherStudentAction()
 {
-    if(NULL != mpCombo){
-        delete mpCombo;
-        mpCombo = NULL;
-    }
-    if(NULL != mpText){
-        delete mpText;
-        mpText = NULL;
-    }
-    if(NULL != mpComboLayout){
-        delete mpComboLayout;
-        mpComboLayout = NULL;
-    }
-    if(NULL != mpLayout){
-        delete mpLayout;
-        mpLayout = NULL;
-    }
+    DELETEPTR(mpCombo);
+    DELETEPTR(mpText);
+    DELETEPTR(mpComboLayout);
+    DELETEPTR(mpLayout);
 }
 
 QString UBTeacherStudentAction::text()
@@ -623,34 +511,13 @@ UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
 
 UBUrlWidget::~UBUrlWidget()
 {
-    if(NULL != mpTitle){
-        delete mpTitle;
-        mpTitle = NULL;
-    }
-    if(NULL != mpTitleLabel){
-        delete mpTitleLabel;
-        mpTitleLabel = NULL;
-    }
-    if(NULL != mpUrlLabel){
-        delete mpUrlLabel;
-        mpUrlLabel = NULL;
-    }
-    if(NULL != mpUrl){
-        delete mpUrl;
-        mpUrl = NULL;
-    }
-    if(NULL != mpTitleLayout){
-        delete mpTitleLayout;
-        mpTitleLayout = NULL;
-    }
-    if(NULL != mpLabelLayout){
-        delete mpLabelLayout;
-        mpLabelLayout = NULL;
-    }
-    if(NULL != mpLayout){
-        delete mpLayout;
-        mpLayout = NULL;
-    }
+    DELETEPTR(mpTitle);
+    DELETEPTR(mpTitleLabel);
+    DELETEPTR(mpUrlLabel);
+    DELETEPTR(mpUrl);
+    DELETEPTR(mpTitleLayout);
+    DELETEPTR(mpLabelLayout);
+    DELETEPTR(mpLayout);
 }
 
 QString UBUrlWidget::url()
@@ -683,6 +550,7 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
   , mpCommentsLabel(NULL)
   , mpComments(NULL)
   , mpLinksLabel(NULL)
+  , mpContentContainer(NULL)
 {
     setObjectName(name);
 
@@ -702,7 +570,9 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
     mTitleDurationLayout.addWidget(mpDuration, 1);
     mLayout.addLayout(&mTitleDurationLayout, 0);
 
-    mLayout.addWidget(&mMediaViewer, 1);
+    mpContentContainer = new UBTBPreviewContainer(this);
+    mLayout.addWidget(mpContentContainer, 1);
+    //mLayout.addWidget(&mMediaViewer, 1);
     // The next line is disgusting. This is a quickfix that must be reworked later
     mMediaViewer.setContentsMargins(-9, -9, -9, -9);
 
@@ -722,38 +592,15 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(QWidget *parent, const char
 
 UBTeacherBarPreviewWidget::~UBTeacherBarPreviewWidget()
 {
-    if(NULL != mpLinksLabel){
-        delete mpLinksLabel;
-        mpLinksLabel = NULL;
-    }
-    if(NULL != mpComments){
-        delete mpComments;
-        mpComments = NULL;
-    }
-    if(NULL != mpTitle){
-        delete mpTitle;
-        mpTitle = NULL;
-    }
-    if(NULL != mpDuration){
-        delete mpDuration;
-        mpDuration = NULL;
-    }
-    if(NULL != mpActionsLabel){
-        delete mpActionsLabel;
-        mpActionsLabel = NULL;
-    }
-    if(NULL != mpMediaLabel){
-        delete mpMediaLabel;
-        mpMediaLabel =  NULL;
-    }
-    if(NULL != mpCommentsLabel){
-        delete mpCommentsLabel;
-        mpCommentsLabel = NULL;
-    }
-    if(NULL != mpEditButton){
-        delete mpEditButton;
-        mpEditButton = NULL;
-    }
+    DELETEPTR(mpLinksLabel);
+    DELETEPTR(mpComments);
+    DELETEPTR(mpTitle);
+    DELETEPTR(mpDuration);
+    DELETEPTR(mpActionsLabel);
+    DELETEPTR(mpMediaLabel);
+    DELETEPTR(mpCommentsLabel);
+    DELETEPTR(mpContentContainer);
+    DELETEPTR(mpEditButton);
 }
 
 void UBTeacherBarPreviewWidget::onEdit()
@@ -807,6 +654,13 @@ void UBTeacherBarPreviewWidget::setComments(const QString &comments)
 void UBTeacherBarPreviewWidget::clean()
 {
     mMediaViewer.cleanMedia();
+
+    foreach(QWidget* eachWidget, mStoredWidgets){
+        delete eachWidget;
+        eachWidget = NULL;
+    }
+    mStoredWidgets.clear();
+
     hideElements();
 }
 
@@ -883,11 +737,7 @@ UBTeacherBarPreviewMedia::UBTeacherBarPreviewMedia(QWidget* parent, const char* 
 
 UBTeacherBarPreviewMedia::~UBTeacherBarPreviewMedia()
 {
-    if(mWidget){
-        delete mWidget;
-        mWidget = NULL;
-    }
-
+    DELETEPTR(mWidget);
 }
 
 void UBTeacherBarPreviewMedia::cleanMedia()
@@ -1119,3 +969,97 @@ QWidget* UBTBMediaContainer::generateMediaWidget(const QString& url)
 
     return pW;
 }
+
+// -------------------------------------------------------------------------------------------------------------------
+UBTBPreviewContainer::UBTBPreviewContainer(QWidget *parent, const char *name):UBWidgetList(parent)
+{
+    setObjectName(name);
+}
+
+UBTBPreviewContainer::~UBTBPreviewContainer()
+{
+
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+UBTBDocumentEditWidget::UBTBDocumentEditWidget(QWidget *parent, const char *name):QWidget(parent)
+  , mpPageViewButton(NULL)
+  , mpPreviewButton(NULL)
+  , mpTitleLabel(NULL)
+  , mpTitle(NULL)
+  , mpTargetLabel(NULL)
+  , mpTarget(NULL)
+  , mpMetadataLabel(NULL)
+  , mpLicenseLabel(NULL)
+{
+    setObjectName(name);
+    setLayout(&mLayout);
+
+    mpPageViewButton = new QPushButton(tr("Page View"), this);
+    mPageLayout.addStretch(1);
+    mPageLayout.addWidget(mpPageViewButton, 0);
+    mPageLayout.addStretch(1);
+    mLayout.addLayout(&mPageLayout);
+
+    mpTitleLabel = new QLabel(tr("Session Title:"), this);
+    mpTitleLabel->setAlignment(Qt::AlignLeft);
+    mLayout.addWidget(mpTitleLabel);
+    mpTitle = new QLineEdit(this);
+    mLayout.addWidget(mpTitle);
+
+
+    mpPreviewButton = new QPushButton(tr("Preview"), this);
+    mPreviewLayout.addStretch(1);
+    mPreviewLayout.addWidget(mpPreviewButton, 0);
+    mPreviewLayout.addStretch(1);
+    mLayout.addLayout(&mPreviewLayout);
+
+    connect(mpPageViewButton, SIGNAL(clicked()), this, SIGNAL(onPageViewClicked()));
+    connect(mpPreviewButton, SIGNAL(clicked()), this, SIGNAL(onPreviewClicked()));
+}
+
+UBTBDocumentEditWidget::~UBTBDocumentEditWidget()
+{
+    DELETEPTR(mpTitleLabel);
+    DELETEPTR(mpTitle);
+    DELETEPTR(mpTargetLabel);
+    DELETEPTR(mpTarget);
+    DELETEPTR(mpMetadataLabel);
+    DELETEPTR(mpLicenseLabel);
+    DELETEPTR(mpPageViewButton);
+    DELETEPTR(mpPreviewButton);
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+UBTBDocumentPreviewWidget::UBTBDocumentPreviewWidget(QWidget *parent, const char *name):QWidget(parent)
+  , mpPageViewButton(NULL)
+  , mpEditButton(NULL)
+{
+    setObjectName(name);
+    setLayout(&mLayout);
+
+    mpPageViewButton = new QPushButton(tr("Page View"), this);
+    mPageLayout.addStretch(1);
+    mPageLayout.addWidget(mpPageViewButton, 0);
+    mPageLayout.addStretch(1);
+    mLayout.addLayout(&mPageLayout);
+
+    // TODO : Add the elements here
+
+    mpEditButton = new QPushButton(tr("Edit"), this);
+    mPreviewLayout.addStretch(1);
+    mPreviewLayout.addWidget(mpEditButton, 0);
+    mPreviewLayout.addStretch(1);
+    mLayout.addLayout(&mPreviewLayout);
+
+    connect(mpPageViewButton, SIGNAL(clicked()), this, SIGNAL(onPageViewClicked()));
+    connect(mpEditButton, SIGNAL(clicked()), this, SIGNAL(onEditClicked()));
+}
+
+UBTBDocumentPreviewWidget::~UBTBDocumentPreviewWidget()
+{
+    DELETEPTR(mpPageViewButton);
+    DELETEPTR(mpEditButton);
+}
+
+
