@@ -769,35 +769,35 @@
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Quit Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Salir de Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Open-Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor de widget Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar aplicación Open-Sankoré</translation>
     </message>
     <message>
         <source>Import Uniboard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar documentos Uniboard</translation>
     </message>
     <message>
         <source>Import old Sankore or Uniboard documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar viejos documentos de Sankore o Uniboard</translation>
     </message>
 </context>
 <context>
@@ -855,7 +855,7 @@
     <name>QuaZipFile</name>
     <message>
         <source>ZIP/UNZIP API error %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Error en API ZIP/UNZIP %1</translation>
     </message>
 </context>
 <context>
@@ -1210,11 +1210,11 @@
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
-        <translation type="unfinished"></translation>
+        <translation>Descargando archivos</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1343,7 +1343,7 @@
     </message>
     <message>
         <source>Editable</source>
-        <translation type="unfinished"></translation>
+        <translation>Editable</translation>
     </message>
 </context>
 <context>
@@ -1780,7 +1780,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBTeacherBarWidget</name>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Título</translation>
+        <translation>Título</translation>
     </message>
     <message>
         <source>Phasis</source>
@@ -1788,15 +1788,15 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Duración</translation>
     </message>
     <message>
         <source>Equipment</source>
-        <translation type="unfinished"></translation>
+        <translation>Equipamiento</translation>
     </message>
     <message>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Actividad</translation>
     </message>
     <message>
         <source></source>
@@ -1804,62 +1804,62 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>I discover</source>
-        <translation type="unfinished"></translation>
+        <translation>Yo descubro</translation>
     </message>
     <message>
         <source>I experiment</source>
-        <translation type="unfinished"></translation>
+        <translation>Yo experimento</translation>
     </message>
     <message>
         <source>I train myself</source>
-        <translation type="unfinished"></translation>
+        <translation>Yo aprendo sólo</translation>
     </message>
     <message>
         <source>I play</source>
-        <translation type="unfinished"></translation>
+        <translation>Yo juego</translation>
     </message>
     <message>
         <source>I memorize</source>
-        <translation type="unfinished"></translation>
+        <translation>Yo memorizo</translation>
     </message>
     <message>
         <source>Short</source>
-        <translation type="unfinished"></translation>
+        <translation>Corto</translation>
     </message>
     <message>
         <source>Middle</source>
-        <translation type="unfinished"></translation>
+        <translation>Medio</translation>
     </message>
     <message>
         <source>Long</source>
-        <translation type="unfinished"></translation>
+        <translation>Largo</translation>
     </message>
     <message>
         <source>Alone</source>
-        <translation type="unfinished"></translation>
+        <translation>Sólo</translation>
     </message>
     <message>
         <source>By Group</source>
-        <translation type="unfinished"></translation>
+        <translation>En grupo</translation>
     </message>
     <message>
         <source>All together</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos juntos</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherStudentAction</name>
     <message>
         <source>Action %0</source>
-        <translation type="unfinished"></translation>
+        <translation>Acción %0</translation>
     </message>
     <message>
         <source>Teacher</source>
-        <translation type="unfinished"></translation>
+        <translation>Profesor</translation>
     </message>
     <message>
         <source>Student</source>
-        <translation type="unfinished"></translation>
+        <translation>Alumno</translation>
     </message>
 </context>
 <context>
@@ -1965,7 +1965,7 @@ Por favor reinicie la aplicación para acceder a los documentos actualizados.</t
     </message>
     <message>
         <source>Remind me later</source>
-        <translation type="unfinished"></translation>
+        <translation>Recordarme más tarde</translation>
     </message>
 </context>
 <context>
@@ -2085,11 +2085,11 @@ Por favor reinicie la aplicación para acceder a los documentos actualizados.</t
     <name>UniboardSankoreTransition</name>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar documentos antiguos de Uniboard/Sankore</translation>
     </message>
     <message>
         <source>There are no documents that should be imported</source>
-        <translation type="unfinished"></translation>
+        <translation>No hay documentos a importar</translation>
     </message>
 </context>
 <context>
@@ -2603,7 +2603,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
