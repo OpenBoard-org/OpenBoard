@@ -2423,8 +2423,23 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::curtainItemToSvg(UBGraphicsCurtainIt
      */
 
     mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "curtain");
+    mXmlWriter.writeAttribute("x", QString("%1").arg(curtainItem->boundingRect().center().x()));
+    mXmlWriter.writeAttribute("y", QString("%1").arg(curtainItem->boundingRect().center().y()));
+    mXmlWriter.writeAttribute("width", QString("%1").arg(curtainItem->boundingRect().width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(curtainItem->boundingRect().height()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(curtainItem->sceneMatrix()));
+    
+    //graphicsItemToSvg(curtainItem);
+    QString zs;
+    zs.setNum(curtainItem->zValue(), 'f'); // 'f' keeps precision
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value", zs);
 
-    graphicsItemToSvg(curtainItem);
+    UBItem* ubItem = dynamic_cast<UBItem*>(curtainItem);
+
+    if (ubItem)
+    {
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(ubItem->uuid()));
+    }
 
     mXmlWriter.writeEndElement();
 }
@@ -2436,13 +2451,17 @@ UBGraphicsCurtainItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::curtainItemFromSvg
 
     graphicsItemFromSvg(curtainItem);
 
+    QStringRef svgX = mXmlReader.attributes().value("x");
+    QStringRef svgY = mXmlReader.attributes().value("y");
     QStringRef svgWidth = mXmlReader.attributes().value("width");
     QStringRef svgHeight = mXmlReader.attributes().value("height");
 
-    QRectF rect = curtainItem->rect();
+
+    QRect rect;
+    rect.setX(svgX.toString().toFloat()-svgWidth.toString().toFloat()/2);
+    rect.setY(svgY.toString().toFloat()-svgHeight.toString().toFloat()/2);
     rect.setWidth(svgWidth.toString().toFloat());
     rect.setHeight(svgHeight.toString().toFloat());
-    rect.translate(- rect.center());
 
     curtainItem->setRect(rect);
 
