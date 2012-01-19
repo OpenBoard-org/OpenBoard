@@ -301,27 +301,52 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
     int startPos = qMin(cursor.anchor(), cursor.position());
     int endPos = qMax(cursor.anchor(), cursor.position());
 
-    for (int i = startPos; i < endPos ; i++)
-    {
-        // selecting single symbol
-        cursor.setPosition (i, QTextCursor::MoveAnchor);
-        cursor.setPosition (i+1, QTextCursor::KeepAnchor);
+    QFont curFont;
+    bool bEndofTheSameBlock;
+    int iBlockLen;
+    int iPointSize;
+    int inewPointSize;
+    int iCursorPos = startPos;
+
+   // we search continuous blocks of the text with the same PointSize and allpy new settings for them.
+    while(iCursorPos < endPos)
+    {   
+        bEndofTheSameBlock = false;
+        iBlockLen = 0; 
+
+        cursor.setPosition (iCursorPos+1, QTextCursor::KeepAnchor);
+        iPointSize = cursor.charFormat().font().pointSize();
+
+        cursor.setPosition (iCursorPos, QTextCursor::KeepAnchor);
+
+        curFont = cursor.charFormat().font();
+
+        do
+        {
+            iBlockLen++;
+
+            cursor.setPosition (iCursorPos+iBlockLen+1, QTextCursor::KeepAnchor);
+            inewPointSize = cursor.charFormat().font().pointSize();
+
+            cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
+            if ((iPointSize != inewPointSize)||(iCursorPos+iBlockLen >= endPos))
+                bEndofTheSameBlock = true;
+
+        }while(!bEndofTheSameBlock);
+
 
         //setting new parameners
-        QFont curFont = cursor.charFormat().font();
-
-        int pointSize =  curFont.pointSize() + delta;
-
-        curFont.setPointSize(pointSize);
+        curFont.setPointSize(iPointSize + delta);
         textFormat.setFont(curFont);
         cursor.mergeCharFormat(textFormat);
-        delegated()->setTextCursor(cursor);
-        UBSettings::settings()->setFontPointSize(pointSize);
 
-        delegated()->document()->adjustSize();
-        delegated()->setFont(curFont);
+        iCursorPos += iBlockLen;
+        cursor.setPosition (iCursorPos, QTextCursor::MoveAnchor);
     }
 
+    delegated()->document()->adjustSize();
+    delegated()->setFont(curFont);
+    UBSettings::settings()->setFontPointSize(iPointSize);
     //returning initial selection
     cursor.setPosition (anchorPos, QTextCursor::MoveAnchor);
     cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
