@@ -79,6 +79,13 @@ bool UBFileSystemUtils::copyFile(const QString &source, const QString &Destinati
     return QFile::copy(source, normalizedDestination);
 }
 
+bool UBFileSystemUtils::deleteFile(const QString &path)
+{
+    QFile f(path);
+    f.setPermissions(path, QFile::ReadOwner | QFile::WriteOwner);
+    return f.remove();
+}
+
 QString UBFileSystemUtils::defaultTempDirPath()
 {
     return QDesktopServices::storageLocation(QDesktopServices::TempLocation) + "/" + defaultTempDirName();

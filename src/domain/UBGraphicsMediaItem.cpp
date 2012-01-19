@@ -25,6 +25,8 @@
 
 #include "core/memcheck.h"
 
+#include "frameworks/UBFileSystemUtils.h"
+
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
 UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent)
@@ -85,15 +87,11 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
 void UBGraphicsMediaItem::clearSource()
 {
     QString path = mediaFileUrl().path();
-
     //if path is absolute clean duplicated path string
     if (!path.contains(UBApplication::boardController->activeDocument()->persistencePath()))
         path = UBApplication::boardController->activeDocument()->persistencePath() + "/" + path;
 
-    QFile f(path);
-    f.setPermissions(path, QFile::ReadOwner | QFile::WriteOwner);
-    f.remove();
-
+    UBFileSystemUtils::deleteFile(path);
 }
 
 void UBGraphicsMediaItem::toggleMute()

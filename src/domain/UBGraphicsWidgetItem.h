@@ -70,9 +70,10 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
 
         virtual void setOwnFolder(const QUrl &newFolder) {ownFolder = newFolder;}
         virtual QUrl getOwnFolder() const {return ownFolder;}
+        virtual void setSnapshotPath(const QUrl &newFilePath){SnapshotFile = newFilePath;}
+        virtual QUrl getSnapshotPath(){return SnapshotFile;}
 
-
-        virtual void clearSource(){;}
+        virtual void clearSource();
 
     protected:
 
@@ -95,6 +96,7 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         bool mShouldMoveWidget;
         UBWidgetUniboardAPI* mUniboardAPI;
         QUrl ownFolder;
+        QUrl SnapshotFile;
 };
 
 class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem

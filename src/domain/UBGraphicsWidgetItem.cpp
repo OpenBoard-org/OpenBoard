@@ -25,6 +25,7 @@
 #include "UBW3CWidget.h"
 #include "UBGraphicsScene.h"
 #include "UBAppleWidget.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 #include "core/memcheck.h"
 
@@ -246,6 +247,13 @@ void UBGraphicsWidgetItem::removeScript()
         mWebKitWidget->page()->mainFrame()->evaluateJavaScript("if(widget && widget.onremove) { widget.onremove();}");
     }
 }
+
+void UBGraphicsWidgetItem::clearSource()
+{
+    UBFileSystemUtils::deleteDir(getOwnFolder().toLocalFile());
+    UBFileSystemUtils::deleteFile(getSnapshotPath().toLocalFile());
+}
+
 QString UBGraphicsWidgetItem::downloadUrl(const QString &fileUrl, const QString &extention)
 {
     return mUniboardAPI->downloadUrl(fileUrl, extention);

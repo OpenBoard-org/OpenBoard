@@ -19,6 +19,7 @@
 #include "domain/UBGraphicsAudioItem.h"
 #include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsMediaItem.h"
+#include "domain/UBGraphicsWidgetItem.h"
 
 UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
     : QGraphicsScene ( parent  )
@@ -69,6 +70,9 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
                 break;
         case UBGraphicsVideoItem::Type:
                 item_casted = dynamic_cast<UBGraphicsVideoItem*>(item);
+                break;
+        case UBGraphicsW3CWidgetItem::Type:
+                item_casted = dynamic_cast<UBGraphicsWidgetItem*>(item);
                 break;
         }
 
