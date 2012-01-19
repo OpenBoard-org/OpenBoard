@@ -24,7 +24,6 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "api/UBWidgetUniboardAPI.h"
-#include "api/UBWidgetVotingSystemAPI.h"
 
 #include "board/UBBoardController.h"
 
@@ -219,17 +218,7 @@ void UBW3CWidget::javaScriptWindowObjectCleared()
 
     page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
 
-    UBWidgetVotingSystemAPI *votingSystem = new UBWidgetVotingSystemAPI(this);
-    page()->mainFrame()->addToJavaScriptWindowObject("voting", votingSystem);
-
-    connect(votingSystem, SIGNAL(error(const QString&)) , this, SLOT(votingSystemError(const QString&)));
 }
-
-void UBW3CWidget::votingSystemError(const QString& error)
-{
-    page()->mainFrame()->evaluateJavaScript("if(voting.onerror) { voting.onerror('" + error +"');}");
-}
-
 
 bool UBW3CWidget::hasNPAPIWrapper(const QString& pMimeType)
 {

@@ -117,8 +117,6 @@ class UBW3CWidget : public UBAbstractWidget
 
         void javaScriptWindowObjectCleared();
 
-        void votingSystemError(const QString&);
-
 };
 
 #endif /* UBW3CWIDGET_H_ */

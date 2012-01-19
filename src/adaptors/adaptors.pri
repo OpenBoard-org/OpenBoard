@@ -19,7 +19,6 @@ HEADERS      += src/adaptors/UBExportAdaptor.h\
 HEADERS      += src/adaptors/publishing/UBDocumentPublisher.h \
                 src/adaptors/publishing/UBSvgSubsetRasterizer.h
                
-HEADERS      += src/adaptors/voting/UBAbstractVotingSystem.h
 
 
 SOURCES      += src/adaptors/UBExportAdaptor.cpp\
@@ -42,15 +41,3 @@ SOURCES      += src/adaptors/UBExportAdaptor.cpp\
 
 SOURCES      += \
                 src/adaptors/publishing/UBSvgSubsetRasterizer.cpp
-                
-SOURCES      += src/adaptors/voting/UBAbstractVotingSystem.cpp   
-
-
-win32 {
-
-    SOURCES  += src/adaptors/voting/UBReply2005VotingSystem.cpp \
-                src/adaptors/voting/UBReplyWRS970VotingSystem.cpp
-
-    HEADERS  += src/adaptors/voting/UBReply2005VotingSystem.h \
-                src/adaptors/voting/UBReplyWRS970VotingSystem.h
-}            
