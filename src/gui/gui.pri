@@ -47,7 +47,12 @@ HEADERS      += src/gui/UBThumbnailView.h \
                 src/gui/UBLibWebView.h \
                 src/gui/UBDownloadWidget.h \
                 src/gui/UBDockDownloadWidget.h \
-                src/gui/UBMediaPlayer.h
+                src/gui/UBMediaPlayer.h \
+    src/gui/UBTeacherBarDataMgr.h \
+    src/gui/UBTBDocumentEditWidget.h \
+    src/gui/UBTBDocumentPreviewWidget.h \
+    src/gui/UBTeacherBarPreviewWidget.h \
+    src/gui/UBTBPageEditWidget.h
                 
 SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBFloatingPalette.cpp \
@@ -97,7 +102,12 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBLibWebView.cpp \
                 src/gui/UBDownloadWidget.cpp \
                 src/gui/UBDockDownloadWidget.cpp \
-                src/gui/UBMediaPlayer.cpp
+                src/gui/UBMediaPlayer.cpp \
+    src/gui/UBTeacherBarDataMgr.cpp \
+    src/gui/UBTBDocumentEditWidget.cpp \
+    src/gui/UBTBDocumentPreviewWidget.cpp \
+    src/gui/UBTeacherBarPreviewWidget.cpp \
+    src/gui/UBTBPageEditWidget.cpp
 
 win32 {
 
@@ -125,5 +135,3 @@ linux-g++-64 {
 
     SOURCES  += src/gui/UBKeyboardPalette_linux.cpp
 }
-
-
