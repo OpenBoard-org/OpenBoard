@@ -22,44 +22,15 @@ typedef enum{
     eActionOwner_Student
 }eActionOwner;
 
-class UBTeacherStudentAction : public QWidget
-{
-    Q_OBJECT
+typedef struct{
+    int type;
+    QString content;
+}sAction;
 
-public:
-    UBTeacherStudentAction(QWidget* parent=0, const char* name="UBTeacherStudentAction");
-    ~UBTeacherStudentAction();
-    QString text();
-    QString comboValue();
-    void setComboValue(int value);
-    void setText(const QString& text);
-
-private:
-    QTextEdit* mpText;
-    QHBoxLayout* mpLayout;
-    QVBoxLayout* mpComboLayout;
-    QComboBox* mpCombo;
-};
-
-class UBUrlWidget : public QWidget
-{
-public:
-    UBUrlWidget(QWidget* parent=0, const char* name="UBUrlWidget");
-    ~UBUrlWidget();
-
-    QString url();
-    void setUrl(const QString& url);
-
-private:
-    QVBoxLayout* mpLayout;
-    QHBoxLayout* mpLabelLayout;
-    QHBoxLayout* mpTitleLayout;
-    QLabel* mpUrlLabel;
-    QLineEdit* mpUrl;
-
-    QLabel* mpTitleLabel;
-    QLineEdit* mpTitle;
-};
+typedef struct{
+    QString title;
+    QString link;
+}sLink;
 
 class UBTeacherBarDataMgr
 {
@@ -80,13 +51,15 @@ public:
     QString pageTitle(){return mPageTitle;}
 
     // Actions
-    QVector<UBTeacherStudentAction*> actions(){return mActionList;}
+    QVector<sAction>* actions(){return &mActionList;}
 
     // Medias
     QVector<QWidget*> medias(){return mMediaList;}
+    void addMediaUrl(const QString& url){mMediaUrls << url;}
+    QStringList mediaUrls(){return mMediaUrls;}
 
     // Urls
-    QVector<UBUrlWidget*> urls(){return mUrlList;}
+    QVector<sLink>* urls(){return &mUrlList;}
 
     // Comments
     void setComments(const QString& c){mComments = c;}
@@ -94,6 +67,8 @@ public:
 
     // Others
     void clearLists();
+    void saveContent();
+    void loadContent();
 
 private:
     QString mSessionTitle;
@@ -101,9 +76,10 @@ private:
     QString mPageTitle;
     QString mComments;
 
-    QVector<UBTeacherStudentAction*> mActionList;
-    QVector<UBUrlWidget*> mUrlList;
+    QVector<sAction> mActionList;
+    QVector<sLink> mUrlList;
     QVector<QWidget*> mMediaList;
+    QStringList mMediaUrls;
 };
 
 #endif // UBTEACHERBARDATAMGR_H

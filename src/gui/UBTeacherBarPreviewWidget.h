@@ -61,7 +61,8 @@ public:
     void setLinks(QStringList links);
     void clean();
     QLabel* mediaLabel() { return mpMediaLabel;}
-    void loadInfos(sTeacherBarInfos* infos);
+    void updateFields();
+    void clearFields();
 
 signals:
     void showEditMode();

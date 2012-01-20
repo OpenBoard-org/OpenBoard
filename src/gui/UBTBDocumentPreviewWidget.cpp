@@ -46,3 +46,12 @@ void UBTBDocumentPreviewWidget::onPageView()
     emit changeTBState(eTeacherBarState_PagePreview);
 }
 
+void UBTBDocumentPreviewWidget::updateFields()
+{
+
+}
+
+void UBTBDocumentPreviewWidget::clearFields()
+{
+
+}

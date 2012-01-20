@@ -15,6 +15,8 @@ class UBTBDocumentEditWidget : public QWidget
 public:
     UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QWidget* parent=0, const char* name="UBTBDocumentEditWidget");
     ~UBTBDocumentEditWidget();
+    void updateFields();
+    void clearFields();
 
 signals:
     void changeTBState(eTeacherBarState state);

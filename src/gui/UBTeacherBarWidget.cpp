@@ -59,6 +59,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(mpDocPreviewWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
     connect(mpDocEditWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
     connect(mpPageEditWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
+    connect(mpPageEditWidget, SIGNAL(valueChanged()), this, SLOT(onValueChanged()));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
@@ -88,110 +89,49 @@ void UBTeacherBarWidget::onValueChanged()
 
 void UBTeacherBarWidget::saveContent()
 {
-    sTeacherBarInfos infos;
-    mpPageEditWidget->saveInfos(&infos);
-    UBPersistenceManager::persistenceManager()->persistTeacherBar(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex(), infos);
+    mpPageEditWidget->saveFields();
+    mData.saveContent();
 }
 
 void UBTeacherBarWidget::loadContent()
 {
-//    clearWidgetLists();
-//    sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
+    // Clear the old datas
+    mpPageEditWidget->clearFields();
+    mpPreview->clearFields();
+    mpDocEditWidget->clearFields();
+    mpDocPreviewWidget->clearFields();
 
-//    mpPageEditWidget->loadInfos(&nextInfos);
-//    mpPreview->mediaViewer()->cleanMedia();
+    // Update the datas
+    mData.loadContent();
 
-//    if(!isEmpty()){
-//        // Update the fields of the preview widget
-//        onTBStateChanged(eTeacherBarState_PagePreview);
-//        mpPreview->clean();
-//        mpPreview->loadInfos(&nextInfos);
+    qDebug() << mData.comments();
 
-//        // Add the actions
-//        if(!mActionList.empty()){
-//            QStringList actions;
-//            foreach(UBTeacherStudentAction* action, mActionList){
-//                QString desc = QString("%0;%1").arg(action->comboValue()).arg(action->text());
-//                actions << desc;
-//            }
-//            mpPreview->setActions(actions);
-//        }
+    // Update the fields
+    mpPageEditWidget->updateFields();
+    mpPreview->updateFields();
+    mpDocEditWidget->updateFields();
+    mpDocPreviewWidget->updateFields();
 
-//        // Add the media
-//        if(nextInfos.medias.count() > 0){
-//            QList<QWidget*> widgetList;
-//            widgetList.append(mpPreview->mediaLabel());
-//            mpPreview->mediaViewer()->loadWidgets(widgetList,false);
-//            int loadedMedia = mpPreview->mediaViewer()->loadMedia(nextInfos.medias);
-//            if(loadedMedia)
-//                    mpPreview->mediaLabel()->setVisible(true);
-//        }
-
-
-//        // Add the links
-//        if(!mUrlList.empty()){
-//            QStringList links;
-//            foreach(UBUrlWidget* url, mUrlList){
-//                QStringList list = url->url().split(";");
-//                QString formedlink = "<a href=";
-//                if(!list.at(0).startsWith("http://"))
-//                    formedlink += "http://";
-//                formedlink += list.at(0) + ">" + list.at(1) + "</a>";
-//                links << formedlink;
-//            }
-//            mpPreview->setLinks(links);
-//        }
-//    }
-//    else{
-//        // If the document has only one page, show the document edit page
-//        if(1 == UBApplication::boardController->activeDocument()->pageCount()){
-//            onTBStateChanged(eTeacherBarState_DocumentEdit);
-//        }else{
-//            onTBStateChanged(eTeacherBarState_PageEdit);
-//        }
-//    }
+    if(!isEmpty()){
+        onTBStateChanged(eTeacherBarState_PagePreview);
+    }else{
+        if(1 == UBApplication::boardController->activeDocument()->pageCount()){
+           onTBStateChanged(eTeacherBarState_DocumentEdit);
+        }else{
+           onTBStateChanged(eTeacherBarState_PageEdit);
+        }
+    }
 }
 
 bool UBTeacherBarWidget::isEmpty()
 {
     return  mData.pageTitle() == "" &&
-            mData.urls().empty() &&
-            mData.actions().empty() &&
+            mData.urls()->empty() &&
+            mData.actions()->empty() &&
             mData.medias().empty() &&
-            mData.comments() == "";
-}
-
-void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
-{
-        //mpTitle->setToolTip(text);
-}
-
-void UBTeacherBarWidget::clearWidgetLists()
-{
-//    if(NULL != mpMediaContainer){
-//        for(int i=0; i<mMediaList.size(); i++){
-//            mpMediaContainer->removeWidget(mMediaList.at(i));
-//            delete mMediaList.at(i);
-//        }
-//        mMediaList.clear();
-//        mpMediaContainer->cleanMedias();
-//    }
-
-//    if(NULL != mpActions){
-//        for(int i=0; i<mActionList.size(); i++){
-//            mpActions->removeWidget(mActionList.at(i));
-//            delete mActionList.at(i);
-//        }
-//        mActionList.clear();
-//    }
-
-//    if(NULL != mpLinks){
-//        for(int i=0; i<mUrlList.size(); i++){
-//            mpLinks->removeWidget(mUrlList.at(i));
-//            delete mUrlList.at(i);
-//        }
-//        mUrlList.clear();
-//    }
+            mData.comments() == "" &&
+            mData.sessionTarget() == "" &&
+            mData.sessionTitle() == "";
 }
 
 void UBTeacherBarWidget::onShowEditMode()

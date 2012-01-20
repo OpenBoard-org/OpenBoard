@@ -36,12 +36,10 @@ private slots:
     void saveContent();
     void loadContent();
     void onValueChanged();
-    void onTitleTextChanged(const QString& text);
     void onShowEditMode();
     void onTBStateChanged(eTeacherBarState state);
 
 private:
-    void clearWidgetLists();
     bool isEmpty();
 
     QVBoxLayout mLayout;

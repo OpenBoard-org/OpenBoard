@@ -14,6 +14,48 @@
 #include "interfaces/IDropable.h"
 #include "UBTeacherBarDataMgr.h"
 
+class UBTeacherStudentAction : public QWidget
+{
+    Q_OBJECT
+
+public:
+    UBTeacherStudentAction(QWidget* parent=0, const char* name="UBTeacherStudentAction");
+    ~UBTeacherStudentAction();
+    QString text();
+    QString comboValue();
+    void setComboValue(int value);
+    void setText(const QString& text);
+
+private:
+    QTextEdit* mpText;
+    QHBoxLayout* mpLayout;
+    QVBoxLayout* mpComboLayout;
+    QComboBox* mpCombo;
+};
+
+class UBUrlWidget : public QWidget
+{
+public:
+    UBUrlWidget(QWidget* parent=0, const char* name="UBUrlWidget");
+    ~UBUrlWidget();
+
+    QString url();
+    void setUrl(const QString& url);
+
+    QString title(){return mpTitle->text();}
+    void setTitle(const QString& title){mpTitle->setText(title);}
+
+private:
+    QVBoxLayout* mpLayout;
+    QHBoxLayout* mpLabelLayout;
+    QHBoxLayout* mpTitleLayout;
+    QLabel* mpUrlLabel;
+    QLineEdit* mpUrl;
+
+    QLabel* mpTitleLabel;
+    QLineEdit* mpTitle;
+};
+
 class UBTBMediaContainer : public UBWidgetList
     , public IDropable
 {
@@ -46,9 +88,9 @@ class UBTBPageEditWidget : public QWidget
 public:
     UBTBPageEditWidget(UBTeacherBarDataMgr* pDataMgr, QWidget* parent=0, const char* name="UBTBPageEditWidget");
     ~UBTBPageEditWidget();
-
-    void saveInfos(sTeacherBarInfos* infos);
-    void loadInfos(sTeacherBarInfos* infos);
+    void saveFields();
+    void updateFields();
+    void clearFields();
 
 signals:
     void valueChanged();
@@ -87,6 +129,9 @@ private:
     QPushButton* mpDocumentEditbutton;
     QPushButton* mpPagePreviewButton;
     QWidget* mpContainer;
+
+    QVector<UBTeacherStudentAction*> mActions;
+    QVector<UBUrlWidget*> mUrls;
 };
 
 #endif // UBTBPAGEEDITWIDGET_H

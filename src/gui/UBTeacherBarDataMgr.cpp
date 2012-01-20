@@ -1,5 +1,8 @@
 #include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
+#include "board/UBBoardController.h"
 #include "customWidgets/UBGlobals.h"
+
 #include "UBTeacherBarDataMgr.h"
 
 UBTeacherBarDataMgr::UBTeacherBarDataMgr()
@@ -19,79 +22,75 @@ void UBTeacherBarDataMgr::clearLists()
     mMediaList.clear();
 }
 
-UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name):QWidget(parent)
-  , mpText(NULL)
-  , mpLayout(NULL)
-  , mpComboLayout(NULL)
-  , mpCombo(NULL)
+void UBTeacherBarDataMgr::saveContent()
 {
-    setObjectName(name);
+    // Store the page information in the UBZ
+    sTeacherBarInfos infos;
 
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    infos.title = mPageTitle;
 
-    // Create the GUI
-    mpLayout = new QHBoxLayout(this);
-    setLayout(mpLayout);
-
-    mpComboLayout = new QVBoxLayout();
-
-    mpCombo = new QComboBox(this);
-    mpCombo->setObjectName("DockPaletteWidgetComboBox");
-    mpCombo->setMinimumWidth(80);
-    mpCombo->addItem(tr("Teacher"));
-    mpCombo->addItem(tr("Student"));
-    mpComboLayout->addWidget(mpCombo, 0);
-    mpComboLayout->addStretch(1);
-
-    mpLayout->addLayout(mpComboLayout, 0);
-
-    mpText = new QTextEdit(this);
-    mpText->setObjectName("DockPaletteWidgetBox");
-    mpText->setStyleSheet("background:white;");
-
-    mpLayout->addWidget(mpText, 1);
-
-}
-
-UBTeacherStudentAction::~UBTeacherStudentAction()
-{
-    DELETEPTR(mpCombo);
-    DELETEPTR(mpText);
-    DELETEPTR(mpComboLayout);
-    DELETEPTR(mpLayout);
-}
-
-QString UBTeacherStudentAction::text()
-{
-    QString str;
-    if(NULL != mpText){
-        str = mpText->document()->toPlainText();
-    }
-    return str;
-}
-
-QString UBTeacherStudentAction::comboValue()
-{
-    QString str;
-
-    if(NULL != mpCombo){
-        str = QString("%0").arg(mpCombo->currentIndex());
+    // Actions
+    foreach(sAction action, mActionList){
+        infos.actions << QString("%0;%1").arg(action.type).arg(action.content);
     }
 
-    return str;
+    // Media
+    foreach(QString media, mMediaUrls){
+        infos.medias << media;
+    }
+
+    // Links
+    foreach(sLink link, mUrlList){
+        if("" != link.title && "" != link.link){
+            infos.urls << QString("%0;%1").arg(link.title).arg(link.link);
+        }
+    }
+
+    // Comments
+    infos.comments = mComments;
+
+    UBPersistenceManager::persistenceManager()->persistTeacherBar(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex(), infos);
+
+    // TODO: Store the document metadata somewhere
+
 }
 
-void UBTeacherStudentAction::setComboValue(int value)
+void UBTeacherBarDataMgr::loadContent()
 {
-    if(NULL != mpCombo){
-        mpCombo->setCurrentIndex(value);
+    clearLists();
+
+    sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
+
+    // Page Title
+    mPageTitle = nextInfos.title;
+    // Actions
+    foreach(QString eachAction, nextInfos.actions){
+        QStringList qslAction = eachAction.split(";");
+        if(2 <= qslAction.size()){
+            sAction action;
+            action.type = qslAction.at(0).toInt();
+            action.content = qslAction.at(1);
+            mActionList << action;
+        }
     }
+    // Media URL
+    mMediaUrls = nextInfos.medias;
+
+    // Links
+    foreach(QString eachUrl, nextInfos.urls){
+        QStringList qslUrl = eachUrl.split(';');
+        if(2 <= qslUrl.size()){
+            sLink link;
+            link.title = qslUrl.at(0);
+            link.link = qslUrl.at(1);
+            mUrlList << link;
+        }
+    }
+
+    // Comments
+    mComments = nextInfos.comments;
+
+    // TODO : Read the document metadata file and populate the metadata infos here
+
 }
 
-void UBTeacherStudentAction::setText(const QString& text)
-{
-    if(NULL != mpText){
-        mpText->document()->setPlainText(text);
-    }
-}

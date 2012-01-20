@@ -12,6 +12,8 @@ class UBTBDocumentPreviewWidget : public QWidget
 public:
     UBTBDocumentPreviewWidget(UBTeacherBarDataMgr* pDataMgr, QWidget* parent=0, const char* name="UBTBDocumentPreviewWidget");
     ~UBTBDocumentPreviewWidget();
+    void updateFields();
+    void clearFields();
 
 signals:
     void changeTBState(eTeacherBarState state);

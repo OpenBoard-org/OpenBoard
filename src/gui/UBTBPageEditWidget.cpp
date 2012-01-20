@@ -25,6 +25,8 @@ UBTBPageEditWidget::UBTBPageEditWidget(UBTeacherBarDataMgr *pDataMgr, QWidget *p
 {
     Q_UNUSED(name);
     mpDataMgr = pDataMgr;
+    mActions.clear();
+    mUrls.clear();
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
 
@@ -93,6 +95,7 @@ UBTBPageEditWidget::UBTBPageEditWidget(UBTeacherBarDataMgr *pDataMgr, QWidget *p
     mLayout.addLayout(&mPagePreviewLayout, 0);
 
     connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
+    connect(mpComments, SIGNAL(textChanged()), this, SLOT(onValueChanged()));
     connect(mpActionButton, SIGNAL(clicked()), this, SLOT(onActionButton()));
     connect(mpLinkButton, SIGNAL(clicked()), this, SLOT(onLinkButton()));
     connect(mpDocumentEditbutton, SIGNAL(clicked()), this, SLOT(onDocumentEditClicked()));
@@ -126,14 +129,14 @@ void UBTBPageEditWidget::onValueChanged()
 void UBTBPageEditWidget::onActionButton()
 {
     UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
-    mpDataMgr->actions() << pAction;
+    mActions << pAction;
     mpActions->addWidget(pAction);
 }
 
 void UBTBPageEditWidget::onLinkButton()
 {
     UBUrlWidget* pUrl = new UBUrlWidget(this);
-    mpDataMgr->urls() << pUrl;
+    mUrls << pUrl;
     mpLinks->addWidget(pUrl);
 }
 
@@ -143,79 +146,8 @@ void UBTBPageEditWidget::onMediaDropped(const QString &url)
         QWidget* pMedia = mpMediaContainer->generateMediaWidget(url);
         if(NULL != pMedia){
             mpDataMgr->medias() << pMedia;
+            mpDataMgr->addMediaUrl(url);
             mpMediaContainer->addWidget(pMedia);
-        }
-    }
-}
-
-
-void UBTBPageEditWidget::saveInfos(sTeacherBarInfos *infos)
-{
-    if(NULL != infos){
-        infos->title = mpTitle->text();
-
-        // Actions
-        for(int i=0; i<mpDataMgr->actions().size(); i++){
-            infos->actions << QString("%0;%1").arg(mpDataMgr->actions().at(i)->comboValue()).arg(mpDataMgr->actions().at(i)->text());
-        }
-        // Media
-        foreach(QString media, mpMediaContainer->mediaUrls()){
-            infos->medias << media;
-        }
-
-        // Links
-        for(int j=0; j<mpDataMgr->urls().size(); j++){
-            if("" != mpDataMgr->urls().at(j)->url()){
-                infos->urls << mpDataMgr->urls().at(j)->url();
-            }
-        }
-        // Comments
-        infos->comments = mpComments->document()->toPlainText();
-    }
-}
-
-void UBTBPageEditWidget::loadInfos(sTeacherBarInfos* infos)
-{
-    if(NULL != infos){
-        // Title
-        mpTitle->setText(infos->title);
-        mpDataMgr->setPageTitle(infos->title);
-
-        // Actions
-        for(int i=0; i<infos->actions.size(); i++){
-            QStringList qslAction = infos->actions.at(i).split(";");
-            if(qslAction.size() >= 2){
-                UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
-                pAction->setComboValue(qslAction.at(0).toInt());
-                pAction->setText(qslAction.at(1));
-                mpDataMgr->actions() << pAction;
-                mpActions->addWidget(pAction);
-            }
-        }
-        // Media
-        foreach(QString url, infos->medias){
-            if("" != url){
-                QWidget* pMedia = mpMediaContainer->generateMediaWidget(url);
-                if(NULL != pMedia){
-                    mpDataMgr->medias() << pMedia;
-                    mpMediaContainer->addWidget(pMedia);
-                }
-            }
-        }
-
-        // Links
-        for(int j=0; j<infos->urls.size(); j++){
-            QString qsUrl = infos->urls.at(j);
-            if("" != qsUrl){
-                UBUrlWidget* pLink = new UBUrlWidget(this);
-                pLink->setUrl(qsUrl);
-                mpDataMgr->urls() << pLink;
-                mpLinks->addWidget(pLink);
-            }
-        }
-        // Comments
-        if(NULL != mpComments){
-            mpComments->document()->setPlainText(infos->comments);
         }
     }
 }
@@ -228,6 +160,73 @@ void UBTBPageEditWidget::onDocumentEditClicked()
 void UBTBPageEditWidget::onPagePreviewClicked()
 {
     emit changeTBState(eTeacherBarState_PagePreview);
+}
+
+void UBTBPageEditWidget::saveFields()
+{
+    mpDataMgr->actions()->clear();
+    mpDataMgr->urls()->clear();
+    foreach(UBTeacherStudentAction* pAct, mActions){
+        sAction action;
+        action.type = pAct->comboValue().toInt();
+        action.content = pAct->text();
+        mpDataMgr->actions()->append(action);
+    }
+    foreach(UBUrlWidget* pUrl, mUrls){
+        sLink link;
+        link.title = pUrl->title();
+        link.link = pUrl->url();
+        mpDataMgr->urls()->append(link);
+    }
+
+    // TODO : Medias
+}
+
+void UBTBPageEditWidget::updateFields()
+{
+    mpTitle->setText(mpDataMgr->pageTitle());
+    qDebug() << "mpComments will become: " << mpDataMgr->comments();
+
+    foreach(sAction action, *mpDataMgr->actions()){
+        UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
+        pAction->setComboValue(action.type);
+        pAction->setText(action.content);
+        mActions << pAction;
+        mpActions->addWidget(pAction);
+    }
+
+    foreach(sLink link, *mpDataMgr->urls()){
+        UBUrlWidget* urlWidget = new UBUrlWidget(this);
+        urlWidget->setTitle(link.title);
+        urlWidget->setUrl(link.link);
+        mUrls << urlWidget;
+        mpLinks->addWidget(urlWidget);
+    }
+
+    // TODO: add the medias
+
+    qDebug() << "mpComments will become: " << mpDataMgr->comments();
+    mpComments->setPlainText(mpDataMgr->comments());
+}
+
+void UBTBPageEditWidget::clearFields()
+{
+    mpTitle->setText("");
+    mpComments->setText("");
+    foreach(UBTeacherStudentAction* pAction, mActions){
+        mpActions->removeWidget(pAction);
+        DELETEPTR(pAction);
+    }
+    mActions.clear();
+
+    foreach(UBUrlWidget* pLink, mUrls){
+        mpLinks->removeWidget(pLink);
+        DELETEPTR(pLink);
+    }
+    mUrls.clear();
+
+    // TODO: clean the media?
+
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -287,10 +286,8 @@ QString UBUrlWidget::url()
 
 void UBUrlWidget::setUrl(const QString &url)
 {
-    QStringList list = url.split(";");
     if(NULL != mpUrl){
-        mpUrl->setText(list.at(0));
-        mpTitle->setText(list.at(1));
+        mpUrl->setText(url);
     }
 }
 
@@ -415,3 +412,81 @@ QWidget* UBTBMediaContainer::generateMediaWidget(const QString& url)
 
     return pW;
 }
+
+UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name):QWidget(parent)
+  , mpText(NULL)
+  , mpLayout(NULL)
+  , mpComboLayout(NULL)
+  , mpCombo(NULL)
+{
+    setObjectName(name);
+
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(UBApplication::globalStyleSheet());
+
+    // Create the GUI
+    mpLayout = new QHBoxLayout(this);
+    setLayout(mpLayout);
+
+    mpComboLayout = new QVBoxLayout();
+
+    mpCombo = new QComboBox(this);
+    mpCombo->setObjectName("DockPaletteWidgetComboBox");
+    mpCombo->setMinimumWidth(80);
+    mpCombo->addItem(tr("Teacher"));
+    mpCombo->addItem(tr("Student"));
+    mpComboLayout->addWidget(mpCombo, 0);
+    mpComboLayout->addStretch(1);
+
+    mpLayout->addLayout(mpComboLayout, 0);
+
+    mpText = new QTextEdit(this);
+    mpText->setObjectName("DockPaletteWidgetBox");
+    mpText->setStyleSheet("background:white;");
+
+    mpLayout->addWidget(mpText, 1);
+
+}
+
+UBTeacherStudentAction::~UBTeacherStudentAction()
+{
+    DELETEPTR(mpCombo);
+    DELETEPTR(mpText);
+    DELETEPTR(mpComboLayout);
+    DELETEPTR(mpLayout);
+}
+
+QString UBTeacherStudentAction::text()
+{
+    QString str;
+    if(NULL != mpText){
+        str = mpText->document()->toPlainText();
+    }
+    return str;
+}
+
+QString UBTeacherStudentAction::comboValue()
+{
+    QString str;
+
+    if(NULL != mpCombo){
+        str = QString("%0").arg(mpCombo->currentIndex());
+    }
+
+    return str;
+}
+
+void UBTeacherStudentAction::setComboValue(int value)
+{
+    if(NULL != mpCombo){
+        mpCombo->setCurrentIndex(value);
+    }
+}
+
+void UBTeacherStudentAction::setText(const QString& text)
+{
+    if(NULL != mpText){
+        mpText->document()->setPlainText(text);
+    }
+}
+

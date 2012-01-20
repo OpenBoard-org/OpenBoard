@@ -302,13 +302,12 @@ void UBTeacherBarPreviewWidget::setLinks(QStringList links)
     }
 }
 
-void UBTeacherBarPreviewWidget::loadInfos(sTeacherBarInfos *infos)
+void UBTeacherBarPreviewWidget::updateFields()
 {
-    if(NULL != infos){
-        setTitle(infos->title);
-        mediaViewer()->loadMedia(infos->medias);
 
-        // Add the comments
-        //setComments();
-    }
+}
+
+void UBTeacherBarPreviewWidget::clearFields()
+{
+
 }
