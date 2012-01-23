@@ -200,9 +200,13 @@ void UBTBPageEditWidget::updateFields()
     }
     // Medias
     foreach(QString url, mpDataMgr->mediaUrls()){
+        if(url.isEmpty())
+            continue;
         QWidget* pWidget = mpMediaContainer->generateMediaWidget(url);
-        mpDataMgr->medias()->append(pWidget);
-        mpMediaContainer->addWidget(pWidget);
+        if(pWidget != NULL){
+            mpDataMgr->medias()->append(pWidget);
+            mpMediaContainer->addWidget(pWidget);
+        }
     }
     // Links
     foreach(sLink link, *mpDataMgr->urls()){

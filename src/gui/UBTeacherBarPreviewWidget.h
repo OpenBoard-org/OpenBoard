@@ -15,7 +15,7 @@ class UBTeacherBarPreviewMedia : public QWidget
 public:
     UBTeacherBarPreviewMedia(QWidget* parent=0, const char* name="UBTeacherBarPreviewMedia");
     ~UBTeacherBarPreviewMedia();
-    int loadMedia(QStringList pMedias);
+//    int loadMedia(QStringList pMedias);
     void loadWidgets(QList<QWidget*> pWidgetList, bool isResizable = true);
     void cleanMedia();
 

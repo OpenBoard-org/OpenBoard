@@ -71,6 +71,7 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent* ev);
+    void showEvent(QShowEvent* event);
 
 private slots:
     void onPlayStopClicked();
