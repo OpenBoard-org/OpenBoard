@@ -245,7 +245,7 @@ UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
     mpLayout = new QVBoxLayout(this);
     setLayout(mpLayout);
 
-    mpLabelLayout = new QHBoxLayout(this);
+    mpLabelLayout = new QHBoxLayout(0);
     mpUrlLabel = new QLabel(tr("Url"), this);
     mpLabelLayout->addWidget(mpUrlLabel, 0);
     mpUrl = new QLineEdit(this);
@@ -253,7 +253,7 @@ UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
     mpUrl->setMinimumHeight(20);
     mpLabelLayout->addWidget(mpUrl, 1);
 
-    mpTitleLayout = new QHBoxLayout(this);
+    mpTitleLayout = new QHBoxLayout(0);
     mpTitleLabel = new QLabel(tr("Title"),this);
     mpTitleLayout->addWidget(mpTitleLabel,0);
     mpTitle = new QLineEdit(this);
