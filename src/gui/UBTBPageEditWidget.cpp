@@ -171,6 +171,7 @@ void UBTBPageEditWidget::saveFields()
 {
     mpDataMgr->actions()->clear();
     mpDataMgr->urls()->clear();
+
     foreach(UBTeacherStudentAction* pAct, mActions){
         sAction action;
         action.type = pAct->comboValue().toInt();
@@ -183,14 +184,13 @@ void UBTBPageEditWidget::saveFields()
         link.link = pUrl->url();
         mpDataMgr->urls()->append(link);
     }
-
-    // TODO : Medias
 }
 
 void UBTBPageEditWidget::updateFields()
 {
+    // Title
     mpTitle->setText(mpDataMgr->pageTitle());
-
+    // Actions
     foreach(sAction action, *mpDataMgr->actions()){
         UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
         pAction->setComboValue(action.type);
@@ -198,7 +198,13 @@ void UBTBPageEditWidget::updateFields()
         mActions << pAction;
         mpActions->addWidget(pAction);
     }
-
+    // Medias
+    foreach(QString url, mpDataMgr->mediaUrls()){
+        QWidget* pWidget = mpMediaContainer->generateMediaWidget(url);
+        mpDataMgr->medias()->append(pWidget);
+        mpMediaContainer->addWidget(pWidget);
+    }
+    // Links
     foreach(sLink link, *mpDataMgr->urls()){
         UBUrlWidget* urlWidget = new UBUrlWidget(this);
         urlWidget->setTitle(link.title);
@@ -206,30 +212,36 @@ void UBTBPageEditWidget::updateFields()
         mUrls << urlWidget;
         mpLinks->addWidget(urlWidget);
     }
-
-    // TODO: add the medias
-
+    // Comments
     mpComments->document()->setPlainText(mpDataMgr->comments());
 }
 
 void UBTBPageEditWidget::clearFields()
 {
+    // Title
     mpTitle->setText("");
-    mpComments->setText("");
+    // Actions
     foreach(UBTeacherStudentAction* pAction, mActions){
         mpActions->removeWidget(pAction);
         DELETEPTR(pAction);
     }
     mActions.clear();
-
+    // Medias
+    foreach(QWidget* pMedia, *mpDataMgr->medias()){
+        if(NULL != pMedia){
+            mpMediaContainer->removeWidget(pMedia);
+            DELETEPTR(pMedia);
+        }
+    }
+    mpDataMgr->mediaUrls().clear();
+    // Links
     foreach(UBUrlWidget* pLink, mUrls){
         mpLinks->removeWidget(pLink);
         DELETEPTR(pLink);
     }
     mUrls.clear();
-
-    mpMediaContainer->cleanMedias();
-
+    // Comments
+    mpComments->setText("");
 }
 
 // ---------------------------------------------------------------------------------------------
