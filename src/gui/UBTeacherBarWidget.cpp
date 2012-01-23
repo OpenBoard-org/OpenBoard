@@ -126,7 +126,7 @@ bool UBTeacherBarWidget::isEmpty()
     return  mData.pageTitle() == "" &&
             mData.urls()->empty() &&
             mData.actions()->empty() &&
-            mData.medias().empty() &&
+            mData.medias()->empty() &&
             mData.comments() == "" &&
             mData.sessionTarget() == "" &&
             mData.sessionTitle() == "";

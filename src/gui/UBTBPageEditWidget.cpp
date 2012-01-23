@@ -150,7 +150,7 @@ void UBTBPageEditWidget::onMediaDropped(const QString &url)
     if("" != url){
         QWidget* pMedia = mpMediaContainer->generateMediaWidget(url);
         if(NULL != pMedia){
-            mpDataMgr->medias() << pMedia;
+            mpDataMgr->medias()->append(pMedia);
             mpDataMgr->addMediaUrl(url);
             mpMediaContainer->addWidget(pMedia);
         }
@@ -228,7 +228,7 @@ void UBTBPageEditWidget::clearFields()
     }
     mUrls.clear();
 
-    // TODO: clean the media?
+    mpMediaContainer->cleanMedias();
 
 }
 

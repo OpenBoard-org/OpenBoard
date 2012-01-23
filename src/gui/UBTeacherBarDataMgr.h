@@ -54,7 +54,7 @@ public:
     QVector<sAction>* actions(){return &mActionList;}
 
     // Medias
-    QVector<QWidget*> medias(){return mMediaList;}
+    QVector<QWidget*>* medias(){return &mMediaList;}
     void addMediaUrl(const QString& url){mMediaUrls << url;}
     QStringList mediaUrls(){return mMediaUrls;}
 
