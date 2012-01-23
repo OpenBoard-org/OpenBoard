@@ -52,14 +52,16 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mpStackWidget->addWidget(mpDocEditWidget);
 
     connect(UBApplication::boardController, SIGNAL(activeSceneWillChange()), this, SLOT(saveContent()));
-    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContent()));
     connect(UBApplication::mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(saveContent()));
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContentInfos()));
+    connect(UBApplication::boardController, SIGNAL(activeDocumentChanged()), this, SLOT(onActiveDocumentChanged()));
 
     connect(mpPreview, SIGNAL(showEditMode()), this, SLOT(onShowEditMode()));
     connect(mpDocPreviewWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
     connect(mpDocEditWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
     connect(mpPageEditWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
     connect(mpPageEditWidget, SIGNAL(valueChanged()), this, SLOT(onValueChanged()));
+    connect(mpDocEditWidget, SIGNAL(valueChanged()), this, SLOT(onValueChanged()));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
@@ -69,6 +71,11 @@ UBTeacherBarWidget::~UBTeacherBarWidget()
     DELETEPTR(mpPageEditWidget);
     DELETEPTR(mpPreview);
     DELETEPTR(mpStackWidget);
+}
+
+void UBTeacherBarWidget::onActiveDocumentChanged()
+{
+    loadContent(true);
 }
 
 void UBTeacherBarWidget::onValueChanged()
@@ -93,22 +100,31 @@ void UBTeacherBarWidget::saveContent()
     mData.saveContent();
 }
 
-void UBTeacherBarWidget::loadContent()
+void UBTeacherBarWidget::loadContentInfos()
+{
+    loadContent(false);
+}
+
+void UBTeacherBarWidget::loadContent(bool docChanged)
 {
     // Clear the old datas
     mpPageEditWidget->clearFields();
     mpPreview->clearFields();
-    mpDocEditWidget->clearFields();
-    mpDocPreviewWidget->clearFields();
+    if(docChanged){
+        mpDocEditWidget->clearFields();
+        mpDocPreviewWidget->clearFields();
+    }
 
     // Update the datas
-    mData.loadContent();
+    mData.loadContent(docChanged);
 
     // Update the fields
     mpPageEditWidget->updateFields();
     mpPreview->updateFields();
-    mpDocEditWidget->updateFields();
-    mpDocPreviewWidget->updateFields();
+    if(docChanged){
+        mpDocEditWidget->updateFields();
+        mpDocPreviewWidget->updateFields();
+    }
 
     if(!isEmpty()){
         onTBStateChanged(eTeacherBarState_PagePreview);
@@ -127,9 +143,7 @@ bool UBTeacherBarWidget::isEmpty()
             mData.urls()->empty() &&
             mData.actions()->empty() &&
             mData.medias()->empty() &&
-            mData.comments() == "" &&
-            mData.sessionTarget() == "" &&
-            mData.sessionTitle() == "";
+            mData.comments() == "";
 }
 
 void UBTeacherBarWidget::onShowEditMode()

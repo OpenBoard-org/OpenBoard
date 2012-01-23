@@ -20,10 +20,13 @@ public:
 
 signals:
     void changeTBState(eTeacherBarState state);
+    void valueChanged();
 
 private slots:
     void onPageView();
     void onPreview();
+    void onSessionTitleChanged();
+    void onSessionTargetChanged();
 
 private:
     QVBoxLayout mLayout;

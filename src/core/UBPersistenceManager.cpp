@@ -1086,7 +1086,6 @@ void UBPersistenceManager::persistTeacherBar(UBDocumentProxy* pDocumentProxy, in
                         // Set the <teacherBar> element values
                         QDomElement teacherBarElem = teacherBarNode.toElement();
                         teacherBarElem.setAttribute("title", infos.title);
-                        teacherBarElem.setAttribute("duration", QString("%0").arg(infos.Duration));
 
                         QString qsAct;
                         for(int i=0; i<infos.actions.size(); i++){
@@ -1146,7 +1145,6 @@ sTeacherBarInfos UBPersistenceManager::getTeacherBarInfos(UBDocumentProxy* pDocu
                     QDomNode teacherBarNode = rootElem.namedItem("teacherBar");
 
                     infos.title = teacherBarNode.toElement().attributeNode("title").value();
-                    infos.Duration = teacherBarNode.toElement().attributeNode("duration").value().toInt();
                     infos.actions = teacherBarNode.toElement().attributeNode("actions").value().split("@");
                     infos.medias = teacherBarNode.toElement().attributeNode("medias").value().split("@");
                     infos.urls = teacherBarNode.toElement().attributeNode("links").value().split("@");

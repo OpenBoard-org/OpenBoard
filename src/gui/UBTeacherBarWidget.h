@@ -34,12 +34,14 @@ public:
 
 private slots:
     void saveContent();
-    void loadContent();
+    void loadContentInfos();
     void onValueChanged();
     void onShowEditMode();
     void onTBStateChanged(eTeacherBarState state);
+    void onActiveDocumentChanged();
 
 private:
+    void loadContent(bool docChanged = false);
     bool isEmpty();
 
     QVBoxLayout mLayout;

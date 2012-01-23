@@ -63,6 +63,8 @@ UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QW
 
     connect(mpPageViewButton, SIGNAL(clicked()), this, SLOT(onPageView()));
     connect(mpPreviewButton, SIGNAL(clicked()), this, SLOT(onPreview()));
+    connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onSessionTitleChanged()));
+    connect(mpTarget, SIGNAL(textChanged()), this, SLOT(onSessionTargetChanged()));
 }
 
 UBTBDocumentEditWidget::~UBTBDocumentEditWidget()
@@ -87,12 +89,28 @@ void UBTBDocumentEditWidget::onPreview()
     emit changeTBState(eTeacherBarState_DocumentPreview);
 }
 
+void UBTBDocumentEditWidget::onSessionTitleChanged()
+{
+    mpDataMgr->setSessionTitle(mpTitle->text());
+    emit valueChanged();
+}
+
+void UBTBDocumentEditWidget::onSessionTargetChanged()
+{
+    mpDataMgr->setSessionTarget(mpTarget->document()->toPlainText());
+    emit valueChanged();
+}
+
 void UBTBDocumentEditWidget::updateFields()
 {
-
+    mpTitle->setText(mpDataMgr->sessionTitle());
+    mpTarget->setPlainText(mpDataMgr->sessionTarget());
 }
 
 void UBTBDocumentEditWidget::clearFields()
 {
-
+    mpTitle->setText("");
+    mpTarget->setPlainText("");
 }
+
+

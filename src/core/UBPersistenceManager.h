@@ -23,7 +23,6 @@
 struct sTeacherBarInfos
 {
     QString title;
-    int Duration;
     QStringList actions;
     QStringList medias;
     QStringList urls;
@@ -36,7 +35,7 @@ class UBGraphicsScene;
 
 class UBPersistenceManager : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     private:
         UBPersistenceManager(QObject *pParent = 0);

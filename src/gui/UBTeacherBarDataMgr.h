@@ -68,7 +68,7 @@ public:
     // Others
     void clearLists();
     void saveContent();
-    void loadContent();
+    void loadContent(bool docChanged = false);
 
 private:
     QString mSessionTitle;

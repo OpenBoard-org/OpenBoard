@@ -42,7 +42,6 @@ UBTBPageEditWidget::UBTBPageEditWidget(UBTeacherBarDataMgr *pDataMgr, QWidget *p
     mpTitleLabel = new QLabel(tr("Title"), mpContainer);
     mpTitle = new QLineEdit(mpContainer);
     mpTitle->setObjectName("DockPaletteWidgetLineEdit");
-    connect(mpTitle, SIGNAL(textChanged(const QString&)), this, SLOT(onTitleTextChanged(const QString&)));
     mContainerLayout.addWidget(mpTitleLabel, 0);
     mContainerLayout.addWidget(mpTitle, 0);
 
