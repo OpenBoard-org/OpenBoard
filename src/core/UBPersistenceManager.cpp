@@ -240,7 +240,7 @@ QStringList UBPersistenceManager::allWidgets(const QDir& dir)
 }
 
 
-UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName, const QString& pName)
+UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName, const QString& pName, bool withEmptyPage)
 {
     checkIfDocumentRepositoryExists();
 
@@ -259,7 +259,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     doc->setMetaData(UBSettings::documentVersion, UBSettings::currentFileVersion);
     doc->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
-    createDocumentSceneAt(doc, 0);
+    if (withEmptyPage) createDocumentSceneAt(doc, 0);
 
     documentProxies.insert(0, QPointer<UBDocumentProxy>(doc));
 
@@ -369,7 +369,7 @@ UBDocumentProxy* UBPersistenceManager::duplicateDocument(UBDocumentProxy* pDocum
 
 void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QList<int>& indexes)
 {
-    checkIfDocumentRepositoryExists();
+	checkIfDocumentRepositoryExists();
 
     int pageCount = UBPersistenceManager::persistenceManager()->sceneCount(proxy);
 
@@ -397,15 +397,14 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
     QString sourceGroupName = proxy->metaData(UBSettings::documentGroupName).toString();
     QString sourceName = proxy->metaData(UBSettings::documentName).toString();
-    UBDocumentProxy *trashDocProxy = createDocument(UBSettings::trashedDocumentGroupNamePrefix + sourceGroupName, sourceName);
+    UBDocumentProxy *trashDocProxy = createDocument(UBSettings::trashedDocumentGroupNamePrefix + sourceGroupName, sourceName, false);
 
     foreach(int index, compactedIndexes)
     {
         UBGraphicsScene *scene = loadDocumentScene(proxy, index);
         if (scene)
         {
-            UBGraphicsScene* sceneClone = scene->sceneDeepCopy();
-
+            //scene is about to move into new document
             foreach (QUrl relativeFile, scene->relativeDependencies())
             {
                 QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
@@ -418,18 +417,9 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
                 QFile::copy(source, target);
             }
 
-            insertDocumentSceneAt(trashDocProxy, sceneClone, trashDocProxy->pageCount());
+            insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount());
         }
     }
-
-    // Delete empty first page
-    QString svgFileName = trashDocProxy->persistencePath() +
-                            UBFileSystemUtils::digitFileFormat("/page%1.svg", 1);
-    QFile::remove(svgFileName);
-    QString thumbFileName = trashDocProxy->persistencePath() +
-                            UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", 1);
-    QFile::remove(thumbFileName);
-    trashDocProxy->decPageCount();
 
     for (int i = 1; i < pageCount; i++)
     {
@@ -448,7 +438,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
         QFile::remove(thumbFileName);
 
-        mSceneCache.removeScene(proxy, index);
+		mSceneCache.removeScene(proxy, index);
 
         proxy->decPageCount();
 

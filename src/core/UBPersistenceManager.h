@@ -60,7 +60,7 @@ class UBPersistenceManager : public QObject
         static UBPersistenceManager* persistenceManager();
         static void destroy();
 
-        virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "");
+		virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = true);
         virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory);
 
         virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy);
