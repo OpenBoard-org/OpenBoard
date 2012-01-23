@@ -94,8 +94,8 @@ UBTBPageEditWidget::UBTBPageEditWidget(UBTeacherBarDataMgr *pDataMgr, QWidget *p
     mPagePreviewLayout.addStretch(1);
     mLayout.addLayout(&mPagePreviewLayout, 0);
 
-    connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
-    connect(mpComments, SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onTitleChanged()));
+    connect(mpComments, SIGNAL(textChanged()), this, SLOT(onCommentsChanged()));
     connect(mpActionButton, SIGNAL(clicked()), this, SLOT(onActionButton()));
     connect(mpLinkButton, SIGNAL(clicked()), this, SLOT(onLinkButton()));
     connect(mpDocumentEditbutton, SIGNAL(clicked()), this, SLOT(onDocumentEditClicked()));
@@ -119,9 +119,14 @@ UBTBPageEditWidget::~UBTBPageEditWidget()
     DELETEPTR(mpTitle);
 }
 
-void UBTBPageEditWidget::onValueChanged()
+void UBTBPageEditWidget::onTitleChanged()
 {
     mpDataMgr->setPageTitle(mpTitle->text());
+    emit valueChanged();
+}
+
+void UBTBPageEditWidget::onCommentsChanged()
+{
     mpDataMgr->setComments(mpComments->document()->toPlainText());
     emit valueChanged();
 }
@@ -185,7 +190,6 @@ void UBTBPageEditWidget::saveFields()
 void UBTBPageEditWidget::updateFields()
 {
     mpTitle->setText(mpDataMgr->pageTitle());
-    qDebug() << "mpComments will become: " << mpDataMgr->comments();
 
     foreach(sAction action, *mpDataMgr->actions()){
         UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
@@ -205,8 +209,7 @@ void UBTBPageEditWidget::updateFields()
 
     // TODO: add the medias
 
-    qDebug() << "mpComments will become: " << mpDataMgr->comments();
-    mpComments->setPlainText(mpDataMgr->comments());
+    mpComments->document()->setPlainText(mpDataMgr->comments());
 }
 
 void UBTBPageEditWidget::clearFields()

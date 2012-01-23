@@ -97,7 +97,8 @@ signals:
     void changeTBState(eTeacherBarState state);
 
 private slots:
-    void onValueChanged();
+    void onTitleChanged();
+    void onCommentsChanged();
     void onActionButton();
     void onLinkButton();
     void onMediaDropped(const QString& url);

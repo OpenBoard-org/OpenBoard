@@ -104,8 +104,6 @@ void UBTeacherBarWidget::loadContent()
     // Update the datas
     mData.loadContent();
 
-    qDebug() << mData.comments();
-
     // Update the fields
     mpPageEditWidget->updateFields();
     mpPreview->updateFields();
