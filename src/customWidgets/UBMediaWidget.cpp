@@ -103,6 +103,21 @@ eMediaType UBMediaWidget::mediaType()
     return mType;
 }
 
+void UBMediaWidget::showEvent(QShowEvent* event)
+{
+    if(!mpVideoWidget){
+        mpVideoWidget = new Phonon::VideoWidget(this);
+        mMediaLayout.addStretch(1);
+        mMediaLayout.addWidget(mpVideoWidget, 0);
+        mMediaLayout.addStretch(1);
+        Phonon::createPath(mpMediaObject, mpVideoWidget);
+        adaptSizeToVideo();
+        mpMediaObject->play();
+        mpMediaObject->stop();
+    }
+    QWidget::showEvent(event);
+}
+
 /**
   * \brief Create the media player
   */
@@ -114,12 +129,14 @@ void UBMediaWidget::createMediaPlayer()
 
     if(eMediaType_Video == mType){
         mMediaLayout.setContentsMargins(10, 10, 25, 10);
-        mpVideoWidget = new Phonon::VideoWidget(this);
-        mMediaLayout.addStretch(1);
-        mMediaLayout.addWidget(mpVideoWidget, 0);
-        mMediaLayout.addStretch(1);
-        Phonon::createPath(mpMediaObject, mpVideoWidget);
-        adaptSizeToVideo();
+        if(isVisible()){
+            mpVideoWidget = new Phonon::VideoWidget(this);
+            mMediaLayout.addStretch(1);
+            mMediaLayout.addWidget(mpVideoWidget, 0);
+            mMediaLayout.addStretch(1);
+            Phonon::createPath(mpMediaObject, mpVideoWidget);
+            adaptSizeToVideo();
+        }
         mpAudioOutput = new Phonon::AudioOutput(Phonon::VideoCategory, this);
         Phonon::createPath(mpMediaObject, mpAudioOutput);
     }else if(eMediaType_Audio == mType){

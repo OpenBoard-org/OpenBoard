@@ -43,34 +43,34 @@ void UBTeacherBarPreviewMedia::loadWidgets(QList<QWidget*> pWidgetsList, bool is
 }
 
 
-int UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
-{
-    int addedMedia = 0;
-//    foreach(QString eachString, pMedias){
-//        if(!eachString.isEmpty()){
-//            QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(eachString);
-//            if(mimeType.contains("image")){
-//                UBDraggableLabel* label = new UBDraggableLabel();
-//                label->loadImage(eachString);
-//                mWidget->addWidget(label);
-//                mWidgetList[label]=eachString;
-//                addedMedia += 1;
-//            }
-//            else if(mimeType.contains("video") || mimeType.contains("audio")){
-//                UBDraggableMediaPlayer* mediaPlayer = new UBDraggableMediaPlayer();
-//                mediaPlayer->setFile(eachString);
-//                mWidget->addWidget(mediaPlayer);
-//                mWidgetList[mediaPlayer] = eachString;
-//                addedMedia += 1;
-//            }
-//            else{
-//                qWarning() << "pMediaPath" << eachString;
-//                qWarning() << "bad idea to come here";
-//            }
-//        }
-//    }
-    return addedMedia;
-}
+//int UBTeacherBarPreviewMedia::loadMedia(QStringList pMedias)
+//{
+//    int addedMedia = 0;
+////    foreach(QString eachString, pMedias){
+////        if(!eachString.isEmpty()){
+////            QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(eachString);
+////            if(mimeType.contains("image")){
+////                UBDraggableLabel* label = new UBDraggableLabel();
+////                label->loadImage(eachString);
+////                mWidget->addWidget(label);
+////                mWidgetList[label]=eachString;
+////                addedMedia += 1;
+////            }
+////            else if(mimeType.contains("video") || mimeType.contains("audio")){
+////                UBDraggableMediaPlayer* mediaPlayer = new UBDraggableMediaPlayer();
+////                mediaPlayer->setFile(eachString);
+////                mWidget->addWidget(mediaPlayer);
+////                mWidgetList[mediaPlayer] = eachString;
+////                addedMedia += 1;
+////            }
+////            else{
+////                qWarning() << "pMediaPath" << eachString;
+////                qWarning() << "bad idea to come here";
+////            }
+////        }
+////    }
+//    return addedMedia;
+//}
 
 // -----------------------------------------------------------------------------------------------
 UBActionPreview::UBActionPreview(QWidget *parent, const char *name):QWidget(parent)
