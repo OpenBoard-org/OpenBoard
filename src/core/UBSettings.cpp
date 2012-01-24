@@ -36,6 +36,9 @@ QString UBSettings::documentSize = QString("Size");
 QString UBSettings::documentIdentifer = QString("ID");
 QString UBSettings::documentVersion = QString("Version");
 QString UBSettings::documentUpdatedAt = QString("UpdatedAt");
+QString UBSettings::sessionTitle = QString("sessionTitle");
+QString UBSettings::sessionTarget = QString("sessionTarget");
+QString UBSettings::sessionLicence = QString("sessionLicence");
 
 QString UBSettings::trashedDocumentGroupNamePrefix = QString("_Trash:");
 

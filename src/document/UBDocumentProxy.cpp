@@ -49,6 +49,10 @@ void UBDocumentProxy::init()
     setUuid(QUuid::createUuid());
 
     setDefaultDocumentSize(UBSettings::settings()->defaultDocumentSize);
+
+    setSessionTitle("");
+    setSessionTarget("");
+    setSessionLicence("");
 }
 
 
@@ -195,6 +199,46 @@ void UBDocumentProxy::setUuid(const QUuid& uuid)
     setMetaData(UBSettings::documentIdentifer,
             UBSettings::uniboardDocumentNamespaceUri + "/" + UBStringUtils::toCanonicalUuid(uuid));
 }
+
+QString UBDocumentProxy::sessionTitle() const
+{
+    if(mMetaDatas.contains(UBSettings::sessionTitle))
+        return metaData(UBSettings::sessionTitle).toString();
+    else
+        return QString();
+}
+
+void UBDocumentProxy::setSessionTitle(const QString & sessionTitle)
+{
+    setMetaData(UBSettings::sessionTitle,QVariant(sessionTitle));
+}
+
+QString UBDocumentProxy::sessionTarget() const
+{
+    if(mMetaDatas.contains(UBSettings::sessionTarget))
+        return metaData(UBSettings::sessionTarget).toString();
+    else
+        return QString();
+}
+
+void UBDocumentProxy::setSessionTarget(const QString & sessionTarget)
+{
+    setMetaData(UBSettings::sessionTarget,QVariant(sessionTarget));
+}
+
+QString UBDocumentProxy::sessionLicence() const
+{
+    if(mMetaDatas.contains(UBSettings::sessionLicence))
+        return metaData(UBSettings::sessionLicence).toString();
+    else
+        return QString();
+}
+
+void UBDocumentProxy::setSessionLicence(const QString & sessionLicence)
+{
+    setMetaData(UBSettings::sessionLicence,QVariant(sessionLicence));
+}
+
 
 bool UBDocumentProxy::isModified() const
 {

@@ -46,6 +46,10 @@ public:
     void setSessionTarget(const QString& target){mSessionTarget = target;}
     QString sessionTarget(){return mSessionTarget;}
 
+    // Licence
+    void setSessionLicence(const QString& licence){mSessionLicence = licence;}
+    QString sessionLicence(){return mSessionLicence;}
+
     // Page Title
     void setPageTitle(const QString& title){mPageTitle = title;}
     QString pageTitle(){return mPageTitle;}
@@ -73,6 +77,7 @@ public:
 private:
     QString mSessionTitle;
     QString mSessionTarget;
+    QString mSessionLicence;
     QString mPageTitle;
     QString mComments;
 
