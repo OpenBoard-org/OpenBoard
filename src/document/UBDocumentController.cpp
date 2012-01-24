@@ -534,7 +534,10 @@ void UBDocumentController::duplicateSelectedItem()
     if (UBApplication::applicationController->displayMode() != UBApplicationController::Document)
         return;
 
-    if (mSelectionType == Page)
+	UBBoardPaletteManager* paletteMan = UBApplication::boardController->paletteManager();
+	//necessary to save active scene teacher bar data, if the scene didn't happen to be changed
+	if(paletteMan) paletteMan->ForceTeacherBarToSaveData();
+	if (mSelectionType == Page)
     {
         QList<QGraphicsItem*> selectedItems = mDocumentUI->thumbnailWidget->selectedItems();
         QList<int> selectedSceneIndexes;

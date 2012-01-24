@@ -1057,3 +1057,8 @@ QRect UBBoardPaletteManager::GetFreeRectGlobalCoords() const
     }
     return QRect(topLeft, bottomRight);
 }
+
+void UBBoardPaletteManager::ForceTeacherBarToSaveData()
+{
+	mpTeacherBarWidget->saveContent();
+}

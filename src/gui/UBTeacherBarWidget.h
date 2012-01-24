@@ -46,9 +46,10 @@ public:
     UBTeacherBarWidget(QWidget* parent=0, const char* name="UBTeacherBarWidget");
     ~UBTeacherBarWidget();
 
-private slots:
+public slots:
     void saveContent();
     void loadContent();
+private slots:
     void onValueChanged();
 	void onTitleTextChanged(const QString& text);
 	void onEquipmentTextChanged(const QString& text);
