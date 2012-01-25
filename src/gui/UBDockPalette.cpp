@@ -696,7 +696,7 @@ void UBDockPalette::moveTabs()
         break;
     case eUBDockOrientation_Right:
         if (parentWidget()) {
-            origin.setX(parentWidget()->width() - width() - mTabPalette->width());
+            origin.setX(parentWidget()->width() - width() - border() * 2);
         }
         break;
     case eUBDockOrientation_Top: ;
