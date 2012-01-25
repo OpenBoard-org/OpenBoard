@@ -57,7 +57,7 @@ void UBWidgetList::addWidget(QWidget *widget)
 
 void UBWidgetList::removeWidget(QWidget *widget)
 {
-    if(NULL != mpLayout){
+    if(NULL != mpLayout && NULL != widget){
         mpLayout->removeWidget(widget);
         mWidgetInfo.remove(widget);
         widget->setVisible(false);

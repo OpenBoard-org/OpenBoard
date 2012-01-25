@@ -39,13 +39,13 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     // Create the GUI
     setLayout(&mLayout);
 
-    mpPageEditWidget = new UBTBPageEditWidget(&mData, this);
-    mpPreview = new UBTeacherBarPreviewWidget(&mData, this);
-    mpDocPreviewWidget = new UBTBDocumentPreviewWidget(&mData, this);
-    mpDocEditWidget = new UBTBDocumentEditWidget(&mData, this);
-
     mpStackWidget = new QStackedWidget(this);
     mLayout.addWidget(mpStackWidget);
+    mpPageEditWidget = new UBTBPageEditWidget(&mData, mpStackWidget);
+    mpPreview = new UBTeacherBarPreviewWidget(&mData, mpStackWidget);
+    mpDocPreviewWidget = new UBTBDocumentPreviewWidget(&mData, mpStackWidget);
+    mpDocEditWidget = new UBTBDocumentEditWidget(&mData, mpStackWidget);
+
     mpStackWidget->addWidget(mpPageEditWidget);
     mpStackWidget->addWidget(mpPreview);
     mpStackWidget->addWidget(mpDocPreviewWidget);
@@ -120,7 +120,7 @@ void UBTeacherBarWidget::loadContent(bool docChanged)
 
     // Update the fields
     mpPageEditWidget->updateFields();
-    mpPreview->updateFields();
+    //mpPreview->updateFields();
     if(docChanged){
         mpDocEditWidget->updateFields();
         mpDocPreviewWidget->updateFields();
@@ -155,15 +155,19 @@ void UBTeacherBarWidget::onTBStateChanged(eTeacherBarState state)
 {
     switch(state){
     case eTeacherBarState_DocumentEdit:
+        //mpDocEditWidget->updateFields();
         mpStackWidget->setCurrentWidget(mpDocEditWidget);
         break;
     case eTeacherBarState_DocumentPreview:
+        //mpDocPreviewWidget->updateFields();
         mpStackWidget->setCurrentWidget(mpDocPreviewWidget);
         break;
     case eTeacherBarState_PageEdit:
+        mpPageEditWidget->updateFields();
         mpStackWidget->setCurrentWidget(mpPageEditWidget);
         break;
     case eTeacherBarState_PagePreview:
+        mpPreview->updateFields();
         mpStackWidget->setCurrentWidget(mpPreview);
         break;
     }

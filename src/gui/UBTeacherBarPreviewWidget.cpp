@@ -1,5 +1,6 @@
 #include "core/UBApplication.h"
 #include "customWidgets/UBGlobals.h"
+#include "board/UBBoardController.h"
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "UBTeacherBarPreviewWidget.h"
@@ -84,9 +85,10 @@ UBActionPreview::UBActionPreview(QWidget *parent, const char *name):QWidget(pare
     mOwnerLayout.addWidget(mpOwner, 0);
     mOwnerLayout.addStretch(1);
     mLayout.addLayout(&mOwnerLayout);
-    mpContent = new QLabel(this);
+    mpContent = new QTextEdit(this);
+    mpContent->setReadOnly(true);
     mpContent->setObjectName("UBActionPreviewContent");
-    mpContent->setWordWrap(true);
+    //mpContent->setWordWrap(true);
     mLayout.addWidget(mpContent);
     setContentsMargins(-9, -9, -9, -9);
 }
@@ -103,10 +105,10 @@ UBActionPreview::~UBActionPreview()
     }
 }
 
-void UBActionPreview::setOwner(const QString &owner)
+void UBActionPreview::setOwner(int owner)
 {
     if(NULL != mpOwner && NULL != mpContent){
-        switch(owner.toInt()){
+        switch(owner){
             case eActionOwner_Teacher:
                 mpOwner->setText(tr("Teacher"));
                 mpContent->setStyleSheet("background:lightblue; border:lightblue;");
@@ -124,6 +126,7 @@ void UBActionPreview::setContent(const QString &content)
 {
     if(NULL != mpContent){
         mpContent->setText(content);
+        setMinimumHeight(mpOwner->height() + mpContent->height());
     }
 }
 
@@ -137,18 +140,29 @@ UBTBPreviewContainer::~UBTBPreviewContainer()
 {
 
 }
+// ------------------------------------------------------------------------------------
+UBTBPreviewSeparator::UBTBPreviewSeparator(QWidget *parent, const char *name):QFrame(parent)
+{
+    setObjectName("UBTBSeparator");
+    setMinimumHeight(5);
+    setMaximumHeight(5);
+}
+
+UBTBPreviewSeparator::~UBTBPreviewSeparator()
+{
+
+}
 
 // ------------------------------------------------------------------------------------
 UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataMgr, QWidget *parent, const char *name):QWidget(parent)
   , mpEditButton(NULL)
+  , mpSessionTitle(NULL)
   , mpTitle(NULL)
-  , mpDuration(NULL)
-  , mpActionsLabel(NULL)
-  , mpMediaLabel(NULL)
-  , mpCommentsLabel(NULL)
-  , mpComments(NULL)
-  , mpLinksLabel(NULL)
+  , mpTitleLabel(NULL)
+  , mpPageNbrLabel(NULL)
   , mpContentContainer(NULL)
+  , mpScheduleLabel(NULL)
+  , mpLicenseLabel(NULL)
 {
     setObjectName(name);
     mpDataMgr = pDataMgr;
@@ -158,23 +172,45 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataM
     setStyleSheet(UBApplication::globalStyleSheet());
 
     // Build the Preview widget
-    // Title + duration
-    mpTitle = new QLabel(this);
+    // Session Title
+    mTitleContainer.setLayout(&mTitleLayout);
+    mpSessionTitle = new QLabel(this);
+    mpSessionTitle->setText(tr("Session: "));
+    mpSessionTitle->setWordWrap(true);
+    mpSessionTitle->setAlignment(Qt::AlignRight);
+    mpSessionTitle->setObjectName("UBTBPreviewSessionTitle");
+    mLayout.addWidget(mpSessionTitle);
+
+    // Title
+    mTitleContainer.setLayout(&mTitleLayout);
+    mTitleLayout.setContentsMargins(0, 0, 0, 0);
+    mpTitleLabel = new QLabel(&mTitleContainer);
+    mpTitleLabel->setText(tr("Activity"));
+    mpTitleLabel->setObjectName("UBTeacherBarPreviewSubtitle");
+    mTitleLayout.addWidget(mpTitleLabel, 0);
+    mpTitle = new QLabel(&mTitleContainer);
     mpTitle->setObjectName("UBTeacherBarPreviewTitle");
     mpTitle->setWordWrap(true);
-    mpTitle->setAlignment(Qt::AlignCenter);
-    mpDuration = new QLabel(this);
-    mTitleDurationLayout.addWidget(mpTitle, 0);
-    mTitleDurationLayout.addWidget(mpDuration, 1);
-    mLayout.addLayout(&mTitleDurationLayout, 0);
+    mpTitle->setAlignment(Qt::AlignLeft);
+    mTitleLayout.addWidget(mpTitle, 1);
+    mpPageNbrLabel = new QLabel(tr("Page n° "), &mTitleContainer);
+    mpPageNbrLabel->setAlignment(Qt::AlignRight);
+    mpPageNbrLabel->setObjectName("UBTBPreviewSessionTitle");
+    mTitleLayout.addWidget(mpPageNbrLabel);
+    mTitleLayout.addWidget(&mTitleSeparator);
+    mLayout.addWidget(&mTitleContainer);
 
+    // Content
     mpContentContainer = new UBTBPreviewContainer(this);
     mLayout.addWidget(mpContentContainer, 1);
-    //mLayout.addWidget(&mMediaViewer, 1);
-    // The next line is disgusting. This is a quickfix that must be reworked later
-    mMediaViewer.setContentsMargins(-9, -9, -9, -9);
 
-    hideElements();
+    // License
+    mLayout.addWidget(&mLicenseSeparator);
+    mpLicenseLabel = new QLabel(tr("License"), this);
+    mpLicenseLabel->setObjectName("UBTeacherBarPreviewSubtitle");
+    mLayout.addWidget(mpLicenseLabel);
+    // TODO : Add the license field here
+
 
     // Edit button
     mpEditButton = new QPushButton(tr("Edit infos"), this);
@@ -186,19 +222,23 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataM
 
 
     connect(mpEditButton, SIGNAL(clicked()), this, SLOT(onEdit()));
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
 }
 
 UBTeacherBarPreviewWidget::~UBTeacherBarPreviewWidget()
 {
-    DELETEPTR(mpLinksLabel);
-    DELETEPTR(mpComments);
-    DELETEPTR(mpTitle);
-    DELETEPTR(mpDuration);
-    DELETEPTR(mpActionsLabel);
-    DELETEPTR(mpMediaLabel);
-    DELETEPTR(mpCommentsLabel);
-    DELETEPTR(mpContentContainer);
     DELETEPTR(mpEditButton);
+    DELETEPTR(mpLicenseLabel);
+    DELETEPTR(mpScheduleLabel);
+    DELETEPTR(mpPageNbrLabel);
+    DELETEPTR(mpTitle);
+    DELETEPTR(mpTitleLabel);
+    DELETEPTR(mpSessionTitle);
+}
+
+void UBTeacherBarPreviewWidget::onActiveSceneChanged()
+{
+    mpPageNbrLabel->setText(tr("Page n° %0").arg(UBApplication::boardController->activeSceneIndex()));
 }
 
 void UBTeacherBarPreviewWidget::onEdit()
@@ -206,108 +246,97 @@ void UBTeacherBarPreviewWidget::onEdit()
     emit showEditMode();
 }
 
-void UBTeacherBarPreviewWidget::setTitle(const QString &title)
-{
-    if(NULL != mpTitle){
-        mpTitle->setText(title);
-    }
-}
-
-void UBTeacherBarPreviewWidget::setComments(const QString &comments)
-{
-    if("" != comments){
-        mWidgets.clear();
-        mpComments->setText(comments);
-        mpComments->setVisible(true);
-        mpCommentsLabel->setVisible(true);
-        mWidgets << mpCommentsLabel;
-        mMediaViewer.loadWidgets(mWidgets, false);
-        mWidgets.clear();
-        mWidgets << mpComments;
-        mMediaViewer.loadWidgets(mWidgets, true);
-    }
-}
-
-void UBTeacherBarPreviewWidget::clean()
-{
-    mMediaViewer.cleanMedia();
-
-    foreach(QWidget* eachWidget, mStoredWidgets){
-        delete eachWidget;
-        eachWidget = NULL;
-    }
-    mStoredWidgets.clear();
-
-    hideElements();
-}
-
-void UBTeacherBarPreviewWidget::hideElements()
-{
-    mpActionsLabel = new QLabel(tr("Actions"), this);
-    mpActionsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
-    mpMediaLabel = new QLabel(tr("Medias"), this);
-    mpMediaLabel->setObjectName("UBTeacherBarPreviewSubtitle");
-    mpCommentsLabel = new QLabel(tr("Comments"), this);
-    mpCommentsLabel->setObjectName("UBTeacherBarPreviewSubtitle");
-    mpComments = new QLabel(this);
-    mpComments->setWordWrap(true);
-    mpComments->setObjectName("UBTeacherBarPreviewComments");
-    mpLinksLabel = new QLabel(tr("Links"), this);
-    mpLinksLabel->setObjectName("UBTeacherBarPreviewSubtitle");
-
-    mpActionsLabel->setVisible(false);
-    mpMediaLabel->setVisible(false);
-    mpCommentsLabel->setVisible(false);
-    mpComments->setVisible(false);
-    mpLinksLabel->setVisible(false);
-}
-
-void UBTeacherBarPreviewWidget::setActions(QStringList actions)
-{
-    if(!actions.empty()){
-        mWidgets.clear();
-        mpActionsLabel->setVisible(true);
-        mWidgets << mpActionsLabel;
-        mediaViewer()->loadWidgets(mWidgets,false);
-        mWidgets.clear();
-        foreach(QString action, actions){
-            QStringList desc = action.split(';');
-            if(2 <= desc.size()){
-                QString owner = desc.at(0);
-                QString act = desc.at(1);
-                mpTmpAction = new UBActionPreview(this);
-                mpTmpAction->setOwner(owner);
-                mpTmpAction->setContent(act);
-                mWidgets << mpTmpAction;
-            }
-        }
-        mMediaViewer.loadWidgets(mWidgets, true);
-    }
-}
-
-void UBTeacherBarPreviewWidget::setLinks(QStringList links)
-{
-    if(!links.empty()){
-        mWidgets.clear();
-        mpLinksLabel->setVisible(true);
-        mWidgets << mpLinksLabel;
-        mMediaViewer.loadWidgets(mWidgets, false);
-        mWidgets.clear();
-        foreach(QString link, links){
-            mpTmpLink = new QLabel(link, this);
-            mpTmpLink->setOpenExternalLinks(true);
-            mWidgets << mpTmpLink;
-        }
-        mMediaViewer.loadWidgets(mWidgets, true);
-    }
-}
-
 void UBTeacherBarPreviewWidget::updateFields()
 {
+    // First, remove the previous elements
+    if(!mStoredWidgets.empty()){
+        foreach(QWidget* pW, mStoredWidgets){
+            mpContentContainer->removeWidget(pW);
+            if( pW->objectName() == "UBActionPreview" ||
+                pW->objectName() == "UBLinkPreview" ||
+                pW->objectName() == "UBCommentsPreview"){
+                // Here we delete all preview widget excepting the media because they are handled by the data manager
+                delete pW;
+                pW = NULL;
+            }
+        }
+        mStoredWidgets.clear();
+    }
+
+    // Session Title
+    mpSessionTitle->setText(mpDataMgr->sessionTitle());
+
+    // Page Title
+    if("" != mpDataMgr->pageTitle()){
+        mpTitle->setText(mpDataMgr->pageTitle());
+        mpPageNbrLabel->setText(tr("Page n° %0").arg(UBApplication::boardController->activeSceneIndex()));
+        mTitleContainer.setVisible(true);
+    }else{
+        mTitleContainer.setVisible(false);
+    }
+
+    // Actions
+    generateActions();
+
+    // Media
+    generateMedias();
+
+    // Links
+    generateLinks();
+
+    // Comments
+    generateComments();
 
 }
 
 void UBTeacherBarPreviewWidget::clearFields()
 {
 
+}
+
+void UBTeacherBarPreviewWidget::generateActions()
+{
+    if(!mpDataMgr->actions()->empty()){
+        foreach(sAction act, *mpDataMgr->actions()){
+            mpTmpAction = new UBActionPreview(this);
+            mpTmpAction->setOwner(act.type);
+            mpTmpAction->setContent(act.content);
+            mpContentContainer->addWidget(mpTmpAction);
+            mStoredWidgets << mpTmpAction;
+        }
+    }
+}
+
+void UBTeacherBarPreviewWidget::generateMedias()
+{
+    foreach(QWidget* pMedia, *mpDataMgr->medias()){
+        if(NULL != pMedia){
+            mpContentContainer->addWidget(pMedia);
+            mStoredWidgets << pMedia;
+        }
+    }
+}
+
+void UBTeacherBarPreviewWidget::generateLinks()
+{
+    if(!mpDataMgr->urls()->empty()){
+        foreach(sLink link, *mpDataMgr->urls()){
+            mpTmpLink = new QLabel(QString("<a href='%0'>%1</a>").arg(link.link).arg(link.title), this);
+            mpTmpLink->setObjectName("UBLinkPreview");
+            mpContentContainer->addWidget(mpTmpLink);
+            mStoredWidgets << mpTmpLink;
+        }
+    }
+}
+
+void UBTeacherBarPreviewWidget::generateComments()
+{
+    if("" != mpDataMgr->comments()){
+        mpTmpComment = new QTextEdit(this);
+        mpTmpComment->setObjectName("UBCommentPreview");
+        mpTmpComment->setPlainText(mpDataMgr->comments());
+        mpTmpComment->setReadOnly(true);
+        mpContentContainer->addWidget(mpTmpComment);
+        mStoredWidgets << mpTmpComment;
+    }
 }

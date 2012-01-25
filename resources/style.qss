@@ -13,6 +13,13 @@ QWidget#UBTBMediaContainer
 	border: 2px solid #999999;
 }
 
+QFrame#UBTBSeparator
+{
+	background: #DDDDDD;
+	border-radius: 2px;
+	border: 1px solid #DDDDDD;
+}
+
 QWidget#UBMediaVideoContainer
 {
 	background: #000000;
@@ -27,11 +34,17 @@ QWidget#UBTeacherBarPreviewWidget
 	border: 2px solid #999999;
 }
 
+QLabel#UBTBPreviewSessionTitle
+{
+	font-size: 12px;
+}
+
 QLabel#UBTeacherBarPreviewTitle
 {
 	color: #555555;
-	font-size : 18px;
+	font-size : 20px;
 	font-weight:bold;
+	padding-left:5px;
 }
 
 QLabel#UBMediaPlayerButton
@@ -44,7 +57,7 @@ QLabel#UBTeacherBarPreviewSubtitle
 	color: #555555;
 	font-size : 15px;
 	font-weight:bold;
-	padding-top: 10px;
+	padding-left:5px;
 }
 
 QWidget#UBLibWebView
@@ -61,7 +74,8 @@ QWidget#UBActionPreviewOwner
 	font-weight: bold;
 }
 
-QWidget#UBTeacherBarPreviewComments
+QWidget#UBTeacherBarPreviewComments,
+QWidget#UBTeacherBarTargetBox
 {
 	border-radius: 10px;
 	border: white 2px solid;

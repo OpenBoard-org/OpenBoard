@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QFrame>
 
 #include "core/UBPersistenceManager.h"
 #include "customWidgets/UBWidgetList.h"
@@ -30,12 +31,12 @@ class UBActionPreview : public QWidget
 public:
     UBActionPreview(QWidget* parent=0, const char* name="UBActionPreview");
     ~UBActionPreview();
-    void setOwner(const QString& owner);
+    void setOwner(int owner);
     void setContent(const QString& content);
 
 private:
     QLabel* mpOwner;
-    QLabel* mpContent;
+    QTextEdit* mpContent;
 
     QVBoxLayout mLayout;
     QHBoxLayout mOwnerLayout;
@@ -48,19 +49,19 @@ public:
     ~UBTBPreviewContainer();
 };
 
+class UBTBPreviewSeparator : public QFrame
+{
+public:
+    UBTBPreviewSeparator(QWidget* parent=0, const char* name="UBTBPreviewSeparator");
+    ~UBTBPreviewSeparator();
+};
+
 class UBTeacherBarPreviewWidget : public QWidget
 {
     Q_OBJECT
 public:
     UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataMgr, QWidget* parent=0, const char* name="UBTeacherBarPreviewWidget");
     ~UBTeacherBarPreviewWidget();
-    UBTeacherBarPreviewMedia* mediaViewer() {return &mMediaViewer;}
-    void setTitle(const QString& title);
-    void setComments(const QString& comments);
-    void setActions(QStringList actions);
-    void setLinks(QStringList links);
-    void clean();
-    QLabel* mediaLabel() { return mpMediaLabel;}
     void updateFields();
     void clearFields();
 
@@ -69,29 +70,47 @@ signals:
 
 private slots:
     void onEdit();
+    void onActiveSceneChanged();
 
 private:
-    void hideElements();
+    void generateActions();
+    void generateMedias();
+    void generateLinks();
+    void generateComments();
 
     QVBoxLayout mLayout;
     QHBoxLayout mEditLayout;
-    QHBoxLayout mTitleDurationLayout;
-    UBTeacherBarPreviewMedia mMediaViewer;
-    QList<QWidget*> mWidgets;
-    QList<QWidget*> mStoredWidgets;
-
     QPushButton* mpEditButton;
+
+    // Titles
+    QVBoxLayout mTitleLayout;
+    UBTBPreviewSeparator mTitleSeparator;
+    QWidget mTitleContainer;
+    QLabel* mpSessionTitle;
     QLabel* mpTitle;
-    QLabel* mpDuration;
-    QLabel* mpActionsLabel;
-    QLabel* mpMediaLabel;
-    QLabel* mpCommentsLabel;
-    QLabel* mpComments;
-    QLabel* mpLinksLabel;
-    QLabel* mpTmpLink;
-    UBActionPreview* mpTmpAction;
+    QLabel* mpTitleLabel;
+    QLabel* mpPageNbrLabel;
     UBTBPreviewContainer* mpContentContainer;
+
+    // Schedule
+    QLabel* mpScheduleLabel;
+
+    // License
+    UBTBPreviewSeparator mLicenseSeparator;
+    QLabel* mpLicenseLabel;
+
+    /** Pointer to the datas */
     UBTeacherBarDataMgr* mpDataMgr;
+    /** The list of stored widgets */
+    QList<QWidget*> mStoredWidgets;
+    /** A temporary action widget */
+    UBActionPreview* mpTmpAction;
+    /** A temporary media widget */
+    UBTeacherBarPreviewMedia* mpTmpMedia;
+    /** A temporary link */
+    QLabel* mpTmpLink;
+    /** A temporary comments field */
+    QTextEdit* mpTmpComment;
 };
 
 #endif // UBTEACHERBARPREVIEWWIDGET_H
