@@ -148,7 +148,7 @@ bool UBTeacherBarWidget::isEmpty()
 
 void UBTeacherBarWidget::onShowEditMode()
 {
-    mpStackWidget->setCurrentWidget(mpPageEditWidget);
+    onTBStateChanged(eTeacherBarState_PageEdit);
 }
 
 void UBTeacherBarWidget::onTBStateChanged(eTeacherBarState state)
@@ -163,10 +163,13 @@ void UBTeacherBarWidget::onTBStateChanged(eTeacherBarState state)
         mpStackWidget->setCurrentWidget(mpDocPreviewWidget);
         break;
     case eTeacherBarState_PageEdit:
+        mpPageEditWidget->clearFields();
         mpPageEditWidget->updateFields();
         mpStackWidget->setCurrentWidget(mpPageEditWidget);
         break;
     case eTeacherBarState_PagePreview:
+        saveContent();
+        mpPreview->clearFields();
         mpPreview->updateFields();
         mpStackWidget->setCurrentWidget(mpPreview);
         break;

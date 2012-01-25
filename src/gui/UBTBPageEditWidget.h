@@ -133,6 +133,9 @@ private:
 
     QVector<UBTeacherStudentAction*> mActions;
     QVector<UBUrlWidget*> mUrls;
+    QVector<QWidget*> mMedias;
+    QStringList mMediaUrls;
+    bool mClearingFields;
 };
 
 #endif // UBTBPAGEEDITWIDGET_H

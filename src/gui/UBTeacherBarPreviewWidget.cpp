@@ -248,23 +248,13 @@ void UBTeacherBarPreviewWidget::onEdit()
 
 void UBTeacherBarPreviewWidget::updateFields()
 {
-    // First, remove the previous elements
-    if(!mStoredWidgets.empty()){
-        foreach(QWidget* pW, mStoredWidgets){
-            mpContentContainer->removeWidget(pW);
-            if( pW->objectName() == "UBActionPreview" ||
-                pW->objectName() == "UBLinkPreview" ||
-                pW->objectName() == "UBCommentsPreview"){
-                // Here we delete all preview widget excepting the media because they are handled by the data manager
-                delete pW;
-                pW = NULL;
-            }
-        }
-        mStoredWidgets.clear();
-    }
-
     // Session Title
-    mpSessionTitle->setText(mpDataMgr->sessionTitle());
+    if("" != mpDataMgr->sessionTitle()){
+        mpSessionTitle->setText(mpDataMgr->sessionTitle());
+        mpSessionTitle->setVisible(true);
+    }else{
+        mpSessionTitle->setVisible(false);
+    }
 
     // Page Title
     if("" != mpDataMgr->pageTitle()){
@@ -279,7 +269,7 @@ void UBTeacherBarPreviewWidget::updateFields()
     generateActions();
 
     // Media
-    generateMedias();
+    //generateMedias();
 
     // Links
     generateLinks();
@@ -291,7 +281,20 @@ void UBTeacherBarPreviewWidget::updateFields()
 
 void UBTeacherBarPreviewWidget::clearFields()
 {
+    // Session Title
+    mpSessionTitle->setText("");
 
+    // Page Title
+    mpTitle->setText("");
+
+    // Medias
+    if(!mStoredWidgets.empty()){
+        foreach(QWidget* pW, mStoredWidgets){
+            mpContentContainer->removeWidget(pW);
+            DELETEPTR(pW);
+        }
+        mStoredWidgets.clear();
+    }
 }
 
 void UBTeacherBarPreviewWidget::generateActions()
@@ -309,10 +312,25 @@ void UBTeacherBarPreviewWidget::generateActions()
 
 void UBTeacherBarPreviewWidget::generateMedias()
 {
-    foreach(QWidget* pMedia, *mpDataMgr->medias()){
-        if(NULL != pMedia){
-            mpContentContainer->addWidget(pMedia);
-            mStoredWidgets << pMedia;
+    if(isVisible()){
+        foreach(QString mediaUrl, mpDataMgr->mediaUrls()){
+            QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mediaUrl);
+            if(mimeType.contains("image")){
+                QPixmap pix = QPixmap(mediaUrl);
+                QLabel* label = new QLabel();
+                pix.scaledToWidth(label->width());
+                label->resize(pix.width(), pix.height());
+                label->setPixmap(pix);
+                label->setScaledContents(true);
+                mStoredWidgets << label;
+                mpContentContainer->addWidget(label);
+            }
+            else if(mimeType.contains("video") || mimeType.contains("audio")){
+                UBMediaWidget* mediaPlayer = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
+                mediaPlayer->setFile(mediaUrl);
+                mStoredWidgets << mediaPlayer;
+                mpContentContainer->addWidget(mediaPlayer);
+            }
         }
     }
 }
@@ -323,6 +341,7 @@ void UBTeacherBarPreviewWidget::generateLinks()
         foreach(sLink link, *mpDataMgr->urls()){
             mpTmpLink = new QLabel(QString("<a href='%0'>%1</a>").arg(link.link).arg(link.title), this);
             mpTmpLink->setObjectName("UBLinkPreview");
+            mpTmpLink->setOpenExternalLinks(true);
             mpContentContainer->addWidget(mpTmpLink);
             mStoredWidgets << mpTmpLink;
         }
@@ -339,4 +358,20 @@ void UBTeacherBarPreviewWidget::generateComments()
         mpContentContainer->addWidget(mpTmpComment);
         mStoredWidgets << mpTmpComment;
     }
+}
+
+void UBTeacherBarPreviewWidget::showEvent(QShowEvent* ev)
+{
+    //updateFields();
+}
+
+// -----------------------------------------------------------------------------------------------------
+UBDraggableMedia::UBDraggableMedia(eMediaType type, QWidget *parent, const char *name):UBMediaWidget(type, parent, name)
+{
+
+}
+
+UBDraggableMedia::~UBDraggableMedia()
+{
+
 }

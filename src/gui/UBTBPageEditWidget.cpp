@@ -29,7 +29,7 @@ UBTBPageEditWidget::UBTBPageEditWidget(UBTeacherBarDataMgr *pDataMgr, QWidget *p
     mUrls.clear();
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
-
+    mClearingFields = false;
     mLayout.setContentsMargins(0, 0, 0, 0);
     setLayout(&mLayout);
 
@@ -120,14 +120,18 @@ UBTBPageEditWidget::~UBTBPageEditWidget()
 
 void UBTBPageEditWidget::onTitleChanged()
 {
-    mpDataMgr->setPageTitle(mpTitle->text());
-    emit valueChanged();
+    if(!mClearingFields){
+        mpDataMgr->setPageTitle(mpTitle->text());
+        emit valueChanged();
+    }
 }
 
 void UBTBPageEditWidget::onCommentsChanged()
 {
-    mpDataMgr->setComments(mpComments->document()->toPlainText());
-    emit valueChanged();
+    if(!mClearingFields){
+        mpDataMgr->setComments(mpComments->document()->toPlainText());
+        emit valueChanged();
+    }
 }
 
 void UBTBPageEditWidget::onActionButton()
@@ -135,6 +139,7 @@ void UBTBPageEditWidget::onActionButton()
     UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
     mActions << pAction;
     mpActions->addWidget(pAction);
+    emit valueChanged();
 }
 
 void UBTBPageEditWidget::onLinkButton()
@@ -142,6 +147,7 @@ void UBTBPageEditWidget::onLinkButton()
     UBUrlWidget* pUrl = new UBUrlWidget(this);
     mUrls << pUrl;
     mpLinks->addWidget(pUrl);
+    emit valueChanged();
 }
 
 void UBTBPageEditWidget::onMediaDropped(const QString &url)
@@ -149,9 +155,12 @@ void UBTBPageEditWidget::onMediaDropped(const QString &url)
     if("" != url){
         QWidget* pMedia = mpMediaContainer->generateMediaWidget(url);
         if(NULL != pMedia){
-            mpDataMgr->medias()->append(pMedia);
-            mpDataMgr->addMediaUrl(url);
+            mMedias << pMedia;
+            mMediaUrls << url;
+            //mpDataMgr->medias()->append(pMedia);
+            //mpDataMgr->addMediaUrl(url);
             mpMediaContainer->addWidget(pMedia);
+            emit valueChanged();
         }
     }
 }
@@ -170,6 +179,8 @@ void UBTBPageEditWidget::saveFields()
 {
     mpDataMgr->actions()->clear();
     mpDataMgr->urls()->clear();
+    mpDataMgr->mediaUrls().clear();
+    mpDataMgr->medias()->clear();
 
     foreach(UBTeacherStudentAction* pAct, mActions){
         sAction action;
@@ -182,6 +193,12 @@ void UBTBPageEditWidget::saveFields()
         link.title = pUrl->title();
         link.link = pUrl->url();
         mpDataMgr->urls()->append(link);
+    }
+    foreach(QString url, mMediaUrls){
+        mpDataMgr->mediaUrls().append(url);
+    }
+    foreach(QWidget* pMedia, mMedias){
+        mpDataMgr->medias()->append(pMedia);
     }
 }
 
@@ -203,7 +220,7 @@ void UBTBPageEditWidget::updateFields()
             continue;
         QWidget* pWidget = mpMediaContainer->generateMediaWidget(url);
         if(pWidget != NULL){
-            mpDataMgr->medias()->append(pWidget);
+            mMedias << pWidget;
             mpMediaContainer->addWidget(pWidget);
         }
     }
@@ -221,6 +238,7 @@ void UBTBPageEditWidget::updateFields()
 
 void UBTBPageEditWidget::clearFields()
 {
+    mClearingFields = true;
     // Title
     mpTitle->setText("");
     // Actions
@@ -230,13 +248,14 @@ void UBTBPageEditWidget::clearFields()
     }
     mActions.clear();
     // Medias
-    foreach(QWidget* pMedia, *mpDataMgr->medias()){
+    foreach(QWidget* pMedia, mMedias){
         if(NULL != pMedia){
             mpMediaContainer->removeWidget(pMedia);
             DELETEPTR(pMedia);
         }
     }
-    mpDataMgr->mediaUrls().clear();
+    mMedias.clear();
+    mMediaUrls.clear();
     // Links
     foreach(UBUrlWidget* pLink, mUrls){
         mpLinks->removeWidget(pLink);
@@ -245,6 +264,8 @@ void UBTBPageEditWidget::clearFields()
     mUrls.clear();
     // Comments
     mpComments->setText("");
+
+    mClearingFields = false;
 }
 
 // ---------------------------------------------------------------------------------------------

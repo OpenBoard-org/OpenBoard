@@ -8,6 +8,7 @@
 
 #include "core/UBPersistenceManager.h"
 #include "customWidgets/UBWidgetList.h"
+#include "customWidgets/UBMediaWidget.h"
 #include "UBTeacherBarDataMgr.h"
 
 class UBTeacherBarPreviewMedia : public QWidget
@@ -56,6 +57,14 @@ public:
     ~UBTBPreviewSeparator();
 };
 
+class UBDraggableMedia : public UBMediaWidget
+{
+public:
+    UBDraggableMedia(eMediaType type = eMediaType_Video, QWidget* parent=0, const char* name="UBDraggableMedia");
+    ~UBDraggableMedia();
+
+};
+
 class UBTeacherBarPreviewWidget : public QWidget
 {
     Q_OBJECT
@@ -67,6 +76,9 @@ public:
 
 signals:
     void showEditMode();
+
+protected:
+    void showEvent(QShowEvent* ev);
 
 private slots:
     void onEdit();
@@ -111,6 +123,8 @@ private:
     QLabel* mpTmpLink;
     /** A temporary comments field */
     QTextEdit* mpTmpComment;
+    /** A temporary media object */
+    UBDraggableMedia* mTmpMedia;
 };
 
 #endif // UBTEACHERBARPREVIEWWIDGET_H
