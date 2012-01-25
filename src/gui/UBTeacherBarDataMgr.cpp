@@ -111,8 +111,5 @@ void UBTeacherBarDataMgr::loadContent(bool docChanged)
 
     // Comments
     mComments = nextInfos.comments;
-
-    // TODO : Read the document metadata file and populate the metadata infos here
-
 }
 

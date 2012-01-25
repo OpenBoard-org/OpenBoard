@@ -179,7 +179,7 @@ void UBTBPageEditWidget::saveFields()
 {
     mpDataMgr->actions()->clear();
     mpDataMgr->urls()->clear();
-    mpDataMgr->mediaUrls().clear();
+    mpDataMgr->mediaUrls()->clear();
     mpDataMgr->medias()->clear();
 
     foreach(UBTeacherStudentAction* pAct, mActions){
@@ -195,7 +195,8 @@ void UBTBPageEditWidget::saveFields()
         mpDataMgr->urls()->append(link);
     }
     foreach(QString url, mMediaUrls){
-        mpDataMgr->mediaUrls().append(url);
+        qDebug() << "saving media :" << url;
+        mpDataMgr->mediaUrls()->append(url);
     }
     foreach(QWidget* pMedia, mMedias){
         mpDataMgr->medias()->append(pMedia);
@@ -215,15 +216,17 @@ void UBTBPageEditWidget::updateFields()
         mpActions->addWidget(pAction);
     }
     // Medias
-    foreach(QString url, mpDataMgr->mediaUrls()){
-        if(url.isEmpty())
-            continue;
-        QWidget* pWidget = mpMediaContainer->generateMediaWidget(url);
-        if(pWidget != NULL){
-            mMedias << pWidget;
-            mpMediaContainer->addWidget(pWidget);
+    foreach(QString url, *mpDataMgr->mediaUrls()){
+        if(!url.isEmpty()){
+            mMediaUrls << url;
+            QWidget* pWidget = mpMediaContainer->generateMediaWidget(url);
+            if(pWidget != NULL){
+                mMedias << pWidget;
+                mpMediaContainer->addWidget(pWidget);
+            }
         }
     }
+
     // Links
     foreach(sLink link, *mpDataMgr->urls()){
         UBUrlWidget* urlWidget = new UBUrlWidget(this);

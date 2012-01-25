@@ -313,7 +313,7 @@ void UBTeacherBarPreviewWidget::generateActions()
 void UBTeacherBarPreviewWidget::generateMedias()
 {
     if(isVisible()){
-        foreach(QString mediaUrl, mpDataMgr->mediaUrls()){
+        foreach(QString mediaUrl, *mpDataMgr->mediaUrls()){
             QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mediaUrl);
             if(mimeType.contains("image")){
                 QPixmap pix = QPixmap(mediaUrl);

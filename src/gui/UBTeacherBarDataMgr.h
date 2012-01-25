@@ -60,7 +60,7 @@ public:
     // Medias
     QVector<QWidget*>* medias(){return &mMediaList;}
     void addMediaUrl(const QString& url){mMediaUrls << url;}
-    QStringList mediaUrls(){return mMediaUrls;}
+    QStringList* mediaUrls(){return &mMediaUrls;}
 
     // Urls
     QVector<sLink>* urls(){return &mUrlList;}
