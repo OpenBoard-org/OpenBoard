@@ -269,7 +269,7 @@ void UBTeacherBarPreviewWidget::updateFields()
     generateActions();
 
     // Media
-    //generateMedias();
+    generateMedias();
 
     // Links
     generateLinks();
@@ -362,7 +362,7 @@ void UBTeacherBarPreviewWidget::generateComments()
 
 void UBTeacherBarPreviewWidget::showEvent(QShowEvent* ev)
 {
-    //updateFields();
+    updateFields();
 }
 
 // -----------------------------------------------------------------------------------------------------
