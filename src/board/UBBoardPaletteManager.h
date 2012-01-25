@@ -67,6 +67,7 @@ class UBBoardPaletteManager : public QObject
         void stopDownloads();
         QRect GetFreeRectGlobalCoords() const;
 		void ForceTeacherBarToSaveData();
+		void ForceTeacherBarToLoadData();
 
     signals:
         void connectToDocController();

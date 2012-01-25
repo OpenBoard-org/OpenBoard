@@ -574,6 +574,8 @@ void UBDocumentController::duplicateSelectedItem()
             UBMetadataDcSubsetAdaptor::persist(proxy);
             mDocumentUI->thumbnailWidget->selectItemAt(selectedSceneIndexes.last() + offset);
         }
+		//necessary due to architectural peculiarities
+		if(paletteMan) paletteMan->ForceTeacherBarToLoadData();
     }
     else
     {

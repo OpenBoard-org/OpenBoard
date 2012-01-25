@@ -1062,3 +1062,8 @@ void UBBoardPaletteManager::ForceTeacherBarToSaveData()
 {
 	mpTeacherBarWidget->saveContent();
 }
+
+void UBBoardPaletteManager::ForceTeacherBarToLoadData()
+{
+	mpTeacherBarWidget->loadContent();
+}
