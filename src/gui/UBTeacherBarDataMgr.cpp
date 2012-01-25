@@ -1,9 +1,14 @@
+#include "UBTeacherBarDataMgr.h"
+
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+
 #include "board/UBBoardController.h"
+
 #include "customWidgets/UBGlobals.h"
 
-#include "UBTeacherBarDataMgr.h"
+#include "adaptors/UBMetadataDcSubsetAdaptor.h"
+
 
 UBTeacherBarDataMgr::UBTeacherBarDataMgr()
 {
@@ -47,30 +52,32 @@ void UBTeacherBarDataMgr::saveContent()
     // Comments
     infos.comments = mComments;
 
-    UBPersistenceManager::persistenceManager()->persistTeacherBar(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex(), infos);
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    if(documentProxy){
+        UBPersistenceManager::persistenceManager()->persistTeacherBar(documentProxy, UBApplication::boardController->activeSceneIndex(), infos);
 
-    // TODO: Store the document metadata somewhere
-    // Session Title
-    //... = mSessionTitle;
-    // Session Target
-    //... = mSessionTarget;
+        documentProxy->setSessionTitle(mSessionTitle);
+        documentProxy->setSessionTarget(mSessionTarget);
+        documentProxy->setSessionLicence(mSessionLicence);
 
+        UBMetadataDcSubsetAdaptor::persist(documentProxy);
+    }
 }
+
+
 
 void UBTeacherBarDataMgr::loadContent(bool docChanged)
 {
     clearLists();
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
 
-    sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
-
-    if(docChanged){
-        // TODO: Read these information from the metadata file
-
-        // Session Title
-        //mSessionTitle = ...;
-        // Session Target
-        //mSessionTarget = ...;
+    sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(documentProxy, UBApplication::boardController->activeSceneIndex());
+    if(true/*docChanged*/){
+        mSessionTitle = documentProxy->sessionTitle();
+        mSessionTarget = documentProxy->sessionTarget();
+        mSessionLicence = documentProxy->sessionLicence();
     }
+
     // Page Title
     mPageTitle = nextInfos.title;
     // Actions
