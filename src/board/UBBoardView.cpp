@@ -47,6 +47,7 @@
 #include "document/UBDocumentProxy.h"
 
 #include "customWidgets/UBDraggableLabel.h"
+#include "customWidgets/UBDraggableMedia.h"
 
 #include "core/memcheck.h"
 
@@ -727,7 +728,7 @@ void
 UBBoardView::dropEvent (QDropEvent *event)
 {
     qDebug() << event->source();
-    if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBDraggableMediaPlayer *>(event->source()) || dynamic_cast<UBDraggableLabel *>(event->source()))
+    if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBDraggableMediaPlayer *>(event->source()) || dynamic_cast<UBDraggableLabel *>(event->source()) || dynamic_cast<UBDraggableMedia *>(event->source()))
     {
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction ();

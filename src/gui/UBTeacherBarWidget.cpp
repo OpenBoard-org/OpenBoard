@@ -170,7 +170,9 @@ void UBTeacherBarWidget::onTBStateChanged(eTeacherBarState state)
     case eTeacherBarState_PagePreview:
         saveContent();
         mpPreview->clearFields();
-        //mpPreview->updateFields();
+        if(mpPreview->isVisible()){
+            mpPreview->updateFields();
+        }
         mpStackWidget->setCurrentWidget(mpPreview);
         break;
     }

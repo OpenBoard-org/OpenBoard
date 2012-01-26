@@ -316,17 +316,13 @@ void UBTeacherBarPreviewWidget::generateMedias()
         foreach(QString mediaUrl, *mpDataMgr->mediaUrls()){
             QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mediaUrl);
             if(mimeType.contains("image")){
-                QPixmap pix = QPixmap(mediaUrl);
-                QLabel* label = new QLabel();
-                pix.scaledToWidth(label->width());
-                label->resize(pix.width(), pix.height());
-                label->setPixmap(pix);
-                label->setScaledContents(true);
-                mStoredWidgets << label;
-                mpContentContainer->addWidget(label);
+                mpTmpLabel = new UBDraggableLabel();
+                mpTmpLabel->loadImage(mediaUrl);
+                mStoredWidgets << mpTmpLabel;
+                mpContentContainer->addWidget(mpTmpLabel);
             }
             else if(mimeType.contains("video") || mimeType.contains("audio")){
-                UBMediaWidget* mediaPlayer = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
+                UBDraggableMedia* mediaPlayer = new UBDraggableMedia(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
                 mediaPlayer->setFile(mediaUrl);
                 mStoredWidgets << mediaPlayer;
                 mpContentContainer->addWidget(mediaPlayer);
@@ -365,13 +361,3 @@ void UBTeacherBarPreviewWidget::showEvent(QShowEvent* ev)
     updateFields();
 }
 
-// -----------------------------------------------------------------------------------------------------
-UBDraggableMedia::UBDraggableMedia(eMediaType type, QWidget *parent, const char *name):UBMediaWidget(type, parent, name)
-{
-
-}
-
-UBDraggableMedia::~UBDraggableMedia()
-{
-
-}

@@ -72,6 +72,8 @@ public:
 protected:
     void resizeEvent(QResizeEvent* ev);
     void showEvent(QShowEvent* event);
+    /** The current media file path */
+    QString mFilePath;
 
 private slots:
     void onPlayStopClicked();
@@ -85,8 +87,6 @@ private:
     void createMediaPlayer();
     void adaptSizeToVideo();
 
-    /** The current media file path */
-    QString mFilePath;
     /** The current media type */
     eMediaType mType;
     /** The media object */
