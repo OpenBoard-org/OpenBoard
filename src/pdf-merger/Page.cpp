@@ -193,7 +193,7 @@ static void _updateAnnotParentPage(Object *annotation,Object *newParentPage)
       std::string &annotContent = annotation->getObjectContent();
 
       size_t startOfP = Parser::findTokenName(annotContent,strP);
-      if( startOfP == std::string::npos )
+      if( startOfP == -1 )
       {
          return;
       }
@@ -229,12 +229,12 @@ static void _updateAnnotParentPage(Object *annotation,Object *newParentPage)
 static void _updateAnnotFormColor(Object *annotation )
 {
    std::string &objectContent = annotation->getObjectContent();
-   if( objectContent.find("/Widget") == std::string::npos )
+   if( objectContent.find("/Widget") == -1 )
    {
       return;
    }
    size_t startOfAP = Parser::findTokenName(objectContent,"/AP");
-   if( startOfAP == std::string::npos )
+   if( startOfAP == -1 )
    {
       return;
    }
@@ -262,7 +262,7 @@ static void _updateAnnotFormColor(Object *annotation )
       {
          if( token == "f" || token == "F" )
          {
-            if( found != std::string::npos )
+            if( found != -1 )
             {
                decodedStream[found] = ' ';
             }
@@ -272,7 +272,7 @@ static void _updateAnnotFormColor(Object *annotation )
       // Then we need to update Filter section (if any)
       std::string filterStr = "/Filter";
       size_t startOfFlate = Parser::findTokenName(content,filterStr);
-      if( startOfFlate != std::string::npos )
+      if( startOfFlate != -1 )
       {
          size_t endOfFlate = Parser::findEndOfElementContent(content,startOfFlate+filterStr.size());
          childWithAP->eraseContent(startOfFlate,endOfFlate-startOfFlate);
@@ -285,7 +285,7 @@ static void _updateAnnotFormColor(Object *annotation )
       // update the length field
       std::string lengthStr = "/Length";
       size_t startOfLength = Parser::findTokenName(content,lengthStr,0);
-      if( startOfLength != std::string::npos )
+      if( startOfLength != -1 )
       {
          size_t endOfLength = Parser::findEndOfElementContent(content,startOfLength + lengthStr.size());
          childWithAP->eraseContent(startOfLength,endOfLength-startOfLength);
@@ -296,10 +296,10 @@ static void _updateAnnotFormColor(Object *annotation )
          // update the stream of object with new content
          std::string stream("stream");
          size_t leftBoundOfContentStream = content.find(stream);
-         if( leftBoundOfContentStream != std::string::npos )
+         if( leftBoundOfContentStream != -1 )
          {
             size_t rightBoundOfContentStream = content.find("endstream", leftBoundOfContentStream);
-            if( rightBoundOfContentStream == std::string::npos )
+            if( rightBoundOfContentStream == -1 )
             {
                rightBoundOfContentStream = content.size() - 1;
             }
@@ -323,7 +323,7 @@ static void processBasePageResources(Object *basePage)
       return;
    }
    std::string resourceToken = "/Resources";
-   if( Parser::findTokenName(basePage->getObjectContent(),resourceToken) == std::string::npos )
+   if( Parser::findTokenName(basePage->getObjectContent(),resourceToken) == -1 )
    {
       // it seems base page does not have resources, they can be located in parent!
       Object *resource = basePage->findPatternInObjOrParents(resourceToken);
@@ -331,20 +331,20 @@ static void processBasePageResources(Object *basePage)
       {
          std::string &resContStr = resource->getObjectContent();
          size_t startOfRes = Parser::findTokenName(resContStr,resourceToken);
-         if( startOfRes == std::string::npos )
+         if( startOfRes == -1 )
          {
             // no resources at all
             return;
          }
          size_t endOfRes = Parser::findEndOfElementContent(resContStr,startOfRes + resourceToken.size());
-         if( endOfRes == std::string::npos )
+         if( endOfRes == -1 )
          {
             return; // broken resources
          }
          std::string resourceContent = resContStr.substr(startOfRes,endOfRes-startOfRes);
 
          size_t positionToInsert = basePage->getObjectContent().find("<<");
-         if( positionToInsert == std::string::npos )
+         if( positionToInsert == -1 )
          {
             positionToInsert = 0;
             resourceContent.insert(0,"<<");
@@ -479,7 +479,7 @@ void Page::merge(Page * sourcePage, Document * parentDocument, MergePageDescript
       rotationHandler.processObjectContent();
       description.basePageTransformation.addRotation(_rotation);
 
-      if( sourcePage->_root->getObjectContent().find("/Annots") != std::string::npos )
+      if( sourcePage->_root->getObjectContent().find("/Annots") != -1 )
       {
          Object *crop = sourcePage->_root->findPatternInObjOrParents("/CropBox");
          if( crop )

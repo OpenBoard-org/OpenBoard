@@ -42,14 +42,14 @@ y2(0)
 {
    unsigned int rectanglePosition = Parser::findToken(content,rectangleName);
    
-   if( rectanglePosition == std::string::npos )
+   if( rectanglePosition == -1 )
    {
       std::cerr<<"Unable to find rectangle name  "<<rectangleName<<" in content\n";
    }
    size_t beg = content.find("[",rectanglePosition);
    size_t end = content.find("]",rectanglePosition);
 
-   if( beg != std::string::npos && end != std::string::npos )
+   if( beg != -1 && end != -1 )
    {
       std::string arr = content.substr(beg+1,end-beg-1);
       std::stringstream in;
@@ -119,7 +119,7 @@ void Rectangle::updateRectangle(Object * objectWithRectangle, const char * delim
 
       std::string objectContent = objectWithMatrix->getObjectContent();      
       unsigned int matrixPosition = Parser::findToken(objectContent,"/Matrix");
-      if(matrixPosition == std::string::npos)
+      if(matrixPosition == -1)
          continue;
       unsigned int matrixValueLeftBound = objectContent.find("[", matrixPosition);
       unsigned int matrixValueRightBound = objectContent.find("]", matrixValueLeftBound) + 1;

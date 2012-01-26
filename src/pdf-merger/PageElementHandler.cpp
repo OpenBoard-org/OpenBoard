@@ -72,10 +72,10 @@ unsigned int PageElementHandler::_findEndOfElementContent(unsigned int startOfPa
    static std::string whitespacesAndDelimeters(" \t\f\v\n\r<<[/");
    unsigned int foundSlash = _pageContent.find("/", startOfPageElement + 1);
    std::string fieldType;
-   while(foundSlash != std::string::npos)
+   while(foundSlash != -1)
    {
       unsigned int foundWhitespace = _pageContent.find_first_of(whitespacesAndDelimeters, foundSlash + 1);
-      if(foundWhitespace != std::string::npos)      
+      if(foundWhitespace != -1)
          fieldType = _pageContent.substr(foundSlash + 1, foundWhitespace - foundSlash - 1);
       else 
          break;

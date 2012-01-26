@@ -52,14 +52,14 @@ FilterPredictor::~FilterPredictor()
 std::string FilterPredictor::getDictionaryContentStr(std::string & in, size_t &pos )
 {
    size_t beg = in.find(DICT_START_TOKEN,pos);
-   if( beg == std::string::npos )
+   if( beg == -1 )
    {
       return "";
    }
 
    beg += DICT_START_TOKEN.size();
    size_t end = in.find(DICT_END_TOKEN,beg);
-   if( end == std::string::npos )
+   if( end == -1 )
    {
       return "";
    }
@@ -85,7 +85,7 @@ void FilterPredictor::obtainDecodeParams(Object *objectWithStream, std::string &
    for(; it != params.end();it++)
    {
       size_t pos = dictStr.find((*it).first);
-      if( pos != std::string::npos )
+      if( pos != -1 )
       {
          pos += (*it).first.size();
 
@@ -116,7 +116,7 @@ void FilterPredictor::initialize(Object *objectWithStream)
       objectWithStream->getHeader(content);
       // we need to parse the header of file to obtain the decoder parameter      
       size_t position = content.find(DECODE_PARAM_TOKEN);
-      if(  position != std::string::npos)
+      if(  position != -1)
       {
          position += DECODE_PARAM_TOKEN.size();
          std::string dictStr = getDictionaryContentStr(content,position);

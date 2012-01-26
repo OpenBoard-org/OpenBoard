@@ -57,8 +57,8 @@ void Parser::_retrieveAllPages(Object * objectWithKids)
    unsigned int startOfKids = objectContent.find("/Kids");
    unsigned int endOfKids = objectContent.find("]", startOfKids);
    if(
-      (startOfKids == std::string::npos) && 
-      (objectContent.find("/Page") != std::string::npos)
+      (startOfKids == -1) &&
+      (objectContent.find("/Page") != -1)
       )
    {
       unsigned int numberOfPages = _document->_pages.size() + 1;
@@ -81,7 +81,7 @@ void Parser::_createDocument(const char * docName)
    Object * objectWithPages = 0;
    std::string & rootContent = _root->getObjectContent();
    unsigned int startOfPages = rootContent.find("/Pages");
-   if(startOfPages == std::string::npos)
+   if(startOfPages == -1)
       throw Exception("Some document is wrong");
    unsigned int endOfPages = rootContent.find("R", startOfPages);
    std::vector<Object *> objectWithKids = _root->getChildrenByBounds(startOfPages, endOfPages);
@@ -187,19 +187,19 @@ const std::map<unsigned int, Object::ReferencePositionsInContent> & Parser::_get
    static std::map<unsigned int, std::vector<unsigned int> >  searchResult;
    searchResult.clear();
    unsigned int streamStart = objectContent.find("stream");
-   if(streamStart == string::npos)
+   if(streamStart == -1)
       streamStart = objectContent.size();
    while(startOfNextSearch < streamStart)
    {
       //try to find reference. reference example is 15 0 R
       startOfNextSearch = objectContent.find(" R", startOfNextSearch);
       currentPosition = startOfNextSearch;
-      if(currentPosition != std::string::npos)
+      if(currentPosition != -1)
       {         
          //check that next character of " R" is WHITESPACE. 
 
-         if((WHITESPACES.find(objectContent[currentPosition + 2]) == string::npos) && 
-            (DELIMETERS.find(objectContent[currentPosition + 2]) == string::npos)
+         if((WHITESPACES.find(objectContent[currentPosition + 2]) == -1) &&
+            (DELIMETERS.find(objectContent[currentPosition + 2]) == -1)
             )
          {
             //this is not reference. this is something looks like "0 0 0 RG"
@@ -257,7 +257,7 @@ const std::map<unsigned int, Object::ReferencePositionsInContent> & Parser::_get
 unsigned int Parser::_skipNumber(const std::string & str, unsigned int currentPosition)
 {
    unsigned int numberSearchCounter = currentPosition;    
-   while((NUMBERS.find(str[numberSearchCounter]) != string::npos) && --numberSearchCounter) 
+   while((NUMBERS.find(str[numberSearchCounter]) != -1) && --numberSearchCounter)
    {}
 
    return numberSearchCounter;
@@ -367,10 +367,10 @@ const std::pair<unsigned int, unsigned int> & Parser::_getLineBounds(const std::
 {
    static std::pair<unsigned int, unsigned int> bounds;
    bounds.first = str.rfind('\n', fromPosition);
-   if(bounds.first == string::npos)
+   if(bounds.first == -1)
       bounds.first = 0;
    bounds.second = str.find('\n', fromPosition);
-   if(bounds.second == string::npos)
+   if(bounds.second == -1)
       bounds.second = str.size();    
    return bounds;
 }
@@ -405,7 +405,7 @@ unsigned int Parser::_countTokens(unsigned int leftBound, unsigned int rightBoun
    while (position < rightBount)
    {
       position = _fileContent.find_first_of(WHITESPACES, position);
-      if (position != string::npos)
+      if (position != -1)
          ++tokensCount;
       //start search from next symbol
       ++position;
@@ -416,7 +416,7 @@ unsigned int Parser::_countTokens(unsigned int leftBound, unsigned int rightBoun
 unsigned int Parser::_skipWhiteSpaces(const std::string & str, unsigned int fromPosition)
 {
    unsigned int position = fromPosition;
-   if(WHITESPACES.find(str[0]) != string::npos)
+   if(WHITESPACES.find(str[0]) != -1)
       position = str.find_first_not_of(WHITESPACES, position);
    return position;
 }
@@ -424,7 +424,7 @@ unsigned int Parser::_skipWhiteSpaces(const std::string & str, unsigned int from
 unsigned int Parser::_skipWhiteSpacesFromContent(unsigned int fromPosition)
 {
    unsigned int position = fromPosition;
-   if(WHITESPACES.find(_fileContent[position]) != string::npos)
+   if(WHITESPACES.find(_fileContent[position]) != -1)
       position = _fileContent.find_first_not_of(WHITESPACES, position);// + 1;
 
    return position;
@@ -453,7 +453,7 @@ const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsig
    static std::string objectContent;
 
    size_t contentStart = _fileContent.find_first_not_of(Parser::WHITESPACES,currentPosition);
-   if( contentStart == std::string::npos )
+   if( contentStart == -1 )
    {
       std::stringstream strOut;
       strOut<<"Wrong object "<< objectNumber<< "in PDF, cannot find content for it\n";
@@ -461,13 +461,13 @@ const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsig
    }
    currentPosition = contentStart;
    unsigned int endOfContent = _fileContent.find("endobj", contentStart);
-   if( endOfContent == std::string::npos )
+   if( endOfContent == -1 )
    {
       stringstream errorMessage("Corrupted PDF file, obj does not have matching endobj");
       throw Exception(errorMessage);
    }
    unsigned int endOfStream = _fileContent.find("endstream", currentPosition);
-   if((endOfStream != std::string::npos) && (endOfStream < endOfContent))
+   if((endOfStream != -1) && (endOfStream < endOfContent))
    {
       std::string stream("stream");
       unsigned int beginOfStream = _fileContent.find(stream, currentPosition) + stream.size();
@@ -484,7 +484,7 @@ const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsig
       // try to use Length field to determine end of stream.
       std::string lengthToken = "/Length";
       size_t lengthBegin = Parser::findTokenName(_fileContent,lengthToken,contentStart);
-      if ( lengthBegin != std::string::npos )
+      if ( lengthBegin != -1 )
       {
          std::string lengthStr;
          size_t lenPos = lengthBegin + lengthToken.size();
@@ -512,7 +512,7 @@ const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsig
             strin>>streamEnd;
             streamEnd += beginOfStream;
             unsigned int streamEndBegin = _fileContent.find("endstream",streamEnd);
-            if( streamEndBegin != std::string::npos )
+            if( streamEndBegin != -1 )
             {
                endOfStream = streamEndBegin;
             }
@@ -537,18 +537,18 @@ unsigned int Parser::_readTrailerAndReturnRoot()
    unsigned int startOfTrailer = Parser::findToken(_fileContent,"trailer", _getStartOfXrefWithRoot());
    std::string rootStr("/Root");
    unsigned int startOfRoot = Parser::findToken(_fileContent,rootStr.data(), startOfTrailer);
-   if( startOfRoot == std::string::npos)
+   if( startOfRoot == -1)
    {
       throw Exception("Cannot find Root object !");
    }
    std::string encryptStr("/Encrypt");
-   if( Parser::findToken(_fileContent,encryptStr,startOfTrailer) != std::string::npos )
+   if( Parser::findToken(_fileContent,encryptStr,startOfTrailer) != -1 )
    {
       throw Exception("Encrypted PDF is not supported!");
    }
    startOfRoot += rootStr.size()+1; //"/Root + ' ' 
    unsigned int endOfRoot = startOfRoot;
-   while(NUMBERS.find(_fileContent[endOfRoot++]) != string::npos) 
+   while(NUMBERS.find(_fileContent[endOfRoot++]) != -1)
    {}
    --endOfRoot;
    return Utils::stringToInt(_fileContent.substr(startOfRoot, endOfRoot - startOfRoot));   
@@ -557,21 +557,21 @@ unsigned int Parser::_readTrailerAndReturnRoot()
 unsigned int Parser::_readTrailerAndRterievePrev(const unsigned int startPositionForSearch, unsigned int & previosXref)
 {
    unsigned int startOfTrailer = Parser::findToken(_fileContent,"trailer", startPositionForSearch);
-   if( startOfTrailer == std::string::npos )
+   if( startOfTrailer == -1 )
    {
       throw Exception("Cannot find trailer!");
    }
 
    unsigned int startOfPrev = _fileContent.find("Prev ", startOfTrailer);
    unsigned int startxref = _fileContent.find("startxref", startOfTrailer);
-   if(startOfPrev == string::npos || (startOfPrev > startxref))
+   if(startOfPrev == -1 || (startOfPrev > startxref))
       return false;
    //"Prev "s length = 5
    else
       startOfPrev += 5;
 
    unsigned int endOfPrev = startOfPrev;
-   while(NUMBERS.find(_fileContent[endOfPrev++]) != string::npos) 
+   while(NUMBERS.find(_fileContent[endOfPrev++]) != -1)
    {}
    --endOfPrev;
    previosXref = Utils::stringToInt(_fileContent.substr(startOfPrev, endOfPrev - startOfPrev));   
@@ -589,13 +589,13 @@ std::string Parser::getNextToken(const std::string &str, unsigned int  &position
    }
    //skip first spaces
    size_t beg_pos = str.find_first_not_of(Parser::WHITESPACES,position);
-   if ( beg_pos == std::string::npos )
+   if ( beg_pos == -1 )
    {   
       // it is empty string!
       return "";
    }
    size_t end_pos = str.find_first_of(Parser::WHITESPACES_AND_DELIMETERS,beg_pos);
-   if ( end_pos == std::string::npos )
+   if ( end_pos == -1 )
    {
       end_pos = str.size();
    }
@@ -614,7 +614,7 @@ bool Parser::getNextWord(std::string &out, const std::string &str, size_t &nextP
 {
    if( found )
    {
-      *found = std::string::npos;
+      *found = -1;
    }
    //trace("position = %d",position);
    if( nextPosition >= str.size() )
@@ -623,7 +623,7 @@ bool Parser::getNextWord(std::string &out, const std::string &str, size_t &nextP
    }
    //skip first spaces
    size_t beg_pos = str.find_first_not_of(Parser::WHITESPACES,nextPosition);
-   if ( beg_pos == std::string::npos )
+   if ( beg_pos == -1 )
    {   
       // it is empty string!
       return false;
@@ -634,7 +634,7 @@ bool Parser::getNextWord(std::string &out, const std::string &str, size_t &nextP
    }
    size_t end_pos = str.find_first_of(Parser::WHITESPACES,beg_pos);
 
-   if ( end_pos == std::string::npos )
+   if ( end_pos == -1 )
    {
       end_pos = str.size();
    }
@@ -656,8 +656,8 @@ void Parser::trim(std::string &str)
 {
    std::string::size_type pos1 = str.find_first_not_of(WHITESPACES);
    std::string::size_type pos2 = str.find_last_not_of(WHITESPACES);
-   str = str.substr(pos1 == std::string::npos ? 0 : pos1,
-      pos2 == std::string::npos ? str.length() - 1 : pos2 - pos1 + 1);
+   str = str.substr(pos1 == -1 ? 0 : pos1,
+      pos2 == -1 ? str.length() - 1 : pos2 - pos1 + 1);
 }
 
 // Method tries to find the PDF token from the content 
@@ -665,7 +665,7 @@ void Parser::trim(std::string &str)
 std::string Parser::findTokenStr(const std::string &content, const std::string &pattern, size_t start, size_t &foundStart, size_t &foundEnd)
 {
    size_t cur_pos  = Parser::findToken(content,pattern,start);
-   if( cur_pos == std::string::npos )
+   if( cur_pos == -1 )
    {
       return "";
    }
@@ -673,7 +673,7 @@ std::string Parser::findTokenStr(const std::string &content, const std::string &
    cur_pos += pattern.size();
    // then lets parse the content of remaining part
    size_t end_pos = content.find_first_of(Parser::DELIMETERS,cur_pos);
-   if( end_pos == std::string::npos )
+   if( end_pos == -1 )
    {
       end_pos = content.size();
    }
@@ -692,12 +692,12 @@ size_t Parser::findToken(const std::string &content, const std::string &keyword,
 {
    size_t cur_pos  = start;
    // lets find pattern first
-   size_t foundStart = std::string::npos;
+   size_t foundStart = -1;
    size_t savedPos = 0;
    while( 1 )
    {
       cur_pos = content.find(keyword,cur_pos);
-      if( cur_pos == std::string::npos )
+      if( cur_pos == -1 )
       {
          break;
       }
@@ -705,8 +705,8 @@ size_t Parser::findToken(const std::string &content, const std::string &keyword,
       cur_pos += keyword.size();
       if( cur_pos < content.size() )
       {
-         if( Parser::WHITESPACES.find(content[cur_pos]) != std::string::npos ||
-            Parser::DELIMETERS.find(content[cur_pos]) != std::string::npos )
+         if( Parser::WHITESPACES.find(content[cur_pos]) != -1 ||
+            Parser::DELIMETERS.find(content[cur_pos]) != -1 )
          {
             foundStart = savedPos;
             break;
@@ -736,10 +736,10 @@ bool Parser::tokenIsAName(const std::string &content, size_t start )
       size_t foundNonWhite = content.find_first_not_of(Parser::WHITESPACES,start);
       size_t foundDelim = content.find_first_of(Parser::DELIMETERS,start);
 
-      if( foundNonWhite != std::string::npos && 
-          foundDelim != std::string::npos )
+      if( foundNonWhite != -1 &&
+          foundDelim != -1 )
       {
-         if( (foundNonWhite < foundDelim )  || ( openBraces.find(content[foundDelim]) != std::string::npos) )
+         if( (foundNonWhite < foundDelim )  || ( openBraces.find(content[foundDelim]) != -1) )
          {
             if( found )
             {
@@ -778,13 +778,13 @@ size_t Parser::findTokenName(const std::string &content, const std::string &keyw
 {
    size_t cur_pos  = start;
    // lets find pattern first
-   size_t foundStart = std::string::npos;
+   size_t foundStart = -1;
    size_t savedPos = 0;
    std::string braces = "<[({";
    while( 1 )
    {
       cur_pos = content.find(keyword,cur_pos);
-      if( cur_pos == std::string::npos )
+      if( cur_pos == -1 )
       {
          break;
       }
@@ -792,7 +792,7 @@ size_t Parser::findTokenName(const std::string &content, const std::string &keyw
       cur_pos += keyword.size();
       if( cur_pos < content.size() )
       {
-         if( Parser::WHITESPACES_AND_DELIMETERS.find(content[cur_pos]) != std::string::npos )
+         if( Parser::WHITESPACES_AND_DELIMETERS.find(content[cur_pos]) != -1 )
          {
             if( tokenIsAName(content,cur_pos ) )
             {
@@ -813,7 +813,7 @@ size_t Parser::findTokenName(const std::string &content, const std::string &keyw
 
 unsigned int Parser::findEndOfElementContent(const std::string &content,unsigned int startOfPageElement)
 {
-   unsigned int foundEnd = std::string::npos;
+   unsigned int foundEnd = -1;
    std::stack<std::string> delimStack;
    std::string endDelim = "/]>)}";
    unsigned int curPos = startOfPageElement;
@@ -832,7 +832,7 @@ unsigned int Parser::findEndOfElementContent(const std::string &content,unsigned
       unsigned int foundOpenBrace = content.find("[",curPos);
       unsigned int foundOpenDict = content.find("<",curPos);
 
-      if( foundDelimeter == std::string::npos && foundOpenBrace == std::string::npos && foundOpenDict == std::string::npos )
+      if( foundDelimeter == -1 && foundOpenBrace == -1 && foundOpenDict == -1 )
       {
          if( !delimStack.empty() )
          {
@@ -882,7 +882,7 @@ unsigned int Parser::findEndOfElementContent(const std::string &content,unsigned
       if( delimStack.empty() )
       {
          foundEnd = content.find_first_of(delimeter,curPos);
-         if( foundEnd == std::string::npos )
+         if( foundEnd == -1 )
          {
             foundEnd = curPos;
          }

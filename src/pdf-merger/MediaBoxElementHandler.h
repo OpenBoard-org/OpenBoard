@@ -59,7 +59,7 @@ namespace merge_lib
       }
       bool _wasCropBoxHandlerCalled()
       {
-         return (_page->getObjectContent().find("/BBox") != std::string::npos) ? true : false;
+         return (_page->getObjectContent().find("/BBox") != -1) ? true : false;
       }
    };
 }

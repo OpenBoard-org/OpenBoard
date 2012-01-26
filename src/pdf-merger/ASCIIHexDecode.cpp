@@ -51,7 +51,7 @@ bool ASCIIHexDecode::decode(std::string & encoded)
    for(int i = 0;i<len;i++)
    {
       unsigned char ch = encoded[i];
-      if( WHITESPACES.find(ch) != std::string::npos )
+      if( WHITESPACES.find(ch) != -1 )
       {
          continue;
       }

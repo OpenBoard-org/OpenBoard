@@ -46,7 +46,7 @@ namespace merge_lib
       void processObjectContent()
       {
          unsigned int startOfPageElement = _findStartOfPageElement();
-         if(startOfPageElement != std::string::npos)
+         if(startOfPageElement != -1)
             _processObjectContent(startOfPageElement);
          if(_nextHandler)
             _nextHandler->processObjectContent();
@@ -55,7 +55,7 @@ namespace merge_lib
       void changeObjectContent()
       {
          unsigned int startOfPageElement = _findStartOfPageElement();
-         if(startOfPageElement != std::string::npos)
+         if(startOfPageElement != -1)
             _changeObjectContent(startOfPageElement);
          else
             _pageElementNotFound();
