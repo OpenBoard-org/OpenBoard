@@ -29,6 +29,10 @@ private slots:
     void onSessionTitleChanged();
     void onSessionTargetChanged();
     void onLicenseCurrentIndexChanged(int selection);
+    void onKeywordChanged(const QString& kw);
+    void onLevelChanged(const QString& level);
+    void onTopicChanged(const QString& topic);
+    void onAuthorChanged(const QString& authors);
 
 private:
     QVBoxLayout mLayout;
@@ -41,6 +45,11 @@ private:
     UBTBSeparator mTargetSeparator;
     UBTBSeparator mLicenseSeparator;
 
+    QHBoxLayout mKeywordLayout;
+    QHBoxLayout mLevelLayout;
+    QHBoxLayout mTopicLayout;
+    QHBoxLayout mAuthorLayout;
+
     QWidget* mpContainer;
     QLabel* mpTitleLabel;
     QLineEdit* mpTitle;
@@ -49,6 +58,14 @@ private:
     QLabel* mpMetadataLabel;
     QLabel* mpLicenseLabel;
     QComboBox* mpLicenseCombox;
+    QLineEdit* mpKeywords;
+    QComboBox* mpLevel;
+    QComboBox* mpTopic;
+    QLineEdit* mpAuthor;
+    QLabel* mpKeywordLabel;
+    QLabel* mpLevelLabel;
+    QLabel* mpTopicLabel;
+    QLabel* mpAuthorLabel;
 
     UBTeacherBarDataMgr* mpDataMgr;
 };

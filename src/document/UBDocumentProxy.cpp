@@ -53,6 +53,10 @@ void UBDocumentProxy::init()
     setSessionTitle("");
     setSessionTarget("");
     setSessionLicence("");
+    setSessionKeywords("");
+    setSessionLevel("");
+    setSessionTopic("");
+    setSessionAuthor("");
 }
 
 
@@ -239,6 +243,57 @@ void UBDocumentProxy::setSessionLicence(const QString & sessionLicence)
     setMetaData(UBSettings::sessionLicence,QVariant(sessionLicence));
 }
 
+void UBDocumentProxy::setSessionKeywords(const QString &kw)
+{
+    setMetaData(UBSettings::sessionKeywords,QVariant(kw));
+}
+
+QString UBDocumentProxy::sessionKeywords()
+{
+    if(mMetaDatas.contains(UBSettings::sessionKeywords))
+        return metaData(UBSettings::sessionKeywords).toString();
+    else
+        return QString();
+}
+
+void UBDocumentProxy::setSessionLevel(const QString &level)
+{
+    setMetaData(UBSettings::sessionLevel,QVariant(level));
+}
+
+QString UBDocumentProxy::sessionLevel()
+{
+    if(mMetaDatas.contains(UBSettings::sessionLevel))
+        return metaData(UBSettings::sessionLevel).toString();
+    else
+        return QString();
+}
+
+void UBDocumentProxy::setSessionTopic(const QString &topic)
+{
+    setMetaData(UBSettings::sessionTopic,QVariant(topic));
+}
+
+QString UBDocumentProxy::sessionTopic()
+{
+    if(mMetaDatas.contains(UBSettings::sessionTopic))
+        return metaData(UBSettings::sessionTopic).toString();
+    else
+        return QString();
+}
+
+void UBDocumentProxy::setSessionAuthor(const QString &authors)
+{
+    setMetaData(UBSettings::sessionAuthors,QVariant(authors));
+}
+
+QString UBDocumentProxy::sessionAuthors()
+{
+    if(mMetaDatas.contains(UBSettings::sessionAuthors))
+        return metaData(UBSettings::sessionAuthors).toString();
+    else
+        return QString();
+}
 
 bool UBDocumentProxy::isModified() const
 {

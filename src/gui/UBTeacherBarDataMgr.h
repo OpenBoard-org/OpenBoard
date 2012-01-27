@@ -99,6 +99,23 @@ public:
     void setComments(const QString& c){mComments = c;}
     QString comments(){return mComments;}
 
+    // Keywords
+    void setKeywords(const QString& kw){mKeywords = kw;}
+    QString keywords(){return mKeywords;}
+
+    // Level
+    void setLevel(const QString& level){mLevel = level;}
+    QString level(){return mLevel;}
+
+    // Topic
+    void setTopic(const QString& topic){mTopic = topic;}
+    QString topic(){return mTopic;}
+
+    // Authors
+    void setAuthors(const QString& authors){mAuthors = authors;}
+    QString authors(){return mAuthors;}
+
+
     // Others
     void clearLists();
     void saveContent();
@@ -110,6 +127,10 @@ private:
     eLicense mSessionLicence;
     QString mPageTitle;
     QString mComments;
+    QString mKeywords;
+    QString mLevel;
+    QString mTopic;
+    QString mAuthors;
 
     QVector<sAction> mActionList;
     QVector<sLink> mUrlList;

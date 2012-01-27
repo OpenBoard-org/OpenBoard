@@ -59,6 +59,10 @@ void UBTeacherBarDataMgr::saveContent()
         documentProxy->setSessionTitle(mSessionTitle);
         documentProxy->setSessionTarget(mSessionTarget);
         documentProxy->setSessionLicence(QString("%0").arg(mSessionLicence));
+        documentProxy->setSessionKeywords(mAuthors);
+        documentProxy->setSessionLevel(mLevel);
+        documentProxy->setSessionTopic(mTopic);
+        documentProxy->setSessionAuthor(mAuthors);
 
         UBMetadataDcSubsetAdaptor::persist(documentProxy);
     }
@@ -76,6 +80,10 @@ void UBTeacherBarDataMgr::loadContent(bool docChanged)
         mSessionTitle = documentProxy->sessionTitle();
         mSessionTarget = documentProxy->sessionTarget();
         mSessionLicence = (eLicense)documentProxy->sessionLicence().toInt();
+        mKeywords = documentProxy->sessionKeywords();
+        mLevel = documentProxy->sessionLevel();
+        mTopic = documentProxy->sessionTopic();
+        mAuthors = documentProxy->sessionAuthors();
     }
 
     // Page Title

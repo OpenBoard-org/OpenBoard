@@ -143,7 +143,11 @@ bool UBTeacherBarWidget::isEmpty()
             mData.urls()->empty() &&
             mData.actions()->empty() &&
             mData.medias()->empty() &&
-            mData.comments() == "";
+            mData.comments() == "" &&
+            mData.authors() == "" &&
+            mData.keywords() == "" &&
+            mData.level() == "" &&
+            mData.topic() == "";
 }
 
 void UBTeacherBarWidget::onShowEditMode()
