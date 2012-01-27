@@ -202,8 +202,11 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // The cache widget will be visible only if a cache is put on the page
     mRightPalette->registerWidget(mpCachePropWidget);
     // The teacher bar widget will always be there
-    mRightPalette->registerWidget(mpTeacherBarWidget);
-    mRightPalette->addTab(mpTeacherBarWidget);
+
+    // TeacherBarWidget moved to left side just for testing!!!!
+    mLeftPalette->registerWidget(mpTeacherBarWidget);
+    mLeftPalette->addTab(mpTeacherBarWidget);
+
     //  The download widget will be part of the right palette but
     //  will become visible only when the first download starts
     mRightPalette->registerWidget(mpDownloadWidget);
@@ -211,8 +214,8 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     changeMode(eUBDockPaletteWidget_BOARD, true);
 
     // Hide the tabs that must be hidden
-    mRightPalette->removeTab(mpDownloadWidget->name());
-    mRightPalette->removeTab(mpCachePropWidget->name());
+    mRightPalette->removeTab(mpDownloadWidget);
+    mRightPalette->removeTab(mpCachePropWidget);
 
 //     mLeftPalette->showTabWidget(0);
 //     mRightPalette->showTabWidget(0);
@@ -998,7 +1001,7 @@ void UBBoardPaletteManager::stopDownloads()
     {
         mDownloadInProgress = false;
         mpDownloadWidget->setVisibleState(false);
-        mRightPalette->removeTab(mpDownloadWidget->name());
+        mRightPalette->removeTab(mpDownloadWidget);
     }
 }
 

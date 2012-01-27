@@ -111,8 +111,9 @@ public:
 
     void setBackgroundBrush(const QBrush& brush);
     void registerWidget(UBDockPaletteWidget* widget);
+
     void addTab(UBDockPaletteWidget* widget);
-    void removeTab(const QString& widgetName);
+    void removeTab(UBDockPaletteWidget* widget);
 
     void connectSignals();
 
@@ -129,8 +130,8 @@ public:
     eUBDockPaletteType paletteType(){return mPaletteType;}
 
 public slots:
-    void onShowTabWidget(const QString& widgetName);
-    void onHideTabWidget(const QString& widgetName);
+    void onShowTabWidget(UBDockPaletteWidget* widget);
+    void onHideTabWidget(UBDockPaletteWidget* widget);
     void onAllDownloadsFinished();
 
 protected:

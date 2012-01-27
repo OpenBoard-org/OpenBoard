@@ -567,19 +567,15 @@ void UBDockPalette::addTab(UBDockPaletteWidget *widget)
  * \brief Remove the given tab
  * @param widgetName as the tab widget name
  */
-void UBDockPalette::removeTab(const QString &widgetName)
+void UBDockPalette::removeTab(UBDockPaletteWidget* widget)
 {
-    for(int i = 0; i < mTabWidgets.size(); i++)
+    int nWidget = mTabWidgets.indexOf(widget);
+    if( nWidget >= 0 )
     {
-        UBDockPaletteWidget* pCrntWidget = mTabWidgets.at(i);
-        if(NULL != pCrntWidget && (pCrntWidget->name() == widgetName))
-        {
-            mpStackWidget->removeWidget(pCrntWidget);
-            mTabWidgets.remove(i);
-            pCrntWidget->hide();
-            update();
-            break;
-        }
+        mpStackWidget->removeWidget(widget);
+        mTabWidgets.remove(nWidget);
+        widget->hide();
+        update();
     }
     resizeTabs();
     mCurrentTab = qMax(mCurrentTab - 1, 0);
@@ -607,17 +603,12 @@ int UBDockPalette::tabSpacing()
  * \brief Show the given widget
  * @param widgetName as the given widget name
  */
-void UBDockPalette::onShowTabWidget(const QString &widgetName)
+void UBDockPalette::onShowTabWidget(UBDockPaletteWidget* widget)
 {
-    for(int i = 0; i < mRegisteredWidgets.size(); i++)
+    if (mRegisteredWidgets.contains(widget))
     {
-        UBDockPaletteWidget* pCrntWidget = mRegisteredWidgets.at(i);
-        if(NULL != pCrntWidget && (pCrntWidget->name() == widgetName))
-        {
-            pCrntWidget->setVisibleState(true);
-            addTab(pCrntWidget);
-            break;
-        }
+        widget->setVisibleState(true);
+        addTab(widget);
     }
 }
 
@@ -625,16 +616,13 @@ void UBDockPalette::onShowTabWidget(const QString &widgetName)
  * \brief Hide the given widget
  * @param widgetName as the given widget name
  */
-void UBDockPalette::onHideTabWidget(const QString &widgetName)
+void UBDockPalette::onHideTabWidget(UBDockPaletteWidget* widget)
 {
-    for(int i = 0; i < mRegisteredWidgets.size(); i++){
-        UBDockPaletteWidget* pCrntWidget = mRegisteredWidgets.at(i);
-        if(NULL != pCrntWidget && (pCrntWidget->name() == widgetName)){
-            pCrntWidget->setVisibleState(false);
-            break;
-        }
+    if (mRegisteredWidgets.contains(widget))
+    {
+        widget->setVisibleState(false);
+        removeTab(widget);
     }
-    removeTab(widgetName);
 }
 
 /**
@@ -644,8 +632,8 @@ void UBDockPalette::connectSignals()
 {
     for(int i=0; i < mRegisteredWidgets.size(); i++)
     {
-        connect(mRegisteredWidgets.at(i), SIGNAL(showTab(QString)), this, SLOT(onShowTabWidget(QString)));
-        connect(mRegisteredWidgets.at(i), SIGNAL(hideTab(QString)), this, SLOT(onHideTabWidget(QString)));
+        connect(mRegisteredWidgets.at(i), SIGNAL(showTab(UBDockPaletteWidget*)), this, SLOT(onShowTabWidget(UBDockPaletteWidget*)));
+        connect(mRegisteredWidgets.at(i), SIGNAL(hideTab(UBDockPaletteWidget*)), this, SLOT(onHideTabWidget(UBDockPaletteWidget*)));
     }
 }
 
@@ -747,7 +735,7 @@ bool UBDockPalette::switchMode(eUBDockPaletteWidgetMode mode)
             }
             else
             {
-                removeTab(pNextWidget->name());
+                removeTab(pNextWidget);
             }
         }
     }

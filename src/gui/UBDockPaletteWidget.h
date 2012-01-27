@@ -31,8 +31,8 @@ public:
     void setVisibleState(bool state){mVisibleState = state;}
 
 signals:
-    void hideTab(const QString& widgetName);
-    void showTab(const QString& widgetName);
+    void hideTab(UBDockPaletteWidget* widget);
+    void showTab(UBDockPaletteWidget* widget);
 
 public slots:
     void slot_changeMode(eUBDockPaletteWidgetMode newMode);
