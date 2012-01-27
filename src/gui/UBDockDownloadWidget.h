@@ -28,6 +28,12 @@ public:
     UBDockDownloadWidget(QWidget* parent=0, const char* name="UBDockDownloadWidget");
     ~UBDockDownloadWidget();
 
+    bool visibleInMode(eUBDockPaletteWidgetMode mode)
+    {
+        return mode == eUBDockPaletteWidget_BOARD;
+    }
+
+
 private:
     QVBoxLayout* mpLayout;
     UBDownloadWidget* mpDLWidget;

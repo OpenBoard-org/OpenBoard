@@ -21,6 +21,11 @@ public:
     UBCachePropertiesWidget(QWidget* parent=0, const char* name="UBCachePropertiesWidget");
     ~UBCachePropertiesWidget();
 
+    bool visibleInMode(eUBDockPaletteWidgetMode mode)
+    {
+        return mode == eUBDockPaletteWidget_BOARD;
+    }
+
 public slots:
     void updateCurrentCache();
 

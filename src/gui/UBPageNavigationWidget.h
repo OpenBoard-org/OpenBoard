@@ -36,6 +36,11 @@ public:
     void setDocument(UBDocumentProxy* document);
     void refresh();
 
+    bool visibleInMode(eUBDockPaletteWidgetMode mode)
+    {
+        return mode == eUBDockPaletteWidget_BOARD;
+    }
+
 signals:
     void resizeRequest(QResizeEvent* event);
 

@@ -173,24 +173,18 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // Create the widgets for the dock palettes
 
     mpPageNavigWidget = new UBPageNavigationWidget();
-    mpPageNavigWidget->registerMode(eUBDockPaletteWidget_BOARD);
 //    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpPageNavigWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpLibWidget = new UBLibWidget();
-    mpLibWidget ->registerMode(eUBDockPaletteWidget_BOARD);
-    mpLibWidget ->registerMode(eUBDockPaletteWidget_DESKTOP);
 //    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpLibWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpCachePropWidget = new UBCachePropertiesWidget();
-    mpCachePropWidget->registerMode(eUBDockPaletteWidget_BOARD);
 //    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpCachePropWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpTeacherBarWidget = new UBTeacherBarWidget();
-    mpTeacherBarWidget->registerMode(eUBDockPaletteWidget_BOARD);
 //    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpTeacherBarWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpDownloadWidget = new UBDockDownloadWidget();
-    mpDownloadWidget->registerMode(eUBDockPaletteWidget_BOARD);
 
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
@@ -689,38 +683,10 @@ void UBBoardPaletteManager::addItem(const QUrl& pUrl)
 
 }
 
-void UBBoardPaletteManager::processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode)
-{
-    //-------------------------------//
-    // get full right palette widgets list, parse it, show all widgets for BOARD mode, and hide all other
-    QVector<UBDockPaletteWidget*> widgetsList = paletter->GetWidgetsList();
-    for(int i = 0; i < widgetsList.size(); i++)
-    {
-        UBDockPaletteWidget* pNextWidget = widgetsList.at(i);
-        if( pNextWidget != NULL )
-        {
-            if( pNextWidget->GetRegisteredModes().contains(mode) ) 
-            {
-                paletter->addTab(pNextWidget);
-            }
-            else
-            {
-                paletter->removeTab(pNextWidget->name());
-            }
-        }
-    }
-    //-------------------------------//
-
-    if(widgetsList.size() > 0)
-        paletter->showTabWidget(0);
-    
-    paletter->update();
-}
-
 void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool isInit)
 {
-    processPalettersWidget(mRightPalette, newMode);
-    processPalettersWidget(mLeftPalette, newMode);
+    bool rightPaletteVisible = mRightPalette->switchMode(newMode);
+    bool leftPaletteVisible = mLeftPalette->switchMode(newMode);
 
     switch( newMode )
     {
@@ -741,10 +707,11 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                         mKeyboardPalette->setParent(UBApplication::boardController->controlContainer());
                 }
 
-                mLeftPalette->setVisible(true);
-                mRightPalette->setVisible(true);
+                mLeftPalette->setVisible(leftPaletteVisible);
+                mRightPalette->setVisible(rightPaletteVisible);
 #ifdef Q_WS_WIN
-                mRightPalette->setAdditionalVOffset(0);
+                if (rightPaletteVisible)
+                    mRightPalette->setAdditionalVOffset(0);
 #endif
 
                 if( !isInit )
@@ -773,10 +740,11 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                         mKeyboardPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 }
 
-                mLeftPalette->setVisible(false);
-                mRightPalette->setVisible(true);
+                mLeftPalette->setVisible(leftPaletteVisible);
+                mRightPalette->setVisible(rightPaletteVisible);
 #ifdef Q_WS_WIN
-                mRightPalette->setAdditionalVOffset(30);
+                if (rightPaletteVisible)
+                    mRightPalette->setAdditionalVOffset(30);
 #endif
 
                 if( !isInit )
@@ -805,8 +773,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
         default:
             {
-                mLeftPalette->setVisible(false);
-                mRightPalette->setVisible(false);
+                mLeftPalette->setVisible(leftPaletteVisible);
+                mRightPalette->setVisible(rightPaletteVisible);
                 mLeftPalette->setParent(0);
                 mRightPalette->assignParent(0);
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)

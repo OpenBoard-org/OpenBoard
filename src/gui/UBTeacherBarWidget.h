@@ -46,6 +46,11 @@ public:
     UBTeacherBarWidget(QWidget* parent=0, const char* name="UBTeacherBarWidget");
     ~UBTeacherBarWidget();
 
+    bool visibleInMode(eUBDockPaletteWidgetMode mode)
+    {
+        return mode == eUBDockPaletteWidget_BOARD;
+    }
+
 public slots:
     void saveContent();
     void loadContent();

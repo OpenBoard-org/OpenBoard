@@ -48,6 +48,12 @@ public:
     UBLibNavigatorWidget* libNavigator() {return mNavigator;}
     UBLibPathViewer* pathViewer() {return mpPathViewer;}
 
+    bool visibleInMode(eUBDockPaletteWidgetMode mode)
+    {
+        return mode == eUBDockPaletteWidget_BOARD
+            || mode == eUBDockPaletteWidget_DESKTOP;
+    }
+
 signals:
     void resized();
     void showLibElemProperties();

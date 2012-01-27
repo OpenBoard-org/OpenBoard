@@ -25,9 +25,8 @@ public:
     QPixmap iconToLeft();
     QString name();
 
-    void registerMode(eUBDockPaletteWidgetMode mode);
+    virtual bool visibleInMode(eUBDockPaletteWidgetMode mode) = NULL;
 
-    QVector<eUBDockPaletteWidgetMode> GetRegisteredModes() { return mRegisteredModes; }
     bool visibleState(){return mVisibleState;}
     void setVisibleState(bool state){mVisibleState = state;}
 
@@ -45,7 +44,7 @@ protected:
     QString mName;
 
     /* The current widget available mode list */
-    QVector<eUBDockPaletteWidgetMode> mRegisteredModes;
+    //QVector<eUBDockPaletteWidgetMode> mRegisteredModes;
 
     bool mVisibleState;
 };

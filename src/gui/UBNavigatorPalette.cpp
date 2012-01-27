@@ -23,12 +23,13 @@
  * @param parent as the parent widget
  * @param name as the object name
  */
-UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):UBDockPalette(parent, name)
+UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):
+    UBDockPalette(eUBDockPaletteType_NAVIGATOR, parent, name)
 	, mNavigator(NULL)
 	, mLayout(NULL)
-        , mHLayout(NULL)
-        , mPageNbr(NULL)
-        , mClock(NULL)
+    , mHLayout(NULL)
+    , mPageNbr(NULL)
+    , mClock(NULL)
 {
     setOrientation(eUBDockOrientation_Left);
     setMaximumWidth(300);

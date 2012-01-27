@@ -28,7 +28,7 @@
 /**
  * \brief The constructor
  */
-UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
+UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, const char *name)
     :QWidget(parent, Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint)
     , mOrientation(eUBDockOrientation_Left)
     , mPreferredWidth(100)
@@ -41,6 +41,7 @@ UBDockPalette::UBDockPalette(QWidget *parent, const char *name)
     , mpStackWidget(NULL)
     , mpLayout(NULL)
     , mCurrentTab(0)
+    , mPaletteType(paletteType)
     , mTabPalette(new UBTabDockPalete(this, parent))
 {
     setObjectName(name);
@@ -728,6 +729,38 @@ void UBDockPalette::setVisible(bool visible)
     QWidget::setVisible(visible);
     mTabPalette->setVisible(visible);
 }
+
+bool UBDockPalette::switchMode(eUBDockPaletteWidgetMode mode)
+{
+    bool hasVisibleElements = false;
+    //-------------------------------//
+    // get full right palette widgets list, parse it, show all widgets for BOARD mode, and hide all other
+    for(int i = 0; i < mRegisteredWidgets.size(); i++)
+    {
+        UBDockPaletteWidget* pNextWidget = mRegisteredWidgets.at(i);
+        if( pNextWidget != NULL )
+        {
+            if( pNextWidget->visibleInMode(mode) ) 
+            {
+                addTab(pNextWidget);
+                hasVisibleElements = true;
+            }
+            else
+            {
+                removeTab(pNextWidget->name());
+            }
+        }
+    }
+    //-------------------------------//
+
+    if(mRegisteredWidgets.size() > 0)
+        showTabWidget(0);
+    
+    update();
+
+    return hasVisibleElements;
+}
+
 
 UBTabDockPalete::UBTabDockPalete(UBDockPalette *dockPalette, QWidget *parent) :
     QWidget(parent)

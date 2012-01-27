@@ -22,7 +22,8 @@
 /**
  * \brief The constructor
  */
-UBRightPalette::UBRightPalette(QWidget *parent, const char *name):UBDockPalette(parent)
+UBRightPalette::UBRightPalette(QWidget *parent, const char *name):
+    UBDockPalette(eUBDockPaletteType_RIGHT, parent)
 {
     setObjectName(name);
     setOrientation(eUBDockOrientation_Right);

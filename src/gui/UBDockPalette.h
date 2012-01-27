@@ -75,13 +75,22 @@ private:
     bool mFlotable;
 };
 
+
+typedef enum
+{
+    eUBDockPaletteType_LEFT,
+    eUBDockPaletteType_RIGHT,
+    eUBDockPaletteType_NAVIGATOR,
+} eUBDockPaletteType;
+
+
 class UBDockPalette : public QWidget
 {
     Q_OBJECT
     friend class UBTabDockPalete;
 
 public:
-    UBDockPalette(QWidget* parent=0, const char* name="UBDockPalette");
+    UBDockPalette(eUBDockPaletteType paletteType, QWidget* parent=0, const char* name="UBDockPalette");
     ~UBDockPalette();
 
     eUBDockOrientation orientation();
@@ -107,6 +116,8 @@ public:
 
     void connectSignals();
 
+    bool switchMode(eUBDockPaletteWidgetMode mode);
+
     QVector<UBDockPaletteWidget*> GetWidgetsList() { return mRegisteredWidgets; }
 
 public:
@@ -114,6 +125,8 @@ public:
     void setTabFlotable(bool newFlotable) {mTabPalette->mFlotable = newFlotable;}
     int getAdditionalVOffset() const {return mTabPalette->mVerticalOffset;}
     void setAdditionalVOffset(int newOffset) {mTabPalette->mVerticalOffset = newOffset;}
+
+    eUBDockPaletteType paletteType(){return mPaletteType;}
 
 public slots:
     void onShowTabWidget(const QString& widgetName);
@@ -178,7 +191,7 @@ private:
 
 private:
     UBTabDockPalete *mTabPalette;
-
+    eUBDockPaletteType mPaletteType;
 };
 
 #endif // UBDOCKPALETTE_H
