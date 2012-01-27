@@ -4,7 +4,6 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QPushButton>
-#include <QFrame>
 
 #include "core/UBPersistenceManager.h"
 #include "customWidgets/UBWidgetList.h"
@@ -52,13 +51,6 @@ public:
     ~UBTBPreviewContainer();
 };
 
-class UBTBPreviewSeparator : public QFrame
-{
-public:
-    UBTBPreviewSeparator(QWidget* parent=0, const char* name="UBTBPreviewSeparator");
-    ~UBTBPreviewSeparator();
-};
-
 class UBTeacherBarPreviewWidget : public QWidget
 {
     Q_OBJECT
@@ -90,7 +82,7 @@ private:
 
     // Titles
     QVBoxLayout mTitleLayout;
-    UBTBPreviewSeparator mTitleSeparator;
+    UBTBSeparator mTitleSeparator;
     QWidget mTitleContainer;
     QLabel* mpSessionTitle;
     QLabel* mpTitle;
@@ -102,8 +94,10 @@ private:
     QLabel* mpScheduleLabel;
 
     // License
-    UBTBPreviewSeparator mLicenseSeparator;
-    QLabel* mpLicenseLabel;
+    UBTBSeparator mLicenseSeparator;
+    // TODO : replace the QLabel of the license by a widget done for that!
+    UBTBLicenseWidget* mpLicenseLabel;
+
 
     /** Pointer to the datas */
     UBTeacherBarDataMgr* mpDataMgr;

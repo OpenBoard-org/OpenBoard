@@ -83,10 +83,11 @@ QWidget#UBTeacherBarTargetBox
 	background-color: white;
 }
 
-QWidget#UBActionPreviewContent
+QWidget#UBActionPreviewContent,
+QTextEdit#UBCommentPreview
 {
 	border-radius : 10px;
-	border: 2px solid;
+	border: 2px solid #999999;
 	padding: 5px 5px 5px 5px;
 }
 

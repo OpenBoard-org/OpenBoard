@@ -58,7 +58,7 @@ void UBTeacherBarDataMgr::saveContent()
 
         documentProxy->setSessionTitle(mSessionTitle);
         documentProxy->setSessionTarget(mSessionTarget);
-        documentProxy->setSessionLicence(mSessionLicence);
+        documentProxy->setSessionLicence(QString("%0").arg(mSessionLicence));
 
         UBMetadataDcSubsetAdaptor::persist(documentProxy);
     }
@@ -75,7 +75,7 @@ void UBTeacherBarDataMgr::loadContent(bool docChanged)
     if(true/*docChanged*/){
         mSessionTitle = documentProxy->sessionTitle();
         mSessionTarget = documentProxy->sessionTarget();
-        mSessionLicence = documentProxy->sessionLicence();
+        mSessionLicence = (eLicense)documentProxy->sessionLicence().toInt();
     }
 
     // Page Title
@@ -113,3 +113,64 @@ void UBTeacherBarDataMgr::loadContent(bool docChanged)
     mComments = nextInfos.comments;
 }
 
+// ------------------------------------------------------------------------------------
+UBTBSeparator::UBTBSeparator(QWidget *parent, const char *name):QFrame(parent)
+{
+    setObjectName("UBTBSeparator");
+    setMinimumHeight(5);
+    setMaximumHeight(5);
+}
+
+UBTBSeparator::~UBTBSeparator()
+{
+
+}
+
+// ------------------------------------------------------------------------------------
+UBTBLicenseWidget::UBTBLicenseWidget(QWidget *parent, const char *name):QWidget(parent)
+{
+    setObjectName(name);
+    setLayout(&mLayout);
+
+    mpIcon = new QLabel(this);
+    mpText = new QLabel(this);
+    mpText->setWordWrap(true);
+    mLayout.addWidget(mpIcon);
+    mLayout.addWidget(mpText);
+}
+
+UBTBLicenseWidget::~UBTBLicenseWidget()
+{
+    DELETEPTR(mpIcon);
+    DELETEPTR(mpText);
+}
+
+void UBTBLicenseWidget::setLicense(eLicense lic)
+{
+    switch(lic){
+        case eLicense_CCBY:
+            mpIcon->setPixmap(QPixmap(":images/licenses/ccby.png"));
+            mpText->setText(tr("Creative Common License %0").arg("CC BY"));
+            break;
+        case eLicense_CCBYND:
+            mpIcon->setPixmap(QPixmap(":images/licenses/ccbynd.png"));
+            mpText->setText(tr("Creative Common License %0").arg("CC BY-ND"));
+            break;
+        case eLicense_CCBYNCSA:
+            mpIcon->setPixmap(QPixmap(":images/licenses/ccbyncsa.png"));
+            mpText->setText(tr("Creative Common License %0").arg("CC BY-NC-SA"));
+            break;
+        case eLicense_CCBYSA:
+            mpIcon->setPixmap(QPixmap(":images/licenses/ccbysa.png"));
+            mpText->setText(tr("Creative Common License %0").arg("CC BY-SA"));
+            break;
+        case eLicense_CCBYNC:
+            mpIcon->setPixmap(QPixmap(":images/licenses/ccbync.png"));
+            mpText->setText(tr("Creative Common License %0").arg("CC BY-NC"));
+            break;
+        case eLicense_CCBYNCND:
+            mpIcon->setPixmap(QPixmap(":images/licenses/ccbyncnd.png"));
+            mpText->setText(tr("Creative Common License %0").arg("CC BY-NC-ND"));
+            break;
+    }
+}

@@ -126,7 +126,7 @@ void UBActionPreview::setContent(const QString &content)
 {
     if(NULL != mpContent){
         mpContent->setText(content);
-        setMinimumHeight(mpOwner->height() + mpContent->height());
+        setMinimumHeight(mpOwner->height() + mpContent->document()->documentLayout()->documentSize().toSize().height());
     }
 }
 
@@ -137,18 +137,6 @@ UBTBPreviewContainer::UBTBPreviewContainer(QWidget *parent, const char *name):UB
 }
 
 UBTBPreviewContainer::~UBTBPreviewContainer()
-{
-
-}
-// ------------------------------------------------------------------------------------
-UBTBPreviewSeparator::UBTBPreviewSeparator(QWidget *parent, const char *name):QFrame(parent)
-{
-    setObjectName("UBTBSeparator");
-    setMinimumHeight(5);
-    setMaximumHeight(5);
-}
-
-UBTBPreviewSeparator::~UBTBPreviewSeparator()
 {
 
 }
@@ -206,11 +194,8 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataM
 
     // License
     mLayout.addWidget(&mLicenseSeparator);
-    mpLicenseLabel = new QLabel(tr("License"), this);
-    mpLicenseLabel->setObjectName("UBTeacherBarPreviewSubtitle");
+    mpLicenseLabel = new UBTBLicenseWidget(this);
     mLayout.addWidget(mpLicenseLabel);
-    // TODO : Add the license field here
-
 
     // Edit button
     mpEditButton = new QPushButton(tr("Edit infos"), this);
@@ -271,11 +256,14 @@ void UBTeacherBarPreviewWidget::updateFields()
     // Media
     generateMedias();
 
+    // Comments
+    generateComments();
+
     // Links
     generateLinks();
 
-    // Comments
-    generateComments();
+    // License
+    mpLicenseLabel->setLicense(mpDataMgr->sessionLicence());
 
 }
 
@@ -295,6 +283,9 @@ void UBTeacherBarPreviewWidget::clearFields()
         }
         mStoredWidgets.clear();
     }
+
+    // License
+    mpLicenseLabel->setLicense(eLicense_CCBY);
 }
 
 void UBTeacherBarPreviewWidget::generateActions()

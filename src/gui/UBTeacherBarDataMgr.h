@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QComboBox>
+#include <QFrame>
 
 typedef enum{
     eTeacherBarState_DocumentEdit,
@@ -32,6 +33,35 @@ typedef struct{
     QString link;
 }sLink;
 
+typedef enum{
+    eLicense_CCBY,
+    eLicense_CCBYND,
+    eLicense_CCBYNCSA,
+    eLicense_CCBYSA,
+    eLicense_CCBYNC,
+    eLicense_CCBYNCND
+}eLicense;
+
+class UBTBSeparator : public QFrame
+{
+public:
+    UBTBSeparator(QWidget* parent=0, const char* name="UBTBSeparator");
+    ~UBTBSeparator();
+};
+
+class UBTBLicenseWidget : public QWidget
+{
+public:
+    UBTBLicenseWidget(QWidget* parent=0, const char* name="UBTBLicenseWidget");
+    ~UBTBLicenseWidget();
+    void setLicense(eLicense lic);
+
+private:
+    QHBoxLayout mLayout;
+    QLabel* mpIcon;
+    QLabel* mpText;
+};
+
 class UBTeacherBarDataMgr
 {
 public:
@@ -47,8 +77,8 @@ public:
     QString sessionTarget(){return mSessionTarget;}
 
     // Licence
-    void setSessionLicence(const QString& licence){mSessionLicence = licence;}
-    QString sessionLicence(){return mSessionLicence;}
+    void setSessionLicence(eLicense licence){mSessionLicence = licence;}
+    eLicense sessionLicence(){return mSessionLicence;}
 
     // Page Title
     void setPageTitle(const QString& title){mPageTitle = title;}
@@ -77,7 +107,7 @@ public:
 private:
     QString mSessionTitle;
     QString mSessionTarget;
-    QString mSessionLicence;
+    eLicense mSessionLicence;
     QString mPageTitle;
     QString mComments;
 

@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QTextEdit>
+#include <QComboBox>
 
 #include "UBTeacherBarDataMgr.h"
 
@@ -27,6 +28,7 @@ private slots:
     void onPreview();
     void onSessionTitleChanged();
     void onSessionTargetChanged();
+    void onLicenseCurrentIndexChanged(int selection);
 
 private:
     QVBoxLayout mLayout;
@@ -35,6 +37,9 @@ private:
     QVBoxLayout mContainerLayout;
     QPushButton* mpPageViewButton;
     QPushButton* mpPreviewButton;
+    UBTBSeparator mTitleSeparator;
+    UBTBSeparator mTargetSeparator;
+    UBTBSeparator mLicenseSeparator;
 
     QWidget* mpContainer;
     QLabel* mpTitleLabel;
@@ -43,6 +48,7 @@ private:
     QTextEdit* mpTarget;
     QLabel* mpMetadataLabel;
     QLabel* mpLicenseLabel;
+    QComboBox* mpLicenseCombox;
 
     UBTeacherBarDataMgr* mpDataMgr;
 };

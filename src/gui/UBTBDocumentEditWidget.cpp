@@ -10,6 +10,7 @@ UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QW
   , mpTarget(NULL)
   , mpMetadataLabel(NULL)
   , mpLicenseLabel(NULL)
+  , mpLicenseCombox(NULL)
 {
     setObjectName(name);
 
@@ -31,6 +32,7 @@ UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QW
     mpTitle = new QLineEdit(mpContainer);
     mpTitle->setObjectName("DockPaletteWidgetLineEdit");
     mContainerLayout.addWidget(mpTitle, 0);
+    mContainerLayout.addWidget(&mTitleSeparator);
 
     // Target
     mpTargetLabel = new QLabel(tr("Session Target"), mpContainer);
@@ -39,18 +41,31 @@ UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QW
     mpTarget = new QTextEdit(mpContainer);
     mpTarget->setObjectName("UBTeacherBarTargetBox");
     mContainerLayout.addWidget(mpTarget, 1);
+    mContainerLayout.addWidget(&mTargetSeparator);
 
     // Metadata
     mpMetadataLabel = new QLabel(tr("Metadata"), mpContainer);
     mpMetadataLabel->setAlignment(Qt::AlignLeft);
     //mpMetadataLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mContainerLayout.addWidget(mpMetadataLabel, 0);
+    mContainerLayout.addWidget(&mLicenseSeparator);
 
     // License
     mpLicenseLabel = new QLabel(tr("License"), mpContainer);
     mpLicenseLabel->setAlignment(Qt::AlignLeft);
     //mpLicenseLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mContainerLayout.addWidget(mpLicenseLabel, 0);
+    mpLicenseCombox = new QComboBox(this);
+    mpLicenseCombox->setObjectName("DockPaletteWidgetComboBox");
+    QStringList qslLicenses;
+    qslLicenses << "CC BY";
+    qslLicenses << "CC BY-ND";
+    qslLicenses << "CC BY-NC-SA";
+    qslLicenses << "CC BY-SA";
+    qslLicenses << "CC BY-NC";
+    qslLicenses << "CC BY-NC-ND";
+    mpLicenseCombox->addItems(qslLicenses);
+    mContainerLayout.addWidget(mpLicenseCombox);
 
     mpPageViewButton = new QPushButton(tr("Page View"), this);
     mpPageViewButton->setObjectName("DockPaletteWidgetButton");
@@ -65,6 +80,7 @@ UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QW
     connect(mpPreviewButton, SIGNAL(clicked()), this, SLOT(onPreview()));
     connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onSessionTitleChanged()));
     connect(mpTarget, SIGNAL(textChanged()), this, SLOT(onSessionTargetChanged()));
+    connect(mpLicenseCombox, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseCurrentIndexChanged(int)));
 }
 
 UBTBDocumentEditWidget::~UBTBDocumentEditWidget()
@@ -75,6 +91,7 @@ UBTBDocumentEditWidget::~UBTBDocumentEditWidget()
     DELETEPTR(mpTarget);
     DELETEPTR(mpMetadataLabel);
     DELETEPTR(mpLicenseLabel);
+    DELETEPTR(mpLicenseCombox);
     DELETEPTR(mpPageViewButton);
     DELETEPTR(mpPreviewButton);
 }
@@ -98,6 +115,12 @@ void UBTBDocumentEditWidget::onSessionTitleChanged()
 void UBTBDocumentEditWidget::onSessionTargetChanged()
 {
     mpDataMgr->setSessionTarget(mpTarget->document()->toPlainText());
+    emit valueChanged();
+}
+
+void UBTBDocumentEditWidget::onLicenseCurrentIndexChanged(int selection)
+{
+    mpDataMgr->setSessionLicence((eLicense)selection);
     emit valueChanged();
 }
 

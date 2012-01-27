@@ -341,5 +341,11 @@
         <file>images/duration1.png</file>
         <file>images/duration2.png</file>
         <file>images/duration3.png</file>
+        <file>images/licenses/ccby.png</file>
+        <file>images/licenses/ccbync.png</file>
+        <file>images/licenses/ccbyncnd.png</file>
+        <file>images/licenses/ccbyncsa.png</file>
+        <file>images/licenses/ccbynd.png</file>
+        <file>images/licenses/ccbysa.png</file>
     </qresource>
 </RCC>
