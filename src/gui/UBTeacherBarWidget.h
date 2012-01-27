@@ -48,7 +48,7 @@ public:
 
     bool visibleInMode(eUBDockPaletteWidgetMode mode)
     {
-        return mode == eUBDockPaletteWidget_BOARD;
+        return (mode == eUBDockPaletteWidget_BOARD) || (mode == eUBDockPaletteWidget_DESKTOP);
     }
 
 public slots:

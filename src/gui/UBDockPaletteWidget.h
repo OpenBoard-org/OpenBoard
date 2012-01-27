@@ -25,7 +25,7 @@ public:
     QPixmap iconToLeft();
     QString name();
 
-    virtual bool visibleInMode(eUBDockPaletteWidgetMode mode) = NULL;
+    virtual bool visibleInMode(eUBDockPaletteWidgetMode mode) = 0;
 
     bool visibleState(){return mVisibleState;}
     void setVisibleState(bool state){mVisibleState = state;}

@@ -692,7 +692,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
     {
         case eUBDockPaletteWidget_BOARD:
             {
-                mLeftPalette->setParent(UBApplication::boardController->controlContainer());
+                mLeftPalette->assignParent(UBApplication::boardController->controlContainer());
                 mRightPalette->assignParent(UBApplication::boardController->controlContainer());
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
@@ -721,7 +721,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
         case eUBDockPaletteWidget_DESKTOP:
             {
-                mLeftPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+                mLeftPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mRightPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
@@ -775,7 +775,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
             {
                 mLeftPalette->setVisible(leftPaletteVisible);
                 mRightPalette->setVisible(rightPaletteVisible);
-                mLeftPalette->setParent(0);
+                mLeftPalette->assignParent(0);
                 mRightPalette->assignParent(0);
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
