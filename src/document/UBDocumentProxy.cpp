@@ -48,7 +48,7 @@ void UBDocumentProxy::init()
 
     setUuid(QUuid::createUuid());
 
-    setDefaultDocumentSize(UBSettings::settings()->defaultDocumentSize);
+    setDefaultDocumentSize(UBSettings::settings()->pageSize->get().toSize());
 
     setSessionTitle("");
     setSessionTarget("");

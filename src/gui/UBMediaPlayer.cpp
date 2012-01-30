@@ -350,6 +350,7 @@ void UBMediaPlayer::hasVideoChanged(bool bHasVideo)
 
 void UBMediaPlayer::resizeEvent(QResizeEvent* pEvent)
 {
+    Q_UNUSED(pEvent);
 //    int origWidth = m_videoWindow.width();
 //    int origHeight = m_videoWindow.height();
 

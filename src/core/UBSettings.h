@@ -273,8 +273,6 @@ class UBSettings : public QObject
 
         QMap<DocumentSizeRatio::Enum, QSize> documentSizes;
 
-        QSize defaultDocumentSize;
-
         UBSetting* svgViewBoxMargin;
         UBSetting* pdfMargin;
         UBSetting* pdfPageFormat;
