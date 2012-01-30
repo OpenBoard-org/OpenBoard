@@ -1836,7 +1836,7 @@ UBGraphicsAudioItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
 
-    UBGraphicsAudioItem* audioItem = new UBGraphicsAudioItem(href);
+    UBGraphicsAudioItem* audioItem = new UBGraphicsAudioItem(QUrl::fromLocalFile(href));
     graphicsItemFromSvg(audioItem);
     QStringRef ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
 

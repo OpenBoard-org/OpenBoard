@@ -86,12 +86,13 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
 
 void UBGraphicsMediaItem::clearSource()
 {
-    QString path = mediaFileUrl().path();
+    QString path = mediaFileUrl().toLocalFile();
     //if path is absolute clean duplicated path string
     if (!path.contains(UBApplication::boardController->activeDocument()->persistencePath()))
         path = UBApplication::boardController->activeDocument()->persistencePath() + "/" + path;
 
-    UBFileSystemUtils::deleteFile(path);
+    if (!UBFileSystemUtils::deleteFile(path))
+        qDebug() << "cannot delete file: " << path;
 }
 
 void UBGraphicsMediaItem::toggleMute()
