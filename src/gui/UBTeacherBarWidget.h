@@ -34,7 +34,7 @@ public:
 
     bool visibleInMode(eUBDockPaletteWidgetMode mode)
     {
-        return (mode == eUBDockPaletteWidget_BOARD) || (mode == eUBDockPaletteWidget_DESKTOP);
+        return (mode == eUBDockPaletteWidget_BOARD);
     }
     
     void loadContent(bool docChanged = false);
