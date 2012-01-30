@@ -68,12 +68,17 @@ UBMetadataDcSubsetAdaptor::~UBMetadataDcSubsetAdaptor()
 
 void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
 {
+    if(!QDir(proxy->persistencePath()).exists()){
+        //In this case the a document is an empty document so we do not persist it
+        return;
+    }
     QString fileName = proxy->persistencePath() + "/" + metadataFilename;
     qWarning() << fileName;
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
         qCritical() << "cannot open " << fileName << " for writing ...";
+        qCritical() << "error : "  << file.errorString();
         return;
     }
 
