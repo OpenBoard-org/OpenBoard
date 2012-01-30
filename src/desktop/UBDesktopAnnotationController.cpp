@@ -888,11 +888,15 @@ void UBDesktopAnnotationController::TransparentWidgetResized()
 void UBDesktopAnnotationController::onTransparentWidgetResized()
 {
     int rW = UBApplication::boardController->paletteManager()->rightPalette()->width();
-    int rH_ = UBApplication::boardController->paletteManager()->rightPalette()->height();
+    int lW = UBApplication::boardController->paletteManager()->leftPalette()->width();
+
     int rH = mTransparentDrawingView->height();
 
     UBApplication::boardController->paletteManager()->rightPalette()->resize(rW+1, rH);
     UBApplication::boardController->paletteManager()->rightPalette()->resize(rW, rH);
+
+    UBApplication::boardController->paletteManager()->leftPalette()->resize(lW+1, rH);
+    UBApplication::boardController->paletteManager()->leftPalette()->resize(lW, rH);
 
 //      mRightPalette->resize(mRightPalette->width(), mTransparentDrawingView->height());
 }
@@ -921,6 +925,19 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
         {
             p.drawRect(UBApplication::boardController->paletteManager()->mKeyboardPalette->geometry().x(), UBApplication::boardController->paletteManager()->mKeyboardPalette->geometry().y(), 
                 UBApplication::boardController->paletteManager()->mKeyboardPalette->width(), UBApplication::boardController->paletteManager()->mKeyboardPalette->height());
+        }
+
+        if(UBApplication::boardController->paletteManager()->leftPalette()->isVisible())
+        {
+            QRect leftPalette(UBApplication::boardController->paletteManager()->leftPalette()->geometry().x(),
+                        UBApplication::boardController->paletteManager()->leftPalette()->geometry().y(),
+                        UBApplication::boardController->paletteManager()->leftPalette()->width(),
+                        UBApplication::boardController->paletteManager()->leftPalette()->height());
+
+            QRect tabsPalette(UBApplication::boardController->paletteManager()->leftPalette()->getTabPaletteRect());
+
+            p.drawRect(leftPalette);
+            p.drawRect(tabsPalette);
         }
 
         if(UBApplication::boardController->paletteManager()->rightPalette()->isVisible())

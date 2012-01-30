@@ -5,6 +5,10 @@
 #include <QPixmap>
 #include <QString>
 
+
+/**
+  * This enum defines the different mode availables.
+  */
 typedef enum
 {
     eUBDockPaletteWidget_BOARD,
@@ -25,14 +29,16 @@ public:
     QPixmap iconToLeft();
     QString name();
 
-    virtual bool visibleInMode(eUBDockPaletteWidgetMode mode) = NULL;
+    virtual bool visibleInMode(eUBDockPaletteWidgetMode mode) = 0;
+
+    void registerMode(eUBDockPaletteWidgetMode mode);
 
     bool visibleState(){return mVisibleState;}
     void setVisibleState(bool state){mVisibleState = state;}
 
 signals:
-    void hideTab(const QString& widgetName);
-    void showTab(const QString& widgetName);
+    void hideTab(UBDockPaletteWidget* widget);
+    void showTab(UBDockPaletteWidget* widget);
 
 public slots:
     void slot_changeMode(eUBDockPaletteWidgetMode newMode);
@@ -44,7 +50,7 @@ protected:
     QString mName;
 
     /* The current widget available mode list */
-    //QVector<eUBDockPaletteWidgetMode> mRegisteredModes;
+    QVector<eUBDockPaletteWidgetMode> mRegisteredModes;
 
     bool mVisibleState;
 };

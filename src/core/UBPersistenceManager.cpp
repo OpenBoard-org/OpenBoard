@@ -1102,16 +1102,35 @@ void UBPersistenceManager::persistTeacherBar(UBDocumentProxy* pDocumentProxy, in
                         // Set the <teacherBar> element values
                         QDomElement teacherBarElem = teacherBarNode.toElement();
                         teacherBarElem.setAttribute("title", infos.title);
-                        teacherBarElem.setAttribute("phasis", infos.phasis);
-                        teacherBarElem.setAttribute("duration", infos.Duration);
-                        teacherBarElem.setAttribute("equipment", infos.material);
-                        teacherBarElem.setAttribute("activity", infos.activity);
-                        teacherBarElem.setAttribute("action1Teacher", infos.action1Master);
-                        teacherBarElem.setAttribute("action1Student", infos.action1Student);
-                        teacherBarElem.setAttribute("action2Teacher", infos.action2Master);
-                        teacherBarElem.setAttribute("action2Student", infos.action2Student);
-                        teacherBarElem.setAttribute("action3Teacher", infos.action3Master);
-                        teacherBarElem.setAttribute("action3Student", infos.action3Student);
+
+                        QString qsAct;
+                        for(int i=0; i<infos.actions.size(); i++){
+                            if(0 != i){
+                                qsAct.append('@');
+                            }
+                            qsAct.append(infos.actions.at(i));
+                        }
+                        teacherBarElem.setAttribute("actions", qsAct);
+
+                        QString qsMedias;
+                        for(int j=0; j<infos.medias.size(); j++){
+                            if(0 != j){
+                                qsMedias.append('@');
+                            }
+                            qsMedias.append(infos.medias.at(j));
+                        }
+                        teacherBarElem.setAttribute("medias", qsMedias);
+
+                        QString qsUrls;
+                        for(int k=0; k<infos.urls.size(); k++){
+                            if(0 != k){
+                                qsUrls.append('@');
+                            }
+                            qsUrls.append(infos.urls.at(k));
+                        }
+                        teacherBarElem.setAttribute("links", qsUrls);
+
+                        teacherBarElem.setAttribute("comments", infos.comments);
 
                         // Save the file
                         f.write(domDoc.toString().toAscii());
@@ -1142,16 +1161,10 @@ sTeacherBarInfos UBPersistenceManager::getTeacherBarInfos(UBDocumentProxy* pDocu
                     QDomNode teacherBarNode = rootElem.namedItem("teacherBar");
 
                     infos.title = teacherBarNode.toElement().attributeNode("title").value();
-                    infos.phasis = teacherBarNode.toElement().attributeNode("phasis").value().toInt();
-                    infos.Duration = teacherBarNode.toElement().attributeNode("duration").value().toInt();
-                    infos.material = teacherBarNode.toElement().attributeNode("equipment").value();
-                    infos.activity = teacherBarNode.toElement().attributeNode("activity").value().toInt();
-                    infos.action1Master = teacherBarNode.toElement().attributeNode("action1Teacher").value();
-                    infos.action1Student = teacherBarNode.toElement().attributeNode("action1Student").value();
-                    infos.action2Master = teacherBarNode.toElement().attributeNode("action2Teacher").value();
-                    infos.action2Student = teacherBarNode.toElement().attributeNode("action2Student").value();
-                    infos.action3Master = teacherBarNode.toElement().attributeNode("action3Teacher").value();
-                    infos.action3Student = teacherBarNode.toElement().attributeNode("action3Student").value();
+                    infos.actions = teacherBarNode.toElement().attributeNode("actions").value().split("@");
+                    infos.medias = teacherBarNode.toElement().attributeNode("medias").value().split("@");
+                    infos.urls = teacherBarNode.toElement().attributeNode("links").value().split("@");
+                    infos.comments = teacherBarNode.toElement().attributeNode("comments").value();
                 }
                 f.close();
             }

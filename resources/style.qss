@@ -1,14 +1,63 @@
 QWidget#DockPaletteWidgetBox,
 QWidget#documentNavigator,
 QWidget#UBLibPathViewer,
-QWidget#UBTeacherStudentAction,
 QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
-QWidget#UBDownloadWidget
+QWidget#UBDownloadWidget,
+QWidget#UBWidgetList,
+QWidget#UBTeacherBarDropMediaZone,
+QWidget#UBTBMediaContainer
 {
 	background: #EEEEEE;
 	border-radius: 10px;
 	border: 2px solid #999999;
+}
+
+QFrame#UBTBSeparator
+{
+	background: #DDDDDD;
+	border-radius: 2px;
+	border: 1px solid #DDDDDD;
+}
+
+QWidget#UBMediaVideoContainer
+{
+	background: #000000;
+	border-radius: 10px;
+	border: 2px solid #999999;
+}
+
+QWidget#UBTeacherBarPreviewWidget
+{
+	background: #FFFFFF;
+	border-radius: 10px;
+	border: 2px solid #999999;
+}
+
+QLabel#UBTBPreviewSessionTitle
+{
+	font-size: 12px;
+}
+
+QLabel#UBTeacherBarPreviewTitle
+{
+	color: #555555;
+	font-size : 20px;
+	font-weight:bold;
+	padding-left:5px;
+}
+
+QLabel#UBMediaPlayerButton
+{
+	padding: 0px 0px 0px 0px;
+}
+
+QLabel#UBTeacherBarPreviewSubtitle
+{
+	color: #555555;
+	font-size : 15px;
+	font-weight:bold;
+	padding-left:5px;
 }
 
 QWidget#UBLibWebView
@@ -16,6 +65,30 @@ QWidget#UBLibWebView
 	background: #EEEEEE;
 	border-radius : 10px;
 	border: 2px solid #999999;
+}
+
+QWidget#UBActionPreviewOwner
+{
+	color: #555555;
+	font-size : 12px;
+	font-weight: bold;
+}
+
+QWidget#UBTeacherBarPreviewComments,
+QWidget#UBTeacherBarTargetBox
+{
+	border-radius: 10px;
+	border: white 2px solid;
+	padding: 5px 5px 5px 5px;
+	background-color: white;
+}
+
+QWidget#UBActionPreviewContent,
+QTextEdit#UBCommentPreview
+{
+	border-radius : 10px;
+	border: 2px solid #999999;
+	padding: 5px 5px 5px 5px;
 }
 
 QWebView#SearchEngineView

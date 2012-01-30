@@ -14,7 +14,6 @@
  */
 
 #include "UBImportDocument.h"
-#include "UBMetadataDcSubsetAdaptor.h"
 #include "document/UBDocumentProxy.h"
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -49,7 +48,7 @@ QStringList UBImportDocument::supportedExtentions()
 
 QString UBImportDocument::importFileFilter()
 {
-    return tr("Sankore 3.1 (*.ubz)");
+    return tr("Open-Sankore (*.ubz)");
 }
 
 

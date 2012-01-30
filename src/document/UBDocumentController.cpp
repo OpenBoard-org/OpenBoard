@@ -37,7 +37,6 @@
 #include "board/UBBoardPaletteManager.h"
 #include "board/UBDrawingController.h"
 
-//#include "gui/UBKeyboardPalette.h"
 
 #include "gui/UBThumbnailView.h"
 #include "gui/UBDocumentTreeWidget.h"
@@ -69,7 +68,6 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
    , mToolsPalette(0)
    , mToolsPalettePositionned(false)
    , mTrashTi(0)
-//   , mKeyboardPalette(0)
 {
     setupViews();
     setupToolbar();

@@ -222,7 +222,7 @@ void UBCachePropertiesWidget::onCloseClicked()
             emit cacheListEmpty();
         }
 
-        emit hideTab(name());
+        emit hideTab(this);
     }
 }
 
@@ -300,7 +300,7 @@ void UBCachePropertiesWidget::updateCurrentCache()
             if("Cache" == it->data(Qt::UserRole).toString())
             {
                 setEnabled(true);
-                emit showTab(name());
+                emit showTab(this);
                 mpCurrentCache = dynamic_cast<UBGraphicsCache*>(it);
                 if((NULL != mpCurrentCache) && (!mCaches.contains(mpCurrentCache)))
                 {
@@ -331,7 +331,7 @@ void UBCachePropertiesWidget::updateCurrentCache()
     // 1 - that this page has no cache
     // 2 - we are not in Board mode
     // 3 - we are in Board mode, but show desktop (as really - Desktop mode)
-    emit hideTab(name());
+    emit hideTab(this);
     mpCurrentCache = NULL;
     setDisabled(true);
 }
@@ -346,6 +346,6 @@ void UBCachePropertiesWidget::onSizeChanged(int newSize)
 
 void UBCachePropertiesWidget::onCacheEnabled()
 {
-    emit showTab(name());
+    emit showTab(this);
 }
  
