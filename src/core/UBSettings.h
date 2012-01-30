@@ -153,6 +153,13 @@ class UBSettings : public QObject
         static QString documentIdentifer;
         static QString documentVersion;
         static QString documentUpdatedAt;
+        static QString sessionTitle;
+        static QString sessionTarget;
+        static QString sessionLicence;
+        static QString sessionKeywords;
+        static QString sessionLevel;
+        static QString sessionTopic;
+        static QString sessionAuthors;
 
         static QString trashedDocumentGroupNamePrefix;
 
@@ -266,7 +273,7 @@ class UBSettings : public QObject
 
         QMap<DocumentSizeRatio::Enum, QSize> documentSizes;
 
-        //QSize defaultDocumentSize;
+        QSize defaultDocumentSize;
 
         UBSetting* svgViewBoxMargin;
         UBSetting* pdfMargin;

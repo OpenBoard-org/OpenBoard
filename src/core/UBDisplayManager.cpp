@@ -48,7 +48,7 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
 
 void UBDisplayManager::initScreenIndexes()
 {
-    int screenCount = numScreens();
+    int screenCount = 1;//= numScreens();
 
     mScreenIndexesRoles.clear();
 

@@ -53,6 +53,8 @@ include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/softwareupdate/softwareupdate.pri)
 include(src/transition/transition.pri)
+include(src/customWidgets/customWidgets.pri)
+include(src/interfaces/interfaces.pri)
 
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
@@ -398,3 +400,4 @@ INSTALLS = UB_ETC \
    UB_THIRDPARTY_INTERACTIVE
 
 OTHER_FILES +=
+

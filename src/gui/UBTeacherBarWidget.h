@@ -7,37 +7,23 @@
 #include <QLabel>
 #include <QTextEdit>
 #include <QLineEdit>
+#include <QCheckBox>
+#include <QTabWidget>
+#include <QButtonGroup>
+#include <QPushButton>
 #include <QComboBox>
+#include <QStackedWidget>
 
 #include "UBDockPaletteWidget.h"
+#include "customWidgets/UBWidgetList.h"
+#include "interfaces/IDropable.h"
+#include "UBTeacherBarDataMgr.h"
+#include "UBTBDocumentPreviewWidget.h"
+#include "UBTBPageEditWidget.h"
+#include "UBTeacherBarPreviewWidget.h"
+#include "UBTBDocumentEditWidget.h"
 
 #define LABEL_MINWIDHT      80
-
-class UBTeacherStudentAction : public QWidget
-{
-    Q_OBJECT
-
-public:
-    UBTeacherStudentAction(int actionNumber, QWidget* parent=0, const char* name="UBTeacherStudentAction");
-    ~UBTeacherStudentAction();
-    QString teacherText();
-    QString studentText();
-    void setTeacherText(QString text);
-    void setStudentText(QString text);
-    QTextEdit* teacher();
-    QTextEdit* student();
-
-private:
-    int mActionNumber;
-    QLabel* mpActionLabel;
-    QLabel* mpTeacherLabel;
-    QLabel* mpStudentLabel;
-    QTextEdit* mpTeacher;
-    QTextEdit* mpStudent;
-    QVBoxLayout* mpLayout;
-    QHBoxLayout* mpTeacherLayout;
-    QHBoxLayout* mpStudentLayout;
-};
 
 class UBTeacherBarWidget : public UBDockPaletteWidget
 {
@@ -50,39 +36,32 @@ public:
     {
         return (mode == eUBDockPaletteWidget_BOARD) || (mode == eUBDockPaletteWidget_DESKTOP);
     }
+    
+    void loadContent(bool docChanged = false);
 
 public slots:
     void saveContent();
-    void loadContent();
+
 private slots:
+    void loadContentInfos();
     void onValueChanged();
-	void onTitleTextChanged(const QString& text);
-	void onEquipmentTextChanged(const QString& text);
+    void onShowEditMode();
+    void onTBStateChanged(eTeacherBarState state);
+    void onActiveDocumentChanged();
 
 private:
-    void populateCombos();
+    bool isEmpty();
 
-    QVBoxLayout* mpLayout;
-    QHBoxLayout* mpTitleLayout;
-    QHBoxLayout* mpPhasisLayout;
-    QHBoxLayout* mpDurationLayout;
-    QHBoxLayout* mpEquipmentLayout;
-    QHBoxLayout* mpActivityLayout;
-    QLabel* mpTitleLabel;
-    QLabel* mpPhasisLabel;
-    QLabel* mpDurationLabel;
-    QLabel* mpEquipmentLabel;
-    QLabel* mpActivityLabel;
-    QLineEdit* mpTitle;
-    QLineEdit* mpEquipment;
-    QComboBox* mpPhasis;
-    QComboBox* mpDuration;
-    QComboBox* mpActivity;
-    UBTeacherStudentAction* mpAction1;
-    UBTeacherStudentAction* mpAction2;
-    UBTeacherStudentAction* mpAction3;
-    QWidget* mpContainer;
-    QVBoxLayout* mpContainerLayout;
+    QVBoxLayout mLayout;
+    QStackedWidget* mpStackWidget;
+    eTeacherBarState mState;
+
+    UBTBPageEditWidget* mpPageEditWidget;
+    UBTeacherBarPreviewWidget* mpPreview;
+    UBTBDocumentPreviewWidget* mpDocPreviewWidget;
+    UBTBDocumentEditWidget* mpDocEditWidget;
+
+    UBTeacherBarDataMgr mData;
 };
 
 #endif // UBTEACHERBARWIDGET_H

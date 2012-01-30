@@ -45,6 +45,21 @@ class UBDocumentProxy : public QObject
 
         QString name() const;
         QString groupName() const;
+        QString sessionTitle() const;
+        void setSessionTitle(const QString& sessionTitle);
+        QString sessionTarget() const;
+        void setSessionTarget(const QString& sessionTarget);
+        QString sessionLicence() const;
+        void setSessionLicence(const QString& sessionLicence);
+        void setSessionKeywords(const QString& kw);
+        QString sessionKeywords();
+        void setSessionLevel(const QString& level);
+        QString sessionLevel();
+        void setSessionTopic(const QString& topic);
+        QString sessionTopic();
+        void setSessionAuthor(const QString& authors);
+        QString sessionAuthors();
+
 
         QSize defaultDocumentSize() const;
         void setDefaultDocumentSize(QSize pSize);
