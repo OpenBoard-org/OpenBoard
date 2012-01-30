@@ -83,7 +83,7 @@ private:
     // Titles
     QVBoxLayout mTitleLayout;
     UBTBSeparator mTitleSeparator;
-    QWidget mTitleContainer;
+    QWidget* mpTitleContainer;
     QLabel* mpSessionTitle;
     QLabel* mpTitle;
     QLabel* mpTitleLabel;

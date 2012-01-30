@@ -161,7 +161,8 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataM
 
     // Build the Preview widget
     // Session Title
-    mTitleContainer.setLayout(&mTitleLayout);
+    mpTitleContainer = new QWidget(this);
+    mpTitleContainer->setLayout(&mTitleLayout);
     mpSessionTitle = new QLabel(this);
     mpSessionTitle->setText(tr("Session: "));
     mpSessionTitle->setWordWrap(true);
@@ -170,23 +171,23 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataM
     mLayout.addWidget(mpSessionTitle);
 
     // Title
-    mTitleContainer.setLayout(&mTitleLayout);
+    mpTitleContainer->setLayout(&mTitleLayout);
     mTitleLayout.setContentsMargins(0, 0, 0, 0);
-    mpTitleLabel = new QLabel(&mTitleContainer);
+    mpTitleLabel = new QLabel(mpTitleContainer);
     mpTitleLabel->setText(tr("Activity"));
     mpTitleLabel->setObjectName("UBTeacherBarPreviewSubtitle");
     mTitleLayout.addWidget(mpTitleLabel, 0);
-    mpTitle = new QLabel(&mTitleContainer);
+    mpTitle = new QLabel(mpTitleContainer);
     mpTitle->setObjectName("UBTeacherBarPreviewTitle");
     mpTitle->setWordWrap(true);
     mpTitle->setAlignment(Qt::AlignLeft);
     mTitleLayout.addWidget(mpTitle, 1);
-    mpPageNbrLabel = new QLabel(tr("Page n° "), &mTitleContainer);
+    mpPageNbrLabel = new QLabel(tr("Page n° "), mpTitleContainer);
     mpPageNbrLabel->setAlignment(Qt::AlignRight);
     mpPageNbrLabel->setObjectName("UBTBPreviewSessionTitle");
     mTitleLayout.addWidget(mpPageNbrLabel);
     mTitleLayout.addWidget(&mTitleSeparator);
-    mLayout.addWidget(&mTitleContainer);
+    mLayout.addWidget(mpTitleContainer);
 
     // Content
     mpContentContainer = new UBTBPreviewContainer(this);
@@ -212,13 +213,6 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataM
 
 UBTeacherBarPreviewWidget::~UBTeacherBarPreviewWidget()
 {
-    DELETEPTR(mpEditButton);
-    DELETEPTR(mpLicenseLabel);
-    DELETEPTR(mpScheduleLabel);
-    DELETEPTR(mpPageNbrLabel);
-    DELETEPTR(mpTitle);
-    DELETEPTR(mpTitleLabel);
-    DELETEPTR(mpSessionTitle);
 }
 
 void UBTeacherBarPreviewWidget::onActiveSceneChanged()
@@ -245,9 +239,9 @@ void UBTeacherBarPreviewWidget::updateFields()
     if("" != mpDataMgr->pageTitle()){
         mpTitle->setText(mpDataMgr->pageTitle());
         mpPageNbrLabel->setText(tr("Page n° %0").arg(UBApplication::boardController->activeSceneIndex()));
-        mTitleContainer.setVisible(true);
+        mpTitleContainer->setVisible(true);
     }else{
-        mTitleContainer.setVisible(false);
+        mpTitleContainer->setVisible(false);
     }
 
     // Actions
