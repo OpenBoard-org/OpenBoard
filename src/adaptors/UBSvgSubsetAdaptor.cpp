@@ -1301,6 +1301,15 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
                 point.setY(sCoord.at(1).toFloat());
                 polygon << point;
             }
+            else if (sCoord.size() == 4){
+                //This is the case on system were the "," is used to seperate decimal
+                QPointF point;
+                QString x = sCoord.at(0) + "." + sCoord.at(1);
+                QString y = sCoord.at(2) + "." + sCoord.at(3);
+                point.setX(x.toFloat());
+                point.setY(y.toFloat());
+                polygon << point;
+            }
             else
             {
                 qWarning() << "cannot make sense of a 'point' value" << sCoord;
@@ -1581,6 +1590,15 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
                 point.setY(sCoord.at(1).toFloat());
+                points << point;
+            }
+            else if (sCoord.size() == 4){
+                //This is the case on system were the "," is used to seperate decimal
+                QPointF point;
+                QString x = sCoord.at(0) + "." + sCoord.at(1);
+                QString y = sCoord.at(2) + "." + sCoord.at(3);
+                point.setX(x.toFloat());
+                point.setY(y.toFloat());
                 points << point;
             }
             else
