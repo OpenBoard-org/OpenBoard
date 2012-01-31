@@ -66,11 +66,6 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
 {
-    DELETEPTR(mpDocPreviewWidget);
-    DELETEPTR(mpDocEditWidget);
-    DELETEPTR(mpPageEditWidget);
-    DELETEPTR(mpPreview);
-    DELETEPTR(mpStackWidget);
 }
 
 void UBTeacherBarWidget::onActiveDocumentChanged()
