@@ -10,6 +10,14 @@
         <script type="text/javascript" src="js/script.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
+                var lang = ""; //locale language
+                if(window.sankore){
+                    lang = sankore.locale().substr(0,2);    
+                } else 
+                    lang = "en";
+                $("<script type='text/javascript' src='js/translation/" + lang + ".js'>").appendTo("head");
+                if((typeof sankoreLang) == "undefined")
+                    $("<script type='text/javascript' src='js/translation/en.js'>").appendTo("head");
                 start();
                 //here you can put your code
                 if(window.sankore)
@@ -41,6 +49,6 @@
             </div>
         </div>
         <div style="width: 100%; height: 25px;"></div>
-        
+
     </body>
 </html>
