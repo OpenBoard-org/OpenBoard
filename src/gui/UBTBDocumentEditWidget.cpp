@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "UBTBDocumentEditWidget.h"
 #include "customWidgets/UBGlobals.h"
 
@@ -190,6 +192,7 @@ void UBTBDocumentEditWidget::clearFields()
 void UBTBDocumentEditWidget::onKeywordChanged(const QString &kw)
 {
     mpDataMgr->setKeywords(kw);
+    qDebug() << ">>> KEYWORD CHANGED: " << kw;
     emit valueChanged();
 }
 
