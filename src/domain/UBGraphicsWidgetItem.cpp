@@ -258,6 +258,10 @@ QString UBGraphicsWidgetItem::downloadUrl(const QString &fileUrl, const QString 
 {
     return mUniboardAPI->downloadUrl(fileUrl, extention);
 }
+QString UBGraphicsWidgetItem::downloadWeb(const QString &fileUrl)
+{
+    return mUniboardAPI->downloadWeb(fileUrl);
+}
 
 UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
     : UBGraphicsWidgetItem(parent)

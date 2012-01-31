@@ -55,6 +55,7 @@ UBWidgetUniboardAPI::UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidg
         mMessagesAPI = new UBWidgetMessageAPI(w3CGraphicsWidget->w3cWidget());
         mDatastoreAPI = new UBDatastoreAPI(w3CGraphicsWidget);
     }
+    connect(UBDownloadManager::downloadManager(), SIGNAL(downloadFinished(bool,int,QUrl,QString,QByteArray)), this, SLOT(onDownloadFinished(bool,int,QUrl,QString,QByteArray)));
 }
 
 
@@ -451,7 +452,25 @@ QString UBWidgetUniboardAPI::downloadUrl(const QString &objectUrl, const QString
 
     return result;
 }
+QString UBWidgetUniboardAPI::downloadWeb(const QString &objectUrl)
+{
+    // When we fall there, it means that we are dropping something from the web to the board
+    sDownloadFileDesc desc;
+    desc.modal = true;
+    desc.url = objectUrl;
+    desc.currentSize = 0;
+    desc.name = QFileInfo(objectUrl).fileName();
+    desc.totalSize = 0; // The total size will be retrieved during the download
 
+    registerIDWidget(UBDownloadManager::downloadManager()->addFileToDownload(desc));
+    return QString();
+}
+
+void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, int id, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData)
+{
+    Q_UNUSED(pData)
+    qDebug() << "got an ID" << id << pSuccess << sourceUrl << pContentTypeHeader;
+}
 
 UBDocumentDatastoreAPI::UBDocumentDatastoreAPI(UBGraphicsW3CWidgetItem *graphicsWidget)
     : UBW3CWebStorage(graphicsWidget)

@@ -66,6 +66,7 @@ const QString htmlAlias = "html";
 const QString tMainSection = "mimedata";
 const QString tType = "type";
 const QString tPath = "path";
+const QString tMessage = "message";
 
 UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 : QGraphicsView (pParent)
@@ -771,6 +772,24 @@ QString UBBoardView::processMimeData(const QMimeData *pMimeData, UBGraphicsWidge
     writer.writeStartDocument();
     writer.writeStartElement(tMainSection);
 
+    if (pMimeData->hasHtml()) {
+        QList<QUrl> urls = pMimeData->urls();
+
+        int index = 0;
+        foreach(const QUrl url, urls) {
+
+//            QPointF pos(pPos + QPointF(index * 15, index * 15));
+//            downloadURL(url, pos);
+            widget->downloadWeb(url.toString());
+            index++;
+        }
+        writer.writeTextElement(tMessage, "Downloading content process...");
+
+        writer.writeEndElement();
+        writer.writeEndDocument();
+        return mimeXml;
+    }
+
     if (pMimeData->hasUrls()) {
         QList<QUrl> urls = pMimeData->urls();
 
@@ -806,7 +825,7 @@ QString UBBoardView::processMimeData(const QMimeData *pMimeData, UBGraphicsWidge
     return mimeXml;
 }
 
-QString UBBoardView::fileExtention(const QString &filename)
+QString UBBoardView::fileExtention(const QString &filename) const
 {
     int pos = filename.lastIndexOf(".");
     if (pos != -1)
@@ -814,7 +833,7 @@ QString UBBoardView::fileExtention(const QString &filename)
     else
         return QString();
 }
-QString UBBoardView::typeForExtention(const QString &extention)
+QString UBBoardView::typeForExtention(const QString &extention) const
 {
     if (extention.isEmpty())
         return QString();
@@ -833,8 +852,12 @@ QString UBBoardView::typeForExtention(const QString &extention)
 
     return result;
 }
-bool UBBoardView::isDropableData(const QMimeData *pMimeData)
+bool UBBoardView::isDropableData(const QMimeData *pMimeData) const
 {
+    if (pMimeData->hasHtml()) {
+        return true;
+    }
+
     if (pMimeData->hasUrls()) {
         if (!typeForExtention(fileExtention(pMimeData->urls().at(0).toLocalFile())).isNull()) {
             return true;
@@ -850,7 +873,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
     QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
-    if (graphicsWidget && graphicsWidget->acceptDrops()){
+    if (graphicsWidget && graphicsWidget->acceptDrops()) {
         // A new event is build to avoid problem related to different way to pass the mime type
         // A parsing is done to try to provide a mimeType with only urls.
         QMimeData mimeData;

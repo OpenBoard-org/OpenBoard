@@ -49,8 +49,8 @@ QNetworkReply* UBHttpGet::get(QUrl pUrl, QPointF pPos, QSize pSize, bool isBackg
     mSize = pSize;
     mIsBackground = isBackground;
 
-        if (mReply)
-                delete mReply;
+    if (mReply)
+        delete mReply;
 
     UBNetworkAccessManager * nam = UBNetworkAccessManager::defaultAccessManager();
     mReply = nam->get(QNetworkRequest(pUrl)); //mReply deleted by this destructor

@@ -70,7 +70,7 @@ void UBDownloadManager::destroy()
  * \brief Add a file to the download list
  * @param desc as the given file description
  */
-void UBDownloadManager::addFileToDownload(sDownloadFileDesc desc)
+int UBDownloadManager::addFileToDownload(sDownloadFileDesc desc)
 {
     // Set the ID for this download
     desc.id = mLastID;
@@ -89,6 +89,8 @@ void UBDownloadManager::addFileToDownload(sDownloadFileDesc desc)
     UBApplication::boardController->paletteManager()->startDownloads();
 
     emit fileAddedToDownload();
+
+    return desc.id;
 }
 
 /**
@@ -194,23 +196,29 @@ void UBDownloadManager::onDownloadProgress(int id, qint64 received, qint64 total
  */
 void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
-    for(int i=0; i<mCrntDL.size(); i++)
-    {
-        sDownloadFileDesc desc = mCrntDL.at(i);
-        if(id == desc.id)
-        {
-            if(desc.modal)
-            {
-                // The downloaded file is modal so we must put it on the board
-                emit addDownloadedFileToBoard(pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
-            }
-            else
-            {
-                emit addDownloadedFileToLibrary(pSuccess, sourceUrl, pContentTypeHeader, pData);
-            }
-            break;
-        }
-    }
+//    Temporary data for dnd do not delete it please
+    Q_UNUSED(pPos)
+    Q_UNUSED(pSize)
+    Q_UNUSED(isBackground)
+
+    emit downloadFinished(pSuccess, id, sourceUrl, pContentTypeHeader, pData);
+//    for(int i=0; i<mCrntDL.size(); i++)
+//    {
+//        sDownloadFileDesc desc = mCrntDL.at(i);
+//        if(id == desc.id)
+//        {
+//            if(desc.modal)
+//            {
+//                // The downloaded file is modal so we must put it on the board
+//                emit addDownloadedFileToBoard(pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
+//            }
+//            else
+//            {
+//                emit addDownloadedFileToLibrary(pSuccess, sourceUrl, pContentTypeHeader, pData);
+//            }
+//            break;
+//        }
+//    }
 
     // Then do this
     updateFileCurrentSize(id);

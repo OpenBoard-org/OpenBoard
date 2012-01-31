@@ -245,6 +245,20 @@ class UBWidgetUniboardAPI : public QObject
          * this method download the object on the widget directory and return the path of the downloaded object
          */
         QString downloadUrl(const QString &objectUrl, const QString &extention = "");
+        QString downloadWeb(const QString &objectUrl);
+
+private slots:
+        void onDownloadFinished(bool pSuccess, int id, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData);
+
+
+private:
+        inline void registerIDWidget(int id){webDownloadIds.append(id);}
+        inline bool expectedID(int id) const {return webDownloadIds.contains(id);}
+        inline bool removeID(int id) {return webDownloadIds.removeAll(id);}
+
+
+
+//        void unregister
 
     private:
 
@@ -265,7 +279,7 @@ class UBWidgetUniboardAPI : public QObject
         UBWidgetMessageAPI* mMessagesAPI;
 
         UBDatastoreAPI* mDatastoreAPI;
-
+        QList<int> webDownloadIds;
 };
 
 

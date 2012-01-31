@@ -62,11 +62,12 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         QMap<QString, QString> datastoreEntries() const;
         void removeDatastoreEntry(const QString& key);
         void removeAllDatastoreEntries();
-        virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate;}
+        virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate; }
 
         virtual void remove();
         void removeScript();
         QString downloadUrl(const QString &fileUrl, const QString &extention);
+        QString downloadWeb(const QString &fileUrl);
 
         virtual void setOwnFolder(const QUrl &newFolder) {ownFolder = newFolder;}
         virtual QUrl getOwnFolder() const {return ownFolder;}

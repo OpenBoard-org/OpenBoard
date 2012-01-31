@@ -58,7 +58,6 @@ SOURCES += \
 	
 
 macx {
-
    LIBS += -lz
 }
 

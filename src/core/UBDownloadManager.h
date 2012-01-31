@@ -19,6 +19,7 @@
 #include <QString>
 #include <QVector>
 #include <QMutex>
+#include <QDropEvent>
 
 #include "UBDownloadThread.h"
 
@@ -26,8 +27,26 @@
 
 #define     SIMULTANEOUS_DOWNLOAD       2   // Maximum 5 because of QNetworkAccessManager limitation!!!
 
-typedef struct
+enum eDestinations {
+    board //default for sDownloadFileDesc
+    , library
+    , graphicsWidget
+};
+
+struct sDownloadFileDesc
 {
+    //creating constructor to make sure to have default values
+    sDownloadFileDesc() :
+        dest(board)
+      , id(0)
+      , totalSize(0)
+      , currentSize(0)
+      , modal(false)
+      , isBackground(false)
+      , widgetDrop(0)
+    {;}
+
+    eDestinations dest;
     QString name;
     int id;
     int totalSize;
@@ -37,7 +56,8 @@ typedef struct
     QPointF pos;        // For board drop only
     QSize size;         // For board drop only
     bool isBackground;  // For board drop only
-}sDownloadFileDesc;
+    QDropEvent *widgetDrop; //For widget's drops
+};
 
 class UBDownloadHttpFile : public UBHttpGet
 {
@@ -66,7 +86,7 @@ public:
     UBDownloadManager(QObject* parent=0, const char* name="UBDownloadManager");
     ~UBDownloadManager();
     static UBDownloadManager* downloadManager();
-    void addFileToDownload(sDownloadFileDesc desc);
+    int addFileToDownload(sDownloadFileDesc desc);
     QVector<sDownloadFileDesc> currentDownloads();
     QVector<sDownloadFileDesc> pendingDownloads();
     void cancelDownloads();
@@ -78,6 +98,7 @@ signals:
     void fileAddedToDownload();
     void downloadUpdated(int id, qint64 crnt, qint64 total);
     void downloadFinished(int id);
+    void downloadFinished(bool pSuccess, int id, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData);
     void downloadModalFinished();
     void addDownloadedFileToBoard(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
     void addDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData);
