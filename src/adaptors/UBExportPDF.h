@@ -33,7 +33,7 @@ class UBExportPDF : public UBExportAdaptor
         virtual QString exportExtention();
         virtual void persist(UBDocumentProxy* pDocument);
 
-        static void persistsDocument(UBDocumentProxy* pDocument, QString filename);
+        static void persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
 };
 
 #endif /* UBEXPORTPDF_H_ */

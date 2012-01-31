@@ -1770,7 +1770,6 @@ void UBGraphicsScene::addMask(const QPointF &center)
 
     QRectF rect = UBApplication::boardController->activeScene()->normalizedSceneRect();
     rect.setRect(center.x() - rect.width()/4, center.y() - rect.height()/4, rect.width()/2 , rect.height()/2);
-    QPointF origin = center.isNull() ? rect.bottomRight() : center;
     curtain->setRect(rect);
     UBGraphicsItem::assignZValue(curtain, toolLayerStart + toolOffsetCurtain);
 

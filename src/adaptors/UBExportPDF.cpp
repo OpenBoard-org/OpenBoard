@@ -63,9 +63,8 @@ void UBExportPDF::persist(UBDocumentProxy* pDocumentProxy)
 }
 
 
-void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, QString filename)
+void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
 {
-    //PDF
     QPrinter pdfPrinter;
 
     qDebug() << "exporting document to PDF" << filename;
@@ -73,19 +72,15 @@ void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, QString file
     pdfPrinter.setOutputFormat(QPrinter::PdfFormat);
     pdfPrinter.setResolution(UBSettings::settings()->pdfResolution->get().toInt());
     pdfPrinter.setOutputFileName(filename);
+	pdfPrinter.setFullPage(true);
 
-    if (UBSettings::settings()->pdfPageFormat->get().toString() == "Letter")
-        pdfPrinter.setPageSize(QPrinter::Letter);
-    else
-        pdfPrinter.setPageSize(QPrinter::A4);
-
-    // pdfMargin is in mm, but margin should be in px
-    qreal margin = UBSettings::settings()->pdfMargin->get().toDouble() * pdfPrinter.resolution() / 25.4;
-
-    pdfPrinter.setOrientation(QPrinter::Landscape);
-    pdfPrinter.setFullPage(true);
-
-    QPainter pdfPainter(&pdfPrinter);
+    //need to calculate screen resolution
+	QDesktopWidget* desktop = UBApplication::desktop();
+	int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+	float scaleFactor = 72.0f / dpiCommon;
+	
+    QPainter pdfPainter;
+	bool painterNeedsBegin = true;
 
     int existingPageCount = pDocumentProxy->pageCount();
 
@@ -98,20 +93,19 @@ void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, QString file
         bool isCrossed = scene->isCrossedBackground();
         scene->setBackground(false, false);
 
-        QRectF paperRect = pdfPrinter.paperRect();
-        paperRect = paperRect.adjusted(margin, margin, -margin, -margin);
-
-        QRectF normalized = scene->normalizedSceneRect(paperRect.width() / paperRect.height());
+		QSize pageSize = scene->nominalSize();
 
         // set high res rendering
         scene->setRenderingQuality(UBItem::RenderingQualityHigh);
         scene->setRenderingContext(UBGraphicsScene::NonScreen);
 
+		//setting page size to appropriate value
+		pdfPrinter.setPaperSize(QSizeF(pageSize.width()*scaleFactor, pageSize.height()*scaleFactor), QPrinter::Point);
+		if(painterNeedsBegin) painterNeedsBegin = !pdfPainter.begin(&pdfPrinter);
         //render to PDF
-        scene->render(&pdfPainter, paperRect, normalized);
+		scene->render(&pdfPainter);
 
-        if (pageIndex < existingPageCount - 1)
-            pdfPrinter.newPage();
+        if (pageIndex < existingPageCount - 1) pdfPrinter.newPage();
 
         //restore screen rendering quality
         scene->setRenderingContext(UBGraphicsScene::Screen);
@@ -120,6 +114,7 @@ void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, QString file
         //restore background state
         scene->setBackground(isDark, isCrossed);
     }
+	if(!painterNeedsBegin) pdfPainter.end();
 }
 
 QString UBExportPDF::exportExtention()

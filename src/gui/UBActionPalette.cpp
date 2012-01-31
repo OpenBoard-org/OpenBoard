@@ -57,12 +57,10 @@ void UBActionPalette::init(Qt::Orientation orientation)
     mToolButtonStyle = Qt::ToolButtonIconOnly;
     mButtons.clear();
 
-    QBoxLayout *layout = 0;
-
     if (orientation == Qt::Horizontal)
-        layout = new QHBoxLayout(this);
+        new QHBoxLayout(this);
     else
-        layout = new QVBoxLayout(this);
+        new QVBoxLayout(this);
 
     updateLayout();
 }

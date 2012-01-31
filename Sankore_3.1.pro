@@ -13,7 +13,7 @@ linux-g++-64 {
 VERSION_MAJ = 1
 VERSION_MIN = 40 
 VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 02
+VERSION_PATCH = 03
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
@@ -53,6 +53,8 @@ include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/softwareupdate/softwareupdate.pri)
 include(src/transition/transition.pri)
+include(src/customWidgets/customWidgets.pri)
+include(src/interfaces/interfaces.pri)
 
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
@@ -398,3 +400,4 @@ INSTALLS = UB_ETC \
    UB_THIRDPARTY_INTERACTIVE
 
 OTHER_FILES +=
+

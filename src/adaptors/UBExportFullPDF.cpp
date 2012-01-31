@@ -46,7 +46,10 @@ using namespace merge_lib;
 UBExportFullPDF::UBExportFullPDF(QObject *parent)
     : UBExportAdaptor(parent)
 {
-    // NOOP
+    //need to calculate screen resolution
+	QDesktopWidget* desktop = UBApplication::desktop();
+	int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+	mScaleFactor = 72.0f / dpiCommon;
 }
 
 
@@ -56,7 +59,7 @@ UBExportFullPDF::~UBExportFullPDF()
 }
 
 
-void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, QString filename)
+void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QString& filename)
 {
     if (!pDocumentProxy || filename.length() == 0 || pDocumentProxy->pageCount() == 0)
         return;
@@ -69,9 +72,6 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, QString fi
     pdfPrinter.setResolution(UBSettings::settings()->pdfResolution->get().toInt());
     pdfPrinter.setOutputFileName(filename);
     pdfPrinter.setFullPage(true);
-
-    const qreal margin = UBSettings::settings()->pdfMargin->get().toDouble() * pdfPrinter.resolution() / 25.4;
-    mMargin = margin;
 
     QPainter* pdfPainter = 0;
 
@@ -87,54 +87,20 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, QString fi
         scene->setRenderingQuality(UBItem::RenderingQualityHigh);
         scene->setRenderingContext(UBGraphicsScene::PdfExport);
 
-        UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
+		QSize pageSize = scene->nominalSize();
 
-        if (pdfItem)
-        {
-            QSizeF sceneItemsBound = scene->itemsBoundingRect().size();
-            qreal ratio = (qreal)pdfPrinter.resolution() / 72.0;
-            QSizeF scaled = sceneItemsBound * ratio;
+		UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
-            pdfPrinter.setPaperSize(scaled, QPrinter::DevicePixel);
+        if (pdfItem) mHasPDFBackgrounds = true;
+        
+		pdfPrinter.setPaperSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPrinter::Point);
 
-            if (pageIndex != 0)
-                 pdfPrinter.newPage();
+        if (!pdfPainter) pdfPainter = new QPainter(&pdfPrinter);
 
-            if (!pdfPainter)
-                pdfPainter = new QPainter(&pdfPrinter);
+		if (pageIndex != 0) pdfPrinter.newPage();
 
-            //render to PDF
-            scene->render(pdfPainter, QRectF(0, 0, sceneItemsBound.width() * ratio
-                    , sceneItemsBound.height() * ratio), scene->itemsBoundingRect());
-
-            mHasPDFBackgrounds = true;
-        }
-        else
-        {
-            if (UBSettings::settings()->pdfPageFormat->get().toString() == "Letter")
-                pdfPrinter.setPageSize(QPrinter::Letter);
-            else
-                pdfPrinter.setPageSize(QPrinter::A4);
-
-            QSize docSize = pDocumentProxy->defaultDocumentSize();
-            if(docSize.width() > docSize.height())
-            {
-                pdfPrinter.setOrientation(QPrinter::Landscape);
-            }
-
-            if (pageIndex != 0)
-                 pdfPrinter.newPage();
-
-            mDefaultPageRect = pdfPrinter.paperRect();
-            QRectF paperRect = mDefaultPageRect.adjusted(margin, margin, -margin, -margin);
-            QRectF normalized = scene->normalizedSceneRect(paperRect.width() / paperRect.height());
-
-            if (!pdfPainter)
-                pdfPainter = new QPainter(&pdfPrinter);
-
-            //render to PDF
-            scene->render(pdfPainter, paperRect, normalized);
-        }
+        //render to PDF
+        scene->render(pdfPainter);
 
         //restore screen rendering quality
         scene->setRenderingContext(UBGraphicsScene::Screen);
@@ -144,8 +110,7 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, QString fi
         scene->setBackground(isDark, isCrossed);
     }
 
-    if (pdfPainter)
-        delete pdfPainter;
+    if (pdfPainter) delete pdfPainter;
 }
 
 
@@ -171,12 +136,10 @@ void UBExportFullPDF::persist(UBDocumentProxy* pDocumentProxy)
 }
 
 
-void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, QString filename)
+void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
 {
-
     QFile file(filename);
-    if (file.exists())
-        file.remove();
+    if (file.exists()) file.remove();
 
     QString overlayName = filename;
     overlayName.replace(".pdf", "_overlay.pdf");
@@ -209,31 +172,27 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, QString 
                 UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
                 UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
-                if (pdfItem)
+				QSize pageSize = scene->nominalSize();
+                
+				if (pdfItem)
                 {
                     QString pdfName = UBPersistenceManager::objectDirectory + "/" + pdfItem->fileUuid().toString() + ".pdf";
                     QString backgroundPath = pDocumentProxy->persistencePath() + "/" + pdfName;
 
                     QPointF boudingRectBottomLeft = scene->itemsBoundingRect().bottomLeft();
                     QPointF pdfItemBottomLeft = pdfItem->sceneBoundingRect().bottomLeft();
-                    QPointF offset = pdfItemBottomLeft - boudingRectBottomLeft;
 
                     qDebug() << "scene->itemsBoundingRect()" << scene->itemsBoundingRect();
                     qDebug() << "pdfItem->boundingRect()" << pdfItem->boundingRect();
                     qDebug() << "pdfItem->sceneBoundingRect()" << pdfItem->sceneBoundingRect();
-                    qDebug() << offset;
 
-                    TransformationDescription baseTrans(offset.x(), offset.y() * -1, 1, 0);
-                    //TransformationDescription baseTrans(0, 0, 1, 0);
-                    TransformationDescription overlayTrans(0, 0, 1, 0);
-
-                    MergePageDescription pageDescription(scene->itemsBoundingRect().width(),
-                                                         scene->itemsBoundingRect().height(),
+                    MergePageDescription pageDescription(pageSize.width() * mScaleFactor,
+                                                         pageSize.height() * mScaleFactor,
                                                          pdfItem->pageNumber(),
                                                          QFile::encodeName(backgroundPath).constData(),
-                                                         baseTrans,
+                                                         TransformationDescription(),
                                                          pageIndex + 1,
-                                                         overlayTrans,
+                                                         TransformationDescription(),
                                                          false, false);
 
                     mergeInfo.push_back(pageDescription);
@@ -242,12 +201,8 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, QString 
                 }
                 else
                 {
-                    QRectF paperRect = mDefaultPageRect.adjusted(mMargin, mMargin, -mMargin, -mMargin);
-                    QRectF normalized = scene->normalizedSceneRect(paperRect.width() / paperRect.height());
-
-
-                    MergePageDescription pageDescription(normalized.width(),
-                             normalized.height(),
+                    MergePageDescription pageDescription(pageSize.width() * mScaleFactor,
+                             pageSize.height() * mScaleFactor,
                              0,
                              "",
                              TransformationDescription(),

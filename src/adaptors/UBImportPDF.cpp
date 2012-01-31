@@ -14,7 +14,6 @@
  */
 
 #include "UBImportPDF.h"
-#include "UBMetadataDcSubsetAdaptor.h"
 #include "UBSvgSubsetAdaptor.h"
 
 #include "document/UBDocumentProxy.h"

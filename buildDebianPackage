@@ -49,8 +49,8 @@ else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
         echo creating a tag with the version $VERSION
-#        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
-#        git push origin --tags 
+        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
+        git push origin --tags 
     fi
 fi
 
@@ -192,6 +192,9 @@ CONTROL_FILE="$BASE_WORKING_DIR/DEBIAN/control"
 CHANGE_LOG_TEXT="changelog.txt"
 
 ARCHITECTURE=`uname -i`
+if [ "$ARCHITECTURE" == "x86_64" ]; then
+    ARCHITECTURE="amd64"
+fi
 
 echo "Open-Sankore ($VERSION) $ARCHITECTURE; urgency=low" > "$CHANGE_LOG_FILE"
 echo >> "$CHANGE_LOG_FILE"
@@ -206,8 +209,8 @@ echo "Priority: optional" >> "$CONTROL_FILE"
 echo "Architecture: $ARCHITECTURE" >> "$CONTROL_FILE"
 echo "Essential: no" >> "$CONTROL_FILE"
 echo "Installed-Size: `du -s $SANKORE_PACKAGE_DIRECTORY | awk '{ print $1 }'`" >> "$CONTROL_FILE"
-echo "Maintainer: Claudio VALERIO <claudio@open-sankore.org>" >> "$CONTROL_FILE"
-echo "Homepage: http://www.open-sankore.org" >> "$CONTROL_FILE"
+echo "Maintainer: Open-Sankoré Developers team <dev@open-sankore.org>" >> "$CONTROL_FILE"
+echo "Homepage: http://dev.open-sankore.org" >> "$CONTROL_FILE"
 echo -n "Depends: " >> "$CONTROL_FILE"
 unset tab
 declare -a tab
@@ -222,6 +225,10 @@ for l in `objdump -p $SANKORE_PACKAGE_DIRECTORY/Open-Sankore | grep NEEDED | awk
         fi; 
     done; 
 done; 
+
+#additional dependencies
+tab[$count]="gtk2-engines-pixbuf"
+((count++))
 
 for ((i=0;i<${#tab[@]};i++)); do
     if [ $i -ne "0" ]; then
@@ -254,10 +261,10 @@ chmod 755 "$BASE_WORKING_DIR/DEBIAN/postint"
 
 mkdir -p "install/linux"
 
-sudo  chown -R root:root $BASE_WORKING_DIR 
+fakeroot  chown -R root:root $BASE_WORKING_DIR 
 dpkg -b "$BASE_WORKING_DIR" install/linux/Open-Sankore_${VERSION}_$ARCHITECTURE.deb
 notify-send "Open-Sankore" "Package built"
 
 #clean up mess
-#sudo rm -rf $BASE_WORKING_DIR
+#fakeroot rm -rf $BASE_WORKING_DIR
 

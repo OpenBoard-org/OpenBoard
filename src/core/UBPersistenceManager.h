@@ -23,16 +23,10 @@
 struct sTeacherBarInfos
 {
     QString title;
-    int phasis;
-    int Duration;
-    QString material;
-    int activity;
-    QString action1Master;
-    QString action1Student;
-    QString action2Master;
-    QString action2Student;
-    QString action3Master;
-    QString action3Student;
+    QStringList actions;
+    QStringList medias;
+    QStringList urls;
+    QString comments;
 };
 
 class UBDocument;
@@ -41,7 +35,7 @@ class UBGraphicsScene;
 
 class UBPersistenceManager : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     private:
         UBPersistenceManager(QObject *pParent = 0);

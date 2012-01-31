@@ -35,6 +35,11 @@ class UBVideoPlayer : public QWidget
             return mVideoPlayer;
         }
 
+        void loadMedia(QUrl url)
+        {
+            mVideoPlayer->load(Phonon::MediaSource(url));
+        }
+
     protected:
 
         Phonon::VideoPlayer* mVideoPlayer;

@@ -1,7 +1,8 @@
- #include "UBTeacherBarWidget.h"
+#include "UBTeacherBarWidget.h"
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+
 #include "UBMainWindow.h"
 
 #include "document/UBDocumentController.h"
@@ -10,34 +11,24 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
 
+#include "gui/UBMediaPlayer.h"
+
+#include "customWidgets/UBDraggableLabel.h"
+#include "customWidgets/UBMediaWidget.h"
+#include "customWidgets/UBGlobals.h"
+
 #include "core/memcheck.h"
 
 UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
-    , mpLayout(NULL)
-    , mpTitleLayout(NULL)
-    , mpPhasisLayout(NULL)
-    , mpDurationLayout(NULL)
-    , mpEquipmentLayout(NULL)
-    , mpActivityLayout(NULL)
-    , mpTitleLabel(NULL)
-    , mpPhasisLabel(NULL)
-    , mpDurationLabel(NULL)
-    , mpEquipmentLabel(NULL)
-    , mpActivityLabel(NULL)
-    , mpTitle(NULL)
-    , mpEquipment(NULL)
-    , mpPhasis(NULL)
-    , mpDuration(NULL)
-    , mpActivity(NULL)
-    , mpAction1(NULL)
-    , mpAction2(NULL)
-    , mpAction3(NULL)
-    , mpContainer(NULL)
-    , mpContainerLayout(NULL)
-{
+    , mpStackWidget(NULL)
+    , mpPreview(NULL)
+    , mpDocPreviewWidget(NULL)
+    , mpDocEditWidget(NULL)
+  {
     setObjectName(name);
     mName = "TeacherBarWidget";
     mVisibleState = true;
+    mData.clearLists();
 
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
@@ -46,235 +37,45 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     mIconToRight = QPixmap(":images/teacher_close.png");
 
     // Create the GUI
-    mpContainerLayout = new QVBoxLayout(this);
-    setLayout(mpContainerLayout);
+    setLayout(&mLayout);
 
-    mpContainer = new QWidget(this);
-    mpContainer->setObjectName("DockPaletteWidgetBox");
-    mpContainerLayout->addWidget(mpContainer);
+    mpStackWidget = new QStackedWidget(this);
+    mLayout.addWidget(mpStackWidget);
+    mpPageEditWidget = new UBTBPageEditWidget(&mData, mpStackWidget);
+    mpPreview = new UBTeacherBarPreviewWidget(&mData, mpStackWidget);
+    mpDocPreviewWidget = new UBTBDocumentPreviewWidget(&mData, mpStackWidget);
+    mpDocEditWidget = new UBTBDocumentEditWidget(&mData, mpStackWidget);
 
-    mpLayout = new QVBoxLayout(mpContainer);
-    mpContainer->setLayout(mpLayout);
-
-    // Title
-    mpTitleLabel = new QLabel(tr("Title"), mpContainer);
-    mpTitleLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpTitleLabel->setAlignment(Qt::AlignRight);
-    mpTitle = new QLineEdit(mpContainer);
-    mpTitle->setObjectName("DockPaletteWidgetLineEdit");
-	connect(mpTitle, SIGNAL(textChanged(const QString&)), this, SLOT(onTitleTextChanged(const QString&)));
-    mpTitleLayout = new QHBoxLayout();
-    mpTitleLayout->addWidget(mpTitleLabel, 0);
-    mpTitleLayout->addWidget(mpTitle, 1);
-    mpLayout->addLayout(mpTitleLayout);
-
-    // Phasis
-    mpPhasisLabel = new QLabel(tr("Phasis"), mpContainer);
-    mpPhasisLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpPhasisLabel->setAlignment(Qt::AlignRight);
-    mpPhasis = new QComboBox(mpContainer);
-    mpPhasis->setObjectName("DockPaletteWidgetComboBox");
-    mpPhasisLayout = new QHBoxLayout();
-    mpPhasisLayout->addWidget(mpPhasisLabel, 0);
-    mpPhasisLayout->addWidget(mpPhasis, 1);
-    mpLayout->addLayout(mpPhasisLayout);
-
-    // Duration
-    mpDurationLabel = new QLabel(tr("Duration"), mpContainer);
-    mpDurationLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpDurationLabel->setAlignment(Qt::AlignRight);
-    mpDuration = new QComboBox(mpContainer);
-    mpDuration->setObjectName("DockPaletteWidgetComboBox");
-    mpDurationLayout = new QHBoxLayout();
-    mpDurationLayout->addWidget(mpDurationLabel, 0);
-    mpDurationLayout->addWidget(mpDuration, 1);
-    mpLayout->addLayout(mpDurationLayout);
-
-    // Equipment
-    mpEquipmentLabel = new QLabel(tr("Equipment"), mpContainer);
-    mpEquipmentLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpEquipmentLabel->setAlignment(Qt::AlignRight);
-    mpEquipment = new QLineEdit(mpContainer);
-    mpEquipment->setObjectName("DockPaletteWidgetLineEdit");
-	connect(mpEquipment, SIGNAL(textChanged(const QString&)), this, SLOT(onEquipmentTextChanged(const QString&)));
-    mpEquipmentLayout = new QHBoxLayout();
-    mpEquipmentLayout->addWidget(mpEquipmentLabel, 0);
-    mpEquipmentLayout->addWidget(mpEquipment, 1);
-    mpLayout->addLayout(mpEquipmentLayout);
-
-    // Activity
-    mpActivityLabel = new QLabel(tr("Activity"), mpContainer);
-    mpActivityLabel->setMinimumWidth(LABEL_MINWIDHT);
-    mpActivityLabel->setAlignment(Qt::AlignRight);
-    mpActivity = new QComboBox(mpContainer);
-    mpActivity->setObjectName("DockPaletteWidgetComboBox");
-    mpActivityLayout = new QHBoxLayout();
-    mpActivityLayout->addWidget(mpActivityLabel, 0);
-    mpActivityLayout->addWidget(mpActivity, 1);
-    mpLayout->addLayout(mpActivityLayout);
-
-    // Actions
-    mpAction1 = new UBTeacherStudentAction(1, mpContainer);
-    mpAction2 = new UBTeacherStudentAction(2, mpContainer);
-    mpAction3 = new UBTeacherStudentAction(3, mpContainer);
-
-    mpLayout->addWidget(mpAction1);
-    mpLayout->addWidget(mpAction2);
-    mpLayout->addWidget(mpAction3);
-
-    populateCombos();
+    mpStackWidget->addWidget(mpPageEditWidget);
+    mpStackWidget->addWidget(mpPreview);
+    mpStackWidget->addWidget(mpDocPreviewWidget);
+    mpStackWidget->addWidget(mpDocEditWidget);
 
     connect(UBApplication::boardController, SIGNAL(activeSceneWillChange()), this, SLOT(saveContent()));
-    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContent()));
     connect(UBApplication::mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(saveContent()));
-    connect(mpTitle, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
-    connect(mpPhasis, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
-    connect(mpDuration, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
-    connect(mpEquipment, SIGNAL(textChanged(QString)), this, SLOT(onValueChanged()));
-    connect(mpActivity, SIGNAL(currentIndexChanged(int)), this, SLOT(onValueChanged()));
-    connect(mpAction1->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction1->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction2->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction2->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction3->teacher(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
-    connect(mpAction3->student(), SIGNAL(textChanged()), this, SLOT(onValueChanged()));
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(loadContentInfos()));
+    connect(UBApplication::boardController, SIGNAL(activeDocumentChanged()), this, SLOT(onActiveDocumentChanged()));
+
+    connect(mpPreview, SIGNAL(showEditMode()), this, SLOT(onShowEditMode()));
+    connect(mpDocPreviewWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
+    connect(mpDocEditWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
+    connect(mpPageEditWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
+    connect(mpPageEditWidget, SIGNAL(valueChanged()), this, SLOT(onValueChanged()));
+    connect(mpDocEditWidget, SIGNAL(valueChanged()), this, SLOT(onValueChanged()));
 }
 
 UBTeacherBarWidget::~UBTeacherBarWidget()
 {
-    if(NULL != mpAction3)
-    {
-        delete mpAction3;
-        mpAction3 = NULL;
-    }
-    if(NULL != mpAction2)
-    {
-        delete mpAction2;
-        mpAction2 = NULL;
-    }
-    if(NULL != mpAction1)
-    {
-        delete mpAction1;
-        mpAction1 = NULL;
-    }
-    if(NULL != mpActivityLabel)
-    {
-        delete mpActivityLabel;
-        mpActivityLabel = NULL;
-    }
-    if(NULL != mpActivity)
-    {
-        delete mpActivity;
-        mpActivity = NULL;
-    }
-    if(NULL != mpActivityLayout)
-    {
-        delete mpActivityLayout;
-        mpActivityLayout = NULL;
-    }
-    if(NULL != mpEquipmentLabel)
-    {
-        delete mpEquipmentLabel;
-        mpEquipmentLabel = NULL;
-    }
-    if(NULL != mpEquipment)
-    {
-        delete mpEquipment;
-        mpEquipment = NULL;
-    }
-    if(NULL != mpEquipmentLayout)
-    {
-        delete mpEquipmentLayout;
-        mpEquipmentLayout = NULL;
-    }
-    if(NULL != mpDurationLabel)
-    {
-        delete mpDurationLabel;
-        mpDurationLabel = NULL;
-    }
-    if(NULL != mpDuration)
-    {
-        delete mpDuration;
-        mpDuration = NULL;
-    }
-    if(NULL != mpDurationLayout)
-    {
-        delete mpDurationLayout;
-        mpDurationLayout = NULL;
-    }
-    if(NULL != mpPhasisLabel)
-    {
-        delete mpPhasisLabel;
-        mpPhasisLabel = NULL;
-    }
-    if(NULL != mpPhasisLayout)
-    {
-        delete mpPhasisLayout;
-        mpPhasisLayout = NULL;
-    }
-    if(NULL != mpTitleLabel)
-    {
-        delete mpTitleLabel;
-        mpTitleLabel = NULL;
-    }
-    if(NULL != mpTitle)
-    {
-        delete mpTitle;
-        mpTitle = NULL;
-    }
-    if(NULL != mpTitleLayout)
-    {
-        delete mpTitleLayout;
-        mpTitleLayout = NULL;
-    }
-    if(NULL != mpLayout)
-    {
-        delete mpLayout;
-        mpLayout = NULL;
-    }
-    if(NULL != mpContainer)
-    {
-        delete mpContainer;
-        mpContainer = NULL;
-    }
-    if(NULL != mpContainerLayout)
-    {
-        delete mpContainerLayout;
-        mpContainerLayout = NULL;
-    }
 }
 
-void UBTeacherBarWidget::populateCombos()
+void UBTeacherBarWidget::onActiveDocumentChanged()
 {
-    QStringList qslPhasis;
-    qslPhasis << tr("") << tr("I discover") << tr("I experiment") << tr("I train myself") << tr("I play") << tr("I memorize");
-    mpPhasis->insertItems(0, qslPhasis);
-    mpPhasis->setCurrentIndex(0);
-
-    QStringList qslDuration;
-    qslDuration << tr("") << tr("Short") << tr("Middle") << tr("Long");
-    mpDuration->insertItems(0, qslDuration);
-    mpDuration->setCurrentIndex(0);
-
-    QStringList qslActivity;
-    qslActivity << tr("") << tr("Alone") << tr("By Group") << tr("All together");
-    mpActivity->insertItems(0, qslActivity);
-    mpActivity->setCurrentIndex(0);
+    loadContent(true);
 }
 
 void UBTeacherBarWidget::onValueChanged()
 {
-    if( mpTitle->text() == ""
-        && mpDuration->currentIndex() == 0
-        && mpPhasis->currentIndex() == 0
-        && mpEquipment->text() == ""
-        && mpActivity->currentIndex() == 0
-        && mpAction1->teacherText() == ""
-        && mpAction1->studentText() == ""
-        && mpAction2->teacherText() == ""
-        && mpAction2->studentText() == ""
-        && mpAction3->teacherText() == ""
-        && mpAction3->studentText() == "")
+    if(isEmpty())
     {
         mIconToLeft = QPixmap(":images/teacher_open_disabled.png");
         mIconToRight = QPixmap(":images/teacher_close_disabled.png");
@@ -290,165 +91,89 @@ void UBTeacherBarWidget::onValueChanged()
 
 void UBTeacherBarWidget::saveContent()
 {
-    sTeacherBarInfos infos;
-    infos.title = mpTitle->text();
-    infos.phasis = mpPhasis->currentIndex();
-    infos.Duration = mpDuration->currentIndex();
-    infos.material = mpEquipment->text();
-    infos.activity = mpActivity->currentIndex();
-    infos.action1Master = mpAction1->teacherText();
-    infos.action1Student = mpAction1->studentText();
-    infos.action2Master = mpAction2->teacherText();
-    infos.action2Student = mpAction2->studentText();
-    infos.action3Master = mpAction3->teacherText();
-    infos.action3Student = mpAction3->studentText();
-    UBPersistenceManager::persistenceManager()->persistTeacherBar(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex(), infos);
+    mpPageEditWidget->saveFields();
+    mData.saveContent();
 }
 
-void UBTeacherBarWidget::loadContent()
+void UBTeacherBarWidget::loadContentInfos()
 {
-    sTeacherBarInfos nextInfos = UBPersistenceManager::persistenceManager()->getTeacherBarInfos(UBApplication::boardController->activeDocument(), UBApplication::boardController->activeSceneIndex());
-    mpTitle->setText(nextInfos.title);
-    mpPhasis->setCurrentIndex(nextInfos.phasis);
-    mpDuration->setCurrentIndex(nextInfos.Duration);
-    mpEquipment->setText(nextInfos.material);
-    mpActivity->setCurrentIndex(nextInfos.activity);
-    mpAction1->setTeacherText(nextInfos.action1Master);
-    mpAction1->setStudentText(nextInfos.action1Student);
-    mpAction2->setTeacherText(nextInfos.action2Master);
-    mpAction2->setStudentText(nextInfos.action2Student);
-    mpAction3->setTeacherText(nextInfos.action3Master);
-    mpAction3->setStudentText(nextInfos.action3Student);
+    loadContent(false);
 }
 
-void UBTeacherBarWidget::onTitleTextChanged(const QString& text)
+void UBTeacherBarWidget::loadContent(bool docChanged)
 {
-	mpTitle->setToolTip(text);
-}
-
-void UBTeacherBarWidget::onEquipmentTextChanged(const QString& text)
-{
-	mpEquipment->setToolTip(text);
-}
-
-UBTeacherStudentAction::UBTeacherStudentAction(int actionNumber, QWidget *parent, const char *name):QWidget(parent)
-    , mpActionLabel(NULL)
-    , mpTeacherLabel(NULL)
-    , mpStudentLabel(NULL)
-    , mpTeacher(NULL)
-    , mpStudent(NULL)
-    , mpLayout(NULL)
-    , mpTeacherLayout(NULL)
-    , mpStudentLayout(NULL)
-{
-    setObjectName(name);
-    mActionNumber = actionNumber;
-
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
-
-    // Create the GUI
-    mpLayout = new QVBoxLayout(this);
-    setLayout(mpLayout);
-
-    mpActionLabel = new QLabel(tr("Action %0").arg(mActionNumber), this);
-    mpLayout->addWidget(mpActionLabel, 0);
-
-    mpTeacherLayout = new QHBoxLayout();
-
-    //TODO: I'm not able to translate this string using the normal way *qm file why?
-    mpTeacherLabel = new QLabel(tr("Teacher"), this);
-//    mpTeacherLabel = new QLabel(tr("Enseignant"), this);
-    mpTeacherLabel->setAlignment(Qt::AlignTop);
-    mpTeacher = new QTextEdit(this);
-    mpTeacher->setObjectName("TeacherStudentBox");
-    mpTeacher->setStyleSheet("background-color:#FF9F6D");
-    mpTeacherLayout->addWidget(mpTeacherLabel, 0);
-    mpTeacherLayout->addWidget(mpTeacher, 1);
-    mpLayout->addLayout(mpTeacherLayout, 1);
-
-    mpStudentLayout = new QHBoxLayout();
-    mpStudentLabel = new QLabel(tr("Student"), this);
-//    mpStudentLabel = new QLabel(tr("Élève"), this);
-    mpStudentLabel->setAlignment(Qt::AlignTop);
-    mpStudent = new QTextEdit(this);
-    mpStudent->setObjectName("TeacherStudentBox");
-    mpStudent->setStyleSheet("background-color:#06E983");
-    mpStudentLayout->addWidget(mpStudentLabel, 0);
-    mpStudentLayout->addWidget(mpStudent, 1);
-    mpLayout->addLayout(mpStudentLayout, 1);
-}
-
-UBTeacherStudentAction::~UBTeacherStudentAction()
-{
-    if(NULL != mpActionLabel)
-    {
-        delete mpActionLabel;
-        mpActionLabel = NULL;
+    // Clear the old datas
+    mpPageEditWidget->clearFields();
+    mpPreview->clearFields();
+    if(docChanged){
+        mpDocEditWidget->clearFields();
+        mpDocPreviewWidget->clearFields();
     }
-    if(NULL != mpTeacherLabel)
-    {
-        delete mpTeacherLabel;
-        mpTeacherLabel = NULL;
+
+    // Update the datas
+    mData.loadContent(docChanged);
+
+    // Update the fields
+    mpPageEditWidget->updateFields();
+    //mpPreview->updateFields();
+    if(docChanged){
+        mpDocEditWidget->updateFields();
+        mpDocPreviewWidget->updateFields();
     }
-    if(NULL != mpTeacher)
-    {
-        delete mpTeacher;
-        mpTeacher = NULL;
-    }
-    if(NULL != mpTeacherLayout)
-    {
-        delete mpTeacherLayout;
-        mpTeacherLayout = NULL;
-    }
-    if(NULL != mpStudentLabel)
-    {
-        delete mpStudentLabel;
-        mpStudentLabel = NULL;
-    }
-    if(NULL != mpStudent)
-    {
-        delete mpStudent;
-        mpStudent = NULL;
-    }
-    if(NULL != mpStudentLayout)
-    {
-        delete mpStudentLayout;
-        mpStudentLayout = NULL;
-    }
-    if(NULL != mpLayout)
-    {
-        delete mpLayout;
-        mpLayout = NULL;
+
+    if(!isEmpty()){
+        onTBStateChanged(eTeacherBarState_PagePreview);
+    }else{
+        if(1 == UBApplication::boardController->activeDocument()->pageCount()){
+           onTBStateChanged(eTeacherBarState_DocumentEdit);
+        }else{
+           onTBStateChanged(eTeacherBarState_PageEdit);
+        }
     }
 }
 
-QString UBTeacherStudentAction::teacherText()
+bool UBTeacherBarWidget::isEmpty()
 {
-    return mpTeacher->document()->toPlainText();
+    return  mData.pageTitle() == "" &&
+            mData.urls()->empty() &&
+            mData.actions()->empty() &&
+            mData.medias()->empty() &&
+            mData.comments() == "" &&
+            mData.authors() == "" &&
+            mData.keywords() == "" &&
+            mData.level() == "" &&
+            mData.topic() == "";
 }
 
-QString UBTeacherStudentAction::studentText()
+void UBTeacherBarWidget::onShowEditMode()
 {
-    return mpStudent->document()->toPlainText();
+    onTBStateChanged(eTeacherBarState_PageEdit);
 }
 
-void UBTeacherStudentAction::setTeacherText(QString text)
+void UBTeacherBarWidget::onTBStateChanged(eTeacherBarState state)
 {
-    mpTeacher->setText(text);
+    switch(state){
+    case eTeacherBarState_DocumentEdit:
+        //mpDocEditWidget->updateFields();
+        mpStackWidget->setCurrentWidget(mpDocEditWidget);
+        break;
+    case eTeacherBarState_DocumentPreview:
+        //mpDocPreviewWidget->updateFields();
+        mpStackWidget->setCurrentWidget(mpDocPreviewWidget);
+        break;
+    case eTeacherBarState_PageEdit:
+        mpPageEditWidget->clearFields();
+        mpPageEditWidget->updateFields();
+        mpStackWidget->setCurrentWidget(mpPageEditWidget);
+        break;
+    case eTeacherBarState_PagePreview:
+        saveContent();
+        mpPreview->clearFields();
+        if(mpPreview->isVisible()){
+            mpPreview->updateFields();
+        }
+        mpStackWidget->setCurrentWidget(mpPreview);
+        break;
+    }
 }
 
-void UBTeacherStudentAction::setStudentText(QString text)
-{
-    mpStudent->setText(text);
-}
-
-QTextEdit* UBTeacherStudentAction::teacher()
-{
-    return mpTeacher;
-}
-
-QTextEdit* UBTeacherStudentAction::student()
-{
-    return mpStudent;
-}

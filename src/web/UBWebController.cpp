@@ -20,6 +20,7 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "UBWebController.h"
+#include "UBOEmbedParser.h"
 #include "UBTrapFlashController.h"
 
 #include "web/browser/WBBrowserWindow.h"
@@ -79,6 +80,7 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 
 }
 
+
 UBWebController::~UBWebController()
 {
     // NOOP
@@ -95,6 +97,7 @@ void UBWebController::initialiazemOEmbedProviders()
     mOEmbedProviders << "metacafe.com";
     mOEmbedProviders << "qik.com";
     mOEmbedProviders << "slideshare";
+    mOEmbedProviders << "5min.com";
     mOEmbedProviders << "twitpic.com";
     mOEmbedProviders << "viddler.com";
     mOEmbedProviders << "vimeo.com";
@@ -323,8 +326,6 @@ void UBWebController::activePageChanged()
             mTrapFlashController->updateTrapFlashFromPage((*mCurrentWebBrowser)->currentTabWebView()->page()->currentFrame());
         }
 
-
-
         mMainWindow->actionWebTrap->setChecked(false);
 
         QUrl latestUrl = (*mCurrentWebBrowser)->currentTabWebView()->url();
@@ -333,7 +334,6 @@ void UBWebController::activePageChanged()
         //UBApplication::mainWindow->actionWebOEmbed->setEnabled(hasEmbeddedContent());
         // And remove this line once the previous one is uncommented
         UBApplication::mainWindow->actionWebOEmbed->setEnabled(isOEmbedable(latestUrl));
-
         UBApplication::mainWindow->actionEduMedia->setEnabled(isEduMedia(latestUrl));
 
         emit activeWebPageChanged((*mCurrentWebBrowser)->currentTabWebView());

@@ -14,7 +14,6 @@
  */
 
 #include "UBImportImage.h"
-#include "UBMetadataDcSubsetAdaptor.h"
 #include "UBSvgSubsetAdaptor.h"
 
 #include "document/UBDocumentProxy.h"

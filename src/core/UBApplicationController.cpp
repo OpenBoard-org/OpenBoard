@@ -347,6 +347,7 @@ void UBApplicationController::showBoard()
     if (UBApplication::boardController)
         UBApplication::boardController->show();
 
+    mIsShowingDesktop = false;
     UBPlatformUtils::setDesktopMode(false);
 
     mUninoteController->hideWindow();
@@ -722,7 +723,6 @@ void UBApplicationController::importFile(const QString& pFilePath)
 void UBApplicationController::useMultiScreen(bool use)
 {
     mDisplayManager->setUseMultiScreen(use);
-
 }
 
 

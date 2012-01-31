@@ -112,11 +112,6 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
         delete mpLibWidget;
         mpLibWidget = NULL;
     }
-    if(NULL != mpTeacherBarWidget)
-    {
-        delete mpTeacherBarWidget;
-        mpTeacherBarWidget = NULL;
-    }
     if(NULL != mpCachePropWidget)
     {
         delete mpCachePropWidget;
@@ -193,6 +188,10 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
 
+    // The teacher bar widget will always be there
+    mLeftPalette->registerWidget(mpTeacherBarWidget);
+    mLeftPalette->addTab(mpTeacherBarWidget);
+
     mLeftPalette->connectSignals();
 
     mRightPalette = new UBRightPalette(mContainer);
@@ -201,9 +200,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mRightPalette->addTab(mpLibWidget);
     // The cache widget will be visible only if a cache is put on the page
     mRightPalette->registerWidget(mpCachePropWidget);
-    // The teacher bar widget will always be there
-    mRightPalette->registerWidget(mpTeacherBarWidget);
-    mRightPalette->addTab(mpTeacherBarWidget);
+
     //  The download widget will be part of the right palette but
     //  will become visible only when the first download starts
     mRightPalette->registerWidget(mpDownloadWidget);
@@ -211,8 +208,8 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     changeMode(eUBDockPaletteWidget_BOARD, true);
 
     // Hide the tabs that must be hidden
-    mRightPalette->removeTab(mpDownloadWidget->name());
-    mRightPalette->removeTab(mpCachePropWidget->name());
+    mRightPalette->removeTab(mpDownloadWidget);
+    mRightPalette->removeTab(mpCachePropWidget);
 
 //     mLeftPalette->showTabWidget(0);
 //     mRightPalette->showTabWidget(0);
@@ -788,9 +785,6 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     }
                     else
                         mKeyboardPalette->setParent(0);
-
-//                    mKeyboardPalette->update();
-
                 }
             }
             break;
@@ -828,7 +822,7 @@ void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos, 
 
 void UBBoardPaletteManager::addItemToCurrentPage()
 {
-    UBApplication::applicationController->showBoard();
+    UBApplication::applicationController->showBoard();    
     mAddItemPalette->hide();
     if(mPixmap.isNull())
         UBApplication::boardController->downloadURL(mItemUrl);
@@ -998,7 +992,7 @@ void UBBoardPaletteManager::stopDownloads()
     {
         mDownloadInProgress = false;
         mpDownloadWidget->setVisibleState(false);
-        mRightPalette->removeTab(mpDownloadWidget->name());
+        mRightPalette->removeTab(mpDownloadWidget);
     }
 }
 
