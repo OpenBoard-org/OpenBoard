@@ -823,6 +823,7 @@ void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos, 
 void UBBoardPaletteManager::addItemToCurrentPage()
 {
     UBApplication::applicationController->showBoard();
+    UBApplication::applicationController->hideDesktop();
     mAddItemPalette->hide();
     if(mPixmap.isNull())
         UBApplication::boardController->downloadURL(mItemUrl);
