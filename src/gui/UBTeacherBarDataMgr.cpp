@@ -59,7 +59,8 @@ void UBTeacherBarDataMgr::saveContent()
         documentProxy->setSessionTitle(mSessionTitle);
         documentProxy->setSessionTarget(mSessionTarget);
         documentProxy->setSessionLicence(QString("%0").arg(mSessionLicence));
-        documentProxy->setSessionKeywords(mAuthors);
+        qDebug() << "Saving keywords: " << mKeywords;
+        documentProxy->setSessionKeywords(mKeywords);
         documentProxy->setSessionLevel(mLevel);
         documentProxy->setSessionTopic(mTopic);
         documentProxy->setSessionAuthor(mAuthors);
@@ -81,6 +82,7 @@ void UBTeacherBarDataMgr::loadContent(bool docChanged)
         mSessionTarget = documentProxy->sessionTarget();
         mSessionLicence = (eLicense)documentProxy->sessionLicence().toInt();
         mKeywords = documentProxy->sessionKeywords();
+        qDebug() << "Keywords loaded: " << mKeywords << " (" << documentProxy->sessionKeywords() << ")";
         mLevel = documentProxy->sessionLevel();
         mTopic = documentProxy->sessionTopic();
         mAuthors = documentProxy->sessionAuthors();
