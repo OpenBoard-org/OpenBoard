@@ -1,3 +1,5 @@
+#include <QDate>
+
 #include "UBTeacherBarDataMgr.h"
 
 #include "core/UBApplication.h"
@@ -59,7 +61,6 @@ void UBTeacherBarDataMgr::saveContent()
         documentProxy->setSessionTitle(mSessionTitle);
         documentProxy->setSessionTarget(mSessionTarget);
         documentProxy->setSessionLicence(QString("%0").arg(mSessionLicence));
-        qDebug() << "Saving keywords: " << mKeywords;
         documentProxy->setSessionKeywords(mKeywords);
         documentProxy->setSessionLevel(mLevel);
         documentProxy->setSessionTopic(mTopic);
@@ -82,10 +83,15 @@ void UBTeacherBarDataMgr::loadContent(bool docChanged)
         mSessionTarget = documentProxy->sessionTarget();
         mSessionLicence = (eLicense)documentProxy->sessionLicence().toInt();
         mKeywords = documentProxy->sessionKeywords();
-        qDebug() << "Keywords loaded: " << mKeywords << " (" << documentProxy->sessionKeywords() << ")";
         mLevel = documentProxy->sessionLevel();
         mTopic = documentProxy->sessionTopic();
         mAuthors = documentProxy->sessionAuthors();
+        if("" != documentProxy->documentDate()){
+            mCreationDate = documentProxy->documentDate();
+        }else{
+            mCreationDate = QDate::currentDate().toString("yyyy-MM-dd");
+        }
+
     }
 
     // Page Title
