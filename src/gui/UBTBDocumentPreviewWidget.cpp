@@ -29,7 +29,7 @@ UBTBDocumentPreviewWidget::UBTBDocumentPreviewWidget(UBTeacherBarDataMgr *pDataM
 
     mpContainer = new QWidget(this);
     mpContainer->setLayout(&mContainerLayout);
-    mpContainer->setObjectName("UBTeacherBarPreviewWidget");
+    mpContainer->setObjectName("UBTBPreviewWidget");
 
     // Session Title
     mpSessionLabel = new QLabel(tr("Session"), mpContainer);

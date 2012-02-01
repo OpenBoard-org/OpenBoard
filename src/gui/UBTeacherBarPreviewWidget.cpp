@@ -144,6 +144,7 @@ UBTBPreviewContainer::~UBTBPreviewContainer()
 // ------------------------------------------------------------------------------------
 UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataMgr, QWidget *parent, const char *name):QWidget(parent)
   , mpEditButton(NULL)
+  , mpDocumentButton(NULL)
   , mpSessionTitle(NULL)
   , mpTitle(NULL)
   , mpTitleLabel(NULL)
@@ -155,20 +156,27 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataM
     setObjectName(name);
     mpDataMgr = pDataMgr;
     setLayout(&mLayout);
+    mLayout.setContentsMargins(0, 0, 0, 0);
 
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
 
     // Build the Preview widget
+    mpContainer = new QWidget(this);
+    mpContainer->setObjectName("UBTBPreviewWidget");
+    mpContainer->setLayout(&mContainerLayout);
+    mLayout.addWidget(mpContainer, 1);
+
+
     // Session Title
-    mpTitleContainer = new QWidget(this);
+    mpTitleContainer = new QWidget(mpContainer);
     mpTitleContainer->setLayout(&mTitleLayout);
-    mpSessionTitle = new QLabel(this);
+    mpSessionTitle = new QLabel(mpContainer);
     mpSessionTitle->setText(tr("Session: "));
     mpSessionTitle->setWordWrap(true);
     mpSessionTitle->setAlignment(Qt::AlignRight);
     mpSessionTitle->setObjectName("UBTBPreviewSessionTitle");
-    mLayout.addWidget(mpSessionTitle);
+    mContainerLayout.addWidget(mpSessionTitle);
 
     // Title
     mpTitleContainer->setLayout(&mTitleLayout);
@@ -187,27 +195,32 @@ UBTeacherBarPreviewWidget::UBTeacherBarPreviewWidget(UBTeacherBarDataMgr* pDataM
     mpPageNbrLabel->setObjectName("UBTBPreviewSessionTitle");
     mTitleLayout.addWidget(mpPageNbrLabel);
     mTitleLayout.addWidget(&mTitleSeparator);
-    mLayout.addWidget(mpTitleContainer);
+    mContainerLayout.addWidget(mpTitleContainer);
 
     // Content
-    mpContentContainer = new UBTBPreviewContainer(this);
-    mLayout.addWidget(mpContentContainer, 1);
+    mpContentContainer = new UBTBPreviewContainer(mpContainer);
+    mContainerLayout.addWidget(mpContentContainer, 1);
 
     // License
-    mLayout.addWidget(&mLicenseSeparator);
-    mpLicenseLabel = new UBTBLicenseWidget(this);
-    mLayout.addWidget(mpLicenseLabel);
+    mContainerLayout.addWidget(&mLicenseSeparator);
+    mpLicenseLabel = new UBTBLicenseWidget(mpContainer);
+    mContainerLayout.addWidget(mpLicenseLabel);
 
-    // Edit button
-    mpEditButton = new QPushButton(tr("Edit infos"), this);
+    // Document Button
+    mpDocumentButton = new QPushButton(tr("Document View"), this);
+    mpDocumentButton->setObjectName("DockPaletteWidgetButton");
+
+    // Edit Button
+    mpEditButton = new QPushButton(tr("Edit"), this);
     mpEditButton->setObjectName("DockPaletteWidgetButton");
-    mEditLayout.addStretch(1);
+    mEditLayout.addWidget(mpDocumentButton, 0);
     mEditLayout.addWidget(mpEditButton, 0);
     mEditLayout.addStretch(1);
     mLayout.addLayout(&mEditLayout, 0);
 
 
     connect(mpEditButton, SIGNAL(clicked()), this, SLOT(onEdit()));
+    connect(mpDocumentButton, SIGNAL(clicked()), this, SLOT(onDocumentClicked()));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
 }
 
@@ -223,6 +236,11 @@ void UBTeacherBarPreviewWidget::onActiveSceneChanged()
 void UBTeacherBarPreviewWidget::onEdit()
 {
     emit showEditMode();
+}
+
+void UBTeacherBarPreviewWidget::onDocumentClicked()
+{
+    emit showDocumentPreview();
 }
 
 void UBTeacherBarPreviewWidget::updateFields()
