@@ -347,6 +347,7 @@ void UBApplicationController::showBoard()
     if (UBApplication::boardController)
         UBApplication::boardController->show();
 
+    mIsShowingDesktop = false;
     UBPlatformUtils::setDesktopMode(false);
 
     mUninoteController->hideWindow();

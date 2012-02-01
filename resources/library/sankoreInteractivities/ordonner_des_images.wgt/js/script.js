@@ -1,19 +1,8 @@
-var lang = ""; //locale language
-
 //main function
 function start(){
     
-    if(window.sankore){
-        try{
-            lang = sankore.locale().substr(0,2);
-            sankoreLang[lang].edit;
-        } catch(e){
-            lang = "en";
-        }
-    } else 
-        lang = "en";
-    $("#display_text").text(sankoreLang[lang].display);
-    $("#edit_text").text(sankoreLang[lang].edit);
+    $("#display_text").text(sankoreLang.display);
+    $("#edit_text").text(sankoreLang.edit);
     
     if(window.sankore){
         if(sankore.preference("odr_des_imgs","")){
@@ -114,7 +103,7 @@ function start(){
                 //                }, 1);
                 
                 
-                $("<div class='add_block'>" + sankoreLang[lang].add + "</div>").appendTo("body");
+                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("body");
             }
         }
     });
@@ -251,7 +240,7 @@ function showExample(){
     var imgs_container = $("<div class='imgs_cont'>").appendTo(container);
 
     var number = $("<div class='number_cont'>1</div>").appendTo(sub_container);
-    var text = $("<div class='text_cont'>" + sankoreLang[lang].short_desc + "</div>").appendTo(sub_container);
+    var text = $("<div class='text_cont'>" + sankoreLang.short_desc + "</div>").appendTo(sub_container);
     
     $("<input type='hidden' value='1*2*3*4*5*'/>").appendTo(imgs_container);
     
