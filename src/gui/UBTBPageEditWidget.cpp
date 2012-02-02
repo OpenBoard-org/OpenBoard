@@ -320,7 +320,7 @@ QString UBUrlWidget::url()
     QString str;
 
     if(NULL != mpUrl){
-        str = mpUrl->text() + ";" + mpTitle->text();
+        str = mpUrl->text();// + ";" + mpTitle->text();
     }
 
     return str;
