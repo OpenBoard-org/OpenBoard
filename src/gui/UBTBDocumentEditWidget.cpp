@@ -62,8 +62,8 @@ UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QW
     mpKeywords->setObjectName("DockPaletteWidgetLineEdit");
     mpLevel = new QComboBox(this);
     mpLevel->setObjectName("DockPaletteWidgetComboBox");
-    mpTopic = new QComboBox(this);
-    mpTopic->setObjectName("DockPaletteWidgetComboBox");
+    mpTopic = new QLineEdit(this);
+    mpTopic->setObjectName("DockPaletteWidgetLineEdit");
     mpAuthor = new QLineEdit(this);
     mpAuthor->setObjectName("DockPaletteWidgetLineEdit");
     mpKeywordLabel = new QLabel(tr("Keywords:"), this);
@@ -179,7 +179,7 @@ void UBTBDocumentEditWidget::updateFields()
     mpTarget->setPlainText(mpDataMgr->sessionTarget());
     mpKeywords->setText(mpDataMgr->keywords());
     // TODO: retrieve the level
-    // TODO retrieve the topic
+    mpTopic->setText(mpDataMgr->topic());
     mpAuthor->setText(mpDataMgr->authors());
 }
 

@@ -60,7 +60,7 @@ private:
     QComboBox* mpLicenseCombox;
     QLineEdit* mpKeywords;
     QComboBox* mpLevel;
-    QComboBox* mpTopic;
+    QLineEdit* mpTopic;
     QLineEdit* mpAuthor;
     QLabel* mpKeywordLabel;
     QLabel* mpLevelLabel;
