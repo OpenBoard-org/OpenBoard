@@ -120,7 +120,7 @@ UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QW
     connect(mpLicenseCombox, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseCurrentIndexChanged(int)));
     connect(mpKeywords, SIGNAL(textChanged(QString)), this, SLOT(onKeywordChanged(QString)));
     connect(mpLevel, SIGNAL(currentIndexChanged(QString)), this, SLOT(onLevelChanged(QString)));
-    connect(mpTopic, SIGNAL(currentIndexChanged(QString)), this, SLOT(onTopicChanged(QString)));
+    connect(mpTopic, SIGNAL(textChanged(QString)), this, SLOT(onTopicChanged(QString)));
     connect(mpAuthor, SIGNAL(textChanged(QString)), this, SLOT(onAuthorChanged(QString)));
 }
 

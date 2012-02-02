@@ -134,6 +134,7 @@ void UBActionPreview::setContent(const QString &content)
 UBTBPreviewContainer::UBTBPreviewContainer(QWidget *parent, const char *name):UBWidgetList(parent)
 {
     setObjectName(name);
+    mCanRemove = false;
 }
 
 UBTBPreviewContainer::~UBTBPreviewContainer()
