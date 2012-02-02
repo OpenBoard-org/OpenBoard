@@ -309,6 +309,7 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
     int iCursorPos = startPos;
 
    // we search continuous blocks of the text with the same PointSize and allpy new settings for them.
+    cursor.setPosition (startPos, QTextCursor::MoveAnchor);
     while(iCursorPos < endPos)
     {   
         bEndofTheSameBlock = false;
