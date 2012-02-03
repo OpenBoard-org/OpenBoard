@@ -444,7 +444,8 @@ void UBDocumentNavigator::onMovedToIndex(int index)
         UBSceneThumbnailNavigPixmap* pItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(mThumbnails.at(index));
         if(NULL != pItem)
         {
-            mCrntItem = pItem;
+            if(mCrntItem) mCrntItem->setSelected(false);//deselecting previous one
+			mCrntItem = pItem;
             mCrntItem->setSelected(true);
             centerOn(mCrntItem);
         }

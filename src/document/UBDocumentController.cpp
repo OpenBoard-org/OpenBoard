@@ -1150,11 +1150,10 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
     UBMetadataDcSubsetAdaptor::persist(proxy);
     refreshDocumentThumbnailsView();
 
-    // NOTE [Didier]: I think that selecting the thumbnail is not the role of the documentController
-    mDocumentUI->thumbnailWidget->selectItemAt(target);
-
     // Notify the move to anyone interested in knowing it
     emit movedToIndex(target);
+
+	UBApplication::boardController->setActiveDocumentScene(proxy, target);
 }
 
 
