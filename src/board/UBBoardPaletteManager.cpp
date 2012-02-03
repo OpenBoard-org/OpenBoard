@@ -92,43 +92,8 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
 
 UBBoardPaletteManager::~UBBoardPaletteManager()
 {
-    if(NULL != mpDownloadWidget)
-    {
-        delete mpDownloadWidget;
-        mpDownloadWidget = NULL;
-    }
-    if(NULL != mpTeacherBarWidget)
-    {
-        delete mpTeacherBarWidget;
-        mpTeacherBarWidget = NULL;
-    }
-    if(NULL != mpPageNavigWidget)
-    {
-        delete mpPageNavigWidget;
-        mpPageNavigWidget = NULL;
-    }
-    if(NULL != mpLibWidget)
-    {
-        delete mpLibWidget;
-        mpLibWidget = NULL;
-    }
-    if(NULL != mpCachePropWidget)
-    {
-        delete mpCachePropWidget;
-        mpCachePropWidget = NULL;
-    }
     delete mAddItemPalette;
-    if(NULL != mLeftPalette)
-    {
-        delete mLeftPalette;
-        mLeftPalette = NULL;
-    }
 
-    if(NULL != mRightPalette)
-    {
-        delete mRightPalette;
-        mRightPalette = NULL;
-    }
 
     if(NULL != mStylusPalette)
     {
