@@ -2,6 +2,7 @@
 #include "UBTBDocumentPreviewWidget.h"
 
 UBTBDocumentPreviewWidget::UBTBDocumentPreviewWidget(UBTeacherBarDataMgr *pDataMgr, QWidget *parent, const char *name):QWidget(parent)
+  , mpContainer(NULL)
   , mpPageViewButton(NULL)
   , mpEditButton(NULL)
   , mpSessionLabel(NULL)
@@ -19,7 +20,6 @@ UBTBDocumentPreviewWidget::UBTBDocumentPreviewWidget(UBTeacherBarDataMgr *pDataM
   , mpTopicLabel(NULL)
   , mpTopic(NULL)
   , mpLicense(NULL)
-  , mpContainer(NULL)
 {
     setObjectName(name);
     mpDataMgr = pDataMgr;

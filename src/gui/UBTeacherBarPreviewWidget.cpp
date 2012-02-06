@@ -37,6 +37,7 @@ void UBTeacherBarPreviewMedia::cleanMedia()
 
 void UBTeacherBarPreviewMedia::loadWidgets(QList<QWidget*> pWidgetsList, bool isResizable)
 {
+    Q_UNUSED(isResizable);
     foreach(QWidget*eachWidget, pWidgetsList){
         mWidget->addWidget(eachWidget);
         mWidgetList[eachWidget]="DRAG UNAVAILABLE";
@@ -362,6 +363,7 @@ void UBTeacherBarPreviewWidget::generateComments()
 
 void UBTeacherBarPreviewWidget::showEvent(QShowEvent* ev)
 {
+    Q_UNUSED(ev);
     updateFields();
 }
 

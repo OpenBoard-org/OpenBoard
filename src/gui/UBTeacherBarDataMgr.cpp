@@ -74,6 +74,7 @@ void UBTeacherBarDataMgr::saveContent()
 
 void UBTeacherBarDataMgr::loadContent(bool docChanged)
 {
+    Q_UNUSED(docChanged);
     clearLists();
     UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
 
@@ -132,6 +133,7 @@ void UBTeacherBarDataMgr::loadContent(bool docChanged)
 // ------------------------------------------------------------------------------------
 UBTBSeparator::UBTBSeparator(QWidget *parent, const char *name):QFrame(parent)
 {
+    Q_UNUSED(name);
     setObjectName("UBTBSeparator");
     setMinimumHeight(5);
     setMaximumHeight(5);
