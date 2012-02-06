@@ -11,6 +11,7 @@
 #include <QLabel>
 
 #include "interfaces/IResizeable.h"
+#include "customWidgets/UBActionableWidget.h"
 
 typedef enum{
     eWidgetListOrientation_Vertical,
@@ -40,6 +41,9 @@ public:
     void setListElementSpacing(int margin) { mListElementsSpacing = margin; }
     int listElementsSpacing() {return mListElementsSpacing; }
 
+signals:
+    void closeWidget(QWidget* w);
+
 protected:
     bool mCanRemove;
 
@@ -47,6 +51,7 @@ protected:
     void mousePressEvent(QMouseEvent* ev);
 
 private:
+    QWidget* widgetAt(QPoint p);
     int scaleWidgets(QSize pSize);
     void scaleContainer(QSize pSize, int updateValue);
     void updateView(QSize pSize);
@@ -58,7 +63,7 @@ private:
     int mListElementsSpacing;
     QMap<QWidget*, QSize> mWidgetInfo;
     QLabel* mpEmptyLabel;
-    QWidget* mpCurrentWidget;
+    UBActionableWidget* mpCurrentWidget;
 };
 
 #endif // UBWIDGETLIST_H

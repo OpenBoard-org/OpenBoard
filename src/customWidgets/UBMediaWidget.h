@@ -27,6 +27,7 @@
 #include <phonon/AudioOutput>
 
 #include "interfaces/IResizeable.h"
+#include "UBActionableWidget.h"
 
 #define UBMEDIABUTTON_SIZE              32
 #define TICK_INTERVAL                   1000
@@ -58,7 +59,7 @@ private:
     bool mPressed;
 };
 
-class UBMediaWidget : public QWidget
+class UBMediaWidget : public UBActionableWidget
 {
     Q_OBJECT
 public:
