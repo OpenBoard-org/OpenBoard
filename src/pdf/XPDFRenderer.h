@@ -18,10 +18,15 @@
 #include <QImage>
 #include "PDFRenderer.h"
 #include <splash/SplashBitmap.h>
+
+#include "globals/UBGlobals.h"
+
+THIRD_PARTY_WARNINGS_DISABLE
 #include <xpdf/Object.h>
 #include <xpdf/GlobalParams.h>
 #include <xpdf/SplashOutputDev.h>
 #include <xpdf/PDFDoc.h>
+THIRD_PARTY_WARNINGS_ENABLE
 
 class PDFDoc;
 

@@ -15,7 +15,7 @@
 
 #include "customWidgets/UBDraggableLabel.h"
 #include "customWidgets/UBMediaWidget.h"
-#include "customWidgets/UBGlobals.h"
+#include "globals/UBGlobals.h"
 
 #include "core/memcheck.h"
 

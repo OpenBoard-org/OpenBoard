@@ -1,4 +1,4 @@
-#include "customWidgets/UBGlobals.h"
+#include "globals/UBGlobals.h"
 #include "UBTBDocumentPreviewWidget.h"
 
 UBTBDocumentPreviewWidget::UBTBDocumentPreviewWidget(UBTeacherBarDataMgr *pDataMgr, QWidget *parent, const char *name):QWidget(parent)
