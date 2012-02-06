@@ -13,6 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
+#include <QtGlobal>
 #include "LZWDecode.h"
 #include "FilterPredictor.h"
 
@@ -31,8 +32,9 @@ LZWDecode::LZWDecode():
       _readBits(0),
       _nextCode(0),
       _bitsToRead(0),
-      _curSequenceLength(0),
-      _first(true)
+      _first(true),
+      _curSequenceLength(0)
+
 {
    clearTable();
 }
@@ -46,6 +48,7 @@ LZWDecode::~LZWDecode()
 
 bool LZWDecode::encode(std::string & decoded)
 {
+    Q_UNUSED(decoded);
     return true;
 }
 

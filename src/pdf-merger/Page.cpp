@@ -37,7 +37,7 @@
 using namespace merge_lib;
 
 
-Page::Page(unsigned int pageNumber): _pageNumber(pageNumber),_root(NULL), _rotation(0)
+Page::Page(unsigned int pageNumber): _root(NULL),_pageNumber(pageNumber), _rotation(0)
 {
 
 }

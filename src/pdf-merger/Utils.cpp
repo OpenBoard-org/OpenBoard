@@ -12,6 +12,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include <QtGlobal>
 #include "Config.h"
 #include "Utils.h"
 #include "Exception.h"
@@ -101,6 +103,7 @@ bool Utils::doubleEquals(const double left, const double right, const double eps
 
 double Utils::normalizeValue(double &val, const double epsilon )
 {
+    Q_UNUSED(epsilon);
    if( Utils::doubleEquals(val,0))
    {
       val = 0;

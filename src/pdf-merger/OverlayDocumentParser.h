@@ -38,7 +38,7 @@ namespace merge_lib
       
    private:
 	   //methods
-	  void         _getFileContent(const char * fileName){};
+      void         _getFileContent(const char * fileName);
       void         _readXRefAndCreateObjects();
 	  void         _readXref(std::map<unsigned int, unsigned long> & objectsAndSizes);
 	  void         _getPartOfFileContent(long startOfPart, unsigned int length);

@@ -37,8 +37,8 @@ namespace merge_lib
       void clearTable();
       int getCode();
 
-      std::string &_encoded;
       std::string _dummy;
+      std::string &_encoded;
       size_t _curSymbolIndex;
 
       int _earlyChange;	// early parameter
