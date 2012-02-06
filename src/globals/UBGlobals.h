@@ -33,6 +33,7 @@ _Pragma("GCC diagnostic ignored \"-Wsign-compare\"");
 #ifdef NO_THIRD_PARTY_WARNINGS
 //disabling some warnings
 #define THIRD_PARTY_WARNINGS_DISABLE WARNINGS_DISABLE
+
 #define THIRD_PARTY_WARNINGS_ENABLE WARNINGS_ENABLE
 #else
 // just save old state (needs for not empty define)

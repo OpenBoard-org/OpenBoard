@@ -1,5 +1,7 @@
 #include <QDebug>
 #include <QScrollBar>
+#include <QApplication>
+#include <QPainter>
 
 #include "globals/UBGlobals.h"
 #include "UBWidgetList.h"
@@ -136,8 +138,47 @@ void UBWidgetList::mousePressEvent(QMouseEvent *ev)
 {
     Q_UNUSED(ev);
     if(mCanRemove){
+        QWidget* pWAt = widgetAt(ev->pos());
+        if(NULL != mpCurrentWidget){
+            if(pWAt == mpCurrentWidget){
+                QPoint p;
+                p.setX(ev->x());
+                p.setY(ev->y());
+                if(mpCurrentWidget->shouldClose(p)){
+                    emit closeWidget(mpCurrentWidget);
+                    return;
+                }
 
+            }else{
+                mpCurrentWidget->setActionsVisible(false);
+            }
+        }
+        mpCurrentWidget = dynamic_cast<UBActionableWidget*>(pWAt);
+        if(NULL != mpCurrentWidget){
+            mpCurrentWidget->setActionsVisible(true);
+        }
     }
+    update();
+}
+
+QWidget* UBWidgetList::widgetAt(QPoint p)
+{
+    QWidget* pW = NULL;
+    pW = childAt(p);
+    if(NULL != pW){
+        do{
+            if( "UBTeacherStudentAction" == pW->objectName() ||
+                "UBUrlWidget" == pW->objectName() ||
+                "UBTBMediaPicture" == pW->objectName() ||
+                "UBMediaWidget" == pW->objectName()){
+                return pW;
+            }else{
+                pW = pW->parentWidget();
+            }
+        }while(NULL != pW && this != pW);
+    }
+
+    return pW;
 }
 
 void UBWidgetList::updateSizes()

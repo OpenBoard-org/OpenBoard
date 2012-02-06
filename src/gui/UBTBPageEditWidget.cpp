@@ -100,6 +100,9 @@ UBTBPageEditWidget::UBTBPageEditWidget(UBTeacherBarDataMgr *pDataMgr, QWidget *p
     connect(mpDocumentEditbutton, SIGNAL(clicked()), this, SLOT(onDocumentEditClicked()));
     connect(mpPagePreviewButton, SIGNAL(clicked()), this, SLOT(onPagePreviewClicked()));
     connect(mpMediaContainer, SIGNAL(mediaDropped(QString)), this, SLOT(onMediaDropped(QString)));
+    connect(mpActions, SIGNAL(closeWidget(QWidget*)), this, SLOT(onCloseWidget(QWidget*)));
+    connect(mpLinks, SIGNAL(closeWidget(QWidget*)), this, SLOT(onCloseWidget(QWidget*)));
+    connect(mpMediaContainer, SIGNAL(closeWidget(QWidget*)), this, SLOT(onCloseWidget(QWidget*)));
 }
 
 UBTBPageEditWidget::~UBTBPageEditWidget()
@@ -271,15 +274,36 @@ void UBTBPageEditWidget::clearFields()
     mClearingFields = false;
 }
 
+void UBTBPageEditWidget::onCloseWidget(QWidget *w)
+{
+    if(NULL != w){
+        if("UBTeacherStudentAction" == w->objectName()){
+            UBTeacherStudentAction* pW = dynamic_cast<UBTeacherStudentAction*>(w);
+            mpActions->removeWidget(pW);
+            mActions.remove(mActions.indexOf(pW));
+            DELETEPTR(w);
+        }else if("UBUrlWidget" == w->objectName()){
+            UBUrlWidget* pW = dynamic_cast<UBUrlWidget*>(w);
+            mpLinks->removeWidget(pW);
+            mUrls.remove(mUrls.indexOf(pW));
+            DELETEPTR(w);
+        }else if("UBTBMediaPicture" == w->objectName() || "UBMediaWidget" == w->objectName()){
+            mpMediaContainer->removeWidget(w);
+            mMedias.remove(mMedias.indexOf(w));
+            DELETEPTR(w);
+        }
+    }
+}
+
 // ---------------------------------------------------------------------------------------------
-UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):QWidget(parent)
+UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):UBActionableWidget(parent, name)
   , mpLayout(NULL)
   , mpUrlLabel(NULL)
   , mpUrl(NULL)
 {
-    setObjectName(name);
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
+    addAction(eAction_Close);
 
     mpLayout = new QVBoxLayout(this);
     setLayout(mpLayout);
@@ -435,12 +459,13 @@ QWidget* UBTBMediaContainer::generateMediaWidget(const QString& url)
     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(url);
     if(mimeType.contains("image")){
         QPixmap pix = QPixmap(url);
-        QLabel* label = new QLabel();
-        pix.scaledToWidth(label->width());
-        label->resize(pix.width(), pix.height());
-        label->setPixmap(pix);
-        label->setScaledContents(true);
-        pW = label;
+        UBPictureWidget* pic = new UBPictureWidget();
+        pix.scaledToWidth(pic->label()->width());
+        pic->label()->resize(pix.width(), pix.height());
+        pic->label()->setPixmap(pix);
+        pic->label()->setScaledContents(true);
+        pic->setObjectName("UBTBMediaPicture");
+        pW = pic;
     }
     else if(mimeType.contains("video") || mimeType.contains("audio")){
         UBMediaWidget* mediaPlayer = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
@@ -455,16 +480,15 @@ QWidget* UBTBMediaContainer::generateMediaWidget(const QString& url)
     return pW;
 }
 
-UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name):QWidget(parent)
+UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name):UBActionableWidget(parent, name)
   , mpText(NULL)
   , mpLayout(NULL)
   , mpComboLayout(NULL)
   , mpCombo(NULL)
 {
-    setObjectName(name);
-
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
+    addAction(eAction_Close);
 
     // Create the GUI
     mpLayout = new QHBoxLayout(this);
@@ -532,3 +556,27 @@ void UBTeacherStudentAction::setText(const QString& text)
     }
 }
 
+// -------------------------------------------------------------
+UBPictureWidget::UBPictureWidget(QWidget *parent, const char *name):UBActionableWidget(parent, name)
+  , mpLayout(NULL)
+  , mpLabel(NULL)
+{
+    addAction(eAction_Close);
+    mpLayout = new QVBoxLayout(this);
+    setLayout(mpLayout);
+    mpLayout->setContentsMargins(10, 0, 10, 0);
+    mpLabel = new QLabel(this);
+    mpLayout->addWidget(mpLabel);
+    mpLabel->setGeometry( 10, 10, width()-2*10, height());
+}
+
+UBPictureWidget::~UBPictureWidget()
+{
+    DELETEPTR(mpLabel);
+    DELETEPTR(mpLayout);
+}
+
+void UBPictureWidget::resizeEvent(QResizeEvent *ev)
+{
+    mpLabel->setGeometry( 10, 10, width()-2*10, height());
+}

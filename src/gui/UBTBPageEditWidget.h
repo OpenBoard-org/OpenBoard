@@ -11,10 +11,11 @@
 
 #include "core/UBPersistenceManager.h"
 #include "customWidgets/UBWidgetList.h"
+#include "customWidgets/UBActionableWidget.h"
 #include "interfaces/IDropable.h"
 #include "UBTeacherBarDataMgr.h"
 
-class UBTeacherStudentAction : public QWidget
+class UBTeacherStudentAction : public UBActionableWidget
 {
     Q_OBJECT
 
@@ -33,7 +34,7 @@ private:
     QComboBox* mpCombo;
 };
 
-class UBUrlWidget : public QWidget
+class UBUrlWidget : public UBActionableWidget
 {
 public:
     UBUrlWidget(QWidget* parent=0, const char* name="UBUrlWidget");
@@ -54,6 +55,22 @@ private:
 
     QLabel* mpTitleLabel;
     QLineEdit* mpTitle;
+};
+
+class UBPictureWidget : public UBActionableWidget
+{
+public:
+    UBPictureWidget(QWidget* parent=0, const char* name="UBPictureWidget");
+    ~UBPictureWidget();
+
+    QLabel* label(){return mpLabel;}
+
+protected:
+    void resizeEvent(QResizeEvent* ev);
+
+private:
+    QVBoxLayout* mpLayout;
+    QLabel* mpLabel;
 };
 
 class UBTBMediaContainer : public UBWidgetList
@@ -104,6 +121,7 @@ private slots:
     void onMediaDropped(const QString& url);
     void onDocumentEditClicked();
     void onPagePreviewClicked();
+    void onCloseWidget(QWidget* w);
 
 private:
     QVBoxLayout mLayout;

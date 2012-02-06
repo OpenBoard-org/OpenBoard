@@ -22,7 +22,7 @@
   * @param parent as the parent widget
   * @param name as the object name
   */
-UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name):QWidget(parent)
+UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name):UBActionableWidget(parent, name)
   , mpMediaObject(NULL)
   , mpVideoWidget(NULL)
   , mpAudioOutput(NULL)
@@ -35,11 +35,10 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
   , mpMediaContainer(NULL)
   , mpCover(NULL)
 {
-    setObjectName(name);
-
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
 
+    addAction(eAction_Close);
     mType = type;
     setLayout(&mLayout);
 
