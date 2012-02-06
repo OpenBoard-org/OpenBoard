@@ -361,15 +361,12 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
                 QString filePath;
                 QString crntPath = urlList.at(i).toString();
 
-#ifdef Q_WS_MACX
-                filePath = QUrl(urlList.at(i)).toString();
-#else
                 if(crntPath.startsWith("file:") || crntPath.startsWith("/")){
                     filePath = QUrl(crntPath).toLocalFile();
                 }else{
                     filePath = crntPath;
                 }
-#endif
+
                 mLibraryController->importItemOnLibrary(filePath);
                 bDropAccepted = true;
             }

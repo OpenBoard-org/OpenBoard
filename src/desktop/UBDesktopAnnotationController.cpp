@@ -81,7 +81,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
     mTransparentDrawingView->setMouseTracking(true);
 
-    mTransparentDrawingView->setAcceptDrops(false);
+    mTransparentDrawingView->setAcceptDrops(true);
 
     QString backgroundStyle = "QWidget {background-color: rgba(127, 127, 127, 0)}";
     mTransparentDrawingView->setStyleSheet(backgroundStyle);

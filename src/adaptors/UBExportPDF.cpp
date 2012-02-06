@@ -101,7 +101,6 @@ void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
 
 		//setting page size to appropriate value
 		pdfPrinter.setPaperSize(QSizeF(pageSize.width()*scaleFactor, pageSize.height()*scaleFactor), QPrinter::Point);
-		pdfPrinter.setOrientation((pageSize.width() > pageSize.height())? QPrinter::Landscape : QPrinter::Portrait);
 		if(painterNeedsBegin) painterNeedsBegin = !pdfPainter.begin(&pdfPrinter);
         //render to PDF
 		scene->render(&pdfPainter);

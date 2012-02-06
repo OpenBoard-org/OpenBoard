@@ -62,8 +62,8 @@ UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QW
     mpKeywords->setObjectName("DockPaletteWidgetLineEdit");
     mpLevel = new QComboBox(this);
     mpLevel->setObjectName("DockPaletteWidgetComboBox");
-    mpTopic = new QComboBox(this);
-    mpTopic->setObjectName("DockPaletteWidgetComboBox");
+    mpTopic = new QLineEdit(this);
+    mpTopic->setObjectName("DockPaletteWidgetLineEdit");
     mpAuthor = new QLineEdit(this);
     mpAuthor->setObjectName("DockPaletteWidgetLineEdit");
     mpKeywordLabel = new QLabel(tr("Keywords:"), this);
@@ -120,7 +120,7 @@ UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QW
     connect(mpLicenseCombox, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseCurrentIndexChanged(int)));
     connect(mpKeywords, SIGNAL(textChanged(QString)), this, SLOT(onKeywordChanged(QString)));
     connect(mpLevel, SIGNAL(currentIndexChanged(QString)), this, SLOT(onLevelChanged(QString)));
-    connect(mpTopic, SIGNAL(currentIndexChanged(QString)), this, SLOT(onTopicChanged(QString)));
+    connect(mpTopic, SIGNAL(textChanged(QString)), this, SLOT(onTopicChanged(QString)));
     connect(mpAuthor, SIGNAL(textChanged(QString)), this, SLOT(onAuthorChanged(QString)));
 }
 
@@ -179,7 +179,7 @@ void UBTBDocumentEditWidget::updateFields()
     mpTarget->setPlainText(mpDataMgr->sessionTarget());
     mpKeywords->setText(mpDataMgr->keywords());
     // TODO: retrieve the level
-    // TODO retrieve the topic
+    mpTopic->setText(mpDataMgr->topic());
     mpAuthor->setText(mpDataMgr->authors());
 }
 
@@ -192,7 +192,6 @@ void UBTBDocumentEditWidget::clearFields()
 void UBTBDocumentEditWidget::onKeywordChanged(const QString &kw)
 {
     mpDataMgr->setKeywords(kw);
-    qDebug() << ">>> KEYWORD CHANGED: " << kw;
     emit valueChanged();
 }
 

@@ -27,7 +27,8 @@ QWidget#UBMediaVideoContainer
 	border: 2px solid #999999;
 }
 
-QWidget#UBTeacherBarPreviewWidget
+
+QWidget#UBTBPreviewWidget
 {
 	background: #FFFFFF;
 	border-radius: 10px;

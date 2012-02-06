@@ -10,6 +10,8 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
   , mMargin(5)
   , mListElementsSpacing(10)
   , mpEmptyLabel(NULL)
+  , mCanRemove(true)
+  , mpCurrentWidget(NULL)
 {
    setObjectName(name);
    mOrientation = orientation;
@@ -128,6 +130,13 @@ void UBWidgetList::resizeEvent(QResizeEvent *ev)
                               mpEmptyLabel->height());
     updateView(size());
     updateSizes();
+}
+
+void UBWidgetList::mousePressEvent(QMouseEvent *ev)
+{
+    if(mCanRemove){
+
+    }
 }
 
 void UBWidgetList::updateSizes()

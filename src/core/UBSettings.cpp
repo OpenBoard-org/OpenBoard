@@ -43,6 +43,7 @@ QString UBSettings::sessionKeywords = QString("sessionKeywords");
 QString UBSettings::sessionLevel = QString("sessionLevel");
 QString UBSettings::sessionTopic = QString("sessionTopic");
 QString UBSettings::sessionAuthors = QString("sessionAuthors");
+QString UBSettings::documentDate = QString("date");
 
 QString UBSettings::trashedDocumentGroupNamePrefix = QString("_Trash:");
 

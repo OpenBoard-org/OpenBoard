@@ -41,7 +41,10 @@ public:
     int listElementsSpacing() {return mListElementsSpacing; }
 
 protected:
+    bool mCanRemove;
+
     void resizeEvent(QResizeEvent* ev);
+    void mousePressEvent(QMouseEvent* ev);
 
 private:
     int scaleWidgets(QSize pSize);
@@ -55,6 +58,7 @@ private:
     int mListElementsSpacing;
     QMap<QWidget*, QSize> mWidgetInfo;
     QLabel* mpEmptyLabel;
+    QWidget* mpCurrentWidget;
 };
 
 #endif // UBWIDGETLIST_H

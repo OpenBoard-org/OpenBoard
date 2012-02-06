@@ -295,6 +295,15 @@ QString UBDocumentProxy::sessionAuthors()
         return QString();
 }
 
+QString UBDocumentProxy::documentDate()
+{
+    if(mMetaDatas.contains(UBSettings::documentDate)){
+        return metaData(UBSettings::documentDate).toString();
+    }else{
+        return QString();
+    }
+}
+
 bool UBDocumentProxy::isModified() const
 {
     return mIsModified;

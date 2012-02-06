@@ -115,6 +115,13 @@ public:
     void setAuthors(const QString& authors){mAuthors = authors;}
     QString authors(){return mAuthors;}
 
+    // Creation Date
+    void setCreationDate(const QString& date){mCreationDate = date;}
+    QString creationDate(){return mCreationDate;}
+
+    // Last Modification
+    void setLastModificationDate(const QString& date){mLastModif = date;}
+    QString lastModificationDate(){return mLastModif;}
 
     // Others
     void clearLists();
@@ -131,6 +138,8 @@ private:
     QString mLevel;
     QString mTopic;
     QString mAuthors;
+    QString mCreationDate;
+    QString mLastModif;
 
     QVector<sAction> mActionList;
     QVector<sLink> mUrlList;

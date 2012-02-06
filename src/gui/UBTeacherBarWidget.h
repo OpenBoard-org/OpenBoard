@@ -48,6 +48,7 @@ private slots:
     void onShowEditMode();
     void onTBStateChanged(eTeacherBarState state);
     void onActiveDocumentChanged();
+    void onShowDocumentPreview();
 
 private:
     bool isEmpty();
