@@ -1,7 +1,7 @@
 #include <QDebug>
 #include <QScrollBar>
 
-#include "UBGlobals.h"
+#include "globals/UBGlobals.h"
 #include "UBWidgetList.h"
 
 UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, const char* name):QScrollArea(parent)

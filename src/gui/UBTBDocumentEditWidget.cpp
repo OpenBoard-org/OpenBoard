@@ -1,7 +1,7 @@
 #include <QDebug>
 
 #include "UBTBDocumentEditWidget.h"
-#include "customWidgets/UBGlobals.h"
+#include "globals/UBGlobals.h"
 
 UBTBDocumentEditWidget::UBTBDocumentEditWidget(UBTeacherBarDataMgr* pDataMgr, QWidget *parent, const char *name):QWidget(parent)
   , mpPageViewButton(NULL)

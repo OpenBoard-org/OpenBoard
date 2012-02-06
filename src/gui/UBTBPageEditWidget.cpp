@@ -1,4 +1,4 @@
-#include "customWidgets/UBGlobals.h"
+#include "globals/UBGlobals.h"
 #include "core/UBApplication.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "gui/UBMediaPlayer.h"
