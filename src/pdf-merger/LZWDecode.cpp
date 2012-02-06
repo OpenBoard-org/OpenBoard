@@ -44,6 +44,11 @@ LZWDecode::~LZWDecode()
    }
 }
 
+bool LZWDecode::encode(std::string & decoded)
+{
+    return true;
+}
+
 void LZWDecode::initialize(Object * objectWithStream)
 {
    if( objectWithStream )

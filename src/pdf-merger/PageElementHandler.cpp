@@ -12,8 +12,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "PageElementHandler.h"
 
+#include "PageElementHandler.h"
+#include <QtGlobal>
 #include "core/memcheck.h"
 
 using namespace merge_lib;
@@ -87,4 +88,9 @@ unsigned int PageElementHandler::_findEndOfElementContent(unsigned int startOfPa
       foundSlash = foundWhitespace;
    }
    return _pageContent.rfind(">>");
+}
+
+void PageElementHandler::_processObjectContent(unsigned int startOfPageElement)
+{
+    Q_UNUSED(startOfPageElement);
 }

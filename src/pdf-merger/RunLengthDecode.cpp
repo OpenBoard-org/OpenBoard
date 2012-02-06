@@ -12,11 +12,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "RunLengthDecode.h"
 
+#include "RunLengthDecode.h"
+#include <QtGlobal>
 #include "core/memcheck.h"
 
 using namespace merge_lib;
+
+bool RunLengthDecode::encode(std::string & decoded)
+{
+    Q_UNUSED(decoded);
+    return false;
+}
 
 /* The encoded data is a sequence of
 runs, where each run consists of a length byte followed by 1 to 128 bytes of data. If
@@ -57,3 +64,8 @@ bool RunLengthDecode::decode(std::string & encoded)
    }
    return true;
 }
+
+void RunLengthDecode::initialize(Object * objectWithStream)
+{
+    Q_UNUSED(objectWithStream);
+};

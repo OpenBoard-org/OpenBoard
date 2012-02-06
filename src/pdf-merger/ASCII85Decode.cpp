@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
-
+#include <QtGlobal>
 #include "ASCII85Decode.h"
 
 #include "core/memcheck.h"
@@ -51,6 +51,12 @@ void ASCII85Decode::_wput(std::string &cur,unsigned long tuple, int len)
    }
 }
 
+bool ASCII85Decode::encode(std::string & decoded)
+{
+    Q_UNUSED(decoded);
+    return false;
+}
+
 bool ASCII85Decode::decode(std::string &encoded)
 {
    unsigned long tuple = 0;
@@ -58,7 +64,6 @@ bool ASCII85Decode::decode(std::string &encoded)
    int count = 0;
    int size = encoded.size();
    int i = 0;
-   bool found = false;
    for(;size;)
    {
       char ch = encoded[i++];
@@ -121,3 +126,7 @@ bool ASCII85Decode::decode(std::string &encoded)
    }
    return true;
 }
+void ASCII85Decode::initialize(Object * objectWithStram)
+{
+    Q_UNUSED(objectWithStram);
+};

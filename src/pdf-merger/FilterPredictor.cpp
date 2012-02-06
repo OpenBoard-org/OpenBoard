@@ -15,6 +15,7 @@
 #include "Config.h"
 #include <iostream>
 #include <map>
+#include <QtGlobal>
 
 #include "FilterPredictor.h"
 #include "Utils.h"
@@ -48,6 +49,12 @@ _earlyChange(1)
 FilterPredictor::~FilterPredictor()
 {
 }
+
+ bool FilterPredictor::encode(std::string & decoded)
+ {
+     Q_UNUSED(decoded);
+     return false;
+ }
 
 std::string FilterPredictor::getDictionaryContentStr(std::string & in, size_t &pos )
 {

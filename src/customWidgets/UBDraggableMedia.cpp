@@ -38,5 +38,5 @@ void UBDraggableMedia::mouseMoveEvent(QMouseEvent* ev)
 
     drag->setMimeData(mimeData);
 
-    Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+    drag->exec(Qt::CopyAction | Qt::MoveAction);
 }

@@ -73,14 +73,14 @@ namespace merge_lib
       void _createAllPageFieldsSet();
 
       //members   
-      std::string & _pageContent;
       Object * _page;
+      std::string & _pageContent;
       std::string _handlerName;  
       PageElementHandler * _nextHandler;
 
    private:
       //methods
-      virtual void _processObjectContent(unsigned int startOfPageElement){};
+      virtual void _processObjectContent(unsigned int startOfPageElement);
       virtual void _changeObjectContent(unsigned int startOfPageElement) = 0;
       virtual void _pageElementNotFound() {};
       unsigned int _findStartOfPageElement()

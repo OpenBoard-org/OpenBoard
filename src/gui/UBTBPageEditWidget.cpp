@@ -578,5 +578,6 @@ UBPictureWidget::~UBPictureWidget()
 
 void UBPictureWidget::resizeEvent(QResizeEvent *ev)
 {
+    Q_UNUSED(ev);
     mpLabel->setGeometry( 10, 10, width()-2*10, height());
 }

@@ -27,7 +27,7 @@ namespace merge_lib
    public:
       LZWDecode();
       virtual ~LZWDecode();
-      bool encode(std::string & decoded) {return true;};
+      bool encode(std::string & decoded);
       bool decode(std::string & encoded);
       void initialize(Object * objectWithStram);
    private:

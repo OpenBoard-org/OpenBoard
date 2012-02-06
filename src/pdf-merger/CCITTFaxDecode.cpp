@@ -13,24 +13,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ASCIIHexDecode_h
-#define ASCIIHexDecode_h
+#include <QtGlobal>
+#include "CCITTFaxDecode.h"
 
-#include <string>
-#include "Decoder.h"
-namespace merge_lib
+using namespace merge_lib;
+
+bool CCITTFaxDecode::encode(std::string & decoded)
 {
-   // this class provides method for ASCIIHEX encoding and decoding
-   class ASCIIHexDecode : public Decoder
-   {
-      public:
-         ASCIIHexDecode(){};
-         virtual ~ASCIIHexDecode(){};
-         bool encode(std::string & decoded);
-         bool decode(std::string & encoded);
-         void initialize(Object * objectWithStram);
-
-   };
+    Q_UNUSED(decoded);
+    return true;
 }
-#endif // FLATEDECODE_H_INCLUDED
 
+bool CCITTFaxDecode::decode(std::string & encoded)
+{
+    Q_UNUSED(encoded);
+    return true;
+}
+
+void CCITTFaxDecode::initialize(Object * objectWithStram)
+{
+    Q_UNUSED(objectWithStram);
+}

@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "ASCIIHexDecode.h"
-
+#include <QtGlobal>
 #include <string>
 #include "Utils.h"
 
@@ -40,6 +40,12 @@ static unsigned int convertHexVal(unsigned char c)
       return (c - 'a' + 10);
    }
    return 0;
+}
+
+bool ASCIIHexDecode::encode(std::string & decoded)
+{
+    Q_UNUSED(decoded);
+    return false;
 }
 
 bool ASCIIHexDecode::decode(std::string & encoded)
@@ -74,4 +80,9 @@ bool ASCIIHexDecode::decode(std::string & encoded)
    }
    encoded = decoded;
    return true;
+}
+
+void ASCIIHexDecode::initialize(Object * objectWithStram)
+{
+    Q_UNUSED(objectWithStram);
 }

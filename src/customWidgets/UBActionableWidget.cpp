@@ -57,6 +57,7 @@ bool UBActionableWidget::shouldClose(QPoint p)
 
 void UBActionableWidget::paintEvent(QPaintEvent* ev)
 {
+    Q_UNUSED(ev);
     if(mShowActions){
         QPainter p(this);
         if(mActions.contains(eAction_Close)){

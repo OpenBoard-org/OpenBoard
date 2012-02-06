@@ -28,7 +28,8 @@
 using namespace merge_lib;
 const std::string firstObj("%PDF-1.4\n1 0 obj\n<<\n/Title ()/Creator ()/Producer (Qt 4.5.0 (C) 1992-2009 Nokia Corporation and/or its subsidiary(-ies))/CreationDate (D:20090424120829)\n>>\nendobj\n");
 const std::string zeroStr("0000000000");
-Document::Document(const char * fileName): _pages(), _maxObjectNumber(0),_root(0),_documentName(fileName)
+Document::Document(const char * fileName):
+    _root(0), _pages(), _documentName(fileName), _maxObjectNumber(0)
 {
 
 }
