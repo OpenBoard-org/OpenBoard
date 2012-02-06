@@ -391,17 +391,13 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
                 mCrntItem = pCrntItem;
             }
 
-            // HACK: for an unknown reason, the mousePressEvent of the item is not
-            //       called when a click occurs on it. So I created this method in
-            //       order to handle the click.
-            mCrntItem->notifyClick(mapToScene(event->pos()));
-
             // Then display the related page
             emit changeCurrentPage();
             refreshScene();
         }
         bNavig = false;
     }
+	QGraphicsView::mousePressEvent(event);
 }
 
 /**
@@ -448,7 +444,8 @@ void UBDocumentNavigator::onMovedToIndex(int index)
         UBSceneThumbnailNavigPixmap* pItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(mThumbnails.at(index));
         if(NULL != pItem)
         {
-            mCrntItem = pItem;
+            if(mCrntItem) mCrntItem->setSelected(false);//deselecting previous one
+			mCrntItem = pItem;
             mCrntItem->setSelected(true);
             centerOn(mCrntItem);
         }

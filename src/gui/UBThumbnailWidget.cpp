@@ -740,25 +740,21 @@ void UBSceneThumbnailNavigPixmap::paint(QPainter *painter, const QStyleOptionGra
 
 void UBSceneThumbnailNavigPixmap::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    // INFO: This implementation should work but this method is not called on a mousePressEvent, why?
-    //       PLEASE DO NOT REMOVE THIS METHOD! We should reactivate this code when we will fix
-    //       the mousePressEvent-not-called issue!
+    QPointF p = event->pos();
 
-//    QPointF p = event->pos();
-
-//    // Here we check the position of the click and verify if it has to trig an action or not.
-//    if(bCanDelete && p.x() >= 0 && p.x() <= BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
-//    {
-//        deletePage();
-//    }
-//    if(bCanMoveUp && p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= 2*BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
-//    {
-//        moveUpPage();
-//    }
-//    if(bCanMoveDown && p.x() >= 2*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 2*(BUTTONSIZE + BUTTONSPACING) + BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
-//    {
-//        moveDownPage();
-//    }
+    // Here we check the position of the click and verify if it has to trig an action or not.
+    if(bCanDelete && p.x() >= 0 && p.x() <= BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
+    {
+        deletePage();
+    }
+    if(bCanMoveUp && p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= 2*BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
+    {
+        moveUpPage();
+    }
+    if(bCanMoveDown && p.x() >= 2*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 2*(BUTTONSIZE + BUTTONSPACING) + BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
+    {
+        moveDownPage();
+    }
     event->accept();
 }
 
@@ -808,33 +804,4 @@ void UBSceneThumbnailNavigPixmap::moveUpPage()
 void UBSceneThumbnailNavigPixmap::moveDownPage()
 {
     UBApplication::documentController->moveSceneToIndex(proxy(), sceneIndex(), sceneIndex() + 1);
-}
-
-void UBSceneThumbnailNavigPixmap::notifyClick(QPointF clickedScenePos)
-{
-    QPointF p = clickedPos(clickedScenePos);
-
-    // Here we check the position of the click and verify if it has to trig an action or not.
-    if(bCanDelete && p.x() >= 0 && p.x() <= BUTTONSIZE/2 && p.y() >= 0 && p.y() <= BUTTONSIZE/2)
-    {
-        deletePage();
-    }
-    if(bCanMoveUp && p.x() >= (BUTTONSIZE + BUTTONSPACING)/2 && p.x() <= BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE/2)
-    {
-        moveUpPage();
-    }
-    if(bCanMoveDown && p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= BUTTONSIZE + BUTTONSPACING + BUTTONSIZE/2 && p.y() >= 0 && p.y() <= BUTTONSIZE/2)
-    {
-        moveDownPage();
-    }
-}
-
-QPointF UBSceneThumbnailNavigPixmap::clickedPos(QPointF clickedScenePos)
-{
-    QPointF p;
-
-    p.setX(clickedScenePos.x() - scenePos().x());
-    p.setY(clickedScenePos.y() - scenePos().y());
-
-    return p;
 }

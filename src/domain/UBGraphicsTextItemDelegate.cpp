@@ -305,10 +305,11 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
     bool bEndofTheSameBlock;
     int iBlockLen;
     int iPointSize;
-    int inewPointSize;
+    int iNextPointSize;
     int iCursorPos = startPos;
 
    // we search continuous blocks of the text with the same PointSize and allpy new settings for them.
+    cursor.setPosition (startPos, QTextCursor::MoveAnchor);
     while(iCursorPos < endPos)
     {   
         bEndofTheSameBlock = false;
@@ -326,17 +327,18 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
             iBlockLen++;
 
             cursor.setPosition (iCursorPos+iBlockLen+1, QTextCursor::KeepAnchor);
-            inewPointSize = cursor.charFormat().font().pointSize();
+            iNextPointSize = cursor.charFormat().font().pointSize();
 
             cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
-            if ((iPointSize != inewPointSize)||(iCursorPos+iBlockLen >= endPos))
+            if ((iPointSize != iNextPointSize)||(iCursorPos+iBlockLen >= endPos))
                 bEndofTheSameBlock = true;
 
         }while(!bEndofTheSameBlock);
 
 
         //setting new parameners
-        curFont.setPointSize(iPointSize + delta);
+        int iNewPointSize = iPointSize + delta;
+        curFont.setPointSize( (iNewPointSize > 0)?iNewPointSize:1);
         textFormat.setFont(curFont);
         cursor.mergeCharFormat(textFormat);
 

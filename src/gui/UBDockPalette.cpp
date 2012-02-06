@@ -697,7 +697,7 @@ void UBDockPalette::moveTabs()
 void UBDockPalette::resizeTabs()
 {
     int numTabs = mTabWidgets.size();
-    mTabPalette->resize(2 * border(), (numTabs * TABSIZE) + qMax(numTabs - 1, 0) * tabSpacing());
+    mTabPalette->setFixedSize(2 * border(), (numTabs * TABSIZE) + qMax(numTabs - 1, 0) * tabSpacing());
 }
 QRect UBDockPalette::getTabPaletteRect()
 {
