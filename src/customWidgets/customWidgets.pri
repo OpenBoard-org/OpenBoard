@@ -2,7 +2,7 @@
 HEADERS      += src/customWidgets/UBWidgetList.h \
     src/customWidgets/UBDraggableLabel.h \
     src/customWidgets/UBMediaWidget.h \
-    src/customWidgets/UBGlobals.h \
+    src/globals/UBGlobals.h \
     src/customWidgets/UBDraggableMedia.h \
     src/customWidgets/UBActionableWidget.h
                 

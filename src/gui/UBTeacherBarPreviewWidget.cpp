@@ -1,5 +1,5 @@
 #include "core/UBApplication.h"
-#include "customWidgets/UBGlobals.h"
+#include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
 #include "frameworks/UBFileSystemUtils.h"
 

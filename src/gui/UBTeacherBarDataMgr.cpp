@@ -7,7 +7,7 @@
 
 #include "board/UBBoardController.h"
 
-#include "customWidgets/UBGlobals.h"
+#include "globals/UBGlobals.h"
 
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 

@@ -22,8 +22,12 @@
 
 #include "document/UBDocumentProxy.h"
 
+#include "globals/UBGlobals.h"
+
+THIRD_PARTY_WARNINGS_DISABLE
 #include "quazip.h"
 #include "quazipfile.h"
+THIRD_PARTY_WARNINGS_ENABLE
 
 #include "transition/UniboardSankoreTransition.h"
 
