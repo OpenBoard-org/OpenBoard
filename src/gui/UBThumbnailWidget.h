@@ -292,7 +292,6 @@ class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
     public:
         UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex);
         ~UBSceneThumbnailNavigPixmap();
-        void notifyClick(QPointF clickedScenePos);
 
     protected:
         void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -305,7 +304,6 @@ class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
         void deletePage();
         void moveUpPage();
         void moveDownPage();
-        QPointF clickedPos(QPointF clickedScenePos);
 
         bool bButtonsVisible;
         bool bCanDelete;
