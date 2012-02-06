@@ -1,4 +1,5 @@
-var sankoreLang = {display: "Display", edit: "Edit", short_desc: "Place the pictures in ascending order.", add: "Add new block"};
+
+var sankoreLang = {display: "D'affichage", edit: "Modifier", short_desc: "Placez les photos dans l'ordre croissant.", add: "Nouveau bloc"};
 
 //main function
 function start(){
@@ -99,15 +100,6 @@ function start(){
                     container.find(".imgs_cont").append(add_img)
                 });
                 
-                //                $(".img_block").css("overflow", "auto");
-                //                setTimeout(function(){
-                //                    $(".img_block").css("overflow", "").width(121);
-                //                    setTimeout(function(){
-                //                        $(".img_block").width(120);
-                //                    }, 1);
-                //                }, 1);
-                
-                
                 $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("body");
             }
         }
@@ -139,20 +131,6 @@ function start(){
         }
         
     });
-    
-    //    //turning an image
-    //    $(".fill_img").live("click",function(){
-    //        var tmp_back = $(this).css("background-image");
-    //        var lclImg = $(this).parent().find("img");
-    //        if(tmp_back.match(/fill_hor/)){
-    //            lclImg.removeAttr("height").attr("width", "120");
-    //            $(this).css("background-image","url(img/fill_vert.png)");
-    //        }
-    //        else{
-    //            lclImg.removeAttr("width").attr("height", "120");
-    //            $(this).css("background-image","url(img/fill_hor.png)");
-    //        }
-    //    });
     
     //cleaning an image
     $(".clear_img").live("click",function(){
@@ -186,15 +164,13 @@ function exportData(){
         $(this).find(".img_block").each(function(){
             var img_obj = new Object();
             img_obj.value = $(this).find("input").val();
-            img_obj.link = $(this).find("img").attr("src");
+            img_obj.link = $(this).find("img").attr("src").replace("../../","");
             img_obj.ht = $(this).find("img").height();
             img_obj.wd = $(this).find("img").width();
             cont_obj.imgs.push(img_obj);
         });
         array_to_export.push(cont_obj);
     });
-    //console.log(JSON.stringify(array_to_import));
-    //alert(JSON.stringify(array_to_export))
     sankore.setPreference("odr_des_imgs", JSON.stringify(array_to_export));
 }
 
@@ -215,7 +191,7 @@ function importData(data){
         
         for(var j in data[i].imgs){
             var img_block = $("<div class='img_block' style='text-align: center;'>");
-            var img = $("<img src='" + data[i].imgs[j].link + "' style='display: inline;'>");
+            var img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
             img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
             if((120 - data[i].imgs[j].ht) > 0)
                 img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
@@ -249,19 +225,19 @@ function showExample(){
     
     var img1 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='1'/>").appendTo(img1);
-    $("<img src=\"objects/0.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img1);
+    $("<img src=\"../../objects/0.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img1);
     var img2 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='2'/>").appendTo(img2);
-    $("<img src=\"objects/1.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img2);
+    $("<img src=\"../../objects/1.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img2);
     var img3 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='3'/>").appendTo(img3);
-    $("<img src=\"objects/2.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img3);
+    $("<img src=\"../../objects/2.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img3);
     var img4 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='4'/>").appendTo(img4);
-    $("<img src=\"objects/3.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img4);
+    $("<img src=\"../../objects/3.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img4);
     var img5 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='5'/>").appendTo(img5);
-    $("<img src=\"objects/4.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img5);  
+    $("<img src=\"../../objects/4.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img5);  
     
     tmp_array.push(img1, img2, img3, img4, img5);
     tmp_array = shuffle(tmp_array);
@@ -326,8 +302,7 @@ function refreshBlockNumbers(){
 //shuffles an array
 function shuffle( arr )
 {
-    var pos, tmp;
-	
+    var pos, tmp;	
     for( var i = 0; i < arr.length; i++ )
     {
         pos = Math.round( Math.random() * ( arr.length - 1 ) );
@@ -382,7 +357,6 @@ function stringToXML(text){
 
 function onDropTarget(obj, event) {
     $(obj).find("img").remove();
-    //alert(tmp_img.width() + " | " + tmp_img.height() + " | " + tmp_img.attr("src"));
     if (event.dataTransfer) {
         var format = "text/plain";
         var textData = event.dataTransfer.getData(format);
@@ -391,15 +365,9 @@ function onDropTarget(obj, event) {
         }
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
-        tmp = tmp.substr(1, tmp.length);
-        //alert(textData.getElementsByTagName("type")[0].firstChild.textContent + " | " + textData.getElementsByTagName("path")[0].firstChild.textContent);
-        var tmp_img = $("<img/>").attr("src", tmp);
-        //alert(1)
-        //alert(tmp_img.width() + " | " + tmp_img.height() + " | " + tmp_img.attr("src"));
-        //$("#dnd_1").html(textData);        
-        //tmp_img.css("display", "none");
+        tmp = tmp.substr(1, tmp.length);       
+        var tmp_img = $("<img/>").attr("src", "../../" + tmp);
         $(obj).append(tmp_img);
-        //alert(tmp_img.width() + " | " + tmp_img.height())
         setTimeout(function(){
             if(tmp_img.height() >= tmp_img.width())
                 tmp_img.attr("height", "120");
@@ -408,14 +376,6 @@ function onDropTarget(obj, event) {
                 tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
             }
         }, 6)
-    //alert(tmp_img.width() + " | " + tmp_img.height())
-    //        $(".img_block").css("overflow", "auto");
-    //        setTimeout(function(){
-    //            $(".img_block").css("overflow", "").width(121);
-    //            setTimeout(function(){
-    //                $(".img_block").width(120);
-    //            }, 1);
-    //        }, 1);
     }
     else {
         alert ("Your browser does not support the dataTransfer object.");
