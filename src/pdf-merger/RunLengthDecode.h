@@ -26,9 +26,9 @@ namespace merge_lib
       public:
          RunLengthDecode(){};
          virtual ~RunLengthDecode(){};
-         bool encode(std::string & decoded){return false;}
+         bool encode(std::string & decoded);
          bool decode(std::string & encoded);
-         void initialize(Object * objectWithStream){};
+         void initialize(Object * objectWithStream);
 
    };
 }

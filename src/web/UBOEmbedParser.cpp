@@ -26,6 +26,7 @@
 
 UBOEmbedParser::UBOEmbedParser(QObject *parent, const char* name)
 {
+    Q_UNUSED(parent);
     setObjectName(name);
     mParsedTitles.clear();
     connect(this, SIGNAL(parseContent(QString)), this, SLOT(onParseContent(QString)));
@@ -223,7 +224,6 @@ void UBOEmbedParser::onParseContent(QString url)
 
 void UBOEmbedParser::onFinished(QNetworkReply *reply)
 {
-    QNetworkReply::NetworkError err = reply->error();
     if(QNetworkReply::NoError == reply->error()){
         QString receivedDatas = reply->readAll().constData();
         sOEmbedContent crntContent;

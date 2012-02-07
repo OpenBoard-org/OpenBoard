@@ -15,6 +15,8 @@
 #if !defined RotationHandler_h
 #define RotationHandler_h
 
+#include <QtGlobal>
+
 #include "PageElementHandler.h"
 #include "Page.h"
 
@@ -55,7 +57,7 @@ namespace merge_lib
          strin>>rotation;
          _basePage.setRotation(rotation);
       }
-      virtual void _changeObjectContent(unsigned int startOfPageElement) {};
+      virtual void _changeObjectContent(unsigned int startOfPageElement) {Q_UNUSED(startOfPageElement);};
 
       //members
       Page & _basePage;

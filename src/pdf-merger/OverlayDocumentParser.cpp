@@ -15,6 +15,7 @@
 #include "OverlayDocumentParser.h"
 #include <fstream>
 #include <string.h>
+#include <QtGlobal>
 #include "Exception.h"
 #include "Object.h"
 
@@ -74,7 +75,6 @@ void OverlayDocumentParser::_readXRefAndCreateObjects()
          notEndOfFile = false;
       }
 
-      unsigned long toReadAgain = 0;
       for(objIter = objectsAndPositions.begin(); objIter != objectsAndPositions.end(); )
       {
          if((objectsAndSizes[objIter->first] +  objIter->second <= nextPartStart) && (objIter->second >= partStart) && ((objIter->second < nextPartStart)))
@@ -98,6 +98,11 @@ void OverlayDocumentParser::_readXRefAndCreateObjects()
       partStart = nextPartStart;
    }
    while(notEndOfFile);   
+}
+
+void OverlayDocumentParser::_getFileContent(const char * fileName)
+{
+    Q_UNUSED(fileName);
 }
 
 void OverlayDocumentParser::_getPartOfFileContent(long startOfPart, unsigned int length)

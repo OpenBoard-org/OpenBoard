@@ -47,7 +47,7 @@ QByteArray UBBase32::decode(const QString& base32String)
         if (lookup < 0 || lookup >= 80)
             continue;
 
-        int digit = sBase32Lookup[lookup];
+        int digit = sBase32Lookup[(int)lookup];
 
         /* If this digit is not in the table, ignore it */
         if (digit == 0xFF)

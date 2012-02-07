@@ -24,21 +24,21 @@
 using namespace merge_lib;
 
 Rectangle::Rectangle(const char * rectangleName): 
-_rectangleName(rectangleName), 
 x1(0),
 y1(0),
 x2(0),
 y2(0),
+_rectangleName(rectangleName),
 _tm()
 
 {}
 
 Rectangle::Rectangle(const char * rectangleName, const std::string content): 
-_rectangleName(rectangleName), 
 x1(0),
 y1(0),
 x2(0),
-y2(0)
+y2(0),
+_rectangleName(rectangleName)
 {
    unsigned int rectanglePosition = Parser::findToken(content,rectangleName);
    

@@ -16,6 +16,7 @@
 #define JBIG2Decode_H 
 
 #include <string>
+#include "Decoder.h"
 
 namespace merge_lib
 {
@@ -25,9 +26,9 @@ namespace merge_lib
       public:
          JBIG2Decode(){};
          virtual ~JBIG2Decode(){};
-         bool encode(std::string & decoded) {return true;};
-         bool decode(std::string & encoded) {return true;};
-         void initialize(Object * objectWithStram){};
+         bool encode(std::string & decoded);
+         bool decode(std::string & encoded);
+         void initialize(Object * objectWithStram);
 
    };
 }

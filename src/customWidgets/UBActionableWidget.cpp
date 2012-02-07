@@ -40,7 +40,6 @@ void UBActionableWidget::removeAllActions()
 
 void UBActionableWidget::setActionsVisible(bool bVisible)
 {
-    //mShowActions = bVisible;
     if(!mActions.empty() && mActions.contains(eAction_Close)){
         mCloseButtons.setVisible(bVisible);
     }
@@ -49,35 +48,6 @@ void UBActionableWidget::setActionsVisible(bool bVisible)
 void UBActionableWidget::onCloseClicked()
 {
     emit close(this);
-}
-
-bool UBActionableWidget::shouldClose(QPoint p)
-{
-    bool close = false;
-
-//    if(mShowActions &&
-//       p.x() >= 0 &&
-//       p.x() <= ACTIONSIZE &&
-//       p.y() >= 0 &&
-//       p.y() <= ACTIONSIZE){
-//       close = true;
-//    }
-
-    return close;
-}
-
-void UBActionableWidget::paintEvent(QPaintEvent* ev)
-{
-//    if(mShowActions){
-//        QPainter p(this);
-//        if(mActions.contains(eAction_Close)){
-//            p.drawPixmap(0, 0, 16, 16, QPixmap(":images/close.svg"));
-//        }else if(mActions.contains(eAction_MoveUp)){
-//            // Implement me later
-//        }else if(mActions.contains(eAction_MoveDown)){
-//            // Implement me later
-//        }
-//    }
 }
 
 void UBActionableWidget::setActionsParent(QWidget *parent)

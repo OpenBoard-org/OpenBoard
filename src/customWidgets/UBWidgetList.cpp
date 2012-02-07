@@ -7,12 +7,12 @@
 #include "UBWidgetList.h"
 
 UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, const char* name):QScrollArea(parent)
+  , mCanRemove(true)
   , mpLayout(NULL)
   , mpContainer(NULL)
   , mMargin(10)
   , mListElementsSpacing(10)
   , mpEmptyLabel(NULL)
-  , mCanRemove(true)
   , mpCurrentWidget(NULL)
 {
    setObjectName(name);
@@ -139,6 +139,7 @@ void UBWidgetList::resizeEvent(QResizeEvent *ev)
 
 void UBWidgetList::mousePressEvent(QMouseEvent *ev)
 {
+    Q_UNUSED(ev);
     if(mCanRemove){
         QWidget* pWAt = widgetAt(ev->pos());
         if(NULL != mpCurrentWidget){
