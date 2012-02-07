@@ -146,8 +146,7 @@ void UBDownloadManager::onUpdateDownloadLists()
             // If we fall here that means that there is no pending download
             break;
         }
-        if(-1 == mDLAvailability.at(i))
-        {
+        if(-1 == mDLAvailability.at(i))        {
             // Pending downloads exist and a download 'slot' is available
             // Let's move the first pending download to the current download
             // list and fill the slot
@@ -201,24 +200,27 @@ void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl
     Q_UNUSED(pSize)
     Q_UNUSED(isBackground)
 
-    emit downloadFinished(pSuccess, id, sourceUrl, pContentTypeHeader, pData);
-//    for(int i=0; i<mCrntDL.size(); i++)
-//    {
-//        sDownloadFileDesc desc = mCrntDL.at(i);
-//        if(id == desc.id)
-//        {
-//            if(desc.modal)
-//            {
-//                // The downloaded file is modal so we must put it on the board
-//                emit addDownloadedFileToBoard(pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
-//            }
-//            else
-//            {
-//                emit addDownloadedFileToLibrary(pSuccess, sourceUrl, pContentTypeHeader, pData);
-//            }
-//            break;
-//        }
-//    }
+    for(int i=0; i<mCrntDL.size(); i++)
+    {
+        sDownloadFileDesc desc = mCrntDL.at(i);
+        if(id == desc.id)
+        {
+            if (desc.dest == sDownloadFileDesc::graphicsWidget) {
+                desc.contentTypeHeader = pContentTypeHeader;
+                emit downloadFinished(pSuccess, desc, pData);
+
+            } else if(desc.modal) {
+                // The downloaded file is modal so we must put it on the board
+                emit addDownloadedFileToBoard(pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
+            }
+            else
+            {
+                emit addDownloadedFileToLibrary(pSuccess, sourceUrl, pContentTypeHeader, pData);
+            }
+
+            break;
+        }
+    }
 
     // Then do this
     updateFileCurrentSize(id);

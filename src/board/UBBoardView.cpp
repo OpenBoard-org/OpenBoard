@@ -52,7 +52,6 @@
 
 #include "core/memcheck.h"
 
-
 //Known extentions for files, add if you know more supported
 const QString audioExtentions = ".mp3.wma.ogg";
 const QString videoExtentions = ".avi.flv";
@@ -64,12 +63,6 @@ const QString imageAlias = "image";
 const QString videoAlias = "video";
 const QString audioAlias = "audio";
 const QString htmlAlias = "html";
-
-//Xml tag names
-const QString tMainSection = "mimedata";
-const QString tType = "type";
-const QString tPath = "path";
-const QString tMessage = "message";
 
 UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 : QGraphicsView (pParent)
@@ -644,7 +637,6 @@ UBBoardView::forcedTabletRelease ()
       mMouseButtonIsPressed = false;
       mTabletStylusIsPressed = false;
       mPendingStylusReleaseEvent = false;
-
     }
 }
 
@@ -767,67 +759,6 @@ void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
     }
 }
 
-QString UBBoardView::processMimeData(const QMimeData *pMimeData, UBGraphicsWidgetItem *widget)
-{
-    QString mimeXml;
-    QXmlStreamWriter writer(&mimeXml);
-    writer.setAutoFormatting(true);
-    writer.writeStartDocument();
-    writer.writeStartElement(tMainSection);
-
-    if (pMimeData->hasHtml()) {
-        QList<QUrl> urls = pMimeData->urls();
-
-        int index = 0;
-        foreach(const QUrl url, urls) {
-
-//            QPointF pos(pPos + QPointF(index * 15, index * 15));
-//            downloadURL(url, pos);
-            widget->downloadWeb(url.toString());
-            index++;
-        }
-        writer.writeTextElement(tMessage, "Downloading content process...");
-
-        writer.writeEndElement();
-        writer.writeEndDocument();
-        return mimeXml;
-    }
-
-    if (pMimeData->hasUrls()) {
-        QList<QUrl> urls = pMimeData->urls();
-
-        QString ext = fileExtention(urls.at(0).toLocalFile());
-        if (ext.isNull()) {
-            qDebug() << "unknown file type";
-            return QString();
-        }
-        QString fileType = typeForExtention(ext);
-        if (fileType.isNull()) {
-            qDebug() << "unknown extention";
-            return QString();
-        }
-
-        //writing type of element
-        writer.writeTextElement(tType, fileType);
-
-        QString fileName = urls.at(0).toLocalFile();
-        QString destName = widget->downloadUrl(fileName, ext);
-
-        if (destName.isNull()) {
-            qDebug() << "error at creating destination folder";
-            return QString();
-        }
-
-        //writing path to created object
-        writer.writeTextElement(tPath, destName);
-    }
-
-    writer.writeEndElement();
-    writer.writeEndDocument();
-
-    return mimeXml;
-}
-
 QString UBBoardView::fileExtention(const QString &filename) const
 {
     int pos = filename.lastIndexOf(".");
@@ -877,24 +808,16 @@ void UBBoardView::dropEvent (QDropEvent *event)
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
     if (graphicsWidget && graphicsWidget->acceptDrops()) {
-        // A new event is build to avoid problem related to different way to pass the mime type
-        // A parsing is done to try to provide a mimeType with only urls.
-        QMimeData mimeData;
-        QString str = processMimeData(event->mimeData(), graphicsWidget);
-        mimeData.setData("text/plain", str.toAscii());
-        QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
-        QDropEvent cleanedEvent(newPoint, event->dropAction(), &mimeData, event->mouseButtons(), event->keyboardModifiers());
-        QApplication::sendEvent(graphicsWidget->widgetWebView(),&cleanedEvent);
-        cleanedEvent.acceptProposedAction();
+
+        graphicsWidget->processDropEvent(event);
         event->acceptProposedAction();
 
-        return;
-    }
-    qDebug() << event->source();
-    if(!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBDraggableMediaPlayer *>(event->source()) || dynamic_cast<UBDraggableLabel *>(event->source()) || dynamic_cast<UBDraggableMedia *>(event->source()))
-    {
+    } else if (!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source())
+               || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBDraggableMediaPlayer *>(event->source())
+               || dynamic_cast<UBDraggableLabel *>(event->source()) || dynamic_cast<UBDraggableMedia *>(event->source())) {
+
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
-        event->acceptProposedAction ();
+        event->acceptProposedAction();
     }
 }
 

@@ -68,6 +68,7 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         void removeScript();
         QString downloadUrl(const QString &fileUrl, const QString &extention);
         QString downloadWeb(const QString &fileUrl);
+        void processDropEvent(QDropEvent *event);
 
         virtual void setOwnFolder(const QUrl &newFolder) {ownFolder = newFolder;}
         virtual QUrl getOwnFolder() const {return ownFolder;}

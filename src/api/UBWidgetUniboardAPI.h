@@ -16,8 +16,10 @@
 #define UBWIDGETAPI_H
 
 #include <QtCore>
+#include <QDropEvent>
 
 #include "UBW3CWidgetAPI.h"
+#include "core/UBDownloadManager.h"
 
 class UBGraphicsScene;
 class UBGraphicsWidgetItem;
@@ -246,19 +248,15 @@ class UBWidgetUniboardAPI : public QObject
          */
         QString downloadUrl(const QString &objectUrl, const QString &extention = "");
         QString downloadWeb(const QString &objectUrl);
+        void ProcessDropEvent(QDropEvent *);
 
 private slots:
-        void onDownloadFinished(bool pSuccess, int id, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData);
+        void onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData);
 
 
 private:
         inline void registerIDWidget(int id){webDownloadIds.append(id);}
-        inline bool expectedID(int id) const {return webDownloadIds.contains(id);}
-        inline bool removeID(int id) {return webDownloadIds.removeAll(id);}
-
-
-
-//        void unregister
+        inline bool takeIDWidget(int id);
 
     private:
 
@@ -269,6 +267,10 @@ private:
         int pageCount();
 
         int currentPageNumber();
+        QString getObjDir();
+        QString createMimeText(bool downloaded, const QString &mimeType, const QString &fileName);
+        bool supportedTypeHeader(const QString &) const;
+        QString boolToStr(bool value) const {return value ? "true" : "false";}
 
         UBGraphicsScene* mScene;
 

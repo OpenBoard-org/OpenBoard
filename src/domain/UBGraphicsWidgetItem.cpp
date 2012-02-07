@@ -262,6 +262,10 @@ QString UBGraphicsWidgetItem::downloadWeb(const QString &fileUrl)
 {
     return mUniboardAPI->downloadWeb(fileUrl);
 }
+void UBGraphicsWidgetItem::processDropEvent(QDropEvent *event)
+{
+    return mUniboardAPI->ProcessDropEvent(event);
+}
 
 UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
     : UBGraphicsWidgetItem(parent)

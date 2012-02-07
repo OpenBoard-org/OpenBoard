@@ -16,6 +16,7 @@
 
 #include <QWebView>
 #include <QDomDocument>
+#include <QtGui>
 
 #include "core/UB.h"
 #include "core/UBApplication.h"
@@ -35,9 +36,35 @@
 
 #include "UBWidgetMessageAPI.h"
 #include "frameworks/UBFileSystemUtils.h"
+#include "core/UBDownloadManager.h"
 
 #include "core/memcheck.h"
 
+//Known extentions for files, add if you know more supported
+const QString audioExtentions = ".mp3.wma.ogg";
+const QString videoExtentions = ".avi.flv";
+const QString imageExtentions = ".png.jpg.tif.bmp.tga";
+const QString htmlExtentions = ".htm.html.xhtml";
+
+//Allways use aliases instead of const char* itself
+const QString imageAlias    = "image";
+const QString imageAliasCap = "Image";
+const QString videoAlias    = "video";
+const QString videoAliasCap = "Video";
+const QString audioAlias    = "audio";
+const QString audioAliasCap = "Audio";
+
+//Xml tag names
+const QString tMainSection = "mimedata";
+const QString tType = "type";
+const QString tPath = "path";
+const QString tMessage = "message";
+const QString tReady = "ready";
+
+const QString tMimeText = "text/plain";
+
+
+//Name of path inside widget to store objects
 const QString objectsPath = "objects";
 
 UBWidgetUniboardAPI::UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidgetItem *widget)
@@ -47,7 +74,7 @@ UBWidgetUniboardAPI::UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidg
     , mIsVisible(false)
     , mMessagesAPI(0)
     , mDatastoreAPI(0)
-{
+ {
     UBGraphicsW3CWidgetItem* w3CGraphicsWidget = dynamic_cast<UBGraphicsW3CWidgetItem*>(widget);
 
     if (w3CGraphicsWidget)
@@ -55,7 +82,8 @@ UBWidgetUniboardAPI::UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidg
         mMessagesAPI = new UBWidgetMessageAPI(w3CGraphicsWidget->w3cWidget());
         mDatastoreAPI = new UBDatastoreAPI(w3CGraphicsWidget);
     }
-    connect(UBDownloadManager::downloadManager(), SIGNAL(downloadFinished(bool,int,QUrl,QString,QByteArray)), this, SLOT(onDownloadFinished(bool,int,QUrl,QString,QByteArray)));
+
+    connect(UBDownloadManager::downloadManager(), SIGNAL(downloadFinished(bool,sDownloadFileDesc,QByteArray)), this, SLOT(onDownloadFinished(bool,sDownloadFileDesc,QByteArray)));
 }
 
 
@@ -298,6 +326,11 @@ int UBWidgetUniboardAPI::currentPageNumber()
     return UBApplication::boardController->activeSceneIndex() + 1;
 }
 
+QString UBWidgetUniboardAPI::getObjDir()
+{
+    return mGraphicsWidget->getOwnFolder().toLocalFile() + "/" + objectsPath + "/";
+}
+
 void UBWidgetUniboardAPI::showMessage(const QString& message)
 {
     UBApplication::boardController->showMessage(message, false);
@@ -456,6 +489,7 @@ QString UBWidgetUniboardAPI::downloadWeb(const QString &objectUrl)
 {
     // When we fall there, it means that we are dropping something from the web to the board
     sDownloadFileDesc desc;
+    desc.dest = sDownloadFileDesc::graphicsWidget;
     desc.modal = true;
     desc.url = objectUrl;
     desc.currentSize = 0;
@@ -466,11 +500,182 @@ QString UBWidgetUniboardAPI::downloadWeb(const QString &objectUrl)
     return QString();
 }
 
-void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, int id, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData)
+void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
 {
-    Q_UNUSED(pData)
-    qDebug() << "got an ID" << id << pSuccess << sourceUrl << pContentTypeHeader;
+    const QMimeData *pMimeData = event->mimeData();
+
+    QString destFileName;
+    QString contentType;
+    bool downloaded = false;
+
+    QGraphicsView *tmpView = mGraphicsWidget->scene()->views().at(0);
+    QPoint dropPoint(mGraphicsWidget->mapFromScene(tmpView->mapToScene(event->pos())).toPoint());
+    Qt::DropActions dropActions = event->dropAction();
+    Qt::MouseButtons dropMouseButtons = event->mouseButtons();
+    Qt::KeyboardModifiers dropModifiers = event->keyboardModifiers();
+    QMimeData dropMimeData;
+
+
+    if (pMimeData->hasHtml()) { //Dropping element from web browser
+        QString qsHtml = pMimeData->html();
+        QString url = UBApplication::urlFromHtml(qsHtml);
+
+        if(!url.isEmpty()) {
+            QString str = "test string";
+
+            QMimeData mimeData;
+            mimeData.setData(tMimeText, str.toAscii());
+
+            sDownloadFileDesc desc;
+            desc.dest = sDownloadFileDesc::graphicsWidget;
+            desc.modal = true;
+            desc.url = url;
+            desc.currentSize = 0;
+            desc.name = QFileInfo(url).fileName();
+            desc.totalSize = 0; // The total size will be retrieved during the download
+
+            desc.dropPoint = event->pos(); //Passing pure event point. No modifications
+            desc.dropActions = dropActions;
+            desc.dropMouseButtons = dropMouseButtons;
+            desc.dropModifiers = dropModifiers;
+
+            registerIDWidget(UBDownloadManager::downloadManager()->addFileToDownload(desc));
+
+            return;
+        }
+
+    } else  if (pMimeData->hasUrls()) { //Local file processing
+        QUrl curUrl = pMimeData->urls().first();
+        QString sUrl = curUrl.toString();
+
+        if (sUrl.startsWith("file://") || sUrl.startsWith("/")) {
+            QString fileName = curUrl.toLocalFile();
+            QString extention = UBFileSystemUtils::extension(fileName);
+            contentType = UBFileSystemUtils::mimeTypeFromFileName(fileName);
+
+            if (supportedTypeHeader(contentType)) {
+                destFileName = getObjDir() + QUuid::createUuid().toString() + extention;
+
+                if (!UBFileSystemUtils::copyFile(fileName, destFileName)) {
+                    qDebug() << "can't copy from" << fileName << "to" << destFileName;
+                    return;
+                }
+                downloaded = true;
+
+            }
+        }
+    }
+
+    QString mimeText = createMimeText(downloaded, contentType, destFileName);
+    dropMimeData.setData(tMimeText, mimeText.toAscii());
+
+    QDropEvent readyEvent(dropPoint, dropActions, &dropMimeData, dropMouseButtons, dropModifiers);
+    //sending event to destination either it had been downloaded or not
+    QApplication::sendEvent(mGraphicsWidget->widgetWebView(),&readyEvent);
+//    readyEvent.acceptProposedAction();
 }
+
+void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData)
+{
+    //if widget recieves is waiting for this id then process
+    if (!takeIDWidget(desc.id))
+        return;
+
+    if (!pSuccess) {
+        qDebug() << "can't download the whole data. An error occured";
+        return;
+    }
+
+    QString contentType = desc.contentTypeHeader;
+    QString extention = UBFileSystemUtils::fileExtensionFromMimeType(contentType);
+
+    if (!supportedTypeHeader(contentType)) {
+        qDebug() << "actions for mime type" << contentType << "are not supported";
+        return;
+    }
+
+    QString objDir = getObjDir();
+    if (!QDir().exists(objDir)) {
+        if (!QDir().mkpath(objDir)) {
+            qDebug() << "can't create objects directory path. Check the permissions";
+            return;
+        }
+    }
+
+    QString destFileName = objDir + QUuid::createUuid() + "." + extention;
+    QFile destFile(destFileName);
+
+    if (!destFile.open(QIODevice::WriteOnly)) {
+        qDebug() << "can't open" << destFileName << "for wrighting";
+        return;
+    }
+
+    if (destFile.write(pData) == -1) {
+        qDebug() << "can't implement data writing";
+        return;
+    }
+
+    QGraphicsView *tmpView = mGraphicsWidget->scene()->views().at(0);
+    QPoint dropPoint(mGraphicsWidget->mapFromScene(tmpView->mapToScene(desc.dropPoint)).toPoint());
+
+    QMimeData dropMimeData;
+    QString mimeText = createMimeText(true, contentType, destFileName);
+    dropMimeData.setData(tMimeText, mimeText.toAscii());
+
+    destFile.close();
+
+    QDropEvent readyEvent(dropPoint, desc.dropActions, &dropMimeData, desc.dropMouseButtons, desc.dropModifiers);
+    //sending event to destination either it had been downloaded or not
+    QApplication::sendEvent(mGraphicsWidget->widgetWebView(),&readyEvent);
+    readyEvent.acceptProposedAction();
+}
+
+QString UBWidgetUniboardAPI::createMimeText(bool downloaded, const QString &mimeType, const QString &fileName)
+{
+    QString mimeXml;
+    QXmlStreamWriter writer(&mimeXml);
+    writer.setAutoFormatting(true);
+    writer.writeStartDocument();
+    writer.writeStartElement(tMainSection);
+
+    writer.writeTextElement(tReady, boolToStr(downloaded));
+
+    if (downloaded) {
+        if (!mimeType.isEmpty()) {
+            writer.writeTextElement(tType, mimeType);  //writing type of element
+        }
+        if (!QFile::exists(fileName)) {
+            qDebug() << "file" << fileName << "doesn't exist";
+            return QString();
+        }
+
+        QString relatedFileName = fileName;
+        relatedFileName = relatedFileName.remove(mGraphicsWidget->getOwnFolder().toLocalFile());
+        writer.writeTextElement(tPath, relatedFileName);   //writing path to created object
+    }
+
+    writer.writeEndElement();
+    writer.writeEndDocument();
+
+    return mimeXml;
+}
+
+bool UBWidgetUniboardAPI::supportedTypeHeader(const QString &typeHeader) const
+{
+    return     typeHeader.startsWith(imageAlias) || typeHeader.startsWith(imageAliasCap)
+            || typeHeader.startsWith(audioAlias) || typeHeader.startsWith(audioAliasCap)
+            || typeHeader.startsWith(videoAlias) || typeHeader.startsWith(videoAliasCap);
+}
+
+bool UBWidgetUniboardAPI::takeIDWidget(int id)
+{
+    if (webDownloadIds.contains(id)) {
+        webDownloadIds.removeAll(id);
+        return true;
+    }
+    return false;
+}
+
 
 UBDocumentDatastoreAPI::UBDocumentDatastoreAPI(UBGraphicsW3CWidgetItem *graphicsWidget)
     : UBW3CWebStorage(graphicsWidget)
