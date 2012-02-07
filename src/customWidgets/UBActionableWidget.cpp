@@ -8,6 +8,10 @@ UBActionableWidget::UBActionableWidget(QWidget *parent, const char *name):QWidge
 {
     setObjectName(name);
     mActions.clear();
+    mCloseButtons.setIcon(QIcon(QPixmap(":images/close.svg")));
+    mCloseButtons.setGeometry(0, 0, 2*ACTIONSIZE, ACTIONSIZE);
+    mCloseButtons.setVisible(false);
+    connect(&mCloseButtons, SIGNAL(clicked()), this, SLOT(onCloseClicked()));
 }
 
 UBActionableWidget::~UBActionableWidget()
@@ -36,36 +40,26 @@ void UBActionableWidget::removeAllActions()
 
 void UBActionableWidget::setActionsVisible(bool bVisible)
 {
-    mShowActions = bVisible;
-}
-
-bool UBActionableWidget::shouldClose(QPoint p)
-{
-    qDebug() << "Should close: " << p.x() << "," << p.y();
-    bool close = false;
-
-    if(mShowActions &&
-       p.x() >= 0 &&
-       p.x() <= ACTIONSIZE &&
-       p.y() >= 0 &&
-       p.y() <= ACTIONSIZE){
-       close = true;
+    if(!mActions.empty() && mActions.contains(eAction_Close)){
+        mCloseButtons.setVisible(bVisible);
     }
-
-    return close;
 }
 
-void UBActionableWidget::paintEvent(QPaintEvent* ev)
+void UBActionableWidget::onCloseClicked()
 {
-    Q_UNUSED(ev);
-    if(mShowActions){
-        QPainter p(this);
-        if(mActions.contains(eAction_Close)){
-            p.drawPixmap(0, 0, 16, 16, QPixmap(":images/close.svg"));
-        }else if(mActions.contains(eAction_MoveUp)){
-            // Implement me later
-        }else if(mActions.contains(eAction_MoveDown)){
-            // Implement me later
-        }
+    emit close(this);
+}
+
+void UBActionableWidget::setActionsParent(QWidget *parent)
+{
+    if(mActions.contains(eAction_Close)){
+        mCloseButtons.setParent(parent);
+    }
+}
+
+void UBActionableWidget::unsetActionsParent()
+{
+    if(mActions.contains(eAction_Close)){
+        mCloseButtons.setParent(this);
     }
 }
