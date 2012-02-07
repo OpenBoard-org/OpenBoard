@@ -10,7 +10,7 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
   , mCanRemove(true)
   , mpLayout(NULL)
   , mpContainer(NULL)
-  , mMargin(5)
+  , mMargin(10)
   , mListElementsSpacing(10)
   , mpEmptyLabel(NULL)
   , mpCurrentWidget(NULL)
@@ -68,6 +68,9 @@ void UBWidgetList::removeWidget(QWidget *widget)
         updateView(size());
         if(0 == mpLayout->count()){
             mpEmptyLabel->setVisible(true);
+        }
+        if(mpCurrentWidget == widget){
+            mpCurrentWidget = NULL;
         }
     }
 }
@@ -141,13 +144,19 @@ void UBWidgetList::mousePressEvent(QMouseEvent *ev)
         QWidget* pWAt = widgetAt(ev->pos());
         if(NULL != mpCurrentWidget){
             if(pWAt == mpCurrentWidget){
-                QPoint p;
-                p.setX(ev->x());
-                p.setY(ev->y());
-                if(mpCurrentWidget->shouldClose(p)){
-                    emit closeWidget(mpCurrentWidget);
-                    return;
-                }
+
+//                qDebug() << ev->x() << "," << ev->y();
+//                qDebug() << "mpCurrentWidget->pos() = " << mpCurrentWidget->pos().x() << "," << mpCurrentWidget->pos().y();
+//                qDebug() << "viewport position: " << visibleRegion().boundingRect().x() << "," << visibleRegion().boundingRect().y();
+
+//                QPoint p;
+//                p.setX(ev->x() - mpCurrentWidget->pos().x());
+//                p.setY(ev->y() - mpCurrentWidget->pos().y());
+
+//                if(mpCurrentWidget->shouldClose(p)){
+//                    emit closeWidget(mpCurrentWidget);
+//                    return;
+//                }
 
             }else{
                 mpCurrentWidget->setActionsVisible(false);

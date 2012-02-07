@@ -69,6 +69,8 @@ public:
     eMediaType mediaType();
     int border();
     void setAudioCover(const QString& coverPath);
+    void setUrl(const QString& url){mUrl = url;}
+    QString url(){return mUrl;}
 
 protected:
     void resizeEvent(QResizeEvent* ev);
@@ -118,6 +120,8 @@ private:
     QHBoxLayout mMediaLayout;
     /** The audio cover */
     QLabel* mpCover;
+    /** The media url */
+    QString mUrl;
 };
 
 #endif // UBMEDIAWIDGET_H
