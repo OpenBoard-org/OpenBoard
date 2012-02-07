@@ -39,6 +39,7 @@ class UBRoutedMouseEventWebView : public QWebView
         virtual void mouseReleaseEvent(QMouseEvent* ev);
         virtual void contextMenuEvent(QContextMenuEvent* ev);
         virtual void wheelEvent(QWheelEvent* ev);
+//        virtual void dropEvent(QDropEvent *);
 };
 
 #endif /* UBROUTEDMOUSEEVENTWEBVIEW_H_ */

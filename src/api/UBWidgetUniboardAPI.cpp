@@ -541,7 +541,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
 
             registerIDWidget(UBDownloadManager::downloadManager()->addFileToDownload(desc));
 
-            return;
+//            return;
         }
 
     } else  if (pMimeData->hasUrls()) { //Local file processing

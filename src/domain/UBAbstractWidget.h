@@ -131,6 +131,7 @@ class UBAbstractWidget : public UBRoutedMouseEventWebView
 
         virtual void injectInlineJavaScript();
         virtual void paintEvent(QPaintEvent * event);
+        virtual void dropEvent(QDropEvent *);
 
     protected slots:
 

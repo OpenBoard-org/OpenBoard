@@ -253,7 +253,6 @@ class UBWidgetUniboardAPI : public QObject
 private slots:
         void onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData);
 
-
 private:
         inline void registerIDWidget(int id){webDownloadIds.append(id);}
         inline bool takeIDWidget(int id);
