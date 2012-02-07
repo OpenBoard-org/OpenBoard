@@ -36,8 +36,8 @@ void AnnotsHandler::_processObjectContent(unsigned int startOfPageElement)
    {
       Object * child = _annotations[0];
       std::string childContent = child->getObjectContent();
-      if( Parser::findToken(childContent,"/Rect") == -1 &&
-         Parser::findToken(childContent,"/Subtype") == -1 )
+      if((int) Parser::findToken(childContent,"/Rect") == -1 &&
+         (int)Parser::findToken(childContent,"/Subtype") == -1 )
       {
          // this was not Annotation but reference to array 
          // of annotations 

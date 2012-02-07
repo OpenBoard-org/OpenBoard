@@ -47,7 +47,7 @@ void FlateDecode::initialize(Object * objectWithStream)
       std::string head;
       objectWithStream->getHeader(head);
 
-      if( head.find(FilterPredictor::DECODE_PARAM_TOKEN)  != -1 )
+      if((int) head.find(FilterPredictor::DECODE_PARAM_TOKEN)  != -1 )
       {
          _predict = new FilterPredictor();
          _predict->initialize(objectWithStream);

@@ -42,7 +42,7 @@ namespace merge_lib
          {
             unsigned int startOfParent = content.find("/Parent");
             unsigned int endOfParent = content.find(" R", startOfParent);
-            if(startOfParent == -1)
+            if((int)startOfParent == -1)
                break;
             std::vector <Object *> parents = parent->getChildrenByBounds(startOfParent, endOfParent);
             if(parents.size() != 1)
@@ -50,7 +50,7 @@ namespace merge_lib
             parent = parents[0];
             std::string parentContent = parent->getObjectContent();
             unsigned int startOfMediaBox = parentContent.find(_handlerName);
-            if(startOfMediaBox == -1)
+            if((int)startOfMediaBox == -1)
             {
                content = parentContent;
                continue;

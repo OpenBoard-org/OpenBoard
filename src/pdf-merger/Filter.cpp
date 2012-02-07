@@ -63,12 +63,12 @@ std::vector <Decoder * > Filter::_getDecoders()
    while(1)
    {      
       startOfDecoder = streamHeader.find("/", startOfDecoder);
-      if(startOfDecoder == -1)
+      if((int)startOfDecoder == -1)
          break;
       else
          ++startOfDecoder;
       unsigned int endOfDecoder = streamHeader.find_first_of(whitespacesAndDelimeters, startOfDecoder);
-      if(endOfDecoder == -1)
+      if((int)endOfDecoder == -1)
          break;
       std::map<std::string, Decoder *>::iterator foundDecoder = 
          _allDecoders.find(streamHeader.substr(startOfDecoder, endOfDecoder - startOfDecoder));

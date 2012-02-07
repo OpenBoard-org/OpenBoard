@@ -47,8 +47,8 @@ class UBWebPluginFactory : public QWebPluginFactory
     QObject* create(const QString &mimeType, const QUrl &url, const QStringList &argumentNames, const QStringList &argumentValues) const
     {
         Q_UNUSED(url);
-                Q_UNUSED(argumentNames);
-                Q_UNUSED(argumentValues);
+        Q_UNUSED(argumentNames);
+        Q_UNUSED(argumentValues);
 
         if (mimeType == "application/x-ub-pdf")
         {
