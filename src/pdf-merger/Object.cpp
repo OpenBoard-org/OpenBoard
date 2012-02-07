@@ -369,7 +369,7 @@ bool Object::_findObject(const std::string & token, Object* & foundObject, unsig
 {
    _isPassed = true;
    tokenPositionInContent = Parser::findToken(_content,token);
-   if(tokenPositionInContent != -1)
+   if((int)tokenPositionInContent != -1)
    {
       foundObject = this;
       return true;
@@ -456,12 +456,12 @@ bool Object::getStream(std::string & stream)
 bool Object::_getStreamFromContent(std::string & stream)
 {
    size_t stream_begin = _content.find("stream");
-   if( stream_begin == -1 )
+   if((int) stream_begin == -1 )
    {
       return false;
    }
    size_t stream_end = _content.find("endstream",stream_begin);
-   if( stream_end == -1 )
+   if((int) stream_end == -1 )
    {
       return false;
    }
@@ -558,7 +558,7 @@ std::string Object::getNameSimpleValue(const std::string &content, const std::st
 Object* Object::findPatternInObjOrParents(const std::string &pattern)
 {
    std::string content=getObjectContent();
-   if( Parser::findToken(content,pattern,0) != -1 )
+   if((int) Parser::findToken(content,pattern,0) != -1 )
    {
       return this;
    }
@@ -569,7 +569,7 @@ Object* Object::findPatternInObjOrParents(const std::string &pattern)
    {
       unsigned int startOfParent = content.find("/Parent");
       unsigned int endOfParent = content.find(" R", startOfParent);
-      if(startOfParent == -1)
+      if((int)startOfParent == -1)
       {
          break;
       }
@@ -581,7 +581,7 @@ Object* Object::findPatternInObjOrParents(const std::string &pattern)
       parent = parents[0];
       std::string parentContent = parent->getObjectContent();
       unsigned int startOfPattern = parentContent.find(pattern);
-      if(startOfPattern == -1)
+      if((int)startOfPattern == -1)
       {
          content = parentContent;
          continue;
