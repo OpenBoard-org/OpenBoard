@@ -142,6 +142,7 @@ void UBTBPageEditWidget::onActionButton()
     UBTeacherStudentAction* pAction = new UBTeacherStudentAction(this);
     mActions << pAction;
     mpActions->addWidget(pAction);
+    connectActions(pAction);
     emit valueChanged();
 }
 
@@ -150,6 +151,7 @@ void UBTBPageEditWidget::onLinkButton()
     UBUrlWidget* pUrl = new UBUrlWidget(this);
     mUrls << pUrl;
     mpLinks->addWidget(pUrl);
+    connectActions(pUrl);
     emit valueChanged();
 }
 
@@ -163,8 +165,17 @@ void UBTBPageEditWidget::onMediaDropped(const QString &url)
             //mpDataMgr->medias()->append(pMedia);
             //mpDataMgr->addMediaUrl(url);
             mpMediaContainer->addWidget(pMedia);
+            connectActions(pMedia);
             emit valueChanged();
         }
+    }
+}
+
+void UBTBPageEditWidget::connectActions(QWidget* w)
+{
+    UBActionableWidget* pActionable = dynamic_cast<UBActionableWidget*>(w);
+    if(NULL != pActionable){
+        connect(pActionable, SIGNAL(close(QWidget*)), this, SLOT(onCloseWidget(QWidget*)));
     }
 }
 
@@ -217,6 +228,7 @@ void UBTBPageEditWidget::updateFields()
         pAction->setText(action.content);
         mActions << pAction;
         mpActions->addWidget(pAction);
+        connectActions(pAction);
     }
     // Medias
     foreach(QString url, *mpDataMgr->mediaUrls()){
@@ -226,6 +238,7 @@ void UBTBPageEditWidget::updateFields()
             if(pWidget != NULL){
                 mMedias << pWidget;
                 mpMediaContainer->addWidget(pWidget);
+                connectActions(pWidget);
             }
         }
     }
@@ -237,6 +250,7 @@ void UBTBPageEditWidget::updateFields()
         urlWidget->setUrl(link.link);
         mUrls << urlWidget;
         mpLinks->addWidget(urlWidget);
+        connectActions(urlWidget);
     }
     // Comments
     mpComments->document()->setPlainText(mpDataMgr->comments());
@@ -287,7 +301,15 @@ void UBTBPageEditWidget::onCloseWidget(QWidget *w)
             mpLinks->removeWidget(pW);
             mUrls.remove(mUrls.indexOf(pW));
             DELETEPTR(w);
-        }else if("UBTBMediaPicture" == w->objectName() || "UBMediaWidget" == w->objectName()){
+        }else if("UBTBMediaPicture" == w->objectName()){
+            UBPictureWidget* pW = dynamic_cast<UBPictureWidget*>(w);
+            mMediaUrls.removeOne(pW->url());
+            mpMediaContainer->removeWidget(w);
+            mMedias.remove(mMedias.indexOf(w));
+            DELETEPTR(w);
+        }else if("UBMediaWidget" == w->objectName()){
+            UBMediaWidget* pW = dynamic_cast<UBMediaWidget*>(w);
+            mMediaUrls.removeOne(pW->url());
             mpMediaContainer->removeWidget(w);
             mMedias.remove(mMedias.indexOf(w));
             DELETEPTR(w);
@@ -326,10 +348,12 @@ UBUrlWidget::UBUrlWidget(QWidget *parent, const char *name):UBActionableWidget(p
 
     mpLayout->addLayout(mpTitleLayout);
     mpLayout->addLayout(mpLabelLayout);
+    setActionsParent(this);
 }
 
 UBUrlWidget::~UBUrlWidget()
 {
+    unsetActionsParent();
     DELETEPTR(mpTitle);
     DELETEPTR(mpTitleLabel);
     DELETEPTR(mpUrlLabel);
@@ -460,6 +484,7 @@ QWidget* UBTBMediaContainer::generateMediaWidget(const QString& url)
     if(mimeType.contains("image")){
         QPixmap pix = QPixmap(url);
         UBPictureWidget* pic = new UBPictureWidget();
+        pic->setUrl(url);
         pix.scaledToWidth(pic->label()->width());
         pic->label()->resize(pix.width(), pix.height());
         pic->label()->setPixmap(pix);
@@ -470,6 +495,7 @@ QWidget* UBTBMediaContainer::generateMediaWidget(const QString& url)
     else if(mimeType.contains("video") || mimeType.contains("audio")){
         UBMediaWidget* mediaPlayer = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
         mediaPlayer->setFile(url);
+        mediaPlayer->setUrl(url);
         pW = mediaPlayer;
     }
     else{
@@ -511,11 +537,12 @@ UBTeacherStudentAction::UBTeacherStudentAction(QWidget *parent, const char *name
     mpText->setStyleSheet("background:white;");
 
     mpLayout->addWidget(mpText, 1);
-
+    setActionsParent(this);
 }
 
 UBTeacherStudentAction::~UBTeacherStudentAction()
 {
+    unsetActionsParent();
     DELETEPTR(mpCombo);
     DELETEPTR(mpText);
     DELETEPTR(mpComboLayout);
@@ -568,15 +595,18 @@ UBPictureWidget::UBPictureWidget(QWidget *parent, const char *name):UBActionable
     mpLabel = new QLabel(this);
     mpLayout->addWidget(mpLabel);
     mpLabel->setGeometry( 10, 10, width()-2*10, height());
+    setActionsParent(mpLabel);
 }
 
 UBPictureWidget::~UBPictureWidget()
 {
+    unsetActionsParent();
     DELETEPTR(mpLabel);
     DELETEPTR(mpLayout);
 }
 
 void UBPictureWidget::resizeEvent(QResizeEvent *ev)
 {
+    Q_UNUSED(ev);
     mpLabel->setGeometry( 10, 10, width()-2*10, height());
 }

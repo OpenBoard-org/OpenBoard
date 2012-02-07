@@ -67,6 +67,7 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
   */
 UBMediaWidget::~UBMediaWidget()
 {
+    unsetActionsParent();
     DELETEPTR(mpSlider);
     DELETEPTR(mpPauseButton);
     DELETEPTR(mpPlayStopButton);
@@ -152,6 +153,7 @@ void UBMediaWidget::createMediaPlayer()
     }
     mLayout.addWidget(mpMediaContainer, 1);
     mLayout.addLayout(&mSeekerLayout, 0);
+    setActionsParent(mpMediaContainer);
 }
 
 /**
