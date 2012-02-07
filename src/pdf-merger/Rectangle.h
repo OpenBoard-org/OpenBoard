@@ -40,7 +40,7 @@ namespace merge_lib
       double getHeight();
 
       //members
-      double x1, x2, y1, y2;
+      double x1, y1, x2, y2;
    private:
       //methods
       const std::string _getRectangleAsString(const char * delimeter);

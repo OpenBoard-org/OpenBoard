@@ -27,7 +27,7 @@ namespace merge_lib
    public:
       LZWDecode();
       virtual ~LZWDecode();
-      bool encode(std::string & decoded) {return true;};
+      bool encode(std::string & decoded);
       bool decode(std::string & encoded);
       void initialize(Object * objectWithStram);
    private:
@@ -37,8 +37,8 @@ namespace merge_lib
       void clearTable();
       int getCode();
 
-      std::string &_encoded;
       std::string _dummy;
+      std::string &_encoded;
       size_t _curSymbolIndex;
 
       int _earlyChange;	// early parameter

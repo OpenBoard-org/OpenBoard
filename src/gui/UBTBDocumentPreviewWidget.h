@@ -24,10 +24,35 @@ private slots:
 
 private:
     QVBoxLayout mLayout;
-    QHBoxLayout mPageLayout;
-    QHBoxLayout mPreviewLayout;
+    QHBoxLayout mButtonsLayout;
+
+    QWidget* mpContainer;
+    QVBoxLayout mContainerLayout;
     QPushButton* mpPageViewButton;
     QPushButton* mpEditButton;
+    QLabel* mpSessionLabel;
+    QLabel* mpSessionTitle;
+    UBTBSeparator mTitleSeparator;
+    QLabel* mpAuthorLabel;
+    QLabel* mpAuthors;
+    UBTBSeparator mAuthorSeparator;
+    QLabel* mpCreationDate;
+    UBTBSeparator mDateSeparator;
+    QLabel* mpTargetLabel;
+    QTextEdit* mpTarget;
+    UBTBSeparator mTargetSeparator;
+    QLabel* mpMetadataLabel;
+    QHBoxLayout mKeywordLayout;
+    QLabel* mpKeywordLabel;
+    QLabel* mpKeyword;
+    QHBoxLayout mLevelLayout;
+    QLabel* mpLevelLabel;
+    QLabel* mpLevel;
+    QHBoxLayout mTopicLayout;
+    QLabel* mpTopicLabel;
+    QLabel* mpTopic;
+    UBTBSeparator mMetadataSeparator;
+    UBTBLicenseWidget* mpLicense;
 
     UBTeacherBarDataMgr* mpDataMgr;
 };

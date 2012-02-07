@@ -62,6 +62,7 @@ public:
 
 signals:
     void showEditMode();
+    void showDocumentPreview();
 
 protected:
     void showEvent(QShowEvent* ev);
@@ -69,6 +70,7 @@ protected:
 private slots:
     void onEdit();
     void onActiveSceneChanged();
+    void onDocumentClicked();
 
 private:
     void generateActions();
@@ -77,8 +79,12 @@ private:
     void generateComments();
 
     QVBoxLayout mLayout;
+    QVBoxLayout mContainerLayout;
     QHBoxLayout mEditLayout;
     QPushButton* mpEditButton;
+    QPushButton* mpDocumentButton;
+
+    QWidget* mpContainer;
 
     // Titles
     QVBoxLayout mTitleLayout;
@@ -95,7 +101,6 @@ private:
 
     // License
     UBTBSeparator mLicenseSeparator;
-    // TODO : replace the QLabel of the license by a widget done for that!
     UBTBLicenseWidget* mpLicenseLabel;
 
 

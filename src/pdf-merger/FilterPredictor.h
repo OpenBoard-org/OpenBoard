@@ -27,7 +27,7 @@ namespace merge_lib
    public:
       FilterPredictor();
       virtual ~FilterPredictor();
-      bool encode(std::string & decoded){return false;}
+      bool encode(std::string & decoded);
       bool decode(std::string & encoded);
 
       void initialize(Object * objectWithStream);

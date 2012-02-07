@@ -179,9 +179,6 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                     QString pdfName = UBPersistenceManager::objectDirectory + "/" + pdfItem->fileUuid().toString() + ".pdf";
                     QString backgroundPath = pDocumentProxy->persistencePath() + "/" + pdfName;
 
-                    QPointF boudingRectBottomLeft = scene->itemsBoundingRect().bottomLeft();
-                    QPointF pdfItemBottomLeft = pdfItem->sceneBoundingRect().bottomLeft();
-
                     qDebug() << "scene->itemsBoundingRect()" << scene->itemsBoundingRect();
                     qDebug() << "pdfItem->boundingRect()" << pdfItem->boundingRect();
                     qDebug() << "pdfItem->sceneBoundingRect()" << pdfItem->sceneBoundingRect();

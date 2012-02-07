@@ -276,13 +276,14 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
         qWarning() << "Document size not found, using default view size" << docSize;
 
         metadata.insert(UBSettings::documentSize, QVariant(docSize));
-
     }
 
     if (!updatedAtFound)
     {
         metadata.insert(UBSettings::documentUpdatedAt, date + "T00:00:00Z");
     }
+
+    metadata.insert(UBSettings::documentDate, QVariant(date));
 
     return metadata;
 }

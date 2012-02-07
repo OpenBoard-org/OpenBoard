@@ -15,10 +15,26 @@
                     lang = sankore.locale().substr(0,2);    
                 } else 
                     lang = "en";
-                $("<script type='text/javascript' src='js/translation/" + lang + ".js'>").appendTo("head");
-                if((typeof sankoreLang) == "undefined")
-                    $("<script type='text/javascript' src='js/translation/en.js'>").appendTo("head");
-                start();
+                if(lang == "en")
+                    start();
+                else{
+                    returnStatus(lang);
+                }
+                
+                function returnStatus(lang){
+                    $.ajax({
+                        type: 'POST',
+                        url:'locales/' + lang + '/index.html',
+                        statusCode: {
+                            404: function() {
+                                start();
+                            },
+                            200: function(){
+                                window.location.href = 'locales/' + lang + '/index.html';
+                            }
+                        }
+                    });                    
+                }
                 //here you can put your code
                 if(window.sankore)
                     sankore.enableDropOnWidget();
@@ -38,13 +54,13 @@
             <div style="width: 50%; height: 100%; float: left;">
                 <div id="display" style="float: right; width: 90px; cursor: pointer;" class="selected">
                     <div id="display_img" style="float: right;" class="green_point"></div>
-                    <div id="display_text" style="float: right;">Display</div>                    
+                    <div id="display_text" style="float: right;"></div>                    
                 </div>
             </div>
             <div style="width: 50%; height: 100%; float: right;">
                 <div id="edit" style="float: left; width: 90px; cursor: pointer;">                    
                     <div id="edit_img" style="float: left;" class="red_point"></div>
-                    <div id="edit_text" style="float: left;">Edit</div>
+                    <div id="edit_text" style="float: left;"></div>
                 </div>
             </div>
         </div>

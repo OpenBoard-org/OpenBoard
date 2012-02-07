@@ -16,6 +16,8 @@
 #define CCITTFaxDecode_H
 
 #include <string>
+#include "Decoder.h"
+
 namespace merge_lib
 {
    // this class provides method for FlateDecode encoding and decoding
@@ -24,9 +26,9 @@ namespace merge_lib
       public:
          CCITTFaxDecode(){};
          virtual ~CCITTFaxDecode(){};
-         bool encode(std::string & decoded) {return true;};
-         bool decode(std::string & encoded) {return true;};
-         void initialize(Object * objectWithStram){};
+         bool encode(std::string & decoded);
+         bool decode(std::string & encoded);
+         void initialize(Object * objectWithStram);
 
    };
 }

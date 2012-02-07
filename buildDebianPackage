@@ -49,8 +49,8 @@ else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
         echo creating a tag with the version $VERSION
-        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
-        git push origin --tags 
+#        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
+#        git push origin --tags 
     fi
 fi
 
@@ -191,7 +191,7 @@ CHANGE_LOG_FILE="$BASE_WORKING_DIR/DEBIAN/changelog-sankore-$VERSION.txt"
 CONTROL_FILE="$BASE_WORKING_DIR/DEBIAN/control"
 CHANGE_LOG_TEXT="changelog.txt"
 
-ARCHITECTURE=`uname -i`
+ARCHITECTURE=`uname -m`
 if [ "$ARCHITECTURE" == "x86_64" ]; then
     ARCHITECTURE="amd64"
 fi

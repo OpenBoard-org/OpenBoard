@@ -112,6 +112,7 @@ void UBYouTubePublisher::postClientLoginRequest(const QString& userName, const Q
 
 void UBYouTubePublisher::postClientLoginResponse(bool success, const QByteArray& pPayload)
 {
+    Q_UNUSED(success);
     mAuthToken = "";
 
     QString auth = QString::fromUtf8(pPayload);
@@ -136,7 +137,7 @@ void UBYouTubePublisher::postClientLoginResponse(bool success, const QByteArray&
     if(mAuthToken.length() == 0)
     {
         UBApplication::showMessage(tr("YouTube authentication failed."));
-        success = false;
+//        success = false;
         deleteLater();
     }
     else

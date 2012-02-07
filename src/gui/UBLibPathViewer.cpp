@@ -284,7 +284,7 @@ void UBLibPathViewer::showBack()
     if(NULL != pLastElem)
     {
         mpBackElem->setPath(pLastElem->element()->path());
-        mpBackElem->setType(eUBLibElementType_Folder);
+        mpBackElem->setType(pLastElem->element()->type());
         mpBackElem->setName(pLastElem->element()->name());
     }
 

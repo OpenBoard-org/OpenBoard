@@ -16,10 +16,12 @@
 #include "UBFileSystemUtils.h"
 
 #include <QtGui>
+#include "globals/UBGlobals.h"
 
+THIRD_PARTY_WARNINGS_DISABLE
 #include "quazipfile.h"
-
 #include <openssl/md5.h>
+THIRD_PARTY_WARNINGS_ENABLE
 
 #include "core/memcheck.h"
 

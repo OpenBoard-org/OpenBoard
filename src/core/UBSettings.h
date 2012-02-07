@@ -160,6 +160,7 @@ class UBSettings : public QObject
         static QString sessionLevel;
         static QString sessionTopic;
         static QString sessionAuthors;
+        static QString documentDate;
 
         static QString trashedDocumentGroupNamePrefix;
 

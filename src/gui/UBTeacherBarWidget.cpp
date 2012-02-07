@@ -15,7 +15,7 @@
 
 #include "customWidgets/UBDraggableLabel.h"
 #include "customWidgets/UBMediaWidget.h"
-#include "customWidgets/UBGlobals.h"
+#include "globals/UBGlobals.h"
 
 #include "core/memcheck.h"
 
@@ -57,6 +57,7 @@ UBTeacherBarWidget::UBTeacherBarWidget(QWidget *parent, const char *name):UBDock
     connect(UBApplication::boardController, SIGNAL(activeDocumentChanged()), this, SLOT(onActiveDocumentChanged()));
 
     connect(mpPreview, SIGNAL(showEditMode()), this, SLOT(onShowEditMode()));
+    connect(mpPreview, SIGNAL(showDocumentPreview()), this, SLOT(onShowDocumentPreview()));
     connect(mpDocPreviewWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
     connect(mpDocEditWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
     connect(mpPageEditWidget, SIGNAL(changeTBState(eTeacherBarState)), this, SLOT(onTBStateChanged(eTeacherBarState)));
@@ -148,6 +149,11 @@ bool UBTeacherBarWidget::isEmpty()
 void UBTeacherBarWidget::onShowEditMode()
 {
     onTBStateChanged(eTeacherBarState_PageEdit);
+}
+
+void UBTeacherBarWidget::onShowDocumentPreview()
+{
+    onTBStateChanged(eTeacherBarState_DocumentPreview);
 }
 
 void UBTeacherBarWidget::onTBStateChanged(eTeacherBarState state)

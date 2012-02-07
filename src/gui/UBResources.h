@@ -37,7 +37,6 @@ class UBResources : public QObject
 
          QCursor penCursor;
          QCursor eraserCursor;
-         QCursor magnifierCursor;
          QCursor markerCursor;
          QCursor pointerCursor;
          QCursor handCursor;

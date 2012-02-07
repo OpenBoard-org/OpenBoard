@@ -1755,6 +1755,9 @@ void UBGraphicsScene::addCache()
     mTools << cache;
 
     addItem(cache);
+
+    cache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
     cache->setVisible(true);
     cache->setSelected(true);
     UBApplication::boardController->notifyCache(true);

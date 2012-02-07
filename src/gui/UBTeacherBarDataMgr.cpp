@@ -1,3 +1,5 @@
+#include <QDate>
+
 #include "UBTeacherBarDataMgr.h"
 
 #include "core/UBApplication.h"
@@ -5,7 +7,7 @@
 
 #include "board/UBBoardController.h"
 
-#include "customWidgets/UBGlobals.h"
+#include "globals/UBGlobals.h"
 
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
@@ -59,7 +61,6 @@ void UBTeacherBarDataMgr::saveContent()
         documentProxy->setSessionTitle(mSessionTitle);
         documentProxy->setSessionTarget(mSessionTarget);
         documentProxy->setSessionLicence(QString("%0").arg(mSessionLicence));
-        qDebug() << "Saving keywords: " << mKeywords;
         documentProxy->setSessionKeywords(mKeywords);
         documentProxy->setSessionLevel(mLevel);
         documentProxy->setSessionTopic(mTopic);
@@ -73,6 +74,7 @@ void UBTeacherBarDataMgr::saveContent()
 
 void UBTeacherBarDataMgr::loadContent(bool docChanged)
 {
+    Q_UNUSED(docChanged);
     clearLists();
     UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
 
@@ -82,10 +84,15 @@ void UBTeacherBarDataMgr::loadContent(bool docChanged)
         mSessionTarget = documentProxy->sessionTarget();
         mSessionLicence = (eLicense)documentProxy->sessionLicence().toInt();
         mKeywords = documentProxy->sessionKeywords();
-        qDebug() << "Keywords loaded: " << mKeywords << " (" << documentProxy->sessionKeywords() << ")";
         mLevel = documentProxy->sessionLevel();
         mTopic = documentProxy->sessionTopic();
         mAuthors = documentProxy->sessionAuthors();
+        if("" != documentProxy->documentDate()){
+            mCreationDate = documentProxy->documentDate();
+        }else{
+            mCreationDate = QDate::currentDate().toString("yyyy-MM-dd");
+        }
+
     }
 
     // Page Title
@@ -126,6 +133,7 @@ void UBTeacherBarDataMgr::loadContent(bool docChanged)
 // ------------------------------------------------------------------------------------
 UBTBSeparator::UBTBSeparator(QWidget *parent, const char *name):QFrame(parent)
 {
+    Q_UNUSED(name);
     setObjectName("UBTBSeparator");
     setMinimumHeight(5);
     setMaximumHeight(5);

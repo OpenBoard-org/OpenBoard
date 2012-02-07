@@ -26,9 +26,9 @@ namespace merge_lib
       public:
          ASCIIHexDecode(){};
          virtual ~ASCIIHexDecode(){};
-         bool encode(std::string & decoded){return false;}
+         bool encode(std::string & decoded);
          bool decode(std::string & encoded);
-         void initialize(Object * objectWithStram){};
+         void initialize(Object * objectWithStram);
 
    };
 }

@@ -35,6 +35,7 @@ QT += script
 QT += xmlpatterns
 
 INCLUDEPATH += src
+INCLUDEPATH += globals
 
 include($$THIRD_PARTY_PATH/libs.pri)
 include(src/adaptors/adaptors.pri)
@@ -83,6 +84,7 @@ UB_LIBRARY.files = resources/library
 UB_FONTS.files = resources/fonts
 UB_THIRDPARTY_INTERACTIVE.files = thirdparty/interactive
 
+DEFINES += NO_THIRD_PARTY_WARNINGS
 DEFINES += UBVERSION=\"\\\"$${LONG_VERSION}\"\\\" \
    UBVERSION_RC=$$VERSION_RC
 ALPHA_BETA_STR = $$find(VERSION, "[ab]")

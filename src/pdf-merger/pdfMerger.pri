@@ -54,7 +54,10 @@ SOURCES += \
 	RemoveHimselfHandler.cpp \
 	RunLengthDecode.cpp \
 	Utils.cpp \
-	OverlayDocumentParser.cpp
+	OverlayDocumentParser.cpp \
+    src/pdf-merger/CCITTFaxDecode.cpp \
+    src/pdf-merger/JBIG2Decode.cpp \
+    src/pdf-merger/DCTDecode.cpp
 	
 
 macx {
@@ -82,3 +85,6 @@ linux-g++-64 {
    LIBS += -lz
 
 }
+
+
+

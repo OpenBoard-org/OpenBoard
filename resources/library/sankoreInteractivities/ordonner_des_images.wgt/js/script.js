@@ -1,3 +1,5 @@
+var sankoreLang = {display: "Display", edit: "Edit", short_desc: "Place the pictures in ascending order.", add: "Add new block"};
+
 //main function
 function start(){
     
@@ -40,9 +42,10 @@ function start(){
                     container.find(".add_img").remove();
                     container.find(".close_cont").remove();
                     container.find(".img_block").each(function(){
-                        if($(this).html().match(/<img/)){
+                        if($(this).find("img").attr("src") != "img/drop_img.png"){
                             $(this).find(".close_img").remove();
                             $(this).find(".clear_img").remove();
+                            $(this).find(".numb_img").remove();
                             $(this).removeAttr("ondragenter")
                             .removeAttr("ondragleave")
                             .removeAttr("ondragover")
@@ -78,7 +81,7 @@ function start(){
     
                     $("<div class='close_cont'>").appendTo(container);
                     container.find(".text_cont").attr("contenteditable","true");
-                    container.find(".imgs_cont").sortable("destroy");
+                    //container.find(".imgs_cont").sortable("destroy");
                     container.find(".imgs_cont").css("background-color", "white");
                     
                     var add_img = $("<div class='add_img'>");
@@ -87,10 +90,12 @@ function start(){
                         .attr("ondragleave", "$(this).css(\"background-color\",\"white\"); return false;")
                         .attr("ondragover", "$(this).css(\"background-color\",\"#ccc\"); return false;")
                         .attr("ondrop", "$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);")
-                        .css("float","left");
+                        //.css("float","left");
                         $("<div class='close_img'>").appendTo($(this));
                         $("<div class='clear_img'>").appendTo($(this));
+                        $("<div class='numb_img'>" + $(this).find("input").val() + "</div>").appendTo($(this));
                     });
+                    rightOrder(container.find(".imgs_cont"));
                     container.find(".imgs_cont").append(add_img)
                 });
                 
@@ -130,9 +135,7 @@ function start(){
         var tmp_obj = $(this).parent().parent();        
         $(this).parent().remove();
         if(tmp_obj.find(".img_block").size() > 0){
-            tmp_obj.find(".img_block").each(function(){
-                $(this).find("input").val(++i);
-            });
+            refreshImgNumbers(tmp_obj);
         }
         
     });
@@ -154,7 +157,7 @@ function start(){
     //cleaning an image
     $(".clear_img").live("click",function(){
         //$(this).parent().find(".fill_img").remove();
-        $(this).parent().find("img").remove();
+        $(this).parent().find("img").attr("src","img/drop_img.png");
     });
 }
 
@@ -274,13 +277,17 @@ function showExample(){
 //check result
 function checkResult(event)
 {
-    var str = "";
-    var right_str = $(event.target).find("input").val();
-    $(event.target).find(".img_block").each(function(){
-        str += $(this).find("input").val() + "*";
-    });
-    if(str == right_str)
-        $(event.target).css("background-color","#9f9");
+    if($("#display").hasClass("selected")){
+        var str = "";
+        var right_str = $(event.target).find("input").val();
+        $(event.target).find(".img_block").each(function(){
+            str += $(this).find("input").val() + "*";
+        });
+        if(str == right_str)
+            $(event.target).css("background-color","#9f9");
+    } else {
+        refreshImgNumbers($(event.target));
+    }
 }
 
 //add new container
@@ -300,11 +307,13 @@ function addContainer(){
 
 //add new img block
 function addImgBlock(dest){
-    var img_block = $("<div class='img_block' ondragenter='return false;' ondragleave='$(this).css(\"background-color\",\"white\"); return false;' ondragover='$(this).css(\"background-color\",\"#ccc\"); return false;' ondrop='$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);' style='text-align: center; float: left;'></div>").insertBefore(dest);
+    var img_block = $("<div class='img_block' ondragenter='return false;' ondragleave='$(this).css(\"background-color\",\"white\"); return false;' ondragover='$(this).css(\"background-color\",\"#ccc\"); return false;' ondrop='$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);' style='text-align: center;'></div>").insertBefore(dest);
     var tmp_counter = dest.parent().find(".img_block").size();
     $("<div class='close_img'>").appendTo(img_block);
     $("<div class='clear_img'>").appendTo(img_block);
+    $("<div class='numb_img'>" + tmp_counter + "</div>").appendTo(img_block);
     $("<input type='hidden' value='" + tmp_counter + "'/>").appendTo(img_block);
+    $("<img src='img/drop_img.png' height='120'/>").appendTo(img_block);
 }
 
 function refreshBlockNumbers(){
@@ -329,6 +338,35 @@ function shuffle( arr )
     return arr;
 }
 
+//regulation the images in right order
+function rightOrder(source){
+    var tmp_arr = [];
+    var tmp_var;
+    source.find(".img_block").each(function(){
+        tmp_arr.push($(this));
+        $(this).remove();
+    });
+    for(var i = 0; i < tmp_arr.length; i++)
+        for(var j = 0; j < tmp_arr.length - 1; j++){
+            if(tmp_arr[j].find("input").val() > tmp_arr[j+1].find("input").val()){
+                tmp_var = tmp_arr[j];
+                tmp_arr[j] = tmp_arr[j+1];
+                tmp_arr[j+1] = tmp_var;
+            }
+        }
+    for(i in tmp_arr)
+        source.append(tmp_arr[i]);
+}
+
+//refresh the numbers of the images
+function refreshImgNumbers(source){
+    var tmp = 1;
+    source.find(".img_block").each(function(){
+        $(this).find("input").val(tmp);
+        $(this).find(".numb_img").text(tmp);
+        tmp++;
+    });
+}
 
 function stringToXML(text){
     if (window.ActiveXObject){

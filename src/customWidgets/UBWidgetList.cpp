@@ -1,15 +1,19 @@
 #include <QDebug>
 #include <QScrollBar>
+#include <QApplication>
+#include <QPainter>
 
-#include "UBGlobals.h"
+#include "globals/UBGlobals.h"
 #include "UBWidgetList.h"
 
 UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, const char* name):QScrollArea(parent)
+  , mCanRemove(true)
   , mpLayout(NULL)
   , mpContainer(NULL)
   , mMargin(5)
   , mListElementsSpacing(10)
   , mpEmptyLabel(NULL)
+  , mpCurrentWidget(NULL)
 {
    setObjectName(name);
    mOrientation = orientation;
@@ -128,6 +132,53 @@ void UBWidgetList::resizeEvent(QResizeEvent *ev)
                               mpEmptyLabel->height());
     updateView(size());
     updateSizes();
+}
+
+void UBWidgetList::mousePressEvent(QMouseEvent *ev)
+{
+    Q_UNUSED(ev);
+    if(mCanRemove){
+        QWidget* pWAt = widgetAt(ev->pos());
+        if(NULL != mpCurrentWidget){
+            if(pWAt == mpCurrentWidget){
+                QPoint p;
+                p.setX(ev->x());
+                p.setY(ev->y());
+                if(mpCurrentWidget->shouldClose(p)){
+                    emit closeWidget(mpCurrentWidget);
+                    return;
+                }
+
+            }else{
+                mpCurrentWidget->setActionsVisible(false);
+            }
+        }
+        mpCurrentWidget = dynamic_cast<UBActionableWidget*>(pWAt);
+        if(NULL != mpCurrentWidget){
+            mpCurrentWidget->setActionsVisible(true);
+        }
+    }
+    update();
+}
+
+QWidget* UBWidgetList::widgetAt(QPoint p)
+{
+    QWidget* pW = NULL;
+    pW = childAt(p);
+    if(NULL != pW){
+        do{
+            if( "UBTeacherStudentAction" == pW->objectName() ||
+                "UBUrlWidget" == pW->objectName() ||
+                "UBTBMediaPicture" == pW->objectName() ||
+                "UBMediaWidget" == pW->objectName()){
+                return pW;
+            }else{
+                pW = pW->parentWidget();
+            }
+        }while(NULL != pW && this != pW);
+    }
+
+    return pW;
 }
 
 void UBWidgetList::updateSizes()

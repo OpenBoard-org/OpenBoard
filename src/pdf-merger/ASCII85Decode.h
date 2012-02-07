@@ -26,9 +26,9 @@ namespace merge_lib
       public:
          ASCII85Decode(){};
          virtual ~ASCII85Decode(){};
-         bool encode(std::string & decoded) {return false;}
+         bool encode(std::string & decoded);
          bool decode(std::string & encoded);
-         void initialize(Object * objectWithStram){};
+         void initialize(Object * objectWithStram);
       private:
          void _wput(std::string &cur,unsigned long tuple, int len);
 

@@ -3,6 +3,7 @@ html, body{
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: white;
 }
 
 .toggle_mode{
@@ -122,29 +123,35 @@ html, body{
     background-color: white;
 }
 
-.close_img{
+.close_img, .clear_img, .numb_img {
     width: 30px;
-    height: 30px;
-    background-image: url(../img/close_img.png);
+    height: 30px;    
     background-repeat: no-repeat;
-    position: absolute;
-    top: -15px;
+    position: absolute;    
     right: -15px;
     cursor: pointer;
+}
+
+.close_img{
+    background-image: url(../img/close_img.png);
+    top: -15px;
 }
 
 .clear_img{
-    width: 30px;
-    height: 30px;
     background-image: url(../img/clear_img.png);
-    background-repeat: no-repeat;
-    position: absolute;
     top: 15px;
-    right: -15px;
-    cursor: pointer;
 }
 
-.fill_img{
+.numb_img{
+    background-image: url(../img/numb_img.png); 
+    left: -15px;
+    top: -15px;
+    color: white;
+    font-weight: bold;
+    font-size: 130%;
+}
+
+/*.fill_img{
     width: 30px;
     height: 30px;
     background-image: url(../img/fill_hor.png);
@@ -153,7 +160,9 @@ html, body{
     top: -15px;
     right: 17px; 
     cursor: pointer;
-}
+}*/
+
+
 
 .add_block{
     margin: 20px 0 0 20px;
