@@ -143,28 +143,15 @@ void UBWidgetList::mousePressEvent(QMouseEvent *ev)
     if(mCanRemove){
         QWidget* pWAt = widgetAt(ev->pos());
         if(NULL != mpCurrentWidget){
-            if(pWAt == mpCurrentWidget){
-
-//                qDebug() << ev->x() << "," << ev->y();
-//                qDebug() << "mpCurrentWidget->pos() = " << mpCurrentWidget->pos().x() << "," << mpCurrentWidget->pos().y();
-//                qDebug() << "viewport position: " << visibleRegion().boundingRect().x() << "," << visibleRegion().boundingRect().y();
-
-//                QPoint p;
-//                p.setX(ev->x() - mpCurrentWidget->pos().x());
-//                p.setY(ev->y() - mpCurrentWidget->pos().y());
-
-//                if(mpCurrentWidget->shouldClose(p)){
-//                    emit closeWidget(mpCurrentWidget);
-//                    return;
-//                }
-
-            }else{
+            if(pWAt != mpCurrentWidget){
                 mpCurrentWidget->setActionsVisible(false);
+                update();
             }
         }
         mpCurrentWidget = dynamic_cast<UBActionableWidget*>(pWAt);
         if(NULL != mpCurrentWidget){
             mpCurrentWidget->setActionsVisible(true);
+            update();
         }
     }
     update();
@@ -240,6 +227,3 @@ bool UBWidgetList::empty()
 {
     return mWidgetInfo.empty();
 }
-
-// TODO :   - add onHover 'delete' button
-
