@@ -59,6 +59,8 @@
 
 #include "core/memcheck.h"
 
+#include "document/UBDocumentController.h"
+
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
     : QObject(container)
     , mKeyboardPalette(0)
@@ -730,6 +732,27 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                         mKeyboardPalette->setParent(brWnd);
                 }
 
+            }
+            break;
+
+        case eUBDockPaletteWidget_DOCUMENT:
+            {
+                mLeftPalette->setVisible(leftPaletteVisible);
+                mRightPalette->setVisible(rightPaletteVisible);
+                mLeftPalette->assignParent(UBApplication::documentController->controlView());
+                mRightPalette->assignParent(UBApplication::documentController->controlView());
+                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                {
+
+                    if(mKeyboardPalette->m_isVisible)
+                    {
+                        mKeyboardPalette->hide();
+                        mKeyboardPalette->setParent(UBApplication::documentController->controlView());
+                        mKeyboardPalette->show();
+                    }
+                    else
+                        mKeyboardPalette->setParent(UBApplication::documentController->controlView());                    
+                } 
             }
             break;
 
