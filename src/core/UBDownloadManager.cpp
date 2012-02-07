@@ -70,7 +70,7 @@ void UBDownloadManager::destroy()
  * \brief Add a file to the download list
  * @param desc as the given file description
  */
-void UBDownloadManager::addFileToDownload(sDownloadFileDesc desc)
+int UBDownloadManager::addFileToDownload(sDownloadFileDesc desc)
 {
     // Set the ID for this download
     desc.id = mLastID;
@@ -89,6 +89,8 @@ void UBDownloadManager::addFileToDownload(sDownloadFileDesc desc)
     UBApplication::boardController->paletteManager()->startDownloads();
 
     emit fileAddedToDownload();
+
+    return desc.id;
 }
 
 /**
@@ -144,8 +146,7 @@ void UBDownloadManager::onUpdateDownloadLists()
             // If we fall here that means that there is no pending download
             break;
         }
-        if(-1 == mDLAvailability.at(i))
-        {
+        if(-1 == mDLAvailability.at(i))        {
             // Pending downloads exist and a download 'slot' is available
             // Let's move the first pending download to the current download
             // list and fill the slot
@@ -194,13 +195,21 @@ void UBDownloadManager::onDownloadProgress(int id, qint64 received, qint64 total
  */
 void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
+//    Temporary data for dnd do not delete it please
+    Q_UNUSED(pPos)
+    Q_UNUSED(pSize)
+    Q_UNUSED(isBackground)
+
     for(int i=0; i<mCrntDL.size(); i++)
     {
         sDownloadFileDesc desc = mCrntDL.at(i);
         if(id == desc.id)
         {
-            if(desc.modal)
-            {
+            if (desc.dest == sDownloadFileDesc::graphicsWidget) {
+                desc.contentTypeHeader = pContentTypeHeader;
+                emit downloadFinished(pSuccess, desc, pData);
+
+            } else if(desc.modal) {
                 // The downloaded file is modal so we must put it on the board
                 emit addDownloadedFileToBoard(pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
             }
@@ -208,6 +217,7 @@ void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl
             {
                 emit addDownloadedFileToLibrary(pSuccess, sourceUrl, pContentTypeHeader, pData);
             }
+
             break;
         }
     }

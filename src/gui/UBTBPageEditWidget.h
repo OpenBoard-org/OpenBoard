@@ -64,6 +64,8 @@ public:
     ~UBPictureWidget();
 
     QLabel* label(){return mpLabel;}
+    void setUrl(const QString& url){mUrl = url;}
+    QString url(){return mUrl;}
 
 protected:
     void resizeEvent(QResizeEvent* ev);
@@ -71,6 +73,7 @@ protected:
 private:
     QVBoxLayout* mpLayout;
     QLabel* mpLabel;
+    QString mUrl;
 };
 
 class UBTBMediaContainer : public UBWidgetList
@@ -124,6 +127,7 @@ private slots:
     void onCloseWidget(QWidget* w);
 
 private:
+    void connectActions(QWidget* w);
     QVBoxLayout mLayout;
     QHBoxLayout mTitleLayout;
     QVBoxLayout mContainerLayout;

@@ -93,3 +93,8 @@ void UBRoutedMouseEventWebView::wheelEvent(QWheelEvent* ev)
         p->event(ev);
     }
 }
+//void UBRoutedMouseEventWebView::dropEvent(QDropEvent *event)
+//{
+////    QWebView::dropEvent(event);
+//    event->accept();
+//}

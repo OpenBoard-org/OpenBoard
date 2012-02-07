@@ -16,8 +16,10 @@
 #define UBWIDGETAPI_H
 
 #include <QtCore>
+#include <QDropEvent>
 
 #include "UBW3CWidgetAPI.h"
+#include "core/UBDownloadManager.h"
 
 class UBGraphicsScene;
 class UBGraphicsWidgetItem;
@@ -245,6 +247,15 @@ class UBWidgetUniboardAPI : public QObject
          * this method download the object on the widget directory and return the path of the downloaded object
          */
         QString downloadUrl(const QString &objectUrl, const QString &extention = "");
+        QString downloadWeb(const QString &objectUrl);
+        void ProcessDropEvent(QDropEvent *);
+
+private slots:
+        void onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData);
+
+private:
+        inline void registerIDWidget(int id){webDownloadIds.append(id);}
+        inline bool takeIDWidget(int id);
 
     private:
 
@@ -255,6 +266,10 @@ class UBWidgetUniboardAPI : public QObject
         int pageCount();
 
         int currentPageNumber();
+        QString getObjDir();
+        QString createMimeText(bool downloaded, const QString &mimeType, const QString &fileName);
+        bool supportedTypeHeader(const QString &) const;
+        QString boolToStr(bool value) const {return value ? "true" : "false";}
 
         UBGraphicsScene* mScene;
 
@@ -265,7 +280,7 @@ class UBWidgetUniboardAPI : public QObject
         UBWidgetMessageAPI* mMessagesAPI;
 
         UBDatastoreAPI* mDatastoreAPI;
-
+        QList<int> webDownloadIds;
 };
 
 

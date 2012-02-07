@@ -5,7 +5,7 @@
 
 UBDraggableMedia::UBDraggableMedia(eMediaType type, QWidget *parent, const char *name):UBMediaWidget(type, parent, name)
 {
-
+    removeAllActions();
 }
 
 UBDraggableMedia::~UBDraggableMedia()

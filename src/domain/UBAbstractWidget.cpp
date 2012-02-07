@@ -428,7 +428,10 @@ void UBAbstractWidget::paintEvent(QPaintEvent * event)
          p.drawText(rect(), Qt::AlignCenter, message);
     }
 }
-
+void UBAbstractWidget::dropEvent(QDropEvent *event)
+{
+    QWebView::dropEvent(event);
+}
 
 QPixmap UBAbstractWidget::takeSnapshot()
 {

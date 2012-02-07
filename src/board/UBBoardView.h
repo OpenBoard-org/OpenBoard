@@ -89,7 +89,7 @@ class UBBoardView : public QGraphicsView
 
         QList<QUrl> processMimeData(const QMimeData* pMimeData);
         QString processMimeData(const QMimeData *pMimeData, UBGraphicsWidgetItem *widget);
-        bool isDropableData(const QMimeData *pMimeData);
+        bool isDropableData(const QMimeData *pMimeData) const;
 
         UBBoardController* mController;
 
@@ -118,8 +118,8 @@ class UBBoardView : public QGraphicsView
 		bool mVirtualKeyboardActive;
         bool mOkOnWidget;
 
-        QString typeForExtention(const QString &extention);
-        QString fileExtention(const QString &filename);
+        QString typeForExtention(const QString &extention) const;
+        QString fileExtention(const QString &filename) const;
 
     private slots:
 

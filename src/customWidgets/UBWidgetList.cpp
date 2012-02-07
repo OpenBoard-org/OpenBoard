@@ -10,7 +10,7 @@ UBWidgetList::UBWidgetList(QWidget* parent, eWidgetListOrientation orientation, 
   , mCanRemove(true)
   , mpLayout(NULL)
   , mpContainer(NULL)
-  , mMargin(5)
+  , mMargin(10)
   , mListElementsSpacing(10)
   , mpEmptyLabel(NULL)
   , mpCurrentWidget(NULL)
@@ -68,6 +68,9 @@ void UBWidgetList::removeWidget(QWidget *widget)
         updateView(size());
         if(0 == mpLayout->count()){
             mpEmptyLabel->setVisible(true);
+        }
+        if(mpCurrentWidget == widget){
+            mpCurrentWidget = NULL;
         }
     }
 }
@@ -140,22 +143,15 @@ void UBWidgetList::mousePressEvent(QMouseEvent *ev)
     if(mCanRemove){
         QWidget* pWAt = widgetAt(ev->pos());
         if(NULL != mpCurrentWidget){
-            if(pWAt == mpCurrentWidget){
-                QPoint p;
-                p.setX(ev->x());
-                p.setY(ev->y());
-                if(mpCurrentWidget->shouldClose(p)){
-                    emit closeWidget(mpCurrentWidget);
-                    return;
-                }
-
-            }else{
+            if(pWAt != mpCurrentWidget){
                 mpCurrentWidget->setActionsVisible(false);
+                update();
             }
         }
         mpCurrentWidget = dynamic_cast<UBActionableWidget*>(pWAt);
         if(NULL != mpCurrentWidget){
             mpCurrentWidget->setActionsVisible(true);
+            update();
         }
     }
     update();
@@ -231,6 +227,3 @@ bool UBWidgetList::empty()
 {
     return mWidgetInfo.empty();
 }
-
-// TODO :   - add onHover 'delete' button
-
