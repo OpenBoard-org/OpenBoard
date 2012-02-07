@@ -24,7 +24,6 @@ public:
     void removeAction(eAction act);
     void removeAllActions();
     void setActionsVisible(bool bVisible);
-    bool shouldClose(QPoint p);
 
 signals:
     void close(QWidget* w);
@@ -32,7 +31,6 @@ signals:
 protected:
     void setActionsParent(QWidget* parent);
     void unsetActionsParent();
-    void paintEvent(QPaintEvent* ev);
     QVector<eAction> mActions;
     QPushButton mCloseButtons;
 
