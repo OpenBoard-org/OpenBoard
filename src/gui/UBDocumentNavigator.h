@@ -57,7 +57,6 @@ private slots:
     void generateThumbnails();
 
 private:
-    void setGraphicsItems(QList<QGraphicsItem*> items, QStringList labels);
     void refreshScene();
     void updateSpecificThumbnail(int iPage);
     int border();
@@ -69,12 +68,8 @@ private:
     UBSceneThumbnailNavigPixmap* mCrntItem;
     /** The current document */
     UBDocumentProxy* mCrntDoc;
-    /** The list of current thumbnails */
-    QList<QGraphicsItem*> mThumbnails;
-    /** The list of current label items */
-    QList<UBThumbnailTextItem*> mLabels;
-    /** The list of current labels */
-    QStringList mLab;
+	/** The list of current thumbnails with labels*/
+	QList<UBImgTextThumbnailElement> mThumbsWithLabels;
     /** The current number of columns */
     int mNbColumns;
     /** The current thumbnails width */

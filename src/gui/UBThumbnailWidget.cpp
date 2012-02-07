@@ -805,3 +805,59 @@ void UBSceneThumbnailNavigPixmap::moveDownPage()
 {
     UBApplication::documentController->moveSceneToIndex(proxy(), sceneIndex(), sceneIndex() + 1);
 }
+
+void UBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal height)
+{
+    int labelSpacing = 0;
+	if(this->caption)
+	{
+        QFontMetrics fm(this->caption->font());
+        labelSpacing = UBSettings::thumbnailSpacing + fm.height();
+	}
+	if(this->thumbnail)
+	{
+        int w = this->thumbnail->boundingRect().width();
+        int h = this->thumbnail->boundingRect().height();
+
+		qreal scaleWidth = width / w;
+        qreal scaleHeight = height / h;
+        qreal scaleFactor = qMin(scaleWidth, scaleHeight);
+        UBThumbnail* pix = dynamic_cast<UBThumbnail*>(this->thumbnail);
+
+        if(pix)
+        {
+            scaleFactor = qMin(scaleFactor, 1.0);
+        }
+
+        QTransform transform;
+        transform.scale(scaleFactor, scaleFactor);
+
+        // Apply the scaling
+        this->thumbnail->setTransform(transform);
+        this->thumbnail->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+        if(pix)
+        {
+            pix->setColumn(col);
+            pix->setRow(row);
+        }
+
+        QPointF pos(border + (width - w * scaleFactor) / 2 + col * (width + border),
+                    border + row * (height + border + labelSpacing) + (height - h * scaleFactor) / 2);
+
+        this->thumbnail->setPos(pos);
+
+		if(this->caption)
+		{
+            QFontMetrics fm(this->caption->font());
+            QString elidedText = fm.elidedText(this->caption->toPlainText(), Qt::ElideRight, width);
+
+            this->caption->setPlainText(elidedText);
+            this->caption->setWidth(fm.width(elidedText) + 2 * this->caption->document()->documentMargin());
+            pos.setY(pos.y() + (height + h * scaleFactor) / 2 + 5); // What is this 5 ??
+            qreal labelWidth = fm.width(elidedText);
+            pos.setX(border + (width - labelWidth) / 2 + col * (width + border));
+            this->caption->setPos(pos);
+		}
+	}
+}

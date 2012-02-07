@@ -391,5 +391,31 @@ class UBThumbnailTextItem : public QGraphicsTextItem
         bool mIsHighlighted;
 };
 
+class UBImgTextThumbnailElement
+{
+private:
+	QGraphicsItem* thumbnail;
+	UBThumbnailTextItem* caption;
+	int border;
+
+public:
+	UBImgTextThumbnailElement(QGraphicsItem* thumb, UBThumbnailTextItem* text): border(0)
+	{
+		this->thumbnail = thumb;
+		this->caption = text;
+	}
+
+	QGraphicsItem* getThumbnail() const { return this->thumbnail; }
+	void setThumbnail(QGraphicsItem* newGItem) { this->thumbnail = newGItem; }
+
+	UBThumbnailTextItem* getCaption() const { return this->caption; }
+	void setCaption(UBThumbnailTextItem* newcaption) { this->caption = newcaption; }
+
+	void Place(int row, int col, qreal width, qreal height);
+
+	int getBorder() const { return this->border; }
+	void setBorder(int newBorder) { this->border = newBorder; }
+};
+
 
 #endif /* UBTHUMBNAILWIDGET_H_ */
