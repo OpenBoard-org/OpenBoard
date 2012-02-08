@@ -78,6 +78,16 @@ void UBGraphicsWidgetItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     UBGraphicsProxyWidget::mouseReleaseEvent(event);
 }
 
+void UBGraphicsWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    sendJSEnterEvent();
+    UBGraphicsProxyWidget::hoverEnterEvent(event);
+}
+void UBGraphicsWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    sendJSLeaveEvent();
+    UBGraphicsProxyWidget::hoverLeaveEvent(event);
+}
 
 bool UBGraphicsWidgetItem::eventFilter(QObject *obj, QEvent *event)
 {
@@ -245,6 +255,20 @@ void UBGraphicsWidgetItem::removeScript()
     if (mWebKitWidget && mWebKitWidget->page() && mWebKitWidget->page()->mainFrame())
     {
         mWebKitWidget->page()->mainFrame()->evaluateJavaScript("if(widget && widget.onremove) { widget.onremove();}");
+    }
+}
+void UBGraphicsWidgetItem::sendJSEnterEvent()
+{
+    if (mWebKitWidget && mWebKitWidget->page() && mWebKitWidget->page()->mainFrame())
+    {
+        mWebKitWidget->page()->mainFrame()->evaluateJavaScript("if(widget && widget.onenter) { widget.onenter();}");
+    }
+}
+void UBGraphicsWidgetItem::sendJSLeaveEvent()
+{
+    if (mWebKitWidget && mWebKitWidget->page() && mWebKitWidget->page()->mainFrame())
+    {
+        mWebKitWidget->page()->mainFrame()->evaluateJavaScript("if(widget && widget.onleave) { widget.onleave();}");
     }
 }
 

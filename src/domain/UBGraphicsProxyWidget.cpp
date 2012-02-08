@@ -111,6 +111,16 @@ void UBGraphicsProxyWidget::wheelEvent(QGraphicsSceneWheelEvent *event)
     }
 }
 
+void UBGraphicsProxyWidget::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_UNUSED(event)
+//    NOOP
+}
+void UBGraphicsProxyWidget::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_UNUSED(event)
+//    NOOP
+}
 
 void UBGraphicsProxyWidget::setDelegate(UBGraphicsItemDelegate* pDelegate)
 {
