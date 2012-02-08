@@ -272,12 +272,22 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     return doc;
 }
 
-
-UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory)
+UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName, const QString& pName, bool withEmptyPage)
 {
     checkIfDocumentRepositoryExists();
 
     UBDocumentProxy* doc = new UBDocumentProxy(pDocumentDirectory); // deleted in UBPersistenceManager::destructor
+
+    if (pGroupName.length() > 0)
+    {
+        doc->setMetaData(UBSettings::documentGroupName, pGroupName);
+    }
+
+    if (pName.length() > 0)
+    {
+        doc->setMetaData(UBSettings::documentName, pName);
+    }
+    if (withEmptyPage) createDocumentSceneAt(doc, 0);
 
     QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
 
