@@ -35,7 +35,7 @@ UBImportAdaptor::~UBImportAdaptor()
 
 UBDocumentProxy* UBImportAdaptor::importFile(const QFile& pFile, const QString& pGroup)
 {
-    QString documentName = QFileInfo(pFile.fileName()).baseName();
+    QString documentName = QFileInfo(pFile.fileName()).completeBaseName();
 
     UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocument(pGroup, documentName);
 

@@ -855,8 +855,8 @@ QString UBSettings::userFavoriteListFilePath()
     static QString filePath = "";
     if(filePath.isEmpty()){
         QString dirPath = userDataDirectory() + "/libraryPalette";
-        filePath = dirPath + "/favorite.dat";
         checkDirectory(dirPath);
+        filePath = dirPath + "/favorite.dat";
     }
     return filePath;
 }
@@ -865,7 +865,7 @@ QString UBSettings::userTrashDirPath()
 {
     static QString trashPath = "";
     if(trashPath.isEmpty()){
-        QString trashPath = userDataDirectory() + "/libraryPalette/trash";
+        trashPath = userDataDirectory() + "/libraryPalette/trash";
         checkDirectory(trashPath);
     }
     return trashPath;
@@ -878,12 +878,10 @@ QString UBSettings::applicationShapeLibraryDirectory()
 
     QString configPath = value("Library/ShapeDirectory", QVariant(defaultRelativePath)).toString();
 
-    if (configPath.startsWith("."))
-    {
+    if (configPath.startsWith(".")) {
         return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
-    else
-    {
+    else {
         return configPath;
     }
 }
@@ -914,12 +912,10 @@ QString UBSettings::applicationImageLibraryDirectory()
 
     QString configPath = value("Library/ImageDirectory", QVariant(defaultRelativePath)).toString();
 
-    if (configPath.startsWith("."))
-    {
+    if (configPath.startsWith(".")) {
         return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
-    else
-    {
+    else {
         return configPath;
     }
 }
@@ -959,12 +955,10 @@ QString UBSettings::applicationInteractivesDirectory()
 
     QString configPath = value("Library/InteractivitiesDirectory", QVariant(defaultRelativePath)).toString();
 
-    if (configPath.startsWith("."))
-    {
+    if (configPath.startsWith(".")) {
         return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
-    else
-    {
+    else {
         return configPath;
     }
 }
@@ -975,12 +969,10 @@ QString UBSettings::applicationApplicationsLibraryDirectory()
 
     QString configPath = value("Library/ApplicationsDirectory", QVariant(defaultRelativePath)).toString();
 
-    if (configPath.startsWith("."))
-    {
+    if (configPath.startsWith(".")) {
         return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
-    else
-    {
+    else {
         return configPath;
     }
 }
@@ -1131,6 +1123,9 @@ QString UBSettings::replaceWildcard(QString& path)
     }
     else if(result.startsWith("{Home}")) {
         result = result.replace("{Home}", QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    }
+    else if(result.startsWith("{Desktop}")) {
+        result = result.replace("{Desktop}", QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     }
 
     if(result.contains("{UserLoginName}") && UBPlatformUtils::osUserLoginName().length() > 0) {

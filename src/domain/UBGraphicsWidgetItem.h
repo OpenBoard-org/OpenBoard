@@ -66,6 +66,7 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
 
         virtual void remove();
         void removeScript();
+
         QString downloadUrl(const QString &fileUrl, const QString &extention);
         QString downloadWeb(const QString &fileUrl);
         void processDropEvent(QDropEvent *event);
@@ -77,12 +78,19 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
 
         virtual void clearSource();
 
+
     protected:
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
+        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
         virtual bool eventFilter(QObject *obj, QEvent *event);
+
+        virtual void sendJSEnterEvent();
+        virtual void sendJSLeaveEvent();
 
         UBAbstractWidget* mWebKitWidget;
 
