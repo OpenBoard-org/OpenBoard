@@ -60,7 +60,7 @@ UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
         // standalone window
         // !!!! Should be included into Windows after QT recompilation
 #ifndef Q_WS_WIN
-        setAttribute(Qt::WA_TranslucentBackground);
+//        setAttribute(Qt::WA_TranslucentBackground);
         setAttribute(Qt::WA_MacAlwaysShowToolWindow);
 #endif
 #ifdef Q_WS_MAC
@@ -97,7 +97,6 @@ UBMagnifier::~UBMagnifier()
         delete sDecreasePixmap;
         sDecreasePixmap = NULL;
     }
-
 }
 
 void UBMagnifier::setSize(qreal percentFromScene) 

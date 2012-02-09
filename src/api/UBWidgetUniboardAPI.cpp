@@ -572,7 +572,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
     QDropEvent readyEvent(dropPoint, dropActions, &dropMimeData, dropMouseButtons, dropModifiers);
     //sending event to destination either it had been downloaded or not
     QApplication::sendEvent(mGraphicsWidget->widgetWebView(),&readyEvent);
-//    readyEvent.acceptProposedAction();
+    readyEvent.acceptProposedAction();
 }
 
 void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData)
@@ -623,6 +623,10 @@ void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc de
     dropMimeData.setData(tMimeText, mimeText.toAscii());
 
     destFile.close();
+
+    //To make js interpreter accept drop event we need to generate move event first.
+    QDragMoveEvent readmove(dropPoint, desc.dropActions, &dropMimeData, desc.dropMouseButtons, desc.dropModifiers);
+    QApplication::sendEvent(mGraphicsWidget->widgetWebView(),&readmove);
 
     QDropEvent readyEvent(dropPoint, desc.dropActions, &dropMimeData, desc.dropMouseButtons, desc.dropModifiers);
     //sending event to destination either it had been downloaded or not
