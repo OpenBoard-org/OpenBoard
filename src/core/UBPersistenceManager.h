@@ -86,7 +86,6 @@ class UBPersistenceManager : public QObject
 
         virtual QStringList allShapes();
         virtual QStringList allGips();
-        virtual QStringList allSounds();
         virtual QStringList allImages(const QDir& dir);
         virtual QStringList allVideos(const QDir& dir);
         virtual QStringList allWidgets(const QDir& dir);

@@ -60,7 +60,7 @@ void UniboardSankoreTransition::rollbackDocumentsTransition(QFileInfoList& fileI
         if (fileInfo->isDir() && fileInfo->fileName().startsWith("Uniboard Document ")){
             QString sankoreDocumentName = fileInfo->fileName();
             sankoreDocumentName.replace("Uniboard","Sankore");
-            QString sankoreDocumentDirectoryPath = UBSettings::uniboardDocumentDirectory() + "/" + sankoreDocumentName;
+            QString sankoreDocumentDirectoryPath = UBSettings::userDocumentDirectory() + "/" + sankoreDocumentName;
             if (QFileInfo(sankoreDocumentDirectoryPath).exists()){
                 UBFileSystemUtils::deleteDir(sankoreDocumentDirectoryPath);
             }
@@ -244,7 +244,7 @@ void UniboardSankoreTransition::executeTransition()
     fileInfoList.append(UBFileSystemUtils::allElementsInDirectory(mOldSankoreDirectory + "/document"));
 
     QFileInfoList::iterator fileInfo;
-    QString sankoreDocumentDirectory = UBSettings::uniboardDocumentDirectory();
+    QString sankoreDocumentDirectory = UBSettings::userDocumentDirectory();
 
     for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end() && result; fileInfo += 1) {
         if (fileInfo->isDir() && (fileInfo->fileName().startsWith("Uniboard Document ") || fileInfo->fileName().startsWith("Sankore Document "))){

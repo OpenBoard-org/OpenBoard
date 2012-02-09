@@ -98,29 +98,28 @@ class UBSettings : public QObject
 
         void init();
 
-        static QString uniboardDataDirectory();
-        static QString uniboardDocumentDirectory();
 
-        static QString libraryPaletteFavoriteListFilePath();
-        static QString trashLibraryPaletteDirPath();
+        //user directories
+        static QString userDataDirectory();
+        static QString userDocumentDirectory();
+        static QString userFavoriteListFilePath();
+        static QString userTrashDirPath();
+        static QString userImageDirectory();
+        static QString userVideoDirectory();
+        static QString userAudioDirectory();
+        static QString userSearchDirectory();
+        static QString userAnimationDirectory();
+        static QString userInteractiveDirectory();
+        static QString userInteractiveFavoritesDirectory();
+        static QString userPodcastRecordingDirectory();
 
-        QString uniboardShapeLibraryDirectory();
-        QString uniboardGipLibraryDirectory();
-        QString uniboardImageLibraryDirectory();
-        QString uniboardUserImageDirectory();
-        QString defaultUserImagesDirectory();
-        QString uniboardSearchDirectory();
+        //application directory
+        QString applicationShapeLibraryDirectory();
+        QString applicationGipLibraryDirectory();
+        QString applicationImageLibraryDirectory();
+        QString applicationApplicationsLibraryDirectory();
+        QString applicationInteractivesDirectory();
 
-        QString uniboardUserVideoDirectory();
-        QString uniboardDefaultUserImageLibraryDirectory();
-
-        QString uniboardInteractiveUserDirectory();
-        QString animationUserDirectory();
-        QString uniboardInteractiveLibraryDirectory();
-        QString uniboardInteractiveFavoritesDirectory();
-        QString sankoreDistributedInteractiveDirectory();
-
-        QString podcastRecordingDirectory();
 
         QNetworkProxy* httpProxy();
 
@@ -319,11 +318,6 @@ class UBSettings : public QObject
 
         UBSetting* pageSize;
 
-        /*
-        static int navigPaletteWidth;
-        static int libPaletteWidth;
-        */
-
         UBSetting* KeyboardLocale;
 
     public slots:
@@ -347,10 +341,7 @@ class UBSettings : public QObject
         QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
         void setValue (const QString & key,const QVariant & value);
 
-        void colorChanged()
-        {
-            emit colorContextChanged();
-        }
+        void colorChanged() { emit colorContextChanged(); }
 
     signals:
         void colorContextChanged();
@@ -363,12 +354,13 @@ class UBSettings : public QObject
         static const int sDefaultFontPixelSize;
         static const char *sDefaultFontFamily;
 
-    private:
-
         static QSettings* getAppSettings();
 
         static QPointer<QSettings> sAppSettings;
         static QPointer<UBSettings> sSingleton;
+
+        static bool checkDirectory(QString& dirPath);
+        static QString replaceWildcard(QString& path);
 
 };
 

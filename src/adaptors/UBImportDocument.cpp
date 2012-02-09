@@ -182,7 +182,7 @@ UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString&
     UBApplication::showMessage(tr("Importing file %1...").arg(fi.baseName()), true);
 
     // first unzip the file to the correct place
-    QString path = UBSettings::settings()->uniboardDocumentDirectory();
+    QString path = UBSettings::userDocumentDirectory();
 
     QString documentRootFolder = expandFileToDir(pFile, path);
 

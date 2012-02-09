@@ -842,8 +842,6 @@ void UBBoardPaletteManager::addItemToLibrary()
 
     if(!mPixmap.isNull())
     {
-        QString imageDir = UBSettings::settings()->defaultUserImagesDirectory();
-
         if(mScaleFactor != 1.)
         {
              mPixmap = mPixmap.scaled(mScaleFactor * mPixmap.width(), mScaleFactor* mPixmap.height()

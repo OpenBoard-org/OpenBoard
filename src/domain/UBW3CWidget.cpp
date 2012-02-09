@@ -231,7 +231,7 @@ bool UBW3CWidget::hasNPAPIWrapper(const QString& pMimeType)
 QString UBW3CWidget::createNPAPIWrapper(const QString& url,
         const QString& pMimeType, const QSize& sizeHint, const QString& pName)
 {
-    const QString userWidgetPath = UBSettings::settings()->uniboardInteractiveUserDirectory() + "/" + tr("Web");
+    const QString userWidgetPath = UBSettings::settings()->userInteractiveDirectory() + "/" + tr("Web");
     QDir userWidgetDir(userWidgetPath);
 
     return createNPAPIWrapperInDir(url, userWidgetDir, pMimeType, sizeHint, pName);

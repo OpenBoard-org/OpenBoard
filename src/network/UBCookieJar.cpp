@@ -135,7 +135,7 @@ void UBCookieJar::load()
     // load cookies and exceptions
     qRegisterMetaTypeStreamOperators<QList<QNetworkCookie> >("QList<QNetworkCookie>");
 
-    QSettings cookieSettings(UBSettings::uniboardDataDirectory() + QLatin1String("/cookies.ini"), QSettings::IniFormat);
+    QSettings cookieSettings(UBSettings::userDataDirectory() + QLatin1String("/cookies.ini"), QSettings::IniFormat);
     QVariant vCookies = cookieSettings.value(QLatin1String("cookies"));
     QList<QNetworkCookie> cookies = qvariant_cast<QList<QNetworkCookie> >(vCookies);
 
@@ -180,7 +180,7 @@ void UBCookieJar::save()
     if (!mLoaded)
         return;
     purgeOldCookies();
-    QString directory = UBSettings::uniboardDataDirectory();
+    QString directory = UBSettings::userDataDirectory();
     if (directory.isEmpty())
         directory = QDir::homePath() + QLatin1String("/.") + QCoreApplication::applicationName();
     if (!QFile::exists(directory)) {

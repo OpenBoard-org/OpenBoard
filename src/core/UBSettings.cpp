@@ -146,7 +146,7 @@ UBSettings::UBSettings(QObject *parent)
 
     mAppSettings = UBSettings::getAppSettings();
 
-    QString userSettingsFile = UBSettings::uniboardDataDirectory() + "/UniboardUser.config";
+    QString userSettingsFile = UBSettings::userDataDirectory() + "/UniboardUser.config";
 
     mUserSettings = new QSettings(userSettingsFile, QSettings::IniFormat, parent);
 
@@ -729,297 +729,150 @@ void UBSettings::setItalicFont(bool italic)
 }
 
 
-QString UBSettings::uniboardDataDirectory()
+QString UBSettings::userDataDirectory()
 {
 
-    // first look into the application settings
-    if (sAppSettings && getAppSettings()->contains("App/DataDirectory"))
-    {
-        QString dataDirectory = getAppSettings()->value("App/DataDirectory").toString();
+    static QString dataDirPath = "";
+    if(dataDirPath.isEmpty()){
+        if (sAppSettings && getAppSettings()->contains("App/DataDirectory")) {
+            dataDirPath = getAppSettings()->value("App/DataDirectory").toString();
+            dataDirPath = replaceWildcard(dataDirPath);
 
-        // mute it to something absolute
-        if (dataDirectory.startsWith("{Documents}"))
-        {
-            dataDirectory = dataDirectory.replace("{Documents}",
-                    QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+            if(checkDirectory(dataDirPath))
+                return dataDirPath;
+            else
+                qCritical() << "Impossible to create datadirpath " << dataDirPath;
+
         }
-        else if(dataDirectory.startsWith("{Home}"))
-        {
-            dataDirectory = dataDirectory.replace("{Home}",
-                    QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+        dataDirPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+        dataDirPath.replace("/Open-Sankore", "");
+    }
+    return dataDirPath;
+}
+
+
+QString UBSettings::userImageDirectory()
+{
+    static QString imageDirectory = "";
+    if(imageDirectory.isEmpty()){
+        if (sAppSettings && getAppSettings()->contains("App/UserImageDirectory")) {
+            imageDirectory = getAppSettings()->value("App/UserImageDirectory").toString();
+
+            imageDirectory = replaceWildcard(imageDirectory);
+            if(checkDirectory(imageDirectory))
+                return imageDirectory;
+            else
+                qCritical() << "failed to create image directory " << imageDirectory;
         }
 
-        if(dataDirectory.contains("{UserLoginName}") && UBPlatformUtils::osUserLoginName().length() > 0)
-        {
-            dataDirectory = dataDirectory.replace("{UserLoginName}", UBPlatformUtils::osUserLoginName());
+        imageDirectory = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation) + "/Sankore";
+        checkDirectory(imageDirectory);
+    }
+    return imageDirectory;
+}
+
+
+QString UBSettings::userVideoDirectory()
+{
+    static QString videoDirectory = "";
+    if(videoDirectory.isEmpty()){
+        if (sAppSettings && getAppSettings()->contains("App/UserVideoDirectory")) {
+            videoDirectory = getAppSettings()->value("App/UserVideoDirectory").toString();
+            videoDirectory = replaceWildcard(videoDirectory);
+            if(checkDirectory(videoDirectory))
+                return videoDirectory;
+            else
+                qCritical() << "failed to create video directory " << videoDirectory;
         }
 
-        // valid ?
-        QDir dir(dataDirectory);
-        dir.mkpath(dataDirectory);
 
-        if (dir.exists(dataDirectory))
-        {
-            return dataDirectory;
-        }
+        videoDirectory = QDesktopServices::storageLocation(QDesktopServices::MoviesLocation);
+
+        if(videoDirectory.isEmpty())
+            videoDirectory = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/" + tr("My Movies");
         else
-        {
-            // Do not log anything here, we need data directory to be valid to be able to log to it
-            //
-            //qWarning << "Failed to interpret App/DataDirectory config : " + getAppSettings()->value("App/DataDirectory").toString() +
-            //    ", defaulting to " + UBDesktopServices::storageLocation(QDesktopServices::DataLocation);
-        }
+            videoDirectory = videoDirectory + "/Sankore";
+
+        checkDirectory(videoDirectory);
     }
-    QString qtDataPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-    qtDataPath.replace("/Open-Sankore", "");
-    return qtDataPath;
+    return videoDirectory;
+}
+
+QString UBSettings::userAudioDirectory()
+{
+    static QString audioDirectory = "";
+    if(audioDirectory.isEmpty()){
+        if (sAppSettings && getAppSettings()->contains("App/UserAudioDirectory")) {
+            audioDirectory = getAppSettings()->value("App/UserAudioDirectory").toString();
+
+            audioDirectory = replaceWildcard(audioDirectory);
+            if(checkDirectory(audioDirectory))
+                return audioDirectory;
+            else
+                qCritical() << "failed to create image directory " << audioDirectory;
+        }
+
+        audioDirectory = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "/Sankore";
+        checkDirectory(audioDirectory);
+    }
+    return audioDirectory;
 }
 
 
-QString UBSettings::uniboardUserImageDirectory()
+QString UBSettings::userPodcastRecordingDirectory()
 {
-    QString valideUserImageDirectory =
-        QDesktopServices::storageLocation(QDesktopServices::PicturesLocation)
-        + "/" + QCoreApplication::applicationName();
-
-    bool hasCreatedDir = false;
-
-    // first look into the application settings
-    if (sAppSettings && getAppSettings()->contains("App/UserImageDirectory"))
-    {
-        QString userImageDirectory = getAppSettings()->value("App/UserImageDirectory").toString();
-
-        // mute it to something absolute
-        if (userImageDirectory.startsWith("{Documents}"))
+    static QString dirPath = "";
+    if(dirPath.isEmpty()){
+        if (sAppSettings && getAppSettings()->contains("Podcast/RecordingDirectory"))
         {
-            userImageDirectory = userImageDirectory.replace("{Documents}",
-                    QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-        }
-        else if (userImageDirectory.startsWith("{Home}"))
-        {
-            userImageDirectory = userImageDirectory.replace("{Home}",
-                    QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-        }
-        else if(userImageDirectory.startsWith("{Pictures}"))
-        {
-            userImageDirectory = userImageDirectory.replace("{Pictures}",
-                    QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
-        }
+            dirPath = getAppSettings()->value("Podcast/RecordingDirectory").toString();
+            dirPath = replaceWildcard(dirPath);
+            if(checkDirectory(dirPath))
+                return dirPath;
+            else
+                qCritical() << "failed to create dir " << dirPath;
 
-        if(userImageDirectory.contains("{UserLoginName}") && UBPlatformUtils::osUserLoginName() > 0)
-        {
-            userImageDirectory = userImageDirectory.replace("{UserLoginName}", UBPlatformUtils::osUserLoginName());
         }
-
-        // valid ?
-        QDir dir(userImageDirectory);
-
-        if (!dir.exists())
-        {
-            dir.mkpath(userImageDirectory);
-            hasCreatedDir = true;
-        }
-
-        if (dir.exists())
-        {
-            valideUserImageDirectory = userImageDirectory;
-        }
-        else
-        {
-            hasCreatedDir = false;
-            qWarning() << "Failed to interpret App/UserImageDirectory config : "
-                + getAppSettings()->value("App/UserImageDirectory").toString()
-                + ", defaulting to " + valideUserImageDirectory;
-        }
+        dirPath = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
+        checkDirectory(dirPath);
     }
-
-    QDir userImageDir(valideUserImageDirectory);
-
-    userImageDir.mkpath(valideUserImageDirectory);
-
-    if (hasCreatedDir || !userImageDir.exists())
-    {
-        QString defaultUserImageDir = valideUserImageDirectory + "/" + tr("Images");
-        UBFileSystemUtils::copyDir(uniboardDefaultUserImageLibraryDirectory(),
-                defaultUserImageDir);
-    }
-
-    return valideUserImageDirectory;
+    return dirPath;
 }
 
 
-QString UBSettings::defaultUserImagesDirectory()
+QString UBSettings::userDocumentDirectory()
 {
-    QString userImageDir = uniboardUserImageDirectory() + "/" + tr("Images");
-    QDir dir(userImageDir);
-    dir.mkpath(userImageDir);
-
-    return userImageDir;
+    static QString documentDirectory = "";
+    if(documentDirectory.isEmpty()){
+        documentDirectory = userDataDirectory() + "/document";
+        checkDirectory(documentDirectory);
+    }
+    return documentDirectory;
 }
 
-
-QString UBSettings::uniboardUserVideoDirectory()
+QString UBSettings::userFavoriteListFilePath()
 {
-    QString valideUserVideoDirectory =
-        QDesktopServices::storageLocation(QDesktopServices::MoviesLocation);
-
-    // first look into the application settings
-    if (sAppSettings && getAppSettings()->contains("App/UserVideoDirectory"))
-    {
-        QString userVideoDirectory = getAppSettings()->value("App/UserVideoDirectory").toString();
-
-        // mute it to something absolute
-        if (userVideoDirectory.startsWith("{Documents}"))
-        {
-            userVideoDirectory = userVideoDirectory.replace("{Documents}",
-                    QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-        }
-        else if(userVideoDirectory.startsWith("{Home}"))
-        {
-            userVideoDirectory = userVideoDirectory.replace("{Home}",
-                    QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-        }
-        else if(userVideoDirectory.startsWith("{Videos}"))
-        {
-            userVideoDirectory = userVideoDirectory.replace("{Videos}",
-                    QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
-        }
-
-        if(userVideoDirectory.contains("{UserLoginName}") && UBPlatformUtils::osUserLoginName() > 0)
-        {
-            userVideoDirectory = userVideoDirectory.replace("{UserLoginName}", UBPlatformUtils::osUserLoginName());
-        }
-
-        // valid ?
-        QDir dir(userVideoDirectory);
-
-        if (!dir.exists())
-        {
-            dir.mkpath(userVideoDirectory);
-        }
-
-        if (dir.exists())
-        {
-            valideUserVideoDirectory = userVideoDirectory;
-        }
-        else
-        {
-            qWarning() << "Failed to interpret App/UserVideoDirectory config : "
-                + getAppSettings()->value("App/UserVideoDirectory").toString()
-                + ", defaulting to " + valideUserVideoDirectory;
-        }
+    static QString filePath = "";
+    if(filePath.isEmpty()){
+        QString dirPath = userDataDirectory() + "/libraryPalette";
+        filePath = dirPath + "/favorite.dat";
+        checkDirectory(dirPath);
     }
-    else
-    {
-        // May not exists (on windows XP)
-        if (valideUserVideoDirectory.length() == 0)
-        {
-            valideUserVideoDirectory = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/" + tr("My Movies");
-        }
-
-        QDir dir(valideUserVideoDirectory);
-
-        if (!dir.exists())
-        {
-            dir.mkpath(valideUserVideoDirectory);
-        }
-    }
-
-    return valideUserVideoDirectory;
-}
-
-
-QString UBSettings::podcastRecordingDirectory()
-{
-    QString validePodcastRecordingDirectory =
-        QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
-
-    // first look into the application settings
-    if (sAppSettings && getAppSettings()->contains("Podcast/RecordingDirectory"))
-    {
-        QString userPodcastRecordingDirectory = getAppSettings()->value("Podcast/RecordingDirectory").toString();
-
-        // mute it to something absolute
-        if (userPodcastRecordingDirectory.startsWith("{Documents}"))
-        {
-            userPodcastRecordingDirectory = userPodcastRecordingDirectory.replace("{Documents}",
-                    QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-        }
-        else if(userPodcastRecordingDirectory.startsWith("{Home}"))
-        {
-            userPodcastRecordingDirectory = userPodcastRecordingDirectory.replace("{Home}",
-                    QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-        }
-        else if(userPodcastRecordingDirectory.startsWith("{Videos}"))
-        {
-            userPodcastRecordingDirectory = userPodcastRecordingDirectory.replace("{Videos}",
-                    QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
-        }
-
-        if(userPodcastRecordingDirectory.contains("{UserLoginName}") && UBPlatformUtils::osUserLoginName() > 0)
-        {
-            userPodcastRecordingDirectory = userPodcastRecordingDirectory.replace("{UserLoginName}", UBPlatformUtils::osUserLoginName());
-        }
-
-        // valid ?
-        QDir dir(userPodcastRecordingDirectory);
-
-        if (!dir.exists())
-        {
-            dir.mkpath(userPodcastRecordingDirectory);
-        }
-
-        if (dir.exists())
-        {
-            validePodcastRecordingDirectory = userPodcastRecordingDirectory;
-        }
-        else
-        {
-            qWarning() << "Failed to interpret Podcast/RecordingDirectory config : "
-                + getAppSettings()->value("Podcast/RecordingDirectory").toString()
-                + ", defaulting to user Desktop";
-        }
-    }
-    else
-    {
-
-        QDir dir(validePodcastRecordingDirectory);
-
-        if (!dir.exists())
-        {
-            dir.mkpath(validePodcastRecordingDirectory);
-        }
-    }
-
-    return validePodcastRecordingDirectory;
-}
-
-
-QString UBSettings::uniboardDocumentDirectory()
-{
-    return uniboardDataDirectory() + "/document";
-}
-
-QString UBSettings::libraryPaletteFavoriteListFilePath()
-{
-    QString filePath = uniboardDataDirectory() + "/libraryPalette/favorite.dat";
-
-    if (!QDir(uniboardDataDirectory() + "/libraryPalette").exists())
-        QDir().mkpath(uniboardDataDirectory() + "/libraryPalette");
-
     return filePath;
 }
 
-QString UBSettings::trashLibraryPaletteDirPath()
+QString UBSettings::userTrashDirPath()
 {
-    QString trashPath = uniboardDataDirectory() + "/libraryPalette/trash";
-    if (!QDir(trashPath).exists())
-        QDir().mkpath(trashPath);
+    static QString trashPath = "";
+    if(trashPath.isEmpty()){
+        QString trashPath = userDataDirectory() + "/libraryPalette/trash";
+        checkDirectory(trashPath);
+    }
     return trashPath;
 }
 
 
-QString UBSettings::uniboardShapeLibraryDirectory()
+QString UBSettings::applicationShapeLibraryDirectory()
 {
     QString defaultRelativePath = QString("./library/shape");
 
@@ -1035,25 +888,27 @@ QString UBSettings::uniboardShapeLibraryDirectory()
     }
 }
 
-QString UBSettings::uniboardGipLibraryDirectory()
+QString UBSettings::applicationGipLibraryDirectory()
 {
-    QString dirPath = UBPlatformUtils::applicationResourcesDirectory() + "/library/gips";
-    if (!QDir(dirPath).exists())
-        QDir().mkpath(dirPath);
-
+    static QString dirPath = "";
+    if(dirPath.isEmpty()){
+        dirPath = UBPlatformUtils::applicationResourcesDirectory() + "/library/gips";
+        checkDirectory(dirPath);
+    }
     return dirPath;
 }
 
-QString UBSettings::uniboardSearchDirectory()
+QString UBSettings::userSearchDirectory()
 {
-    QString dirPath = UBPlatformUtils::applicationResourcesDirectory() + "/library/search";
-    if (!QDir(dirPath).exists())
-        QDir().mkpath(dirPath);
-
+    static QString dirPath = "";
+    if(dirPath.isEmpty()){
+        dirPath = UBPlatformUtils::applicationResourcesDirectory() + "/library/search";
+        checkDirectory(dirPath);
+    }
     return dirPath;
 }
 
-QString UBSettings::uniboardImageLibraryDirectory()
+QString UBSettings::applicationImageLibraryDirectory()
 {
     QString defaultRelativePath = QString("./library/image");
 
@@ -1069,96 +924,40 @@ QString UBSettings::uniboardImageLibraryDirectory()
     }
 }
 
-
-QString UBSettings::uniboardDefaultUserImageLibraryDirectory()
+QString UBSettings::userAnimationDirectory()
 {
-    QString defaultRelativePath = QString("./library/userImage");
-
-    QString configPath = value("Library/DefaultUserImageDirectory", QVariant(defaultRelativePath)).toString();
-
-    if (configPath.startsWith("."))
-    {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+    static QString animationDirectory = "";
+    if(animationDirectory.isEmpty()){
+        animationDirectory = userDataDirectory() + "/animationUserDirectory";
+        checkDirectory(animationDirectory);
     }
-    else
-    {
-        return configPath;
-    }
-}
-
-
-QString UBSettings::animationUserDirectory()
-{
-    QString animationDirectory = uniboardDataDirectory() + "/animationUserDirectory";
-    if (!QDir(animationDirectory).exists())
-        QDir().mkpath(animationDirectory);
-
     return animationDirectory;
 }
 
-QString UBSettings::uniboardInteractiveUserDirectory()
+QString UBSettings::userInteractiveDirectory()
 {
-    QString valideUserInteractiveDirectory = uniboardDataDirectory() + "/interactive content";
-
-    // first look into the application settings
-    if (sAppSettings && getAppSettings()->contains("App/UserInteractiveContentDirectory"))
-    {
-        QString userWidgetDirectory = getAppSettings()->value("App/UserInteractiveContentDirectory").toString();
-
-        // mute it to something absolute
-        if (userWidgetDirectory.startsWith("{Documents}"))
-        {
-            userWidgetDirectory = userWidgetDirectory.replace("{Documents}",
-                    QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+    static QString interactiveDirectory = "";
+    if(interactiveDirectory.isEmpty()){
+        if (sAppSettings && getAppSettings()->contains("App/UserInteractiveContentDirectory")) {
+            interactiveDirectory = getAppSettings()->value("App/UserInteractiveContentDirectory").toString();
+            interactiveDirectory = replaceWildcard(interactiveDirectory);
+            if(checkDirectory(interactiveDirectory))
+                return interactiveDirectory;
+            else
+                qCritical() << "failed to create directory " << interactiveDirectory;
         }
-        else if(userWidgetDirectory.startsWith("{Home}"))
-        {
-            userWidgetDirectory = userWidgetDirectory.replace("{Home}",
-                    QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-        }
-        else if(userWidgetDirectory.startsWith("{Videos}"))
-        {
-            userWidgetDirectory = userWidgetDirectory.replace("{Videos}",
-                    QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
-        }
-
-        // valid ?
-        QDir dir(userWidgetDirectory);
-
-        if (!dir.exists())
-        {
-            dir.mkpath(userWidgetDirectory);
-        }
-
-        if (dir.exists())
-        {
-            valideUserInteractiveDirectory = userWidgetDirectory;
-        }
-        else
-        {
-            qWarning() << "Failed to interpret App/UserInteractiveContentDirectory config : "
-                + getAppSettings()->value("App/UserInteractiveContentDirectory").toString()
-                + ", defaulting to " + valideUserInteractiveDirectory;
-        }
+        interactiveDirectory = userDataDirectory() + "/interactive content";
+        checkDirectory(interactiveDirectory);
     }
-    else
-    {
-        QDir widgetUserDir = QDir(valideUserInteractiveDirectory);
-        if (!widgetUserDir.exists())
-        {
-            widgetUserDir.mkpath(valideUserInteractiveDirectory);
-        }
-    }
-
-    return valideUserInteractiveDirectory;
+    return interactiveDirectory;
 }
 
 
-QString UBSettings::sankoreDistributedInteractiveDirectory()
+QString UBSettings::applicationInteractivesDirectory()
 {
-    QString defaultRelativePath = QString("./library/sankoreInteractivities");
+    QString defaultRelativePath = QString("./library/interactivities");
 
-    QString configPath = value("Library/sankoreInteractivities", QVariant(defaultRelativePath)).toString();
+    QString configPath = value("Library/InteractivitiesDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith("."))
     {
@@ -1170,11 +969,11 @@ QString UBSettings::sankoreDistributedInteractiveDirectory()
     }
 }
 
-QString UBSettings::uniboardInteractiveLibraryDirectory()
+QString UBSettings::applicationApplicationsLibraryDirectory()
 {
-    QString defaultRelativePath = QString("./library/interactive");
+    QString defaultRelativePath = QString("./library/applications");
 
-    QString configPath = value("Library/InteractiveContentDirectory", QVariant(defaultRelativePath)).toString();
+    QString configPath = value("Library/ApplicationsDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith("."))
     {
@@ -1187,61 +986,23 @@ QString UBSettings::uniboardInteractiveLibraryDirectory()
 }
 
 
-QString UBSettings::uniboardInteractiveFavoritesDirectory()
+QString UBSettings::userInteractiveFavoritesDirectory()
 {
-    QString valideUserInteractiveDirectory = uniboardDataDirectory() + "/interactive favorites";
-
-    // first look into the application settings
-    if (sAppSettings && getAppSettings()->contains("App/UserInteractiveFavoritesDirectory"))
-    {
-        QString userWidgetDirectory = getAppSettings()->value("App/UserInteractiveFavoritesDirectory").toString();
-
-        // mute it to something absolute
-        if (userWidgetDirectory.startsWith("{Documents}"))
-        {
-            userWidgetDirectory = userWidgetDirectory.replace("{Documents}",
-                    QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-        }
-        else if(userWidgetDirectory.startsWith("{Home}"))
-        {
-            userWidgetDirectory = userWidgetDirectory.replace("{Home}",
-                    QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-        }
-        else if(userWidgetDirectory.startsWith("{Videos}"))
-        {
-            userWidgetDirectory = userWidgetDirectory.replace("{Videos}",
-                    QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+    static QString dirPath = "";
+    if(dirPath.isEmpty()){
+        if (sAppSettings && getAppSettings()->contains("App/UserInteractiveFavoritesDirectory")) {
+            dirPath = getAppSettings()->value("App/UserInteractiveFavoritesDirectory").toString();
+            dirPath = replaceWildcard(dirPath);
+            if(checkDirectory(dirPath))
+                return dirPath;
+            else
+                qCritical() << "failed to create directory " << dirPath;
         }
 
-        // valid ?
-        QDir dir(userWidgetDirectory);
-
-        if (!dir.exists())
-        {
-            dir.mkpath(userWidgetDirectory);
-        }
-
-        if (dir.exists())
-        {
-            valideUserInteractiveDirectory = userWidgetDirectory;
-        }
-        else
-        {
-            qWarning() << "Failed to interpret App/UserInteractiveFavoritesDirectory config : "
-                + getAppSettings()->value("App/UserInteractiveFavoritesDirectory").toString()
-                + ", defaulting to " + valideUserInteractiveDirectory;
-        }
+        dirPath = userDataDirectory() + "/interactive favorites";
+        checkDirectory(dirPath);
     }
-    else
-    {
-        QDir widgetUserDir = QDir(valideUserInteractiveDirectory);
-        if (!widgetUserDir.exists())
-        {
-            widgetUserDir.mkpath(valideUserInteractiveDirectory);
-        }
-    }
-
-    return valideUserInteractiveDirectory;
+    return dirPath;
 }
 
 
@@ -1349,4 +1110,32 @@ QString UBSettings::communityPassword()
 void UBSettings::setCommunityPassword(const QString &password)
 {
     communityPsw->set(QVariant(password));
+}
+
+
+bool UBSettings::checkDirectory(QString& dirPath)
+{
+    bool result = true;
+    QDir dir(dirPath);
+    if(!dir.exists())
+        result = dir.mkpath(dirPath);
+    return result;
+}
+
+QString UBSettings::replaceWildcard(QString& path)
+{
+    QString result(path);
+
+    if (result.startsWith("{Documents}")) {
+        result = result.replace("{Documents}", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+    }
+    else if(result.startsWith("{Home}")) {
+        result = result.replace("{Home}", QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    }
+
+    if(result.contains("{UserLoginName}") && UBPlatformUtils::osUserLoginName().length() > 0) {
+        result = result.replace("{UserLoginName}", UBPlatformUtils::osUserLoginName());
+    }
+
+    return result;
 }
