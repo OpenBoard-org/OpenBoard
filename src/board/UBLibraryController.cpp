@@ -649,11 +649,11 @@ QRectF UBLibraryController::visibleSceneRect()
 
 void UBLibraryController::addImagesToCurrentPage(const QList<QUrl>& images)
 {
-    QPointF pos = visibleSceneRect().center();
+    QPointF pos = UBApplication::boardController->activeScene()->normalizedSceneRect().center();
 
+   
     foreach(const QUrl url, images)
     {
-        mLastItemOffsetIndex++;
         mLastItemOffsetIndex = qMin(mLastItemOffsetIndex, 5);
 
         QGraphicsItem* itemInScene = 0;
@@ -662,6 +662,8 @@ void UBLibraryController::addImagesToCurrentPage(const QList<QUrl>& images)
             QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(
                     url.toString());
 
+            pos = QPointF(pos.x() + 50 * mLastItemOffsetIndex, pos.y() + 50 * mLastItemOffsetIndex);
+            mLastItemOffsetIndex++;
             //TODO UB 4.x move this logic to the scene ..
             if (mimeType == "image/svg+xml") {
                 itemInScene = activeScene()->addSvg(url, pos);
@@ -673,8 +675,6 @@ void UBLibraryController::addImagesToCurrentPage(const QList<QUrl>& images)
 
         if (itemInScene) {
             itemInScene = activeScene()->scaleToFitDocumentSize(itemInScene, false, UBSettings::objectInControlViewMargin);
-
-            itemInScene->setPos(QPoint(pos.x() + 50 * mLastItemOffsetIndex, pos.y() + 50 * mLastItemOffsetIndex));
         }
     }
 }
