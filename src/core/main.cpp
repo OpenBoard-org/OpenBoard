@@ -50,8 +50,7 @@ void ub_message_output(QtMsgType type, const char *msg) {
 #endif
 
     if (UBApplication::app() && UBApplication::app()->isVerbose()) {
-        QString logFileNamePath = UBSettings::uniboardDataDirectory()
-                + "/log/uniboard.log";
+        QString logFileNamePath = UBSettings::userDataDirectory() + "/log/uniboard.log";
         QFile logFile(logFileNamePath);
 
         if (logFile.exists() && logFile.size() > 10000000)
@@ -102,7 +101,7 @@ int main(int argc, char *argv[])
 
     QStringList args = app.arguments();
 
-    QString dumpPath = UBSettings::uniboardDataDirectory() + "/log";
+    QString dumpPath = UBSettings::userDataDirectory() + "/log";
     QDir logDir(dumpPath);
     if (!logDir.exists())
         logDir.mkdir(dumpPath);

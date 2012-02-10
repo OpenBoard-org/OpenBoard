@@ -332,7 +332,7 @@ void UBPodcastController::start()
 
             mPartNumber = 0;
 
-            mPodcastRecordingPath = UBSettings::settings()->podcastRecordingDirectory();
+            mPodcastRecordingPath = UBSettings::settings()->userPodcastRecordingDirectory();
 
             qDebug() << "mPodcastRecordingPath: " << mPodcastRecordingPath;
 

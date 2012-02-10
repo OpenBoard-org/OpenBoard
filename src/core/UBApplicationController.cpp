@@ -313,7 +313,7 @@ void UBApplicationController::addCapturedEmbedCode(const QString& embedCode)
     {
         showBoard();
 
-        const QString userWidgetPath = UBSettings::settings()->uniboardInteractiveUserDirectory() + "/" + tr("Web"); // TODO UB 4.x synch with w3cWidget
+        const QString userWidgetPath = UBSettings::settings()->userInteractiveDirectory() + "/" + tr("Web"); // TODO UB 4.x synch with w3cWidget
         QDir userWidgetDir(userWidgetPath);
 
         int width = 300;

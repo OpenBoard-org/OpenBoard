@@ -268,7 +268,6 @@ void UBMediaPlayer::openFile()
         for (int i=1; i<fileNames.size(); i++)
             m_MediaObject.enqueue(Phonon::MediaSource(fileNames[i]));
     }
-//    forwardButton->setEnabled(m_MediaObject.queue().size() > 0);
 }
 
 void UBMediaPlayer::bufferStatus(int percent)

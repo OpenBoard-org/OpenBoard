@@ -55,7 +55,7 @@ class UBPersistenceManager : public QObject
         static void destroy();
 
 		virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = true);
-        virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = false);
+        virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory);
 
         virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy);
 
@@ -86,7 +86,6 @@ class UBPersistenceManager : public QObject
 
         virtual QStringList allShapes();
         virtual QStringList allGips();
-        virtual QStringList allSounds();
         virtual QStringList allImages(const QDir& dir);
         virtual QStringList allVideos(const QDir& dir);
         virtual QStringList allWidgets(const QDir& dir);

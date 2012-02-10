@@ -63,7 +63,7 @@ UBNetworkAccessManager::UBNetworkAccessManager(QObject *parent)
     }
 
     QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
-    QString location = UBSettings::uniboardDataDirectory() + "/web-cache";
+    QString location = UBSettings::userDataDirectory() + "/web-cache";
     diskCache->setCacheDirectory(location);
     setCache(diskCache);
 }

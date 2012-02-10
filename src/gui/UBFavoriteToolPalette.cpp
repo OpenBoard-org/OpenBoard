@@ -56,7 +56,7 @@ UBFavoriteToolPalette::UBFavoriteToolPalette(QWidget* parent)
         }
     }
 
-    QDir favoritesDir(UBSettings::settings()->uniboardInteractiveFavoritesDirectory());
+    QDir favoritesDir(UBSettings::settings()->userInteractiveFavoritesDirectory());
     QStringList favoritesSubDirs =  favoritesDir.entryList(QStringList(), QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks, QDir::Name);
     QStringList appPathes;
 

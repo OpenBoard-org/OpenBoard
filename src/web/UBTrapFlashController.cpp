@@ -207,7 +207,7 @@ void UBTrapFlashController::createWidget()
 
 void UBTrapFlashController::importWidgetInLibrary(QDir pSourceDir)
 {
-    const QString userWidgetPath = UBSettings::settings()->uniboardInteractiveUserDirectory() + "/" + tr("Web");
+    const QString userWidgetPath = UBSettings::settings()->userInteractiveDirectory() + "/" + tr("Web");
     QDir userWidgetDir(userWidgetPath);
 
     if (!userWidgetDir.exists())

@@ -246,8 +246,7 @@ void WBHistoryManager::load()
 {
     loadSettings();
 
-    QFile historyFile(UBSettings::uniboardDataDirectory()
-        + QLatin1String("/history"));
+    QFile historyFile(UBSettings::userDataDirectory() + QLatin1String("/history"));
     if (!historyFile.exists())
         return;
     if (!historyFile.open(QFile::ReadOnly))
@@ -332,7 +331,7 @@ void WBHistoryManager::save()
     if (first == m_history.count() - 1)
         saveAll = true;
 
-    QString directory = UBSettings::uniboardDataDirectory();
+    QString directory = UBSettings::userDataDirectory();
     if (directory.isEmpty())
         directory = QDir::homePath() + QLatin1String("/.") + QCoreApplication::applicationName();
     if (!QFile::exists(directory))

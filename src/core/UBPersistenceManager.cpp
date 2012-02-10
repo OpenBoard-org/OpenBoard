@@ -86,7 +86,7 @@ UBPersistenceManager::~UBPersistenceManager()
 
 QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
 {
-    mDocumentRepositoryPath = UBSettings::settings()->uniboardDocumentDirectory();
+    mDocumentRepositoryPath = UBSettings::userDocumentDirectory();
 
     QDir rootDir(mDocumentRepositoryPath);
     rootDir.mkpath(rootDir.path());
@@ -130,7 +130,7 @@ QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
 
 QStringList UBPersistenceManager::allShapes()
 {
-    QString shapeLibraryPath = UBSettings::settings()->uniboardShapeLibraryDirectory();
+    QString shapeLibraryPath = UBSettings::settings()->applicationShapeLibraryDirectory();
 
     QDir dir(shapeLibraryPath);
 
@@ -150,7 +150,7 @@ QStringList UBPersistenceManager::allShapes()
 
 QStringList UBPersistenceManager::allGips()
 {
-    QString gipLibraryPath = UBSettings::settings()->uniboardGipLibraryDirectory();
+    QString gipLibraryPath = UBSettings::settings()->applicationGipLibraryDirectory();
 
     QDir dir(gipLibraryPath);
 
@@ -163,24 +163,6 @@ QStringList UBPersistenceManager::allGips()
 
         if (UBSettings::settings()->widgetFileExtensions.contains(fi.suffix()))
             paths.append(dir.path() + QString("/") + file);
-    }
-
-    return paths;
-}
-
-QStringList UBPersistenceManager::allSounds()
-{
-    QString soundLibraryPath = QDesktopServices::storageLocation(QDesktopServices::MusicLocation);
-
-    QDir dir(soundLibraryPath);
-
-    QStringList files = dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
-    QStringList paths;
-
-    foreach(QString file, files)
-    {
-        QFileInfo fi(file);
-        paths.append(dir.path() + QString("/") + file);
     }
 
     return paths;
@@ -272,22 +254,12 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     return doc;
 }
 
-UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName, const QString& pName, bool withEmptyPage)
+
+UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory)
 {
     checkIfDocumentRepositoryExists();
 
     UBDocumentProxy* doc = new UBDocumentProxy(pDocumentDirectory); // deleted in UBPersistenceManager::destructor
-
-    if (pGroupName.length() > 0)
-    {
-        doc->setMetaData(UBSettings::documentGroupName, pGroupName);
-    }
-
-    if (pName.length() > 0)
-    {
-        doc->setMetaData(UBSettings::documentName, pName);
-    }
-    if (withEmptyPage) createDocumentSceneAt(doc, 0);
 
     QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
 
@@ -710,7 +682,7 @@ int UBPersistenceManager::sceneCountInDir(const QString& pPath)
 
 QString UBPersistenceManager::generateUniqueDocumentPath()
 {
-    QString ubPath = UBSettings::settings()->uniboardDocumentDirectory();
+    QString ubPath = UBSettings::userDocumentDirectory();
 
     QDateTime now = QDateTime::currentDateTime();
     QString dirName = now.toString("yyyy-MM-dd hh-mm-ss.zzz");

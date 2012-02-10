@@ -171,20 +171,15 @@ class UBSvgSubsetAdaptor
                     int pointsCount = crashedPoints.size();
                     QString svgPoints;
 
-                    static const int maxBufferLengthPerPoint = 30;
-                    int maxBufferLength = maxBufferLengthPerPoint * pointsCount;
-                    char *buffer = new char[maxBufferLength];
                     int length = 0;
-
+                    QString sBuf;
                     for(int j = 0; j < pointsCount; j++)
                     {
-                            const QPointF & point = crashedPoints.at(j);
-                            int n = sprintf(buffer + length, "%.2f,%.2f ", point.x(), point.y());
-                            length += n;
+                            const QPointF & point = crashedPoints.at(j);                          
+                            sBuf.sprintf("%.2f,%.2f ", point.x(), point.y());
+                            svgPoints.insert(length, sBuf);
+                            length += sBuf.length();
                     }
-
-                    svgPoints = QString::fromAscii(buffer, length);
-                    delete buffer;
                     return svgPoints;
                 }
 

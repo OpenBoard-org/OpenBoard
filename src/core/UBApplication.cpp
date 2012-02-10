@@ -212,7 +212,7 @@ int UBApplication::exec(const QString& pFileToImport)
 {
     QPixmapCache::setCacheLimit(1024 * 100);
 
-    QString webDbPath = UBSettings::uniboardDataDirectory() + "/web-databases";
+    QString webDbPath = UBSettings::userDataDirectory() + "/web-databases";
     QDir webDbDir(webDbPath);
     if (!webDbDir.exists(webDbPath))
         webDbDir.mkpath(webDbPath);

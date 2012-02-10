@@ -53,18 +53,15 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget) :
 {
     readFavoriteList();
 
-    mAudioStandardDirectoryPath = QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-    userPath(mAudioStandardDirectoryPath);
+    mAudioStandardDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userAudioDirectory());
 
-    mVideoStandardDirectoryPath = QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
-    userPath(mVideoStandardDirectoryPath);
+    mVideoStandardDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userVideoDirectory());
 
-    mPicturesStandardDirectoryPath = QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
-    userPath(mPicturesStandardDirectoryPath);
+    mPicturesStandardDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userImageDirectory());
 
-    mInteractiveUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardInteractiveUserDirectory());
+    mInteractiveUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userInteractiveDirectory());
 
-    mAnimationUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->animationUserDirectory());
+    mAnimationUserDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userAnimationDirectory());
 
     createInternalWidgetItems();
 
@@ -72,8 +69,8 @@ UBLibraryController::UBLibraryController(QWidget *pParentWidget) :
 
 bool UBLibraryController::canItemsOnElementBeDeleted(UBLibElement *pElement)
 {
-    return !pElement->path().toLocalFile().startsWith(UBSettings::settings()->uniboardShapeLibraryDirectory()) &&
-            !pElement->path().toLocalFile().startsWith(UBSettings::settings()->sankoreDistributedInteractiveDirectory()) &&
+    return !pElement->path().toLocalFile().startsWith(UBSettings::settings()->applicationShapeLibraryDirectory()) &&
+            !pElement->path().toLocalFile().startsWith(UBSettings::settings()->applicationInteractivesDirectory()) &&
             pElement->isDeletable();
 }
 
@@ -163,7 +160,7 @@ void UBLibraryController::importItemOnLibrary(QString& pItemString)
     bool isZip = false;
     if(itemToImport.isDir() || (isZip = UBFileSystemUtils::isAZipFile(pItemString))){
         if(pItemString.contains(".wgt",Qt::CaseInsensitive) || pItemString.contains(".wdgt",Qt::CaseInsensitive)){
-            QString destination = UBSettings::settings()->uniboardInteractiveUserDirectory() + "/" + itemToImport.fileName();
+            QString destination = UBSettings::settings()->userInteractiveDirectory() + "/" + itemToImport.fileName();
             if(isZip)
                 UBFileSystemUtils::expandZipToDir(pItemString,destination);
             else{
@@ -209,12 +206,6 @@ void UBLibraryController::importItemOnLibrary(QString& pItemString)
 
 }
 
-void UBLibraryController::userPath(QUrl& pPath)
-{
-    pPath = QUrl::fromLocalFile(pPath.toLocalFile() + "/Sankore");
-    createDirectory(pPath);
-}
-
 QList<UBLibElement*> UBLibraryController::rootCategoriesList()
 {
     QList<UBLibElement*> categories;
@@ -234,7 +225,7 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     element->setMoveable(false);
     categories << element;
 
-    QString path = UBSettings::settings()->uniboardShapeLibraryDirectory();
+    QString path = UBSettings::settings()->applicationShapeLibraryDirectory();
     element = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(path), tr("Shapes", "Shapes category element"));
     element->setThumbnail(QImage(":images/libpalette/ShapesCategory.svg"));
     element->setMoveable(false);
@@ -250,14 +241,14 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     element->setMoveable(false);
     categories << element;
 
-    mInteractiveCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardGipLibraryDirectory());
+    mInteractiveCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationGipLibraryDirectory());
     element = new UBLibElement(eUBLibElementType_Folder, mInteractiveCategoryPath, tr("Interactivities", "Interactives category element"));
     element->setThumbnail(QImage(":images/libpalette/InteractivesCategory.svg"));
     element->setMoveable(false);
     categories << element;
 
 //  Note : FEATURE IN DEVELOPMENT, DO NOT ERASE (or you will get problems) !!!!
-    mSearchCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->uniboardSearchDirectory());
+    mSearchCategoryPath = QUrl::fromLocalFile(UBSettings::userSearchDirectory());
     element = new UBLibElement(eUBLibElementType_Folder, mSearchCategoryPath, tr("Web Search", "Web search category element"));
     element->setThumbnail(QImage(":images/libpalette/WebSearchCategory.svg"));
     element->setMoveable(false);
@@ -333,19 +324,17 @@ QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QS
 {
     QList<UBLibElement*> content;
     if (pPath == mInteractiveUserDirectoryPath.toLocalFile()){
-        content << listElementsInPath(UBSettings::settings()->uniboardInteractiveLibraryDirectory());
-        content << listElementsInPath(UBSettings::settings()->uniboardInteractiveFavoritesDirectory());
+        content << listElementsInPath(UBSettings::settings()->applicationApplicationsLibraryDirectory());
+        content << listElementsInPath(UBSettings::settings()->userInteractiveFavoritesDirectory());
         foreach(UBLibElement* eachElement, mInternalLibElements)
             content << new UBLibElement(eachElement);
     }
     else if (pPath == mPicturesStandardDirectoryPath.toLocalFile()){
-        QUrl path = QUrl::fromLocalFile(UBSettings::settings()->uniboardImageLibraryDirectory());
-        userPath(path);
+        QUrl path = QUrl::fromLocalFile(UBSettings::settings()->applicationImageLibraryDirectory());
         content << listElementsInPath(path.toLocalFile());
-        content << listElementsInPath(UBSettings::settings()->uniboardDefaultUserImageLibraryDirectory());
     }
     else if (pPath == mInteractiveCategoryPath.toLocalFile()){
-        content << listElementsInPath(UBSettings::settings()->sankoreDistributedInteractiveDirectory());
+        content << listElementsInPath(UBSettings::settings()->applicationInteractivesDirectory());
     }
 
     return content;
@@ -548,7 +537,7 @@ UBGraphicsScene* UBLibraryController::activeScene()
 
 void UBLibraryController::persistFavoriteList()
 {
-    QFile file(UBSettings::libraryPaletteFavoriteListFilePath());
+    QFile file(UBSettings::userFavoriteListFilePath());
     file.open(QIODevice::WriteOnly);
     QDataStream out(&file);
     //magic number
@@ -567,7 +556,7 @@ void UBLibraryController::persistFavoriteList()
 
 void UBLibraryController::readFavoriteList()
 {
-    QFile file(UBSettings::libraryPaletteFavoriteListFilePath());
+    QFile file(UBSettings::userFavoriteListFilePath());
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);    // read the data serialized from the file
     quint32 magicNumber;
@@ -649,11 +638,11 @@ QRectF UBLibraryController::visibleSceneRect()
 
 void UBLibraryController::addImagesToCurrentPage(const QList<QUrl>& images)
 {
-    QPointF pos = visibleSceneRect().center();
+    QPointF pos = UBApplication::boardController->activeScene()->normalizedSceneRect().center();
 
+   
     foreach(const QUrl url, images)
     {
-        mLastItemOffsetIndex++;
         mLastItemOffsetIndex = qMin(mLastItemOffsetIndex, 5);
 
         QGraphicsItem* itemInScene = 0;
@@ -662,6 +651,8 @@ void UBLibraryController::addImagesToCurrentPage(const QList<QUrl>& images)
             QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(
                     url.toString());
 
+            pos = QPointF(pos.x() + 50 * mLastItemOffsetIndex, pos.y() + 50 * mLastItemOffsetIndex);
+            mLastItemOffsetIndex++;
             //TODO UB 4.x move this logic to the scene ..
             if (mimeType == "image/svg+xml") {
                 itemInScene = activeScene()->addSvg(url, pos);
@@ -673,8 +664,6 @@ void UBLibraryController::addImagesToCurrentPage(const QList<QUrl>& images)
 
         if (itemInScene) {
             itemInScene = activeScene()->scaleToFitDocumentSize(itemInScene, false, UBSettings::objectInControlViewMargin);
-
-            itemInScene->setPos(QPoint(pos.x() + 50 * mLastItemOffsetIndex, pos.y() + 50 * mLastItemOffsetIndex));
         }
     }
 }
@@ -819,7 +808,7 @@ QUrl UBChainedLibElement::lastItemPath()
 UBLibElement* UBLibElement::trashElement()
 {
     UBLibElement *trashElement;
-	trashElement = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(UBSettings::trashLibraryPaletteDirPath()), QObject::tr("Trash", "Pictures category element"));
+	trashElement = new UBLibElement(eUBLibElementType_Folder, QUrl::fromLocalFile(UBSettings::userTrashDirPath()), QObject::tr("Trash", "Pictures category element"));
     trashElement->setThumbnail(QImage(":images/libpalette/TrashCategory.svg"));
     trashElement->setMoveable(false);
 
