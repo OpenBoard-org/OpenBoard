@@ -41,6 +41,9 @@ class UBDocumentThumbnailWidget: public UBThumbnailWidget
     signals:
         void sceneDropped(UBDocumentProxy* proxy, int source, int target);
 
+	private slots:
+		void autoScroll();
+
     protected:
 
         virtual void mouseMoveEvent(QMouseEvent *event);
@@ -57,6 +60,8 @@ class UBDocumentThumbnailWidget: public UBThumbnailWidget
         UBSceneThumbnailPixmap *mClosestDropItem;
         bool mDropIsRight;
         bool mDragEnabled;
+		QTimer* mScrollTimer;
+		int mScrollMagnitude;
 };
 
 #endif /* UBDOCUMENTTHUMBNAILWIDGET_H_ */
