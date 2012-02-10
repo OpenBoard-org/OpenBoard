@@ -246,9 +246,8 @@ class UBWidgetUniboardAPI : public QObject
          * When an object is dropped on a widget, this one send us the informations to download it locally.
          * this method download the object on the widget directory and return the path of the downloaded object
          */
-        QString downloadUrl(const QString &objectUrl, const QString &extention = "");
-        QString downloadWeb(const QString &objectUrl);
         void ProcessDropEvent(QDropEvent *);
+        bool isDropableData(const QMimeData *pMimeData) const;
 
 private slots:
         void onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData);
@@ -256,6 +255,7 @@ private slots:
 private:
         inline void registerIDWidget(int id){webDownloadIds.append(id);}
         inline bool takeIDWidget(int id);
+
 
     private:
 

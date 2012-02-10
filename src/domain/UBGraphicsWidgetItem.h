@@ -70,6 +70,7 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         QString downloadUrl(const QString &fileUrl, const QString &extention);
         QString downloadWeb(const QString &fileUrl);
         void processDropEvent(QDropEvent *event);
+        bool isDropableData(const QMimeData *data) const;
 
         virtual void setOwnFolder(const QUrl &newFolder) {ownFolder = newFolder;}
         virtual QUrl getOwnFolder() const {return ownFolder;}

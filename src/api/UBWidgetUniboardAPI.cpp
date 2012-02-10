@@ -470,36 +470,6 @@ void UBWidgetUniboardAPI::enableDropOnWidget()
     mGraphicsWidget->setAcceptDrops(true);
 }
 
-QString UBWidgetUniboardAPI::downloadUrl(const QString &objectUrl, const QString &extention)
-{
-    QString result;
-    QUrl widgetUrl = mGraphicsWidget->getOwnFolder();
-    QString destFileName =widgetUrl.toLocalFile() + "/objects/" + QUuid::createUuid().toString() + extention;
-
-    if (UBFileSystemUtils::copyFile(objectUrl, destFileName)) {
-        result = destFileName.remove(widgetUrl.toLocalFile());
-    } else {
-        qDebug() << "can't copy from " << widgetUrl << "to" << destFileName;
-        result = QString();
-    }
-
-    return result;
-}
-QString UBWidgetUniboardAPI::downloadWeb(const QString &objectUrl)
-{
-    // When we fall there, it means that we are dropping something from the web to the board
-    sDownloadFileDesc desc;
-    desc.dest = sDownloadFileDesc::graphicsWidget;
-    desc.modal = true;
-    desc.url = objectUrl;
-    desc.currentSize = 0;
-    desc.name = QFileInfo(objectUrl).fileName();
-    desc.totalSize = 0; // The total size will be retrieved during the download
-
-    registerIDWidget(UBDownloadManager::downloadManager()->addFileToDownload(desc));
-    return QString();
-}
-
 void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
 {
     const QMimeData *pMimeData = event->mimeData();
@@ -541,7 +511,6 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
 
             registerIDWidget(UBDownloadManager::downloadManager()->addFileToDownload(desc));
 
-//            return;
         }
 
     } else  if (pMimeData->hasUrls()) { //Local file processing
@@ -554,7 +523,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
             contentType = UBFileSystemUtils::mimeTypeFromFileName(fileName);
 
             if (supportedTypeHeader(contentType)) {
-                destFileName = getObjDir() + QUuid::createUuid().toString() + extention;
+                destFileName = getObjDir() + QUuid::createUuid().toString() + "." + extention;
 
                 if (!UBFileSystemUtils::copyFile(fileName, destFileName)) {
                     qDebug() << "can't copy from" << fileName << "to" << destFileName;
@@ -625,8 +594,8 @@ void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc de
     destFile.close();
 
     //To make js interpreter accept drop event we need to generate move event first.
-    QDragMoveEvent readmove(dropPoint, desc.dropActions, &dropMimeData, desc.dropMouseButtons, desc.dropModifiers);
-    QApplication::sendEvent(mGraphicsWidget->widgetWebView(),&readmove);
+    QDragMoveEvent pseudoMove(dropPoint, desc.dropActions, &dropMimeData, desc.dropMouseButtons, desc.dropModifiers);
+    QApplication::sendEvent(mGraphicsWidget->widgetWebView(),&pseudoMove);
 
     QDropEvent readyEvent(dropPoint, desc.dropActions, &dropMimeData, desc.dropMouseButtons, desc.dropModifiers);
     //sending event to destination either it had been downloaded or not
@@ -677,6 +646,25 @@ bool UBWidgetUniboardAPI::takeIDWidget(int id)
         webDownloadIds.removeAll(id);
         return true;
     }
+    return false;
+}
+
+bool UBWidgetUniboardAPI::isDropableData(const QMimeData *pMimeData) const
+{
+    QString fileName = QString();
+    if (pMimeData->hasHtml()) {
+        fileName = UBApplication::urlFromHtml(pMimeData->html());
+        if (fileName.isEmpty())
+            return false;
+    } else if (pMimeData->hasUrls()) {
+        fileName = pMimeData->urls().at(0).toLocalFile();
+        if (fileName.isEmpty())
+            return false;
+    }
+
+    if (supportedTypeHeader(UBFileSystemUtils::mimeTypeFromFileName(fileName)))
+        return true;
+
     return false;
 }
 

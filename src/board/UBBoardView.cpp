@@ -52,18 +52,6 @@
 
 #include "core/memcheck.h"
 
-//Known extentions for files, add if you know more supported
-const QString audioExtentions = ".mp3.wma.ogg";
-const QString videoExtentions = ".avi.flv";
-const QString imageExtentions = ".png.jpg.tif.bmp.tga";
-const QString htmlExtentions = ".htm.html.xhtml";
-
-//Allways use aliases instead of const char* itself
-const QString imageAlias = "image";
-const QString videoAlias = "video";
-const QString audioAlias = "audio";
-const QString htmlAlias = "html";
-
 UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 : QGraphicsView (pParent)
 , mController (pController)
@@ -724,11 +712,11 @@ UBBoardView::drawItems (QPainter *painter, int numItems,
     }
 }
 
-void UBBoardView::dragEnterEvent (QDragEnterEvent *event)
-{
-    // TODO UB 4.x be smarter with drag accept code .... we cannot handle everything ...
-    event->acceptProposedAction ();
-}
+//void UBBoardView::dragEnterEvent (QDragEnterEvent *event)
+//{
+//    // TODO UB 4.x be smarter with drag accept code .... we cannot handle everything ...
+//    event->acceptProposedAction ();
+//}
 
 void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
 {
@@ -738,7 +726,7 @@ void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
     if (graphicsWidget) {
         if (graphicsWidget->acceptDrops()) {
             if (!mOkOnWidget) {
-                if (!isDropableData(event->mimeData())) {
+                if (!graphicsWidget->isDropableData(event->mimeData())) {
                     mOkOnWidget = false;
                     event->ignore();
                     return;
@@ -757,48 +745,6 @@ void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
         event->acceptProposedAction();
         mOkOnWidget = false;
     }
-}
-
-QString UBBoardView::fileExtention(const QString &filename) const
-{
-    int pos = filename.lastIndexOf(".");
-    if (pos != -1)
-        return filename.right(filename.size() - pos);
-    else
-        return QString();
-}
-QString UBBoardView::typeForExtention(const QString &extention) const
-{
-    if (extention.isEmpty())
-        return QString();
-
-    QString result = QString();
-
-    if (audioExtentions.contains(extention)) {
-        result = audioAlias;
-    } else if (videoExtentions.contains(extention)) {
-        result = videoAlias;
-    } else if (imageExtentions.contains(extention)) {
-        result = imageAlias;
-//    } else if (htmlExtentions.contains(extention)) {
-//        result = htmlAlias;
-    }
-
-    return result;
-}
-bool UBBoardView::isDropableData(const QMimeData *pMimeData) const
-{
-    if (pMimeData->hasHtml()) {
-        return true;
-    }
-
-    if (pMimeData->hasUrls()) {
-        if (!typeForExtention(fileExtention(pMimeData->urls().at(0).toLocalFile())).isNull()) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 void UBBoardView::dropEvent (QDropEvent *event)

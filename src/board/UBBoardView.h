@@ -65,7 +65,7 @@ class UBBoardView : public QGraphicsView
                                     QGraphicsItem *items[],
                                     const QStyleOptionGraphicsItem options[]);
 
-        virtual void dragEnterEvent(QDragEnterEvent * event);
+//        virtual void dragEnterEvent(QDragEnterEvent * event);
         virtual void dropEvent(QDropEvent *event);
         virtual void dragMoveEvent(QDragMoveEvent *event);
 
@@ -88,8 +88,6 @@ class UBBoardView : public QGraphicsView
         }
 
         QList<QUrl> processMimeData(const QMimeData* pMimeData);
-        QString processMimeData(const QMimeData *pMimeData, UBGraphicsWidgetItem *widget);
-        bool isDropableData(const QMimeData *pMimeData) const;
 
         UBBoardController* mController;
 
@@ -117,9 +115,6 @@ class UBBoardView : public QGraphicsView
 
 		bool mVirtualKeyboardActive;
         bool mOkOnWidget;
-
-        QString typeForExtention(const QString &extention) const;
-        QString fileExtention(const QString &filename) const;
 
     private slots:
 

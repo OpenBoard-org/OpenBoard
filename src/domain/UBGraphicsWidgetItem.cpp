@@ -278,17 +278,13 @@ void UBGraphicsWidgetItem::clearSource()
     UBFileSystemUtils::deleteFile(getSnapshotPath().toLocalFile());
 }
 
-QString UBGraphicsWidgetItem::downloadUrl(const QString &fileUrl, const QString &extention)
-{
-    return mUniboardAPI->downloadUrl(fileUrl, extention);
-}
-QString UBGraphicsWidgetItem::downloadWeb(const QString &fileUrl)
-{
-    return mUniboardAPI->downloadWeb(fileUrl);
-}
 void UBGraphicsWidgetItem::processDropEvent(QDropEvent *event)
 {
     return mUniboardAPI->ProcessDropEvent(event);
+}
+bool UBGraphicsWidgetItem::isDropableData(const QMimeData *data) const
+{
+    return mUniboardAPI->isDropableData(data);
 }
 
 UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
