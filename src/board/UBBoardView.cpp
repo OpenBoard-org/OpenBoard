@@ -283,9 +283,7 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
 
     UBDrawingController *dc = UBDrawingController::drawingController ();
 
-    QPointF tabletPos = UBGeometryUtils::pointConstrainedInRect (event->hiResGlobalPos () - mapToGlobal (QPoint (0, 0)), rect ());
-
-//    QPointF tabletPos = event->pos();
+    QPointF tabletPos = event->pos();
 
     qDebug() << "tabletPos " << tabletPos;
 
