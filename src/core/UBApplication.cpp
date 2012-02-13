@@ -138,8 +138,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
 
     QTranslator *translator = new QTranslator(this);
 
-//    translator->load(UBPlatformUtils::preferredTranslation());
-    translator->load("/home/ilia/Sankore/Sankore-3.1/resources/i18n/sankore_ru.qm");
+    translator->load(UBPlatformUtils::preferredTranslation());
 
     installTranslator(translator);
 
