@@ -2511,7 +2511,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation>Barre d&apos;outil du stylet</translation>
+        <translation>Barre d&apos;outils du stylet</translation>
     </message>
     <message>
         <source>Horizontal</source>
