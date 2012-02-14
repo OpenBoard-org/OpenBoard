@@ -196,6 +196,10 @@ if [ "$ARCHITECTURE" == "x86_64" ]; then
     ARCHITECTURE="amd64"
 fi
 
+if [ "$ARCHITECTURE" == "i686" ]; then
+    ARCHITECTURE="i386"
+fi
+
 echo "Open-Sankore ($VERSION) $ARCHITECTURE; urgency=low" > "$CHANGE_LOG_FILE"
 echo >> "$CHANGE_LOG_FILE"
 cat $CHANGE_LOG_TEXT >> "$CHANGE_LOG_FILE"
