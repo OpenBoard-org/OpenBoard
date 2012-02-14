@@ -58,7 +58,7 @@ private slots:
 
 private:
     void refreshScene();
-    void updateSpecificThumbnail(int iPage);
+	void updateSpecificThumbnail(int iPage);
     int border();
 
 
