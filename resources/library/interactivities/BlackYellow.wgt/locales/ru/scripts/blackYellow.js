@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var sankoreLang = {display: "Display", edit: "Edit", add: "Add", enter_data: "Enter data:", enter_result: "Enter result:", ok: "Ok", cancel: "Cancel"};
+var sankoreLang = {display: "Показать", edit: "Изменить", add: "Добавить", enter_data: "Введите вопрос:", enter_result: "Введите ответ:", ok: "Ок", cancel: "Отмена"};
 
 function init(){
 

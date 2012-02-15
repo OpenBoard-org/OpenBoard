@@ -99,7 +99,7 @@ void UBDocumentNavigator::setDocument(UBDocumentProxy *document)
  */
 void UBDocumentNavigator::generateThumbnails()
 {
-    // Get the thumbnails
+	// Get the thumbnails
     QList<QPixmap> thumbs = UBThumbnailAdaptor::load(mCrntDoc);
 
 	mThumbsWithLabels.clear();
@@ -155,9 +155,8 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
         UBThumbnailAdaptor::persistScene(mCrntDoc->persistencePath(), pScene, iPage);
 
         // Load it
-        QList<QPixmap> thumbs = UBThumbnailAdaptor::load(mCrntDoc);
-        QPixmap pix = thumbs.at(iPage);
-        QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailNavigPixmap(pix, mCrntDoc, iPage);
+        QPixmap pix = UBThumbnailAdaptor::load(mCrntDoc, iPage);
+        UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(pix, mCrntDoc, iPage);
         if(pixmapItem)
         {
             // Get the old thumbnail
@@ -307,27 +306,29 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
 				}
             }
         }
-        else
-        {
-            if(NULL != mCrntItem && mCrntItem != pCrntItem)
-            {
-                // Unselect the previous item
-                int iOldPage = -1;
+		else
+		{
+			if(NULL != mCrntItem && mCrntItem != pCrntItem)
+			{
+				// Unselect the previous item
+				mCrntItem->setSelected(false);
+				int iOldPage = -1;
 				for(int i = 0; i < mThumbsWithLabels.size(); i++)
 					if (mThumbsWithLabels.at(i).getThumbnail() == mCrntItem)
 					{
 						iOldPage = i;
 						break;
 					}
-                updateSpecificThumbnail(iOldPage);
-                mCrntItem = pCrntItem;
-            }
+				updateSpecificThumbnail(iOldPage);
+				mCrntItem = pCrntItem;
+			}
 
-            // Then display the related page
-            emit changeCurrentPage();
-            refreshScene();
-        }
-        bNavig = false;
+			// Then display the related page
+			emit changeCurrentPage();
+			refreshScene();
+		}
+        
+		bNavig = false;
     }
 	QGraphicsView::mousePressEvent(event);
 }
