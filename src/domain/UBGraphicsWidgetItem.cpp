@@ -339,6 +339,7 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     mW3CWidget = new UBW3CWidget(pWidgetUrl, 0);
     mWebKitWidget = mW3CWidget;
     initialize();
+    setOwnFolder(pWidgetUrl);
 }
 
 UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(UBW3CWidget *w3cWidget, QGraphicsItem *parent, int widgetType)
