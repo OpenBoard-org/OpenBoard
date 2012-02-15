@@ -23,6 +23,8 @@ class UBGraphicsScene;
 
 class UBThumbnailAdaptor //static class
 {
+	Q_DECLARE_TR_FUNCTIONS(UBThumbnailAdaptor)
+
 private: UBThumbnailAdaptor() {}
 public:
     static void persistScene(const QString& pDocPath, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);

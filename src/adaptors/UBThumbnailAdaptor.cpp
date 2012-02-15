@@ -62,14 +62,14 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
                 thumbCount++;
 
                 if (displayMessage && thumbCount == 1)
-					UBApplication::showMessage(QObject::tr("Generating preview thumbnails ..."));
+					UBApplication::showMessage(tr("Generating preview thumbnails ..."));
 
                 persistScene(proxy->persistencePath(), scene, i);
             }
         }
 
         if (displayMessage && thumbCount > 0)
-            UBApplication::showMessage(QObject::tr("%1 thumbnails generated ...").arg(thumbCount));
+            UBApplication::showMessage(tr("%1 thumbnails generated ...").arg(thumbCount));
 
     }
 
@@ -128,14 +128,14 @@ QPixmap UBThumbnailAdaptor::load(UBDocumentProxy* proxy, int index)
                 thumbCount++;
 
                 if (displayMessage && thumbCount == 1)
-					UBApplication::showMessage(QObject::tr("Generating preview thumbnails ..."));
+					UBApplication::showMessage(tr("Generating preview thumbnails ..."));
 
                 persistScene(proxy->persistencePath(), scene, i);
             }
         }
 
         if (displayMessage && thumbCount > 0)
-            UBApplication::showMessage(QObject::tr("%1 thumbnails generated ...").arg(thumbCount));
+            UBApplication::showMessage(tr("%1 thumbnails generated ...").arg(thumbCount));
 
     }
 
