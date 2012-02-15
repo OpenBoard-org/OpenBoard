@@ -210,6 +210,7 @@ void UBSettings::init()
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
     appLastSessionPageIndex = new UBSetting(this, "App", "LastSessionPageIndex", 0);
+    appUseMultiscreen = new UBSetting(this, "App", "UseMusliscreenMode", true);
 
     boardPenFineWidth = new UBSetting(this, "Board", "PenFineWidth", 1.5);
     boardPenMediumWidth = new UBSetting(this, "Board", "PenMediumWidth", 3.0);

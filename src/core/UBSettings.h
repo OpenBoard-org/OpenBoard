@@ -212,6 +212,8 @@ class UBSettings : public QObject
         UBSetting* appLastSessionDocumentUUID;
         UBSetting* appLastSessionPageIndex;
 
+        UBSetting* appUseMultiscreen;
+
         UBSetting* boardPenFineWidth;
         UBSetting* boardPenMediumWidth;
         UBSetting* boardPenStrongWidth;

@@ -281,6 +281,9 @@ int UBApplication::exec(const QString& pFileToImport)
 
     toolBarPositionChanged(UBSettings::settings()->appToolBarPositionedAtTop->get());
 
+    bool bUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
+    mainWindow->actionMultiScreen->setChecked(bUseMultiScreen);
+    applicationController->useMultiScreen(bUseMultiScreen);
     connect(mainWindow->actionMultiScreen, SIGNAL(triggered(bool)), applicationController, SLOT(useMultiScreen(bool)));
     connect(mainWindow->actionWidePageSize, SIGNAL(triggered(bool)), boardController, SLOT(setWidePageSize(bool)));
     connect(mainWindow->actionRegularPageSize, SIGNAL(triggered(bool)), boardController, SLOT(setRegularPageSize(bool)));
