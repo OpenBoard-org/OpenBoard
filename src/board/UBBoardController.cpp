@@ -1166,9 +1166,10 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     {
         emit activeDocumentChanged();
         UBGraphicsTextItem::lastUsedTextColor = QColor();
-		// Notify the navigator palette that the document has changed
-		emit setDocOnPageNavigator(pDocumentProxy);
     }
+
+    // Notify the navigator palette that the document has changed
+    emit setDocOnPageNavigator(pDocumentProxy);
 
     if (sceneChange)
     {
@@ -1984,7 +1985,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
                 downloadURL(QUrl(qsTmp), pPos);
             }
             else{
-                mActiveScene->addText(pMimeData->text(), pPos);
+                mActiveScene->addTextHtml(pMimeData->html(), pPos);
             }
         }
         else{
