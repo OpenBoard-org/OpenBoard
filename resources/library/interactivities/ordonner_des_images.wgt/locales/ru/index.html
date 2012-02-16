@@ -8,23 +8,13 @@
         <script type="text/javascript" src="../../js/jquery-ui-1.8.9.custom.min.js"></script>
         <script type="text/javascript" src="js/script.js"></script>
         <script type="text/javascript">
-            $(document).ready(function(){                
+            $(document).ready(function(){ 
+                sankore.enableDropOnWidget(false);
                 start();
-                //here you can put your code
-                if(window.sankore)
-                    sankore.enableDropOnWidget();
             });
         </script>
     </head>
     <body>
-        <!--<div class="dnd_container">
-            <div class="dnd_1" id="dnd_1" ondragenter="return false;" ondragleave="$(this).css('border-color','#ccc'); return false;" ondragover="$(this).css('border-color','orange'); return false;" ondrop="$(this).css('border-color','#ccc'); return onDropTarget1(event);">Drop the item here ...</div>
-            <div class="dnd_2" id="dnd_2" ondragenter="return false;" ondragleave="$(this).css('border-color','#ccc'); return false;" ondragover="$(this).css('border-color','orange'); return false;" ondrop="$(this).css('border-color','#ccc'); return onDropTarget2(event);">Drop the item here ...</div>
-        </div>
-        <div class='black_overlay' id='fade'></div>
-        <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">открыть</a></p>
-    <div id="light" class="white_content">
-        Содержание<a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">закрыть</a></div>-->
         <div class="toggle_mode">
             <div style="width: 50%; height: 100%; float: left;">
                 <div id="display" style="float: right; width: 120px; cursor: pointer;" class="selected">
