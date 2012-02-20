@@ -321,6 +321,7 @@ class UBSettings : public QObject
         UBSetting* pageSize;
 
         UBSetting* KeyboardLocale;
+        UBSetting* swapControlAndDisplayScreens;
 
     public slots:
 

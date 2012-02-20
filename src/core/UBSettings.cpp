@@ -373,6 +373,7 @@ void UBSettings::init()
     intranetPodcastAuthor = new UBSetting(this, "IntranetPodcast", "Author", "");
 
 	KeyboardLocale = new UBSetting(this, "Board", "StartupKeyboardLocale", 0);
+    swapControlAndDisplayScreens = new UBSetting(this, "App", "SwapControlAndDisplayScreens", false);
 }
 
 

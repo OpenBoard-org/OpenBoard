@@ -34,6 +34,7 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
     , mDisplayScreenIndex(-1)
     , mControlWidget(0)
     , mDisplayWidget(0)
+    , mDesktopWidget(0)
 {
     mDesktop = qApp->desktop();
 
@@ -55,8 +56,10 @@ void UBDisplayManager::initScreenIndexes()
     if (screenCount > 0)
     {
         mControlScreenIndex = mDesktop->primaryScreen();
-
-        //qDebug() <<  "The primary screen: " << mControlScreenIndex << mDesktop->screenGeometry(mControlScreenIndex);
+        if (UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
+        {
+           mControlScreenIndex = mControlScreenIndex^1;
+        }
 
         mScreenIndexesRoles << Control;
     }
@@ -130,6 +133,20 @@ void UBDisplayManager::setAsControl(QWidget* pControlWidget )
     }
 }
 
+void UBDisplayManager::setAsDesktop(QWidget* pControlWidget )
+{
+    if(hasControl() && pControlWidget && (pControlWidget != mControlWidget))
+    {
+        mDesktopWidget = pControlWidget;
+        mDesktopWidget->hide();
+        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+//        mDisplayWidget->showFullScreen();
+        // !!!! Should be included into Windows after QT recompilation
+#ifdef Q_WS_MAC
+        //        mControlWidget->setAttribute(Qt::WA_MacNoShadow);
+#endif
+    }
+}
 
 void UBDisplayManager::setAsDisplay(QWidget* pDisplayWidget)
 {
@@ -163,6 +180,12 @@ QRect UBDisplayManager::displayGeometry()
     return mDesktop->screenGeometry(mDisplayScreenIndex);
 }
 
+void UBDisplayManager::swapScreens(bool swap)
+{
+
+    adjustScreens(-1);
+}
+
 void UBDisplayManager::adjustScreens(int screen)
 {
     Q_UNUSED(screen);
@@ -188,6 +211,11 @@ void UBDisplayManager::positionScreens()
     {
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
         mDisplayWidget->showFullScreen();
+    }
+    if(mDesktopWidget && mControlScreenIndex > -1)
+    {
+        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+   //     mDesktopWidget->showFullScreen();
     }
     else if(mDisplayWidget)
     {

@@ -141,6 +141,7 @@ void UBApplicationController::initScreenLayout()
     mDisplayManager->setAsDisplay(mDisplayView);
 
     mDisplayManager->setAsPreviousDisplays(mPreviousViews);
+    mDisplayManager->setAsDesktop(mUninoteController->drawingView());
 
     mDisplayManager->adjustScreens(-1);
 }
