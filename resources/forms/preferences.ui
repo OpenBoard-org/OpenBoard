@@ -272,7 +272,7 @@
           <item row="1" column="1">
            <widget class="QCheckBox" name="swapControlAndDisplayScreensCheckBox">
             <property name="text">
-             <string>Swap condtol display and view display</string>
+             <string>Swap control display and view display</string>
             </property>
            </widget>
           </item>
