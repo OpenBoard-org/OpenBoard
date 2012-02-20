@@ -182,7 +182,7 @@ QRect UBDisplayManager::displayGeometry()
 
 void UBDisplayManager::swapScreens(bool swap)
 {
-
+    Q_UNUSED(swap);
     adjustScreens(-1);
 }
 
@@ -201,6 +201,10 @@ void UBDisplayManager::adjustScreens(int screen)
 void UBDisplayManager::positionScreens()
 {
 
+    if(mDesktopWidget && mControlScreenIndex > -1)
+    {
+        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+    }
     if (mControlWidget && mControlScreenIndex > -1)
     {
         mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
@@ -211,11 +215,6 @@ void UBDisplayManager::positionScreens()
     {
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
         mDisplayWidget->showFullScreen();
-    }
-    if(mDesktopWidget && mControlScreenIndex > -1)
-    {
-        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
-   //     mDesktopWidget->showFullScreen();
     }
     else if(mDisplayWidget)
     {
