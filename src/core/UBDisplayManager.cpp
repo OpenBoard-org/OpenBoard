@@ -135,7 +135,7 @@ void UBDisplayManager::setAsControl(QWidget* pControlWidget )
 
 void UBDisplayManager::setAsDesktop(QWidget* pControlWidget )
 {
-    if(hasControl() && pControlWidget && (pControlWidget != mControlWidget))
+    if(pControlWidget && (pControlWidget != mControlWidget))
     {
         mDesktopWidget = pControlWidget;
         mDesktopWidget->hide();
@@ -150,7 +150,7 @@ void UBDisplayManager::setAsDesktop(QWidget* pControlWidget )
 
 void UBDisplayManager::setAsDisplay(QWidget* pDisplayWidget)
 {
-    if(hasDisplay() && pDisplayWidget && (pDisplayWidget != mDisplayWidget))
+    if(pDisplayWidget && (pDisplayWidget != mDisplayWidget))
     {
         mDisplayWidget = pDisplayWidget;
         mDisplayWidget->hide();
@@ -203,16 +203,19 @@ void UBDisplayManager::positionScreens()
 
     if(mDesktopWidget && mControlScreenIndex > -1)
     {
+        mDesktopWidget->hide();
         mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
     }
     if (mControlWidget && mControlScreenIndex > -1)
     {
+        mControlWidget->hide();
         mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
         mControlWidget->showFullScreen();
     }
 
     if (mDisplayWidget && mDisplayScreenIndex > -1)
     {
+        mDisplayWidget->hide();
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
         mDisplayWidget->showFullScreen();
     }
