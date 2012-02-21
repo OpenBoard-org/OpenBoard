@@ -43,6 +43,7 @@ UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailW
     , mpCrntDir(NULL)
     , mpCrntElem(NULL)
     , mpTmpElem(NULL)
+	, mLoadingLibraryItems(false)
 {
     setObjectName(name);
     setSpacing(5);
@@ -147,7 +148,8 @@ void UBLibraryWidget::onItemClicked(QGraphicsItem *item, int index)
     Q_UNUSED(index);
     if(NULL != item)
     {
-        int iItem = mGraphicItems.indexOf(item);
+        mLoadingLibraryItems = true;
+		int iItem = mGraphicItems.indexOf(item);
         if(0 <= iItem)
         {
             UBLibElement* pElem = mCurrentElems.at(iItem);
@@ -183,6 +185,7 @@ void UBLibraryWidget::onItemClicked(QGraphicsItem *item, int index)
             }
             emit itemClicked();
         }
+		mLoadingLibraryItems = false;
     }
 }
 

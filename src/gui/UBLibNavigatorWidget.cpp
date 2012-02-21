@@ -126,11 +126,14 @@ void UBLibNavigatorWidget::onNavigbarUpate(UBLibElement *pElem)
  */
 void UBLibNavigatorWidget::onPathItemClicked(UBChainedLibElement *elem)
 {
-    // If this element has some subelement, remove them
-    removeNextChainedElements(elem);
+	if (!this->libraryWidget()->isLoadingLibraryItems())
+	{
+		// If this element has some subelement, remove them
+		removeNextChainedElements(elem);
 
-    // The refresh the view
-    mLibWidget->setCurrentElemsAndRefresh(elem);
+		// The refresh the view
+		mLibWidget->setCurrentElemsAndRefresh(elem);
+	}
 }
 
 /**

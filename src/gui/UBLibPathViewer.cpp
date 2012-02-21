@@ -405,9 +405,10 @@ void UBPathScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             if(NULL != pView)
             {
                 int iClickedItem = pView->widgetAt(event->scenePos());
-                if(-1 != iClickedItem)
+				QGraphicsLayout* wgtLayout = pGWidget->layout();
+                if(iClickedItem != -1 && wgtLayout != NULL)
                 {
-                    QGraphicsWidget* pFolderW = dynamic_cast<QGraphicsWidget*>(pGWidget->layout()->itemAt(iClickedItem));
+					QGraphicsWidget* pFolderW = dynamic_cast<QGraphicsWidget*>(wgtLayout->itemAt(iClickedItem));
                     if(NULL != pFolderW)
                     {
                         UBChainedLibElement* chElem = mMapWidgetToChainedElem[pFolderW];
