@@ -18,8 +18,6 @@
 // just save old state (needs for not empty define)
 #define THIRD_PARTY_WARNINGS_DISABLE __pragma(warning(push));
 #endif //#ifdef NO_THIRD_PARTY_WARNINGS
-// anyway on WIN
-#define THIRD_PARTY_WARNINGS_ENABLE WARNINGS_ENABLE
 
 #else //#ifdef Q_WS_WIN
 
@@ -33,15 +31,16 @@ _Pragma("GCC diagnostic ignored \"-Wsign-compare\"");
 #ifdef NO_THIRD_PARTY_WARNINGS
 //disabling some warnings
 #define THIRD_PARTY_WARNINGS_DISABLE WARNINGS_DISABLE
-
-#define THIRD_PARTY_WARNINGS_ENABLE WARNINGS_ENABLE
 #else
 // just save old state (needs for not empty define)
-#define THIRD_PARTY_WARNINGS_ENABLE WARNINGS_ENABLE
+#define THIRD_PARTY_WARNINGS_DISABLE _Pragma("GCC diagnostic push");
 
 #endif //#ifdef NO_THIRD_PARTY_WARNINGS
 
 #endif //#ifdef Q_WS_WIN
+
+// anyway on any OS
+#define THIRD_PARTY_WARNINGS_ENABLE WARNINGS_ENABLE
 
 #endif // UBGLOBALS_H
         

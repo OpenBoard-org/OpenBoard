@@ -35,7 +35,6 @@ QT += script
 QT += xmlpatterns
 
 INCLUDEPATH += src
-INCLUDEPATH += globals
 
 include($$THIRD_PARTY_PATH/libs.pri)
 include(src/adaptors/adaptors.pri)
