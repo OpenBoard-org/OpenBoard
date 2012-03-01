@@ -24,9 +24,9 @@ $(document).ready(function()
     var sentence = "";
         
     if(window.sankore)
-        sentence = (sankore.preference("ordSplPhrases", ""))?sankore.preference("ordSplPhrases", ""):"this is a bunch of words which should be split apart";
+        sentence = (sankore.preference("ordSplPhrases", ""))?sankore.preference("ordSplPhrases", ""):sankoreLang.example;
     else
-        sentence = "this is a bunch of words which should be split apart";
+        sentence = sankoreLang.example;
     
 	
     w.maxWidth = 600;
@@ -134,7 +134,7 @@ $(document).ready(function()
     {
         return {
             w: winstance.elements.containerEdit.find( "textarea" ).parent().outerWidth( true ),
-            h: winstance.elements.containerEdit.find( "textarea" ).parent().outerHeight( true ),
+            h: winstance.elements.containerEdit.find( "textarea" ).parent().outerHeight( true )
         };
     };
 	
@@ -171,10 +171,13 @@ $(document).ready(function()
 	
     w.modeView();
     
-    $(window).mouseout(function(){
-        if(window.sankore){
-            sankore.setPreference("ordSplPhrases", w.getData("phrase"));
+    if (window.widget) {
+        window.widget.onleave = function(){
+            if(w.editMode)
+                sankore.setPreference("ordSplPhrases", w.elements.container.find( "textarea" ).val());
+            else
+                sankore.setPreference("ordSplPhrases", w.getData("phrase"));
         }
-    });
+    }
 	
 });
