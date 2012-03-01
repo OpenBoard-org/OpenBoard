@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Template</title>
+
+        <!--Styles-->
+        <link rel="stylesheet" type="text/css" href="../../styles/master.css">
+        <link rel="stylesheet" type="text/css" href="../../styles/of_puppets.css">
+        <!--Scripts-->
+        <script type="text/javascript" src="../../scripts/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="../../scripts/jquery-ui-1.8.9.custom.min.js"></script>
+        <script type="text/javascript" src="script/template2.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){          
+                if(window.sankore)
+                    sankore.enableDropOnWidget(false);
+                $("#ub-widget").append('<div id="mp_setup"></div><div id="mp_word"></div>');
+                modeView();
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id="ub-widget">
+
+        </div>
+    </body>
+
+</html>
