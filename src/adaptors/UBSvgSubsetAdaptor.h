@@ -164,21 +164,31 @@ class UBSvgSubsetAdaptor
                 void strokeToSvgPolyline(UBGraphicsStroke* stroke, bool groupHoldsInfo);
                 void strokeToSvgPolygon(UBGraphicsStroke* stroke, bool groupHoldsInfo);
 
-                inline QString pointsToSvgPointsAttribute(const QVector<QPointF> points)
+                inline QString pointsToSvgPointsAttribute(QVector<QPointF> points)
                 {
-                    const QVector<QPointF> crashedPoints = UBGeometryUtils::crashPointList(points);
+                    UBGeometryUtils::crashPointList(points);
 
-                    int pointsCount = crashedPoints.size();
+                    int pointsCount = points.size();
                     QString svgPoints;
 
                     int length = 0;
                     QString sBuf;
+
                     for(int j = 0; j < pointsCount; j++)
                     {
-                            const QPointF & point = crashedPoints.at(j);                          
-                            sBuf.sprintf("%.2f,%.2f ", point.x(), point.y());
-                            svgPoints.insert(length, sBuf);
-                            length += sBuf.length();
+                        sBuf = "%1,%2 ";
+                        const QPointF & point = points.at(j);
+
+                        QString temp1 =  "%1", temp2 = "%2";
+
+                        temp1 = temp1.arg(point.x());
+                        temp2 = temp2.arg(point.y());
+
+                        QLocale loc(QLocale::C);
+                        sBuf = sBuf.arg(loc.toFloat(temp1)).arg(loc.toFloat(temp2));
+                        
+                        svgPoints.insert(length, sBuf);
+                        length += sBuf.length(); 
                     }
                     return svgPoints;
                 }

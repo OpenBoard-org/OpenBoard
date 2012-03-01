@@ -205,22 +205,20 @@ QRectF UBGeometryUtils::lineToInnerRect(const QLineF& pLine, const qreal& pWidth
 }
 
 
-QVector<QPointF> UBGeometryUtils::crashPointList(const QVector<QPointF> points)
+void UBGeometryUtils::crashPointList(QVector<QPointF> &points)
 {
-    QVector<QPointF> result(points);
+   // QVector<QPointF> result(points);
     int position = 1;
 
-    while(position < result.size())
+    while(position < points.size())
     {
-        if (result.at(position) == result.at(position - 1))
+        if (points.at(position) == points.at(position - 1))
         {
-            result.remove(position);
+            points.remove(position);
         }
         else
         {
             ++position;
         }
     }
-
-    return result;
 }
