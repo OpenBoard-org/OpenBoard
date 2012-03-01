@@ -27,9 +27,9 @@ $(document).ready(function()
     var sentences = "";
     
     if(window.sankore)
-        sentences = (sankore.preference("ordSplText", ""))?sankore.preference("ordSplText", ""):"hello, this is the first sentence. hi, this is the second sentence. hello again, this is the third sentence. good morning, this is the fifth sentence. hi, sorry, i\'m late, i\'m the fourth sentence.";
+        sentences = (sankore.preference("ordSplText", ""))?sankore.preference("ordSplText", ""):sankoreLang.example;
     else
-        sentences = "hello, this is the first sentence. hi, this is the second sentence. hello again, this is the third sentence. good morning, this is the fifth sentence. hi, sorry, i\'m late, i\'m the fourth sentence.";
+        sentences = sankoreLang.example;
     
     w.maxWidth = 600;
 	
@@ -180,5 +180,14 @@ $(document).ready(function()
             sankore.setPreference("ordSplText", w.getData( "text" ));
         }
     });
+    
+    if (window.widget) {
+        window.widget.onleave = function(){
+            if(w.editMode)
+                sankore.setPreference("ordSplText", w.elements.container.find( "textarea" ).val());
+            else
+                sankore.setPreference("ordSplText", w.getData( "text" ));
+        }
+    }
 	
 });
