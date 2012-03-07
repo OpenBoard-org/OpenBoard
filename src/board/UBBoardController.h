@@ -153,7 +153,6 @@ class UBBoardController : public QObject
 
         void ClearUndoStack();
 
-
     public slots:
         void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0);
         void showDocumentsDialog();
@@ -209,6 +208,11 @@ class UBBoardController : public QObject
         void moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicWidget);
         void moveToolWidgetToScene(UBToolWidget* toolWidget);
         void addItem();
+
+        void freezeW3CWidgets(bool freeze);
+        void freezeW3CWidget(QGraphicsItem* item, bool freeze);
+        void startScript();
+        void stopScript();
 
     signals:
         void activeSceneWillBePersisted();

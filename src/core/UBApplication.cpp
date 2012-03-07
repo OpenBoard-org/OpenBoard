@@ -237,8 +237,11 @@ int UBApplication::exec(const QString& pFileToImport)
     mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
 
     connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(showBoard()));
+    connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(startScript()));
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));
+    connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(showDocument()));
+    connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(closing()));
     connect(mainWindow, SIGNAL(closeEvent_Signal(QCloseEvent*)), this, SLOT(closeEvent(QCloseEvent*)));
 
@@ -262,6 +265,7 @@ int UBApplication::exec(const QString& pFileToImport)
 
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
+    connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));
 #ifndef Q_WS_MAC
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
 #else
@@ -274,6 +278,7 @@ int UBApplication::exec(const QString& pFileToImport)
 
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
     connect(mainWindow->actionTutorial, SIGNAL(triggered()), applicationController, SLOT(showTutorial()));
+    connect(mainWindow->actionTutorial, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mainWindow->actionSankoreEditor, SIGNAL(triggered()), applicationController, SLOT(showSankoreEditor()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
 
@@ -352,6 +357,16 @@ void UBApplication::showMinimized()
 }
 
 #endif
+
+void UBApplication::startScript()
+{
+    this->boardController->freezeW3CWidgets(false);
+}
+
+void UBApplication::stopScript()
+{
+    this->boardController->freezeW3CWidgets(true);
+}
 
 void UBApplication::showBoard()
 {

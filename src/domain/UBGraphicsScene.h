@@ -178,6 +178,11 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void addMask(const QPointF &center = QPointF());
         void addCache();
 
+        QList<QGraphicsItem*> getFastAccessItems()
+        {
+            return mFastAccessItems;
+        }
+
         class SceneViewState
         {
             public:

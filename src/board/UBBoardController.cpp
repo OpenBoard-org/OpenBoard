@@ -351,15 +351,27 @@ void UBBoardController::connectToolbar()
     connect(mMainWindow->actionEraseItems, SIGNAL(triggered()), this, SLOT(clearSceneItems()));
     connect(mMainWindow->actionEraseAnnotations, SIGNAL(triggered()), this, SLOT(clearSceneAnnotation()));
 
+    //connect(mMainWindow->actionUndo, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mMainWindow->actionUndo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(undo()));
     connect(mMainWindow->actionRedo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(redo()));
+    connect(mMainWindow->actionRedo, SIGNAL(triggered()), this, SLOT(startScript()));
     connect(mMainWindow->actionBack, SIGNAL( triggered()), this, SLOT(previousScene()));
     connect(mMainWindow->actionForward, SIGNAL(triggered()), this, SLOT(nextScene()));
+    connect(mMainWindow->actionSleep, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mMainWindow->actionSleep, SIGNAL(triggered()), this, SLOT(blackout()));
     connect(mMainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
     connect(mMainWindow->actionImportPage, SIGNAL(triggered()), this, SLOT(importPage()));
 }
 
+void UBBoardController::startScript()
+{
+    freezeW3CWidgets(false);
+}
+
+void UBBoardController::stopScript()
+{
+    freezeW3CWidgets(true);
+}
 
 void UBBoardController::initToolbarTexts()
 {
@@ -515,6 +527,7 @@ void UBBoardController::clearScene()
 {
     if (mActiveScene)
     {
+        freezeW3CWidgets(true);
         mActiveScene->clearItemsAndAnnotations();
         updateActionStates();
     }
@@ -525,6 +538,7 @@ void UBBoardController::clearSceneItems()
 {
     if (mActiveScene)
     {
+        freezeW3CWidgets(true);
         mActiveScene->clearItems();
         updateActionStates();
     }
@@ -1134,6 +1148,8 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
     if (targetScene)
     {
+        freezeW3CWidgets(true);
+
         if(sceneChange)
             emit activeSceneWillChange();
 
@@ -1155,6 +1171,8 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
         UBSettings::settings()->setDarkBackground(mActiveScene->isDarkBackground());
         UBSettings::settings()->setCrossedBackground(mActiveScene->isCrossedBackground());
+
+        freezeW3CWidgets(false);
     }
 
     selectionChanged();
@@ -1793,7 +1811,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
 
     newUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addGraphicsWidgteToDocument(mActiveDocument, pUrl.toLocalFile(), uuid));
 
-    w3cWidgetItem = mActiveScene->addW3CWidget(newUrl, pos);
+    w3cWidgetItem = mActiveScene->addW3CWidget(pUrl, pos);
 
     if (w3cWidgetItem) {
         w3cWidgetItem->setUuid(uuid);
@@ -2093,7 +2111,7 @@ void UBBoardController::addItem()
 
     QString filename = QFileDialog::getOpenFileName(mControlContainer, tr("Add Item"),
                                                     defaultPath,
-                                                    tr("All Supported (%1)").arg(extensions));
+                                                    tr("All Supported (%1)").arg(extensions), NULL, QFileDialog::DontUseNativeDialog);
 
     if (filename.length() > 0)
     {
@@ -2126,4 +2144,32 @@ void UBBoardController::onDownloadModalFinished()
 void UBBoardController::displayMetaData(QMap<QString, QString> metadatas)
 {
     emit displayMetadata(metadatas);
+}
+
+void UBBoardController::freezeW3CWidgets(bool freeze)
+{
+    if (mActiveSceneIndex >= 0)
+    {
+        QList<QGraphicsItem *> list = UBApplication::boardController->activeScene()->getFastAccessItems();
+        foreach(QGraphicsItem *item, list)
+        {
+            freezeW3CWidget(item, freeze);
+        }
+    }
+}
+
+void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
+{
+            if(item->type() == UBGraphicsW3CWidgetItem::Type)
+            {
+                QString scriptString;
+                if (freeze)
+                    scriptString = "setfreezed(true);";
+                else 
+                    scriptString = "setfreezed(false);";
+                UBGraphicsW3CWidgetItem* item_casted = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
+                if (0 == item_casted)
+                    return;
+                item_casted->widgetWebView()->page()->mainFrame()->evaluateJavaScript(scriptString);
+            }
 }

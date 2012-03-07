@@ -21,6 +21,9 @@
 
 #include "core/memcheck.h"
 
+#include "core/UBApplication.h"
+
+#include "board/UBBoardController.h"
 
 UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
         const QSet<QGraphicsItem*>& pAddedItems)
@@ -29,6 +32,18 @@ UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, co
         , mAddedItems(pAddedItems - pRemovedItems)
 {
     mFirstRedo = true;
+
+    QSetIterator<QGraphicsItem*> itAdded(mAddedItems);
+    while (itAdded.hasNext())
+    {
+        UBApplication::boardController->freezeW3CWidget(itAdded.next(), true);
+    }
+
+    QSetIterator<QGraphicsItem*> itRemoved(mRemovedItems);
+    while (itRemoved.hasNext())
+    {
+        UBApplication::boardController->freezeW3CWidget(itRemoved.next(), false);
+    }
 }
 
 UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QGraphicsItem* pRemovedItem,
@@ -37,10 +52,16 @@ UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QG
 {
 
     if (pRemovedItem)
+    {
         mRemovedItems.insert(pRemovedItem);
+        UBApplication::boardController->freezeW3CWidget(pRemovedItem, true);
+    }
 
     if (pAddedItem)
+    {
         mAddedItems.insert(pAddedItem);
+        UBApplication::boardController->freezeW3CWidget(pAddedItem, false);
+    }
 
     mFirstRedo = true;
 
@@ -63,12 +84,15 @@ void UBGraphicsItemUndoCommand::undo()
         QGraphicsItem* item = itAdded.next();
         item->setSelected(false);
         mScene->removeItem(item);
+        UBApplication::boardController->freezeW3CWidget(item, true);
     }
 
     QSetIterator<QGraphicsItem*> itRemoved(mRemovedItems);
     while (itRemoved.hasNext())
     {
-        mScene->addItem(itRemoved.next());
+        QGraphicsItem* item = itRemoved.next();
+        mScene->addItem(item);
+        UBApplication::boardController->freezeW3CWidget(item, false);
     }
 
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
@@ -92,12 +116,15 @@ void UBGraphicsItemUndoCommand::redo()
             QGraphicsItem* item = itRemoved.next();
             item->setSelected(false);
             mScene->removeItem(item);
+            UBApplication::boardController->freezeW3CWidget(item, true);
         }
 
         QSetIterator<QGraphicsItem*> itAdded(mAddedItems);
         while (itAdded.hasNext())
         {
-            mScene->addItem(itAdded.next());
+            QGraphicsItem* item = itAdded.next();
+            mScene->addItem(item);
+            UBApplication::boardController->freezeW3CWidget(item, false);
         }
 
         // force refresh, QT is a bit lazy and take a lot of time (nb item ^2) to trigger repaint
