@@ -365,7 +365,7 @@ void UBBoardController::connectToolbar()
 
 void UBBoardController::startScript()
 {
-    freezeW3CWidgets(false);
+    freezeW3CWidgets(true);
 }
 
 void UBBoardController::stopScript()
@@ -2160,16 +2160,15 @@ void UBBoardController::freezeW3CWidgets(bool freeze)
 
 void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
 {
-            if(item->type() == UBGraphicsW3CWidgetItem::Type)
-            {
-                QString scriptString;
-                if (freeze)
-                    scriptString = "setfreezed(true);";
-                else 
-                    scriptString = "setfreezed(false);";
-                UBGraphicsW3CWidgetItem* item_casted = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
-                if (0 == item_casted)
-                    return;
-                item_casted->widgetWebView()->page()->mainFrame()->evaluateJavaScript(scriptString);
-            }
+    if(item->type() == UBGraphicsW3CWidgetItem::Type)
+    {
+        UBGraphicsW3CWidgetItem* item_casted = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
+        if (0 == item_casted)
+            return;
+
+        if (freeze) {
+            item_casted->widgetWebView()->page()->mainFrame()->setContent(UBW3CWidget::freezedWidgetPage().toAscii());
+        } else
+            item_casted->widgetWebView()->loadMainHtml();
+    }
 }

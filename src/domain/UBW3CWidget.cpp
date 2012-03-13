@@ -29,6 +29,8 @@
 
 #include "core/memcheck.h"
 
+const QString freezedWidgetDefaultContentFilePath = "./etc/freezedWidgetWrapper.html";
+
 bool UBW3CWidget::sTemplateLoaded = false;
 QMap<QString, QString> UBW3CWidget::sNPAPIWrapperTemplates;
 QString UBW3CWidget::sNPAPIWrappperConfigTemplate;
@@ -414,6 +416,29 @@ QString UBW3CWidget::createHtmlWrapperInDir(const QString& html, const QDir& pDi
 
     return widgetPath;
 
+}
+
+QString UBW3CWidget::freezedWidgetPage()
+{
+    static QString defaultcontent;
+
+    if (defaultcontent.isNull()) {
+        QFile wrapperFile(freezedWidgetDefaultContentFilePath);
+        if (!wrapperFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug() << "can't open wrapper file " + freezedWidgetDefaultContentFilePath;
+            defaultcontent = "";
+        } else {
+            QByteArray arr = wrapperFile.readAll();
+            if (!arr.isEmpty()) {
+                defaultcontent = QString(arr);
+            } else {
+                qDebug() << "content of " + freezedWidgetDefaultContentFilePath + "is empty";
+                defaultcontent = "";
+            }
+        }
+    }
+
+    return defaultcontent;
 }
 
 void UBW3CWidget::loadNPAPIWrappersTemplates()
