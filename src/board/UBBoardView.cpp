@@ -291,7 +291,6 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     UBDrawingController *dc = UBDrawingController::drawingController ();
 
     QPointF tabletPos = event->pos();
-ubw3cwid
     qDebug() << "tabletPos " << tabletPos;
 
 
