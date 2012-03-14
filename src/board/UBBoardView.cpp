@@ -291,7 +291,7 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     UBDrawingController *dc = UBDrawingController::drawingController ();
 
     QPointF tabletPos = event->pos();
-
+ubw3cwid
     qDebug() << "tabletPos " << tabletPos;
 
 
@@ -435,7 +435,7 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
                 {
                     delete suspendedMousePressEvent;
                 }
-                suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers()); // óäàëèòü
+                suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers()); // ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ
             }
             
             event->accept();
