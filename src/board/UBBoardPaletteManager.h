@@ -25,7 +25,6 @@
 #include "gui/UBPageNavigationWidget.h"
 #include "gui/UBLibWidget.h"
 #include "gui/UBCachePropertiesWidget.h"
-#include "gui/UBTeacherBarWidget.h"
 #include "gui/UBDockDownloadWidget.h"
 #include "core/UBApplicationController.h"
 
@@ -59,15 +58,12 @@ class UBBoardPaletteManager : public QObject
         void refreshPalettes();
 
         UBKeyboardPalette *mKeyboardPalette;
-//        UBRightPalette* createDesktopRightPalette(QWidget* parent);
 
         void processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode);
         void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
         void startDownloads();
         void stopDownloads();
         QRect GetFreeRectGlobalCoords() const;
-		void ForceTeacherBarToSaveData();
-		void ForceTeacherBarToLoadData();
 
     signals:
         void connectToDocController();
@@ -80,7 +76,6 @@ class UBBoardPaletteManager : public QObject
         void addItem(const QUrl& pUrl);
         void addItem(const QPixmap& pPixmap, const QPointF& p = QPointF(0.0, 0.0), qreal scale = 1.0, const QUrl& sourceUrl = QUrl());
 
-//        void slot_changeMode(eUBDockPaletteWidgetMode newMode);
         void slot_changeMainMode(UBApplicationController::MainMode);
         void slot_changeDesktopMode(bool);
 
@@ -102,11 +97,6 @@ class UBBoardPaletteManager : public QObject
         UBLeftPalette* mLeftPalette;
         /** The right dock palette */
         UBRightPalette* mRightPalette;
-
-//         // HACK: here we duplicate the right palette for the desktop mode
-//         //       we MUST refactor the architecture in order to use only one
-//         //       right palette!
-//         UBRightPalette* mDesktopRightPalette;
 
         UBActionPalette *mBackgroundsPalette;
         UBActionPalette *mToolsPalette;
@@ -137,8 +127,7 @@ class UBBoardPaletteManager : public QObject
         UBLibWidget* mpLibWidget;
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
-        /** The teacher bar widget */
-        UBTeacherBarWidget* mpTeacherBarWidget;
+
         /** The download widget */
         UBDockDownloadWidget* mpDownloadWidget;
         // HACK: here we duplicate the lib widget for the desktop mode

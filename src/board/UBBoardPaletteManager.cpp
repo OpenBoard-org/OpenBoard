@@ -82,7 +82,6 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpPageNavigWidget(NULL)
     , mpLibWidget(NULL)
     , mpCachePropWidget(NULL)
-    , mpTeacherBarWidget(NULL)
     , mpDownloadWidget(NULL)
     , mpDesktopLibWidget(NULL)
     , mDownloadInProgress(false)
@@ -108,11 +107,6 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
         delete mpDesktopLibWidget;
         mpDesktopLibWidget = NULL;
     }
-//     if(NULL != mDesktopRightPalette)
-//     {
-//         delete mDesktopRightPalette;
-//         mDesktopRightPalette = NULL;
-//     }
 }
 
 void UBBoardPaletteManager::initPalettesPosAtStartup()
@@ -135,16 +129,10 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // Create the widgets for the dock palettes
 
     mpPageNavigWidget = new UBPageNavigationWidget();
-//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpPageNavigWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpLibWidget = new UBLibWidget();
-//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpLibWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpCachePropWidget = new UBCachePropertiesWidget();
-//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpCachePropWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
-
-    mpTeacherBarWidget = new UBTeacherBarWidget();
-//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpTeacherBarWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpDownloadWidget = new UBDockDownloadWidget();
 
@@ -154,10 +142,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // LEFT palette widgets
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
-
-    // The teacher bar widget will always be there
-    mLeftPalette->registerWidget(mpTeacherBarWidget);
-    mLeftPalette->addTab(mpTeacherBarWidget);
 
     mLeftPalette->connectSignals();
 
@@ -178,10 +162,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mRightPalette->removeTab(mpDownloadWidget);
     mRightPalette->removeTab(mpCachePropWidget);
 
-//     mLeftPalette->showTabWidget(0);
-//     mRightPalette->showTabWidget(0);
-// 
-//     //------------------------------------------------//
 }
 
 void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMode mainMode)
@@ -1004,14 +984,4 @@ QRect UBBoardPaletteManager::GetFreeRectGlobalCoords() const
         }
     }
     return QRect(topLeft, bottomRight);
-}
-
-void UBBoardPaletteManager::ForceTeacherBarToSaveData()
-{
-	mpTeacherBarWidget->saveContent();
-}
-
-void UBBoardPaletteManager::ForceTeacherBarToLoadData()
-{
-	mpTeacherBarWidget->loadContent();
 }
