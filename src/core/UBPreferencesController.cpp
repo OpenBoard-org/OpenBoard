@@ -112,6 +112,7 @@ void UBPreferencesController::wire()
 
 
     connect(mPreferencesUI->keyboardPaletteKeyButtonSize, SIGNAL(currentIndexChanged(const QString &)), settings->boardKeyboardPaletteKeyBtnSize, SLOT(setString(const QString &)));
+    connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(const QString &)), settings->appStartMode, SLOT(setString(const QString &)));
 
 
     connect(mPreferencesUI->useExternalBrowserCheckBox, SIGNAL(clicked(bool)), settings->webUseExternalBrowser, SLOT(setBool(bool)));
@@ -177,6 +178,14 @@ void UBPreferencesController::init()
                 settings->boardKeyboardPaletteKeyBtnSize->get().toString())
         {
             mPreferencesUI->keyboardPaletteKeyButtonSize->setCurrentIndex(i);
+            break;
+        }
+
+    for(int i=0; i<mPreferencesUI->startModeComboBox->count(); i++)
+        if (mPreferencesUI->startModeComboBox->itemText(i) ==
+                settings->appStartMode->get().toString())
+        {
+            mPreferencesUI->startModeComboBox->setCurrentIndex(i);
             break;
         }
 
@@ -293,6 +302,7 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->toolbarDisplayTextCheckBox->setChecked(defaultValue);
         mPreferencesUI->verticalChoice->setChecked(settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->horizontalChoice->setChecked(!settings->appToolBarOrientationVertical->reset().toBool());
+        mPreferencesUI->startModeComboBox->setCurrentIndex(0);
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->penTab)
     {

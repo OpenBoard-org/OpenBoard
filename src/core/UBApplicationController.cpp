@@ -137,7 +137,7 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 
 void UBApplicationController::initScreenLayout()
 {
-    mDisplayManager->setAsControl(mMainWindow);
+    mDisplayManager->setAsControl(mMainWindow, true);
     mDisplayManager->setAsDisplay(mDisplayView);
 
     mDisplayManager->setAsPreviousDisplays(mPreviousViews);
@@ -352,7 +352,8 @@ void UBApplicationController::showBoard()
     UBPlatformUtils::setDesktopMode(false);
 
     mUninoteController->hideWindow();
-    mMainWindow->show();
+    
+    mDisplayManager->adjustScreens(0);
 
     emit mainModeChanged(Board);
 }

@@ -118,13 +118,15 @@ int UBDisplayManager::numPreviousViews()
 }
 
 
-void UBDisplayManager::setAsControl(QWidget* pControlWidget )
+void UBDisplayManager::setAsControl(QWidget* pControlWidget, bool init)
 {
     if(hasControl() && pControlWidget && (pControlWidget != mControlWidget))
     {
         mControlWidget = pControlWidget;
         mControlWidget->hide();
         mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+
+        if (!init)
         mControlWidget->showFullScreen();
 		// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC

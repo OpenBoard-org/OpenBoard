@@ -365,7 +365,7 @@ void UBBoardController::connectToolbar()
 
 void UBBoardController::startScript()
 {
-    freezeW3CWidgets(true);
+    freezeW3CWidgets(false);
 }
 
 void UBBoardController::stopScript()
@@ -453,6 +453,7 @@ void UBBoardController::addScene()
 
     setActiveDocumentScene(mActiveDocument, mActiveSceneIndex + 1);
     QApplication::restoreOverrideCursor();
+    centerOn();
 }
 
 
@@ -2162,13 +2163,14 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
 {
     if(item->type() == UBGraphicsW3CWidgetItem::Type)
     {
+                QString scriptString;
+                if (freeze)
+                    scriptString = "setfreezed(true);";
+                else 
+                    scriptString = "setfreezed(false);";
         UBGraphicsW3CWidgetItem* item_casted = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
         if (0 == item_casted)
             return;
-
-        if (freeze) {
-            item_casted->widgetWebView()->page()->mainFrame()->setContent(UBW3CWidget::freezedWidgetPage().toAscii());
-        } else
-            item_casted->widgetWebView()->loadMainHtml();
+                item_casted->widgetWebView()->page()->mainFrame()->evaluateJavaScript(scriptString);
     }
 }

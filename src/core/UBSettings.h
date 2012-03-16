@@ -229,6 +229,8 @@ class UBSettings : public QObject
 
         UBSetting* boardKeyboardPaletteKeyBtnSize;
 
+        UBSetting* appStartMode;
+
         UBColorListSetting* boardPenLightBackgroundColors;
         UBColorListSetting* boardPenLightBackgroundSelectedColors;
 

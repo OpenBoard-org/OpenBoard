@@ -33,7 +33,7 @@ class UBDisplayManager : public QObject
 
         int numPreviousViews();
 
-        void setAsControl(QWidget* pControlWidget);
+        void setAsControl(QWidget* pControlWidget, bool init = false);
 
         void setAsDisplay(QWidget* pDisplayWidget);
 

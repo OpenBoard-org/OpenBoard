@@ -310,6 +310,9 @@ int UBApplication::exec(const QString& pFileToImport)
     static AEEventHandlerUPP ub_proc_ae_handlerUPP = AEEventHandlerUPP(ub_appleEventProcessor);
     AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
 #endif
+    if (UBSettings::settings()->appStartMode->get() == "Desktop")
+        applicationController->showDesktop();
+    else applicationController->showBoard();
 
 
     if (UBSettings::settings()->appIsInSoftwareUpdateProcess->get().toBool())
