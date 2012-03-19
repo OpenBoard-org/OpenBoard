@@ -416,12 +416,15 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
         }
       else if (currentTool == UBStylusTool::Selector)
         {
+            QSet<QGraphicsItem*> existingTools = scene()->tools();
+
             movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
 
-            if (!movingItem || 
-                movingItem->isSelected() || 
-                (movingItem->type() == UBGraphicsDelegateFrame::Type ||         
-                movingItem->type() == DelegateButton::Type))
+            if (!movingItem 
+                || movingItem->isSelected()
+                || (movingItem->type() == UBGraphicsDelegateFrame::Type
+                || movingItem->type() == DelegateButton::Type) 
+                || existingTools.contains(movingItem))
                 {
                     movingItem = NULL;
                     QGraphicsView::mousePressEvent (event);
