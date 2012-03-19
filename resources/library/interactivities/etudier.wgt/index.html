@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>D'n'd</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet" type="text/css" href="css/basic.css"/>
+        <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
+        <script type="text/javascript" src="js/easySlider1.5.js"></script>
+        <script type="text/javascript" src="js/script.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var lang = ""; //locale language
+                if(window.sankore){
+                    lang = sankore.locale().substr(0,2);    
+                } else 
+                    lang = "en";
+                if(lang == "en"){  
+                    if(window.sankore)
+                        sankore.enableDropOnWidget(false);
+                    start();
+                }
+                else{
+                    returnStatus(lang);
+                }
+                
+                function returnStatus(lang){
+                    $.ajax({
+                        type: 'POST',
+                        url:'locales/' + lang + '/index.html',
+                        statusCode: {
+                            404: function() {
+                                start();
+                            },
+                            200: function(){
+                                window.location.href = 'locales/' + lang + '/index.html';
+                            }
+                        }
+                    });                    
+                }
+            });
+        </script>
+    </head>
+    <body>       
+        <div class="toggle_mode">
+            <div style="width: 50%; height: 100%; float: left;">
+                <div id="display" style="float: right; width: 120px; cursor: pointer;" class="selected">
+                    <div id="display_img" style="float: right;" class="green_point"></div>
+                    <div id="display_text" style="float: right;"></div>                    
+                </div>
+            </div>
+            <div style="width: 50%; height: 100%; float: right;">
+                <div id="edit" style="float: left; width: 120px; cursor: pointer;">                    
+                    <div id="edit_img" style="float: left;" class="red_point"></div>
+                    <div id="edit_text" style="float: left;"></div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%; height: 25px;"></div>
+        <div id="slider">
+            <ul>							
+            </ul>
+        </div>
+        <span id="prevBtn"><a href="javascript:void(0);"></a></span>
+        <span id="nextBtn"><a href="javascript:void(0);"></a></span>
+    </body>
+</html>
