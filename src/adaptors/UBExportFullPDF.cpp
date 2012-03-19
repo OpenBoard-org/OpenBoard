@@ -100,7 +100,7 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 		if (pageIndex != 0) pdfPrinter.newPage();
 
         //render to PDF
-        scene->render(pdfPainter, QRectF(), scene->normalizedSceneRect());
+        scene->render(pdfPainter);
 
         //restore screen rendering quality
         scene->setRenderingContext(UBGraphicsScene::Screen);

@@ -103,7 +103,7 @@ void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
 		pdfPrinter.setPaperSize(QSizeF(pageSize.width()*scaleFactor, pageSize.height()*scaleFactor), QPrinter::Point);
 		if(painterNeedsBegin) painterNeedsBegin = !pdfPainter.begin(&pdfPrinter);
         //render to PDF
-		scene->render(&pdfPainter, QRectF(), scene->normalizedSceneRect());
+		scene->render(&pdfPainter);
 
         if (pageIndex < existingPageCount - 1) pdfPrinter.newPage();
 
