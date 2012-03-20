@@ -356,6 +356,8 @@ void UBApplicationController::showBoard()
     mDisplayManager->adjustScreens(0);
 
     emit mainModeChanged(Board);
+
+    UBApplication::boardController->freezeW3CWidgets(false);
 }
 
 

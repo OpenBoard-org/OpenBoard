@@ -237,7 +237,6 @@ int UBApplication::exec(const QString& pFileToImport)
     mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
 
     connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(showBoard()));
-    connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(startScript()));
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(showDocument()));
