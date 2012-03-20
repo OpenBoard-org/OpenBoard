@@ -105,11 +105,11 @@ void UBLibraryController::createDirectory(QUrl& pDirPath)
         QDir().mkpath(pDirPath.toLocalFile());
 }
 
-void UBLibraryController::routeItem(QString& pItem, QString pMiddleDirectory)
+
+QString UBLibraryController::getBaseDestinationForItem(QString& pItem)
 {
-    QFileInfo itemToRoute(pItem);
-    QString mimetype = UBFileSystemUtils::mimeTypeFromFileName(itemToRoute.fileName());
     QString destination("");
+    QString mimetype = UBFileSystemUtils::mimeTypeFromFileName(pItem);
 
     if(mimetype.contains("audio"))
         destination = mAudioStandardDirectoryPath.toLocalFile();
@@ -123,9 +123,29 @@ void UBLibraryController::routeItem(QString& pItem, QString pMiddleDirectory)
         else
             destination = mInteractiveUserDirectoryPath.toLocalFile();
     }
-    else{
-        return;
+    return destination;
+}
+
+void UBLibraryController::routeDataItem(QString& pItem, QByteArray pData)
+{
+    QString fileName = QFileInfo(pItem).fileName();
+    QString destination = getBaseDestinationForItem(pItem);
+    if(!destination.isEmpty()){
+        QString destinationPath = UBFileSystemUtils::normalizeFilePath(QString("%0/%1").arg(destination).arg(fileName));
+        QFile file(destinationPath);
+        if(file.open(QIODevice::WriteOnly)) {
+            file.write(pData);
+            file.close();
+        }
     }
+    else
+        qWarning() << "no destination found for pItem "  << pItem;
+}
+
+void UBLibraryController::routeItem(QString& pItem, QString pMiddleDirectory)
+{
+    QFileInfo itemToRoute(pItem);
+    QString destination = getBaseDestinationForItem(pItem);
 
     if(!destination.isEmpty()){
         if(!pMiddleDirectory.isEmpty()){

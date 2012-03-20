@@ -123,7 +123,9 @@ class UBLibraryController : public QObject
 
         void createNewFolder(QString name, UBLibElement* parentElem);
         bool canItemsOnElementBeDeleted(UBLibElement *pElement);
+
         void routeItem(QString& pItem, QString pMiddleDirectory = QString());
+        void routeDataItem(QString& pItem, QByteArray pData);
 
     signals:
         void dialogClosed(int state);
@@ -175,6 +177,7 @@ class UBLibraryController : public QObject
         UBBoardController *mBoardController;
 
         int mLastItemOffsetIndex;
+        QString getBaseDestinationForItem(QString& pItem);
 
 };
 
