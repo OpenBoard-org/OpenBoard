@@ -233,6 +233,8 @@ done;
 #additional dependencies
 tab[$count]="gtk2-engines-pixbuf"
 ((count++))
+tab[$count]="ttf-mscorefonts-installer"
+((count++))
 
 for ((i=0;i<${#tab[@]};i++)); do
     if [ $i -ne "0" ]; then
@@ -270,5 +272,5 @@ dpkg -b "$BASE_WORKING_DIR" install/linux/Open-Sankore_${VERSION}_$ARCHITECTURE.
 notify-send "Open-Sankore" "Package built"
 
 #clean up mess
-#fakeroot rm -rf $BASE_WORKING_DIR
+fakeroot rm -rf $BASE_WORKING_DIR
 
