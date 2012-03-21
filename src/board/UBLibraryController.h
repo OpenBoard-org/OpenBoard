@@ -130,6 +130,7 @@ class UBLibraryController : public QObject
     signals:
         void dialogClosed(int state);
         void setResource(QString &pathResource,QString &mimetype);
+        void updateItemsList();
 
     public slots:
         void removeBackground();

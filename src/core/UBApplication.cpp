@@ -601,14 +601,14 @@ void UBApplication::cleanup()
 	if (boardController) delete boardController;
 	if (webController) delete webController;
 	if (documentController) delete documentController;
-        if (mUniboardSankoreTransition) delete mUniboardSankoreTransition;
+    if (mUniboardSankoreTransition) delete mUniboardSankoreTransition;
 
 
 	applicationController = NULL;
 	boardController = NULL;
 	webController = NULL;
 	documentController = NULL;
-        mUniboardSankoreTransition = NULL;
+    mUniboardSankoreTransition = NULL;
 }
 
 void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,

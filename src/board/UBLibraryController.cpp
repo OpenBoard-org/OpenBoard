@@ -167,6 +167,7 @@ void UBLibraryController::importImageOnLibrary(QImage& pImage)
         filePath = UBFileSystemUtils::normalizeFilePath(filePath);
         pImage.save(filePath);
         UBApplication::showMessage(tr("Added 1 Image to Library"));
+        emit updateItemsList();
     }
 }
 

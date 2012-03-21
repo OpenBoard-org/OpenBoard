@@ -91,6 +91,8 @@ void UBLibraryWidget::init()
     connect(this, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToLibrary(bool,QUrl,QString,QByteArray)), this, SLOT(onAddDownloadedFileToLibrary(bool,QUrl,QString,QByteArray)));
     connect(UBApplication::boardController, SIGNAL(displayMetadata(QMap<QString,QString>)), this, SLOT(onDisplayMetadata(QMap<QString,QString>)));
+
+    connect(mLibraryController,SIGNAL(updateItemsList()),this,SLOT(onRefreshCurrentFolder()));
 }
 
 /**
