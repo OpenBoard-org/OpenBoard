@@ -48,6 +48,7 @@ UBGraphicsCurtainItem::UBGraphicsCurtainItem(QGraphicsItem* parent)
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Tool);
     setPen(Qt::NoPen);
+    this->setAcceptHoverEvents(true);
 }
 
 UBGraphicsCurtainItem::~UBGraphicsCurtainItem()

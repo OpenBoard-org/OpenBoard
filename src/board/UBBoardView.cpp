@@ -43,12 +43,17 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
+#include "domain/UBGraphicsPDFItem.h"
+#include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBItem.h"
 
 #include "document/UBDocumentProxy.h"
 
 #include "customWidgets/UBDraggableLabel.h"
 #include "customWidgets/UBDraggableMedia.h"
+
+#include "tools/UBGraphicsCompass.h"
+#include "tools/UBGraphicsCache.h"
 
 #include "core/memcheck.h"
 
@@ -422,9 +427,12 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
 
             if (!movingItem 
                 || movingItem->isSelected()
-                || (movingItem->type() == UBGraphicsDelegateFrame::Type
-                || movingItem->type() == DelegateButton::Type) 
-                || existingTools.contains(movingItem))
+                || movingItem->type() == UBGraphicsDelegateFrame::Type
+                || movingItem->type() == DelegateButton::Type 
+                || movingItem->type() == UBGraphicsCompass::Type
+                || movingItem->type() == UBGraphicsPDFItem::Type
+                || movingItem->type() == UBGraphicsPolygonItem::Type
+                || movingItem->type() == UBGraphicsCache::Type)
                 {
                     movingItem = NULL;
                     QGraphicsView::mousePressEvent (event);
