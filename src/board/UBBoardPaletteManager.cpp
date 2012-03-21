@@ -230,9 +230,6 @@ void UBBoardPaletteManager::setupPalettes()
 #ifndef Q_WS_WIN
         connect(mKeyboardPalette, SIGNAL(closed()), mKeyboardPalette, SLOT(onDeactivated()));
 #endif
-#ifndef Q_WS_MAC
-        //     mKeyboardPalette->setParent(mContainer);
-#endif
     }
 
     setupDockPaletteWidgets();
@@ -763,13 +760,6 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
     emit signal_changeMode(newMode);
 }
-
-/*
-void UBBoardPaletteManager::slot_changeMode(eUBDockPaletteWidgetMode newMode)
-{
-    emit signal_changeMode(newMode);
-}
-*/
 
 void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos,  qreal scaleFactor, const QUrl& sourceUrl)
 {

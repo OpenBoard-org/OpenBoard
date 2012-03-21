@@ -315,7 +315,8 @@ class UBSettings : public QObject
         UBSetting* soundThumbnailWidth;
 
         UBSetting* navigPaletteWidth;
-        UBSetting* libPaletteWidth;
+        UBSetting* rightLibPaletteWidth;
+        UBSetting* leftLibPaletteWidth;
 
         UBSetting* communityUser;
         UBSetting* communityPsw;
