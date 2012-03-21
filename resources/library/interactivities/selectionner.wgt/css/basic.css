@@ -1,0 +1,236 @@
+html, body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+.toggle_mode{
+    width: 100%;
+    height: 25px;
+    border-bottom: 1px solid black;
+    background-color: #ccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+#display_img, #edit_img{
+    width: 15px;
+    height: 15px;
+    margin: 5px 10px;
+}
+
+.green_point{
+    background-image: url(../img/green_point.png);
+}
+
+.red_point{
+    background-image: url(../img/red_point.png);
+}
+
+#display_text, #edit_text{
+    height: 19px;
+    padding: 3px 0 0 0;
+}
+
+.selected{
+    background-color: #666;
+}
+
+#display:hover, #edit:hover{
+    background-color: #999;
+}
+
+.cont{
+    width: 100%;
+    border-bottom: 1px solid black;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.sub_cont{
+    width: 100%;
+    padding: 0;
+    margin: 20px 0 0 0;
+    min-height: 60px;
+}
+
+.imgs_cont{
+    width: 100%;
+    margin: 0;
+}
+
+.number_cont{
+    width: 40px;
+    height: 33px;
+    margin-left: 40px;
+    margin-right: 10px;
+    background-image: url(../img/circle.png);
+    background-repeat: no-repeat;
+    text-align: center;
+    float: left;
+    font-size: 130%;
+    padding-top: 7px;
+    font-weight: bold;
+}
+
+.text_cont{
+    width: 80%;
+    min-height: 40px;
+    float: right;
+    background-color: #ccc;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-left: 10px;
+}
+
+.close_cont{
+    width: 20px;
+    height: 20px;
+    background-image: url(../img/close_cont.png);
+    cursor: pointer;
+    position: absolute;
+    top: -15px;
+    left: 5px;
+}
+
+.add_img{
+    width: 120px;
+    height: 120px;
+    margin: 10px 20px;
+    background-image: url(../img/add_text.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    float: left;
+    display: inline-block;
+}
+
+.img_block{
+    display: inline-block;
+}
+
+.img_block, .text_block{
+    width: 120px;
+    height: 120px;
+    margin: 10px 20px;
+    cursor: pointer;
+    float: left;
+    position: relative;
+    border: 1px solid #ccc;
+    -moz-box-shadow: #ccc -1px 0 4px;
+    -webkit-box-shadow: #ccc -1px 0 4px;
+    box-shadow: #ccc -1px 0 4px;
+    background-color: white;
+}
+
+.text_block{
+    display: table;
+    text-align: center;
+}
+
+.audio_block{
+    width: 120px;
+    height: 30px;
+    margin: 44px 5px;
+    position: relative;
+    float: left;
+    display: inline-block;
+}
+
+.text_subblock{
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 120%;
+}
+
+.close_img, .clear_img, .numb_img {
+    width: 30px;
+    height: 30px;    
+    background-repeat: no-repeat;
+    position: absolute;    
+    right: -15px;
+    cursor: pointer;
+}
+
+.close_img{
+    background-image: url(../img/close_img.png);
+    top: -15px;
+}
+
+.clear_img{
+    background-image: url(../img/clear_img.png);
+    top: 15px;
+}
+
+.numb_img{
+    background-image: url(../img/numb_img.png); 
+    left: -15px;
+    top: -15px;
+    color: white;
+    font-weight: bold;
+    font-size: 130%;
+}
+
+.add_block{
+    margin: 20px 0 0 20px;
+    width: 110px;
+    height: 25px;
+    background-image: url(../img/add_block.png);
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    padding-top: 5px;
+    cursor: pointer;
+    background-color: #ccc;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;    
+}
+
+.ch_box{
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.right{
+    background-color: #9f9;
+}
+
+.clear{
+    clear: both;
+}
+
+.over{
+    background-color: #ccc;
+}
+
+.play, .stop{
+    height: 30px;
+    width: 70px;    
+    float: left;
+    cursor: pointer;
+}
+
+.play{
+    background-image: url(../img/play.png);
+}
+
+.stop{
+    background-image: url(../img/stop.png);
+}
+
+.replay{
+    height: 30px;
+    width: 32px;
+    margin-left: 10px;
+    float: left;
+    background-image: url(../img/replay.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
