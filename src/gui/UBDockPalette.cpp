@@ -42,7 +42,7 @@ UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, co
     , mpLayout(NULL)
     , mCurrentTab(0)
     , mPaletteType(paletteType)
-    , mTabPalette(new UBTabDockPalete(this, parent))
+    , mTabPalette(new UBTabDockPalette(this, parent))
 {
     setObjectName(name);
 
@@ -346,6 +346,8 @@ void UBDockPalette::setTabsOrientation(eUBDockTabOrientation orientation)
 /**
  * \brief Update the tab position regarding the toolbar position (up or down)
  */
+#include "board/UBBoardController.h"
+#include "domain/UBGraphicsScene.h"
 void UBDockPalette::onToolbarPosUpdated()
 {
     // Get the position of the tab
@@ -357,6 +359,7 @@ void UBDockPalette::onToolbarPosUpdated()
     {
         setTabsOrientation(eUBDockTabOrientation_Down);
     }
+    moveTabs();
     update();
 }
 
@@ -491,13 +494,13 @@ void UBDockPalette::onAllDownloadsFinished()
 
 void UBDockPalette::moveTabs()
 {
-    if (!mHTab) {
+ //   if (!mHTab) {
         if(eUBDockTabOrientation_Up == mTabsOrientation) {
             mHTab = border();
         } else {
             mHTab = height() - border() - mTabWidgets.size() * TABSIZE - (mTabWidgets.size() - 1) * tabSpacing();
         }
-    }
+//    }
 
     QPoint origin(width(), mHTab + mTabPalette->mVerticalOffset);
 
@@ -572,7 +575,7 @@ bool UBDockPalette::switchMode(eUBDockPaletteWidgetMode mode)
 }
 
 
-UBTabDockPalete::UBTabDockPalete(UBDockPalette *dockPalette, QWidget *parent) :
+UBTabDockPalette::UBTabDockPalette(UBDockPalette *dockPalette, QWidget *parent) :
     QWidget(parent)
   , dock(dockPalette)
   , mVerticalOffset(0)
@@ -584,7 +587,7 @@ UBTabDockPalete::UBTabDockPalete(UBDockPalette *dockPalette, QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);
 }
 
-void UBTabDockPalete::paintEvent(QPaintEvent *)
+void UBTabDockPalette::paintEvent(QPaintEvent *)
 {
     int nTabs = dock->mTabWidgets.size();
     if (nTabs <= 0) {
@@ -654,11 +657,11 @@ void UBTabDockPalete::paintEvent(QPaintEvent *)
         painter.restore();
     }
 }
-UBTabDockPalete::~UBTabDockPalete()
+UBTabDockPalette::~UBTabDockPalette()
 {
 }
 
-void UBTabDockPalete::mousePressEvent(QMouseEvent *event)
+void UBTabDockPalette::mousePressEvent(QMouseEvent *event)
 {
     dock->mClickTime = QTime::currentTime();
     // The goal here is to verify if the user can resize the widget.
@@ -684,7 +687,7 @@ void UBTabDockPalete::mousePressEvent(QMouseEvent *event)
         break;
     }
 }
-void UBTabDockPalete::mouseMoveEvent(QMouseEvent *event)
+void UBTabDockPalette::mouseMoveEvent(QMouseEvent *event)
 {
     QPoint p = event->pos();
 
@@ -735,7 +738,7 @@ void UBTabDockPalete::mouseMoveEvent(QMouseEvent *event)
         }
     }
 }
-void UBTabDockPalete::mouseReleaseEvent(QMouseEvent *event)
+void UBTabDockPalette::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
     if(!dock->mResized && dock->mClickTime.elapsed() < CLICKTIME) {

@@ -23,13 +23,13 @@
 UBLeftPalette::UBLeftPalette(QWidget *parent, const char *name):
     UBDockPalette(eUBDockPaletteType_LEFT, parent)
 {
-        setObjectName(name);
-        setOrientation(eUBDockOrientation_Left);
+    setObjectName(name);
+    setOrientation(eUBDockOrientation_Left);
 
-        mLastWidth = UBSettings::settings()->leftLibPaletteWidth->get().toInt();
-        mCollapseWidth = 150;
+    mLastWidth = UBSettings::settings()->leftLibPaletteWidth->get().toInt();
+    mCollapseWidth = 150;
 
-        resize(mLastWidth, parentWidget()->height());
+    resize(mLastWidth, parentWidget()->height());
 }
 
 /**

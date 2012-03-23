@@ -908,18 +908,6 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     mStylusPalette->setVisible(bVisible); // always show stylus palette at startup
 }
 
-/*
-UBRightPalette* UBBoardPaletteManager::createDesktopRightPalette(QWidget* parent)
-{
-    mpDesktopLibWidget = new UBLibWidget();
-    mDesktopRightPalette = new UBRightPalette(parent);
-    mDesktopRightPalette->registerWidget(mpDesktopLibWidget);
-    mDesktopRightPalette->addTabWidget(mpDesktopLibWidget);
-    mDesktopRightPalette->connectSignals();
-
-    return mDesktopRightPalette;
-}
-*/
 
 void UBBoardPaletteManager::connectToDocumentController()
 {
@@ -950,28 +938,4 @@ void UBBoardPaletteManager::stopDownloads()
         mpDownloadWidget->setVisibleState(false);
         mRightPalette->removeTab(mpDownloadWidget);
     }
-}
-
-QRect UBBoardPaletteManager::GetFreeRectGlobalCoords() const
-{
-    QPoint topLeft, bottomRight;
-    if (mLeftPalette) {
-        int x = mLeftPalette->getTabPaletteRect().topRight().x();
-        int y = 0;
-        if (x || y) {
-            topLeft.setX(x);
-            topLeft.setY(y);
-            topLeft = mContainer->mapToGlobal(topLeft);
-        }
-    }
-    if (mRightPalette) {
-        int x = mRightPalette->getTabPaletteRect().topLeft().x();
-        int y = mRightPalette->height();
-        if (x || y) {
-            bottomRight.setX(x);
-            bottomRight.setY(y);
-            bottomRight = mContainer->mapToGlobal(bottomRight);
-        }
-    }
-    return QRect(topLeft, bottomRight);
 }
