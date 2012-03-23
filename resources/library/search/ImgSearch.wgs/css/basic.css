@@ -43,7 +43,7 @@ body{
     border-bottom-right-radius: 15px;
     border: solid 4px #EEEEEE;
     border-top: none;
-    z-index: 10;
+    z-index: 101;
 }
 
 .togglePages{
@@ -61,6 +61,7 @@ body{
     -webkit-box-shadow: #dadada -1px 0 4px;
     box-shadow: #dadada -1px 0 4px;
     cursor: pointer;
+	z-index: 100;
 }
 
 .toggleIcon{
