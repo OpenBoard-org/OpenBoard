@@ -346,8 +346,6 @@ void UBDockPalette::setTabsOrientation(eUBDockTabOrientation orientation)
 /**
  * \brief Update the tab position regarding the toolbar position (up or down)
  */
-#include "board/UBBoardController.h"
-#include "domain/UBGraphicsScene.h"
 void UBDockPalette::onToolbarPosUpdated()
 {
     // Get the position of the tab
