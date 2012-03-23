@@ -744,26 +744,14 @@ void UBTabDockPalette::mouseReleaseEvent(QMouseEvent *event)
         int clickedTab = 0;
         // If the clicked position is in the tab, perform the related action
 
-        if(eUBDockOrientation_Left == dock->mOrientation) {
-            if(dock->mMousePressPos.y() >= dock->mHTab &&
-                    dock->mMousePressPos.x() <= width() &&
-                    dock->mMousePressPos.y() <= dock->mHTab + nbTabs * TABSIZE + (nbTabs -1)*dock->tabSpacing()) {
+        if(dock->mMousePressPos.x() >= 0 &&
+                dock->mMousePressPos.x() <= width() &&
+                dock->mMousePressPos.y() >= 0 &&
+                dock->mMousePressPos.y() <= nbTabs * TABSIZE + (nbTabs -1)*dock->tabSpacing()) {
 
-                clickedTab = (dock->mMousePressPos.y() - dock->mHTab) / (TABSIZE + dock->tabSpacing());
-                dock->tabClicked(clickedTab);
-            }
-
-        } else if (eUBDockOrientation_Right == dock->mOrientation) {
-            if(dock->mMousePressPos.x() >= 0 &&
-                    dock->mMousePressPos.x() <= width() &&
-                    dock->mMousePressPos.y() >= 0 &&
-                    dock->mMousePressPos.y() <= nbTabs * TABSIZE + (nbTabs -1) * dock->tabSpacing()) {
-
-                clickedTab = (dock->mMousePressPos.y())/(TABSIZE+dock->tabSpacing());
-                dock->tabClicked(clickedTab);
-            }
+            clickedTab = (dock->mMousePressPos.y()) / (TABSIZE + dock->tabSpacing());
+            dock->tabClicked(clickedTab);
         }
     }
-
     dock->mCanResize = false;
 }
