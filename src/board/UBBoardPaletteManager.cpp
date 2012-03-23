@@ -675,10 +675,17 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 #else
                         mKeyboardPalette->setParent(0);
 #endif
+#ifdef Q_WS_MAC
+                        mKeyboardPalette->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
+#endif
                         mKeyboardPalette->show();
                     }
                     else
                         mKeyboardPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+#ifdef Q_WS_MAC
+                        mKeyboardPalette->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
+#endif
+
                 }
 
                 mLeftPalette->setVisible(leftPaletteVisible);
