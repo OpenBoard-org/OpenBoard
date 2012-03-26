@@ -252,6 +252,8 @@ int UBApplication::exec(const QString& pFileToImport)
 
     boardController->paletteManager()->connectToDocumentController();
 
+    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Selector);
+
     applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
 
 
@@ -281,8 +283,8 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionSankoreEditor, SIGNAL(triggered()), applicationController, SLOT(showSankoreEditor()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
 
-    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
-
+   
+ 
     toolBarPositionChanged(UBSettings::settings()->appToolBarPositionedAtTop->get());
 
     bool bUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
