@@ -205,11 +205,15 @@ void UBSettings::init()
     appEnableSoftwareUpdates = new UBSetting(this, "App", "EnableSoftwareUpdates", true);
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
     navigPaletteWidth = new UBSetting(this, "Board", "NavigPaletteWidth", 270);
-    libPaletteWidth = new UBSetting(this, "Board", "LibPaletteWidth", 270);
+    rightLibPaletteWidth = new UBSetting(this, "Board", "RightLibPaletteWidth", 270);
+    leftLibPaletteWidth = new UBSetting(this, "Board", "LeftLibPaletteWidth",270);
 
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
     appLastSessionPageIndex = new UBSetting(this, "App", "LastSessionPageIndex", 0);
+    appUseMultiscreen = new UBSetting(this, "App", "UseMusliscreenMode", true);
+
+    appStartMode = new UBSetting(this, "App", "StartMode", "");
 
     boardPenFineWidth = new UBSetting(this, "Board", "PenFineWidth", 1.5);
     boardPenMediumWidth = new UBSetting(this, "Board", "PenMediumWidth", 3.0);
@@ -372,6 +376,7 @@ void UBSettings::init()
     intranetPodcastAuthor = new UBSetting(this, "IntranetPodcast", "Author", "");
 
 	KeyboardLocale = new UBSetting(this, "Board", "StartupKeyboardLocale", 0);
+    swapControlAndDisplayScreens = new UBSetting(this, "App", "SwapControlAndDisplayScreens", false);
 }
 
 

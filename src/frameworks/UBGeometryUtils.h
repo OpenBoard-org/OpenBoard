@@ -36,7 +36,7 @@ class UBGeometryUtils
         static QPointF pointConstrainedInRect(QPointF point, QRectF rect);
         static QPoint pointConstrainedInRect(QPoint point, QRect rect);
 
-        static QVector<QPointF> crashPointList(const QVector<QPointF> points);
+        static void crashPointList(QVector<QPointF> &points);
 };
 
 #endif /* UBGEOMETRYUTILS_H_ */

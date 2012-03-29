@@ -240,7 +240,7 @@ class UBWidgetUniboardAPI : public QObject
         /**
          * If the widget support a the drop of an object it will notify sankore about this.
          */
-        void enableDropOnWidget ();
+        void enableDropOnWidget (bool enable = true);
 
         /**
          * When an object is dropped on a widget, this one send us the informations to download it locally.

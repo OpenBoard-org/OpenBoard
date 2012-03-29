@@ -64,8 +64,8 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mPendingMarkerButtonPressed(false)
         , mPendingEraserButtonPressed(false)
         , mbArrowClicked(false)
-        , mBoardStylusTool(UBStylusTool::Selector /*UBStylusTool::Pen*/)
-        , mDesktopStylusTool(UBStylusTool::Selector)
+        , mBoardStylusTool(UBDrawingController::drawingController()->stylusTool())
+        , mDesktopStylusTool(UBDrawingController::drawingController()->stylusTool())
 {
 
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, 0); // deleted in UBDesktopAnnotationController::destructor
@@ -112,6 +112,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
 #ifdef Q_WS_X11
         connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
+        connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(refreshMask()));
         connect(mDesktopPalette,SIGNAL(refreshMask()), this, SLOT(refreshMask()));
 #endif
     }
@@ -123,6 +124,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
 //    connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
+
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 

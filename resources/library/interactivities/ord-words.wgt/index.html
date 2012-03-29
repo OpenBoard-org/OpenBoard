@@ -1,26 +1,60 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+    "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Template</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Template</title>
 
-	<!--Styles-->
-	<link rel="stylesheet" type="text/css" href="template/styles/master.css">
-	<link rel="stylesheet" type="text/css" href="template/styles/of_puppets.css">
-	<!--Scripts-->
-	<script type="text/javascript" src="template/scripts/jquery144.js"></script>
-	<script type="text/javascript" src="template/scripts/jquery-ui-1.8.9.custom.min.js"></script>
-	<script type="text/javascript" src="template/scripts/template2.js"></script>
-	
-</head>
+        <!--Styles-->
+        <link rel="stylesheet" type="text/css" href="styles/master.css">
+        <link rel="stylesheet" type="text/css" href="styles/of_puppets.css">
+        <!--Scripts-->
+        <script type="text/javascript" src="scripts/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="scripts/jquery-ui-1.8.9.custom.min.js"></script>
+        <script type="text/javascript" src="scripts/template2.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var lang = ""; //locale language
+                if(window.sankore){
+                    lang = sankore.locale().substr(0,2);    
+                } else 
+                    lang = "en";
+                if(lang == "en"){
+                    if(window.sankore)
+                        sankore.enableDropOnWidget(false);
+                    $("#ub-widget").append('<div id="mp_setup"></div><div id="mp_word"></div>');
+                    modeView();
+                }
+                else{
+                    returnStatus(lang);
+                }
+                
+                function returnStatus(lang){
+                    $.ajax({
+                        type: 'POST',
+                        url:'locales/' + lang + '/index.html',
+                        statusCode: {
+                            404: function() {
+                                if(window.sankore)
+                                    sankore.enableDropOnWidget(false);
+                                modeView();
+                            },
+                            200: function(){
+                                window.location.href = 'locales/' + lang + '/index.html';
+                            }
+                        }
+                    });                    
+                }                
+            });
+        </script>
+    </head>
 
-<body>
-	<div id="ub-widget">
-	
-	</div>
-</body>
+    <body>
+        <div id="ub-widget">
+
+        </div>
+    </body>
 
 </html>

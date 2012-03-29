@@ -21,21 +21,18 @@ class UBDocument;
 class UBDocumentProxy;
 class UBGraphicsScene;
 
-class UBThumbnailAdaptor : public QObject
+class UBThumbnailAdaptor //static class
 {
-    Q_OBJECT;
+	Q_DECLARE_TR_FUNCTIONS(UBThumbnailAdaptor)
 
+private: UBThumbnailAdaptor() {}
 public:
-
-    UBThumbnailAdaptor(QObject *parent = 0);
-    ~UBThumbnailAdaptor();
-
-    static void persistScene(const QString& pDocPath, UBGraphicsScene* pScene, const int pageIndex,  const bool overrideModified = false);
+    static void persistScene(const QString& pDocPath, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
 
     static QList<QPixmap> load(UBDocumentProxy* proxy);
+	static QPixmap load(UBDocumentProxy* proxy, int index);
 
-    static QUrl thumbnailUrl(UBDocumentProxy* proxy, const int pageIndex);
-
+    static QUrl thumbnailUrl(UBDocumentProxy* proxy, int pageIndex);
 };
 
 #endif // UBTHUMBNAILADAPTOR_H

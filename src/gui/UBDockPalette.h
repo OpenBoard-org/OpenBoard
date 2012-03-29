@@ -32,7 +32,7 @@
 #include "UBDockPaletteWidget.h"
 
 #define TABSIZE	    50       //Height of the tab of the palette
-#define CLICKTIME   1000000  //Clicktime to expand or collapse paltte
+#define CLICKTIME   1000000  //Clicktime to expand or collapse palette
 
 /**
  * \brief The dock positions
@@ -53,15 +53,15 @@ typedef enum
 
 class UBDockPalette;
 
-class UBTabDockPalete : public QWidget
+class UBTabDockPalette : public QWidget
 {
     Q_OBJECT
     friend class UBDockPalette;
 
 public:
 
-    UBTabDockPalete(UBDockPalette *dockPalette, QWidget *parent = 0);
-    ~UBTabDockPalete();
+    UBTabDockPalette(UBDockPalette *dockPalette, QWidget *parent = 0);
+    ~UBTabDockPalette();
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
@@ -87,7 +87,7 @@ typedef enum
 class UBDockPalette : public QWidget
 {
     Q_OBJECT
-    friend class UBTabDockPalete;
+    friend class UBTabDockPalette;
 
 public:
     UBDockPalette(eUBDockPaletteType paletteType, QWidget* parent=0, const char* name="UBDockPalette");
@@ -102,9 +102,6 @@ public:
     virtual void assignParent(QWidget *widget);
     virtual void setVisible(bool visible);
 
-//    virtual void mouseMoveEvent(QMouseEvent *event);
-//    virtual void mousePressEvent(QMouseEvent *event);
-//    virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void paintEvent(QPaintEvent *event);
     virtual void enterEvent(QEvent *);
     virtual void leaveEvent(QEvent *);
@@ -192,7 +189,7 @@ private:
 
 private:
     eUBDockPaletteType mPaletteType;
-    UBTabDockPalete *mTabPalette;
+    UBTabDockPalette *mTabPalette;
 };
 
 #endif // UBDOCKPALETTE_H

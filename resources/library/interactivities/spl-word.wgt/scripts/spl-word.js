@@ -21,9 +21,9 @@ $(document).ready(function()
     var words = "";
         
     if(window.sankore)
-        words = (sankore.preference("ordSplWords", ""))?sankore.preference("ordSplWords", ""):"so*phis*ti*ca*ted";
+        words = (sankore.preference("ordSplWords", ""))?sankore.preference("ordSplWords", ""):sankoreLang.example;
     else
-        words = "so*phis*ti*ca*ted";
+        words = sankoreLang.example;
     w.setEditContent( '<div class="inputwrap"><input class="percent" value="' + words + '"></div>' );
     w.setViewContent( '<span class="upper"><span class="dash fixed">&mdash;</span></span>' );
     w.setData( "dashWidth", w.elements.container.find( "span.dash" ).outerWidth() );
@@ -104,10 +104,13 @@ $(document).ready(function()
 	
     w.modeView();
     
-    $(window).mouseout(function(){
-        if(window.sankore){
-            sankore.setPreference("ordSplWords", w.getData("word"));
+    if (window.widget) {
+        window.widget.onleave = function(){
+            if(w.editMode)
+                sankore.setPreference("ordSplWords", w.elements.container.find( "input" ).val().trim( ['*'] ));
+            else
+                sankore.setPreference("ordSplWords", w.getData("word"));
         }
-    });
+    }
 	
 });

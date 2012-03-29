@@ -1,0 +1,62 @@
+body{
+	background-color: #fff;
+}
+
+.letter{
+	min-width: 30px; height: 40px;
+	border: solid 1px #ccc;
+	margin: 4px;
+	padding: 4px 10px;
+	
+	float: left;
+	font: 28px tahoma;
+	text-align: center;
+	cursor: pointer;
+	text-transform: uppercase;
+	background-color: #fff;
+}
+.phrase{
+	height: 40px;
+	border: solid 1px #ccc;
+	margin: 4px;
+	padding: 4px 10px;
+	background-color: #fff;
+	font: 28px tahoma;
+	text-align: center;
+	cursor: pointer;
+	text-transform: uppercase;
+
+}
+
+.right{
+	background-color: #cfb;
+}
+
+#ub-widget{
+	width: 560px;
+}
+
+#mp_setup{
+	text-align: right;
+}
+
+#mp_word{
+	
+}
+
+#mp_word input{
+	font: 32px tahoma;
+	letter-spacing: 0.1em;
+	width: 600px;
+}
+
+#mp_msg{
+	position: absolute;
+	left: 120px; top: 160px;
+	background-color: #eee;
+	border: solid 1px #ddd;
+	width: 160px;
+	padding: 40px;
+	text-align: center;
+}
+

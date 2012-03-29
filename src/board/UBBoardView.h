@@ -18,6 +18,7 @@
 
 #include <QtGui>
 #include "core/UB.h"
+#include "domain/UBGraphicsDelegateFrame.h"
 
 class UBBoardController;
 class UBAppleWidget;
@@ -115,6 +116,11 @@ class UBBoardView : public QGraphicsView
 
 		bool mVirtualKeyboardActive;
         bool mOkOnWidget;
+
+        bool mWidgetMoved;
+        QPointF mLastPressedMousePos;
+        QGraphicsItem *movingItem;
+        QMouseEvent *suspendedMousePressEvent;
 
     private slots:
 

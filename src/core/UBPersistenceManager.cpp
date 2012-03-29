@@ -470,12 +470,7 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
 
     proxy->incPageCount();
 
-	//due to architectural peculiarity we need to save teacher bar info, otherwise we'll see not exactly what we expect
-	sTeacherBarInfos properInfo = getTeacherBarInfos(proxy, index + 1);
-	//after the call below
 	emit documentSceneCreated(proxy, index + 1);
-	//restoring info
-	persistTeacherBar(proxy, index + 1, properInfo);
 }
 
 
@@ -1054,104 +1049,4 @@ bool UBPersistenceManager::mayHaveWidget(UBDocumentProxy* pDocumentProxy)
     QDir widgetDir(pDocumentProxy->persistencePath() + "/" + UBPersistenceManager::widgetDirectory);
 
     return widgetDir.exists() && widgetDir.entryInfoList(QDir::Dirs).length() > 0;
-}
-
-void UBPersistenceManager::persistTeacherBar(UBDocumentProxy* pDocumentProxy, int page, sTeacherBarInfos infos)
-{
-    if(NULL != pDocumentProxy)
-    {
-        QFile f(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", page + 1));
-        if(f.exists())
-        {
-            if(f.open(QIODevice::ReadOnly))
-            {
-                QDomDocument domDoc;
-                if(domDoc.setContent(f.readAll()))
-                {
-                    f.close();
-                    if(f.open(QIODevice::WriteOnly))
-                    {
-                        QDomElement rootElem = domDoc.documentElement();
-                        QDomNode teacherBarNode = rootElem.namedItem("teacherBar");
-                        if(teacherBarNode.isNull())
-                        {
-                            // Create the element
-                            QDomElement teacherElem = domDoc.createElement("teacherBar");
-                            rootElem.appendChild(teacherElem);
-                            teacherBarNode = teacherElem;
-                        }
-
-                        // Set the <teacherBar> element values
-                        QDomElement teacherBarElem = teacherBarNode.toElement();
-                        teacherBarElem.setAttribute("title", infos.title);
-
-                        QString qsAct;
-                        for(int i=0; i<infos.actions.size(); i++){
-                            if(0 != i){
-                                qsAct.append('@');
-                            }
-                            qsAct.append(infos.actions.at(i));
-                        }
-                        teacherBarElem.setAttribute("actions", qsAct);
-
-                        QString qsMedias;
-                        for(int j=0; j<infos.medias.size(); j++){
-                            if(0 != j){
-                                qsMedias.append('@');
-                            }
-                            qsMedias.append(infos.medias.at(j));
-                        }
-                        teacherBarElem.setAttribute("medias", qsMedias);
-
-                        QString qsUrls;
-                        for(int k=0; k<infos.urls.size(); k++){
-                            if(0 != k){
-                                qsUrls.append('@');
-                            }
-                            qsUrls.append(infos.urls.at(k));
-                        }
-                        teacherBarElem.setAttribute("links", qsUrls);
-
-                        teacherBarElem.setAttribute("comments", infos.comments);
-
-                        // Save the file
-                        f.write(domDoc.toString().toAscii());
-                        f.close();
-                    }
-                }
-                f.close();
-            }
-        }
-    }
-}
-
-sTeacherBarInfos UBPersistenceManager::getTeacherBarInfos(UBDocumentProxy* pDocumentProxy, int page)
-{
-    sTeacherBarInfos infos;
-
-    if(NULL != pDocumentProxy)
-    {
-        QFile f(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", page + 1));
-        if(f.exists())
-        {
-            if(f.open(QIODevice::ReadWrite))
-            {
-                QDomDocument domDoc;
-                if(domDoc.setContent(f.readAll()))
-                {
-                    QDomElement rootElem = domDoc.documentElement();
-                    QDomNode teacherBarNode = rootElem.namedItem("teacherBar");
-
-                    infos.title = teacherBarNode.toElement().attributeNode("title").value();
-                    infos.actions = teacherBarNode.toElement().attributeNode("actions").value().split("@");
-                    infos.medias = teacherBarNode.toElement().attributeNode("medias").value().split("@");
-                    infos.urls = teacherBarNode.toElement().attributeNode("links").value().split("@");
-                    infos.comments = teacherBarNode.toElement().attributeNode("comments").value();
-                }
-                f.close();
-            }
-        }
-    }
-
-    return infos;
 }

@@ -84,6 +84,8 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     setAntiScale(1.0);
 
     positionHandles();
+
+    this->setAcceptHoverEvents(true);
 }
 
 

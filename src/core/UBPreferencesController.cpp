@@ -112,10 +112,13 @@ void UBPreferencesController::wire()
 
 
     connect(mPreferencesUI->keyboardPaletteKeyButtonSize, SIGNAL(currentIndexChanged(const QString &)), settings->boardKeyboardPaletteKeyBtnSize, SLOT(setString(const QString &)));
+    connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(const QString &)), settings->appStartMode, SLOT(setString(const QString &)));
 
 
     connect(mPreferencesUI->useExternalBrowserCheckBox, SIGNAL(clicked(bool)), settings->webUseExternalBrowser, SLOT(setBool(bool)));
     connect(mPreferencesUI->displayBrowserPageCheckBox, SIGNAL(clicked(bool)), settings->webShowPageImmediatelyOnMirroredScreen, SLOT(setBool(bool)));
+    connect(mPreferencesUI->swapControlAndDisplayScreensCheckBox, SIGNAL(clicked(bool)), settings->swapControlAndDisplayScreens, SLOT(setBool(bool)));
+    connect(mPreferencesUI->swapControlAndDisplayScreensCheckBox, SIGNAL(clicked(bool)), UBApplication::applicationController->displayManager(), SLOT(swapScreens(bool)));
 
     connect(mPreferencesUI->toolbarAtTopRadioButton, SIGNAL(clicked(bool)), this, SLOT(toolbarPositionChanged(bool)));
     connect(mPreferencesUI->toolbarAtBottomRadioButton, SIGNAL(clicked(bool)), this, SLOT(toolbarPositionChanged(bool)));
@@ -178,6 +181,14 @@ void UBPreferencesController::init()
             break;
         }
 
+    for(int i=0; i<mPreferencesUI->startModeComboBox->count(); i++)
+        if (mPreferencesUI->startModeComboBox->itemText(i) ==
+                settings->appStartMode->get().toString())
+        {
+            mPreferencesUI->startModeComboBox->setCurrentIndex(i);
+            break;
+        }
+
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
     mPreferencesUI->displayBrowserPageCheckBox->setChecked(settings->webShowPageImmediatelyOnMirroredScreen->get().toBool());
     mPreferencesUI->webHomePage->setText(settings->webHomePage->get().toString());
@@ -193,6 +204,7 @@ void UBPreferencesController::init()
 
     mPreferencesUI->Username_textBox->setText(settings->communityUsername());
     mPreferencesUI->Password_textEdit->setText(settings->communityPassword());
+    mPreferencesUI->swapControlAndDisplayScreensCheckBox->setChecked(settings->swapControlAndDisplayScreens->get().toBool());
 
     // pen tab
     mPenProperties->fineSlider->setValue(settings->boardPenFineWidth->get().toDouble() * sSliderRatio);
@@ -290,6 +302,7 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->toolbarDisplayTextCheckBox->setChecked(defaultValue);
         mPreferencesUI->verticalChoice->setChecked(settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->horizontalChoice->setChecked(!settings->appToolBarOrientationVertical->reset().toBool());
+        mPreferencesUI->startModeComboBox->setCurrentIndex(0);
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->penTab)
     {

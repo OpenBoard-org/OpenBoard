@@ -43,6 +43,7 @@ UBLibraryWidget::UBLibraryWidget(QWidget *parent, const char *name):UBThumbnailW
     , mpCrntDir(NULL)
     , mpCrntElem(NULL)
     , mpTmpElem(NULL)
+	, mLoadingLibraryItems(false)
 {
     setObjectName(name);
     setSpacing(5);
@@ -90,6 +91,7 @@ void UBLibraryWidget::init()
     connect(this, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToLibrary(bool,QUrl,QString,QByteArray)), this, SLOT(onAddDownloadedFileToLibrary(bool,QUrl,QString,QByteArray)));
     connect(UBApplication::boardController, SIGNAL(displayMetadata(QMap<QString,QString>)), this, SLOT(onDisplayMetadata(QMap<QString,QString>)));
+    connect(mLibraryController,SIGNAL(updateItemsList()),this,SLOT(onRefreshCurrentFolder()));
 }
 
 /**
@@ -147,7 +149,8 @@ void UBLibraryWidget::onItemClicked(QGraphicsItem *item, int index)
     Q_UNUSED(index);
     if(NULL != item)
     {
-        int iItem = mGraphicItems.indexOf(item);
+        mLoadingLibraryItems = true;
+		int iItem = mGraphicItems.indexOf(item);
         if(0 <= iItem)
         {
             UBLibElement* pElem = mCurrentElems.at(iItem);
@@ -183,6 +186,7 @@ void UBLibraryWidget::onItemClicked(QGraphicsItem *item, int index)
             }
             emit itemClicked();
         }
+		mLoadingLibraryItems = false;
     }
 }
 
@@ -695,19 +699,20 @@ void UBLibraryWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl
     Q_UNUSED(pContentHeader);
     if(pSuccess)
     {
-        QDir dir;
-        dir.mkdir("tmp");
-        QString qsFileName = QFileInfo(sourceUrl.toString()).fileName();
-        QString qsFilePath = UBFileSystemUtils::normalizeFilePath(QString("tmp/%0").arg(qsFileName));
-        QFile f(qsFilePath);
-        if(f.open(QIODevice::WriteOnly))
-        {
-            f.write(pData);
-            f.close();
-        }
-        mLibraryController->routeItem(qsFilePath);
-        dir.remove(qsFileName);
-        dir.rmdir("tmp");       // Due to Qt, the directoy will be removed only if it's empty :)
+//        QDir dir;
+//        dir.mkdir("tmp");
+//        QString qsFileName = QFileInfo(sourceUrl.toString()).fileName();
+//        QString qsFilePath = UBFileSystemUtils::normalizeFilePath(QString("tmp/%0").arg(qsFileName));
+//        QFile f(qsFilePath);
+//        if(f.open(QIODevice::WriteOnly))
+//        {
+//            f.write(pData);
+//            f.close();
+//        }
+        QString urlString = sourceUrl.toString();
+        mLibraryController->routeDataItem(urlString, pData);
+//        dir.remove(qsFileName);
+//        dir.rmdir("tmp");       // Due to Qt, the directoy will be removed only if it's empty :)
     }
 }
 

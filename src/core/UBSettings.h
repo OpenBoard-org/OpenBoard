@@ -212,6 +212,8 @@ class UBSettings : public QObject
         UBSetting* appLastSessionDocumentUUID;
         UBSetting* appLastSessionPageIndex;
 
+        UBSetting* appUseMultiscreen;
+
         UBSetting* boardPenFineWidth;
         UBSetting* boardPenMediumWidth;
         UBSetting* boardPenStrongWidth;
@@ -226,6 +228,8 @@ class UBSettings : public QObject
         UBSetting* boardUseHighResTabletEvent;
 
         UBSetting* boardKeyboardPaletteKeyBtnSize;
+
+        UBSetting* appStartMode;
 
         UBColorListSetting* boardPenLightBackgroundColors;
         UBColorListSetting* boardPenLightBackgroundSelectedColors;
@@ -311,7 +315,8 @@ class UBSettings : public QObject
         UBSetting* soundThumbnailWidth;
 
         UBSetting* navigPaletteWidth;
-        UBSetting* libPaletteWidth;
+        UBSetting* rightLibPaletteWidth;
+        UBSetting* leftLibPaletteWidth;
 
         UBSetting* communityUser;
         UBSetting* communityPsw;
@@ -319,6 +324,7 @@ class UBSettings : public QObject
         UBSetting* pageSize;
 
         UBSetting* KeyboardLocale;
+        UBSetting* swapControlAndDisplayScreens;
 
     public slots:
 

@@ -50,6 +50,9 @@ Thumbs.db
 ###############
 build
 install
+Makefile
+Makefile.Debug
+Makefile.Release
 
 # Translation files #
 #####################

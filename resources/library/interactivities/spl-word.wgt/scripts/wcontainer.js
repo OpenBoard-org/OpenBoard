@@ -1,3 +1,9 @@
+var sankoreLang = {
+    view: "View", 
+    edit: "Edit",
+    example: "so*phis*ti*ca*ted"
+};
+
 // if use the "view/edit" button or rely on the api instead
 var isSankore = false;
 // whether to do window.resize or not (window = widget area)
@@ -7,7 +13,7 @@ function wcontainer( containerID )
 {
 	// some protecred variables
 	var thisInstance = this;
-	var editMode = false;
+	this.editMode = false;
 	var data = {}; // see setData and getData
 	
 	// widget size parameters
@@ -28,10 +34,10 @@ function wcontainer( containerID )
 		var html = 
 			'<div id="mp_setup">' +
 				'<div class="viewmode">' +
-					'<button>Edit</button>' +
+					'<button>' + sankoreLang.edit + '</button>' +
 				'</div>' +
 				'<div class="editmode">' +
-					'<button>View</button>' +
+					'<button>' + sankoreLang.view + '</button>' +
 				'</div>' +
 			'</div>' +
 			'<div id="mp_content">' +
@@ -94,7 +100,7 @@ function wcontainer( containerID )
 	this.modeEdit = function()
 	{
 		this.onEditMode();
-		editMode = true;
+		this.editMode = true;
 		this.elements.edit.removeClass( "hide" );
 		this.elements.view.addClass( "hide" );
 		
@@ -103,7 +109,7 @@ function wcontainer( containerID )
 	this.modeView = function()
 	{
 		this.onViewMode();
-		editMode = false;
+		this.editMode = false;
 		this.elements.edit.addClass( "hide" );
 		this.elements.view.removeClass( "hide" );
 		
@@ -122,7 +128,7 @@ function wcontainer( containerID )
 	{
 		if( arguments.length < 2 )
 		{
-			var s = ( editMode )? this.editSize() : this.viewSize();
+			var s = ( this.editMode )? this.editSize() : this.viewSize();
 			var width = s.w;
 			var height = s.h;
 		}

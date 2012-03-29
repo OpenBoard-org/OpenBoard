@@ -43,12 +43,17 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
+#include "domain/UBGraphicsPDFItem.h"
+#include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBItem.h"
 
 #include "document/UBDocumentProxy.h"
 
 #include "customWidgets/UBDraggableLabel.h"
 #include "customWidgets/UBDraggableMedia.h"
+
+#include "tools/UBGraphicsCompass.h"
+#include "tools/UBGraphicsCache.h"
 
 #include "core/memcheck.h"
 
@@ -58,6 +63,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 , mIsCreatingTextZone (false)
 , mIsCreatingSceneGrabZone (false)
 , mOkOnWidget(false)
+, suspendedMousePressEvent(NULL)
 {
   init ();
 
@@ -67,6 +73,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent)
 : QGraphicsView (pParent)
 , mController (pController)
+, suspendedMousePressEvent(NULL)
 {
   init ();
 
@@ -78,6 +85,8 @@ UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int p
 
 UBBoardView::~UBBoardView () {
   //NOOP
+    if (suspendedMousePressEvent)
+        delete suspendedMousePressEvent;
 }
 
 void
@@ -116,6 +125,9 @@ UBBoardView::init ()
   settingChanged (QVariant ());
 
   unsetCursor();
+
+  movingItem = NULL;
+  mWidgetMoved = false;
 }
 
 UBGraphicsScene*
@@ -284,7 +296,6 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     UBDrawingController *dc = UBDrawingController::drawingController ();
 
     QPointF tabletPos = event->pos();
-
     qDebug() << "tabletPos " << tabletPos;
 
 
@@ -410,7 +421,34 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
         }
       else if (currentTool == UBStylusTool::Selector)
         {
-          QGraphicsView::mousePressEvent (event);
+            QSet<QGraphicsItem*> existingTools = scene()->tools();
+
+            movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
+
+            if (!movingItem 
+                || movingItem->isSelected()
+                || movingItem->type() == UBGraphicsDelegateFrame::Type
+                || movingItem->type() == DelegateButton::Type 
+                || movingItem->type() == UBGraphicsCompass::Type
+                || movingItem->type() == UBGraphicsPDFItem::Type
+                || movingItem->type() == UBGraphicsPolygonItem::Type
+                || movingItem->type() == UBGraphicsCache::Type)
+                {
+                    movingItem = NULL;
+                    QGraphicsView::mousePressEvent (event);
+
+                }
+            else 
+            {
+                mLastPressedMousePos = mapToScene(event->pos());
+                if (suspendedMousePressEvent)
+                {
+                    delete suspendedMousePressEvent;
+                }
+                suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers()); // удалить
+            }
+            
+            event->accept();
         }
       else if (currentTool == UBStylusTool::Text)
         {
@@ -496,7 +534,20 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
     }
   else if (currentTool == UBStylusTool::Selector)
     {
-      QGraphicsView::mouseMoveEvent (event);
+        if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
+            return;
+        }
+        
+        if (movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed))
+        {
+            QPointF scenePos = mapToScene(event->pos());
+            QPointF newPos = movingItem->pos() + scenePos - mLastPressedMousePos;
+            movingItem->setPos(newPos);
+            mLastPressedMousePos = scenePos;
+            mWidgetMoved = true;
+            event->accept();
+        }
+        else QGraphicsView::mouseMoveEvent (event);
     }
   else if ((UBDrawingController::drawingController()->isDrawingTool())
   	&& !mMouseButtonIsPressed)
@@ -539,6 +590,19 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
   if (currentTool == UBStylusTool::Selector)
     {
+      if (mWidgetMoved)
+      {
+          mWidgetMoved = false;
+          movingItem = NULL;
+      }
+      else if (movingItem && suspendedMousePressEvent) 
+      {
+          QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
+          movingItem = NULL;
+          delete suspendedMousePressEvent;
+          suspendedMousePressEvent = NULL;
+      }
+
       QGraphicsView::mouseReleaseEvent (event);
     }
   else if (currentTool == UBStylusTool::Text)

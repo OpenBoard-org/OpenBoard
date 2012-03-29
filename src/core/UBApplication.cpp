@@ -238,7 +238,9 @@ int UBApplication::exec(const QString& pFileToImport)
 
     connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(showBoard()));
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));
+    connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(showDocument()));
+    connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(closing()));
     connect(mainWindow, SIGNAL(closeEvent_Signal(QCloseEvent*)), this, SLOT(closeEvent(QCloseEvent*)));
 
@@ -249,6 +251,8 @@ int UBApplication::exec(const QString& pFileToImport)
     documentController = new UBDocumentController(mainWindow);
 
     boardController->paletteManager()->connectToDocumentController();
+
+    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Selector);
 
     applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
 
@@ -262,6 +266,7 @@ int UBApplication::exec(const QString& pFileToImport)
 
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
+    connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));
 #ifndef Q_WS_MAC
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
 #else
@@ -274,13 +279,17 @@ int UBApplication::exec(const QString& pFileToImport)
 
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
     connect(mainWindow->actionTutorial, SIGNAL(triggered()), applicationController, SLOT(showTutorial()));
+    connect(mainWindow->actionTutorial, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mainWindow->actionSankoreEditor, SIGNAL(triggered()), applicationController, SLOT(showSankoreEditor()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
 
-    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
-
+   
+ 
     toolBarPositionChanged(UBSettings::settings()->appToolBarPositionedAtTop->get());
 
+    bool bUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
+    mainWindow->actionMultiScreen->setChecked(bUseMultiScreen);
+    applicationController->useMultiScreen(bUseMultiScreen);
     connect(mainWindow->actionMultiScreen, SIGNAL(triggered(bool)), applicationController, SLOT(useMultiScreen(bool)));
     connect(mainWindow->actionWidePageSize, SIGNAL(triggered(bool)), boardController, SLOT(setWidePageSize(bool)));
     connect(mainWindow->actionRegularPageSize, SIGNAL(triggered(bool)), boardController, SLOT(setRegularPageSize(bool)));
@@ -302,6 +311,9 @@ int UBApplication::exec(const QString& pFileToImport)
     static AEEventHandlerUPP ub_proc_ae_handlerUPP = AEEventHandlerUPP(ub_appleEventProcessor);
     AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
 #endif
+    if (UBSettings::settings()->appStartMode->get() == "Desktop")
+        applicationController->showDesktop();
+    else applicationController->showBoard();
 
 
     if (UBSettings::settings()->appIsInSoftwareUpdateProcess->get().toBool())
@@ -349,6 +361,16 @@ void UBApplication::showMinimized()
 }
 
 #endif
+
+void UBApplication::startScript()
+{
+    this->boardController->freezeW3CWidgets(false);
+}
+
+void UBApplication::stopScript()
+{
+    this->boardController->freezeW3CWidgets(true);
+}
 
 void UBApplication::showBoard()
 {
@@ -581,14 +603,14 @@ void UBApplication::cleanup()
 	if (boardController) delete boardController;
 	if (webController) delete webController;
 	if (documentController) delete documentController;
-        if (mUniboardSankoreTransition) delete mUniboardSankoreTransition;
+    if (mUniboardSankoreTransition) delete mUniboardSankoreTransition;
 
 
 	applicationController = NULL;
 	boardController = NULL;
 	webController = NULL;
 	documentController = NULL;
-        mUniboardSankoreTransition = NULL;
+    mUniboardSankoreTransition = NULL;
 }
 
 void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,

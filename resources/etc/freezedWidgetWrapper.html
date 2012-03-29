@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>ololo</title>
+        <style>
+            html,body{
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+            }
+
+            div{
+                text-align: center;
+                border: 5px #ccc outset;
+            }
+        </style>
+        <script type="text/javascript">
+            window.onload = function(){
+                var div = document.getElementById("freezed");
+                div.style.width = getDocWidth() - 10;
+                div.style.height = getDocHeight()/2 - 10;
+                div.style.paddingTop = getDocHeight()/2 
+               
+                function getDocHeight() {
+                    var D = document;
+                    return Math.max(
+                    Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
+                    Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
+                    Math.max(D.body.clientHeight, D.documentElement.clientHeight)
+                );
+                }
+                
+                function getDocWidth() {
+                    var D = document;
+                    return Math.max(
+                    Math.max(D.body.scrollWidth, D.documentElement.scrollWidth),
+                    Math.max(D.body.offsetWidth, D.documentElement.offsetWidth),
+                    Math.max(D.body.clientWidth, D.documentElement.clientWidth)
+                );
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="freezed">Widget freezed.</div>
+    </body>
+</html>

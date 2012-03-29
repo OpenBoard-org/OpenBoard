@@ -48,6 +48,7 @@ public:
     void init();
 
     UBLibraryController* libraryController() {return mLibraryController;}
+	bool isLoadingLibraryItems() const { return mLoadingLibraryItems; }
 
 public slots:
     void onRefreshCurrentFolder();
@@ -92,7 +93,7 @@ private:
     QList<UBLibElement*> mCurrentElems;
     QList<UBLibElement*> mOrigCurrentElems;
     QList<QGraphicsItem*> mItems;
-
+	bool mLoadingLibraryItems;
 };
 
 class UBNewFolderDlg : public QDialog

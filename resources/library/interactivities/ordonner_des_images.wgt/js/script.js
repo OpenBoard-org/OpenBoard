@@ -1,4 +1,10 @@
-var sankoreLang = {display: "Display", edit: "Edit", short_desc: "Place the pictures in ascending order.", add: "Add new block"};
+var sankoreLang = {
+    display: "Display", 
+    edit: "Edit", 
+    short_desc: "Place the pictures in ascending order.", 
+    add: "Add new block",
+    enter: "Enter your text here ..."
+};
 
 //main function
 function start(){
@@ -18,15 +24,16 @@ function start(){
         showExample();
     
     //events
-    $("body").live("mouseout",function(){
-        if(event.target.tagName == "BODY")
-            if(window.sankore)
-                exportData();
-    })
+    if (window.widget) {
+        window.widget.onleave = function(){
+            exportData();
+        }
+    }
     
     $("#display, #edit").click(function(event){
         if(this.id == "display"){
             if(!$(this).hasClass("selected")){
+                sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
                 $("#display_img").removeClass("red_point").addClass("green_point");
                 $("#edit_img").removeClass("green_point").addClass("red_point");
@@ -71,6 +78,7 @@ function start(){
             }
         } else {            
             if(!$(this).hasClass("selected")){
+                sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
                 $("#edit_img").removeClass("red_point").addClass("green_point");
                 $("#display_img").removeClass("green_point").addClass("red_point");
@@ -298,7 +306,7 @@ function addContainer(){
     
     var close = $("<div class='close_cont'>").appendTo(container);
     var number = $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
-    var text = $("<div class='text_cont' contenteditable>Enter your text here ... </div>").appendTo(sub_container);
+    var text = $("<div class='text_cont' contenteditable>" + sankoreLang.enter + "</div>").appendTo(sub_container);
     
     $("<input type='hidden' value='1*2*3*4*5*'/>").appendTo(imgs_container);
     var add_img = $("<div class='add_img'>").appendTo(imgs_container);

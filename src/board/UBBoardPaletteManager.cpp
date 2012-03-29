@@ -82,7 +82,6 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpPageNavigWidget(NULL)
     , mpLibWidget(NULL)
     , mpCachePropWidget(NULL)
-    , mpTeacherBarWidget(NULL)
     , mpDownloadWidget(NULL)
     , mpDesktopLibWidget(NULL)
     , mDownloadInProgress(false)
@@ -108,11 +107,6 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
         delete mpDesktopLibWidget;
         mpDesktopLibWidget = NULL;
     }
-//     if(NULL != mDesktopRightPalette)
-//     {
-//         delete mDesktopRightPalette;
-//         mDesktopRightPalette = NULL;
-//     }
 }
 
 void UBBoardPaletteManager::initPalettesPosAtStartup()
@@ -135,16 +129,10 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // Create the widgets for the dock palettes
 
     mpPageNavigWidget = new UBPageNavigationWidget();
-//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpPageNavigWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpLibWidget = new UBLibWidget();
-//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpLibWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpCachePropWidget = new UBCachePropertiesWidget();
-//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpCachePropWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
-
-    mpTeacherBarWidget = new UBTeacherBarWidget();
-//    connect(this, SIGNAL(signal_changeMode(eUBDockPaletteWidgetMode)), mpTeacherBarWidget, SLOT(slot_changeMode(eUBDockPaletteWidgetMode)));
 
     mpDownloadWidget = new UBDockDownloadWidget();
 
@@ -154,10 +142,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // LEFT palette widgets
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
-
-    // The teacher bar widget will always be there
-    mLeftPalette->registerWidget(mpTeacherBarWidget);
-    mLeftPalette->addTab(mpTeacherBarWidget);
 
     mLeftPalette->connectSignals();
 
@@ -178,10 +162,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mRightPalette->removeTab(mpDownloadWidget);
     mRightPalette->removeTab(mpCachePropWidget);
 
-//     mLeftPalette->showTabWidget(0);
-//     mRightPalette->showTabWidget(0);
-// 
-//     //------------------------------------------------//
 }
 
 void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMode mainMode)
@@ -249,9 +229,6 @@ void UBBoardPaletteManager::setupPalettes()
         mKeyboardPalette = new UBKeyboardPalette(0);
 #ifndef Q_WS_WIN
         connect(mKeyboardPalette, SIGNAL(closed()), mKeyboardPalette, SLOT(onDeactivated()));
-#endif
-#ifndef Q_WS_MAC
-        //     mKeyboardPalette->setParent(mContainer);
 #endif
     }
 
@@ -698,10 +675,17 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 #else
                         mKeyboardPalette->setParent(0);
 #endif
+#ifdef Q_WS_MAC
+                        mKeyboardPalette->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
+#endif
                         mKeyboardPalette->show();
                     }
                     else
                         mKeyboardPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+#ifdef Q_WS_MAC
+                        mKeyboardPalette->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
+#endif
+
                 }
 
                 mLeftPalette->setVisible(leftPaletteVisible);
@@ -783,13 +767,6 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
     emit signal_changeMode(newMode);
 }
-
-/*
-void UBBoardPaletteManager::slot_changeMode(eUBDockPaletteWidgetMode newMode)
-{
-    emit signal_changeMode(newMode);
-}
-*/
 
 void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos,  qreal scaleFactor, const QUrl& sourceUrl)
 {
@@ -938,18 +915,6 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     mStylusPalette->setVisible(bVisible); // always show stylus palette at startup
 }
 
-/*
-UBRightPalette* UBBoardPaletteManager::createDesktopRightPalette(QWidget* parent)
-{
-    mpDesktopLibWidget = new UBLibWidget();
-    mDesktopRightPalette = new UBRightPalette(parent);
-    mDesktopRightPalette->registerWidget(mpDesktopLibWidget);
-    mDesktopRightPalette->addTabWidget(mpDesktopLibWidget);
-    mDesktopRightPalette->connectSignals();
-
-    return mDesktopRightPalette;
-}
-*/
 
 void UBBoardPaletteManager::connectToDocumentController()
 {
@@ -980,38 +945,4 @@ void UBBoardPaletteManager::stopDownloads()
         mpDownloadWidget->setVisibleState(false);
         mRightPalette->removeTab(mpDownloadWidget);
     }
-}
-
-QRect UBBoardPaletteManager::GetFreeRectGlobalCoords() const
-{
-    QPoint topLeft, bottomRight;
-    if (mLeftPalette) {
-        int x = mLeftPalette->getTabPaletteRect().topRight().x();
-        int y = 0;
-        if (x || y) {
-            topLeft.setX(x);
-            topLeft.setY(y);
-            topLeft = mContainer->mapToGlobal(topLeft);
-        }
-    }
-    if (mRightPalette) {
-        int x = mRightPalette->getTabPaletteRect().topLeft().x();
-        int y = mRightPalette->height();
-        if (x || y) {
-            bottomRight.setX(x);
-            bottomRight.setY(y);
-            bottomRight = mContainer->mapToGlobal(bottomRight);
-        }
-    }
-    return QRect(topLeft, bottomRight);
-}
-
-void UBBoardPaletteManager::ForceTeacherBarToSaveData()
-{
-	mpTeacherBarWidget->saveContent();
-}
-
-void UBBoardPaletteManager::ForceTeacherBarToLoadData()
-{
-	mpTeacherBarWidget->loadContent();
 }

@@ -48,6 +48,8 @@ class UBW3CWidget : public UBAbstractWidget
         static QString createHtmlWrapperInDir(const QString& html, const QDir& pDir,
             const QSize& sizeHint,  const QString& pName);
 
+        static QString freezedWidgetPage();
+
         static bool hasNPAPIWrapper(const QString& pMimeType);
 
         class PreferenceValue
