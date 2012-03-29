@@ -25,7 +25,6 @@
 #include "UBItem.h"
 #include "tools/UBGraphicsCurtainItem.h"
 
-
 class UBGraphicsPixmapItem;
 class UBGraphicsProxyWidget;
 class UBGraphicsSvgItem;
@@ -50,11 +49,41 @@ class UBGraphicsCache;
 
 const double PI = 4.0 * atan(1.0);
 
+class UBZLayerController
+{
+public:
+
+    struct ItemLayerTypeData {
+        ItemLayerTypeData() : bottomLimit(0), topLimit(0), curValue(0) {;}
+        ItemLayerTypeData(qreal bot, qreal top) : bottomLimit(bot), topLimit(top), curValue(bot) {;}
+        qreal bottomLimit;
+        qreal topLimit;
+        qreal curValue;
+    };
+
+    typedef QMap<itemLayerType::Enum, ItemLayerTypeData> ScopeMap;
+
+    UBZLayerController();
+
+    qreal getBottomLimit(itemLayerType::Enum key) const {return scopeMap.value(key).bottomLimit;}
+    qreal getTopLimit(itemLayerType::Enum key) const {return scopeMap.value(key).topLimit;}
+    bool validLayerType(itemLayerType::Enum key) const {return scopeMap.contains(key);}
+    static qreal errorNum() {return errorNumber;}
+
+    qreal generateZLevel(itemLayerType::Enum key);
+
+    private:
+        ScopeMap scopeMap;
+        static qreal errorNumber;
+
+};
+
 class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 {
     Q_OBJECT
 
     public:
+
     //        tmp stub for divide addings scene objects from undo mechanism implementation
     void setURStackEnable(bool set = true) {enableUndoRedoStack = set;}
 
@@ -323,6 +352,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
     private:
         void setDocumentUpdated();
+        qreal generateZLevel(QGraphicsItem *item);
 
         qreal mDrawingZIndex;
         qreal mObjectZIndex;
@@ -376,7 +406,10 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBMagnifier *magniferControlViewWidget;
         UBMagnifier *magniferDisplayViewWidget;
 
+        UBZLayerController mZLayerController;
 
 };
+
+
 
 #endif /* UBGRAPHICSSCENE_H_ */

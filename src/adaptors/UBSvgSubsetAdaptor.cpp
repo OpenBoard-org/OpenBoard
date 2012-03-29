@@ -320,6 +320,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         mXmlReader.readNext();
         if (mXmlReader.isStartElement())
         {
+            qreal zFromSvg = getZValueFromSvg();
+
             if (mXmlReader.name() == "svg")
             {
                 if (!scene)
@@ -529,6 +531,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                             scene->addItem(pixmapItem);
 
+                            if (zFromSvg != UBZLayerController::errorNum())
+                                UBGraphicsItem::assignZValue(pixmapItem, zFromSvg);
+
                             if (isBackground)
                                 scene->setAsBackgroundObject(pixmapItem);
 
@@ -547,6 +552,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                             maxObjectZIndex = qMax(svgItem->zValue(), maxObjectZIndex);
 
                             scene->addItem(svgItem);
+
+                            if (zFromSvg != UBZLayerController::errorNum())
+                                UBGraphicsItem::assignZValue(svgItem, zFromSvg);
 
                             if (isBackground)
                                 scene->setAsBackgroundObject(svgItem);
@@ -573,6 +581,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     scene->addItem(audioItem);
 
+                    if (zFromSvg != UBZLayerController::errorNum())
+                        UBGraphicsItem::assignZValue(audioItem, zFromSvg);
+
                     audioItem->show();
 
                     //force start to load the video and display the first frame
@@ -592,6 +603,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     maxObjectZIndex = qMax(videoItem->zValue(), maxObjectZIndex);
 
                     scene->addItem(videoItem);
+
+                    if (zFromSvg != UBZLayerController::errorNum())
+                        UBGraphicsItem::assignZValue(videoItem, zFromSvg);
 
                     videoItem->show();
 
@@ -613,6 +627,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     scene->addItem(textItem);
 
+                    if (zFromSvg != UBZLayerController::errorNum())
+                        UBGraphicsItem::assignZValue(textItem, zFromSvg);
+
                     textItem->show();
                 }
             }
@@ -624,17 +641,27 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     scene->addItem(mask);
                     scene->registerTool(mask);
+
+                    if (zFromSvg != UBZLayerController::errorNum())
+                        UBGraphicsItem::assignZValue(mask, zFromSvg);
                 }
             }
             else if (mXmlReader.name() == "ruler")
             {
+
+                QString ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value").toString();
                 UBGraphicsRuler *ruler = rulerFromSvg();
 
+                ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value").toString();
                 if (ruler)
                 {
                     scene->addItem(ruler);
                     scene->registerTool(ruler);
+
+                    if (zFromSvg != UBZLayerController::errorNum())
+                        UBGraphicsItem::assignZValue(ruler, zFromSvg);
                 }
+
             }
             else if (mXmlReader.name() == "compass")
             {
@@ -644,6 +671,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     scene->addItem(compass);
                     scene->registerTool(compass);
+
+                    if (zFromSvg != UBZLayerController::errorNum())
+                        UBGraphicsItem::assignZValue(compass, zFromSvg);
                 }
             }
             else if (mXmlReader.name() == "protractor")
@@ -654,6 +684,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     scene->addItem(protractor);
                     scene->registerTool(protractor);
+
+                    if (zFromSvg != UBZLayerController::errorNum())
+                        UBGraphicsItem::assignZValue(protractor, zFromSvg);
                 }
             }
             else if (mXmlReader.name() == "triangle")
@@ -664,6 +697,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     scene->addItem(triangle);
                     scene->registerTool(triangle);
+
+                    if (zFromSvg != UBZLayerController::errorNum())
+                        UBGraphicsItem::assignZValue(triangle, zFromSvg);
                 }
             }
             else if(mXmlReader.name() == "cache")
@@ -674,6 +710,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     scene->addItem(cache);
                     scene->registerTool(cache);
                     UBApplication::boardController->notifyCache(true);
+
+                    if (zFromSvg != UBZLayerController::errorNum())
+                        UBGraphicsItem::assignZValue(cache, zFromSvg);
                 }
             }
             else if (mXmlReader.name() == "foreignObject")
@@ -698,6 +737,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                         scene->addItem(pdfItem);
 
+                        if (zFromSvg != UBZLayerController::errorNum())
+                            UBGraphicsItem::assignZValue(pdfItem, zFromSvg);
+
                         if (isBackground)
                             scene->setAsBackgroundObject(pdfItem);
 
@@ -720,6 +762,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                         scene->addItem(appleWidgetItem);
 
+                        if (zFromSvg != UBZLayerController::errorNum())
+                            UBGraphicsItem::assignZValue(appleWidgetItem, zFromSvg);
+
                         appleWidgetItem->show();
 
                         currentWidget = appleWidgetItem;
@@ -740,6 +785,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                         scene->addItem(w3cWidgetItem);
 
+                        if (zFromSvg != UBZLayerController::errorNum())
+                            UBGraphicsItem::assignZValue(w3cWidgetItem, zFromSvg);
+
                         w3cWidgetItem->show();
 
                         currentWidget = w3cWidgetItem;
@@ -756,6 +804,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                         maxObjectZIndex = qMax(textItem->zValue(), maxObjectZIndex);
                         scene->addItem(textItem);
+
+                        if (zFromSvg != UBZLayerController::errorNum())
+                            UBGraphicsItem::assignZValue(textItem, zFromSvg);
+
                         textItem->show();
                     }
                 }
@@ -2009,6 +2061,17 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     }
 }
 
+qreal UBSvgSubsetAdaptor::UBSvgSubsetReader::getZValueFromSvg()
+{
+    qreal result = UBZLayerController::errorNum();
+
+    QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
+    if (!ubZValue.isNull()) {
+        result  = ubZValue.toString().toFloat();
+    }
+
+    return result;
+}
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* item)
 {

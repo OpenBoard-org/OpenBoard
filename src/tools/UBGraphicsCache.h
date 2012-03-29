@@ -21,8 +21,6 @@
 #include "domain/UBItem.h"
 #include "core/UB.h"
 
-#define CACHE_ZVALUE    100000
-
 typedef enum
 {
     eMaskShape_Circle,

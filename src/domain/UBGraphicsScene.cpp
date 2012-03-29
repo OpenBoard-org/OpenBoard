@@ -77,6 +77,45 @@ qreal UBGraphicsScene::toolOffsetPointer = 1100;
 
 qreal UBGraphicsScene::toolOffsetCache = 1000;//Didier please define offset you want
 
+qreal UBZLayerController::errorNumber = -20000001.0;
+
+
+UBZLayerController::UBZLayerController()
+{
+    scopeMap.insert(itemLayerType::NoLayer,        ItemLayerTypeData( errorNumber, errorNumber));
+    scopeMap.insert(itemLayerType::BackgroundItem, ItemLayerTypeData(-10000000.0, -10000000.0 ));
+    scopeMap.insert(itemLayerType::ObjectItem,     ItemLayerTypeData(-10000000.0,  0.0        ));
+    scopeMap.insert(itemLayerType::DrawingItem,    ItemLayerTypeData( 0.0,         10000000.0 ));
+    scopeMap.insert(itemLayerType::ToolItem,       ItemLayerTypeData( 10000000.0,  10000100.0 ));
+    scopeMap.insert(itemLayerType::CppTool,        ItemLayerTypeData( 10000100.0,  10000200.0 ));
+    scopeMap.insert(itemLayerType::Eraiser,        ItemLayerTypeData( 10000200.0,  10001000.0 ));
+    scopeMap.insert(itemLayerType::Curtain,        ItemLayerTypeData( 10001000.0,  10001100.0 ));
+    scopeMap.insert(itemLayerType::Pointer,        ItemLayerTypeData( 10001100.0,  10001200.0 ));
+    scopeMap.insert(itemLayerType::Cache,          ItemLayerTypeData( 10001300.0,  10001400.0 ));
+}
+
+qreal UBZLayerController::generateZLevel(itemLayerType::Enum key)
+{
+
+    if (!scopeMap.contains(key)) {
+        qDebug() << "Number is out of layer scope";
+        return errorNumber;
+    }
+
+    qreal result = scopeMap.value(key).curValue;
+    qreal top = scopeMap.value(key).topLimit;
+
+    result++;
+    if (result >= top) {
+        qDebug() << "new values are finished for the scope" << key;
+        result = top;
+    }
+
+    scopeMap[key].curValue = result;
+
+    return result;
+}
+
 UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
@@ -116,6 +155,12 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 
     mEraser->setZValue(/*toolLayerStart + toolOffsetEraser*/2);
     mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+//    mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(Eraiser));
+
+//    qreal zval = mZLayerController.generateZLevel((itmeLayerType)mEraser->data(UBGraphicsItemData::itemLayerType).toInt());
+//    qreal zval1 = mZLayerController.generateZLevel(Eraiser);
+//    qreal zval2 = mZLayerController.generateZLevel(Eraiser);
+//    mEraser->setZValue(zval);
 
     mTools << mEraser;
     addItem(mEraser);
@@ -155,8 +200,8 @@ UBGraphicsScene::~UBGraphicsScene()
 void UBGraphicsScene::selectionChangedProcessing()
 {
     if (selectedItems().count())
-        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
-
+        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
+                                                + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
 
     QList<QGraphicsItem *> allItemsList = items();
     qreal maxZ = 0.;
@@ -827,9 +872,6 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
     polygonItem->setColorOnLightBackground(colorOnLightBG);
 
     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
-
-//    polygonItem->setZValue(getNextDrawingZIndex());
-    UBGraphicsItem::assignZValue(polygonItem, getNextDrawingZIndex());
 }
 
 
@@ -1051,7 +1093,6 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 //    pixmapItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(pixmapItem, getNextObjectZIndex());
 
     pixmapItem->setPixmap(pPixmap);
 
@@ -1104,7 +1145,6 @@ UBGraphicsVideoItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool s
     videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 //    videoItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(videoItem, getNextObjectZIndex());
 
     addItem(videoItem);
 
@@ -1137,7 +1177,6 @@ UBGraphicsAudioItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool s
     audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 //    audioItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(audioItem, getNextObjectZIndex());
 
     addItem(audioItem);
 
@@ -1204,8 +1243,6 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, c
 void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos)
 {
     graphicsWidget->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    graphicsWidget->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(graphicsWidget, getNextObjectZIndex());
 
     addItem(graphicsWidget);
 
@@ -1267,8 +1304,6 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    svgItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(svgItem, getNextObjectZIndex());
 
     qreal sscale = 1 / UBApplication::boardController->systemScaleFactor();
     svgItem->scale(sscale, sscale);
@@ -1303,8 +1338,6 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 {
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText(pString);
-//    textItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(textItem, getNextObjectZIndex());
 
     QFont font = textItem->font();
 
@@ -1361,8 +1394,6 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText("");
     textItem->setHtml(pString);
-//    textItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(textItem, getNextObjectZIndex());
 
     addItem(textItem);
     textItem->show();
@@ -1388,6 +1419,8 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     setModified(true);
     UBCoreGraphicsScene::addItem(item);
 
+    UBGraphicsItem::assignZValue(item, generateZLevel(item));
+
     if (!mTools.contains(item))
       ++mItemCount;
 
@@ -1398,8 +1431,10 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 {
     setModified(true);
 
-    foreach(QGraphicsItem* item, items)
+    foreach(QGraphicsItem* item, items) {
         UBCoreGraphicsScene::addItem(item);
+        UBGraphicsItem::assignZValue(item, generateZLevel(item));
+    }
 
     mItemCount += items.size();
 
@@ -1461,7 +1496,7 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
         item->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::FixedBackground);
 
 //        item->setZValue(backgroundLayerStart);
-        UBGraphicsItem::assignZValue(item, backgroundLayerStart);
+        UBGraphicsItem::assignZValue(item, generateZLevel(item));
 
         if (pAdaptTransformation)
         {
@@ -1565,9 +1600,6 @@ void UBGraphicsScene::addRuler(QPointF center)
     QRectF rect = ruler->rect();
     ruler->setRect(center.x() - rect.width()/2, center.y() - rect.height()/2, rect.width(), rect.height());
 
-//    ruler->setZValue(toolLayerStart + toolOffsetRuler);
-    UBGraphicsItem::assignZValue(ruler, toolLayerStart + toolOffsetRuler);
-
     ruler->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     addItem(ruler);
@@ -1583,9 +1615,6 @@ void UBGraphicsScene::addProtractor(QPointF center)
 
     UBGraphicsProtractor* protractor = new UBGraphicsProtractor(); // mem : owned and destroyed by the scene
     mTools << protractor;
-
-//    protractor->setZValue(toolLayerStart + toolOffsetProtractor);
-    UBGraphicsItem::assignZValue(protractor, toolLayerStart + toolOffsetProtractor);
 
     protractor->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
@@ -1604,9 +1633,6 @@ void UBGraphicsScene::addTriangle(QPointF center)
 
     UBGraphicsTriangle* triangle = new UBGraphicsTriangle(); // mem : owned and destroyed by the scene
     mTools << triangle;
-
-//    triangle->setZValue(toolLayerStart + toolOffsetProtractor);
-    UBGraphicsItem::assignZValue(triangle, toolLayerStart + toolOffsetTriangle);
 
     triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
@@ -1738,9 +1764,6 @@ void UBGraphicsScene::addCompass(QPointF center)
     QRectF rect = compass->rect();
     compass->setRect(center.x() - rect.width() / 2, center.y() - rect.height() / 2, rect.width(), rect.height());
 
-//    compass->setZValue(toolLayerStart + toolOffsetCompass);
-    UBGraphicsItem::assignZValue(compass, toolLayerStart + toolOffsetCompass);
-
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     compass->setVisible(true);
@@ -1772,8 +1795,6 @@ void UBGraphicsScene::addMask(const QPointF &center)
     QRectF rect = UBApplication::boardController->activeScene()->normalizedSceneRect();
     rect.setRect(center.x() - rect.width()/4, center.y() - rect.height()/4, rect.width()/2 , rect.height()/2);
     curtain->setRect(rect);
-    UBGraphicsItem::assignZValue(curtain, toolLayerStart + toolOffsetCurtain);
-
     curtain->setVisible(true);
     curtain->setSelected(true);
     setModified(true);
@@ -1992,6 +2013,17 @@ void UBGraphicsScene::setDocumentUpdated()
                 , UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 }
 
+qreal UBGraphicsScene::generateZLevel(QGraphicsItem *item)
+{
+    qreal result = UBZLayerController::errorNum();
+    itemLayerType::Enum type = static_cast<itemLayerType::Enum>(item->data(UBGraphicsItemData::itemLayerType).toInt());
+
+    if (mZLayerController.validLayerType(type)) {
+        result =  mZLayerController.generateZLevel(type);
+    }
+
+    return result;
+}
 
 void UBGraphicsScene::setToolCursor(int tool)
 {

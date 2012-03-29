@@ -76,17 +76,25 @@ void UBGraphicsItemDelegate::init()
     UBGraphicsItem::assignZValue(mFrame, UBGraphicsScene::toolLayerStart + 1);
     mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame);
+    mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
     mButtons << mDeleteButton;
     connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
     if (canDuplicate()){
-        mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame);
+        mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
         connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
         mButtons << mDuplicateButton;
     }
-    mMenuButton = new DelegateButton(":/images/menu.svg", mDelegated, mFrame);
+    mMenuButton = new DelegateButton(":/images/menu.svg", mDelegated, mFrame, Qt::TopLeftSection);
     connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
     mButtons << mMenuButton;
+
+    mZOrderUpButton = new DelegateButton(":/images/plus.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevel()));
+    mButtons << mZOrderUpButton;
+
+    mZOrderDownButton = new DelegateButton(":/images/minus.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(decreaseZLevel()));
+    mButtons << mZOrderDownButton;
 
     buildButtons();
 
@@ -238,10 +246,13 @@ void UBGraphicsItemDelegate::positionHandles()
 
         mDeleteButton->setTransform(tr);
 
-        qreal x = mFrame->rect().left()- mDeleteButton->renderer()->viewBox().width() * mAntiScaleRatio / 2;
-        qreal y = mFrame->rect().top() - mDeleteButton->renderer()->viewBox().height() * mAntiScaleRatio / 2;
+        qreal topX = mFrame->rect().left()- mDeleteButton->renderer()->viewBox().width() * mAntiScaleRatio / 2;
+        qreal topY = mFrame->rect().top() - mDeleteButton->renderer()->viewBox().height() * mAntiScaleRatio / 2;
 
-        mDeleteButton->setPos(x, y);
+        qreal bottomX = mFrame->rect().left()- mDeleteButton->renderer()->viewBox().width() * mAntiScaleRatio / 2;
+        qreal bottomY = mFrame->rect().bottom() - mDeleteButton->renderer()->viewBox().height() * mAntiScaleRatio / 2;
+
+        mDeleteButton->setPos(topX, topY);
 
         if (!mDeleteButton->scene())
         {
@@ -257,12 +268,18 @@ void UBGraphicsItemDelegate::positionHandles()
 
         lock(isLocked());
 
-        for(int i = 1 ; i < mButtons.length(); i++)
-        {
-            DelegateButton* button = mButtons[i];
+        int i = 1, j = 0, k = 0;
+        while ((i + j) < mButtons.size())  {
+            DelegateButton* button = mButtons[i + j];
 
             button->setTransform(tr);
-            button->setPos(x + (i * 1.6 * mFrameWidth * mAntiScaleRatio), y);
+            if (button->getSection() == Qt::TopLeftSection) {
+                button->setPos(topX + (i++ * 1.6 * mFrameWidth * mAntiScaleRatio), topY);
+            } else if (button->getSection() == Qt::BottomLeftSection) {
+                button->setPos(bottomX + (++j * 1.6 * mFrameWidth * mAntiScaleRatio), bottomY);
+            } else if (button->getSection() == Qt::NoSection) {
+                ++k;
+            }
             if (!button->scene())
             {
                 button->setParentItem(mFrame);//update parent for the case the item has been previously removed from scene
@@ -271,9 +288,7 @@ void UBGraphicsItemDelegate::positionHandles()
             }
             button->show();
         }
-    }
-    else
-    {
+    } else {
         foreach(DelegateButton* button, mButtons)
             button->hide();
 
@@ -316,7 +331,19 @@ void UBGraphicsItemDelegate::duplicate()
     UBApplication::boardController->copy();
     UBApplication::boardController->paste();
 }
+void UBGraphicsItemDelegate::increaseZLevel(int delta)
+{
+    qDebug() << delegated()->scene()->items().count();
 
+//    UBGraphicsItem::assignZValue(delegated(), )
+
+//    int valueCandidate = delegated()->data(UBGraphicsItemData::ItemOwnZValue).toInt();
+//    if (delta < 0) {
+
+//    } else if (delta > 0) {
+
+//    }
+}
 
 void UBGraphicsItemDelegate::lock(bool locked)
 {

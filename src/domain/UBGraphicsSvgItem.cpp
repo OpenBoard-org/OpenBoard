@@ -37,7 +37,6 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QString& pFilePath, QGraphicsItem* pa
     }
 }
 
-
 UBGraphicsSvgItem::UBGraphicsSvgItem(const QByteArray& pFileData, QGraphicsItem* parent)
     : QGraphicsSvgItem(parent)
 {
@@ -47,6 +46,8 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QByteArray& pFileData, QGraphicsItem*
 
     setSharedRenderer(renderer);
     mFileData = pFileData;
+
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 }
 
 

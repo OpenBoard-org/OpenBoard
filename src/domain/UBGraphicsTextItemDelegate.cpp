@@ -96,10 +96,10 @@ void UBGraphicsTextItemDelegate::buildButtons()
 {
     UBGraphicsItemDelegate::buildButtons();
 
-    mFontButton = new DelegateButton(":/images/font.svg", mDelegated, mFrame);
-    mColorButton = new DelegateButton(":/images/color.svg", mDelegated, mFrame);
-    mDecreaseSizeButton = new DelegateButton(":/images/minus.svg", mDelegated, mFrame);
-    mIncreaseSizeButton = new DelegateButton(":/images/plus.svg", mDelegated, mFrame);
+    mFontButton = new DelegateButton(":/images/font.svg", mDelegated, mFrame, Qt::TopLeftSection);
+    mColorButton = new DelegateButton(":/images/color.svg", mDelegated, mFrame, Qt::TopLeftSection);
+    mDecreaseSizeButton = new DelegateButton(":/images/minus.svg", mDelegated, mFrame, Qt::TopLeftSection);
+    mIncreaseSizeButton = new DelegateButton(":/images/plus.svg", mDelegated, mFrame, Qt::TopLeftSection);
 
     connect(mFontButton, SIGNAL(clicked(bool)), this, SLOT(pickFont()));
     connect(mColorButton, SIGNAL(clicked(bool)), this, SLOT(pickColor()));

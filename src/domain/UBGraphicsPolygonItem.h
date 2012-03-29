@@ -35,6 +35,8 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
         ~UBGraphicsPolygonItem();
 
+        void initialize();
+
         void setColor(const QColor& color);
 
         QColor color() const;

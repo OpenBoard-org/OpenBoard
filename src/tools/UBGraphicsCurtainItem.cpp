@@ -49,6 +49,8 @@ UBGraphicsCurtainItem::UBGraphicsCurtainItem(QGraphicsItem* parent)
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Tool);
     setPen(Qt::NoPen);
     this->setAcceptHoverEvents(true);
+
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Curtain)); //Necessary to set if we want z value to be assigned correctly
 }
 
 UBGraphicsCurtainItem::~UBGraphicsCurtainItem()
