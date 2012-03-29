@@ -777,7 +777,7 @@
     </message>
     <message utf8="true">
         <source>Open-Sankoré Editor</source>
-        <translation>Editeur Open-Sankoré</translation>
+        <translation>Editeur Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
