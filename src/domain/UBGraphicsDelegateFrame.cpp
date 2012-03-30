@@ -210,6 +210,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         if (resizingBottomRight())
         {
+            // -----------------------------------------------------
+            // ! We want to keep the aspect ratio with this resize !
+            // -----------------------------------------------------
             qreal scaleX = (width + moveX) / width;
             qreal scaleY = (height + moveY) / height;
             qreal scaleFactor = (scaleX + scaleY) / 2;
@@ -230,39 +233,56 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                     mScaleY = scaleY;
                 }
             }
-        }
-        else if (resizingLeft())
+        }else if (resizingLeft() || resizingRight())
         {
-            qreal scaleX = (width - moveX) / width;
-            if (scaleX > 1 || (width * scaleX) > 2 * mFrameWidth)
-            {
-                mScaleX = scaleX;
-                mTranslateX = moveX;
+            if(width != 0){
+                qreal scaleX = 0.0;
+                if(resizingLeft()){
+                    scaleX = (width - moveX) / width;
+                }else if(resizingRight()){
+                    scaleX = (width + moveX) / width;
+                }
+                if(mDelegate->isFlippable() && qAbs(scaleX) != 0){
+                    if((width * qAbs(scaleX)) < 2*mFrameWidth){
+                        bool negative = (scaleX < 0)?true:false;
+                        if(negative){
+                            scaleX = -2*mFrameWidth/width;
+                        }else{
+                            scaleX = 2*mFrameWidth/width;
+                        }
+                    }
+                    mScaleX = scaleX;
+                }else if (scaleX > 1 || (width * scaleX) > 2 * mFrameWidth){
+                    mScaleX = scaleX;
+                    if(resizingLeft()){
+                        mTranslateX = moveX;
+                    }
+                }
             }
-        }
-        else if (resizingRight())
-        {
-            qreal scaleX = (width + moveX) / width;
-            if (scaleX > 1 || (width * scaleX) > 2 * mFrameWidth)
-            {
-                mScaleX = scaleX;
-            }
-        }
-        else if (resizingTop())
-        {
-            qreal scaleY = (height - moveY) / height;
-            if (scaleY > 1 || (height * scaleY) > 2 * mFrameWidth)
-            {
-                mScaleY = scaleY;
-                mTranslateY = moveY;
-            }
-        }
-        else if (resizingBottom())
-        {
-            qreal scaleY = (height + moveY) / height;
-            if (scaleY > 1 || (height * scaleY) > 2 * mFrameWidth)
-            {
-                mScaleY = scaleY;
+        }else if(resizingTop() || resizingBottom()){
+            if(height != 0){
+                qreal scaleY = 0.0;
+                if(resizingTop()){
+                    scaleY = (height - moveY) / height;
+                }else if(resizingBottom()){
+                    scaleY = (height + moveY) / height;
+                }
+
+                if(mDelegate->isFlippable() && qAbs(scaleY) != 0){
+                    if((height * qAbs(scaleY)) < 2*mFrameWidth){
+                        bool negative = (scaleY < 0)?true:false;
+                        if(negative){
+                            scaleY = -2*mFrameWidth/width;
+                        }else{
+                            scaleY = 2*mFrameWidth/width;
+                        }
+                    }
+                    mScaleY = scaleY;
+                }else if (scaleY > 1 || (height * scaleY) > 2 * mFrameWidth)
+                {
+                    mScaleY = scaleY;
+                    mTranslateY = moveY;
+                }
             }
         }
     }
