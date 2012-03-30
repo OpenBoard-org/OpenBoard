@@ -306,9 +306,6 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
 UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 {
     UBGraphicsScene *scene = 0;
-    qreal maxDrawingZIndex = 0;
-    qreal maxObjectZIndex = 0;
-
     UBGraphicsWidgetItem *currentWidget = 0;
 
     mFileVersion = 40100; // default to 4.1.0
@@ -481,7 +478,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     scene->addItem(polygonItem);
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
-                    maxDrawingZIndex = qMax(polygonItem->zValue(), maxDrawingZIndex);
 
                     polygonItem->show();
                 }
@@ -501,8 +497,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     scene->addItem(polygonItem);
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
-                    maxDrawingZIndex = qMax(polygonItem->zValue(), maxDrawingZIndex);
-
                     polygonItem->show();
                 }
             }
@@ -527,8 +521,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                             pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                             pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                            maxObjectZIndex = qMax(pixmapItem->zValue(), maxObjectZIndex);
-
                             scene->addItem(pixmapItem);
 
                             if (zFromSvg != UBZLayerController::errorNum())
@@ -548,8 +540,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         {
                             svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                             svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-                            maxObjectZIndex = qMax(svgItem->zValue(), maxObjectZIndex);
 
                             scene->addItem(svgItem);
 
@@ -577,8 +567,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                    maxObjectZIndex = qMax(audioItem->zValue(), maxObjectZIndex);
-
                     scene->addItem(audioItem);
 
                     if (zFromSvg != UBZLayerController::errorNum())
@@ -600,8 +588,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                    maxObjectZIndex = qMax(videoItem->zValue(), maxObjectZIndex);
-
                     scene->addItem(videoItem);
 
                     if (zFromSvg != UBZLayerController::errorNum())
@@ -622,8 +608,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-                    maxObjectZIndex = qMax(textItem->zValue(), maxObjectZIndex);
 
                     scene->addItem(textItem);
 
@@ -733,8 +717,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                        maxObjectZIndex = qMax(pdfItem->zValue(), maxObjectZIndex);
-
                         scene->addItem(pdfItem);
 
                         if (zFromSvg != UBZLayerController::errorNum())
@@ -758,8 +740,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                         appleWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
 
-                        maxObjectZIndex = qMax(appleWidgetItem->zValue(), maxObjectZIndex);
-
                         scene->addItem(appleWidgetItem);
 
                         if (zFromSvg != UBZLayerController::errorNum())
@@ -781,8 +761,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                         w3cWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
 
-                        maxObjectZIndex = qMax(w3cWidgetItem->zValue(), maxObjectZIndex);
-
                         scene->addItem(w3cWidgetItem);
 
                         if (zFromSvg != UBZLayerController::errorNum())
@@ -802,7 +780,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                        maxObjectZIndex = qMax(textItem->zValue(), maxObjectZIndex);
                         scene->addItem(textItem);
 
                         if (zFromSvg != UBZLayerController::errorNum())
@@ -856,17 +833,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         qWarning() << "error parsing Sankore file " << mXmlReader.errorString();
     }
 
-    if (scene)
-    {
-        scene->setObjectZIndex(maxObjectZIndex);
-        scene->setDrawingZIndex(maxDrawingZIndex);
+    if (scene) {
         scene->setModified(false);
     }
 
     if (annotationGroup)
     {
-            if (annotationGroup->polygons().empty())
-                    delete annotationGroup;
+        if (annotationGroup->polygons().empty())
+            delete annotationGroup;
     }
 
     return scene;
@@ -1400,12 +1374,10 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     if (!ubZValue.isNull())
     {
-//        polygonItem->setZValue (ubZValue.toString().toFloat());
         UBGraphicsItem::assignZValue(polygonItem, ubZValue.toString().toFloat());
     }
     else
     {
-//        polygonItem->setZValue(mGroupZIndex);
         UBGraphicsItem::assignZValue(polygonItem, mGroupZIndex);
     }
 
@@ -1509,12 +1481,10 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
 
     if (!ubZValue.isNull())
     {
-//        polygonItem->setZValue(ubZValue.toString().toFloat());
         UBGraphicsItem::assignZValue(polygonItem, ubZValue.toString().toFloat());
     }
     else
     {
-//        polygonItem->setZValue(mGroupZIndex);
         UBGraphicsItem::assignZValue(polygonItem, mGroupZIndex);
     }
 
@@ -1663,7 +1633,6 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
         {
             UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem(QLineF(points.at(i), points.at(i + 1)), lineWidth);
             polygonItem->setColor(brushColor);
-//            polygonItem->setZValue(zValue);
             UBGraphicsItem::assignZValue(polygonItem, zValue);
             polygonItem->setColorOnDarkBackground(colorOnDarkBackground);
             polygonItem->setColorOnLightBackground(colorOnLightBackground);
@@ -2008,7 +1977,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
 
     if (!ubZValue.isNull())
     {
-//        gItem->setZValue(ubZValue.toString().toFloat());
         UBGraphicsItem::assignZValue(gItem, ubZValue.toString().toFloat());
     }
 
@@ -2591,7 +2559,6 @@ UBGraphicsRuler* UBSvgSubsetAdaptor::UBSvgSubsetReader::rulerFromSvg()
 
     graphicsItemFromSvg(ruler);
 
-//    ruler->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetRuler);
     UBGraphicsItem::assignZValue(ruler, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetRuler);
     ruler->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
@@ -2650,7 +2617,6 @@ UBGraphicsCompass* UBSvgSubsetAdaptor::UBSvgSubsetReader::compassFromSvg()
 
     graphicsItemFromSvg(compass);
 
-    //compass->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCompass);
     UBGraphicsItem::assignZValue(compass, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCompass);
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
@@ -2715,7 +2681,6 @@ UBGraphicsProtractor* UBSvgSubsetAdaptor::UBSvgSubsetReader::protractorFromSvg()
 {
     UBGraphicsProtractor* protractor = new UBGraphicsProtractor();
 
-//    protractor->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetProtractor);
     UBGraphicsItem::assignZValue(protractor, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetProtractor);
     protractor->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
@@ -2786,7 +2751,6 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 {
     UBGraphicsTriangle* triangle = new UBGraphicsTriangle();
 
-//    triangle->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetTriangle);
     UBGraphicsItem::assignZValue(triangle, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetTriangle);
     triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
@@ -2813,8 +2777,6 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 UBGraphicsCache* UBSvgSubsetAdaptor::UBSvgSubsetReader::cacheFromSvg()
 {
     UBGraphicsCache* pCache = new UBGraphicsCache();
-    pCache->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCache);
-//    UBGraphicsItem::assignZValue(pCache, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCache);
     pCache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     graphicsItemFromSvg(pCache);

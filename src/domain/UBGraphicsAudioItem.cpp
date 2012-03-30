@@ -97,8 +97,6 @@ UBItem* UBGraphicsAudioItem::deepCopy() const
     UBGraphicsAudioItem *copy = new UBGraphicsAudioItem(audioUrl, parentItem());
 
     copy->setPos(this->pos());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);

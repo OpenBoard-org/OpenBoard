@@ -33,7 +33,7 @@ class DelegateButton: public QGraphicsSvgItem
     Q_OBJECT
 
     public:
-        DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent = 0, Qt::WindowFrameSection section = Qt::NoSection)
+        DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent = 0, Qt::WindowFrameSection section = Qt::TopLeftSection)
             : QGraphicsSvgItem(fileName, parent)
             , mDelegated(pDelegated)
             , mIsTransparentToMouseEvent(false)

@@ -95,8 +95,6 @@ UBItem* UBGraphicsTriangle::deepCopy(void) const
 
     copy->setPos(this->pos());
     copy->setPolygon(this->polygon());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
 
     // TODO UB 4.7 ... complete all members ?

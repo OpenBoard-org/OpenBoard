@@ -181,22 +181,10 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return mCrossedBackground;
         }
 
-        void setDrawingZIndex(qreal pDrawingZIndex)
-        {
-            mDrawingZIndex = pDrawingZIndex;
-        }
-
-        void setObjectZIndex(qreal pObjectZIndex)
-        {
-            mObjectZIndex = pObjectZIndex;
-        }
-
         bool hasBackground()
         {
             return (mBackgroundObject != 0);
         }
-
-        qreal getNextObjectZIndex();
 
         void addRuler(QPointF center);
         void addProtractor(QPointF center);
@@ -253,11 +241,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void setNominalSize(const QSize& pSize);
 
         void setNominalSize(int pWidth, int pHeight);
-
-        qreal currentObjectZIndex()
-        {
-            return mObjectZIndex;
-        }
 
         enum RenderingContext
         {
@@ -343,19 +326,17 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void recolorAllItems();
 
-        qreal getNextDrawingZIndex();
-
-        virtual void drawItems (QPainter * painter, int numItems,
+       virtual void drawItems (QPainter * painter, int numItems,
                 QGraphicsItem * items[], const QStyleOptionGraphicsItem options[], QWidget * widget = 0);
 
         QGraphicsItem* rootItem(QGraphicsItem* item) const;
 
     private:
         void setDocumentUpdated();
-        qreal generateZLevel(QGraphicsItem *item);
+        void createEraiser();
+        void createPointer();
 
-        qreal mDrawingZIndex;
-        qreal mObjectZIndex;
+        qreal generateZLevel(QGraphicsItem *item);
 
         QGraphicsEllipseItem* mEraser;
         QGraphicsEllipseItem* mPointer;

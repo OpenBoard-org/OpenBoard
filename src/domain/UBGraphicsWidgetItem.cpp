@@ -411,7 +411,6 @@ UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
     UBGraphicsW3CWidgetItem *copy = new UBGraphicsW3CWidgetItem(mWebKitWidget->widgetUrl(), parentItem());
 
     copy->setPos(this->pos());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);

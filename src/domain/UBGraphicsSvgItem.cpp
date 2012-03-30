@@ -46,8 +46,6 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QByteArray& pFileData, QGraphicsItem*
 
     setSharedRenderer(renderer);
     mFileData = pFileData;
-
-    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 }
 
 
@@ -62,6 +60,8 @@ void UBGraphicsSvgItem::init()
 
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setMaximumCacheSize(boundingRect().size().toSize() * UB_MAX_ZOOM);
+
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 }
 
 
@@ -133,8 +133,6 @@ UBItem* UBGraphicsSvgItem::deepCopy() const
     UBGraphicsSvgItem* copy = new UBGraphicsSvgItem(this->fileData());
 
     copy->setPos(this->pos());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -188,8 +186,6 @@ UBGraphicsPixmapItem* UBGraphicsSvgItem::toPixmapItem() const
     pixmapItem->setPixmap(QPixmap::fromImage(image));
 
     pixmapItem->setPos(this->pos());
-//    pixmapItem->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(pixmapItem, this->zValue());
     pixmapItem->setTransform(this->transform());
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);

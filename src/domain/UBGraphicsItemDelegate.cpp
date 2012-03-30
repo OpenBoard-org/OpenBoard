@@ -73,8 +73,6 @@ void UBGraphicsItemDelegate::init()
 {
     mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
     mFrame->hide();
-//    mFrame->setZValue(UBGraphicsScene::toolLayerStart + 1);
-    UBGraphicsItem::assignZValue(mFrame, UBGraphicsScene::toolLayerStart + 1);
     mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
@@ -102,8 +100,6 @@ void UBGraphicsItemDelegate::init()
     foreach(DelegateButton* button, mButtons)
     {
         button->hide();
-//        button->setZValue(UBGraphicsScene::toolLayerStart + 2);
-        UBGraphicsItem::assignZValue(button, UBGraphicsScene::toolLayerStart + 2);
         button->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
 }
@@ -168,18 +164,9 @@ bool UBGraphicsItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (!mDelegated->isSelected())
     {
         mDelegated->setSelected(true);
-
-        UBGraphicsScene* scene = static_cast<UBGraphicsScene*>(mDelegated->scene());
-
         qDebug() << mDelegated->zValue();
-        qDebug() << scene->currentObjectZIndex();
-
-// To investigate. Z value behavior
-//                if (mDelegated->zValue() < scene->currentObjectZIndex() && !isLocked())
-//            mDelegated->setZValue(scene->getNextObjectZIndex());
 
         positionHandles();
-
         return true;
     }
     else
@@ -288,6 +275,7 @@ void UBGraphicsItemDelegate::positionHandles()
                     mDelegated->scene()->addItem(button);
             }
             button->show();
+            button->setZValue(delegated()->zValue());
         }
     } else {
         foreach(DelegateButton* button, mButtons)

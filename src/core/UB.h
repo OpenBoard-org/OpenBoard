@@ -84,6 +84,7 @@ struct itemLayerType
         , Curtain
         , Pointer
         , Cache
+        , SelectedItem
     };
 };
 

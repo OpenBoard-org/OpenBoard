@@ -61,8 +61,6 @@
 
 #include "core/memcheck.h"
 
-qreal UBGraphicsScene::backgroundLayerStart = -20000000.0;
-qreal UBGraphicsScene::objectLayerStart = -10000000.0;
 qreal UBGraphicsScene::drawingLayerStart = 0.0;
 qreal UBGraphicsScene::toolLayerStart = 10000000.0;
 
@@ -88,10 +86,12 @@ UBZLayerController::UBZLayerController()
     scopeMap.insert(itemLayerType::DrawingItem,    ItemLayerTypeData( 0.0,         10000000.0 ));
     scopeMap.insert(itemLayerType::ToolItem,       ItemLayerTypeData( 10000000.0,  10000100.0 ));
     scopeMap.insert(itemLayerType::CppTool,        ItemLayerTypeData( 10000100.0,  10000200.0 ));
-    scopeMap.insert(itemLayerType::Eraiser,        ItemLayerTypeData( 10000200.0,  10001000.0 ));
-    scopeMap.insert(itemLayerType::Curtain,        ItemLayerTypeData( 10001000.0,  10001100.0 ));
+    scopeMap.insert(itemLayerType::Curtain,        ItemLayerTypeData( 10000200.0,  10001000.0 ));
+    scopeMap.insert(itemLayerType::Eraiser,        ItemLayerTypeData( 10001000.0,  10001100.0 ));
     scopeMap.insert(itemLayerType::Pointer,        ItemLayerTypeData( 10001100.0,  10001200.0 ));
     scopeMap.insert(itemLayerType::Cache,          ItemLayerTypeData( 10001300.0,  10001400.0 ));
+
+    scopeMap.insert(itemLayerType::SelectedItem,   ItemLayerTypeData( 10001000.0,  10001000.0 ));
 }
 
 qreal UBZLayerController::generateZLevel(itemLayerType::Enum key)
@@ -107,8 +107,8 @@ qreal UBZLayerController::generateZLevel(itemLayerType::Enum key)
 
     result++;
     if (result >= top) {
-        qDebug() << "new values are finished for the scope" << key;
-        result = top;
+        qDebug() << "new values are over for the scope" << key;
+        result = top - 1;
     }
 
     scopeMap[key].curValue = result;
@@ -145,38 +145,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 #endif
 
     setDocument(parent);
-
-    mDrawingZIndex = drawingLayerStart;
-    mObjectZIndex = objectLayerStart;
-
-    mEraser = new QGraphicsEllipseItem(); // mem : owned and destroyed by the scene
-    mEraser->setRect(QRect(0, 0, 0, 0));
-    mEraser->setVisible(false);
-
-    mEraser->setZValue(/*toolLayerStart + toolOffsetEraser*/2);
-    mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-//    mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(Eraiser));
-
-//    qreal zval = mZLayerController.generateZLevel((itmeLayerType)mEraser->data(UBGraphicsItemData::itemLayerType).toInt());
-//    qreal zval1 = mZLayerController.generateZLevel(Eraiser);
-//    qreal zval2 = mZLayerController.generateZLevel(Eraiser);
-//    mEraser->setZValue(zval);
-
-    mTools << mEraser;
-    addItem(mEraser);
-
-    mPointer = new QGraphicsEllipseItem();  // mem : owned and destroyed by the scene
-    mPointer->setRect(QRect(0, 0, 20, 20));
-    mPointer->setVisible(false);
-
-    mPointer->setPen(Qt::NoPen);
-    mPointer->setBrush(QBrush(QColor(255, 0, 0, 186)));
-
-    mPointer->setZValue( /*toolLayerStart + toolOffsetPointer*/ 2);
-    mPointer->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
-
-    mTools << mPointer;
-    addItem(mPointer);
+    createEraiser();
+    createPointer();
 
     if (UBApplication::applicationController)
     {
@@ -204,23 +174,14 @@ void UBGraphicsScene::selectionChangedProcessing()
                                                 + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
 
     QList<QGraphicsItem *> allItemsList = items();
-    qreal maxZ = 0.;
     for( int i = 0; i < allItemsList.size(); i++ ) {
         QGraphicsItem *nextItem = allItemsList.at(i);
-        //Temporary stub. Due to ugly z-order implementation I need to do this (sankore 360)
-        //z-order behavior should be reimplemented and this stub should be deleted
-        if (nextItem == mBackgroundObject)
-            continue;
-        //Temporary stub end (sankore 360)
-        if (nextItem->zValue() > maxZ)
-            maxZ = nextItem->zValue();
-        nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-//        nextItem->setZValue(qreal(1));
-    }
-    QList<QGraphicsItem *> selItemsList = selectedItems();
-    for( int i = 0; i < selItemsList.size(); i++ ) {
-        QGraphicsItem *nextItem = selItemsList.at(i);
-        nextItem->setZValue(maxZ + 0.0001);
+
+        if (nextItem->isSelected()) {
+            nextItem->setZValue(mZLayerController.generateZLevel(itemLayerType::SelectedItem));
+        } else {
+            nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+        }
     }
 }
 
@@ -449,25 +410,11 @@ void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool isFirstDraw)
     qreal eraserRadius = eraserWidth / 2;
 
     // TODO UB 4.x optimize - no need to do that every time we move it
-    if (mEraser)
-    {
+    if (mEraser) {
         mEraser->setRect(QRectF(pPoint.x() - eraserRadius, pPoint.y() - eraserRadius, eraserWidth, eraserWidth));
 
-        if(isFirstDraw)
-        {
-            qreal maxZ = 0.;
-            QList<QGraphicsItem *> allItemsList = items();
-            for( int i = 0; i < allItemsList.size(); i++ )
-            {
-                QGraphicsItem *nextItem = allItemsList.at(i);
-                qreal zValue = nextItem->zValue();
-                if (zValue > maxZ)
-                    maxZ = zValue;
-                nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-            }
-
-            mEraser->setZValue(maxZ + 0.0001);
-            mEraser->show();
+        if(isFirstDraw) {
+          mEraser->show();
         }
     }
 }
@@ -478,27 +425,12 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
     qreal pointerRadius = pointerDiameter / 2;
 
     // TODO UB 4.x optimize - no need to do that every time we move it
-    if (mPointer)
-    {
+    if (mPointer) {
         mPointer->setRect(QRectF(pPoint.x() - pointerRadius,
-                pPoint.y() - pointerRadius,
-                pointerDiameter,
-                pointerDiameter));
-
-        if(isFirstDraw)
-        {
-            qreal maxZ = 0.;
-            QList<QGraphicsItem *> allItemsList = items();
-            for( int i = 0; i < allItemsList.size(); i++ )
-            {
-                QGraphicsItem *nextItem = allItemsList.at(i);
-                qreal zValue = nextItem->zValue();
-                if (zValue > maxZ)
-                    maxZ = zValue;
-                nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-            }
-
-            mPointer->setZValue(maxZ + 0.0001);
+                                 pPoint.y() - pointerRadius,
+                                 pointerDiameter,
+                                 pointerDiameter));
+        if(isFirstDraw) {
             mPointer->show();
         }
     }
@@ -735,21 +667,6 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     setDocumentUpdated();
 }
 
-
-qreal UBGraphicsScene::getNextDrawingZIndex()
-{
-    mDrawingZIndex = mDrawingZIndex + 1.0;
-    return mDrawingZIndex;
-}
-
-
-qreal UBGraphicsScene::getNextObjectZIndex()
-{
-    mObjectZIndex = mObjectZIndex + 1.0;
-    return mObjectZIndex;
-}
-
-
 void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
 {
     bool needRepaint = false;
@@ -912,9 +829,6 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
     UBGraphicsScene* copy = new UBGraphicsScene(this->document());
 
     copy->setBackground(this->isDarkBackground(), this->isCrossedBackground());
-
-    copy->mDrawingZIndex = this->mDrawingZIndex;
-    copy->mObjectZIndex = this->mObjectZIndex;
     copy->setSceneRect(this->sceneRect());
 
     if (this->mNominalSize.isValid())
@@ -1092,7 +1006,6 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
 
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    pixmapItem->setZValue(getNextObjectZIndex());
 
     pixmapItem->setPixmap(pPixmap);
 
@@ -1144,7 +1057,6 @@ UBGraphicsVideoItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool s
 
     videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    videoItem->setZValue(getNextObjectZIndex());
 
     addItem(videoItem);
 
@@ -1176,7 +1088,6 @@ UBGraphicsAudioItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool s
 
     audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    audioItem->setZValue(getNextObjectZIndex());
 
     addItem(audioItem);
 
@@ -1495,8 +1406,7 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
         item->setAcceptedMouseButtons(Qt::NoButton);
         item->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::FixedBackground);
 
-//        item->setZValue(backgroundLayerStart);
-        UBGraphicsItem::assignZValue(item, generateZLevel(item));
+        UBGraphicsItem::assignZValue(item, mZLayerController.generateZLevel(itemLayerType::BackgroundItem));
 
         if (pAdaptTransformation)
         {
@@ -2011,6 +1921,34 @@ void UBGraphicsScene::setDocumentUpdated()
     if (document())
         document()->setMetaData(UBSettings::documentUpdatedAt
                 , UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+}
+void UBGraphicsScene::createEraiser()
+{
+    mEraser = new QGraphicsEllipseItem(); // mem : owned and destroyed by the scene
+    mEraser->setRect(QRect(0, 0, 0, 0));
+    mEraser->setVisible(false);
+
+    mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+    mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser)); //Necessary to set if we want z value to be assigned correctly
+
+    mTools << mEraser;
+    addItem(mEraser);
+
+}
+void UBGraphicsScene::createPointer()
+{
+    mPointer = new QGraphicsEllipseItem();  // mem : owned and destroyed by the scene
+    mPointer->setRect(QRect(0, 0, 20, 20));
+    mPointer->setVisible(false);
+
+    mPointer->setPen(Qt::NoPen);
+    mPointer->setBrush(QBrush(QColor(255, 0, 0, 186)));
+
+    mPointer->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+    mPointer->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Pointer)); //Necessary to set if we want z value to be assigned correctly
+
+    mTools << mPointer;
+    addItem(mPointer);
 }
 
 qreal UBGraphicsScene::generateZLevel(QGraphicsItem *item)

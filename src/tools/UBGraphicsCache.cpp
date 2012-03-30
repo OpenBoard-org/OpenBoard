@@ -47,8 +47,6 @@ UBItem* UBGraphicsCache::deepCopy() const
 
     copy->setPos(this->pos());
     copy->setRect(this->rect());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
 
     // TODO UB 4.7 ... complete all members ?
