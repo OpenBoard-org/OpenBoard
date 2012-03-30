@@ -136,6 +136,9 @@ class UBGraphicsItemDelegate : public QObject
         QMimeData* mimeData(){ return mMimeData; }
         void setMimeData(QMimeData* mimeData);
 
+        void setFlippable(bool flippable);
+        bool isFlippable();
+
     signals:
         void showOnDisplayChanged(bool shown);
         void lockChanged(bool locked);
@@ -196,6 +199,9 @@ private:
         bool mCanDuplicate;
         bool mRespectRatio;
         QMimeData* mMimeData;
+
+        /** A boolean saying that this object can be flippable (mirror effect) */
+        bool mFlippable;
 };
 
 

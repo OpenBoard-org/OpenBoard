@@ -64,6 +64,7 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mCanDuplicate(true)
     , mRespectRatio(respectRatio)
     , mMimeData(NULL)
+    , mFlippable(false)
 {
     // NOOP
 }
@@ -486,4 +487,12 @@ void UBGraphicsItemDelegate::showMenu()
     mMenu->exec(cv->mapToGlobal(pinPos.bottomRight()));
 }
 
+void UBGraphicsItemDelegate::setFlippable(bool flippable)
+{
+    mFlippable = flippable;
+}
 
+bool UBGraphicsItemDelegate::isFlippable()
+{
+    return mFlippable;
+}
