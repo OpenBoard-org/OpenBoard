@@ -289,16 +289,9 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
         return;
     }
 
-    qDebug() << "tableEvent position " << event->pos();
-    qDebug() << "tableEvent global position " << event->globalPos();
-
-
     UBDrawingController *dc = UBDrawingController::drawingController ();
 
     QPointF tabletPos = event->pos();
-    qDebug() << "tabletPos " << tabletPos;
-
-
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)dc->stylusTool ();
 
     if (event->type () == QEvent::TabletPress || event->type () == QEvent::TabletEnterProximity) {
