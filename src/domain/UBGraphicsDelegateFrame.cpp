@@ -499,26 +499,27 @@ void UBGraphicsDelegateFrame::positionHandles()
     mTopResizeGrip->setParentItem(this);
 
     QRectF brRect = mBottomRightResizeGripSvgItem->mapRectToParent(mBottomRightResizeGripSvgItem->boundingRect());
-    mBottomRightResizeGripSvgItem->setPos(rect().right() - brRect.width()
-            , rect().bottom() - brRect.height());
-
     QRectF bRect = mBottomResizeGripSvgItem->mapRectToParent(mBottomResizeGripSvgItem->boundingRect());
-
-    mBottomResizeGripSvgItem->setPos(rect().center().x() - bRect.width() / 2
-            , rect().bottom() - bRect.height());
-
     QRectF lRect = mLeftResizeGripSvgItem->mapRectToParent(mLeftResizeGripSvgItem->boundingRect());
-    mLeftResizeGripSvgItem->setPos(rect().left()
-            , rect().center().y() - lRect.height() / 2);
-
     QRectF rRect = mRightResizeGripSvgItem->mapRectToParent(mRightResizeGripSvgItem->boundingRect());
-    mRightResizeGripSvgItem->setPos(rect().right() - rRect.width()
-            , rect().center().y() - rRect.height() / 2);
-
     QRectF trRect = mTopResizeGripSvgItem->mapRectToParent(mTopResizeGripSvgItem->boundingRect());
-    mTopResizeGripSvgItem->setPos(rect().center().x() - trRect.width() / 2
-            , rect().y());
 
+    mBottomRightResizeGripSvgItem->setPos(rect().right() - brRect.width(), rect().bottom() - brRect.height());
+    mBottomResizeGripSvgItem->setPos(rect().center().x() - bRect.width() / 2, rect().bottom() - bRect.height());
+
+    if(0 <= mScaleX){
+        mLeftResizeGripSvgItem->setPos(rect().left(), rect().center().y() - lRect.height() / 2);
+        mRightResizeGripSvgItem->setPos(rect().right() - rRect.width(), rect().center().y() - rRect.height() / 2);
+    }else{
+        mLeftResizeGripSvgItem->setPos(rect().right() - rRect.width(), rect().center().y() - lRect.height() / 2);
+        mRightResizeGripSvgItem->setPos(rect().left() , rect().center().y() - rRect.height() / 2);
+    }
+
+    if(0 < mScaleY){
+
+    }
+
+    mTopResizeGripSvgItem->setPos(rect().center().x() - trRect.width() / 2, rect().y());
     mRotateButton->setPos(rect().right() - mFrameWidth - 5, rect().top() + 5);
 
     mBottomRightResizeGrip->setRect(bottomRightResizeGripRect());
