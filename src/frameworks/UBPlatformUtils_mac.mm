@@ -182,7 +182,7 @@ void UBPlatformUtils::fadeDisplayIn()
     }
 }
 
-QString UBPlatformUtils::preferredTranslation()
+QString UBPlatformUtils::preferredTranslation(QString pFilePrefix)
 {
     QString qmPath;
 
@@ -202,7 +202,7 @@ QString UBPlatformUtils::preferredTranslation()
 
 QString UBPlatformUtils::preferredLanguage()
 {
-    QFileInfo qmFileInfo = QFileInfo(preferredTranslation());
+    QFileInfo qmFileInfo = QFileInfo(applicationPreferredTranslation());
     QDir lprojPath = qmFileInfo.dir();
     QFileInfo lprojFileInfo = QFileInfo(lprojPath.absolutePath());
     return lprojFileInfo.baseName();

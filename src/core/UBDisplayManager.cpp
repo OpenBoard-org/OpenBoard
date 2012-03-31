@@ -142,7 +142,6 @@ void UBDisplayManager::setAsDesktop(QWidget* pControlWidget )
         mDesktopWidget = pControlWidget;
         mDesktopWidget->hide();
         mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
-//        mDisplayWidget->showFullScreen();
         // !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
         //        mControlWidget->setAttribute(Qt::WA_MacNoShadow);

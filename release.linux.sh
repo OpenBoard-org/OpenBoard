@@ -23,6 +23,7 @@ QT_PATH="/usr/local/Trolltech/Qt-4.7.3"
 PLUGINS_PATH="$QT_PATH/plugins"
 QMAKE_PATH="$QT_PATH/bin/qmake"
 LRELEASES="/usr/local/Trolltech/Qt-4.7.3/bin/lrelease"
+GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-sankore3.1/translations"
 
 if [ ! -e "$QMAKE_PATH" ]; then
     echo "qmake command not found at $QMAKE_PATH"
@@ -35,11 +36,15 @@ if [ ! -e "$PLUGINS_PATH" ]; then
     exit 1
 fi
 
-$QMAKE_PATH -spec linux-g++
+ARCHITECTURE=`uname -m`
+if [ "$ARCHITECTURE" == "x86_64" ]; then
+    $QMAKE_PATH -spec linux-g++-64
+else
+    $QMAKE_PATH -spec linux-g++
+fi
 
 make -j 4 release-install
 
-$LRELEASES "Sankore_3.1.pro"
 
 VERSION=`cat build/linux/release/version`
 if [ ! -f build/linux/release/version ]; then
@@ -79,9 +84,6 @@ copyQtLibrary(){
 }
 
 
-cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4" "$QT_LIBRARY_DEST_PATH/"
-cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
-
 copyQtLibrary libQtWebKit
 copyQtLibrary libQtDBus
 copyQtLibrary libQtScript
@@ -92,8 +94,25 @@ copyQtLibrary libQtXml
 copyQtLibrary libQtGui
 copyQtLibrary libQtCore
 
-cp "$QT_LIBRARY_SOURCE_PATH/phonon.so.4" "$QT_LIBRARY_DEST_PATH/"
-cp "$QT_LIBRARY_SOURCE_PATH/phonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
+cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4" "$QT_LIBRARY_DEST_PATH/"
+cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
+
+if [ ! -e $GUI_TRANSLATIONS_DIRECTORY_PATH ]; then
+    notifyError "gui translations pro file not found at: $GUI_TRANSLATIONS_DIRECTORY_PATH"
+else
+    cd $GUI_TRANSLATIONS_DIRECTORY_PATH
+    $LRELEASES translations.pro
+    cd -
+    if [ ! -e build/linux/release/product/i18n ]; then
+        mkdir build/linux/release/product/i18n
+    fi
+    #copying qt gui translation    
+    cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qt_??.qm build/linux/release/product/i18n/
+fi
+
+$LRELEASES Sankore_3.1.pro
+cp resources/i18n/*.qm build/linux/release/product/i18n/
+
 
 rm -rf install/linux
 mkdir -p install/linux
