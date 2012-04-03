@@ -137,13 +137,13 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 
 void UBApplicationController::initScreenLayout(bool useMultiscreen)
 {
-    mDisplayManager->setAsControl(mMainWindow);
-    mDisplayManager->setAsDisplay(mDisplayView);
+    mDisplayManager->setControlWidget(mMainWindow);
+    mDisplayManager->setDisplayWidget(mDisplayView);
 
-    mDisplayManager->setAsPreviousDisplays(mPreviousViews);
-    mDisplayManager->setAsDesktop(mUninoteController->drawingView());
+    mDisplayManager->setPreviousDisplaysWidgets(mPreviousViews);
+    mDisplayManager->setDesktopWidget(mUninoteController->drawingView());
 
-    mDisplayManager->setUseMultiScreen(bMultiScreen);
+    mDisplayManager->setUseMultiScreen(useMultiscreen);
     mDisplayManager->adjustScreens(-1);
 }
 
@@ -637,12 +637,12 @@ void UBApplicationController::mirroringEnabled(bool enabled)
         if (enabled)
         {
             mMirror->start();
-            mDisplayManager->setAsDisplay(mMirror);
+            mDisplayManager->setDisplayWidget(mMirror);
 
         }
         else
         {
-            mDisplayManager->setAsDisplay(mDisplayView);
+            mDisplayManager->setDisplayWidget(mDisplayView);
             mMirror->stop();
         }
 
@@ -652,7 +652,7 @@ void UBApplicationController::mirroringEnabled(bool enabled)
     }
     else
     {
-        mDisplayManager->setAsDisplay(mDisplayView);
+        mDisplayManager->setDisplayWidget(mDisplayView);
     }
 }
 
