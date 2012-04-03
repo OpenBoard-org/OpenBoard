@@ -135,14 +135,15 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 }
 
 
-void UBApplicationController::initScreenLayout()
+void UBApplicationController::initScreenLayout(bool useMultiscreen)
 {
-    mDisplayManager->setAsControl(mMainWindow, true);
+    mDisplayManager->setAsControl(mMainWindow);
     mDisplayManager->setAsDisplay(mDisplayView);
 
     mDisplayManager->setAsPreviousDisplays(mPreviousViews);
     mDisplayManager->setAsDesktop(mUninoteController->drawingView());
 
+    mDisplayManager->setUseMultiScreen(bMultiScreen);
     mDisplayManager->adjustScreens(-1);
 }
 
@@ -343,7 +344,6 @@ void UBApplicationController::showBoard()
     mirroringEnabled(false);
 
     mMainWindow->switchToBoardWidget();
-    mDisplayManager->setAsDisplay(mDisplayView);
 
     if (UBApplication::boardController)
         UBApplication::boardController->show();
@@ -353,7 +353,7 @@ void UBApplicationController::showBoard()
 
     mUninoteController->hideWindow();
     
-    mDisplayManager->adjustScreens(0);
+    mMainWindow->show();
 
     emit mainModeChanged(Board);
 
@@ -727,6 +727,7 @@ void UBApplicationController::importFile(const QString& pFilePath)
 void UBApplicationController::useMultiScreen(bool use)
 {
     mDisplayManager->setUseMultiScreen(use);
+    mDisplayManager->adjustScreens(0);
     UBSettings::settings()->appUseMultiscreen->set(use);
 
 }
