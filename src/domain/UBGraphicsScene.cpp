@@ -135,6 +135,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , enableUndoRedoStack(true)
     , magniferControlViewWidget(0)
     , magniferDisplayViewWidget(0)
+    , mIsDesktopMode(false)
 
 {
 
@@ -160,8 +161,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 
 UBGraphicsScene::~UBGraphicsScene()
 {
-    DisposeMagnifierQWidgets();
-
     if (mCurrentStroke)
         if (mCurrentStroke->polygons().empty())
             delete mCurrentStroke;
@@ -711,6 +710,15 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
     }
 }
 
+void UBGraphicsScene::setBackgroundZoomFactor(qreal zoom)
+{
+    mZoomFactor = zoom;
+}
+
+void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
+{
+    mIsDesktopMode = bModeDesktop;
+}
 
 void UBGraphicsScene::recolorAllItems()
 {
@@ -1854,6 +1862,58 @@ void UBGraphicsScene::drawItems (QPainter * painter, int numItems,
     }
 }
 
+void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    if (mIsDesktopMode)
+    {
+        QGraphicsScene::drawBackground (painter, rect);
+        return;
+    }
+    bool darkBackground = isDarkBackground ();
+
+    if (darkBackground)
+    {
+      painter->fillRect (rect, QBrush (QColor (Qt::black)));
+    }
+    else
+    {
+      painter->fillRect (rect, QBrush (QColor (Qt::white)));
+    }
+
+    if (mZoomFactor > 0.5)
+    {
+        QColor bgCrossColor;
+
+        if (darkBackground)
+            bgCrossColor = UBSettings::crossDarkBackground;
+        else
+            bgCrossColor = UBSettings::crossLightBackground;
+        if (mZoomFactor < 1.0)
+        {
+            int alpha = 255 * mZoomFactor / 2;
+            bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
+        }
+
+        painter->setPen (bgCrossColor);
+
+        if (isCrossedBackground())
+        {
+            qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
+
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += UBSettings::crossSize)
+            {
+                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+            }
+
+            qreal firstX = ((int) (rect.x () / UBSettings::crossSize)) * UBSettings::crossSize;
+
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += UBSettings::crossSize)
+            {
+                painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+            }
+        }
+    }
+}
 
 void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 {
