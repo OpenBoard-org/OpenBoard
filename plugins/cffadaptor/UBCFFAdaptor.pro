@@ -10,14 +10,16 @@ linux-g++: SUB_DIR = linux
 linux-g++-32: SUB_DIR = linux
 linux-g++-64: SUB_DIR = linux
 
-QUAZIP_DIR   = "$$PWD/../../../Sankore-ThirdParty/quazip"
-ZLIB_DIR     = "$$PWD/../../../Sankore-ThirdParty/zlib"
+THIRD_PARTY_PATH = ../../../Sankore-ThirdParty
+QUAZIP_DIR   = "$$PWD/../../../Sankore-ThirdParty/quazip/quazip-0.3"
 
-INCLUDEPATH += src \
-            "$$QUAZIP_DIR/quazip-0.3" \
-            "$$ZLIB_DIR/1.2.3/include"
+INCLUDEPATH += src
 
-LIBS        += "-L$$QUAZIP_DIR/lib/$$SUB_DIR" "-lquazip"
+DEPENDPATH  += $$THIRD_PARTY_PATH/quazip/
+INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
+include($$THIRD_PARTY_PATH/quazip/quazip.pri)
+
+LIBS     += "-L$$THIRD_PARTY_PATH/quazip/lib/$$SUB_DIR" "-lquazip"
 
 QT       += xml xmlpatterns core
 QT       += gui
