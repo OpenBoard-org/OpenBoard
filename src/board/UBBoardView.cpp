@@ -54,6 +54,7 @@
 
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsCache.h"
+#include "tools/UBGraphicsTriangle.h"
 
 #include "core/memcheck.h"
 
@@ -425,7 +426,8 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
                 || movingItem->type() == UBGraphicsCompass::Type
                 || movingItem->type() == UBGraphicsPDFItem::Type
                 || movingItem->type() == UBGraphicsPolygonItem::Type
-                || movingItem->type() == UBGraphicsCache::Type)
+                || movingItem->type() == UBGraphicsCache::Type
+                || movingItem->type() == UBGraphicsTriangle::Type)
                 {
                     movingItem = NULL;
                     QGraphicsView::mousePressEvent (event);
