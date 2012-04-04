@@ -1,9 +1,9 @@
 var sankoreLang = {
-    display: "D'affichage", 
+    display: "Afficher", 
     edit: "Modifier", 
-    text_content: "Ceci est un exemple. Au lieu de ce texte, vous pouvez mettre votre propre contenu.", 
+    text_content: "Ceci est un exemple. Au lieu de ce texte, vous pouvez saisir votre propre texte ou glisser-déposer une image, un son.", 
     new_txt: "Nouveau bloc de texte",
-    new_slide: "C'est une nouvelle diapositive."
+    new_slide: "Ceci est une nouvelle diapositive."
 };
 
 //some flags

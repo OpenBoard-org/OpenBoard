@@ -26,9 +26,9 @@ function checkResponse()
 */
 
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
-    example: "il\ns'agit\nd'une\nphrase\nd'exemple"
+    example: "Cette phrase\nest un\nexemple."
 };
 
 
