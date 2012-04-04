@@ -1876,6 +1876,8 @@ UBCFFAdaptor::UBToCFFConverter::~UBToCFFConverter()
         delete mDataModel;
     if (mIWBContentWriter)
         delete mIWBContentWriter;
+    if (mDocumentToWrite)
+        delete mDocumentToWrite;
 }
 bool UBCFFAdaptor::UBToCFFConverter::isValid() const
 {
