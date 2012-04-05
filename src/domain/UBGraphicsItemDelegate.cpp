@@ -263,7 +263,6 @@ void UBGraphicsItemDelegate::positionHandles()
             DelegateButton* button = mButtons[i + j];
 
             button->setTransform(tr);
-
             if (button->getSection() == Qt::TopLeftSection) {
                 button->setPos(topX + (i++ * 1.6 * mFrameWidth * mAntiScaleRatio), topY);
             } else if (button->getSection() == Qt::BottomLeftSection) {
@@ -271,7 +270,6 @@ void UBGraphicsItemDelegate::positionHandles()
             } else if (button->getSection() == Qt::NoSection) {
                 ++k;
             }
-
             if (!button->scene())
             {
                 button->setParentItem(mFrame);//update parent for the case the item has been previously removed from scene
@@ -282,7 +280,7 @@ void UBGraphicsItemDelegate::positionHandles()
                 button->show();
                 button->setZValue(delegated()->zValue());
             }
-        }
+}
     } else {
         foreach(DelegateButton* button, mButtons)
             button->hide();

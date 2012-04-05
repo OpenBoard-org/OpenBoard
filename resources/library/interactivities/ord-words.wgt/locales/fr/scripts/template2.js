@@ -27,9 +27,9 @@ function checkResponse()
 */
 
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
-    example: "une*longue*,*il*ya*bien*longtemps*..."
+    example: "Il*y*a*longtemps*,*nous*Žtions*ˆ*la*mer*."
 };
 
 var word = "";
