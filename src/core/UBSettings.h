@@ -97,8 +97,7 @@ class UBSettings : public QObject
         void setCommunityPassword(const QString& password);
 
         void init();
-
-
+        
         //user directories
         static QString userDataDirectory();
         static QString userDocumentDirectory();
@@ -325,6 +324,8 @@ class UBSettings : public QObject
 
         UBSetting* KeyboardLocale;
         UBSetting* swapControlAndDisplayScreens;
+
+        UBSetting* angleTolerance;
 
     public slots:
 
