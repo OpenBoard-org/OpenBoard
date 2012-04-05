@@ -71,9 +71,11 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     mBottomResizeGrip = new QGraphicsRectItem(this);
     mBottomResizeGrip->setPen(Qt::NoPen);
     mLeftResizeGrip = new QGraphicsRectItem(this);
+    mLeftResizeGrip->setToolTip("left");
     mLeftResizeGrip->setPen(Qt::NoPen);
     mRightResizeGrip = new QGraphicsRectItem(this);
     mRightResizeGrip->setPen(Qt::NoPen);
+    mRightResizeGrip->setToolTip("Right");
     mTopResizeGrip = new QGraphicsRectItem(this);
     mTopResizeGrip->setPen(Qt::NoPen);
 
@@ -159,6 +161,7 @@ void UBGraphicsDelegateFrame::initializeTransform()
     QPointF  bottomLeft = itemTransform.map(itemRect.bottomLeft());
 
     qreal horizontalFlip = (topLeft.x() > topRight.x()) ? -1 : 1;
+    mMirrorX = horizontalFlip < 0 ;
     if(horizontalFlip < 0){
         // why this is because of the way of calculating the translations that checks which side is the most is the
         // nearest instead of checking which one is the left side.
@@ -172,11 +175,14 @@ void UBGraphicsDelegateFrame::initializeTransform()
 
     qreal verticalFlip = (bottomLeft.y() < topLeft.y()) ? -1 : 1;
     // not sure that is usefull
-    if(verticalFlip < 0){
+    mMirrorY = verticalFlip < 0;
+    if(verticalFlip < 0 && !mMirrorX){
         topLeft = itemTransform.map(itemRect.bottomLeft());
         topRight = itemTransform.map(itemRect.bottomRight());
         bottomLeft = itemTransform.map(itemRect.topLeft());
     }
+
+    qDebug() << "mMirrorX " << mMirrorX << " ,mMirrorY " << mMirrorY;
 
     QLineF topLine(topLeft, topRight);
     QLineF leftLine(topLeft, bottomLeft);
@@ -278,7 +284,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 if(mDelegate->isFlippable() && qAbs(scaleX) != 0){
                     if((qAbs(width * scaleX)) < 2*mFrameWidth){
                         bool negative = (scaleX < 0)?true:false;
-                        mMirrorX = (negative?mMirrorX:!mMirrorX);
+                        //mMirrorX = (negative?mMirrorX:!mMirrorX);
                         if(negative){
                             scaleX = -2*mFrameWidth/width;
                         }else{
@@ -305,7 +311,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 if(mDelegate->isFlippable() && qAbs(scaleY) != 0){
                     if((qAbs(height * scaleY)) < 2*mFrameWidth){
                         bool negative = (scaleY < 0)?true:false;
-                        mMirrorY = (negative?mMirrorY:!mMirrorY);
+                        //mMirrorY = (negative?mMirrorY:!mMirrorY);
                         if(negative){
                             scaleY = -2*mFrameWidth/width;
                         }else{
