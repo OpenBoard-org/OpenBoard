@@ -239,6 +239,8 @@ void UBGraphicsItemDelegate::positionHandles()
 
         mDeleteButton->setTransform(tr);
 
+
+        // This is where the position of the buttons is calculated. It starts always on the topleft of mFrame!
         qreal x = mFrame->rect().left()- mDeleteButton->renderer()->viewBox().width() * mAntiScaleRatio / 2;
         qreal y = mFrame->rect().top() - mDeleteButton->renderer()->viewBox().height() * mAntiScaleRatio / 2;
 
@@ -251,7 +253,9 @@ void UBGraphicsItemDelegate::positionHandles()
                 mDelegated->scene()->addItem(mDeleteButton);
         }
 
-        mDeleteButton->show();
+        if(!mFrame->isResizing()){
+            mDeleteButton->show();
+        }
 
         bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
         showHide(shownOnDisplay);
@@ -264,13 +268,17 @@ void UBGraphicsItemDelegate::positionHandles()
 
             button->setTransform(tr);
             button->setPos(x + (i * 1.6 * mFrameWidth * mAntiScaleRatio), y);
+
+
             if (!button->scene())
             {
                 button->setParentItem(mFrame);//update parent for the case the item has been previously removed from scene
                 if (mDelegated->scene())
                     mDelegated->scene()->addItem(button);
             }
-            button->show();
+            if(!mFrame->isResizing()){
+                button->show();
+            }
         }
     }
     else
@@ -468,4 +476,11 @@ void UBGraphicsItemDelegate::setFlippable(bool flippable)
 bool UBGraphicsItemDelegate::isFlippable()
 {
     return mFlippable;
+}
+
+void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
+{
+    foreach(DelegateButton* pButton, mButtons){
+        pButton->setVisible(visible);
+    }
 }

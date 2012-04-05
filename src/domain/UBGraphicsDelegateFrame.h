@@ -47,6 +47,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
 
         enum OperationMode {Scaling, Resizing};
         void setOperationMode(OperationMode pMode) {mOperationMode = pMode;}
+        bool isResizing(){return mResizing;}
 
     private:
         QRectF bottomRightResizeGripRect() const;
@@ -69,8 +70,8 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         void  initializeTransform ();
 
         enum FrameTool {None, Move, Rotate, ResizeBottomRight, ResizeTop, ResizeRight, ResizeBottom, ResizeLeft};
-
-                FrameTool toolFromPos (QPointF pos);
+        FrameTool toolFromPos (QPointF pos);
+        void refreshGeometry();
 
         FrameTool mCurrentTool;
         UBGraphicsItemDelegate* mDelegate;
@@ -111,5 +112,10 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         OperationMode mOperationMode;
 
         QGraphicsItem* delegated();
+        bool mMirrorX;
+        bool mMirrorY;
+        bool mResizing;
+        bool mMirroredXAtStart;
+        bool mMirroredYAtStart;
 };
 #endif /* UBGRAPHICSDELEGATEFRAME_H_ */
