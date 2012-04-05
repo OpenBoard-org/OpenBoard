@@ -64,6 +64,8 @@ UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl& pAudioFileUrl, QGraphicsIte
 
     mDelegate->frame()->setOperationMode ( UBGraphicsDelegateFrame::Resizing );
 
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
+
 }
 
 void UBGraphicsAudioItem::onStateChanged(Phonon::State newState, Phonon::State oldState)
@@ -95,8 +97,6 @@ UBItem* UBGraphicsAudioItem::deepCopy() const
     UBGraphicsAudioItem *copy = new UBGraphicsAudioItem(audioUrl, parentItem());
 
     copy->setPos(this->pos());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);

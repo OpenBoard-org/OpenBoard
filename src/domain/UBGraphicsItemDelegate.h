@@ -33,10 +33,11 @@ class DelegateButton: public QGraphicsSvgItem
     Q_OBJECT
 
     public:
-        DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent = 0)
+        DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent = 0, Qt::WindowFrameSection section = Qt::TopLeftSection)
             : QGraphicsSvgItem(fileName, parent)
             , mDelegated(pDelegated)
             , mIsTransparentToMouseEvent(false)
+            , mButtonAlignmentSection(section)
         {
             setAcceptedMouseButtons(Qt::LeftButton);
             setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
@@ -56,6 +57,9 @@ class DelegateButton: public QGraphicsSvgItem
         {
             QGraphicsSvgItem::setSharedRenderer(new QSvgRenderer (fileName, this));
         }
+
+        void setSection(Qt::WindowFrameSection section) {mButtonAlignmentSection =  section;}
+        Qt::WindowFrameSection getSection() const {return mButtonAlignmentSection;}
 
     protected:
 
@@ -80,7 +84,9 @@ class DelegateButton: public QGraphicsSvgItem
 
         QGraphicsItem* mDelegated;
 
+
         bool mIsTransparentToMouseEvent;
+        Qt::WindowFrameSection mButtonAlignmentSection;
 
     signals:
         void clicked (bool checked = false);
@@ -147,6 +153,9 @@ class UBGraphicsItemDelegate : public QObject
         virtual void lock(bool lock);
         virtual void duplicate();
 
+        virtual void increaseZLevel() {increaseZLevel(1);}
+        virtual void decreaseZLevel() {increaseZLevel(-1);}
+
     protected:
         virtual void buildButtons() {;}
         virtual void decorateMenu(QMenu *menu);
@@ -154,9 +163,14 @@ class UBGraphicsItemDelegate : public QObject
 
         QGraphicsItem* mDelegated;
 
+        //buttons from the top left section of delegate frame
         DelegateButton* mDeleteButton;
         DelegateButton* mDuplicateButton;
         DelegateButton* mMenuButton;
+
+        //buttons from the bottom left section of delegate frame
+        DelegateButton *mZOrderUpButton;
+        DelegateButton *mZOrderDownButton;
 
         QMenu* mMenu;
 
@@ -175,6 +189,8 @@ protected slots:
         virtual void gotoContentSource(bool checked);
 
 private:
+
+        virtual void increaseZLevel(int delta);
 
         QPointF mOffset;
         QTransform mPreviousTransform;

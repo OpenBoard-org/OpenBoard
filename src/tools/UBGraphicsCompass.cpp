@@ -70,6 +70,8 @@ UBGraphicsCompass::UBGraphicsCompass()
 
 	unsetCursor();
 
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
+
     connect(UBApplication::boardController, SIGNAL(penColorChanged()), this, SLOT(penColorChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), this, SLOT(lineWidthChanged()));
 }
@@ -85,8 +87,6 @@ UBItem* UBGraphicsCompass::deepCopy() const
 
     copy->setPos(this->pos());
     copy->setRect(this->rect());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
 
    // TODO UB 4.7 ... complete all members ?

@@ -43,8 +43,8 @@ UBGraphicsTriangle::UBGraphicsTriangle()
 
     mHFlipSvgItem = new QGraphicsSvgItem(":/images/hflipTool.svg", this);
     mHFlipSvgItem->setVisible(false);
-    mHFlipSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
+    mHFlipSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
     mVFlipSvgItem = new QGraphicsSvgItem(":/images/vflipTool.svg", this);
     mVFlipSvgItem->setVisible(false);
@@ -53,6 +53,8 @@ UBGraphicsTriangle::UBGraphicsTriangle()
     mRotateSvgItem = new QGraphicsSvgItem(":/images/rotateTool.svg", this);
     mRotateSvgItem->setVisible(false);
     mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
 
     updateResizeCursor();
 }
@@ -93,8 +95,6 @@ UBItem* UBGraphicsTriangle::deepCopy(void) const
 
     copy->setPos(this->pos());
     copy->setPolygon(this->polygon());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
 
     // TODO UB 4.7 ... complete all members ?

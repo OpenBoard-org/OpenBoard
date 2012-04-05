@@ -135,14 +135,15 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 }
 
 
-void UBApplicationController::initScreenLayout()
+void UBApplicationController::initScreenLayout(bool useMultiscreen)
 {
-    mDisplayManager->setAsControl(mMainWindow, true);
-    mDisplayManager->setAsDisplay(mDisplayView);
+    mDisplayManager->setControlWidget(mMainWindow);
+    mDisplayManager->setDisplayWidget(mDisplayView);
 
-    mDisplayManager->setAsPreviousDisplays(mPreviousViews);
-    mDisplayManager->setAsDesktop(mUninoteController->drawingView());
+    mDisplayManager->setPreviousDisplaysWidgets(mPreviousViews);
+    mDisplayManager->setDesktopWidget(mUninoteController->drawingView());
 
+    mDisplayManager->setUseMultiScreen(useMultiscreen);
     mDisplayManager->adjustScreens(-1);
 }
 
@@ -343,7 +344,6 @@ void UBApplicationController::showBoard()
     mirroringEnabled(false);
 
     mMainWindow->switchToBoardWidget();
-    mDisplayManager->setAsDisplay(mDisplayView);
 
     if (UBApplication::boardController)
         UBApplication::boardController->show();
@@ -353,7 +353,7 @@ void UBApplicationController::showBoard()
 
     mUninoteController->hideWindow();
     
-    mDisplayManager->adjustScreens(0);
+    mMainWindow->show();
 
     emit mainModeChanged(Board);
 
@@ -637,12 +637,12 @@ void UBApplicationController::mirroringEnabled(bool enabled)
         if (enabled)
         {
             mMirror->start();
-            mDisplayManager->setAsDisplay(mMirror);
+            mDisplayManager->setDisplayWidget(mMirror);
 
         }
         else
         {
-            mDisplayManager->setAsDisplay(mDisplayView);
+            mDisplayManager->setDisplayWidget(mDisplayView);
             mMirror->stop();
         }
 
@@ -652,7 +652,7 @@ void UBApplicationController::mirroringEnabled(bool enabled)
     }
     else
     {
-        mDisplayManager->setAsDisplay(mDisplayView);
+        mDisplayManager->setDisplayWidget(mDisplayView);
     }
 }
 
@@ -727,6 +727,7 @@ void UBApplicationController::importFile(const QString& pFilePath)
 void UBApplicationController::useMultiScreen(bool use)
 {
     mDisplayManager->setUseMultiScreen(use);
+    mDisplayManager->adjustScreens(0);
     UBSettings::settings()->appUseMultiscreen->set(use);
 
 }

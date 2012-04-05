@@ -52,7 +52,6 @@ bool UBGraphicsCurtainItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *ev
     if (!mDelegated->isSelected())
     {
         mDelegated->setSelected(true);
-//        mDelegated->setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCurtain);
         positionHandles();
 
         return true;

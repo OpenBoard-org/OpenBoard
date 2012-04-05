@@ -17,6 +17,7 @@
 
 #include <QtGui>
 #include "domain/UBGraphicsItemDelegate.h"
+#include "core/UB.h"
 
 class UBGraphicsScene;
 

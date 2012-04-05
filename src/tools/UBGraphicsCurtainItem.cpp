@@ -49,6 +49,8 @@ UBGraphicsCurtainItem::UBGraphicsCurtainItem(QGraphicsItem* parent)
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Tool);
     setPen(Qt::NoPen);
     this->setAcceptHoverEvents(true);
+
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Curtain)); //Necessary to set if we want z value to be assigned correctly
 }
 
 UBGraphicsCurtainItem::~UBGraphicsCurtainItem()
@@ -58,8 +60,6 @@ UBGraphicsCurtainItem::~UBGraphicsCurtainItem()
 
 QVariant UBGraphicsCurtainItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-//    if (change == QGraphicsItem::ItemSelectedHasChanged && QGraphicsRectItem::scene() && isSelected())
-//        setZValue(UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCurtain);
 
     QVariant newValue = value;
 
@@ -131,8 +131,6 @@ UBItem* UBGraphicsCurtainItem::deepCopy() const
    copy->setPos(this->pos());
    copy->setBrush(this->brush());
    copy->setPen(this->pen());
-//   copy->setZValue(this->zValue());
-   UBGraphicsItem::assignZValue(copy, this->zValue());
    copy->setTransform(this->transform());
    copy->setFlag(QGraphicsItem::ItemIsMovable, true);
    copy->setFlag(QGraphicsItem::ItemIsSelectable, true);

@@ -26,7 +26,8 @@
 UBGraphicsPDFItem::UBGraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphicsItem* parent)
     : GraphicsPDFItem(renderer, pageNumber, parent)
 {
-    setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
+    setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object); //deprecated
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::BackgroundItem)); //Necessary to set if we want z value to be assigned correctly
     mDelegate = new UBGraphicsItemDelegate(this,0);
     mDelegate->init();
 }
@@ -84,8 +85,6 @@ UBItem* UBGraphicsPDFItem::deepCopy() const
     UBGraphicsPDFItem *copy =  new UBGraphicsPDFItem(mRenderer, mPageNumber, parentItem());
 
     copy->setPos(this->pos());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -135,8 +134,6 @@ UBGraphicsPixmapItem* UBGraphicsPDFItem::toPixmapItem() const
     pixmapItem->setPixmap(pixmap);
 
     pixmapItem->setPos(this->pos());
-//    pixmapItem->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(pixmapItem, this->zValue());
     pixmapItem->setTransform(this->transform());
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);

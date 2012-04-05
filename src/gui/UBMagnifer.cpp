@@ -19,6 +19,7 @@
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
 #include "domain/UBGraphicsScene.h"
+#include "board/UBBoardView.h"
 
 #include "core/memcheck.h"
 
@@ -27,7 +28,6 @@ UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
     : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))
     , mShouldMoveWidget(false)
     , mShouldResizeWidget(false)
-    , inTimer(false)
     , borderPen(Qt::darkGray)
     , gView(0)
     , mView(0)
@@ -70,16 +70,11 @@ UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
 #endif
     }
 
+    connect(&mRefreshTimer, SIGNAL(timeout()), this, SLOT(slot_refresh()));
 }
 
 UBMagnifier::~UBMagnifier()
 {
-    if (timerUpdate != 0)
-    {
-        killTimer(timerUpdate);
-        timerUpdate = 0;
-    }
-
     if(sClosePixmap)
     {
         delete sClosePixmap;
@@ -285,51 +280,56 @@ void UBMagnifier::mouseReleaseEvent(QMouseEvent * event)
 
 }
 
-void UBMagnifier::timerEvent(QTimerEvent *e)
+void UBMagnifier::slot_refresh()
 {
-    if(inTimer) return;
-    if (e->timerId() == timerUpdate)
+    if(!(updPointGrab.isNull())) 
+        grabPoint(updPointGrab);
+
+    if(isCusrsorAlreadyStored)
     {
-        inTimer = true;
-        if(!(updPointGrab.isNull())) 
-            grabPoint(updPointGrab);
-
-        if(isCusrsorAlreadyStored)
+        QPoint globalCursorPos = QCursor::pos();
+        QPoint cursorPos = mapFromGlobal(globalCursorPos);
+        if (cursorPos.x() < size().width() - mResizeItem->width() - 20 || 
+            cursorPos.x() > size().width() - 20 ||
+            cursorPos.y() < size().height() - mResizeItem->height() - 20 ||
+            cursorPos.y() > size().height() - - 20
+            )
         {
-            QPoint globalCursorPos = QCursor::pos();
-            QPoint cursorPos = mapFromGlobal(globalCursorPos);
-            if (cursorPos.x() < size().width() - mResizeItem->width() - 20 || 
-                cursorPos.x() > size().width() - 20 ||
-                cursorPos.y() < size().height() - mResizeItem->height() - 20 ||
-                cursorPos.y() > size().height() - - 20
-                )
-            {
-                isCusrsorAlreadyStored = false;
-                setCursor(mOldCursor);
-            }
-
+            isCusrsorAlreadyStored = false;
+            setCursor(mOldCursor);
         }
-
-        inTimer = false;
     }
 }
 
 void UBMagnifier::grabPoint()
 {
+    QMatrix transM = UBApplication::boardController->controlView()->matrix();
     QPointF itemPos = gView->mapFromGlobal(updPointGrab);
 
-    qreal zWidth = size().width() / params.zoom;
+    qreal zWidth = width() / (params.zoom * transM.m11());
     qreal zWidthHalf = zWidth / 2;
-    qreal zHeight = size().height() / params.zoom;
+    qreal zHeight = height() / (params.zoom * transM.m22());
     qreal zHeightHalf = zHeight / 2;
+    
 
-    int x = itemPos.x() - zWidthHalf;
-    int y = itemPos.y() - zHeightHalf;
+    QPointF pfScLtF(UBApplication::boardController->controlView()->mapToScene(QPoint(itemPos.x(), itemPos.y())));
+   
+    
+    QRect magnifierRect = rect();
 
-    QPixmap newPixMap(QSize(zWidth,zHeight));
-    ((QWidget*)gView)->render(&newPixMap, QPoint(0, 0), QRegion(x, y, zWidth, zHeight));
-    UBApplication::boardController->activeScene()->update();
+    float x = pfScLtF.x() - zWidthHalf;
+    float y = pfScLtF.y() - zHeightHalf;
 
+    QPointF leftTop(x,y);
+    QPointF rightBottom(x + zWidth, y + zHeight);  
+    QRectF srcRect(leftTop, rightBottom);
+
+    QPixmap newPixMap(QSize(width(), height()));
+    QPainter painter(&newPixMap);
+
+    UBApplication::boardController->activeScene()->render(&painter, QRectF(0,0,width(),height()), srcRect);
+    painter.end();
+    
     pMap.fill(Qt::transparent);
     pMap = newPixMap.scaled(QSize(width(), height()));
     pMap.setMask(bmpMask);
@@ -339,27 +339,42 @@ void UBMagnifier::grabPoint()
 
 void UBMagnifier::grabPoint(const QPoint &pGrab)
 {
+    QMatrix transM = UBApplication::boardController->controlView()->matrix();
     updPointGrab = pGrab;
     QPointF itemPos = gView->mapFromGlobal(pGrab);
 
-    qreal zWidth = size().width() / params.zoom;
+    qreal zWidth = width() / (params.zoom * transM.m11());
     qreal zWidthHalf = zWidth / 2;
-    qreal zHeight = size().height() / params.zoom;
+    qreal zHeight = height() / (params.zoom * transM.m22());
     qreal zHeightHalf = zHeight / 2;
+    
 
-    int x = itemPos.x() - zWidthHalf;
-    int y = itemPos.y() - zHeightHalf;
+    QPointF pfScLtF(UBApplication::boardController->controlView()->mapToScene(QPoint(itemPos.x(), itemPos.y())));
+   
+    
+    QRect magnifierRect = rect();
 
-    QPixmap newPixMap(QSize(zWidth,zHeight));
-    ((QWidget*)gView)->render(&newPixMap, QPoint(0, 0), QRegion(x, y, zWidth, zHeight));
-    UBApplication::boardController->activeScene()->update();
+    float x = pfScLtF.x() - zWidthHalf;
+    float y = pfScLtF.y() - zHeightHalf;
 
-    pMap.fill(Qt::transparent);
-    pMap = newPixMap.scaled(QSize(width(), height()));
+    QPointF leftTop(x,y);
+    QPointF rightBottom(x + zWidth, y + zHeight);  
+    QRectF srcRect(leftTop, rightBottom);
+
+    QPixmap newPixMap(QSize(width(), height()));
+    QPainter painter(&newPixMap);
+
+    UBApplication::boardController->activeScene()->render(&painter, QRectF(0,0,width(),height()), srcRect);   
+    painter.end();
+    
+   // pMap.fill(Qt::transparent);
+    pMap = newPixMap;
     pMap.setMask(bmpMask);
 
     update();
 }
+
+
 
 // from global
 void UBMagnifier::grabNMove(const QPoint &pGrab, const QPoint &pMove, bool needGrab, bool needMove)
@@ -379,10 +394,9 @@ void UBMagnifier::grabNMove(const QPoint &pGrab, const QPoint &pMove, bool needG
 }
 
 void UBMagnifier::setGrabView(QWidget *view)
-{
-    if (timerUpdate != 0)
-        killTimer(timerUpdate);
+{   
     gView = view;
-    timerUpdate = startTimer(200);
+    mRefreshTimer.setInterval(40);
+    mRefreshTimer.start();
 }
 

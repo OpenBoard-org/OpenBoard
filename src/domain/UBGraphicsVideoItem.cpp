@@ -51,6 +51,8 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl& pVideoFileUrl, QGraphicsIte
 
     mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
 
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
+
     connect(mDelegate, SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
     connect(mMediaObject, SIGNAL(hasVideoChanged(bool)), this, SLOT(hasVideoChanged(bool)));
 }
@@ -68,8 +70,6 @@ UBItem* UBGraphicsVideoItem::deepCopy() const
     UBGraphicsVideoItem *copy = new UBGraphicsVideoItem(videoUrl, parentItem());
 
     copy->setPos(this->pos());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);

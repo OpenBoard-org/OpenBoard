@@ -61,8 +61,6 @@
 
 #include "core/memcheck.h"
 
-qreal UBGraphicsScene::backgroundLayerStart = -20000000.0;
-qreal UBGraphicsScene::objectLayerStart = -10000000.0;
 qreal UBGraphicsScene::drawingLayerStart = 0.0;
 qreal UBGraphicsScene::toolLayerStart = 10000000.0;
 
@@ -76,6 +74,47 @@ qreal UBGraphicsScene::toolOffsetCurtain = 1000;
 qreal UBGraphicsScene::toolOffsetPointer = 1100;
 
 qreal UBGraphicsScene::toolOffsetCache = 1000;//Didier please define offset you want
+
+qreal UBZLayerController::errorNumber = -20000001.0;
+
+
+UBZLayerController::UBZLayerController()
+{
+    scopeMap.insert(itemLayerType::NoLayer,        ItemLayerTypeData( errorNumber, errorNumber));
+    scopeMap.insert(itemLayerType::BackgroundItem, ItemLayerTypeData(-10000000.0, -10000000.0 ));
+    scopeMap.insert(itemLayerType::ObjectItem,     ItemLayerTypeData(-10000000.0,  0.0        ));
+    scopeMap.insert(itemLayerType::DrawingItem,    ItemLayerTypeData( 0.0,         10000000.0 ));
+    scopeMap.insert(itemLayerType::ToolItem,       ItemLayerTypeData( 10000000.0,  10000100.0 ));
+    scopeMap.insert(itemLayerType::CppTool,        ItemLayerTypeData( 10000100.0,  10000200.0 ));
+    scopeMap.insert(itemLayerType::Curtain,        ItemLayerTypeData( 10000200.0,  10001000.0 ));
+    scopeMap.insert(itemLayerType::Eraiser,        ItemLayerTypeData( 10001000.0,  10001100.0 ));
+    scopeMap.insert(itemLayerType::Pointer,        ItemLayerTypeData( 10001100.0,  10001200.0 ));
+    scopeMap.insert(itemLayerType::Cache,          ItemLayerTypeData( 10001300.0,  10001400.0 ));
+
+    scopeMap.insert(itemLayerType::SelectedItem,   ItemLayerTypeData( 10001000.0,  10001000.0 ));
+}
+
+qreal UBZLayerController::generateZLevel(itemLayerType::Enum key)
+{
+
+    if (!scopeMap.contains(key)) {
+        qDebug() << "Number is out of layer scope";
+        return errorNumber;
+    }
+
+    qreal result = scopeMap.value(key).curValue;
+    qreal top = scopeMap.value(key).topLimit;
+
+    result++;
+    if (result >= top) {
+        qDebug() << "new values are over for the scope" << key;
+        result = top - 1;
+    }
+
+    scopeMap[key].curValue = result;
+
+    return result;
+}
 
 UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     : UBCoreGraphicsScene(parent)
@@ -96,6 +135,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , enableUndoRedoStack(true)
     , magniferControlViewWidget(0)
     , magniferDisplayViewWidget(0)
+    , mIsDesktopMode(false)
 
 {
 
@@ -106,32 +146,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 #endif
 
     setDocument(parent);
-
-    mDrawingZIndex = drawingLayerStart;
-    mObjectZIndex = objectLayerStart;
-
-    mEraser = new QGraphicsEllipseItem(); // mem : owned and destroyed by the scene
-    mEraser->setRect(QRect(0, 0, 0, 0));
-    mEraser->setVisible(false);
-
-    mEraser->setZValue(/*toolLayerStart + toolOffsetEraser*/2);
-    mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-
-    mTools << mEraser;
-    addItem(mEraser);
-
-    mPointer = new QGraphicsEllipseItem();  // mem : owned and destroyed by the scene
-    mPointer->setRect(QRect(0, 0, 20, 20));
-    mPointer->setVisible(false);
-
-    mPointer->setPen(Qt::NoPen);
-    mPointer->setBrush(QBrush(QColor(255, 0, 0, 186)));
-
-    mPointer->setZValue( /*toolLayerStart + toolOffsetPointer*/ 2);
-    mPointer->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
-
-    mTools << mPointer;
-    addItem(mPointer);
+    createEraiser();
+    createPointer();
 
     if (UBApplication::applicationController)
     {
@@ -145,8 +161,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 
 UBGraphicsScene::~UBGraphicsScene()
 {
-    DisposeMagnifierQWidgets();
-
     if (mCurrentStroke)
         if (mCurrentStroke->polygons().empty())
             delete mCurrentStroke;
@@ -155,27 +169,18 @@ UBGraphicsScene::~UBGraphicsScene()
 void UBGraphicsScene::selectionChangedProcessing()
 {
     if (selectedItems().count())
-        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
-
+        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
+                                                + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
 
     QList<QGraphicsItem *> allItemsList = items();
-    qreal maxZ = 0.;
     for( int i = 0; i < allItemsList.size(); i++ ) {
         QGraphicsItem *nextItem = allItemsList.at(i);
-        //Temporary stub. Due to ugly z-order implementation I need to do this (sankore 360)
-        //z-order behavior should be reimplemented and this stub should be deleted
-        if (nextItem == mBackgroundObject)
-            continue;
-        //Temporary stub end (sankore 360)
-        if (nextItem->zValue() > maxZ)
-            maxZ = nextItem->zValue();
-        nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-//        nextItem->setZValue(qreal(1));
-    }
-    QList<QGraphicsItem *> selItemsList = selectedItems();
-    for( int i = 0; i < selItemsList.size(); i++ ) {
-        QGraphicsItem *nextItem = selItemsList.at(i);
-        nextItem->setZValue(maxZ + 0.0001);
+
+        if (nextItem->isSelected()) {
+            nextItem->setZValue(mZLayerController.generateZLevel(itemLayerType::SelectedItem));
+        } else {
+            nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+        }
     }
 }
 
@@ -404,25 +409,11 @@ void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool isFirstDraw)
     qreal eraserRadius = eraserWidth / 2;
 
     // TODO UB 4.x optimize - no need to do that every time we move it
-    if (mEraser)
-    {
+    if (mEraser) {
         mEraser->setRect(QRectF(pPoint.x() - eraserRadius, pPoint.y() - eraserRadius, eraserWidth, eraserWidth));
 
-        if(isFirstDraw)
-        {
-            qreal maxZ = 0.;
-            QList<QGraphicsItem *> allItemsList = items();
-            for( int i = 0; i < allItemsList.size(); i++ )
-            {
-                QGraphicsItem *nextItem = allItemsList.at(i);
-                qreal zValue = nextItem->zValue();
-                if (zValue > maxZ)
-                    maxZ = zValue;
-                nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-            }
-
-            mEraser->setZValue(maxZ + 0.0001);
-            mEraser->show();
+        if(isFirstDraw) {
+          mEraser->show();
         }
     }
 }
@@ -433,27 +424,12 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
     qreal pointerRadius = pointerDiameter / 2;
 
     // TODO UB 4.x optimize - no need to do that every time we move it
-    if (mPointer)
-    {
+    if (mPointer) {
         mPointer->setRect(QRectF(pPoint.x() - pointerRadius,
-                pPoint.y() - pointerRadius,
-                pointerDiameter,
-                pointerDiameter));
-
-        if(isFirstDraw)
-        {
-            qreal maxZ = 0.;
-            QList<QGraphicsItem *> allItemsList = items();
-            for( int i = 0; i < allItemsList.size(); i++ )
-            {
-                QGraphicsItem *nextItem = allItemsList.at(i);
-                qreal zValue = nextItem->zValue();
-                if (zValue > maxZ)
-                    maxZ = zValue;
-                nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-            }
-
-            mPointer->setZValue(maxZ + 0.0001);
+                                 pPoint.y() - pointerRadius,
+                                 pointerDiameter,
+                                 pointerDiameter));
+        if(isFirstDraw) {
             mPointer->show();
         }
     }
@@ -690,21 +666,6 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     setDocumentUpdated();
 }
 
-
-qreal UBGraphicsScene::getNextDrawingZIndex()
-{
-    mDrawingZIndex = mDrawingZIndex + 1.0;
-    return mDrawingZIndex;
-}
-
-
-qreal UBGraphicsScene::getNextObjectZIndex()
-{
-    mObjectZIndex = mObjectZIndex + 1.0;
-    return mObjectZIndex;
-}
-
-
 void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
 {
     bool needRepaint = false;
@@ -749,6 +710,15 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
     }
 }
 
+void UBGraphicsScene::setBackgroundZoomFactor(qreal zoom)
+{
+    mZoomFactor = zoom;
+}
+
+void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
+{
+    mIsDesktopMode = bModeDesktop;
+}
 
 void UBGraphicsScene::recolorAllItems()
 {
@@ -827,9 +797,6 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
     polygonItem->setColorOnLightBackground(colorOnLightBG);
 
     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
-
-//    polygonItem->setZValue(getNextDrawingZIndex());
-    UBGraphicsItem::assignZValue(polygonItem, getNextDrawingZIndex());
 }
 
 
@@ -870,9 +837,6 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
     UBGraphicsScene* copy = new UBGraphicsScene(this->document());
 
     copy->setBackground(this->isDarkBackground(), this->isCrossedBackground());
-
-    copy->mDrawingZIndex = this->mDrawingZIndex;
-    copy->mObjectZIndex = this->mObjectZIndex;
     copy->setSceneRect(this->sceneRect());
 
     if (this->mNominalSize.isValid())
@@ -1050,8 +1014,6 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
 
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    pixmapItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(pixmapItem, getNextObjectZIndex());
 
     pixmapItem->setPixmap(pPixmap);
 
@@ -1103,8 +1065,6 @@ UBGraphicsVideoItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool s
 
     videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    videoItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(videoItem, getNextObjectZIndex());
 
     addItem(videoItem);
 
@@ -1136,8 +1096,6 @@ UBGraphicsAudioItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool s
 
     audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    audioItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(audioItem, getNextObjectZIndex());
 
     addItem(audioItem);
 
@@ -1204,8 +1162,6 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, c
 void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos)
 {
     graphicsWidget->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    graphicsWidget->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(graphicsWidget, getNextObjectZIndex());
 
     addItem(graphicsWidget);
 
@@ -1267,8 +1223,6 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    svgItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(svgItem, getNextObjectZIndex());
 
     qreal sscale = 1 / UBApplication::boardController->systemScaleFactor();
     svgItem->scale(sscale, sscale);
@@ -1303,8 +1257,6 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 {
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText(pString);
-//    textItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(textItem, getNextObjectZIndex());
 
     QFont font = textItem->font();
 
@@ -1361,8 +1313,6 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
     textItem->setPlainText("");
     textItem->setHtml(pString);
-//    textItem->setZValue(getNextObjectZIndex());
-    UBGraphicsItem::assignZValue(textItem, getNextObjectZIndex());
 
     addItem(textItem);
     textItem->show();
@@ -1388,6 +1338,8 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     setModified(true);
     UBCoreGraphicsScene::addItem(item);
 
+    UBGraphicsItem::assignZValue(item, generateZLevel(item));
+
     if (!mTools.contains(item))
       ++mItemCount;
 
@@ -1398,8 +1350,10 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 {
     setModified(true);
 
-    foreach(QGraphicsItem* item, items)
+    foreach(QGraphicsItem* item, items) {
         UBCoreGraphicsScene::addItem(item);
+        UBGraphicsItem::assignZValue(item, generateZLevel(item));
+    }
 
     mItemCount += items.size();
 
@@ -1460,8 +1414,7 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
         item->setAcceptedMouseButtons(Qt::NoButton);
         item->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::FixedBackground);
 
-//        item->setZValue(backgroundLayerStart);
-        UBGraphicsItem::assignZValue(item, backgroundLayerStart);
+        UBGraphicsItem::assignZValue(item, mZLayerController.generateZLevel(itemLayerType::BackgroundItem));
 
         if (pAdaptTransformation)
         {
@@ -1565,9 +1518,6 @@ void UBGraphicsScene::addRuler(QPointF center)
     QRectF rect = ruler->rect();
     ruler->setRect(center.x() - rect.width()/2, center.y() - rect.height()/2, rect.width(), rect.height());
 
-//    ruler->setZValue(toolLayerStart + toolOffsetRuler);
-    UBGraphicsItem::assignZValue(ruler, toolLayerStart + toolOffsetRuler);
-
     ruler->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     addItem(ruler);
@@ -1583,9 +1533,6 @@ void UBGraphicsScene::addProtractor(QPointF center)
 
     UBGraphicsProtractor* protractor = new UBGraphicsProtractor(); // mem : owned and destroyed by the scene
     mTools << protractor;
-
-//    protractor->setZValue(toolLayerStart + toolOffsetProtractor);
-    UBGraphicsItem::assignZValue(protractor, toolLayerStart + toolOffsetProtractor);
 
     protractor->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
@@ -1604,9 +1551,6 @@ void UBGraphicsScene::addTriangle(QPointF center)
 
     UBGraphicsTriangle* triangle = new UBGraphicsTriangle(); // mem : owned and destroyed by the scene
     mTools << triangle;
-
-//    triangle->setZValue(toolLayerStart + toolOffsetProtractor);
-    UBGraphicsItem::assignZValue(triangle, toolLayerStart + toolOffsetTriangle);
 
     triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
@@ -1738,9 +1682,6 @@ void UBGraphicsScene::addCompass(QPointF center)
     QRectF rect = compass->rect();
     compass->setRect(center.x() - rect.width() / 2, center.y() - rect.height() / 2, rect.width(), rect.height());
 
-//    compass->setZValue(toolLayerStart + toolOffsetCompass);
-    UBGraphicsItem::assignZValue(compass, toolLayerStart + toolOffsetCompass);
-
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     compass->setVisible(true);
@@ -1772,8 +1713,6 @@ void UBGraphicsScene::addMask(const QPointF &center)
     QRectF rect = UBApplication::boardController->activeScene()->normalizedSceneRect();
     rect.setRect(center.x() - rect.width()/4, center.y() - rect.height()/4, rect.width()/2 , rect.height()/2);
     curtain->setRect(rect);
-    UBGraphicsItem::assignZValue(curtain, toolLayerStart + toolOffsetCurtain);
-
     curtain->setVisible(true);
     curtain->setSelected(true);
     setModified(true);
@@ -1923,6 +1862,58 @@ void UBGraphicsScene::drawItems (QPainter * painter, int numItems,
     }
 }
 
+void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    if (mIsDesktopMode)
+    {
+        QGraphicsScene::drawBackground (painter, rect);
+        return;
+    }
+    bool darkBackground = isDarkBackground ();
+
+    if (darkBackground)
+    {
+      painter->fillRect (rect, QBrush (QColor (Qt::black)));
+    }
+    else
+    {
+      painter->fillRect (rect, QBrush (QColor (Qt::white)));
+    }
+
+    if (mZoomFactor > 0.5)
+    {
+        QColor bgCrossColor;
+
+        if (darkBackground)
+            bgCrossColor = UBSettings::crossDarkBackground;
+        else
+            bgCrossColor = UBSettings::crossLightBackground;
+        if (mZoomFactor < 1.0)
+        {
+            int alpha = 255 * mZoomFactor / 2;
+            bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
+        }
+
+        painter->setPen (bgCrossColor);
+
+        if (isCrossedBackground())
+        {
+            qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
+
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += UBSettings::crossSize)
+            {
+                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+            }
+
+            qreal firstX = ((int) (rect.x () / UBSettings::crossSize)) * UBSettings::crossSize;
+
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += UBSettings::crossSize)
+            {
+                painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+            }
+        }
+    }
+}
 
 void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 {
@@ -1991,7 +1982,46 @@ void UBGraphicsScene::setDocumentUpdated()
         document()->setMetaData(UBSettings::documentUpdatedAt
                 , UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 }
+void UBGraphicsScene::createEraiser()
+{
+    mEraser = new QGraphicsEllipseItem(); // mem : owned and destroyed by the scene
+    mEraser->setRect(QRect(0, 0, 0, 0));
+    mEraser->setVisible(false);
 
+    mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+    mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser)); //Necessary to set if we want z value to be assigned correctly
+
+    mTools << mEraser;
+    addItem(mEraser);
+
+}
+void UBGraphicsScene::createPointer()
+{
+    mPointer = new QGraphicsEllipseItem();  // mem : owned and destroyed by the scene
+    mPointer->setRect(QRect(0, 0, 20, 20));
+    mPointer->setVisible(false);
+
+    mPointer->setPen(Qt::NoPen);
+    mPointer->setBrush(QBrush(QColor(255, 0, 0, 186)));
+
+    mPointer->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+    mPointer->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Pointer)); //Necessary to set if we want z value to be assigned correctly
+
+    mTools << mPointer;
+    addItem(mPointer);
+}
+
+qreal UBGraphicsScene::generateZLevel(QGraphicsItem *item)
+{
+    qreal result = UBZLayerController::errorNum();
+    itemLayerType::Enum type = static_cast<itemLayerType::Enum>(item->data(UBGraphicsItemData::itemLayerType).toInt());
+
+    if (mZLayerController.validLayerType(type)) {
+        result =  mZLayerController.generateZLevel(type);
+    }
+
+    return result;
+}
 
 void UBGraphicsScene::setToolCursor(int tool)
 {

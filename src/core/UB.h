@@ -62,7 +62,7 @@ struct UBSize
     };
 };
 
-
+// Deprecated. Keep it for backward campability with old versions
 struct UBItemLayerType
 {
     enum Enum
@@ -71,16 +71,37 @@ struct UBItemLayerType
     };
 };
 
+struct itemLayerType
+{
+    enum Enum {
+        NoLayer = 0
+        , BackgroundItem
+        , ObjectItem
+        , DrawingItem
+        , ToolItem
+        , CppTool
+        , Eraiser
+        , Curtain
+        , Pointer
+        , Cache
+        , SelectedItem
+    };
+};
+
+
 struct UBGraphicsItemData
 {
     enum Enum
     {
-        ItemLayerType
+        ItemLayerType //Deprecated. Keep it for backward campability with old versions. Use itemLayerType instead
         , ItemLocked
         , ItemEditable//for text only
         , ItemOwnZValue
+        , itemLayerType //use instead of deprecated ItemLayerType
     };
 };
+
+
 
 struct UBGraphicsItemType
 {

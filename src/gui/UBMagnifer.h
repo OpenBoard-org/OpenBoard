@@ -53,10 +53,12 @@ signals:
     void magnifierZoomIn_Signal();
     void magnifierZoomOut_Signal();
     void magnifierResized_Signal(qreal newPercentSize);
+    
+public slots:
+    void slot_refresh();
 
 protected:
     void paintEvent(QPaintEvent *);
-    void timerEvent(QTimerEvent *);
 
     virtual void mousePressEvent ( QMouseEvent * event );
     virtual void mouseMoveEvent ( QMouseEvent * event );
@@ -78,10 +80,9 @@ protected:
     QCursor mResizeCursor;
 
 private:
-    bool inTimer;
+    QTimer mRefreshTimer;
     bool m_isInteractive;
 
-    int timerUpdate;
     QPoint updPointGrab;
     QPoint updPointMove;
     

@@ -118,16 +118,11 @@ int UBDisplayManager::numPreviousViews()
 }
 
 
-void UBDisplayManager::setAsControl(QWidget* pControlWidget, bool init)
+void UBDisplayManager::setControlWidget(QWidget* pControlWidget)
 {
     if(hasControl() && pControlWidget && (pControlWidget != mControlWidget))
     {
         mControlWidget = pControlWidget;
-        mControlWidget->hide();
-        mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
-
-        if (!init)
-        mControlWidget->showFullScreen();
 		// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
 //        mControlWidget->setAttribute(Qt::WA_MacNoShadow);
@@ -135,14 +130,11 @@ void UBDisplayManager::setAsControl(QWidget* pControlWidget, bool init)
     }
 }
 
-void UBDisplayManager::setAsDesktop(QWidget* pControlWidget )
+void UBDisplayManager::setDesktopWidget(QWidget* pControlWidget )
 {
     if(pControlWidget && (pControlWidget != mControlWidget))
     {
         mDesktopWidget = pControlWidget;
-        mDesktopWidget->hide();
-        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
-//        mDisplayWidget->showFullScreen();
         // !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
         //        mControlWidget->setAttribute(Qt::WA_MacNoShadow);
@@ -150,14 +142,11 @@ void UBDisplayManager::setAsDesktop(QWidget* pControlWidget )
     }
 }
 
-void UBDisplayManager::setAsDisplay(QWidget* pDisplayWidget)
+void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
 {
     if(pDisplayWidget && (pDisplayWidget != mDisplayWidget))
     {
         mDisplayWidget = pDisplayWidget;
-        mDisplayWidget->hide();
-        mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
-        mDisplayWidget->showFullScreen();
 		// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
 //        mDisplayWidget->setAttribute(Qt::WA_MacNoShadow);
@@ -166,7 +155,7 @@ void UBDisplayManager::setAsDisplay(QWidget* pDisplayWidget)
 }
 
 
-void UBDisplayManager::setAsPreviousDisplays(QList<UBBoardView*> pPreviousViews)
+void UBDisplayManager::setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousViews)
 {
     mPreviousDisplayWidgets = pPreviousViews;
 }
@@ -182,7 +171,7 @@ QRect UBDisplayManager::displayGeometry()
     return mDesktop->screenGeometry(mDisplayScreenIndex);
 }
 
-void UBDisplayManager::swapScreens(bool swap)
+void UBDisplayManager::reinitScreens(bool swap)
 {
     Q_UNUSED(swap);
     adjustScreens(-1);
@@ -310,6 +299,5 @@ void UBDisplayManager::setRoleToScreen(DisplayRole role, int screenIndex)
 void UBDisplayManager::setUseMultiScreen(bool pUse)
 {
     mUseMultiScreen = pUse;
-    adjustScreens(0);
 }
 

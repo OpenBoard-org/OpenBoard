@@ -52,8 +52,7 @@ void UBGraphicsVideoItemDelegate::buildButtons()
     mMuteButton->hide();
 
     mVideoControl = new DelegateVideoControl(delegated(), mFrame);
-//    mVideoControl->setZValue(UBGraphicsScene::toolLayerStart + 2);
-    UBGraphicsItem::assignZValue(mVideoControl, UBGraphicsScene::toolLayerStart + 2);
+    UBGraphicsItem::assignZValue(mVideoControl, delegated()->zValue());
     mVideoControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     connect(mPlayPauseButton, SIGNAL(clicked(bool)), this, SLOT(togglePlayPause()));
@@ -106,6 +105,7 @@ void UBGraphicsVideoItemDelegate::positionHandles()
         }
 
         mVideoControl->setAntiScale(mAntiScaleRatio);
+        mVideoControl->setZValue(delegated()->zValue());
         mVideoControl->show();
     }
     else

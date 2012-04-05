@@ -664,6 +664,7 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
     UBApplication::applicationController->adjustDisplayView();
 
     emit controlViewportChanged();
+    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
 }
 
 
@@ -1163,7 +1164,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
         mControlView->setScene(mActiveScene);
         mDisplayView->setScene(mActiveScene);
-
+        mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
         pDocumentProxy->setDefaultDocumentSize(mActiveScene->nominalSize());
         updatePageSizeState();
 
@@ -1564,7 +1565,7 @@ void UBBoardController::updateSystemScaleFactor()
     mControlView->setTransform(scalingTransform);
     mControlView->horizontalScrollBar()->setValue(viewState.horizontalPosition);
     mControlView->verticalScrollBar()->setValue(viewState.verticalPostition);
-}
+    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());}
 
 
 void UBBoardController::setWidePageSize(bool checked)
@@ -1943,8 +1944,6 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
                 if (gi)
                 {
-//                    gi->setZValue(mActiveScene->getNextObjectZIndex());
-                    UBGraphicsItem::assignZValue(gi, mActiveScene->getNextObjectZIndex());
                     mActiveScene->addItem(gi);
                     gi->setPos(gi->pos() + QPointF(50, 50));
                 }

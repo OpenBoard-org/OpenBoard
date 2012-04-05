@@ -33,14 +33,12 @@ UBGraphicsCache::UBGraphicsCache():QGraphicsRectItem()
     // Get the board size and pass it to the shape
     QRect boardRect = UBApplication::boardController->displayView()->rect();
     setRect(-15*boardRect.width(), -15*boardRect.height(), 30*boardRect.width(), 30*boardRect.height());
-//    setZValue(CACHE_ZVALUE);
-    UBGraphicsItem::assignZValue(this, CACHE_ZVALUE);
     setData(Qt::UserRole, QVariant("Cache"));
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Cache)); //Necessary to set if we want z value to be assigned correctly
 }
 
 UBGraphicsCache::~UBGraphicsCache()
 {
-
 }
 
 UBItem* UBGraphicsCache::deepCopy() const
@@ -49,8 +47,6 @@ UBItem* UBGraphicsCache::deepCopy() const
 
     copy->setPos(this->pos());
     copy->setRect(this->rect());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
 
     // TODO UB 4.7 ... complete all members ?
@@ -91,8 +87,6 @@ void UBGraphicsCache::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-
-    UBGraphicsItem::assignZValue(this, CACHE_ZVALUE);
 
     painter->setBrush(mMaskColor);
     painter->setPen(mMaskColor);

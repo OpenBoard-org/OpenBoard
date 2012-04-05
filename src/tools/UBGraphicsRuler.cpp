@@ -44,6 +44,8 @@ UBGraphicsRuler::UBGraphicsRuler()
 
 	create(*this);
 
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
+
 	updateResizeCursor();
 }
 
@@ -74,8 +76,6 @@ UBItem* UBGraphicsRuler::deepCopy() const
 
     copy->setPos(this->pos());
     copy->setRect(this->rect());
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
 
     // TODO UB 4.7 ... complete all members ?

@@ -48,6 +48,7 @@ UBAbstractDrawRuler::UBAbstractDrawRuler()
 	QDesktopWidget* desktop = UBApplication::desktop();
 	int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
 	sPixelsPerMillimeter = qRound(dpiCommon / 25.4f);//because 1inch = 25.4 mm
+
 }
 
 void UBAbstractDrawRuler::create(QGraphicsItem& item)

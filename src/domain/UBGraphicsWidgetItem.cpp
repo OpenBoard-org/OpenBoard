@@ -39,6 +39,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(QGraphicsItem *parent, int widgetType
     UBGraphicsWidgetItemDelegate* delegate = new UBGraphicsWidgetItemDelegate(this, widgetType);
     delegate->init();
     setDelegate(delegate);
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 }
 
 
@@ -154,6 +155,8 @@ void UBGraphicsWidgetItem::initialize()
 
     if (mDelegate && mDelegate->frame() && mWebKitWidget->resizable())
         mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 }
 
 
@@ -408,7 +411,6 @@ UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
     UBGraphicsW3CWidgetItem *copy = new UBGraphicsW3CWidgetItem(mWebKitWidget->widgetUrl(), parentItem());
 
     copy->setPos(this->pos());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
     copy->setFlag(QGraphicsItem::ItemIsSelectable, true);

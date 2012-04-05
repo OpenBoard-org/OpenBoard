@@ -30,6 +30,7 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (QGraphicsItem * parent)
     , mStroke(0)
 {
     // NOOP
+    initialize();
 }
 
 
@@ -40,6 +41,7 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QPolygonF & polygon, QGraphi
     , mStroke(0)
 {
     // NOOP
+    initialize();
 }
 
 
@@ -51,6 +53,12 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pWidth)
     , mStroke(0)
 {
     // NOOP
+    initialize();
+}
+
+void UBGraphicsPolygonItem::initialize()
+{
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::DrawingItem)); //Necessary to set if we want z value to be assigned correctly
 }
 
 void UBGraphicsPolygonItem::clearStroke()
@@ -152,9 +160,6 @@ UBGraphicsPolygonItem* UBGraphicsPolygonItem::deepCopy(const QPolygonF& pol) con
     copy->setBrush(this->brush());
     copy->setPen(this->pen());
     copy->mHasAlpha = this->mHasAlpha;
-
-//    copy->setZValue(this->zValue());
-    UBGraphicsItem::assignZValue(copy, this->zValue());
 
 
     copy->setColorOnDarkBackground(this->colorOnDarkBackground());
