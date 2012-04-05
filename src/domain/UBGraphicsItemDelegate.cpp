@@ -249,7 +249,9 @@ void UBGraphicsItemDelegate::positionHandles()
                 mDelegated->scene()->addItem(mDeleteButton);
         }
 
-        mDeleteButton->show();
+        if(!mFrame->isResizing()){
+            mDeleteButton->show();
+        }
 
         bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
         showHide(shownOnDisplay);
@@ -274,9 +276,11 @@ void UBGraphicsItemDelegate::positionHandles()
                 if (mDelegated->scene())
                     mDelegated->scene()->addItem(button);
             }
-            button->show();
-            button->setZValue(delegated()->zValue());
-        }
+            if(!mFrame->isResizing()){
+                button->show();
+                button->setZValue(delegated()->zValue());
+            }
+}
     } else {
         foreach(DelegateButton* button, mButtons)
             button->hide();
@@ -483,4 +487,11 @@ void UBGraphicsItemDelegate::setFlippable(bool flippable)
 bool UBGraphicsItemDelegate::isFlippable()
 {
     return mFlippable;
+}
+
+void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
+{
+    foreach(DelegateButton* pButton, mButtons){
+        pButton->setVisible(visible);
+    }
 }

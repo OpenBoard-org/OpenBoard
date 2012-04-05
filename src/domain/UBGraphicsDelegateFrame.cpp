@@ -29,8 +29,6 @@
 
 #include "core/memcheck.h"
 
-qreal const UBGraphicsDelegateFrame::mAngleTolerance = 6;
-
 UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelegate, QRectF pRect, qreal pFrameWidth, bool respectRatio)
     : QGraphicsRectItem(), QObject(pDelegate)
     , mCurrentTool(None)
@@ -48,7 +46,11 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mTotalTranslateX(0)
     , mTotalTranslateY(0)
     , mOperationMode(Scaling)
+    , mMirrorX(false)
+    , mMirrorY(false)
 {
+    mAngleTolerance = UBSettings::settings()->angleTolerance->get().toReal();
+
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -69,9 +71,11 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     mBottomResizeGrip = new QGraphicsRectItem(this);
     mBottomResizeGrip->setPen(Qt::NoPen);
     mLeftResizeGrip = new QGraphicsRectItem(this);
+    mLeftResizeGrip->setToolTip("left");
     mLeftResizeGrip->setPen(Qt::NoPen);
     mRightResizeGrip = new QGraphicsRectItem(this);
     mRightResizeGrip->setPen(Qt::NoPen);
+    mRightResizeGrip->setToolTip("Right");
     mTopResizeGrip = new QGraphicsRectItem(this);
     mTopResizeGrip->setPen(Qt::NoPen);
 
@@ -86,11 +90,14 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     positionHandles();
 
     this->setAcceptHoverEvents(true);
+
+    angleWidget = new UBAngleWidget();
 }
 
 
 UBGraphicsDelegateFrame::~UBGraphicsDelegateFrame()
 {
+delete angleWidget;
     // NOOP
 }
 
@@ -156,14 +163,39 @@ void UBGraphicsDelegateFrame::initializeTransform()
     QPointF topRight = itemTransform.map(itemRect.topRight());
     QPointF  bottomLeft = itemTransform.map(itemRect.bottomLeft());
 
+    qreal horizontalFlip = (topLeft.x() > topRight.x()) ? -1 : 1;
+    mMirrorX = horizontalFlip < 0 ;
+    if(horizontalFlip < 0){
+        // why this is because of the way of calculating the translations that checks which side is the most is the
+        // nearest instead of checking which one is the left side.
+        QPointF tmp = topLeft;
+        topLeft = topRight;
+        topRight = tmp;
+
+        // because of the calculation of the height is done by lenght and not deltaY
+        bottomLeft = itemTransform.map(itemRect.bottomRight());
+    }
+
+    qreal verticalFlip = (bottomLeft.y() < topLeft.y()) ? -1 : 1;
+    // not sure that is usefull
+    mMirrorY = verticalFlip < 0;
+    if(verticalFlip < 0 && !mMirrorX){
+        topLeft = itemTransform.map(itemRect.bottomLeft());
+        topRight = itemTransform.map(itemRect.bottomRight());
+        bottomLeft = itemTransform.map(itemRect.topLeft());
+    }
+
     QLineF topLine(topLeft, topRight);
     QLineF leftLine(topLeft, bottomLeft);
     qreal width = topLine.length();
     qreal height = leftLine.length();
 
     mAngle = topLine.angle();
-    mTotalScaleX = width / itemRect.width();
-    mTotalScaleY = height / itemRect.height();
+
+    //the fact the the lenght is used we loose the horizontalFlip information
+    // a better way to do this is using DeltaX that preserve the direction information.
+    mTotalScaleX = (width / itemRect.width()) * horizontalFlip;
+    mTotalScaleY = height / itemRect.height() * verticalFlip;
 
     QTransform tr;
     QPointF center = delegated()->boundingRect().center();
@@ -192,6 +224,7 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mAngleOffset = 0;
 
     mInitialTransform = buildTransform();
+
     mCurrentTool = toolFromPos(event->pos());
 
     event->accept();
@@ -205,9 +238,16 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal moveY = -move.length() * sin((move.angle() - mAngle) * PI / 180);
     qreal width = delegated()->boundingRect().width() * mTotalScaleX;
     qreal height = delegated()->boundingRect().height() * mTotalScaleY;
+    mTranslateX = moveX;
+
 
     if(mOperationMode == Scaling)
     {
+//        // Hide the buttons
+//        mDelegate->setButtonsVisible(false);
+//        mResizing = true;
+
+        // Perform the resize
         if (resizingBottomRight())
         {
             // -----------------------------------------------------
@@ -243,8 +283,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                     scaleX = (width + moveX) / width;
                 }
                 if(mDelegate->isFlippable() && qAbs(scaleX) != 0){
-                    if((width * qAbs(scaleX)) < 2*mFrameWidth){
+                    if((qAbs(width * scaleX)) < 2*mFrameWidth){
                         bool negative = (scaleX < 0)?true:false;
+                        //mMirrorX = (negative?mMirrorX:!mMirrorX);
                         if(negative){
                             scaleX = -2*mFrameWidth/width;
                         }else{
@@ -269,8 +310,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 }
 
                 if(mDelegate->isFlippable() && qAbs(scaleY) != 0){
-                    if((height * qAbs(scaleY)) < 2*mFrameWidth){
+                    if((qAbs(height * scaleY)) < 2*mFrameWidth){
                         bool negative = (scaleY < 0)?true:false;
+                        //mMirrorY = (negative?mMirrorY:!mMirrorY);
                         if(negative){
                             scaleY = -2*mFrameWidth/width;
                         }else{
@@ -281,7 +323,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 }else if (scaleY > 1 || (height * scaleY) > 2 * mFrameWidth)
                 {
                     mScaleY = scaleY;
-                    mTranslateY = moveY;
+                    if(resizingTop()){
+                        mTranslateY = moveY;
+                    }
                 }
             }
         }
@@ -331,7 +375,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
             QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
         mAngle += startLine.angleTo(currentLine);
-                if ((int)mAngle % 45 >= 45 - mAngleTolerance || (int)mAngle % 45 <= mAngleTolerance)
+
+        if ((int)mAngle % 45 >= 45 - mAngleTolerance 
+             || (int)mAngle % 45 <= mAngleTolerance)
         {
             mAngle = qRound(mAngle / 45) * 45;
             mAngleOffset += startLine.angleTo(currentLine);
@@ -341,6 +387,23 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 mAngleOffset = 0;
             }
         }
+        else if ((int)mAngle % 30 >= 30 - mAngleTolerance
+                  || (int)mAngle % 30 <= mAngleTolerance)
+        {
+            mAngle = qRound(mAngle / 30) * 30;
+            mAngleOffset += startLine.angleTo(currentLine);
+            if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
+            {
+                mAngle += mAngleOffset;
+                mAngleOffset = 0;
+            }
+        }
+
+        if (!angleWidget->isVisible())
+            angleWidget->show();
+
+        angleWidget->setText(QString::number((int)mAngle % 360));
+        angleWidget->update();
 
     }
     else if (moving())
@@ -410,6 +473,9 @@ QTransform UBGraphicsDelegateFrame::buildTransform()
 
 void UBGraphicsDelegateFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (angleWidget->isVisible())
+        angleWidget->hide();
+
     updateResizeCursors();
 
     mDelegate->commitUndoStep();
@@ -421,6 +487,12 @@ void UBGraphicsDelegateFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     mCurrentTool = None;
     QGraphicsRectItem::mouseReleaseEvent(event);
+
+    // Show the buttons
+    if(isResizing()){
+        mResizing = false;
+    }
+    mDelegate->setButtonsVisible(true);
 }
 
 
@@ -463,6 +535,14 @@ void UBGraphicsDelegateFrame::positionHandles()
     QPointF topRight = itemTransform.map(itemRect.topRight());
     QPointF bottomLeft = itemTransform.map(itemRect.bottomLeft());
     QPointF center = itemTransform.map(itemRect.center());
+
+    // Handle the mirroring
+    if(topLeft.x() > topRight.x()){
+        QPointF tmp = topRight;
+        topRight = topLeft;
+        topLeft = tmp;
+        bottomLeft.setX(topLeft.x());
+    }
 
     QLineF topLine(topLeft, topRight);
     qreal angle = topLine.angle();
@@ -507,17 +587,8 @@ void UBGraphicsDelegateFrame::positionHandles()
     mBottomRightResizeGripSvgItem->setPos(rect().right() - brRect.width(), rect().bottom() - brRect.height());
     mBottomResizeGripSvgItem->setPos(rect().center().x() - bRect.width() / 2, rect().bottom() - bRect.height());
 
-    if(0 <= mScaleX){
-        mLeftResizeGripSvgItem->setPos(rect().left(), rect().center().y() - lRect.height() / 2);
-        mRightResizeGripSvgItem->setPos(rect().right() - rRect.width(), rect().center().y() - rRect.height() / 2);
-    }else{
-        mLeftResizeGripSvgItem->setPos(rect().right() - rRect.width(), rect().center().y() - lRect.height() / 2);
-        mRightResizeGripSvgItem->setPos(rect().left() , rect().center().y() - rRect.height() / 2);
-    }
-
-    if(0 < mScaleY){
-
-    }
+    mLeftResizeGripSvgItem->setPos(rect().left(), rect().center().y() - lRect.height() / 2);
+    mRightResizeGripSvgItem->setPos(rect().right() - rRect.width(), rect().center().y() - rRect.height() / 2);
 
     mTopResizeGripSvgItem->setPos(rect().center().x() - trRect.width() / 2, rect().y());
     mRotateButton->setPos(rect().right() - mFrameWidth - 5, rect().top() + 5);
@@ -571,14 +642,35 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
                 return None;
     else if (bottomRightResizeGripRect().contains(pos))
         return ResizeBottomRight;
-    else if (bottomResizeGripRect().contains(pos))
-        return ResizeBottom;
-    else if (leftResizeGripRect().contains(pos))
-        return ResizeLeft;
-    else if (rightResizeGripRect().contains(pos))
-        return ResizeRight;
-    else if (topResizeGripRect().contains(pos))
-        return ResizeTop;
+    else if (bottomResizeGripRect().contains(pos)){
+            if(mMirrorY){
+                return ResizeTop;
+            }else{
+                return ResizeBottom;
+            }
+        }
+    else if (leftResizeGripRect().contains(pos)){
+            if(mMirrorX){
+                return ResizeRight;
+            }else{
+                return ResizeLeft;
+            }
+            return ResizeLeft;
+        }
+    else if (rightResizeGripRect().contains(pos)){
+            if(mMirrorX){
+                return ResizeLeft;
+            }else{
+                return ResizeRight;
+            }
+        }
+    else if (topResizeGripRect().contains(pos)){
+            if(mMirrorY){
+                return ResizeBottom;
+            }else{
+                return ResizeTop;
+            }
+        }
     else if (rotateButtonBounds().contains(pos) && mDelegate && mDelegate->canRotate())
         return Rotate;
     else
@@ -621,3 +713,21 @@ QRectF UBGraphicsDelegateFrame::rotateButtonBounds() const
     return QRectF(rect().right()- mFrameWidth, rect().top(), mFrameWidth, mFrameWidth);
 }
 
+void UBGraphicsDelegateFrame::refreshGeometry()
+{
+    // Here we want to have the left on the left, the right on the right, the top on the top and the bottom on the bottom!
+    QRectF itemRect = delegated()->boundingRect();
+    QTransform itemTransform = delegated()->sceneTransform();
+    QPointF topLeft = itemTransform.map(itemRect.topLeft());
+    QPointF topRight = itemTransform.map(itemRect.topRight());
+    QPointF bottomLeft = itemTransform.map(itemRect.bottomLeft());
+    QPointF center = itemTransform.map(itemRect.center());
+
+
+    QLineF topLine(topLeft, topRight);
+    qreal angle = topLine.angle();
+    qreal width = topLine.length();
+    QLineF leftLine(topLeft, bottomLeft);
+    qreal height = leftLine.length();
+    setRect(topRight.x() - mFrameWidth, topLeft.y() - mFrameWidth, width + 2*mFrameWidth, height + 2*mFrameWidth);
+}

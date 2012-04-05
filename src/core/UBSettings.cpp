@@ -377,6 +377,8 @@ void UBSettings::init()
 
 	KeyboardLocale = new UBSetting(this, "Board", "StartupKeyboardLocale", 0);
     swapControlAndDisplayScreens = new UBSetting(this, "App", "SwapControlAndDisplayScreens", false);
+
+    angleTolerance = new UBSetting(this, "App", "AngleTolerance", 4);
 }
 
 
@@ -1139,3 +1141,4 @@ QString UBSettings::replaceWildcard(QString& path)
 
     return result;
 }
+

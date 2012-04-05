@@ -29,7 +29,7 @@ function checkResponse()
 var sankoreLang = {
     view: "Afficher", 
     edit: "Modifier",
-    example: "Il*y*a*longtemps*,*nous*Žtions*ˆ*la*mer*."
+    example: "Il*Ã©tait*une*fois*..."
 };
 
 var word = "";

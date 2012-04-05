@@ -427,7 +427,8 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
                 || movingItem->type() == UBGraphicsPDFItem::Type
                 || movingItem->type() == UBGraphicsPolygonItem::Type
                 || movingItem->type() == UBGraphicsCache::Type
-                || movingItem->type() == UBGraphicsTriangle::Type)
+                || movingItem->type() == UBGraphicsTriangle::Type
+                || movingItem == this->scene()->backgroundObject())
                 {
                     movingItem = NULL;
                     QGraphicsView::mousePressEvent (event);
