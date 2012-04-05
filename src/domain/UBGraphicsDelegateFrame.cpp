@@ -273,12 +273,14 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 if(resizingLeft()){
                     scaleX = (width - moveX) / width;
                 }else if(resizingRight()){
-                  scaleX = (width + moveX) / width;
+                    scaleX = (width + moveX) / width;
                 }
                 if(mDelegate->isFlippable() && qAbs(scaleX) != 0){
                     if((qAbs(width * scaleX)) < 2*mFrameWidth){
                         bool negative = (scaleX < 0)?true:false;
+
                         mMirrorX = (negative?mMirrorX:!mMirrorX);
+
                         if(negative){
                             scaleX = -2*mFrameWidth/width;
                         }else{
