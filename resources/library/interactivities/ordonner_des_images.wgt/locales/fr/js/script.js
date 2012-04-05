@@ -1,10 +1,10 @@
 
 var sankoreLang = {
-    display: "Affichage", 
+    display: "Afficher", 
     edit: "Modifier", 
-    short_desc: "Placez les photos dans l'ordre croissant.", 
+    short_desc: "Placer les photos dans l'ordre croissant.", 
     add: "Nouveau bloc",
-    enter: "Saisissez votre texte ici ..."
+    enter: "Saisir votre texte ici ..."
 };
 
 //main function

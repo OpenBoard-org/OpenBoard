@@ -1,9 +1,9 @@
 var sankoreLang = {
     display: "Display", 
     edit: "Edit", 
-    text_content: "This is an example. Instead of this text you can put your own content.", 
+    text_content: "This is an example. Instead of this text you can put your own content or drag an drop a picture or an audio file", 
     new_txt: "New text block",
-    new_slide: "This is new slide."
+    new_slide: "This is a new slide."
 };
 
 //some flags
