@@ -182,8 +182,6 @@ void UBGraphicsDelegateFrame::initializeTransform()
         bottomLeft = itemTransform.map(itemRect.topLeft());
     }
 
-    qDebug() << "mMirrorX " << mMirrorX << " ,mMirrorY " << mMirrorY;
-
     QLineF topLine(topLeft, topRight);
     QLineF leftLine(topLeft, bottomLeft);
     qreal width = topLine.length();
@@ -627,7 +625,6 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
             }
         }
     else if (leftResizeGripRect().contains(pos)){
-            qDebug() << "LEFT GRIP (" << mMirrorX << ")";
             if(mMirrorX){
                 return ResizeRight;
             }else{
@@ -636,7 +633,6 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
             return ResizeLeft;
         }
     else if (rightResizeGripRect().contains(pos)){
-            qDebug() << "RIGHT GRIP (" << mMirrorX << ")";
             if(mMirrorX){
                 return ResizeLeft;
             }else{
@@ -702,7 +698,6 @@ void UBGraphicsDelegateFrame::refreshGeometry()
     QPointF bottomLeft = itemTransform.map(itemRect.bottomLeft());
     QPointF center = itemTransform.map(itemRect.center());
 
-    qDebug() << topLeft << ", " << topRight << ", " << bottomLeft;
 
     QLineF topLine(topLeft, topRight);
     qreal angle = topLine.angle();
