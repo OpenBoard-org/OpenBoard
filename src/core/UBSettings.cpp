@@ -86,6 +86,7 @@ const int UBSettings::defaultWidgetIconWidth = 110;
 const int UBSettings::defaultVideoWidth = 80;
 
 const int UBSettings::thumbnailSpacing = 20;
+const int UBSettings::longClickInterval = 2000;
 
 const qreal UBSettings::minScreenRatio = 1.33; // 800/600 or 1024/768
 

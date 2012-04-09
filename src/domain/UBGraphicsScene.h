@@ -49,33 +49,47 @@ class UBGraphicsCache;
 
 const double PI = 4.0 * atan(1.0);
 
-class UBZLayerController
+class UBZLayerController : public QObject
 {
-public:
+    Q_OBJECT
 
+public:
     struct ItemLayerTypeData {
-        ItemLayerTypeData() : bottomLimit(0), topLimit(0), curValue(0) {;}
-        ItemLayerTypeData(qreal bot, qreal top) : bottomLimit(bot), topLimit(top), curValue(bot) {;}
-        qreal bottomLimit;
-        qreal topLimit;
-        qreal curValue;
+        ItemLayerTypeData() : bottomLimit(0), topLimit(0), curValue(0), incStep(1) {;}
+        ItemLayerTypeData(qreal bot, qreal top, qreal increment = 1) : bottomLimit(bot), topLimit(top), curValue(bot), incStep(increment) {;}
+        qreal bottomLimit; //bottom bound of the layer
+        qreal topLimit;//top bound of the layer
+        qreal curValue;//current value of variable
+        qreal incStep;//incremental step
+    };
+
+    enum moveDestination {
+        up
+        , down
+        , top
+        , bottom
     };
 
     typedef QMap<itemLayerType::Enum, ItemLayerTypeData> ScopeMap;
 
-    UBZLayerController();
+    UBZLayerController(QGraphicsScene *scene);
 
     qreal getBottomLimit(itemLayerType::Enum key) const {return scopeMap.value(key).bottomLimit;}
     qreal getTopLimit(itemLayerType::Enum key) const {return scopeMap.value(key).topLimit;}
     bool validLayerType(itemLayerType::Enum key) const {return scopeMap.contains(key);}
+
     static qreal errorNum() {return errorNumber;}
 
     qreal generateZLevel(itemLayerType::Enum key);
+    qreal generateZLevel(QGraphicsItem *item);
 
-    private:
-        ScopeMap scopeMap;
-        static qreal errorNumber;
+    qreal changeZLevelTo(QGraphicsItem *item, moveDestination dest);
+    itemLayerType::Enum typeForData(QGraphicsItem *item) const;
 
+private:
+    ScopeMap scopeMap;
+    static qreal errorNumber;
+    QGraphicsScene *mScene;
 };
 
 class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
@@ -87,7 +101,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
     //        tmp stub for divide addings scene objects from undo mechanism implementation
     void setURStackEnable(bool set = true) {enableUndoRedoStack = set;}
 
-        UBGraphicsScene(UBDocumentProxy *parent);
+    UBGraphicsScene(UBDocumentProxy *parent);
         virtual ~UBGraphicsScene();
 
         virtual UBItem* deepCopy() const;
@@ -242,6 +256,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void setNominalSize(int pWidth, int pHeight);
 
+        qreal changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest);
+
         enum RenderingContext
         {
             Screen = 0, NonScreen, PdfExport, Podcast
@@ -257,20 +273,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return mRenderingContext;
         }
 
-        static qreal backgroundLayerStart;
-        static qreal objectLayerStart;
-        static qreal drawingLayerStart;
-        static qreal toolLayerStart;
-
-        static qreal toolOffsetEraser;
-        static qreal toolOffsetPointer;
-        static qreal toolOffsetRuler;
-        static qreal toolOffsetProtractor;
-        static qreal toolOffsetCompass;
-        static qreal toolOffsetCurtain;
-        static qreal toolOffsetTriangle;
-        static qreal toolOffsetCache;
-
         QSet<QGraphicsItem*> tools(){ return mTools;}
 
         void registerTool(QGraphicsItem* item)
@@ -283,7 +285,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 			return mPreviousPoint;
 		}
 
-    public slots:
+        void setSelectedZLevel(QList<QGraphicsItem *> itemList);
+        void setOwnZlevel(QList<QGraphicsItem *> itemList);
+public slots:
 
         void hideEraser();
 
@@ -336,8 +340,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void createEraiser();
         void createPointer();
 
-        qreal generateZLevel(QGraphicsItem *item);
-
         QGraphicsEllipseItem* mEraser;
         QGraphicsEllipseItem* mPointer;
 
@@ -387,7 +389,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBMagnifier *magniferControlViewWidget;
         UBMagnifier *magniferDisplayViewWidget;
 
-        UBZLayerController mZLayerController;
+        UBZLayerController *mZLayerController;
 
 };
 

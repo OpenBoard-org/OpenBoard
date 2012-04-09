@@ -418,10 +418,10 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
 
             movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
 
-            if (!movingItem 
+            if (!movingItem
                 || movingItem->isSelected()
                 || movingItem->type() == UBGraphicsDelegateFrame::Type
-                || movingItem->type() == DelegateButton::Type 
+                || movingItem->type() == DelegateButton::Type
                 || movingItem->type() == UBGraphicsCompass::Type
                 || movingItem->type() == UBGraphicsPDFItem::Type
                 || movingItem->type() == UBGraphicsPolygonItem::Type
@@ -431,7 +431,7 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
                     QGraphicsView::mousePressEvent (event);
 
                 }
-            else 
+            else
             {
                 mLastPressedMousePos = mapToScene(event->pos());
                 if (suspendedMousePressEvent)

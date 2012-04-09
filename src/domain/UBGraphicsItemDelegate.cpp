@@ -47,6 +47,28 @@
 
 class UBGraphicsParaschoolEditorWidgetItem;
 
+void DelegateButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    // make sure delegate is selected, to avoid control being hidden
+    mPressedTime = QTime::currentTime();
+//    mDelegated->setSelected(true);
+
+    event->setAccepted(!mIsTransparentToMouseEvent);
+ }
+
+void DelegateButton::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    int timeto = qAbs(QTime::currentTime().msecsTo(mPressedTime));
+
+    if (timeto < UBSettings::longClickInterval) {
+        emit clicked();
+    } else {
+        emit longClicked();
+    }
+
+    event->setAccepted(!mIsTransparentToMouseEvent);
+}
+
 UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, bool respectRatio, bool canRotate)
     : QObject(parent)
     , mDelegated(pDelegated)
@@ -88,11 +110,13 @@ void UBGraphicsItemDelegate::init()
     mButtons << mMenuButton;
 
     mZOrderUpButton = new DelegateButton(":/images/plus.svg", mDelegated, mFrame, Qt::BottomLeftSection);
-    connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevel()));
+    connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
+    connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
     mButtons << mZOrderUpButton;
 
     mZOrderDownButton = new DelegateButton(":/images/minus.svg", mDelegated, mFrame, Qt::BottomLeftSection);
-    connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(decreaseZLevel()));
+    connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
+    connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
     mButtons << mZOrderDownButton;
 
     buildButtons();
@@ -149,23 +173,22 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
     return value;
 }
 
+UBGraphicsScene *UBGraphicsItemDelegate::castUBGraphicsScene()
+{
+    UBGraphicsScene *castScene = dynamic_cast<UBGraphicsScene*>(delegated()->scene());
+
+    return castScene;
+}
 
 bool UBGraphicsItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(NULL != mMimeData)
-    {
-        QDrag* mDrag = new QDrag(event->widget());
-        mDrag->setMimeData(mMimeData);
-        mDrag->start();
-    }
+    mDragStartPosition = event->pos();
 
     startUndoStep();
 
     if (!mDelegated->isSelected())
     {
         mDelegated->setSelected(true);
-        qDebug() << mDelegated->zValue();
-
         positionHandles();
         return true;
     }
@@ -182,13 +205,27 @@ void UBGraphicsItemDelegate::setMimeData(QMimeData *mimeData)
 
 bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    if((NULL != mMimeData) && ((event->pos() - mDragStartPosition).manhattanLength() < QApplication::startDragDistance()))
+    {
+        QDrag* mDrag = new QDrag(event->widget());
+        mDrag->setMimeData(mMimeData);
+        if (!mDragPixmap.isNull()) {
+            mDrag->setPixmap(mDragPixmap);
+            mDrag->setHotSpot(mDragPixmap.rect().center());
+        }
+        mDrag->exec();
+        mDragPixmap = QPixmap();
+
+        return true;
+    }
+
     if(isLocked())
     {
         event->accept();
         return true;
     }
     else
-        return false;
+        return true;
 }
 
 bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
@@ -215,68 +252,34 @@ bool UBGraphicsItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     return true;
 }
 
+void UBGraphicsItemDelegate::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_UNUSED(event)
+//    if (!mDelegated->isSelected()) {
+//        setZOrderButtonsVisible(true);
+//    }
+}
+
+void UBGraphicsItemDelegate::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_UNUSED(event)
+//    if (!mDelegated->isSelected()) {
+//        setZOrderButtonsVisible(false);
+//    }
+}
+
 
 void UBGraphicsItemDelegate::positionHandles()
 {
-    if (mDelegated->isSelected())
-    {
-        if (mFrame && !mFrame->scene() && mDelegated->scene())
-        {
-            mDelegated->scene()->addItem(mFrame);
-        }
-
-        mFrame->setAntiScale(mAntiScaleRatio);
-        mFrame->positionHandles();
-        mFrame->show();
-
-        QTransform tr;
-        tr.scale(mAntiScaleRatio, mAntiScaleRatio);
-
-        mDeleteButton->setTransform(tr);
-
-        qreal topX = mFrame->rect().left()- mDeleteButton->renderer()->viewBox().width() * mAntiScaleRatio / 2;
-        qreal topY = mFrame->rect().top() - mDeleteButton->renderer()->viewBox().height() * mAntiScaleRatio / 2;
-
-        qreal bottomX = mFrame->rect().left()- mDeleteButton->renderer()->viewBox().width() * mAntiScaleRatio / 2;
-        qreal bottomY = mFrame->rect().bottom() - mDeleteButton->renderer()->viewBox().height() * mAntiScaleRatio / 2;
-
-        mDeleteButton->setPos(topX, topY);
-
-        if (!mDeleteButton->scene())
-        {
-            mDeleteButton->setParentItem(mFrame);//update parent for the case the item has been previously removed from scene
-            if (mDelegated->scene())
-                mDelegated->scene()->addItem(mDeleteButton);
-        }
-
-        mDeleteButton->show();
-
+    if (mDelegated->isSelected()) {
         bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
         showHide(shownOnDisplay);
-
         lock(isLocked());
+        updateFrame();
+        mFrame->show();
 
-        int i = 1, j = 0, k = 0;
-        while ((i + j) < mButtons.size())  {
-            DelegateButton* button = mButtons[i + j];
+        updateButtons(true);
 
-            button->setTransform(tr);
-            if (button->getSection() == Qt::TopLeftSection) {
-                button->setPos(topX + (i++ * 1.6 * mFrameWidth * mAntiScaleRatio), topY);
-            } else if (button->getSection() == Qt::BottomLeftSection) {
-                button->setPos(bottomX + (++j * 1.6 * mFrameWidth * mAntiScaleRatio), bottomY);
-            } else if (button->getSection() == Qt::NoSection) {
-                ++k;
-            }
-            if (!button->scene())
-            {
-                button->setParentItem(mFrame);//update parent for the case the item has been previously removed from scene
-                if (mDelegated->scene())
-                    mDelegated->scene()->addItem(button);
-            }
-            button->show();
-            button->setZValue(delegated()->zValue());
-        }
     } else {
         foreach(DelegateButton* button, mButtons)
             button->hide();
@@ -284,7 +287,30 @@ void UBGraphicsItemDelegate::positionHandles()
         mFrame->hide();
     }
 }
+void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
+{
+    if (visible) {
+        updateFrame();
+        updateButtons();
 
+        QPointF newUpPoint = mFrame->mapToItem(mDelegated, mZOrderUpButton->pos());
+        QPointF newDownPoint = mFrame->mapToItem(mDelegated, mZOrderDownButton->pos());
+
+
+        mZOrderUpButton->setParentItem(mDelegated);
+        mZOrderDownButton->setParentItem(mDelegated);
+
+        mZOrderUpButton->setPos(newUpPoint + QPointF(0,0));
+        mZOrderDownButton->setPos(newDownPoint + QPointF(0,0));
+
+        mZOrderUpButton->show();
+        mZOrderDownButton->show();
+
+    } else {
+        mZOrderUpButton->hide();
+        mZOrderDownButton->hide();
+    }
+}
 
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
@@ -320,18 +346,34 @@ void UBGraphicsItemDelegate::duplicate()
     UBApplication::boardController->copy();
     UBApplication::boardController->paste();
 }
-void UBGraphicsItemDelegate::increaseZLevel(int delta)
+
+void UBGraphicsItemDelegate::increaseZLevelUp()
 {
-    qDebug() << delegated()->scene()->items().count();
-
-//    UBGraphicsItem::assignZValue(delegated(), )
-
-//    int valueCandidate = delegated()->data(UBGraphicsItemData::ItemOwnZValue).toInt();
-//    if (delta < 0) {
-
-//    } else if (delta > 0) {
-
-//    }
+    UBGraphicsScene *curScene = castUBGraphicsScene();
+    if (curScene) {
+        curScene->changeZLevelTo(delegated(), UBZLayerController::up);
+    }
+}
+void UBGraphicsItemDelegate::increaseZlevelTop()
+{
+    UBGraphicsScene *curScene = castUBGraphicsScene();
+    if (curScene) {
+        curScene->changeZLevelTo(delegated(), UBZLayerController::top);
+    }
+}
+void UBGraphicsItemDelegate::increaseZLevelDown()
+{
+    UBGraphicsScene *curScene = castUBGraphicsScene();
+    if (curScene) {
+        curScene->changeZLevelTo(delegated(), UBZLayerController::down);
+    }
+}
+void UBGraphicsItemDelegate::increaseZlevelBottom()
+{
+    UBGraphicsScene *curScene = castUBGraphicsScene();
+    if (curScene) {
+        curScene->changeZLevelTo(delegated(), UBZLayerController::bottom);
+    }
 }
 
 void UBGraphicsItemDelegate::lock(bool locked)
@@ -483,4 +525,65 @@ void UBGraphicsItemDelegate::setFlippable(bool flippable)
 bool UBGraphicsItemDelegate::isFlippable()
 {
     return mFlippable;
+}
+
+void UBGraphicsItemDelegate::updateFrame()
+{
+    if (mFrame && !mFrame->scene() && mDelegated->scene())
+    {
+        mDelegated->scene()->addItem(mFrame);
+    }
+
+    mFrame->setAntiScale(mAntiScaleRatio);
+    mFrame->positionHandles();
+}
+
+void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
+{
+    QTransform tr;
+    tr.scale(mAntiScaleRatio, mAntiScaleRatio);
+
+    mDeleteButton->setParentItem(mFrame);
+    mDeleteButton->setTransform(tr);
+
+    qreal topX = mFrame->rect().left() - mDeleteButton->renderer()->viewBox().width() * mAntiScaleRatio / 2;
+    qreal topY = mFrame->rect().top() - mDeleteButton->renderer()->viewBox().height() * mAntiScaleRatio / 2;
+
+    qreal bottomX = mFrame->rect().left() - mDeleteButton->renderer()->viewBox().width() * mAntiScaleRatio / 2;
+    qreal bottomY = mFrame->rect().bottom() - mDeleteButton->renderer()->viewBox().height() * mAntiScaleRatio / 2;
+
+    mDeleteButton->setPos(topX, topY);
+
+    if (!mDeleteButton->scene())
+    {
+        if (mDelegated->scene())
+            mDelegated->scene()->addItem(mDeleteButton);
+    }
+
+    if (showUpdated)
+        mDeleteButton->show();
+
+    int i = 1, j = 0, k = 0;
+    while ((i + j + k) < mButtons.size())  {
+        DelegateButton* button = mButtons[i + j];
+        button->setParentItem(mFrame);
+
+        button->setTransform(tr);
+        if (button->getSection() == Qt::TopLeftSection) {
+            button->setPos(topX + (i++ * 1.6 * mFrameWidth * mAntiScaleRatio), topY);
+        } else if (button->getSection() == Qt::BottomLeftSection) {
+            button->setPos(bottomX + (++j * 1.6 * mFrameWidth * mAntiScaleRatio), bottomY);
+        } else if (button->getSection() == Qt::NoSection) {
+            ++k;
+        }
+        if (!button->scene())
+        {
+            if (mDelegated->scene())
+                mDelegated->scene()->addItem(button);
+        }
+        if (showUpdated) {
+            button->show();
+            button->setZValue(delegated()->zValue());
+        }
+    }
 }

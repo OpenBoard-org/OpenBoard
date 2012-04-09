@@ -101,7 +101,7 @@ protected:
 
 public:
 
-    static void assignZValue(QGraphicsItem*, int value);
+    static void assignZValue(QGraphicsItem*, qreal value);
     virtual UBGraphicsItemDelegate *Delegate() const  = 0;
 
     virtual void remove() = 0;
