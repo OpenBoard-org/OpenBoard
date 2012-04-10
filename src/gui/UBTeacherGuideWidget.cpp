@@ -84,6 +84,11 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpTreeWidget->setDropIndicatorShown(false);
     mpTreeWidget->header()->close();
     mpTreeWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    mpTreeWidget->setColumnCount(2);
+    mpTreeWidget->header()->setStretchLastSection(false);
+    mpTreeWidget->header()->setResizeMode(0, QHeaderView::Stretch);
+    mpTreeWidget->header()->setResizeMode(1, QHeaderView::Custom);
+
     connect(mpTreeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
 
     mpAddAnActionItem = new UBAddItem(tr("Add an action"),eUBTGAddSubItemWidgetType_Action,mpTreeWidget);
@@ -97,7 +102,6 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
 
 UBTeacherGuideEditionWidget::~UBTeacherGuideEditionWidget()
 {
-
     DELETEPTR(mpDocumentTitle);
     DELETEPTR(mpPageTitle);
     DELETEPTR(mpComment);
@@ -165,6 +169,8 @@ void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int 
     if(column == 0 && addSubItemWidgetType != eUBTGAddSubItemWidgetType_None){
         QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(widget);
         newWidgetItem->setData(column,Qt::UserRole,eUBTGAddSubItemWidgetType_None);
+        newWidgetItem->setData(1,Qt::UserRole,eUBTGAddSubItemWidgetType_None);
+        newWidgetItem->setIcon(1,QIcon(":images/close.svg"));
         switch(addSubItemWidgetType)
         {
         case eUBTGAddSubItemWidgetType_Action:
@@ -177,7 +183,9 @@ void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int 
             mpTreeWidget->setItemWidget(newWidgetItem,0,new UBTGUrlWidget());
             break;
         default:
-            qDebug() << "onAddItemClicked no action set";
+            delete newWidgetItem;
+            qCritical() << "onAddItemClicked no action set";
+            return;
         }
 
         if(addSubItemWidgetType != eUBTGAddSubItemWidgetType_None && !widget->isExpanded() )
@@ -187,6 +195,11 @@ void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int 
             widget->setExpanded(false);
             widget->setExpanded(true);
         }
+    }
+    else if(column == 1 && addSubItemWidgetType == eUBTGAddSubItemWidgetType_None){
+        int index = mpTreeWidget->currentIndex().row();
+        QTreeWidgetItem* toBeDeletedWidgetItem = widget->parent()->takeChild(index);
+        delete toBeDeletedWidgetItem;
     }
 }
 
@@ -252,6 +265,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpTreeWidget->setDropIndicatorShown(false);
     mpTreeWidget->header()->close();
     mpTreeWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+//    mpTreeWidget->setColumnCount(1);
     connect(mpTreeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
 
 }

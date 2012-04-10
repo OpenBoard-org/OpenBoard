@@ -39,6 +39,7 @@ UBAddItem::UBAddItem(const QString &string, int addSubItemWidgetType, QTreeWidge
     setIcon(0,QIcon(":images/increase.svg"));
     setText(0,string);
     setData(0,Qt::UserRole,QVariant(addSubItemWidgetType));
+    setData(1,Qt::UserRole,QVariant(addSubItemWidgetType));
 }
 
 UBAddItem::~UBAddItem()
@@ -305,7 +306,7 @@ void UBTGMediaWidget::mousePressEvent(QMouseEvent *event)
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData;
         QList<QUrl> urlList;
-        urlList << QUrl::fromLocalFile(mRelativePath);
+        urlList << QUrl(mRelativePath);
         mimeData->setUrls(urlList);
         drag->setMimeData(mimeData);
 

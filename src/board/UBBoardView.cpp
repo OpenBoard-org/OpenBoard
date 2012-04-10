@@ -35,8 +35,8 @@
 #include "gui/UBToolWidget.h"
 #include "gui/UBResources.h"
 #include "gui/UBMainWindow.h"
-#include "gui/UBMediaPlayer.h"
 #include "gui/UBThumbnailWidget.h"
+#include "gui/UBTeacherGuideWidgetsTools.h"
 
 #include "board/UBBoardController.h"
 
@@ -764,11 +764,6 @@ UBBoardView::drawItems (QPainter *painter, int numItems,
     }
 }
 
-//void UBBoardView::dragEnterEvent (QDragEnterEvent *event)
-//{
-//    // TODO UB 4.x be smarter with drag accept code .... we cannot handle everything ...
-//    event->acceptProposedAction ();
-//}
 
 void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
 {
@@ -805,14 +800,17 @@ void UBBoardView::dropEvent (QDropEvent *event)
     QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
-    if (graphicsWidget && graphicsWidget->acceptDrops()) {
+    qDebug() << event->source();
 
+    if (graphicsWidget && graphicsWidget->acceptDrops()) {
         graphicsWidget->processDropEvent(event);
         event->acceptProposedAction();
 
-    } else if (!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source())
-               || dynamic_cast<QWebView*>(event->source())) {
-
+    }
+    else if (!event->source()
+             || dynamic_cast<UBThumbnailWidget *>(event->source())
+             || dynamic_cast<QWebView*>(event->source())
+             || dynamic_cast<UBTGMediaWidget*>(event->source())) {
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction();
     }
