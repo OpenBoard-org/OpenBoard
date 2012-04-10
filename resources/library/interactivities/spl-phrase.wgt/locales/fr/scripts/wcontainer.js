@@ -1,7 +1,7 @@
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
-    example: "c'est un tas de mots qui ne devraient être répartis à part"
+    example: "Ceci est une série de mots à séparer correctement"
 };
 
 // if use the "view/edit" button or rely on the api instead

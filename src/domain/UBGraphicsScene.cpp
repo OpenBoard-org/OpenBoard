@@ -61,24 +61,11 @@
 
 #include "core/memcheck.h"
 
-qreal UBGraphicsScene::drawingLayerStart = 0.0;
-qreal UBGraphicsScene::toolLayerStart = 10000000.0;
-
-qreal UBGraphicsScene::toolOffsetRuler = 100;
-qreal UBGraphicsScene::toolOffsetProtractor = 100;
-qreal UBGraphicsScene::toolOffsetTriangle = 100;
-qreal UBGraphicsScene::toolOffsetCompass = 100;
-qreal UBGraphicsScene::toolOffsetEraser = 200;
-
-qreal UBGraphicsScene::toolOffsetCurtain = 1000;
-qreal UBGraphicsScene::toolOffsetPointer = 1100;
-
-qreal UBGraphicsScene::toolOffsetCache = 1000;//Didier please define offset you want
-
 qreal UBZLayerController::errorNumber = -20000001.0;
 
+UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
+    mScene(scene)
 
-UBZLayerController::UBZLayerController()
 {
     scopeMap.insert(itemLayerType::NoLayer,        ItemLayerTypeData( errorNumber, errorNumber));
     scopeMap.insert(itemLayerType::BackgroundItem, ItemLayerTypeData(-10000000.0, -10000000.0 ));
@@ -104,14 +91,159 @@ qreal UBZLayerController::generateZLevel(itemLayerType::Enum key)
 
     qreal result = scopeMap.value(key).curValue;
     qreal top = scopeMap.value(key).topLimit;
+    qreal incrementalStep = scopeMap.value(key).incStep;
 
-    result++;
+    result += incrementalStep;
     if (result >= top) {
-        qDebug() << "new values are over for the scope" << key;
-        result = top - 1;
+        // If not only one variable presents in the scope, notify that values for scope are over
+        if (scopeMap.value(key).topLimit != scopeMap.value(key).bottomLimit) {
+            qDebug() << "new values are over for the scope" << key;
+        }
+        result = top - incrementalStep;
     }
 
     scopeMap[key].curValue = result;
+
+    return result;
+}
+qreal UBZLayerController::generateZLevel(QGraphicsItem *item)
+{
+    qreal result = errorNumber;
+    itemLayerType::Enum type = static_cast<itemLayerType::Enum>(item->data(UBGraphicsItemData::itemLayerType).toInt());
+
+    if (validLayerType(type)) {
+        result =  generateZLevel(type);
+    }
+
+    return result;
+}
+
+qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination dest)
+{
+    itemLayerType::Enum curItemLayerType = typeForData(item);
+    if (curItemLayerType == itemLayerType::NoLayer) {
+        qDebug() << "item's layer is out of the scope. Can't implement z-layer changing operation";
+        return errorNum();
+    }
+
+    //select only items wiht the same z-level as item's one and push it to sortedItems QMultiMap
+    QMultiMap<qreal, QGraphicsItem*> sortedItems;
+    if (mScene->items().count()) {
+        foreach (QGraphicsItem *tmpItem, mScene->items()) {
+            if (typeForData(tmpItem) == curItemLayerType) {
+
+                sortedItems.insert(tmpItem->data(UBGraphicsItemData::ItemOwnZValue).toReal(), tmpItem);
+            }
+        }
+    }
+
+    //If only one item itself - do nothing, return it's z-value
+    if (sortedItems.count() == 1 && sortedItems.values().first() == item) {
+        qDebug() << "only one item exists in layer. Have nothing to change";
+        return item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+    }
+
+    QMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
+
+    if (dest == up) {
+        if (iCurElement.findNext(item)) {
+            if (iCurElement.hasNext()) {
+                qreal nextZ = iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+                UBGraphicsItem::assignZValue(iCurElement.peekNext().value(), item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+                UBGraphicsItem::assignZValue(item, nextZ);
+
+                iCurElement.next();
+
+                while (iCurElement.hasNext() && iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == nextZ) {
+                    UBGraphicsItem::assignZValue(iCurElement.next().value(), nextZ);
+                }
+
+                item->scene()->clearSelection();
+                item->setSelected(true);
+            }
+        }
+
+    } else if (dest == top) {
+        if (iCurElement.findNext(item)) {
+            if (iCurElement.hasNext()) {
+                UBGraphicsItem::assignZValue(item, generateZLevel(item));
+            }
+        }
+
+    } else if (dest == down) {
+        iCurElement.toBack();
+        if (iCurElement.findPrevious(item)) {
+            if (iCurElement.hasPrevious()) {
+                qreal nextZ = iCurElement.peekPrevious().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+                UBGraphicsItem::assignZValue(iCurElement.peekPrevious().value(), item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+                UBGraphicsItem::assignZValue(item, nextZ);
+
+                while (iCurElement.hasNext() && iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == nextZ) {
+                        UBGraphicsItem::assignZValue(iCurElement.next().value(), nextZ);
+                }
+            }
+        }
+
+    } else if (dest == bottom) {
+        iCurElement.toBack();
+        if (iCurElement.findPrevious(item)) {
+            if (iCurElement.hasPrevious()) {
+//                qreal oldz = iCurElement.peekPrevious().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+                qreal oldz = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+                iCurElement.toFront();
+                qreal nextZ = iCurElement.next().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+
+                ItemLayerTypeData curItemLayerTypeData = scopeMap.value(curItemLayerType);
+//
+                //if we have some free space between lowest graphics item and layer's bottom bound,
+                //insert element close to first element in layer
+                if (nextZ >= curItemLayerTypeData.bottomLimit + curItemLayerTypeData.incStep) {
+                    qreal result = nextZ - curItemLayerTypeData.incStep;
+                    UBGraphicsItem::assignZValue(item, result);
+                } else {
+                    UBGraphicsItem::assignZValue(item, nextZ);
+                    bool doubleGap = false; //to detect if we can finish rundown since we can insert item to the free space
+
+                    while (iCurElement.peekNext().value() != item) {
+                        qreal curZ = iCurElement.value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+                        qreal curNextZ = iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+                        if (curNextZ - curZ >= 2 * curItemLayerTypeData.incStep) {
+                            UBGraphicsItem::assignZValue(iCurElement.value(), curZ + curItemLayerTypeData.incStep);
+                            doubleGap = true;
+                            break;
+                        } else {
+                            UBGraphicsItem::assignZValue(iCurElement.value(), iCurElement.next().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+                        }
+                    }
+                    if (!doubleGap) {
+
+                        UBGraphicsItem::assignZValue(iCurElement.value(), oldz);
+
+                        while (iCurElement.hasNext() && (iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == oldz)) {
+                            UBGraphicsItem::assignZValue(iCurElement.next().value(), oldz);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    //clear selection of the item and then select it again to activate selectionChangeProcessing()
+    item->scene()->clearSelection();
+    item->setSelected(true);
+
+    //Return new z value assigned to item
+    return item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+}
+
+itemLayerType::Enum UBZLayerController::typeForData(QGraphicsItem *item) const
+{
+    itemLayerType::Enum result = static_cast<itemLayerType::Enum>(item->data(UBGraphicsItemData::itemLayerType).toInt());
+
+    if (!scopeMap.contains(result)) {
+        result = itemLayerType::NoLayer;
+    }
 
     return result;
 }
@@ -135,7 +267,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , enableUndoRedoStack(true)
     , magniferControlViewWidget(0)
     , magniferDisplayViewWidget(0)
-
+    , mZLayerController(new UBZLayerController(this))
+    , mIsDesktopMode(false)
 {
 
 #ifdef __ppc__
@@ -160,11 +293,12 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 
 UBGraphicsScene::~UBGraphicsScene()
 {
-    DisposeMagnifierQWidgets();
-
     if (mCurrentStroke)
         if (mCurrentStroke->polygons().empty())
             delete mCurrentStroke;
+
+    if (mZLayerController)
+        delete mZLayerController;
 }
 
 void UBGraphicsScene::selectionChangedProcessing()
@@ -178,7 +312,7 @@ void UBGraphicsScene::selectionChangedProcessing()
         QGraphicsItem *nextItem = allItemsList.at(i);
 
         if (nextItem->isSelected()) {
-            nextItem->setZValue(mZLayerController.generateZLevel(itemLayerType::SelectedItem));
+            nextItem->setZValue(mZLayerController->generateZLevel(itemLayerType::SelectedItem));
         } else {
             nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
         }
@@ -711,6 +845,15 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
     }
 }
 
+void UBGraphicsScene::setBackgroundZoomFactor(qreal zoom)
+{
+    mZoomFactor = zoom;
+}
+
+void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
+{
+    mIsDesktopMode = bModeDesktop;
+}
 
 void UBGraphicsScene::recolorAllItems()
 {
@@ -822,7 +965,6 @@ void UBGraphicsScene::leaveEvent(QEvent * event)
     Q_UNUSED(event);
     hideEraser();
 }
-
 
 UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 {
@@ -1330,7 +1472,7 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     setModified(true);
     UBCoreGraphicsScene::addItem(item);
 
-    UBGraphicsItem::assignZValue(item, generateZLevel(item));
+    UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
 
     if (!mTools.contains(item))
       ++mItemCount;
@@ -1344,7 +1486,7 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 
     foreach(QGraphicsItem* item, items) {
         UBCoreGraphicsScene::addItem(item);
-        UBGraphicsItem::assignZValue(item, generateZLevel(item));
+        UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
     }
 
     mItemCount += items.size();
@@ -1406,7 +1548,7 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
         item->setAcceptedMouseButtons(Qt::NoButton);
         item->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::FixedBackground);
 
-        UBGraphicsItem::assignZValue(item, mZLayerController.generateZLevel(itemLayerType::BackgroundItem));
+        UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(itemLayerType::BackgroundItem));
 
         if (pAdaptTransformation)
         {
@@ -1779,6 +1921,23 @@ void UBGraphicsScene::setNominalSize(int pWidth, int pHeight)
      setNominalSize(QSize(pWidth, pHeight));
 }
 
+void UBGraphicsScene::setSelectedZLevel(QList<QGraphicsItem *> itemList)
+{
+    foreach (QGraphicsItem *item, itemList) {
+        item->setZValue(mZLayerController->generateZLevel(itemLayerType::SelectedItem));
+    }
+}
+void UBGraphicsScene::setOwnZlevel(QList<QGraphicsItem *> itemList)
+{
+    foreach (QGraphicsItem *item, itemList) {
+        item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+    }
+}
+
+qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest)
+{
+    return mZLayerController->changeZLevelTo(item, dest);
+}
 
 QGraphicsItem* UBGraphicsScene::rootItem(QGraphicsItem* item) const
 {
@@ -1854,6 +2013,58 @@ void UBGraphicsScene::drawItems (QPainter * painter, int numItems,
     }
 }
 
+void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    if (mIsDesktopMode)
+    {
+        QGraphicsScene::drawBackground (painter, rect);
+        return;
+    }
+    bool darkBackground = isDarkBackground ();
+
+    if (darkBackground)
+    {
+      painter->fillRect (rect, QBrush (QColor (Qt::black)));
+    }
+    else
+    {
+      painter->fillRect (rect, QBrush (QColor (Qt::white)));
+    }
+
+    if (mZoomFactor > 0.5)
+    {
+        QColor bgCrossColor;
+
+        if (darkBackground)
+            bgCrossColor = UBSettings::crossDarkBackground;
+        else
+            bgCrossColor = UBSettings::crossLightBackground;
+        if (mZoomFactor < 1.0)
+        {
+            int alpha = 255 * mZoomFactor / 2;
+            bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
+        }
+
+        painter->setPen (bgCrossColor);
+
+        if (isCrossedBackground())
+        {
+            qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
+
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += UBSettings::crossSize)
+            {
+                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+            }
+
+            qreal firstX = ((int) (rect.x () / UBSettings::crossSize)) * UBSettings::crossSize;
+
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += UBSettings::crossSize)
+            {
+                painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+            }
+        }
+    }
+}
 
 void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 {
@@ -1949,18 +2160,6 @@ void UBGraphicsScene::createPointer()
 
     mTools << mPointer;
     addItem(mPointer);
-}
-
-qreal UBGraphicsScene::generateZLevel(QGraphicsItem *item)
-{
-    qreal result = UBZLayerController::errorNum();
-    itemLayerType::Enum type = static_cast<itemLayerType::Enum>(item->data(UBGraphicsItemData::itemLayerType).toInt());
-
-    if (mZLayerController.validLayerType(type)) {
-        result =  mZLayerController.generateZLevel(type);
-    }
-
-    return result;
 }
 
 void UBGraphicsScene::setToolCursor(int tool)

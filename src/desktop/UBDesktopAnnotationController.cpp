@@ -88,6 +88,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
     mTransparentDrawingScene = new UBGraphicsScene(0);
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
+    mTransparentDrawingScene->setDrawingMode(true);
 
 //    mRightPalette = UBApplication::boardController->paletteManager()->createDesktopRightPalette(mTransparentDrawingView);
     //mRightPalette = new UBRightPalette(mTransparentDrawingView);

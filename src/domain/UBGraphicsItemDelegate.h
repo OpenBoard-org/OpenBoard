@@ -21,9 +21,11 @@
 #include <QMimeData>
 
 #include "core/UB.h"
+#include "core/UBSettings.h"
 
 class QGraphicsSceneMouseEvent;
 class QGraphicsItem;
+class UBGraphicsScene;
 class UBGraphicsProxyWidget;
 class UBGraphicsDelegateFrame;
 class UBGraphicsWidgetItem;
@@ -63,20 +65,8 @@ class DelegateButton: public QGraphicsSvgItem
 
     protected:
 
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event)
-        {
-            // make sure delegate is selected, to avoid control being hidden
-            mDelegated->setSelected(true);
-
-            event->setAccepted(!mIsTransparentToMouseEvent);
-        }
-
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-        {
-            emit clicked();
-
-            event->setAccepted(!mIsTransparentToMouseEvent);
-        }
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
         void modified();
 
@@ -84,12 +74,13 @@ class DelegateButton: public QGraphicsSvgItem
 
         QGraphicsItem* mDelegated;
 
-
+        QTime mPressedTime;
         bool mIsTransparentToMouseEvent;
         Qt::WindowFrameSection mButtonAlignmentSection;
 
     signals:
         void clicked (bool checked = false);
+        void longClicked();
 
 };
 
@@ -110,8 +101,12 @@ class UBGraphicsItemDelegate : public QObject
         virtual bool mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual bool weelEvent(QGraphicsSceneWheelEvent *event);
 
+        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);
+        virtual UBGraphicsScene *castUBGraphicsScene();
 
         void printMessage(const QString &mess) {qDebug() << mess;}
 
@@ -123,6 +118,7 @@ class UBGraphicsItemDelegate : public QObject
         void setCanDuplicate(bool allow){ mCanDuplicate = allow; }
 
         virtual void positionHandles();
+        void setZOrderButtonsVisible(bool visible);
 
         void startUndoStep();
         void commitUndoStep();
@@ -135,9 +131,12 @@ class UBGraphicsItemDelegate : public QObject
 
         QMimeData* mimeData(){ return mMimeData; }
         void setMimeData(QMimeData* mimeData);
+        void setDragPixmap(const QPixmap &pix) {mDragPixmap = pix;}
 
         void setFlippable(bool flippable);
         bool isFlippable();
+
+        void setButtonsVisible(bool visible);
 
     signals:
         void showOnDisplayChanged(bool shown);
@@ -151,8 +150,10 @@ class UBGraphicsItemDelegate : public QObject
         virtual void lock(bool lock);
         virtual void duplicate();
 
-        virtual void increaseZLevel() {increaseZLevel(1);}
-        virtual void decreaseZLevel() {increaseZLevel(-1);}
+        void increaseZLevelUp();
+        void increaseZLevelDown();
+        void increaseZlevelTop();
+        void increaseZlevelBottom();
 
     protected:
         virtual void buildButtons() {;}
@@ -187,18 +188,22 @@ protected slots:
         virtual void gotoContentSource(bool checked);
 
 private:
+        void updateFrame();
+        void updateButtons(bool showUpdated = false);
 
-        virtual void increaseZLevel(int delta);
+
 
         QPointF mOffset;
         QTransform mPreviousTransform;
         QPointF mPreviousPosition;
+        QPointF mDragStartPosition;
         qreal mPreviousZValue;
         QSizeF mPreviousSize;
         bool mCanRotate;
         bool mCanDuplicate;
         bool mRespectRatio;
         QMimeData* mMimeData;
+        QPixmap mDragPixmap;
 
         /** A boolean saying that this object can be flippable (mirror effect) */
         bool mFlippable;

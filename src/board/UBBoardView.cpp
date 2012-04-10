@@ -51,6 +51,7 @@
 
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsCache.h"
+#include "tools/UBGraphicsTriangle.h"
 
 #include "core/memcheck.h"
 
@@ -418,18 +419,20 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
 
             if (!movingItem
-                    || movingItem->isSelected()
-                    || movingItem->type() == UBGraphicsDelegateFrame::Type
-                    || movingItem->type() == DelegateButton::Type
-                    || movingItem->type() == UBGraphicsCompass::Type
-                    || movingItem->type() == UBGraphicsPDFItem::Type
-                    || movingItem->type() == UBGraphicsPolygonItem::Type
-                    || movingItem->type() == UBGraphicsCache::Type)
-            {
-                movingItem = NULL;
-                QGraphicsView::mousePressEvent (event);
+                || movingItem->isSelected()
+                || movingItem->type() == UBGraphicsDelegateFrame::Type
+                || movingItem->type() == DelegateButton::Type
+                || movingItem->type() == UBGraphicsCompass::Type
+                || movingItem->type() == UBGraphicsPDFItem::Type
+                || movingItem->type() == UBGraphicsPolygonItem::Type
+                || movingItem->type() == UBGraphicsCache::Type
+                || movingItem->type() == UBGraphicsTriangle::Type
+                || movingItem == this->scene()->backgroundObject())
+                {
+                    movingItem = NULL;
+                    QGraphicsView::mousePressEvent (event);
 
-            }
+                }
             else
             {
                 mLastPressedMousePos = mapToScene(event->pos());

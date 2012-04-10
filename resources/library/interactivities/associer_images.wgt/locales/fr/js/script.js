@@ -1,9 +1,9 @@
 var sankoreLang = {
-    display: "Affichage", 
+    display: "Afficher", 
     edit: "Modifier", 
     short_desc: "Sélectionner le numéro «trois».", 
     add: "Nouveau bloc",
-    enter: "Saisissez la consigne ici ..."
+    enter: "Saisir la consigne ici ..."
 };
 
 //main function
