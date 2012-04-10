@@ -326,6 +326,7 @@ class UBSettings : public QObject
         UBSetting* swapControlAndDisplayScreens;
 
         UBSetting* angleTolerance;
+        UBSetting* historyLimit;
 
     public slots:
 

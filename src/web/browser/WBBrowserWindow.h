@@ -112,6 +112,10 @@ class WBBrowserWindow : public QWidget
 
         void showTabAtTop(bool attop);
 
+        void aboutToShowBackMenu();
+        void aboutToShowForwardMenu();
+        void openActionUrl(QAction *action);
+
     signals:
         void activeViewPageChanged();
         void activeViewChange(QWidget*);
@@ -160,6 +164,9 @@ class WBBrowserWindow : public QWidget
         QString mLastSearch;
 
         Ui::MainWindow* mUniboardMainWindow;
+
+        QMenu	*mHistoryBackMenu;
+        QMenu	*mHistoryForwardMenu;
 };
 
 #endif // WBBROWSERMAINWINDOW_H
