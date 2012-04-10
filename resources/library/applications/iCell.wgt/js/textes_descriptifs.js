@@ -147,64 +147,64 @@ switch(lang){
         break;
     case "fr":
         txt_vesicule = 	"<h2>Vesicule<br/>Transporteurs</h2>"+
-        "<h4>Structure:</h4><span><p>Bicouche phospholipidique</p></span>"+
-        "<h4>Role:</h4><span><p>Transport de proteines ou d'autres elements a l'interieur de la cellule, vers l'exterieur (exocytose) ou vers l'interieur (endocytose).</p></span>"+
-        '<h4>Fonctionnement:</h4><span><p>Transporteur "remorque" par des proteines prenant appui sur le cytosquelette.</p></span>'
+        "<h4>Structure : </h4><span><p>Bicouche phospholipidique</p></span>"+
+        "<h4>Rôle : </h4><span><p>Transport de protéines ou d'autres éléments à l'intérieur de la cellule, vers l'extérieur (exocytose) ou vers l'intérieur (endocytose).</p></span>"+
+        '<h4>Fonctionnement : </h4><span><p>Transporteur "remorque" par des protéines prenant appui sur le cytosquelette.</p></span>'
 						
         txt_lysosome = "<h2>Lysosome<br/>Estomacs cellulaires</h2>"+
-        "<h4>Structure:</h4><span><p>Bicouche phospholipidique</p></span>"+
-        "<h4>Role:</h4><span><p>Digestion intra-cellulaire a l'aide d'enzymes</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>Absorption de nutriments par endocytose ou d'elements cellulaires abimes, digestion de ceux-ci, puis distribution des resultats de la reaction chimique dans la cellule et enfin expulsion des dechets par exocytose.</p></span>"
+        "<h4>Structure : </h4><span><p>Bicouche phospholipidique</p></span>"+
+        "<h4>Role : </h4><span><p>Digestion intracellulaire à l'aide d'enzymes</p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>Absorption de nutriments par endocytose ou d'éléments cellulaires abimés, digestion de ceux-ci, puis distribution des résultats de la réaction chimique dans la cellule et enfin expulsion des déchets par exocytose.</p></span>"
  
         txt_mitoch = 	"<h2>Mitochondrie<br/>Piles</h2>"+
-        "<h4>Structure:</h4><span><p>Deux bichouches phospholipidiques appelees membranes mitochondriales, une externe et une interne. La mitochondrie contient des ribosomes, de l'ATP de l'ADN et bien d'autres molecules.</p></span>"+
-        "<h4>Role:</h4><span><p>Centrale energetique de la cellule.</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>L'energie - sous forme d'ATP (adenosine triphosphate) - est issue de differentes etapes de reactions chimique partant d'une molecule de glucose.</p></span>"
+        "<h4>Structure : </h4><span><p>Deux bicouches phospholipidiques appelées membranes mitochondriales, une externe et une interne. La mitochondrie contient des ribosomes, de l'ATP de l'ADN et bien d'autres molécules.</p></span>"+
+        "<h4>Rôle : </h4><span><p>Centrale énergétique de la cellule.</p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>L'énergie - sous forme d'ATP (adénosine triphosphate) - est issue de différentes étapes de réactions chimiques partant d'une molécule de glucose.</p></span>"
  
         txt_golgi =	"<h2>Appareil de Golgi<br/>Usines miniatures</h2>"+
-        "<h4>Structure:</h4><span><p>Forme d'un empilement de saccules membranaires applatis.</p></span>"+
-        "<h4>Role:</h4><span><p>Modification de certaines proteines au cours d'un cheminement au travers de ses saccules.</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>Suite de reactions chimiques, notamment par glycosilation.</p></span>"
+        "<h4>Structure : </h4><span><p>Forme d'un empilement de saccules membranaires aplatis.</p></span>"+
+        "<h4>Rôle : </h4><span><p>Modification de certaines protéines au cours d'un cheminement au travers de ses saccules.</p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>Suite de réactions chimiques, notamment par glycosilation.</p></span>"
  
         txt_rer =	"<h2>Reticulum endoplasmique rugueux - Tunnel</h2>"+
-        "<h4>Structure:</h4><span><p>Compose d'une bicouche phospholipidique piquetee de ribosomes (d'un aspect <i>rugueux</i>) delimitant la lumiere, un espace interne pouvant tre compare a un tunnel.</p></span>"+
-        "<h4>Role:</h4><span><p>Plus specialise que le REL, il participe au transport et a la finalisation des proteines, qui sont synthetisees par les ribosomes.</p></span>"+
-        '<h4>Fonctionnement:</h4><span><p>Les proteines "tombent" dans la lumiere du RER o elles sont modifiees et deplacees. Elles quittent le RER dans une vesucule issue de la membrane de ce dernier.</p></span>'
+        "<h4>Structure : </h4><span><p>Composé d'une bicouche phospholipidique piquetée de ribosomes (d'un aspect <i>rugueux</i>) délimitant la lumière, un espace interne pouvant être comparé à un tunnel.</p></span>"+
+        "<h4>Rôle : </h4><span><p>Plus spécialisé que le REL, il participe au transport et à la finalisation des protéines, qui sont synthétisées par les ribosomes.</p></span>"+
+        '<h4>Fonctionnement : </h4><span><p>Les protéines "tombent" dans la lumière du RER où elles sont modifiées et déplacées. Elles quittent le RER dans une vésicule issue de la membrane de ce dernier.</p></span>'
  
         txt_noy = 	"<h2>Noyau - Le coffre-fort</h2>"+
-        "<h4>Structure:</h4><span><p>Entoure par une double membrane appelee enveloppe nucleaire en lien par endroits avec le RER. Ces deux membranes fusionnent a intervalles reguliers pour former les pores nucleaires. a l'interieur se trouvent le nucleole et l'ADN, sous forme de chromatine ou de chomosomes.</p></span>"+
-        "<h4>Role:</h4><span><p>Stockage de la totalite des informations genetiques necessaires a la vie de la cellule.</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>Site de la transcription (copie de l'information genetique sur des ARNm).</p></span>"
+        "<h4>Structure : </h4><span><p>Entouré par une double membrane appelée enveloppe nucléaire en lien par endroits avec le RER. Ces deux membranes fusionnent à intervalles réguliers pour former les pores nucléaires. À l'intérieur se trouve le nucléole et l'ADN, sous forme de chromatine ou de chromosomes.</p></span>"+
+        "<h4>Rôle : </h4><span><p>Stockage de la totalité des informations génétiques nécessaires à la vie de la cellule.</p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>Site de la transcription (copie de l'information génétique sur des ARNm).</p></span>"
  
         txt_rel = 	"<h2>Reticulum endoplasmique lisse - REL</h2>"+
-        "<h4>Structure:</h4><span><p>Similaires a celle du RER, a la difference que sa membranne n'est pas parsemee de ribosomes, d'o son aspect <i>lisse</i>.</p></span>"+
-        "<h4>Role:</h4><span><p>Sinthese des phospholipides,stockage du calcium, transformation de certaines molecules exterieures (medicament, alcool, ...). Dans certaines cellules, le REL remplit aussi des fonctions supplementaires, telles la production d'hormones, d'acides gastriques, etc.</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>Il est le siege de beaucoup de reactions chimiques complexes (ex: detoxification, differentes syntheses).</p></span>"
+        "<h4>Structure : </h4><span><p>Similaire à celle du RER, à la différence que sa membrane n'est pas parsemée de ribosomes, d'où son aspect <i>lisse</i>.</p></span>"+
+        "<h4>Rôle : </h4><span><p>Synthèse des phospholipides, stockage du calcium, transformation de certaines molécules extérieures (médicament, alcool...). Dans certaines cellules, le REL remplit aussi des fonctions supplémentaires, telles que la production d'hormones, d'acides gastriques, etc.</p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>Il est le siège de beaucoup de réactions chimiques complexes (ex : détoxification, différentes synthèses).</p></span>"
  
         txt_adn =	"<h2>ADN - Le livre de la vie</h2>"+
-        "<h4>Structure:</h4><span><p>echelle a la celebre forme de double helice composee de deux colonnes sucre-phosphate-sucre-phosphate-... et dont les echelons sont apelles bases azotees.</p></span>"+
-        "<h4>Role:</h4><span><p>L'ADN contient toutes les informations necessaires a la vie.</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>Toutes les informations sont ecrites a l'aide des quatre lettres A, T, G, et C. Grace a ces combinaisons, il est possible d'ecrire tout ce qui est utile a la cellule.</p></span>"
+        "<h4>Structure : </h4><span><p>échelle à la célèbre forme de double hélice composée de deux colonnes sucre-phosphate-sucre-phosphate-... et dont les échelons sont appelés bases azotées.</p></span>"+
+        "<h4>Rôle : </h4><span><p>L'ADN contient toutes les informations nécessaires à la vie.</p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>Toutes les informations sont écrites à l'aide des quatre lettres A, T, G, et C. Grâce à ces combinaisons, il est possible d'écrire tout ce qui est utile à la cellule.</p></span>"
 
-        txt_centr=	"<h2>Centrioles - Remorqueurs de choromosomes</h2>"+
-        "<h4>Structure:</h4><span><p>Neuf triplets de microtubules entoures par un certain nombre de proteines.</p></span>"+
-        "<h4>Role:</h4><span><p>Separer les differents chromosomes durant la division cellulaire.</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>Les centrioles, une fois places aux deux poles de la cellule, deploient des microtubules vers les centromeres des chromosomes et les tirent vers eux pour les separer.</p></span>"
+        txt_centr=	"<h2>Centrioles - Remorqueurs de chromosomes</h2>"+
+        "<h4>Structure : </h4><span><p>Neuf triplets de microtubules entourent par un certain nombre de protéines.</p></span>"+
+        "<h4>Rôle : </h4><span><p>Séparer les différents chromosomes durant la division cellulaire.</p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>Les centrioles, une fois placés aux deux pôles de la cellule, déploient des microtubules vers les centromères des chromosomes et les tirent vers eux pour les séparer.</p></span>"
 				
-        txt_rib =	"<h2>Ribosome - Decodeurs</h2>"+
-        "<h4>Structure:</h4><span><p>Forme par deux sous-unites composees d'ARN ribosomique et de proteines.</p></span>"+
-        "<h4>Role:</h4><span><p>Le ribosome synthetise les proteines.</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>Un brin d'ARNm (messager) passe dans le ribosome et un ARNt (de transfert) entre dans la grande sous-unite si son codon (groupe de trois bases azotees) correspond a celui qui est en face sur l'ARNm. Cet ARNt porte avec lui un acide amine specifique qui est ajoute a la chaine deja assemblee.</p></span>"
+        txt_rib =	"<h2>Ribosome - Décodeurs</h2>"+
+        "<h4>Structure : </h4><span><p>Formé par deux sous-unités composées d'ARN ribosomique et de protéines.</p></span>"+
+        "<h4>Rôle : </h4><span><p>Le ribosome synthétise les protéines.</p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>Un brin d'ARNm (messager) passe dans le ribosome et un ARNt (de transfert) entre dans la grande sous-unité si son codon (groupe de trois bases azotées) correspond à celui qui est en face sur l'ARNm. Cet ARNt porte avec lui un acide aminé spécifique qui est ajouté à la chaîne déjà assemblée.</p></span>"
 
         txt_arn =	"<h2>ARN - Multifonction</h2>"+
-        "<h4>Structure:</h4><span><p>Tres similaire a l'ADN a la difference qu'il ne possede qu'un brin et que la thymine (T) de l'ADN est remplacee par l'uracile (U). De plus, il est chimiquement plus instable que l'ADN, c'est pourquoi il n'est pas utilise pour le stockage d'informations a long terme.</p></span>"+
-        "<h4>Role:</h4><span><p>Multiples, il existe des ARN de transport, messagers, regulateus, guides, satellites, ...</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>La copie d'informations genetiques se fait grace a l'ouverture de la double-helice d'ADN, puis la copie des codons sur l'ARN. Celui-ci peut alors sortir du noyau, ce que l'ADN ne peut pas faire.</p></span>"
+        "<h4>Structure : </h4><span><p>Très similaire à l'ADN à la différence qu'il ne possède qu'un brin et que la thymine (T) de l'ADN est remplacée par l'uracile (U). De plus, il est chimiquement plus instable que l'ADN, c'est pourquoi il n'est pas utilisé pour le stockage d'informations à long terme.</p></span>"+
+        "<h4>Rôle : </h4><span><p>Multiples, il existe des ARN de transport, messagers, régulateurs, guides, satellites... </p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>La copie d'informations génétiques se fait grâce à l'ouverture de la double hélice d'ADN, puis la copie des codons sur l'ARN. Celui-ci peut alors sortir du noyau, ce que l'ADN ne peut pas faire.</p></span>"
 
-        txt_nucl =	"<h2>Nucleole - Fabrique d'ARN</h2>"+
-        "<h4>Structure:</h4><span><p>Compose d'aucune membranne, c'est un agglomerat de proteines et d'ARN.</p></span>"+
-        "<h4>Role:</h4><span><p>Lieu de la transcription d'ARN, nottament d'ARNr (ribosomiques) qui, associes avec des proteines, vont former les deux sous-unites des ribosomes.</p></span>"+
-        "<h4>Fonctionnement:</h4><span><p>Creation d'un ribosome: Transcription des ARNr ainsi que des proteines necessaires (cette etape est effectuee dans le cytoplasme par d'autres ribosomes) qui rentrent dans le noyau, association des molecules franchement formees en un nouveau ribosome, qui sort du noyau pour jouer son Role.</p></span>"
+        txt_nucl =	"<h2>Nucléole - Fabrique d'ARN</h2>"+
+        "<h4>Structure : </h4><span><p>Composé d'aucune membrane, c'est un agglomérat de protéines et d'ARN.</p></span>"+
+        "<h4>Rôle : </h4><span><p>Lieu de la transcription d'ARN, notamment d'ARNr (ribosomiques) qui, associés avec des protéines, vont former les deux sous-unités des ribosomes.</p></span>"+
+        "<h4>Fonctionnement : </h4><span><p>Création d'un ribosome: Transcription des ARNr ainsi que des protéines nécessaires (cette étape est effectuée dans le cytoplasme par d'autres ribosomes) qui rentrent dans le noyau, association des molécules franchement formées en un nouveau ribosome, qui sort du noyau pour jouer son rôle.</p></span>"
         break;
     default:
         txt_vesicule = 	"<h2>Vesicle<br/>Transporter</h2>"+

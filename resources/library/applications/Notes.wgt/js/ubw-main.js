@@ -199,7 +199,7 @@ function init(){
         if(text) 
             textField.html(text);            
         else 
-            textField.html("Enter your notes here ...");       
+            textField.html("Saisir votre texte ici ...");       
         textField.focus();
     }		
 				
