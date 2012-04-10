@@ -1,3 +1,18 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef UBUBMediaPlayer_H
 #define UBUBMediaPlayer_H
 
@@ -41,7 +56,6 @@ protected:
 private:
     UBMediaPlayer* m_player;
     QBasicTimer m_timer;
-//    QAction m_action;
 };
 
 class UBMediaPlayer : public QWidget
@@ -58,7 +72,6 @@ public slots:
     void openFile();
     void rewind();
     void forward();
-//    void updateTime();
     void finished();
     void playPause();
 
@@ -78,12 +91,8 @@ private:
     QIcon playIcon;
     QIcon pauseIcon;
     QPushButton *playButton;
-//    QPushButton *rewindButton;
-//    QPushButton *forwardButton;
     Phonon::SeekSlider *slider;
-//    QLabel *timeLabel;
     QLabel *progressLabel;
-//    QLabel *info;
 
     QWidget m_videoWindow;
     Phonon::MediaObject m_MediaObject;
@@ -92,16 +101,6 @@ private:
     Phonon::Path m_audioOutputPath;
 };
 
-class UBDraggableMediaPlayer : public UBMediaPlayer
-{
-    Q_OBJECT
-public:
-    UBDraggableMediaPlayer();
-    void setFile(const QString &text);
-protected:
-    QString mSourcePath;
-    void mousePressEvent(QMouseEvent *event);
-};
 
 
 #endif // UBUBMediaPlayer_H

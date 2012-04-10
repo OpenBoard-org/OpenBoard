@@ -40,6 +40,7 @@ class UBServerXMLHttpRequest;
 class UBKeyboardPalette;
 class UBMainWindow;
 class UBApplicationController;
+class UBDockTeacherGuideWidget;
 
 class UBBoardPaletteManager : public QObject
 {
@@ -52,6 +53,7 @@ class UBBoardPaletteManager : public QObject
         void setupLayout();
         UBLeftPalette* leftPalette(){return mLeftPalette;}
         UBRightPalette* rightPalette(){return mRightPalette;}
+        UBStylusPalette* stylusPalette(){return mStylusPalette;}
         void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
         void connectToDocumentController();
@@ -133,6 +135,8 @@ class UBBoardPaletteManager : public QObject
         //       we MUST refactor the architecture in order to use only one
         //       lib widget!
         UBLibWidget* mpDesktopLibWidget;
+
+        UBDockTeacherGuideWidget* mpTeacherGuideWidget;
 
         bool mDownloadInProgress;
 

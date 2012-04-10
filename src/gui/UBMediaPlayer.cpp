@@ -1,8 +1,21 @@
-#include "UBMediaPlayer.h"
-
-
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <QtGui>
+
+#include "UBMediaPlayer.h"
 
 #define SLIDER_RANGE 8
 
@@ -10,13 +23,7 @@
 MediaVideoWidget::MediaVideoWidget(UBMediaPlayer *player, QWidget *parent) :
     Phonon::VideoWidget(parent), m_player(player)/*, m_action(this)*/
 {
-//    m_action.setCheckable(true);
-//    m_action.setChecked(false);
-//    m_action.setShortcut(QKeySequence( Qt::AltModifier + Qt::Key_Return));
-//    m_action.setShortcutContext(Qt::WindowShortcut);
-//    connect(&m_action, SIGNAL(toggled(bool)), SLOT(setFullScreen(bool)));
-//    addAction(&m_action);
-//    setAcceptDrops(true);
+    //NOOP
 }
 
 void MediaVideoWidget::timerEvent(QTimerEvent *e)
@@ -41,23 +48,6 @@ UBMediaPlayer::UBMediaPlayer() :
 
     QSize buttonSize(26, 20);
 
-//    QPushButton *openButton = new QPushButton(this);
-
-////    openButton->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton));
-////    QPalette bpal;
-////    QColor arrowcolor = bpal.buttonText().color();
-////    if (arrowcolor == Qt::black)
-////        arrowcolor = QColor(80, 80, 80);
-////    bpal.setBrush(QPalette::ButtonText, arrowcolor);
-////    openButton->setPalette(bpal);
-
-//    rewindButton = new QPushButton(this);
-//    rewindButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
-
-//    forwardButton = new QPushButton(this);
-//    forwardButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
-//    forwardButton->setEnabled(false);
-
     playButton = new QPushButton(this);
     playIcon = style()->standardIcon(QStyle::SP_MediaPlay);
     pauseIcon = style()->standardIcon(QStyle::SP_MediaPause);
@@ -69,53 +59,18 @@ UBMediaPlayer::UBMediaPlayer() :
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->setContentsMargins(1, 1, 1, 1);
 
-//    QHBoxLayout *layout = new QHBoxLayout();
 
-//    info = new QLabel(this);
-//    info->setMinimumHeight(70);
-//    info->setAcceptDrops(false);
-//    info->setMargin(2);
-//    info->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-//    info->setLineWidth(2);
-//    info->setAutoFillBackground(true);
-
-//    QPalette palette;
-//    palette.setBrush(QPalette::WindowText, Qt::white);
-#ifndef Q_WS_MAC
-//    rewindButton->setMinimumSize(buttonSize);
-//    forwardButton->setMinimumSize(buttonSize);
-    playButton->setMinimumSize(buttonSize);
-#endif
-//    info->setStyleSheet("border-image:url(:/images/screen.png) ; border-width:3px");
-//    info->setPalette(palette);
-//    info->setText(tr("<center>No media</center>"));
-
-
-//    layout->addWidget(rewindButton);
-//    layout->addWidget(playButton);
-//    layout->addWidget(forwardButton);
-
-//    layout->addStretch();
-
-//    vLayout->addWidget(info);
     initVideoWindow();
     vLayout->addWidget(&m_videoWindow);
-//    m_videoWidget->setStyleSheet(QString("background:red;"));
     QVBoxLayout *buttonPanelLayout = new QVBoxLayout();
 #ifndef Q_WS_WIN
         m_videoWindow.hide();
 #endif
-//    buttonPanelLayout->addLayout(layout);
-
-//    timeLabel = new QLabel(this);
     progressLabel = new QLabel(this);
     QWidget *sliderPanel = new QWidget(this);
-//    sliderPanel->setStyleSheet(QString("background:green;"));
     QHBoxLayout *sliderLayout = new QHBoxLayout();
-//    playButton->setStyleSheet(QString("background:yellow;"));
     sliderLayout->addWidget(playButton);
     sliderLayout->addWidget(slider);
-//    sliderLayout->addWidget(timeLabel);
     sliderLayout->addWidget(progressLabel);
     sliderLayout->setContentsMargins(0, 0, 0, 0);
     sliderPanel->setLayout(sliderLayout);
@@ -123,11 +78,7 @@ UBMediaPlayer::UBMediaPlayer() :
     buttonPanelLayout->addWidget(sliderPanel);
     buttonPanelLayout->setContentsMargins(0, 0, 0, 0);
 #ifdef Q_OS_MAC
-//    layout->setSpacing(4);
     buttonPanelLayout->setSpacing(0);
-//    info->setMinimumHeight(100);
-//    info->setFont(QFont("verdana", 15));
-//    openButton->setFocusPolicy(Qt::NoFocus);
 #endif
     QWidget *buttonPanelWidget = new QWidget(this);
     buttonPanelWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -138,23 +89,13 @@ UBMediaPlayer::UBMediaPlayer() :
     vLayout->addLayout(labelLayout);
     setLayout(vLayout);
 
-
-    // Setup signal connections:
-//    connect(rewindButton, SIGNAL(clicked()), this, SLOT(rewind()));
-
     connect(playButton, SIGNAL(clicked()), this, SLOT(playPause()));
-//    connect(forwardButton, SIGNAL(clicked()), this, SLOT(forward()));
-
-//    connect(&m_MediaObject, SIGNAL(totalTimeChanged(qint64)), this, SLOT(updateTime()));
-//    connect(&m_MediaObject, SIGNAL(tick(qint64)), this, SLOT(updateTime()));
     connect(&m_MediaObject, SIGNAL(finished()), this, SLOT(finished()));
     connect(&m_MediaObject, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SLOT(stateChanged(Phonon::State,Phonon::State)));
     connect(&m_MediaObject, SIGNAL(bufferStatus(int)), this, SLOT(bufferStatus(int)));
     connect(&m_MediaObject, SIGNAL(hasVideoChanged(bool)), this, SLOT(hasVideoChanged(bool)));
 
-//    rewindButton->setEnabled(false);
     playButton->setEnabled(false);
-//    setAcceptDrops(true);
 
     m_audioOutputPath = Phonon::createPath(&m_MediaObject, &m_AudioOutput);
     Phonon::createPath(&m_MediaObject, m_videoWidget);
@@ -180,7 +121,6 @@ void UBMediaPlayer::stateChanged(Phonon::State newstate, Phonon::State oldstate)
     case Phonon::ErrorState:
         if (m_MediaObject.errorType() == Phonon::FatalError) {
             playButton->setEnabled(false);
-//            rewindButton->setEnabled(false);
         } else {
             m_MediaObject.pause();
         }
@@ -188,16 +128,13 @@ void UBMediaPlayer::stateChanged(Phonon::State newstate, Phonon::State oldstate)
         break;
 
     case Phonon::StoppedState:
-//        m_videoWidget-> (false);
         // Fall through
     case Phonon::PausedState:
         playButton->setIcon(playIcon);
         if (m_MediaObject.currentSource().type() != Phonon::MediaSource::Invalid){
             playButton->setEnabled(true);
-//            rewindButton->setEnabled(true);
         } else {
             playButton->setEnabled(false);
-//            rewindButton->setEnabled(false);
         }
         break;
     case Phonon::PlayingState:
@@ -207,10 +144,8 @@ void UBMediaPlayer::stateChanged(Phonon::State newstate, Phonon::State oldstate)
             m_videoWindow.show();
         // Fall through
     case Phonon::BufferingState:
-//        rewindButton->setEnabled(true);
         break;
     case Phonon::LoadingState:
-//        rewindButton->setEnabled(false);
         break;
     }
 
@@ -280,35 +215,6 @@ void UBMediaPlayer::bufferStatus(int percent)
     }
 }
 
-//void UBMediaPlayer::updateTime()
-//{
-//    long len = m_MediaObject.totalTime();
-//    long pos = m_MediaObject.currentTime();
-//    QString timeString;
-//    if (pos || len)
-//    {
-//        int sec = pos/1000;
-//        int min = sec/60;
-//        int hour = min/60;
-//        int msec = pos;
-
-//        QTime playTime(hour%60, min%60, sec%60, msec%1000);
-//        sec = len / 1000;
-//        min = sec / 60;
-//        hour = min / 60;
-//        msec = len;
-
-//        QTime stopTime(hour%60, min%60, sec%60, msec%1000);
-//        QString timeFormat = "m:ss";
-//        if (hour > 0)
-//            timeFormat = "h:mm:ss";
-//        timeString = playTime.toString(timeFormat);
-//        if (len)
-//            timeString += " / " + stopTime.toString(timeFormat);
-//    }
-//    timeLabel->setText(timeString);
-//}
-
 void UBMediaPlayer::rewind()
 {
     m_MediaObject.seek(0);
@@ -319,7 +225,6 @@ void UBMediaPlayer::forward()
     QList<Phonon::MediaSource> queue = m_MediaObject.queue();
     if (queue.size() > 0) {
         m_MediaObject.setCurrentSource(queue[0]);
-//        forwardButton->setEnabled(queue.size() > 1);
         m_MediaObject.play();
     }
 }
@@ -343,47 +248,10 @@ void UBMediaPlayer::finished()
 
 void UBMediaPlayer::hasVideoChanged(bool bHasVideo)
 {
-//    info->setVisible(!bHasVideo);
     m_videoWindow.setVisible(bHasVideo);
 }
 
 void UBMediaPlayer::resizeEvent(QResizeEvent* pEvent)
 {
     Q_UNUSED(pEvent);
-//    int origWidth = m_videoWindow.width();
-//    int origHeight = m_videoWindow.height();
-
-//    float scaleFactor = (float)origWidth / (float)width();
-//    int newWidth = width();
-//    int newHeigth = origHeight/scaleFactor;
-
-//    m_videoWindow.resize(newWidth, newHeigth);
 }
-
-//*************************************************************************
-UBDraggableMediaPlayer::UBDraggableMediaPlayer():UBMediaPlayer()
-{
-//    setAcceptDrops(true);
-}
-
-void UBDraggableMediaPlayer::setFile(const QString &text)
-{
-    mSourcePath = text;
-    UBMediaPlayer::setFile(text);
-}
-
-void UBDraggableMediaPlayer::mousePressEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-    QMimeData *mimeData = new QMimeData;
-    QList<QUrl> urls;
-    urls << QUrl::fromLocalFile(mSourcePath);
-    mimeData->setUrls(urls);
-    mimeData->setText(mSourcePath);
-
-
-    QDrag *drag = new QDrag(this);
-    drag->setMimeData(mimeData);
-    drag->start();
-}
-

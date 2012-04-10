@@ -761,21 +761,6 @@ void UBDesktopAnnotationController::togglePropertyPalette(UBActionPalette *palet
 
 void UBDesktopAnnotationController::switchCursor(const int tool)
 {
-//     enum Enum
-//     {
-//         Pen = 0, 
-//         Eraser, 
-//         Marker, 
-//         Selector, 
-//         Hand, 
-//         ZoomIn, 
-//         ZoomOut, 
-//         Pointer, 
-//         Line, 
-//         Text, 
-//         Capture
-//     };
-
     mTransparentDrawingScene->setToolCursor(tool);
     mTransparentDrawingView->setToolCursor(tool);
 }
@@ -825,17 +810,6 @@ void UBDesktopAnnotationController::onDesktopPaletteMaximized()
         connect(pPointerButton, SIGNAL(pressed()), this, SLOT(pointerActionPressed()));
         connect(pPointerButton, SIGNAL(released()), this, SLOT(pointerActionReleased()));
     }
-
-    //     enum Enum
-    //     {
-    //         Hand, 
-    //         ZoomIn, 
-    //         ZoomOut, 
-    //         Line, 
-    //         Text, 
-    //         Capture
-    //     };
-
 }
 
 /**
@@ -871,16 +845,6 @@ void UBDesktopAnnotationController::onDesktopPaletteMinimize()
 
 void UBDesktopAnnotationController::TransparentWidgetResized()
 {
-/*
-    int rW = UBApplication::boardController->paletteManager()->rightPalette()->width();
-    int rH_ = UBApplication::boardController->paletteManager()->rightPalette()->height();
-    int rH = mTransparentDrawingView->height();
-
-    UBApplication::boardController->paletteManager()->rightPalette()->resize(rW+1, rH);
-
-  //  UBApplication::boardController->paletteManager()->rightPalette()->resize(500, 500);
-*/
-
     onTransparentWidgetResized();
 }
 
@@ -899,8 +863,6 @@ void UBDesktopAnnotationController::onTransparentWidgetResized()
 
     UBApplication::boardController->paletteManager()->leftPalette()->resize(lW+1, rH);
     UBApplication::boardController->paletteManager()->leftPalette()->resize(lW, rH);
-
-//      mRightPalette->resize(mRightPalette->width(), mTransparentDrawingView->height());
 }
 
 void UBDesktopAnnotationController::updateMask(bool bTransparent)

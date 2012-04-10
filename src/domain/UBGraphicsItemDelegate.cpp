@@ -322,16 +322,8 @@ void UBGraphicsItemDelegate::duplicate()
 }
 void UBGraphicsItemDelegate::increaseZLevel(int delta)
 {
+    Q_UNUSED(delta)
     qDebug() << delegated()->scene()->items().count();
-
-//    UBGraphicsItem::assignZValue(delegated(), )
-
-//    int valueCandidate = delegated()->data(UBGraphicsItemData::ItemOwnZValue).toInt();
-//    if (delta < 0) {
-
-//    } else if (delta > 0) {
-
-//    }
 }
 
 void UBGraphicsItemDelegate::lock(bool locked)
