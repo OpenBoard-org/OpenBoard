@@ -29,8 +29,6 @@
 
 #include "core/memcheck.h"
 
-qreal const UBGraphicsDelegateFrame::mAngleTolerance = 6;
-
 UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelegate, QRectF pRect, qreal pFrameWidth, bool respectRatio)
     : QGraphicsRectItem(), QObject(pDelegate)
     , mCurrentTool(None)
@@ -51,6 +49,8 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mMirrorX(false)
     , mMirrorY(false)
 {
+    mAngleTolerance = UBSettings::settings()->angleTolerance->get().toReal();
+
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -90,11 +90,14 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     positionHandles();
 
     this->setAcceptHoverEvents(true);
+
+    angleWidget = new UBAngleWidget();
 }
 
 
 UBGraphicsDelegateFrame::~UBGraphicsDelegateFrame()
 {
+delete angleWidget;
     // NOOP
 }
 
@@ -390,7 +393,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
             QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
         mAngle += startLine.angleTo(currentLine);
-                if ((int)mAngle % 45 >= 45 - mAngleTolerance || (int)mAngle % 45 <= mAngleTolerance)
+
+        if ((int)mAngle % 45 >= 45 - mAngleTolerance 
+             || (int)mAngle % 45 <= mAngleTolerance)
         {
             mAngle = qRound(mAngle / 45) * 45;
             mAngleOffset += startLine.angleTo(currentLine);
@@ -400,6 +405,23 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 mAngleOffset = 0;
             }
         }
+        else if ((int)mAngle % 30 >= 30 - mAngleTolerance
+                  || (int)mAngle % 30 <= mAngleTolerance)
+        {
+            mAngle = qRound(mAngle / 30) * 30;
+            mAngleOffset += startLine.angleTo(currentLine);
+            if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
+            {
+                mAngle += mAngleOffset;
+                mAngleOffset = 0;
+            }
+        }
+
+        if (!angleWidget->isVisible())
+            angleWidget->show();
+
+        angleWidget->setText(QString::number((int)mAngle % 360));
+        angleWidget->update();
 
     }
     else if (moving())
@@ -487,6 +509,9 @@ QTransform UBGraphicsDelegateFrame::buildTransform()
 
 void UBGraphicsDelegateFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (angleWidget->isVisible())
+        angleWidget->hide();
+
     updateResizeCursors();
 
     mDelegate->commitUndoStep();

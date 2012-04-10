@@ -18,6 +18,7 @@
 
 #include <QtGui>
 #include "core/UB.h"
+#include "domain/UBAngleWidget.h"
 
 class QGraphicsSceneMouseEvent;
 class UBGraphicsItemDelegate;
@@ -92,7 +93,8 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         qreal mTranslateY;
         qreal mTotalTranslateX;
         qreal mTotalTranslateY;
-        static const qreal mAngleTolerance;
+        qreal mAngleTolerance;
+        QRect mAngleRect;
 
         QPointF mStartingPoint;
         QTransform mInitialTransform;
@@ -118,5 +120,8 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         bool mResizing;
         bool mMirroredXAtStart;
         bool mMirroredYAtStart;
+
+        UBAngleWidget *angleWidget;
+
 };
 #endif /* UBGRAPHICSDELEGATEFRAME_H_ */

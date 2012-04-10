@@ -97,8 +97,7 @@ class UBSettings : public QObject
         void setCommunityPassword(const QString& password);
 
         void init();
-
-
+        
         //user directories
         static QString userDataDirectory();
         static QString userDocumentDirectory();
@@ -179,6 +178,7 @@ class UBSettings : public QObject
         static const int defaultSoundWidth;
 
         static const int thumbnailSpacing;
+        static const int longClickInterval;
 
         static const qreal minScreenRatio;
 
@@ -325,6 +325,9 @@ class UBSettings : public QObject
 
         UBSetting* KeyboardLocale;
         UBSetting* swapControlAndDisplayScreens;
+
+        UBSetting* angleTolerance;
+        UBSetting* historyLimit;
 
     public slots:
 

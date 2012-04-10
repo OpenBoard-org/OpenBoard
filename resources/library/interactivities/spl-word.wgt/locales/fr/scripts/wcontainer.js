@@ -1,5 +1,5 @@
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
     example: "so*phis*ti*qué"
 };
