@@ -44,7 +44,7 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
 
 		virtual void StartLine(const QPointF& position, qreal width);
 		virtual void DrawLine(const QPointF& position, qreal width);
-		virtual void EndLine();
+        virtual void EndLine();
 
     protected:
 		

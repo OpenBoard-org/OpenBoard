@@ -109,10 +109,10 @@ void UBGraphicsVideoItem::showOnDisplayChanged(bool shown)
 
 void UBGraphicsVideoItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    QDrag* mDrag = new QDrag(event->widget());
-    QMimeData* pMime = new QMimeData();
-    mDrag->setMimeData(pMime);
-    mDrag->start();
+//    QDrag* mDrag = new QDrag(event->widget());
+//    QMimeData* pMime = new QMimeData();
+//    mDrag->setMimeData(pMime);
+//    mDrag->start();
 
     mShouldMove = (event->buttons() & Qt::LeftButton);
     mMousePressPos = event->scenePos();

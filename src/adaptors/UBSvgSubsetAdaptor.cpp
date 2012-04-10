@@ -2559,7 +2559,6 @@ UBGraphicsRuler* UBSvgSubsetAdaptor::UBSvgSubsetReader::rulerFromSvg()
 
     graphicsItemFromSvg(ruler);
 
-    UBGraphicsItem::assignZValue(ruler, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetRuler);
     ruler->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     QStringRef svgWidth = mXmlReader.attributes().value("width");
@@ -2617,7 +2616,6 @@ UBGraphicsCompass* UBSvgSubsetAdaptor::UBSvgSubsetReader::compassFromSvg()
 
     graphicsItemFromSvg(compass);
 
-    UBGraphicsItem::assignZValue(compass, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetCompass);
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     QStringRef svgX = mXmlReader.attributes().value("x");
@@ -2681,7 +2679,6 @@ UBGraphicsProtractor* UBSvgSubsetAdaptor::UBSvgSubsetReader::protractorFromSvg()
 {
     UBGraphicsProtractor* protractor = new UBGraphicsProtractor();
 
-    UBGraphicsItem::assignZValue(protractor, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetProtractor);
     protractor->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     graphicsItemFromSvg(protractor);
@@ -2751,7 +2748,6 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 {
     UBGraphicsTriangle* triangle = new UBGraphicsTriangle();
 
-    UBGraphicsItem::assignZValue(triangle, UBGraphicsScene::toolLayerStart + UBGraphicsScene::toolOffsetTriangle);
     triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     graphicsItemFromSvg(triangle);

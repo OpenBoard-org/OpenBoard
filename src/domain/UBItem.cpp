@@ -29,7 +29,7 @@ UBItem::~UBItem()
     // NOOP
 }
 
-void UBGraphicsItem::assignZValue(QGraphicsItem *item, int value)
+void UBGraphicsItem::assignZValue(QGraphicsItem *item, qreal value)
 {
     item->setZValue(value);
     item->setData(UBGraphicsItemData::ItemOwnZValue, value);

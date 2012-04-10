@@ -178,6 +178,7 @@ class UBSettings : public QObject
         static const int defaultSoundWidth;
 
         static const int thumbnailSpacing;
+        static const int longClickInterval;
 
         static const qreal minScreenRatio;
 

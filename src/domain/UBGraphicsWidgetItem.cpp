@@ -82,11 +82,13 @@ void UBGraphicsWidgetItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void UBGraphicsWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     sendJSEnterEvent();
+    mDelegate->hoverEnterEvent(event);
     UBGraphicsProxyWidget::hoverEnterEvent(event);
 }
 void UBGraphicsWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     sendJSLeaveEvent();
+    mDelegate->hoverLeaveEvent(event);
     UBGraphicsProxyWidget::hoverLeaveEvent(event);
 }
 
