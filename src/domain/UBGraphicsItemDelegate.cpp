@@ -268,7 +268,6 @@ void UBGraphicsItemDelegate::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 //    }
 }
 
-
 void UBGraphicsItemDelegate::positionHandles()
 {
     if (mDelegated->isSelected()) {
@@ -560,7 +559,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
             mDelegated->scene()->addItem(mDeleteButton);
     }
 
-    if (showUpdated)
+    if (showUpdated /*&& mFrame->isResizing()*/)
         mDeleteButton->show();
 
     int i = 1, j = 0, k = 0;
@@ -585,5 +584,12 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
             button->show();
             button->setZValue(delegated()->zValue());
         }
+    }
+}
+
+void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
+{
+    foreach(DelegateButton* pButton, mButtons){
+        pButton->setVisible(visible);
     }
 }

@@ -292,7 +292,8 @@ public slots:
         void hideEraser();
 
         void setBackground(bool pIsDark, bool pIsCrossed);
-
+        void setBackgroundZoomFactor(qreal zoom);
+        void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
         UBGraphicsPixmapItem* addPixmap(const QPixmap& pPixmap, const QPointF& pPos = QPointF(0,0), qreal scaleFactor = 1.0, bool pUseAnimation = false);
@@ -335,6 +336,8 @@ public slots:
 
         QGraphicsItem* rootItem(QGraphicsItem* item) const;
 
+        virtual void drawBackground(QPainter *painter, const QRectF &rect);
+
     private:
         void setDocumentUpdated();
         void createEraiser();
@@ -350,6 +353,8 @@ public slots:
 
         bool mDarkBackground;
         bool mCrossedBackground;
+        bool mIsDesktopMode;
+        qreal mZoomFactor;
 
         bool mIsModified;
 

@@ -136,6 +136,8 @@ class UBGraphicsItemDelegate : public QObject
         void setFlippable(bool flippable);
         bool isFlippable();
 
+        void setButtonsVisible(bool visible);
+
     signals:
         void showOnDisplayChanged(bool shown);
         void lockChanged(bool locked);

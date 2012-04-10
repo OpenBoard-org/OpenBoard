@@ -3,7 +3,7 @@ var sankoreLang = {
     edit: "Edit", 
     short_desc: "Select the number \"three\".", 
     add: "Add new block",
-    enter: "Enter your condition here ..."
+    enter: "Enter what to do here ..."
 };
 
 //main function

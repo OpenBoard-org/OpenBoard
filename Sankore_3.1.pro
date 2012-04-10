@@ -131,7 +131,7 @@ win32 {
 }
 
 macx {
-   LIBS += "-Lplugins/cffadaptor/lib/mac"   "-lCFF_Adaptor"
+   LIBS += "-Lplugins/cffadaptor/lib/macx"   "-lCFF_Adaptor"
    LIBS += -framework Foundation 
    LIBS += -lcrypto
    LIBS += -framework AppKit 

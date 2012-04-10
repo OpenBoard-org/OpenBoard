@@ -32,7 +32,7 @@ UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
     mDelegate->init();
 
     // NOTE: Do not remove this code, I'm just doing a backup of my changes! thx..
-    //mDelegate->setFlippable(true);
+    mDelegate->setFlippable(true);
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
     setTransformationMode(Qt::SmoothTransformation);
