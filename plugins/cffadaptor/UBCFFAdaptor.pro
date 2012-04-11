@@ -4,6 +4,9 @@
 #
 #-------------------------------------------------
 
+TARGET = CFF_Adaptor
+TEMPLATE = lib
+
 win32: SUB_DIR = win32
 macx: SUB_DIR = macx
 linux-g++: SUB_DIR = linux
@@ -13,11 +16,21 @@ linux-g++-64: SUB_DIR = linux
 THIRD_PARTY_PATH = ../../../Sankore-ThirdParty
 QUAZIP_DIR   = "$$PWD/../../../Sankore-ThirdParty/quazip/quazip-0.3"
 
-INCLUDEPATH += src
+BUILD_DIR = $$PWD/build/$$SUB_DIR
+CONFIG(debug, debug|release):BUILD_DIR = $$BUILD_DIR/debug
+CONFIG(release, debug|release) {
+   BUILD_DIR = $$BUILD_DIR/release
+   CONFIG += warn_off
+}
 
-DEPENDPATH  += $$THIRD_PARTY_PATH/quazip/
-INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
-include($$THIRD_PARTY_PATH/quazip/quazip.pri)
+win32{
+    CONFIG += dll
+}
+
+OBJECTS_DIR = $$BUILD_DIR/objects
+MOC_DIR = $$BUILD_DIR/moc
+DESTDIR = $$BUILD_DIR/lib
+RCC_DIR = $$BUILD_DIR/rcc
 
 LIBS     += "-L$$THIRD_PARTY_PATH/quazip/lib/$$SUB_DIR" "-lquazip"
 
@@ -25,14 +38,16 @@ QT       += xml xmlpatterns core
 QT       += gui
 QT       += svg 
 
-TARGET = CFF_Adaptor
-TEMPLATE = lib
-win32{
-    CONFIG += dll
-}
 
 DEFINES += UBCFFADAPTOR_LIBRARY
 DEFINES += NO_THIRD_PARTY_WARNINGS
+
+INCLUDEPATH += src
+
+DEPENDPATH  += $$THIRD_PARTY_PATH/quazip/
+INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
+include($$THIRD_PARTY_PATH/quazip/quazip.pri)
+
 
 SOURCES += \
     src/UBCFFAdaptor.cpp
@@ -42,10 +57,6 @@ HEADERS +=\
     src/UBCFFAdaptor.h \
     src/UBCFFAdaptor_global.h \
     src/UBCFFConstants.h
-
-OBJECTS_DIR = $$PWD/objects
-MOC_DIR = $$PWD/moc
-DESTDIR = $$PWD/lib/$$SUB_DIR
 
 RESOURCES += \
     resources/resources.qrc
