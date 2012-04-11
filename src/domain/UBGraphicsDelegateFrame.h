@@ -65,6 +65,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         inline bool resizingTop () const { return mCurrentTool == ResizeTop; }
         inline bool rotating () const { return mCurrentTool == Rotate; }
         inline bool moving () const { return mCurrentTool == Move; }
+        bool canResizeBottomRight(qreal width, qreal height, qreal scaleFactor);
 
         QTransform buildTransform ();
         void  updateResizeCursors ();
