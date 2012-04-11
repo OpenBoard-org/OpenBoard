@@ -192,7 +192,7 @@ void UBGraphicsDelegateFrame::initializeTransform()
 
     mAngle = topLine.angle();
 
-    //the fact the the lenght is used we loose the horizontalFlip information
+    // the fact the the length is used we loose the horizontalFlip information
     // a better way to do this is using DeltaX that preserve the direction information.
     mTotalScaleX = (width / itemRect.width()) * horizontalFlip;
     mTotalScaleY = height / itemRect.height() * verticalFlip;
@@ -230,6 +230,22 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     event->accept();
 }
 
+bool UBGraphicsDelegateFrame::canResizeBottomRight(qreal width, qreal height, qreal scaleFactor)
+{
+    bool res = false;
+
+    if(!mMirrorX && !mMirrorX && ((width * scaleFactor) > 2*mFrameWidth && (height * scaleFactor) > 2*mFrameWidth)){
+        res = true;
+    }else if(mMirrorX && !mMirrorY && (-width * scaleFactor) > 2*mFrameWidth && (height*scaleFactor) > 2*mFrameWidth){
+        res = true;
+    }else if(!mMirrorX && mMirrorY && (width * scaleFactor) > 2*mFrameWidth && (-height*scaleFactor) > 2*mFrameWidth){
+        res = true;
+    }else if(mMirrorX && mMirrorY && (-width * scaleFactor) > 2*mFrameWidth && (-height*scaleFactor) > 2*mFrameWidth){
+        res = true;
+    }
+
+    return res;
+}
 
 void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -240,27 +256,33 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal height = delegated()->boundingRect().height() * mTotalScaleY;
     mTranslateX = moveX;
 
-
     if(mOperationMode == Scaling)
     {
-//        // Hide the buttons
-//        mDelegate->setButtonsVisible(false);
-//        mResizing = true;
-
         // Perform the resize
         if (resizingBottomRight())
         {
             // -----------------------------------------------------
             // ! We want to keep the aspect ratio with this resize !
             // -----------------------------------------------------
-            qreal scaleX = (width + moveX) / width;
-            qreal scaleY = (height + moveY) / height;
+            qreal scaleX;
+            qreal scaleY;
+
+            if(!mMirrorX){
+                scaleX = (width + moveX) / width;
+            }else{
+                scaleX = (width - moveX) / width;
+            }
+
+            if(!mMirrorY){
+                scaleY = (height + moveY) / height;
+            }else{
+                scaleY = (height - moveY) / height;
+            }
+
             qreal scaleFactor = (scaleX + scaleY) / 2;
 
             // Do not allow resizing of image size under frame size
-            if (scaleFactor > 1
-                || ((width * scaleFactor) > 2 * mFrameWidth
-                && (height * scaleFactor) > 2 * mFrameWidth))
+            if (canResizeBottomRight(width, height, scaleFactor))
             {
                 if (mRespectRatio)
                 {
@@ -285,7 +307,6 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 if(mDelegate->isFlippable() && qAbs(scaleX) != 0){
                     if((qAbs(width * scaleX)) < 2*mFrameWidth){
                         bool negative = (scaleX < 0)?true:false;
-                        //mMirrorX = (negative?mMirrorX:!mMirrorX);
                         if(negative){
                             scaleX = -2*mFrameWidth/width;
                         }else{
@@ -363,9 +384,6 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             QSizeF newSize = resizableItem->size() + incVector;
 
-//          if (newSize.width() < 50 /*0*/ || newSize.height() < /*0*/ 50)
-//              return;
-
             resizableItem->resize(newSize);
         }
     }
@@ -417,10 +435,28 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     //TODO UB 4.x: Could find a better solution ?
     if (resizingRight() || resizingBottom() || resizingBottomRight())
     {
-        QPointF topLeft = tr.map(delegated()->boundingRect().topLeft());
-        QPointF fixedPoint = mInitialTransform.map(delegated()->boundingRect().topLeft());
+        QPointF ref;
+        if(!mMirrorX && !mMirrorY){
+            ref = delegated()->boundingRect().topLeft();
+        }else if(mMirrorX && !mMirrorY){
+            ref = delegated()->boundingRect().topRight();
+        }else if(!mMirrorX && mMirrorY){
+            ref = delegated()->boundingRect().bottomLeft();
+        }else if(mMirrorX && mMirrorY){
+            ref = delegated()->boundingRect().bottomRight();
+        }
+
+        // Map the item topleft point to the current mouse move transform
+        QPointF topLeft = tr.map(ref);
+
+        // Map the item topleft point to the mouse press transform
+        QPointF fixedPoint = mInitialTransform.map(ref);
+
+        // Update the translation coordinates
         mTranslateX += fixedPoint.x() - topLeft.x();
         mTranslateY += fixedPoint.y() - topLeft.y();
+
+        // Update the transform
         tr = buildTransform();
     }
     else if (resizingTop() || resizingLeft())

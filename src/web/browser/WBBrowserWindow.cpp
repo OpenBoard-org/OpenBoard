@@ -196,6 +196,36 @@ void WBBrowserWindow::setupToolBar()
     mTabWidget->addWebAction(mUniboardMainWindow->actionWebReload, QWebPage::Reload);
     mTabWidget->addWebAction(mUniboardMainWindow->actionStopLoading, QWebPage::Stop);
 
+    mHistoryBackMenu = new QMenu(this);
+    connect(mHistoryBackMenu, SIGNAL(aboutToShow()),this, SLOT(aboutToShowBackMenu()));
+    connect(mHistoryBackMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
+
+    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebBack->associatedWidgets())
+    {
+        QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
+
+        if (tb && !tb->menu())
+        {
+            tb->setMenu(mHistoryBackMenu);
+            tb->setStyleSheet("QToolButton::menu-indicator { subcontrol-position: bottom left; }");
+        }
+    }
+
+    mHistoryForwardMenu = new QMenu(this);
+    connect(mHistoryForwardMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowForwardMenu()));
+    connect(mHistoryForwardMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
+    
+    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebForward->associatedWidgets())
+    {
+        QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
+
+        if (tb && !tb->menu())
+        {
+            tb->setMenu(mHistoryForwardMenu);
+            tb->setStyleSheet("QToolButton { padding-right: 8px; }");
+        }
+    }
+
     mWebToolBar->insertWidget(mUniboardMainWindow->actionWebBigger, mTabWidget->lineEditStack());
 
     mSearchToolBar = new WBToolbarSearch(mWebToolBar);
@@ -224,6 +254,22 @@ void WBBrowserWindow::setupToolBarForTutorial()
 
     mTabWidget->addWebAction(mUniboardMainWindow->actionWebBack, QWebPage::Back);
     mTabWidget->addWebAction(mUniboardMainWindow->actionWebForward, QWebPage::Forward);
+
+    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebBack->associatedWidgets())
+    {
+        QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
+
+        if (tb && tb->menu())
+            tb->setMenu(NULL);
+    }
+
+    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebForward->associatedWidgets())
+    {
+        QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
+
+        if (tb && tb->menu())
+            tb->setMenu(NULL);
+    }
 //    mTabWidget->addWebAction(mUniboardMainWindow->actionWebReload, QWebPage::Reload);
 //    mTabWidget->addWebAction(mUniboardMainWindow->actionStopLoading, QWebPage::Stop);
 
@@ -534,4 +580,86 @@ void WBBrowserWindow::showTabAtTop(bool attop)
         mTabWidget->setTabPosition(QTabWidget::South);
 }
 
+void WBBrowserWindow::aboutToShowBackMenu()
+{
+    mHistoryBackMenu->clear();
+    if (!currentTabWebView())
+        return;
+    QWebHistory *history = currentTabWebView()->history();
 
+    int historyCount = history->count();
+    int historyLimit = history->backItems(historyCount).count() - UBSettings::settings()->historyLimit->get().toReal();
+    if (historyLimit < 0)
+        historyLimit = 0;
+
+    for (int i = history->backItems(historyCount).count() - 1; i >= historyLimit; --i) 
+    {
+        QWebHistoryItem item = history->backItems(historyCount).at(i);
+
+        QAction *action = new QAction(this);
+        action->setData(-1*(historyCount-i-1));
+
+        if (!QWebSettings::iconForUrl(item.originalUrl()).isNull())
+        action->setIcon(item.icon());
+		action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
+        mHistoryBackMenu->addAction(action);
+    }
+
+    mHistoryBackMenu->addSeparator();
+
+    QAction *action = new QAction(this);
+    action->setData("clear");
+    action->setText("Clear history");
+    mHistoryBackMenu->addAction(action);
+
+}
+
+void WBBrowserWindow::aboutToShowForwardMenu()
+{
+    mHistoryForwardMenu->clear();
+    if (!currentTabWebView())
+        return;
+    QWebHistory *history = currentTabWebView()->history();
+    int historyCount = history->count();
+
+    int historyLimit = history->forwardItems(historyCount).count();
+    if (historyLimit > UBSettings::settings()->historyLimit->get().toReal())
+        historyLimit = UBSettings::settings()->historyLimit->get().toReal();
+
+    for (int i = 0; i < historyLimit; ++i) 
+    {
+        QWebHistoryItem item = history->forwardItems(historyCount).at(i);
+
+        QAction *action = new QAction(this);
+        action->setData(historyCount-i);
+
+        if (!QWebSettings::iconForUrl(item.originalUrl()).isNull())
+        action->setIcon(item.icon());
+        action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
+        mHistoryForwardMenu->addAction(action);
+    }
+
+    mHistoryForwardMenu->addSeparator();
+
+    QAction *action = new QAction(this);
+    action->setData("clear");
+    action->setText("Clear history");
+    mHistoryForwardMenu->addAction(action);
+}
+
+void WBBrowserWindow::openActionUrl(QAction *action)
+{
+    QWebHistory *history = currentTabWebView()->history();  
+
+    if (action->data() == "clear")
+    {
+        history->clear();
+        return;
+    }
+
+    int offset = action->data().toInt();
+    if (offset < 0)
+        history->goToItem(history->backItems(-1*offset).first()); 
+    else if (offset > 0)
+        history->goToItem(history->forwardItems(history->count() - offset + 1).back()); 
+ }

@@ -380,6 +380,7 @@ void UBSettings::init()
     swapControlAndDisplayScreens = new UBSetting(this, "App", "SwapControlAndDisplayScreens", false);
 
     angleTolerance = new UBSetting(this, "App", "AngleTolerance", 4);
+    historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
 }
 
 
