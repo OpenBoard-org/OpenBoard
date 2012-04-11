@@ -87,7 +87,8 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpTreeWidget->setColumnCount(2);
     mpTreeWidget->header()->setStretchLastSection(false);
     mpTreeWidget->header()->setResizeMode(0, QHeaderView::Stretch);
-    mpTreeWidget->header()->setResizeMode(1, QHeaderView::Custom);
+    mpTreeWidget->header()->setResizeMode(1, QHeaderView::Fixed);
+    mpTreeWidget->header()->setDefaultSectionSize(32);
 
     connect(mpTreeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
 
@@ -158,7 +159,9 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getData()
     children << getChildrenList(mpAddALinkItem);
     result << getPageAndCommentData();
     foreach(QTreeWidgetItem* widgetItem, children){
-        result << dynamic_cast<iUBTGSavableData*>(mpTreeWidget->itemWidget(widgetItem,0))->saveData();
+        tUBGEElementNode* node = dynamic_cast<iUBTGSavableData*>(mpTreeWidget->itemWidget(widgetItem,0))->saveData();
+        if(node)
+            result << node;
     }
     return result;
 }

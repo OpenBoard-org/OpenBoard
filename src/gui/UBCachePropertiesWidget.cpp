@@ -7,6 +7,7 @@
 
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
+#include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
 #include "domain/UBGraphicsScene.h"
 
@@ -34,8 +35,8 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
   , mpCurrentCache(NULL)
 {
     setObjectName(name);
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+
+    SET_STYLE_SHEET();
 
     mName = "CachePropWidget";
     mVisibleState = false;
@@ -283,7 +284,7 @@ void UBCachePropertiesWidget::updateCurrentCache()
     if( UBApplication::applicationController != NULL )
     {
         // if app controller is available, and current mode is Board, and no show desktop, than all ok, just process
-        if( UBApplication::applicationController->displayMode() == UBApplicationController::Board && 
+        if( UBApplication::applicationController->displayMode() == UBApplicationController::Board &&
             !UBApplication::applicationController->isShowingDesktop())
             isBoardMode = true;
     }
@@ -348,4 +349,4 @@ void UBCachePropertiesWidget::onCacheEnabled()
 {
     emit showTab(this);
 }
- 
+

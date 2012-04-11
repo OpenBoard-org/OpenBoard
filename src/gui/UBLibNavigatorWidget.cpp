@@ -18,6 +18,8 @@
 #include "core/UBApplication.h"
 #include "core/memcheck.h"
 
+#include "globals/UBGlobals.h"
+
 static int lowBoundForSlider = 40;
 static int topBoundForSlider = 120;
 static int tickIntervalForSlider = 10;
@@ -35,8 +37,7 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
 {
     setObjectName(name);
 
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
 
     setAcceptDrops(true);
 
@@ -62,7 +63,7 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
 
 
     connect(mLibWidget, SIGNAL(propertiesRequested(UBLibElement*)), this, SLOT(onPropertiesRequested(UBLibElement*)));
-    connect(mLibWidget, SIGNAL(displaySearchEngine(UBLibElement*)), this, SLOT(onDisplaySearchEngine(UBLibElement*)));    
+    connect(mLibWidget, SIGNAL(displaySearchEngine(UBLibElement*)), this, SLOT(onDisplaySearchEngine(UBLibElement*)));
     connect(mSlider,SIGNAL(valueChanged(int)),this,SLOT(updateThumbnailsSize(int)));
     connect(libWidget->pathViewer(), SIGNAL(mouseClick(UBChainedLibElement*)), this, SLOT(onPathItemClicked(UBChainedLibElement*)));
     connect(libWidget->pathViewer(), SIGNAL(elementsDropped(QList<QString>,UBLibElement*)), mLibWidget, SLOT(onElementsDropped(QList<QString>,UBLibElement*)));

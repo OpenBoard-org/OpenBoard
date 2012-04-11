@@ -15,6 +15,8 @@
 #include "UBDockDownloadWidget.h"
 #include "core/UBApplication.h"
 
+#include "globals/UBGlobals.h"
+
 UBDockDownloadWidget::UBDockDownloadWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent, name)
   , mpLayout(NULL)
   , mpDLWidget(NULL)
@@ -22,8 +24,7 @@ UBDockDownloadWidget::UBDockDownloadWidget(QWidget *parent, const char *name):UB
     mName = "DownloadWidget";
     mVisibleState = false;
 
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
 
     mIconToLeft = QPixmap(":images/download_open.png");
     mIconToRight = QPixmap(":images/download_close.png");

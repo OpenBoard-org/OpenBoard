@@ -198,6 +198,8 @@ UBTGMediaWidget::~UBTGMediaWidget()
 
 tUBGEElementNode* UBTGMediaWidget::saveData()
 {
+    if(!mpTitle)
+        return 0;
     tUBGEElementNode* result = new tUBGEElementNode();
     result->type = "media";
     result->attributes.insert("title",mpTitle->toPlainText());

@@ -35,8 +35,7 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
   , mpMediaContainer(NULL)
   , mpCover(NULL)
 {
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
 
     addAction(eAction_Close);
     mType = type;

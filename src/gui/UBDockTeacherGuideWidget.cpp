@@ -26,8 +26,7 @@ UBDockTeacherGuideWidget::UBDockTeacherGuideWidget(QWidget* parent, const char* 
 {
     mName = "TeacherGuide";
 
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
 
     mIconToLeft = QPixmap(":images/teacher_open.png");
     mIconToRight = QPixmap(":images/teacher_close.png");
