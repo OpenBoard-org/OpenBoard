@@ -89,11 +89,10 @@ class UBThumbnailWidget : public QGraphicsView
         QList<QUrl> mItemsPaths;
         QStringList mLabels;
         bool bSelectionInProgress;
-        bool bCanDrag;
+        bool bCanDrag;       
 
     private:
         void selectAll();
-        void unselectAll();
         void selectItems(int startIndex, int count);
         int rowCount() const;
         int columnCount() const;
@@ -106,6 +105,8 @@ class UBThumbnailWidget : public QGraphicsView
 
         QString mMimeType;
 
+        QPointF prevMoveMousePos;
+
         qreal mThumbnailWidth;
         qreal mThumbnailHeight;
         qreal mSpacing;
@@ -113,7 +114,8 @@ class UBThumbnailWidget : public QGraphicsView
         UBThumbnail *mLastSelectedThumbnail;
         int mSelectionSpan;
         QGraphicsRectItem *mLassoRectItem;
-        QList<QGraphicsItem*> mSelectedThumbnailItems;
+        QSet<QGraphicsItem*> mSelectedThumbnailItems;
+        QSet<QGraphicsItem*> mPreviouslyIncrementalSelectedItems;
         QTime mClickTime;
 };
 
