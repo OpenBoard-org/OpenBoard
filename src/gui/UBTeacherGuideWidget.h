@@ -23,7 +23,7 @@ class QVBoxLayout;
 class QPushButton;
 
 #include "UBTeacherGuideWidgetsTools.h"
-
+#include "UBTGWidgetTreeDelegate.h"
 
 /***************************************************************************
  *               class    UBTeacherGuideEditionWidget                      *
@@ -39,6 +39,8 @@ public:
 
 public slots:
     void onAddItemClicked(QTreeWidgetItem* widget, int column);
+    void onActiveSceneChanged();
+    void showEvent(QShowEvent* event);
 
 private:
     QList<QTreeWidgetItem*> getChildrenList(QTreeWidgetItem* widgetItem);
@@ -46,13 +48,16 @@ private:
 
     QVBoxLayout* mpLayout;
     QLabel* mpDocumentTitle;
+    QLabel* mpPageNumberLabel;
     UBTGAdaptableText* mpPageTitle;
     UBTGAdaptableText* mpComment;
+    QFrame* mpSeparator;
     QTreeWidget* mpTreeWidget;
     QTreeWidgetItem* mpRootWidgetItem;
     UBAddItem* mpAddAnActionItem;
     UBAddItem* mpAddAMediaItem;
     UBAddItem* mpAddALinkItem;
+    UBTGWidgetTreeDelegate* mpTreeDelegate;
 
 };
 
@@ -67,9 +72,11 @@ public:
     explicit UBTeacherGuidePresentationWidget(QWidget* parent, const char* name = "UBTeacherGuidePresentationName");
     ~UBTeacherGuidePresentationWidget();
     void showData(QVector<tUBGEElementNode*>data);
+    void cleanData();
 
 public slots:
     void onAddItemClicked(QTreeWidgetItem* widget, int column);
+    void onActiveSceneChanged();
 
 private:
     void createMediaButtonItem();
@@ -78,7 +85,9 @@ private:
     UBTGAdaptableText* mpComment;
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonTitleLayout;
-    QLabel* mpDocumentTile;
+    QLabel* mpDocumentTitle;
+    QLabel* mpPageNumberLabel;
+    QFrame* mpSeparator;
     QPushButton* mpModePushButton;
     QTreeWidget* mpTreeWidget;
     QTreeWidgetItem* mpRootWidgetItem;
@@ -107,7 +116,7 @@ public slots:
 private:
     UBTeacherGuideEditionWidget* mpEditionWidget;
     UBTeacherGuidePresentationWidget* mpPresentationWidget;
-    QVector<tUBGEElementNode*>currentData;
+    QVector<tUBGEElementNode*>mCurrentData;
 
 };
 

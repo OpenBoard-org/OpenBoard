@@ -50,7 +50,8 @@ HEADERS      += src/gui/UBThumbnailView.h \
     src/gui/UBDockTeacherGuideWidget.h \
     src/gui/UBTeacherGuideWidget.h \
     src/gui/UBTeacherGuideWidgetsTools.h \
-    src/gui/UBTeacherGuideDelegate.h
+    src/gui/UBTeacherGuideDelegate.h \
+    src/gui/UBTGWidgetTreeDelegate.h
                 
 SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBFloatingPalette.cpp \
@@ -103,7 +104,8 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
     src/gui/UBDockTeacherGuideWidget.cpp \
     src/gui/UBTeacherGuideWidget.cpp \
     src/gui/UBTeacherGuideWidgetsTools.cpp \
-    src/gui/UBTeacherGuideDelegate.cpp
+    src/gui/UBTeacherGuideDelegate.cpp \
+    src/gui/UBTGWidgetTreeDelegate.cpp
 
 win32 {
 

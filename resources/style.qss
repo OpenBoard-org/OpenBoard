@@ -3,7 +3,8 @@ QWidget#documentNavigator,
 QWidget#UBLibPathViewer,
 QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
-QWidget#UBDownloadWidget
+QWidget#UBDownloadWidget,
+QWidget#UBTeacherGuideWidget
 {
 	background: #EEEEEE;
 	border-radius: 10px;
@@ -41,9 +42,11 @@ QLabel#DockPaletteWidgetTitle
 	font-weight:bold;
 }
 
-QLineEdit#DockPaletteWidgetLineEdit
+QLineEdit#UBTGLineEdit,
+QLabel#UBTGMediaDropMeLabel
 {
 	background: white;
+	border: 1 solid #999999;
 	border-radius : 10px;
 	padding: 2px;
 }
@@ -200,4 +203,59 @@ QSlider::groove::horizontal
 	height:10px;
 	border-radius:5px;
 	border:1px solid #555555;
+}
+
+QLabel#UBTGEditionDocumentTitle
+{
+    color: black;
+    font-size : 14px;
+    font-weight:bold;
+}
+
+QLabel#UBTGPresentationDocumentTitle
+{
+    color: black;
+    font-size : 12px;
+    font-weight:bold;
+}
+
+QLabel#UBTGEditionPageNumberLabel
+{
+    color: black;
+    font-size : 12px;
+    font-weight:bold;
+}
+
+QLabel#UBTGPresentationPageNumberLabel
+{
+    color: black;
+    font-size : 12px;
+}
+
+UBTGAdaptableText#UBTGEditionPageTitle,
+UBTGAdaptableText#UBTGEditionComment
+{ 
+    color: black;
+    font-size : 12px;
+}
+
+UBTGAdaptableText#UBTGPresentationPageTitle
+{
+    color: black;
+    font-size:16px;
+    font-weight:bold;
+    border : none;
+}
+
+UBTGAdaptableText#UBTGPresentationComment
+{
+    color: black;
+    font-size:12px;
+    border : none;
+}
+  
+QFrame#UBTGEditionSeparator,
+QFrame#UBTGPresentationSepartor
+{
+    background-color: #cccccc;
 }

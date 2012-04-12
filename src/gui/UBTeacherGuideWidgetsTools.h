@@ -65,17 +65,18 @@ public slots:
 class UBTGActionWidget : public QWidget, public iUBTGSavableData
 {
     Q_OBJECT
+
 public:
-    explicit UBTGActionWidget(QTreeWidgetItem* widget, QWidget* parent = 0,const char* name = "UBActionWidget");
+    explicit UBTGActionWidget(QTreeWidgetItem* widget, QWidget* parent = 0,const char* name = "UBTGActionWidget");
     ~UBTGActionWidget();
     void update();
     tUBGEElementNode* saveData();
-public slots:
-    void onOwnerChange(int ownerId);
+
 private:
     QVBoxLayout* mpLayout;
     QComboBox* mpOwner;
     UBTGAdaptableText* mpTask;
+
 protected:
     QTreeWidgetItem* mpTreeWidgetItem;
 };
@@ -88,13 +89,21 @@ public:
     explicit UBTGAdaptableText(QTreeWidgetItem* widget = 0, QWidget *parent = 0, const char* name = "UBTGAdaptableText");
     void showText(const QString & text);
     void bottomMargin(int newValue);
-signals:
+    void setPlaceHolderText(QString text);
+    QString text();
 
 public slots:
     void onTextChanged();
+
+protected:
+    void focusInEvent(QFocusEvent *e);
+    void focusOutEvent(QFocusEvent *e);
 private:
     int mBottomMargin;
     QTreeWidgetItem* mpTreeWidgetItem;
+    int mMinimumHeight;
+    bool mHasPlaceHolder;
+    QString mPlaceHolderText;
 };
 
 
@@ -106,10 +115,12 @@ public:
     UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget = 0, QWidget* parent = 0, const char* name = "UBTGMediaWidget");
     ~UBTGMediaWidget();
     tUBGEElementNode* saveData();
+
 protected:
     void dragEnterEvent(QDragEnterEvent* event);
     void dropEvent(QDropEvent* event);
     void mousePressEvent(QMouseEvent* event);
+
 private:
     void parseMimeData(const QMimeData* pMimeData);
     void createWorkWidget(QString& path);
@@ -125,6 +136,7 @@ private:
     QWebView* mpWebView;
     QString mRelativePath;
     bool mIsPresentationMode;
+    QString mMediaType;
 };
 
 class UBTGUrlWidget : public QWidget , public iUBTGSavableData

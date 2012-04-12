@@ -23,8 +23,10 @@
 #include <QWebSettings>
 #include <QDomElement>
 #include <QDomDocument>
+#include <QApplication>
 
 #include "UBTeacherGuideWidgetsTools.h"
+#include "UBTGWidgetTreeDelegate.h"
 
 #include "globals/UBGlobals.h"
 
@@ -40,6 +42,9 @@ UBAddItem::UBAddItem(const QString &string, int addSubItemWidgetType, QTreeWidge
     setText(0,string);
     setData(0,Qt::UserRole,QVariant(addSubItemWidgetType));
     setData(1,Qt::UserRole,QVariant(addSubItemWidgetType));
+    setData(0,Qt::BackgroundRole,QVariant(QColor(200,200,200)));
+    setData(1,Qt::BackgroundRole,QVariant(QColor(200,200,200)));
+    setData(0,Qt::FontRole,QVariant(QFont(QApplication::font().family(),12)));
 }
 
 UBAddItem::~UBAddItem()
@@ -56,20 +61,21 @@ UBTGActionWidget::UBTGActionWidget(QTreeWidgetItem* widget, QWidget* parent, con
   , mpTask(NULL)
 {
     setObjectName(name);
+    SET_STYLE_SHEET();
     mpLayout = new QVBoxLayout(this);
     mpOwner = new QComboBox(this);
+    mpOwner->setObjectName("DockPaletteWidgetComboBox");
+    mpOwner->setMinimumHeight(22);
     QStringList qslOwner;
     qslOwner << tr("Teacher") << tr("Student");
     mpOwner->insertItems(0,qslOwner);
     mpOwner->setCurrentIndex(0);
-    connect(mpOwner,SIGNAL(currentIndexChanged(int)),this,SLOT(onOwnerChange(int)));
     mpTask = new UBTGAdaptableText(widget,this);
     mpTask->setAcceptRichText(true);
     mpTask->setTextColor(QColor().green());
     mpTask->setObjectName("ActionWidgetTaskTextEdit");
     mpLayout->addWidget(mpOwner,0);
     mpLayout->addWidget(mpTask,1);
-    setStyleSheet( "QWidget {background-color: white}");
 }
 
 UBTGActionWidget::~UBTGActionWidget()
@@ -79,20 +85,12 @@ UBTGActionWidget::~UBTGActionWidget()
     DELETEPTR(mpLayout);
 }
 
-void UBTGActionWidget::onOwnerChange(int ownerId)
-{
-    if(ownerId == 0)
-        mpTask->setTextColor(QColor().red());
-    else
-        mpTask->setTextColor(QColor().green());
-}
-
 tUBGEElementNode* UBTGActionWidget::saveData()
 {
     tUBGEElementNode* result = new tUBGEElementNode();
     result->type = "action";
-    result->attributes.insert("owner",QString(mpOwner->currentIndex()));
-    result->attributes.insert("task",mpTask->toPlainText());
+    result->attributes.insert("owner",QString("%0").arg(mpOwner->currentIndex()));
+    result->attributes.insert("task",mpTask->text());
     return result;
 }
 
@@ -102,17 +100,66 @@ tUBGEElementNode* UBTGActionWidget::saveData()
 UBTGAdaptableText::UBTGAdaptableText(QTreeWidgetItem* widget, QWidget* parent, const char* name):QTextEdit(parent)
   , mBottomMargin(5)
   , mpTreeWidgetItem(widget)
+  , mMinimumHeight(20)
+  , mHasPlaceHolder(false)
 {
     setObjectName(name);
-    setStyleSheet( "QWidget {background-color: white}");
+    setStyleSheet( "QWidget {background: white; border:1 solid #999999; border-radius : 10px; padding: 2px;}");
     connect(this,SIGNAL(textChanged()),this,SLOT(onTextChanged()));
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setMinimumHeight(mMinimumHeight);
+}
+
+void UBTGAdaptableText::setPlaceHolderText(QString text)
+{
+
+    // the space addition is to make this string unique and check against it to know
+    // if we are talking about a typed string or the placeholder string
+    mPlaceHolderText = text + "     ";
+    setTextColor(QColor(Qt::lightGray));
+    setText(mPlaceHolderText);
+    onTextChanged();
+    if(isHidden())
+        show();
+    mHasPlaceHolder = true;
+}
+
+void UBTGAdaptableText::focusInEvent(QFocusEvent *e)
+{
+    if(mHasPlaceHolder && toPlainText() == mPlaceHolderText){
+        setText("");
+        setTextColor(QColor(Qt::black));
+    }
+
+    e->accept();
+}
+
+
+void UBTGAdaptableText::focusOutEvent(QFocusEvent *e)
+{
+    if(mHasPlaceHolder && toPlainText().length() == 0){
+        setTextColor(QColor(Qt::lightGray));
+        setText(mPlaceHolderText);
+    }
+    e->accept();
+}
+
+QString UBTGAdaptableText::text()
+{
+    QString result = toPlainText();
+    if(mHasPlaceHolder && result == mPlaceHolderText)
+        return "";
+
+    return result;
 }
 
 void UBTGAdaptableText::onTextChanged()
 {
-    setFixedHeight(document()->size().height()+mBottomMargin);
+    if(document()->size().height() < mMinimumHeight)
+        setFixedHeight(mMinimumHeight);
+    else
+        setFixedHeight(document()->size().height()+mBottomMargin);
     updateGeometry();
     //to trig the widget item to resize it
     if(mpTreeWidgetItem){
@@ -120,7 +167,6 @@ void UBTGAdaptableText::onTextChanged()
         mpTreeWidgetItem->setExpanded(true);
         setFocus();
     }
-
 }
 
 void UBTGAdaptableText::showText(const QString & text)
@@ -131,6 +177,8 @@ void UBTGAdaptableText::showText(const QString & text)
     hide();
     setReadOnly(true);
     onTextChanged();
+    if(isHidden())
+        show();
 }
 
 void UBTGAdaptableText::bottomMargin(int newValue)
@@ -155,8 +203,8 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
   , mIsPresentationMode(false)
 {
     setObjectName(name);
-    setStyleSheet( "QWidget {background-color: white}");
     mpDropMeWidget = new QLabel();
+    mpDropMeWidget->setObjectName("UBTGMediaDropMeLabel");
     mpDropMeWidget->setText(tr("drop media here ..."));
     mpDropMeWidget->setAlignment(Qt::AlignCenter);
     setAcceptDrops(true);
@@ -176,6 +224,7 @@ UBTGMediaWidget::UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget, 
   , mpWebView(NULL)
   , mRelativePath(relativePath)
   , mIsPresentationMode(true)
+  , mMediaType("")
 {
     setObjectName(name);
     setAcceptDrops(false);
@@ -202,8 +251,9 @@ tUBGEElementNode* UBTGMediaWidget::saveData()
         return 0;
     tUBGEElementNode* result = new tUBGEElementNode();
     result->type = "media";
-    result->attributes.insert("title",mpTitle->toPlainText());
+    result->attributes.insert("title",mpTitle->text());
     result->attributes.insert("relativePath",mRelativePath);
+    result->attributes.insert("mediaType",mMediaType);
     return result;
 }
 
@@ -218,15 +268,20 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
     qDebug() << mimeType;
     bool setMedia = true;
     if(mimeType.contains("audio") || mimeType.contains("video")){
+        mMediaType = mimeType.contains("audio")? "audio":"movie";
         mpMediaWidget = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
         mpMediaWidget->setFile(path);
     }
     else if(mimeType.contains("image")){
+        mMediaType = "image";
         mpMediaLabelWidget = new QLabel();
-        mpMediaLabelWidget->setPixmap(QPixmap(QUrl(path).toLocalFile()));
+        QPixmap pixmap = QPixmap(QUrl(path).toLocalFile());
+        pixmap = pixmap.scaledToWidth(mpTreeWidgetItem->treeWidget()->size().width());
+        mpMediaLabelWidget->setPixmap(pixmap);
         mpMediaLabelWidget->setScaledContents(true);
     }
     else if(mimeType.contains("application")){
+        mMediaType = "w3c";
         mpWebView = new QWebView(0);
         mpWebView->setAcceptDrops(false);
         mpWebView->settings()->setAttribute(QWebSettings::JavaEnabled, true);
@@ -258,6 +313,7 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
             mpLayout->addWidget(mpMediaLabelWidget);
         }
         else if (mpMediaWidget){
+            mpMediaWidget->setMaximumHeight(mpTreeWidgetItem->treeWidget()->size().width());
             mpMediaWidget->setParent(mpWorkWidget);
             mpLayout->addWidget(mpMediaWidget);
         }
@@ -337,12 +393,14 @@ UBTGUrlWidget::UBTGUrlWidget(QWidget* parent, const char* name ):QWidget(parent)
   , mpUrl(NULL)
 {
     setObjectName(name);
-    setStyleSheet( "QWidget {background-color: white}");
-
+    SET_STYLE_SHEET();
     mpLayout = new QVBoxLayout(this);
-    mpTitle = new QLineEdit("title",this);
-    mpUrl = new QLineEdit("url",this);
-
+    mpTitle = new QLineEdit(this);
+    mpTitle->setObjectName("UBTGLineEdit");
+    mpTitle->setPlaceholderText(tr("Insert link title here..."));
+    mpUrl = new QLineEdit(this);
+    mpUrl->setObjectName("UBTGLineEdit");
+    mpUrl->setPlaceholderText("http://");
     mpLayout->addWidget(mpTitle);
     mpLayout->addWidget(mpUrl);
 }
