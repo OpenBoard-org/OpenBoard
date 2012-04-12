@@ -337,6 +337,9 @@ void UBApplicationController::showBoard()
     mMainWindow->tutorialToolBar->hide();
     mMainWindow->boardToolBar->show();
 
+    if (mMainMode == Document && UBApplication::documentController->getSelectedItemIndex() != -1)
+        UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->getCurrentDocument(), UBApplication::documentController->getSelectedItemIndex());
+
     mMainMode = Board;
 
     adaptToolBar();
