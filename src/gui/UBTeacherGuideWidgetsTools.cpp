@@ -71,6 +71,7 @@ UBTGActionWidget::UBTGActionWidget(QTreeWidgetItem* widget, QWidget* parent, con
     mpOwner->insertItems(0,qslOwner);
     mpOwner->setCurrentIndex(0);
     mpTask = new UBTGAdaptableText(widget,this);
+    mpTask->setPlaceHolderText(tr("Type task here ..."));
     mpTask->setAcceptRichText(true);
     mpTask->setTextColor(QColor().green());
     mpTask->setObjectName("ActionWidgetTaskTextEdit");
@@ -102,6 +103,7 @@ UBTGAdaptableText::UBTGAdaptableText(QTreeWidgetItem* widget, QWidget* parent, c
   , mpTreeWidgetItem(widget)
   , mMinimumHeight(20)
   , mHasPlaceHolder(false)
+  , mIsUpdatingSize(false)
 {
     setObjectName(name);
     setStyleSheet( "QWidget {background: white; border:1 solid #999999; border-radius : 10px; padding: 2px;}");
@@ -113,36 +115,39 @@ UBTGAdaptableText::UBTGAdaptableText(QTreeWidgetItem* widget, QWidget* parent, c
 
 void UBTGAdaptableText::setPlaceHolderText(QString text)
 {
+    mHasPlaceHolder = true;
 
     // the space addition is to make this string unique and check against it to know
     // if we are talking about a typed string or the placeholder string
     mPlaceHolderText = text + "     ";
     setTextColor(QColor(Qt::lightGray));
-    setText(mPlaceHolderText);
-    onTextChanged();
-    if(isHidden())
-        show();
-    mHasPlaceHolder = true;
+    setPlainText(mPlaceHolderText);
 }
 
-void UBTGAdaptableText::focusInEvent(QFocusEvent *e)
+void UBTGAdaptableText::keyPressEvent(QKeyEvent* e)
 {
-    if(mHasPlaceHolder && toPlainText() == mPlaceHolderText){
-        setText("");
+    if(toPlainText() == mPlaceHolderText){
         setTextColor(QColor(Qt::black));
+        setPlainText("");
     }
-
-    e->accept();
+    QTextEdit::keyPressEvent(e);
 }
 
-
-void UBTGAdaptableText::focusOutEvent(QFocusEvent *e)
+void UBTGAdaptableText::keyReleaseEvent(QKeyEvent* e)
 {
-    if(mHasPlaceHolder && toPlainText().length() == 0){
+    QTextEdit::keyReleaseEvent(e);
+
+    if(toPlainText().isEmpty()){
         setTextColor(QColor(Qt::lightGray));
-        setText(mPlaceHolderText);
+        setPlainText(mPlaceHolderText);
     }
-    e->accept();
+}
+
+void UBTGAdaptableText::showEvent(QShowEvent* e)
+{
+    Q_UNUSED(e);
+    if(!mIsUpdatingSize && mHasPlaceHolder && toPlainText().isEmpty())
+        setPlainText(mPlaceHolderText);
 }
 
 QString UBTGAdaptableText::text()
@@ -156,6 +161,7 @@ QString UBTGAdaptableText::text()
 
 void UBTGAdaptableText::onTextChanged()
 {
+    mIsUpdatingSize = true;
     if(document()->size().height() < mMinimumHeight)
         setFixedHeight(mMinimumHeight);
     else
@@ -167,6 +173,7 @@ void UBTGAdaptableText::onTextChanged()
         mpTreeWidgetItem->setExpanded(true);
         setFocus();
     }
+    mIsUpdatingSize = false;
 }
 
 void UBTGAdaptableText::showText(const QString & text)
@@ -210,7 +217,7 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
     setAcceptDrops(true);
     addWidget(mpDropMeWidget);
 
-    setMinimumHeight(100);
+    setMinimumHeight(200);
 }
 
 UBTGMediaWidget::UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget, QWidget* parent,const char* name): QStackedWidget(parent)
@@ -307,6 +314,7 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
         mpLayout = new QVBoxLayout(mpWorkWidget);
         if(!mIsPresentationMode){
             mpTitle = new UBTGAdaptableText(mpTreeWidgetItem,mpWorkWidget);
+            mpTitle->setPlaceHolderText(tr("Type title here..."));
             mpLayout->addWidget(mpTitle,1);
         }
         if(mpMediaLabelWidget){
@@ -347,8 +355,6 @@ void UBTGMediaWidget::parseMimeData(const QMimeData* pMimeData)
         qDebug() << "No mime data present";
 
     createWorkWidget(path);
-    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(path);
-    qDebug() << mimeType;
 }
 
 void UBTGMediaWidget::dropEvent(QDropEvent* event)
