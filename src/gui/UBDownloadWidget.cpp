@@ -18,8 +18,10 @@
 #include <QApplication>
 
 #include "UBDownloadWidget.h"
-#include "core/UBApplication.h"
 
+#include "globals/UBGlobals.h"
+
+#include "core/UBApplication.h"
 #include "core/memcheck.h"
 
 /**
@@ -36,8 +38,7 @@ UBDownloadWidget::UBDownloadWidget(QWidget *parent, const char *name):QWidget(pa
 {
     setObjectName(name);
     setWindowTitle(tr("Downloading files"));
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
     resize(400, 300);
 
     mpLayout = new QVBoxLayout(this);

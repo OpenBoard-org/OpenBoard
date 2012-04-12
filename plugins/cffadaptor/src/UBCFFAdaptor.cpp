@@ -639,29 +639,30 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
 
 void UBCFFAdaptor::UBToCFFConverter::writeQDomElementToXML(const QDomNode &node)
 {
-    if (!node.isNull())
-    if (node.isText())
-    {     
-        mIWBContentWriter->writeCharacters(node.nodeValue());
-    }   
-    else
-    {
-        mIWBContentWriter->writeStartElement(node.namespaceURI(), node.toElement().tagName());
-
-        for (int i = 0; i < node.toElement().attributes().count(); i++)
+    if (!node.isNull()){
+        if (node.isText())
         {
-            QDomAttr attr =  node.toElement().attributes().item(i).toAttr();
-            mIWBContentWriter->writeAttribute(attr.name(), attr.value());
+            mIWBContentWriter->writeCharacters(node.nodeValue());
         }
-        QDomNode child = node.firstChild();
-        while(!child.isNull())
+        else
         {
-            writeQDomElementToXML(child);
-            child = child.nextSibling();
-        }
+            mIWBContentWriter->writeStartElement(node.namespaceURI(), node.toElement().tagName());
 
-        mIWBContentWriter->writeEndElement();
-    }       
+            for (int i = 0; i < node.toElement().attributes().count(); i++)
+            {
+                QDomAttr attr =  node.toElement().attributes().item(i).toAttr();
+                mIWBContentWriter->writeAttribute(attr.name(), attr.value());
+            }
+            QDomNode child = node.firstChild();
+            while(!child.isNull())
+            {
+                writeQDomElementToXML(child);
+                child = child.nextSibling();
+            }
+
+            mIWBContentWriter->writeEndElement();
+        }
+    }
 }
 
 bool UBCFFAdaptor::UBToCFFConverter::writeExtendedIwbSection()
@@ -1322,7 +1323,7 @@ QDomNode UBCFFAdaptor::UBToCFFConverter::findNodeByTagName(const QDomNode &node,
             if (!iterNode.firstChildElement().isNull())
             {
                 QDomNode foundNode = findNodeByTagName(iterNode.firstChildElement(), tagName);
-                if (!foundNode.isNull())
+                if (!foundNode.isNull()){
                     if (foundNode.isElement())
                     {
                         if (tagName == foundNode.toElement().tagName())
@@ -1330,6 +1331,7 @@ QDomNode UBCFFAdaptor::UBToCFFConverter::findNodeByTagName(const QDomNode &node,
                     }
                     else
                         break;
+                }
             }
         }
         

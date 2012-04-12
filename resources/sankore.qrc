@@ -347,5 +347,10 @@
         <file>images/licenses/ccbyncsa.png</file>
         <file>images/licenses/ccbynd.png</file>
         <file>images/licenses/ccbysa.png</file>
+        <file>images/teacherGuide/audio.png</file>
+        <file>images/teacherGuide/image.png</file>
+        <file>images/teacherGuide/link.png</file>
+        <file>images/teacherGuide/movie.png</file>
+        <file>images/teacherGuide/w3c.png</file>
     </qresource>
 </RCC>
