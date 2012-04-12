@@ -210,7 +210,7 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
     setAcceptDrops(true);
     addWidget(mpDropMeWidget);
 
-    setMinimumHeight(40);
+    setMinimumHeight(100);
 }
 
 UBTGMediaWidget::UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget, QWidget* parent,const char* name): QStackedWidget(parent)
@@ -229,6 +229,7 @@ UBTGMediaWidget::UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget, 
     setObjectName(name);
     setAcceptDrops(false);
     createWorkWidget(mRelativePath);
+    setMinimumHeight(200);
 }
 
 UBTGMediaWidget::~UBTGMediaWidget()
@@ -306,7 +307,7 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
         mpLayout = new QVBoxLayout(mpWorkWidget);
         if(!mIsPresentationMode){
             mpTitle = new UBTGAdaptableText(mpTreeWidgetItem,mpWorkWidget);
-            mpLayout->addWidget(mpTitle);
+            mpLayout->addWidget(mpTitle,1);
         }
         if(mpMediaLabelWidget){
             mpMediaLabelWidget->setParent(mpWorkWidget);
@@ -321,6 +322,7 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
             mpWebView->setParent(mpWorkWidget);
             mpLayout->addWidget(mpWebView);
         }
+        mpWorkWidget->setLayout(mpLayout);
         addWidget(mpWorkWidget);
         setCurrentWidget(mpWorkWidget);
         updateSize();
@@ -382,7 +384,6 @@ void UBTGMediaWidget::updateSize()
             mpTitle->setFocus();
     }
 }
-
 
 /***************************************************************************
  *                      class    UBTGUrlWdiget                             *

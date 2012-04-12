@@ -287,7 +287,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
 
     mpDocumentTitle = new QLabel(this);
     mpDocumentTitle->setObjectName("UBTGPresentationDocumentTitle");
-    mpDocumentTitle->setText("Document title");
+    mpDocumentTitle->setText(tr("Document title"));
 
     mpButtonTitleLayout->addWidget(mpModePushButton);
     mpButtonTitleLayout->addWidget(mpDocumentTitle);

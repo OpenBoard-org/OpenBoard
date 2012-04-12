@@ -34,6 +34,8 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
   , mBorder(5)
   , mpMediaContainer(NULL)
   , mpCover(NULL)
+//  , mpVideoStackedWidget(NULL)
+//  , mpSnapshotVideoWidget(NULL)
 {
     SET_STYLE_SHEET();
 
@@ -72,6 +74,8 @@ UBMediaWidget::~UBMediaWidget()
     DELETEPTR(mpPlayStopButton);
     DELETEPTR(mpAudioOutput);
     DELETEPTR(mpVideoWidget);
+//    DELETEPTR(mpVideoStackedWidget);
+//    DELETEPTR(mpSnapshotVideoWidget);
     DELETEPTR(mpMediaObject);
     DELETEPTR(mpCover);
 }
@@ -117,6 +121,13 @@ void UBMediaWidget::showEvent(QShowEvent* event)
     QWidget::showEvent(event);
 }
 
+void UBMediaWidget::hideEvent(QHideEvent* event)
+{
+    if(mpMediaObject->state() == Phonon::PlayingState)
+        mpMediaObject->stop();
+    UBActionableWidget::hideEvent(event);
+}
+
 /**
   * \brief Create the media player
   */
@@ -127,10 +138,17 @@ void UBMediaWidget::createMediaPlayer()
     mpMediaContainer->setLayout(&mMediaLayout);
 
     if(eMediaType_Video == mType){
-        mMediaLayout.setContentsMargins(10, 10, 25, 10);
+        mMediaLayout.setContentsMargins(10, 10, 10, 10);
         if(isVisible()){
             mpVideoWidget = new Phonon::VideoWidget(this);
             mMediaLayout.addStretch(1);
+
+//            mpVideoStackedWidget = new QStackedWidget(this);
+//            mpVideoStackedWidget->addWidget(mpVideoWidget);
+//            mpSnapshotVideoWidget = new QLabel(this);
+//            mpVideoStackedWidget->addWidget(mpSnapshotVideoWidget);
+//            mMediaLayout.addWidget(mpVideoStackedWidget,0);
+
             mMediaLayout.addWidget(mpVideoWidget, 0);
             mMediaLayout.addStretch(1);
             Phonon::createPath(mpMediaObject, mpVideoWidget);
@@ -170,6 +188,22 @@ void UBMediaWidget::adaptSizeToVideo()
     }
 }
 
+//void UBMediaWidget::updateView(Phonon::State nextState)
+//{
+//    if(eMediaType_Video == mType){
+//        if(nextState != Phonon::PlayingState){
+//            const QPixmap& snapshot = QPixmap::grabWindow(mpVideoWidget->winId());
+//            if(snapshot.size().width()!= 0){
+//                mpSnapshotVideoWidget->setPixmap(snapshot);
+//                mpVideoStackedWidget->setCurrentWidget(mpSnapshotVideoWidget);
+//            }
+//        }
+//        else
+//            mpVideoStackedWidget->setCurrentWidget(mpVideoWidget);
+//    }
+
+//}
+
 /**
   * \brief Handle the media state change notification
   * @param newState as the new state
@@ -198,6 +232,7 @@ void UBMediaWidget::onStateChanged(Phonon::State newState, Phonon::State oldStat
             mpPauseButton->setEnabled(false);
             mpSlider->setValue(0);
         }
+        //updateView(newState);
     }
 }
 

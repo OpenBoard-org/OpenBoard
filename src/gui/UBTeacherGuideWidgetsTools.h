@@ -139,6 +139,7 @@ private:
     QString mMediaType;
 };
 
+
 class UBTGUrlWidget : public QWidget , public iUBTGSavableData
 {
     Q_OBJECT

@@ -21,6 +21,7 @@
 #include <QLabel>
 #include <QSlider>
 #include <QMouseEvent>
+#include <QStackedWidget>
 
 #include <phonon/MediaObject>
 #include <phonon/VideoWidget>
@@ -75,6 +76,7 @@ public:
 protected:
     void resizeEvent(QResizeEvent* ev);
     void showEvent(QShowEvent* event);
+    void hideEvent(QHideEvent* event);
     /** The current media file path */
     QString mFilePath;
 
@@ -89,6 +91,7 @@ private slots:
 private:
     void createMediaPlayer();
     void adaptSizeToVideo();
+//    void updateView(Phonon::State nextState);
 
     /** The current media type */
     eMediaType mType;
@@ -122,6 +125,9 @@ private:
     QLabel* mpCover;
     /** The media url */
     QString mUrl;
+
+//    QStackedWidget* mpVideoStackedWidget;
+//    QLabel* mpSnapshotVideoWidget;
 };
 
 #endif // UBMEDIAWIDGET_H
