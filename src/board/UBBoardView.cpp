@@ -35,8 +35,8 @@
 #include "gui/UBToolWidget.h"
 #include "gui/UBResources.h"
 #include "gui/UBMainWindow.h"
-#include "gui/UBMediaPlayer.h"
 #include "gui/UBThumbnailWidget.h"
+#include "gui/UBTeacherGuideWidgetsTools.h"
 
 #include "board/UBBoardController.h"
 
@@ -48,9 +48,6 @@
 #include "domain/UBItem.h"
 
 #include "document/UBDocumentProxy.h"
-
-#include "customWidgets/UBDraggableLabel.h"
-#include "customWidgets/UBDraggableMedia.h"
 
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsCache.h"
@@ -379,41 +376,43 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
 
 }
 
-void
-UBBoardView::mousePressEvent (QMouseEvent *event)
+void UBBoardView::mousePressEvent (QMouseEvent *event)
 {
-  if (isAbsurdPoint (event->pos ()))
+    if (isAbsurdPoint (event->pos ()))
     {
-      event->accept ();
-      return;
+        event->accept ();
+        return;
     }
 
-  mMouseDownPos = event->pos ();
+    mMouseDownPos = event->pos ();
 
-  if (event->button () == Qt::LeftButton && isInteractive ())
+    emit clickOnBoard();
+
+    if (event->button () == Qt::LeftButton && isInteractive ())
     {
-      UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-      if (!mTabletStylusIsPressed)
-        mMouseButtonIsPressed = true;
+        UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-      if (currentTool == UBStylusTool::ZoomIn)
+        if (!mTabletStylusIsPressed)
+            mMouseButtonIsPressed = true;
+
+        if (currentTool == UBStylusTool::ZoomIn)
         {
-          mController->zoomIn (mapToScene (event->pos ()));
-          event->accept ();
+            mController->zoomIn (mapToScene (event->pos ()));
+            event->accept ();
         }
-      else if (currentTool == UBStylusTool::ZoomOut)
+        else if (currentTool == UBStylusTool::ZoomOut)
         {
-          mController->zoomOut (mapToScene (event->pos ()));
-          event->accept ();
+            mController->zoomOut (mapToScene (event->pos ()));
+            event->accept ();
         }
-      else if (currentTool == UBStylusTool::Hand)
+        else if (currentTool == UBStylusTool::Hand)
         {
-          viewport ()->setCursor (QCursor (Qt::ClosedHandCursor));
-          mPreviousPoint = event->posF ();
-          event->accept ();
+            viewport ()->setCursor (QCursor (Qt::ClosedHandCursor));
+            mPreviousPoint = event->posF ();
+            event->accept ();
         }
-      else if (currentTool == UBStylusTool::Selector)
+        else if (currentTool == UBStylusTool::Selector)
         {
             QSet<QGraphicsItem*> existingTools = scene()->tools();
 
@@ -443,67 +442,67 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
                 }
                 suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers()); // удалить
             }
-            
+
             event->accept();
         }
-      else if (currentTool == UBStylusTool::Text)
+        else if (currentTool == UBStylusTool::Text)
         {
-          int frameWidth = UBSettings::settings ()->objectFrameWidth;
-          QRectF fuzzyRect (0, 0, frameWidth * 4, frameWidth * 4);
-          fuzzyRect.moveCenter (mapToScene (mMouseDownPos));
+            int frameWidth = UBSettings::settings ()->objectFrameWidth;
+            QRectF fuzzyRect (0, 0, frameWidth * 4, frameWidth * 4);
+            fuzzyRect.moveCenter (mapToScene (mMouseDownPos));
 
-          UBGraphicsTextItem* foundTextItem = 0;
-          QListIterator<QGraphicsItem *> it (scene ()->items (fuzzyRect));
+            UBGraphicsTextItem* foundTextItem = 0;
+            QListIterator<QGraphicsItem *> it (scene ()->items (fuzzyRect));
 
-          while (it.hasNext () && !foundTextItem)
+            while (it.hasNext () && !foundTextItem)
             {
-              foundTextItem = qgraphicsitem_cast<UBGraphicsTextItem*>(it.next ());
+                foundTextItem = qgraphicsitem_cast<UBGraphicsTextItem*>(it.next ());
             }
 
-          if (foundTextItem)
+            if (foundTextItem)
             {
-              mIsCreatingTextZone = false;
-              QGraphicsView::mousePressEvent (event);
+                mIsCreatingTextZone = false;
+                QGraphicsView::mousePressEvent (event);
             }
-          else
-            {
-              scene ()->deselectAllItems ();
-
-              if (!mRubberBand)
-                mRubberBand = new UBRubberBand (QRubberBand::Rectangle, this);
-
-              mRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
-              mRubberBand->show ();
-              mIsCreatingTextZone = true;
-
-              event->accept ();
-            }
-        }
-      else if (currentTool == UBStylusTool::Capture)
-        {
-          scene ()->deselectAllItems ();
-
-          if (!mRubberBand)
-            mRubberBand = new UBRubberBand (QRubberBand::Rectangle, this);
-
-          mRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
-          mRubberBand->show ();
-          mIsCreatingSceneGrabZone = true;
-
-          event->accept ();
-        }
             else
             {
-                if(UBDrawingController::drawingController()->mActiveRuler==NULL)
-                {
-                        viewport()->setCursor (QCursor (Qt::BlankCursor));
-                }
+                scene ()->deselectAllItems ();
 
-                if (scene () && !mTabletStylusIsPressed)
-                {
-                        scene ()->inputDevicePress (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())));
-                }
+                if (!mRubberBand)
+                    mRubberBand = new UBRubberBand (QRubberBand::Rectangle, this);
+
+                mRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
+                mRubberBand->show ();
+                mIsCreatingTextZone = true;
+
                 event->accept ();
+            }
+        }
+        else if (currentTool == UBStylusTool::Capture)
+        {
+            scene ()->deselectAllItems ();
+
+            if (!mRubberBand)
+                mRubberBand = new UBRubberBand (QRubberBand::Rectangle, this);
+
+            mRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
+            mRubberBand->show ();
+            mIsCreatingSceneGrabZone = true;
+
+            event->accept ();
+        }
+        else
+        {
+            if(UBDrawingController::drawingController()->mActiveRuler==NULL)
+            {
+                viewport()->setCursor (QCursor (Qt::BlankCursor));
+            }
+
+            if (scene () && !mTabletStylusIsPressed)
+            {
+                scene ()->inputDevicePress (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())));
+            }
+            event->accept ();
         }
     }
 }
@@ -533,7 +532,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
         if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
             return;
         }
-        
+
         if (movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed))
         {
             QPointF scenePos = mapToScene(event->pos());
@@ -591,7 +590,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           mWidgetMoved = false;
           movingItem = NULL;
       }
-      else if (movingItem && suspendedMousePressEvent) 
+      else if (movingItem && suspendedMousePressEvent)
       {
           QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
           movingItem = NULL;
@@ -703,7 +702,7 @@ UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 
     QList<QGraphicsItem *> selItemsList = scene()->selectedItems();
     // if NO have selected items, than no need process mouse wheel. just exist
-    if( selItemsList.count() > 0 ) 
+    if( selItemsList.count() > 0 )
     {
         // only one selected item possible, so we will work with first item only
         QGraphicsItem * selItem = selItemsList[0];
@@ -711,7 +710,7 @@ UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
         // get items list under mouse cursor
         QPointF scenePos = mapToScene(wheelEvent->pos());
         QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
-        
+
         QBool isSlectedAndMouseHower = itemsList.contains(selItem);
         if(isSlectedAndMouseHower)
         {
@@ -765,11 +764,6 @@ UBBoardView::drawItems (QPainter *painter, int numItems,
     }
 }
 
-//void UBBoardView::dragEnterEvent (QDragEnterEvent *event)
-//{
-//    // TODO UB 4.x be smarter with drag accept code .... we cannot handle everything ...
-//    event->acceptProposedAction ();
-//}
 
 void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
 {
@@ -806,15 +800,17 @@ void UBBoardView::dropEvent (QDropEvent *event)
     QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
-    if (graphicsWidget && graphicsWidget->acceptDrops()) {
+    qDebug() << event->source();
 
+    if (graphicsWidget && graphicsWidget->acceptDrops()) {
         graphicsWidget->processDropEvent(event);
         event->acceptProposedAction();
 
-    } else if (!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source())
-               || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBDraggableMediaPlayer *>(event->source())
-               || dynamic_cast<UBDraggableLabel *>(event->source()) || dynamic_cast<UBDraggableMedia *>(event->source())) {
-
+    }
+    else if (!event->source()
+             || dynamic_cast<UBThumbnailWidget *>(event->source())
+             || dynamic_cast<QWebView*>(event->source())
+             || dynamic_cast<UBTGMediaWidget*>(event->source())) {
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction();
     }
@@ -966,7 +962,7 @@ UBBoardView::setToolCursor (int tool)
       controlViewport->setCursor (UBResources::resources ()->penCursor);
       break;
     case UBStylusTool::Eraser:
-      controlViewport->setCursor (UBResources::resources ()->eraserCursor); 
+      controlViewport->setCursor (UBResources::resources ()->eraserCursor);
       break;
     case UBStylusTool::Marker:
       controlViewport->setCursor (UBResources::resources ()->markerCursor);

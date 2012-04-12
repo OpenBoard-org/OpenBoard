@@ -46,6 +46,7 @@ class UBBoardView : public QGraphicsView
         void resized(QResizeEvent* event);
         void hidden();
         void shown();
+        void clickOnBoard();
 
     protected:
 

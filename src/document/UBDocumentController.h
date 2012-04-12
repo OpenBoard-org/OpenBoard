@@ -48,8 +48,9 @@ class UBDocumentController : public QObject
         QWidget* controlView();
         UBDocumentProxyTreeItem* findDocument(UBDocumentProxy* proxy);
         bool addFileToDocument(UBDocumentProxy* document);
-        UBDocumentProxy* getCurrentDocument();
+        UBDocumentProxy* getCurrentDocument() { return mCurrentDocument; };
         void deletePages(QList<QGraphicsItem*> itemsToDelete);
+        int getSelectedItemIndex();
 
     signals:
         void refreshThumbnails();
@@ -111,6 +112,7 @@ class UBDocumentController : public QObject
         bool mToolsPalettePositionned;
         UBDocumentGroupTreeItem* mTrashTi;
         UBDocumentProxy* mCurrentDocument;
+        QList<QPixmap> mDocumentThumbs;
 
 //        UBKeyboardPalette *mKeyboardPalette;
 

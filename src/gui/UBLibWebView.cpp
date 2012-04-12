@@ -1,11 +1,15 @@
 #include <QDomDocument>
 
 #include "core/UBApplication.h"
+#include "core/memcheck.h"
+
 #include "board/UBBoardController.h"
+
+#include "globals/UBGlobals.h"
 
 #include "UBLibWebView.h"
 
-#include "core/memcheck.h"
+
 
 UBLibWebView::UBLibWebView(QWidget* parent, const char* name):QWidget(parent)
     , mpView(NULL)
@@ -15,8 +19,7 @@ UBLibWebView::UBLibWebView(QWidget* parent, const char* name):QWidget(parent)
 {
     setObjectName(name);
 
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
 
     mpLayout = new QVBoxLayout();
     setLayout(mpLayout);

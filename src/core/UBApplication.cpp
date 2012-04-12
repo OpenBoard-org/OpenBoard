@@ -257,10 +257,10 @@ int UBApplication::exec(const QString& pFileToImport)
     applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
 
 
-    connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)), 
+    connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),
             boardController->paletteManager(), SLOT(slot_changeMainMode(UBApplicationController::MainMode)));
 
-    connect(applicationController, SIGNAL(desktopMode(bool)), 
+    connect(applicationController, SIGNAL(desktopMode(bool)),
             boardController->paletteManager(), SLOT(slot_changeDesktopMode(bool)));
 
 
@@ -283,8 +283,8 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionSankoreEditor, SIGNAL(triggered()), applicationController, SLOT(showSankoreEditor()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
 
-   
- 
+
+
     toolBarPositionChanged(UBSettings::settings()->appToolBarPositionedAtTop->get());
 
     bool bUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
@@ -645,29 +645,13 @@ void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, 
         painter->setPen(savedPen);
 }
 
-QString UBApplication::globalStyleSheet()
-{
-    QString style;
-
-    QFile f(":style.qss");
-    if(f.exists())
-    {
-        if(f.open(QIODevice::ReadOnly))
-        {
-            style = QString(f.readAll());
-        }
-    }
-
-    return style;
-}
-
 QString UBApplication::urlFromHtml(QString html)
 {
 	QString _html;
 	QRegExp comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
 	QString url;
     QDomDocument domDoc;
-	
+
 	//	We remove all the comments & CRLF of this html
 	_html = html.remove(comments);
 	domDoc.setContent(_html.remove(QRegExp("[\\0]")));
