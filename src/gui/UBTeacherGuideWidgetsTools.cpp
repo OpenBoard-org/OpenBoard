@@ -194,6 +194,12 @@ void UBTGAdaptableText::bottomMargin(int newValue)
     onTextChanged();
 }
 
+void UBTGAdaptableText::resizeEvent(QResizeEvent* e)
+{
+    QTextEdit::resizeEvent(e);
+    onTextChanged();
+}
+
 /***************************************************************************
  *                      class    UBTGMediaWidget                           *
  ***************************************************************************/

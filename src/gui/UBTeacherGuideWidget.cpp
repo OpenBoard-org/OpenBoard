@@ -388,7 +388,7 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
             newWidgetItem->setText(0,element->attributes.value("task"));
             QString colorString = element->attributes.value("owner").toInt() == 0 ? "red":"green";
             UBTGAdaptableText* textWidget = new UBTGAdaptableText(newWidgetItem,0);
-            textWidget->bottomMargin(15);
+            textWidget->bottomMargin(14);
             textWidget->setStyleSheet("QWidget {background: #EEEEEE; border:none; color:" + colorString + ";}");
             textWidget->showText(element->attributes.value("task"));
             textWidget->document()->setDefaultFont(QFont(QApplication::font().family(),11));
