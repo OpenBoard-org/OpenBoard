@@ -386,10 +386,14 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
         else if(element->type == "action"){
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpRootWidgetItem);
             newWidgetItem->setText(0,element->attributes.value("task"));
-            QColor color = element->attributes.value("owner").toInt() == 0 ? QColor(Qt::red):QColor(Qt::green);
-            newWidgetItem->setData(0,Qt::ForegroundRole,QBrush(color));
-            newWidgetItem->setData(0,tUBTGTreeWidgetItemRole_HasAnAction,tUBTGActionAssociateOnClickItem_NONE);
-            newWidgetItem->setData(0,Qt::FontRole, QVariant(QFont(QApplication::font().family(),11)));
+            QString colorString = element->attributes.value("owner").toInt() == 0 ? "red":"green";
+            UBTGAdaptableText* textWidget = new UBTGAdaptableText(newWidgetItem,0);
+            textWidget->bottomMargin(15);
+            textWidget->setStyleSheet("QWidget {background: #EEEEEE; border:none; color:" + colorString + ";}");
+            textWidget->showText(element->attributes.value("task"));
+            textWidget->document()->setDefaultFont(QFont(QApplication::font().family(),11));
+            mpTreeWidget->setItemWidget(newWidgetItem,0,textWidget);
+
             mpRootWidgetItem->addChild(newWidgetItem);
         }
         else if(element->type == "media"){

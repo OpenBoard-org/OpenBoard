@@ -327,6 +327,7 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
             mpLayout->addWidget(mpMediaWidget);
         }
         else if (mpWebView){
+            mpWebView->setMaximumHeight(mpTreeWidgetItem->treeWidget()->size().width());
             mpWebView->setParent(mpWorkWidget);
             mpLayout->addWidget(mpWebView);
         }
