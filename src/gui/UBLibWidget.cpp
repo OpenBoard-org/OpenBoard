@@ -15,9 +15,11 @@
 #include <QDebug>
 
 #include "UBLibWidget.h"
-#include "core/UBApplication.h"
 
+#include "core/UBApplication.h"
 #include "core/memcheck.h"
+
+#include "globals/UBGlobals.h"
 
 /**
  * \brief Constructor
@@ -37,8 +39,7 @@ UBLibWidget::UBLibWidget(QWidget *parent, const char *name):UBDockPaletteWidget(
     mName = "LibWidget";
     mVisibleState = true;
 
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
 
     mIconToLeft = QPixmap(":images/library_open.png");
     mIconToRight = QPixmap(":images/library_close.png");

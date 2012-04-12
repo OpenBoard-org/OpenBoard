@@ -18,10 +18,12 @@
 
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
+#include "core/memcheck.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 
-#include "core/memcheck.h"
+#include "globals/UBGlobals.h"
+
 
 /**
  * \brief Constructor
@@ -43,8 +45,7 @@ UBLibItemProperties::UBLibItemProperties(QWidget *parent, const char *name):QWid
 {
     setObjectName(name);
 
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
 
     // Create the GUI
     mpLayout = new QVBoxLayout(this);

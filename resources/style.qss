@@ -4,20 +4,11 @@ QWidget#UBLibPathViewer,
 QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
 QWidget#UBDownloadWidget,
-QWidget#UBWidgetList,
-QWidget#UBTeacherBarDropMediaZone,
-QWidget#UBTBMediaContainer
+QWidget#UBTeacherGuideWidget
 {
 	background: #EEEEEE;
 	border-radius: 10px;
 	border: 2px solid #999999;
-}
-
-QFrame#UBTBSeparator
-{
-	background: #DDDDDD;
-	border-radius: 2px;
-	border: 1px solid #DDDDDD;
 }
 
 QWidget#UBMediaVideoContainer
@@ -27,69 +18,11 @@ QWidget#UBMediaVideoContainer
 	border: 2px solid #999999;
 }
 
-
-QWidget#UBTBPreviewWidget
-{
-	background: #FFFFFF;
-	border-radius: 10px;
-	border: 2px solid #999999;
-}
-
-QLabel#UBTBPreviewSessionTitle
-{
-	font-size: 12px;
-}
-
-QLabel#UBTeacherBarPreviewTitle
-{
-	color: #555555;
-	font-size : 20px;
-	font-weight:bold;
-	padding-left:5px;
-}
-
-QLabel#UBMediaPlayerButton
-{
-	padding: 0px 0px 0px 0px;
-}
-
-QLabel#UBTeacherBarPreviewSubtitle
-{
-	color: #555555;
-	font-size : 15px;
-	font-weight:bold;
-	padding-left:5px;
-}
-
 QWidget#UBLibWebView
 {
 	background: #EEEEEE;
 	border-radius : 10px;
 	border: 2px solid #999999;
-}
-
-QWidget#UBActionPreviewOwner
-{
-	color: #555555;
-	font-size : 12px;
-	font-weight: bold;
-}
-
-QWidget#UBTeacherBarPreviewComments,
-QWidget#UBTeacherBarTargetBox
-{
-	border-radius: 10px;
-	border: white 2px solid;
-	padding: 5px 5px 5px 5px;
-	background-color: white;
-}
-
-QWidget#UBActionPreviewContent,
-QTextEdit#UBCommentPreview
-{
-	border-radius : 10px;
-	border: 2px solid #999999;
-	padding: 5px 5px 5px 5px;
 }
 
 QWebView#SearchEngineView
@@ -109,9 +42,11 @@ QLabel#DockPaletteWidgetTitle
 	font-weight:bold;
 }
 
-QLineEdit#DockPaletteWidgetLineEdit
+QLineEdit#UBTGLineEdit,
+QLabel#UBTGMediaDropMeLabel
 {
 	background: white;
+	border: 1 solid #999999;
 	border-radius : 10px;
 	padding: 2px;
 }
@@ -268,4 +203,59 @@ QSlider::groove::horizontal
 	height:10px;
 	border-radius:5px;
 	border:1px solid #555555;
+}
+
+QLabel#UBTGEditionDocumentTitle
+{
+    color: black;
+    font-size : 14px;
+    font-weight:bold;
+}
+
+QLabel#UBTGPresentationDocumentTitle
+{
+    color: black;
+    font-size : 12px;
+    font-weight:bold;
+}
+
+QLabel#UBTGEditionPageNumberLabel
+{
+    color: black;
+    font-size : 12px;
+    font-weight:bold;
+}
+
+QLabel#UBTGPresentationPageNumberLabel
+{
+    color: black;
+    font-size : 12px;
+}
+
+UBTGAdaptableText#UBTGEditionPageTitle,
+UBTGAdaptableText#UBTGEditionComment
+{ 
+    color: black;
+    font-size : 12px;
+}
+
+UBTGAdaptableText#UBTGPresentationPageTitle
+{
+    color: black;
+    font-size:16px;
+    font-weight:bold;
+    border : none;
+}
+
+UBTGAdaptableText#UBTGPresentationComment
+{
+    color: black;
+    font-size:12px;
+    border : none;
+}
+  
+QFrame#UBTGEditionSeparator,
+QFrame#UBTGPresentationSepartor
+{
+    background-color: #cccccc;
 }

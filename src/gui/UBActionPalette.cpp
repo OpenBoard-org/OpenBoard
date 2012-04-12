@@ -231,6 +231,7 @@ void UBActionPalette::mouseReleaseEvent(QMouseEvent * event)
 
 void UBActionPalette::actionChanged()
 {
+    emit itemOnActionPaletteChanged();
     for(int i = 0; i < mActions.length() && i < mButtons.length(); i++)
     {
         mButtons.at(i)->setVisible(mActions.at(i)->isVisible());

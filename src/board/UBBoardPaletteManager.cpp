@@ -31,6 +31,7 @@
 #include "gui/UBZoomPalette.h"
 #include "gui/UBActionPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
+#include "gui/UBDockTeacherGuideWidget.h"
 
 
 #include "web/UBWebPage.h"
@@ -84,6 +85,7 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpCachePropWidget(NULL)
     , mpDownloadWidget(NULL)
     , mpDesktopLibWidget(NULL)
+    , mpTeacherGuideWidget(NULL)
     , mDownloadInProgress(false)
 {
     setupPalettes();
@@ -135,6 +137,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mpCachePropWidget = new UBCachePropertiesWidget();
 
     mpDownloadWidget = new UBDockDownloadWidget();
+    mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
 
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
@@ -142,6 +145,9 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // LEFT palette widgets
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
+
+    mLeftPalette->registerWidget(mpTeacherGuideWidget);
+    mLeftPalette->addTab(mpTeacherGuideWidget);
 
     mLeftPalette->connectSignals();
 
@@ -170,7 +176,7 @@ void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMod
 
     switch( mainMode )
     {
-        case UBApplicationController::Board: 
+        case UBApplicationController::Board:
             {
                 // call changeMode only when switch NOT from desktop mode
                 if(!UBApplication::applicationController->isShowingDesktop())
@@ -205,7 +211,7 @@ void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMod
 void UBBoardPaletteManager::slot_changeDesktopMode(bool isDesktop)
 {
     UBApplicationController::MainMode currMode = UBApplication::applicationController->displayMode();
-    if(!isDesktop) 
+    if(!isDesktop)
     {
         switch( currMode )
         {
@@ -231,6 +237,7 @@ void UBBoardPaletteManager::setupPalettes()
         connect(mKeyboardPalette, SIGNAL(closed()), mKeyboardPalette, SLOT(onDeactivated()));
 #endif
     }
+
 
     setupDockPaletteWidgets();
 
@@ -735,8 +742,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                         mKeyboardPalette->show();
                     }
                     else
-                        mKeyboardPalette->setParent(UBApplication::documentController->controlView());                    
-                } 
+                        mKeyboardPalette->setParent(UBApplication::documentController->controlView());
+                }
             }
             break;
 
@@ -787,7 +794,7 @@ void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos, 
 
 void UBBoardPaletteManager::addItemToCurrentPage()
 {
-    UBApplication::applicationController->showBoard();    
+    UBApplication::applicationController->showBoard();
     mAddItemPalette->hide();
     if(mPixmap.isNull())
         UBApplication::boardController->downloadURL(mItemUrl);

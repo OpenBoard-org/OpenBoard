@@ -12,40 +12,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "UBDockDownloadWidget.h"
-#include "core/UBApplication.h"
 
+#include "core/UBApplication.h"
 #include "globals/UBGlobals.h"
 
-UBDockDownloadWidget::UBDockDownloadWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent, name)
-  , mpLayout(NULL)
-  , mpDLWidget(NULL)
+#include "UBDockTeacherGuideWidget.h"
+#include "UBTeacherGuideWidget.h"
+
+
+UBDockTeacherGuideWidget::UBDockTeacherGuideWidget(QWidget* parent, const char* name):
+    UBDockPaletteWidget(parent,name)
+  , mpTeacherGuideWidget(NULL)
 {
-    mName = "DownloadWidget";
-    mVisibleState = false;
+    mName = "TeacherGuide";
 
     SET_STYLE_SHEET();
 
-    mIconToLeft = QPixmap(":images/download_open.png");
-    mIconToRight = QPixmap(":images/download_close.png");
+    mIconToLeft = QPixmap(":images/teacher_open.png");
+    mIconToRight = QPixmap(":images/teacher_close.png");
 
     mpLayout = new QVBoxLayout(this);
     setLayout(mpLayout);
-
-    mpDLWidget = new UBDownloadWidget(this);
-    mpLayout->addWidget(mpDLWidget);
+    mpTeacherGuideWidget = new UBTeacherGuideWidget(this);
+    mpLayout->addWidget(mpTeacherGuideWidget);
 }
 
-UBDockDownloadWidget::~UBDockDownloadWidget()
+UBDockTeacherGuideWidget::~UBDockTeacherGuideWidget()
 {
-    if(NULL != mpDLWidget)
-    {
-        delete mpDLWidget;
-        mpDLWidget = NULL;
-    }
-    if(NULL != mpLayout)
-    {
-        delete mpLayout;
-        mpLayout = NULL;
-    }
+    DELETEPTR(mpTeacherGuideWidget);
+    DELETEPTR(mpLayout);
 }

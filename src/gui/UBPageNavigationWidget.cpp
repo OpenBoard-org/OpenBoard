@@ -14,8 +14,11 @@
  */
 #include "UBPageNavigationWidget.h"
 #include "core/UBApplication.h"
-#include "board/UBBoardController.h"
 #include "core/memcheck.h"
+
+#include "board/UBBoardController.h"
+
+#include "globals/UBGlobals.h"
 
 /**
  * \brief Constructor
@@ -32,8 +35,8 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
     setObjectName(name);
     mName = "PageNavigator";
     mVisibleState = true;
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+
+    SET_STYLE_SHEET();
 
     mIconToRight = QPixmap(":images/pages_open.png");
     mIconToLeft = QPixmap(":images/pages_close.png");
