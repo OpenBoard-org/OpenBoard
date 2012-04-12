@@ -160,6 +160,9 @@ void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurr
 
         mDocumentUI->documentTreeWidget->scrollToItem(selected);
 
+        mDocumentThumbs = UBThumbnailAdaptor::load(selectedDocumentProxy());
+        refreshDocumentThumbnailsView();
+
         mSelectionType = Document;
     }
 }
@@ -268,11 +271,10 @@ void UBDocumentController::refreshDocumentThumbnailsView()
     if (proxy)
     {
         mCurrentDocument = proxy;
-        QList<QPixmap> thumbs = UBThumbnailAdaptor::load(proxy);
 
-        for (int i = 0; i < thumbs.count(); i++)
+        for (int i = 0; i < mDocumentThumbs.count(); i++)
         {
-            QPixmap pix = thumbs.at(i);
+            QPixmap pix = mDocumentThumbs.at(i);
             QGraphicsPixmapItem *pixmapItem = new UBSceneThumbnailPixmap(pix, proxy, i); // deleted by the tree widget
 
             if (proxy == mBoardController->activeDocument() && mBoardController->activeSceneIndex() == i)
@@ -507,7 +509,7 @@ void UBDocumentController::openSelectedItem()
 
             if (proxy && isOKToOpenDocument(proxy))
             {
-                mBoardController->setActiveDocumentScene(proxy, thumb->sceneIndex());
+                //mBoardController->setActiveDocumentScene(proxy, thumb->sceneIndex());
                 UBApplication::applicationController->showBoard();
             }
         }
@@ -561,6 +563,7 @@ void UBDocumentController::duplicateSelectedItem()
                 foreach (int sceneIndex, selectedSceneIndexes)
                 {
                     UBPersistenceManager::persistenceManager()->duplicateDocumentScene(proxy, sceneIndex + offset);
+                    mDocumentThumbs.insert(sceneIndex + offset, mDocumentThumbs.at(sceneIndex + offset));
                     offset++;
                 }
             }
@@ -921,6 +924,7 @@ void UBDocumentController::itemClicked(QTreeWidgetItem * item, int column )
     Q_UNUSED(item);
     Q_UNUSED(column);
 
+    selectDocument(selectedDocumentProxy(), false);
     itemSelectionChanged();
 }
 
@@ -1043,6 +1047,7 @@ void UBDocumentController::addFolderOfImages()
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
                 UBMetadataDcSubsetAdaptor::persist(document);
+                mDocumentThumbs = UBThumbnailAdaptor::load(selectedDocumentProxy());
                 refreshDocumentThumbnailsView();
             }
         }
@@ -1057,6 +1062,7 @@ void UBDocumentController::addFileToDocument()
     if (document)
     {
          addFileToDocument(document);
+         mDocumentThumbs = UBThumbnailAdaptor::load(document);
          refreshDocumentThumbnailsView();
     }
 }
@@ -1108,12 +1114,9 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
 
     proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
     UBMetadataDcSubsetAdaptor::persist(proxy);
+    mDocumentThumbs.insert(target, mDocumentThumbs.takeAt(source));
     refreshDocumentThumbnailsView();
-
-    // Notify the move to anyone interested in knowing it
-    emit movedToIndex(target);
-
-	UBApplication::boardController->setActiveDocumentScene(proxy, target);
+    mDocumentUI->thumbnailWidget->hightlightItem(target);
 }
 
 
@@ -1321,7 +1324,8 @@ void UBDocumentController::addToDocument()
         }
 
         int newActiveSceneIndex = selectedItems.count() == mBoardController->activeDocument()->pageCount() ? 0 : oldActiveSceneIndex + 1;
-        mBoardController->setActiveDocumentScene(mBoardController->activeDocument(), newActiveSceneIndex);
+        mDocumentUI->thumbnailWidget->selectItemAt(newActiveSceneIndex, false);
+        selectDocument(mBoardController->activeDocument());
         mBoardController->activeDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBMetadataDcSubsetAdaptor::persist(mBoardController->activeDocument());
 
@@ -1495,6 +1499,7 @@ void UBDocumentController::addImages()
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
                 UBMetadataDcSubsetAdaptor::persist(document);
+                mDocumentThumbs = UBThumbnailAdaptor::load(selectedDocumentProxy());
                 refreshDocumentThumbnailsView();
             }
         }
@@ -1605,6 +1610,13 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
             UBPersistenceManager::persistenceManager()->deleteDocumentScenes(proxy, sceneIndexes);
             proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             UBMetadataDcSubsetAdaptor::persist(proxy);
+
+            int offset = 0;
+            foreach(int index, sceneIndexes)
+            {
+                mDocumentThumbs.removeAt(index - offset);
+                offset++;
+            }
             refreshDocumentThumbnailsView();
 
             int minIndex = proxy->pageCount() - 1;
@@ -1615,4 +1627,16 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
             mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
         }
     }
+}
+
+int UBDocumentController::getSelectedItemIndex()
+{
+    QList<QGraphicsItem*> selectedItems = mDocumentUI->thumbnailWidget->selectedItems();
+
+    if (selectedItems.count() > 0)
+    {
+        UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (selectedItems.last()); 
+        return thumb->sceneIndex();
+    }
+    else return -1;
 }
