@@ -197,7 +197,7 @@ void UBTGAdaptableText::bottomMargin(int newValue)
 void UBTGAdaptableText::resizeEvent(QResizeEvent* e)
 {
     QTextEdit::resizeEvent(e);
-    onTextChanged();
+    QTimer::singleShot(100,this,SLOT(onTextChanged()));
 }
 
 /***************************************************************************
