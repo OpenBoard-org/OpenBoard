@@ -191,7 +191,7 @@ UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString&
 		return 0;
 	}
 	else{
-		UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder);
+		UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder, pGroup);
 		UBApplication::showMessage(tr("Import successful."));
 		return newDocument;
 	}

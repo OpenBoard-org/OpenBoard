@@ -254,10 +254,10 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal moveY = -move.length() * sin((move.angle() - mAngle) * PI / 180);
     qreal width = delegated()->boundingRect().width() * mTotalScaleX;
     qreal height = delegated()->boundingRect().height() * mTotalScaleY;
-    mTranslateX = moveX;
 
     if(mOperationMode == Scaling)
     {
+        mTranslateX = moveX;
         // Perform the resize
         if (resizingBottomRight())
         {
@@ -353,6 +353,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else if (mOperationMode == Resizing)
     {
+        mTranslateX = moveX;
         UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(delegated());
 
         if (resizableItem)
@@ -390,12 +391,14 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     if (rotating())
     {
+        mTranslateX = 0;
+        mTranslateY = 0;
+
         QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
-            QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
+        QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
         mAngle += startLine.angleTo(currentLine);
 
-        if ((int)mAngle % 45 >= 45 - mAngleTolerance 
-             || (int)mAngle % 45 <= mAngleTolerance)
+        if ((int)mAngle % 45 >= 45 - mAngleTolerance || (int)mAngle % 45 <= mAngleTolerance)
         {
             mAngle = qRound(mAngle / 45) * 45;
             mAngleOffset += startLine.angleTo(currentLine);
@@ -405,8 +408,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 mAngleOffset = 0;
             }
         }
-        else if ((int)mAngle % 30 >= 30 - mAngleTolerance
-                  || (int)mAngle % 30 <= mAngleTolerance)
+        else if ((int)mAngle % 30 >= 30 - mAngleTolerance || (int)mAngle % 30 <= mAngleTolerance)
         {
             mAngle = qRound(mAngle / 30) * 30;
             mAngleOffset += startLine.angleTo(currentLine);
@@ -498,10 +500,16 @@ QTransform UBGraphicsDelegateFrame::buildTransform()
 {
     QTransform tr;
     QPointF center = delegated()->boundingRect().center();
+
+    // Translate
     tr.translate(mTotalTranslateX + mTranslateX, mTotalTranslateY + mTranslateY);
+
+    // Set angle
     tr.translate(center.x() * mTotalScaleX * mScaleX, center.y() * mTotalScaleY * mScaleY);
     tr.rotate(-mAngle);
     tr.translate(-center.x() * mTotalScaleX * mScaleX, -center.y() * mTotalScaleY * mScaleY);
+
+    // Scale
     tr.scale(mTotalScaleX * mScaleX, mTotalScaleY * mScaleY);
     return tr;
 }
@@ -565,35 +573,53 @@ void UBGraphicsDelegateFrame::setVisible(bool visible)
 
 void UBGraphicsDelegateFrame::positionHandles()
 {
+    // TODO: Check why the height is modified if the user rotates the item more than 90°
+
     QRectF itemRect = delegated()->boundingRect();
     QTransform itemTransform = delegated()->sceneTransform();
     QPointF topLeft = itemTransform.map(itemRect.topLeft());
     QPointF topRight = itemTransform.map(itemRect.topRight());
     QPointF bottomLeft = itemTransform.map(itemRect.bottomLeft());
+    QPointF bottomRight = itemTransform.map(itemRect.bottomRight());
     QPointF center = itemTransform.map(itemRect.center());
+    int rotateHeight = QLineF(topLeft, bottomLeft).length();
 
     // Handle the mirroring
     if(topLeft.x() > topRight.x()){
-        QPointF tmp = topRight;
+        QPointF topTmp = topRight;
+        QPointF bottomTmp = bottomRight;
         topRight = topLeft;
-        topLeft = tmp;
-        bottomLeft.setX(topLeft.x());
+        topLeft = topTmp;
+        bottomRight = bottomLeft;
+        bottomLeft = bottomTmp;
+    }
+
+    if(bottomLeft.y() > topLeft.y()){
+        QPointF leftTmp = bottomLeft;
+        QPointF rightTmp = bottomRight;
+        bottomLeft = topLeft;
+        topLeft = leftTmp;
+        bottomRight = topRight;
+        topRight = rightTmp;
     }
 
     QLineF topLine(topLeft, topRight);
     qreal angle = topLine.angle();
     qreal width = topLine.length();
+
     QLineF leftLine(topLeft, bottomLeft);
     qreal height = leftLine.length();
 
+    int h = rotating()?rotateHeight:height;
+
     if (mVisible)
     {
-        setRect(center.x() - mFrameWidth - width / 2, center.y() - mFrameWidth - height / 2,
-                width + 2 * mFrameWidth, height + 2 * mFrameWidth);
+        qDebug() << center.y();
+        setRect(center.x() - mFrameWidth - width / 2, center.y() - mFrameWidth - h / 2, width + 2 * mFrameWidth, h + 2 * mFrameWidth);
     }
     else
     {
-        setRect(center.x() - width / 2, center.y() - height / 2, width, height);
+        setRect(center.x() - width / 2, center.y() - h / 2, width, h);
     }
 
     resetTransform();
@@ -680,30 +706,38 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
         return ResizeBottomRight;
     else if (bottomResizeGripRect().contains(pos)){
             if(mMirrorY){
+                qDebug() << "Top";
                 return ResizeTop;
             }else{
+                qDebug() << "Bottom";
                 return ResizeBottom;
             }
         }
     else if (leftResizeGripRect().contains(pos)){
             if(mMirrorX){
+                qDebug() << "Right";
                 return ResizeRight;
             }else{
+                qDebug() << "Left";
                 return ResizeLeft;
             }
             return ResizeLeft;
         }
     else if (rightResizeGripRect().contains(pos)){
             if(mMirrorX){
+                qDebug() << "Left";
                 return ResizeLeft;
             }else{
+                qDebug() << "Right";
                 return ResizeRight;
             }
         }
     else if (topResizeGripRect().contains(pos)){
             if(mMirrorY){
+                qDebug() << "Bottom";
                 return ResizeBottom;
             }else{
+                qDebug() << "Top";
                 return ResizeTop;
             }
         }
