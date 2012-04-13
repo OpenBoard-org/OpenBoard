@@ -55,6 +55,7 @@ void UBGraphicsSvgItem::init()
 
     mDelegate = new UBGraphicsItemDelegate(this, 0, true, true);
     mDelegate->init();
+    mDelegate->setFlippable(true);
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
