@@ -33,6 +33,7 @@ UBThumbnailWidget::UBThumbnailWidget(QWidget* parent)
     , mLastSelectedThumbnail(0)
     , mSelectionSpan(0)
     , mLassoRectItem(0)
+    , mPrevLassoRect(QRect())
 {
     // By default, the drag is possible
     bCanDrag = true;
@@ -217,6 +218,7 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
         QStyleOption option;
         option.initFrom(&rubberBand);
 
+        mPrevLassoRect = QRect();
         mLassoRectItem = new QGraphicsRectItem(0, scene());
 
 #ifdef Q_WS_MAC
@@ -248,6 +250,8 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
         }
 
         mSelectedThumbnailItems.clear();
+        mPreviouslyIncrementalSelectedItemsX.clear();
+        mPreviouslyIncrementalSelectedItemsY.clear();
         QGraphicsView::mousePressEvent(event);
     }
     else if (Qt::ShiftModifier & event->modifiers())
@@ -305,6 +309,8 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         QRectF lassoRect(
             qMin(mMousePressScenePos.x(), currentScenePos.x()), qMin(mMousePressScenePos.y(), currentScenePos.y()),
             qAbs(mMousePressScenePos.x() - currentScenePos.x()), qAbs(mMousePressScenePos.y() - currentScenePos.y()));
+        if (QPoint() == prevMoveMousePos)
+            prevMoveMousePos = currentScenePos;
         QRectF incrementXSelection(
             qMin(prevMoveMousePos.x(), currentScenePos.x()), qMin(mMousePressScenePos.y(), currentScenePos.y()),
             qAbs(prevMoveMousePos.x() - currentScenePos.x())+incrementLassoMinWidth, qAbs(mMousePressScenePos.y() - currentScenePos.y()));
@@ -315,49 +321,82 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         prevMoveMousePos = currentScenePos;
         mLassoRectItem->setRect(lassoRect);
 
-
-        QSet<QGraphicsItem*> incSelectedItems = scene()->items(incrementXSelection, Qt::IntersectsItemBoundingRect).toSet()
-                                              + scene()->items(incrementYSelection, Qt::IntersectsItemBoundingRect).toSet();  
-
-        mPreviouslyIncrementalSelectedItems = incSelectedItems;
-        QSet<QGraphicsItem*> lassoSelectedItems;
         QSet<QGraphicsItem*> lassoSelectedThumbnailItems;
-        foreach (QGraphicsItem *lassoSelectedItem, incSelectedItems)
+
+        QSet<QGraphicsItem*> toUnset;
+        QSet<QGraphicsItem*> toSet;
+
+        // for horizontal moving
+        QSet<QGraphicsItem*> incSelectedItemsX = scene()->items(incrementXSelection, Qt::IntersectsItemBoundingRect).toSet();
+        foreach (QGraphicsItem *lassoSelectedItem, incSelectedItemsX)
+        {
+            if (lassoSelectedItem)
+            {
+                UBSceneThumbnailPixmap *thumbnailItem = dynamic_cast<UBSceneThumbnailPixmap*>(lassoSelectedItem);
+                if (thumbnailItem)
+                     lassoSelectedThumbnailItems += lassoSelectedItem;
+            }
+        }
+
+        if(lassoRect.width() < mPrevLassoRect.width())
+        {
+            if (!lassoSelectedThumbnailItems.contains(mPreviouslyIncrementalSelectedItemsX))
+                toUnset += mPreviouslyIncrementalSelectedItemsX - lassoSelectedThumbnailItems;
+
+        }
+        mPreviouslyIncrementalSelectedItemsX = lassoSelectedThumbnailItems;
+
+        toSet += lassoSelectedThumbnailItems + mPreviouslyIncrementalSelectedItemsX;
+
+
+        lassoSelectedThumbnailItems.clear();
+
+        // for vertical moving
+
+        QSet<QGraphicsItem*> incSelectedItemsY = scene()->items(incrementYSelection, Qt::IntersectsItemBoundingRect).toSet();  
+        foreach (QGraphicsItem *lassoSelectedItem, incSelectedItemsY)
         {
             if (lassoSelectedItem)
             {
                 UBSceneThumbnailPixmap *thumbnailItem = dynamic_cast<UBSceneThumbnailPixmap*>(lassoSelectedItem);
 
                 if (thumbnailItem)
-                {
-                    lassoSelectedItem->setSelected(true);
                     lassoSelectedThumbnailItems += lassoSelectedItem;
-                }
             }
         }
 
-        QSet<QGraphicsItem*> toUnset;
-        toUnset =  mSelectedThumbnailItems - lassoSelectedThumbnailItems;
-        foreach(QGraphicsItem* item, toUnset)
+        if(lassoRect.height() < mPrevLassoRect.height())
+        {
+            if (!lassoSelectedThumbnailItems.contains(mPreviouslyIncrementalSelectedItemsY))
+                toUnset += mPreviouslyIncrementalSelectedItemsY - lassoSelectedThumbnailItems;
+
+        }
+        mPreviouslyIncrementalSelectedItemsY = lassoSelectedThumbnailItems;
+
+
+        toSet += lassoSelectedThumbnailItems + mPreviouslyIncrementalSelectedItemsY;
+
+
+        toSet -= toUnset;
+
+        foreach (QGraphicsItem *item, toSet)
+        {
+            item->setSelected(true);
+        }
+
+        foreach (QGraphicsItem *item, toUnset)
         {
             item->setSelected(false);
         }
-
         
-        mSelectedThumbnailItems += lassoSelectedItems;
-      //  foreach (QGraphicsItem *lassoSelectedItem, lassoSelectedThumbnailItems)
-        {
-            
-        }
+        mSelectedThumbnailItems += lassoSelectedThumbnailItems;
+        mPrevLassoRect = lassoRect;
+
         if (Qt::ControlModifier & event->modifiers())
         {
             for (int i = 0; i < mSelectedThumbnailItems.count()-1; i++)
             {
                 mSelectedThumbnailItems.values().at(i)->setSelected(true);
-            }
-          //  foreach (QGraphicsItem *selectedItem, mSelectedThumbnailItems)
-            {
-            //    selectedItem->setSelected(true);
             }
         }
     }
@@ -404,6 +443,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 void UBThumbnailWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     int elapsedTimeSincePress = mClickTime.elapsed();
+    prevMoveMousePos = QPoint();
     deleteLasso();
     QGraphicsView::mouseReleaseEvent(event);
 
