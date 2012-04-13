@@ -153,6 +153,10 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mRightPalette = new UBRightPalette(mContainer);
     // RIGHT palette widgets
+
+	mRightPalette->registerWidget(mpFeaturesWidget);
+	mRightPalette->addTab(mpFeaturesWidget);
+
     mRightPalette->registerWidget(mpLibWidget);
     mRightPalette->addTab(mpLibWidget);
     // The cache widget will be visible only if a cache is put on the page

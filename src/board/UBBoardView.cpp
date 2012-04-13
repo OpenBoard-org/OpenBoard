@@ -800,17 +800,17 @@ void UBBoardView::dropEvent (QDropEvent *event)
     QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
-    qDebug() << event->source();
-
     if (graphicsWidget && graphicsWidget->acceptDrops()) {
+
         graphicsWidget->processDropEvent(event);
         event->acceptProposedAction();
 
-    }
-    else if (!event->source()
+	} else if (!event->source()
              || dynamic_cast<UBThumbnailWidget *>(event->source())
              || dynamic_cast<QWebView*>(event->source())
-             || dynamic_cast<UBTGMediaWidget*>(event->source())) {
+             || dynamic_cast<UBTGMediaWidget*>(event->source()))
+	         || dynamic_cast<QListView *>(event->source()) ) {
+
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction();
     }

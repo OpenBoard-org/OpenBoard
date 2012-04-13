@@ -27,6 +27,7 @@
 #include "gui/UBCachePropertiesWidget.h"
 #include "gui/UBDockDownloadWidget.h"
 #include "core/UBApplicationController.h"
+#include "gui/UBFeaturesWidget.h"
 
 
 class UBStylusPalette;
@@ -128,6 +129,8 @@ class UBBoardPaletteManager : public QObject
         UBLibWidget* mpLibWidget;
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
+
+		UBFeaturesWidget *mpFeaturesWidget;
 
         /** The download widget */
         UBDockDownloadWidget* mpDownloadWidget;
