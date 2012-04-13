@@ -59,7 +59,7 @@ void UBKeyboardPalette::createCtrlButtons()
     ctrlButtons[ctrlID++] = new UBCntrlButton(this, 0x09, "tab");      // Tab
 //     ctrlButtons[ctrlID++] = new UBKeyButton(this);                  // Row 2 Stub
 //     ctrlButtons[ctrlID++] = new UBKeyButton(this);                  // Row 3 Stub
-    ctrlButtons[ctrlID++] = new UBCntrlButton(this, "Enter", 0x0d);    // Enter
+    ctrlButtons[ctrlID++] = new UBCntrlButton(this, tr("Enter"), 0x0d);    // Enter
     ctrlButtons[ctrlID++] = new UBCapsLockButton(this, "capslock");    // Caps Lock
     ctrlButtons[ctrlID++] = new UBCapsLockButton(this, "capslock");    // Caps Lock
     ctrlButtons[ctrlID++] = new UBLocaleButton(this);                  // Language Switch 

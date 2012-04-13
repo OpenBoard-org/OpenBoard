@@ -53,7 +53,6 @@ UBImportCFF::~UBImportCFF()
 QStringList UBImportCFF::supportedExtentions()
 {
     return QStringList("iwb");
-//    return QStringList();
 }
 
 

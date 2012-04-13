@@ -50,7 +50,7 @@ void UBKeyboardPalette::createCtrlButtons()
 
         ctrlButtons[0] = new UBCntrlButton(this, "<-", 51);
         ctrlButtons[1] = new UBCntrlButton(this, "<->", 48);
-        ctrlButtons[2] = new UBCntrlButton(this, "Enter", 76);
+        ctrlButtons[2] = new UBCntrlButton(this, tr("Enter"), 76);
         ctrlButtons[3] = new UBCapsLockButton(this, "capslock");
         ctrlButtons[4] = new UBCapsLockButton(this, "capslock");
         ctrlButtons[5] = new UBLocaleButton(this);
