@@ -46,6 +46,7 @@ signals:
 
 public slots:
     void onMovedToIndex(int index);
+    void onScrollToSelectedPage() { centerOn(mCrntItem); }
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
