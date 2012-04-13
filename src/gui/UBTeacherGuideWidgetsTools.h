@@ -96,14 +96,18 @@ public slots:
     void onTextChanged();
 
 protected:
-    void focusInEvent(QFocusEvent *e);
-    void focusOutEvent(QFocusEvent *e);
+    void keyPressEvent(QKeyEvent* e);
+    void keyReleaseEvent(QKeyEvent* e);
+    void showEvent(QShowEvent* e);
+    void resizeEvent(QResizeEvent* e);
+
 private:
     int mBottomMargin;
     QTreeWidgetItem* mpTreeWidgetItem;
     int mMinimumHeight;
     bool mHasPlaceHolder;
     QString mPlaceHolderText;
+    bool mIsUpdatingSize;
 };
 
 
