@@ -23,7 +23,8 @@ QT_PATH="/usr/local/Trolltech/Qt-4.7.3"
 PLUGINS_PATH="$QT_PATH/plugins"
 QMAKE_PATH="$QT_PATH/bin/qmake"
 LRELEASES="/usr/local/Trolltech/Qt-4.7.3/bin/lrelease"
-GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-sankore3.1/translations"
+QT_GUI_TRANSLATIONS_DIRECTORY="../Qt-sankore3.1/translations"
+QT_GUI_TRANSLATIONS_PRO_FILE="$QT_GUI_TRANSLATIONS_DIRECTORY/translations.pro"
 
 if [ ! -e "$QMAKE_PATH" ]; then
     echo "qmake command not found at $QMAKE_PATH"
@@ -45,6 +46,13 @@ fi
 
 make -j 4 release-install
 
+
+if [ ! -f $QT_GUI_TRANSLATIONS ]; then 
+    echo "impossible to create and integrate the qt gui translation"
+    exit 1
+else
+    $LRELEASES $QT_GUI_TRANSLATIONS_PRO_FILE
+elif
 
 VERSION=`cat build/linux/release/version`
 if [ ! -f build/linux/release/version ]; then
