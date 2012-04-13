@@ -3,12 +3,12 @@ var sankoreLang = {
     edit: "Edit", 
     first_desc: "Fruits", 
     second_desc: "Vegetables",
-    potatoes: "Potatoes",
+    potatoes: "Potato",
     carrot: "Carrot",
     onion: "Onion",
     apple: "Apple",
     pear: "Pear",
-    enter: "Enter your category name here ...",
+    enter: "Enter a category name here ...",
     add: "Add new block",
     text: "Some text"
 };

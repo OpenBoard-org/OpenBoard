@@ -1,14 +1,14 @@
 var sankoreLang = {
-    display: "D'affichage", 
+    display: "Afficher", 
     edit: "Modifier", 
     first_desc: "Fruits", 
     second_desc: "Légumes",
-    potatoes: "Pommes de terre",
+    potatoes: "Pomme de terre",
     carrot: "Carotte",
     onion: "Oignon",
     apple: "Pomme",
     pear: "Poire",
-    enter: "Entrez votre nom de la catégorie ici ...",
+    enter: "Saisir le nom de la catégorie ici ...",
     add: "Nouveau bloc",
     text: "Texte"
 };
