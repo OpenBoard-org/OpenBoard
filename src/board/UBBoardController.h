@@ -152,6 +152,7 @@ class UBBoardController : public QObject
         void displayMetaData(QMap<QString, QString> metadatas);
 
         void ClearUndoStack();
+        void emitScrollSignal() { emit scrollToSelectedPage(); }
 
     public slots:
         void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0);
@@ -230,6 +231,7 @@ class UBBoardController : public QObject
         void setDocOnPageNavigator(UBDocumentProxy* doc);
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
+        void scrollToSelectedPage();
 
     protected:
         void setupViews();

@@ -337,8 +337,15 @@ void UBApplicationController::showBoard()
     mMainWindow->tutorialToolBar->hide();
     mMainWindow->boardToolBar->show();
 
-    if (mMainMode == Document && UBApplication::documentController->getSelectedItemIndex() != -1)
-        UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->getCurrentDocument(), UBApplication::documentController->getSelectedItemIndex());
+    if (mMainMode == Document)
+    {
+        int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
+        if (selectedSceneIndex != -1)
+        {
+            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->getCurrentDocument(), selectedSceneIndex);
+            UBApplication::boardController->emitScrollSignal();
+        }
+    }
 
     mMainMode = Board;
 

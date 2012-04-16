@@ -109,8 +109,9 @@ MOC_DIR = $$BUILD_DIR/moc
 RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
+LIBS += "-Lplugins/cffadaptor/$$BUILD_DIR/lib" "-lCFF_Adaptor"
+
 win32 {
-   LIBS += "-Lplugins/cffadaptor/lib/win32" "-lCFF_Adaptor"
    RC_FILE = resources/win/sankore.rc
    CONFIG += qaxcontainer
    exists(console):CONFIG += console
@@ -131,7 +132,6 @@ win32 {
 }
 
 macx {
-   LIBS += "-Lplugins/cffadaptor/lib/macx"   "-lCFF_Adaptor"
    LIBS += -framework Foundation 
    LIBS += -lcrypto
    LIBS += -framework AppKit 
@@ -329,7 +329,6 @@ macx {
 }
 
 linux-g++ {
-   LIBS += "-Lplugins/cffadaptor/lib/linux" "-lCFF_Adaptor"
    LIBS += -lcrypto
    QMAKE_CFLAGS += -fopenmp
    QMAKE_CXXFLAGS += -fopenmp
@@ -345,7 +344,6 @@ linux-g++ {
 }
 
 linux-g++-32 {
-   LIBS += "-Lplugins/cffadaptor/lib/linux" "-lCFF_Adaptor"
    LIBS += -lcrypto
    QMAKE_CFLAGS += -fopenmp
    QMAKE_CXXFLAGS += -fopenmp
@@ -361,7 +359,6 @@ linux-g++-32 {
 }
 
 linux-g++-64 { 
-    LIBS += "-Lplugins/cffadaptor/lib/linux" "-lCFF_Adaptor"
     LIBS += -lcrypto
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp

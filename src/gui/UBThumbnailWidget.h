@@ -113,9 +113,11 @@ class UBThumbnailWidget : public QGraphicsView
 
         UBThumbnail *mLastSelectedThumbnail;
         int mSelectionSpan;
+        QRectF mPrevLassoRect;
         QGraphicsRectItem *mLassoRectItem;
         QSet<QGraphicsItem*> mSelectedThumbnailItems;
-        QSet<QGraphicsItem*> mPreviouslyIncrementalSelectedItems;
+        QSet<QGraphicsItem*> mPreviouslyIncrementalSelectedItemsX;
+        QSet<QGraphicsItem*> mPreviouslyIncrementalSelectedItemsY;
         QTime mClickTime;
 };
 
