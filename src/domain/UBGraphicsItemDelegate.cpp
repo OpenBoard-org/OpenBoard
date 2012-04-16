@@ -499,7 +499,6 @@ void UBGraphicsItemDelegate::updateMenuActionState()
     }
 }
 
-
 void UBGraphicsItemDelegate::showMenu()
 {
     if (!mMenu)

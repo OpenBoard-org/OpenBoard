@@ -446,11 +446,11 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if(!mMirrorX && !mMirrorY){
             ref = delegated()->boundingRect().topLeft();
         }else if(mMirrorX && !mMirrorY){
-            ref = delegated()->boundingRect().topRight();
+            ref = delegated()->boundingRect().topLeft();
         }else if(!mMirrorX && mMirrorY){
-            ref = delegated()->boundingRect().bottomLeft();
+            ref = delegated()->boundingRect().topLeft();
         }else if(mMirrorX && mMirrorY){
-            ref = delegated()->boundingRect().bottomRight();
+            ref = delegated()->boundingRect().topRight();
         }
 
         // Map the item topleft point to the current mouse move transform
@@ -578,8 +578,6 @@ void UBGraphicsDelegateFrame::setVisible(bool visible)
 
 void UBGraphicsDelegateFrame::positionHandles()
 {
-    // TODO: Check why the height is modified if the user rotates the item more than 90°
-
     QRectF itemRect = delegated()->boundingRect();
     QTransform itemTransform = delegated()->sceneTransform();
     QPointF topLeft = itemTransform.map(itemRect.topLeft());
@@ -619,7 +617,6 @@ void UBGraphicsDelegateFrame::positionHandles()
 
     if (mVisible)
     {
-        qDebug() << center.y();
         setRect(center.x() - mFrameWidth - width / 2, center.y() - mFrameWidth - h / 2, width + 2 * mFrameWidth, h + 2 * mFrameWidth);
     }
     else
@@ -711,38 +708,30 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
         return ResizeBottomRight;
     else if (bottomResizeGripRect().contains(pos)){
             if(mMirrorY){
-                qDebug() << "Top";
                 return ResizeTop;
             }else{
-                qDebug() << "Bottom";
                 return ResizeBottom;
             }
         }
     else if (leftResizeGripRect().contains(pos)){
             if(mMirrorX){
-                qDebug() << "Right";
                 return ResizeRight;
             }else{
-                qDebug() << "Left";
                 return ResizeLeft;
             }
             return ResizeLeft;
         }
     else if (rightResizeGripRect().contains(pos)){
             if(mMirrorX){
-                qDebug() << "Left";
                 return ResizeLeft;
             }else{
-                qDebug() << "Right";
                 return ResizeRight;
             }
         }
     else if (topResizeGripRect().contains(pos)){
             if(mMirrorY){
-                qDebug() << "Bottom";
                 return ResizeBottom;
             }else{
-                qDebug() << "Top";
                 return ResizeTop;
             }
         }
@@ -796,11 +785,8 @@ void UBGraphicsDelegateFrame::refreshGeometry()
     QPointF topLeft = itemTransform.map(itemRect.topLeft());
     QPointF topRight = itemTransform.map(itemRect.topRight());
     QPointF bottomLeft = itemTransform.map(itemRect.bottomLeft());
-    QPointF center = itemTransform.map(itemRect.center());
-
 
     QLineF topLine(topLeft, topRight);
-    qreal angle = topLine.angle();
     qreal width = topLine.length();
     QLineF leftLine(topLeft, bottomLeft);
     qreal height = leftLine.length();
