@@ -4,6 +4,7 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
+#include "globals/UBGlobals.h"
 
 UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
 {
@@ -11,8 +12,9 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
     mName = "FeaturesWidget";
     mVisibleState = true;
 
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+	SET_STYLE_SHEET();
+    //setAttribute(Qt::WA_StyledBackground, true);
+    //setStyleSheet(UBApplication::globalStyleSheet());
 
     mIconToLeft = QPixmap(":images/library_open.png");
     mIconToRight = QPixmap(":images/library_close.png");
@@ -44,6 +46,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	featuresPathModel->setSourceModel( featuresModel );
 	
 
+	//featuresListView->setStyleSheet( QString("background: #EEEEEE;border-radius: 10px;border: 2px solid #999999;") );
 	featuresListView->setDragDropMode( QAbstractItemView::InternalMove );
 	featuresListView->setModel( featuresProxyModel );
 
@@ -55,6 +58,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	featuresListView->setIconSize( QSize(40, 40) );
 	featuresListView->setGridSize( QSize(70, 70) );
 
+	//pathListView->setStyleSheet( QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;") );
 	pathListView->setModel( featuresPathModel );
 	pathListView->setViewMode( QListView::IconMode );
 	pathListView->setIconSize( QSize(30, 30) );
@@ -201,8 +205,8 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
 {
 	setObjectName(name);
 
-    setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
+    //setStyleSheet(UBApplication::globalStyleSheet());
 
     // Create the GUI
     mpLayout = new QVBoxLayout(this);
@@ -316,9 +320,9 @@ UBFeaturesPathViewer::UBFeaturesPathViewer(const QPixmap &root, const QString &r
 {
 	setObjectName(name);
 
-	setAttribute(Qt::WA_StyledBackground, true);
+	/*setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(UBApplication::globalStyleSheet());
-
+*/
 	layout = new QGraphicsLinearLayout();
 
 	container = new QGraphicsWidget();

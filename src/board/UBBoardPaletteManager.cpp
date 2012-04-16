@@ -138,6 +138,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mpDownloadWidget = new UBDockDownloadWidget();
     mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
+	mpFeaturesWidget = new UBFeaturesWidget();
 
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);

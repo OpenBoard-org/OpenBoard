@@ -4,7 +4,8 @@ QWidget#UBLibPathViewer,
 QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
 QWidget#UBDownloadWidget,
-QWidget#UBTeacherGuideWidget
+QWidget#UBTeacherGuideWidget,
+QWidget#UBFeatureProperties
 {
 	background: #EEEEEE;
 	border-radius: 10px;
@@ -19,6 +20,13 @@ QWidget#UBMediaVideoContainer
 }
 
 QWidget#UBLibWebView
+{
+	background: #EEEEEE;
+	border-radius : 10px;
+	border: 2px solid #999999;
+}
+
+QListView
 {
 	background: #EEEEEE;
 	border-radius : 10px;

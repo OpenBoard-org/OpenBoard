@@ -16,6 +16,7 @@
 
 #include <QtGui>
 #include <QtXml>
+#include <QListView>
 
 #include "UBDrawingController.h"
 
@@ -808,7 +809,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
 	} else if (!event->source()
              || dynamic_cast<UBThumbnailWidget *>(event->source())
              || dynamic_cast<QWebView*>(event->source())
-             || dynamic_cast<UBTGMediaWidget*>(event->source()))
+             || dynamic_cast<UBTGMediaWidget*>(event->source())
 	         || dynamic_cast<QListView *>(event->source()) ) {
 
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
