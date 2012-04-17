@@ -322,7 +322,8 @@ int UBApplication::exec(const QString& pFileToImport)
 #endif
     if (UBSettings::settings()->appStartMode->get() == "Desktop")
         applicationController->showDesktop();
-    else applicationController->showBoard();
+    else
+        applicationController->showBoard();
 
 
     if (UBSettings::settings()->appIsInSoftwareUpdateProcess->get().toBool())
@@ -543,16 +544,16 @@ void UBApplication::updateProtoActionsState()
 void UBApplication::insertSpaceToToolbarBeforeAction(QToolBar* toolbar, QAction* action, int width)
 {
     QWidget* spacer = new QWidget();
-    QHBoxLayout *layout = new QHBoxLayout();
 
-    if (width >= 0)
+    if (width >= 0){
+        QHBoxLayout *layout = new QHBoxLayout();
         layout->addSpacing(width);
+        spacer->setLayout(layout);
+    }
     else
-        layout->addStretch();
+        spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
 
-    spacer->setLayout(layout);
     toolbar->insertWidget(action, spacer);
-
 }
 
 

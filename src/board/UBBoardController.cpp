@@ -351,7 +351,6 @@ void UBBoardController::connectToolbar()
     connect(mMainWindow->actionEraseItems, SIGNAL(triggered()), this, SLOT(clearSceneItems()));
     connect(mMainWindow->actionEraseAnnotations, SIGNAL(triggered()), this, SLOT(clearSceneAnnotation()));
 
-    //connect(mMainWindow->actionUndo, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mMainWindow->actionUndo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(undo()));
     connect(mMainWindow->actionRedo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(redo()));
     connect(mMainWindow->actionRedo, SIGNAL(triggered()), this, SLOT(startScript()));
@@ -669,8 +668,6 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 
 void UBBoardController::handScroll(qreal dx, qreal dy)
 {
-//    mControlView->horizontalScrollBar()->setValue(mControlView->horizontalScrollBar()->value() - dx);
-//    mControlView->verticalScrollBar()->setValue(mControlView->verticalScrollBar()->value() - dy);
     mControlView->translate(dx, dy);
 	
     UBApplication::applicationController->adjustDisplayView();

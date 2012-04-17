@@ -172,6 +172,7 @@ void UBApplicationController::screenLayoutChanged()
 void UBApplicationController::adaptToolBar()
 {
     bool highResolution = mMainWindow->width() > 1024;
+
     mMainWindow->actionClearPage->setVisible(Board == mMainMode && highResolution);
     mMainWindow->actionBoard->setVisible(Board != mMainMode || highResolution);
     mMainWindow->actionDocument->setVisible(Document != mMainMode || highResolution);
