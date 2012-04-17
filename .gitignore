@@ -59,7 +59,7 @@ Makefile.Release
 
 plugins/cffadaptor/lib
 plugins/cffadaptor/moc
-plugins/cffadadpor/objects
+plugins/cffadaptor/objects
 
 
 # Translation files #
