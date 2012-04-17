@@ -26,6 +26,9 @@ rm -rf install
 QT_PATH="/usr/local/Trolltech/Qt-4.7.3"
 PLUGINS_PATH="$QT_PATH/plugins"
 QMAKE_PATH="$QT_PATH/bin/qmake"
+LRELEASES="/usr/local/Trolltech/Qt-4.7.3/bin/lrelease"
+GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-sankore3.1/translations"
+ARCHITECTURE=`uname -m`
 
 if [ ! -e "$QMAKE_PATH" ]; then
     notifyError "qmake command not found at $QMAKE_PATH"
@@ -36,10 +39,14 @@ if [ ! -e "$PLUGINS_PATH" ]; then
 fi
 
 notify-send "Open-Sankore" "Building Open-Sankore ..."
-$QMAKE_PATH -spec linux-g++
+
+if [ "$ARCHITECTURE" == "x86_64" ]; then
+    $QMAKE_PATH -spec linux-g++-64
+else
+    $QMAKE_PATH -spec linux-g++
+fi
 
 make -j 4 release-install
-
 
 notify-send "Git Hub" "Make a tag of the delivered version"
 VERSION=`cat build/linux/release/version`
@@ -49,8 +56,8 @@ else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
         echo creating a tag with the version $VERSION
-#        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
-#        git push origin --tags 
+        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
+        git push origin --tags 
     fi
 fi
 
@@ -92,15 +99,31 @@ else
     cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
 fi
 
+
+notify-send "QT" "Internalization ..."
+if [ ! -e $GUI_TRANSLATIONS_DIRECTORY_PATH ]; then
+    notifyError "gui translations pro file not found at: $GUI_TRANSLATIONS_DIRECTORY_PATH"
+else
+    cd $GUI_TRANSLATIONS_DIRECTORY_PATH
+    $LRELEASES translations.pro
+    cd -
+    if [ ! -e build/linux/release/product/i18n ]; then
+        mkdir build/linux/release/product/i18n
+    fi
+    #copying qt gui translation    
+    cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qt_??.qm build/linux/release/product/i18n/
+fi
+
+$LRELEASES Sankore_3.1.pro
+cp resources/i18n/*.qm build/linux/release/product/i18n/
+
 rm -rf install/linux
 mkdir -p install/linux
 
-#mv build/linux/release/product build/linux/release/Sankore.$VERSION
 cd build/linux/release/product
 
 #Removing .svn directories ...
 find . -name .svn -exec rm -rf {} \; 2> /dev/null
-#tar cvzf ../../../install/linux/Sankore\ 3.1.tar.gz Sankore_3.1.$VERSION -C . 
 
 cd -
 notify-send "Building Sankore" "Finished to build Sankore building the package"
@@ -191,7 +214,6 @@ CHANGE_LOG_FILE="$BASE_WORKING_DIR/DEBIAN/changelog-sankore-$VERSION.txt"
 CONTROL_FILE="$BASE_WORKING_DIR/DEBIAN/control"
 CHANGE_LOG_TEXT="changelog.txt"
 
-ARCHITECTURE=`uname -m`
 if [ "$ARCHITECTURE" == "x86_64" ]; then
     ARCHITECTURE="amd64"
 fi

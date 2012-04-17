@@ -24,6 +24,7 @@ set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
 set INNO_EXE=%PROGRAMS_FILE_PATH%\Inno Setup 5\iscc.exe 
 set BUILD_DIR=build\win32\release
 set LRELEASE=%QT_DIR%\bin\lrelease
+set BASE_QT_TRANSLATIONS_DIRECTORY=%QT_DIR%\translations
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
 
@@ -36,7 +37,7 @@ REM is correct. This is important because installer
 REM pick up dll from this directory
 IF NOT EXIST "..\Qt-sankore3.1\lib\QtCore4.dll" GOTO EXIT_WITH_ERROR
 
-REM rmdir /S /Q %BUILD_DIR%
+rmdir /S /Q %BUILD_DIR%
 
 set EDITION=MNEMIS_EDITION
 
@@ -44,13 +45,13 @@ set EDITION=MNEMIS_EDITION
 
 %LRELEASE% Sankore_3.1.pro
 
-set /p VERSION= < build\win32\release\version
-git rev-list --tags --max-count=1 > tmp
-set /p LAST_TAG= < tmp
-erase tmp
-git describe %LAST_TAG% > tmp
-set /p LAST_TAG_VERSION=< tmp
-erase tmp
+REM set /p VERSION= < build\win32\release\version
+REM git rev-list --tags --max-count=1 > tmp
+REM set /p LAST_TAG= < tmp
+REM erase tmp
+REM git describe %LAST_TAG% > tmp
+REM set /p LAST_TAG_VERSION=< tmp
+REM erase tmp
 
 echo %VERSION%
 echo %LAST_TAG_VERSION%
@@ -58,6 +59,10 @@ echo %LAST_TAG_VERSION%
 REM if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
 nmake release-install
+
+
+copy %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm build\win32\release\product\i18n\
+del build\win32\release\product\i18n\qt_help*
 
 del ".\build\win32\release\product\Sankore.pdb"
 

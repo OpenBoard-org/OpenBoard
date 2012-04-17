@@ -55,9 +55,9 @@ void UBPlatformUtils::fadeDisplayIn()
     // NOOP
 }
 
-QString UBPlatformUtils::preferredTranslation()
+QString UBPlatformUtils::preferredTranslation(QString pFilePrefix)
 {
-    QString qmPath = applicationResourcesDirectory() + "/" + "i18n" + "/" + QString("sankore_") + preferredLanguage() + ".qm";
+    QString qmPath = applicationResourcesDirectory() + "/" + "i18n" + "/" + pFilePrefix + preferredLanguage() + ".qm";
     return qmPath;
 }
 

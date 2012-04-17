@@ -131,6 +131,8 @@ class UBApplication : public QtSingleApplication
 #endif
 
         UBPreferencesController* mPreferencesController;
+        QTranslator* mApplicationTranslator;
+        QTranslator* mQtGuiTranslator;
 
 };
 

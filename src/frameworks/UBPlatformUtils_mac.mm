@@ -182,9 +182,10 @@ void UBPlatformUtils::fadeDisplayIn()
     }
 }
 
-QString UBPlatformUtils::preferredTranslation()
+QString UBPlatformUtils::preferredTranslation(QString pFilePrefix)
 {
     QString qmPath;
+    NSString* filePrefix = [[NSString alloc] initWithUTF8String:(const char*)(pFilePrefix.toUtf8())];
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -192,7 +193,7 @@ QString UBPlatformUtils::preferredTranslation()
     if (lprojPath)
     {
         NSString *lang = [[lprojPath lastPathComponent] stringByDeletingPathExtension];
-        NSString *translationFilePath = [lprojPath stringByAppendingPathComponent:[[@"sankore_" stringByAppendingString:lang] stringByAppendingPathExtension:@"qm"]];
+        NSString *translationFilePath = [lprojPath stringByAppendingPathComponent:[[filePrefix stringByAppendingString:lang] stringByAppendingPathExtension:@"qm"]];
         qmPath = QString::fromUtf8([translationFilePath UTF8String], strlen([translationFilePath UTF8String]));
     }
 
@@ -202,7 +203,7 @@ QString UBPlatformUtils::preferredTranslation()
 
 QString UBPlatformUtils::preferredLanguage()
 {
-    QFileInfo qmFileInfo = QFileInfo(preferredTranslation());
+    QFileInfo qmFileInfo = QFileInfo(preferredTranslation("sankore_"));
     QDir lprojPath = qmFileInfo.dir();
     QFileInfo lprojFileInfo = QFileInfo(lprojPath.absolutePath());
     return lprojFileInfo.baseName();

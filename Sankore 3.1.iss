@@ -84,10 +84,9 @@ Source: "..\Qt-sankore3.1\plugins\phonon_backend\phonon_ds94.dll"; DestDir: "{ap
 
 [Icons]
 Name: "{group}\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"
-Name: "{group}\{cm:UninstallProgram,Sankore 3.1}"; Filename: "{uninstallexe}"
+Name: "{group}\{cm:UninstallProgram,Open-Sankore}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"; Tasks: quicklaunchicon
-;Name: "{group}\Printing Preferences"; Filename: "{app}\properties.exe"; WorkingDir: {app}
 
 [Registry]
 Root: HKCR; Subkey: ".ubz"; ValueType: string; ValueName: ""; ValueData: "SankoreFile"; Flags: uninsdeletevalue
@@ -114,7 +113,7 @@ Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Righ
 Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppPath"; ValueData: "{app}"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 [Run]
-Filename: "{tmp}\vcredist_x86.exe";WorkingDir:"{tmp}"
+Filename: "{tmp}\vcredist_x86.exe";WorkingDir:"{tmp}"; Parameters: "/q:a/c:""VCREDI~3.EXE /q:a /c:""""msiexec /i vcredist.msi /qn"""""""; StatusMsg: Installing CRT ...
 Filename: "{app}\Open-Sankore.exe"; Description: "{cm:LaunchProgram,Open-Sankore}"; Flags: nowait postinstall
 
 [UninstallDelete]
