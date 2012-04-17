@@ -62,9 +62,6 @@ protected:
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-
-//        UBGraphicsItemDelegate* mDelegate;
-
 };
 
 #endif /* UBGRAPHICSPIXMAPITEM_H_ */

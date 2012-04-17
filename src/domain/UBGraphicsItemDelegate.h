@@ -129,6 +129,7 @@ class UBGraphicsItemDelegate : public QObject
 
         QMimeData* mimeData(){ return mMimeData; }
         void setMimeData(QMimeData* mimeData);
+        void setDragPixmap(const QPixmap &pix) {mDragPixmap = pix;}
 
     signals:
         void showOnDisplayChanged(bool shown);
@@ -174,12 +175,15 @@ private:
         QPointF mOffset;
         QTransform mPreviousTransform;
         QPointF mPreviousPosition;
+        QPointF mDragStartPosition;
         qreal mPreviousZValue;
         QSizeF mPreviousSize;
         bool mCanRotate;
         bool mCanDuplicate;
         bool mRespectRatio;
         QMimeData* mMimeData;
+        QPixmap mDragPixmap;
+
 };
 
 

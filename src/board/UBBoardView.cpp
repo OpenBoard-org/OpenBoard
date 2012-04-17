@@ -421,9 +421,7 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
         }
       else if (currentTool == UBStylusTool::Selector)
         {
-            QSet<QGraphicsItem*> existingTools = scene()->tools();
-
-            movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
+          movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
 
             if (!movingItem 
                 || movingItem->isSelected()
@@ -432,7 +430,8 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
                 || movingItem->type() == UBGraphicsCompass::Type
                 || movingItem->type() == UBGraphicsPDFItem::Type
                 || movingItem->type() == UBGraphicsPolygonItem::Type
-                || movingItem->type() == UBGraphicsCache::Type)
+                || movingItem->type() == UBGraphicsCache::Type
+                || scene()->isBackgroundObject(movingItem))
                 {
                     movingItem = NULL;
                     QGraphicsView::mousePressEvent (event);

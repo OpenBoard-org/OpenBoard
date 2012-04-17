@@ -53,6 +53,11 @@ void UBGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QMimeData* pMime = new QMimeData();
     pMime->setImageData(pixmap().toImage());
     mDelegate->setMimeData(pMime);
+    int k = pixmap().width() / 100;
+    QSize newSize(pixmap().width() / k, pixmap().height() / k);
+
+    mDelegate->setDragPixmap(pixmap().scaled(newSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
     if (mDelegate->mousePressEvent(event))
     {
         //NOOP
