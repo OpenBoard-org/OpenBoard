@@ -286,15 +286,7 @@ void UBPreferencesController::defaultSettings()
 
     if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->displayTab)
     {
-        bool defaultValue = settings->webUseExternalBrowser->reset().toBool();
-        mPreferencesUI->useExternalBrowserCheckBox->setChecked(defaultValue);
-
-        defaultValue = settings->webShowPageImmediatelyOnMirroredScreen->reset().toBool();
-        mPreferencesUI->displayBrowserPageCheckBox->setChecked(defaultValue);
-
-        mPreferencesUI->webHomePage->setText(settings->webHomePage->reset().toString());
-
-        defaultValue = settings->appToolBarPositionedAtTop->reset().toBool();
+        bool defaultValue = settings->appToolBarPositionedAtTop->reset().toBool();
         mPreferencesUI->toolbarAtTopRadioButton->setChecked(defaultValue);
         mPreferencesUI->toolbarAtBottomRadioButton->setChecked(!defaultValue);
 
@@ -350,6 +342,15 @@ void UBPreferencesController::defaultSettings()
         bool defaultValue = settings->appEnableAutomaticSoftwareUpdates->reset().toBool();
         mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox->setChecked(defaultValue);
     }
+    else if(mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->networkTab){
+        bool defaultValue = settings->webUseExternalBrowser->reset().toBool();
+        mPreferencesUI->useExternalBrowserCheckBox->setChecked(defaultValue);
+        defaultValue = settings->webShowPageImmediatelyOnMirroredScreen->reset().toBool();
+        mPreferencesUI->displayBrowserPageCheckBox->setChecked(defaultValue);
+
+        mPreferencesUI->webHomePage->setText(settings->webHomePage->reset().toString());
+    }
+
 }
 
 
