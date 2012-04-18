@@ -117,6 +117,7 @@ UBBoardView::init ()
   mUsingTabletEraser = false;
   mIsCreatingTextZone = false;
   mRubberBand = 0;
+  mUBRubberBand = 0;
 
   mVirtualKeyboardActive = false;
 
@@ -414,9 +415,18 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         }
         else if (currentTool == UBStylusTool::Selector)
         {
-            QSet<QGraphicsItem*> existingTools = scene()->tools();
+//            QSet<QGraphicsItem*> existingTools = scene()->tools(); why do we need to get tools here?
 
             movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
+
+            if (!movingItem) {
+                // Rubberband selection implementation
+                if (!mUBRubberBand) {
+                    mUBRubberBand = new UBRubberBand(QRubberBand::Rectangle, this);
+                }
+                mUBRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
+                mUBRubberBand->show();
+            }
 
             if (!movingItem
                 || movingItem->isSelected()
@@ -442,6 +452,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 }
                 suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers()); // удалить
             }
+
 
             event->accept();
         }
@@ -470,7 +481,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
                 if (!mRubberBand)
                     mRubberBand = new UBRubberBand (QRubberBand::Rectangle, this);
-
                 mRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
                 mRubberBand->show ();
                 mIsCreatingTextZone = true;
@@ -531,6 +541,10 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
     {
         if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
             return;
+        }
+
+        if (mUBRubberBand && mUBRubberBand->isVisible()) {
+            mUBRubberBand->setGeometry(QRect(mMouseDownPos, event->pos()).normalized());
         }
 
         if (movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed))
@@ -596,6 +610,10 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           movingItem = NULL;
           delete suspendedMousePressEvent;
           suspendedMousePressEvent = NULL;
+      }
+
+      if (mUBRubberBand && mUBRubberBand->isVisible()) {
+          mUBRubberBand->hide();
       }
 
       QGraphicsView::mouseReleaseEvent (event);

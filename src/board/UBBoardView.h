@@ -24,6 +24,7 @@ class UBBoardController;
 class UBAppleWidget;
 class UBGraphicsScene;
 class UBGraphicsWidgetItem;
+class UBRubberBand;
 
 class UBBoardView : public QGraphicsView
 {
@@ -122,6 +123,8 @@ class UBBoardView : public QGraphicsView
         QPointF mLastPressedMousePos;
         QGraphicsItem *movingItem;
         QMouseEvent *suspendedMousePressEvent;
+
+        UBRubberBand *mUBRubberBand;
 
     private slots:
 
