@@ -13,6 +13,7 @@
 #include <QLocale>
 #include <QGraphicsLinearLayout>
 #include <QStackedWidget>
+#include <QDropEvent>
 
 #include "UBDockPaletteWidget.h"
 #include "UBLibActionBar.h"
@@ -34,6 +35,7 @@ class UBFeaturesPathProxyModel;
 class UBFeaturesPathViewer;
 class UBFeatureProperties;
 class UBFeatureItemButton;
+class UBFeaturesListView;
 
 class UBFeaturesWidget : public UBDockPaletteWidget
 {
@@ -62,8 +64,8 @@ private:
 	UBFeaturesSearchProxyModel *featuresSearchModel;
 	UBFeaturesPathProxyModel *featuresPathModel;
 
-	QListView *featuresListView;
-	QListView *pathListView;
+	UBFeaturesListView *featuresListView;
+	UBFeaturesListView *pathListView;
 	QVBoxLayout *layout;
 	UBFeaturesPathViewer *pathViewer;
 	QGraphicsScene *pathScene;
@@ -77,6 +79,16 @@ private slots:
 	void currentPathChanged(const QString &);
 	void currentPathChanged( const QModelIndex & );
 	void searchStarted(QString);
+};
+
+class UBFeaturesListView : public QListView
+{
+	Q_OBJECT
+public:
+	UBFeaturesListView( QWidget* parent=0, const char* name="UBFeaturesListView" );
+	virtual ~UBFeaturesListView() {};
+protected:
+	virtual void dropEvent( QDropEvent *event );
 };
 
 class UBFeaturesPathViewer : public QGraphicsView

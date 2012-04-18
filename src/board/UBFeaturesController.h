@@ -31,8 +31,8 @@ public:
 		return mThumbnail; 
 	};
 	QString getUrl() const { return virtualPath; };
-	QString getPath() const { return mPath; };
-	QString getFullPath() const { return mPath + "/" + mName; };
+	//QString getPath() const { return mPath; };
+	QString getFullPath() const { return mPath; };
 	UBFeatureElementType getType() const { return elementType; } ;
 private:
 	QString virtualPath;
@@ -58,6 +58,7 @@ public:
 	void addItemToPage(const UBFeature &item);
 	static QPixmap thumbnailForFile( const QString &path );
 	static UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
+	static UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
 private:
 	void initDirectoryTree();
 	void fileSystemScan(const QString &currPath, const QString & currVirtualPath);

@@ -28,8 +28,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	featuresModel = new UBFeaturesModel(this);
 	featuresModel->setFeaturesList( controller->getFeatures() );
 	featuresModel->setSupportedDragActions( Qt::CopyAction | Qt::MoveAction );
-	featuresListView = new QListView(this);
-	pathListView = new QListView(this);
+	featuresListView = new UBFeaturesListView(this);
+	pathListView = new UBFeaturesListView(this);
 
 
 	featuresProxyModel = new UBFeaturesProxyModel(this);
@@ -69,7 +69,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	pathListView->setSelectionMode( QAbstractItemView::NoSelection );
 	pathListView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     pathListView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
-	pathListView->setMovement( QListView::Static );
+	//pathListView->setMovement( QListView::Static );
 	pathListView->setDragDropMode( QAbstractItemView::DragDrop );
 
 	pathScene = new QGraphicsScene(this);
@@ -191,6 +191,21 @@ void UBFeaturesWidget::currentPathChanged(const QString &path)
 UBFeaturesWidget::~UBFeaturesWidget()
 {
 }
+
+UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) : QListView(parent)
+{
+	setObjectName(name);
+}
+
+void UBFeaturesListView::dropEvent( QDropEvent *event )
+{
+	if( event->source() || dynamic_cast<UBFeaturesListView *>( event->source() ) )
+	{
+		event->setDropAction( Qt::MoveAction );
+	}
+	QListView::dropEvent( event );
+}
+
 
 UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : QWidget(parent)
     , mpLayout(NULL)
@@ -432,18 +447,6 @@ QMimeData* UBFeaturesModel::mimeData(const QModelIndexList &indexes) const
 		}
 	}
 	mimeData->setUrls( urlList );
-    /*QByteArray encodedData;
-
-    QDataStream stream(&encodedData, QIODevice::WriteOnly);
-
-    foreach (QModelIndex index, indexes) {
-        if (index.isValid()) {
-            QString str = qVariantValue<QString>(data(index));
-            stream << str;
-        }
-    }
-
-    mimeData->setData("text/uri-list", encodedData);*/
 
     return mimeData;
 }
@@ -476,7 +479,16 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 	
 	foreach ( QUrl url, urls )
 	{
-		UBFeature element = UBFeaturesController::moveItemToFolder( url, parentFeature );
+		UBFeature element;
+		
+		if ( action == Qt::MoveAction )
+		{
+			element = UBFeaturesController::moveItemToFolder( url, parentFeature );
+		}
+		else
+		{
+			element = UBFeaturesController::copyItemToFolder( url, parentFeature );
+		}
 		beginInsertRows( QModelIndex(), featuresList->size(), featuresList->size() );
 		featuresList->push_back( element );
 		endInsertRows();
@@ -517,6 +529,10 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 		if ( item.getType() == UBFeatureElementType::FEATURE_INTERACTIVE || 
 			item.getType() == UBFeatureElementType::FEATURE_ITEM )
 			return Qt::ItemIsDragEnabled | defaultFlags;
+		if ( item.getType() == UBFeatureElementType::FEATURE_FOLDER ||
+			item.getType() == UBFeatureElementType::FEATURE_CATEGORY && item.getFullPath() != "")
+			return defaultFlags | Qt::ItemIsDropEnabled;
+		else return defaultFlags;
 	}
 	return defaultFlags | Qt::ItemIsDropEnabled;
 }
@@ -605,7 +621,7 @@ void UBFeaturesPathItemDelegate::paint( QPainter *painter, const QStyleOptionVie
 {
 	UBFeature feature = index.data( Qt::UserRole + 1 ).value<UBFeature>();
 	QRect rect = option.rect;
-	if ( !feature.getPath().isEmpty() )
+	if ( !feature.getFullPath().isEmpty() )
 	{
 		painter->drawPixmap( rect.left() - 10, rect.center().y() - 5, *arrowPixmap );
 	}

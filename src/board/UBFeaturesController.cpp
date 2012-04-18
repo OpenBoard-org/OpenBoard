@@ -27,7 +27,7 @@ UBFeature::UBFeature(const QString &url, const QPixmap &icon, const QString &nam
 UBFeature::UBFeature(const UBFeature &f)
 {
 	virtualPath = f.getUrl();
-	mPath = f.getPath();
+	mPath = f.getFullPath();
 	mThumbnail = f.getThumbnail();
 	mName = f.getName();
 	elementType = f.getType();
@@ -110,7 +110,7 @@ void UBFeaturesController::fileSystemScan(const QString & currentPath, const QSt
         }
 		QString itemName = (fileType != FEATURE_ITEM) ? fileName : fileInfo->completeBaseName();
 		QPixmap icon = QPixmap(":images/libpalette/soundIcon.svg");
-		QString fullFileName = currentPath + "/" + fileName;
+		QString fullFileName = fileInfo->filePath();
 
 		if ( fileType == FEATURE_FOLDER ) 
 		{
@@ -131,7 +131,7 @@ void UBFeaturesController::fileSystemScan(const QString & currentPath, const QSt
 				icon = QPixmap( thumbnailPath );
 			else icon = createThumbnail( fullFileName );*/
 		}
-		featuresList->push_back( UBFeature( currVirtualPath, icon, fileName, currentPath, fileType ) );
+		featuresList->push_back( UBFeature( currVirtualPath, icon, fileName, fullFileName, fileType ) );
 
 		if ( fileType == FEATURE_FOLDER )
 		{
@@ -194,7 +194,16 @@ void UBFeaturesController::addItemToPage(const UBFeature &item)
 
 UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeature &destination )
 {
+	UBFeature newElement = copyItemToFolder( url, destination );
 	QString sourcePath = url.toLocalFile();
+	QFile::remove( sourcePath );
+	QString thumbnailPath = UBFileSystemUtils::thumbnailPath( sourcePath );
+    if (thumbnailPath.length() && QFileInfo( thumbnailPath ).exists()) 
+	{
+        QFile::remove(thumbnailPath);
+    }
+	return newElement;
+	/*QString sourcePath = url.toLocalFile();
 
 	Q_ASSERT( QFileInfo( sourcePath ).exists() );
 
@@ -217,8 +226,30 @@ UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeatu
 	if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") ) 
         type = UBFeatureElementType::FEATURE_INTERACTIVE;
 	UBFeature newElement( destVirtualPath, thumb, name, destPath, type );
+	return newElement;*/
+}
+
+UBFeature UBFeaturesController::copyItemToFolder( const QUrl &url, const UBFeature &destination )
+{
+	QString sourcePath = url.toLocalFile();
+
+	Q_ASSERT( QFileInfo( sourcePath ).exists() );
+
+	QString name = QFileInfo( sourcePath ).fileName();
+	QString destPath = destination.getFullPath();
+	QString destVirtualPath = destination.getUrl() + "/" + destination.getName();
+	QString newFullPath = destPath + "/" + name;
+	QFile( sourcePath ).copy( newFullPath );
+
+	QPixmap thumb = thumbnailForFile( newFullPath );
+	
+	UBFeatureElementType type = UBFeatureElementType::FEATURE_ITEM;
+	if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") ) 
+        type = UBFeatureElementType::FEATURE_INTERACTIVE;
+	UBFeature newElement( destVirtualPath, thumb, name, newFullPath, type );
 	return newElement;
 }
+
 /*
 void UBFeaturesController::addImageToCurrentPage( const QString &path )
 {
