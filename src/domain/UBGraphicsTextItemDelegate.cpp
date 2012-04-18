@@ -18,13 +18,11 @@
 
 #include "UBGraphicsTextItemDelegate.h"
 #include "UBGraphicsScene.h"
+#include "gui/UBResources.h"
+
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsDelegateFrame.h"
 #include "core/UBSettings.h"
-
-#include "core/UBApplication.h" // TODO UB 4.x clean that dependency
-#include "core/UBApplicationController.h" // TODO UB 4.x clean that dependency
-#include "core/UBDisplayManager.h" // TODO UB 4.x clean that dependency
 
 #include "core/memcheck.h"
 #include "board/UBBoardController.h"
@@ -146,17 +144,17 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
             safeWebFontNames.append("Arial");
             safeWebFontNames.append("Arial Black");
             safeWebFontNames.append("Comic Sans MS");
-            //safeWebFontNames.append("Century Gothic"); Not available on OSX
             safeWebFontNames.append("Courier New");
             safeWebFontNames.append("Georgia");
             safeWebFontNames.append("Impact");
             safeWebFontNames.append("Times New Roman");
             safeWebFontNames.append("Trebuchet MS");
             safeWebFontNames.append("Verdana");
+
+            QStringList customFontList =  UBResources::resources()->customFontList();
             int index = 0;
-            foreach (QString dialogFontName, dialogFontNames)
-            {
-                if (safeWebFontNames.contains(dialogFontName, Qt::CaseInsensitive))
+            foreach (QString dialogFontName, dialogFontNames){
+                if (safeWebFontNames.contains(dialogFontName, Qt::CaseInsensitive) || customFontList.contains(dialogFontName, Qt::CaseSensitive))
                     index++;
                 else
                     stringListModel->removeRow(index);

@@ -24,6 +24,8 @@ class UBResources : public QObject
 
     public:
          static UBResources* resources();
+         QStringList customFontList() { return mCustomFontList; }
+
 
     private:
          UBResources(QObject* pParent = 0);
@@ -32,6 +34,8 @@ class UBResources : public QObject
          void init();
 
          static UBResources* sSingleton;
+         void buildFontList();
+         QStringList mCustomFontList;
 
     public:
 
