@@ -104,6 +104,9 @@ checkExecutable "$LRELEASE"
 notify "Cleaning ..."
 rm -rf "$BUILD_DIR"
 
+notify "Translations ..."
+$LRELEASE "Sankore_3.1.pro"
+
 # generate Makefiles
 notify "Generating Makefile ..."
 
@@ -115,12 +118,9 @@ $QMAKE_CMD
 notify "Compiling ..."
 make -j4 release
 
-
-notify "Translations ..."
-$LRELEASE "Sankore_3.1.pro"
-
 addQtTranslations
 
+cp -R resources/customizations $PRODUCT_DIR/Open-Sankore.app/Contents/Resources
 
 notify "Tagging ..."
 VERSION=`cat "$BUILD_DIR/version"`
