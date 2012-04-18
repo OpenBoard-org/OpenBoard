@@ -86,7 +86,7 @@ class UBFeaturesListView : public QListView
 	Q_OBJECT
 public:
 	UBFeaturesListView( QWidget* parent=0, const char* name="UBFeaturesListView" );
-	virtual ~UBFeaturesListView() {};
+    virtual ~UBFeaturesListView() {;}
 protected:
 	virtual void dropEvent( QDropEvent *event );
 };
@@ -96,7 +96,7 @@ class UBFeaturesPathViewer : public QGraphicsView
 	Q_OBJECT
 public:
 	UBFeaturesPathViewer(const QPixmap &root, const QString &rootPath, QGraphicsScene *sc, QWidget* parent=0, const char* name="UBFeaturesPathViewer");
-	virtual ~UBFeaturesPathViewer() {} ;
+    virtual ~UBFeaturesPathViewer() {;}
 	void addPathElement(const QPixmap &p, const QString &s);
 	void truncatePath(int number);
 private:
@@ -110,21 +110,22 @@ class UBFolderWidget : public QLabel
 {
 	Q_OBJECT
 public:
-	UBFolderWidget( QWidget * parent = 0, Qt::WindowFlags f = 0 ) : QLabel( parent, f ) {};
-	virtual ~UBFolderWidget() {};
-	virtual QString getPath()const { return path; };
-	virtual void setPath( const QString &p ) { path = p; };
+    UBFolderWidget( QWidget * parent = 0, Qt::WindowFlags f = 0 ) : QLabel( parent, f ) {;}
+    virtual ~UBFolderWidget() {;}
+    virtual QString getPath()const { return path;}
+    virtual void setPath( const QString &p ) { path = p;}
 signals:
 	void clicked(const QString &);
 protected:
-	virtual void mouseReleaseEvent ( QMouseEvent * ev ) 
+    virtual void mouseReleaseEvent ( QMouseEvent * ev )
 	{ 
-		emit clicked(path); 
-	}; 
+        Q_UNUSED(ev)
+        emit clicked(path);
+    }
 	virtual void mousePressEvent ( QMouseEvent * ev ) 
 	{ 
 		ev->accept();
-	}; 
+    }
 private:
 	QString path;
 };
@@ -179,8 +180,8 @@ class UBFeaturesModel : public QAbstractListModel
 {
 	Q_OBJECT
 public:
-	UBFeaturesModel( QObject *parent = 0 ) { };
-	virtual ~UBFeaturesModel(){};
+    UBFeaturesModel( QObject *parent = 0 ) : QAbstractListModel(parent) {;}
+    virtual ~UBFeaturesModel(){;}
 
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
 	QMimeData *mimeData( const QModelIndexList &indexes ) const;
@@ -190,9 +191,9 @@ public:
     bool dropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	bool removeRow(int row, const QModelIndex &parent = QModelIndex());
-	Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; };
+    Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 
-	void setFeaturesList( QVector <UBFeature> *flist ) { featuresList = flist; };
+    void setFeaturesList( QVector <UBFeature> *flist ) { featuresList = flist; }
 private:
 	QVector <UBFeature> *featuresList;
 };
@@ -201,8 +202,8 @@ class UBFeaturesProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 public:
-	UBFeaturesProxyModel(QObject *parent = 0) { QSortFilterProxyModel::QSortFilterProxyModel(parent); }; 
-	virtual ~UBFeaturesProxyModel() {};
+    UBFeaturesProxyModel(QObject *parent = 0) : QSortFilterProxyModel(parent) {;}
+    virtual ~UBFeaturesProxyModel() {}
 protected:
 	virtual bool filterAcceptsRow ( int sourceRow, const QModelIndex & sourceParent ) const;
 };
@@ -211,8 +212,8 @@ class UBFeaturesSearchProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 public:
-	UBFeaturesSearchProxyModel(QObject *parent = 0) { QSortFilterProxyModel::QSortFilterProxyModel(parent); }; 
-	virtual ~UBFeaturesSearchProxyModel() {};
+    UBFeaturesSearchProxyModel(QObject *parent = 0) : QSortFilterProxyModel(parent) {;}
+    virtual ~UBFeaturesSearchProxyModel() {}
 protected:
 	virtual bool filterAcceptsRow ( int sourceRow, const QModelIndex & sourceParent ) const;
 };
@@ -221,9 +222,9 @@ class UBFeaturesPathProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 public:
-	UBFeaturesPathProxyModel(QObject *parent = 0) { QSortFilterProxyModel::QSortFilterProxyModel(parent); }; 
-	virtual ~UBFeaturesPathProxyModel() {};
-	void setPath( const QString &p ) { path = p; };
+    UBFeaturesPathProxyModel(QObject *parent = 0) : QSortFilterProxyModel(parent) {;}
+    virtual ~UBFeaturesPathProxyModel() {}
+    void setPath( const QString &p ) { path = p; }
 protected:
 	virtual bool filterAcceptsRow ( int sourceRow, const QModelIndex & sourceParent ) const;
 private:
@@ -234,8 +235,8 @@ class UBFeaturesItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 public:
-	UBFeaturesItemDelegate(QWidget *parent = 0, const QListView *lw = 0) : QStyledItemDelegate(parent) { listView = lw; };
-	~UBFeaturesItemDelegate() {};
+    UBFeaturesItemDelegate(QWidget *parent = 0, const QListView *lw = 0) : QStyledItemDelegate(parent) { listView = lw; }
+    ~UBFeaturesItemDelegate() {}
 	//UBFeaturesItemDelegate(const QListView *lw = 0) { listView = lw; };
 	//void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     //QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;

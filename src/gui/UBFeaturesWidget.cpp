@@ -123,7 +123,7 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 		QString path = model->data(current, Qt::UserRole).toString();
 		eUBLibElementType type = (eUBLibElementType)model->data(current, Qt::UserRole + 1).toInt();*/
 		UBFeature feature = model->data(current, Qt::UserRole + 1).value<UBFeature>();
-		if ( feature.getType() == UBFeatureElementType::FEATURE_FOLDER || feature.getType() == UBFeatureElementType::FEATURE_CATEGORY)
+        if ( feature.getType() == FEATURE_FOLDER || feature.getType() == FEATURE_CATEGORY)
 		{
 			QString newPath = feature.getUrl() + "/" + feature.getName();
 			//pathViewer->addPathElement( feature.getThumbnail(), newPath );
@@ -453,16 +453,18 @@ QMimeData* UBFeaturesModel::mimeData(const QModelIndexList &indexes) const
 
 bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
-	if ( !mimeData->hasUrls() )
+    Q_UNUSED(row)
+
+    if ( !mimeData->hasUrls() )
 		return false;
 	if ( action == Qt::IgnoreAction )
 		return true;
 	if ( column > 0 )
 		return false;
 
-	int endRow;
+    int endRow = 0;
 
-    if ( !parent.isValid() ) 
+    if ( !parent.isValid() )
 	{
 		return false;
         /*if (row < 0)
@@ -526,11 +528,11 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 	if ( index.isValid() )
 	{
 		UBFeature item = index.data( Qt::UserRole + 1 ).value<UBFeature>();
-		if ( item.getType() == UBFeatureElementType::FEATURE_INTERACTIVE || 
-			item.getType() == UBFeatureElementType::FEATURE_ITEM )
+        if ( item.getType() == FEATURE_INTERACTIVE ||
+            item.getType() == FEATURE_ITEM )
 			return Qt::ItemIsDragEnabled | defaultFlags;
-		if ( item.getType() == UBFeatureElementType::FEATURE_FOLDER ||
-			item.getType() == UBFeatureElementType::FEATURE_CATEGORY && item.getFullPath() != "")
+        if ( item.getType() == FEATURE_FOLDER ||
+            (item.getType() == FEATURE_CATEGORY && item.getFullPath() != ""))
 			return defaultFlags | Qt::ItemIsDropEnabled;
 		else return defaultFlags;
 	}
@@ -569,8 +571,8 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 	eUBLibElementType type = (eUBLibElementType)sourceModel()->data(index, Qt::UserRole + 1).toInt();*/
 
 	UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
-	bool isFile = feature.getType() == UBFeatureElementType::FEATURE_INTERACTIVE ||
-		feature.getType() == UBFeatureElementType::FEATURE_ITEM;
+    bool isFile = feature.getType() == FEATURE_INTERACTIVE ||
+        feature.getType() == FEATURE_ITEM;
 	
 	return isFile && filterRegExp().exactMatch( feature.getName() );
 }
@@ -582,8 +584,8 @@ bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
 	eUBLibElementType type = (eUBLibElementType)sourceModel()->data(index, Qt::UserRole + 1).toInt();*/
 
 	UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
-	bool isFolder = feature.getType() == UBFeatureElementType::FEATURE_CATEGORY ||
-		feature.getType() == UBFeatureElementType::FEATURE_FOLDER;
+    bool isFolder = feature.getType() == FEATURE_CATEGORY ||
+        feature.getType() == FEATURE_FOLDER;
 	QString virtualFullPath = feature.getUrl() + "/" + feature.getName();
 	
 	return isFolder && path.startsWith( virtualFullPath );
@@ -591,7 +593,9 @@ bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
 
 QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const
 {
-	QString text = value.toString();
+    Q_UNUSED(locale)
+
+    QString text = value.toString();
 	if (listView)
 	{
 		const QFontMetrics fm = listView->fontMetrics();
@@ -614,7 +618,10 @@ UBFeaturesPathItemDelegate::UBFeaturesPathItemDelegate(QWidget *parent) : QStyle
 
 QString	UBFeaturesPathItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const
 {
-	return "";
+    Q_UNUSED(value)
+    Q_UNUSED(locale)
+
+    return QString();
 }
 
 void UBFeaturesPathItemDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

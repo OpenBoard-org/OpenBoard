@@ -243,9 +243,9 @@ UBFeature UBFeaturesController::copyItemToFolder( const QUrl &url, const UBFeatu
 
 	QPixmap thumb = thumbnailForFile( newFullPath );
 	
-	UBFeatureElementType type = UBFeatureElementType::FEATURE_ITEM;
+    UBFeatureElementType type = FEATURE_ITEM;
 	if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") ) 
-        type = UBFeatureElementType::FEATURE_INTERACTIVE;
+        type = FEATURE_INTERACTIVE;
 	UBFeature newElement( destVirtualPath, thumb, name, newFullPath, type );
 	return newElement;
 }

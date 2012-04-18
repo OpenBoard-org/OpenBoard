@@ -22,24 +22,22 @@ enum UBFeatureElementType
 class UBFeature
 {
 public:
-	UBFeature(){};
+    UBFeature() {;}
 	UBFeature(const UBFeature &f);
-	UBFeature(const QString &url, const QPixmap &icon, const QString &name, const QString &realPath, UBFeatureElementType type = FEATURE_CATEGORY);
-	virtual ~UBFeature(){};
-	QString getName() const { return mName; };
-	QPixmap getThumbnail() const { 
-		return mThumbnail; 
-	};
-	QString getUrl() const { return virtualPath; };
+    UBFeature(const QString &url, const QPixmap &icon, const QString &name, const QString &realPath, UBFeatureElementType type = FEATURE_CATEGORY);
+    virtual ~UBFeature() {;}
+    QString getName() const { return mName; }
+    QPixmap getThumbnail() const {return mThumbnail;}
+    QString getUrl() const { return virtualPath; }
 	//QString getPath() const { return mPath; };
-	QString getFullPath() const { return mPath; };
-	UBFeatureElementType getType() const { return elementType; } ;
+    QString getFullPath() const { return mPath; }
+    UBFeatureElementType getType() const { return elementType; }
 private:
 	QString virtualPath;
-	QString mPath;
     QPixmap mThumbnail;
     QString mName;
-	UBFeatureElementType elementType;
+	QString mPath;
+    UBFeatureElementType elementType;
 };
 Q_DECLARE_METATYPE( UBFeature )
 
@@ -51,9 +49,9 @@ public:
 	UBFeaturesController(QWidget *parentWidget);
     virtual ~UBFeaturesController();
 
-	QVector <UBFeature>* getFeatures()const { return featuresList; };
+    QVector <UBFeature>* getFeatures()const { return featuresList; }
 	
-	QString getRootPath()const { return rootPath; };
+    QString getRootPath()const { return rootPath; }
 
 	void addItemToPage(const UBFeature &item);
 	static QPixmap thumbnailForFile( const QString &path );
