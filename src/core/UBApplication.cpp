@@ -101,8 +101,10 @@ static OSStatus ub_appleEventProcessor(const AppleEvent *ae, AppleEvent *event, 
 #endif
 
 
-UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSingleApplication(id, argc, argv),
-    mPreferencesController(NULL)
+UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSingleApplication(id, argc, argv)
+  , mPreferencesController(NULL)
+  , mApplicationTranslator(NULL)
+  , mQtGuiTranslator(NULL)
 {
 
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
@@ -136,22 +138,20 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
         undoStack = new QUndoStack(staticMemoryCleaner);
     }
 
-    QTranslator *translator = new QTranslator(this);
-
-    translator->load(UBPlatformUtils::preferredTranslation());
-
-    installTranslator(translator);
+    mApplicationTranslator = new QTranslator(this);
+    mApplicationTranslator->load(UBPlatformUtils::preferredTranslation(QString("sankore_")));
+    installTranslator(mApplicationTranslator);
 
     QString localString;
-
-    if (!translator->isEmpty())
-    {
+    if (!mApplicationTranslator->isEmpty())
         localString = UBPlatformUtils::preferredLanguage();
-    }
     else
-    {
         localString = "en_US";
-    }
+
+    mQtGuiTranslator = new QTranslator(this);
+    mQtGuiTranslator->load(UBPlatformUtils::preferredTranslation(QString("qt_")));
+    installTranslator(mQtGuiTranslator);
+
 
     QLocale::setDefault(QLocale(localString));
     qDebug() << "Running application in:" << localString;
@@ -203,6 +203,15 @@ UBApplication::~UBApplication()
 
     UBToolsManager::destroy();
 
+    if(mApplicationTranslator != NULL){
+        delete mApplicationTranslator;
+        mApplicationTranslator = NULL;
+    }
+    if(mQtGuiTranslator!=NULL){
+        delete mQtGuiTranslator;
+        mQtGuiTranslator = NULL;
+    }
+
     delete staticMemoryCleaner;
     staticMemoryCleaner = 0;
 }
@@ -252,7 +261,7 @@ int UBApplication::exec(const QString& pFileToImport)
 
     boardController->paletteManager()->connectToDocumentController();
 
-    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Selector);
+    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
     applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
 
@@ -312,7 +321,8 @@ int UBApplication::exec(const QString& pFileToImport)
 #endif
     if (UBSettings::settings()->appStartMode->get() == "Desktop")
         applicationController->showDesktop();
-    else applicationController->showBoard();
+    else
+        applicationController->showBoard();
 
 
     if (UBSettings::settings()->appIsInSoftwareUpdateProcess->get().toBool())
@@ -533,16 +543,16 @@ void UBApplication::updateProtoActionsState()
 void UBApplication::insertSpaceToToolbarBeforeAction(QToolBar* toolbar, QAction* action, int width)
 {
     QWidget* spacer = new QWidget();
-    QHBoxLayout *layout = new QHBoxLayout();
 
-    if (width >= 0)
+    if (width >= 0){
+        QHBoxLayout *layout = new QHBoxLayout();
         layout->addSpacing(width);
+        spacer->setLayout(layout);
+    }
     else
-        layout->addStretch();
+        spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
 
-    spacer->setLayout(layout);
     toolbar->insertWidget(action, spacer);
-
 }
 
 

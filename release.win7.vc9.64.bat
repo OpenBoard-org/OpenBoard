@@ -24,6 +24,7 @@ set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
 set INNO_EXE=%PROGRAMS_FILE_PATH%\Inno Setup 5\iscc.exe 
 set BUILD_DIR=build\win32\release
 set LRELEASE=%QT_DIR%\bin\lrelease
+set BASE_QT_TRANSLATIONS_DIRECTORY=%QT_DIR%\translations
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
 
@@ -58,6 +59,8 @@ echo %LAST_TAG_VERSION%
 REM if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
 nmake release-install
+copy %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm build\win32\release\product\i18n\
+del build\win32\release\product\i18n\qt_help*
 
 del ".\build\win32\release\product\Sankore.pdb"
 

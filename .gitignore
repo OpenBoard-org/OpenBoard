@@ -54,6 +54,14 @@ Makefile
 Makefile.Debug
 Makefile.Release
 
+# plugins #
+###########
+
+plugins/cffadaptor/lib
+plugins/cffadaptor/moc
+plugins/cffadaptor/objects
+
+
 # Translation files #
 #####################
 *.qm

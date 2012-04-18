@@ -115,7 +115,7 @@ void UBKeyboardPalette::createCtrlButtons()
 
         ctrlButtons[0] = new UBCntrlButton(this, "<-", XK_BackSpace);
         ctrlButtons[1] = new UBCntrlButton(this, "<->", XK_Tab);
-        ctrlButtons[2] = new UBCntrlButton(this, "Enter", XK_Return);
+        ctrlButtons[2] = new UBCntrlButton(this, tr("Enter"), XK_Return);
         ctrlButtons[3] = new UBCapsLockButton(this, "capslock");
         ctrlButtons[4] = new UBCapsLockButton(this, "capslock");
         ctrlButtons[5] = new UBLocaleButton(this);

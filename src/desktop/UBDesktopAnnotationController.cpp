@@ -52,11 +52,9 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mTransparentDrawingView(0)
         , mTransparentDrawingScene(0)
         , mDesktopPalette(NULL)
-//        , mKeyboardPalette(0)
         , mDesktopPenPalette(NULL)
         , mDesktopMarkerPalette(NULL)
         , mDesktopEraserPalette(NULL)
-//        , mRightPalette(NULL)
         , mWindowPositionInitialized(0)
         , mIsFullyTransparent(false)
         , mDesktopToolsPalettePositioned(false)
@@ -90,26 +88,12 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
     mTransparentDrawingScene->setDrawingMode(true);
 
-//    mRightPalette = UBApplication::boardController->paletteManager()->createDesktopRightPalette(mTransparentDrawingView);
-    //mRightPalette = new UBRightPalette(mTransparentDrawingView);
-
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView);
 
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
-#ifdef Q_WS_X11
-//        mKeyboardPalette = UBKeyboardPalette::create(0);
-//        connect(mTransparentDrawingView, SIGNAL(hidden()), mKeyboardPalette, SLOT(hide()));
-//        connect(mTransparentDrawingView, SIGNAL(shown()), this, SLOT(showKeyboard()));
-#else
-//        mKeyboardPalette = UBKeyboardPalette::create(mTransparentDrawingView);
-//        mKeyboardPalette->setParent(mTransparentDrawingView);
-#endif
         connect( UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(keyboardActivated(bool)), 
                  mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
-
-//         connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), 
-//                 mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
 
 #ifdef Q_WS_X11
         connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
@@ -124,8 +108,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
-//    connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(showKeyboard(bool)));
-
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 

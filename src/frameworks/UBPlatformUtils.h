@@ -103,7 +103,7 @@ class UBPlatformUtils
         static void setFileType(const QString &filePath, unsigned long fileType);
         static void fadeDisplayOut();
         static void fadeDisplayIn();
-        static QString preferredTranslation();
+        static QString preferredTranslation(QString pFilePrefix);
         static QString preferredLanguage();
         static bool hasVirtualKeyboard();
         //static void showVirtualKeyboard();
