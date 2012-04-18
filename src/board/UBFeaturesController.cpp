@@ -60,7 +60,7 @@ void UBFeaturesController::initDirectoryTree()
 
 	QList <UBToolsManager::UBToolDescriptor> tools = UBToolsManager::manager()->allTools();
 
-	featuresList->push_back( UBFeature( "", QPixmap( ":images/libpalette/home.png" ), "root", "" ) );
+	featuresList->push_back( UBFeature( QString(), QPixmap( ":images/libpalette/home.png" ), "root", QString() ) );
 	
 	appPath = rootPath + "/Applications";
 	audiosPath = rootPath + "/Audios";
@@ -80,7 +80,7 @@ void UBFeaturesController::initDirectoryTree()
 
 	foreach (UBToolsManager::UBToolDescriptor tool, tools)
 	{
-		featuresList->push_back( UBFeature( appPath, tool.icon, tool.label, mUserInteractiveDirectoryPath, FEATURE_INTERACTIVE ) );
+		featuresList->push_back( UBFeature( appPath, tool.icon, tool.label, tool.id, FEATURE_INTERNAL ) );
 	}
 	fileSystemScan( mUserInteractiveDirectoryPath, appPath  );
 	fileSystemScan( mUserAudioDirectoryPath, audiosPath  );

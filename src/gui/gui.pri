@@ -46,7 +46,8 @@ HEADERS      += src/gui/UBThumbnailView.h \
                 src/gui/UBLibWebView.h \
                 src/gui/UBDownloadWidget.h \
                 src/gui/UBDockDownloadWidget.h \
-		src/gui/UBFeaturesWidget.h\
+		src/gui/UBFeaturesWidget.h \
+		src/gui/UBFeaturesActionBar.h \
     src/gui/UBDockTeacherGuideWidget.h \
     src/gui/UBTeacherGuideWidget.h \
     src/gui/UBTeacherGuideWidgetsTools.h \
@@ -100,7 +101,8 @@ SOURCES      += src/gui/UBThumbnailView.cpp \
                 src/gui/UBLibWebView.cpp \
                 src/gui/UBDownloadWidget.cpp \
                 src/gui/UBDockDownloadWidget.cpp \
-		src/gui/UBFeaturesWidget.cpp\
+		src/gui/UBFeaturesWidget.cpp \
+		src/gui/UBFeaturesActionBar.cpp \
     src/gui/UBDockTeacherGuideWidget.cpp \
     src/gui/UBTeacherGuideWidget.cpp \
     src/gui/UBTeacherGuideWidgetsTools.cpp \

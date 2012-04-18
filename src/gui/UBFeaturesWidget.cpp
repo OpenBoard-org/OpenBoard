@@ -106,7 +106,7 @@ void UBFeaturesWidget::searchStarted( QString pattern )
 		featuresListView->setModel( featuresProxyModel );
 		featuresProxyModel->invalidate();
 	}
-	else
+	else if ( pattern.size() > 2 )
 	{
 		featuresSearchModel->setFilterWildcard( "*" + pattern + "*" );
 		featuresListView->setModel( featuresSearchModel );
@@ -443,7 +443,14 @@ QMimeData* UBFeaturesModel::mimeData(const QModelIndexList &indexes) const
 		if ( index.isValid() )
 		{
 			UBFeature element = data( index, Qt::UserRole + 1 ).value<UBFeature>();
-			urlList.push_back( QUrl::fromLocalFile( element.getFullPath() ) );
+			if ( element.getType() == FEATURE_INTERNAL )
+			{
+				urlList.push_back( QUrl( element.getFullPath() ) );
+			}
+			else if ( element.getType() == FEATURE_INTERACTIVE || element.getType() == FEATURE_ITEM )
+			{
+				urlList.push_back( QUrl::fromLocalFile(element.getFullPath()) );
+			}
 		}
 	}
 	mimeData->setUrls( urlList );
@@ -529,10 +536,11 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 	{
 		UBFeature item = index.data( Qt::UserRole + 1 ).value<UBFeature>();
         if ( item.getType() == FEATURE_INTERACTIVE ||
-            item.getType() == FEATURE_ITEM )
+            item.getType() == FEATURE_ITEM ||
+			item.getType() == FEATURE_INTERNAL )
 			return Qt::ItemIsDragEnabled | defaultFlags;
         if ( item.getType() == FEATURE_FOLDER ||
-            (item.getType() == FEATURE_CATEGORY && item.getFullPath() != ""))
+			(item.getType() == FEATURE_CATEGORY && !item.getFullPath().isNull()))
 			return defaultFlags | Qt::ItemIsDropEnabled;
 		else return defaultFlags;
 	}
@@ -572,6 +580,7 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 
 	UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
     bool isFile = feature.getType() == FEATURE_INTERACTIVE ||
+		feature.getType() == FEATURE_INTERNAL ||
         feature.getType() == FEATURE_ITEM;
 	
 	return isFile && filterRegExp().exactMatch( feature.getName() );
