@@ -138,25 +138,27 @@ UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 
 QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
+    if (change == QGraphicsItem::ItemSelectedHasChanged) {
+        bool ok;
+        bool selected = value.toUInt(&ok);
+        if (ok) {
+            UBGraphicsScene *ubScene = castUBGraphicsScene();
+            if (ubScene) {
+                if (selected) {
+                    ubScene->setSelectedZLevel(delegated());
+                } else {
+                    ubScene->setOwnZlevel(delegated());
+                }
+            }
+        }
+    }
+
     if ((change == QGraphicsItem::ItemSelectedHasChanged
          || change == QGraphicsItem::ItemPositionHasChanged
          || change == QGraphicsItem::ItemTransformHasChanged)
         && mDelegated->scene())
         {
         mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-
-        if (mDelegated->isSelected())
-        {
-            QList<QGraphicsItem*> items = mDelegated->scene()->selectedItems();
-
-            foreach(QGraphicsItem* item, items)
-            {
-                if (item != mDelegated)
-                {
-                    item->setSelected(false);
-                }
-            }
-        }
 
         positionHandles();
     }
@@ -246,6 +248,17 @@ bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
 bool UBGraphicsItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
+
+    //Deselect all the rest selected items if no ctrl key modifier
+    if (delegated()->scene()
+            && delegated()->scene()->selectedItems().count()
+            && event->modifiers() != Qt::ControlModifier) {
+        foreach (QGraphicsItem *item, delegated()->scene()->selectedItems()) {
+            if (item != delegated()) {
+                item->setSelected(false);
+            }
+        }
+    }
 
     commitUndoStep();
 

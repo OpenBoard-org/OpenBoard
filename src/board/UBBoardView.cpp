@@ -46,6 +46,9 @@
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBItem.h"
+#include "domain/UBGraphicsVideoItem.h"
+#include "domain/UBGraphicsAudioItem.h"
+#include "domain/UBGraphicsSvgItem.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -517,6 +520,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     }
 }
 
+QSet<QGraphicsItem*> mJustSelectedItems;
+
 void
 UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
@@ -538,14 +543,39 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
       event->accept ();
     }
   else if (currentTool == UBStylusTool::Selector)
-    {
-        if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
-            return;
-        }
+  {
+      if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
+          return;
+      }
 
-        if (mUBRubberBand && mUBRubberBand->isVisible()) {
-            mUBRubberBand->setGeometry(QRect(mMouseDownPos, event->pos()).normalized());
-        }
+      if (mUBRubberBand && mUBRubberBand->isVisible()) {
+          QRect bandRect(mMouseDownPos, event->pos());
+          bandRect = bandRect.normalized();
+
+          mUBRubberBand->setGeometry(bandRect);
+
+          QList<QGraphicsItem *> rubberItems = items(bandRect);
+          foreach (QGraphicsItem *item, mJustSelectedItems) {
+              if (!rubberItems.contains(item)) {
+                  item->setSelected(false);
+                  mJustSelectedItems.remove(item);
+              }
+          }
+          foreach (QGraphicsItem *item, items(bandRect)) {
+
+              if (item->type() == UBGraphicsW3CWidgetItem::Type
+                      || item->type() == UBGraphicsPixmapItem::Type
+                      || item->type() == UBGraphicsVideoItem::Type
+                      || item->type() == UBGraphicsAudioItem::Type
+                      || item->type() == UBGraphicsSvgItem::Type) {
+
+                  if (!mJustSelectedItems.contains(item)) {
+                      item->setSelected(true);
+                      mJustSelectedItems.insert(item);
+                  }
+              }
+          }
+      }
 
         if (movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed))
         {

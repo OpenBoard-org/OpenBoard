@@ -8,7 +8,4 @@ SOURCES      += src/api/UBWidgetUniboardAPI.cpp \
                 src/api/UBLibraryAPI.cpp \
                 src/api/UBW3CWidgetAPI.cpp \
                 src/api/UBWidgetMessageAPI.cpp 
-                
 
-    
-    
