@@ -55,9 +55,13 @@ public:
     QString getRootPath()const { return rootPath; }
 
 	void addItemToPage(const UBFeature &item);
+	UBFeature getCurrentElement()const { return currentElement; }
+	void setCurrentElement( const UBFeature &elem ) { currentElement = elem; }
+
 	static QPixmap thumbnailForFile( const QString &path );
 	static UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
 	static UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
+	UBFeature newFolder( const QString &name );
 private:
 	void initDirectoryTree();
 	void fileSystemScan(const QString &currPath, const QString & currVirtualPath);
@@ -92,6 +96,7 @@ private:
 	QString interactPath;
 
 	int mLastItemOffsetIndex;
+	UBFeature currentElement;
 };
 
 

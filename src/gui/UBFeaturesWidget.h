@@ -16,8 +16,9 @@
 #include <QDropEvent>
 
 #include "UBDockPaletteWidget.h"
-#include "UBLibActionBar.h"
+//#include "UBLibActionBar.h"
 #include "board/UBFeaturesController.h"
+#include "UBFeaturesActionBar.h"
 
 
 #define THUMBNAIL_WIDTH 400
@@ -67,18 +68,19 @@ private:
 	UBFeaturesListView *featuresListView;
 	UBFeaturesListView *pathListView;
 	QVBoxLayout *layout;
-	UBFeaturesPathViewer *pathViewer;
+	//UBFeaturesPathViewer *pathViewer;
 	QGraphicsScene *pathScene;
-	UBLibActionBar *mActionBar;
+	UBFeaturesActionBar *mActionBar;
 	UBFeatureProperties *featureProperties;
 	QStackedWidget *stackedWidget;
 
 	int currentStackedWidget;
 private slots:
-	void currentSelected(const QModelIndex &);
-	void currentPathChanged(const QString &);
+	void currentSelected( const QModelIndex & );
+	//void currentPathChanged(const QString &);
 	void currentPathChanged( const QModelIndex & );
-	void searchStarted(QString);
+	void searchStarted( QString );
+	void createNewFolder();
 };
 
 class UBFeaturesListView : public QListView
@@ -91,6 +93,7 @@ protected:
 	virtual void dropEvent( QDropEvent *event );
 };
 
+/*
 class UBFeaturesPathViewer : public QGraphicsView
 {
 	Q_OBJECT
@@ -129,7 +132,7 @@ protected:
 private:
 	QString path;
 };
-
+*/
 
 class UBFeatureProperties : public QWidget
 {
@@ -183,6 +186,7 @@ public:
     UBFeaturesModel( QObject *parent = 0 ) : QAbstractListModel(parent) {;}
     virtual ~UBFeaturesModel(){;}
 
+	void addItem( const UBFeature &item );
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
 	QMimeData *mimeData( const QModelIndexList &indexes ) const;
 	QStringList mimeTypes() const;

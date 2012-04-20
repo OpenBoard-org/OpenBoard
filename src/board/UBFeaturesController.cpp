@@ -60,7 +60,8 @@ void UBFeaturesController::initDirectoryTree()
 
 	QList <UBToolsManager::UBToolDescriptor> tools = UBToolsManager::manager()->allTools();
 
-	featuresList->push_back( UBFeature( QString(), QPixmap( ":images/libpalette/home.png" ), "root", QString() ) );
+	featuresList->append( UBFeature( QString(), QPixmap( ":images/libpalette/home.png" ), "root", QString() ) );
+	currentElement = featuresList->at(0);
 	
 	appPath = rootPath + "/Applications";
 	audiosPath = rootPath + "/Audios";
@@ -70,17 +71,17 @@ void UBFeaturesController::initDirectoryTree()
 	interactPath = rootPath + "/Interactivities";
 	shapesPath = rootPath + "/Shapes";
 
-	featuresList->push_back( UBFeature( rootPath, QPixmap(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath ) );
-	featuresList->push_back( UBFeature( rootPath, QPixmap(":images/libpalette/MoviesCategory.svg"), "Movies" , mUserVideoDirectoryPath ) );
-	featuresList->push_back( UBFeature( rootPath, QPixmap(":images/libpalette/PicturesCategory.svg"), "Pictures" , mUserPicturesDirectoryPath ) );
-	featuresList->push_back( UBFeature( rootPath, QPixmap(":images/libpalette/ApplicationsCategory.svg"), "Applications" , mUserInteractiveDirectoryPath ) );
-	featuresList->push_back( UBFeature( rootPath, QPixmap(":images/libpalette/FlashCategory.svg"), "Animations" , mUserAnimationDirectoryPath ) );
-	featuresList->push_back( UBFeature( rootPath, QPixmap(":images/libpalette/InteractivesCategory.svg"), "Interactivities" ,  mLibInteractiveDirectoryPath ) );
-	featuresList->push_back( UBFeature( rootPath, QPixmap(":images/libpalette/ShapesCategory.svg"), "Shapes" , mLibShapesDirectoryPath ) );
+	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath ) );
+	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/MoviesCategory.svg"), "Movies" , mUserVideoDirectoryPath ) );
+	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/PicturesCategory.svg"), "Pictures" , mUserPicturesDirectoryPath ) );
+	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/ApplicationsCategory.svg"), "Applications" , mUserInteractiveDirectoryPath ) );
+	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/FlashCategory.svg"), "Animations" , mUserAnimationDirectoryPath ) );
+	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/InteractivesCategory.svg"), "Interactivities" ,  mLibInteractiveDirectoryPath ) );
+	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/ShapesCategory.svg"), "Shapes" , mLibShapesDirectoryPath ) );
 
 	foreach (UBToolsManager::UBToolDescriptor tool, tools)
 	{
-		featuresList->push_back( UBFeature( appPath, tool.icon, tool.label, tool.id, FEATURE_INTERNAL ) );
+		featuresList->append( UBFeature( appPath, tool.icon, tool.label, tool.id, FEATURE_INTERNAL ) );
 	}
 	fileSystemScan( mUserInteractiveDirectoryPath, appPath  );
 	fileSystemScan( mUserAudioDirectoryPath, audiosPath  );
@@ -131,7 +132,7 @@ void UBFeaturesController::fileSystemScan(const QString & currentPath, const QSt
 				icon = QPixmap( thumbnailPath );
 			else icon = createThumbnail( fullFileName );*/
 		}
-		featuresList->push_back( UBFeature( currVirtualPath, icon, fileName, fullFileName, fileType ) );
+		featuresList->append( UBFeature( currVirtualPath, icon, fileName, fullFileName, fileType ) );
 
 		if ( fileType == FEATURE_FOLDER )
 		{
@@ -185,6 +186,16 @@ QPixmap UBFeaturesController::createThumbnail(const QString &path)
     }
 
     return QPixmap(thumbnailPath);
+}
+
+UBFeature UBFeaturesController::newFolder( const QString &name )
+{
+	QString path = currentElement.getFullPath() + "/" + name;
+	if(!QFileInfo(path).exists())
+	{
+        QDir().mkpath(path);
+	}
+	return UBFeature( currentElement.getUrl() + "/" + currentElement.getName(), QPixmap(":images/libpalette/folder.svg"), name, path, FEATURE_FOLDER );
 }
 
 void UBFeaturesController::addItemToPage(const UBFeature &item)

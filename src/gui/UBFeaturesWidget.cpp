@@ -1,6 +1,7 @@
 #include "UBFeaturesWidget.h"
 #include "domain/UBAbstractWidget.h"
 #include "gui/UBThumbnailWidget.h"
+#include "gui/UBLibraryWidget.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
@@ -87,7 +88,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	stackedWidget->setCurrentIndex(ID_LISTVIEW);
     currentStackedWidget = ID_LISTVIEW;
 
-	mActionBar = new UBLibActionBar(this);
+	mActionBar = new UBFeaturesActionBar(controller, this);
 	layout->addWidget(mActionBar);
 
 	/*connect(featuresListView->selectionModel(), SIGNAL(currentChanged ( const QModelIndex &, const QModelIndex & )),
@@ -95,6 +96,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( featuresListView, SIGNAL(clicked ( const QModelIndex & ) ),
 		this, SLOT( currentSelected(const QModelIndex &) ) );
 	connect( mActionBar, SIGNAL( searchElement(QString) ), this, SLOT( searchStarted(QString) ) );
+	connect( mActionBar, SIGNAL( newFolderToCreate() ), this, SLOT( createNewFolder()  ) );
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 }
@@ -127,6 +129,7 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 		{
 			QString newPath = feature.getUrl() + "/" + feature.getName();
 			//pathViewer->addPathElement( feature.getThumbnail(), newPath );
+			controller->setCurrentElement( feature );
 
 			model->setFilterFixedString( newPath );
 			model->invalidate();
@@ -134,11 +137,13 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 
 			featuresPathModel->setPath( newPath );
 			featuresPathModel->invalidate();
+			mActionBar->setCurrentState( IN_FOLDER );
 		}
 		else
 		{
 			featureProperties->showElement( feature );
 			switchToProperties();
+			mActionBar->setCurrentState( IN_PROPERTIES );
 		}
 		
 	}
@@ -158,9 +163,29 @@ void UBFeaturesWidget::currentPathChanged(const QModelIndex &index)
 		featuresProxyModel->setFilterFixedString(newPath);
 		featuresProxyModel->invalidate();
 		switchToListView();
+		controller->setCurrentElement( feature );
+		if ( feature.getType() == FEATURE_CATEGORY && feature.getName() == "root" )
+		{
+			mActionBar->setCurrentState( IN_ROOT );
+		}
+		else
+		{
+			mActionBar->setCurrentState( IN_FOLDER );
+		}
 	}
 }
 
+void UBFeaturesWidget::createNewFolder()
+{
+	UBNewFolderDlg dlg;
+    if(QDialog::Accepted == dlg.exec())
+    {
+		UBFeature newFolder = controller->newFolder( dlg.folderName() );
+		featuresModel->addItem( newFolder );
+		featuresProxyModel->invalidate();
+    }
+	
+}
 
 void UBFeaturesWidget::switchToListView()
 {
@@ -175,6 +200,7 @@ void UBFeaturesWidget::switchToProperties()
 }
 
 
+/*
 
 void UBFeaturesWidget::currentPathChanged(const QString &path)
 {
@@ -185,7 +211,7 @@ void UBFeaturesWidget::currentPathChanged(const QString &path)
 	featuresProxyModel->invalidate();
 	switchToListView();
 }
-
+*/
 
 
 UBFeaturesWidget::~UBFeaturesWidget()
@@ -330,14 +356,14 @@ void UBFeatureProperties::onAddToPage()
 UBFeatureProperties::~UBFeatureProperties()
 {
 }
-
+/*
 UBFeaturesPathViewer::UBFeaturesPathViewer(const QPixmap &root, const QString &rootPath, QGraphicsScene *sc, QWidget* parent, const char* name) : QGraphicsView(sc, parent)
 {
 	setObjectName(name);
 
-	/*setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet(UBApplication::globalStyleSheet());
-*/
+	//setAttribute(Qt::WA_StyledBackground, true);
+    //setStyleSheet(UBApplication::globalStyleSheet());
+
 	layout = new QGraphicsLinearLayout();
 
 	container = new QGraphicsWidget();
@@ -396,7 +422,7 @@ void UBFeaturesPathViewer::truncatePath(int number)
 	}
 	scene()->invalidate();
 }
-
+*/
 UBFeatureItemButton::UBFeatureItemButton(QWidget *parent, const char *name):QPushButton(parent)
 {
     setObjectName(name);
@@ -498,11 +524,16 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 		{
 			element = UBFeaturesController::copyItemToFolder( url, parentFeature );
 		}
-		beginInsertRows( QModelIndex(), featuresList->size(), featuresList->size() );
-		featuresList->push_back( element );
-		endInsertRows();
+		addItem( element );
 	}
 	return true;
+}
+
+void UBFeaturesModel::addItem( const UBFeature &item )
+{
+	beginInsertRows( QModelIndex(), featuresList->size(), featuresList->size() );
+	featuresList->push_back( item );
+	endInsertRows();
 }
 
 bool UBFeaturesModel::removeRows( int row, int count, const QModelIndex & parent )
