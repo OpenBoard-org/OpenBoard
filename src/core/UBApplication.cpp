@@ -18,6 +18,7 @@
 #include <QtGui>
 #include <QtWebKit>
 #include <QtXml>
+#include <QFontDatabase>
 
 #if defined(Q_WS_MACX)
 #include <Carbon/Carbon.h>
@@ -350,8 +351,6 @@ int UBApplication::exec(const QString& pFileToImport)
             }
         }
     }
-
-
 
     return QApplication::exec();
 }

@@ -895,6 +895,19 @@ QString UBSettings::applicationShapeLibraryDirectory()
     }
 }
 
+QString UBSettings::applicationCustomizationDirectory()
+{
+    QString defaultRelativePath = QString("/customizations");
+    return UBPlatformUtils::applicationResourcesDirectory() + defaultRelativePath;
+
+}
+
+QString UBSettings::applicationCustomFontDirectory()
+{
+    QString defaultFontDirectory = "/fonts";
+    return applicationCustomizationDirectory() + defaultFontDirectory;
+}
+
 QString UBSettings::applicationGipLibraryDirectory()
 {
     static QString dirPath = "";

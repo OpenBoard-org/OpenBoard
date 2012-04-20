@@ -53,8 +53,8 @@ REM git describe %LAST_TAG% > tmp
 REM set /p LAST_TAG_VERSION=< tmp
 REM erase tmp
 
-echo %VERSION%
-echo %LAST_TAG_VERSION%
+REM echo %VERSION%
+REM echo %LAST_TAG_VERSION%
 
 REM if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
@@ -62,6 +62,8 @@ nmake release-install
 
 
 copy %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm build\win32\release\product\i18n\
+copy resources\customizations build\win32\release\product\
+
 del build\win32\release\product\i18n\qt_help*
 
 del ".\build\win32\release\product\Sankore.pdb"

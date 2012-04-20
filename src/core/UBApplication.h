@@ -118,8 +118,8 @@ class UBApplication : public QtSingleApplication
         void showMinimized();
 #endif
         void importUniboardFiles();
-    private:
 
+    private:
         void updateProtoActionsState();
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
