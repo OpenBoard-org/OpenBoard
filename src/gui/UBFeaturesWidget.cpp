@@ -48,7 +48,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	
 
 	//featuresListView->setStyleSheet( QString("background: #EEEEEE;border-radius: 10px;border: 2px solid #999999;") );
-	featuresListView->setDragDropMode( QAbstractItemView::InternalMove );
+	featuresListView->setDragDropMode( QAbstractItemView::DragDrop );
 	featuresListView->setModel( featuresProxyModel );
 
 	featuresListView->setResizeMode( QListView::Adjust );
@@ -95,13 +95,14 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 		this, SLOT(currentSelected(const QModelIndex &)));*/
 	connect( featuresListView, SIGNAL(clicked ( const QModelIndex & ) ),
 		this, SLOT( currentSelected(const QModelIndex &) ) );
-	connect( mActionBar, SIGNAL( searchElement(QString) ), this, SLOT( searchStarted(QString) ) );
+	connect( mActionBar, SIGNAL( searchElement(const QString &) ), this, SLOT( const searchStarted(QString &) ) );
 	connect( mActionBar, SIGNAL( newFolderToCreate() ), this, SLOT( createNewFolder()  ) );
+	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &)), this, SLOT( deleteElements(const QMimeData &) ) ); 
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 }
 
-void UBFeaturesWidget::searchStarted( QString pattern )
+void UBFeaturesWidget::searchStarted( const QString &pattern )
 {
 	if ( pattern.isEmpty() )
 	{
@@ -125,7 +126,8 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 		QString path = model->data(current, Qt::UserRole).toString();
 		eUBLibElementType type = (eUBLibElementType)model->data(current, Qt::UserRole + 1).toInt();*/
 		UBFeature feature = model->data(current, Qt::UserRole + 1).value<UBFeature>();
-        if ( feature.getType() == FEATURE_FOLDER || feature.getType() == FEATURE_CATEGORY)
+        if ( feature.getType() == FEATURE_FOLDER || feature.getType() == FEATURE_CATEGORY ||
+			feature.getType() == FEATURE_TRASH )
 		{
 			QString newPath = feature.getUrl() + "/" + feature.getName();
 			//pathViewer->addPathElement( feature.getThumbnail(), newPath );
@@ -187,6 +189,28 @@ void UBFeaturesWidget::createNewFolder()
 	
 }
 
+void UBFeaturesWidget::deleteElements( const QMimeData & mimeData )
+{
+	if ( !mimeData.hasUrls() )
+		return;
+	QList<QUrl> urls = mimeData.urls();
+	
+	foreach ( QUrl url, urls )
+	{
+		if ( controller->isTrash( url) )
+		{
+			UBFeaturesController::deleteItem( url );
+		}
+		else
+		{
+			UBFeature elem = UBFeaturesController::moveItemToFolder( url, controller->getTrashElement() );
+			featuresModel->addItem( elem );
+		}
+	}
+	QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
+	model->invalidate();
+}
+
 void UBFeaturesWidget::switchToListView()
 {
 	stackedWidget->setCurrentIndex(ID_LISTVIEW);
@@ -221,6 +245,12 @@ UBFeaturesWidget::~UBFeaturesWidget()
 UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) : QListView(parent)
 {
 	setObjectName(name);
+}
+
+void UBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
+{
+	if ( event->mimeData()->hasUrls() )
+		event->acceptProposedAction();
 }
 
 void UBFeaturesListView::dropEvent( QDropEvent *event )
@@ -356,73 +386,7 @@ void UBFeatureProperties::onAddToPage()
 UBFeatureProperties::~UBFeatureProperties()
 {
 }
-/*
-UBFeaturesPathViewer::UBFeaturesPathViewer(const QPixmap &root, const QString &rootPath, QGraphicsScene *sc, QWidget* parent, const char* name) : QGraphicsView(sc, parent)
-{
-	setObjectName(name);
 
-	//setAttribute(Qt::WA_StyledBackground, true);
-    //setStyleSheet(UBApplication::globalStyleSheet());
-
-	layout = new QGraphicsLinearLayout();
-
-	container = new QGraphicsWidget();
-	container->setMaximumWidth( width() - 20 );
-	container->setLayout( layout );
-	scene()->addItem( container );
-	
-	UBFolderWidget* pIconLabel = new UBFolderWidget();
-    pIconLabel->setStyleSheet(QString("background-color: transparent;"));
-	pIconLabel->setPixmap( root );
-	pIconLabel->setPath(rootPath);
-	connect( pIconLabel, SIGNAL( clicked(const QString &) ), parent, SLOT( currentPathChanged(const QString &) ) );
-
-	QGraphicsProxyWidget *iconWidget = scene()->addWidget( pIconLabel ) ;;
-	layout->addItem( iconWidget );
-	setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
-	setAlignment( Qt::AlignLeft );
-	setFixedHeight( 70 );
-	arrowPixmap = new QPixmap(":images/navig_arrow.png");
-}
-
-void UBFeaturesPathViewer::addPathElement(const QPixmap &p, const QString &s)
-{
-	UBFolderWidget* pIconLabel = new UBFolderWidget();
-	pIconLabel->setStyleSheet(QString("background-color: transparent;"));
-	pIconLabel->setPixmap( *arrowPixmap );
-
-	QGraphicsProxyWidget *iconWidget = scene()->addWidget( pIconLabel );
-	layout->addItem( iconWidget );
-
-	
-	pIconLabel = new UBFolderWidget();
-	
-	pIconLabel->setStyleSheet(QString("background-color: transparent;"));
-	pIconLabel->setPixmap( p.scaledToHeight( height() - 30, Qt::SmoothTransformation) );
-	pIconLabel->setPath(s);
-	connect( pIconLabel, SIGNAL( clicked(const QString &) ), parent(), SLOT( currentPathChanged(const QString &) ) );
-
-	iconWidget = scene()->addWidget( pIconLabel );
-	layout->addItem( iconWidget );
-	scene()->invalidate();
-}
-
-void UBFeaturesPathViewer::truncatePath(int number)
-{
-	QList <QGraphicsItem*> items = scene()->items();
-	int itemsToDel = items.size() - number * 2;
-	for ( QList <QGraphicsItem*>::iterator it = items.begin() ; it != items.begin() + itemsToDel; ++it )
-	{
-		scene()->removeItem( (*it) );
-		QGraphicsLayoutItem *layoutItem = dynamic_cast<QGraphicsLayoutItem *>(*it);
-		Q_ASSERT(layout);
-		layout->removeItem(layoutItem);
-		delete layoutItem;
-	}
-	scene()->invalidate();
-}
-*/
 UBFeatureItemButton::UBFeatureItemButton(QWidget *parent, const char *name):QPushButton(parent)
 {
     setObjectName(name);
@@ -540,7 +504,7 @@ bool UBFeaturesModel::removeRows( int row, int count, const QModelIndex & parent
 {
 	if ( row < 0 )
 		return false;
-	if ( row + count >= featuresList->size() )
+	if ( row + count > featuresList->size() )
 		return false;
 	beginRemoveRows( parent, row, row + count - 1 );
 	featuresList->remove( row, count );
@@ -571,6 +535,7 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 			item.getType() == FEATURE_INTERNAL )
 			return Qt::ItemIsDragEnabled | defaultFlags;
         if ( item.getType() == FEATURE_FOLDER ||
+			item.getType() == FEATURE_TRASH ||
 			(item.getType() == FEATURE_CATEGORY && !item.getFullPath().isNull()))
 			return defaultFlags | Qt::ItemIsDropEnabled;
 		else return defaultFlags;

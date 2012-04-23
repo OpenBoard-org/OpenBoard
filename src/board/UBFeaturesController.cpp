@@ -55,6 +55,7 @@ void UBFeaturesController::initDirectoryTree()
 	mLibInteractiveDirectoryPath = UBSettings::settings()->applicationInteractivesDirectory();
 	mLibApplicationsDirectoryPath = UBSettings::settings()->applicationApplicationsLibraryDirectory();
 	mLibShapesDirectoryPath = UBSettings::settings()->applicationShapeLibraryDirectory() ;
+	trashDirectoryPath = UBSettings::userTrashDirPath();
 
 	featuresList = new QVector <UBFeature>();
 
@@ -70,6 +71,7 @@ void UBFeaturesController::initDirectoryTree()
 	flashPath = rootPath + "/Animations";
 	interactPath = rootPath + "/Interactivities";
 	shapesPath = rootPath + "/Shapes";
+	trashPath = rootPath + "/Trash";
 
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath ) );
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/MoviesCategory.svg"), "Movies" , mUserVideoDirectoryPath ) );
@@ -78,6 +80,8 @@ void UBFeaturesController::initDirectoryTree()
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/FlashCategory.svg"), "Animations" , mUserAnimationDirectoryPath ) );
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/InteractivesCategory.svg"), "Interactivities" ,  mLibInteractiveDirectoryPath ) );
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/ShapesCategory.svg"), "Shapes" , mLibShapesDirectoryPath ) );
+	trashElement = UBFeature( rootPath, QPixmap(":images/libpalette/TrashCategory.svg"), "Trash", trashDirectoryPath, FEATURE_TRASH );
+	featuresList->append( trashElement );
 
 	foreach (UBToolsManager::UBToolDescriptor tool, tools)
 	{
@@ -93,6 +97,7 @@ void UBFeaturesController::initDirectoryTree()
 	fileSystemScan( mLibPicturesDirectoryPath, picturesPath  );
 	fileSystemScan( mLibShapesDirectoryPath, shapesPath  );
 	fileSystemScan( mLibInteractiveDirectoryPath, interactPath  );
+	fileSystemScan( trashDirectoryPath, trashPath );
 
 }
 
@@ -206,38 +211,15 @@ void UBFeaturesController::addItemToPage(const UBFeature &item)
 UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeature &destination )
 {
 	UBFeature newElement = copyItemToFolder( url, destination );
-	QString sourcePath = url.toLocalFile();
-	QFile::remove( sourcePath );
-	QString thumbnailPath = UBFileSystemUtils::thumbnailPath( sourcePath );
-    if (thumbnailPath.length() && QFileInfo( thumbnailPath ).exists()) 
-	{
-        QFile::remove(thumbnailPath);
-    }
-	return newElement;
+	deleteItem( url );
 	/*QString sourcePath = url.toLocalFile();
-
-	Q_ASSERT( QFileInfo( sourcePath ).exists() );
-
-	QString name = QFileInfo( sourcePath ).fileName();
-	QString destPath = destination.getFullPath();
-	QString destVirtualPath = destination.getUrl() + "/" + destination.getName();
-	QString newFullPath = destPath + "/" + name;
-	QFile( sourcePath ).copy( newFullPath );
 	QFile::remove( sourcePath );
-
 	QString thumbnailPath = UBFileSystemUtils::thumbnailPath( sourcePath );
     if (thumbnailPath.length() && QFileInfo( thumbnailPath ).exists()) 
 	{
         QFile::remove(thumbnailPath);
-    }
-
-	QPixmap thumb = thumbnailForFile( newFullPath );
-	
-	UBFeatureElementType type = UBFeatureElementType::FEATURE_ITEM;
-	if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") ) 
-        type = UBFeatureElementType::FEATURE_INTERACTIVE;
-	UBFeature newElement( destVirtualPath, thumb, name, destPath, type );
-	return newElement;*/
+    }*/
+	return newElement;
 }
 
 UBFeature UBFeaturesController::copyItemToFolder( const QUrl &url, const UBFeature &destination )
@@ -261,37 +243,23 @@ UBFeature UBFeaturesController::copyItemToFolder( const QUrl &url, const UBFeatu
 	return newElement;
 }
 
-/*
-void UBFeaturesController::addImageToCurrentPage( const QString &path )
+void UBFeaturesController::deleteItem( const QUrl &url )
 {
-	QPointF pos = UBApplication::boardController->activeScene()->normalizedSceneRect().center();
-	mLastItemOffsetIndex = qMin(mLastItemOffsetIndex, 5);
+	QString path = url.toLocalFile();
+	Q_ASSERT( QFileInfo( path ).exists() );
 
-    QGraphicsItem* itemInScene = 0;
-
-    if ( UBApplication::boardController->activeScene() ) 
+	QString thumbnailPath = UBFileSystemUtils::thumbnailPath( path );
+    if (thumbnailPath.length() && QFileInfo( thumbnailPath ).exists()) 
 	{
-        QString mimeType = UBFileSystemUtils::mimeTypeFromFileName( path );
-
-        pos = QPointF( pos.x() + 50 * mLastItemOffsetIndex, pos.y() + 50 * mLastItemOffsetIndex );
-        mLastItemOffsetIndex++;
-        //TODO UB 4.x move this logic to the scene ..
-        if (mimeType == "image/svg+xml") 
-		{
-			itemInScene = UBApplication::boardController->activeScene()->addSvg( QUrl::fromLocalFile(path), pos );
-        } 
-		else 
-		{
-            itemInScene = UBApplication::boardController->activeScene()->addPixmap( QPixmap(path), pos );
-        }
+        QFile::remove(thumbnailPath);
     }
-
-    if (itemInScene) 
-	{
-        itemInScene = UBApplication::boardController->activeScene()->scaleToFitDocumentSize(itemInScene, false, UBSettings::objectInControlViewMargin);
-    }
+	QFile::remove( path );
 }
-*/
+
+bool UBFeaturesController::isTrash( const QUrl &url )
+{
+	return url.toLocalFile().startsWith( trashDirectoryPath );
+}
 
 UBFeaturesController::~UBFeaturesController()
 {

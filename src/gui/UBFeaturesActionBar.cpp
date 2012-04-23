@@ -87,6 +87,8 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mLayout->addWidget(mpCloseBtn);
     mLayout->addWidget(mpRemoveFavoriteBtn);
 	setCurrentState( IN_ROOT );
+	mpDeleteBtn->setAcceptDrops(true);
+	setAcceptDrops( true );
 }
 
 void UBFeaturesActionBar::setCurrentState( UBFeaturesActionBarState state )
@@ -100,7 +102,16 @@ void UBFeaturesActionBar::setButtons()
     switch( currentState )
     {
 	case IN_FOLDER:
+		mpFavoriteBtn->show();
+        mpSocialBtn->hide();
+        mSearchBar->show();
+        mpDeleteBtn->show();
+        mpCloseBtn->hide();
+        mpRemoveFavoriteBtn->hide();
+        mpNewFolderBtn->show();
 		mpNewFolderBtn->setEnabled(true);
+		mpDeleteBtn->setEnabled(true);
+		break;
     case IN_ROOT:
         mpFavoriteBtn->show();
         mpSocialBtn->hide();
@@ -109,6 +120,8 @@ void UBFeaturesActionBar::setButtons()
         mpCloseBtn->hide();
         mpRemoveFavoriteBtn->hide();
         mpNewFolderBtn->show();
+		mpNewFolderBtn->setEnabled(false);
+		mpDeleteBtn->setEnabled(false);
         break;
     case IN_PROPERTIES:
         mpFavoriteBtn->show();
@@ -143,6 +156,31 @@ void UBFeaturesActionBar::onSearchTextChanged(QString txt)
 void UBFeaturesActionBar::onActionNewFolder()
 {
     emit newFolderToCreate();
+}
+
+/*
+void UBFeaturesActionBar::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->acceptProposedAction();
+}
+*/
+
+void UBFeaturesActionBar::dragEnterEvent( QDragEnterEvent *event )
+{
+    if (event->mimeData()->hasFormat("text/uri-list"))
+        event->acceptProposedAction();
+}
+
+void UBFeaturesActionBar::dropEvent( QDropEvent *event )
+{	
+	QWidget *dest = childAt( event->pos() );
+	if ( dest == mpDeleteBtn )
+	{
+		event->setDropAction( Qt::MoveAction );
+		event->accept();
+		emit deleteElements( *event->mimeData() );
+	}
+
 }
 
 UBFeaturesActionBar::~UBFeaturesActionBar()

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QToolButton>
+#include <QDropEvent>
 #include "UBLibActionBar.h"
 #include "board/UBFeaturesController.h"
 
@@ -23,11 +24,16 @@ public:
 	
 	void setCurrentState( UBFeaturesActionBarState state );
 signals:
-	void searchElement(QString text);
+	void searchElement(const QString &text);
 	void newFolderToCreate();
+	void deleteElements( const QMimeData &data );
 private slots:
 	void onSearchTextChanged(QString txt);
 	void onActionNewFolder();
+protected:
+	//void dragMoveEvent(QDragMoveEvent *event);
+	void dragEnterEvent( QDragEnterEvent *event );
+	void dropEvent( QDropEvent *event );
 private:
 	void setButtons();
 	UBFeaturesController *featuresController;

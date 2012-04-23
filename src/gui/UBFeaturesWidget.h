@@ -75,12 +75,14 @@ private:
 	QStackedWidget *stackedWidget;
 
 	int currentStackedWidget;
+	QModelIndex trashIndex;
 private slots:
 	void currentSelected( const QModelIndex & );
 	//void currentPathChanged(const QString &);
 	void currentPathChanged( const QModelIndex & );
-	void searchStarted( QString );
+	void searchStarted( const QString & );
 	void createNewFolder();
+	void deleteElements( const QMimeData & );
 };
 
 class UBFeaturesListView : public QListView
@@ -90,6 +92,7 @@ public:
 	UBFeaturesListView( QWidget* parent=0, const char* name="UBFeaturesListView" );
     virtual ~UBFeaturesListView() {;}
 protected:
+	virtual void dragEnterEvent( QDragEnterEvent *event );
 	virtual void dropEvent( QDropEvent *event );
 };
 

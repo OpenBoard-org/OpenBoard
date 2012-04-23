@@ -17,7 +17,8 @@ enum UBFeatureElementType
     FEATURE_FOLDER,
     FEATURE_INTERACTIVE,
 	FEATURE_INTERNAL,
-    FEATURE_ITEM
+    FEATURE_ITEM,
+	FEATURE_TRASH
 };
 
 class UBFeature
@@ -52,15 +53,18 @@ public:
 
     QVector <UBFeature>* getFeatures()const { return featuresList; }
 	
-    QString getRootPath()const { return rootPath; }
+    const QString& getRootPath()const { return rootPath; }
 
 	void addItemToPage(const UBFeature &item);
-	UBFeature getCurrentElement()const { return currentElement; }
+	const UBFeature& getCurrentElement()const { return currentElement; }
 	void setCurrentElement( const UBFeature &elem ) { currentElement = elem; }
+	const UBFeature & getTrashElement () const { return trashElement; }
 
 	static QPixmap thumbnailForFile( const QString &path );
 	static UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
 	static UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
+	static void deleteItem( const QUrl &url );
+	bool isTrash( const QUrl &url );
 	UBFeature newFolder( const QString &name );
 private:
 	void initDirectoryTree();
@@ -85,6 +89,7 @@ private:
     QString mLibAnimationDirectoryPath;
 	QString mLibApplicationsDirectoryPath;
 	QString mLibShapesDirectoryPath;
+	QString trashDirectoryPath;
 
 	QString rootPath;
 	QString audiosPath;
@@ -94,9 +99,11 @@ private:
 	QString flashPath;
 	QString shapesPath;
 	QString interactPath;
+	QString trashPath;
 
 	int mLastItemOffsetIndex;
 	UBFeature currentElement;
+	UBFeature trashElement;
 };
 
 
