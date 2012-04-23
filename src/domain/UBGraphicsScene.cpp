@@ -308,17 +308,6 @@ void UBGraphicsScene::selectionChangedProcessing()
     if (selectedItems().count())
         UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
                                                 + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
-
-    QList<QGraphicsItem *> allItemsList = items();
-    for( int i = 0; i < allItemsList.size(); i++ ) {
-        QGraphicsItem *nextItem = allItemsList.at(i);
-
-        if (nextItem->isSelected()) {
-            nextItem->setZValue(mZLayerController->generateZLevel(itemLayerType::SelectedItem));
-        } else {
-            nextItem->setZValue(nextItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-        }
-    }
 }
 
 // MARK: -
@@ -1968,17 +1957,13 @@ void UBGraphicsScene::setNominalSize(int pWidth, int pHeight)
      setNominalSize(QSize(pWidth, pHeight));
 }
 
-void UBGraphicsScene::setSelectedZLevel(QList<QGraphicsItem *> itemList)
-{
-    foreach (QGraphicsItem *item, itemList) {
-        item->setZValue(mZLayerController->generateZLevel(itemLayerType::SelectedItem));
-    }
+void UBGraphicsScene::setSelectedZLevel(QGraphicsItem * item)
+{    
+    item->setZValue(mZLayerController->generateZLevel(itemLayerType::SelectedItem));
 }
-void UBGraphicsScene::setOwnZlevel(QList<QGraphicsItem *> itemList)
+void UBGraphicsScene::setOwnZlevel(QGraphicsItem *item)
 {
-    foreach (QGraphicsItem *item, itemList) {
-        item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-    }
+    item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
 }
 
 qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest)

@@ -46,6 +46,9 @@
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBItem.h"
+#include "domain/UBGraphicsVideoItem.h"
+#include "domain/UBGraphicsAudioItem.h"
+#include "domain/UBGraphicsSvgItem.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -117,6 +120,7 @@ UBBoardView::init ()
   mUsingTabletEraser = false;
   mIsCreatingTextZone = false;
   mRubberBand = 0;
+  mUBRubberBand = 0;
 
   mVirtualKeyboardActive = false;
 
@@ -407,9 +411,18 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         }
         else if (currentTool == UBStylusTool::Selector)
         {
-            QSet<QGraphicsItem*> existingTools = scene()->tools();
+//            QSet<QGraphicsItem*> existingTools = scene()->tools(); why do we need to get tools here?
 
             movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
+
+            if (!movingItem) {
+                // Rubberband selection implementation
+                if (!mUBRubberBand) {
+                    mUBRubberBand = new UBRubberBand(QRubberBand::Rectangle, this);
+                }
+                mUBRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
+                mUBRubberBand->show();
+            }
 
             if (!movingItem
                 || movingItem->isSelected()
@@ -435,6 +448,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 }
                 suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers()); // удалить
             }
+
 
             event->accept();
         }
@@ -463,7 +477,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
                 if (!mRubberBand)
                     mRubberBand = new UBRubberBand (QRubberBand::Rectangle, this);
-
                 mRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
                 mRubberBand->show ();
                 mIsCreatingTextZone = true;
@@ -500,6 +513,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     }
 }
 
+QSet<QGraphicsItem*> mJustSelectedItems;
+
 void
 UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
@@ -521,10 +536,39 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
       event->accept ();
     }
   else if (currentTool == UBStylusTool::Selector)
-    {
-        if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
-            return;
-        }
+  {
+      if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
+          return;
+      }
+
+      if (mUBRubberBand && mUBRubberBand->isVisible()) {
+          QRect bandRect(mMouseDownPos, event->pos());
+          bandRect = bandRect.normalized();
+
+          mUBRubberBand->setGeometry(bandRect);
+
+          QList<QGraphicsItem *> rubberItems = items(bandRect);
+          foreach (QGraphicsItem *item, mJustSelectedItems) {
+              if (!rubberItems.contains(item)) {
+                  item->setSelected(false);
+                  mJustSelectedItems.remove(item);
+              }
+          }
+          foreach (QGraphicsItem *item, items(bandRect)) {
+
+              if (item->type() == UBGraphicsW3CWidgetItem::Type
+                      || item->type() == UBGraphicsPixmapItem::Type
+                      || item->type() == UBGraphicsVideoItem::Type
+                      || item->type() == UBGraphicsAudioItem::Type
+                      || item->type() == UBGraphicsSvgItem::Type) {
+
+                  if (!mJustSelectedItems.contains(item)) {
+                      item->setSelected(true);
+                      mJustSelectedItems.insert(item);
+                  }
+              }
+          }
+      }
 
         if (movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed))
         {
@@ -589,6 +633,10 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           movingItem = NULL;
           delete suspendedMousePressEvent;
           suspendedMousePressEvent = NULL;
+      }
+
+      if (mUBRubberBand && mUBRubberBand->isVisible()) {
+          mUBRubberBand->hide();
       }
 
       QGraphicsView::mouseReleaseEvent (event);

@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
+
 BASE_TROLLTECH_DIRECTORY=/usr/local/Trolltech/Qt-4.7.3
 # Executables
 QMAKE=$BASE_TROLLTECH_DIRECTORY/bin/qmake
@@ -28,6 +29,7 @@ LRELEASE=$BASE_TROLLTECH_DIRECTORY/bin/lrelease
 # Directories
 BUILD_DIR="build/macx/release"
 PRODUCT_DIR="$BUILD_DIR/product"
+BASE_QT_TRANSLATIONS_DIRECTORY=../Qt-sankore3.1/translations
 
 function notify {
     GROWLNOTIFY=`which growlnotify`
@@ -50,6 +52,31 @@ function checkExecutable {
     if [ ! -x "$1" ]; then
         abort "$1 not found"
     fi
+}
+
+function addQtTranslations {
+for eachTranslation in `ls $BASE_QT_TRANSLATIONS_DIRECTORY/qt_??.qm`
+do
+    # looking fo the language code for each qt translation file
+    languageCode=`echo $eachTranslation | sed 's/.*qt_\(.*\).qm/\1/'`
+    basicDir=$PRODUCT_DIR/Open-Sankore.app/Contents/Resources/
+    for eachDirectory in `ls $basicDir`
+    do
+        # looping through the Sankore availables languages
+        directoryLanguageCode=`echo $eachDirectory | sed 's/\(.*\)\.lproj/\1/'`
+        if [ ! -z $directoryLanguageCode ]; then
+            if [[ $eachDirectory == *".lproj"* && $eachDirectory != "empty.lproj" && $directoryLanguageCode == *$languageCode* ]]; then
+                # sankore translation found for qt translation file
+                cp $eachTranslation $basicDir/$eachDirectory
+                if [ $directoryLanguageCode != $languageCode ]; then
+                    # handling fr and fr_CH code.
+                    mv $basicDir/$eachDirectory/qt_$languageCode.qm $basicDir/$eachDirectory/qt_$directoryLanguageCode.qm
+                fi
+            fi
+        fi
+    done
+done
+
 }
 
 trap "defaults write com.mnemis.Uniboard.release Running -bool NO" EXIT
@@ -77,6 +104,9 @@ checkExecutable "$LRELEASE"
 notify "Cleaning ..."
 rm -rf "$BUILD_DIR"
 
+notify "Translations ..."
+$LRELEASE "Sankore_3.1.pro"
+
 # generate Makefiles
 notify "Generating Makefile ..."
 
@@ -88,8 +118,11 @@ $QMAKE_CMD
 notify "Compiling ..."
 make -j4 release
 
-$LRELEASE "Sankore_3.1.pro"
+addQtTranslations
 
+cp -R resources/customizations $PRODUCT_DIR/Open-Sankore.app/Contents/Resources
+
+notify "Tagging ..."
 VERSION=`cat "$BUILD_DIR/version"`
 if [ ! -f "$BUILD_DIR/version" ]; then
     echo "version not found"
@@ -98,8 +131,8 @@ else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
 	echo creating a tag with the version $VERSION
-	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
-	git push origin --tags
+#	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
+#	git push origin --tags
     fi
 fi
   

@@ -16,6 +16,8 @@
 #include "UBRubberBand.h"
 
 #include <QtGui>
+#include <QtGui/QPlastiqueStyle>
+#include <QStyleFactory>
 
 #ifdef Q_WS_MAC
 #include <QtGui/QMacStyle>
@@ -32,10 +34,13 @@ UBRubberBand::UBRubberBand(Shape s, QWidget * p)
     customStyle = new QWindowsXPStyle();
 #elif defined(Q_WS_MAC)
     customStyle = new QMacStyle();
+#elif defined(Q_WS_X11)
+//    customStyle = QStyleFactory::create("oxygen");
 #endif
 
     if (customStyle)
         QRubberBand::setStyle(customStyle);
+
 }
 
 UBRubberBand::~UBRubberBand()

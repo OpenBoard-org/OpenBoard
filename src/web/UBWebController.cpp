@@ -128,9 +128,7 @@ void UBWebController::webBrowserInstance()
 
             WBBrowserWindow::downloadManager()->setParent((*mCurrentWebBrowser), Qt::Tool);
 
-            UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar,
-                                                                   mMainWindow->actionBoard, 32);
-
+            UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar, mMainWindow->actionBoard, 32);
             UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
             bool showAddBookmarkButtons = UBSettings::settings()->webShowAddBookmarkButton->get().toBool();
@@ -151,8 +149,6 @@ void UBWebController::webBrowserInstance()
 
             (*mCurrentWebBrowser)->tabWidget()->tabBar()->show();
             (*mCurrentWebBrowser)->tabWidget()->lineEdits()->show();
-//            (*mCurrentWebBrowser)->tabWidget()->tabBar()->hide();
-//            (*mCurrentWebBrowser)->tabWidget()->lineEdits()->hide();
         }
 
         UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());

@@ -42,9 +42,10 @@ Thumbs.db
 *.pdb
 *.sln
 *.suo
-*.vcproj
+*.vcproj*
 *.ncb
 *.pro.user
+*.idb
 
 # Build files #
 ###############
@@ -53,6 +54,14 @@ install
 Makefile
 Makefile.Debug
 Makefile.Release
+
+# plugins #
+###########
+
+plugins/cffadaptor/lib
+plugins/cffadaptor/moc
+plugins/cffadaptor/objects
+
 
 # Translation files #
 #####################

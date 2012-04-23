@@ -285,8 +285,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 			return mPreviousPoint;
 		}
 
-        void setSelectedZLevel(QList<QGraphicsItem *> itemList);
-        void setOwnZlevel(QList<QGraphicsItem *> itemList);
+        void setSelectedZLevel(QGraphicsItem *item);
+        void setOwnZlevel(QGraphicsItem *item);
 public slots:
 
         void hideEraser();
