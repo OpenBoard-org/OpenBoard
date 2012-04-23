@@ -54,6 +54,7 @@
 #include "UBGraphicsWidgetItem.h"
 #include "UBGraphicsPDFItem.h"
 #include "UBGraphicsTextItem.h"
+#include "UBGraphicsStrokesGroup.h"
 
 #include "UBAppleWidget.h"
 #include "UBW3CWidget.h"
@@ -269,8 +270,9 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , magniferDisplayViewWidget(0)
     , mZLayerController(new UBZLayerController(this))
     , mIsDesktopMode(false)
+    , mpLastPolygon(NULL)
 {
-
+    UBCoreGraphicsScene::setObjectName("BoardScene");
 #ifdef __ppc__
     mShouldUseOMP = false;
 #elif defined(Q_WS_MAC)
@@ -342,19 +344,29 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 
         if (UBDrawingController::drawingController()->isDrawingTool())
         {
+            // -----------------------------------------------------------------
+            // We fall here if we are using the Pen, the Marker or the Line tool
+            // -----------------------------------------------------------------
             qreal width = 0;
 
             // delete current stroke, if not assigned to any polygon
-            if (mCurrentStroke)
-                if (mCurrentStroke->polygons().empty())
-                    delete mCurrentStroke;
+            if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+                delete mCurrentStroke;
+                mCurrentStroke = NULL;
+            }
 
+            // ---------------------------------------------------------------
+            // Create a new Stroke. A Stroke is a collection of QGraphicsLines
+            // ---------------------------------------------------------------
             mCurrentStroke = new UBGraphicsStroke();
 
-            if (currentTool != UBStylusTool::Line)
+            if (currentTool != UBStylusTool::Line){
+                // Handle the pressure
                 width = UBDrawingController::drawingController()->currentToolWidth() * pressure;
-            else
-                width = UBDrawingController::drawingController()->currentToolWidth(); //ignore pressure for line tool
+            }else{
+                // Ignore pressure for the line tool
+                width = UBDrawingController::drawingController()->currentToolWidth();
+            }
 
             width /= UBApplication::boardController->systemScaleFactor();
             width /= UBApplication::boardController->currentZoom();
@@ -364,14 +376,12 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 
 			if (UBDrawingController::drawingController()->mActiveRuler)
 			{
-				UBDrawingController::drawingController()->mActiveRuler->StartLine(
-					scenePos, width);
+                UBDrawingController::drawingController()->mActiveRuler->StartLine(scenePos, width);
 			}
 			else
 			{
 				moveTo(scenePos);
-				drawLineTo(scenePos, width,
-					UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
 			}
             accepted = true;
         }
@@ -422,10 +432,13 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
         {
             qreal width = 0;
 
-            if (currentTool != UBStylusTool::Line)
+            if (currentTool != UBStylusTool::Line){
+                // Handle the pressure
                 width = dc->currentToolWidth() * pressure;
-            else
-                width = dc->currentToolWidth();//ignore pressure for line tool
+            }else{
+                // Ignore pressure for line tool
+                width = dc->currentToolWidth();
+            }
 
             width /= UBApplication::boardController->systemScaleFactor();
             width /= UBApplication::boardController->currentZoom();
@@ -437,10 +450,20 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 			else
 			{
 	            if (currentTool == UBStylusTool::Line)
-		        {
-                            // TODO:    Verify this beautiful implementation and check if
-                            //          it is possible to optimize it
-			        QLineF radius(mPreviousPoint, position);
+                {
+                    if(NULL != mpLastPolygon && NULL != mCurrentStroke && mAddedItems.size() > 0){
+                        UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
+                        mAddedItems.remove(mpLastPolygon);
+                        mCurrentStroke->remove(mpLastPolygon);
+                        removeItem(mpLastPolygon);
+                        mPreviousPolygonItems.removeAll(mpLastPolygon);
+                    }
+
+                    // ------------------------------------------------------------------------
+                    // Here we wanna make sure that the Line will 'grip' at i*45, i*90 degrees
+                    // ------------------------------------------------------------------------
+
+                    QLineF radius(mPreviousPoint, position);
 				    qreal angle = radius.angle();
 					angle = qRound(angle / 45) * 45;
 	                qreal radiusLength = radius.length();
@@ -452,8 +475,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 						position = newPosition;
 				}
 
-				drawLineTo(position, width,
-					UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                drawLineTo(position, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
 			}
         }
         else if (currentTool == UBStylusTool::Eraser)
@@ -492,8 +514,6 @@ bool UBGraphicsScene::inputDeviceRelease()
 
     bool accepted = false;
 
-
-
     if (mPointer)
     {
         mPointer->hide();
@@ -505,10 +525,32 @@ bool UBGraphicsScene::inputDeviceRelease()
     {
         if (mCurrentStroke)
         {
-            if (mCurrentStroke->polygons().empty())
+            if(eDrawingMode_Vector == dc->drawingMode()){
+                UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
+
+                // Remove the strokes that were just drawn here and replace them by a stroke item
+                foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
+                    mPreviousPolygonItems.removeAll(poly);
+                    removeItem(poly);
+                    UBCoreGraphicsScene::removeItemFromDeletion(poly);
+                    pStrokes->addToGroup(poly);
+                }
+
+                // TODO LATER : Generate well pressure-interpolated polygons and create the line group with them
+
+                mAddedItems.clear();
+
+                // Add the groupItem in mAddedItem
+                mAddedItems << pStrokes;
+
+                addItem(pStrokes);
+            }
+
+            if (mCurrentStroke->polygons().empty()){
                 delete mCurrentStroke;
-            mCurrentStroke = 0;
-        } 
+                mCurrentStroke = 0;
+            }
+        }
     } 
    
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
@@ -619,6 +661,9 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
 
     if (!polygonItem->brush().isOpaque())
     {
+        // -------------------------------------------------------------------------------------
+        // Here we substract the polygons that are overlapping in order to keep the transparency
+        // -------------------------------------------------------------------------------------
         for (int i = 0; i < mPreviousPolygonItems.size(); i++)
         {
             UBGraphicsPolygonItem* previous = mPreviousPolygonItems.value(i);
@@ -638,6 +683,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         mAddedItems.clear();
     }
 
+    mpLastPolygon = polygonItem;
     mAddedItems.insert(polygonItem);
 
     if (mCurrentStroke)
@@ -645,6 +691,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         polygonItem->setStroke(mCurrentStroke);
     }
 
+    // Here we add the item to the scene
     addItem(polygonItem);
 
     mPreviousPolygonItems.append(polygonItem);

@@ -312,7 +312,6 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     }
 
     QPointF scenePos = viewportTransform ().inverted ().map (tabletPos);
-    qDebug() << "scene Pos " << scenePos;
 
     qreal pressure = 1.0;
     if (((currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Line)
@@ -325,16 +324,12 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
 
     switch (event->type ()) {
     case QEvent::TabletPress: {
-        qDebug() << "TabletPress";
-
         mTabletStylusIsPressed = true;
         scene()->inputDevicePress (scenePos, pressure);
 
         break;
     }
     case QEvent::TabletMove: {
-        qDebug() << "TabletMove";
-
         if (mTabletStylusIsPressed)
             scene ()->inputDeviceMove (scenePos, pressure);
 
@@ -344,8 +339,6 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
 
     }
     case QEvent::TabletRelease: {
-        qDebug() << "TabletRelease";
-
         UBStylusTool::Enum currentTool = (UBStylusTool::Enum)dc->stylusTool ();
         scene ()->setToolCursor (currentTool);
         setToolCursor (currentTool);

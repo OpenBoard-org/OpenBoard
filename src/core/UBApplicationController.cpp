@@ -462,6 +462,7 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
         UBPlatformUtils::bringPreviousProcessToFront();
     }
 
+    UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Artistic);
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 }
 
@@ -605,6 +606,7 @@ void UBApplicationController::checkUpdateRequest()
 void UBApplicationController::hideDesktop()
 {
     mDisplayManager->adjustScreens(-1);
+    UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
 
     if (mMainMode == Board)
     {

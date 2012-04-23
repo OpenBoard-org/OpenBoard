@@ -395,6 +395,7 @@ public slots:
         UBMagnifier *magniferDisplayViewWidget;
 
         UBZLayerController *mZLayerController;
+        UBGraphicsPolygonItem* mpLastPolygon;
 
 };
 

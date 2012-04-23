@@ -86,3 +86,10 @@ bool UBGraphicsStroke::hasAlpha() const
     }
 }
 
+void UBGraphicsStroke::clear()
+{
+    if(!mPolygons.empty()){
+        mPolygons.clear();
+    }
+}
+

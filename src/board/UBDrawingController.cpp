@@ -45,6 +45,7 @@ UBDrawingController::UBDrawingController(QObject * parent)
     , mActiveRuler(NULL)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
+    //, mDrawingMode(eDrawingMode_Vector)
 
 {
     connect(UBSettings::settings(), SIGNAL(colorContextChanged()), this, SIGNAL(colorPaletteChanged()));
@@ -386,4 +387,14 @@ void UBDrawingController::captureToolSelected(bool checked)
 {
     if (checked)
         setStylusTool(UBStylusTool::Capture);
+}
+
+void UBDrawingController::setDrawingMode(eDrawingMode mode)
+{
+    mDrawingMode = mode;
+}
+
+eDrawingMode UBDrawingController::drawingMode()
+{
+    return mDrawingMode;
 }
