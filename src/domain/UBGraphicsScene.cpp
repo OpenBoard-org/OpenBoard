@@ -364,7 +364,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             mRemovedItems.clear();
 
 			if (UBDrawingController::drawingController()->mActiveRuler)
-			{
+            {
                 UBDrawingController::drawingController()->mActiveRuler->StartLine(scenePos, width);
 			}
 			else
@@ -432,40 +432,37 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             width /= UBApplication::boardController->systemScaleFactor();
             width /= UBApplication::boardController->currentZoom();
 
-			if (dc->mActiveRuler)
-			{
-				dc->mActiveRuler->DrawLine(position, width);
-			}
-			else
-			{
-	            if (currentTool == UBStylusTool::Line)
-                {
-                    if(NULL != mpLastPolygon && NULL != mCurrentStroke && mAddedItems.size() > 0){
-                        UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
-                        mAddedItems.remove(mpLastPolygon);
-                        mCurrentStroke->remove(mpLastPolygon);
-                        removeItem(mpLastPolygon);
-                        mPreviousPolygonItems.removeAll(mpLastPolygon);
-                    }
+            if (currentTool == UBStylusTool::Line || dc->mActiveRuler)
+            {
+                if(NULL != mpLastPolygon && NULL != mCurrentStroke && mAddedItems.size() > 0){
+                    UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
+                    mAddedItems.remove(mpLastPolygon);
+                    mCurrentStroke->remove(mpLastPolygon);
+                    removeItem(mpLastPolygon);
+                    mPreviousPolygonItems.removeAll(mpLastPolygon);
+                }
 
-                    // ------------------------------------------------------------------------
-                    // Here we wanna make sure that the Line will 'grip' at i*45, i*90 degrees
-                    // ------------------------------------------------------------------------
+                // ------------------------------------------------------------------------
+                // Here we wanna make sure that the Line will 'grip' at i*45, i*90 degrees
+                // ------------------------------------------------------------------------
 
-                    QLineF radius(mPreviousPoint, position);
-				    qreal angle = radius.angle();
-					angle = qRound(angle / 45) * 45;
-	                qreal radiusLength = radius.length();
-		            QPointF newPosition(
-			            mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
-				        mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
-					QLineF chord(position, newPosition);
-                                        if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
-						position = newPosition;
-				}
+                QLineF radius(mPreviousPoint, position);
+                qreal angle = radius.angle();
+                angle = qRound(angle / 45) * 45;
+                qreal radiusLength = radius.length();
+                QPointF newPosition(
+                    mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
+                    mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
+                QLineF chord(position, newPosition);
+                                    if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
+                    position = newPosition;
+            }
 
+            if(dc->mActiveRuler){
+                dc->mActiveRuler->DrawLine(position, width);
+            }else{
                 drawLineTo(position, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
-			}
+            }
         }
         else if (currentTool == UBStylusTool::Eraser)
         {
@@ -675,13 +672,13 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
     mpLastPolygon = polygonItem;
     mAddedItems.insert(polygonItem);
 
+    // Here we add the item to the scene
+    addItem(polygonItem);
+
     if (mCurrentStroke)
     {
         polygonItem->setStroke(mCurrentStroke);
     }
-
-    // Here we add the item to the scene
-    addItem(polygonItem);
 
     mPreviousPolygonItems.append(polygonItem);
 

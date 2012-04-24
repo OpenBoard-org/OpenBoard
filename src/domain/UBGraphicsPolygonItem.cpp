@@ -176,7 +176,6 @@ UBGraphicsPolygonItem* UBGraphicsPolygonItem::deepCopy(const QPolygonF& pol) con
 
 void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-
     if(mHasAlpha && scene() && scene()->isLightBackground())
     {
         painter->setCompositionMode(QPainter::CompositionMode_Darken);
@@ -190,11 +189,3 @@ UBGraphicsScene* UBGraphicsPolygonItem::scene()
 {
     return qobject_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene());
 }
-
-
-
-
-
-
-
-
