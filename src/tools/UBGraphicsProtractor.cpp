@@ -79,8 +79,7 @@ void UBGraphicsProtractor::paint(QPainter *painter, const QStyleOptionGraphicsIt
     painter->setFont(QFont("Arial"));
     painter->setPen(drawColor());
     painter->setBrush(fillBrush());
-    painter->drawPie(QRectF(rect().center().x() - radius(), rect().center().y() - radius(),
-                            2 * radius(), 2 * radius()), mStartAngle * 16, mSpan * 16);
+    painter->drawPie(QRectF(rect().center().x() - radius(), rect().center().y() - radius(), 2 * radius(), 2 * radius()), mStartAngle * 16, mSpan * 16);
     paintGraduations(painter);
     paintButtons(painter);
     paintAngleMarker(painter);
