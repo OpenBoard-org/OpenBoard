@@ -105,6 +105,11 @@ QString UBStringUtils::toUtcIsoDateTime(const QDateTime& dateTime)
     return dateTime.toUTC().toString(Qt::ISODate) + "Z";
 }
 
+QDateTime UBStringUtils::fromUtcIsoDate(const QString& dateString)
+{
+    return QDateTime::fromString(dateString,Qt::ISODate).toLocalTime();
+}
+
 
 
 
