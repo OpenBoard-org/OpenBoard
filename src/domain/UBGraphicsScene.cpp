@@ -508,10 +508,31 @@ bool UBGraphicsScene::inputDeviceRelease()
 
     UBDrawingController *dc = UBDrawingController::drawingController();
 
-    // TODO: Find a way to detect that we just did a compass drawing and replace the mArcPolygonItem just below
     if (dc->isDrawingTool() || mDrawWithCompass)
     {
-        if (mCurrentStroke)
+        if(mArcPolygonItem){
+            if(eDrawingMode_Vector == dc->drawingMode()){
+                UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
+
+                // Add the arc
+                mAddedItems.remove(mArcPolygonItem);
+                removeItem(mArcPolygonItem);
+                UBCoreGraphicsScene::removeItemFromDeletion(mArcPolygonItem);
+                pStrokes->addToGroup(mArcPolygonItem);
+
+                // Add the center cross
+                foreach(QGraphicsItem* item, mAddedItems){
+                    removeItem(item);
+                    UBCoreGraphicsScene::removeItemFromDeletion(item);
+                    pStrokes->addToGroup(item);
+                }
+
+                mAddedItems.clear();
+                mAddedItems << pStrokes;
+                addItem(pStrokes);
+                mDrawWithCompass = false;
+            }
+        }else if (mCurrentStroke)
         {
             if(eDrawingMode_Vector == dc->drawingMode()){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
@@ -534,28 +555,6 @@ bool UBGraphicsScene::inputDeviceRelease()
             if (mCurrentStroke->polygons().empty()){
                 delete mCurrentStroke;
                 mCurrentStroke = 0;
-            }
-        }else if(mArcPolygonItem){
-            if(eDrawingMode_Vector == dc->drawingMode()){
-                UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
-
-                // Add the arc
-                mAddedItems.remove(mArcPolygonItem);
-                removeItem(mArcPolygonItem);
-                UBCoreGraphicsScene::removeItemFromDeletion(mArcPolygonItem);
-                pStrokes->addToGroup(mArcPolygonItem);
-
-                // Add the center cross
-                foreach(QGraphicsItem* item, mAddedItems){
-                    removeItem(item);
-                    UBCoreGraphicsScene::removeItemFromDeletion(item);
-                    pStrokes->addToGroup(item);
-                }
-
-                mAddedItems.clear();
-                mAddedItems << pStrokes;
-                addItem(pStrokes);
-                mDrawWithCompass = false;
             }
         }
     } 
