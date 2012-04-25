@@ -397,6 +397,8 @@ public slots:
         UBZLayerController *mZLayerController;
         UBGraphicsPolygonItem* mpLastPolygon;
 
+        bool mDrawWithCompass;
+
 };
 
 

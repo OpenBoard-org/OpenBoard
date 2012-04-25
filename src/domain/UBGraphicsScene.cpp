@@ -507,9 +507,32 @@ bool UBGraphicsScene::inputDeviceRelease()
     }
 
     UBDrawingController *dc = UBDrawingController::drawingController();
-    if (dc->isDrawingTool()) 
+
+    if (dc->isDrawingTool() || mDrawWithCompass)
     {
-        if (mCurrentStroke)
+        if(mArcPolygonItem){
+            if(eDrawingMode_Vector == dc->drawingMode()){
+                UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
+
+                // Add the arc
+                mAddedItems.remove(mArcPolygonItem);
+                removeItem(mArcPolygonItem);
+                UBCoreGraphicsScene::removeItemFromDeletion(mArcPolygonItem);
+                pStrokes->addToGroup(mArcPolygonItem);
+
+                // Add the center cross
+                foreach(QGraphicsItem* item, mAddedItems){
+                    removeItem(item);
+                    UBCoreGraphicsScene::removeItemFromDeletion(item);
+                    pStrokes->addToGroup(item);
+                }
+
+                mAddedItems.clear();
+                mAddedItems << pStrokes;
+                addItem(pStrokes);
+                mDrawWithCompass = false;
+            }
+        }else if (mCurrentStroke)
         {
             if(eDrawingMode_Vector == dc->drawingMode()){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
@@ -525,10 +548,7 @@ bool UBGraphicsScene::inputDeviceRelease()
                 // TODO LATER : Generate well pressure-interpolated polygons and create the line group with them
 
                 mAddedItems.clear();
-
-                // Add the groupItem in mAddedItem
                 mAddedItems << pStrokes;
-
                 addItem(pStrokes);
             }
 
@@ -635,6 +655,7 @@ void UBGraphicsScene::moveTo(const QPointF &pPoint)
     mPreviousWidth = -1.0;
     mPreviousPolygonItems.clear();
     mArcPolygonItem = 0;
+    mDrawWithCompass = false;
 }
 
 
@@ -817,6 +838,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
 void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
 {
+    mDrawWithCompass = true;
     if (mArcPolygonItem)
     {
         mAddedItems.remove(mArcPolygonItem);
