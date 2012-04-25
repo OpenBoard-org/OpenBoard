@@ -118,7 +118,6 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
         QPainterPath shape () const;
 
 
-
     private:
 
         void clearStroke();

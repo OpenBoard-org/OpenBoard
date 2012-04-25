@@ -103,6 +103,7 @@ void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *s
 
 
     painter->setPen(drawColor());
+    painter->setRenderHint(QPainter::Antialiasing, true);
     painter->drawRoundedRect(rect(), sRoundingRadius, sRoundingRadius);
     fillBackground(painter);
     paintGraduations(painter);
@@ -452,8 +453,8 @@ void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
 	itemPos.setY(y);
 	itemPos = mapToScene(itemPos);
 
-	scene()->moveTo(itemPos);
-	scene()->drawLineTo(itemPos, width, true);
+    scene()->moveTo(itemPos);
+    scene()->drawLineTo(itemPos, width, true);
 }
 
 void UBGraphicsRuler::DrawLine(const QPointF& scenePos, qreal width)
@@ -478,9 +479,11 @@ void UBGraphicsRuler::DrawLine(const QPointF& scenePos, qreal width)
 	itemPos = mapToScene(itemPos);
 
 	// We have to use "pointed" line for marker tool
-	scene()->drawLineTo(itemPos, width, 
-		UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker);
+    scene()->drawLineTo(itemPos, width, UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker);
 }
 
 void UBGraphicsRuler::EndLine()
-{}
+{
+    // We never come to this place
+    scene()->inputDeviceRelease();
+}

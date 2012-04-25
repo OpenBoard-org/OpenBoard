@@ -30,6 +30,7 @@ class UBCoreGraphicsScene : public QGraphicsScene
 
         virtual bool deleteItem(QGraphicsItem* item);
 
+        void removeItemFromDeletion(QGraphicsItem* item);
 
     private:
         QSet<QGraphicsItem*> mItemsToDelete;

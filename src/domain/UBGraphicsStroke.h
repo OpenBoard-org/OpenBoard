@@ -41,6 +41,8 @@ class UBGraphicsStroke
 
         bool hasAlpha() const;
 
+        void clear();
+
     protected:
         void addPolygon(UBGraphicsPolygonItem* pol);
 

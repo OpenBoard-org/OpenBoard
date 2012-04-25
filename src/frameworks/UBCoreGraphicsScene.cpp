@@ -87,3 +87,9 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
         return false;
 }
 
+void UBCoreGraphicsScene::removeItemFromDeletion(QGraphicsItem *item)
+{
+    if(NULL != item){
+        mItemsToDelete.remove(item);
+    }
+}
