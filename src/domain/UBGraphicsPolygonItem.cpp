@@ -185,6 +185,19 @@ void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphi
     QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
+QPainterPath UBGraphicsPolygonItem::shape() const
+{
+
+    QPainterPath path;
+    path.addRect(boundingRect());
+
+    return path;
+
+//    static QPainterPath shapePath = QGraphicsPolygonItem::shape();
+
+//    return shapePath;
+}
+
 
 UBGraphicsScene* UBGraphicsPolygonItem::scene()
 {

@@ -440,7 +440,9 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 || movingItem->type() == UBGraphicsPolygonItem::Type
                 || movingItem->type() == UBGraphicsCache::Type
                 || movingItem->type() == UBGraphicsTriangle::Type
-                || movingItem == this->scene()->backgroundObject())
+                || movingItem == this->scene()->backgroundObject()
+                || movingItem->group())
+
                 {
                     movingItem = NULL;
                     QGraphicsView::mousePressEvent (event);
