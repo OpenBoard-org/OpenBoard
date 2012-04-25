@@ -366,7 +366,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 // introduced in UB 4.0
 
-                QStringRef svgViewBox = mXmlReader.attributes().value(nsSvg, "viewBox");
+                QStringRef svgViewBox = mXmlReader.attributes().value("viewBox");
+
 
                 if (!svgViewBox.isNull())
                 {
