@@ -254,8 +254,7 @@ UBTGAdaptableText#UBTGPresentationComment
     border : none;
 }
   
-QFrame#UBTGEditionSeparator,
-QFrame#UBTGPresentationSepartor
+QFrame#UBTGSeparator
 {
     background-color: #cccccc;
 }

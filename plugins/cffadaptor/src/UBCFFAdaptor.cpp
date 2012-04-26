@@ -443,7 +443,6 @@ bool UBCFFAdaptor::UBToCFFConverter::parseMetadata()
                     QSize tmpSize = getSVGDimentions(nextInElement.text());
                     if (!tmpSize.isNull()) {
                         mSVGSize = tmpSize;
-                        mViewbox.setRect(0,0, tmpSize.width(), tmpSize.height());
                     } else {
                         qDebug() << "can't interpret svg section size";
                         errorStr = "InterpretSvgSizeError";
@@ -487,6 +486,11 @@ bool UBCFFAdaptor::UBToCFFConverter::parseContent() {
     }
 
     
+    if (QRect() == mViewbox)
+    {
+        mViewbox.setRect(0,0, mSVGSize.width(), mSVGSize.height());
+    }
+
     svgDocumentSection.setAttribute(aIWBViewBox, rectToIWBAttr(mViewbox));
     svgDocumentSection.setAttribute(aWidth, QString("%1").arg(mViewbox.width()));
     svgDocumentSection.setAttribute(aHeight, QString("%1").arg(mViewbox.height()));
@@ -639,30 +643,29 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
 
 void UBCFFAdaptor::UBToCFFConverter::writeQDomElementToXML(const QDomNode &node)
 {
-    if (!node.isNull()){
-        if (node.isText())
-        {
-            mIWBContentWriter->writeCharacters(node.nodeValue());
-        }
-        else
-        {
-            mIWBContentWriter->writeStartElement(node.namespaceURI(), node.toElement().tagName());
+    if (!node.isNull())
+    if (node.isText())
+    {     
+        mIWBContentWriter->writeCharacters(node.nodeValue());
+    }   
+    else
+    {
+        mIWBContentWriter->writeStartElement(node.namespaceURI(), node.toElement().tagName());
 
-            for (int i = 0; i < node.toElement().attributes().count(); i++)
-            {
-                QDomAttr attr =  node.toElement().attributes().item(i).toAttr();
-                mIWBContentWriter->writeAttribute(attr.name(), attr.value());
-            }
-            QDomNode child = node.firstChild();
-            while(!child.isNull())
-            {
-                writeQDomElementToXML(child);
-                child = child.nextSibling();
-            }
-
-            mIWBContentWriter->writeEndElement();
+        for (int i = 0; i < node.toElement().attributes().count(); i++)
+        {
+            QDomAttr attr =  node.toElement().attributes().item(i).toAttr();
+            mIWBContentWriter->writeAttribute(attr.name(), attr.value());
         }
-    }
+        QDomNode child = node.firstChild();
+        while(!child.isNull())
+        {
+            writeQDomElementToXML(child);
+            child = child.nextSibling();
+        }
+
+        mIWBContentWriter->writeEndElement();
+    }       
 }
 
 bool UBCFFAdaptor::UBToCFFConverter::writeExtendedIwbSection()
@@ -1025,8 +1028,6 @@ void UBCFFAdaptor::UBToCFFConverter::setCoordinatesFromUBZ(const QDomElement &ub
 
     item.setRect(0,0, width, height);
     item.setTransform(tr);
-
-    item.setTransformOriginPoint(item.boundingRect().center());
     item.setRotation(-alpha);
     QMatrix sceneMatrix = item.sceneMatrix();
  
@@ -1107,6 +1108,9 @@ bool UBCFFAdaptor::UBToCFFConverter::setContentFromUBZ(const QDomElement &ubzEle
                 svgElement.setAttribute(aSVGRequiredExtension, svgRequiredExtensionPrefix+fePng);
             }
         }
+    }else
+    {
+        bRet = false;
     }
    
     if (!bRet)
@@ -1142,7 +1146,6 @@ void UBCFFAdaptor::UBToCFFConverter::setCFFTextFromHTMLTextNode(const QDomElemen
 
         QDomNode spanNode = htmlPNode.firstChild();
 
-       
         while (!spanNode.isNull())
         {
             if (spanNode.isText())
@@ -1153,7 +1156,10 @@ void UBCFFAdaptor::UBToCFFConverter::setCFFTextFromHTMLTextNode(const QDomElemen
             else
             if (spanNode.isElement())
             {      
+                QDomElement pElementIwb;
                 QDomElement spanElement = textDoc.createElementNS(svgIWBNS,svgIWBNSPrefix + ":" + tIWBTspan);
+                setCommonAttributesFromUBZ(htmlPNode.toElement(), pElementIwb, spanElement);
+
                 if (spanNode.hasAttributes())
                 {       
                     int attrCount = spanNode.attributes().count();
@@ -1196,6 +1202,8 @@ QString UBCFFAdaptor::UBToCFFConverter::ubzAttrNameToCFFAttrName(QString cffAttr
     QString sRet = cffAttrName;
     if (QString("color") == cffAttrName)
         sRet = QString("fill");
+    if (QString("align") == cffAttrName)
+        sRet = QString("text-align");
 
     return sRet;
 }

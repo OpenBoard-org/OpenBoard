@@ -470,14 +470,12 @@ void UBPreferencesController::toolbarOrientationVertical(bool checked)
 {
     UBSettings* settings = UBSettings::settings();
     settings->appToolBarOrientationVertical->set(checked);
-    //settings->appToolBarOrientationVertical->set(true);
 }
 
 void UBPreferencesController::toolbarOrientationHorizontal(bool checked)
 {
     UBSettings* settings = UBSettings::settings();
     settings->appToolBarOrientationVertical->set(!checked);
-    //settings->appToolBarOrientationVertical->set(false);
 }
 
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,

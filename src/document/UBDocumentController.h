@@ -34,7 +34,6 @@ class UBDocumentGroupTreeItem;
 class UBDocumentProxyTreeItem;
 class UBMainWindow;
 class UBDocumentToolsPalette;
-//class UBKeyboardPalette;
 
 class UBDocumentController : public QObject
 {
@@ -76,8 +75,6 @@ class UBDocumentController : public QObject
         void copy();
         void paste();
         void focusChanged(QWidget *old, QWidget *current);
-
-//        void showKeyboard(bool show);
 
     protected:
         virtual void setupViews();

@@ -59,7 +59,9 @@ class UBDocumentProxy : public QObject
         QString sessionTopic();
         void setSessionAuthor(const QString& authors);
         QString sessionAuthors();
-        QString documentDate();
+        QDateTime documentDate();
+
+        QDateTime lastUpdate();
 
 
         QSize defaultDocumentSize() const;
