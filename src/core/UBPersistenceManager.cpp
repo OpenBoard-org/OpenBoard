@@ -619,7 +619,6 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
 
     emit documentCommitted(pDocumentProxy);
-
 }
 
 
