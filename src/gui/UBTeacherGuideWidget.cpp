@@ -767,8 +767,10 @@ void UBTeacherGuidePageZeroEditionWidget::switchToMode(tUBTGZeroPageMode mode)
         mpLicenceValueLabel->setText(mpLicenceBox->currentText());
         QStringList licenceIconList;
         licenceIconList << ":images/licenses/ccby.png" << ":images/licenses/ccbynd.png" << ":images/licenses/ccbysa.png" << ":images/licenses/ccbync.png" << ":images/licenses/ccbyncnd.png" << ":images/licenses/ccbyncsa.png";
-        if(mpLicenceBox->currentIndex() < 6){
-            mpLicenceIcon->setPixmap(licenceIconList.at(mpLicenceBox->currentIndex()));
+        int licenceBoxCurrentIndex = mpLicenceBox->currentIndex();
+        // -1 is return if there is no values on the box
+        if(licenceBoxCurrentIndex > 0 && licenceBoxCurrentIndex < licenceIconList.count()){
+            mpLicenceIcon->setPixmap(licenceIconList.at(licenceBoxCurrentIndex));
             mpLicenceIcon->show();
         }
         mpLicenceValueLabel->show();
