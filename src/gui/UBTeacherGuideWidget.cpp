@@ -723,10 +723,10 @@ void UBTeacherGuidePageZeroEditionWidget::onActiveSceneChanged()
 {
     UBDocumentProxy* documentProxy = UBApplication::documentController ? UBApplication::documentController->getCurrentDocument() : 0;
     if(UBApplication::documentController && UBApplication::boardController->activeSceneIndex() == 0){
-        QDateTime creationDate = documentProxy->documentDate();
-        mpCreationLabel->setText(tr("Created the:") + creationDate.toString(Qt::SystemLocaleShortDate));
-        QDateTime updatedDate = documentProxy->lastUpdate();
-        mpLastModifiedLabel->setText(tr("Updated the:") + updatedDate.toString(Qt::SystemLocaleShortDate));
+//        QDateTime creationDate = documentProxy->documentDate();
+//        mpCreationLabel->setText(tr("Created the:") + creationDate.toString(Qt::SystemLocaleShortDate));
+//        QDateTime updatedDate = documentProxy->lastUpdate();
+//        mpLastModifiedLabel->setText(tr("Updated the:") + updatedDate.toString(Qt::SystemLocaleShortDate));
     }
 }
 
