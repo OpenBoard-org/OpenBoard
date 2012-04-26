@@ -146,6 +146,11 @@ void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
 {
     if(pDisplayWidget && (pDisplayWidget != mDisplayWidget))
     {
+        if (mDisplayWidget)
+        {
+            pDisplayWidget->setGeometry(mDisplayWidget->geometry());
+            pDisplayWidget->setWindowFlags(mDisplayWidget->windowFlags());
+        }
         mDisplayWidget = pDisplayWidget;
 		// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
