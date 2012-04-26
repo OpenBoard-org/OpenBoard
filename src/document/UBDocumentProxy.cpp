@@ -295,13 +295,18 @@ QString UBDocumentProxy::sessionAuthors()
         return QString();
 }
 
-QString UBDocumentProxy::documentDate()
+QDateTime UBDocumentProxy::documentDate()
 {
-    if(mMetaDatas.contains(UBSettings::documentDate)){
-        return metaData(UBSettings::documentDate).toString();
-    }else{
-        return QString();
-    }
+    if(mMetaDatas.contains(UBSettings::documentDate))
+        return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentDate).toString());
+    return QDateTime::currentDateTime();
+}
+
+QDateTime UBDocumentProxy::lastUpdate()
+{
+    if(mMetaDatas.contains(UBSettings::documentUpdatedAt))
+        return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentUpdatedAt).toString());
+    return QDateTime().currentDateTime();
 }
 
 bool UBDocumentProxy::isModified() const

@@ -33,6 +33,7 @@ class UBStringUtils
         static QString toCanonicalUuid(const QUuid& uuid);
 
         static QString toUtcIsoDateTime(const QDateTime& dateTime);
+        static QDateTime fromUtcIsoDate(const QString& dateString);
 
 
 };

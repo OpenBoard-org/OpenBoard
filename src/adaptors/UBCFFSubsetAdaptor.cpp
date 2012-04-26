@@ -41,8 +41,6 @@
 #include "core/UBApplication.h"
 #include "QFile"
 
-#include <QDomDocument>
-
 #include "core/memcheck.h"
 //#include "qtlogger.h"
 

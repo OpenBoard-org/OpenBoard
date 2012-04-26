@@ -21,9 +21,16 @@ class QHeaderView;
 class QLabel;
 class QVBoxLayout;
 class QPushButton;
+class UBDocumentProxy;
 
 #include "UBTeacherGuideWidgetsTools.h"
 #include "UBTGWidgetTreeDelegate.h"
+
+typedef enum
+{
+    tUBTGZeroPageMode_EDITION,
+    tUBTGZeroPageMode_PRESENTATION
+}tUBTGZeroPageMode;
 
 /***************************************************************************
  *               class    UBTeacherGuideEditionWidget                      *
@@ -95,7 +102,73 @@ private:
 
 };
 
+/***************************************************************************
+ *        class    UBTeacherGuidePageZeroPresentationWidget                *
+ ***************************************************************************/
+class UBTeacherGuidePageZeroEditionWidget : public QWidget
+{
+    Q_OBJECT
 
+public:
+    explicit UBTeacherGuidePageZeroEditionWidget(QWidget* parent, const char* name = "UBTeacherGuidePageZeroEditionWidget");
+    ~UBTeacherGuidePageZeroEditionWidget();
+
+    QVector<tUBGEElementNode*> getData();
+
+
+public slots:
+    void onActiveSceneChanged();
+    void switchToMode(tUBTGZeroPageMode mode = tUBTGZeroPageMode_EDITION);
+
+private:
+    void fillComboBoxes();
+
+    QVBoxLayout* mpLayout;
+    QHBoxLayout* mpButtonTitleLayout;
+    QPushButton* mpModePushButton;
+    QLabel* mpPageNumberLabel;
+    UBTGAdaptableText* mpSessionTitle;
+    QFrame* mpSeparatorSessionTitle;
+
+    QLabel* mpAuthorsLabel;
+    UBTGAdaptableText* mpAuthors;
+    QFrame* mpSeparatorAuthors;
+
+    QLabel* mpCreationLabel;
+    QLabel* mpLastModifiedLabel;
+    QLabel* mpGoalsLabel;
+    UBTGAdaptableText* mpGoals;
+    QFrame* mpSeparatorGoals;
+
+    QLabel* mpIndexLabel;
+    QLabel* mpKeywordsLabel;
+    UBTGAdaptableText* mpKeywords;
+
+    QLabel* mpSchoolLevelItemLabel;
+    QComboBox* mpSchoolLevelBox;
+    QLabel* mpSchoolLevelValueLabel;
+
+    QLabel* mpSchoolBranchItemLabel;
+    QComboBox* mpSchoolBranchBox;
+    QLabel* mpSchoolBranchValueLabel;
+
+    QLabel* mpSchoolTypeItemLabel;
+    QComboBox* mpSchoolTypeBox;
+    QLabel* mpSchoolTypeValueLabel;
+    QFrame* mpSeparatorIndex;
+
+    QLabel* mpLicenceLabel;
+    QComboBox* mpLicenceBox;
+    QLabel* mpLicenceValueLabel;
+    QLabel* mpLicenceIcon;
+    QHBoxLayout* mpLicenceLayout;
+
+    QMap<QString,QString> mGradeLevelsMap;
+    QMap<QString,QStringList> mSubjects;
+
+private slots:
+    void onSchoolLevelChanged(QString schoolLevel);
+};
 
 /***************************************************************************
  *                    class    UBTeacherGuideWidget                        *
@@ -114,6 +187,7 @@ public slots:
     void connectToStylusPalette();
 
 private:
+    UBTeacherGuidePageZeroEditionWidget* mpPageZeroEditonWidget;
     UBTeacherGuideEditionWidget* mpEditionWidget;
     UBTeacherGuidePresentationWidget* mpPresentationWidget;
     QVector<tUBGEElementNode*>mCurrentData;

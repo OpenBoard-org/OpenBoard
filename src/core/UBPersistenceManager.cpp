@@ -239,7 +239,9 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     }
 
     doc->setMetaData(UBSettings::documentVersion, UBSettings::currentFileVersion);
-    doc->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+    QString currentDate =  UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime());
+    doc->setMetaData(UBSettings::documentUpdatedAt,currentDate);
+    doc->setMetaData(UBSettings::documentDate,currentDate);
 
     if (withEmptyPage) createDocumentSceneAt(doc, 0);
 

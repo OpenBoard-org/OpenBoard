@@ -97,7 +97,7 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
 
     xmlWriter.writeTextElement(nsDc, "title", proxy->metaData(UBSettings::documentName).toString());
     xmlWriter.writeTextElement(nsDc, "type", proxy->metaData(UBSettings::documentGroupName).toString());
-    xmlWriter.writeTextElement(nsDc, "date", QDate::currentDate().toString("yyyy-MM-dd"));
+    xmlWriter.writeTextElement(nsDc, "date", proxy->metaData(UBSettings::documentDate).toString());
     xmlWriter.writeTextElement(nsDc, "format", "image/svg+xml");
 
     // introduced in UB 4.2
@@ -108,8 +108,7 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "size", QString("%1x%2").arg(width).arg(height));
 
     // introduced in UB 4.4
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "updated-at", proxy->metaData(UBSettings::documentUpdatedAt).toString());
-
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "updated-at", UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTimeUtc()));
     // introduced in OpenSankore 1.40.00
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionTitle,proxy->metaData(UBSettings::sessionTitle).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionTarget,proxy->metaData(UBSettings::sessionTarget).toString());
@@ -278,12 +277,20 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
         metadata.insert(UBSettings::documentSize, QVariant(docSize));
     }
 
-    if (!updatedAtFound)
-    {
-        metadata.insert(UBSettings::documentUpdatedAt, date + "T00:00:00Z");
+    // this is necessary to update the old files date
+    QString dateString = metadata.value(UBSettings::documentDate).toString();
+    if(dateString.length() < 10){
+        metadata.remove(UBSettings::documentDate);
+        metadata.insert(UBSettings::documentDate,dateString+"T00:00:00Z");
+    }
+
+    if (!updatedAtFound) {
+        metadata.insert(UBSettings::documentUpdatedAt, dateString);
     }
 
     metadata.insert(UBSettings::documentDate, QVariant(date));
+
+
 
     return metadata;
 }

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<teacherGuide>
+    <gradeLevels>
+        <gradeLevel label="Petite Section (3-4 ans)" baseLevel="Maternelle"/>
+        <gradeLevel label="Moyenne Section (4-5 ans)" baseLevel="Maternelle"/>
+        <gradeLevel label="Grande Section (5-6 ans)" baseLevel="Maternelle"/>
+        <gradeLevel label="CP (6-7 ans)" baseLevel="Elémentaire"/>
+        <gradeLevel label="CE1 (7-8 ans)" baseLevel="Elémentaire"/>
+        <gradeLevel label="CE2 (8-9 ans)" baseLevel="Elémentaire"/>
+        <gradeLevel label="CM1 (9-10ans)" baseLevel="Elémentaire"/>
+        <gradeLevel label="CM2 (10-11 ans)" baseLevel="Elémentaire"/>
+        <gradeLevel label="6ème (11-12 ans)" baseLevel="Collège"/>
+        <gradeLevel label="5ème (12-13 ans)" baseLevel="Collège"/>
+        <gradeLevel label="4ème (13-14 ans)" baseLevel="Collège"/>
+        <gradeLevel label="3ème (14-15 ans)" baseLevel="Collège"/>
+        <gradeLevel label="2nde dont CAP/BEP (15-16 ans)" baseLevel="Lycée"/>
+        <gradeLevel label="1ère dont CAP/BEP (16-17 ans)" baseLevel="Lycée"/>
+        <gradeLevel label="Terminale dont Bac Pro (17-18 ans)" baseLevel="Lycée"/>
+        <gradeLevel label="Bac+2 professionnel" baseLevel="Enseignement Professionnel" />
+        <gradeLevel label="Niveau universitaire" baseLevel="Enseignement Professionnel" />
+        <gradeLevel label="Formation continue Professionnelle" baseLevel="Enseignement Professionnel" />
+        <gradeLevel label="Education Spécialisée" baseLevel="Enseignement Professionnel" />
+    </gradeLevels>
+    <subjects baseLevel="Maternelle">
+        <subject label="Percevoir, sentir, imaginer, créer" />
+        <subject label="Découvrir l'écrit" />
+        <subject label="S'approprier le langage" />
+        <subject label="Agir et s'exprimer avec son corps" />
+        <subject label="Découvrir le monde" />
+    </subjects>
+    <subjects baseLevel="Elémentaire">
+        <subject label="Pratiques artistiques" />
+        <subject label="Pratiques artistiques - arts visuels" />
+        <subject label="Pratiques artistiques - éducation musicale" />
+        <subject label="Histoire des arts" />
+        <subject label="Langues vivantes étrangères" />
+        <subject label="Langue nationale français" />
+        <subject label="Langue nationale français - lecture" />
+        <subject label="Langue nationale français - écriture" />
+        <subject label="Langue nationale français - langage oral" />
+        <subject label="Langue nationale français - grammaire" />
+        <subject label="Langue nationale français - orthographe" />
+        <subject label="Langue nationale français - vocabulaire" />
+        <subject label="Mathématiques - informatique" />
+        <subject label="EPS (éducation physique et sportive)" />
+        <subject label="Découverte du monde" />
+        <subject label="Sciences expérimentales et technologie" />
+        <subject label="Instruction civique et morale" />
+        <subject label="Histoire et géographie" />
+        <subject label="TUIC" />
+    </subjects>
+    <subjects baseLevel="Collège">
+        <subject label="Pratiques artistiques" />
+        <subject label="Pratiques artistiques - arts visuels" />
+        <subject label="Pratiques artistiques - éducation musicale" />
+        <subject label="Histoire des arts" />
+        <subject label="Langues vivantes étrangères" />
+        <subject label="Langues vivantes étrangères - anglais" />
+        <subject label="Langues vivantes étrangères - allemand" />
+        <subject label="Langues vivantes étrangères - espagnol" />
+        <subject label="Langues vivantes étrangères - italien" />
+        <subject label="Langues vivantes étrangères - néerlandais" />
+        <subject label="Langues vivantes étrangères - chinois" />
+        <subject label="Langues vivantes étrangères - portugais" />
+        <subject label="Langues vivantes étrangères - russe" />
+        <subject label="Langues vivantes étrangères - arabe" />
+        <subject label="Langues et cultures de l'Antiquité (latin,grec ancien)" />
+        <subject label="Langue nationale français" />
+        <subject label="Mathématiques - informatique" />
+        <subject label="EPS (éducation physique et sportive)" />
+        <subject label="Education à la sécurité" />
+        <subject label="Education à la santé" />
+        <subject label="SVT (sciences de la vie et de la Terre)" />
+        <subject label="Sciences physiques et chimiques" />
+        <subject label="Technologie" />
+        <subject label="Culture scientifique et technique" />
+        <subject label="Histoire - éducation civique" />
+        <subject label="Géographie" />
+        <subject label="EDD (éducation au développement durable)" />
+        <subject label="Education aux médias" />
+    </subjects>
+    <subjects baseLevel="Lycée">
+        <subject label="Enseignements artistiques" />
+        <subject label="Agriculture" />
+        <subject label="Arts" />
+        <subject label="Banque - Assurances - Immobilier" /> 
+        <subject label="Commerce" />
+        <subject label="Défense publique - Sécurité" />
+        <subject label="Economie - Droit - Sciences politiques" />
+        <subject label="Electricité - Electronique" />
+        <subject label="Environnement - Energies - Aménagement - Propreté" /> 
+        <subject label="Fonction production - Transport" />
+        <subject label="Formation générale - Lettres et langues - Enseignement" /> 
+        <subject label="Génie civil - Construction - Architecture" />
+        <subject label="Gestion des entreprises" />
+        <subject label="Hôtellerie - Restauration - Tourisme" /> 
+        <subject label="Information - Communication" />
+        <subject label="Informatique" />
+        <subject label="Mécanique" />
+        <subject label="Santé - Social - Sport" /> 
+        <subject label="Sciences" />
+        <subject label="Sciences humaines et sociales" />
+        <subject label="Transformation" />
+        <subject label="Langues et cultures de l'Antiquité (latin,grec ancien)" />
+        <subject label="Langues vivantes étrangères" />
+        <subject label="Langues vivantes étrangères - anglais" />
+        <subject label="Langues vivantes étrangères - allemand" />
+        <subject label="Langues vivantes étrangères - espagnol" />
+        <subject label="Langues vivantes étrangères - italien" />
+        <subject label="Langues vivantes étrangères - néerlandais" />
+        <subject label="Langues vivantes étrangères - chinois" />
+        <subject label="Langues vivantes étrangères - portugais" />
+        <subject label="Langues vivantes étrangères - russe" />
+        <subject label="Langues vivantes étrangères - arabe" />
+        <subject label="Langue nationale français" />
+        <subject label="Mathématiques - informatique" />
+        <subject label="EPS" />
+        <subject label="Physique-chimie" />
+        <subject label="SVT (sciences de la vie et de la Terre)" />
+        <subject label="Histoire-géographie et éducation civique" />
+        <subject label="SES (sciences économiques et sociales)" />
+        <subject label="Economie" />
+        <subject label="Droit" />
+        <subject label="Langues et cultures de l'Antiquité" />
+        <subject label="Philosophie" />
+    </subjects>
+    <subjects baseLevel="Enseignement Professionnel">
+        <subject label="Enseignements artistiques" />
+        <subject label="Agriculture" />
+        <subject label="Arts" />
+        <subject label="Banque - Assurances - Immobilier" /> 
+        <subject label="Commerce" />
+        <subject label="Défense publique - Sécurité" />
+        <subject label="Economie - Droit - Sciences politiques" />
+        <subject label="Electricité - Electronique" />
+        <subject label="Environnement - Energies - Aménagement - Propreté" /> 
+        <subject label="Fonction production - Transport" />
+        <subject label="Formation générale - Lettres et langues - Enseignement" /> 
+        <subject label="Génie civil - Construction - Architecture" />
+        <subject label="Gestion des entreprises" />
+        <subject label="Hôtellerie - Restauration - Tourisme" /> 
+        <subject label="Information - Communication" />
+        <subject label="Informatique" />
+        <subject label="Mécanique" />
+        <subject label="Santé - Social - Sport" /> 
+        <subject label="Sciences" />
+        <subject label="Sciences humaines et sociales" />
+        <subject label="Transformation" />
+        <subject label="Langues vivantes étrangères" />
+        <subject label="Langues vivantes étrangères - anglais" />
+        <subject label="Langues vivantes étrangères - allemand" />
+        <subject label="Langues vivantes étrangères - espagnol" />
+        <subject label="Langues vivantes étrangères - italien" />
+        <subject label="Langues vivantes étrangères - néerlandais" />
+        <subject label="Langues vivantes étrangères - chinois" />
+        <subject label="Langues vivantes étrangères - portugais" />
+        <subject label="Langues vivantes étrangères - russe" />
+        <subject label="Langues vivantes étrangères - arabe" />
+        <subject label="Langue nationale français" />
+        <subject label="Mathématiques - informatique" />
+        <subject label="EPS" />
+        <subject label="Physique-chimie" />
+        <subject label="SVT (sciences de la vie et de la Terre)" />
+        <subject label="Histoire-géographie et éducation civique" />
+        <subject label="SES (sciences économiques et sociales)" />
+        <subject label="Economie" />
+        <subject label="Droit" />
+        <subject label="Langues et cultures de l'Antiquité" />
+        <subject label="Philosophie" />
+    </subjects>
+    <types>
+        <type label="Activité : Evaluation/Travail à la maison" />
+        <type label="Activité : Exercice" />
+        <type label="Activité : Travaux Pratiques" />
+        <type label="Activité : Jeux" />
+        <type label="Activité : Grapheur/Tableur" />
+        <type label="Activité : Collection de sujets" />
+        <type label="Activité : WebQuest" />
+        <type label="Composant : Animation/Simulation" />
+        <type label="Composant : Article" />
+        <type label="Composant : Audio" />
+        <type label="Composant : Diagramme/illustration" />
+        <type label="Composant : Glossaire / Liste de vocabulaire" />
+        <type label="Composant : Table des Matières" />
+        <type label="Composant : Photographie" />
+        <type label="Composant : Référence" />
+        <type label="Composant : Scénario" />
+        <type label="Composant : Etude/Données/Recherche" />
+        <type label="Composant : Graphique/Diagramme" />
+        <type label="Composant : Modèle de Document" />
+        <type label="Composant : Video/Présentation/Diapo" />
+        <type label="Composant : Webcast/Podcast" />
+        <type label="Livre : Fiction" />
+        <type label="Livre : Documentaire" />
+        <type label="Livre : Notes de lecture" />
+        <type label="Livre : Manuel scolaire" />
+        <type label="Parcours : Réponse" />
+        <type label="Parcours : Evaluation/Test" />
+        <type label="Parcours : Cours complet" />
+        <type label="Parcours : Plan de cours" />
+        <type label="Parcours : Rubrique" />
+        <type label="Parcours : Séquence" />
+        <type label="Parcours : Standard ou programme" />
+        <type label="Parcours : Polycopié / notes de cours" />
+        <type label="Parcours : Programme" />
+        <type label="Parcours : Tutoriel" />
+        <type label="Parcours : Unité pédagogique" />
+        <type label="Parcours : Cahier d'activité" />
+        <type label="Autres" />
+    </types>
+</teacherGuide>
