@@ -180,13 +180,18 @@ void UBFeaturesActionBar::dropEvent( QDropEvent *event )
 		event->accept();
 		emit deleteElements( *event->mimeData() );
 	}
-	if ( dest == mpFavoriteBtn )
+	else if ( dest == mpFavoriteBtn )
 	{
 		event->setDropAction( Qt::CopyAction );
 		event->accept();
 		emit addToFavorite( *event->mimeData() );
 	}
-
+	else if ( dest == mpRemoveFavoriteBtn )
+	{
+		event->setDropAction( Qt::MoveAction );
+		event->accept();
+		emit removeFromFavorite( *event->mimeData() );
+	}
 }
 
 UBFeaturesActionBar::~UBFeaturesActionBar()

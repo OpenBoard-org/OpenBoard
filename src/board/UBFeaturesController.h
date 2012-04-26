@@ -18,14 +18,15 @@ enum UBFeatureElementType
     FEATURE_INTERACTIVE,
 	FEATURE_INTERNAL,
     FEATURE_ITEM,
-	FEATURE_TRASH
+	FEATURE_TRASH,
+	FEATURE_FAVORITE
 };
 
 class UBFeature
 {
 public:
     UBFeature() {;}
-	UBFeature(const UBFeature &f);
+	//UBFeature(const UBFeature &f);
     UBFeature(const QString &url, const QPixmap &icon, const QString &name, const QString &realPath, UBFeatureElementType type = FEATURE_CATEGORY);
     virtual ~UBFeature() {;}
     QString getName() const { return mName; }
@@ -34,6 +35,7 @@ public:
 	//QString getPath() const { return mPath; };
     QString getFullPath() const { return mPath; }
     UBFeatureElementType getType() const { return elementType; }
+	bool isFolder() const;
 private:
 	QString virtualPath;
     QPixmap mThumbnail;
@@ -59,14 +61,16 @@ public:
 	const UBFeature& getCurrentElement()const { return currentElement; }
 	void setCurrentElement( const UBFeature &elem ) { currentElement = elem; }
 	const UBFeature & getTrashElement () const { return trashElement; }
-
-	static QPixmap thumbnailForFile( const QString &path );
-	static UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
-	static UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
-	static void deleteItem( const QUrl &url );
+	UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
+	UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
+	void deleteItem( const QUrl &url );
 	bool isTrash( const QUrl &url );
 	UBFeature newFolder( const QString &name );
 	UBFeature addToFavorite( const QUrl &path );
+	void removeFromFavorite( const QUrl &path );
+
+	static QString fileNameFromUrl( const QUrl &url );
+	static QPixmap thumbnailForFile( const QString &path );
 private:
 	void initDirectoryTree();
 	void fileSystemScan(const QString &currPath, const QString & currVirtualPath);
@@ -74,7 +78,7 @@ private:
 	//void addImageToCurrentPage( const QString &path );
 	void loadFavoriteList();
 	void saveFavoriteList();
-	static QString fileNameFromUrl( const QUrl &url );
+
 	static UBFeatureElementType fileTypeFromUrl( const QString &path );
 
 	QVector <UBFeature> *featuresList;

@@ -84,6 +84,7 @@ private slots:
 	void createNewFolder();
 	void deleteElements( const QMimeData & );
 	void addToFavorite( const QMimeData & );
+	void removeFromFavorite( const QMimeData & );
 };
 
 class UBFeaturesListView : public QListView

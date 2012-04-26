@@ -99,6 +99,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( mActionBar, SIGNAL( newFolderToCreate() ), this, SLOT( createNewFolder()  ) );
 	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &) ), this, SLOT( deleteElements(const QMimeData &) ) ); 
 	connect( mActionBar, SIGNAL( addToFavorite(const QMimeData &) ), this, SLOT( addToFavorite(const QMimeData &) ) );
+	connect( mActionBar, SIGNAL( removeFromFavorite(const QMimeData &) ), this, SLOT( removeFromFavorite(const QMimeData &) ) );
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 }
@@ -127,8 +128,8 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 		QString path = model->data(current, Qt::UserRole).toString();
 		eUBLibElementType type = (eUBLibElementType)model->data(current, Qt::UserRole + 1).toInt();*/
 		UBFeature feature = model->data(current, Qt::UserRole + 1).value<UBFeature>();
-        if ( feature.getType() == FEATURE_FOLDER || feature.getType() == FEATURE_CATEGORY ||
-			feature.getType() == FEATURE_TRASH )
+
+		if ( feature.isFolder() )
 		{
 			QString newPath = feature.getUrl() + "/" + feature.getName();
 			//pathViewer->addPathElement( feature.getThumbnail(), newPath );
@@ -140,7 +141,14 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 
 			featuresPathModel->setPath( newPath );
 			featuresPathModel->invalidate();
-			mActionBar->setCurrentState( IN_FOLDER );
+			if ( feature.getType() == FEATURE_FAVORITE )
+			{
+				mActionBar->setCurrentState( IN_FAVORITE );
+			}
+			else
+			{
+				mActionBar->setCurrentState( IN_FOLDER );
+			}
 		}
 		else
 		{
@@ -171,6 +179,10 @@ void UBFeaturesWidget::currentPathChanged(const QModelIndex &index)
 		{
 			mActionBar->setCurrentState( IN_ROOT );
 		}
+		else if (feature.getType() == FEATURE_FAVORITE)
+		{
+			mActionBar->setCurrentState( IN_FAVORITE );
+		}
 		else
 		{
 			mActionBar->setCurrentState( IN_FOLDER );
@@ -198,14 +210,16 @@ void UBFeaturesWidget::deleteElements( const QMimeData & mimeData )
 	
 	foreach ( QUrl url, urls )
 	{
-		if ( controller->isTrash( url) )
+		if ( controller->isTrash( url ) )
 		{
-			UBFeaturesController::deleteItem( url );
+			controller->deleteItem( url );
 		}
 		else
 		{
-			UBFeature elem = UBFeaturesController::moveItemToFolder( url, controller->getTrashElement() );
+			UBFeature elem = controller->moveItemToFolder( url, controller->getTrashElement() );
+			controller->removeFromFavorite( url );
 			featuresModel->addItem( elem );
+			featuresModel->deleteFavoriteItem( UBFeaturesController::fileNameFromUrl( url ) );
 		}
 	}
 	QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
@@ -226,6 +240,17 @@ void UBFeaturesWidget::addToFavorite( const QMimeData & mimeData )
 	}
 	QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
 	model->invalidate();
+}
+
+void UBFeaturesWidget::removeFromFavorite( const QMimeData & mimeData )
+{
+	if ( !mimeData.hasUrls() )
+		return;
+	QList<QUrl> urls = mimeData.urls();
+	foreach( QUrl url, urls )
+	{
+		controller->removeFromFavorite( url );
+	}
 }
 
 void UBFeaturesWidget::switchToListView()
@@ -499,11 +524,11 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 		
 		if ( action == Qt::MoveAction )
 		{
-			element = UBFeaturesController::moveItemToFolder( url, parentFeature );
+			element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->moveItemToFolder( url, parentFeature );
 		}
 		else
 		{
-			element = UBFeaturesController::copyItemToFolder( url, parentFeature );
+			element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->copyItemToFolder( url, parentFeature );
 		}
 		addItem( element );
 	}
@@ -522,7 +547,7 @@ void UBFeaturesModel::deleteFavoriteItem( const QString &path )
 	for ( int i = 0; i < featuresList->size(); ++i )
 	{
 		if ( !QString::compare( featuresList->at(i).getFullPath(), path, Qt::CaseInsensitive ) &&
-			!QString::compare( featuresList->at(i).getUrl(), "root/favorite", Qt::CaseInsensitive ) )
+			!QString::compare( featuresList->at(i).getUrl(), "/root/favorites", Qt::CaseInsensitive ) )
 		{
 			removeRow( i, QModelIndex() );
 			return;
@@ -564,9 +589,7 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
             item.getType() == FEATURE_ITEM ||
 			item.getType() == FEATURE_INTERNAL )
 			return Qt::ItemIsDragEnabled | defaultFlags;
-        if ( item.getType() == FEATURE_FOLDER ||
-			item.getType() == FEATURE_TRASH ||
-			(item.getType() == FEATURE_CATEGORY && !item.getFullPath().isNull()))
+		if ( item.isFolder() && !item.getFullPath().isNull() )
 			return defaultFlags | Qt::ItemIsDropEnabled;
 		else return defaultFlags;
 	}
@@ -619,11 +642,9 @@ bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
 	eUBLibElementType type = (eUBLibElementType)sourceModel()->data(index, Qt::UserRole + 1).toInt();*/
 
 	UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
-    bool isFolder = feature.getType() == FEATURE_CATEGORY ||
-        feature.getType() == FEATURE_FOLDER || feature.getType() == FEATURE_TRASH;
 	QString virtualFullPath = feature.getUrl() + "/" + feature.getName();
 	
-	return isFolder && path.startsWith( virtualFullPath );
+	return feature.isFolder() && path.startsWith( virtualFullPath );
 }
 
 QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const

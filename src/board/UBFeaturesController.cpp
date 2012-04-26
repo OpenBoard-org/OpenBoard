@@ -24,15 +24,13 @@ UBFeature::UBFeature(const QString &url, const QPixmap &icon, const QString &nam
 	
 }
 
-UBFeature::UBFeature(const UBFeature &f)
-{
-	virtualPath = f.getUrl();
-	mPath = f.getFullPath();
-	mThumbnail = f.getThumbnail();
-	mName = f.getName();
-	elementType = f.getType();
-}
 
+
+bool UBFeature::isFolder() const
+{
+	return elementType == FEATURE_CATEGORY || elementType == FEATURE_TRASH || elementType == FEATURE_FAVORITE
+		|| elementType == FEATURE_FOLDER;
+}
 
 
 UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
@@ -83,7 +81,7 @@ void UBFeaturesController::initDirectoryTree()
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/ShapesCategory.svg"), "Shapes" , mLibShapesDirectoryPath ) );
 	trashElement = UBFeature( rootPath, QPixmap(":images/libpalette/TrashCategory.svg"), "Trash", trashDirectoryPath, FEATURE_TRASH );
 	featuresList->append( trashElement );
-	favoriteElement = UBFeature( rootPath, QPixmap(":images/libpalette/FavoritesCategory.svg"), "Favorites", "favorites" );
+	favoriteElement = UBFeature( rootPath, QPixmap(":images/libpalette/FavoritesCategory.svg"), "Favorites", "favorites", FEATURE_FAVORITE );
 	featuresList->append( favoriteElement );
 
 	loadFavoriteList();
@@ -213,6 +211,16 @@ UBFeature UBFeaturesController::addToFavorite( const QUrl &path )
 		return elem;
 	}
 	return UBFeature();
+}
+
+void UBFeaturesController::removeFromFavorite( const QUrl &path )
+{
+	QString filePath = fileNameFromUrl( path );
+	if ( favoriteSet->find( filePath ) != favoriteSet->end() )
+	{
+		favoriteSet->erase( favoriteSet->find( filePath ) );
+		saveFavoriteList();
+	}
 }
 
 QString UBFeaturesController::fileNameFromUrl( const QUrl &url )
