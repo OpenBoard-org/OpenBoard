@@ -207,7 +207,7 @@ void UBGraphicsItemDelegate::setMimeData(QMimeData *mimeData)
 
 bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if((NULL != mMimeData) && ((event->pos() - mDragStartPosition).manhattanLength() < QApplication::startDragDistance()))
+    if(NULL != mMimeData)
     {
         QDrag* mDrag = new QDrag(event->widget());
         mDrag->setMimeData(mMimeData);
