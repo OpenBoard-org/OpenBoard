@@ -27,6 +27,7 @@ signals:
 	void searchElement(const QString &text);
 	void newFolderToCreate();
 	void deleteElements( const QMimeData &data );
+	void addToFavorite( const QMimeData &data );
 private slots:
 	void onSearchTextChanged(QString txt);
 	void onActionNewFolder();

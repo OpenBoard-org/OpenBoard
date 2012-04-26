@@ -83,6 +83,7 @@ private slots:
 	void searchStarted( const QString & );
 	void createNewFolder();
 	void deleteElements( const QMimeData & );
+	void addToFavorite( const QMimeData & );
 };
 
 class UBFeaturesListView : public QListView
@@ -96,46 +97,6 @@ protected:
 	virtual void dropEvent( QDropEvent *event );
 };
 
-/*
-class UBFeaturesPathViewer : public QGraphicsView
-{
-	Q_OBJECT
-public:
-	UBFeaturesPathViewer(const QPixmap &root, const QString &rootPath, QGraphicsScene *sc, QWidget* parent=0, const char* name="UBFeaturesPathViewer");
-    virtual ~UBFeaturesPathViewer() {;}
-	void addPathElement(const QPixmap &p, const QString &s);
-	void truncatePath(int number);
-private:
-	QGraphicsLinearLayout *layout;
-	QGraphicsWidget *container;
-	QPixmap *arrowPixmap;
-};
-
-
-class UBFolderWidget : public QLabel
-{
-	Q_OBJECT
-public:
-    UBFolderWidget( QWidget * parent = 0, Qt::WindowFlags f = 0 ) : QLabel( parent, f ) {;}
-    virtual ~UBFolderWidget() {;}
-    virtual QString getPath()const { return path;}
-    virtual void setPath( const QString &p ) { path = p;}
-signals:
-	void clicked(const QString &);
-protected:
-    virtual void mouseReleaseEvent ( QMouseEvent * ev )
-	{ 
-        Q_UNUSED(ev)
-        emit clicked(path);
-    }
-	virtual void mousePressEvent ( QMouseEvent * ev ) 
-	{ 
-		ev->accept();
-    }
-private:
-	QString path;
-};
-*/
 
 class UBFeatureProperties : public QWidget
 {
@@ -190,6 +151,8 @@ public:
     virtual ~UBFeaturesModel(){;}
 
 	void addItem( const UBFeature &item );
+	void deleteFavoriteItem( const QString &path );
+
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
 	QMimeData *mimeData( const QModelIndexList &indexes ) const;
 	QStringList mimeTypes() const;
@@ -198,6 +161,7 @@ public:
     bool dropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	bool removeRow(int row, const QModelIndex &parent = QModelIndex());
+	
     Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 
     void setFeaturesList( QVector <UBFeature> *flist ) { featuresList = flist; }

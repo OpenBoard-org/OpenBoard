@@ -72,6 +72,7 @@ void UBFeaturesController::initDirectoryTree()
 	interactPath = rootPath + "/Interactivities";
 	shapesPath = rootPath + "/Shapes";
 	trashPath = rootPath + "/Trash";
+	favoritePath = rootPath + "/Favorites";
 
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath ) );
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/MoviesCategory.svg"), "Movies" , mUserVideoDirectoryPath ) );
@@ -82,10 +83,18 @@ void UBFeaturesController::initDirectoryTree()
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/ShapesCategory.svg"), "Shapes" , mLibShapesDirectoryPath ) );
 	trashElement = UBFeature( rootPath, QPixmap(":images/libpalette/TrashCategory.svg"), "Trash", trashDirectoryPath, FEATURE_TRASH );
 	featuresList->append( trashElement );
+	favoriteElement = UBFeature( rootPath, QPixmap(":images/libpalette/FavoritesCategory.svg"), "Favorites", "favorites" );
+	featuresList->append( favoriteElement );
+
+	loadFavoriteList();
 
 	foreach (UBToolsManager::UBToolDescriptor tool, tools)
 	{
 		featuresList->append( UBFeature( appPath, tool.icon, tool.label, tool.id, FEATURE_INTERNAL ) );
+		if ( favoriteSet->find( tool.id ) != favoriteSet->end() )
+		{
+			featuresList->append( UBFeature( favoritePath, tool.icon, tool.label, tool.id, FEATURE_INTERNAL ) );
+		}
 	}
 	fileSystemScan( mUserInteractiveDirectoryPath, appPath  );
 	fileSystemScan( mUserAudioDirectoryPath, audiosPath  );
@@ -98,6 +107,8 @@ void UBFeaturesController::initDirectoryTree()
 	fileSystemScan( mLibShapesDirectoryPath, shapesPath  );
 	fileSystemScan( mLibInteractiveDirectoryPath, interactPath  );
 	fileSystemScan( trashDirectoryPath, trashPath );
+
+	
 
 }
 
@@ -138,6 +149,10 @@ void UBFeaturesController::fileSystemScan(const QString & currentPath, const QSt
 			else icon = createThumbnail( fullFileName );*/
 		}
 		featuresList->append( UBFeature( currVirtualPath, icon, fileName, fullFileName, fileType ) );
+		if ( favoriteSet->find( fullFileName ) != favoriteSet->end() )
+		{
+			featuresList->append( UBFeature( favoritePath, icon, fileName, fullFileName, fileType ) );
+		}
 
 		if ( fileType == FEATURE_FOLDER )
 		{
@@ -147,8 +162,95 @@ void UBFeaturesController::fileSystemScan(const QString & currentPath, const QSt
 	}
 }
 
+void UBFeaturesController::loadFavoriteList()
+{
+	favoriteSet = new QSet<QString>();
+	QFile file( UBSettings::userDataDirectory() + "/favorites.dat" );
+	if ( file.exists() )
+	{
+		file.open(QIODevice::ReadOnly);
+		QDataStream in(&file);
+		int elementsNumber;
+		in >> elementsNumber;
+		for ( int i = 0; i < elementsNumber; ++i)
+		{
+			QString path;
+			in >> path;
+			/*QFileInfo fileInfo( path );
+			QString fileName = fileInfo.fileName();
+
+			UBFeature elem( favoritePath, thumbnailForFile( path ), fileName, path, fileTypeFromUrl(path) );
+			featuresList->append( elem );*/
+			favoriteSet->insert( path );
+		}
+	}
+}
+
+void UBFeaturesController::saveFavoriteList()
+{
+	QFile file( UBSettings::userDataDirectory() + "/favorites.dat" );
+	file.resize(0);
+	file.open(QIODevice::WriteOnly);
+	QDataStream out(&file);
+	out << favoriteSet->size();
+	for ( QSet<QString>::iterator it = favoriteSet->begin(); it != favoriteSet->end(); ++it )
+	{
+		out << (*it);
+	}
+	file.close();
+}
+
+UBFeature UBFeaturesController::addToFavorite( const QUrl &path )
+{
+	QString filePath = fileNameFromUrl( path );
+	if ( favoriteSet->find( filePath ) == favoriteSet->end() )
+	{
+		QFileInfo fileInfo( filePath );
+		QString fileName = fileInfo.fileName();
+		UBFeature elem( favoritePath, thumbnailForFile( filePath ), fileName, filePath, fileTypeFromUrl(filePath) );
+		favoriteSet->insert( filePath );
+		saveFavoriteList();
+		return elem;
+	}
+	return UBFeature();
+}
+
+QString UBFeaturesController::fileNameFromUrl( const QUrl &url )
+{
+	QString fileName = url.toString();
+	if ( fileName.contains( "uniboardTool://" ) )
+		return fileName;
+	return url.toLocalFile();
+}
+
+UBFeatureElementType UBFeaturesController::fileTypeFromUrl( const QString &path )
+{
+	QFileInfo fileInfo( path );
+	QString fileName = fileInfo.fileName();
+
+	UBFeatureElementType fileType = fileInfo.isDir() ? FEATURE_FOLDER : FEATURE_ITEM;
+	if ( UBFileSystemUtils::mimeTypeFromFileName(fileName).contains("application") ) 
+	{
+		fileType = FEATURE_INTERACTIVE;
+	}
+	else if ( path.contains("uniboardTool://")  )
+	{
+		fileType = FEATURE_INTERNAL;
+	}
+	return fileType;
+}
+
 QPixmap UBFeaturesController::thumbnailForFile(const QString &path)
 {
+	if ( path.contains("uniboardTool://") )
+	{
+            return QPixmap( UBToolsManager::manager()->iconFromToolId(path) );
+    }
+    if ( UBFileSystemUtils::mimeTypeFromFileName(path).contains("application") )
+	{
+        return QPixmap( UBAbstractWidget::iconFilePath( QUrl::fromLocalFile(path) ) );
+    }
+
 	QPixmap thumb;
 	QString thumbnailPath = UBFileSystemUtils::thumbnailPath( path );
 

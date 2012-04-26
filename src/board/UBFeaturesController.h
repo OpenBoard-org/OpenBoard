@@ -66,11 +66,16 @@ public:
 	static void deleteItem( const QUrl &url );
 	bool isTrash( const QUrl &url );
 	UBFeature newFolder( const QString &name );
+	UBFeature addToFavorite( const QUrl &path );
 private:
 	void initDirectoryTree();
 	void fileSystemScan(const QString &currPath, const QString & currVirtualPath);
 	static QPixmap createThumbnail(const QString &path);
 	//void addImageToCurrentPage( const QString &path );
+	void loadFavoriteList();
+	void saveFavoriteList();
+	static QString fileNameFromUrl( const QUrl &url );
+	static UBFeatureElementType fileTypeFromUrl( const QString &path );
 
 	QVector <UBFeature> *featuresList;
 	UBFeature *rootElement;
@@ -100,10 +105,14 @@ private:
 	QString shapesPath;
 	QString interactPath;
 	QString trashPath;
+	QString favoritePath;
 
 	int mLastItemOffsetIndex;
 	UBFeature currentElement;
 	UBFeature trashElement;
+	UBFeature favoriteElement;
+
+	QSet <QString> *favoriteSet;
 };
 
 

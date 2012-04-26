@@ -97,7 +97,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 		this, SLOT( currentSelected(const QModelIndex &) ) );
 	connect( mActionBar, SIGNAL( searchElement(const QString &) ), this, SLOT( const searchStarted(QString &) ) );
 	connect( mActionBar, SIGNAL( newFolderToCreate() ), this, SLOT( createNewFolder()  ) );
-	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &)), this, SLOT( deleteElements(const QMimeData &) ) ); 
+	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &) ), this, SLOT( deleteElements(const QMimeData &) ) ); 
+	connect( mActionBar, SIGNAL( addToFavorite(const QMimeData &) ), this, SLOT( addToFavorite(const QMimeData &) ) );
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 }
@@ -206,6 +207,22 @@ void UBFeaturesWidget::deleteElements( const QMimeData & mimeData )
 			UBFeature elem = UBFeaturesController::moveItemToFolder( url, controller->getTrashElement() );
 			featuresModel->addItem( elem );
 		}
+	}
+	QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
+	model->invalidate();
+}
+
+void UBFeaturesWidget::addToFavorite( const QMimeData & mimeData )
+{
+	if ( !mimeData.hasUrls() )
+		return;
+	QList<QUrl> urls = mimeData.urls();
+	
+	foreach ( QUrl url, urls )
+	{
+		UBFeature elem = controller->addToFavorite( url );
+		if ( !elem.getUrl().isEmpty() && !elem.getUrl().isNull() )
+			featuresModel->addItem( elem );
 	}
 	QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
 	model->invalidate();
@@ -500,6 +517,19 @@ void UBFeaturesModel::addItem( const UBFeature &item )
 	endInsertRows();
 }
 
+void UBFeaturesModel::deleteFavoriteItem( const QString &path )
+{
+	for ( int i = 0; i < featuresList->size(); ++i )
+	{
+		if ( !QString::compare( featuresList->at(i).getFullPath(), path, Qt::CaseInsensitive ) &&
+			!QString::compare( featuresList->at(i).getUrl(), "root/favorite", Qt::CaseInsensitive ) )
+		{
+			removeRow( i, QModelIndex() );
+			return;
+		}
+	}
+}
+
 bool UBFeaturesModel::removeRows( int row, int count, const QModelIndex & parent )
 {
 	if ( row < 0 )
@@ -590,7 +620,7 @@ bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
 
 	UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
     bool isFolder = feature.getType() == FEATURE_CATEGORY ||
-        feature.getType() == FEATURE_FOLDER;
+        feature.getType() == FEATURE_FOLDER || feature.getType() == FEATURE_TRASH;
 	QString virtualFullPath = feature.getUrl() + "/" + feature.getName();
 	
 	return isFolder && path.startsWith( virtualFullPath );
