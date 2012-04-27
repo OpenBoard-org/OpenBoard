@@ -70,6 +70,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	pathListView->setSelectionMode( QAbstractItemView::NoSelection );
 	pathListView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     pathListView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+	//pathListView->setResizeMode( QListView::Adjust );
 	//pathListView->setMovement( QListView::Static );
 	pathListView->setDragDropMode( QAbstractItemView::DragDrop );
 
@@ -89,11 +90,16 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
     currentStackedWidget = ID_LISTVIEW;
 
 	mActionBar = new UBFeaturesActionBar(controller, this);
-	thumbSlider = new QSlider( Qt::Horizontal, this );
+	thumbSlider = new QSlider( Qt::Horizontal, featuresListView );
 	thumbSlider->setMinimum( minThumbnailSize );
 	thumbSlider->setMaximum( maxThumbnailSize );
 	thumbSlider->setValue( defaultThumbnailSize );
-	layout->addWidget( thumbSlider );
+	//qDebug() << "init" << featuresListView->height();
+	thumbSlider->move( 0, featuresListView->height()  );
+	thumbSlider->resize( thumbSlider->width(), thumbSlider->height() + 4 );
+	thumbSlider->show();
+	featuresListView->installEventFilter(this);
+	//layout->addWidget( thumbSlider );
 	layout->addWidget( mActionBar );
 
 	/*connect(featuresListView->selectionModel(), SIGNAL(currentChanged ( const QModelIndex &, const QModelIndex & )),
@@ -108,6 +114,18 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
+}
+
+bool UBFeaturesWidget::eventFilter( QObject *target, QEvent *event )
+{
+	if ( target == featuresListView && event->type() == QEvent::Resize )
+	{
+		thumbSlider->move( 10, featuresListView->height() - thumbSlider->height() - 10 );
+		thumbSlider->resize( featuresListView->width() - 20, thumbSlider->height() );
+		//qDebug() << featuresListView->height();
+		//return true;
+	}
+	return UBDockPaletteWidget::eventFilter(target, event);
 }
 
 void UBFeaturesWidget::searchStarted( const QString &pattern )

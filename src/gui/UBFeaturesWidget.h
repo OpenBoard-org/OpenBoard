@@ -92,6 +92,8 @@ private slots:
 	void addToFavorite( const QMimeData & );
 	void removeFromFavorite( const QMimeData & );
 	void thumbnailSizeChanged( int );
+protected:
+	bool eventFilter(QObject *target, QEvent *event);
 };
 
 class UBFeaturesListView : public QListView
