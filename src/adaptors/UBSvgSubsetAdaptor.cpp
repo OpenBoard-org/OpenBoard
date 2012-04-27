@@ -29,6 +29,7 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
+#include "domain/UBGraphicsStrokesGroup.h"
 #include "domain/UBItem.h"
 
 #include "tools/UBGraphicsRuler.h"
@@ -42,6 +43,7 @@
 
 #include "board/UBBoardView.h"
 #include "board/UBBoardController.h"
+#include "board/UBDrawingController.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
@@ -311,6 +313,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
     mFileVersion = 40100; // default to 4.1.0
 
     UBGraphicsStroke* annotationGroup = 0;
+    UBGraphicsStrokesGroup* strokesGroup = 0;
+    UBDrawingController* dc = UBDrawingController::drawingController();
 
     while (!mXmlReader.atEnd())
     {
@@ -433,6 +437,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 				else
 					annotationGroup = new UBGraphicsStroke();
 
+                if(eDrawingMode_Vector == dc->drawingMode()){
+                    strokesGroup = new UBGraphicsStrokesGroup();
+                }
+
                 QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
 
                 if (!ubZValue.isNull())
@@ -475,7 +483,13 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         polygonItem->setStroke(annotationGroup);
                     }
 
-                    scene->addItem(polygonItem);
+                    if(eDrawingMode_Vector == dc->drawingMode()){
+                        if(strokesGroup){
+                            strokesGroup->addToGroup(polygonItem);
+                        }
+                    }else{
+                        scene->addItem(polygonItem);
+                    }
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
@@ -494,7 +508,13 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         polygonItem->setStroke(annotationGroup);
                     }
 
-                    scene->addItem(polygonItem);
+                    if(eDrawingMode_Vector == dc->drawingMode()){
+                        if(strokesGroup){
+                            strokesGroup->addToGroup(polygonItem);
+                        }
+                    }else{
+                        scene->addItem(polygonItem);
+                    }
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
                     polygonItem->show();
@@ -816,6 +836,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         {
             if (mXmlReader.name() == "g")
             {
+                if(strokesGroup && scene){
+                    scene->addItem(strokesGroup);
+                }
+
 				if (annotationGroup)
 				{
 					if (!annotationGroup->polygons().empty())
@@ -930,7 +954,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
         while (!items.empty())
         {
             QGraphicsItem *item = items.takeFirst();
-
 
             UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
 
