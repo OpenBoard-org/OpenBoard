@@ -51,6 +51,10 @@ public:
             || mode == eUBDockPaletteWidget_DESKTOP;
     }
 	UBFeaturesController * getFeaturesController()const { return controller; };
+
+	static const int minThumbnailSize = 20;
+	static const int maxThumbnailSize = 100;
+	static const int defaultThumbnailSize = 40;
 private:
 	void switchToListView();
 	void switchToProperties();
@@ -67,6 +71,8 @@ private:
 
 	UBFeaturesListView *featuresListView;
 	UBFeaturesListView *pathListView;
+
+	QSlider *thumbSlider;
 	QVBoxLayout *layout;
 	//UBFeaturesPathViewer *pathViewer;
 	QGraphicsScene *pathScene;
@@ -85,6 +91,7 @@ private slots:
 	void deleteElements( const QMimeData & );
 	void addToFavorite( const QMimeData & );
 	void removeFromFavorite( const QMimeData & );
+	void thumbnailSizeChanged( int );
 };
 
 class UBFeaturesListView : public QListView
@@ -165,9 +172,9 @@ public:
 	
     Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 
-    void setFeaturesList( QVector <UBFeature> *flist ) { featuresList = flist; }
+    void setFeaturesList( QList <UBFeature> *flist ) { featuresList = flist; }
 private:
-	QVector <UBFeature> *featuresList;
+	QList <UBFeature> *featuresList;
 };
 
 class UBFeaturesProxyModel : public QSortFilterProxyModel

@@ -53,7 +53,7 @@ public:
 	UBFeaturesController(QWidget *parentWidget);
     virtual ~UBFeaturesController();
 
-    QVector <UBFeature>* getFeatures()const { return featuresList; }
+    QList <UBFeature>* getFeatures()const { return featuresList; }
 	
     const QString& getRootPath()const { return rootPath; }
 
@@ -81,7 +81,7 @@ private:
 
 	static UBFeatureElementType fileTypeFromUrl( const QString &path );
 
-	QVector <UBFeature> *featuresList;
+	QList <UBFeature> *featuresList;
 	UBFeature *rootElement;
 
 	QString mUserAudioDirectoryPath;

@@ -56,14 +56,14 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	itemDelegate = new UBFeaturesItemDelegate( this, featuresListView );
 	featuresListView->setItemDelegate( itemDelegate );
 
-	featuresListView->setIconSize( QSize(40, 40) );
-	featuresListView->setGridSize( QSize(70, 70) );
+	featuresListView->setIconSize( QSize(defaultThumbnailSize, defaultThumbnailSize) );
+	featuresListView->setGridSize( QSize(defaultThumbnailSize * 1.75, defaultThumbnailSize * 1.75) );
 
 	//pathListView->setStyleSheet( QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;") );
 	pathListView->setModel( featuresPathModel );
 	pathListView->setViewMode( QListView::IconMode );
-	pathListView->setIconSize( QSize(30, 30) );
-	pathListView->setGridSize( QSize(50, 30) );
+	pathListView->setIconSize( QSize(defaultThumbnailSize - 10, defaultThumbnailSize - 10) );
+	pathListView->setGridSize( QSize(defaultThumbnailSize + 10, defaultThumbnailSize - 10) );
 	pathListView->setFixedHeight( 60 );
 	pathItemDelegate = new UBFeaturesPathItemDelegate( this );
 	pathListView->setItemDelegate( pathItemDelegate );
@@ -89,7 +89,12 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
     currentStackedWidget = ID_LISTVIEW;
 
 	mActionBar = new UBFeaturesActionBar(controller, this);
-	layout->addWidget(mActionBar);
+	thumbSlider = new QSlider( Qt::Horizontal, this );
+	thumbSlider->setMinimum( minThumbnailSize );
+	thumbSlider->setMaximum( maxThumbnailSize );
+	thumbSlider->setValue( defaultThumbnailSize );
+	layout->addWidget( thumbSlider );
+	layout->addWidget( mActionBar );
 
 	/*connect(featuresListView->selectionModel(), SIGNAL(currentChanged ( const QModelIndex &, const QModelIndex & )),
 		this, SLOT(currentSelected(const QModelIndex &)));*/
@@ -102,6 +107,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( mActionBar, SIGNAL( removeFromFavorite(const QMimeData &) ), this, SLOT( removeFromFavorite(const QMimeData &) ) );
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
+	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
 }
 
 void UBFeaturesWidget::searchStarted( const QString &pattern )
@@ -251,6 +257,12 @@ void UBFeaturesWidget::removeFromFavorite( const QMimeData & mimeData )
 	{
 		controller->removeFromFavorite( url );
 	}
+}
+
+void UBFeaturesWidget::thumbnailSizeChanged( int value )
+{
+	featuresListView->setIconSize( QSize( value, value ) );
+	featuresListView->setGridSize( QSize( value * 1.75, value * 1.75 ) );
 }
 
 void UBFeaturesWidget::switchToListView()
@@ -407,7 +419,10 @@ void UBFeatureProperties::showElement( const UBFeature &elem )
 
 void UBFeatureProperties::onAddToPage()
 {
-    if ( UBApplication::isFromWeb( mpElement->getUrl() ) )
+	QWidget *w = parentWidget()->parentWidget();
+    UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
+    featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
+    /*if ( UBApplication::isFromWeb( mpElement->getUrl() ) )
 	{
         sDownloadFileDesc desc;
         desc.isBackground = false;
@@ -422,7 +437,7 @@ void UBFeatureProperties::onAddToPage()
 		QWidget *w = parentWidget()->parentWidget();
         UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
         featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
-    }
+    }*/
 }
 
 UBFeatureProperties::~UBFeatureProperties()
@@ -562,7 +577,8 @@ bool UBFeaturesModel::removeRows( int row, int count, const QModelIndex & parent
 	if ( row + count > featuresList->size() )
 		return false;
 	beginRemoveRows( parent, row, row + count - 1 );
-	featuresList->remove( row, count );
+	//featuresList->remove( row, count );
+	featuresList->erase( featuresList->begin() + row, featuresList->begin() + row + count );
 	endRemoveRows();
 	return true;
 }
@@ -574,7 +590,8 @@ bool UBFeaturesModel::removeRow(  int row, const QModelIndex & parent )
 	if ( row >= featuresList->size() )
 		return false;
 	beginRemoveRows( parent, row, row );
-	featuresList->remove( row );
+	//featuresList->remove( row );
+	featuresList->erase( featuresList->begin() + row );
 	endRemoveRows();
 	return true;
 }

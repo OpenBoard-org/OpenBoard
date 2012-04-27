@@ -55,7 +55,7 @@ void UBFeaturesController::initDirectoryTree()
 	mLibShapesDirectoryPath = UBSettings::settings()->applicationShapeLibraryDirectory() ;
 	trashDirectoryPath = UBSettings::userTrashDirPath();
 
-	featuresList = new QVector <UBFeature>();
+	featuresList = new QList <UBFeature>();
 
 	QList <UBToolsManager::UBToolDescriptor> tools = UBToolsManager::manager()->allTools();
 
@@ -322,13 +322,6 @@ UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeatu
 {
 	UBFeature newElement = copyItemToFolder( url, destination );
 	deleteItem( url );
-	/*QString sourcePath = url.toLocalFile();
-	QFile::remove( sourcePath );
-	QString thumbnailPath = UBFileSystemUtils::thumbnailPath( sourcePath );
-    if (thumbnailPath.length() && QFileInfo( thumbnailPath ).exists()) 
-	{
-        QFile::remove(thumbnailPath);
-    }*/
 	return newElement;
 }
 
