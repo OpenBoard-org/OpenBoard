@@ -64,7 +64,6 @@ UBAppleWidget::UBAppleWidget(const QUrl& pWidgetUrl, QWidget *parent)
     mNominalSize = defaultPixmap.size();
 }
 
-
 UBAppleWidget::~UBAppleWidget()
 {
     // NOOP

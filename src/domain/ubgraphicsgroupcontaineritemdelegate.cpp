@@ -49,10 +49,16 @@ void UBGraphicsGroupContainerItemDelegate::buildButtons()
 
     mButtons << mDestroyGroupButton;
 
-    connect(mDestroyGroupButton, SIGNAL(clicked()), this, SLOT(destroyGroup()));
+    connect(mDestroyGroupButton, SIGNAL(clicked()), (UBGraphicsGroupContainerItemDelegate*)this, SLOT(destroyGroup()));
 }
 
 void UBGraphicsGroupContainerItemDelegate::destroyGroup()
 {
-    castUBGraphicsScene()->destroyItemGroup(delegated());
+    qDebug() << "got an event";
+    foreach (QGraphicsItem *item, delegated()->childItems()) {
+        delegated()->removeFromGroup(item);
+        item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    }
+
+    remove(true);
 }

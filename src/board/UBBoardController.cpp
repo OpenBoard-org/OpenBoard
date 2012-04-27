@@ -1809,7 +1809,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
 
     newUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addGraphicsWidgteToDocument(mActiveDocument, pUrl.toLocalFile(), uuid));
 
-    w3cWidgetItem = mActiveScene->addW3CWidget(pUrl, pos);
+    w3cWidgetItem = mActiveScene->addW3CWidget(newUrl, pos);
 
     if (w3cWidgetItem) {
         w3cWidgetItem->setUuid(uuid);

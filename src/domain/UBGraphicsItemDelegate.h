@@ -184,14 +184,11 @@ class UBGraphicsItemDelegate : public QObject
         QList<DelegateButton*> mButtons;
 
 protected slots:
-
         virtual void gotoContentSource(bool checked);
 
 private:
         void updateFrame();
         void updateButtons(bool showUpdated = false);
-
-
 
         QPointF mOffset;
         QTransform mPreviousTransform;

@@ -7,16 +7,15 @@ class UBGraphicsGroupContainerItem;
 
 class UBGraphicsGroupContainerItemDelegate : public UBGraphicsItemDelegate
 {
+Q_OBJECT
+
 public:
     UBGraphicsGroupContainerItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0);
-
     UBGraphicsGroupContainerItem *delegated();
 
 protected:
     virtual void decorateMenu(QMenu *menu);
     virtual void buildButtons();
-
-
 
 
 private slots:
