@@ -330,6 +330,8 @@ class UBSettings : public QObject
 
         UBSetting* angleTolerance;
         UBSetting* historyLimit;
+        UBSetting* teacherGuidePageZeroActivated;
+        UBSetting* teacherGuideLessonPagesActivated;
 
     public slots:
 

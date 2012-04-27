@@ -105,13 +105,13 @@ private:
 /***************************************************************************
  *        class    UBTeacherGuidePageZeroPresentationWidget                *
  ***************************************************************************/
-class UBTeacherGuidePageZeroEditionWidget : public QWidget
+class UBTeacherGuidePageZeroWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit UBTeacherGuidePageZeroEditionWidget(QWidget* parent, const char* name = "UBTeacherGuidePageZeroEditionWidget");
-    ~UBTeacherGuidePageZeroEditionWidget();
+    explicit UBTeacherGuidePageZeroWidget(QWidget* parent, const char* name = "UBTeacherGuidePageZeroEditionWidget");
+    ~UBTeacherGuidePageZeroWidget();
 
     QVector<tUBGEElementNode*> getData();
 
@@ -185,9 +185,10 @@ public slots:
     void changeMode();
     void showPresentationMode();
     void connectToStylusPalette();
+    void onActiveSceneChanged();
 
 private:
-    UBTeacherGuidePageZeroEditionWidget* mpPageZeroEditonWidget;
+    UBTeacherGuidePageZeroWidget* mpPageZeroWidget;
     UBTeacherGuideEditionWidget* mpEditionWidget;
     UBTeacherGuidePresentationWidget* mpPresentationWidget;
     QVector<tUBGEElementNode*>mCurrentData;

@@ -129,25 +129,25 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     //------------------------------------------------//
     // Create the widgets for the dock palettes
-
-    mpPageNavigWidget = new UBPageNavigationWidget();
-
     mpLibWidget = new UBLibWidget();
 
     mpCachePropWidget = new UBCachePropertiesWidget();
 
     mpDownloadWidget = new UBDockDownloadWidget();
-    mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
 
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
 
     // LEFT palette widgets
+    mpPageNavigWidget = new UBPageNavigationWidget();
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
 
-    mLeftPalette->registerWidget(mpTeacherGuideWidget);
-    mLeftPalette->addTab(mpTeacherGuideWidget);
+    if(UBSettings::settings()->teacherGuidePageZeroActivated || UBSettings::settings()->teacherGuideLessonPagesActivated){
+        mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
+        mLeftPalette->registerWidget(mpTeacherGuideWidget);
+        mLeftPalette->addTab(mpTeacherGuideWidget);
+    }
 
     mLeftPalette->connectSignals();
 

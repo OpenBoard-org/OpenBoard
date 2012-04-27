@@ -57,6 +57,8 @@ class UBBoardController : public QObject
         QRectF controlGeometry();
         void closing();
 
+        int currentPage();
+
         UBDocumentProxy* activeDocument()
         {
             return mActiveDocument;

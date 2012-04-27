@@ -25,6 +25,7 @@
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+#include "core/UBSettings.h"
 
 #include "globals/UBGlobals.h"
 
@@ -146,7 +147,7 @@ void UBTeacherGuideEditionWidget::showEvent(QShowEvent* event)
 void UBTeacherGuideEditionWidget::onActiveSceneChanged()
 {
     cleanData();
-    mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->activeSceneIndex() + 1));
+    mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->currentPage()));
 }
 
 void UBTeacherGuideEditionWidget::cleanData()
@@ -359,7 +360,7 @@ void UBTeacherGuidePresentationWidget::cleanData()
 void UBTeacherGuidePresentationWidget::onActiveSceneChanged()
 {
     cleanData();
-    mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->activeSceneIndex() + 1));
+    mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->currentPage()));
 }
 
 void UBTeacherGuidePresentationWidget::createMediaButtonItem()
@@ -459,7 +460,7 @@ void UBTeacherGuidePresentationWidget::onAddItemClicked(QTreeWidgetItem* widget,
 /***************************************************************************
  *              class   UBTeacherGuidePageZeroEditionWidget                *
  ***************************************************************************/
-UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget* parent, const char* name): QWidget(parent)
+UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, const char* name): QWidget(parent)
   , mpLayout(NULL)
   , mpButtonTitleLayout(NULL)
   , mpModePushButton(NULL)
@@ -626,7 +627,7 @@ UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget
     fillComboBoxes();
 }
 
-UBTeacherGuidePageZeroEditionWidget::~UBTeacherGuidePageZeroEditionWidget()
+UBTeacherGuidePageZeroWidget::~UBTeacherGuidePageZeroWidget()
 {
     DELETEPTR(mpPageNumberLabel);
     DELETEPTR(mpSessionTitle);
@@ -659,7 +660,7 @@ UBTeacherGuidePageZeroEditionWidget::~UBTeacherGuidePageZeroEditionWidget()
     DELETEPTR(mpLayout);
 }
 
-void UBTeacherGuidePageZeroEditionWidget::fillComboBoxes()
+void UBTeacherGuidePageZeroWidget::fillComboBoxes()
 {
     QString parametersConfigFilePath = UBSettings::settings()->applicationCustomizationDirectory() + "/teacherGuide/indexingParameters.xml";
     QFile parametersFile(parametersConfigFilePath);
@@ -704,7 +705,7 @@ void UBTeacherGuidePageZeroEditionWidget::fillComboBoxes()
     mpLicenceBox->addItems(licences);
 }
 
-void UBTeacherGuidePageZeroEditionWidget::onSchoolLevelChanged(QString schoolLevel)
+void UBTeacherGuidePageZeroWidget::onSchoolLevelChanged(QString schoolLevel)
 {
     QStringList subjects = mSubjects.value(mGradeLevelsMap.value(schoolLevel));
     mpSchoolBranchBox->clear();
@@ -719,19 +720,19 @@ void UBTeacherGuidePageZeroEditionWidget::onSchoolLevelChanged(QString schoolLev
     }
 }
 
-void UBTeacherGuidePageZeroEditionWidget::onActiveSceneChanged()
+void UBTeacherGuidePageZeroWidget::onActiveSceneChanged()
 {
     UBDocumentProxy* documentProxy = UBApplication::documentController ? UBApplication::documentController->getCurrentDocument() : 0;
-    if(UBApplication::documentController && UBApplication::boardController->activeSceneIndex() == 0){
-//        QDateTime creationDate = documentProxy->documentDate();
-//        mpCreationLabel->setText(tr("Created the:") + creationDate.toString(Qt::SystemLocaleShortDate));
-//        QDateTime updatedDate = documentProxy->lastUpdate();
-//        mpLastModifiedLabel->setText(tr("Updated the:") + updatedDate.toString(Qt::SystemLocaleShortDate));
+    if(UBApplication::documentController && UBApplication::boardController->currentPage() == 0){
+        QDateTime creationDate = documentProxy->documentDate();
+        mpCreationLabel->setText(tr("Created the:") + creationDate.toString(Qt::SystemLocaleShortDate));
+        QDateTime updatedDate = documentProxy->lastUpdate();
+        mpLastModifiedLabel->setText(tr("Updated the:") + updatedDate.toString(Qt::SystemLocaleShortDate));
     }
 }
 
 
-void UBTeacherGuidePageZeroEditionWidget::switchToMode(tUBTGZeroPageMode mode)
+void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
 {
     if(mode == tUBTGZeroPageMode_EDITION){
         mpModePushButton->hide();
@@ -767,10 +768,8 @@ void UBTeacherGuidePageZeroEditionWidget::switchToMode(tUBTGZeroPageMode mode)
         mpLicenceValueLabel->setText(mpLicenceBox->currentText());
         QStringList licenceIconList;
         licenceIconList << ":images/licenses/ccby.png" << ":images/licenses/ccbynd.png" << ":images/licenses/ccbysa.png" << ":images/licenses/ccbync.png" << ":images/licenses/ccbyncnd.png" << ":images/licenses/ccbyncsa.png";
-        int licenceBoxCurrentIndex = mpLicenceBox->currentIndex();
-        // -1 is return if there is no values on the box
-        if(licenceBoxCurrentIndex > 0 && licenceBoxCurrentIndex < licenceIconList.count()){
-            mpLicenceIcon->setPixmap(licenceIconList.at(licenceBoxCurrentIndex));
+        if(mpLicenceBox->currentIndex() < 6){
+            mpLicenceIcon->setPixmap(licenceIconList.at(mpLicenceBox->currentIndex()));
             mpLicenceIcon->show();
         }
         mpLicenceValueLabel->show();
@@ -778,7 +777,7 @@ void UBTeacherGuidePageZeroEditionWidget::switchToMode(tUBTGZeroPageMode mode)
     }
 }
 
-QVector<tUBGEElementNode*> UBTeacherGuidePageZeroEditionWidget::getData()
+QVector<tUBGEElementNode*> UBTeacherGuidePageZeroWidget::getData()
 {
     QVector<tUBGEElementNode*>result;
     tUBGEElementNode* elementNode = new tUBGEElementNode();
@@ -837,24 +836,25 @@ QVector<tUBGEElementNode*> UBTeacherGuidePageZeroEditionWidget::getData()
  *                    class    UBTeacherGuideWidget                        *
  ***************************************************************************/
 UBTeacherGuideWidget::UBTeacherGuideWidget(QWidget* parent, const char* name): QStackedWidget(parent)
-  , mpPageZeroEditonWidget(NULL)
+  , mpPageZeroWidget(NULL)
   , mpEditionWidget(NULL)
   , mpPresentationWidget(NULL)
 {
     setObjectName(name);
-
-    mpPageZeroEditonWidget = new UBTeacherGuidePageZeroEditionWidget(this);
-    addWidget(mpPageZeroEditonWidget);
-    setCurrentWidget(mpPageZeroEditonWidget);
-    //    mpEditionWidget = new UBTeacherGuideEditionWidget(this);
-//    addWidget(mpEditionWidget);
-//    mpPresentationWidget = new UBTeacherGuidePresentationWidget(this);
-//    addWidget(mpPresentationWidget);
-//    setCurrentWidget(mpPresentationWidget);
-
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
+        mpPageZeroWidget = new UBTeacherGuidePageZeroWidget(this);
+        addWidget(mpPageZeroWidget);
+    }
+    if(UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
+        mpEditionWidget = new UBTeacherGuideEditionWidget(this);
+        addWidget(mpEditionWidget);
+        mpPresentationWidget = new UBTeacherGuidePresentationWidget(this);
+        addWidget(mpPresentationWidget);
+    }
 
     connect(UBApplication::boardController->controlView(),SIGNAL(clickOnBoard()),this,SLOT(showPresentationMode()));
     connectToStylusPalette();
+    connect(UBApplication::boardController,SIGNAL(activeSceneChanged()),this,SLOT(onActiveSceneChanged()));
 }
 
 
@@ -864,19 +864,29 @@ UBTeacherGuideWidget::~UBTeacherGuideWidget()
     DELETEPTR(mpPresentationWidget);
 }
 
+
+void UBTeacherGuideWidget::onActiveSceneChanged()
+{
+    if(UBApplication::boardController->currentPage() == 0)
+        setCurrentWidget(mpPageZeroWidget);
+    else
+        setCurrentWidget(mpPresentationWidget);
+
+}
+
 void UBTeacherGuideWidget::connectToStylusPalette()
 {
     if(UBApplication::boardController->paletteManager())
         connect(UBApplication::boardController->paletteManager()->stylusPalette(),SIGNAL(itemOnActionPaletteChanged()),this,SLOT(showPresentationMode()));
     else
-        QTimer::singleShot(500,this,SLOT(connectToStylusPalette()));
+        QTimer::singleShot(100,this,SLOT(connectToStylusPalette()));
 }
 
 void UBTeacherGuideWidget::showPresentationMode()
 {
-    if(currentWidget()==mpPageZeroEditonWidget){
-        mCurrentData = mpPageZeroEditonWidget->getData();
-        mpPageZeroEditonWidget->switchToMode(tUBTGZeroPageMode_PRESENTATION);
+    if(currentWidget()==mpPageZeroWidget){
+        mCurrentData = mpPageZeroWidget->getData();
+        mpPageZeroWidget->switchToMode(tUBTGZeroPageMode_PRESENTATION);
     }
     else if(currentWidget()==mpEditionWidget){
         mCurrentData = mpEditionWidget->getData();

@@ -65,6 +65,8 @@
 
 #include "UBBoardPaletteManager.h"
 
+#include "core/UBSettings.h"
+
 #include "core/memcheck.h"
 //#include <typeinfo>
 
@@ -146,6 +148,13 @@ UBBoardController::~UBBoardController()
     delete mDisplayView;
 }
 
+
+int UBBoardController::currentPage()
+{
+    if(!UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+        return mActiveSceneIndex;
+    return mActiveSceneIndex + 1;
+}
 
 void UBBoardController::setupViews()
 {
