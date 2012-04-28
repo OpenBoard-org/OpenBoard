@@ -150,6 +150,7 @@ void UBFeaturesActionBar::setButtons()
 
 void UBFeaturesActionBar::onSearchTextChanged(QString txt)
 {
+    Q_UNUSED(txt)
     emit searchElement(mSearchBar->text());
 }
    

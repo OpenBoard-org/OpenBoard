@@ -546,6 +546,7 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
     } 
 	else
         endRow = parent.row();
+    Q_UNUSED(endRow) //why do we need this variable?
 
 	UBFeature parentFeature = parent.data( Qt::UserRole + 1).value<UBFeature>();
 
