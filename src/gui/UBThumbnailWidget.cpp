@@ -32,8 +32,9 @@ UBThumbnailWidget::UBThumbnailWidget(QWidget* parent)
     , mSpacing(UBSettings::thumbnailSpacing)
     , mLastSelectedThumbnail(0)
     , mSelectionSpan(0)
-    , mLassoRectItem(0)
     , mPrevLassoRect(QRect())
+    , mLassoRectItem(0)
+
 {
     // By default, the drag is possible
     bCanDrag = true;

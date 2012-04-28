@@ -158,8 +158,11 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 	mRightPalette->registerWidget(mpFeaturesWidget);
 	mRightPalette->addTab(mpFeaturesWidget);
 
-    mRightPalette->registerWidget(mpLibWidget);
-    mRightPalette->addTab(mpLibWidget);
+    //Do not show deprecated lib widget to prevent collisions. Uncomment to return lib widget
+//    mRightPalette->registerWidget(mpLibWidget);
+//    mRightPalette->addTab(mpLibWidget);
+
+
     // The cache widget will be visible only if a cache is put on the page
     mRightPalette->registerWidget(mpCachePropWidget);
 

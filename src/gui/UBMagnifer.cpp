@@ -314,9 +314,6 @@ void UBMagnifier::grabPoint()
 
     QPointF pfScLtF(UBApplication::boardController->controlView()->mapToScene(QPoint(itemPos.x(), itemPos.y())));
    
-    
-    QRect magnifierRect = rect();
-
     float x = pfScLtF.x() - zWidthHalf;
     float y = pfScLtF.y() - zHeightHalf;
 
@@ -351,9 +348,6 @@ void UBMagnifier::grabPoint(const QPoint &pGrab)
 
     QPointF pfScLtF(UBApplication::boardController->controlView()->mapToScene(QPoint(itemPos.x(), itemPos.y())));
    
-    
-    QRect magnifierRect = rect();
-
     float x = pfScLtF.x() - zWidthHalf;
     float y = pfScLtF.y() - zHeightHalf;
 
