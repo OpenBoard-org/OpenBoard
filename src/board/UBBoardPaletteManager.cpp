@@ -138,6 +138,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mpDownloadWidget = new UBDockDownloadWidget();
     mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
+	mpFeaturesWidget = new UBFeaturesWidget();
 
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
@@ -153,8 +154,15 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mRightPalette = new UBRightPalette(mContainer);
     // RIGHT palette widgets
-    mRightPalette->registerWidget(mpLibWidget);
-    mRightPalette->addTab(mpLibWidget);
+
+	mRightPalette->registerWidget(mpFeaturesWidget);
+	mRightPalette->addTab(mpFeaturesWidget);
+
+    //Do not show deprecated lib widget to prevent collisions. Uncomment to return lib widget
+//    mRightPalette->registerWidget(mpLibWidget);
+//    mRightPalette->addTab(mpLibWidget);
+
+
     // The cache widget will be visible only if a cache is put on the page
     mRightPalette->registerWidget(mpCachePropWidget);
 

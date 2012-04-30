@@ -367,6 +367,7 @@ linux-g++-32 {
 
 linux-g++-64 { 
     LIBS += -lcrypto
+    LIBS += -lX11
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp
     QMAKE_LFLAGS += -fopenmp

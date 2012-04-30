@@ -30,6 +30,7 @@
 #include "core/UBPersistenceManager.h"
 
 #include "gui/UBMagnifer.h"
+#include "gui/UBMainWindow.h"
 
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsProtractor.h"
@@ -55,6 +56,8 @@
 #include "UBGraphicsPDFItem.h"
 #include "UBGraphicsTextItem.h"
 #include "UBGraphicsStrokesGroup.h"
+
+#include "domain/ubgraphicsgroupcontaineritem.h"
 
 #include "UBAppleWidget.h"
 #include "UBW3CWidget.h"
@@ -158,9 +161,6 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
                 while (iCurElement.hasNext() && iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == nextZ) {
                     UBGraphicsItem::assignZValue(iCurElement.next().value(), nextZ);
                 }
-
-                item->scene()->clearSelection();
-                item->setSelected(true);
             }
         }
 
@@ -256,6 +256,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mDocument(parent)
     , mDarkBackground(false)
     , mCrossedBackground(false)
+    , mIsDesktopMode(false)
     , mIsModified(true)
     , mBackgroundObject(0)
     , mPreviousWidth(0)
@@ -269,7 +270,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , magniferControlViewWidget(0)
     , magniferDisplayViewWidget(0)
     , mZLayerController(new UBZLayerController(this))
-    , mIsDesktopMode(false)
     , mpLastPolygon(NULL)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
@@ -291,6 +291,9 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     }
 
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(enableGroupingButton()));
+
+    connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(processGroupItems()));
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -308,6 +311,36 @@ void UBGraphicsScene::selectionChangedProcessing()
     if (selectedItems().count())
         UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
                                                 + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
+}
+void UBGraphicsScene::enableGroupingButton()
+{
+    QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
+
+    if (selectedItems().count() > 1) {
+        groupAction->setEnabled(true);
+    } else {
+        groupAction->setEnabled(false);
+    }
+}
+void UBGraphicsScene::processGroupItems()
+{
+    qDebug() << "processing grouping items";
+
+    UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
+
+    foreach (QGraphicsItem *item, selectedItems()) {
+        item->setSelected(false);
+        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        item->setFlag( QGraphicsItem::ItemIsMovable, false);
+        item->setFlag(QGraphicsItem::ItemIsFocusable);
+        groupItem->addToGroup(item);
+    }
+
+    addItem(groupItem);
+//    groupItem->setPos(50, 50);
+    groupItem->setVisible(true);
+    groupItem->setFocus();
+    qDebug() << groupItem->boundingRect();
 }
 
 // MARK: -
@@ -1984,6 +2017,14 @@ void UBGraphicsScene::setOwnZlevel(QGraphicsItem *item)
 {
     item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
 }
+void UBGraphicsScene::groupItems(QList<QGraphicsItem *> &itemList)
+{
+    foreach (QGraphicsItem *item, itemList) {
+        qDebug() << "selected item found";
+        item->setSelected(false);
+    }
+}
+
 
 qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest)
 {

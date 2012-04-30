@@ -297,6 +297,8 @@ QString UBDocumentProxy::sessionAuthors()
 
 QDateTime UBDocumentProxy::documentDate()
 {
+    qDebug()<< UBSettings::documentDate;
+    qDebug()<<mMetaDatas;
     if(mMetaDatas.contains(UBSettings::documentDate))
         return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentDate).toString());
     return QDateTime::currentDateTime();
