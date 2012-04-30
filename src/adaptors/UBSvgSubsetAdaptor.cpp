@@ -428,7 +428,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             }
             else if (mXmlReader.name() == "g")
             {
-				// Create new stroke, if its NULL or already has poligons
+                // Create new stroke, if its NULL or already has polygons
 				if (annotationGroup)
 				{
 					if (!annotationGroup->polygons().empty())
@@ -437,8 +437,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 				else
 					annotationGroup = new UBGraphicsStroke();
 
-                if(eDrawingMode_Vector == dc->drawingMode()){
+               if(eDrawingMode_Vector == dc->drawingMode()){
                     strokesGroup = new UBGraphicsStrokesGroup();
+                    graphicsItemFromSvg(strokesGroup);
                 }
 
                 QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
@@ -485,6 +486,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     if(eDrawingMode_Vector == dc->drawingMode()){
                         if(strokesGroup){
+                            polygonItem->setTransform(strokesGroup->transform());
                             strokesGroup->addToGroup(polygonItem);
                         }
                     }else{
@@ -510,6 +512,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     if(eDrawingMode_Vector == dc->drawingMode()){
                         if(strokesGroup){
+                            polygonItem->setTransform(strokesGroup->transform());
                             strokesGroup->addToGroup(polygonItem);
                         }
                     }else{
@@ -838,6 +841,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             {
                 if(strokesGroup && scene){
                     scene->addItem(strokesGroup);
+                    //graphicsItemFromSvg(strokesGroup);
                 }
 
 				if (annotationGroup)
