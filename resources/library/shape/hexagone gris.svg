@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 13.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="133.428px" height="118.852px" viewBox="0 0 133.428 118.852" enable-background="new 0 0 133.428 118.852"
+	 xml:space="preserve">
+
+<g>
+	<g opacity="0.25">
+		<polygon fill-rule="evenodd" clip-rule="evenodd" points="99.986,116.443 68.022,116.443 36.054,116.443 4.089,61.077 
+			20.072,33.394 36.054,5.71 68.022,5.71 99.986,5.71 115.971,33.394 131.951,61.077 115.971,88.759 		"/>
+		<polygon fill-rule="evenodd" clip-rule="evenodd" points="99.986,116.443 68.022,116.443 36.054,116.443 4.089,61.077 
+			20.072,33.394 36.054,5.71 68.022,5.71 99.986,5.71 115.971,33.394 131.951,61.077 115.971,88.759 		"/>
+	</g>
+	<g>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="2.1108" y1="59.2944" x2="130.3359" y2="59.2944">
+			<stop  offset="0" style="stop-color:#BEBEBE"/>
+			<stop  offset="1" style="stop-color:#6A6A6A"/>
+		</linearGradient>
+		<polygon fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_1_)" stroke="#414141" points="98.281,114.818 66.226,114.818 
+			34.166,114.818 2.111,59.294 18.138,31.533 34.166,3.771 66.226,3.771 98.281,3.771 114.311,31.533 130.336,59.294 
+			114.311,87.056 		"/>
+		<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="2.1108" y1="59.2944" x2="130.3359" y2="59.2944">
+			<stop  offset="0" style="stop-color:#BEBEBE"/>
+			<stop  offset="1" style="stop-color:#6A6A6A"/>
+		</linearGradient>
+		<polygon fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_2_)" stroke="#414141" points="98.281,114.818 66.226,114.818 
+			34.166,114.818 2.111,59.294 18.138,31.533 34.166,3.771 66.226,3.771 98.281,3.771 114.311,31.533 130.336,59.294 
+			114.311,87.056 		"/>
+	</g>
+</g>
+</svg>
