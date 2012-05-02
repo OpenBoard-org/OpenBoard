@@ -68,7 +68,7 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpLayout = new QVBoxLayout(this);
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
-    mpPageNumberLabel->setObjectName("UBTGEditionPageNumberLabel");
+    mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
     mpLayout->addWidget(mpPageNumberLabel);
     // tree basic configuration
     mpDocumentTitle = new QLabel(this);
@@ -195,7 +195,7 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getData()
     children << getChildrenList(mpAddALinkItem);
     result << getPageAndCommentData();
     foreach(QTreeWidgetItem* widgetItem, children){
-        tUBGEElementNode* node = dynamic_cast<iUBTGSavableData*>(mpTreeWidget->itemWidget(widgetItem,0))->saveData();
+        tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget(widgetItem,0))->saveData();
         if(node)
             result << node;
     }
@@ -205,7 +205,7 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getData()
 void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int column)
 {
     int addSubItemWidgetType = widget->data(column,Qt::UserRole).toInt();
-    if(column == 0 && addSubItemWidgetType != eUBTGAddSubItemWidgetType_None){
+    if(addSubItemWidgetType != eUBTGAddSubItemWidgetType_None){
         QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(widget);
         newWidgetItem->setData(column,Qt::UserRole,eUBTGAddSubItemWidgetType_None);
         newWidgetItem->setData(1,Qt::UserRole,eUBTGAddSubItemWidgetType_None);
@@ -279,7 +279,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
 
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
-    mpPageNumberLabel->setObjectName("UBTGPresentationPageNumberLabel");
+    mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
 
     mpLayout->addWidget(mpPageNumberLabel);
 
@@ -317,10 +317,11 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpSeparator->setObjectName("UBTGSepartor");
     mpLayout->addWidget(mpSeparator);
 
-    mpTreeWidget = new QTreeWidget(this);
+    mpTreeWidget = new UBTGDraggableTreeItem(this);
     mpLayout->addWidget(mpTreeWidget);
 
     mpRootWidgetItem = mpTreeWidget->invisibleRootItem();
+    mpTreeWidget->setDragEnabled(true);
     mpTreeWidget->setRootIsDecorated(false);
     mpTreeWidget->setIndentation(0);
     mpTreeWidget->setDropIndicatorShown(false);
@@ -392,6 +393,7 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
         else if(element->type == "action"){
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpRootWidgetItem);
             newWidgetItem->setText(0,element->attributes.value("task"));
+            newWidgetItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             QString colorString = element->attributes.value("owner").toInt() == 0 ? "red":"green";
             UBTGAdaptableText* textWidget = new UBTGAdaptableText(newWidgetItem,0);
             textWidget->bottomMargin(14);
@@ -409,6 +411,8 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
             newWidgetItem->setText(0,element->attributes.value("title"));
             newWidgetItem->setData(0,tUBTGTreeWidgetItemRole_HasAnAction,tUBTGActionAssociateOnClickItem_MEDIA);
             newWidgetItem->setData(0,Qt::FontRole, QVariant(QFont(QApplication::font().family(),11)));
+            newWidgetItem->setData(0, TG_USER_ROLE_MIME_TYPE, element->attributes.value("relativePath"));
+            newWidgetItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             mpRootWidgetItem->addChild(newWidgetItem);
 
             QTreeWidgetItem* mediaItem = new QTreeWidgetItem(newWidgetItem);
@@ -425,6 +429,7 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
             newWidgetItem->setData(0,tUBTGTreeWidgetItemRole_HasAnAction,tUBTGActionAssociateOnClickItem_URL);
             newWidgetItem->setData(0,tUBTGTreeWidgetItemRole_HasAnUrl,QVariant(element->attributes.value("url")));
             newWidgetItem->setData(0,Qt::FontRole, QVariant(QFont(QApplication::font().family(),11)));
+            newWidgetItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             mpRootWidgetItem->addChild(newWidgetItem);
         }
     }
@@ -498,7 +503,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpLayout = new QVBoxLayout(this);
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
-    mpPageNumberLabel->setObjectName("UBTGPresentationPageNumberLabel");
+    mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
     mpPageNumberLabel->setText(tr("Page 0"));
     mpLayout->addWidget(mpPageNumberLabel);
 
@@ -510,9 +515,9 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpButtonTitleLayout->addWidget(mpModePushButton);
     connect(mpModePushButton,SIGNAL(clicked()),this,SLOT(switchToMode()));
 
-    mpSessionTitle = new UBTGAdaptableText(0,this);
+    mpSessionTitle = new UBTGAdaptableText(0,this,"UBTGSessionTitle");
     mpSessionTitle->setPlaceHolderText(tr("Type session title here ..."));
-    mpSessionTitle->setObjectName("UBTGEditionModeSessionTitle");
+    //mpSessionTitle->setObjectName("UBTGSessionTitle");
     mpButtonTitleLayout->addWidget(mpSessionTitle);
 
     mpLayout->addLayout(mpButtonTitleLayout);

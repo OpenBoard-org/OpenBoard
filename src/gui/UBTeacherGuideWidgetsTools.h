@@ -29,6 +29,9 @@
 
 #include "customWidgets/UBMediaWidget.h"
 
+#define TG_USER_ROLE_MIME_TYPE (Qt::UserRole+50)
+
+
 class QTreeWidget;
 class QVBoxLayout;
 class QComboBox;
@@ -44,7 +47,7 @@ typedef struct
 }tUBGEElementNode;
 
 
-class iUBTGSavableData
+class iUBTGSaveData
 {
 public:
     virtual tUBGEElementNode* saveData() = 0;
@@ -62,7 +65,7 @@ signals:
 public slots:
 };
 
-class UBTGActionWidget : public QWidget, public iUBTGSavableData
+class UBTGActionWidget : public QWidget, public iUBTGSaveData
 {
     Q_OBJECT
 
@@ -127,7 +130,7 @@ private:
     bool mDragStarted;
 };
 
-class UBTGMediaWidget : public QStackedWidget , public iUBTGSavableData
+class UBTGMediaWidget : public QStackedWidget , public iUBTGSaveData
 {
     Q_OBJECT
 public:
@@ -162,7 +165,7 @@ private:
 };
 
 
-class UBTGUrlWidget : public QWidget , public iUBTGSavableData
+class UBTGUrlWidget : public QWidget , public iUBTGSaveData
 {
     Q_OBJECT
 public:
@@ -175,5 +178,14 @@ private:
     QLineEdit* mpUrl;
 };
 
+class UBTGDraggableTreeItem : public QTreeWidget
+{
+    Q_OBJECT
+public:
+    UBTGDraggableTreeItem(QWidget* parent = 0, const char* name = "UBTGDraggableTreeItem");
+
+private:
+    QMimeData* mimeData(const QList<QTreeWidgetItem *> items) const;
+};
 
 #endif // UBTEACHERGUIDEWIDGETSTOOLS_H

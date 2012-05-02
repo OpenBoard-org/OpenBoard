@@ -96,7 +96,7 @@ private:
     QLabel* mpPageNumberLabel;
     QFrame* mpSeparator;
     QPushButton* mpModePushButton;
-    QTreeWidget* mpTreeWidget;
+    UBTGDraggableTreeItem* mpTreeWidget;
     QTreeWidgetItem* mpRootWidgetItem;
     QTreeWidgetItem* mpMediaSwitchItem;
 

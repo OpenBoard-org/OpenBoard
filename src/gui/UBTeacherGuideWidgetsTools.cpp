@@ -103,15 +103,18 @@ tUBGEElementNode* UBTGActionWidget::saveData()
 UBTGAdaptableText::UBTGAdaptableText(QTreeWidgetItem* widget, QWidget* parent, const char* name):QTextEdit(parent)
   , mBottomMargin(5)
   , mpTreeWidgetItem(widget)
-  , mMinimumHeight(20)
+  , mMinimumHeight(0)
   , mHasPlaceHolder(false)
   , mIsUpdatingSize(false)
 {
     setObjectName(name);
-    setStyleSheet( "QWidget {background: white; border:1 solid #999999; border-radius : 10px; padding: 2px;}");
     connect(this,SIGNAL(textChanged()),this,SLOT(onTextChanged()));
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    mMinimumHeight = document()->size().height() + mBottomMargin;
+    setMinimumHeight(mMinimumHeight);
+
 }
 
 void UBTGAdaptableText::setPlaceHolderText(QString text)
@@ -170,7 +173,6 @@ QString UBTGAdaptableText::text()
 void UBTGAdaptableText::onTextChanged()
 {
     qreal documentSize = document()->size().height();
-
     if(height() == documentSize + mBottomMargin)
         return;
     mIsUpdatingSize = true;
@@ -478,7 +480,7 @@ void UBTGMediaWidget::updateSize()
 }
 
 /***************************************************************************
- *                      class    UBTGUrlWdiget                             *
+ *                      class    UBTGUrlWidget                             *
  ***************************************************************************/
 UBTGUrlWidget::UBTGUrlWidget(QWidget* parent, const char* name ):QWidget(parent)
   , mpLayout(NULL)
@@ -511,5 +513,23 @@ tUBGEElementNode* UBTGUrlWidget::saveData()
     result->type = "link";
     result->attributes.insert("title",mpTitle->text());
     result->attributes.insert("url",mpUrl->text());
+    return result;
+}
+
+
+/***************************************************************************
+ *              class    UBTGDraggableTreeItem                             *
+ ***************************************************************************/
+UBTGDraggableTreeItem::UBTGDraggableTreeItem(QWidget* parent, const char* name) : QTreeWidget(parent)
+{
+    setObjectName(name);
+}
+
+QMimeData* UBTGDraggableTreeItem::mimeData(const QList<QTreeWidgetItem *> items) const
+{
+    QMimeData* result = new QMimeData();
+    QList<QUrl> urls;
+    urls << QUrl(items.at(0)->data(0,TG_USER_ROLE_MIME_TYPE).toString());
+    result->setUrls(urls);
     return result;
 }
