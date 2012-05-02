@@ -86,6 +86,8 @@ public slots:
     void onActiveSceneChanged();
 
 private:
+    bool eventFilter(QObject* object, QEvent* event);
+
     void createMediaButtonItem();
 
     UBTGAdaptableText* mpPageTitle;
@@ -124,6 +126,7 @@ private:
     void fillComboBoxes();
     void loadData();
     void hideEvent(QHideEvent* event);
+    bool eventFilter(QObject* object, QEvent* event);
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonTitleLayout;

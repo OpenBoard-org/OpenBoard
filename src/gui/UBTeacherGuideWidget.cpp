@@ -210,6 +210,7 @@ void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int 
         newWidgetItem->setData(column,Qt::UserRole,eUBTGAddSubItemWidgetType_None);
         newWidgetItem->setData(1,Qt::UserRole,eUBTGAddSubItemWidgetType_None);
         newWidgetItem->setIcon(1,QIcon(":images/close.svg"));
+
         switch(addSubItemWidgetType)
         {
         case eUBTGAddSubItemWidgetType_Action:
@@ -288,6 +289,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpModePushButton = new QPushButton(this);
     mpModePushButton->setIcon(QIcon(":images/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
+    mpModePushButton->installEventFilter(this);
 
     connect(mpModePushButton,SIGNAL(clicked()),parentWidget(),SLOT(changeMode()));
 
@@ -343,6 +345,14 @@ UBTeacherGuidePresentationWidget::~UBTeacherGuidePresentationWidget()
     DELETEPTR(mpButtonTitleLayout);
     DELETEPTR(mpTreeWidget);
     DELETEPTR(mpLayout);
+}
+
+bool UBTeacherGuidePresentationWidget::eventFilter(QObject* object, QEvent* event)
+{
+    Q_UNUSED(object);
+    if(event->type() == QEvent::HoverEnter || event->type() == QEvent::HoverMove || event->type() == QEvent::HoverLeave)
+        return true;
+    return false;
 }
 
 void UBTeacherGuidePresentationWidget::cleanData()
@@ -512,6 +522,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpModePushButton = new QPushButton(this);
     mpModePushButton->setIcon(QIcon(":images/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
+    mpModePushButton->installEventFilter(this);
     mpButtonTitleLayout->addWidget(mpModePushButton);
     connect(mpModePushButton,SIGNAL(clicked()),this,SLOT(switchToMode()));
 
@@ -663,6 +674,14 @@ UBTeacherGuidePageZeroWidget::~UBTeacherGuidePageZeroWidget()
     DELETEPTR(mpLicenceLayout);
     DELETEPTR(mpButtonTitleLayout);
     DELETEPTR(mpLayout);
+}
+
+bool UBTeacherGuidePageZeroWidget::eventFilter(QObject* object, QEvent* event)
+{
+    Q_UNUSED(object);
+    if(event->type() == QEvent::HoverEnter || event->type() == QEvent::HoverMove || event->type() == QEvent::HoverLeave)
+        return true;
+    return false;
 }
 
 void UBTeacherGuidePageZeroWidget::fillComboBoxes()
