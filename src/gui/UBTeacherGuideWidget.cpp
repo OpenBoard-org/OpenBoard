@@ -701,8 +701,11 @@ void UBTeacherGuidePageZeroWidget::fillComboBoxes()
 
     QStringList licences;
     licences << tr("Attribution CC BY") << tr("Attribution-NoDerivs CC BY-ND") << tr("Attribution-ShareAlike CC BY-SA") << tr("Attribution-NonCommercial CC BY-NC") << tr("Attribution-NonCommercial-NoDerivs CC BY-NC-ND") << tr("Attribution-NonCommercial-ShareAlike CC BY-NC-SA") << tr("Public domain") << tr("Copyright");
-
     mpLicenceBox->addItems(licences);
+    QStringList licenceIconList;
+    licenceIconList << ":images/licenses/ccby.png" << ":images/licenses/ccbynd.png" << ":images/licenses/ccbysa.png" << ":images/licenses/ccbync.png" << ":images/licenses/ccbyncnd.png" << ":images/licenses/ccbyncsa.png";
+    for(int i = 0; i < licenceIconList.count(); i+=1)
+        mpLicenceBox->setItemData(i,licenceIconList.at(i));
 }
 
 void UBTeacherGuidePageZeroWidget::onSchoolLevelChanged(QString schoolLevel)
@@ -722,21 +725,64 @@ void UBTeacherGuidePageZeroWidget::onSchoolLevelChanged(QString schoolLevel)
 
 void UBTeacherGuidePageZeroWidget::onActiveSceneChanged()
 {
-    UBDocumentProxy* documentProxy = UBApplication::documentController ? UBApplication::documentController->getCurrentDocument() : 0;
-    if(UBApplication::documentController && UBApplication::boardController->currentPage() == 0){
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    if(documentProxy && UBApplication::boardController->currentPage() == 0){
         QDateTime creationDate = documentProxy->documentDate();
-        mpCreationLabel->setText(tr("Created the:") + creationDate.toString(Qt::SystemLocaleShortDate));
+        mpCreationLabel->setText(tr("Created the: ") + creationDate.toString(Qt::SystemLocaleShortDate));
         QDateTime updatedDate = documentProxy->lastUpdate();
-        mpLastModifiedLabel->setText(tr("Updated the:") + updatedDate.toString(Qt::SystemLocaleShortDate));
+        mpLastModifiedLabel->setText(tr("Updated the: ") + updatedDate.toString(Qt::SystemLocaleShortDate));
+        persistData();
+        loadData();
     }
 }
 
+void UBTeacherGuidePageZeroWidget::hideEvent ( QHideEvent * event )
+{
+    persistData();
+    QWidget::hideEvent(event);
+}
+
+void UBTeacherGuidePageZeroWidget::loadData()
+{
+
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    mpSessionTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
+    mpAuthors->setText(documentProxy->metaData(UBSettings::sessionAuthors).toString());
+    mpGoals->setText(documentProxy->metaData(UBSettings::sessionGoals).toString());
+    mpKeywords->setText(documentProxy->metaData(UBSettings::sessionKeywords).toString());
+
+    int currentIndex = mpSchoolLevelBox->findText(documentProxy->metaData(UBSettings::sessionGradeLevel).toString());
+    mpSchoolLevelBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
+
+    currentIndex = mpSchoolBranchBox->findText(documentProxy->metaData(UBSettings::sessionBranch).toString());
+    mpSchoolBranchBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
+
+    currentIndex = mpSchoolTypeBox->findText(documentProxy->metaData(UBSettings::sessionType).toString());
+    mpSchoolTypeBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
+
+    currentIndex = mpLicenceBox->findText(documentProxy->metaData(UBSettings::sessionLicence).toString());
+    mpLicenceBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
+}
+
+void UBTeacherGuidePageZeroWidget::persistData()
+{
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    documentProxy->setMetaData(UBSettings::sessionTitle,mpSessionTitle->text());
+    documentProxy->setMetaData(UBSettings::sessionAuthors, mpAuthors->text());
+    documentProxy->setMetaData(UBSettings::sessionGoals,mpGoals->text());
+    documentProxy->setMetaData(UBSettings::sessionKeywords,mpKeywords->text());
+    documentProxy->setMetaData(UBSettings::sessionGradeLevel,mpSchoolLevelBox->currentText());
+    documentProxy->setMetaData(UBSettings::sessionBranch,mpSchoolBranchBox->currentText());
+    documentProxy->setMetaData(UBSettings::sessionType,mpSchoolTypeBox->currentText());
+    documentProxy->setMetaData(UBSettings::sessionLicence,mpLicenceBox->currentText());
+}
 
 void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
 {
     if(mode == tUBTGZeroPageMode_EDITION){
         mpModePushButton->hide();
         mpSessionTitle->setReadOnly(false);
+        mpSessionTitle->setObjectName("UBTGEditionModeSessionTitle");
         mpAuthors->setReadOnly(false);
         mpGoals->setReadOnly(false);
         mpKeywords->setReadOnly(false);
@@ -753,6 +799,7 @@ void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
     else{
         mpModePushButton->show();
         mpSessionTitle->setReadOnly(true);
+        mpSessionTitle->setObjectName("UBTGPresentationSessionTitle");
         mpAuthors->setReadOnly(true);
         mpGoals->setReadOnly(true);
         mpKeywords->setReadOnly(true);
@@ -766,14 +813,14 @@ void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
         mpSchoolTypeValueLabel->show();
         mpSchoolTypeBox->hide();
         mpLicenceValueLabel->setText(mpLicenceBox->currentText());
-        QStringList licenceIconList;
-        licenceIconList << ":images/licenses/ccby.png" << ":images/licenses/ccbynd.png" << ":images/licenses/ccbysa.png" << ":images/licenses/ccbync.png" << ":images/licenses/ccbyncnd.png" << ":images/licenses/ccbyncsa.png";
-        if(mpLicenceBox->currentIndex() < 6){
-            mpLicenceIcon->setPixmap(licenceIconList.at(mpLicenceBox->currentIndex()));
+        QString licenceIconPath = mpLicenceBox->itemData(mpLicenceBox->currentIndex()).toString();
+        if(!licenceIconPath.isEmpty()){
+            mpLicenceIcon->setPixmap(QPixmap(licenceIconPath));
             mpLicenceIcon->show();
         }
         mpLicenceValueLabel->show();
         mpLicenceBox->hide();
+        persistData();
     }
 }
 
@@ -860,6 +907,7 @@ UBTeacherGuideWidget::UBTeacherGuideWidget(QWidget* parent, const char* name): Q
 
 UBTeacherGuideWidget::~UBTeacherGuideWidget()
 {
+    DELETEPTR(mpPageZeroWidget);
     DELETEPTR(mpEditionWidget);
     DELETEPTR(mpPresentationWidget);
 }
@@ -867,10 +915,11 @@ UBTeacherGuideWidget::~UBTeacherGuideWidget()
 
 void UBTeacherGuideWidget::onActiveSceneChanged()
 {
-    if(UBApplication::boardController->currentPage() == 0)
+    if(UBApplication::boardController->currentPage() == 0){
         setCurrentWidget(mpPageZeroWidget);
-    else
-        setCurrentWidget(mpPresentationWidget);
+        mpPageZeroWidget->switchToMode(tUBTGZeroPageMode_EDITION);
+    }else
+        setCurrentWidget(mpEditionWidget);
 
 }
 

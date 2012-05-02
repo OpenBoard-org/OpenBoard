@@ -21,12 +21,14 @@
 #include <QDebug>
 #include <QUrl>
 #include <QWebSettings>
-#include <QDomElement>
-#include <QDomDocument>
 #include <QApplication>
 
 #include "UBTeacherGuideWidgetsTools.h"
 #include "UBTGWidgetTreeDelegate.h"
+
+#include "core/UBPersistenceManager.h"
+
+#include "domain/UBW3CWidget.h"
 
 #include "globals/UBGlobals.h"
 
@@ -110,7 +112,6 @@ UBTGAdaptableText::UBTGAdaptableText(QTreeWidgetItem* widget, QWidget* parent, c
     connect(this,SIGNAL(textChanged()),this,SLOT(onTextChanged()));
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setMinimumHeight(mMinimumHeight);
 }
 
 void UBTGAdaptableText::setPlaceHolderText(QString text)
@@ -126,6 +127,13 @@ void UBTGAdaptableText::setPlaceHolderText(QString text)
 
 void UBTGAdaptableText::keyPressEvent(QKeyEvent* e)
 {
+    if(isReadOnly()){
+        // this is important if you set a placeholder. In this case even if the text field is readonly the
+        // keypressed event came here. So if you don't ignore it you'll have a flick on the text zone
+        e->ignore();
+        return;
+    }
+
     if(toPlainText() == mPlaceHolderText){
         setTextColor(QColor(Qt::black));
         setPlainText("");
@@ -161,11 +169,18 @@ QString UBTGAdaptableText::text()
 
 void UBTGAdaptableText::onTextChanged()
 {
+    qreal documentSize = document()->size().height();
+
+    if(height() == documentSize + mBottomMargin)
+        return;
     mIsUpdatingSize = true;
-    if(document()->size().height() < mMinimumHeight)
+
+
+    if(documentSize < mMinimumHeight)
         setFixedHeight(mMinimumHeight);
     else
-        setFixedHeight(document()->size().height()+mBottomMargin);
+        setFixedHeight(documentSize+mBottomMargin);
+
     updateGeometry();
     //to trig the widget item to resize it
     if(mpTreeWidgetItem){
@@ -197,7 +212,51 @@ void UBTGAdaptableText::bottomMargin(int newValue)
 void UBTGAdaptableText::resizeEvent(QResizeEvent* e)
 {
     QTextEdit::resizeEvent(e);
-    QTimer::singleShot(100,this,SLOT(onTextChanged()));
+    //QTimer::singleShot(100,this,SLOT(onTextChanged()));
+}
+
+/***************************************************************************
+ *                      class   UBTGDraggableWeb                           *
+ ***************************************************************************/
+UBDraggableWeb::UBDraggableWeb(QString& relativePath, QWidget* parent): QWebView(parent)
+  , mRelativePath(relativePath)
+  , mDragStartPosition(QPoint(-1,-1))
+  , mDragStarted(false)
+
+{
+    //NOOP
+}
+
+void UBDraggableWeb::mousePressEvent(QMouseEvent* event)
+{
+    mDragStartPosition = event->pos();
+    mDragStarted = true;
+    QWebView::mousePressEvent(event);
+}
+
+void UBDraggableWeb::mouseReleaseEvent(QMouseEvent* event)
+{
+    mDragStarted = false;
+    QWebView::mouseReleaseEvent(event);
+}
+
+void UBDraggableWeb::mouseMoveEvent(QMouseEvent* event)
+{
+    if(mDragStarted && (event->pos() - mDragStartPosition).manhattanLength() > QApplication::startDragDistance()){
+        QDrag *drag = new QDrag(this);
+        QMimeData *mimeData = new QMimeData;
+        QList<QUrl> urlList;
+        urlList << QUrl(mRelativePath);
+        mimeData->setUrls(urlList);
+        drag->setMimeData(mimeData);
+
+        drag->exec();
+        event->accept();
+        mDragStarted = false;
+    }
+    else
+        QWebView::mouseMoveEvent(event);
+
 }
 
 /***************************************************************************
@@ -259,6 +318,22 @@ UBTGMediaWidget::~UBTGMediaWidget()
     DELETEPTR(mpWorkWidget);
 }
 
+void UBTGMediaWidget::hideEvent(QHideEvent* event)
+{
+    if(mpWebView)
+        mpWebView->page()->mainFrame()->setContent(UBW3CWidget::freezedWidgetPage().toAscii());
+    QWidget::hideEvent(event);
+}
+
+void UBTGMediaWidget::showEvent(QShowEvent* event)
+{
+    QWidget::showEvent(event);
+    if(mpWebView){
+        qDebug() << mRelativePath;
+        mpWebView->load(QUrl(mRelativePath + "/index.htm"));
+    }
+}
+
 tUBGEElementNode* UBTGMediaWidget::saveData()
 {
     if(!mpTitle)
@@ -279,8 +354,8 @@ void UBTGMediaWidget::dragEnterEvent(QDragEnterEvent *event)
 void UBTGMediaWidget::createWorkWidget(QString& path)
 {
     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(path);
-    qDebug() << mimeType;
     bool setMedia = true;
+    mRelativePath = path;
     if(mimeType.contains("audio") || mimeType.contains("video")){
         mMediaType = mimeType.contains("audio")? "audio":"movie";
         mpMediaWidget = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
@@ -296,7 +371,11 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
     }
     else if(mimeType.contains("application")){
         mMediaType = "w3c";
-        mpWebView = new QWebView(0);
+        if(!mIsPresentationMode){
+            QDir baseW3CDirectory("/home/claudio");
+            mRelativePath = UBW3CWidget::createNPAPIWrapperInDir(path,baseW3CDirectory,mimeType,QSize(100,100),"flashahaha");
+        }
+        mpWebView = new UBDraggableWeb(mRelativePath);
         mpWebView->setAcceptDrops(false);
         mpWebView->settings()->setAttribute(QWebSettings::JavaEnabled, true);
         mpWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -305,8 +384,8 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
         mpWebView->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
         mpWebView->settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
         mpWebView->settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
-        mpWebView->load(QUrl(path));
-        mpWebView->show();
+
+        mpWebView->load(QUrl(mRelativePath+"/index.htm"));
     }
     else{
         qDebug() << "createWorkWidget mime type not handled" << mimeType;
@@ -314,7 +393,6 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
     }
 
     if(setMedia){
-        mRelativePath = path;
         setAcceptDrops(false);
         mpWorkWidget = new QWidget(this);
         mpLayout = new QVBoxLayout(mpWorkWidget);
@@ -336,6 +414,7 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
             mpWebView->setMaximumHeight(mpTreeWidgetItem->treeWidget()->size().width());
             mpWebView->setParent(mpWorkWidget);
             mpLayout->addWidget(mpWebView);
+            mpWebView->show();
         }
         mpWorkWidget->setLayout(mpLayout);
         addWidget(mpWorkWidget);

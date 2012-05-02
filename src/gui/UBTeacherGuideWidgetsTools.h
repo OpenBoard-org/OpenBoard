@@ -111,6 +111,22 @@ private:
 };
 
 
+class UBDraggableWeb : public QWebView
+{
+    Q_OBJECT
+public:
+    explicit UBDraggableWeb(QString& relativePath, QWidget* parent = 0);
+
+private:
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
+
+    QString mRelativePath;
+    QPoint mDragStartPosition;
+    bool mDragStarted;
+};
+
 class UBTGMediaWidget : public QStackedWidget , public iUBTGSavableData
 {
     Q_OBJECT
@@ -124,6 +140,8 @@ protected:
     void dragEnterEvent(QDragEnterEvent* event);
     void dropEvent(QDropEvent* event);
     void mousePressEvent(QMouseEvent* event);
+    void hideEvent(QHideEvent* event);
+    void showEvent(QShowEvent* event);
 
 private:
     void parseMimeData(const QMimeData* pMimeData);
@@ -137,7 +155,7 @@ private:
     UBTGAdaptableText* mpTitle;
     QLabel* mpMediaLabelWidget;
     UBMediaWidget* mpMediaWidget;
-    QWebView* mpWebView;
+    UBDraggableWeb* mpWebView;
     QString mRelativePath;
     bool mIsPresentationMode;
     QString mMediaType;

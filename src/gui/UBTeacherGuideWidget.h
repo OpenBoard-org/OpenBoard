@@ -103,7 +103,7 @@ private:
 };
 
 /***************************************************************************
- *        class    UBTeacherGuidePageZeroPresentationWidget                *
+ *                  class    UBTeacherGuidePageZeroWidget                  *
  ***************************************************************************/
 class UBTeacherGuidePageZeroWidget : public QWidget
 {
@@ -122,6 +122,8 @@ public slots:
 
 private:
     void fillComboBoxes();
+    void loadData();
+    void hideEvent(QHideEvent* event);
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonTitleLayout;
@@ -168,6 +170,7 @@ private:
 
 private slots:
     void onSchoolLevelChanged(QString schoolLevel);
+    void persistData();
 };
 
 /***************************************************************************
