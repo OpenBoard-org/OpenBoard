@@ -34,8 +34,11 @@ public:
     QString getUrl() const { return virtualPath; }
 	//QString getPath() const { return mPath; };
     QString getFullPath() const { return mPath; }
+	QString getVirtualPath() const { return  virtualPath + "/" + mName; }
     UBFeatureElementType getType() const { return elementType; }
 	bool isFolder() const;
+	bool operator ==( const UBFeature &f )const;
+	bool operator !=( const UBFeature &f )const;
 private:
 	QString virtualPath;
     QPixmap mThumbnail;
@@ -78,6 +81,7 @@ private:
 	//void addImageToCurrentPage( const QString &path );
 	void loadFavoriteList();
 	void saveFavoriteList();
+	UBFeature getDestinationForItem( const QUrl &url );
 
 	static UBFeatureElementType fileTypeFromUrl( const QString &path );
 
@@ -115,6 +119,12 @@ private:
 	UBFeature currentElement;
 	UBFeature trashElement;
 	UBFeature favoriteElement;
+	UBFeature audiosElement;
+	UBFeature moviesElement;
+	UBFeature picturesElement;
+	UBFeature interactElement;
+	UBFeature flashElement;
+	UBFeature shapesElement;
 
 	QSet <QString> *favoriteSet;
 };

@@ -143,6 +143,16 @@ void UBFeaturesActionBar::setButtons()
         mpRemoveFavoriteBtn->show();
         mpNewFolderBtn->hide();
         break;
+	case IN_TRASH:
+		mpFavoriteBtn->hide();
+        mpSocialBtn->hide();
+        mSearchBar->show();
+        //mpSearchBtn->show();
+        //mpDeleteBtn->hide();
+        mpCloseBtn->hide();
+        //mpRemoveFavoriteBtn->show();
+        mpNewFolderBtn->hide();
+		break;
     default:
         break;
     }

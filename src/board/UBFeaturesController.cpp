@@ -24,7 +24,15 @@ UBFeature::UBFeature(const QString &url, const QPixmap &icon, const QString &nam
 	
 }
 
+bool UBFeature::operator ==( const UBFeature &f )const
+{
+	return virtualPath == f.getUrl() && mName == f.getName() && mPath == f.getFullPath() && elementType == f.getType();
+}
 
+bool UBFeature::operator !=( const UBFeature &f )const
+{
+	return !(*this == f);
+}
 
 bool UBFeature::isFolder() const
 {
@@ -72,12 +80,17 @@ void UBFeaturesController::initDirectoryTree()
 	trashPath = rootPath + "/Trash";
 	favoritePath = rootPath + "/Favorites";
 
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath ) );
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/MoviesCategory.svg"), "Movies" , mUserVideoDirectoryPath ) );
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/PicturesCategory.svg"), "Pictures" , mUserPicturesDirectoryPath ) );
+	audiosElement = UBFeature( rootPath, QPixmap(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath );
+	featuresList->append( audiosElement );
+	moviesElement = UBFeature( rootPath, QPixmap(":images/libpalette/MoviesCategory.svg"), "Movies" , mUserVideoDirectoryPath );
+	featuresList->append( moviesElement );
+	picturesElement = UBFeature( rootPath, QPixmap(":images/libpalette/PicturesCategory.svg"), "Pictures" , mUserPicturesDirectoryPath );
+	featuresList->append( picturesElement );
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/ApplicationsCategory.svg"), "Applications" , mUserInteractiveDirectoryPath ) );
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/FlashCategory.svg"), "Animations" , mUserAnimationDirectoryPath ) );
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/InteractivesCategory.svg"), "Interactivities" ,  mLibInteractiveDirectoryPath ) );
+	flashElement = UBFeature( rootPath, QPixmap(":images/libpalette/FlashCategory.svg"), "Animations" , mUserAnimationDirectoryPath );
+	featuresList->append( flashElement );
+	interactElement = UBFeature( rootPath, QPixmap(":images/libpalette/InteractivesCategory.svg"), "Interactivities" ,  mLibInteractiveDirectoryPath );
+	featuresList->append( interactElement );
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/ShapesCategory.svg"), "Shapes" , mLibShapesDirectoryPath ) );
 	trashElement = UBFeature( rootPath, QPixmap(":images/libpalette/TrashCategory.svg"), "Trash", trashDirectoryPath, FEATURE_TRASH );
 	featuresList->append( trashElement );
@@ -325,6 +338,26 @@ void UBFeaturesController::addItemToPage(const UBFeature &item)
 	}
 }
 
+UBFeature UBFeaturesController::getDestinationForItem( const QUrl &url )
+{
+    QString mimetype = UBFileSystemUtils::mimeTypeFromFileName( fileNameFromUrl(url) );
+
+    if ( mimetype.contains("audio") )
+        return audiosElement;
+    if ( mimetype.contains("video") )
+        return moviesElement;
+    else if ( mimetype.contains("image") )
+        return picturesElement;
+    else if ( mimetype.contains("application") )
+	{
+        if ( mimetype.contains( "x-shockwave-flash") )
+            return flashElement;
+        else
+            return interactElement;
+    }
+    return UBFeature();
+}
+
 UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeature &destination )
 {
 	UBFeature newElement = copyItemToFolder( url, destination );
@@ -338,9 +371,19 @@ UBFeature UBFeaturesController::copyItemToFolder( const QUrl &url, const UBFeatu
 
 	Q_ASSERT( QFileInfo( sourcePath ).exists() );
 
+	UBFeature possibleDest = getDestinationForItem( url );
+
+	UBFeature dest = destination;
+
+	if ( destination != trashElement && 
+		!destination.getVirtualPath().startsWith( possibleDest.getVirtualPath(), Qt::CaseInsensitive ) )
+	{
+		dest = possibleDest;
+	}
+
 	QString name = QFileInfo( sourcePath ).fileName();
-	QString destPath = destination.getFullPath();
-	QString destVirtualPath = destination.getUrl() + "/" + destination.getName();
+	QString destPath = dest.getFullPath();
+	QString destVirtualPath = dest.getVirtualPath();
 	QString newFullPath = destPath + "/" + name;
 	QFile( sourcePath ).copy( newFullPath );
 

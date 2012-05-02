@@ -19,6 +19,7 @@
 //#include "UBLibActionBar.h"
 #include "board/UBFeaturesController.h"
 #include "UBFeaturesActionBar.h"
+#include "UBRubberBand.h"
 
 
 #define THUMBNAIL_WIDTH 400
@@ -105,6 +106,12 @@ public:
 protected:
 	virtual void dragEnterEvent( QDragEnterEvent *event );
 	virtual void dropEvent( QDropEvent *event );
+	/*virtual void mousePressEvent( QMouseEvent *event );
+	virtual void mouseMoveEvent( QMouseEvent *event );
+	virtual void mouseReleaseEvent( QMouseEvent *event );*/
+private:
+	//UBRubberBand *rubberBand;
+	//QPoint rubberOrigin;
 };
 
 

@@ -56,6 +56,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	featuresListView->setViewMode( QListView::IconMode );
 	itemDelegate = new UBFeaturesItemDelegate( this, featuresListView );
 	featuresListView->setItemDelegate( itemDelegate );
+	//featuresListView->setSelectionRectVisible(false);
 
 	featuresListView->setIconSize( QSize(defaultThumbnailSize, defaultThumbnailSize) );
 	featuresListView->setGridSize( QSize(defaultThumbnailSize * 1.75, defaultThumbnailSize * 1.75) );
@@ -71,6 +72,9 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	pathListView->setSelectionMode( QAbstractItemView::NoSelection );
 	pathListView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     pathListView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+	pathListView->setFlow( QListView::LeftToRight );
+	pathListView->setWrapping(false);
+	
 	//pathListView->setResizeMode( QListView::Adjust );
 	//pathListView->setMovement( QListView::Static );
 	pathListView->setDragDropMode( QAbstractItemView::DropOnly );
@@ -170,6 +174,10 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 			{
 				mActionBar->setCurrentState( IN_FAVORITE );
 			}
+			else if (feature.getType() == FEATURE_TRASH)
+			{
+				mActionBar->setCurrentState( IN_TRASH );
+			}
 			else
 			{
 				mActionBar->setCurrentState( IN_FOLDER );
@@ -208,6 +216,10 @@ void UBFeaturesWidget::currentPathChanged(const QModelIndex &index)
 		{
 			mActionBar->setCurrentState( IN_FAVORITE );
 		}
+		else if (feature.getType() == FEATURE_TRASH)
+		{
+			mActionBar->setCurrentState( IN_TRASH );
+		}
 		else
 		{
 			mActionBar->setCurrentState( IN_FOLDER );
@@ -224,7 +236,6 @@ void UBFeaturesWidget::createNewFolder()
 		featuresModel->addItem( newFolder );
 		featuresProxyModel->invalidate();
     }
-	
 }
 
 void UBFeaturesWidget::deleteElements( const QMimeData & mimeData )
@@ -315,11 +326,39 @@ UBFeaturesWidget::~UBFeaturesWidget()
 {
 }
 
-UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) : QListView(parent)
+UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) 
+: QListView(parent)
 {
 	setObjectName(name);
+	//rubberBand = new UBRubberBand( QRubberBand::Rectangle, this ); 
 }
 
+/*
+void UBFeaturesListView::mousePressEvent( QMouseEvent *event )
+{
+	rubberOrigin = event->pos();
+	rubberBand->setGeometry( QRect( rubberOrigin, QSize() ) );
+	//qDebug()  << rubberOrigin.x() << rubberOrigin.y();
+	rubberBand->show();
+	QListView::mousePressEvent(event);
+}
+
+void UBFeaturesListView::mouseMoveEvent( QMouseEvent *event )
+{
+	QPoint current = event->pos();
+	rubberBand->setGeometry( QRect( rubberOrigin, current ).normalized() );
+
+	//setSelection( rubberBand->rect(), QItemSelectionModel::Select );
+	QListView::mouseMoveEvent(event);
+}
+
+void UBFeaturesListView::mouseReleaseEvent( QMouseEvent *event )
+{
+	rubberBand->hide();
+	QListView::mouseReleaseEvent(event);
+}
+
+*/
 void UBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
 {
 	if ( event->mimeData()->hasUrls() )
@@ -537,19 +576,15 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 
     int endRow = 0;
 
+	UBFeature parentFeature;
     if ( !parent.isValid() )
 	{
-		return false;
-        /*if (row < 0)
-            endRow = featuresList->size();
-        else
-            endRow = qMin( row, featuresList->size() );*/
+		parentFeature = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->getCurrentElement();
     } 
 	else
-        endRow = parent.row();
-    Q_UNUSED(endRow) //why do we need this variable?
-
-	UBFeature parentFeature = parent.data( Qt::UserRole + 1).value<UBFeature>();
+	{
+		parentFeature = parent.data( Qt::UserRole + 1).value<UBFeature>();
+	}
 
 	QList<QUrl> urls = mimeData->urls();
 	
@@ -628,7 +663,7 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 			return Qt::ItemIsDragEnabled | defaultFlags;
 		if ( item.isFolder() && !item.getFullPath().isNull() )
 			return defaultFlags | Qt::ItemIsDropEnabled;
-		else return defaultFlags;
+		else return defaultFlags | Qt::ItemIsDropEnabled;
 	}
 	/*if ( index.isValid() )
 	{
@@ -647,7 +682,7 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 		default:;
 		}
 	}*/
-	return defaultFlags;
+	return defaultFlags | Qt::ItemIsDropEnabled;
 }
 
 
@@ -710,13 +745,7 @@ QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLoc
 	{
 		const QFontMetrics fm = listView->fontMetrics();
 		const QSize iSize = listView->iconSize();
-
-		if ( iSize.width() > 0 && fm.width(text) > iSize.width() )
-		{
-			while (fm.width(text) > iSize.width())
-				text.resize(text.size()-1);
-			text += "...";
-		}
+		return elidedText( fm, iSize.width(), Qt::ElideRight, text );
 	}
 	return text;
 }
