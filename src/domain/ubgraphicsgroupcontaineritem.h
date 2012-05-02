@@ -15,6 +15,14 @@ public:
     virtual UBGraphicsScene* scene();
     virtual UBGraphicsGroupContainerItem *deepCopy() const;
     virtual void remove();
+    enum { Type = UBGraphicsItemType::groupContainerType };
+
+    virtual int type() const
+    {
+        return Type;
+    }
+
+    void destroy();
 
 
 protected:

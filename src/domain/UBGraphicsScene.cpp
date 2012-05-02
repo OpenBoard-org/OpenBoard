@@ -65,6 +65,9 @@
 
 #include "core/memcheck.h"
 
+const QString groupText = "Group items";
+const QString ungroupText = "Ungroup items";
+
 qreal UBZLayerController::errorNumber = -20000001.0;
 
 UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
@@ -291,9 +294,9 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     }
 
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(enableGroupingButton()));
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(groupButtonProcessing()));
 
-    connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(processGroupItems()));
+    connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -312,15 +315,65 @@ void UBGraphicsScene::selectionChangedProcessing()
         UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
                                                 + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
 }
-void UBGraphicsScene::enableGroupingButton()
+void UBGraphicsScene::groupButtonProcessing()
 {
     QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
+    QList<QGraphicsItem*> selItems = selectedItems();
+    int selCount = selItems.count();
 
-    if (selectedItems().count() > 1) {
-        groupAction->setEnabled(true);
-    } else {
+    if (selCount < 1) {
         groupAction->setEnabled(false);
+        groupAction->setText(groupText);
+
+    } else if (selCount == 1) {
+        if (selItems.first()->type() == UBGraphicsGroupContainerItem::Type) {
+            groupAction->setEnabled(true);
+            groupAction->setText(ungroupText);
+        } else {
+            groupAction->setEnabled(false);
+        }
+
+    } else if (selCount > 1) {
+        groupAction->setEnabled(true);
+        groupAction->setText(groupText);
     }
+}
+void UBGraphicsScene::groupButtonClicked()
+{
+    QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
+    QList<QGraphicsItem*> selItems = selectedItems();
+    if (!selItems.count()) {
+        qDebug() << "Got grouping request when there is no any selected item on the scene";
+        return;
+    }
+
+    if (groupAction->text() == groupText) { //The only way to get information from item, considering using smth else
+        UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
+
+        foreach (QGraphicsItem *item, selItems) {
+            item->setSelected(false);
+            item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+            item->setFlag( QGraphicsItem::ItemIsMovable, false);
+            item->setFlag(QGraphicsItem::ItemIsFocusable);
+            groupItem->addToGroup(item);
+        }
+
+        addItem(groupItem);
+        groupItem->setVisible(true);
+        groupItem->setFocus();
+
+    } else if (groupAction->text() == ungroupText) {
+        //Considering one selected item and it's a group
+        if (selItems.count() > 1) {
+            qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
+            return;
+        }
+        UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.first());
+        if (currentGroup) {
+            currentGroup->destroy();
+        }
+    }
+
 }
 void UBGraphicsScene::processGroupItems()
 {
@@ -431,7 +484,6 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 
     return accepted;
 }
-
 
 bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pressure)
 {

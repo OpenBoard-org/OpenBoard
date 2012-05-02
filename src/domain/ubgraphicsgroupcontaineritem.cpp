@@ -53,6 +53,15 @@ void UBGraphicsGroupContainerItem::remove()
         mDelegate->remove();
 }
 
+void UBGraphicsGroupContainerItem::destroy() {
+
+    foreach (QGraphicsItem *item, childItems()) {
+        removeFromGroup(item);
+        item->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    }
+
+    mDelegate->remove(true);
+}
 
 void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

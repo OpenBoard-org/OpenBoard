@@ -64,6 +64,7 @@ UBGraphicsProtractor::UBGraphicsProtractor()
     mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
 
     scale(1.5, 1.5);
 }
