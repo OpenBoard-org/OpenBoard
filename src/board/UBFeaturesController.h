@@ -37,6 +37,7 @@ public:
 	QString getVirtualPath() const { return  virtualPath + "/" + mName; }
     UBFeatureElementType getType() const { return elementType; }
 	bool isFolder() const;
+	bool isDeletable() const;
 	bool operator ==( const UBFeature &f )const;
 	bool operator !=( const UBFeature &f )const;
 private:
@@ -74,6 +75,7 @@ public:
 
 	static QString fileNameFromUrl( const QUrl &url );
 	static QPixmap thumbnailForFile( const QString &path );
+	static bool isDeletable( const QUrl &url );
 private:
 	void initDirectoryTree();
 	void fileSystemScan(const QString &currPath, const QString & currVirtualPath);

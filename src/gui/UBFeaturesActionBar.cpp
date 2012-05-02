@@ -179,7 +179,9 @@ void UBFeaturesActionBar::dragMoveEvent(QDragMoveEvent *event)
 void UBFeaturesActionBar::dragEnterEvent( QDragEnterEvent *event )
 {
     if (event->mimeData()->hasFormat("text/uri-list"))
+	{
         event->acceptProposedAction();
+	}
 }
 
 void UBFeaturesActionBar::dropEvent( QDropEvent *event )
@@ -187,6 +189,12 @@ void UBFeaturesActionBar::dropEvent( QDropEvent *event )
 	QWidget *dest = childAt( event->pos() );
 	if ( dest == mpDeleteBtn )
 	{
+		QList <QUrl> urls = event->mimeData()->urls();
+		foreach ( QUrl url, urls )
+		{
+			if ( !UBFeaturesController::isDeletable( url ) )
+				return;
+		}
 		event->setDropAction( Qt::MoveAction );
 		event->accept();
 		emit deleteElements( *event->mimeData() );

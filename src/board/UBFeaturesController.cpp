@@ -40,6 +40,10 @@ bool UBFeature::isFolder() const
 		|| elementType == FEATURE_FOLDER;
 }
 
+bool UBFeature::isDeletable()const
+{
+	return elementType == FEATURE_ITEM;
+}
 
 UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
         QObject(pParentWidget),
@@ -279,6 +283,12 @@ QPixmap UBFeaturesController::thumbnailForFile(const QString &path)
 		thumb = QPixmap( thumbnailPath );
 	else thumb = createThumbnail( path );
 	return thumb;
+}
+
+bool UBFeaturesController::isDeletable( const QUrl &url )
+{
+	UBFeatureElementType type = fileTypeFromUrl( fileNameFromUrl(url) );
+	return type == FEATURE_ITEM;
 }
 
 QPixmap UBFeaturesController::createThumbnail(const QString &path)
