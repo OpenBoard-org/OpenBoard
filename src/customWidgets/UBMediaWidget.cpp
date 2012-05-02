@@ -56,7 +56,7 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
     mpSlider->setMinimum(0);
     mpSlider->setMaximum(0);
 
-    mpSeekerLayout = new QHBoxLayout(this);
+    mpSeekerLayout = new QHBoxLayout();
     mpSeekerLayout->addWidget(mpPlayStopButton, 0);
     mpSeekerLayout->addWidget(mpPauseButton, 0);
     mpSeekerLayout->addWidget(mpSlider, 1);
@@ -144,9 +144,9 @@ void UBMediaWidget::hideEvent(QHideEvent* event)
   */
 void UBMediaWidget::createMediaPlayer()
 {
-    mpMediaContainer = new QWidget(this);
+    mpMediaContainer = new QWidget();
     mpMediaContainer->setObjectName("UBMediaVideoContainer");
-    mMediaLayout = new QHBoxLayout(this);
+    mMediaLayout = new QHBoxLayout();
     mpMediaContainer->setLayout(mMediaLayout);
 
     if(eMediaType_Video == mType){
