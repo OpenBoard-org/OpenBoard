@@ -49,6 +49,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 
 	//featuresListView->setStyleSheet( QString("background: #EEEEEE;border-radius: 10px;border: 2px solid #999999;") );
 	featuresListView->setDragDropMode( QAbstractItemView::DragDrop );
+	featuresListView->setSelectionMode( QAbstractItemView::ContiguousSelection );
 	featuresListView->setModel( featuresProxyModel );
 
 	featuresListView->setResizeMode( QListView::Adjust );
@@ -72,7 +73,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
     pathListView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
 	//pathListView->setResizeMode( QListView::Adjust );
 	//pathListView->setMovement( QListView::Static );
-	pathListView->setDragDropMode( QAbstractItemView::DragDrop );
+	pathListView->setDragDropMode( QAbstractItemView::DropOnly );
 
 	pathScene = new QGraphicsScene(this);
 	//pathViewer = new UBFeaturesPathViewer( QPixmap(":images/libpalette/home.png"), controller->getRootPath(), pathScene,  this );
@@ -629,7 +630,24 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 			return defaultFlags | Qt::ItemIsDropEnabled;
 		else return defaultFlags;
 	}
-	return defaultFlags | Qt::ItemIsDropEnabled;
+	/*if ( index.isValid() )
+	{
+		UBFeature item = index.data( Qt::UserRole + 1 ).value<UBFeature>();
+		switch( item.getType() )
+		{
+		case FEATURE_CATEGORY:
+		case FEATURE_FOLDER:
+		case FEATURE_FAVORITE:
+		case FEATURE_TRASH:
+			return Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
+		case FEATURE_INTERACTIVE:
+		case FEATURE_INTERNAL:
+		case FEATURE_ITEM:		
+			return Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+		default:;
+		}
+	}*/
+	return defaultFlags;
 }
 
 

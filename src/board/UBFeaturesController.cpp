@@ -315,7 +315,14 @@ UBFeature UBFeaturesController::newFolder( const QString &name )
 
 void UBFeaturesController::addItemToPage(const UBFeature &item)
 {
-	UBApplication::boardController->downloadURL( QUrl::fromLocalFile( item.getFullPath() ) );
+	if ( item.getType() == FEATURE_INTERNAL )
+	{
+		UBApplication::boardController->downloadURL( QUrl( item.getFullPath() ) );
+	}
+	else
+	{
+		UBApplication::boardController->downloadURL( QUrl::fromLocalFile( item.getFullPath() ) );
+	}
 }
 
 UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeature &destination )
