@@ -199,7 +199,7 @@ void UBMediaWidget::adaptSizeToVideo()
 
 void UBMediaWidget::updateView(Phonon::State nextState)
 {
-    if(eMediaType_Video == mType){
+    if(isVisible() && eMediaType_Video == mType){
         if(nextState != Phonon::PlayingState){
             const QPixmap& snapshot = QPixmap::grabWindow(mpVideoWidget->winId());
             mpSnapshotVideoWidget->setPixmap(snapshot);
