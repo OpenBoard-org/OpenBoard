@@ -29,6 +29,7 @@
 #include <QVBoxLayout>
 
 #include "UBThumbnailWidget.h"
+#include "board/UBLibraryController.h"
 
 class UBLibraryController;
 class UBChainedLibElement;
