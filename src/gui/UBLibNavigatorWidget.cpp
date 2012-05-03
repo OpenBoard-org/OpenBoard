@@ -16,9 +16,10 @@
 #include "UBLibWidget.h"
 
 #include "core/UBApplication.h"
-#include "core/memcheck.h"
 
 #include "globals/UBGlobals.h"
+
+#include "core/memcheck.h"
 
 static int lowBoundForSlider = 40;
 static int topBoundForSlider = 120;

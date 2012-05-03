@@ -6,6 +6,7 @@
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
 #include "globals/UBGlobals.h"
+#include "core/memcheck.h"
 
 UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
 {
@@ -500,6 +501,16 @@ void UBFeatureProperties::onAddToPage()
 
 UBFeatureProperties::~UBFeatureProperties()
 {
+	if ( mpOrigPixmap )
+    {
+        delete mpOrigPixmap;
+        mpOrigPixmap = NULL;
+    }
+	if ( mpElement )
+	{
+		delete mpElement;
+		mpElement = NULL;
+	}
 }
 
 UBFeatureItemButton::UBFeatureItemButton(QWidget *parent, const char *name):QPushButton(parent)
@@ -519,19 +530,19 @@ QVariant UBFeaturesModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
 	if (role == Qt::DisplayRole)
-		return featuresList->at(index.row()).getName();
+		return featuresList.at(index.row()).getName();
 	else if (role == Qt::DecorationRole)
 	{
-		return QIcon( featuresList->at(index.row()).getThumbnail() );
+		return QIcon( featuresList.at(index.row()).getThumbnail() );
 	}
 	else if (role == Qt::UserRole)
 	{
-		return featuresList->at(index.row()).getUrl();
+		return featuresList.at(index.row()).getUrl();
 	}
 	else if (role == Qt::UserRole + 1)
 	{
 		//return featuresList->at(index.row()).getType();
-		UBFeature f = featuresList->at(index.row());
+		UBFeature f = featuresList.at(index.row());
 		return QVariant::fromValue( f );
 	}
 
@@ -607,17 +618,17 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 
 void UBFeaturesModel::addItem( const UBFeature &item )
 {
-	beginInsertRows( QModelIndex(), featuresList->size(), featuresList->size() );
-	featuresList->push_back( item );
+	beginInsertRows( QModelIndex(), featuresList.size(), featuresList.size() );
+	featuresList.push_back( item );
 	endInsertRows();
 }
 
 void UBFeaturesModel::deleteFavoriteItem( const QString &path )
 {
-	for ( int i = 0; i < featuresList->size(); ++i )
+	for ( int i = 0; i < featuresList.size(); ++i )
 	{
-		if ( !QString::compare( featuresList->at(i).getFullPath(), path, Qt::CaseInsensitive ) &&
-			!QString::compare( featuresList->at(i).getUrl(), "/root/favorites", Qt::CaseInsensitive ) )
+		if ( !QString::compare( featuresList.at(i).getFullPath(), path, Qt::CaseInsensitive ) &&
+			!QString::compare( featuresList.at(i).getUrl(), "/root/favorites", Qt::CaseInsensitive ) )
 		{
 			removeRow( i, QModelIndex() );
 			return;
@@ -629,11 +640,11 @@ bool UBFeaturesModel::removeRows( int row, int count, const QModelIndex & parent
 {
 	if ( row < 0 )
 		return false;
-	if ( row + count > featuresList->size() )
+	if ( row + count > featuresList.size() )
 		return false;
 	beginRemoveRows( parent, row, row + count - 1 );
 	//featuresList->remove( row, count );
-	featuresList->erase( featuresList->begin() + row, featuresList->begin() + row + count );
+	featuresList.erase( featuresList.begin() + row, featuresList.begin() + row + count );
 	endRemoveRows();
 	return true;
 }
@@ -642,11 +653,11 @@ bool UBFeaturesModel::removeRow(  int row, const QModelIndex & parent )
 {
 	if ( row < 0 )
 		return false;
-	if ( row >= featuresList->size() )
+	if ( row >= featuresList.size() )
 		return false;
 	beginRemoveRows( parent, row, row );
 	//featuresList->remove( row );
-	featuresList->erase( featuresList->begin() + row );
+	featuresList.erase( featuresList.begin() + row );
 	endRemoveRows();
 	return true;
 }
@@ -698,7 +709,7 @@ int UBFeaturesModel::rowCount(const QModelIndex &parent) const
 	if (parent.isValid())
         return 0;
     else
-        return featuresList->size();
+        return featuresList.size();
 }
 
 

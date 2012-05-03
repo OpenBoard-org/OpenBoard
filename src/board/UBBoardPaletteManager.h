@@ -43,6 +43,10 @@ class UBMainWindow;
 class UBApplicationController;
 class UBDockTeacherGuideWidget;
 
+// Uncomment this to use old-styles lib paletter
+// #define USE_WEB_WIDGET
+
+
 class UBBoardPaletteManager : public QObject
 {
     Q_OBJECT
@@ -125,8 +129,12 @@ class UBBoardPaletteManager : public QObject
 
         /** The page navigator widget */
         UBPageNavigationWidget* mpPageNavigWidget;
+        
+#ifdef USE_WEB_WIDGET
         /** The library widget */
         UBLibWidget* mpLibWidget;
+#endif
+
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
 

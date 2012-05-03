@@ -1,5 +1,7 @@
 #include "UBGraphicsStrokesGroup.h"
 
+#include "core/memcheck.h"
+
 UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent):QGraphicsItemGroup(parent)
 {
     mDelegate = new UBGraphicsItemDelegate(this, 0, true, true);

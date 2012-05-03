@@ -1,4 +1,5 @@
 #include "UBFeaturesActionBar.h"
+#include "core/memcheck.h"
 
 UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWidget* parent, const char* name ) : QWidget (parent)
 	, featuresController(controller)

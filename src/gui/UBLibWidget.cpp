@@ -17,9 +17,10 @@
 #include "UBLibWidget.h"
 
 #include "core/UBApplication.h"
-#include "core/memcheck.h"
 
 #include "globals/UBGlobals.h"
+
+#include "core/memcheck.h"
 
 /**
  * \brief Constructor

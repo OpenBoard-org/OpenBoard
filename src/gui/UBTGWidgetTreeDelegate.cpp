@@ -7,6 +7,8 @@
 #include <QModelIndex>
 #include "UBTGWidgetTreeDelegate.h"
 
+#include "core/memcheck.h"
+
 UBTGWidgetTreeDelegate::UBTGWidgetTreeDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
 {

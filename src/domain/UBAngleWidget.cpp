@@ -1,6 +1,8 @@
 #include "UBAngleWidget.h"
 #include <QPainter>
 
+#include "core/memcheck.h"
+
 UBAngleWidget::UBAngleWidget(QWidget *parent)
     : QWidget(parent)
 {
