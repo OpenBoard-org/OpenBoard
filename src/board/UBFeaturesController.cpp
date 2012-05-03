@@ -65,6 +65,7 @@ void UBFeaturesController::initDirectoryTree()
 	mLibInteractiveDirectoryPath = UBSettings::settings()->applicationInteractivesDirectory();
 	mLibApplicationsDirectoryPath = UBSettings::settings()->applicationApplicationsLibraryDirectory();
 	mLibShapesDirectoryPath = UBSettings::settings()->applicationShapeLibraryDirectory() ;
+	mLibSearchDirectoryPath = UBSettings::settings()->userSearchDirectory();
 	trashDirectoryPath = UBSettings::userTrashDirPath();
 
 	featuresList = new QList <UBFeature>();
@@ -100,7 +101,8 @@ void UBFeaturesController::initDirectoryTree()
 	featuresList->append( trashElement );
 	favoriteElement = UBFeature( rootPath, QPixmap(":images/libpalette/FavoritesCategory.svg"), "Favorites", "favorites", FEATURE_FAVORITE );
 	featuresList->append( favoriteElement );
-
+	searchElement = UBFeature( rootPath, QPixmap(":images/libpalette/WebSearchCategory.svg"), "Web search", mLibSearchDirectoryPath );
+	featuresList->append( searchElement );
 	loadFavoriteList();
 
 	foreach (UBToolsManager::UBToolDescriptor tool, tools)
@@ -122,7 +124,7 @@ void UBFeaturesController::initDirectoryTree()
 	fileSystemScan( mLibShapesDirectoryPath, shapesPath  );
 	fileSystemScan( mLibInteractiveDirectoryPath, interactPath  );
 	fileSystemScan( trashDirectoryPath, trashPath );
-
+	fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
 	
 
 }
@@ -137,8 +139,14 @@ void UBFeaturesController::fileSystemScan(const QString & currentPath, const QSt
 		UBFeatureElementType fileType = fileInfo->isDir() ? FEATURE_FOLDER : FEATURE_ITEM;
 
         QString fileName = fileInfo->fileName();
-        if ( UBFileSystemUtils::mimeTypeFromFileName(fileName).contains("application") ) {
-            fileType = FEATURE_INTERACTIVE;
+        if ( UBFileSystemUtils::mimeTypeFromFileName(fileName).contains("application") ) 
+		{
+			if ( UBFileSystemUtils::mimeTypeFromFileName(fileName).contains("application/search") )
+			{
+				fileType = FEATURE_SEARCH;
+			}
+			else
+             fileType = FEATURE_INTERACTIVE;
         }
 		QString itemName = (fileType != FEATURE_ITEM) ? fileName : fileInfo->completeBaseName();
 		QPixmap icon = QPixmap(":images/libpalette/soundIcon.svg");

@@ -19,7 +19,8 @@ enum UBFeatureElementType
 	FEATURE_INTERNAL,
     FEATURE_ITEM,
 	FEATURE_TRASH,
-	FEATURE_FAVORITE
+	FEATURE_FAVORITE,
+	FEATURE_SEARCH
 };
 
 class UBFeature
@@ -105,6 +106,7 @@ private:
 	QString mLibApplicationsDirectoryPath;
 	QString mLibShapesDirectoryPath;
 	QString trashDirectoryPath;
+	QString mLibSearchDirectoryPath;
 
 	QString rootPath;
 	QString audiosPath;
@@ -127,6 +129,7 @@ private:
 	UBFeature interactElement;
 	UBFeature flashElement;
 	UBFeature shapesElement;
+	UBFeature searchElement;
 
 	QSet <QString> *favoriteSet;
 };
