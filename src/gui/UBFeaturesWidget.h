@@ -205,9 +205,9 @@ public:
 	
     Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 
-    void setFeaturesList(const QList <UBFeature> &flist ) { featuresList = flist; }
+    void setFeaturesList(QList <UBFeature> *flist ) { featuresList = flist; }
 private:
-	QList <UBFeature> featuresList;
+	QList <UBFeature> *featuresList;
 };
 
 class UBFeaturesProxyModel : public QSortFilterProxyModel
