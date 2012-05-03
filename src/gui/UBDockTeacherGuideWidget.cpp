@@ -25,7 +25,7 @@ UBDockTeacherGuideWidget::UBDockTeacherGuideWidget(QWidget* parent, const char* 
   , mpTeacherGuideWidget(NULL)
 {
     mName = "TeacherGuide";
-
+    mVisibleState = true;
     SET_STYLE_SHEET();
 
     mIconToLeft = QPixmap(":images/teacher_open.png");
