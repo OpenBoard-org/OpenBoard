@@ -84,6 +84,31 @@ class DelegateButton: public QGraphicsSvgItem
 
 };
 
+class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
+{
+    public:
+        UBGraphicsToolBarItem(QGraphicsItem * parent = 0);
+        virtual ~UBGraphicsToolBarItem() {};
+
+        bool isVisibleOnBoard() const { return mVisible; }
+        void setVisibleOnBoard(bool visible) { mVisible = visible; }
+        bool isShifting() const { return mShifting; }
+        void setShifting(bool shifting) { mShifting = shifting; } 
+        int offsetOnToolBar() const { return mOffsetOnToolBar; }
+        void setOffsetOnToolBar(int pOffset) { mOffsetOnToolBar = pOffset; }
+        QList<QGraphicsItem*> itemsOnToolBar() const { return mItemsOnToolBar; }
+        void setItemsOnToolBar(QList<QGraphicsItem*> itemsOnToolBar) { mItemsOnToolBar = itemsOnToolBar;}
+        int minWidth() { return mMinWidth; }
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                QWidget *widget);
+
+    private:
+        bool mShifting;
+        bool mVisible;
+        int mOffsetOnToolBar;
+        int mMinWidth;
+        QList<QGraphicsItem*> mItemsOnToolBar;
+};
 
 class UBGraphicsItemDelegate : public QObject
 {
@@ -138,6 +163,10 @@ class UBGraphicsItemDelegate : public QObject
 
         void setButtonsVisible(bool visible);
 
+        UBGraphicsToolBarItem* getToolBarItem() const { return mToolBarItem; }
+
+        qreal antiScaleRatio() const { return mAntiScaleRatio; }
+
     signals:
         void showOnDisplayChanged(bool shown);
         void lockChanged(bool locked);
@@ -183,12 +212,17 @@ class UBGraphicsItemDelegate : public QObject
 
         QList<DelegateButton*> mButtons;
 
+        UBGraphicsToolBarItem* mToolBarItem;
+
 protected slots:
         virtual void gotoContentSource(bool checked);
 
 private:
         void updateFrame();
         void updateButtons(bool showUpdated = false);
+        void updateToolBar();
+
+
 
         QPointF mOffset;
         QTransform mPreviousTransform;
