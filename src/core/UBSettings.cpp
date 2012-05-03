@@ -37,12 +37,13 @@ QString UBSettings::documentIdentifer = QString("ID");
 QString UBSettings::documentVersion = QString("Version");
 QString UBSettings::documentUpdatedAt = QString("UpdatedAt");
 QString UBSettings::sessionTitle = QString("sessionTitle");
-QString UBSettings::sessionTarget = QString("sessionTarget");
-QString UBSettings::sessionLicence = QString("sessionLicence");
-QString UBSettings::sessionKeywords = QString("sessionKeywords");
-QString UBSettings::sessionLevel = QString("sessionLevel");
-QString UBSettings::sessionTopic = QString("sessionTopic");
 QString UBSettings::sessionAuthors = QString("sessionAuthors");
+QString UBSettings::sessionGoals = QString("sessionGoals");
+QString UBSettings::sessionKeywords = QString("sessionKeywords");
+QString UBSettings::sessionGradeLevel = QString("sessionGradeLevel");
+QString UBSettings::sessionBranch = QString("sessionBranch");
+QString UBSettings::sessionType = QString("sessionType");
+QString UBSettings::sessionLicence = QString("sessionLicence");
 QString UBSettings::documentDate = QString("date");
 
 QString UBSettings::trashedDocumentGroupNamePrefix = QString("_Trash:");
@@ -382,7 +383,7 @@ void UBSettings::init()
     angleTolerance = new UBSetting(this, "App", "AngleTolerance", 4);
     historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
     teacherGuidePageZeroActivated = new UBSetting(this,"DockPalette","TeacherGuideActivatePageZero",true);
-    teacherGuideLessonPagesActivated = new UBSetting(this,"DockPalette","TeacherGuideActvateLessonPages",true);
+    teacherGuideLessonPagesActivated = new UBSetting(this,"DockPalette","TeacherGuideActivateLessonPages",true);
 }
 
 

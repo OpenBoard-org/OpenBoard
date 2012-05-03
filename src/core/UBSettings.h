@@ -153,13 +153,16 @@ class UBSettings : public QObject
         static QString documentIdentifer;
         static QString documentVersion;
         static QString documentUpdatedAt;
+
         static QString sessionTitle;
-        static QString sessionTarget;
-        static QString sessionLicence;
-        static QString sessionKeywords;
-        static QString sessionLevel;
-        static QString sessionTopic;
         static QString sessionAuthors;
+        static QString sessionGoals;
+        static QString sessionKeywords;
+        static QString sessionGradeLevel;
+        static QString sessionBranch;
+        static QString sessionType;
+        static QString sessionLicence;
+
         static QString documentDate;
 
         static QString trashedDocumentGroupNamePrefix;
