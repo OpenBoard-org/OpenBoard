@@ -111,11 +111,13 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "updated-at", UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTimeUtc()));
     // introduced in OpenSankore 1.40.00
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionTitle,proxy->metaData(UBSettings::sessionTitle).toString());
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionTarget,proxy->metaData(UBSettings::sessionTarget).toString());
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionLicence,proxy->metaData(UBSettings::sessionLicence).toString());
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionAuthors,proxy->metaData(UBSettings::sessionAuthors).toString());
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionGoals,proxy->metaData(UBSettings::sessionGoals).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionKeywords,proxy->metaData(UBSettings::sessionKeywords).toString());
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionLevel,proxy->metaData(UBSettings::sessionLevel).toString());
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionTopic,proxy->metaData(UBSettings::sessionTopic).toString());
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionGradeLevel,proxy->metaData(UBSettings::sessionGradeLevel).toString());
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionBranch,proxy->metaData(UBSettings::sessionBranch).toString());
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionType,proxy->metaData(UBSettings::sessionType).toString());
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionLicence,proxy->metaData(UBSettings::sessionLicence).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionAuthors,proxy->metaData(UBSettings::sessionAuthors).toString());
 
     xmlWriter.writeEndElement(); //dc:Description
@@ -222,36 +224,42 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
                 {
                     metadata.insert(UBSettings::sessionTitle, xml.readElementText());
                 }
-                else if (xml.name() == UBSettings::sessionTarget // introduced in OpenSankore 1.40.00
+                else if (xml.name() == UBSettings::sessionAuthors // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
-                    metadata.insert(UBSettings::sessionTarget, xml.readElementText());
+                    metadata.insert(UBSettings::sessionAuthors, xml.readElementText());
                 }
-                else if (xml.name() == UBSettings::sessionLicence // introduced in OpenSankore 1.40.00
+                else if (xml.name() == UBSettings::sessionGoals // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
-                    metadata.insert(UBSettings::sessionLicence, xml.readElementText());
+                    metadata.insert(UBSettings::sessionGoals, xml.readElementText());
                 }
                 else if (xml.name() == UBSettings::sessionKeywords // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
                     metadata.insert(UBSettings::sessionKeywords, xml.readElementText());
                 }
-                else if (xml.name() == UBSettings::sessionLevel // introduced in OpenSankore 1.40.00
+                else if (xml.name() == UBSettings::sessionGradeLevel // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
-                    metadata.insert(UBSettings::sessionLevel, xml.readElementText());
+                    metadata.insert(UBSettings::sessionGradeLevel, xml.readElementText());
                 }
-                else if (xml.name() == UBSettings::sessionTopic // introduced in OpenSankore 1.40.00
+                else if (xml.name() == UBSettings::sessionBranch // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
-                    metadata.insert(UBSettings::sessionTopic, xml.readElementText());
+                    metadata.insert(UBSettings::sessionBranch, xml.readElementText());
                 }
-                else if (xml.name() == UBSettings::sessionAuthors // introduced in OpenSankore 1.40.00
+                else if (xml.name() == UBSettings::sessionType // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
-                    metadata.insert(UBSettings::sessionAuthors, xml.readElementText());
+                    metadata.insert(UBSettings::sessionType, xml.readElementText());
                 }
+                else if (xml.name() == UBSettings::sessionLicence // introduced in OpenSankore 1.40.00
+                         && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
+                {
+                    metadata.insert(UBSettings::sessionLicence, xml.readElementText());
+                }
+
                 metadata.insert(UBSettings::documentVersion, docVersion);
             }
 
