@@ -605,6 +605,16 @@ void UBFeatureProperties::onAddToPage()
 
 UBFeatureProperties::~UBFeatureProperties()
 {
+	if ( mpOrigPixmap )
+    {
+        delete mpOrigPixmap;
+        mpOrigPixmap = NULL;
+    }
+	if ( mpElement )
+	{
+		delete mpElement;
+		mpElement = NULL;
+	}
 }
 
 UBFeatureItemButton::UBFeatureItemButton(QWidget *parent, const char *name):QPushButton(parent)
