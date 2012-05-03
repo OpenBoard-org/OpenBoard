@@ -91,7 +91,6 @@ private slots:
 private:
     void createMediaPlayer();
     void adaptSizeToVideo();
-    void updateView(Phonon::State nextState);
 
     /** The current media type */
     eMediaType mType;
@@ -125,9 +124,6 @@ private:
     QLabel* mpCover;
     /** The media url */
     QString mUrl;
-
-    QStackedWidget* mpVideoStackedWidget;
-    QLabel* mpSnapshotVideoWidget;
 };
 
 #endif // UBMEDIAWIDGET_H

@@ -37,7 +37,6 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
   , mpMediaContainer(NULL)
   , mMediaLayout(NULL)
   , mpCover(NULL)
-  , mpSnapshotVideoWidget(NULL)
 {
     SET_STYLE_SHEET();
 
@@ -73,15 +72,13 @@ UBMediaWidget::UBMediaWidget(eMediaType type, QWidget *parent, const char *name)
 UBMediaWidget::~UBMediaWidget()
 {
     unsetActionsParent();
+    DELETEPTR(mpMediaObject);
     DELETEPTR(mpSlider);
     DELETEPTR(mpPauseButton);
     DELETEPTR(mpPlayStopButton);
     DELETEPTR(mpAudioOutput);
     DELETEPTR(mpVideoWidget);
-    DELETEPTR(mpMediaObject);
     DELETEPTR(mpCover);
-    DELETEPTR(mpSnapshotVideoWidget);
-    DELETEPTR(mpVideoStackedWidget);
     DELETEPTR(mpMediaContainer);
     DELETEPTR(mpSeekerLayout);
     DELETEPTR(mpLayout);
@@ -116,13 +113,9 @@ eMediaType UBMediaWidget::mediaType()
 void UBMediaWidget::showEvent(QShowEvent* event)
 {
     if(!mpVideoWidget){
-        mpSnapshotVideoWidget = new QLabel(this);
         mpVideoWidget = new Phonon::VideoWidget(this);
-        mpVideoStackedWidget = new QStackedWidget(this);
-        mpVideoStackedWidget->addWidget(mpVideoWidget);
-        mpVideoStackedWidget->addWidget(mpSnapshotVideoWidget);
         mMediaLayout->addStretch(1);
-        mMediaLayout->addWidget(mpVideoStackedWidget,0);
+        mMediaLayout->addWidget(mpVideoWidget);
         mMediaLayout->addStretch(1);
         Phonon::createPath(mpMediaObject, mpVideoWidget);
         adaptSizeToVideo();
@@ -152,13 +145,9 @@ void UBMediaWidget::createMediaPlayer()
     if(eMediaType_Video == mType){
         mMediaLayout->setContentsMargins(10, 10, 10, 10);
         if(isVisible()){
-            mpSnapshotVideoWidget = new QLabel(this);
             mpVideoWidget = new Phonon::VideoWidget(this);
-            mpVideoStackedWidget = new QStackedWidget(this);
-            mpVideoStackedWidget->addWidget(mpVideoWidget);
-            mpVideoStackedWidget->addWidget(mpSnapshotVideoWidget);
             mMediaLayout->addStretch(1);
-            mMediaLayout->addWidget(mpVideoStackedWidget, 0);
+            mMediaLayout->addWidget(mpVideoWidget);
             mMediaLayout->addStretch(1);
             Phonon::createPath(mpMediaObject, mpVideoWidget);
             adaptSizeToVideo();
@@ -197,20 +186,6 @@ void UBMediaWidget::adaptSizeToVideo()
     }
 }
 
-void UBMediaWidget::updateView(Phonon::State nextState)
-{
-    if(isVisible() && eMediaType_Video == mType){
-        if(nextState != Phonon::PlayingState){
-            const QPixmap& snapshot = QPixmap::grabWindow(mpVideoWidget->winId());
-            mpSnapshotVideoWidget->setPixmap(snapshot);
-            mpVideoStackedWidget->setCurrentWidget(mpSnapshotVideoWidget);
-        }
-        else
-            mpVideoStackedWidget->setCurrentWidget(mpVideoWidget);
-    }
-
-}
-
 /**
   * \brief Handle the media state change notification
   * @param newState as the new state
@@ -239,9 +214,10 @@ void UBMediaWidget::onStateChanged(Phonon::State newState, Phonon::State oldStat
             mpPauseButton->setEnabled(false);
             mpSlider->setValue(0);
         }
-        if(mType == eMediaType_Video)
-            updateView(newState);
+
     }
+    //    if(mType == eMediaType_Video)
+    //        updateView(newState);
 }
 
 /**
@@ -281,16 +257,16 @@ void UBMediaWidget::onSliderChanged(int value)
 void UBMediaWidget::onPlayStopClicked()
 {
     switch(mpMediaObject->state()){
-        case Phonon::PlayingState:
-            mpMediaObject->stop();
-            break;
+    case Phonon::PlayingState:
+        mpMediaObject->stop();
+        break;
 
-        case Phonon::StoppedState:
-        case Phonon::PausedState:
-            mpMediaObject->play();
-            break;
-        default:
-            break;
+    case Phonon::StoppedState:
+    case Phonon::PausedState:
+        mpMediaObject->play();
+        break;
+    default:
+        break;
     }
 }
 
