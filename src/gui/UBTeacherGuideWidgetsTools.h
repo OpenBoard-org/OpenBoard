@@ -102,7 +102,6 @@ protected:
     void keyPressEvent(QKeyEvent* e);
     void keyReleaseEvent(QKeyEvent* e);
     void showEvent(QShowEvent* e);
-    void resizeEvent(QResizeEvent* e);
 
 private:
     int mBottomMargin;

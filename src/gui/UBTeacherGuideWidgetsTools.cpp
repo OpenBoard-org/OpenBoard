@@ -77,8 +77,8 @@ UBTGActionWidget::UBTGActionWidget(QTreeWidgetItem* widget, QWidget* parent, con
     mpTask->setAcceptRichText(true);
     mpTask->setTextColor(QColor().green());
     mpTask->setObjectName("ActionWidgetTaskTextEdit");
-    mpLayout->addWidget(mpOwner,0);
-    mpLayout->addWidget(mpTask,1);
+    mpLayout->addWidget(mpOwner);
+    mpLayout->addWidget(mpTask);
 }
 
 UBTGActionWidget::~UBTGActionWidget()
@@ -87,6 +87,7 @@ UBTGActionWidget::~UBTGActionWidget()
     DELETEPTR(mpTask);
     DELETEPTR(mpLayout);
 }
+
 
 tUBGEElementNode* UBTGActionWidget::saveData()
 {
@@ -159,6 +160,8 @@ void UBTGAdaptableText::showEvent(QShowEvent* e)
     Q_UNUSED(e);
     if(!mIsUpdatingSize && mHasPlaceHolder && toPlainText().isEmpty())
         setPlainText(mPlaceHolderText);
+    else
+        onTextChanged();
 }
 
 QString UBTGAdaptableText::text()
@@ -184,10 +187,11 @@ void UBTGAdaptableText::onTextChanged()
         setFixedHeight(documentSize+mBottomMargin);
 
     updateGeometry();
-    //to trig the widget item to resize it
+    //to trig a resize on the tree widget item
     if(mpTreeWidgetItem){
-        mpTreeWidgetItem->setExpanded(false);
+        mpTreeWidgetItem->setDisabled(true);
         mpTreeWidgetItem->setExpanded(true);
+        mpTreeWidgetItem->setDisabled(false);
         setFocus();
     }
     mIsUpdatingSize = false;
@@ -196,13 +200,8 @@ void UBTGAdaptableText::onTextChanged()
 void UBTGAdaptableText::showText(const QString & text)
 {
     setText(text);
-    //A first rendering has to be done to calculate the text's size.
-    show();
-    hide();
     setReadOnly(true);
     onTextChanged();
-    if(isHidden())
-        show();
 }
 
 void UBTGAdaptableText::bottomMargin(int newValue)
@@ -211,11 +210,6 @@ void UBTGAdaptableText::bottomMargin(int newValue)
     onTextChanged();
 }
 
-void UBTGAdaptableText::resizeEvent(QResizeEvent* e)
-{
-    QTextEdit::resizeEvent(e);
-    //QTimer::singleShot(100,this,SLOT(onTextChanged()));
-}
 
 /***************************************************************************
  *                      class   UBTGDraggableWeb                           *
@@ -284,7 +278,7 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
     setAcceptDrops(true);
     addWidget(mpDropMeWidget);
 
-    setMinimumHeight(200);
+    setMinimumHeight(250);
 }
 
 UBTGMediaWidget::UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget, QWidget* parent,const char* name): QStackedWidget(parent)
@@ -303,7 +297,7 @@ UBTGMediaWidget::UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget, 
     setObjectName(name);
     setAcceptDrops(false);
     createWorkWidget(mRelativePath);
-    setMinimumHeight(200);
+    setFixedHeight(200);
 }
 
 UBTGMediaWidget::~UBTGMediaWidget()
@@ -401,19 +395,20 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
         if(!mIsPresentationMode){
             mpTitle = new UBTGAdaptableText(mpTreeWidgetItem,mpWorkWidget);
             mpTitle->setPlaceHolderText(tr("Type title here..."));
-            mpLayout->addWidget(mpTitle,1);
+            mpLayout->addWidget(mpTitle);
         }
         if(mpMediaLabelWidget){
+            mpMediaLabelWidget->setMaximumHeight(width());
             mpMediaLabelWidget->setParent(mpWorkWidget);
             mpLayout->addWidget(mpMediaLabelWidget);
         }
         else if (mpMediaWidget){
-            mpMediaWidget->setMaximumHeight(mpTreeWidgetItem->treeWidget()->size().width());
+            mpMediaWidget->setMaximumHeight(width());
             mpMediaWidget->setParent(mpWorkWidget);
             mpLayout->addWidget(mpMediaWidget);
         }
         else if (mpWebView){
-            mpWebView->setMaximumHeight(mpTreeWidgetItem->treeWidget()->size().width());
+            mpWebView->setMaximumHeight(width());
             mpWebView->setParent(mpWorkWidget);
             mpLayout->addWidget(mpWebView);
             mpWebView->show();
@@ -421,7 +416,6 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
         mpWorkWidget->setLayout(mpLayout);
         addWidget(mpWorkWidget);
         setCurrentWidget(mpWorkWidget);
-        updateSize();
     }
 }
 
@@ -466,16 +460,6 @@ void UBTGMediaWidget::mousePressEvent(QMouseEvent *event)
 
         drag->exec();
         event->accept();
-    }
-}
-
-void UBTGMediaWidget::updateSize()
-{
-    if(mpTreeWidgetItem){
-        mpTreeWidgetItem->setExpanded(false);
-        mpTreeWidgetItem->setExpanded(true);
-        if(!mIsPresentationMode)
-            mpTitle->setFocus();
     }
 }
 
