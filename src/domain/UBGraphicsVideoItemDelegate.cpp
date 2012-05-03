@@ -39,21 +39,18 @@ UBGraphicsVideoItemDelegate::UBGraphicsVideoItemDelegate(UBGraphicsVideoItem* pD
 
 void UBGraphicsVideoItemDelegate::buildButtons()
 {
-    mPlayPauseButton = new DelegateButton(":/images/play.svg", mDelegated, mFrame);
+    mPlayPauseButton = new DelegateButton(":/images/play.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
 
-    mStopButton = new DelegateButton(":/images/stop.svg", mDelegated, mFrame);
-    mStopButton->hide();
+    mStopButton = new DelegateButton(":/images/stop.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
 
-    if (delegated()->isMuted())
-        mMuteButton = new DelegateButton(":/images/soundOff.svg", mDelegated, mFrame);
-    else
-        mMuteButton = new DelegateButton(":/images/soundOn.svg", mDelegated, mFrame);
-
-    mMuteButton->hide();
-
-    mVideoControl = new DelegateVideoControl(delegated(), mFrame);
+    mVideoControl = new DelegateVideoControl(delegated(), mToolBarItem);
     UBGraphicsItem::assignZValue(mVideoControl, delegated()->zValue());
     mVideoControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+    if (delegated()->isMuted())
+        mMuteButton = new DelegateButton(":/images/soundOff.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+    else
+        mMuteButton = new DelegateButton(":/images/soundOn.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
 
     connect(mPlayPauseButton, SIGNAL(clicked(bool)), this, SLOT(togglePlayPause()));
     connect(mStopButton, SIGNAL(clicked(bool)), mMedia, SLOT(stop()));
@@ -62,6 +59,10 @@ void UBGraphicsVideoItemDelegate::buildButtons()
 
     mButtons << mPlayPauseButton << mStopButton << mMuteButton;
 
+    QList<QGraphicsItem*> itemsOnToolBar;
+    itemsOnToolBar << mPlayPauseButton << mStopButton << mVideoControl << mMuteButton;
+    mToolBarItem->setItemsOnToolBar(itemsOnToolBar);
+
     mMedia->setTickInterval(50);
 
     connect(mMedia, SIGNAL(stateChanged (Phonon::State, Phonon::State)), this, SLOT(mediaStateChanged (Phonon::State, Phonon::State)));
@@ -69,6 +70,8 @@ void UBGraphicsVideoItemDelegate::buildButtons()
     connect(mMedia, SIGNAL(tick(qint64)), this, SLOT(updateTicker(qint64)));
     connect(mMedia, SIGNAL(totalTimeChanged(qint64)), this, SLOT(totalTimeChanged(qint64)));
 
+    mToolBarItem->setVisibleOnBoard(true);
+    mToolBarItem->setShifting(false);
 }
 
 
@@ -86,21 +89,24 @@ void UBGraphicsVideoItemDelegate::positionHandles()
     {
         qreal scaledFrameWidth = mFrameWidth * mAntiScaleRatio;
 
+        int offset = 0;
+        foreach (DelegateButton* button, mButtons)
+        {
+            if (button->getSection() == Qt::TitleBarArea)
+                offset += button->boundingRect().width() * mAntiScaleRatio;
+        }
 
-        qreal width = mFrame->rect().width();
-        qreal height = mFrame->rect().height();
+        mVideoControl->setRect(mVideoControl->rect().x()
+                , scaledFrameWidth/6 - 0.5
+                , (mToolBarItem->rect().width() - 35 - offset) / mAntiScaleRatio 
+                , (2 * scaledFrameWidth) / mAntiScaleRatio);
 
-        qreal x = mFrame->rect().left();
-        qreal y = mFrame->rect().top();
-
-        mVideoControl->setRect(x + 2 * scaledFrameWidth
-                , y + height - 3 * scaledFrameWidth
-                , width - 4 * scaledFrameWidth
-                , 2 * scaledFrameWidth);
+        offset += (mVideoControl->rect().width() + 5) * mAntiScaleRatio;
+        mMuteButton->setPos(offset, 0);
 
         if (!mVideoControl->scene())
         {
-            mVideoControl->setParentItem(mFrame);//update parent for the case the item has been previously removed from scene
+            mVideoControl->setParentItem(mToolBarItem);//update parent for the case the item has been previously removed from scene
             mDelegated->scene()->addItem(mVideoControl);
         }
 
@@ -215,12 +221,17 @@ DelegateVideoControl::DelegateVideoControl(UBGraphicsVideoItem* pDelegated, QGra
     , mAntiScale(1.0)
     , mCurrentTimeInMs(0)
     , mTotalTimeInMs(0)
+    , mStartWidth(200)
 {
     setAcceptedMouseButtons(Qt::LeftButton);
 
-    setBrush(QBrush(UBSettings::paletteColor));
+    setBrush(QBrush(Qt::white));
     setPen(Qt::NoPen);
     setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+
+    QRectF rect = this->rect();
+    rect.setWidth(mStartWidth);
+    this->setRect(rect);
 }
 
 
@@ -250,8 +261,8 @@ void DelegateVideoControl::paint(QPainter *painter,
     {
         painter->setBrush(UBSettings::paletteColor);
         painter->setPen(QPen(Qt::NoPen));
-        QRectF balloon(rect().x() + position - frameWidth, rect().y() - (frameWidth * 1.2), 2 * frameWidth, frameWidth);
-        painter->drawRoundedRect(balloon, frameWidth/2, frameWidth/2);
+        mBalloon.setRect(rect().x() + position - frameWidth, rect().y() - (frameWidth * 1.2), 2 * frameWidth, frameWidth);
+        painter->drawRoundedRect(mBalloon, frameWidth/2, frameWidth/2);
 
         QTime t;
         t = t.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
@@ -259,7 +270,7 @@ void DelegateVideoControl::paint(QPainter *painter,
             f.setPointSizeF(f.pointSizeF() * mAntiScale);
         painter->setFont(f);
         painter->setPen(Qt::white);
-        painter->drawText(balloon, Qt::AlignCenter, t.toString("m:ss"));
+        painter->drawText(mBalloon, Qt::AlignCenter, t.toString("m:ss"));
     }
 }
 
@@ -298,9 +309,13 @@ void DelegateVideoControl::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void DelegateVideoControl::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    seekToMousePos(event->pos());
-    update();
-    event->accept();
+    if (shape().contains(event->pos() - QPointF(mBalloon.width()/2,0)) 
+        && shape().contains(event->pos() + QPointF(mBalloon.width()/2,0)))
+    {   
+        seekToMousePos(event->pos());
+        update();
+        event->accept();
+    }
 }
 
 
