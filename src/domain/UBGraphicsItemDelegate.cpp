@@ -50,6 +50,27 @@
 
 class UBGraphicsParaschoolEditorWidgetItem;
 
+DelegateButton::DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent, Qt::WindowFrameSection section)
+    : QGraphicsSvgItem(fileName, parent)
+    , mDelegated(pDelegated)
+    , mIsTransparentToMouseEvent(false)
+    , mButtonAlignmentSection(section)
+{
+    setAcceptedMouseButtons(Qt::LeftButton);
+    setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+}
+
+DelegateButton::~DelegateButton()
+{
+    // NOOP
+}
+
+void DelegateButton::setFileName(const QString & fileName)
+{
+    QGraphicsSvgItem::setSharedRenderer(new QSvgRenderer (fileName, this));
+}
+
+
 void DelegateButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // make sure delegate is selected, to avoid control being hidden

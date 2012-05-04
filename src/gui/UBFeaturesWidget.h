@@ -183,7 +183,7 @@ public:
 
     void setFeaturesList(const QList <UBFeature> &flist ) { featuresList = flist; }
 private:
-	QList <UBFeature> featuresList;
+	QList <UBFeature>  featuresList;
 };
 
 class UBFeaturesProxyModel : public QSortFilterProxyModel
