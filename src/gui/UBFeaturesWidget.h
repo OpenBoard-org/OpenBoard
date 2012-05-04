@@ -99,6 +99,7 @@ private slots:
 	void addToFavorite( const QMimeData & );
 	void removeFromFavorite( const QMimeData & );
 	void thumbnailSizeChanged( int );
+	void onDisplayMetadata( QMap<QString,QString> );
 protected:
 	bool eventFilter(QObject *target, QEvent *event);
 };
@@ -160,18 +161,20 @@ private slots:
     //void onBack();
 
 private:
+	void populateMetadata();
+
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonLayout;
     UBFeatureItemButton* mpAddPageButton;
     UBFeatureItemButton* mpAddToLibButton;
     UBFeatureItemButton* mpSetAsBackgroundButton;
     QLabel* mpObjInfoLabel;
-    //QTreeWidget* mpObjInfos;
+    QTreeWidget* mpObjInfos;
     QLabel* mpThumbnail;
     QPixmap* mpOrigPixmap;
     int maxThumbHeight;
     UBFeature *mpElement;
-    //QTreeWidgetItem* mpItem;
+    QTreeWidgetItem* mpItem;
 };
 
 

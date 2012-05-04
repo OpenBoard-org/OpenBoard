@@ -8,6 +8,8 @@
 #include <QVector>
 #include <QString>
 #include <QPixmap>
+#include <QMap>
+#include <QUrl>
 
 //#include "UBDockPaletteWidget.h"
 
@@ -29,25 +31,30 @@ class UBFeature
 public:
     UBFeature() {;}
 	//UBFeature(const UBFeature &f);
-    UBFeature(const QString &url, const QPixmap &icon, const QString &name, const QString &realPath, UBFeatureElementType type = FEATURE_CATEGORY);
+    UBFeature(const QString &url, const QPixmap &icon, const QString &name, const QUrl &realPath, UBFeatureElementType type = FEATURE_CATEGORY);
     virtual ~UBFeature() {;}
     QString getName() const { return mName; }
     QPixmap getThumbnail() const {return mThumbnail;}
-    QString getUrl() const { return virtualPath; }
+    QString getVirtualPath() const { return virtualPath; }
 	//QString getPath() const { return mPath; };
-    QString getFullPath() const { return mPath; }
-	QString getVirtualPath() const { return  virtualPath + "/" + mName; }
+    QUrl getFullPath() const { return mPath; }
+	QString getFullVirtualPath() const { return  virtualPath + "/" + mName; }
+	QString getUrl() const;
     UBFeatureElementType getType() const { return elementType; }
+
 	bool isFolder() const;
 	bool isDeletable() const;
 	bool operator ==( const UBFeature &f )const;
 	bool operator !=( const UBFeature &f )const;
+	const QMap<QString,QString> & getMetadata() const { return metadata; }
+	void setMetadata( const QMap<QString,QString> &data ) { metadata = data; }
 private:
 	QString virtualPath;
     QPixmap mThumbnail;
     QString mName;
-	QString mPath;
+	QUrl mPath;
     UBFeatureElementType elementType;
+	QMap<QString,QString> metadata;
 };
 Q_DECLARE_METATYPE( UBFeature )
 
@@ -80,7 +87,7 @@ public:
 	static bool isDeletable( const QUrl &url );
 private:
 	void initDirectoryTree();
-	void fileSystemScan(const QString &currPath, const QString & currVirtualPath);
+	void fileSystemScan(const QUrl &currPath, const QString & currVirtualPath);
 	static QPixmap createThumbnail(const QString &path);
 	//void addImageToCurrentPage( const QString &path );
 	void loadFavoriteList();
@@ -92,22 +99,22 @@ private:
 	QList <UBFeature> *featuresList;
 	UBFeature *rootElement;
 
-	QString mUserAudioDirectoryPath;
-    QString mUserVideoDirectoryPath;
-    QString mUserPicturesDirectoryPath;
-    QString mUserInteractiveDirectoryPath;
-    QString mUserAnimationDirectoryPath;
+	QUrl mUserAudioDirectoryPath;
+    QUrl mUserVideoDirectoryPath;
+    QUrl mUserPicturesDirectoryPath;
+    QUrl mUserInteractiveDirectoryPath;
+    QUrl mUserAnimationDirectoryPath;
 
 	QString libraryPath;
-	QString mLibAudioDirectoryPath;
-    QString mLibVideoDirectoryPath;
-    QString mLibPicturesDirectoryPath;
-    QString mLibInteractiveDirectoryPath;
-    QString mLibAnimationDirectoryPath;
-	QString mLibApplicationsDirectoryPath;
-	QString mLibShapesDirectoryPath;
-	QString trashDirectoryPath;
-	QString mLibSearchDirectoryPath;
+	QUrl mLibAudioDirectoryPath;
+    QUrl mLibVideoDirectoryPath;
+    QUrl mLibPicturesDirectoryPath;
+    QUrl mLibInteractiveDirectoryPath;
+    QUrl mLibAnimationDirectoryPath;
+	QUrl mLibApplicationsDirectoryPath;
+	QUrl mLibShapesDirectoryPath;
+	QUrl trashDirectoryPath;
+	QUrl mLibSearchDirectoryPath;
 
 	QString rootPath;
 	QString audiosPath;
@@ -132,7 +139,7 @@ private:
 	UBFeature shapesElement;
 	UBFeature webSearchElement;
 
-	QSet <QString> *favoriteSet;
+	QSet <QUrl> *favoriteSet;
 };
 
 
