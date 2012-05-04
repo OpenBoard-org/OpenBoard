@@ -27,7 +27,7 @@
 #include <phonon/VideoWidget>
 #include <phonon/AudioOutput>
 
-#include "interfaces/IResizeable.h"
+//#include "interfaces/IResizeable.h"
 #include "UBActionableWidget.h"
 
 #define UBMEDIABUTTON_SIZE              32
