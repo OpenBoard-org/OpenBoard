@@ -74,6 +74,7 @@ public:
     ~UBTGActionWidget();
     void update();
     tUBGEElementNode* saveData();
+    void initializeWithDom(QDomElement element);
 
 private:
     QVBoxLayout* mpLayout;
@@ -94,6 +95,7 @@ public:
     void bottomMargin(int newValue);
     void setPlaceHolderText(QString text);
     QString text();
+    void setInitialText(const QString& text);
 
 public slots:
     void onTextChanged();
@@ -134,9 +136,10 @@ class UBTGMediaWidget : public QStackedWidget , public iUBTGSaveData
     Q_OBJECT
 public:
     UBTGMediaWidget(QTreeWidgetItem* widget = 0, QWidget* parent = 0, const char* name = "UBTGMediaWidget");
-    UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget = 0, QWidget* parent = 0, const char* name = "UBTGMediaWidget");
+    UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget = 0, QWidget* parent = 0, const char* name = "UBTGMediaWidget");
     ~UBTGMediaWidget();
     tUBGEElementNode* saveData();
+    void initializeWithDom(QDomElement element);
 
 protected:
     void dragEnterEvent(QDragEnterEvent* event);
@@ -147,7 +150,7 @@ protected:
 
 private:
     void parseMimeData(const QMimeData* pMimeData);
-    void createWorkWidget(QString& path);
+    void createWorkWidget();
     void updateSize();
 
     QTreeWidgetItem* mpTreeWidgetItem;
@@ -158,9 +161,10 @@ private:
     QLabel* mpMediaLabelWidget;
     UBMediaWidget* mpMediaWidget;
     UBDraggableWeb* mpWebView;
-    QString mRelativePath;
+    QString mMediaPath;
     bool mIsPresentationMode;
     QString mMediaType;
+    bool mIsInitializationMode;
 };
 
 
@@ -171,6 +175,7 @@ public:
     UBTGUrlWidget(QWidget* parent = 0, const char* name = "UBTGUrlWidget");
     ~UBTGUrlWidget();
     tUBGEElementNode* saveData();
+    void initializeWithDom(QDomElement element);
 private:
     QVBoxLayout* mpLayout;
     QLineEdit* mpTitle;

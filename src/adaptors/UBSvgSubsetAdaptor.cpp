@@ -53,6 +53,8 @@
 #include "core/UBPersistenceManager.h"
 #include "core/UBApplication.h"
 
+#include "interfaces/IDataStorage.h"
+
 #include "pdf/PDFRenderer.h"
 
 #include "core/memcheck.h"
@@ -68,6 +70,15 @@ const QString UBSvgSubsetAdaptor::sPixelUnit = "px";
 const QString UBSvgSubsetAdaptor::sFontWeightPrefix = "font-weight:";
 const QString UBSvgSubsetAdaptor::sFontStylePrefix = "font-style:";
 const QString UBSvgSubsetAdaptor::sFormerUniboardDocumentNamespaceUri = "http://www.mnemis.com/uniboard";
+QMap<QString,IDataStorage*> UBSvgSubsetAdaptor::additionalElementToStore;
+
+// Why using such a string?
+// Media file path are relative to the current document. So if we are reading the
+// first page of a document the document path has not been updated.
+// Concatenate relative media path with the old document path leads to mess
+// This string is so used only for activeDocumentChanged signal
+QString UBSvgSubsetAdaptor::sTeacherGuideNode = "";
+
 
 
 
@@ -133,8 +144,7 @@ void UBSvgSubsetAdaptor::upgradeScene(UBDocumentProxy* proxy, const int pageInde
 
 QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(UBDocumentProxy* proxy, const int pPageIndex)
 {
-    QString fileName = proxy->persistencePath() +
-                       UBFileSystemUtils::digitFileFormat("/page%1.svg", pPageIndex + 1);
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pPageIndex));
 
     QFile file(fileName);
     QDomDocument doc("page");
@@ -157,8 +167,7 @@ QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(UBDocumentProxy* proxy, const
 
 void UBSvgSubsetAdaptor::setSceneUuid(UBDocumentProxy* proxy, const int pageIndex, QUuid pUuid)
 {
-    QString fileName = proxy->persistencePath() +
-                       UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex + 1);
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
 
     QFile file(fileName);
 
@@ -207,6 +216,16 @@ void UBSvgSubsetAdaptor::setSceneUuid(UBDocumentProxy* proxy, const int pageInde
     }
 }
 
+bool UBSvgSubsetAdaptor::addElementToBeStored(QString domName, IDataStorage *dataStorageClass)
+{
+    if(domName.isEmpty() || additionalElementToStore.contains(domName)){
+        qWarning() << "Error adding the element that should persist";
+        return false;
+    }
+
+    additionalElementToStore.insert(domName,dataStorageClass);
+    return true;
+}
 
 QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVersion)
 {
@@ -216,8 +235,7 @@ QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVer
 
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int pageIndex)
 {
-    QString fileName = proxy->persistencePath() +
-                       UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex + 1);
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
 
     QFile file(fileName);
 
@@ -243,7 +261,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int
 QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 {
     QString fileName = proxy->persistencePath() +
-                       UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex + 1);
+            UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
 
     QFile file(fileName);
 
@@ -429,13 +447,13 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             else if (mXmlReader.name() == "g")
             {
                 // Create new stroke, if its NULL or already has polygons
-				if (annotationGroup)
-				{
-					if (!annotationGroup->polygons().empty())
-						annotationGroup = new UBGraphicsStroke();
-				}
-				else
-					annotationGroup = new UBGraphicsStroke();
+                if (annotationGroup)
+                {
+                    if (!annotationGroup->polygons().empty())
+                        annotationGroup = new UBGraphicsStroke();
+                }
+                else
+                    annotationGroup = new UBGraphicsStroke();
 
                if(eDrawingMode_Vector == dc->drawingMode()){
                     strokesGroup = new UBGraphicsStrokesGroup();
@@ -709,7 +727,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         UBGraphicsItem::assignZValue(triangle, zFromSvg);
                 }
             }
-            else if(mXmlReader.name() == "cache")
+            else if (mXmlReader.name() == "cache")
             {
                 UBGraphicsCache* cache = cacheFromSvg();
                 if(cache)
@@ -830,6 +848,18 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 currentWidget->setDatastoreEntry(key, value);
             }
+            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
+                sTeacherGuideNode.clear();
+                sTeacherGuideNode += "<teacherGuide version=\"" + mXmlReader.attributes().value("version").toString() + "\">";
+                sTeacherGuideNode += "\n";
+            }
+            else if (mXmlReader.name() == "media" || mXmlReader.name() == "link" || mXmlReader.name() == "title" || mXmlReader.name() == "comment" || mXmlReader.name() == "action")
+            {
+                sTeacherGuideNode += "<" + mXmlReader.name().toString() + " ";
+                foreach(QXmlStreamAttribute attribute, mXmlReader.attributes())
+                    sTeacherGuideNode += attribute.name().toString() + "=\"" + attribute.value().toString() + "\" ";
+                sTeacherGuideNode += " />\n";
+            }
             else
             {
                 // NOOP
@@ -844,14 +874,22 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     //graphicsItemFromSvg(strokesGroup);
                 }
 
-				if (annotationGroup)
-				{
-					if (!annotationGroup->polygons().empty())
-						annotationGroup = 0;
-				}
+                if (annotationGroup)
+                {
+                    if (!annotationGroup->polygons().empty())
+                        annotationGroup = 0;
+                }
                 mGroupHasInfo = false;
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
+            }
+            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
+                sTeacherGuideNode += "</teacherGuide>";
+                QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
+                IDataStorage* storageClass = elements.value("teacherGuide");
+                if(storageClass){
+                     storageClass->load(sTeacherGuideNode);
+                }
             }
         }
     }
@@ -1152,7 +1190,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
         }
 
         mXmlWriter.writeEndDocument();
-        QString fileName = mDocumentPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", mPageIndex + 1);
+        QString fileName = mDocumentPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(mPageIndex));
         QFile file(fileName);
 
         if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
@@ -1167,7 +1205,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
     }
     else
     {
-        qDebug() << "ignoring unmodified page" << mPageIndex + 1;
+        qDebug() << "ignoring unmodified page" << UBApplication::boardController->pageFromSceneIndex(mPageIndex);
     }
 
     return true;
@@ -2504,7 +2542,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::curtainItemToSvg(UBGraphicsCurtainIt
     mXmlWriter.writeAttribute("width", QString("%1").arg(curtainItem->boundingRect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(curtainItem->boundingRect().height()));
     mXmlWriter.writeAttribute("transform", toSvgTransform(curtainItem->sceneMatrix()));
-    
+
     //graphicsItemToSvg(curtainItem);
     QString zs;
     zs.setNum(curtainItem->zValue(), 'f'); // 'f' keeps precision

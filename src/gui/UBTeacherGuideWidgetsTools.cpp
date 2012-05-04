@@ -26,6 +26,9 @@
 #include "UBTeacherGuideWidgetsTools.h"
 
 #include "core/UBPersistenceManager.h"
+#include "core/UBApplication.h"
+
+#include "board/UBBoardController.h"
 
 #include "domain/UBW3CWidget.h"
 
@@ -87,6 +90,11 @@ UBTGActionWidget::~UBTGActionWidget()
     DELETEPTR(mpLayout);
 }
 
+void UBTGActionWidget::initializeWithDom(QDomElement element)
+{
+    mpOwner->setCurrentIndex(element.attribute("owner").toInt());
+    mpTask->setInitialText(element.attribute("task"));
+}
 
 tUBGEElementNode* UBTGActionWidget::saveData()
 {
@@ -195,6 +203,12 @@ void UBTGAdaptableText::onTextChanged()
     }
     mIsUpdatingSize = false;
 }
+void UBTGAdaptableText::setInitialText(const QString& text)
+{
+    setText(text);
+    setReadOnly(false);
+    onTextChanged();
+}
 
 void UBTGAdaptableText::showText(const QString & text)
 {
@@ -266,8 +280,9 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
   , mpMediaLabelWidget(NULL)
   , mpMediaWidget(NULL)
   , mpWebView(NULL)
-  , mRelativePath(QString(""))
+  , mMediaPath(QString(""))
   , mIsPresentationMode(false)
+  , mIsInitializationMode(false)
 {
     setObjectName(name);
     mpDropMeWidget = new QLabel();
@@ -280,7 +295,7 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
     setMinimumHeight(250);
 }
 
-UBTGMediaWidget::UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget, QWidget* parent,const char* name): QStackedWidget(parent)
+UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWidget* parent,const char* name): QStackedWidget(parent)
   , mpTreeWidgetItem(widget)
   , mpDropMeWidget(NULL)
   , mpWorkWidget(NULL)
@@ -289,13 +304,14 @@ UBTGMediaWidget::UBTGMediaWidget(QString relativePath, QTreeWidgetItem* widget, 
   , mpMediaLabelWidget(NULL)
   , mpMediaWidget(NULL)
   , mpWebView(NULL)
-  , mRelativePath(relativePath)
+  , mMediaPath(mediaPath)
   , mIsPresentationMode(true)
   , mMediaType("")
+  , mIsInitializationMode(false)
 {
     setObjectName(name);
     setAcceptDrops(false);
-    createWorkWidget(mRelativePath);
+    createWorkWidget();
     setFixedHeight(200);
 }
 
@@ -313,6 +329,17 @@ UBTGMediaWidget::~UBTGMediaWidget()
     DELETEPTR(mpWorkWidget);
 }
 
+void UBTGMediaWidget::initializeWithDom(QDomElement element)
+{
+    mIsInitializationMode = true;
+    setAcceptDrops(false);
+    mMediaPath = UBApplication::boardController->activeDocument()->persistencePath() + "/" + element.attribute("relativePath");
+    createWorkWidget();
+    setFixedHeight(200);
+    mpTitle->setInitialText(element.attribute("title"));
+    mIsInitializationMode = false;
+}
+
 void UBTGMediaWidget::hideEvent(QHideEvent* event)
 {
     if(mpWebView)
@@ -323,10 +350,8 @@ void UBTGMediaWidget::hideEvent(QHideEvent* event)
 void UBTGMediaWidget::showEvent(QShowEvent* event)
 {
     QWidget::showEvent(event);
-    if(mpWebView){
-        qDebug() << mRelativePath;
-        mpWebView->load(QUrl(mRelativePath + "/index.htm"));
-    }
+    if(mpWebView)
+        mpWebView->load(QUrl(mMediaPath + "/index.htm"));
 }
 
 tUBGEElementNode* UBTGMediaWidget::saveData()
@@ -336,7 +361,7 @@ tUBGEElementNode* UBTGMediaWidget::saveData()
     tUBGEElementNode* result = new tUBGEElementNode();
     result->type = "media";
     result->attributes.insert("title",mpTitle->text());
-    result->attributes.insert("relativePath",mRelativePath);
+    result->attributes.insert("relativePath",mMediaPath);
     result->attributes.insert("mediaType",mMediaType);
     return result;
 }
@@ -346,31 +371,40 @@ void UBTGMediaWidget::dragEnterEvent(QDragEnterEvent *event)
     event->accept();
 }
 
-void UBTGMediaWidget::createWorkWidget(QString& path)
+void UBTGMediaWidget::createWorkWidget()
 {
-    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(path);
+    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mMediaPath);
     bool setMedia = true;
-    mRelativePath = path;
+    UBDocumentProxy* proxyDocument = UBApplication::boardController->activeDocument();
     if(mimeType.contains("audio") || mimeType.contains("video")){
         mMediaType = mimeType.contains("audio")? "audio":"movie";
         mpMediaWidget = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);
-        mpMediaWidget->setFile(path);
+        if(mIsPresentationMode || mIsInitializationMode){
+            mpMediaWidget->setFile(mMediaPath);
+        }
+        else{
+            mMediaPath = UBPersistenceManager::persistenceManager()->addObjectToTeacherGuideDirectory(proxyDocument, mMediaPath);
+            mpMediaWidget->setFile(mMediaPath);
+        }
     }
     else if(mimeType.contains("image")){
         mMediaType = "image";
+        if(!(mIsPresentationMode || mIsInitializationMode))
+            mMediaPath = UBPersistenceManager::persistenceManager()->addObjectToTeacherGuideDirectory(proxyDocument, mMediaPath);
+
         mpMediaLabelWidget = new QLabel();
-        QPixmap pixmap = QPixmap(QUrl(path).toLocalFile());
+        QPixmap pixmap = QPixmap(mMediaPath);
         pixmap = pixmap.scaledToWidth(mpTreeWidgetItem->treeWidget()->size().width());
         mpMediaLabelWidget->setPixmap(pixmap);
         mpMediaLabelWidget->setScaledContents(true);
     }
     else if(mimeType.contains("application")){
         mMediaType = "w3c";
-        if(!mIsPresentationMode){
-            QDir baseW3CDirectory("/home/claudio");
-            mRelativePath = UBW3CWidget::createNPAPIWrapperInDir(path,baseW3CDirectory,mimeType,QSize(100,100),"flashahaha");
+        if(!(mIsPresentationMode || mIsInitializationMode)){
+            QDir baseW3CDirectory(UBPersistenceManager::persistenceManager()->teacherGuideAbsoluteObjectPath(proxyDocument));
+            mMediaPath = UBW3CWidget::createNPAPIWrapperInDir(mMediaPath,baseW3CDirectory,mimeType,QSize(100,100),QUuid::createUuid());
         }
-        mpWebView = new UBDraggableWeb(mRelativePath);
+        mpWebView = new UBDraggableWeb(mMediaPath);
         mpWebView->setAcceptDrops(false);
         mpWebView->settings()->setAttribute(QWebSettings::JavaEnabled, true);
         mpWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -380,7 +414,7 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
         mpWebView->settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
         mpWebView->settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
 
-        mpWebView->load(QUrl(mRelativePath+"/index.htm"));
+        mpWebView->load(QUrl(mMediaPath+"/index.htm"));
     }
     else{
         qDebug() << "createWorkWidget mime type not handled" << mimeType;
@@ -420,13 +454,12 @@ void UBTGMediaWidget::createWorkWidget(QString& path)
 
 void UBTGMediaWidget::parseMimeData(const QMimeData* pMimeData)
 {
-    QString path;
     if(pMimeData){
         if(pMimeData->hasText()){
-            path = QUrl::fromLocalFile(pMimeData->text()).toString();
+            mMediaPath = QUrl::fromLocalFile(pMimeData->text()).toString();
         }
         else if(pMimeData->hasUrls()){
-            path = pMimeData->urls().at(0).toString();
+            mMediaPath = pMimeData->urls().at(0).toString();
         }
         else if(pMimeData->hasImage()){
             qDebug() << "Not yet implemented";
@@ -435,7 +468,7 @@ void UBTGMediaWidget::parseMimeData(const QMimeData* pMimeData)
     else
         qDebug() << "No mime data present";
 
-    createWorkWidget(path);
+    createWorkWidget();
 }
 
 void UBTGMediaWidget::dropEvent(QDropEvent* event)
@@ -451,9 +484,9 @@ void UBTGMediaWidget::mousePressEvent(QMouseEvent *event)
      else{
 
         QDrag *drag = new QDrag(this);
-        QMimeData *mimeData = new QMimeData;
+        QMimeData *mimeData = new QMimeData();
         QList<QUrl> urlList;
-        urlList << QUrl(mRelativePath);
+        urlList << QUrl(mMediaPath);
         mimeData->setUrls(urlList);
         drag->setMimeData(mimeData);
 
@@ -488,6 +521,12 @@ UBTGUrlWidget::~UBTGUrlWidget()
     DELETEPTR(mpTitle);
     DELETEPTR(mpUrl);
     DELETEPTR(mpLayout);
+}
+
+void UBTGUrlWidget::initializeWithDom(QDomElement element)
+{
+    mpTitle->setText(element.attribute("title"));
+    mpUrl->setText(element.attribute("url"));
 }
 
 tUBGEElementNode* UBTGUrlWidget::saveData()

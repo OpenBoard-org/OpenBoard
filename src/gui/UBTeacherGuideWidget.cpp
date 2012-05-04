@@ -23,6 +23,8 @@
 
 #include "UBTeacherGuideWidget.h"
 
+#include "adaptors/UBSvgSubsetAdaptor.h"
+
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBSettings.h"
@@ -79,10 +81,12 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
     mpLayout->addWidget(mpPageNumberLabel);
     // tree basic configuration
-    mpDocumentTitle = new QLabel(this);
-    mpDocumentTitle->setText("Document title");
-    mpDocumentTitle->setObjectName("UBTGEditionDocumentTitle");
-    mpLayout->addWidget(mpDocumentTitle);
+
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
+        mpDocumentTitle = new QLabel(this);
+        mpDocumentTitle->setObjectName("UBTGPresentationDocumentTitle");
+        mpLayout->addWidget(mpDocumentTitle);
+    }
 
     mpPageTitle = new UBTGAdaptableText(0,this);
     mpPageTitle->setObjectName("UBTGEditionPageTitle");
@@ -124,6 +128,11 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpRootWidgetItem->addChild(mpAddAnActionItem);
     mpRootWidgetItem->addChild(mpAddAMediaItem);
     mpRootWidgetItem->addChild(mpAddALinkItem);
+
+    if(UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
+        UBSvgSubsetAdaptor::addElementToBeStored(QString("teacherGuide"),this);
+        connect(UBApplication::boardController,SIGNAL(activeDocumentChanged()),this,SLOT(onActiveDocumentChanged()));
+    }
 }
 
 UBTeacherGuideEditionWidget::~UBTeacherGuideEditionWidget()
@@ -142,16 +151,52 @@ UBTeacherGuideEditionWidget::~UBTeacherGuideEditionWidget()
 
 void UBTeacherGuideEditionWidget::showEvent(QShowEvent* event)
 {
-    mpPageTitle->setFocus();
-    mpComment->setFocus();
+//    mpPageTitle->setFocus();
+//    mpComment->setFocus();
     setFocus();
     QWidget::showEvent(event);
 }
 
-void UBTeacherGuideEditionWidget::onActiveSceneChanged()
+void UBTeacherGuideEditionWidget::onActiveDocumentChanged()
+{
+    load(UBSvgSubsetAdaptor::sTeacherGuideNode);
+}
+
+void UBTeacherGuideEditionWidget::load(QString element)
 {
     cleanData();
+    QDomDocument doc("TeacherGuide");
+    doc.setContent(element);
+
+    for(QDomElement element = doc.documentElement().firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
+        QString tagName = element.tagName();
+        if(tagName == "title")
+            mpPageTitle->setInitialText(element.attribute("value"));
+        else if(tagName == "comment")
+            mpComment->setInitialText(element.attribute("value"));
+        else if(tagName == "media")
+            onAddItemClicked(mpAddAMediaItem,0,&element);
+        else if(tagName == "link")
+            onAddItemClicked(mpAddALinkItem,0,&element);
+        else if(tagName == "action")
+            onAddItemClicked(mpAddAnActionItem,0,&element);
+    }
+}
+
+
+
+QDomElement* UBTeacherGuideEditionWidget::save(QDomElement* parentElement)
+{
+    qDebug() << parentElement;
+    return 0;
+}
+
+void UBTeacherGuideEditionWidget::onActiveSceneChanged()
+{
     mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->currentPage()));
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    if(mpDocumentTitle)
+        mpDocumentTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
 }
 
 void UBTeacherGuideEditionWidget::cleanData()
@@ -165,7 +210,6 @@ void UBTeacherGuideEditionWidget::cleanData()
     foreach(QTreeWidgetItem* item, children){
         DELETEPTR(item);
     }
-
 }
 
 QList<QTreeWidgetItem*> UBTeacherGuideEditionWidget::getChildrenList(QTreeWidgetItem* widgetItem)
@@ -206,7 +250,7 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getData()
     return result;
 }
 
-void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int column)
+void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int column, QDomElement *element)
 {
     int addSubItemWidgetType = widget->data(column,Qt::UserRole).toInt();
     if(addSubItemWidgetType != eUBTGAddSubItemWidgetType_None){
@@ -217,15 +261,24 @@ void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int 
 
         switch(addSubItemWidgetType)
         {
-        case eUBTGAddSubItemWidgetType_Action:
-            mpTreeWidget->setItemWidget(newWidgetItem,0,new UBTGActionWidget(widget));
+        case eUBTGAddSubItemWidgetType_Action:{
+            UBTGActionWidget* actionWidget = new UBTGActionWidget(widget);
+            if(element) actionWidget->initializeWithDom(*element);
+            mpTreeWidget->setItemWidget(newWidgetItem,0,actionWidget);
             break;
-        case eUBTGAddSubItemWidgetType_Media:
-            mpTreeWidget->setItemWidget(newWidgetItem,0,new UBTGMediaWidget(widget));
+        }
+        case eUBTGAddSubItemWidgetType_Media:{
+            UBTGMediaWidget* mediaWidget = new UBTGMediaWidget(widget);
+            if(element) mediaWidget->initializeWithDom(*element);
+            mpTreeWidget->setItemWidget(newWidgetItem,0,mediaWidget);
             break;
-        case eUBTGAddSubItemWidgetType_Url:
-            mpTreeWidget->setItemWidget(newWidgetItem,0,new UBTGUrlWidget());
+        }
+        case eUBTGAddSubItemWidgetType_Url:{
+            UBTGUrlWidget* urlWidget = new UBTGUrlWidget();
+            if(element) urlWidget->initializeWithDom(*element);
+            mpTreeWidget->setItemWidget(newWidgetItem,0,urlWidget);
             break;
+        }
         default:
             delete newWidgetItem;
             qCritical() << "onAddItemClicked no action set";
@@ -296,13 +349,13 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpModePushButton->installEventFilter(this);
 
     connect(mpModePushButton,SIGNAL(clicked()),parentWidget(),SLOT(changeMode()));
-
-    mpDocumentTitle = new QLabel(this);
-    mpDocumentTitle->setObjectName("UBTGPresentationDocumentTitle");
-    mpDocumentTitle->setText(tr("Document title"));
-
     mpButtonTitleLayout->addWidget(mpModePushButton);
-    mpButtonTitleLayout->addWidget(mpDocumentTitle);
+
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
+        mpDocumentTitle = new QLabel(this);
+        mpDocumentTitle->setObjectName("UBTGPresentationDocumentTitle");
+        mpButtonTitleLayout->addWidget(mpDocumentTitle);
+    }
 
     mpLayout->addLayout(mpButtonTitleLayout);
 
@@ -376,14 +429,15 @@ void UBTeacherGuidePresentationWidget::onActiveSceneChanged()
 {
     cleanData();
     mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->currentPage()));
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    if(mpDocumentTitle)
+        mpDocumentTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
 }
 
 void UBTeacherGuidePresentationWidget::createMediaButtonItem()
 {
     if(!mpMediaSwitchItem){
-        //create the media button
         mpMediaSwitchItem = new QTreeWidgetItem(mpRootWidgetItem);
-        //mpMediaSwitchItem->setIcon(0,QIcon(":images/plus.svg"));
         mpMediaSwitchItem->setText(0,"+");
         mpMediaSwitchItem->setExpanded(false);
         mpMediaSwitchItem->setData(0,tUBTGTreeWidgetItemRole_HasAnAction,tUBTGActionAssociateOnClickItem_EXPAND);

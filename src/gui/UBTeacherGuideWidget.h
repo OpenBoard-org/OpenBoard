@@ -23,7 +23,10 @@ class QVBoxLayout;
 class QPushButton;
 class UBDocumentProxy;
 
+
 #include "UBTeacherGuideWidgetsTools.h"
+
+#include "interfaces/IDataStorage.h"
 
 typedef enum
 {
@@ -34,7 +37,7 @@ typedef enum
 /***************************************************************************
  *               class    UBTeacherGuideEditionWidget                      *
  ***************************************************************************/
-class UBTeacherGuideEditionWidget : public QWidget
+class UBTeacherGuideEditionWidget : public QWidget , public IDataStorage
 {
     Q_OBJECT
 public:
@@ -43,8 +46,11 @@ public:
     void cleanData();
     QVector<tUBGEElementNode*> getData();
 
+    void load(QString element);
+    QDomElement* save(QDomElement* parentElement);
+
 public slots:
-    void onAddItemClicked(QTreeWidgetItem* widget, int column);
+    void onAddItemClicked(QTreeWidgetItem* widget, int column, QDomElement* element = 0);
     void onActiveSceneChanged();
     void showEvent(QShowEvent* event);
 
@@ -63,6 +69,9 @@ private:
     UBAddItem* mpAddAnActionItem;
     UBAddItem* mpAddAMediaItem;
     UBAddItem* mpAddALinkItem;
+
+private slots:
+    void onActiveDocumentChanged();
 
 };
 

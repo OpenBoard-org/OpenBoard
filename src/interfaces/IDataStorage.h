@@ -16,4 +16,12 @@
 #ifndef IDATASTORAGE_H
 #define IDATASTORAGE_H
 
+class QDomElement;
+
+class IDataStorage
+{
+public:
+    virtual void load(QString element) = 0;
+    virtual QDomElement* save(QDomElement* parentElement) = 0 ;
+};
 #endif // IDATASTORAGE_H
