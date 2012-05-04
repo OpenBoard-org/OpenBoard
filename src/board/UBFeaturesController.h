@@ -10,6 +10,7 @@
 #include <QPixmap>
 #include <QMap>
 #include <QUrl>
+#include <QByteArray>
 
 //#include "UBDockPaletteWidget.h"
 
@@ -75,6 +76,9 @@ public:
 	const UBFeature& getCurrentElement()const { return currentElement; }
 	void setCurrentElement( const UBFeature &elem ) { currentElement = elem; }
 	const UBFeature & getTrashElement () const { return trashElement; }
+
+    UBFeature addDownloadedFile( const QUrl &sourceUrl, const QByteArray &pData );
+
 	UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
 	UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
 	void deleteItem( const QUrl &url );

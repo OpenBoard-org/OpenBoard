@@ -369,7 +369,7 @@ void UBFeaturesController::addItemAsBackground(const UBFeature &item)
 
 UBFeature UBFeaturesController::getDestinationForItem( const QUrl &url )
 {
-    QString mimetype = UBFileSystemUtils::mimeTypeFromFileName( fileNameFromUrl(url) );
+    QString mimetype = UBFileSystemUtils::mimeTypeFromFileName( url.toString() );
 
     if ( mimetype.contains("audio") )
         return audiosElement;
@@ -383,6 +383,25 @@ UBFeature UBFeaturesController::getDestinationForItem( const QUrl &url )
             return flashElement;
         else
             return interactElement;
+    }
+    return UBFeature();
+}
+
+UBFeature UBFeaturesController::addDownloadedFile( const QUrl &sourceUrl, const QByteArray &pData )
+{
+    UBFeature dest = getDestinationForItem( sourceUrl );
+    if ( dest == UBFeature() )
+        return UBFeature();
+    QString fileName = QFileInfo( sourceUrl.toString() ).fileName();
+    QString filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
+
+    QFile file( filePath );
+    if( file.open(QIODevice::WriteOnly )) 
+    {
+        file.write(pData);
+        file.close();
+        return UBFeature( dest.getFullVirtualPath(), thumbnailForFile( filePath ), 
+            fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM );
     }
     return UBFeature();
 }

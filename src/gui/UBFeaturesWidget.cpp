@@ -126,6 +126,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
 	connect( UBApplication::boardController, SIGNAL( displayMetadata( QMap<QString,QString> ) ), 
 		this, SLOT( onDisplayMetadata( QMap<QString,QString> ) ) );
+    connect( UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray ) ), 
+        this, SLOT( onAddDownloadedFileToLibrary( bool, QUrl, QString,QByteArray ) ) );
 }
 
 bool UBFeaturesWidget::eventFilter( QObject *target, QEvent *event )
@@ -315,6 +317,20 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 	featureProperties->showElement( feature );
 	switchToProperties();
 	mActionBar->setCurrentState( IN_PROPERTIES );
+}
+
+void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData)
+{
+    if ( pSuccess )
+    {
+        UBFeature newFeature = controller->addDownloadedFile( sourceUrl, pData );
+        if ( newFeature != UBFeature() )
+        {
+            featuresModel->addItem( newFeature );
+	        QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
+	        model->invalidate();
+        }
+    }
 }
 
 void UBFeaturesWidget::switchToListView()
@@ -557,7 +573,34 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
 
 	connect( mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()) );
     connect( mpSetAsBackgroundButton, SIGNAL( clicked() ), this, SLOT( onSetAsBackground() ) );
+    connect( mpAddToLibButton, SIGNAL( clicked() ), this, SLOT(onAddToLib() ) );
+}
 
+void UBFeatureProperties::resizeEvent( QResizeEvent *event )
+{
+    Q_UNUSED(event);
+    adaptSize();
+}
+
+void UBFeatureProperties::showEvent (QShowEvent *event )
+{
+    Q_UNUSED(event);
+    adaptSize();
+}
+
+void UBFeatureProperties::adaptSize()
+{
+    if( NULL != mpOrigPixmap )
+    {
+        if( width() < THUMBNAIL_WIDTH + 40 )
+        {
+            mpThumbnail->setPixmap( mpOrigPixmap->scaledToWidth( width() - 40 ) );
+        }
+        else
+        {
+            mpThumbnail->setPixmap( mpOrigPixmap->scaledToWidth( THUMBNAIL_WIDTH ) );
+        }
+    }
 }
 
 void UBFeatureProperties::showElement( const UBFeature &elem )
@@ -628,6 +671,22 @@ void UBFeatureProperties::onAddToPage()
     UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
     featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
 }
+
+void UBFeatureProperties::onAddToLib()
+{
+    if ( UBApplication::isFromWeb(  mpElement->getFullPath().toString() ) )
+    {
+        sDownloadFileDesc desc;
+        desc.isBackground = false;
+        desc.modal = false;
+        desc.name = QFileInfo( mpElement->getFullPath().toString()).fileName();
+        qDebug() << desc.name;
+        desc.url = mpElement->getFullPath().toString();
+        qDebug() << desc.url;
+        UBDownloadManager::downloadManager()->addFileToDownload(desc);
+    }
+}
+
 
 void UBFeatureProperties::onSetAsBackground()
 {

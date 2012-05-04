@@ -100,6 +100,7 @@ private slots:
 	void removeFromFavorite( const QMimeData & );
 	void thumbnailSizeChanged( int );
 	void onDisplayMetadata( QMap<QString,QString> );
+    void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
 protected:
 	bool eventFilter(QObject *target, QEvent *event);
 };
@@ -151,17 +152,18 @@ public:
 
 
 protected:
-    //void resizeEvent(QResizeEvent *event);
-    //void showEvent(QShowEvent *event);
+    void resizeEvent(QResizeEvent *event);
+    void showEvent(QShowEvent *event);
 
 private slots:
     void onAddToPage();
-    //void onAddToLib();
+    void onAddToLib();
     void onSetAsBackground();
     //void onBack();
 
 private:
 	void populateMetadata();
+    void adaptSize();
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonLayout;
