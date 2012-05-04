@@ -70,7 +70,8 @@ public:
 	
     const QString& getRootPath()const { return rootPath; }
 
-	void addItemToPage(const UBFeature &item);
+	void addItemToPage( const UBFeature &item );
+    void addItemAsBackground( const UBFeature &item );
 	const UBFeature& getCurrentElement()const { return currentElement; }
 	void setCurrentElement( const UBFeature &elem ) { currentElement = elem; }
 	const UBFeature & getTrashElement () const { return trashElement; }

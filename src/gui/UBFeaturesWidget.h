@@ -157,7 +157,7 @@ protected:
 private slots:
     void onAddToPage();
     //void onAddToLib();
-    //void onSetAsBackground();
+    void onSetAsBackground();
     //void onBack();
 
 private:

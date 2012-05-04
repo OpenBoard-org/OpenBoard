@@ -555,7 +555,8 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     mpObjInfos->setStyleSheet("background:white;");
     mpLayout->addWidget(mpObjInfos, 1);
 
-	connect(mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()));
+	connect( mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()) );
+    connect( mpSetAsBackgroundButton, SIGNAL( clicked() ), this, SLOT( onSetAsBackground() ) );
 
 }
 
@@ -626,22 +627,13 @@ void UBFeatureProperties::onAddToPage()
 	QWidget *w = parentWidget()->parentWidget();
     UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
     featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
-    /*if ( UBApplication::isFromWeb( mpElement->getVirtualPath() ) )
-	{
-        sDownloadFileDesc desc;
-        desc.isBackground = false;
-        desc.modal = true;
-        desc.name = QFileInfo( mpElement->getName() ).fileName();
-        desc.url = mpElement->getVirtualPath();
-        UBDownloadManager::downloadManager()->addFileToDownload(desc);
+}
 
-    }
-	else
-	{
-		QWidget *w = parentWidget()->parentWidget();
-        UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
-        featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
-    }*/
+void UBFeatureProperties::onSetAsBackground()
+{
+    QWidget *w = parentWidget()->parentWidget();
+    UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
+    featuresWidget->getFeaturesController()->addItemAsBackground( *mpElement );
 }
 
 UBFeatureProperties::~UBFeatureProperties()
@@ -704,14 +696,15 @@ QMimeData* UBFeaturesModel::mimeData(const QModelIndexList &indexes) const
 		if ( index.isValid() )
 		{
 			UBFeature element = data( index, Qt::UserRole + 1 ).value<UBFeature>();
-			if ( element.getType() == FEATURE_INTERNAL )
+            urlList.push_back( element.getFullPath() );
+			/*if ( element.getType() == FEATURE_INTERNAL )
 			{
 				urlList.push_back( QUrl( element.getFullPath() ) );
 			}
 			else if ( element.getType() == FEATURE_INTERACTIVE || element.getType() == FEATURE_ITEM )
 			{
 				urlList.push_back( element.getFullPath() );
-			}
+			}*/
 		}
 	}
 	mimeData->setUrls( urlList );

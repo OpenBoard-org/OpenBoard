@@ -359,15 +359,13 @@ UBFeature UBFeaturesController::newFolder( const QString &name )
 void UBFeaturesController::addItemToPage(const UBFeature &item)
 {
     UBApplication::boardController->downloadURL( item.getFullPath() );
-	/*if ( item.getType() == FEATURE_INTERNAL )
-	{
-		UBApplication::boardController->downloadURL( QUrl( item.getFullPath() ) );
-	}
-	else
-	{
-		UBApplication::boardController->downloadURL( QUrl::fromLocalFile( item.getFullPath() ) );
-	}*/
 }
+
+void UBFeaturesController::addItemAsBackground(const UBFeature &item)
+{
+    UBApplication::boardController->downloadURL( item.getFullPath(), QPointF(), QSize(), true );
+}
+
 
 UBFeature UBFeaturesController::getDestinationForItem( const QUrl &url )
 {
