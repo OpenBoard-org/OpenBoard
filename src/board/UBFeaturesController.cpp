@@ -101,8 +101,8 @@ void UBFeaturesController::initDirectoryTree()
 	featuresList->append( trashElement );
 	favoriteElement = UBFeature( rootPath, QPixmap(":images/libpalette/FavoritesCategory.svg"), "Favorites", "favorites", FEATURE_FAVORITE );
 	featuresList->append( favoriteElement );
-	searchElement = UBFeature( rootPath, QPixmap(":images/libpalette/WebSearchCategory.svg"), "Web search", mLibSearchDirectoryPath );
-	featuresList->append( searchElement );
+	webSearchElement = UBFeature( rootPath, QPixmap(":images/libpalette/WebSearchCategory.svg"), "Web search", mLibSearchDirectoryPath );
+	featuresList->append( webSearchElement );
 	loadFavoriteList();
 
 	foreach (UBToolsManager::UBToolDescriptor tool, tools)

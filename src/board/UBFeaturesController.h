@@ -130,7 +130,7 @@ private:
 	UBFeature interactElement;
 	UBFeature flashElement;
 	UBFeature shapesElement;
-	UBFeature searchElement;
+	UBFeature webSearchElement;
 
 	QSet <QString> *favoriteSet;
 };

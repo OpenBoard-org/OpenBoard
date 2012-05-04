@@ -116,7 +116,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 		this, SLOT(currentSelected(const QModelIndex &)));*/
 	connect( featuresListView, SIGNAL(clicked ( const QModelIndex & ) ),
 		this, SLOT( currentSelected(const QModelIndex &) ) );
-	connect( mActionBar, SIGNAL( searchElement(const QString &) ), this, SLOT( const searchStarted(QString &) ) );
+	connect( mActionBar, SIGNAL( searchElement(const QString &) ), this, SLOT( searchStarted(const QString &) ) );
 	connect( mActionBar, SIGNAL( newFolderToCreate() ), this, SLOT( createNewFolder()  ) );
 	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &) ), this, SLOT( deleteElements(const QMimeData &) ) ); 
 	connect( mActionBar, SIGNAL( addToFavorite(const QMimeData &) ), this, SLOT( addToFavorite(const QMimeData &) ) );
