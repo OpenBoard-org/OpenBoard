@@ -43,6 +43,15 @@
 
 #define UBTG_SEPARATOR_FIXED_HEIGHT 3
 
+typedef enum
+{
+    eUBTGAddSubItemWidgetType_None,
+    eUBTGAddSubItemWidgetType_Action ,
+    eUBTGAddSubItemWidgetType_Media,
+    eUBTGAddSubItemWidgetType_Url
+}eUBTGAddSubItemWidgetType;
+
+
 
 /***************************************************************************
  *               class    UBTeacherGuideEditionWidget                      *
@@ -61,7 +70,6 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
   , mpAddAnActionItem(NULL)
   , mpAddAMediaItem(NULL)
   , mpAddALinkItem(NULL)
-  , mpTreeDelegate(NULL)
 {
     setObjectName(name);
 
@@ -94,10 +102,7 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpTreeWidget = new QTreeWidget(this);
     mpLayout->addWidget(mpTreeWidget);
 
-    mpTreeDelegate = new UBTGWidgetTreeDelegate();
-
     mpRootWidgetItem = mpTreeWidget->invisibleRootItem();
-    //mpTreeWidget->setItemDelegate(mpTreeDelegate);
     mpTreeWidget->setRootIsDecorated(false);
     mpTreeWidget->setIndentation(0);
     mpTreeWidget->setDropIndicatorShown(false);
@@ -131,7 +136,6 @@ UBTeacherGuideEditionWidget::~UBTeacherGuideEditionWidget()
     DELETEPTR(mpAddAnActionItem);
     DELETEPTR(mpAddAMediaItem);
     DELETEPTR(mpAddALinkItem);
-    DELETEPTR(mpTreeDelegate);
     DELETEPTR(mpTreeWidget)
     DELETEPTR(mpLayout);
 }
@@ -755,7 +759,6 @@ void UBTeacherGuidePageZeroWidget::onActiveSceneChanged()
         mpCreationLabel->setText(tr("Created the: ") + creationDate.toString(Qt::SystemLocaleShortDate));
         QDateTime updatedDate = documentProxy->lastUpdate();
         mpLastModifiedLabel->setText(tr("Updated the: ") + updatedDate.toString(Qt::SystemLocaleShortDate));
-        persistData();
         loadData();
     }
 }
@@ -768,7 +771,6 @@ void UBTeacherGuidePageZeroWidget::hideEvent ( QHideEvent * event )
 
 void UBTeacherGuidePageZeroWidget::loadData()
 {
-
     UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
     mpSessionTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
     mpAuthors->setText(documentProxy->metaData(UBSettings::sessionAuthors).toString());

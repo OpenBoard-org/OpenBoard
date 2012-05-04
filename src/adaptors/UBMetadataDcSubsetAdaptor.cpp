@@ -118,7 +118,6 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionBranch,proxy->metaData(UBSettings::sessionBranch).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionType,proxy->metaData(UBSettings::sessionType).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionLicence,proxy->metaData(UBSettings::sessionLicence).toString());
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionAuthors,proxy->metaData(UBSettings::sessionAuthors).toString());
 
     xmlWriter.writeEndElement(); //dc:Description
     xmlWriter.writeEndElement(); //RDF
@@ -297,7 +296,6 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
     }
 
     metadata.insert(UBSettings::documentDate, QVariant(date));
-
 
 
     return metadata;

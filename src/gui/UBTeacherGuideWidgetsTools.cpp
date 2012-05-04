@@ -24,7 +24,6 @@
 #include <QApplication>
 
 #include "UBTeacherGuideWidgetsTools.h"
-#include "UBTGWidgetTreeDelegate.h"
 
 #include "core/UBPersistenceManager.h"
 

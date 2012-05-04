@@ -24,7 +24,6 @@ class QPushButton;
 class UBDocumentProxy;
 
 #include "UBTeacherGuideWidgetsTools.h"
-#include "UBTGWidgetTreeDelegate.h"
 
 typedef enum
 {
@@ -64,7 +63,6 @@ private:
     UBAddItem* mpAddAnActionItem;
     UBAddItem* mpAddAMediaItem;
     UBAddItem* mpAddALinkItem;
-    UBTGWidgetTreeDelegate* mpTreeDelegate;
 
 };
 
