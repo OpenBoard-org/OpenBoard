@@ -18,6 +18,7 @@
 #include "UBDockPaletteWidget.h"
 //#include "UBLibActionBar.h"
 #include "board/UBFeaturesController.h"
+#include "api/UBWidgetUniboardAPI.h"
 #include "UBFeaturesActionBar.h"
 #include "UBRubberBand.h"
 
@@ -25,6 +26,7 @@
 #define THUMBNAIL_WIDTH 400
 #define ID_LISTVIEW 0
 #define ID_PROPERTIES 1
+#define ID_WEBVIEW 2
 
 class UBListModel;
 
@@ -38,6 +40,7 @@ class UBFeaturesPathViewer;
 class UBFeatureProperties;
 class UBFeatureItemButton;
 class UBFeaturesListView;
+class UBFeaturesWebView;
 
 class UBFeaturesWidget : public UBDockPaletteWidget
 {
@@ -59,6 +62,7 @@ public:
 private:
 	void switchToListView();
 	void switchToProperties();
+	void switchToWebView();
 
 	UBFeaturesController *controller;
 	
@@ -79,7 +83,9 @@ private:
 	QGraphicsScene *pathScene;
 	UBFeaturesActionBar *mActionBar;
 	UBFeatureProperties *featureProperties;
+	UBFeaturesWebView *webView;
 	QStackedWidget *stackedWidget;
+	
 
 	int currentStackedWidget;
 	QModelIndex trashIndex;
@@ -114,6 +120,24 @@ private:
 	//QPoint rubberOrigin;
 };
 
+class UBFeaturesWebView : public QWidget
+{
+    Q_OBJECT
+public:
+    UBFeaturesWebView(QWidget* parent = 0, const char* name = "UBFeaturesWebView");
+    ~UBFeaturesWebView();
+
+    void showElement(const UBFeature &elem);
+
+private slots:
+    void onLoadFinished(bool ok);
+
+private:
+    QWebView* mpView;
+    QWebSettings* mpWebSettings;
+    QVBoxLayout* mpLayout;
+    UBWidgetUniboardAPI* mpSankoreAPI;
+};
 
 class UBFeatureProperties : public QWidget
 {
@@ -181,9 +205,9 @@ public:
 	
     Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 
-    void setFeaturesList(const QList <UBFeature> &flist ) { featuresList = flist; }
+    void setFeaturesList(QList <UBFeature> *flist ) { featuresList = flist; }
 private:
-	QList <UBFeature>  featuresList;
+	QList <UBFeature> *featuresList;
 };
 
 class UBFeaturesProxyModel : public QSortFilterProxyModel

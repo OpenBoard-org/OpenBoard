@@ -20,7 +20,8 @@ enum UBFeatureElementType
 	FEATURE_INTERNAL,
     FEATURE_ITEM,
 	FEATURE_TRASH,
-	FEATURE_FAVORITE
+	FEATURE_FAVORITE,
+	FEATURE_SEARCH
 };
 
 class UBFeature
@@ -58,7 +59,7 @@ public:
 	UBFeaturesController(QWidget *parentWidget);
     virtual ~UBFeaturesController();
 
-    const QList <UBFeature>& getFeatures()const { return featuresList; }
+    QList <UBFeature>* getFeatures()const { return featuresList; }
 	
     const QString& getRootPath()const { return rootPath; }
 
@@ -88,7 +89,7 @@ private:
 
 	static UBFeatureElementType fileTypeFromUrl( const QString &path );
 
-	QList <UBFeature> featuresList;
+	QList <UBFeature> *featuresList;
 	UBFeature *rootElement;
 
 	QString mUserAudioDirectoryPath;
@@ -106,6 +107,7 @@ private:
 	QString mLibApplicationsDirectoryPath;
 	QString mLibShapesDirectoryPath;
 	QString trashDirectoryPath;
+	QString mLibSearchDirectoryPath;
 
 	QString rootPath;
 	QString audiosPath;
@@ -128,8 +130,9 @@ private:
 	UBFeature interactElement;
 	UBFeature flashElement;
 	UBFeature shapesElement;
+	UBFeature searchElement;
 
-	QSet <QString> favoriteSet;
+	QSet <QString> *favoriteSet;
 };
 
 

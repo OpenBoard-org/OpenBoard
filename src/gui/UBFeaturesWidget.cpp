@@ -1,3 +1,5 @@
+#include <QDomDocument>
+
 #include "UBFeaturesWidget.h"
 #include "domain/UBAbstractWidget.h"
 #include "gui/UBThumbnailWidget.h"
@@ -6,7 +8,7 @@
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
 #include "globals/UBGlobals.h"
-#include "core/memcheck.h"
+#include "board/UBBoardController.h"
 
 UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
 {
@@ -83,6 +85,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	pathScene = new QGraphicsScene(this);
 	//pathViewer = new UBFeaturesPathViewer( QPixmap(":images/libpalette/home.png"), controller->getRootPath(), pathScene,  this );
 	featureProperties = new UBFeatureProperties(this);
+	webView = new UBFeaturesWebView(this);
 	
 	//layout->addWidget( pathViewer );
 	//pathViewer->show();
@@ -92,6 +95,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 
 	stackedWidget->addWidget( featuresListView );
 	stackedWidget->addWidget( featureProperties );
+	stackedWidget->addWidget( webView );
 	stackedWidget->setCurrentIndex(ID_LISTVIEW);
     currentStackedWidget = ID_LISTVIEW;
 
@@ -183,6 +187,11 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 			{
 				mActionBar->setCurrentState( IN_FOLDER );
 			}
+		}
+		else if ( feature.getType() == FEATURE_SEARCH )
+		{
+			webView->showElement( feature );
+			switchToWebView();
 		}
 		else
 		{
@@ -308,6 +317,11 @@ void UBFeaturesWidget::switchToProperties()
 	currentStackedWidget = ID_PROPERTIES;
 }
 
+void UBFeaturesWidget::switchToWebView()
+{
+	stackedWidget->setCurrentIndex(ID_WEBVIEW);
+	currentStackedWidget = ID_WEBVIEW;
+}
 
 /*
 
@@ -373,6 +387,96 @@ void UBFeaturesListView::dropEvent( QDropEvent *event )
 		event->setDropAction( Qt::MoveAction );
 	}
 	QListView::dropEvent( event );
+}
+
+
+UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(parent)
+    , mpView(NULL)
+    , mpWebSettings(NULL)
+    , mpLayout(NULL)
+    , mpSankoreAPI(NULL)
+{
+    setObjectName(name);
+
+    SET_STYLE_SHEET();
+
+    mpLayout = new QVBoxLayout();
+    setLayout(mpLayout);
+
+    mpView = new QWebView(this);
+    mpView->setObjectName("SearchEngineView");
+    mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
+    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+
+    mpWebSettings = QWebSettings::globalSettings();
+    mpWebSettings->setAttribute(QWebSettings::JavaEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::PluginsEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
+    mpWebSettings->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+
+    mpLayout->addWidget(mpView);
+
+    connect(mpView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
+}
+
+UBFeaturesWebView::~UBFeaturesWebView()
+{
+    if(NULL != mpSankoreAPI){
+        delete mpSankoreAPI;
+        mpSankoreAPI = NULL;
+    }
+    if(NULL != mpView){
+        delete mpView;
+        mpView = NULL;
+    }
+    if(NULL != mpLayout){
+        delete mpLayout;
+        mpLayout = NULL;
+    }
+}
+
+void UBFeaturesWebView::showElement(const UBFeature &elem)
+{
+	QString qsWidgetName;
+	QString path = elem.getFullPath();
+
+	QString qsConfigPath = QString("%0/config.xml").arg(path);
+
+	if(QFile::exists(qsConfigPath))
+	{
+		QFile f(qsConfigPath);
+		if(f.open(QIODevice::ReadOnly))
+		{
+			QDomDocument domDoc;
+			domDoc.setContent(QString(f.readAll()));
+			QDomElement root = domDoc.documentElement();
+
+			QDomNode node = root.firstChild();
+			while(!node.isNull())
+			{
+				if(node.toElement().tagName() == "content")
+				{
+					QDomAttr srcAttr = node.toElement().attributeNode("src");
+					qsWidgetName = srcAttr.value();
+					break;
+				}
+				node = node.nextSibling();
+			}
+			f.close();
+		}
+	}
+
+	mpView->load(QUrl::fromLocalFile(QString("%0/%1").arg(path).arg(qsWidgetName)));    
+}
+
+void UBFeaturesWebView::onLoadFinished(bool ok)
+{
+    if(ok && NULL != mpSankoreAPI){
+        mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+    }
 }
 
 
@@ -530,19 +634,19 @@ QVariant UBFeaturesModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
 	if (role == Qt::DisplayRole)
-		return featuresList.at(index.row()).getName();
+		return featuresList->at(index.row()).getName();
 	else if (role == Qt::DecorationRole)
 	{
-		return QIcon( featuresList.at(index.row()).getThumbnail() );
+		return QIcon( featuresList->at(index.row()).getThumbnail() );
 	}
 	else if (role == Qt::UserRole)
 	{
-		return featuresList.at(index.row()).getUrl();
+		return featuresList->at(index.row()).getUrl();
 	}
 	else if (role == Qt::UserRole + 1)
 	{
 		//return featuresList->at(index.row()).getType();
-		UBFeature f = featuresList.at(index.row());
+		UBFeature f = featuresList->at(index.row());
 		return QVariant::fromValue( f );
 	}
 
@@ -618,17 +722,17 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 
 void UBFeaturesModel::addItem( const UBFeature &item )
 {
-	beginInsertRows( QModelIndex(), featuresList.size(), featuresList.size() );
-	featuresList.push_back( item );
+	beginInsertRows( QModelIndex(), featuresList->size(), featuresList->size() );
+	featuresList->push_back( item );
 	endInsertRows();
 }
 
 void UBFeaturesModel::deleteFavoriteItem( const QString &path )
 {
-	for ( int i = 0; i < featuresList.size(); ++i )
+	for ( int i = 0; i < featuresList->size(); ++i )
 	{
-		if ( !QString::compare( featuresList.at(i).getFullPath(), path, Qt::CaseInsensitive ) &&
-			!QString::compare( featuresList.at(i).getUrl(), "/root/favorites", Qt::CaseInsensitive ) )
+		if ( !QString::compare( featuresList->at(i).getFullPath(), path, Qt::CaseInsensitive ) &&
+			!QString::compare( featuresList->at(i).getUrl(), "/root/favorites", Qt::CaseInsensitive ) )
 		{
 			removeRow( i, QModelIndex() );
 			return;
@@ -640,11 +744,11 @@ bool UBFeaturesModel::removeRows( int row, int count, const QModelIndex & parent
 {
 	if ( row < 0 )
 		return false;
-	if ( row + count > featuresList.size() )
+	if ( row + count > featuresList->size() )
 		return false;
 	beginRemoveRows( parent, row, row + count - 1 );
 	//featuresList->remove( row, count );
-	featuresList.erase( featuresList.begin() + row, featuresList.begin() + row + count );
+	featuresList->erase( featuresList->begin() + row, featuresList->begin() + row + count );
 	endRemoveRows();
 	return true;
 }
@@ -653,11 +757,11 @@ bool UBFeaturesModel::removeRow(  int row, const QModelIndex & parent )
 {
 	if ( row < 0 )
 		return false;
-	if ( row >= featuresList.size() )
+	if ( row >= featuresList->size() )
 		return false;
 	beginRemoveRows( parent, row, row );
 	//featuresList->remove( row );
-	featuresList.erase( featuresList.begin() + row );
+	featuresList->erase( featuresList->begin() + row );
 	endRemoveRows();
 	return true;
 }
@@ -709,7 +813,7 @@ int UBFeaturesModel::rowCount(const QModelIndex &parent) const
 	if (parent.isValid())
         return 0;
     else
-        return featuresList.size();
+        return featuresList->size();
 }
 
 
