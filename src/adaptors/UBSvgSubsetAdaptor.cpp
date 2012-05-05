@@ -120,7 +120,6 @@ QMatrix UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 static bool itemZIndexComp(const QGraphicsItem* item1,
                            const QGraphicsItem* item2)
 {
-//    return item1->zValue() < item2->zValue();
     return item1->data(UBGraphicsItemData::ItemOwnZValue).toReal() < item2->data(UBGraphicsItemData::ItemOwnZValue).toReal();
 }
 
@@ -1187,6 +1186,26 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
             mXmlWriter.writeEndElement();
             groupHoldsInfo = false;
             openStroke = 0;
+        }
+
+        QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
+        QVector<tIDataStorage*> dataStorageItems = elements.value("teacherGuide")->save();
+        foreach(tIDataStorage* eachItem, dataStorageItems){
+            if(eachItem->type == eElementType_START){
+                mXmlWriter.writeStartElement(eachItem->name);
+                foreach(QString key,eachItem->attributes.keys())
+                    mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
+            }
+            else if (eachItem->type == eElementType_END)
+                mXmlWriter.writeEndElement();
+            else if (eachItem->type == eElementType_UNIQUE){
+                mXmlWriter.writeStartElement(eachItem->name);
+                foreach(QString key,eachItem->attributes.keys())
+                    mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
+                mXmlWriter.writeEndElement();
+            }
+            else
+                qWarning() << "unknown type";
         }
 
         mXmlWriter.writeEndDocument();

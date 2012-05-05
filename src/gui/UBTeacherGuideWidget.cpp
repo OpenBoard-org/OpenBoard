@@ -189,10 +189,49 @@ void UBTeacherGuideEditionWidget::load(QString element)
 
 
 
-QDomElement* UBTeacherGuideEditionWidget::save(QDomElement* parentElement)
+QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save()
 {
-    qDebug() << parentElement;
-    return 0;
+    QVector<tIDataStorage*> result;
+    QMap<QString,QString> attributes;
+    tIDataStorage* data = new tIDataStorage();
+    data->name = "teacherBar";
+    data->type = eElementType_START;
+    data->attributes.insert("version","1.50");
+    result << data;
+
+    data = new tIDataStorage();
+    data->name = "title";
+    data->type = eElementType_UNIQUE;
+    data->attributes.insert("value",mpPageTitle->text());
+    result << data;
+
+    data = new tIDataStorage();
+    data->name = "comment";
+    data->type = eElementType_UNIQUE;
+    data->attributes.insert("value",mpComment->text());
+    result << data;
+
+    QList<QTreeWidgetItem*> children = getChildrenList(mpAddAnActionItem);
+    children << getChildrenList(mpAddAMediaItem);
+    children << getChildrenList(mpAddALinkItem);
+
+    foreach(QTreeWidgetItem* widgetItem, children){
+        tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget(widgetItem,0))->saveData();
+        if(node){
+            data = new tIDataStorage();
+            data->name = node->name;
+            data->type = eElementType_UNIQUE;
+            foreach(QString currentKey, node->attributes.keys())
+                data->attributes.insert(currentKey,node->attributes.value(currentKey));
+            result << data;
+        }
+    }
+
+    data = new tIDataStorage();
+    data->name = "teacherBar";
+    data->type = eElementType_END;
+    result << data;
+    return result;
 }
 
 void UBTeacherGuideEditionWidget::onActiveSceneChanged()
@@ -229,12 +268,12 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getPageAndCommentData()
 {
     QVector<tUBGEElementNode*>result;
     tUBGEElementNode* pageTitle = new tUBGEElementNode();
-    pageTitle->type = "pageTitle";
+    pageTitle->name = "pageTitle";
     pageTitle->attributes.insert("value",mpPageTitle->text());
     result << pageTitle;
 
     tUBGEElementNode* comment = new tUBGEElementNode();
-    comment->type = "comment";
+    comment->name = "comment";
     comment->attributes.insert("value",mpComment->text());
     result << comment;
     return result;
@@ -459,11 +498,11 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
     cleanData();
 
     foreach(tUBGEElementNode* element, data){
-        if(element->type == "pageTitle")
+        if(element->name == "pageTitle")
             mpPageTitle->showText(element->attributes.value("value"));
-        else if (element->type == "comment")
+        else if (element->name == "comment")
             mpComment->showText(element->attributes.value("value"));
-        else if(element->type == "action"){
+        else if(element->name == "action"){
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpRootWidgetItem);
             newWidgetItem->setText(0,element->attributes.value("task"));
             newWidgetItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
@@ -477,14 +516,14 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
 
             mpRootWidgetItem->addChild(newWidgetItem);
         }
-        else if(element->type == "media"){
+        else if(element->name == "media"){
             createMediaButtonItem();
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpMediaSwitchItem);
             newWidgetItem->setIcon(0,QIcon(":images/teacherGuide/"+ element->attributes.value("mediaType") +".png"));
             newWidgetItem->setText(0,element->attributes.value("title"));
             newWidgetItem->setData(0,tUBTGTreeWidgetItemRole_HasAnAction,tUBTGActionAssociateOnClickItem_MEDIA);
             newWidgetItem->setData(0,Qt::FontRole, QVariant(QFont(QApplication::font().family(),11)));
-            newWidgetItem->setData(0, TG_USER_ROLE_MIME_TYPE, element->attributes.value("relativePath"));
+            newWidgetItem->setData(0, TG_USER_ROLE_MIME_TYPE, UBApplication::boardController->activeDocument()->persistencePath()+ "/" + element->attributes.value("relativePath"));
             newWidgetItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             mpRootWidgetItem->addChild(newWidgetItem);
 
@@ -494,7 +533,7 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
             newWidgetItem->setExpanded(false);
             mpTreeWidget->setItemWidget(mediaItem,0,mediaWidget);
         }
-        else if(element->type == "link"){
+        else if(element->name == "link"){
             createMediaButtonItem();
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpMediaSwitchItem);
             newWidgetItem->setIcon(0,QIcon(":images/teacherGuide/link.png"));
@@ -954,52 +993,52 @@ QVector<tUBGEElementNode*> UBTeacherGuidePageZeroWidget::getData()
 {
     QVector<tUBGEElementNode*>result;
     tUBGEElementNode* elementNode = new tUBGEElementNode();
-    elementNode->type = "sessionTitle";
+    elementNode->name = "sessionTitle";
     elementNode->attributes.insert("value",mpSessionTitle->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "authors";
+    elementNode->name = "authors";
     elementNode->attributes.insert("value",mpAuthors->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "creationDate";
+    elementNode->name = "creationDate";
     elementNode->attributes.insert("value",mpCreationLabel->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "lastModifiedDate";
+    elementNode->name = "lastModifiedDate";
     elementNode->attributes.insert("value",mpLastModifiedLabel->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "goals";
+    elementNode->name = "goals";
     elementNode->attributes.insert("value",mpGoals->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "keywords";
+    elementNode->name = "keywords";
     elementNode->attributes.insert("value",mpKeywords->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "schoolLevel";
+    elementNode->name = "schoolLevel";
     elementNode->attributes.insert("value",mpSchoolLevelBox->currentText());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "schoolBranch";
+    elementNode->name = "schoolBranch";
     elementNode->attributes.insert("value",mpSchoolBranchBox->currentText());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "schoolType";
+    elementNode->name = "schoolType";
     elementNode->attributes.insert("value",mpSchoolTypeBox->currentText());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "licence";
+    elementNode->name = "licence";
     elementNode->attributes.insert("value",mpLicenceBox->currentText());
     result << elementNode;
     return result;

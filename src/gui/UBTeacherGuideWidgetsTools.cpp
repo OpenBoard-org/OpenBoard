@@ -101,7 +101,7 @@ void UBTGActionWidget::initializeWithDom(QDomElement element)
 tUBGEElementNode* UBTGActionWidget::saveData()
 {
     tUBGEElementNode* result = new tUBGEElementNode();
-    result->type = "action";
+    result->name = "action";
     result->attributes.insert("owner",QString("%0").arg(mpOwner->currentIndex()));
     result->attributes.insert("task",mpTask->text());
     return result;
@@ -306,12 +306,12 @@ UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWi
   , mpMediaLabelWidget(NULL)
   , mpMediaWidget(NULL)
   , mpWebView(NULL)
-  , mMediaPath(mediaPath)
   , mIsPresentationMode(true)
   , mMediaType("")
   , mIsInitializationMode(false)
 {
     setObjectName(name);
+    mMediaPath = UBApplication::boardController->activeDocument()->persistencePath()+ "/" + mediaPath;
     setAcceptDrops(false);
     createWorkWidget();
     setFixedHeight(200);
@@ -361,9 +361,9 @@ tUBGEElementNode* UBTGMediaWidget::saveData()
     if(!mpTitle)
         return 0;
     tUBGEElementNode* result = new tUBGEElementNode();
-    result->type = "media";
+    result->name = "media";
     result->attributes.insert("title",mpTitle->text());
-    result->attributes.insert("relativePath",mMediaPath);
+    result->attributes.insert("relativePath",mMediaPath.replace(UBApplication::boardController->activeDocument()->persistencePath()+"/",""));
     result->attributes.insert("mediaType",mMediaType);
     return result;
 }
@@ -534,7 +534,7 @@ void UBTGUrlWidget::initializeWithDom(QDomElement element)
 tUBGEElementNode* UBTGUrlWidget::saveData()
 {
     tUBGEElementNode* result = new tUBGEElementNode();
-    result->type = "link";
+    result->name = "link";
     result->attributes.insert("title",mpTitle->text());
     result->attributes.insert("url",mpUrl->text());
     return result;

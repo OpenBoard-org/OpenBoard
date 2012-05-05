@@ -16,12 +16,27 @@
 #ifndef IDATASTORAGE_H
 #define IDATASTORAGE_H
 
-class QDomElement;
+#include <QString>
+#include <QMap>
+
+typedef enum
+{
+    eElementType_START,
+    eElementType_END,
+    eElementType_UNIQUE
+}eElementType;
+
+typedef struct
+{
+    QString name;
+    QMap<QString,QString> attributes;
+    eElementType type;
+}tIDataStorage;
 
 class IDataStorage
 {
 public:
     virtual void load(QString element) = 0;
-    virtual QDomElement* save(QDomElement* parentElement) = 0 ;
+    virtual QVector<tIDataStorage*>save() = 0 ;
 };
 #endif // IDATASTORAGE_H

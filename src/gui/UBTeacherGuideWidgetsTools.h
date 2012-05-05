@@ -42,7 +42,7 @@ class QDomElement;
 
 typedef struct
 {
-    QString type;
+    QString name;
     QMap<QString,QString> attributes;
 }tUBGEElementNode;
 
