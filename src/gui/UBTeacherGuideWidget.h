@@ -22,6 +22,7 @@ class QLabel;
 class QVBoxLayout;
 class QPushButton;
 class UBDocumentProxy;
+class UBGraphicsTextItem;
 
 
 #include "UBTeacherGuideWidgetsTools.h"
@@ -175,6 +176,8 @@ private:
     QLabel* mpLicenceIcon;
     QHBoxLayout* mpLicenceLayout;
 
+    UBGraphicsTextItem* mpSceneItemSessionTitle;
+
     QMap<QString,QString> mGradeLevelsMap;
     QMap<QString,QStringList> mSubjects;
 
@@ -205,7 +208,6 @@ private:
     UBTeacherGuideEditionWidget* mpEditionWidget;
     UBTeacherGuidePresentationWidget* mpPresentationWidget;
     QVector<tUBGEElementNode*>mCurrentData;
-
 };
 
 #endif // UBTEACHERGUIDEWIDGET_H

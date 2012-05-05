@@ -396,15 +396,15 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             mAddedItems.clear();
             mRemovedItems.clear();
 
-			if (UBDrawingController::drawingController()->mActiveRuler)
+            if (UBDrawingController::drawingController()->mActiveRuler)
             {
                 UBDrawingController::drawingController()->mActiveRuler->StartLine(scenePos, width);
-			}
-			else
-			{
-				moveTo(scenePos);
+            }
+            else
+            {
+                moveTo(scenePos);
                 drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
-			}
+            }
             accepted = true;
         }
         else if (currentTool == UBStylusTool::Eraser)
@@ -590,8 +590,8 @@ bool UBGraphicsScene::inputDeviceRelease()
                 mCurrentStroke = 0;
             }
         }
-    } 
-   
+    }
+
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
     {
 
@@ -654,7 +654,7 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 // call this function when user release mouse button in Magnifier mode
 void UBGraphicsScene::DisposeMagnifierQWidgets()
 {
-    if(magniferControlViewWidget) 
+    if(magniferControlViewWidget)
     {
         magniferControlViewWidget->hide();
         magniferControlViewWidget->setParent(0);
@@ -662,7 +662,7 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
         magniferControlViewWidget = NULL;
     }
 
-    if(magniferDisplayViewWidget) 
+    if(magniferDisplayViewWidget)
     {
         magniferDisplayViewWidget->hide();
         magniferDisplayViewWidget->setParent(0);
@@ -679,7 +679,7 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
     catch (...)
     {
     }
-    
+
 }
 
 void UBGraphicsScene::moveTo(const QPointF &pPoint)
@@ -711,7 +711,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         }
     }
 
-	if (bLineStyle)
+    if (bLineStyle)
     {
         QSetIterator<QGraphicsItem*> itItems(mAddedItems);
 
@@ -736,7 +736,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
 
     mPreviousPolygonItems.append(polygonItem);
 
-	if (!bLineStyle)
+    if (!bLineStyle)
     {
         mPreviousPoint = pEndPoint;
         mPreviousWidth = pWidth;
@@ -1473,6 +1473,30 @@ UBGraphicsTextItem* UBGraphicsScene::addText(const QString& pString, const QPoin
             , UBSettings::settings()->isItalicFont());
 }
 
+UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, const QString& objectName)
+{
+    UBGraphicsTextItem* textItem = 0;
+    bool found = false;
+    //looking for a previous such item text
+    for(int i=0; i < mFastAccessItems.count() && !found ; i += 1){
+        UBGraphicsTextItem* currentItem = dynamic_cast<UBGraphicsTextItem*>(mFastAccessItems.at(i));
+        if(currentItem && currentItem->objectName() == objectName){
+            textItem = currentItem;
+            found=true;
+        }
+    }
+    if(!textItem){
+        textItem = addTextWithFont(pString,QPointF(0,0) ,64,"",true,false);
+        textItem->setObjectName(objectName);
+        textItem->Delegate()->setCanDuplicate(false);
+    }
+
+    textItem->setPlainText(pString);
+    textItem->adjustSize();
+    QSizeF size = textItem->size();
+    textItem->setPos(QPointF(-size.width()/2.0,-size.height()/2.0));
+    return textItem;
+}
 
 UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, const QPointF& pTopLeft
             , int pointSize, const QString& fontFamily, bool bold, bool italic)
@@ -1926,11 +1950,11 @@ void UBGraphicsScene::addCache()
 }
 
 void UBGraphicsScene::addMask(const QPointF &center)
-{ 
+{
     UBGraphicsCurtainItem* curtain = new UBGraphicsCurtainItem(); // mem : owned and destroyed by the scene
     mTools << curtain;
 
-	addItem(curtain);
+    addItem(curtain);
 
     QRectF rect = UBApplication::boardController->activeScene()->normalizedSceneRect();
     rect.setRect(center.x() - rect.width()/4, center.y() - rect.height()/4, rect.width()/2 , rect.height()/2);
@@ -2010,7 +2034,7 @@ void UBGraphicsScene::setNominalSize(int pWidth, int pHeight)
 }
 
 void UBGraphicsScene::setSelectedZLevel(QGraphicsItem * item)
-{    
+{
     item->setZValue(mZLayerController->generateZLevel(itemLayerType::SelectedItem));
 }
 void UBGraphicsScene::setOwnZlevel(QGraphicsItem *item)
@@ -2180,7 +2204,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
                         UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
                         if (0 != wc3_widget)
                         if (!wc3_widget->hasFocus())
-                            wc3_widget->remove();                                                             
+                            wc3_widget->remove();
                         break;
                     }
                 case UBGraphicsAppleWidgetItem::Type:
@@ -2188,7 +2212,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
                         UBGraphicsAppleWidgetItem *Apple_widget = dynamic_cast<UBGraphicsAppleWidgetItem*>(item);
                         if (0 !=Apple_widget)
                         if (!Apple_widget->hasFocus())
-                            Apple_widget->remove();                          
+                            Apple_widget->remove();
                         break;
                     }
                 case UBGraphicsTextItem::Type:
@@ -2196,7 +2220,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
                         UBGraphicsTextItem *text_item = dynamic_cast<UBGraphicsTextItem*>(item);
                         if (0 != text_item)
                         if (!text_item->hasFocus())
-                            text_item->remove();                              
+                            text_item->remove();
                         break;
                     }
 
@@ -2206,7 +2230,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
                         if (0 != ubgi)
                             ubgi->remove();
                         else
-                            UBCoreGraphicsScene::removeItem(item);      
+                            UBCoreGraphicsScene::removeItem(item);
                     }
                 }
             }
