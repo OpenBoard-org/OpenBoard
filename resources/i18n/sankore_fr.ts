@@ -799,6 +799,10 @@
         <source>Import old Sankore or Uniboard documents</source>
         <translation>Importer les anciens documents Sankoré et Uniboard</translation>
     </message>
+    <message>
+        <source>Gtorup items</source>
+        <translation>Groupe les éléments</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -1332,6 +1336,67 @@
     </message>
 </context>
 <context>
+    <name>UBFeatureProperties</name>
+    <message>
+        <source>Add to page</source>
+        <translation>Ajouter à la page</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation>Ajouter en arrière plan</translation>
+    </message>
+    <message>
+        <source>Add to library</source>
+        <translation>Ajouter à la librarie</translation>
+    </message>
+    <message>
+        <source>Object informations</source>
+        <translation>Informations</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesActionBar</name>
+    <message>
+        <source>Add to favorites</source>
+        <translation>Ajouter aux favoris</translation>
+    </message>
+    <message>
+        <source>Share</source>
+        <translation>Partager</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Rechercher</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation>Supprimer</translation>
+    </message>
+    <message>
+        <source>Back to folder</source>
+        <translation>Retour au répertoire</translation>
+    </message>
+    <message>
+        <source>Remove from favorites</source>
+        <translation>Supprimer des favoris</translation>
+    </message>
+    <message>
+        <source>Create new folder</source>
+        <translation>Créer un nouveau dossier</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsGroupContainerItemDelegate</name>
+    <message>
+        <source>Locked</source>
+        <translation>Verrouillé</translation>
+    </message>
+    <message>
+        <source>Visible on Extended Screen</source>
+        <translation>Visible sur l&apos;écran de projection</translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsItemDelegate</name>
     <message>
         <source>Locked</source>
@@ -1801,33 +1866,33 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <name>UBTGActionWidget</name>
     <message>
         <source>Teacher</source>
-        <translation type="unfinished"></translation>
+        <translation>Professeur</translation>
     </message>
     <message>
         <source>Student</source>
-        <translation type="unfinished"></translation>
+        <translation>Elève</translation>
     </message>
     <message>
         <source>Type task here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter une action</translation>
     </message>
 </context>
 <context>
     <name>UBTGMediaWidget</name>
     <message>
         <source>drop media here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Glisser un média ici ...</translation>
     </message>
     <message>
         <source>Type title here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre de l&apos;activité</translation>
     </message>
 </context>
 <context>
     <name>UBTGUrlWidget</name>
     <message>
         <source>Insert link title here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre</translation>
     </message>
 </context>
 <context>
@@ -1841,38 +1906,131 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <name>UBTeacherGuideEditionWidget</name>
     <message>
         <source>Type title here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre</translation>
     </message>
     <message>
         <source>Type comment here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Commentaire, descriptif</translation>
     </message>
     <message>
         <source>Add an action</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter une action</translation>
     </message>
     <message>
         <source>Add a media</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un média</translation>
     </message>
     <message>
         <source>Add a link</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un lien</translation>
     </message>
     <message>
         <source>Page: %0</source>
+        <translation>Page: %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherGuidePageZeroWidget</name>
+    <message>
+        <source>Page 0</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Type session title here ...</source>
+        <translation>Titre de la séance</translation>
+    </message>
+    <message>
+        <source>Author(s)</source>
+        <translation>Auteur(s)</translation>
+    </message>
+    <message>
+        <source>Type authors here ...</source>
+        <translation>Auteur(s)</translation>
+    </message>
+    <message>
+        <source>Goal(s)</source>
+        <translation>Objectif(s)</translation>
+    </message>
+    <message>
+        <source>Type goals here...</source>
+        <translation>Objectifs</translation>
+    </message>
+    <message>
+        <source>Resource indexing</source>
+        <translation>Indexation de la ressource</translation>
+    </message>
+    <message>
+        <source>Keywords:</source>
+        <translation>Mots clé(s)</translation>
+    </message>
+    <message>
+        <source>Type keywords here ...</source>
+        <translation>Mots clés</translation>
+    </message>
+    <message>
+        <source>Level:</source>
+        <translation>Niveau scolaire</translation>
+    </message>
+    <message>
+        <source>Branch:</source>
+        <translation>Discipline</translation>
+    </message>
+    <message>
+        <source>Type:</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Licence</source>
+        <translation>Licence</translation>
+    </message>
+    <message>
+        <source>Attribution CC BY</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-NoDerivs CC BY-ND</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-ShareAlike CC BY-SA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-NonCommercial CC BY-NC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-NonCommercial-NoDerivs CC BY-NC-ND</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-NonCommercial-ShareAlike CC BY-NC-SA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Public domain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copyright</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Created the:
+</source>
+        <translation>Crée le:</translation>
+    </message>
+    <message>
+        <source>Updated the:
+</source>
+        <translation>Modifié le:</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePresentationWidget</name>
     <message>
-        <source>Document title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Page: %0</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2840,6 +2998,21 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;GIPENA&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;20 Avenue Ségur Paris 75007&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;Téléphone : 01 43 17 68 08&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;; font-size:12pt; font-weight:600;&quot;&gt;Fonts&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;;&quot;&gt;- Thanks to Henri ROGELET for Script-École 2, ScriptCase-École, Alphonetic (&lt;/span&gt;&lt;a href=&quot;http://pointecole.free.fr/polices.html&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;; text-decoration: underline; color:#0000ff;&quot;&gt;http://pointecole.free.fr/polices.html&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;;&quot;&gt;).&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;;&quot;&gt;- Andika Copyright (c) 2004-2011, SIL International (http://www.sil.org/). Licensed under the SIL Open Font License, Version 1.1 (http://scripts.sil.org/OFL), with Reserved Font Names &amp;quot;Andika&amp;quot; and &amp;quot;SIL&amp;quot;.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;; color:#000000;&quot;&gt;- Ecolier CC BY-NC-ND 2.0 (JM Douteau)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
