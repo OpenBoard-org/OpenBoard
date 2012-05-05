@@ -153,7 +153,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mRightPalette = new UBRightPalette(mContainer);
     // RIGHT palette widgets
-
+    mpFeaturesWidget = new UBFeaturesWidget();
 	mRightPalette->registerWidget(mpFeaturesWidget);
 	mRightPalette->addTab(mpFeaturesWidget);
 
@@ -534,7 +534,7 @@ void UBBoardPaletteManager::activeSceneChanged()
 
     if (mpPageNavigWidget)
     {
-        mpPageNavigWidget->setPageNumber(pageIndex + 1, activeScene->document()->pageCount());
+        mpPageNavigWidget->setPageNumber(UBApplication::boardController->pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
     }
 
     if (mZoomPalette)

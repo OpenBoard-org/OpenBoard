@@ -59,6 +59,8 @@ class UBBoardController : public QObject
 
         int currentPage();
 
+        int pageFromSceneIndex(int sceneIndex);
+
         UBDocumentProxy* activeDocument()
         {
             return mActiveDocument;

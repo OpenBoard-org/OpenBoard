@@ -585,9 +585,9 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
         else QGraphicsView::mouseMoveEvent (event);
     }
   else if ((UBDrawingController::drawingController()->isDrawingTool())
-  	&& !mMouseButtonIsPressed)
+    && !mMouseButtonIsPressed)
   {
-	  QGraphicsView::mouseMoveEvent (event);
+      QGraphicsView::mouseMoveEvent (event);
   }
   else if (currentTool == UBStylusTool::Text || currentTool == UBStylusTool::Capture)
     {
@@ -849,11 +849,12 @@ void UBBoardView::dropEvent (QDropEvent *event)
         graphicsWidget->processDropEvent(event);
         event->acceptProposedAction();
 
-	} else if (!event->source()
-             || dynamic_cast<UBThumbnailWidget *>(event->source())
-             || dynamic_cast<QWebView*>(event->source())
-             || dynamic_cast<UBTGMediaWidget*>(event->source())
-	         || dynamic_cast<QListView *>(event->source()) ) {
+    } else if (!event->source()
+               || dynamic_cast<UBThumbnailWidget *>(event->source())
+               || dynamic_cast<QWebView*>(event->source())
+               || dynamic_cast<UBTGMediaWidget*>(event->source())
+               || dynamic_cast<QListView *>(event->source())
+               || dynamic_cast<UBTGDraggableTreeItem*>(event->source())) {
 
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction();

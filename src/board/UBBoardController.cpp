@@ -151,9 +151,16 @@ UBBoardController::~UBBoardController()
 
 int UBBoardController::currentPage()
 {
-    if(!UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
         return mActiveSceneIndex;
     return mActiveSceneIndex + 1;
+}
+
+int UBBoardController::pageFromSceneIndex(int sceneIndex)
+{
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+        return sceneIndex;
+    return sceneIndex+1;
 }
 
 void UBBoardController::setupViews()

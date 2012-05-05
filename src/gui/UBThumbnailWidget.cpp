@@ -855,6 +855,7 @@ void UBSceneThumbnailNavigPixmap::deletePage()
 
 void UBSceneThumbnailNavigPixmap::moveUpPage()
 {
+
     UBApplication::documentController->moveSceneToIndex(proxy(), sceneIndex(), sceneIndex() - 1);
 }
 

@@ -23,6 +23,8 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 
+#include "board/UBBoardController.h"
+
 #include "document/UBDocumentProxy.h"
 
 #include "domain/UBGraphicsScene.h"
@@ -42,8 +44,7 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
 
     int existingPageCount = proxy->pageCount();
 
-    QString thumbFileName = proxy->persistencePath() +
-        UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", existingPageCount);
+    QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", existingPageCount);
 
     QFile thumbFile(thumbFileName);
 
@@ -80,8 +81,7 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
 
     while (moreToProcess) {
         pageCount++;
-        QString fileName = proxy->persistencePath() +
-                UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageCount);
+        QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageCount);
 
         QFile file(fileName);
         if (file.exists()) {
@@ -108,8 +108,7 @@ QPixmap UBThumbnailAdaptor::load(UBDocumentProxy* proxy, int index)
 		return QPixmap();
     //compatibility with older formats (<= 4.0.b.2.0) : generate missing thumbnails
 
-    QString thumbFileName = proxy->persistencePath() +
-        UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", existingPageCount);
+    QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", existingPageCount);
 
     QFile thumbFile(thumbFileName);
 
@@ -140,8 +139,8 @@ QPixmap UBThumbnailAdaptor::load(UBDocumentProxy* proxy, int index)
     }
 
     //end compatibility with older format
-        QString fileName = proxy->persistencePath() +
-                UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", index + 1);
+//        QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", index + 1);
+        QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", UBApplication::boardController->pageFromSceneIndex(index));
 
         QFile file(fileName);
         if (file.exists())
@@ -160,7 +159,7 @@ QPixmap UBThumbnailAdaptor::load(UBDocumentProxy* proxy, int index)
 
 void UBThumbnailAdaptor::persistScene(const QString& pDocPath, UBGraphicsScene* pScene, int pageIndex, bool overrideModified)
 {
-    QString fileName = pDocPath + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex + 1);
+    QString fileName = pDocPath + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
 
     QFile thumbFile(fileName);
 
@@ -206,8 +205,7 @@ void UBThumbnailAdaptor::persistScene(const QString& pDocPath, UBGraphicsScene* 
 
 QUrl UBThumbnailAdaptor::thumbnailUrl(UBDocumentProxy* proxy, int pageIndex)
 {
-    QString fileName = proxy->persistencePath() +
-            UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex + 1);
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
 
     return QUrl::fromLocalFile(fileName);
 }

@@ -862,15 +862,19 @@ void UBTeacherGuidePageZeroWidget::loadData()
 
 void UBTeacherGuidePageZeroWidget::persistData()
 {
-    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
-    documentProxy->setMetaData(UBSettings::sessionTitle,mpSessionTitle->text());
-    documentProxy->setMetaData(UBSettings::sessionAuthors, mpAuthors->text());
-    documentProxy->setMetaData(UBSettings::sessionGoals,mpGoals->text());
-    documentProxy->setMetaData(UBSettings::sessionKeywords,mpKeywords->text());
-    documentProxy->setMetaData(UBSettings::sessionGradeLevel,mpSchoolLevelBox->currentText());
-    documentProxy->setMetaData(UBSettings::sessionBranch,mpSchoolBranchBox->currentText());
-    documentProxy->setMetaData(UBSettings::sessionType,mpSchoolTypeBox->currentText());
-    documentProxy->setMetaData(UBSettings::sessionLicence,mpLicenceBox->currentText());
+    // check necessary because at document closing hide event is send after boardcontroller set
+    // to NULL
+    if(UBApplication::boardController){
+        UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+        documentProxy->setMetaData(UBSettings::sessionTitle,mpSessionTitle->text());
+        documentProxy->setMetaData(UBSettings::sessionAuthors, mpAuthors->text());
+        documentProxy->setMetaData(UBSettings::sessionGoals,mpGoals->text());
+        documentProxy->setMetaData(UBSettings::sessionKeywords,mpKeywords->text());
+        documentProxy->setMetaData(UBSettings::sessionGradeLevel,mpSchoolLevelBox->currentText());
+        documentProxy->setMetaData(UBSettings::sessionBranch,mpSchoolBranchBox->currentText());
+        documentProxy->setMetaData(UBSettings::sessionType,mpSchoolTypeBox->currentText());
+        documentProxy->setMetaData(UBSettings::sessionLicence,mpLicenceBox->currentText());
+    }
 }
 
 void UBTeacherGuidePageZeroWidget::updateSceneTitle()

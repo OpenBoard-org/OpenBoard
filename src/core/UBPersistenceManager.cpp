@@ -32,6 +32,10 @@
 #include "adaptors/UBThumbnailAdaptor.h"
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
+#include "board/UBBoardController.h"
+
+#include "interfaces/IDataStorage.h"
+
 #include "core/memcheck.h"
 
 const QString UBPersistenceManager::imageDirectory = "images"; // added to UBPersistenceManager::mAllDirectories
@@ -39,6 +43,7 @@ const QString UBPersistenceManager::objectDirectory = "objects"; // added to UBP
 const QString UBPersistenceManager::widgetDirectory = "widgets"; // added to UBPersistenceManager::mAllDirectories
 const QString UBPersistenceManager::videoDirectory = "videos"; // added to UBPersistenceManager::mAllDirectories
 const QString UBPersistenceManager::audioDirectory = "audios"; // added to
+const QString UBPersistenceManager::teacherGuideDirectory = "teacherGuideObjects";
 
 UBPersistenceManager * UBPersistenceManager::sSingleton = 0;
 
@@ -52,6 +57,7 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mDocumentSubDirectories << widgetDirectory;
     mDocumentSubDirectories << videoDirectory;
     mDocumentSubDirectories << audioDirectory;
+    mDocumentSubDirectories << teacherGuideDirectory;
 
     documentProxies = allDocumentProxies();
     emit proxyListChanged();
@@ -82,7 +88,6 @@ UBPersistenceManager::~UBPersistenceManager()
             delete proxyGuard.data();
     }
 }
-
 
 QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
 {
@@ -363,7 +368,7 @@ UBDocumentProxy* UBPersistenceManager::duplicateDocument(UBDocumentProxy* pDocum
 
 void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QList<int>& indexes)
 {
-	checkIfDocumentRepositoryExists();
+    checkIfDocumentRepositoryExists();
 
     int pageCount = UBPersistenceManager::persistenceManager()->sceneCount(proxy);
 
@@ -432,7 +437,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
         QFile::remove(thumbFileName);
 
-		mSceneCache.removeScene(proxy, index);
+        mSceneCache.removeScene(proxy, index);
 
         proxy->decPageCount();
 
@@ -482,7 +487,7 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
 
     proxy->incPageCount();
 
-	emit documentSceneCreated(proxy, index + 1);
+    emit documentSceneCreated(proxy, index + 1);
 }
 
 
@@ -668,7 +673,7 @@ int UBPersistenceManager::sceneCountInDir(const QString& pPath)
 
     while (moreToProcess)
     {
-        QString fileName = pPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex + 1);
+        QString fileName = pPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
 
         QFile file(fileName);
 
@@ -826,6 +831,35 @@ void UBPersistenceManager::purgeEmptyDocuments()
 
         mHasPurgedDocuments = true;
     }
+}
+
+QString UBPersistenceManager::teacherGuideAbsoluteObjectPath(UBDocumentProxy* pDocumentProxy)
+{
+    return pDocumentProxy->persistencePath() + "/" + teacherGuideDirectory;
+}
+
+QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* pDocumentProxy, QString pPath)
+{
+    QFileInfo fi(pPath.replace("file://",""));
+    QString uuid = QUuid::createUuid();
+
+    if (!fi.exists() || !pDocumentProxy)
+        return "";
+
+    QString fileName = UBPersistenceManager::teacherGuideDirectory + "/" + uuid + "." + fi.suffix();
+
+    QString destPath = pDocumentProxy->persistencePath() + "/" + fileName;
+
+    if (!QFile::exists(destPath)){
+        QDir dir;
+        dir.mkdir(pDocumentProxy->persistencePath() + "/" + UBPersistenceManager::teacherGuideDirectory);
+
+        QFile source(pPath);
+
+        source.copy(destPath);
+    }
+
+    return destPath;
 }
 
 

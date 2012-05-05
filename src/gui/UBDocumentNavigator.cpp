@@ -113,7 +113,7 @@ void UBDocumentNavigator::generateThumbnails()
     {
         QPixmap pix = thumbs.at(i);
         QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailNavigPixmap(pix, mCrntDoc, i);
-		UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(tr("Page %0").arg(i + 1));
+        UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(tr("Page %0").arg(UBApplication::boardController->pageFromSceneIndex(i)));
 
 		UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
 		thumbWithText.setBorder(border());
