@@ -44,6 +44,7 @@
 #include "document/UBDocumentController.h"
 
 #include "domain/UBGraphicsTextItem.h"
+
 #include "core/memcheck.h"
 
 #define UBTG_SEPARATOR_FIXED_HEIGHT 3
