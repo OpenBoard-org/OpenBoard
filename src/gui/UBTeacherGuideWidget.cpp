@@ -829,7 +829,7 @@ void UBTeacherGuidePageZeroWidget::onActiveSceneChanged()
         QDateTime updatedDate = documentProxy->lastUpdate();
         mpLastModifiedLabel->setText(tr("Updated the:\n") + updatedDate.toString(Qt::SystemLocaleShortDate));
         loadData();
-        UBApplication::boardController->activeScene()->textForObjectName(mpSessionTitle->text());
+        updateSceneTitle();
     }
 }
 
@@ -873,6 +873,13 @@ void UBTeacherGuidePageZeroWidget::persistData()
     documentProxy->setMetaData(UBSettings::sessionLicence,mpLicenceBox->currentText());
 }
 
+void UBTeacherGuidePageZeroWidget::updateSceneTitle()
+{
+    QString sessionTitle = mpSessionTitle->text();
+    if(!sessionTitle.isEmpty())
+        UBApplication::boardController->activeScene()->textForObjectName(mpSessionTitle->text());
+}
+
 void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
 {
     if(mode == tUBTGZeroPageMode_EDITION){
@@ -902,7 +909,7 @@ void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
         QString inputStyleSheet("QTextEdit { background: transparent; border: none;}");
         mpModePushButton->show();
         mpSessionTitle->setReadOnly(true);
-        UBApplication::boardController->activeScene()->textForObjectName(mpSessionTitle->text());
+        updateSceneTitle();
         mpSessionTitle->setStyleSheet(inputStyleSheet);
         mpSessionTitle->setTextColor(QColor(Qt::black));
         QFont titleFont(QApplication::font().family(),14,1);

@@ -1480,15 +1480,18 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
     //looking for a previous such item text
     for(int i=0; i < mFastAccessItems.count() && !found ; i += 1){
         UBGraphicsTextItem* currentItem = dynamic_cast<UBGraphicsTextItem*>(mFastAccessItems.at(i));
-        if(currentItem && currentItem->objectName() == objectName){
+        if(currentItem && (currentItem->objectName() == objectName || currentItem->toPlainText() == pString)){
+            // The second condition is necessary because the object name isn't stored. On reopeining the file we
+            // need another rule than the objectName
             textItem = currentItem;
             found=true;
+            if(currentItem->objectName() != objectName)
+                textItem->setObjectName(objectName);
         }
     }
     if(!textItem){
-        textItem = addTextWithFont(pString,QPointF(0,0) ,64,"",true,false);
+        textItem = addTextWithFont(pString,QPointF(0,0) ,48,"",true,false);
         textItem->setObjectName(objectName);
-        textItem->Delegate()->setCanDuplicate(false);
     }
 
     textItem->setPlainText(pString);

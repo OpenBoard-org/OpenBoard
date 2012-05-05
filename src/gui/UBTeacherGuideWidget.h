@@ -135,6 +135,7 @@ private:
     void loadData();
     void hideEvent(QHideEvent* event);
     bool eventFilter(QObject* object, QEvent* event);
+    void updateSceneTitle();
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonTitleLayout;
