@@ -26,6 +26,13 @@ QWidget#UBLibWebView
 	border: 2px solid #999999;
 }
 
+QWidget#UBFeaturesWebView
+{
+	background: #EEEEEE;
+	border-radius : 10px;
+	border: 2px solid #999999;
+}
+
 QListView
 {
 	background: #EEEEEE;

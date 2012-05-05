@@ -63,6 +63,9 @@ class DelegateVideoControl: public QGraphicsRectItem
         qint64 mCurrentTimeInMs;
         qint64 mTotalTimeInMs;
 
+    private:
+        int mStartWidth;
+        QRectF mBalloon;
 };
 
 
@@ -107,7 +110,6 @@ class UBGraphicsVideoItemDelegate : public UBGraphicsItemDelegate
         DelegateVideoControl *mVideoControl;
 
         Phonon::MediaObject* mMedia;
-
 };
 
 

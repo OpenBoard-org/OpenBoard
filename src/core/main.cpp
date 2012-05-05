@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
     // Uncomment next section to have memory leaks information
     // tracing in VC++ debug mode under Windows
-    /*
+/*
 #if defined(_MSC_VER) && defined(_DEBUG)
     _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif

@@ -19,11 +19,11 @@
 
 #include "UBGraphicsScene.h"
 
-#include "core/memcheck.h"
-
 #include "core/UBApplication.h"
 
 #include "board/UBBoardController.h"
+
+#include "core/memcheck.h"
 
 UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
         const QSet<QGraphicsItem*>& pAddedItems)

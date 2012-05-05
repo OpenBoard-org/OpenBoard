@@ -16,6 +16,8 @@
 #include <QtGlobal>
 #include "CCITTFaxDecode.h"
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 
 bool CCITTFaxDecode::encode(std::string & decoded)

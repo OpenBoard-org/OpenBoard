@@ -14,11 +14,12 @@
  */
 #include "UBPageNavigationWidget.h"
 #include "core/UBApplication.h"
-#include "core/memcheck.h"
 
 #include "board/UBBoardController.h"
 
 #include "globals/UBGlobals.h"
+
+#include "core/memcheck.h"
 
 /**
  * \brief Constructor
@@ -175,7 +176,7 @@ void UBPageNavigationWidget::updateTime()
  */
 void UBPageNavigationWidget::setPageNumber(int current, int total)
 {
-    mPageNbr->setText(QString("%1 / %2").arg(current).arg(total));
+    mPageNbr->setText(QString("%1 / %2").arg(current).arg(UBApplication::boardController->sceneIndexFromPage(total)));
 }
 
 /**

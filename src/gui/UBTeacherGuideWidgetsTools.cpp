@@ -36,6 +36,8 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 
+#include "core/memcheck.h"
+
 
 /***************************************************************************
  *                             class    UBAddItem                          *

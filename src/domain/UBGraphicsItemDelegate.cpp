@@ -37,6 +37,9 @@
 #include "UBGraphicsWidgetItem.h"
 
 #include "domain/UBAbstractWidget.h"
+#include "domain/UBGraphicsTextItem.h"
+#include "domain/UBGraphicsAudioItem.h"
+#include "domain/UBGraphicsVideoItem.h"
 
 #include "web/UBWebController.h"
 
@@ -46,6 +49,27 @@
 #include "core/memcheck.h"
 
 class UBGraphicsParaschoolEditorWidgetItem;
+
+DelegateButton::DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent, Qt::WindowFrameSection section)
+    : QGraphicsSvgItem(fileName, parent)
+    , mDelegated(pDelegated)
+    , mIsTransparentToMouseEvent(false)
+    , mButtonAlignmentSection(section)
+{
+    setAcceptedMouseButtons(Qt::LeftButton);
+    setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+}
+
+DelegateButton::~DelegateButton()
+{
+    // NOOP
+}
+
+void DelegateButton::setFileName(const QString & fileName)
+{
+    QGraphicsSvgItem::setSharedRenderer(new QSvgRenderer (fileName, this));
+}
+
 
 void DelegateButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -93,6 +117,8 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
 
 void UBGraphicsItemDelegate::init()
 {
+    mToolBarItem = new UBGraphicsToolBarItem(delegated());
+
     mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
     mFrame->hide();
     mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -123,9 +149,12 @@ void UBGraphicsItemDelegate::init()
 
     foreach(DelegateButton* button, mButtons)
     {
+        if (button->getSection() != Qt::TitleBarArea)
+        {
         button->hide();
         button->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
+}
 }
 
 
@@ -292,13 +321,20 @@ void UBGraphicsItemDelegate::positionHandles()
 
         updateButtons(true);
 
+        if (mToolBarItem->isVisibleOnBoard())
+        {
+        updateToolBar();
+           mToolBarItem->show();
+        }
     } else {
         foreach(DelegateButton* button, mButtons)
             button->hide();
 
         mFrame->hide();
+        mToolBarItem->hide();
     }
 }
+
 void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 {
     if (visible) {
@@ -335,6 +371,7 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
 
         scene->removeItem(mFrame);
         scene->removeItem(mDelegated);
+        scene->removeItem(mToolBarItem);
 
         if (canUndo)
         {
@@ -577,14 +614,16 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
     int i = 1, j = 0, k = 0;
     while ((i + j + k) < mButtons.size())  {
         DelegateButton* button = mButtons[i + j];
-        button->setParentItem(mFrame);
 
-        button->setTransform(tr);
         if (button->getSection() == Qt::TopLeftSection) {
+            button->setParentItem(mFrame);
             button->setPos(topX + (i++ * 1.6 * mFrameWidth * mAntiScaleRatio), topY);
+            button->setTransform(tr);
         } else if (button->getSection() == Qt::BottomLeftSection) {
+            button->setParentItem(mFrame);
             button->setPos(bottomX + (++j * 1.6 * mFrameWidth * mAntiScaleRatio), bottomY);
-        } else if (button->getSection() == Qt::NoSection) {
+            button->setTransform(tr);
+        } else if (button->getSection() == Qt::TitleBarArea || button->getSection() == Qt::NoSection){
             ++k;
         }
         if (!button->scene())
@@ -599,9 +638,65 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
     }
 }
 
+void UBGraphicsItemDelegate::updateToolBar()
+{
+    QTransform transformForToolbarButtons;
+    transformForToolbarButtons.scale(mAntiScaleRatio, 1);
+
+    QRectF toolBarRect = mToolBarItem->rect();
+    toolBarRect.setWidth(delegated()->boundingRect().width() - 10);
+    mToolBarItem->setRect(toolBarRect);
+
+    if (mToolBarItem->isShifting())
+        mToolBarItem->setPos(delegated()->boundingRect().bottomLeft() + QPointF(5 * mAntiScaleRatio, 0));
+    else mToolBarItem->setPos(delegated()->boundingRect().bottomLeft() - QPointF(-5 * mAntiScaleRatio, mToolBarItem->rect().height() * 1.1 * mAntiScaleRatio));
+
+    int offsetOnToolBar = 5 * mAntiScaleRatio;
+    QList<QGraphicsItem*> itemList = mToolBarItem->itemsOnToolBar();
+    foreach (QGraphicsItem* item, itemList)
+    {
+        item->setPos(offsetOnToolBar, 0);
+        offsetOnToolBar += (item->boundingRect().width() + 5) * mAntiScaleRatio;
+        item->setTransform(transformForToolbarButtons);
+        item->show();
+    }
+
+    mToolBarItem->setOffsetOnToolBar(offsetOnToolBar);
+
+    QTransform tr;
+    tr.scale(1, mAntiScaleRatio);
+    mToolBarItem->setTransform(tr);
+}
+
 void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
 {
     foreach(DelegateButton* pButton, mButtons){
         pButton->setVisible(visible);
     }
+}
+
+UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) : 
+    QGraphicsRectItem(parent),
+    mShifting(true),
+    mVisible(false),
+    mMinWidth(200)
+{
+    QRectF rect = this->rect();
+    rect.setHeight(26);
+    this->setRect(rect);
+
+    setBrush(QColor(UBSettings::paletteColor));             
+    setPen(Qt::NoPen);
+    hide();
+}
+
+void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    QPainterPath path;
+    path.addRoundedRect(rect(), 10, 10);  
+
+    painter->fillPath(path, brush());
 }

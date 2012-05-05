@@ -44,6 +44,7 @@
 #include "document/UBDocumentController.h"
 
 #include "domain/UBGraphicsTextItem.h"
+#include "core/memcheck.h"
 
 #define UBTG_SEPARATOR_FIXED_HEIGHT 3
 
@@ -196,7 +197,6 @@ QDomElement* UBTeacherGuideEditionWidget::save(QDomElement* parentElement)
 void UBTeacherGuideEditionWidget::onActiveSceneChanged()
 {
     load(UBSvgSubsetAdaptor::sTeacherGuideNode);
-    qDebug() << "UBSvgSubsetAdaptor::sTeacherGuideNode " << UBSvgSubsetAdaptor::sTeacherGuideNode;
     mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->currentPage()));
     UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
     if(mpDocumentTitle)
