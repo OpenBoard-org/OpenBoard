@@ -194,7 +194,7 @@ QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save()
     QVector<tIDataStorage*> result;
     QMap<QString,QString> attributes;
     tIDataStorage* data = new tIDataStorage();
-    data->name = "teacherBar";
+    data->name = "teacherGuide";
     data->type = eElementType_START;
     data->attributes.insert("version","1.50");
     result << data;
@@ -228,7 +228,7 @@ QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save()
     }
 
     data = new tIDataStorage();
-    data->name = "teacherBar";
+    data->name = "teacherGuide";
     data->type = eElementType_END;
     result << data;
     return result;
@@ -236,11 +236,16 @@ QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save()
 
 void UBTeacherGuideEditionWidget::onActiveSceneChanged()
 {
-    load(UBSvgSubsetAdaptor::sTeacherGuideNode);
-    mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->currentPage()));
-    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
-    if(mpDocumentTitle)
-        mpDocumentTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
+    int currentPage = UBApplication::boardController->currentPage();
+    if(currentPage > 0){
+        cleanData();
+        qDebug() << UBSvgSubsetAdaptor::sTeacherGuideNode;
+        load(UBSvgSubsetAdaptor::sTeacherGuideNode);
+        mpPageNumberLabel->setText(tr("Page: %0").arg(currentPage));
+        UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+        if(mpDocumentTitle)
+            mpDocumentTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
+    }
 }
 
 void UBTeacherGuideEditionWidget::cleanData()
