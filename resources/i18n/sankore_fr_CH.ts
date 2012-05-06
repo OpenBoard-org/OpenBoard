@@ -2018,12 +2018,12 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <source>Created the:
 </source>
-        <translation>Crée le:</translation>
+        <translation>Crée le: </translation>
     </message>
     <message>
         <source>Updated the:
 </source>
-        <translation>Modifié le:</translation>
+        <translation>Modifié le: </translation>
     </message>
 </context>
 <context>
