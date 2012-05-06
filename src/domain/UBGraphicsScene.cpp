@@ -1490,7 +1490,7 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
         }
     }
     if(!textItem){
-        textItem = addTextWithFont(pString,QPointF(0,0) ,48,"",true,false);
+        textItem = addTextWithFont(pString,QPointF(0,0) ,72,UBSettings::settings()->fontFamily(),true,false);
         textItem->setObjectName(objectName);
     }
 
