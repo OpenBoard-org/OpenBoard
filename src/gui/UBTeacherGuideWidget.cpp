@@ -618,8 +618,8 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
 {
     setObjectName(name);
     QString chapterStyle("QLabel {font-size:16px; font-weight:bold;}");
-
-    mpLayout = new QVBoxLayout(this);
+    mpLayout = new QVBoxLayout(0);
+    setLayout(mpLayout);
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
     mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
@@ -756,7 +756,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpLayout->addLayout(mpLicenceLayout);
     mpLayout->addStretch(1);
 
-    setLayout(mpLayout);
+
     connect(UBApplication::boardController,SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
     fillComboBoxes();
 }
@@ -870,9 +870,9 @@ void UBTeacherGuidePageZeroWidget::onActiveSceneChanged()
     UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
     if(documentProxy && UBApplication::boardController->currentPage() == 0){
         QDateTime creationDate = documentProxy->documentDate();
-        mpCreationLabel->setText(tr("Created the:\n") + creationDate.toString(Qt::SystemLocaleShortDate));
+        mpCreationLabel->setText(tr("Created the:\n") + creationDate.toString(Qt::DefaultLocaleShortDate));
         QDateTime updatedDate = documentProxy->lastUpdate();
-        mpLastModifiedLabel->setText(tr("Updated the:\n") + updatedDate.toString(Qt::SystemLocaleShortDate));
+        mpLastModifiedLabel->setText(tr("Updated the:\n") + updatedDate.toString(Qt::DefaultLocaleShortDate));
         loadData();
         updateSceneTitle();
     }
