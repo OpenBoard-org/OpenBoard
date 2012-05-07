@@ -37,6 +37,6 @@ class IDataStorage
 {
 public:
     virtual void load(QString element) = 0;
-    virtual QVector<tIDataStorage*>save() = 0 ;
+    virtual QVector<tIDataStorage*>save(int pageIndex) = 0 ;
 };
 #endif // IDATASTORAGE_H

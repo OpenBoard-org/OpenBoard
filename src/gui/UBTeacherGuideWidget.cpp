@@ -189,10 +189,11 @@ void UBTeacherGuideEditionWidget::load(QString element)
 
 
 
-QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save()
+QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save(int pageIndex)
 {
     QVector<tIDataStorage*> result;
-    QMap<QString,QString> attributes;
+    if(pageIndex != UBApplication::boardController->currentPage())
+        return result;
     tIDataStorage* data = new tIDataStorage();
     data->name = "teacherGuide";
     data->type = eElementType_START;
@@ -239,7 +240,7 @@ void UBTeacherGuideEditionWidget::onActiveSceneChanged()
     int currentPage = UBApplication::boardController->currentPage();
     if(currentPage > 0){
         cleanData();
-        qDebug() << UBSvgSubsetAdaptor::sTeacherGuideNode;
+        qDebug() << "active scene changed current page " << currentPage << " " << UBSvgSubsetAdaptor::sTeacherGuideNode;
         load(UBSvgSubsetAdaptor::sTeacherGuideNode);
         mpPageNumberLabel->setText(tr("Page: %0").arg(currentPage));
         UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
@@ -936,14 +937,18 @@ void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
         mpModePushButton->hide();
         mpSessionTitle->setReadOnly(false);
         mpSessionTitle->setStyleSheet(inputStyleSheet);
+        mpSessionTitle->setTextColor(QColor(Qt::lightGray));
         QFont titleFont(QApplication::font().family(),11,-1);
         mpSessionTitle->document()->setDefaultFont(titleFont);
         mpAuthors->setReadOnly(false);
         mpAuthors->setStyleSheet(inputStyleSheet);
+        mpAuthors->setTextColor(QColor(Qt::lightGray));
         mpGoals->setReadOnly(false);
         mpGoals->setStyleSheet(inputStyleSheet);
+        mpGoals->setTextColor(QColor(Qt::lightGray));
         mpKeywords->setReadOnly(false);
         mpKeywords->setStyleSheet(inputStyleSheet);
+        mpKeywords->setTextColor(QColor(Qt::lightGray));
         mpSchoolLevelValueLabel->hide();
         mpSchoolLevelBox->show();
         mpSchoolBranchValueLabel->hide();
@@ -957,21 +962,20 @@ void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
     else{
         QString inputStyleSheet("QTextEdit { background: transparent; border: none;}");
         mpModePushButton->show();
-        mpSessionTitle->setReadOnly(true);
-        updateSceneTitle();
+        mpSessionTitle->showText(mpSessionTitle->text());
         mpSessionTitle->setStyleSheet(inputStyleSheet);
-        mpSessionTitle->setTextColor(QColor(Qt::black));
+        updateSceneTitle();
         QFont titleFont(QApplication::font().family(),14,1);
         mpSessionTitle->document()->setDefaultFont(titleFont);
-        mpAuthors->setReadOnly(true);
         mpAuthors->setStyleSheet(inputStyleSheet);
         mpAuthors->setTextColor(QColor(Qt::black));
-        mpGoals->setReadOnly(true);
+        mpAuthors->showText(mpAuthors->text());
         mpGoals->setStyleSheet(inputStyleSheet);
         mpGoals->setTextColor(QColor(Qt::black));
-        mpKeywords->setReadOnly(true);
+        mpGoals->showText(mpGoals->text());
         mpKeywords->setStyleSheet(inputStyleSheet);
         mpKeywords->setTextColor(QColor(Qt::black));
+        mpKeywords->showText(mpKeywords->text());
         mpSchoolLevelValueLabel->setText(mpSchoolLevelBox->currentText());
         mpSchoolLevelValueLabel->show();
         mpSchoolLevelBox->hide();

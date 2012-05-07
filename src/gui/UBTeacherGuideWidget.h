@@ -48,7 +48,7 @@ public:
     QVector<tUBGEElementNode*> getData();
 
     void load(QString element);
-    QVector<tIDataStorage*> save();
+    QVector<tIDataStorage*> save(int pageIndex);
 
 public slots:
     void onAddItemClicked(QTreeWidgetItem* widget, int column, QDomElement* element = 0);

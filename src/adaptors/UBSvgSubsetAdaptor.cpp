@@ -333,6 +333,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
     UBGraphicsStrokesGroup* strokesGroup = 0;
     UBDrawingController* dc = UBDrawingController::drawingController();
 
+    sTeacherGuideNode = "";
+
+
     while (!mXmlReader.atEnd())
     {
         mXmlReader.readNext();
@@ -915,7 +918,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 void UBSvgSubsetAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex)
 {
     UBSvgSubsetWriter writer(proxy, pScene, pageIndex);
-    writer.persistScene();
+    writer.persistScene(pageIndex);
 }
 
 
@@ -963,8 +966,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
     mXmlWriter.writeEndElement();
 }
 
-bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
+bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
+    sTeacherGuideNode = "";
     if (mScene->isModified())
     {
         QBuffer buffer;
@@ -1189,7 +1193,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
         }
 
         QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
-        QVector<tIDataStorage*> dataStorageItems = elements.value("teacherGuide")->save();
+        QVector<tIDataStorage*> dataStorageItems = elements.value("teacherGuide")->save(pageIndex);
         foreach(tIDataStorage* eachItem, dataStorageItems){
             if(eachItem->type == eElementType_START){
                 mXmlWriter.writeStartElement(eachItem->name);
