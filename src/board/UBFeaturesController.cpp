@@ -345,6 +345,27 @@ QPixmap UBFeaturesController::createThumbnail(const QString &path)
     return QPixmap(thumbnailPath);
 }
 
+UBFeature UBFeaturesController::importImage( const QImage &image, const UBFeature &destination )
+{
+    QDateTime now = QDateTime::currentDateTime();
+    QString fileName = tr("ImportedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss") + ".png";
+
+    UBFeature dest = destination;
+
+    if ( !destination.getFullVirtualPath().startsWith( picturesElement.getFullVirtualPath(), Qt::CaseInsensitive ) )
+    {
+	    dest = picturesElement;
+    }
+
+    QString filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
+    image.save(filePath);
+
+    QPixmap thumb = createThumbnail( filePath );
+    return UBFeature( dest.getFullVirtualPath(), thumb, fileName, 
+        QUrl::fromLocalFile( filePath ), FEATURE_ITEM );
+    
+}
+
 UBFeature UBFeaturesController::newFolder( const QString &name )
 {
     QString path = currentElement.getFullPath().toLocalFile() + "/" + name;

@@ -404,13 +404,19 @@ void UBFeaturesListView::mouseReleaseEvent( QMouseEvent *event )
 */
 void UBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
 {
-	if ( event->mimeData()->hasUrls() )
+    if ( event->mimeData()->hasUrls() || event->mimeData()->hasImage() )
 		event->acceptProposedAction();
+}
+
+void UBFeaturesListView::dragMoveEvent( QDragMoveEvent *event )
+{
+    if ( event->mimeData()->hasUrls() || event->mimeData()->hasImage() )
+        event->acceptProposedAction();
 }
 
 void UBFeaturesListView::dropEvent( QDropEvent *event )
 {
-	if( event->source() || dynamic_cast<UBFeaturesListView *>( event->source() ) )
+	if( event->source() && dynamic_cast<UBFeaturesListView *>( event->source() ) )
 	{
 		event->setDropAction( Qt::MoveAction );
 	}
@@ -775,7 +781,7 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 {
     Q_UNUSED(row)
 
-    if ( !mimeData->hasUrls() )
+    if ( !mimeData->hasUrls() && !mimeData->hasImage() )
 		return false;
 	if ( action == Qt::IgnoreAction )
 		return true;
@@ -794,22 +800,31 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 		parentFeature = parent.data( Qt::UserRole + 1).value<UBFeature>();
 	}
 
-	QList<QUrl> urls = mimeData->urls();
-	
-	foreach ( QUrl url, urls )
-	{
-		UBFeature element;
-		
-		if ( action == Qt::MoveAction )
-		{
-			element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->moveItemToFolder( url, parentFeature );
-		}
-		else
-		{
-			element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->copyItemToFolder( url, parentFeature );
-		}
-		addItem( element );
-	}
+    if ( mimeData->hasUrls() )
+    {
+	    QList<QUrl> urls = mimeData->urls();
+    	
+	    foreach ( QUrl url, urls )
+	    {
+		    UBFeature element;
+    		
+		    if ( action == Qt::MoveAction )
+		    {
+			    element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->moveItemToFolder( url, parentFeature );
+		    }
+		    else
+		    {
+			    element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->copyItemToFolder( url, parentFeature );
+		    }
+		    addItem( element );
+	    }
+    }
+    else if ( mimeData->hasImage() )
+    {
+        QImage image = qvariant_cast<QImage>( mimeData->imageData() );
+        UBFeature element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->importImage( image, parentFeature );
+        addItem( element );
+    }
 	return true;
 }
 
@@ -897,7 +912,7 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 QStringList UBFeaturesModel::mimeTypes() const
 {
 	QStringList types;
-    types << "text/uri-list";
+    types << "text/uri-list" << "image/png" << "image/tiff" << "image/gif" << "image/jpeg";
     return types;
 }
 
