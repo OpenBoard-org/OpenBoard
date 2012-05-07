@@ -86,6 +86,7 @@ public:
 	UBFeature newFolder( const QString &name );
 	UBFeature addToFavorite( const QUrl &path );
 	void removeFromFavorite( const QUrl &path );
+    UBFeature importImage( const QImage &image, const UBFeature &destination );
 
 	static QString fileNameFromUrl( const QUrl &url );
 	static QPixmap thumbnailForFile( const QString &path );
