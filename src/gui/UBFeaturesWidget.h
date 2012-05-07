@@ -101,6 +101,7 @@ private slots:
 	void thumbnailSizeChanged( int );
 	void onDisplayMetadata( QMap<QString,QString> );
     void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
+    void addElementsToFavorite();
 protected:
 	bool eventFilter(QObject *target, QEvent *event);
 };

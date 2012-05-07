@@ -121,6 +121,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &) ), this, SLOT( deleteElements(const QMimeData &) ) ); 
 	connect( mActionBar, SIGNAL( addToFavorite(const QMimeData &) ), this, SLOT( addToFavorite(const QMimeData &) ) );
 	connect( mActionBar, SIGNAL( removeFromFavorite(const QMimeData &) ), this, SLOT( removeFromFavorite(const QMimeData &) ) );
+    connect ( mActionBar, SIGNAL( addElementsToFavorite() ), this, SLOT ( addElementsToFavorite() ) ); 
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
@@ -331,6 +332,20 @@ void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUr
 	        model->invalidate();
         }
     }
+}
+
+void UBFeaturesWidget::addElementsToFavorite()
+{
+    QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
+    for ( int i = 0; i < selected.size(); ++i )
+    {
+        UBFeature feature = selected.at(i).data( Qt::UserRole + 1 ).value<UBFeature>();
+        UBFeature elem = controller->addToFavorite( feature.getFullPath() );
+		if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull() )
+			featuresModel->addItem( elem );
+    }
+    QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
+	model->invalidate();
 }
 
 void UBFeaturesWidget::switchToListView()
@@ -806,17 +821,17 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
     	
 	    foreach ( QUrl url, urls )
 	    {
-		    UBFeature element;
+	        UBFeature element;
     		
-		    if ( action == Qt::MoveAction )
-		    {
-			    element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->moveItemToFolder( url, parentFeature );
-		    }
-		    else
-		    {
-			    element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->copyItemToFolder( url, parentFeature );
-		    }
-		    addItem( element );
+	        if ( action == Qt::MoveAction )
+	        {
+		        element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->moveItemToFolder( url, parentFeature );
+	        }
+	        else
+	        {
+		        element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->copyItemToFolder( url, parentFeature );
+	        }
+	        addItem( element );
 	    }
     }
     else if ( mimeData->hasImage() )
