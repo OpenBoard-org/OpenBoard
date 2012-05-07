@@ -831,7 +831,7 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 void UBFeaturesModel::addItem( const UBFeature &item )
 {
 	beginInsertRows( QModelIndex(), featuresList->size(), featuresList->size() );
-	featuresList->push_back( item );
+	featuresList->append( item );
 	endInsertRows();
 }
 

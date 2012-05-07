@@ -429,8 +429,39 @@ UBFeature UBFeaturesController::addDownloadedFile( const QUrl &sourceUrl, const 
 
 UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeature &destination )
 {
-	UBFeature newElement = copyItemToFolder( url, destination );
+	/*UBFeature newElement = copyItemToFolder( url, destination );
 	deleteItem( url );
+	return newElement;*/
+    QString sourcePath = url.toLocalFile();
+
+	Q_ASSERT( QFileInfo( sourcePath ).exists() );
+
+	UBFeature possibleDest = getDestinationForItem( url );
+
+	UBFeature dest = destination;
+
+	if ( destination != trashElement && 
+		!destination.getFullVirtualPath().startsWith( possibleDest.getFullVirtualPath(), Qt::CaseInsensitive ) )
+	{
+		dest = possibleDest;
+	}
+
+	QString name = QFileInfo( sourcePath ).fileName();
+    QString destPath = dest.getFullPath().toLocalFile();
+	QString destVirtualPath = dest.getFullVirtualPath();
+	QString newFullPath = destPath + "/" + name;
+    if ( sourcePath.compare( newFullPath, Qt::CaseInsensitive ) )
+    {
+	    QFile( sourcePath ).copy( newFullPath );
+        deleteItem( url );
+    }
+
+	QPixmap thumb = thumbnailForFile( newFullPath );
+	
+    UBFeatureElementType type = FEATURE_ITEM;
+	if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") ) 
+        type = FEATURE_INTERACTIVE;
+    UBFeature newElement( destVirtualPath, thumb, name, QUrl::fromLocalFile( newFullPath ), type );
 	return newElement;
 }
 
@@ -454,7 +485,8 @@ UBFeature UBFeaturesController::copyItemToFolder( const QUrl &url, const UBFeatu
     QString destPath = dest.getFullPath().toLocalFile();
 	QString destVirtualPath = dest.getFullVirtualPath();
 	QString newFullPath = destPath + "/" + name;
-	QFile( sourcePath ).copy( newFullPath );
+    if ( !sourcePath.compare( newFullPath, Qt::CaseInsensitive ) )
+	    QFile( sourcePath ).copy( newFullPath );
 
 	QPixmap thumb = thumbnailForFile( newFullPath );
 	
