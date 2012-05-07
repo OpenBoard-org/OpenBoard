@@ -125,6 +125,7 @@ class UBBoardView : public QGraphicsView
         QMouseEvent *suspendedMousePressEvent;
 
         UBRubberBand *mUBRubberBand;
+        QSet<QGraphicsItem*> mJustSelectedItems;
 
     private slots:
 

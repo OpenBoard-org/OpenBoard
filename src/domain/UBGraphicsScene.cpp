@@ -1784,7 +1784,6 @@ QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool
     return item;
 }
 
-
 void UBGraphicsScene::addRuler(QPointF center)
 {
     UBGraphicsRuler* ruler = new UBGraphicsRuler(); // mem : owned and destroyed by the scene

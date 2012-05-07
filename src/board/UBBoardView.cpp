@@ -516,8 +516,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     }
 }
 
-QSet<QGraphicsItem*> mJustSelectedItems;
-
 void
 UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
@@ -563,7 +561,8 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
                       || item->type() == UBGraphicsPixmapItem::Type
                       || item->type() == UBGraphicsVideoItem::Type
                       || item->type() == UBGraphicsAudioItem::Type
-                      || item->type() == UBGraphicsSvgItem::Type) {
+                      || item->type() == UBGraphicsSvgItem::Type
+                      || item->type() == UBGraphicsTextItem::Type) {
 
                   if (!mJustSelectedItems.contains(item)) {
                       item->setSelected(true);

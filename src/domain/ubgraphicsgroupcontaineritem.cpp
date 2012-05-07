@@ -63,6 +63,12 @@ void UBGraphicsGroupContainerItem::destroy() {
     mDelegate->remove(true);
 }
 
+void UBGraphicsGroupContainerItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+    qDebug() << "hover move group";
+    QGraphicsItemGroup::hoverMoveEvent(event);
+}
+
 void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (mDelegate->mousePressEvent(event)) {

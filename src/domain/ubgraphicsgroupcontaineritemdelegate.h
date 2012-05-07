@@ -17,10 +17,6 @@ protected:
     virtual void decorateMenu(QMenu *menu);
     virtual void buildButtons();
 
-
-private slots:
-    void destroyGroup();
-
 private:
     DelegateButton *mDestroyGroupButton;
 };
