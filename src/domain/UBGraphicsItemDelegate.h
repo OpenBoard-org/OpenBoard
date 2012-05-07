@@ -35,30 +35,16 @@ class DelegateButton: public QGraphicsSvgItem
     Q_OBJECT
 
     public:
-        DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent = 0, Qt::WindowFrameSection section = Qt::TopLeftSection)
-            : QGraphicsSvgItem(fileName, parent)
-            , mDelegated(pDelegated)
-            , mIsTransparentToMouseEvent(false)
-            , mButtonAlignmentSection(section)
-        {
-            setAcceptedMouseButtons(Qt::LeftButton);
-            setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-        }
+        DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent = 0, Qt::WindowFrameSection section = Qt::TopLeftSection);
 
-        virtual ~DelegateButton()
-        {
-            // NOOP
-        }
+        virtual ~DelegateButton();
 
         void setTransparentToMouseEvent(bool tr)
         {
             mIsTransparentToMouseEvent = tr;
         }
 
-        void setFileName(const QString & fileName)
-        {
-            QGraphicsSvgItem::setSharedRenderer(new QSvgRenderer (fileName, this));
-        }
+        void setFileName(const QString & fileName);
 
         void setSection(Qt::WindowFrameSection section) {mButtonAlignmentSection =  section;}
         Qt::WindowFrameSection getSection() const {return mButtonAlignmentSection;}
