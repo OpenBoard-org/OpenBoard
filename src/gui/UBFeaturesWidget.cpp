@@ -1,3 +1,5 @@
+#include <QDomDocument>
+
 #include "UBFeaturesWidget.h"
 #include "domain/UBAbstractWidget.h"
 #include "gui/UBThumbnailWidget.h"
@@ -6,6 +8,7 @@
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
 #include "globals/UBGlobals.h"
+#include "board/UBBoardController.h"
 
 UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
 {
@@ -56,6 +59,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	featuresListView->setViewMode( QListView::IconMode );
 	itemDelegate = new UBFeaturesItemDelegate( this, featuresListView );
 	featuresListView->setItemDelegate( itemDelegate );
+	//featuresListView->setSelectionRectVisible(false);
 
 	featuresListView->setIconSize( QSize(defaultThumbnailSize, defaultThumbnailSize) );
 	featuresListView->setGridSize( QSize(defaultThumbnailSize * 1.75, defaultThumbnailSize * 1.75) );
@@ -71,6 +75,9 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	pathListView->setSelectionMode( QAbstractItemView::NoSelection );
 	pathListView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     pathListView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+	pathListView->setFlow( QListView::LeftToRight );
+	pathListView->setWrapping(false);
+	
 	//pathListView->setResizeMode( QListView::Adjust );
 	//pathListView->setMovement( QListView::Static );
 	pathListView->setDragDropMode( QAbstractItemView::DropOnly );
@@ -78,6 +85,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	pathScene = new QGraphicsScene(this);
 	//pathViewer = new UBFeaturesPathViewer( QPixmap(":images/libpalette/home.png"), controller->getRootPath(), pathScene,  this );
 	featureProperties = new UBFeatureProperties(this);
+	webView = new UBFeaturesWebView(this);
 	
 	//layout->addWidget( pathViewer );
 	//pathViewer->show();
@@ -87,6 +95,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 
 	stackedWidget->addWidget( featuresListView );
 	stackedWidget->addWidget( featureProperties );
+	stackedWidget->addWidget( webView );
 	stackedWidget->setCurrentIndex(ID_LISTVIEW);
     currentStackedWidget = ID_LISTVIEW;
 
@@ -107,7 +116,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 		this, SLOT(currentSelected(const QModelIndex &)));*/
 	connect( featuresListView, SIGNAL(clicked ( const QModelIndex & ) ),
 		this, SLOT( currentSelected(const QModelIndex &) ) );
-	connect( mActionBar, SIGNAL( searchElement(const QString &) ), this, SLOT( const searchStarted(QString &) ) );
+	connect( mActionBar, SIGNAL( searchElement(const QString &) ), this, SLOT( searchStarted(const QString &) ) );
 	connect( mActionBar, SIGNAL( newFolderToCreate() ), this, SLOT( createNewFolder()  ) );
 	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &) ), this, SLOT( deleteElements(const QMimeData &) ) ); 
 	connect( mActionBar, SIGNAL( addToFavorite(const QMimeData &) ), this, SLOT( addToFavorite(const QMimeData &) ) );
@@ -115,6 +124,10 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
+	connect( UBApplication::boardController, SIGNAL( displayMetadata( QMap<QString,QString> ) ), 
+		this, SLOT( onDisplayMetadata( QMap<QString,QString> ) ) );
+    connect( UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray ) ), 
+        this, SLOT( onAddDownloadedFileToLibrary( bool, QUrl, QString,QByteArray ) ) );
 }
 
 bool UBFeaturesWidget::eventFilter( QObject *target, QEvent *event )
@@ -156,7 +169,7 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 
 		if ( feature.isFolder() )
 		{
-			QString newPath = feature.getUrl() + "/" + feature.getName();
+			QString newPath = feature.getFullVirtualPath();
 			//pathViewer->addPathElement( feature.getThumbnail(), newPath );
 			controller->setCurrentElement( feature );
 
@@ -170,10 +183,19 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 			{
 				mActionBar->setCurrentState( IN_FAVORITE );
 			}
+			else if (feature.getType() == FEATURE_TRASH)
+			{
+				mActionBar->setCurrentState( IN_TRASH );
+			}
 			else
 			{
 				mActionBar->setCurrentState( IN_FOLDER );
 			}
+		}
+		else if ( feature.getType() == FEATURE_SEARCH )
+		{
+			webView->showElement( feature );
+			switchToWebView();
 		}
 		else
 		{
@@ -190,7 +212,7 @@ void UBFeaturesWidget::currentPathChanged(const QModelIndex &index)
 	if ( index.isValid() )	
 	{
 		UBFeature feature = featuresPathModel->data(index, Qt::UserRole + 1).value<UBFeature>();
-		QString newPath = feature.getUrl() + "/" + feature.getName();
+		QString newPath = feature.getFullVirtualPath();
 
 		featuresPathModel->setPath( newPath );
 		featuresPathModel->invalidate();
@@ -208,6 +230,10 @@ void UBFeaturesWidget::currentPathChanged(const QModelIndex &index)
 		{
 			mActionBar->setCurrentState( IN_FAVORITE );
 		}
+		else if (feature.getType() == FEATURE_TRASH)
+		{
+			mActionBar->setCurrentState( IN_TRASH );
+		}
 		else
 		{
 			mActionBar->setCurrentState( IN_FOLDER );
@@ -224,7 +250,6 @@ void UBFeaturesWidget::createNewFolder()
 		featuresModel->addItem( newFolder );
 		featuresProxyModel->invalidate();
     }
-	
 }
 
 void UBFeaturesWidget::deleteElements( const QMimeData & mimeData )
@@ -260,7 +285,7 @@ void UBFeaturesWidget::addToFavorite( const QMimeData & mimeData )
 	foreach ( QUrl url, urls )
 	{
 		UBFeature elem = controller->addToFavorite( url );
-		if ( !elem.getUrl().isEmpty() && !elem.getUrl().isNull() )
+		if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull() )
 			featuresModel->addItem( elem );
 	}
 	QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
@@ -284,6 +309,30 @@ void UBFeaturesWidget::thumbnailSizeChanged( int value )
 	featuresListView->setGridSize( QSize( value * 1.75, value * 1.75 ) );
 }
 
+void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
+{
+	UBFeature feature( QString(), QPixmap(":images/libpalette/notFound.png"), QString(), metadata["Url"], FEATURE_ITEM );
+	feature.setMetadata( metadata );
+
+	featureProperties->showElement( feature );
+	switchToProperties();
+	mActionBar->setCurrentState( IN_PROPERTIES );
+}
+
+void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData)
+{
+    if ( pSuccess )
+    {
+        UBFeature newFeature = controller->addDownloadedFile( sourceUrl, pData );
+        if ( newFeature != UBFeature() )
+        {
+            featuresModel->addItem( newFeature );
+	        QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
+	        model->invalidate();
+        }
+    }
+}
+
 void UBFeaturesWidget::switchToListView()
 {
 	stackedWidget->setCurrentIndex(ID_LISTVIEW);
@@ -296,6 +345,11 @@ void UBFeaturesWidget::switchToProperties()
 	currentStackedWidget = ID_PROPERTIES;
 }
 
+void UBFeaturesWidget::switchToWebView()
+{
+	stackedWidget->setCurrentIndex(ID_WEBVIEW);
+	currentStackedWidget = ID_WEBVIEW;
+}
 
 /*
 
@@ -315,11 +369,39 @@ UBFeaturesWidget::~UBFeaturesWidget()
 {
 }
 
-UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) : QListView(parent)
+UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) 
+: QListView(parent)
 {
 	setObjectName(name);
+	//rubberBand = new UBRubberBand( QRubberBand::Rectangle, this ); 
 }
 
+/*
+void UBFeaturesListView::mousePressEvent( QMouseEvent *event )
+{
+	rubberOrigin = event->pos();
+	rubberBand->setGeometry( QRect( rubberOrigin, QSize() ) );
+	//qDebug()  << rubberOrigin.x() << rubberOrigin.y();
+	rubberBand->show();
+	QListView::mousePressEvent(event);
+}
+
+void UBFeaturesListView::mouseMoveEvent( QMouseEvent *event )
+{
+	QPoint current = event->pos();
+	rubberBand->setGeometry( QRect( rubberOrigin, current ).normalized() );
+
+	//setSelection( rubberBand->rect(), QItemSelectionModel::Select );
+	QListView::mouseMoveEvent(event);
+}
+
+void UBFeaturesListView::mouseReleaseEvent( QMouseEvent *event )
+{
+	rubberBand->hide();
+	QListView::mouseReleaseEvent(event);
+}
+
+*/
 void UBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
 {
 	if ( event->mimeData()->hasUrls() )
@@ -336,6 +418,96 @@ void UBFeaturesListView::dropEvent( QDropEvent *event )
 }
 
 
+UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(parent)
+    , mpView(NULL)
+    , mpWebSettings(NULL)
+    , mpLayout(NULL)
+    , mpSankoreAPI(NULL)
+{
+    setObjectName(name);
+
+    SET_STYLE_SHEET();
+
+    mpLayout = new QVBoxLayout();
+    setLayout(mpLayout);
+
+    mpView = new QWebView(this);
+    mpView->setObjectName("SearchEngineView");
+    mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
+    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+
+    mpWebSettings = QWebSettings::globalSettings();
+    mpWebSettings->setAttribute(QWebSettings::JavaEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::PluginsEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
+    mpWebSettings->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
+    mpWebSettings->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+
+    mpLayout->addWidget(mpView);
+
+    connect(mpView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
+}
+
+UBFeaturesWebView::~UBFeaturesWebView()
+{
+    if(NULL != mpSankoreAPI){
+        delete mpSankoreAPI;
+        mpSankoreAPI = NULL;
+    }
+    if(NULL != mpView){
+        delete mpView;
+        mpView = NULL;
+    }
+    if(NULL != mpLayout){
+        delete mpLayout;
+        mpLayout = NULL;
+    }
+}
+
+void UBFeaturesWebView::showElement(const UBFeature &elem)
+{
+	QString qsWidgetName;
+    QString path = elem.getFullPath().toLocalFile();
+
+	QString qsConfigPath = QString("%0/config.xml").arg(path);
+
+	if(QFile::exists(qsConfigPath))
+	{
+		QFile f(qsConfigPath);
+		if(f.open(QIODevice::ReadOnly))
+		{
+			QDomDocument domDoc;
+			domDoc.setContent(QString(f.readAll()));
+			QDomElement root = domDoc.documentElement();
+
+			QDomNode node = root.firstChild();
+			while(!node.isNull())
+			{
+				if(node.toElement().tagName() == "content")
+				{
+					QDomAttr srcAttr = node.toElement().attributeNode("src");
+					qsWidgetName = srcAttr.value();
+					break;
+				}
+				node = node.nextSibling();
+			}
+			f.close();
+		}
+	}
+
+	mpView->load(QUrl::fromLocalFile(QString("%0/%1").arg(path).arg(qsWidgetName)));    
+}
+
+void UBFeaturesWebView::onLoadFinished(bool ok)
+{
+    if(ok && NULL != mpSankoreAPI){
+        mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+    }
+}
+
+
 UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : QWidget(parent)
     , mpLayout(NULL)
     , mpButtonLayout(NULL)
@@ -346,6 +518,7 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     , mpThumbnail(NULL)
     , mpOrigPixmap(NULL)
     , mpElement(NULL)
+    , mpObjInfos(NULL)
 {
 	setObjectName(name);
 
@@ -385,12 +558,49 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
 
     mpButtonLayout->addStretch(1);
 
-    mpObjInfoLabel = new QLabel(tr("Object informations"));
+	mpObjInfoLabel = new QLabel(tr("Object informations"));
     mpObjInfoLabel->setStyleSheet(QString("color: #888888; font-size : 18px; font-weight:bold;"));
     mpLayout->addWidget(mpObjInfoLabel, 0);
 
-	connect(mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()));
+    mpObjInfos = new QTreeWidget(this);
+    mpObjInfos->setColumnCount(2);
+    mpObjInfos->header()->hide();
+    mpObjInfos->setAlternatingRowColors(true);
+    mpObjInfos->setRootIsDecorated(false);
+    mpObjInfos->setObjectName("DockPaletteWidgetBox");
+    mpObjInfos->setStyleSheet("background:white;");
+    mpLayout->addWidget(mpObjInfos, 1);
 
+	connect( mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()) );
+    connect( mpSetAsBackgroundButton, SIGNAL( clicked() ), this, SLOT( onSetAsBackground() ) );
+    connect( mpAddToLibButton, SIGNAL( clicked() ), this, SLOT(onAddToLib() ) );
+}
+
+void UBFeatureProperties::resizeEvent( QResizeEvent *event )
+{
+    Q_UNUSED(event);
+    adaptSize();
+}
+
+void UBFeatureProperties::showEvent (QShowEvent *event )
+{
+    Q_UNUSED(event);
+    adaptSize();
+}
+
+void UBFeatureProperties::adaptSize()
+{
+    if( NULL != mpOrigPixmap )
+    {
+        if( width() < THUMBNAIL_WIDTH + 40 )
+        {
+            mpThumbnail->setPixmap( mpOrigPixmap->scaledToWidth( width() - 40 ) );
+        }
+        else
+        {
+            mpThumbnail->setPixmap( mpOrigPixmap->scaledToWidth( THUMBNAIL_WIDTH ) );
+        }
+    }
 }
 
 void UBFeatureProperties::showElement( const UBFeature &elem )
@@ -408,31 +618,50 @@ void UBFeatureProperties::showElement( const UBFeature &elem )
     mpElement = new UBFeature( elem );
 	mpOrigPixmap = new QPixmap( elem.getThumbnail() );
 	mpThumbnail->setPixmap(elem.getThumbnail().scaledToWidth(THUMBNAIL_WIDTH));
-        //populateMetadata();
+    populateMetadata();
 
-    if ( UBApplication::isFromWeb( elem.getUrl() ) )
+    if ( UBApplication::isFromWeb( elem.getFullPath().toString() ) )
 	{
         mpAddToLibButton->show();
-        /*if(elem->metadatas()["Type"].toLower().contains("image"))
+		if( elem.getMetadata()["Type"].toLower().contains("image") )
 		{
             mpSetAsBackgroundButton->show();
         }
 		else
 		{
             mpSetAsBackgroundButton->hide();
-        }*/
+        }
     }
 	else
 	{
         mpAddToLibButton->hide();
-        if (UBFileSystemUtils::mimeTypeFromFileName( elem.getUrl() ).contains("image"))
+        if (UBFileSystemUtils::mimeTypeFromFileName( elem.getFullPath().toLocalFile() ).contains("image"))
 		{
             mpSetAsBackgroundButton->show();
         }
-		else
+	    else
 		{
             mpSetAsBackgroundButton->hide();
         }
+    }
+}
+
+void UBFeatureProperties::populateMetadata()
+{
+    if(NULL != mpObjInfos){
+        mpObjInfos->clear();
+		QMap<QString, QString> metas = mpElement->getMetadata();
+        QList<QString> lKeys = metas.keys();
+        QList<QString> lValues = metas.values();
+
+        for(int i=0; i< metas.size(); i++){
+            QStringList values;
+            values << lKeys.at(i);
+            values << lValues.at(i);
+            mpItem = new QTreeWidgetItem(values);
+            mpObjInfos->addTopLevelItem(mpItem);
+        }
+        mpObjInfos->resizeColumnToContents(0);
     }
 }
 
@@ -441,26 +670,43 @@ void UBFeatureProperties::onAddToPage()
 	QWidget *w = parentWidget()->parentWidget();
     UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
     featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
-    /*if ( UBApplication::isFromWeb( mpElement->getUrl() ) )
-	{
+}
+
+void UBFeatureProperties::onAddToLib()
+{
+    if ( UBApplication::isFromWeb(  mpElement->getFullPath().toString() ) )
+    {
         sDownloadFileDesc desc;
         desc.isBackground = false;
-        desc.modal = true;
-        desc.name = QFileInfo( mpElement->getName() ).fileName();
-        desc.url = mpElement->getUrl();
+        desc.modal = false;
+        desc.name = QFileInfo( mpElement->getFullPath().toString()).fileName();
+        qDebug() << desc.name;
+        desc.url = mpElement->getFullPath().toString();
+        qDebug() << desc.url;
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
-
     }
-	else
-	{
-		QWidget *w = parentWidget()->parentWidget();
-        UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
-        featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
-    }*/
+}
+
+
+void UBFeatureProperties::onSetAsBackground()
+{
+    QWidget *w = parentWidget()->parentWidget();
+    UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
+    featuresWidget->getFeaturesController()->addItemAsBackground( *mpElement );
 }
 
 UBFeatureProperties::~UBFeatureProperties()
 {
+	if ( mpOrigPixmap )
+    {
+        delete mpOrigPixmap;
+        mpOrigPixmap = NULL;
+    }
+	if ( mpElement )
+	{
+		delete mpElement;
+		mpElement = NULL;
+	}
 }
 
 UBFeatureItemButton::UBFeatureItemButton(QWidget *parent, const char *name):QPushButton(parent)
@@ -487,7 +733,7 @@ QVariant UBFeaturesModel::data(const QModelIndex &index, int role) const
 	}
 	else if (role == Qt::UserRole)
 	{
-		return featuresList->at(index.row()).getUrl();
+		return featuresList->at(index.row()).getVirtualPath();
 	}
 	else if (role == Qt::UserRole + 1)
 	{
@@ -509,14 +755,15 @@ QMimeData* UBFeaturesModel::mimeData(const QModelIndexList &indexes) const
 		if ( index.isValid() )
 		{
 			UBFeature element = data( index, Qt::UserRole + 1 ).value<UBFeature>();
-			if ( element.getType() == FEATURE_INTERNAL )
+            urlList.push_back( element.getFullPath() );
+			/*if ( element.getType() == FEATURE_INTERNAL )
 			{
 				urlList.push_back( QUrl( element.getFullPath() ) );
 			}
 			else if ( element.getType() == FEATURE_INTERACTIVE || element.getType() == FEATURE_ITEM )
 			{
-				urlList.push_back( QUrl::fromLocalFile(element.getFullPath()) );
-			}
+				urlList.push_back( element.getFullPath() );
+			}*/
 		}
 	}
 	mimeData->setUrls( urlList );
@@ -537,19 +784,15 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 
     int endRow = 0;
 
+	UBFeature parentFeature;
     if ( !parent.isValid() )
 	{
-		return false;
-        /*if (row < 0)
-            endRow = featuresList->size();
-        else
-            endRow = qMin( row, featuresList->size() );*/
+		parentFeature = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->getCurrentElement();
     } 
 	else
-        endRow = parent.row();
-    Q_UNUSED(endRow) //why do we need this variable?
-
-	UBFeature parentFeature = parent.data( Qt::UserRole + 1).value<UBFeature>();
+	{
+		parentFeature = parent.data( Qt::UserRole + 1).value<UBFeature>();
+	}
 
 	QList<QUrl> urls = mimeData->urls();
 	
@@ -581,8 +824,8 @@ void UBFeaturesModel::deleteFavoriteItem( const QString &path )
 {
 	for ( int i = 0; i < featuresList->size(); ++i )
 	{
-		if ( !QString::compare( featuresList->at(i).getFullPath(), path, Qt::CaseInsensitive ) &&
-			!QString::compare( featuresList->at(i).getUrl(), "/root/favorites", Qt::CaseInsensitive ) )
+		if ( !QString::compare( featuresList->at(i).getUrl(), path, Qt::CaseInsensitive ) &&
+			!QString::compare( featuresList->at(i).getVirtualPath(), "/root/favorites", Qt::CaseInsensitive ) )
 		{
 			removeRow( i, QModelIndex() );
 			return;
@@ -626,9 +869,9 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
             item.getType() == FEATURE_ITEM ||
 			item.getType() == FEATURE_INTERNAL )
 			return Qt::ItemIsDragEnabled | defaultFlags;
-		if ( item.isFolder() && !item.getFullPath().isNull() )
+		if ( item.isFolder() && !item.getVirtualPath().isNull() )
 			return defaultFlags | Qt::ItemIsDropEnabled;
-		else return defaultFlags;
+		else return defaultFlags | Qt::ItemIsDropEnabled;
 	}
 	/*if ( index.isValid() )
 	{
@@ -647,7 +890,7 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 		default:;
 		}
 	}*/
-	return defaultFlags;
+	return defaultFlags | Qt::ItemIsDropEnabled;
 }
 
 
@@ -696,9 +939,8 @@ bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
 	eUBLibElementType type = (eUBLibElementType)sourceModel()->data(index, Qt::UserRole + 1).toInt();*/
 
 	UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
-	QString virtualFullPath = feature.getUrl() + "/" + feature.getName();
 	
-	return feature.isFolder() && path.startsWith( virtualFullPath );
+	return feature.isFolder() && path.startsWith( feature.getFullVirtualPath() );
 }
 
 QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const
@@ -710,13 +952,7 @@ QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLoc
 	{
 		const QFontMetrics fm = listView->fontMetrics();
 		const QSize iSize = listView->iconSize();
-
-		if ( iSize.width() > 0 && fm.width(text) > iSize.width() )
-		{
-			while (fm.width(text) > iSize.width())
-				text.resize(text.size()-1);
-			text += "...";
-		}
+		return elidedText( fm, iSize.width(), Qt::ElideRight, text );
 	}
 	return text;
 }

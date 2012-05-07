@@ -18,11 +18,12 @@
 
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
-#include "core/memcheck.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "globals/UBGlobals.h"
+
+#include "core/memcheck.h"
 
 
 /**

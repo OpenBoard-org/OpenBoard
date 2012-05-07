@@ -16,6 +16,8 @@
 #include "globals/UBGlobals.h"
 #include "UBMediaWidget.h"
 
+#include "core/memcheck.h"
+
 /**
   * \brief Constructor
   * @param type as the media type

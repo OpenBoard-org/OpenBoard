@@ -23,9 +23,9 @@
 
 #include "board/UBBoardController.h"
 
-#include "core/memcheck.h"
-
 #include "frameworks/UBFileSystemUtils.h"
+
+#include "core/memcheck.h"
 
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 

@@ -15,11 +15,12 @@
 
 #include "UBCoreGraphicsScene.h"
 
-#include "core/memcheck.h"
 #include "domain/UBGraphicsAudioItem.h"
 #include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
+
+#include "core/memcheck.h"
 
 UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
     : QGraphicsScene ( parent  )

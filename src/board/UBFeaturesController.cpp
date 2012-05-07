@@ -18,13 +18,30 @@
 #include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 
-UBFeature::UBFeature(const QString &url, const QPixmap &icon, const QString &name, const QString &realPath, UBFeatureElementType type)
+UBFeature::UBFeature(const QString &url, const QPixmap &icon, const QString &name, const QUrl &realPath, UBFeatureElementType type)
 : virtualPath(url), mThumbnail(icon), mName(name), mPath(realPath), elementType(type)
 {
 	
 }
 
+QString UBFeature::getUrl() const
+{
+	if ( elementType == FEATURE_INTERNAL )
+        return getFullPath().toString();
+	/*if ( UBApplication::isFromWeb( getFullPath() ) )
+		return QUrl( getFullPath() );*/
+    return getFullPath().toLocalFile();
+}
 
+bool UBFeature::operator ==( const UBFeature &f )const
+{
+	return virtualPath == f.getVirtualPath() && mName == f.getName() && mPath == f.getFullPath() && elementType == f.getType();
+}
+
+bool UBFeature::operator !=( const UBFeature &f )const
+{
+	return !(*this == f);
+}
 
 bool UBFeature::isFolder() const
 {
@@ -32,6 +49,10 @@ bool UBFeature::isFolder() const
 		|| elementType == FEATURE_FOLDER;
 }
 
+bool UBFeature::isDeletable()const
+{
+	return elementType == FEATURE_ITEM;
+}
 
 UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
         QObject(pParentWidget),
@@ -43,23 +64,24 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
 
 void UBFeaturesController::initDirectoryTree()
 {
-	mUserAudioDirectoryPath = UBSettings::settings()->userAudioDirectory();
-	mUserVideoDirectoryPath = UBSettings::settings()->userVideoDirectory();
-    mUserPicturesDirectoryPath = UBSettings::settings()->userImageDirectory();
-    mUserInteractiveDirectoryPath = UBSettings::settings()->userInteractiveDirectory();
-    mUserAnimationDirectoryPath = UBSettings::settings()->userAnimationDirectory();
+    mUserAudioDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->userAudioDirectory() );
+	mUserVideoDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->userVideoDirectory() );
+    mUserPicturesDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->userImageDirectory() );
+    mUserInteractiveDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->userInteractiveDirectory() );
+    mUserAnimationDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->userAnimationDirectory() );
 
-	mLibPicturesDirectoryPath = UBSettings::settings()->applicationImageLibraryDirectory();
-	mLibInteractiveDirectoryPath = UBSettings::settings()->applicationInteractivesDirectory();
-	mLibApplicationsDirectoryPath = UBSettings::settings()->applicationApplicationsLibraryDirectory();
-	mLibShapesDirectoryPath = UBSettings::settings()->applicationShapeLibraryDirectory() ;
-	trashDirectoryPath = UBSettings::userTrashDirPath();
+	mLibPicturesDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->applicationImageLibraryDirectory() );
+	mLibInteractiveDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->applicationInteractivesDirectory() );
+	mLibApplicationsDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->applicationApplicationsLibraryDirectory() );
+	mLibShapesDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->applicationShapeLibraryDirectory() );
+	mLibSearchDirectoryPath =QUrl::fromLocalFile(  UBSettings::settings()->userSearchDirectory() );
+	trashDirectoryPath = QUrl::fromLocalFile( UBSettings::userTrashDirPath() );
 
 	featuresList = new QList <UBFeature>();
 
 	QList <UBToolsManager::UBToolDescriptor> tools = UBToolsManager::manager()->allTools();
 
-	featuresList->append( UBFeature( QString(), QPixmap( ":images/libpalette/home.png" ), "root", QString() ) );
+	featuresList->append( UBFeature( QString(), QPixmap( ":images/libpalette/home.png" ), "root", QUrl() ) );
 	currentElement = featuresList->at(0);
 	
 	appPath = rootPath + "/Applications";
@@ -72,26 +94,32 @@ void UBFeaturesController::initDirectoryTree()
 	trashPath = rootPath + "/Trash";
 	favoritePath = rootPath + "/Favorites";
 
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath ) );
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/MoviesCategory.svg"), "Movies" , mUserVideoDirectoryPath ) );
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/PicturesCategory.svg"), "Pictures" , mUserPicturesDirectoryPath ) );
+	audiosElement = UBFeature( rootPath, QPixmap(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath );
+	featuresList->append( audiosElement );
+	moviesElement = UBFeature( rootPath, QPixmap(":images/libpalette/MoviesCategory.svg"), "Movies" , mUserVideoDirectoryPath );
+	featuresList->append( moviesElement );
+	picturesElement = UBFeature( rootPath, QPixmap(":images/libpalette/PicturesCategory.svg"), "Pictures" , mUserPicturesDirectoryPath );
+	featuresList->append( picturesElement );
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/ApplicationsCategory.svg"), "Applications" , mUserInteractiveDirectoryPath ) );
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/FlashCategory.svg"), "Animations" , mUserAnimationDirectoryPath ) );
-	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/InteractivesCategory.svg"), "Interactivities" ,  mLibInteractiveDirectoryPath ) );
+	flashElement = UBFeature( rootPath, QPixmap(":images/libpalette/FlashCategory.svg"), "Animations" , mUserAnimationDirectoryPath );
+	featuresList->append( flashElement );
+	interactElement = UBFeature( rootPath, QPixmap(":images/libpalette/InteractivesCategory.svg"), "Interactivities" ,  mLibInteractiveDirectoryPath );
+	featuresList->append( interactElement );
 	featuresList->append( UBFeature( rootPath, QPixmap(":images/libpalette/ShapesCategory.svg"), "Shapes" , mLibShapesDirectoryPath ) );
 	trashElement = UBFeature( rootPath, QPixmap(":images/libpalette/TrashCategory.svg"), "Trash", trashDirectoryPath, FEATURE_TRASH );
 	featuresList->append( trashElement );
-	favoriteElement = UBFeature( rootPath, QPixmap(":images/libpalette/FavoritesCategory.svg"), "Favorites", "favorites", FEATURE_FAVORITE );
+	favoriteElement = UBFeature( rootPath, QPixmap(":images/libpalette/FavoritesCategory.svg"), "Favorites", QUrl("favorites"), FEATURE_FAVORITE );
 	featuresList->append( favoriteElement );
-
+	webSearchElement = UBFeature( rootPath, QPixmap(":images/libpalette/WebSearchCategory.svg"), "Web search", mLibSearchDirectoryPath );
+	featuresList->append( webSearchElement );
 	loadFavoriteList();
 
 	foreach (UBToolsManager::UBToolDescriptor tool, tools)
 	{
-		featuresList->append( UBFeature( appPath, tool.icon, tool.label, tool.id, FEATURE_INTERNAL ) );
-		if ( favoriteSet->find( tool.id ) != favoriteSet->end() )
+		featuresList->append( UBFeature( appPath, tool.icon, tool.label, QUrl( tool.id ), FEATURE_INTERNAL ) );
+		if ( favoriteSet->find( QUrl( tool.id ) ) != favoriteSet->end() )
 		{
-			featuresList->append( UBFeature( favoritePath, tool.icon, tool.label, tool.id, FEATURE_INTERNAL ) );
+			featuresList->append( UBFeature( favoritePath, tool.icon, tool.label, QUrl( tool.id ), FEATURE_INTERNAL ) );
 		}
 	}
 	fileSystemScan( mUserInteractiveDirectoryPath, appPath  );
@@ -105,14 +133,14 @@ void UBFeaturesController::initDirectoryTree()
 	fileSystemScan( mLibShapesDirectoryPath, shapesPath  );
 	fileSystemScan( mLibInteractiveDirectoryPath, interactPath  );
 	fileSystemScan( trashDirectoryPath, trashPath );
-
+	fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
 	
 
 }
 
-void UBFeaturesController::fileSystemScan(const QString & currentPath, const QString & currVirtualPath)
+void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QString & currVirtualPath)
 {
-	QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath);
+    QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath.toLocalFile());
 
     QFileInfoList::iterator fileInfo;
     for ( fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end(); fileInfo +=  1)
@@ -120,12 +148,19 @@ void UBFeaturesController::fileSystemScan(const QString & currentPath, const QSt
 		UBFeatureElementType fileType = fileInfo->isDir() ? FEATURE_FOLDER : FEATURE_ITEM;
 
         QString fileName = fileInfo->fileName();
-        if ( UBFileSystemUtils::mimeTypeFromFileName(fileName).contains("application") ) {
-            fileType = FEATURE_INTERACTIVE;
+        if ( UBFileSystemUtils::mimeTypeFromFileName(fileName).contains("application") ) 
+		{
+			if ( UBFileSystemUtils::mimeTypeFromFileName(fileName).contains("application/search") )
+			{
+				fileType = FEATURE_SEARCH;
+			}
+			else
+             fileType = FEATURE_INTERACTIVE;
         }
 		QString itemName = (fileType != FEATURE_ITEM) ? fileName : fileInfo->completeBaseName();
 		QPixmap icon = QPixmap(":images/libpalette/soundIcon.svg");
 		QString fullFileName = fileInfo->filePath();
+ 
 
 		if ( fileType == FEATURE_FOLDER ) 
 		{
@@ -146,15 +181,15 @@ void UBFeaturesController::fileSystemScan(const QString & currentPath, const QSt
 				icon = QPixmap( thumbnailPath );
 			else icon = createThumbnail( fullFileName );*/
 		}
-		featuresList->append( UBFeature( currVirtualPath, icon, fileName, fullFileName, fileType ) );
-		if ( favoriteSet->find( fullFileName ) != favoriteSet->end() )
+        featuresList->append( UBFeature( currVirtualPath, icon, fileName, QUrl::fromLocalFile( fullFileName ), fileType ) );
+		if ( favoriteSet->find( QUrl::fromLocalFile( fullFileName ) ) != favoriteSet->end() )
 		{
-			featuresList->append( UBFeature( favoritePath, icon, fileName, fullFileName, fileType ) );
+			featuresList->append( UBFeature( favoritePath, icon, fileName, QUrl::fromLocalFile( fullFileName ), fileType ) );
 		}
 
 		if ( fileType == FEATURE_FOLDER )
 		{
-			fileSystemScan( fullFileName, currVirtualPath + "/" + fileName );
+			fileSystemScan( QUrl::fromLocalFile( fullFileName ), currVirtualPath + "/" + fileName );
 		}
 
 	}
@@ -162,7 +197,7 @@ void UBFeaturesController::fileSystemScan(const QString & currentPath, const QSt
 
 void UBFeaturesController::loadFavoriteList()
 {
-	favoriteSet = new QSet<QString>();
+	favoriteSet = new QSet<QUrl>();
 	QFile file( UBSettings::userDataDirectory() + "/favorites.dat" );
 	if ( file.exists() )
 	{
@@ -172,7 +207,7 @@ void UBFeaturesController::loadFavoriteList()
 		in >> elementsNumber;
 		for ( int i = 0; i < elementsNumber; ++i)
 		{
-			QString path;
+			QUrl path;
 			in >> path;
 			/*QFileInfo fileInfo( path );
 			QString fileName = fileInfo.fileName();
@@ -191,7 +226,7 @@ void UBFeaturesController::saveFavoriteList()
 	file.open(QIODevice::WriteOnly);
 	QDataStream out(&file);
 	out << favoriteSet->size();
-	for ( QSet<QString>::iterator it = favoriteSet->begin(); it != favoriteSet->end(); ++it )
+	for ( QSet<QUrl>::iterator it = favoriteSet->begin(); it != favoriteSet->end(); ++it )
 	{
 		out << (*it);
 	}
@@ -201,12 +236,12 @@ void UBFeaturesController::saveFavoriteList()
 UBFeature UBFeaturesController::addToFavorite( const QUrl &path )
 {
 	QString filePath = fileNameFromUrl( path );
-	if ( favoriteSet->find( filePath ) == favoriteSet->end() )
+	if ( favoriteSet->find( path ) == favoriteSet->end() )
 	{
 		QFileInfo fileInfo( filePath );
 		QString fileName = fileInfo.fileName();
-		UBFeature elem( favoritePath, thumbnailForFile( filePath ), fileName, filePath, fileTypeFromUrl(filePath) );
-		favoriteSet->insert( filePath );
+		UBFeature elem( favoritePath, thumbnailForFile( filePath ), fileName, path, fileTypeFromUrl(filePath) );
+		favoriteSet->insert( path );
 		saveFavoriteList();
 		return elem;
 	}
@@ -216,9 +251,9 @@ UBFeature UBFeaturesController::addToFavorite( const QUrl &path )
 void UBFeaturesController::removeFromFavorite( const QUrl &path )
 {
 	QString filePath = fileNameFromUrl( path );
-	if ( favoriteSet->find( filePath ) != favoriteSet->end() )
+	if ( favoriteSet->find( path ) != favoriteSet->end() )
 	{
-		favoriteSet->erase( favoriteSet->find( filePath ) );
+		favoriteSet->erase( favoriteSet->find( path ) );
 		saveFavoriteList();
 	}
 }
@@ -230,6 +265,7 @@ QString UBFeaturesController::fileNameFromUrl( const QUrl &url )
 		return fileName;
 	return url.toLocalFile();
 }
+
 
 UBFeatureElementType UBFeaturesController::fileTypeFromUrl( const QString &path )
 {
@@ -266,6 +302,12 @@ QPixmap UBFeaturesController::thumbnailForFile(const QString &path)
 		thumb = QPixmap( thumbnailPath );
 	else thumb = createThumbnail( path );
 	return thumb;
+}
+
+bool UBFeaturesController::isDeletable( const QUrl &url )
+{
+	UBFeatureElementType type = fileTypeFromUrl( fileNameFromUrl(url) );
+	return type == FEATURE_ITEM;
 }
 
 QPixmap UBFeaturesController::createThumbnail(const QString &path)
@@ -305,24 +347,63 @@ QPixmap UBFeaturesController::createThumbnail(const QString &path)
 
 UBFeature UBFeaturesController::newFolder( const QString &name )
 {
-	QString path = currentElement.getFullPath() + "/" + name;
+    QString path = currentElement.getFullPath().toLocalFile() + "/" + name;
 	if(!QFileInfo(path).exists())
 	{
         QDir().mkpath(path);
 	}
-	return UBFeature( currentElement.getUrl() + "/" + currentElement.getName(), QPixmap(":images/libpalette/folder.svg"), name, path, FEATURE_FOLDER );
+    return UBFeature( currentElement.getFullVirtualPath(), QPixmap(":images/libpalette/folder.svg"), 
+        name, QUrl::fromLocalFile( path ), FEATURE_FOLDER );
 }
 
 void UBFeaturesController::addItemToPage(const UBFeature &item)
 {
-	if ( item.getType() == FEATURE_INTERNAL )
+    UBApplication::boardController->downloadURL( item.getFullPath() );
+}
+
+void UBFeaturesController::addItemAsBackground(const UBFeature &item)
+{
+    UBApplication::boardController->downloadURL( item.getFullPath(), QPointF(), QSize(), true );
+}
+
+
+UBFeature UBFeaturesController::getDestinationForItem( const QUrl &url )
+{
+    QString mimetype = UBFileSystemUtils::mimeTypeFromFileName( url.toString() );
+
+    if ( mimetype.contains("audio") )
+        return audiosElement;
+    if ( mimetype.contains("video") )
+        return moviesElement;
+    else if ( mimetype.contains("image") )
+        return picturesElement;
+    else if ( mimetype.contains("application") )
 	{
-		UBApplication::boardController->downloadURL( QUrl( item.getFullPath() ) );
-	}
-	else
-	{
-		UBApplication::boardController->downloadURL( QUrl::fromLocalFile( item.getFullPath() ) );
-	}
+        if ( mimetype.contains( "x-shockwave-flash") )
+            return flashElement;
+        else
+            return interactElement;
+    }
+    return UBFeature();
+}
+
+UBFeature UBFeaturesController::addDownloadedFile( const QUrl &sourceUrl, const QByteArray &pData )
+{
+    UBFeature dest = getDestinationForItem( sourceUrl );
+    if ( dest == UBFeature() )
+        return UBFeature();
+    QString fileName = QFileInfo( sourceUrl.toString() ).fileName();
+    QString filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
+
+    QFile file( filePath );
+    if( file.open(QIODevice::WriteOnly )) 
+    {
+        file.write(pData);
+        file.close();
+        return UBFeature( dest.getFullVirtualPath(), thumbnailForFile( filePath ), 
+            fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM );
+    }
+    return UBFeature();
 }
 
 UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeature &destination )
@@ -338,9 +419,19 @@ UBFeature UBFeaturesController::copyItemToFolder( const QUrl &url, const UBFeatu
 
 	Q_ASSERT( QFileInfo( sourcePath ).exists() );
 
+	UBFeature possibleDest = getDestinationForItem( url );
+
+	UBFeature dest = destination;
+
+	if ( destination != trashElement && 
+		!destination.getFullVirtualPath().startsWith( possibleDest.getFullVirtualPath(), Qt::CaseInsensitive ) )
+	{
+		dest = possibleDest;
+	}
+
 	QString name = QFileInfo( sourcePath ).fileName();
-	QString destPath = destination.getFullPath();
-	QString destVirtualPath = destination.getUrl() + "/" + destination.getName();
+    QString destPath = dest.getFullPath().toLocalFile();
+	QString destVirtualPath = dest.getFullVirtualPath();
 	QString newFullPath = destPath + "/" + name;
 	QFile( sourcePath ).copy( newFullPath );
 
@@ -349,7 +440,7 @@ UBFeature UBFeaturesController::copyItemToFolder( const QUrl &url, const UBFeatu
     UBFeatureElementType type = FEATURE_ITEM;
 	if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") ) 
         type = FEATURE_INTERACTIVE;
-	UBFeature newElement( destVirtualPath, thumb, name, newFullPath, type );
+    UBFeature newElement( destVirtualPath, thumb, name, QUrl::fromLocalFile( newFullPath ), type );
 	return newElement;
 }
 
@@ -359,7 +450,7 @@ void UBFeaturesController::deleteItem( const QUrl &url )
 	Q_ASSERT( QFileInfo( path ).exists() );
 
 	QString thumbnailPath = UBFileSystemUtils::thumbnailPath( path );
-    if (thumbnailPath.length() && QFileInfo( thumbnailPath ).exists()) 
+    if ( thumbnailPath.length() && QFileInfo( thumbnailPath ).exists() ) 
 	{
         QFile::remove(thumbnailPath);
     }
@@ -368,7 +459,7 @@ void UBFeaturesController::deleteItem( const QUrl &url )
 
 bool UBFeaturesController::isTrash( const QUrl &url )
 {
-	return url.toLocalFile().startsWith( trashDirectoryPath );
+    return url.toLocalFile().startsWith( trashDirectoryPath.toLocalFile() );
 }
 
 UBFeaturesController::~UBFeaturesController()

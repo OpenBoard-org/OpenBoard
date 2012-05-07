@@ -12,7 +12,8 @@ enum UBFeaturesActionBarState
 	IN_ROOT,
 	IN_FOLDER,
 	IN_PROPERTIES,
-	IN_FAVORITE
+	IN_FAVORITE,
+	IN_TRASH
 };
 
 class UBFeaturesActionBar : public QWidget

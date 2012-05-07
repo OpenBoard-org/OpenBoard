@@ -8,8 +8,9 @@
 #include "domain/UBGraphicsDelegateFrame.h"
 #include "domain/ubgraphicsgroupcontaineritem.h"
 
-#include "core/memcheck.h"
 #include "board/UBBoardController.h"
+
+#include "core/memcheck.h"
 
 UBGraphicsGroupContainerItemDelegate::UBGraphicsGroupContainerItemDelegate(QGraphicsItem *pDelegated, QObject *parent) :
     UBGraphicsItemDelegate(pDelegated, parent), mDestroyGroupButton(0)

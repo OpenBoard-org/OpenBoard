@@ -1,4 +1,5 @@
 #include "UBFeaturesActionBar.h"
+#include "core/memcheck.h"
 
 UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWidget* parent, const char* name ) : QWidget (parent)
 	, featuresController(controller)
@@ -143,6 +144,16 @@ void UBFeaturesActionBar::setButtons()
         mpRemoveFavoriteBtn->show();
         mpNewFolderBtn->hide();
         break;
+	case IN_TRASH:
+		mpFavoriteBtn->hide();
+        mpSocialBtn->hide();
+        mSearchBar->show();
+        //mpSearchBtn->show();
+        //mpDeleteBtn->hide();
+        mpCloseBtn->hide();
+        //mpRemoveFavoriteBtn->show();
+        mpNewFolderBtn->hide();
+		break;
     default:
         break;
     }
@@ -169,7 +180,9 @@ void UBFeaturesActionBar::dragMoveEvent(QDragMoveEvent *event)
 void UBFeaturesActionBar::dragEnterEvent( QDragEnterEvent *event )
 {
     if (event->mimeData()->hasFormat("text/uri-list"))
+	{
         event->acceptProposedAction();
+	}
 }
 
 void UBFeaturesActionBar::dropEvent( QDropEvent *event )
@@ -177,6 +190,12 @@ void UBFeaturesActionBar::dropEvent( QDropEvent *event )
 	QWidget *dest = childAt( event->pos() );
 	if ( dest == mpDeleteBtn )
 	{
+		QList <QUrl> urls = event->mimeData()->urls();
+		foreach ( QUrl url, urls )
+		{
+			if ( !UBFeaturesController::isDeletable( url ) )
+				return;
+		}
 		event->setDropAction( Qt::MoveAction );
 		event->accept();
 		emit deleteElements( *event->mimeData() );

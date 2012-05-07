@@ -16,6 +16,8 @@
 #include <QtGlobal>
 #include "DCTDecode.h"
 
+#include "core/memcheck.h"
+
 using namespace merge_lib;
 
 bool DCTDecode::encode(std::string & decoded)

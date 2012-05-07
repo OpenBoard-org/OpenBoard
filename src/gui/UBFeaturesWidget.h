@@ -18,12 +18,15 @@
 #include "UBDockPaletteWidget.h"
 //#include "UBLibActionBar.h"
 #include "board/UBFeaturesController.h"
+#include "api/UBWidgetUniboardAPI.h"
 #include "UBFeaturesActionBar.h"
+#include "UBRubberBand.h"
 
 
 #define THUMBNAIL_WIDTH 400
 #define ID_LISTVIEW 0
 #define ID_PROPERTIES 1
+#define ID_WEBVIEW 2
 
 class UBListModel;
 
@@ -37,6 +40,7 @@ class UBFeaturesPathViewer;
 class UBFeatureProperties;
 class UBFeatureItemButton;
 class UBFeaturesListView;
+class UBFeaturesWebView;
 
 class UBFeaturesWidget : public UBDockPaletteWidget
 {
@@ -58,6 +62,7 @@ public:
 private:
 	void switchToListView();
 	void switchToProperties();
+	void switchToWebView();
 
 	UBFeaturesController *controller;
 	
@@ -78,7 +83,9 @@ private:
 	QGraphicsScene *pathScene;
 	UBFeaturesActionBar *mActionBar;
 	UBFeatureProperties *featureProperties;
+	UBFeaturesWebView *webView;
 	QStackedWidget *stackedWidget;
+	
 
 	int currentStackedWidget;
 	QModelIndex trashIndex;
@@ -92,6 +99,8 @@ private slots:
 	void addToFavorite( const QMimeData & );
 	void removeFromFavorite( const QMimeData & );
 	void thumbnailSizeChanged( int );
+	void onDisplayMetadata( QMap<QString,QString> );
+    void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
 protected:
 	bool eventFilter(QObject *target, QEvent *event);
 };
@@ -105,8 +114,32 @@ public:
 protected:
 	virtual void dragEnterEvent( QDragEnterEvent *event );
 	virtual void dropEvent( QDropEvent *event );
+	/*virtual void mousePressEvent( QMouseEvent *event );
+	virtual void mouseMoveEvent( QMouseEvent *event );
+	virtual void mouseReleaseEvent( QMouseEvent *event );*/
+private:
+	//UBRubberBand *rubberBand;
+	//QPoint rubberOrigin;
 };
 
+class UBFeaturesWebView : public QWidget
+{
+    Q_OBJECT
+public:
+    UBFeaturesWebView(QWidget* parent = 0, const char* name = "UBFeaturesWebView");
+    ~UBFeaturesWebView();
+
+    void showElement(const UBFeature &elem);
+
+private slots:
+    void onLoadFinished(bool ok);
+
+private:
+    QWebView* mpView;
+    QWebSettings* mpWebSettings;
+    QVBoxLayout* mpLayout;
+    UBWidgetUniboardAPI* mpSankoreAPI;
+};
 
 class UBFeatureProperties : public QWidget
 {
@@ -119,28 +152,31 @@ public:
 
 
 protected:
-    //void resizeEvent(QResizeEvent *event);
-    //void showEvent(QShowEvent *event);
+    void resizeEvent(QResizeEvent *event);
+    void showEvent(QShowEvent *event);
 
 private slots:
     void onAddToPage();
-    //void onAddToLib();
-    //void onSetAsBackground();
+    void onAddToLib();
+    void onSetAsBackground();
     //void onBack();
 
 private:
+	void populateMetadata();
+    void adaptSize();
+
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonLayout;
     UBFeatureItemButton* mpAddPageButton;
     UBFeatureItemButton* mpAddToLibButton;
     UBFeatureItemButton* mpSetAsBackgroundButton;
     QLabel* mpObjInfoLabel;
-    //QTreeWidget* mpObjInfos;
+    QTreeWidget* mpObjInfos;
     QLabel* mpThumbnail;
     QPixmap* mpOrigPixmap;
     int maxThumbHeight;
     UBFeature *mpElement;
-    //QTreeWidgetItem* mpItem;
+    QTreeWidgetItem* mpItem;
 };
 
 
@@ -174,7 +210,7 @@ public:
 	
     Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 
-    void setFeaturesList( QList <UBFeature> *flist ) { featuresList = flist; }
+    void setFeaturesList(QList <UBFeature> *flist ) { featuresList = flist; }
 private:
 	QList <UBFeature> *featuresList;
 };

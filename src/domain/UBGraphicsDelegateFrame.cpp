@@ -390,7 +390,10 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             QSizeF newSize = resizableItem->size() + incVector;
 
-            resizableItem->resize(newSize);
+            if (!(mDelegate->getToolBarItem()->isVisibleOnBoard()
+                && (newSize.width() < mDelegate->getToolBarItem()->minWidth() / mDelegate->antiScaleRatio()
+                || newSize.height() < mDelegate->getToolBarItem()->minWidth() / mDelegate->antiScaleRatio() * 3/4)))
+                    resizableItem->resize(newSize);
         }
     }
 
@@ -579,6 +582,11 @@ void UBGraphicsDelegateFrame::setVisible(bool visible)
 void UBGraphicsDelegateFrame::positionHandles()
 {
     QRectF itemRect = delegated()->boundingRect();
+    
+    if (mDelegate->getToolBarItem()->isVisibleOnBoard() 
+        && mDelegate->getToolBarItem()->isShifting())
+        itemRect.setHeight(itemRect.height() + mDelegate->getToolBarItem()->rect().height() * mDelegate->antiScaleRatio() * 1.1);
+
     QTransform itemTransform = delegated()->sceneTransform();
     QPointF topLeft = itemTransform.map(itemRect.topLeft());
     QPointF topRight = itemTransform.map(itemRect.topRight());
