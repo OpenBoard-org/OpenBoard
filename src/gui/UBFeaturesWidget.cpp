@@ -121,7 +121,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &) ), this, SLOT( deleteElements(const QMimeData &) ) ); 
 	connect( mActionBar, SIGNAL( addToFavorite(const QMimeData &) ), this, SLOT( addToFavorite(const QMimeData &) ) );
 	connect( mActionBar, SIGNAL( removeFromFavorite(const QMimeData &) ), this, SLOT( removeFromFavorite(const QMimeData &) ) );
-    connect ( mActionBar, SIGNAL( addElementsToFavorite() ), this, SLOT ( addElementsToFavorite() ) ); 
+    connect( mActionBar, SIGNAL( addElementsToFavorite() ), this, SLOT ( addElementsToFavorite() ) );
+    connect( mActionBar, SIGNAL( removeElementsFromFavorite() ), this, SLOT ( removeElementsFromFavorite() ) );
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
@@ -348,6 +349,25 @@ void UBFeaturesWidget::addElementsToFavorite()
 	model->invalidate();
 }
 
+void UBFeaturesWidget::removeElementsFromFavorite()
+{
+    QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
+    //qSort( selected.begin(), selected.end(), qGreater<QModelIndex>() );
+    QList <QUrl> items;
+    for ( int i = 0; i < selected.size(); ++i )
+    {
+        UBFeature feature = selected.at(i).data( Qt::UserRole + 1 ).value<UBFeature>();
+        items.append( feature.getFullPath() );
+    }
+    foreach ( QUrl url, items )
+    {
+        controller->removeFromFavorite( url );
+        featuresModel->deleteFavoriteItem( url.toString() );
+    }
+    QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
+	model->invalidate();
+}
+
 void UBFeaturesWidget::switchToListView()
 {
 	stackedWidget->setCurrentIndex(ID_LISTVIEW);
@@ -435,7 +455,7 @@ void UBFeaturesListView::dropEvent( QDropEvent *event )
 	{
 		event->setDropAction( Qt::MoveAction );
 	}
-	QListView::dropEvent( event );
+	QListView::dropEvent( event ); 
 }
 
 
@@ -854,7 +874,7 @@ void UBFeaturesModel::deleteFavoriteItem( const QString &path )
 {
 	for ( int i = 0; i < featuresList->size(); ++i )
 	{
-		if ( !QString::compare( featuresList->at(i).getUrl(), path, Qt::CaseInsensitive ) &&
+        if ( !QString::compare( featuresList->at(i).getFullPath().toString(), path, Qt::CaseInsensitive ) &&
 			!QString::compare( featuresList->at(i).getVirtualPath(), "/root/favorites", Qt::CaseInsensitive ) )
 		{
 			removeRow( i, QModelIndex() );
@@ -888,6 +908,7 @@ bool UBFeaturesModel::removeRow(  int row, const QModelIndex & parent )
 	endRemoveRows();
 	return true;
 }
+
 
 Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 {

@@ -102,6 +102,7 @@ private slots:
 	void onDisplayMetadata( QMap<QString,QString> );
     void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
     void addElementsToFavorite();
+    void removeElementsFromFavorite();
 protected:
 	bool eventFilter(QObject *target, QEvent *event);
 };
@@ -209,6 +210,8 @@ public:
     bool dropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	bool removeRow(int row, const QModelIndex &parent = QModelIndex());
+    //bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    //bool insertRow(int row, const QModelIndex &parent = QModelIndex());
 	
     Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 

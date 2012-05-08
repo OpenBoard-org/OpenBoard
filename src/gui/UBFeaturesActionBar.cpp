@@ -77,6 +77,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
 
 	connect(mSearchBar, SIGNAL(textChanged(QString)), this, SLOT(onSearchTextChanged(QString)));
 	connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));
+    connect(mpRemoveFavorite, SIGNAL(triggered()), this, SLOT(onActionRemoveFavorite()));
 
     // Build the default toolbar
     mLayout->addWidget(mpFavoriteBtn);
@@ -173,6 +174,11 @@ void UBFeaturesActionBar::onActionNewFolder()
 void UBFeaturesActionBar::onActionFavorite()
 {
     emit addElementsToFavorite();
+}
+
+void UBFeaturesActionBar::onActionRemoveFavorite()
+{
+    emit removeElementsFromFavorite();
 }
 
 /*
