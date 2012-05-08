@@ -1418,19 +1418,19 @@ var sankoreLang = {
             "city":"Сана",
             "country":"Йемен"
         }
-    },
+     },
     "fr":{
-        "capital":"Capital ville",
-        "europe":"l'Europe",
-        "asia":"l'Asie",
-        "north_america":"l'Amérique du Nord",
-        "south_america":"l'Amérique du Sud",
-        "oceania":"l'Océanie",
-        "africa":"l'Afrique",
+        "capital":"Capitale",
+        "europe":"Europe",
+        "asia":"Asie",
+        "north_america":"Amérique du Nord",
+        "south_america":"Amérique du Sud",
+        "oceania":"Océanie",
+        "africa":"Afrique",
         "eurasia": "Eurasie",
         "MA":{
             "city":"Rabat",
-            "country":"le Maroc"
+            "country":"Maroc"
         },
         "DZ":{
             "city":"Alger",
@@ -1438,15 +1438,15 @@ var sankoreLang = {
         },
         "TN":{
             "city":"Tunis",
-            "country":"la Tunisie"
+            "country":"Tunisie"
         },
         "LY":{
             "city":"Tripoli",
-            "country":"La Libye"
+            "country":"Libye"
         },
         "EG":{
             "city":"Le Caire",
-            "country":"l'Égypte"
+            "country":"Égypte"
         },
         "Sahara_occidental":{
             "city":"",
@@ -1481,12 +1481,12 @@ var sankoreLang = {
             "country":"Djibouti"
         },
         "ET":{
-            "city":"Addis Ababa",
+            "city":"Addis-Abeba",
             "country":"Ethiopie"
         },
         "SO":{
             "city":"Mogadiscio",
-            "country":"Somalia"
+            "country":"Somalie"
         },
         "KE":{
             "city":"Nairobi",
@@ -1494,7 +1494,7 @@ var sankoreLang = {
         },
         "UG":{
             "city":"Kampala",
-            "country":"l'Ouganda"
+            "country":"Ouganda"
         },
         "CD":{
             "city":"Kinshasa",
@@ -1510,10 +1510,10 @@ var sankoreLang = {
         },
         "NG":{
             "city":"Abuja",
-            "country":"Nigeria"
+            "country":"Nigéria"
         },
         "BJ":{
-            "city":"Porto Novo",
+            "city":"Porto-Novo",
             "country":"Bénin"
         },
         "TG":{
@@ -1526,15 +1526,15 @@ var sankoreLang = {
         },
         "CI":{
             "city":"Yamoussoukro",
-            "country":"La Côte d'Ivoire"
+            "country":"Côte d'Ivoire"
         },
         "BF":{
             "city":"Ouagadougou",
             "country":"Burkina Faso"
         },
         "LR":{
-            "city":"Monravia",
-            "country":"Le Libéria"
+            "city":"Monrovia",
+            "country":"Libéria"
         },
         "SL":{
             "city":"Freetown",
@@ -1546,7 +1546,7 @@ var sankoreLang = {
         },
         "GW":{
             "city":"Bissau",
-            "country":"La Guinée-Bissau"
+            "country":"Guinée-Bissau"
         },
         "SN":{
             "city":"Dakar",
@@ -1574,7 +1574,7 @@ var sankoreLang = {
         },
         "GQ":{
             "city":"Malabo",
-            "country":"La Guinée Equatoriale"
+            "country":"Guinée Equatoriale"
         },
         "TZ":{
             "city":"Dodoma",
@@ -1605,12 +1605,12 @@ var sankoreLang = {
             "country":"Botswana"
         },
         "NA":{
-            "city":"Windhoec",
+            "city":"Windhoek",
             "country":"Namibie"
         },
         "ZA":{
             "city":"Pretoria",
-            "country":"l'Afrique du Sud"
+            "country":"Afrique du Sud"
         },
         "LS":{
             "city":"Maseru",
@@ -1641,7 +1641,7 @@ var sankoreLang = {
             "country":"Paraguay"
         },
         "BO":{
-            "city":"La Paz",
+            "city":"Sucre",
             "country":"Bolivie"
         },
         "BR":{
@@ -1654,7 +1654,7 @@ var sankoreLang = {
         },
         "EC":{
             "city":"Quito",
-            "country":"L'Equateur"
+            "country":"Equateur"
         },
         "CO":{
             "city":"Bogota",
@@ -1662,7 +1662,7 @@ var sankoreLang = {
         },
         "VE":{
             "city":"Caracas",
-            "country":"Venezuela"
+            "country":"Vénézuéla"
         },
         "GY":{
             "city":"Georgetown",
@@ -1673,7 +1673,7 @@ var sankoreLang = {
             "country":"Suriname"
         },
         "GF":{
-            "city":"Paris",
+            "city":"Cayenne",
             "country":"Guyane française"
         },
         "CA":{
@@ -1682,14 +1682,14 @@ var sankoreLang = {
         },
         "GL":{
             "city":"Nuuk",
-            "country":"Greenland"
+            "country":"Groënland"
         },
         "US":{
             "city":"Washington",
-            "country":"Les États-Unis d'Amérique"
+            "country":"États-Unis d'Amérique"
         },
         "MX":{
-            "city":"Mexique",
+            "city":"Mexico",
             "country":"Mexique"
         },
         "CU":{
@@ -1701,7 +1701,7 @@ var sankoreLang = {
             "country":"Haïti"
         },
         "DO":{
-            "city":"Santo Domingo",
+            "city":"Saint-Domingue",
             "country":"République Dominicaine"
         },
         "JM":{
@@ -1721,8 +1721,8 @@ var sankoreLang = {
             "country":"Belize"
         },
         "SV":{
-            "city":"Salvador",
-            "country":"San Salvador"
+            "city":"San Salvador",
+            "country":"Salvador"
         },
         "HN":{
             "city":"Tegucigalpa",
@@ -1734,7 +1734,7 @@ var sankoreLang = {
         },
         "CR":{
             "city":"San José",
-            "country":"Costa-Rica"
+            "country":"Costa Rica"
         },
         "PA":{
             "city":"Panama",
@@ -1746,11 +1746,11 @@ var sankoreLang = {
         },
         "NZ":{
             "city":"Wellington",
-            "country":"New Zealand"
+            "country":"Nouvelle-Zélande"
         },
         "PG":{
             "city":"Port Moresby",
-            "country":"La Papouasie-Nouvelle-Guinée"
+            "country":"Papouasie-Nouvelle-Guinée"
         },
         "ID":{
             "city":"Jakarta",
@@ -1765,7 +1765,7 @@ var sankoreLang = {
             "country":"Vanuatu"
         },
         "NC":{
-            "city":"Paris",
+            "city":"Nouméa",
             "country":"Nouvelle-Calédonie"
         },
         "AL":{
@@ -1774,10 +1774,10 @@ var sankoreLang = {
         },
         "DE":{
             "city":"Berlin",
-            "country":"l'Allemagne"
+            "country":"Allemagne"
         },
         "AD":{
-            "city":"Andorre la Vieille",
+            "city":"Andorre-la-Vieille",
             "country":"Andorre"
         },
         "AM":{
@@ -1785,7 +1785,7 @@ var sankoreLang = {
             "country":"Arménie"
         },
         "AT":{
-            "city":"Vienna",
+            "city":"Vienne",
             "country":"Autriche"
         },
         "AZ":{
@@ -1802,11 +1802,11 @@ var sankoreLang = {
         },
         "BA":{
             "city":"Sarajevo",
-            "country":"Bosnie"
+            "country":"Bosnie-Herzégovine"
         },
         "BG":{
             "city":"Sofia",
-            "country":"La Bulgarie"
+            "country":"Bulgarie"
         },
         "CY":{
             "city":"Nicosie",
@@ -1817,16 +1817,16 @@ var sankoreLang = {
             "country":"Croatie"
         },
         "DK":{
-            "city":"De Copenhague",
+            "city":"Copenhague",
             "country":"Danemark"
         },
         "ES":{
             "city":"Madrid",
-            "country":"L'Espagne"
+            "country":"Espagne"
         },
         "EE":{
             "city":"Tallinn",
-            "country":"Estonia"
+            "country":"Estonie"
         },
         "FI":{
             "city":"Helsinki",
@@ -1838,7 +1838,7 @@ var sankoreLang = {
         },
         "GE":{
             "city":"Tbilissi",
-            "country":"Georgia"
+            "country":"Géorgie"
         },
         "EL":{
             "city":"Athènes",
@@ -1850,11 +1850,11 @@ var sankoreLang = {
         },
         "IE":{
             "city":"Dublin",
-            "country":"L'Irlande"
+            "country":"Irlande"
         },
         "IS":{
             "city":"Reykjavik",
-            "country":"L'île"
+            "country":"Islande"
         },
         "IT":{
             "city":"Rome",
@@ -1878,7 +1878,7 @@ var sankoreLang = {
         },
         "MK":{
             "city":"Skopje",
-            "country":"Macedoine"
+            "country":"Macédoine"
         },
         "MT":{
             "city":"La Valette",
@@ -1886,7 +1886,7 @@ var sankoreLang = {
         },
         "MD":{
             "city":"Chisinau",
-            "country":"La Moldavie"
+            "country":"Moldavie"
         },
         "MC":{
             "city":"Monaco",
@@ -1902,14 +1902,14 @@ var sankoreLang = {
         },
         "NL":{
             "city":"Amsterdam",
-            "country":"Pays Bas"
+            "country":"Pays-Bas"
         },
         "PL":{
             "city":"Varsovie",
-            "country":"La Pologne"
+            "country":"Pologne"
         },
         "PT":{
-            "city":"De Lisbonne",
+            "city":"Lisbonne",
             "country":"Portugal"
         },
         "CZ":{
@@ -1921,7 +1921,7 @@ var sankoreLang = {
             "country":"Roumanie"
         },
         "UK":{
-            "city":"London",
+            "city":"Londres",
             "country":"Royaume-Uni"
         },
         "SM":{
@@ -1934,7 +1934,7 @@ var sankoreLang = {
         },
         "SK":{
             "city":"Bratislava",
-            "country":"Slovakia"
+            "country":"Slovaquie"
         },
         "SI":{
             "city":"Ljubljana",
@@ -1946,18 +1946,18 @@ var sankoreLang = {
         },
         "CH":{
             "city":"Berne",
-            "country":"La Suisse"
+            "country":"Suisse"
         },
         "TR":{
             "city":"Ankara",
-            "country":"La Turquie"
+            "country":"Turquie"
         },
         "UA":{
             "city":"Kiev",
             "country":"Ukraine"
         },
         "VA":{
-            "city":"Vatican",
+            "city":"Cité du Vatican",
             "country":"Vatican"
         },
         "AF":{
@@ -1966,23 +1966,23 @@ var sankoreLang = {
         },
         "SA":{
             "city":"Riyad",
-            "country":"L'Arabie Saoudite"
+            "country":"Arabie Saoudite"
         },
         "BH":{
             "city":"Manama",
-            "country":"Bahrein"
+            "country":"Bahreïn"
         },
         "BD":{
             "city":"Dacca",
             "country":"Bangladesh"
         },
         "BT":{
-            "city":"Thimphu",
+            "city":"Thimphou",
             "country":"Bhoutan"
         },
         "BN":{
-            "city":"Andar Seri Begawan",
-            "country":"Brunei"
+            "city":"Bandar Seri Begawan",
+            "country":"Bruneï"
         },
         "KH":{
             "city":"Phnom Penh",
@@ -1994,27 +1994,27 @@ var sankoreLang = {
         },
         "KP":{
             "city":"Pyongyang",
-            "country":"La Corée du Nord"
+            "country":"Corée du Nord"
         },
         "KR":{
-            "city":"Seoul",
-            "country":"La Corée du Sud"
+            "city":"Séoul",
+            "country":"Corée du Sud"
         },
         "AE":{
-            "city":"Abu Dhabi",
+            "city":"Abou Dabi",
             "country":"Emirats Arabes Unis"
         },
         "IN":{
-            "city":"Delhi",
-            "country":"L'Inde"
+            "city":"New Delhi",
+            "country":"Inde"
         },
         "IR":{
             "city":"Téhéran",
-            "country":"L'Iran"
+            "country":"Iran"
         },
         "IQ":{
             "city":"Bagdad",
-            "country":"L'Irak"
+            "country":"Irak"
         },
         "IL":{
             "city":"Jérusalem",
@@ -2026,23 +2026,23 @@ var sankoreLang = {
         },
         "JO":{
             "city":"Amman",
-            "country":"Jordan"
+            "country":"Jordanie"
         },
         "KZ":{
             "city":"Astana",
             "country":"Kazakhstan"
         },
         "KG":{
-            "city":"Bishkek",
-            "country":"Kirghizstan"
+            "city":"Bichkek",
+            "country":"Kirghizistan"
         },
         "KW":{
-            "city":"Koweit",
-            "country":"Koweit"
+            "city":"Koweït",
+            "country":"Koweït"
         },
         "LA":{
-            "city":"Laos",
-            "country":"Vientiane"
+            "city":"Vientiane",
+            "country":"Laos"
         },
         "LB":{
             "city":"Beyrouth",
@@ -2050,10 +2050,10 @@ var sankoreLang = {
         },
         "MY":{
             "city":"Kuala Lumpur",
-            "country":"La Malaisie"
+            "country":"Malaisie"
         },
         "MV":{
-            "city":"Male",
+            "city":"Malé",
             "country":"Maldives"
         },
         "MN":{
@@ -2062,14 +2062,14 @@ var sankoreLang = {
         },
         "MM":{
             "city":"Naypyidaw",
-            "country":"Myanmar"
+            "country":"Birmanie"
         },
         "NP":{
             "city":"Katmandou",
             "country":"Népal"
         },
         "OM":{
-            "city":"Muscat",
+            "city":"Mascate",
             "country":"Oman"
         },
         "UZ":{
@@ -2078,56 +2078,55 @@ var sankoreLang = {
         },
         "PK":{
             "city":"Islamabad",
-            "country":"Le Pakistan"
+            "country":"Pakistan"
         },
         "PH":{
             "city":"Manille",
             "country":"Philippines"
         },
         "QA":{
-            "city":"De Doha",
+            "city":"Doha",
             "country":"Qatar"
         },
         "RU":{
             "city":"Moscou",
-            "country":"La Russie"
+            "country":"Russie"
         },
         "SG":{
             "city":"Singapour",
             "country":"Singapour"
         },
         "LK":{
-            "city":"Colombo",
+            "city":"Sri Jayawardenapura",
             "country":"Sri Lanka"
         },
         "SY":{
-            "city":"Damask",
-            "country":"La Syrie"
+            "city":"Damas",
+            "country":"Syrie"
         },
         "TJ":{
             "city":"Douchanbé",
-            "country":"Tajikistan"
+            "country":"Tadjikistan"
         },
         "TH":{
             "city":"Bangkok",
-            "country":"Thailande"
+            "country":"Thaïlande"
         },
         "TL":{
             "city":"Dili",
-            "country":"Le Timor-oriental"
+            "country":"Timor-oriental"
         },
         "TM":{
-            "city":"Achkhabad",
+            "city":"Achgabat",
             "country":"Turkménistan"
         },
         "VN":{
             "city":"Hanoï",
-            "country":"Viet Nam"
+            "country":"Vietnam"
         },
         "YE":{
-            "city":"Sana",
+            "city":"Sanaa",
             "country":"Yémen"
         }
     }
 };
-
