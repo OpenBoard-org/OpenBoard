@@ -152,8 +152,7 @@ public:
     ~UBFeatureProperties();
 
     void showElement(const UBFeature &elem);
-
-
+    UBFeature getCurrentElement() const;
 protected:
     void resizeEvent(QResizeEvent *event);
     void showEvent(QShowEvent *event);

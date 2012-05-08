@@ -337,13 +337,25 @@ void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUr
 
 void UBFeaturesWidget::addElementsToFavorite()
 {
-    QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
-    for ( int i = 0; i < selected.size(); ++i )
+    if ( currentStackedWidget == ID_PROPERTIES )
     {
-        UBFeature feature = selected.at(i).data( Qt::UserRole + 1 ).value<UBFeature>();
-        UBFeature elem = controller->addToFavorite( feature.getFullPath() );
-		if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull() )
-			featuresModel->addItem( elem );
+        UBFeature feature = featureProperties->getCurrentElement();
+        if ( feature != UBFeature() && !UBApplication::isFromWeb( feature.getFullPath().toString() ) )
+        {
+            UBFeature elem = controller->addToFavorite( feature.getFullPath() );
+            featuresModel->addItem( elem );
+        }
+    }
+    else if ( currentStackedWidget == ID_LISTVIEW )
+    {
+        QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
+        for ( int i = 0; i < selected.size(); ++i )
+        {
+            UBFeature feature = selected.at(i).data( Qt::UserRole + 1 ).value<UBFeature>();
+            UBFeature elem = controller->addToFavorite( feature.getFullPath() );
+		    if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull() )
+			    featuresModel->addItem( elem );
+        }
     }
     QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
 	model->invalidate();
@@ -627,6 +639,13 @@ void UBFeatureProperties::showEvent (QShowEvent *event )
 {
     Q_UNUSED(event);
     adaptSize();
+}
+
+UBFeature UBFeatureProperties::getCurrentElement() const
+{
+    if ( mpElement )
+        return *mpElement;
+    return UBFeature();
 }
 
 void UBFeatureProperties::adaptSize()
