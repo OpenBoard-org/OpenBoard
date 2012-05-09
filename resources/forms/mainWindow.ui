@@ -69,7 +69,6 @@
    <addaction name="actionForward"/>
    <addaction name="separator"/>
    <addaction name="actionErase"/>
-   <addaction name="actionGroupItems"/>
    <addaction name="actionBoard"/>
    <addaction name="actionTutorial"/>
    <addaction name="actionWeb"/>

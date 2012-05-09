@@ -99,6 +99,9 @@ private slots:
 	void addToFavorite( const QMimeData & );
 	void removeFromFavorite( const QMimeData & );
 	void thumbnailSizeChanged( int );
+	void onDisplayMetadata( QMap<QString,QString> );
+    void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
+    void addElementsToFavorite();
 protected:
 	bool eventFilter(QObject *target, QEvent *event);
 };
@@ -112,6 +115,7 @@ public:
 protected:
 	virtual void dragEnterEvent( QDragEnterEvent *event );
 	virtual void dropEvent( QDropEvent *event );
+    virtual void dragMoveEvent( QDragMoveEvent *event );
 	/*virtual void mousePressEvent( QMouseEvent *event );
 	virtual void mouseMoveEvent( QMouseEvent *event );
 	virtual void mouseReleaseEvent( QMouseEvent *event );*/
@@ -150,28 +154,31 @@ public:
 
 
 protected:
-    //void resizeEvent(QResizeEvent *event);
-    //void showEvent(QShowEvent *event);
+    void resizeEvent(QResizeEvent *event);
+    void showEvent(QShowEvent *event);
 
 private slots:
     void onAddToPage();
-    //void onAddToLib();
-    //void onSetAsBackground();
+    void onAddToLib();
+    void onSetAsBackground();
     //void onBack();
 
 private:
+	void populateMetadata();
+    void adaptSize();
+
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonLayout;
     UBFeatureItemButton* mpAddPageButton;
     UBFeatureItemButton* mpAddToLibButton;
     UBFeatureItemButton* mpSetAsBackgroundButton;
     QLabel* mpObjInfoLabel;
-    //QTreeWidget* mpObjInfos;
+    QTreeWidget* mpObjInfos;
     QLabel* mpThumbnail;
     QPixmap* mpOrigPixmap;
     int maxThumbHeight;
     UBFeature *mpElement;
-    //QTreeWidgetItem* mpItem;
+    QTreeWidgetItem* mpItem;
 };
 
 

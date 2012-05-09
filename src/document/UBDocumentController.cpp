@@ -72,9 +72,15 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
 {
     setupViews();
     setupToolbar();
+    this->selectDocument(UBApplication::boardController->activeDocument());
     connect(this, SIGNAL(exportDone()), mMainWindow, SLOT(onExportDone()));
+    connect(mMainWindow->actionNewPage, SIGNAL(triggered()), this, SLOT(reloadThumbs()));
 }
 
+void UBDocumentController::reloadThumbs()
+{
+    mDocumentThumbs = UBThumbnailAdaptor::load(selectedDocumentProxy());
+}
 
 UBDocumentController::~UBDocumentController()
 {

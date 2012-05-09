@@ -733,11 +733,11 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     if(mKeyboardPalette->m_isVisible)
                     {
                         mKeyboardPalette->hide();
-                        mKeyboardPalette->setParent(brWnd);
+                        mKeyboardPalette->setParent(UBApplication::mainWindow);
                         mKeyboardPalette->show();
                     }
                     else
-                        mKeyboardPalette->setParent(brWnd);
+                        mKeyboardPalette->setParent(UBApplication::mainWindow);
                 }
 
             }

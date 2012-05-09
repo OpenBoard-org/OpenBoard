@@ -75,6 +75,7 @@ class UBDocumentController : public QObject
         void copy();
         void paste();
         void focusChanged(QWidget *old, QWidget *current);
+        void reloadThumbs();
 
     protected:
         virtual void setupViews();

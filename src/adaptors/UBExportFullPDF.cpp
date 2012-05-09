@@ -100,6 +100,7 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 		if (pageIndex != 0) pdfPrinter.newPage();
 
         //render to PDF
+        scene->setDrawingMode(true);
         scene->render(pdfPainter, QRectF(), scene->normalizedSceneRect());
 
         //restore screen rendering quality
@@ -107,6 +108,7 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
         scene->setRenderingQuality(UBItem::RenderingQualityNormal);
 
         //restore background state
+        scene->setDrawingMode(false);
         scene->setBackground(isDark, isCrossed);
     }
 
