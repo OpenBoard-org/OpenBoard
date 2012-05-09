@@ -427,13 +427,11 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
     foreach(int index, compactedIndexes)
     {
-        QString svgFileName = proxy->persistencePath() +
-            UBFileSystemUtils::digitFileFormat("/page%1.svg", index + 1);
+        QString svgFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", index);
 
         QFile::remove(svgFileName);
 
-        QString thumbFileName = proxy->persistencePath() +
-            UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", index + 1);
+        QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", index);
 
         QFile::remove(thumbFileName);
 
@@ -496,9 +494,7 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
     int count = sceneCount(proxy);
 
     for(int i = count - 1; i >= index; i--)
-    {
         renamePage(proxy, i , i + 1);
-    }
 
     mSceneCache.shiftUpScenes(proxy, index, count -1);
 
@@ -548,11 +544,11 @@ void UBPersistenceManager::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
     if (source == target)
         return;
 
-    QFile svgTmp(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", source + 1));
-    svgTmp.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.tmp", target + 1));
+    QFile svgTmp(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", source));
+    svgTmp.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.tmp", target));
 
-    QFile thumbTmp(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", source + 1));
-    thumbTmp.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.tmp", target + 1));
+    QFile thumbTmp(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", source));
+    thumbTmp.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.tmp", target));
 
     if (source < target)
     {
@@ -569,11 +565,11 @@ void UBPersistenceManager::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
         }
     }
 
-    QFile svg(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.tmp", target + 1));
-    svg.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", target + 1));
+    QFile svg(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.tmp", target));
+    svg.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", target));
 
-    QFile thumb(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.tmp", target + 1));
-    thumb.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", target + 1));
+    QFile thumb(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.tmp", target));
+    thumb.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", target));
 
     mSceneCache.moveScene(proxy, source, target);
 
@@ -586,10 +582,14 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
     if (mSceneCache.contains(proxy, sceneIndex))
     {
         //qDebug() << "scene" << sceneIndex << "retrieved from cache ...";
+        //updating teacher guide node
+        //TODO Claudio find a way to store extra information like teacher guid
+        UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
         return mSceneCache.value(proxy, sceneIndex);
     }
     else
     {
+        qDebug() << "scene" << sceneIndex << "retrieved from file ...";
         UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
 
         if (scene)
@@ -641,23 +641,23 @@ UBDocumentProxy* UBPersistenceManager::persistDocumentMetadata(UBDocumentProxy* 
 
 void UBPersistenceManager::renamePage(UBDocumentProxy* pDocumentProxy, const int sourceIndex, const int targetIndex)
 {
-    QFile svg(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sourceIndex + 1));
-    svg.rename(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", targetIndex + 1));
+    QFile svg(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sourceIndex));
+    svg.rename(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",  targetIndex));
 
-    QFile thumb(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", sourceIndex + 1));
-    thumb.rename(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex + 1));
+    QFile thumb(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", sourceIndex));
+    thumb.rename(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex));
 }
 
 
 void UBPersistenceManager::copyPage(UBDocumentProxy* pDocumentProxy, const int sourceIndex, const int targetIndex)
 {
-    QFile svg(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sourceIndex + 1));
-    svg.copy(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", targetIndex + 1));
+    QFile svg(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",sourceIndex));
+    svg.copy(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", targetIndex));
 
     UBSvgSubsetAdaptor::setSceneUuid(pDocumentProxy, targetIndex, QUuid::createUuid());
 
-    QFile thumb(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", sourceIndex + 1));
-    thumb.copy(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex + 1));
+    QFile thumb(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", sourceIndex));
+    thumb.copy(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex));
 }
 
 
@@ -673,7 +673,7 @@ int UBPersistenceManager::sceneCountInDir(const QString& pPath)
 
     while (moreToProcess)
     {
-        QString fileName = pPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
+        QString fileName = pPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
 
         QFile file(fileName);
 
@@ -721,13 +721,13 @@ void UBPersistenceManager::addDirectoryContentToDocument(const QString& document
     {
         int targetIndex = targetPageCount + sourceIndex;
 
-        QFile svg(documentRootFolder + UBFileSystemUtils::digitFileFormat("/page%1.svg", sourceIndex + 1));
-        svg.copy(pDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", targetIndex + 1));
+        QFile svg(documentRootFolder + UBFileSystemUtils::digitFileFormat("/page%1.svg", sourceIndex));
+        svg.copy(pDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", targetIndex));
 
         UBSvgSubsetAdaptor::setSceneUuid(pDocument, targetIndex, QUuid::createUuid());
 
-        QFile thumb(documentRootFolder + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", sourceIndex + 1));
-        thumb.copy(pDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex + 1));
+        QFile thumb(documentRootFolder + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", sourceIndex));
+        thumb.copy(pDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex));
     }
 
     foreach(QString dir, mDocumentSubDirectories)

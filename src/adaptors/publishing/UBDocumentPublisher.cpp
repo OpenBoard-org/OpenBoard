@@ -133,7 +133,7 @@ void UBDocumentPublisher::buildUbwFile()
         // remove all useless files
 
         for (int pageIndex = 0; pageIndex < mPublishingDocument->pageCount(); pageIndex++) {
-            QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
+            QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",pageIndex);
 
             QFile::remove(filename);
         }
@@ -193,7 +193,7 @@ void UBDocumentPublisher::rasterizeScenes()
 
         UBSvgSubsetRasterizer rasterizer(mPublishingDocument, pageIndex);
 
-        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.jpg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
+        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.jpg",pageIndex);
 
         rasterizer.rasterizeToFile(filename);
 
@@ -257,7 +257,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
             }
         }
 
-        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.json", UBApplication::boardController->pageFromSceneIndex(pageIndex));
+        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.json",pageIndex);
 
         QFile jsonFile(filename);
         if (jsonFile.open(QIODevice::WriteOnly | QIODevice::Truncate))

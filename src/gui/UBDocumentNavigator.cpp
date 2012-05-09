@@ -56,6 +56,7 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
     setFrameShadow(QFrame::Plain);
 
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(addNewPage()));
+    connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(generateThumbnails()));
     connect(mScene, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
     connect(UBApplication::boardController, SIGNAL(documentReorganized(int)), this, SLOT(onMovedToIndex(int)));
     connect(UBApplication::boardController, SIGNAL(scrollToSelectedPage()), this, SLOT(onScrollToSelectedPage()));

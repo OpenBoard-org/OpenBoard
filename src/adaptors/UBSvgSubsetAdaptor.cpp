@@ -143,7 +143,7 @@ void UBSvgSubsetAdaptor::upgradeScene(UBDocumentProxy* proxy, const int pageInde
 
 QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(UBDocumentProxy* proxy, const int pPageIndex)
 {
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pPageIndex));
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",pPageIndex);
 
     QFile file(fileName);
     QDomDocument doc("page");
@@ -166,7 +166,7 @@ QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(UBDocumentProxy* proxy, const
 
 void UBSvgSubsetAdaptor::setSceneUuid(UBDocumentProxy* proxy, const int pageIndex, QUuid pUuid)
 {
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",pageIndex);
 
     QFile file(fileName);
 
@@ -234,7 +234,7 @@ QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVer
 
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int pageIndex)
 {
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
 
     QFile file(fileName);
 
@@ -260,7 +260,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int
 QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 {
     QString fileName = proxy->persistencePath() +
-            UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
+            UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
 
     QFile file(fileName);
 
@@ -1213,7 +1213,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         }
 
         mXmlWriter.writeEndDocument();
-        QString fileName = mDocumentPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", UBApplication::boardController->pageFromSceneIndex(mPageIndex));
+        QString fileName = mDocumentPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", mPageIndex);
         QFile file(fileName);
 
         if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))

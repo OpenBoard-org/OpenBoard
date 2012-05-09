@@ -44,7 +44,7 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
 
     int existingPageCount = proxy->pageCount();
 
-    QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", UBApplication::boardController->sceneIndexFromPage(existingPageCount));
+    QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", existingPageCount);
 
     QFile thumbFile(thumbFileName);
 
@@ -139,8 +139,7 @@ QPixmap UBThumbnailAdaptor::load(UBDocumentProxy* proxy, int index)
     }
 
     //end compatibility with older format
-//        QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", index + 1);
-        QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", UBApplication::boardController->pageFromSceneIndex(index));
+        QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", index);
 
         QFile file(fileName);
         if (file.exists())
@@ -159,7 +158,7 @@ QPixmap UBThumbnailAdaptor::load(UBDocumentProxy* proxy, int index)
 
 void UBThumbnailAdaptor::persistScene(const QString& pDocPath, UBGraphicsScene* pScene, int pageIndex, bool overrideModified)
 {
-    QString fileName = pDocPath + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
+    QString fileName = pDocPath + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
     QFile thumbFile(fileName);
 
@@ -205,7 +204,7 @@ void UBThumbnailAdaptor::persistScene(const QString& pDocPath, UBGraphicsScene* 
 
 QUrl UBThumbnailAdaptor::thumbnailUrl(UBDocumentProxy* proxy, int pageIndex)
 {
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", UBApplication::boardController->pageFromSceneIndex(pageIndex));
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
     return QUrl::fromLocalFile(fileName);
 }

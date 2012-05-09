@@ -162,6 +162,7 @@ void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurr
         mDocumentUI->documentTreeWidget->scrollToItem(selected);
 
         mDocumentThumbs = UBThumbnailAdaptor::load(selectedDocumentProxy());
+        qDebug() << mDocumentThumbs.size();
         refreshDocumentThumbnailsView();
 
         mSelectionType = Document;
@@ -1635,7 +1636,7 @@ int UBDocumentController::getSelectedItemIndex()
 
     if (selectedItems.count() > 0)
     {
-        UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (selectedItems.last()); 
+        UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (selectedItems.last());
         return thumb->sceneIndex();
     }
     else return -1;

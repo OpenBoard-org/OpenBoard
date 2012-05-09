@@ -18,6 +18,8 @@
 #include "UBThumbnailWidget.h"
 #include "UBRubberBand.h"
 
+#include "board/UBBoardController.h"
+
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
 
@@ -354,7 +356,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
         // for vertical moving
 
-        QSet<QGraphicsItem*> incSelectedItemsY = scene()->items(incrementYSelection, Qt::IntersectsItemBoundingRect).toSet();  
+        QSet<QGraphicsItem*> incSelectedItemsY = scene()->items(incrementYSelection, Qt::IntersectsItemBoundingRect).toSet();
         foreach (QGraphicsItem *lassoSelectedItem, incSelectedItemsY)
         {
             if (lassoSelectedItem)
@@ -389,7 +391,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         {
             item->setSelected(false);
         }
-        
+
         mSelectedThumbnailItems += lassoSelectedThumbnailItems;
         mPrevLassoRect = lassoRect;
 
@@ -749,8 +751,10 @@ UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBD
     , bCanMoveUp(false)
     , bCanMoveDown(false)
 {
-    setAcceptsHoverEvents(true);
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    if(UBApplication::boardController->pageFromSceneIndex(pSceneIndex)){
+        setAcceptsHoverEvents(true);
+        setFlag(QGraphicsItem::ItemIsSelectable, true);
+    }
 }
 
 UBSceneThumbnailNavigPixmap::~UBSceneThumbnailNavigPixmap()
@@ -822,7 +826,7 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
     bCanMoveDown = false;
 
     UBDocumentProxy* p = proxy();
-    if(NULL != p)
+    if(NULL != p && UBApplication::boardController->pageFromSceneIndex(sceneIndex()))
     {
         int iNbPages = p->pageCount();
         if(1 < iNbPages)
@@ -838,6 +842,8 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
             }
         }
     }
+    if(UBSettings::settings()->teacherGuidePageZeroActivated and sceneIndex()<=1)
+        bCanMoveUp = false;
 
     if(bCanDelete || bCanMoveUp || bCanMoveDown)
     {
@@ -855,7 +861,6 @@ void UBSceneThumbnailNavigPixmap::deletePage()
 
 void UBSceneThumbnailNavigPixmap::moveUpPage()
 {
-
     UBApplication::documentController->moveSceneToIndex(proxy(), sceneIndex(), sceneIndex() - 1);
 }
 

@@ -155,8 +155,6 @@ UBTeacherGuideEditionWidget::~UBTeacherGuideEditionWidget()
 
 void UBTeacherGuideEditionWidget::showEvent(QShowEvent* event)
 {
-//    mpPageTitle->setFocus();
-//    mpComment->setFocus();
     setFocus();
     QWidget::showEvent(event);
 }
@@ -240,7 +238,6 @@ void UBTeacherGuideEditionWidget::onActiveSceneChanged()
     int currentPage = UBApplication::boardController->currentPage();
     if(currentPage > 0){
         cleanData();
-        qDebug() << "active scene changed current page " << currentPage << " " << UBSvgSubsetAdaptor::sTeacherGuideNode;
         load(UBSvgSubsetAdaptor::sTeacherGuideNode);
         mpPageNumberLabel->setText(tr("Page: %0").arg(currentPage));
         UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
