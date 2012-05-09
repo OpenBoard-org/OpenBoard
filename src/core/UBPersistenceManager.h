@@ -157,6 +157,8 @@ class UBPersistenceManager : public QObject
 
         QString mDocumentRepositoryPath;
 
+        QHash<int,QString>teacherBarNodeString;
+
     private slots:
         void documentRepositoryChanged(const QString& path);
 

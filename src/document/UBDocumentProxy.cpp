@@ -209,8 +209,6 @@ void UBDocumentProxy::setUuid(const QUuid& uuid)
 
 QDateTime UBDocumentProxy::documentDate()
 {
-    qDebug()<< UBSettings::documentDate;
-    qDebug()<<mMetaDatas;
     if(mMetaDatas.contains(UBSettings::documentDate))
         return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentDate).toString());
     return QDateTime::currentDateTime();

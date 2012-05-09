@@ -72,16 +72,6 @@ const QString UBSvgSubsetAdaptor::sFontStylePrefix = "font-style:";
 const QString UBSvgSubsetAdaptor::sFormerUniboardDocumentNamespaceUri = "http://www.mnemis.com/uniboard";
 QMap<QString,IDataStorage*> UBSvgSubsetAdaptor::additionalElementToStore;
 
-// Why using such a string?
-// Media file path are relative to the current document. So if we are reading the
-// first page of a document the document path has not been updated.
-// Concatenate relative media path with the old document path leads to mess
-// This string is so used only for activeDocumentChanged signal
-QString UBSvgSubsetAdaptor::sTeacherGuideNode = "";
-
-
-
-
 QString UBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
 {
     return QString("matrix(%1, %2, %3, %4, %5, %6)")
@@ -259,8 +249,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int
 
 QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 {
-    QString fileName = proxy->persistencePath() +
-            UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
 
     QFile file(fileName);
 
@@ -312,6 +301,53 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QBy
 }
 
 
+QString UBSvgSubsetAdaptor::readTeacherGuideNode(int sceneIndex)
+{
+    QString result;
+
+    QString fileName = UBApplication::boardController->activeDocument()->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sceneIndex);
+    QFile file(fileName);
+    file.open(QIODevice::ReadOnly);
+    QByteArray fileByteArray=file.readAll();
+    file.close();
+    QXmlStreamReader mXmlReader(fileByteArray);
+
+    while (!mXmlReader.atEnd())
+    {
+        mXmlReader.readNext();
+        if (mXmlReader.isStartElement())
+        {
+             if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
+                result.clear();
+                result += "<teacherGuide version=\"" + mXmlReader.attributes().value("version").toString() + "\">";
+                result += "\n";
+            }
+            else if (mXmlReader.name() == "media" || mXmlReader.name() == "link" || mXmlReader.name() == "title" || mXmlReader.name() == "comment" || mXmlReader.name() == "action")
+            {
+                result += "<" + mXmlReader.name().toString() + " ";
+                foreach(QXmlStreamAttribute attribute, mXmlReader.attributes())
+                    result += attribute.name().toString() + "=\"" + attribute.value().toString() + "\" ";
+                result += " />\n";
+            }
+            else
+            {
+                // NOOP
+            }
+        }
+        else if (mXmlReader.isEndElement() && (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide")){
+            result += "</teacherGuide>";
+        }
+    }
+
+    if (mXmlReader.hasError())
+    {
+        qWarning() << "error parsing Sankore file " << mXmlReader.errorString();
+    }
+
+    return result;
+}
+
+
 UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy, const QByteArray& pXmlData)
         : mXmlReader(pXmlData)
         , mProxy(pProxy)
@@ -332,8 +368,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
     UBGraphicsStroke* annotationGroup = 0;
     UBGraphicsStrokesGroup* strokesGroup = 0;
     UBDrawingController* dc = UBDrawingController::drawingController();
-
-    sTeacherGuideNode = "";
 
 
     while (!mXmlReader.atEnd())
@@ -851,18 +885,18 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 currentWidget->setDatastoreEntry(key, value);
             }
-            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
-                sTeacherGuideNode.clear();
-                sTeacherGuideNode += "<teacherGuide version=\"" + mXmlReader.attributes().value("version").toString() + "\">";
-                sTeacherGuideNode += "\n";
-            }
-            else if (mXmlReader.name() == "media" || mXmlReader.name() == "link" || mXmlReader.name() == "title" || mXmlReader.name() == "comment" || mXmlReader.name() == "action")
-            {
-                sTeacherGuideNode += "<" + mXmlReader.name().toString() + " ";
-                foreach(QXmlStreamAttribute attribute, mXmlReader.attributes())
-                    sTeacherGuideNode += attribute.name().toString() + "=\"" + attribute.value().toString() + "\" ";
-                sTeacherGuideNode += " />\n";
-            }
+//            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
+//                sTeacherGuideNode.clear();
+//                sTeacherGuideNode += "<teacherGuide version=\"" + mXmlReader.attributes().value("version").toString() + "\">";
+//                sTeacherGuideNode += "\n";
+//            }
+//            else if (mXmlReader.name() == "media" || mXmlReader.name() == "link" || mXmlReader.name() == "title" || mXmlReader.name() == "comment" || mXmlReader.name() == "action")
+//            {
+//                sTeacherGuideNode += "<" + mXmlReader.name().toString() + " ";
+//                foreach(QXmlStreamAttribute attribute, mXmlReader.attributes())
+//                    sTeacherGuideNode += attribute.name().toString() + "=\"" + attribute.value().toString() + "\" ";
+//                sTeacherGuideNode += " />\n";
+//            }
             else
             {
                 // NOOP
@@ -886,14 +920,15 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
             }
-            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
-                sTeacherGuideNode += "</teacherGuide>";
-                QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
-                IDataStorage* storageClass = elements.value("teacherGuide");
-                if(storageClass){
-                     storageClass->load(sTeacherGuideNode);
-                }
-            }
+//            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
+//                sTeacherGuideNode += "</teacherGuide>";
+//                qDebug() << sTeacherGuideNode;
+//                QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
+//                IDataStorage* storageClass = elements.value("teacherGuide");
+//                if(storageClass){
+//                     storageClass->load(sTeacherGuideNode);
+//                }
+//            }
         }
     }
 
@@ -969,7 +1004,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
-    sTeacherGuideNode = "";
     if (mScene->isModified())
     {
         QBuffer buffer;

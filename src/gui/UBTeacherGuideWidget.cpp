@@ -161,7 +161,9 @@ void UBTeacherGuideEditionWidget::showEvent(QShowEvent* event)
 
 void UBTeacherGuideEditionWidget::onActiveDocumentChanged()
 {
-    load(UBSvgSubsetAdaptor::sTeacherGuideNode);
+    int activeSceneIndex = UBApplication::boardController->activeSceneIndex();
+    if(UBApplication::boardController->pageFromSceneIndex(activeSceneIndex) != 0)
+        load(UBSvgSubsetAdaptor::readTeacherGuideNode(activeSceneIndex));
 }
 
 void UBTeacherGuideEditionWidget::load(QString element)
@@ -238,7 +240,7 @@ void UBTeacherGuideEditionWidget::onActiveSceneChanged()
     int currentPage = UBApplication::boardController->currentPage();
     if(currentPage > 0){
         cleanData();
-        load(UBSvgSubsetAdaptor::sTeacherGuideNode);
+        load(UBSvgSubsetAdaptor::readTeacherGuideNode(UBApplication::boardController->activeSceneIndex()));
         mpPageNumberLabel->setText(tr("Page: %0").arg(currentPage));
         UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
         if(mpDocumentTitle)

@@ -580,15 +580,8 @@ void UBPersistenceManager::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
 UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy, int sceneIndex)
 {
     if (mSceneCache.contains(proxy, sceneIndex))
-    {
-        //qDebug() << "scene" << sceneIndex << "retrieved from cache ...";
-        //updating teacher guide node
-        //TODO Claudio find a way to store extra information like teacher guid
-        UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
         return mSceneCache.value(proxy, sceneIndex);
-    }
-    else
-    {
+    else {
         qDebug() << "scene" << sceneIndex << "retrieved from file ...";
         UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
 

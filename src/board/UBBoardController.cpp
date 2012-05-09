@@ -62,6 +62,7 @@
 #include "podcast/UBPodcastController.h"
 
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
+#include "adaptors/UBSvgSubsetAdaptor.h"
 
 #include "UBBoardPaletteManager.h"
 
