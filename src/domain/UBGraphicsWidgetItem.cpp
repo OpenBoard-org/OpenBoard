@@ -93,7 +93,6 @@ void UBGraphicsWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 }
 void UBGraphicsWidgetItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
-    qDebug() << "hover move catched";
     UBGraphicsProxyWidget::hoverMoveEvent(event);
 }
 

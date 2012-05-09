@@ -383,9 +383,9 @@ void UBGraphicsScene::processGroupItems()
 
     foreach (QGraphicsItem *item, selectedItems()) {
         item->setSelected(false);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+        item->setFlag(QGraphicsItem::ItemIsSelectable, true);
         item->setFlag( QGraphicsItem::ItemIsMovable, false);
-        item->setFlag(QGraphicsItem::ItemIsFocusable);
+        item->setFlag(QGraphicsItem::ItemIsFocusable, true);
         groupItem->addToGroup(item);
     }
 

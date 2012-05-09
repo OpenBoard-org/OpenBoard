@@ -121,10 +121,7 @@ class UBGraphicsItemDelegate : public QObject
 
         void printMessage(const QString &mess) {qDebug() << mess;}
 
-        QGraphicsItem* delegated()
-        {
-            return mDelegated;
-        }
+        QGraphicsItem* delegated();
 
         void setCanDuplicate(bool allow){ mCanDuplicate = allow; }
 

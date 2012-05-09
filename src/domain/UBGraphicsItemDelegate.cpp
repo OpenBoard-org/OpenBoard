@@ -40,6 +40,7 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsAudioItem.h"
 #include "domain/UBGraphicsVideoItem.h"
+#include "domain/ubgraphicsgroupcontaineritem.h"
 
 #include "web/UBWebController.h"
 
@@ -217,10 +218,9 @@ bool UBGraphicsItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     startUndoStep();
 
-    if (!mDelegated->isSelected())
+    if (!delegated()->isSelected())
     {
-        mDelegated->setSelected(true);
-        positionHandles();
+        delegated()->setSelected(true);
         return true;
     }
     else
@@ -262,7 +262,7 @@ bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
 {
     Q_UNUSED(event);
-    if( mDelegated->isSelected() )
+    if( delegated()->isSelected() )
     {
 //        event->accept();
         return true;
@@ -308,6 +308,18 @@ void UBGraphicsItemDelegate::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 //    if (!mDelegated->isSelected()) {
 //        setZOrderButtonsVisible(false);
 //    }
+}
+
+QGraphicsItem *UBGraphicsItemDelegate::delegated()
+{
+    QGraphicsItem *curDelegate = 0;
+    if (mDelegated->parentItem() && mDelegated->parentItem()->type() == UBGraphicsGroupContainerItem::Type) {
+        curDelegate = mDelegated->parentItem(); // considering delegated item as an item's group which contains everything
+    } else {
+        curDelegate = mDelegated;
+    }
+
+    return curDelegate;
 }
 
 void UBGraphicsItemDelegate::positionHandles()
@@ -363,7 +375,7 @@ void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
 //    QGraphicsScene* scene = mDelegated->scene();
-    UBGraphicsScene* scene = (UBGraphicsScene*)(mDelegated->scene());
+    UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
     if (scene)
     {
         foreach(DelegateButton* button, mButtons)
