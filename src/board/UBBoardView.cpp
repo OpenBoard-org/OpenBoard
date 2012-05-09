@@ -50,6 +50,7 @@
 #include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsAudioItem.h"
 #include "domain/UBGraphicsSvgItem.h"
+#include "domain/UBGraphicsStrokesGroup.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -563,7 +564,8 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
                       || item->type() == UBGraphicsPixmapItem::Type
                       || item->type() == UBGraphicsVideoItem::Type
                       || item->type() == UBGraphicsAudioItem::Type
-                      || item->type() == UBGraphicsSvgItem::Type) {
+                      || item->type() == UBGraphicsSvgItem::Type
+                      || item->type() == UBGraphicsStrokesGroup::Type) {
 
                   if (!mJustSelectedItems.contains(item)) {
                       item->setSelected(true);
