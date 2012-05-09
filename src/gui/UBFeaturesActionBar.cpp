@@ -66,8 +66,8 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mButtonGroup->addButton(mpRemoveFavoriteBtn);
     mButtonGroup->addButton(mpNewFolderBtn);
     // Connect signals & slots
-    /*connect(mpFavoriteAction,SIGNAL(triggered()), this, SLOT(onActionFavorite()));
-    connect(mpSocialAction,SIGNAL(triggered()), this, SLOT(onActionSocial()));
+    connect(mpFavoriteAction,SIGNAL(triggered()), this, SLOT(onActionFavorite()));
+    /*connect(mpSocialAction,SIGNAL(triggered()), this, SLOT(onActionSocial()));
     connect(mpSearchAction,SIGNAL(triggered()), this, SLOT(onActionSearch()));
     connect(mpDeleteAction,SIGNAL(triggered()), this, SLOT(onActionTrash()));
     connect(mpCloseAction, SIGNAL(triggered()), this, SLOT(onActionClose()));
@@ -168,6 +168,11 @@ void UBFeaturesActionBar::onSearchTextChanged(QString txt)
 void UBFeaturesActionBar::onActionNewFolder()
 {
     emit newFolderToCreate();
+}
+
+void UBFeaturesActionBar::onActionFavorite()
+{
+    emit addElementsToFavorite();
 }
 
 /*

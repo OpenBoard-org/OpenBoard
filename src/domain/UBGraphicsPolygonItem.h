@@ -19,6 +19,7 @@
 
 #include "core/UB.h"
 #include "UBItem.h"
+#include "UBGraphicsStrokesGroup.h"
 
 class UBItem;
 class UBGraphicsScene;
@@ -37,6 +38,8 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
         void initialize();
 
+        void setStrokesGroup(UBGraphicsStrokesGroup* group);
+        UBGraphicsStrokesGroup* strokesGroup() const{return mpGroup;}
         void setColor(const QColor& color);
 
         QColor color() const;
@@ -132,6 +135,7 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
         QColor mColorOnLightBackground;
 
         UBGraphicsStroke* mStroke;
+        UBGraphicsStrokesGroup* mpGroup;
 
 };
 

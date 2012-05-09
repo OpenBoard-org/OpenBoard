@@ -619,7 +619,7 @@ bool UBGraphicsScene::inputDeviceRelease()
             }
         }else if (mCurrentStroke)
         {
-            if(eDrawingMode_Vector == dc->drawingMode()){
+            if(eDrawingMode_Vector == DRAWING_MODE){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
@@ -627,6 +627,7 @@ bool UBGraphicsScene::inputDeviceRelease()
                     mPreviousPolygonItems.removeAll(poly);
                     removeItem(poly);
                     UBCoreGraphicsScene::removeItemFromDeletion(poly);
+                    poly->setStrokesGroup(pStrokes);
                     pStrokes->addToGroup(poly);
                 }
 
@@ -808,114 +809,169 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
     eraserPathVar.addPolygon(eraserPolygon);
     const QPainterPath eraserPath = eraserPathVar;
 
+    // Get all the items that are intersecting with the eraser path
     QList<QGraphicsItem*> collidItems = items(eraserBoundingRect, Qt::IntersectsItemBoundingRect);
 
-    QSet<QGraphicsItem*> toBeAddedItems;
-    QSet<QGraphicsItem*> toBeRemovedItems;
+    if(eDrawingMode_Vector == UBDrawingController::drawingController()->drawingMode()){
+        // NOTE: I decided to reuse the 'artistic' eraser all the time in order to have a better eraser
+        //       For this reason, the following code is not used but we will keep it for now, in case of
+        //       futur requirements.
+        foreach(QGraphicsItem* poly, collidItems){
+            UBGraphicsStrokesGroup* pGroup = dynamic_cast<UBGraphicsStrokesGroup*>(poly);
+            if(NULL != pGroup){
+                // TODO:    Ungroup the item, put back the polygons on the scene, deal with the
+                //          eraser's bounding rect, remove the polygons that must be removed
+                //          then create new groups.
 
-    int collidItemsSize = collidItems.size();
-
-    toBeAddedItems.reserve(collidItemsSize);
-    toBeRemovedItems.reserve(collidItemsSize);
-
-    if (mShouldUseOMP)
-    {
-#pragma omp parallel for
-        for (int i = 0; i < collidItemsSize; i++)
-        {
-            UBGraphicsPolygonItem *collidingPolygonItem
-                = qgraphicsitem_cast<UBGraphicsPolygonItem*> (collidItems.at(i));
-
-            if (collidingPolygonItem)
-            {
-                if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
-                {
-#pragma omp critical
-                    toBeRemovedItems << collidingPolygonItem;
-                }
-                else
-                {
-                    QPolygonF collidingPolygon = collidingPolygonItem->polygon();
-                    QPainterPath collidingPath;
-                    collidingPath.addPolygon(collidingPolygon);
-
-                    QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
-                    QPainterPath croppedPathSimplified = croppedPath.simplified();
-
-                    if (croppedPath == collidingPath)
-                    {
-                        // NOOP
-                    }
-                    else if (croppedPathSimplified.isEmpty())
-                    {
-#pragma omp critical
-                        toBeRemovedItems << collidingPolygonItem;
-                    }
-                    else
-                    {
-                        foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
-                        {
-                            UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
-#pragma omp critical
-                            toBeAddedItems << croppedPolygonItem;
+                // Get all substrokes and verify if they are part of the eraserpath then deal with it
+                foreach(QGraphicsItem* item, poly->childItems()){
+                    UBGraphicsPolygonItem* polygon = dynamic_cast<UBGraphicsPolygonItem*>(item);
+                    if(NULL != polygon){
+                        if(eraserBoundingRect.intersects(polygon->boundingRect())){
+                            pGroup->removeFromGroup(polygon);
+                            removeItem(polygon);
                         }
-#pragma omp critical
-                        toBeRemovedItems << collidingPolygonItem;
                     }
                 }
             }
         }
-    }
-    else
-    {
-        for (int i = 0; i < collidItemsSize; i++)
+
+    }else{
+        QSet<QGraphicsItem*> toBeAddedItems;
+        QSet<QGraphicsItem*> toBeRemovedItems;
+        int collidItemsSize = collidItems.size();
+        toBeAddedItems.reserve(collidItemsSize);
+        toBeRemovedItems.reserve(collidItemsSize);
+
+        if (mShouldUseOMP)
         {
-            UBGraphicsPolygonItem *collidingPolygonItem
-                = qgraphicsitem_cast<UBGraphicsPolygonItem*> (collidItems.at(i));
-
-            if (collidingPolygonItem)
+    #pragma omp parallel for
+            for (int i = 0; i < collidItemsSize; i++)
             {
-                if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
-                {
-                    toBeRemovedItems << collidingPolygonItem;
-                }
-                else
-                {
-                    QPolygonF collidingPolygon = collidingPolygonItem->polygon();
-                    QPainterPath collidingPath;
-                    collidingPath.addPolygon(collidingPolygon);
+                UBGraphicsPolygonItem *collidingPolygonItem = dynamic_cast<UBGraphicsPolygonItem*>(collidItems.at(i));
 
-                    QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
-                    QPainterPath croppedPathSimplified = croppedPath.simplified();
+                if (NULL != collidingPolygonItem)
+                {
+                    UBGraphicsStrokesGroup* pGroup = collidingPolygonItem->strokesGroup();
 
-                    if (croppedPath == collidingPath)
+                    if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
                     {
-                        // NOOP
+    #pragma omp critical
+                        // Put the entire polygon into the remove list
+                        toBeRemovedItems << collidingPolygonItem;
                     }
-                    else if (croppedPathSimplified.isEmpty())
+                    else
+                    {
+                        // Here we get the polygon of the colliding item
+                        QPolygonF collidingPolygon = collidingPolygonItem->polygon();
+                        QPainterPath collidingPath;
+                        collidingPath.addPolygon(collidingPolygon);
+
+                        // Then we substract the eraser path to the polygon and we simplify it
+                        QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
+                        QPainterPath croppedPathSimplified = croppedPath.simplified();
+
+                        if (croppedPath == collidingPath)
+                        {
+                            // NOOP
+                        }
+                        else if (croppedPathSimplified.isEmpty())
+                        {
+    #pragma omp critical
+                            // Put the entire polygon into the remove list if the eraser removes all its visible content
+                            toBeRemovedItems << collidingPolygonItem;
+                        }
+                        else
+                        {
+                            // Then we convert the remaining path to a list of polygons that will be converted in
+                            // UBGraphicsPolygonItems and added to the scene
+                            foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
+                            {
+                                UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
+    #pragma omp critical
+                                // Add this new polygon to the 'added' list
+                                toBeAddedItems << croppedPolygonItem;
+                                if(NULL != pGroup){
+                                    croppedPolygonItem->setStrokesGroup(pGroup);
+                                }
+                            }
+    #pragma omp critical
+                            // Remove the original polygonitem because it has been replaced by many smaller polygons
+                            toBeRemovedItems << collidingPolygonItem;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < collidItemsSize; i++)
+            {
+                UBGraphicsPolygonItem *collidingPolygonItem
+                    = qgraphicsitem_cast<UBGraphicsPolygonItem*> (collidItems.at(i));
+
+                if (collidingPolygonItem)
+                {
+                    if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
                     {
                         toBeRemovedItems << collidingPolygonItem;
                     }
                     else
                     {
-                        foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
-                        {
-                            UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
-                            toBeAddedItems << croppedPolygonItem;
-                        }
+                        QPolygonF collidingPolygon = collidingPolygonItem->polygon();
+                        QPainterPath collidingPath;
+                        collidingPath.addPolygon(collidingPolygon);
 
-                        toBeRemovedItems << collidingPolygonItem;
+                        QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
+                        QPainterPath croppedPathSimplified = croppedPath.simplified();
+
+                        if (croppedPath == collidingPath)
+                        {
+                            // NOOP
+                        }
+                        else if (croppedPathSimplified.isEmpty())
+                        {
+                            toBeRemovedItems << collidingPolygonItem;
+                        }
+                        else
+                        {
+                            foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
+                            {
+                                UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
+                                toBeAddedItems << croppedPolygonItem;
+                            }
+
+                            toBeRemovedItems << collidingPolygonItem;
+                        }
                     }
                 }
             }
         }
+
+        addItems(toBeAddedItems);
+        mAddedItems += toBeAddedItems;
+
+        if(eDrawingMode_Vector == DRAWING_MODE){
+            foreach(QGraphicsItem* item, toBeAddedItems){
+                UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
+                if(NULL != poly && NULL != poly->strokesGroup()){
+                    poly->strokesGroup()->addToGroup(poly);
+                }
+            }
+        }
+
+        removeItems(toBeRemovedItems);
+        mRemovedItems += toBeRemovedItems;
+
+        if(eDrawingMode_Vector == DRAWING_MODE){
+            foreach(QGraphicsItem* item, toBeRemovedItems){
+                UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
+                if(NULL != poly && NULL != poly->strokesGroup()){
+                    poly->strokesGroup()->removeFromGroup(poly);
+                }
+            }
+        }
     }
-
-    addItems(toBeAddedItems);
-    mAddedItems += toBeAddedItems;
-
-    removeItems(toBeRemovedItems);
-    mRemovedItems += toBeRemovedItems;
 
     mPreviousPoint = pEndPoint;
 }

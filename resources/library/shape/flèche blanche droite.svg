@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 13.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="119.268px"
+   height="96.873px"
+   viewBox="0 0 119.268 96.873"
+   enable-background="new 0 0 119.268 96.873"
+   xml:space="preserve"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="red_arrow_right.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"><metadata
+   id="metadata4600"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+   id="defs4598"><inkscape:perspective
+   sodipodi:type="inkscape:persp3d"
+   inkscape:vp_x="0 : 48.436501 : 1"
+   inkscape:vp_y="0 : 1000 : 0"
+   inkscape:vp_z="119.268 : 48.436501 : 1"
+   inkscape:persp3d-origin="59.633999 : 32.291 : 1"
+   id="perspective4602" />
+	
+	
+<linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_2_"
+   id="linearGradient4611"
+   gradientUnits="userSpaceOnUse"
+   x1="2.8101001"
+   y1="47.8018"
+   x2="113.3979"
+   y2="47.8018" />
+		<linearGradient
+   id="SVGID_2_"
+   gradientUnits="userSpaceOnUse"
+   x1="2.8101001"
+   y1="47.8018"
+   x2="113.3979"
+   y2="47.8018">
+	<stop
+   offset="0"
+   style="stop-color:#FFFFFF"
+   id="stop4593" />
+		</linearGradient>
+		
+	<linearGradient
+   inkscape:collect="always"
+   xlink:href="#SVGID_2_"
+   id="linearGradient4616"
+   gradientUnits="userSpaceOnUse"
+   x1="2.8101001"
+   y1="47.8018"
+   x2="113.3979"
+   y2="47.8018" />
+		
+		
+	</defs><sodipodi:namedview
+   inkscape:window-height="669"
+   inkscape:window-width="640"
+   inkscape:pageshadow="2"
+   inkscape:pageopacity="0.0"
+   guidetolerance="10.0"
+   gridtolerance="10.0"
+   objecttolerance="10.0"
+   borderopacity="1.0"
+   bordercolor="#666666"
+   pagecolor="#ffffff"
+   id="base"
+   showgrid="false"
+   inkscape:zoom="4.745615"
+   inkscape:cx="59.633999"
+   inkscape:cy="48.436501"
+   inkscape:window-x="184"
+   inkscape:window-y="184"
+   inkscape:current-layer="Layer_1" />
+
+<g
+   id="g4620">
+
+     
+     <path
+     style="opacity:0.25;fill-rule:evenodd"
+     id="path4586"
+     d="M 65.069,64.885 L 8.831,64.885 C 7.593,64.885 6.505,63.797 6.505,62.559 L 6.505,37.307 C 6.505,36.07 7.593,34.982 8.831,34.982 L 65.069,34.982 L 65.069,8.834 C 65.069,6.341 67.057,5.443 68.93,7.086 L 116.27,48.685 C 117.368,49.65 117.368,51.214 116.27,52.179 L 68.93,93.776 C 67.057,95.422 65.069,94.521 65.069,92.031 L 65.069,64.885 z"
+     clip-rule="evenodd" /><path
+     style="fill:url(#linearGradient4616);fill-rule:evenodd;stroke:#000000"
+     id="path4595"
+     d="M 61.375,62.255 L 5.136,62.255 C 3.898,62.255 2.81,61.167 2.81,59.929 L 2.81,34.677 C 2.81,33.44 3.898,32.352 5.136,32.352 L 61.375,32.352 L 61.375,6.204 C 61.375,3.711 63.363,2.813 65.235,4.456 L 112.575,46.055 C 113.673,47.02 113.673,48.584 112.575,49.549 L 65.235,91.147 C 63.363,92.793 61.375,91.892 61.375,89.402 L 61.375,62.255 z"
+     clip-rule="evenodd" /></g>
+</svg>

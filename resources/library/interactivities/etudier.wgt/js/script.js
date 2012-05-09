@@ -472,7 +472,6 @@ function onDropTarget(obj, event) {
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
-        tmp = tmp.substr(1, tmp.length); 
         if(tmp_type.substr(0, 5) == "audio"){                              
             var audio_block = $("<div class='audio_block'>").draggable().appendTo($(obj));
             audio_block.css("position","absolute").css("top",event.clientY).css("left",event.clientX);

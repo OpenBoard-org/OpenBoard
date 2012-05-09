@@ -534,7 +534,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
             }
         }
     }
-
+    qDebug() << destFileName;
     QString mimeText = createMimeText(downloaded, contentType, destFileName);
     dropMimeData.setData(tMimeText, mimeText.toAscii());
 
@@ -623,7 +623,7 @@ QString UBWidgetUniboardAPI::createMimeText(bool downloaded, const QString &mime
         }
 
         QString relatedFileName = fileName;
-        relatedFileName = relatedFileName.remove(mGraphicsWidget->getOwnFolder().toLocalFile());
+        relatedFileName = relatedFileName.remove(mGraphicsWidget->getOwnFolder().toLocalFile() + "/");
         writer.writeTextElement(tPath, relatedFileName);   //writing path to created object
     }
 
