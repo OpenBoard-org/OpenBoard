@@ -40,6 +40,8 @@
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
 
+#include "core/memcheck.h"
+
 #define UBTG_SEPARATOR_FIXED_HEIGHT 3
 
 

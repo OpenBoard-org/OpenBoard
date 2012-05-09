@@ -24,8 +24,9 @@
 #include "domain/UBGraphicsDelegateFrame.h"
 #include "core/UBSettings.h"
 
-#include "core/memcheck.h"
 #include "board/UBBoardController.h"
+
+#include "core/memcheck.h"
 
 const int UBGraphicsTextItemDelegate::sMinPixelSize = 8;
 const int UBGraphicsTextItemDelegate::sMinPointSize = 8;
@@ -94,17 +95,21 @@ void UBGraphicsTextItemDelegate::buildButtons()
 {
     UBGraphicsItemDelegate::buildButtons();
 
-    mFontButton = new DelegateButton(":/images/font.svg", mDelegated, mFrame, Qt::TopLeftSection);
-    mColorButton = new DelegateButton(":/images/color.svg", mDelegated, mFrame, Qt::TopLeftSection);
-    mDecreaseSizeButton = new DelegateButton(":/images/minus.svg", mDelegated, mFrame, Qt::TopLeftSection);
-    mIncreaseSizeButton = new DelegateButton(":/images/plus.svg", mDelegated, mFrame, Qt::TopLeftSection);
+    mFontButton = new DelegateButton(":/images/font.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+    mColorButton = new DelegateButton(":/images/color.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+    mDecreaseSizeButton = new DelegateButton(":/images/minus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+    mIncreaseSizeButton = new DelegateButton(":/images/plus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
 
     connect(mFontButton, SIGNAL(clicked(bool)), this, SLOT(pickFont()));
     connect(mColorButton, SIGNAL(clicked(bool)), this, SLOT(pickColor()));
     connect(mDecreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(decreaseSize()));
     connect(mIncreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(increaseSize()));
 
-    mButtons << mFontButton << mColorButton << mDecreaseSizeButton << mIncreaseSizeButton;
+    QList<QGraphicsItem*> itemsOnToolBar;
+    itemsOnToolBar << mFontButton << mColorButton << mDecreaseSizeButton << mIncreaseSizeButton;
+    mToolBarItem->setItemsOnToolBar(itemsOnToolBar);
+
+    mToolBarItem->setVisibleOnBoard(true);
 }
 
 void UBGraphicsTextItemDelegate::contentsChanged()

@@ -52,6 +52,8 @@ static QString tIwb             = "iwb";
 static QString tMeta            = "meta";
 static QString tPage            = "page";
 static QString tPageset         = "pageset";
+static QString tG               = "g";
+static QString tSwitch          = "switch";
 static QString tPolygon         = "polygon";
 static QString tPolyline        = "polyline";
 static QString tRect            = "rect";
@@ -62,7 +64,7 @@ static QString tTspan           = "tspan";
 static QString tBreak           = "tbreak";
 static QString tImage           = "image";
 static QString tFlash           = "flash";
-static QString tAudio           = "audio";
+static QString tAudio           = "a";
 static QString tVideo           = "video";
 
 //attribute names definition
@@ -161,6 +163,31 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parse()
 
     return result;
 }
+
+bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseGSection(const QDomElement &element)
+{
+    QDomElement currentSvgElement = element.firstChildElement();
+    while (!currentSvgElement.isNull()) {
+        if (!parseSvgElement(currentSvgElement))
+            return false;
+
+        currentSvgElement = currentSvgElement.nextSiblingElement();
+    }
+
+    return true;
+}
+bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgSwitchSection(const QDomElement &element)
+{
+
+    QDomElement currentSvgElement = element.firstChildElement();
+    while (!currentSvgElement.isNull()) {
+        if (parseSvgElement(currentSvgElement))
+            return true;
+    }
+
+    return false;
+}
+
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &element)
 {
     qreal x1 = element.attribute(aX).toDouble();
@@ -175,7 +202,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
 
     QColor fillColor = !textFillColor.isNull() ? colorFromString(textFillColor) : QColor();
     QColor strokeColor = !textStrokeColor.isNull() ? colorFromString(textStrokeColor) : QColor();
-    int strokeWidth = !textStrokeWidth.isNull() ? textStrokeWidth.toInt() : 0;
+    int strokeWidth = textStrokeWidth.toInt();
+
+    x1 -= strokeWidth/2;
+    y1 -= strokeWidth/2;
+    width += strokeWidth;
+    height += strokeWidth;
 
     //init svg generator with temp file
     QSvgGenerator *generator = createSvgGenerator(width, height);
@@ -204,13 +236,13 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
-    bool hastransform = false;
+
+    svgItem->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform);
-        hastransform = true;
+        transform = transformFromString(textTransform, svgItem);
     }
 
-    repositionSvgItem(svgItem, width, height, x1, y1, hastransform, transform);
+    repositionSvgItem(svgItem, width, height, x1, y1, transform);
     hashSceneItem(element, svgItem);
 
     delete generator;
@@ -249,13 +281,14 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgEllipse(const QDomElement &e
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
-    bool hastransform = false;
+
+    svgItem->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform);
-        hastransform = true;
+        transform = transformFromString(textTransform, svgItem);
     }
 
-    repositionSvgItem(svgItem, rx * 2, ry * 2, cx - rx , cy - ry, hastransform, transform);
+
+    repositionSvgItem(svgItem, rx * 2, ry * 2, cx - 2*rx, cy+ry, transform);
     hashSceneItem(element, svgItem);
 
     delete generator;
@@ -306,7 +339,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
 
     QColor strokeColor = !strokeColorText.isEmpty() ? colorFromString(strokeColorText) : QColor();
     QColor fillColor = !fillColorText.isEmpty() ? colorFromString(fillColorText) : QColor();
-    int strokeWidth = strokeWidthText.toInt() > 0 ? strokeWidthText.toInt() : 0;
+    int strokeWidth = strokeWidthText.toDouble();
 
     QPen pen;
     pen.setColor(strokeColor);
@@ -332,12 +365,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
-    bool hastransform = false;
+
+    svgItem->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform);
-        hastransform = true;
+        transform = transformFromString(textTransform, svgItem);
     }
-    repositionSvgItem(svgItem, width + 10, height + 10, x1 - 5, y1 - 5, hastransform, transform);
+    repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 - strokeWidth/2 + transform.m31(), y1 + strokeWidth/2 + transform.m32(), transform);
     hashSceneItem(element, svgItem);
 
     delete generator;
@@ -387,7 +420,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     QString strokeWidthText = element.attribute(aStrokewidth);
 
     QColor strokeColor = !strokeColorText.isEmpty() ? colorFromString(strokeColorText) : QColor();
-    int strokeWidth = strokeWidthText.toInt() > 0 ? strokeWidthText.toInt() : 0;
+    int strokeWidth = strokeWidthText.toDouble();
+
+    width += strokeWidth;
+    height += strokeWidth;
 
     QPen pen;
     pen.setColor(strokeColor);
@@ -398,7 +434,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
 
     painter.begin(generator); //drawing to svg tmp file
 
-    painter.translate(pen.widthF() / 2 - x1, pen.widthF() / 2 - y1);
+    painter.translate(pen.widthF()/2 - x1, pen.widthF()/2- y1);
     painter.setPen(pen);
     painter.drawPolyline(polygon);
 
@@ -408,12 +444,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
-    bool hastransform = false;
+
+    svgItem->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform);
-        hastransform = true;
+        transform = transformFromString(textTransform, svgItem);
     }
-    repositionSvgItem(svgItem, width + 10, height + 10, x1 - 5, y1 - 5, hastransform, transform);
+    repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 + transform.m31() - strokeWidth/2, y1 + transform.m32() + strokeWidth/2, transform);
     hashSceneItem(element, svgItem);
 
     delete generator;
@@ -537,7 +573,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
 //    remember if text area has transform
 //    QString transformString;
     QTransform transform = fontTransform;
-    bool hasTransform = !fontTransform.isIdentity();
 
     QRectF lastDrawnTextBoundingRect;
     //parse text area tags
@@ -552,7 +587,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
     //add resulting svg file to scene
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
 
-    repositionSvgItem(svgItem, width, height, x, y, hasTransform, transform);
+    svgItem->resetTransform();
+    repositionSvgItem(svgItem, width, height, x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, svgItem);
 
     delete generator;
@@ -659,10 +695,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
 
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
-    bool hastransform = false;
+
+    svgItem->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform);
-        hastransform = true;
+        transform = transformFromString(textTransform, svgItem);
     }
 
     //by default all the textAreas are not editable
@@ -671,7 +707,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
         curDelegate->setEditable(false);
     }
 
-    repositionSvgItem(svgItem, width, height, x, y, hastransform, transform);
+    repositionSvgItem(svgItem, width, height, x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, svgItem);
 
     return true;
@@ -703,12 +739,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
    UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix);
    QTransform transform;
    QString textTransform = element.attribute(aTransform);
-   bool hastransform = false;
+
+   pixItem->resetTransform();
    if (!textTransform.isNull()) {
-       transform = transformFromString(textTransform);
-       hastransform = true;
+       transform = transformFromString(textTransform, pixItem);
    }
-   repositionSvgItem(pixItem, width, height, x, y, hastransform, transform);
+   repositionSvgItem(pixItem, width, height, x + transform.m31(), y + transform.m32(), transform);
    hashSceneItem(element, pixItem);
 
    return true;
@@ -745,10 +781,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
 
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
+
+    flashItem->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform);
+        transform = transformFromString(textTransform, flashItem);
     }
-    repositionSvgItem(flashItem, width, height, x, y, true, transform);
+    repositionSvgItem(flashItem, width, height, x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, flashItem);
 
     return true;
@@ -756,32 +794,42 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &element)
 {
-    qreal x = element.attribute(aX).toDouble();
-    qreal y = element.attribute(aY).toDouble();
-    qreal width = element.attribute(aWidth).toDouble();
-    qreal height = element.attribute(aHeight).toDouble();
+    QDomElement parentOfAudio = element.firstChild().toElement();
+    
+    qreal x = parentOfAudio.attribute(aX).toDouble();
+    qreal y = parentOfAudio.attribute(aY).toDouble();
 
     QString itemRefPath = element.attribute(aHref);
 
-    QUrl urlPath;
+    QUrl concreteUrl;
     if (!itemRefPath.isNull()) {
-        QString videoPath = pwdContent + "/" + itemRefPath;
-        if (!QFile::exists(videoPath)) {
+        QString audioPath = pwdContent + "/" + itemRefPath;
+        if (!QFile::exists(audioPath)) {
             qDebug() << "can't load file" << pwdContent + "/" + itemRefPath << "maybe file corrupted";
             return false;
         }
-        urlPath = QUrl::fromLocalFile(videoPath);
+        concreteUrl = QUrl::fromLocalFile(audioPath);
     }
 
-    UBGraphicsAudioItem *audioItem = mCurrentScene->addAudio(urlPath, false);
+    QUuid uuid = QUuid::createUuid();
+
+#ifdef Q_WS_X11
+    concreteUrl = QUrl::fromLocalFile(mCurrentScene->document()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
+        ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
+#else
+    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
+        ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
+#endif
+    
+    UBGraphicsAudioItem *audioItem = mCurrentScene->addAudio(concreteUrl, false);
     QTransform transform;
-    QString textTransform = element.attribute(aTransform);
-    bool hastransform = false;
+    QString textTransform = parentOfAudio.attribute(aTransform);
+
+    audioItem->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform);
-        hastransform = true;
+        transform = transformFromString(textTransform, audioItem);
     }
-    repositionSvgItem(audioItem, width, height, x, y, hastransform, transform);
+    repositionSvgItem(audioItem, audioItem->boundingRect().width(), audioItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, audioItem);
 
     return true;
@@ -793,31 +841,38 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
         if (parseSvgFlash(element)) return true;
         else return false;
     }
-
     qreal x = element.attribute(aX).toDouble();
     qreal y = element.attribute(aY).toDouble();
-    qreal width = element.attribute(aWidth).toDouble();
-    qreal height = element.attribute(aHeight).toDouble();
 
-    QUrl urlPath;
+    QUrl concreteUrl;
     if (!itemRefPath.isNull()) {
         QString videoPath = pwdContent + "/" + itemRefPath;
         if (!QFile::exists(videoPath)) {
             qDebug() << "can't load file" << pwdContent + "/" + itemRefPath << "maybe file corrupted";
             return false;
         }
-        urlPath = QUrl::fromLocalFile(videoPath);
+        concreteUrl = QUrl::fromLocalFile(videoPath);
     }
 
-    UBGraphicsVideoItem *videoItem = mCurrentScene->addVideo(urlPath, false);
+    QUuid uuid = QUuid::createUuid();
+
+#ifdef Q_WS_X11
+    concreteUrl = QUrl::fromLocalFile(mCurrentScene->document()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
+        ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
+#else
+    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
+        ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
+#endif
+
+    UBGraphicsVideoItem *videoItem = mCurrentScene->addVideo(concreteUrl, false);
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
-    bool hastransform = false;
+
+    videoItem->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform);
-        hastransform = true;
+        transform = transformFromString(textTransform, videoItem);
     }
-    repositionSvgItem(videoItem, width, height, x - 5, y - 5, hastransform, transform);
+    repositionSvgItem(videoItem, videoItem->boundingRect().width(), videoItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, videoItem);
 
     return true;
@@ -847,16 +902,18 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgElement(const QDomElement &p
         return false;
     }
 
-    if      (tagName == tRect       &&  !parseSvgRect(parent))      return false;
-    else if (tagName == tEllipse    &&  !parseSvgEllipse(parent))   return false;
-    else if (tagName == tPolygon    &&  !parseSvgPolygon(parent))   return false;
-    else if (tagName == tPolyline   &&  !parseSvgPolyline(parent))  return false;
-    else if (tagName == tText       &&  !parseSvgText(parent))      return false;
-    else if (tagName == tTextarea   &&  !parseSvgTextarea(parent))  return false;
-    else if (tagName == tImage      &&  !parseSvgImage(parent))     return false;
-    else if (tagName == tFlash      &&  !parseSvgFlash(parent))     return false;
-    else if (tagName == tAudio      &&  !parseSvgAudio(parent))     return false;
-    else if (tagName == tVideo      &&  !parseSvgVideo(parent))     return false;
+    if      (tagName == tG          &&  !parseGSection(parent))             return false;
+    else if (tagName == tSwitch     &&  !parseSvgSwitchSection(parent))     return false;
+    else if (tagName == tRect       &&  !parseSvgRect(parent))              return false;    
+    else if (tagName == tEllipse    &&  !parseSvgEllipse(parent))           return false;
+    else if (tagName == tPolygon    &&  !parseSvgPolygon(parent))           return false;
+    else if (tagName == tPolyline   &&  !parseSvgPolyline(parent))          return false;
+    else if (tagName == tText       &&  !parseSvgText(parent))              return false;
+    else if (tagName == tTextarea   &&  !parseSvgTextarea(parent))          return false;
+    else if (tagName == tImage      &&  !parseSvgImage(parent))             return false;
+    else if (tagName == tFlash      &&  !parseSvgFlash(parent))             return false;
+    else if (tagName == tAudio      &&  !parseSvgAudio(parent))             return false;
+    else if (tagName == tVideo      &&  !parseSvgVideo(parent))             return false;
 
     return true;
 }
@@ -984,7 +1041,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseDoc()
 
 void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *item, qreal width, qreal height,
                                                               qreal x, qreal y,
-                                                              bool useTransform, QTransform &transform)
+                                                              QTransform &transform)
 {
     //First using viebox coordinates, then translate them to scene coordinates
 
@@ -996,29 +1053,32 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
     qreal fullScaleX = mVBTransFactor * xScale;
     qreal fullScaleY = mVBTransFactor * yScale;
 
-    if (useTransform) { //if rotation or translation specified
-        QPointF oldVector((x - transform.dx()), (y - transform.dy()));
-        QTransform rTransform(transform.m11(), transform.m12(), transform.m21(), transform.m22(), 0, 0);
-        QPointF newVector = rTransform.map(oldVector);
+    QPointF oldVector((x - transform.dx()), (y - transform.dy()));
+    QTransform rTransform;
+    QPointF newVector = rTransform.map(oldVector);
 
-        item->setTransform(rTransform.scale(fullScaleX, fullScaleY));
-        item->setPos((x - mViewBoxCenter.x() + (newVector - oldVector).x()) * mVBTransFactor,
-                     (y - mViewBoxCenter.y() + (newVector - oldVector).y()) * mVBTransFactor);
-    }  else  { //item is't rotated or translated
-        item->setTransform(QTransform(fullScaleX, 0, 0, fullScaleY, 0, 0));
-        itemBounds = item->boundingRect();
-        item->setPos((int)((x - mViewBoxCenter.x()) * mVBTransFactor),
-                     (int)((y - mViewBoxCenter.y()) * mVBTransFactor));
-    }
+    QRectF sr = mCurrentScene->sceneRect();
+    QRectF sr1 = mCurrentSceneRect;
+    QRectF sr2 = mCurrentScene->normalizedSceneRect();
+
+    QTransform tr = item->sceneTransform();
+    item->setTransform(rTransform.scale(fullScaleX, fullScaleY), true);
+    tr = item->sceneTransform();
+    QPoint pos ((int)((x + mShiftVector.x() + (newVector - oldVector).x()) * mVBTransFactor), (int)((y +mShiftVector.y() + (newVector - oldVector).y()) * mVBTransFactor));
+    item->setPos(pos);
 }
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createNewScene()
 {
     mCurrentScene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, mProxy->pageCount());
     mCurrentScene->setURStackEnable(false);
-    mCurrentSceneRect = mCurrentScene->normalizedSceneRect();
-    mVBTransFactor = qMin(mCurrentSceneRect.width()  / mViewPort.width(),
-                          mCurrentSceneRect.height() / mViewPort.height());
+    mCurrentScene->setSceneRect(mViewBox);
+    if ((mCurrentScene->sceneRect().topLeft().x() >= 0) || (mCurrentScene->sceneRect().topLeft().y() >= 0)) {
+        mShiftVector = -mViewBox.center();
+    }
+    mCurrentSceneRect = mViewBox;
+    mVBTransFactor = qMin(mCurrentScene->normalizedSceneRect().width()  / mViewPort.width(),
+                          mCurrentScene->normalizedSceneRect().height() / mViewPort.height());
     return true;
 }
 
@@ -1046,11 +1106,12 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
             qDebug() << "can't allocate scene, loading failed";
             return false;
         }
-                UBSvgSubsetAdaptor::persistScene(mProxy, mCurrentScene, i);
-                UBGraphicsScene *tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
-                tmpScene->setModified(true);
-                UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), tmpScene, i);
-                delete tmpScene;
+
+        UBSvgSubsetAdaptor::persistScene(mProxy, mCurrentScene, i);
+        UBGraphicsScene *tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
+        tmpScene->setModified(true);
+        UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), tmpScene, i);
+        delete tmpScene;
 
         mCurrentScene->setModified(false);
     }
@@ -1085,45 +1146,63 @@ QColor UBCFFSubsetAdaptor::UBCFFSubsetReader::colorFromString(const QString& clr
         return QColor(clrString);
 }
 
-QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QString trString)
+QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QString trString, QGraphicsItem *item)
 {
+    qreal dxr = 0.0;
+    qreal dyr = 0.0;
     qreal dx = 0.0;
     qreal dy = 0.0;
     qreal angle = 0.0;
+    QTransform tr;
 
-    //check pattern for strings like 'rotate(10)'
-    QRegExp regexp("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-    if (regexp.exactMatch(trString)) {
-        angle = regexp.capturedTexts().at(1).toDouble();
-    } else {
+    foreach(QString trStr, trString.split(" ", QString::SkipEmptyParts))
+    {
+        //check pattern for strings like 'rotate(10)'
+        QRegExp regexp("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
+        if (regexp.exactMatch(trStr)) {
+            angle = regexp.capturedTexts().at(1).toDouble();
+            if (item)
+            {    
+                item->setTransformOriginPoint(QPointF(0, 0));
+                item->rotate(angle);
+            }
+            continue;
+        };
+        
         //check pattern for strings like 'rotate(10,20,20)' or 'rotate(10.1,10.2,34.2)'
         regexp.setPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.exactMatch(trString)) {
+        if (regexp.exactMatch(trStr)) {
             angle = regexp.capturedTexts().at(1).toDouble();
-            dx = regexp.capturedTexts().at(2).toDouble();
-            dy = regexp.capturedTexts().at(3).toDouble();
+            dxr = regexp.capturedTexts().at(2).toDouble();
+            dyr = regexp.capturedTexts().at(3).toDouble();
+            if (item)
+            {                
+                item->setTransformOriginPoint(QPointF(dxr, dyr)-item->pos());
+                item->rotate(angle);
+            }
+            continue;
+        }
+
+        //check pattern for strings like 'translate(11.0, 12.34)'
+        regexp.setPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)");
+        if (regexp.exactMatch(trStr)) {
+            dx = regexp.capturedTexts().at(1).toDouble();
+            dy = regexp.capturedTexts().at(2).toDouble();
+            tr.translate(dx,dy);
+            continue;
         }
     }
-    //check pattern for strings like 'translate(11.0, 12.34)'
-    regexp.setPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)");
-    if (regexp.exactMatch(trString)) {
-        dx = regexp.capturedTexts().at(1).toDouble();
-        dy = regexp.capturedTexts().at(2).toDouble();
-    }
-
-    return QTransform().translate(dx, dy).rotate(angle);
+    return tr;
 }
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::getViewBoxDimenstions(const QString& viewBox)
 {
-    //check pattern for strings like 'rotate(10)'
-    QRegExp regexp("([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)");
-    if (regexp.exactMatch(viewBox))
+    QStringList capturedTexts = viewBox.split(" ", QString::SkipEmptyParts);
+    if (capturedTexts.count())
     {
-        int capturesCount = regexp.capturedTexts().count();
-        if (capturesCount == 5 && regexp.capturedTexts().at(0).length() == viewBox.length())
+        if (4 == capturedTexts.count())
         {
-            mViewBox = QRectF(0, 0, regexp.capturedTexts().at(3).toDouble(), regexp.capturedTexts().at(4).toDouble());
+            mViewBox = QRectF(capturedTexts.at(0).toDouble(), capturedTexts.at(1).toDouble(), capturedTexts.at(2).toDouble(), capturedTexts.at(3).toDouble());
             mViewPort = mViewBox;
             mViewPort.translate(- mViewPort.center());
             mViewBoxCenter.setX(mViewBox.width() / 2);

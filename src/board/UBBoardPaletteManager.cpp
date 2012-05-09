@@ -58,9 +58,9 @@
 
 #include "UBBoardController.h"
 
-#include "core/memcheck.h"
-
 #include "document/UBDocumentController.h"
+
+#include "core/memcheck.h"
 
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
     : QObject(container)
@@ -81,7 +81,9 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mPendingPanButtonPressed(false)
     , mPendingEraseButtonPressed(false)
     , mpPageNavigWidget(NULL)
+#ifdef USE_WEB_WIDGET
     , mpLibWidget(NULL)
+#endif
     , mpCachePropWidget(NULL)
     , mpDownloadWidget(NULL)
     , mpDesktopLibWidget(NULL)
@@ -132,7 +134,9 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mpPageNavigWidget = new UBPageNavigationWidget();
 
+#ifdef USE_WEB_WIDGET
     mpLibWidget = new UBLibWidget();
+#endif
 
     mpCachePropWidget = new UBCachePropertiesWidget();
 
@@ -159,8 +163,11 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 	mRightPalette->addTab(mpFeaturesWidget);
 
     //Do not show deprecated lib widget to prevent collisions. Uncomment to return lib widget
-//    mRightPalette->registerWidget(mpLibWidget);
-//    mRightPalette->addTab(mpLibWidget);
+
+#ifdef USE_WEB_WIDGET
+    mRightPalette->registerWidget(mpLibWidget);
+    mRightPalette->addTab(mpLibWidget);
+#endif
 
 
     // The cache widget will be visible only if a cache is put on the page
@@ -724,11 +731,11 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     if(mKeyboardPalette->m_isVisible)
                     {
                         mKeyboardPalette->hide();
-                        mKeyboardPalette->setParent(brWnd);
+                        mKeyboardPalette->setParent(UBApplication::mainWindow);
                         mKeyboardPalette->show();
                     }
                     else
-                        mKeyboardPalette->setParent(brWnd);
+                        mKeyboardPalette->setParent(UBApplication::mainWindow);
                 }
 
             }
@@ -841,10 +848,10 @@ void UBBoardPaletteManager::addItemToLibrary()
         }
         QImage image = mPixmap.toImage();
 
-        if(NULL != mpLibWidget)
-        {
-            mpLibWidget->libNavigator()->libraryWidget()->libraryController()->importImageOnLibrary(image);
-        }
+#ifdef USE_WEB_WIDGET
+        mpLibWidget->libNavigator()->libraryWidget()->libraryController()->importImageOnLibrary(image);
+#endif
+
     }
     else
     {

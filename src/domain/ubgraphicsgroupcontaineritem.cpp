@@ -6,6 +6,8 @@
 #include "domain/ubgraphicsgroupcontaineritemdelegate.h"
 #include "domain/UBGraphicsScene.h"
 
+#include "core/memcheck.h"
+
 UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent)
     : QGraphicsItemGroup(parent)
 {

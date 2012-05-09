@@ -12,7 +12,8 @@ enum UBFeaturesActionBarState
 	IN_ROOT,
 	IN_FOLDER,
 	IN_PROPERTIES,
-	IN_FAVORITE
+	IN_FAVORITE,
+	IN_TRASH
 };
 
 class UBFeaturesActionBar : public QWidget
@@ -29,9 +30,11 @@ signals:
 	void deleteElements( const QMimeData &data );
 	void addToFavorite( const QMimeData &data );
 	void removeFromFavorite( const QMimeData &data );
+    void addElementsToFavorite();
 private slots:
 	void onSearchTextChanged(QString txt);
 	void onActionNewFolder();
+    void onActionFavorite();
 protected:
 	//void dragMoveEvent(QDragMoveEvent *event);
 	void dragEnterEvent( QDragEnterEvent *event );
