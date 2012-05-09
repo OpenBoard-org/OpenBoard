@@ -670,6 +670,7 @@ int UBPersistenceManager::sceneCountInDir(const QString& pPath)
 {
     int pageIndex = 0;
     bool moreToProcess = true;
+    bool addedMissingZeroPage = false;
 
     while (moreToProcess)
     {
@@ -683,8 +684,22 @@ int UBPersistenceManager::sceneCountInDir(const QString& pPath)
         }
         else
         {
-            moreToProcess = false;
+            if(UBSettings::settings()->teacherGuidePageZeroActivated && pageIndex == 0){
+                // the document has no zero file but doesn't means that it hasn't any file
+                // at all. Just importing a document without the first page using a configuartion
+                // that enables zero page.
+                pageIndex++;
+                addedMissingZeroPage = true;
+            }
+            else
+                moreToProcess = false;
         }
+    }
+
+    if(pageIndex == 1 && addedMissingZeroPage){
+        // increment is done only to check if there are other pages than the missing zero page
+        // This situation means -> no pages on the document
+        return 0;
     }
 
     return pageIndex;

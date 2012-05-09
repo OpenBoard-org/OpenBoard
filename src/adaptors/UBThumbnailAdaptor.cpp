@@ -45,7 +45,6 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
     int existingPageCount = proxy->pageCount();
 
     QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", existingPageCount);
-
     QFile thumbFile(thumbFileName);
 
     if (!thumbFile.exists())
@@ -66,6 +65,16 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
                     UBApplication::showMessage(tr("Generating preview thumbnails ..."));
 
                 persistScene(proxy->persistencePath(), scene, i);
+            }
+            else{
+                if(i==0){
+                    // we are working a document without zero page but on a system that enable it
+                    // we have to create an empty zero scene
+                    scene = new UBGraphicsScene(proxy);
+                    UBSvgSubsetAdaptor::persistScene(proxy,scene,0);
+                    persistScene(proxy->persistencePath(),scene,i);
+                    thumbCount++;
+                }
             }
         }
 
