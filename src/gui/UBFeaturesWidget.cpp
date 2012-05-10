@@ -123,6 +123,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( mActionBar, SIGNAL( removeFromFavorite(const QMimeData &) ), this, SLOT( removeFromFavorite(const QMimeData &) ) );
     connect( mActionBar, SIGNAL( addElementsToFavorite() ), this, SLOT ( addElementsToFavorite() ) );
     connect( mActionBar, SIGNAL( removeElementsFromFavorite() ), this, SLOT ( removeElementsFromFavorite() ) );
+    connect( mActionBar, SIGNAL( deleteSelectedElements() ), this, SLOT( deleteSelectedElements() ) );
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
@@ -275,6 +276,36 @@ void UBFeaturesWidget::deleteElements( const QMimeData & mimeData )
 		}
 	}
 	QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
+	model->invalidate();
+}
+
+void UBFeaturesWidget::deleteSelectedElements()
+{
+    QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
+    QList <QUrl> urls;
+    foreach ( QModelIndex sel, selected )
+    {
+        UBFeature feature = sel.data( Qt::UserRole + 1 ).value<UBFeature>();
+        urls.append( feature.getFullPath() );
+    }
+
+    foreach (QUrl url, urls)
+    {
+        if ( controller->isTrash( url ) )
+		{
+			controller->deleteItem( url );
+		}
+		else
+		{
+			UBFeature elem = controller->moveItemToFolder( url, controller->getTrashElement() );
+			controller->removeFromFavorite( url );
+			featuresModel->addItem( elem );
+            featuresModel->deleteFavoriteItem( url.toString() );
+		}
+        featuresModel->deleteItem( url.toString() );
+    }
+    
+    QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
 	model->invalidate();
 }
 
@@ -895,6 +926,18 @@ void UBFeaturesModel::deleteFavoriteItem( const QString &path )
 	{
         if ( !QString::compare( featuresList->at(i).getFullPath().toString(), path, Qt::CaseInsensitive ) &&
 			!QString::compare( featuresList->at(i).getVirtualPath(), "/root/favorites", Qt::CaseInsensitive ) )
+		{
+			removeRow( i, QModelIndex() );
+			return;
+		}
+	}
+}
+
+void UBFeaturesModel::deleteItem( const QString &path )
+{
+    for ( int i = 0; i < featuresList->size(); ++i )
+	{
+        if ( !QString::compare( featuresList->at(i).getFullPath().toString(), path, Qt::CaseInsensitive ) )
 		{
 			removeRow( i, QModelIndex() );
 			return;

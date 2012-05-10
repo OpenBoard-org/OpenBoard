@@ -103,6 +103,7 @@ private slots:
     void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
     void addElementsToFavorite();
     void removeElementsFromFavorite();
+    void deleteSelectedElements();
 protected:
 	bool eventFilter(QObject *target, QEvent *event);
 };
@@ -200,6 +201,7 @@ public:
 
 	void addItem( const UBFeature &item );
 	void deleteFavoriteItem( const QString &path );
+    void deleteItem( const QString &path );
 
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
 	QMimeData *mimeData( const QModelIndexList &indexes ) const;

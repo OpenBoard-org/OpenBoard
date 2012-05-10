@@ -66,8 +66,8 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mButtonGroup->addButton(mpRemoveFavoriteBtn);
     mButtonGroup->addButton(mpNewFolderBtn);
     // Connect signals & slots
-    connect(mpFavoriteAction,SIGNAL(triggered()), this, SLOT(onActionFavorite()));
-    /*connect(mpSocialAction,SIGNAL(triggered()), this, SLOT(onActionSocial()));
+    /*connect(mpFavoriteAction,SIGNAL(triggered()), this, SLOT(onActionFavorite()));
+    connect(mpSocialAction,SIGNAL(triggered()), this, SLOT(onActionSocial()));
     connect(mpSearchAction,SIGNAL(triggered()), this, SLOT(onActionSearch()));
     connect(mpDeleteAction,SIGNAL(triggered()), this, SLOT(onActionTrash()));
     connect(mpCloseAction, SIGNAL(triggered()), this, SLOT(onActionClose()));
@@ -78,6 +78,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
 	connect(mSearchBar, SIGNAL(textChanged(QString)), this, SLOT(onSearchTextChanged(QString)));
 	connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));
     connect(mpRemoveFavorite, SIGNAL(triggered()), this, SLOT(onActionRemoveFavorite()));
+    connect(mpDeleteAction,SIGNAL(triggered()), this, SLOT(onActionTrash()));
 
     // Build the default toolbar
     mLayout->addWidget(mpFavoriteBtn);
@@ -149,6 +150,8 @@ void UBFeaturesActionBar::setButtons()
 		mpFavoriteBtn->hide();
         mpSocialBtn->hide();
         mSearchBar->show();
+        mpDeleteBtn->show();
+        mpDeleteBtn->setEnabled(true);
         //mpSearchBtn->show();
         //mpDeleteBtn->hide();
         mpCloseBtn->hide();
@@ -179,6 +182,11 @@ void UBFeaturesActionBar::onActionFavorite()
 void UBFeaturesActionBar::onActionRemoveFavorite()
 {
     emit removeElementsFromFavorite();
+}
+
+void UBFeaturesActionBar::onActionTrash()
+{
+    emit deleteSelectedElements();
 }
 
 /*
