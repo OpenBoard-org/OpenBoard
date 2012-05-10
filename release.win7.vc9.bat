@@ -66,7 +66,7 @@ copy resources\customizations build\win32\release\product\
 
 del build\win32\release\product\i18n\qt_help*
 
-del ".\build\win32\release\product\Sankore.pdb"
+del "build\win32\release\product\Sankore.pdb"
 
 set INSTALLER_NAME=Open-Sankore
 

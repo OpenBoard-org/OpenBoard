@@ -399,7 +399,6 @@ function onDropTarget(obj, event) {
         }
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
-        tmp = tmp.substr(1, tmp.length);
         //alert(textData.getElementsByTagName("type")[0].firstChild.textContent + " | " + textData.getElementsByTagName("path")[0].firstChild.textContent);
         var tmp_img = $("<img/>").attr("src", tmp);
         //alert(1)

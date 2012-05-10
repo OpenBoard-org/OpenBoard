@@ -16,6 +16,11 @@ public:
     virtual UBItem* deepCopy() const;
     virtual void remove();
     virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate;}
+    enum { Type = UBGraphicsItemType::StrokeItemType };
+    virtual int type() const
+    {
+        return Type;
+    }
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

@@ -65,6 +65,7 @@ private:
         qreal mVBTransFactor;
         QPointF mViewBoxCenter;
         QSize mSize;
+        QPointF mShiftVector;
 
     private:
         QDomDocument mDOMdoc;
@@ -85,6 +86,8 @@ private:
         bool parseIwbMeta(const QDomElement &element);
         bool parseSvg(const QDomElement &svgSection);
 
+        inline bool parseGSection(const QDomElement &element);
+        inline bool parseSvgSwitchSection(const QDomElement &element);
         inline bool parseSvgRect(const QDomElement &element);
         inline bool parseSvgEllipse(const QDomElement &element);
         inline bool parseSvgPolygon(const QDomElement &element);
@@ -123,9 +126,9 @@ private:
 //        helper methods
         void repositionSvgItem(QGraphicsItem *item, qreal width, qreal height,
                                qreal x, qreal y,
-                               bool useTransform, QTransform &transform);
+                               QTransform &transform);
         QColor colorFromString(const QString& clrString);
-        QTransform transformFromString(const QString trString);
+        QTransform transformFromString(const QString trString, QGraphicsItem *item = 0);
         bool getViewBoxDimenstions(const QString& viewBox);
         QSvgGenerator* createSvgGenerator(qreal width, qreal height);
         bool getTempFileName();

@@ -45,7 +45,10 @@ Type: files ; Name: "{app}\*.dll"
 
 [Files]
 Source: "..\Sankore-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
-Source: ".\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+;Sankore plugins
+Source: "plugins\cffadaptor\build\win32\release\lib\CFF_Adaptor.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ;OpenSSL
 Source: "..\Sankore-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
@@ -60,6 +63,7 @@ Source: "..\Qt-sankore3.1\lib\QtWebKit4.dll"; DestDir: "{app}"; Flags: ignorever
 Source: "..\Qt-sankore3.1\lib\phonon4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Qt-sankore3.1\lib\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Qt-sankore3.1\lib\QtSvg4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-sankore3.1\lib\QtOpenGL4.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ;Qt plugins
 Source: "..\Qt-sankore3.1\plugins\accessible\qtaccessiblecompatwidgets4.dll"; DestDir: "{app}\accessible"; Flags: ignoreversion
