@@ -286,7 +286,8 @@ void UBFeaturesWidget::deleteSelectedElements()
     foreach ( QModelIndex sel, selected )
     {
         UBFeature feature = sel.data( Qt::UserRole + 1 ).value<UBFeature>();
-        urls.append( feature.getFullPath() );
+        if ( feature.isDeletable() )
+            urls.append( feature.getFullPath() );
     }
 
     foreach (QUrl url, urls)

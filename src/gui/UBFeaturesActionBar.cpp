@@ -75,6 +75,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     connect(mSearchBar, SIGNAL(textChanged(QString)), this, SLOT(onSearchTextChanged(QString)));
     connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));*/
 
+    connect(mpFavoriteAction,SIGNAL(triggered()), this, SLOT(onActionFavorite()));
 	connect(mSearchBar, SIGNAL(textChanged(QString)), this, SLOT(onSearchTextChanged(QString)));
 	connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));
     connect(mpRemoveFavorite, SIGNAL(triggered()), this, SLOT(onActionRemoveFavorite()));
