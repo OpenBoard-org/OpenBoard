@@ -343,6 +343,8 @@ void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int 
         }
     }
     else if(column == 1 && addSubItemWidgetType == eUBTGAddSubItemWidgetType_None){
+        UBTGMediaWidget* media = dynamic_cast<UBTGMediaWidget*>(mpTreeWidget->itemWidget(widget,0));
+        if(media) media->removeSource();
         int index = mpTreeWidget->currentIndex().row();
         QTreeWidgetItem* toBeDeletedWidgetItem = widget->parent()->takeChild(index);
         delete toBeDeletedWidgetItem;

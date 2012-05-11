@@ -140,6 +140,7 @@ public:
     ~UBTGMediaWidget();
     tUBGEElementNode* saveData();
     void initializeWithDom(QDomElement element);
+    void removeSource();
 
 protected:
     void dragEnterEvent(QDragEnterEvent* event);

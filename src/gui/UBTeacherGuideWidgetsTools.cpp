@@ -342,6 +342,15 @@ void UBTGMediaWidget::initializeWithDom(QDomElement element)
     mIsInitializationMode = false;
 }
 
+void UBTGMediaWidget::removeSource()
+{
+    QFileInfo fileInfo(mMediaPath);
+    if(fileInfo.isFile())
+        QFile(mMediaPath).remove();
+    else
+        UBFileSystemUtils::deleteDir(mMediaPath);
+}
+
 void UBTGMediaWidget::hideEvent(QHideEvent* event)
 {
     if(mpWebView)
@@ -361,9 +370,11 @@ tUBGEElementNode* UBTGMediaWidget::saveData()
     if(!mpTitle)
         return 0;
     tUBGEElementNode* result = new tUBGEElementNode();
+    QString relativePath = mMediaPath;
+    relativePath = relativePath.replace(UBApplication::boardController->activeDocument()->persistencePath()+"/","");
     result->name = "media";
     result->attributes.insert("title",mpTitle->text());
-    result->attributes.insert("relativePath",mMediaPath.replace(UBApplication::boardController->activeDocument()->persistencePath()+"/",""));
+    result->attributes.insert("relativePath",relativePath);
     result->attributes.insert("mediaType",mMediaType);
     return result;
 }
