@@ -69,6 +69,7 @@
    <addaction name="actionForward"/>
    <addaction name="separator"/>
    <addaction name="actionErase"/>
+   <addaction name="actionGroupItems"/>
    <addaction name="actionBoard"/>
    <addaction name="actionTutorial"/>
    <addaction name="actionWeb"/>
@@ -1642,10 +1643,10 @@
      <normaloff>:/images/toolbar/library.png</normaloff>:/images/toolbar/library.png</iconset>
    </property>
    <property name="text">
-    <string>Gtorup items</string>
+    <string>Group Items</string>
    </property>
    <property name="toolTip">
-    <string>Erase Content</string>
+    <string>Group items</string>
    </property>
   </action>
  </widget>
