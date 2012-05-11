@@ -148,9 +148,9 @@ void UBTGAdaptableText::keyPressEvent(QKeyEvent* e)
     }
 
     if(toPlainText() == mPlaceHolderText){
-        setTextColor(QColor(Qt::black));
         setPlainText("");
     }
+    setTextColor(QColor(Qt::black));
     QTextEdit::keyPressEvent(e);
 }
 
