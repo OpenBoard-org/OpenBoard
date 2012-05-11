@@ -39,14 +39,18 @@ checkDirectory(){
 #                     path definition                                 #
 #######################################################################
 QT_PATH="/usr/local/Trolltech/Qt-4.7.3"
-PLUGINS_PATH="$QT_PATH/plugins"
+QT_PLUGINS_PATH="$QT_PATH/plugins"
 RELEASE_DIR=build/linux/release
 BUILD_DIR=$RELEASE_DIR/product
 GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-sankore3.1/translations"
 QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
+SANKORE_SRC_PLUGINS_PATH="plugins"
+SANKORE_DST_PLUGINS_PATH=build/linux/release/product/plugins
+CFF_ADAPTOR_SRC_PLUGIN_PATH=$SANKORE_SRC_PLUGINS_PATH/cffadaptor/build/linux/release/lib
 
 QMAKE_PATH="$QT_PATH/bin/qmake"
-LRELEASE="/usr/local/Trolltech/Qt-4.7.3/bin/lrelease"
+LRELEASE="../Qt-sankore3.1/bin/lrelease"
+#LRELEASE="/usr/local/Trolltech/Qt-4.7.3/bin/lrelease"
 
 ARCHITECTURE=`uname -m`
 
@@ -57,13 +61,15 @@ checkExecutable $QMAKE_PATH
 checkExecutable $LRELEASE
 
 checkDirectory $GUI_TRANSLATIONS_DIRECTORY_PATH
-checkDirectory $PLUGINS_PATH
+checkDirectory $QT_PLUGINS_PATH
 checkDirectory $QT_LIBRARY_SOURCE_PATH
+
+checkDirectory $CFF_ADAPTOR_PLUGIN_PATH
 
 #######################################################################
 #                            cleaning                                 #
 #######################################################################
-rm -rf $RELEASE_DIR
+#rm -rf $RELEASE_DIR
 
 
 #######################################################################
@@ -126,21 +132,26 @@ cp -R resources/linux/qtlinux/* $BUILD_DIR
 
 cp -R resources/customizations $BUILD_DIR
 
+notify-send "Sankore" "Copying plugins..."
+mkdir "$SANKORE_DST_PLUGINS_PATH"
+mkdir "$SANKORE_DST_PLUGINS_PATH/cffadaptor"
+cp -R $CFF_ADAPTOR_SRC_PLUGIN_PATH/*.so* "$SANKORE_DST_PLUGINS_PATH/cffadaptor"
+
 notify-send "QT" "Coping plugins and library ..."
-cp -R $PLUGINS_PATH $BUILD_DIR
+cp -R $QT_PLUGINS_PATH $BUILD_DIR
 
 #copying custom qt library
 QT_LIBRARY_DEST_PATH="$BUILD_DIR/qtlib"
 mkdir $QT_LIBRARY_DEST_PATH
 
 copyQtLibrary(){
-    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.3" ]; then
+    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4" ]; then
         notifyError "$1 library not found in path: $QT_LIBRARY_SOURCE_PATH"
     fi
-    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4" "$QT_LIBRARY_DEST_PATH/"
-    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.3" "$QT_LIBRARY_DEST_PATH/"
+    cp $QT_LIBRARY_SOURCE_PATH/$1.so.4.* $QT_LIBRARY_DEST_PATH/
 }
 
+copyQtLibrary libphonon
 copyQtLibrary libQtWebKit
 copyQtLibrary libQtDBus
 copyQtLibrary libQtScript
@@ -150,14 +161,8 @@ copyQtLibrary libQtNetwork
 copyQtLibrary libQtXml
 copyQtLibrary libQtGui
 copyQtLibrary libQtCore
-
-if [ ! -e "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4.4.0" ]; then
-    notifyError "phonon library not found in path: $QT_LIBRARY_SOURCE_PATH"
-else
-    cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4" "$QT_LIBRARY_DEST_PATH/"
-    cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
-fi
-
+# uncomment for Qt 4.8
+#copyQtLibrary libQtOpenGL
 
 #######################################################################
 #                  Removing unwanted files                            #
@@ -279,7 +284,7 @@ echo "Priority: optional" >> "$CONTROL_FILE"
 echo "Architecture: $ARCHITECTURE" >> "$CONTROL_FILE"
 echo "Essential: no" >> "$CONTROL_FILE"
 echo "Installed-Size: `du -s $SANKORE_PACKAGE_DIRECTORY | awk '{ print $1 }'`" >> "$CONTROL_FILE"
-echo "Maintainer: Open-Sankoré Developers team <dev@open-sankore.org>" >> "$CONTROL_FILE"
+echo "Maintainer: Open-Sankore Developers team <dev@open-sankore.org>" >> "$CONTROL_FILE"
 echo "Homepage: http://dev.open-sankore.org" >> "$CONTROL_FILE"
 echo -n "Depends: " >> "$CONTROL_FILE"
 unset tab
@@ -318,7 +323,7 @@ echo "Version=$VERSION" >> $SANKORE_SHORTCUT
 echo "Encoding=UTF-8" >> $SANKORE_SHORTCUT
 echo "Name=Open-Sankore ($VERSION)" >> $SANKORE_SHORTCUT
 echo "GenericName=Open-Sankore" >> $SANKORE_SHORTCUT
-echo "Comment=Logiciel de création de présentations pour tableau numérique interactif (TNI)" >> $SANKORE_SHORTCUT 
+echo "Comment=Logiciel de creation de presentations pour tableau numerique interactif (TNI)" >> $SANKORE_SHORTCUT 
 echo "Exec=/usr/local/$SANKORE_DIRECTORY_NAME/run.sh" >> $SANKORE_SHORTCUT
 echo "Icon=/usr/local/$SANKORE_DIRECTORY_NAME/sankore.png" >> $SANKORE_SHORTCUT
 echo "StartupNotify=true" >> $SANKORE_SHORTCUT

@@ -118,7 +118,7 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
 
 void UBGraphicsItemDelegate::init()
 {
-    mToolBarItem = new UBGraphicsToolBarItem(delegated());
+    //mToolBarItem = new UBGraphicsToolBarItem(delegated());
 
     mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
     mFrame->hide();
@@ -168,7 +168,9 @@ UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 
 QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedHasChanged) {
+    if(change == QGraphicsItem::ItemChildAddedChange){
+
+    }else if (change == QGraphicsItem::ItemSelectedHasChanged) {
         bool ok;
         bool selected = value.toUInt(&ok);
         if (ok) {
@@ -331,17 +333,17 @@ void UBGraphicsItemDelegate::positionHandles()
 
         updateButtons(true);
 
-        if (mToolBarItem->isVisibleOnBoard())
-        {
-        updateToolBar();
-           mToolBarItem->show();
-        }
+//        if (mToolBarItem->isVisibleOnBoard())
+//        {
+//        updateToolBar();
+//           mToolBarItem->show();
+//        }
     } else {
         foreach(DelegateButton* button, mButtons)
             button->hide();
 
         mFrame->hide();
-        mToolBarItem->hide();
+//        mToolBarItem->hide();
     }
 }
 
@@ -381,7 +383,7 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
 
         scene->removeItem(mFrame);
         scene->removeItem(mDelegated);
-        scene->removeItem(mToolBarItem);
+        //scene->removeItem(mToolBarItem);
 
         if (canUndo)
         {

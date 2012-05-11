@@ -10,7 +10,7 @@
 #include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
 
-UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
+UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)	
 {
     setObjectName(name);
     mName = "FeaturesWidget";
@@ -82,7 +82,6 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	//pathListView->setMovement( QListView::Static );
 	pathListView->setDragDropMode( QAbstractItemView::DropOnly );
 
-	pathScene = new QGraphicsScene(this);
 	//pathViewer = new UBFeaturesPathViewer( QPixmap(":images/libpalette/home.png"), controller->getRootPath(), pathScene,  this );
 	featureProperties = new UBFeatureProperties(this);
 	webView = new UBFeaturesWebView(this);
@@ -121,7 +120,9 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &) ), this, SLOT( deleteElements(const QMimeData &) ) ); 
 	connect( mActionBar, SIGNAL( addToFavorite(const QMimeData &) ), this, SLOT( addToFavorite(const QMimeData &) ) );
 	connect( mActionBar, SIGNAL( removeFromFavorite(const QMimeData &) ), this, SLOT( removeFromFavorite(const QMimeData &) ) );
-    connect ( mActionBar, SIGNAL( addElementsToFavorite() ), this, SLOT ( addElementsToFavorite() ) ); 
+    connect( mActionBar, SIGNAL( addElementsToFavorite() ), this, SLOT ( addElementsToFavorite() ) );
+    connect( mActionBar, SIGNAL( removeElementsFromFavorite() ), this, SLOT ( removeElementsFromFavorite() ) );
+    connect( mActionBar, SIGNAL( deleteSelectedElements() ), this, SLOT( deleteSelectedElements() ) );
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
 	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
@@ -129,6 +130,15 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 		this, SLOT( onDisplayMetadata( QMap<QString,QString> ) ) );
     connect( UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray ) ), 
         this, SLOT( onAddDownloadedFileToLibrary( bool, QUrl, QString,QByteArray ) ) );
+}
+
+UBFeaturesWidget::~UBFeaturesWidget()
+{
+	if ( thumbSlider != NULL )
+    {
+        delete thumbSlider;
+        thumbSlider = NULL;
+    }
 }
 
 bool UBFeaturesWidget::eventFilter( QObject *target, QEvent *event )
@@ -277,6 +287,37 @@ void UBFeaturesWidget::deleteElements( const QMimeData & mimeData )
 	model->invalidate();
 }
 
+void UBFeaturesWidget::deleteSelectedElements()
+{
+    QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
+    QList <QUrl> urls;
+    foreach ( QModelIndex sel, selected )
+    {
+        UBFeature feature = sel.data( Qt::UserRole + 1 ).value<UBFeature>();
+        if ( feature.isDeletable() )
+            urls.append( feature.getFullPath() );
+    }
+
+    foreach (QUrl url, urls)
+    {
+        if ( controller->isTrash( url ) )
+		{
+			controller->deleteItem( url );
+		}
+		else
+		{
+			UBFeature elem = controller->moveItemToFolder( url, controller->getTrashElement() );
+			controller->removeFromFavorite( url );
+			featuresModel->addItem( elem );
+            featuresModel->deleteFavoriteItem( url.toString() );
+		}
+        featuresModel->deleteItem( url.toString() );
+    }
+    
+    QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
+	model->invalidate();
+}
+
 void UBFeaturesWidget::addToFavorite( const QMimeData & mimeData )
 {
 	if ( !mimeData.hasUrls() )
@@ -336,13 +377,44 @@ void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUr
 
 void UBFeaturesWidget::addElementsToFavorite()
 {
+    if ( currentStackedWidget == ID_PROPERTIES )
+    {
+        UBFeature feature = featureProperties->getCurrentElement();
+        if ( feature != UBFeature() && !UBApplication::isFromWeb( feature.getFullPath().toString() ) )
+        {
+            UBFeature elem = controller->addToFavorite( feature.getFullPath() );
+            featuresModel->addItem( elem );
+        }
+    }
+    else if ( currentStackedWidget == ID_LISTVIEW )
+    {
+        QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
+        for ( int i = 0; i < selected.size(); ++i )
+        {
+            UBFeature feature = selected.at(i).data( Qt::UserRole + 1 ).value<UBFeature>();
+            UBFeature elem = controller->addToFavorite( feature.getFullPath() );
+		    if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull() )
+			    featuresModel->addItem( elem );
+        }
+    }
+    QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
+	model->invalidate();
+}
+
+void UBFeaturesWidget::removeElementsFromFavorite()
+{
     QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
+    //qSort( selected.begin(), selected.end(), qGreater<QModelIndex>() );
+    QList <QUrl> items;
     for ( int i = 0; i < selected.size(); ++i )
     {
         UBFeature feature = selected.at(i).data( Qt::UserRole + 1 ).value<UBFeature>();
-        UBFeature elem = controller->addToFavorite( feature.getFullPath() );
-		if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull() )
-			featuresModel->addItem( elem );
+        items.append( feature.getFullPath() );
+    }
+    foreach ( QUrl url, items )
+    {
+        controller->removeFromFavorite( url );
+        featuresModel->deleteFavoriteItem( url.toString() );
     }
     QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
 	model->invalidate();
@@ -380,9 +452,7 @@ void UBFeaturesWidget::currentPathChanged(const QString &path)
 */
 
 
-UBFeaturesWidget::~UBFeaturesWidget()
-{
-}
+
 
 UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) 
 : QListView(parent)
@@ -435,7 +505,7 @@ void UBFeaturesListView::dropEvent( QDropEvent *event )
 	{
 		event->setDropAction( Qt::MoveAction );
 	}
-	QListView::dropEvent( event );
+	QListView::dropEvent( event ); 
 }
 
 
@@ -473,15 +543,18 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
 
 UBFeaturesWebView::~UBFeaturesWebView()
 {
-    if(NULL != mpSankoreAPI){
+    if( NULL != mpSankoreAPI )
+    {
         delete mpSankoreAPI;
         mpSankoreAPI = NULL;
     }
-    if(NULL != mpView){
+    if( NULL != mpView )
+    {
         delete mpView;
         mpView = NULL;
     }
-    if(NULL != mpLayout){
+    if( NULL != mpLayout )
+    {
         delete mpLayout;
         mpLayout = NULL;
     }
@@ -597,6 +670,55 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     connect( mpAddToLibButton, SIGNAL( clicked() ), this, SLOT(onAddToLib() ) );
 }
 
+UBFeatureProperties::~UBFeatureProperties()
+{
+	if ( mpOrigPixmap )
+    {
+        delete mpOrigPixmap;
+        mpOrigPixmap = NULL;
+    }
+	if ( mpElement )
+	{
+		delete mpElement;
+		mpElement = NULL;
+	}
+    if ( mpThumbnail )
+    {
+        delete mpThumbnail;
+        mpThumbnail = NULL;
+    }
+    if ( mpButtonLayout )
+    {
+        delete mpButtonLayout;
+        mpButtonLayout = NULL;
+    }
+    if ( mpAddPageButton )
+    {
+        delete mpAddPageButton;
+        mpAddPageButton = NULL;
+    }
+    if ( mpSetAsBackgroundButton )
+    {
+        delete mpSetAsBackgroundButton;
+        mpSetAsBackgroundButton = NULL;
+    }
+    if ( mpAddToLibButton )
+    {
+        delete mpAddToLibButton;
+        mpAddToLibButton = NULL;
+    }
+    if ( mpObjInfoLabel )
+    {
+        delete mpObjInfoLabel;
+        mpObjInfoLabel = NULL;
+    }
+    if ( mpObjInfos )
+    {
+        delete mpObjInfos;
+        mpObjInfos = NULL;
+    }
+}
+
 void UBFeatureProperties::resizeEvent( QResizeEvent *event )
 {
     Q_UNUSED(event);
@@ -607,6 +729,13 @@ void UBFeatureProperties::showEvent (QShowEvent *event )
 {
     Q_UNUSED(event);
     adaptSize();
+}
+
+UBFeature UBFeatureProperties::getCurrentElement() const
+{
+    if ( mpElement )
+        return *mpElement;
+    return UBFeature();
 }
 
 void UBFeatureProperties::adaptSize()
@@ -716,19 +845,7 @@ void UBFeatureProperties::onSetAsBackground()
     featuresWidget->getFeaturesController()->addItemAsBackground( *mpElement );
 }
 
-UBFeatureProperties::~UBFeatureProperties()
-{
-	if ( mpOrigPixmap )
-    {
-        delete mpOrigPixmap;
-        mpOrigPixmap = NULL;
-    }
-	if ( mpElement )
-	{
-		delete mpElement;
-		mpElement = NULL;
-	}
-}
+
 
 UBFeatureItemButton::UBFeatureItemButton(QWidget *parent, const char *name):QPushButton(parent)
 {
@@ -854,8 +971,20 @@ void UBFeaturesModel::deleteFavoriteItem( const QString &path )
 {
 	for ( int i = 0; i < featuresList->size(); ++i )
 	{
-		if ( !QString::compare( featuresList->at(i).getUrl(), path, Qt::CaseInsensitive ) &&
+        if ( !QString::compare( featuresList->at(i).getFullPath().toString(), path, Qt::CaseInsensitive ) &&
 			!QString::compare( featuresList->at(i).getVirtualPath(), "/root/favorites", Qt::CaseInsensitive ) )
+		{
+			removeRow( i, QModelIndex() );
+			return;
+		}
+	}
+}
+
+void UBFeaturesModel::deleteItem( const QString &path )
+{
+    for ( int i = 0; i < featuresList->size(); ++i )
+	{
+        if ( !QString::compare( featuresList->at(i).getFullPath().toString(), path, Qt::CaseInsensitive ) )
 		{
 			removeRow( i, QModelIndex() );
 			return;
@@ -888,6 +1017,7 @@ bool UBFeaturesModel::removeRow(  int row, const QModelIndex & parent )
 	endRemoveRows();
 	return true;
 }
+
 
 Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 {

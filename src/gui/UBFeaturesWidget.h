@@ -80,7 +80,7 @@ private:
 	QSlider *thumbSlider;
 	QVBoxLayout *layout;
 	//UBFeaturesPathViewer *pathViewer;
-	QGraphicsScene *pathScene;
+	//QGraphicsScene *pathScene;
 	UBFeaturesActionBar *mActionBar;
 	UBFeatureProperties *featureProperties;
 	UBFeaturesWebView *webView;
@@ -88,7 +88,6 @@ private:
 	
 
 	int currentStackedWidget;
-	QModelIndex trashIndex;
 private slots:
 	void currentSelected( const QModelIndex & );
 	//void currentPathChanged(const QString &);
@@ -102,6 +101,8 @@ private slots:
 	void onDisplayMetadata( QMap<QString,QString> );
     void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
     void addElementsToFavorite();
+    void removeElementsFromFavorite();
+    void deleteSelectedElements();
 protected:
 	bool eventFilter(QObject *target, QEvent *event);
 };
@@ -129,7 +130,7 @@ class UBFeaturesWebView : public QWidget
     Q_OBJECT
 public:
     UBFeaturesWebView(QWidget* parent = 0, const char* name = "UBFeaturesWebView");
-    ~UBFeaturesWebView();
+    virtual ~UBFeaturesWebView();
 
     void showElement(const UBFeature &elem);
 
@@ -151,8 +152,7 @@ public:
     ~UBFeatureProperties();
 
     void showElement(const UBFeature &elem);
-
-
+    UBFeature getCurrentElement() const;
 protected:
     void resizeEvent(QResizeEvent *event);
     void showEvent(QShowEvent *event);
@@ -200,6 +200,7 @@ public:
 
 	void addItem( const UBFeature &item );
 	void deleteFavoriteItem( const QString &path );
+    void deleteItem( const QString &path );
 
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
 	QMimeData *mimeData( const QModelIndexList &indexes ) const;
@@ -209,6 +210,8 @@ public:
     bool dropMimeData(const QMimeData *mimeData, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 	bool removeRow(int row, const QModelIndex &parent = QModelIndex());
+    //bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    //bool insertRow(int row, const QModelIndex &parent = QModelIndex());
 	
     Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 
