@@ -707,6 +707,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpSchoolLevelItemLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpSchoolLevelItemLabel);
     mpSchoolLevelBox = new QComboBox(this);
+    mpSchoolLevelBox->setMinimumHeight(22);
     mpSchoolLevelBox->setObjectName("DockPaletteWidgetComboBox");
     connect(mpSchoolLevelBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(onSchoolLevelChanged(QString)));
     mpLayout->addWidget(mpSchoolLevelBox);
@@ -719,6 +720,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpSchoolSubjectsItemLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpSchoolSubjectsItemLabel);
     mpSchoolSubjectsBox = new QComboBox(this);
+    mpSchoolSubjectsBox->setMinimumHeight(22);
     mpSchoolSubjectsBox->setObjectName("DockPaletteWidgetComboBox");
     mpLayout->addWidget(mpSchoolSubjectsBox);
     mpSchoolSubjectsValueLabel = new QLabel(this);
@@ -730,6 +732,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpSchoolTypeItemLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpSchoolTypeItemLabel);
     mpSchoolTypeBox = new QComboBox(this);
+    mpSchoolTypeBox->setMinimumHeight(22);
     mpSchoolTypeBox->setObjectName("DockPaletteWidgetComboBox");
     mpLayout->addWidget(mpSchoolTypeBox);
     mpSchoolTypeValueLabel = new QLabel(this);
@@ -746,6 +749,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpLicenceLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpLicenceLabel);
     mpLicenceBox = new QComboBox(this);
+    mpLicenceBox->setMinimumHeight(22);
     mpLicenceBox->setObjectName("DockPaletteWidgetComboBox");
     mpLayout->addWidget(mpLicenceBox);
     mpLicenceLayout = new QHBoxLayout(0);
