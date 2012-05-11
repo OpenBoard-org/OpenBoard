@@ -38,10 +38,10 @@ QString UBSettings::documentVersion = QString("Version");
 QString UBSettings::documentUpdatedAt = QString("UpdatedAt");
 QString UBSettings::sessionTitle = QString("sessionTitle");
 QString UBSettings::sessionAuthors = QString("sessionAuthors");
-QString UBSettings::sessionGoals = QString("sessionGoals");
+QString UBSettings::sessionObjectives = QString("sessionObjectives");
 QString UBSettings::sessionKeywords = QString("sessionKeywords");
 QString UBSettings::sessionGradeLevel = QString("sessionGradeLevel");
-QString UBSettings::sessionBranch = QString("sessionBranch");
+QString UBSettings::sessionSubjects = QString("sessionSubjects");
 QString UBSettings::sessionType = QString("sessionType");
 QString UBSettings::sessionLicence = QString("sessionLicence");
 QString UBSettings::documentDate = QString("date");
@@ -55,7 +55,7 @@ QString UBSettings::uniboardApplicationNamespaceUri = "http://uniboard.mnemis.co
 const int UBSettings::sDefaultFontPixelSize = 36;
 const char *UBSettings::sDefaultFontFamily = "Arial";
 
-QString UBSettings::currentFileVersion = "4.5.0";
+QString UBSettings::currentFileVersion = "4.6.0";
 
 QColor UBSettings::crossDarkBackground = QColor(44, 44, 44, 200);
 QColor UBSettings::crossLightBackground = QColor(165, 225, 255);

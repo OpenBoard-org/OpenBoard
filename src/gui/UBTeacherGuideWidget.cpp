@@ -594,18 +594,18 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
   , mpSeparatorAuthors(NULL)
   , mpCreationLabel(NULL)
   , mpLastModifiedLabel(NULL)
-  , mpGoalsLabel(NULL)
-  , mpGoals(NULL)
-  , mpSeparatorGoals(NULL)
+  , mpObjectivesLabel(NULL)
+  , mpObjectives(NULL)
+  , mpSeparatorObjectives(NULL)
   , mpIndexLabel(NULL)
   , mpKeywordsLabel(NULL)
   , mpKeywords(NULL)
   , mpSchoolLevelItemLabel(NULL)
   , mpSchoolLevelBox(NULL)
   , mpSchoolLevelValueLabel(NULL)
-  , mpSchoolBranchItemLabel(NULL)
-  , mpSchoolBranchBox(NULL)
-  , mpSchoolBranchValueLabel(NULL)
+  , mpSchoolSubjectsItemLabel(NULL)
+  , mpSchoolSubjectsBox(NULL)
+  , mpSchoolSubjectsValueLabel(NULL)
   , mpSchoolTypeItemLabel(NULL)
   , mpSchoolTypeBox(NULL)
   , mpSchoolTypeValueLabel(NULL)
@@ -670,21 +670,21 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpSeparatorAuthors->setObjectName("UBTGSeparator");
     mpLayout->addWidget(mpSeparatorAuthors);
 
-    mpGoalsLabel = new QLabel(this);
-    mpGoalsLabel->setObjectName("UBTGZeroPageEditionModeTitle");
-    mpGoalsLabel->setText(tr("Goal(s)"));
-    mpGoalsLabel->setStyleSheet(chapterStyle);
-    mpLayout->addWidget(mpGoalsLabel);
+    mpObjectivesLabel = new QLabel(this);
+    mpObjectivesLabel->setObjectName("UBTGZeroPageEditionModeTitle");
+    mpObjectivesLabel->setText(tr("Objective(s)"));
+    mpObjectivesLabel->setStyleSheet(chapterStyle);
+    mpLayout->addWidget(mpObjectivesLabel);
 
-    mpGoals = new UBTGAdaptableText(0,this);
-    mpGoals->setObjectName("UBTGZeroPageInputText");
-    mpGoals->setPlaceHolderText(tr("Type goals here..."));
-    mpLayout->addWidget(mpGoals);
+    mpObjectives = new UBTGAdaptableText(0,this);
+    mpObjectives->setObjectName("UBTGZeroPageInputText");
+    mpObjectives->setPlaceHolderText(tr("Type objectives here..."));
+    mpLayout->addWidget(mpObjectives);
 
-    mpSeparatorGoals = new QFrame(this);
-    mpSeparatorGoals->setFixedHeight(UBTG_SEPARATOR_FIXED_HEIGHT);
-    mpSeparatorGoals->setObjectName("UBTGSeparator");
-    mpLayout->addWidget(mpSeparatorGoals);
+    mpSeparatorObjectives = new QFrame(this);
+    mpSeparatorObjectives->setFixedHeight(UBTG_SEPARATOR_FIXED_HEIGHT);
+    mpSeparatorObjectives->setObjectName("UBTGSeparator");
+    mpLayout->addWidget(mpSeparatorObjectives);
 
     mpIndexLabel = new QLabel(this);
     mpIndexLabel->setObjectName("UBTGZeroPageEditionModeTitle");
@@ -713,16 +713,16 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpSchoolLevelValueLabel = new QLabel(this);
     mpLayout->addWidget(mpSchoolLevelValueLabel);
 
-    mpSchoolBranchItemLabel = new QLabel(this);
-    mpSchoolBranchItemLabel->setObjectName("UBTGZeroPageItemLabel");
-    mpSchoolBranchItemLabel->setText(tr("Branch:"));
-    mpSchoolBranchItemLabel->setStyleSheet(chapterStyle);
-    mpLayout->addWidget(mpSchoolBranchItemLabel);
-    mpSchoolBranchBox = new QComboBox(this);
-    mpSchoolBranchBox->setObjectName("DockPaletteWidgetComboBox");
-    mpLayout->addWidget(mpSchoolBranchBox);
-    mpSchoolBranchValueLabel = new QLabel(this);
-    mpLayout->addWidget(mpSchoolBranchValueLabel);
+    mpSchoolSubjectsItemLabel = new QLabel(this);
+    mpSchoolSubjectsItemLabel->setObjectName("UBTGZeroPageItemLabel");
+    mpSchoolSubjectsItemLabel->setText(tr("Subjects:"));
+    mpSchoolSubjectsItemLabel->setStyleSheet(chapterStyle);
+    mpLayout->addWidget(mpSchoolSubjectsItemLabel);
+    mpSchoolSubjectsBox = new QComboBox(this);
+    mpSchoolSubjectsBox->setObjectName("DockPaletteWidgetComboBox");
+    mpLayout->addWidget(mpSchoolSubjectsBox);
+    mpSchoolSubjectsValueLabel = new QLabel(this);
+    mpLayout->addWidget(mpSchoolSubjectsValueLabel);
 
     mpSchoolTypeItemLabel = new QLabel(this);
     mpSchoolTypeItemLabel->setObjectName("UBTGZeroPageItemLabel");
@@ -771,16 +771,16 @@ UBTeacherGuidePageZeroWidget::~UBTeacherGuidePageZeroWidget()
     DELETEPTR(mpSeparatorAuthors);
     DELETEPTR(mpCreationLabel);
     DELETEPTR(mpLastModifiedLabel);
-    DELETEPTR(mpGoalsLabel);
-    DELETEPTR(mpGoals);
-    DELETEPTR(mpSeparatorGoals);
+    DELETEPTR(mpObjectivesLabel);
+    DELETEPTR(mpObjectives);
+    DELETEPTR(mpSeparatorObjectives);
     DELETEPTR(mpIndexLabel);
     DELETEPTR(mpKeywordsLabel);
     DELETEPTR(mpKeywords);
     DELETEPTR(mpSchoolLevelItemLabel);
     DELETEPTR(mpSchoolLevelBox);
-    DELETEPTR(mpSchoolBranchItemLabel);
-    DELETEPTR(mpSchoolBranchBox);
+    DELETEPTR(mpSchoolSubjectsItemLabel);
+    DELETEPTR(mpSchoolSubjectsBox);
     DELETEPTR(mpSchoolTypeItemLabel);
     DELETEPTR(mpSchoolTypeBox);
     DELETEPTR(mpSeparatorIndex);
@@ -853,15 +853,15 @@ void UBTeacherGuidePageZeroWidget::fillComboBoxes()
 void UBTeacherGuidePageZeroWidget::onSchoolLevelChanged(QString schoolLevel)
 {
     QStringList subjects = mSubjects.value(mGradeLevelsMap.value(schoolLevel));
-    mpSchoolBranchBox->clear();
+    mpSchoolSubjectsBox->clear();
     if(subjects.count()){
-        mpSchoolBranchItemLabel->setEnabled(true);
-        mpSchoolBranchBox->setEnabled(true);
-        mpSchoolBranchBox->addItems(subjects);
+        mpSchoolSubjectsItemLabel->setEnabled(true);
+        mpSchoolSubjectsBox->setEnabled(true);
+        mpSchoolSubjectsBox->addItems(subjects);
     }
     else{
-        mpSchoolBranchItemLabel->setDisabled(true);
-        mpSchoolBranchBox->setDisabled(true);
+        mpSchoolSubjectsItemLabel->setDisabled(true);
+        mpSchoolSubjectsBox->setDisabled(true);
     }
 }
 
@@ -889,14 +889,14 @@ void UBTeacherGuidePageZeroWidget::loadData()
     UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
     mpSessionTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
     mpAuthors->setText(documentProxy->metaData(UBSettings::sessionAuthors).toString());
-    mpGoals->setText(documentProxy->metaData(UBSettings::sessionGoals).toString());
+    mpObjectives->setText(documentProxy->metaData(UBSettings::sessionObjectives).toString());
     mpKeywords->setText(documentProxy->metaData(UBSettings::sessionKeywords).toString());
 
     int currentIndex = mpSchoolLevelBox->findText(documentProxy->metaData(UBSettings::sessionGradeLevel).toString());
     mpSchoolLevelBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
 
-    currentIndex = mpSchoolBranchBox->findText(documentProxy->metaData(UBSettings::sessionBranch).toString());
-    mpSchoolBranchBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
+    currentIndex = mpSchoolSubjectsBox->findText(documentProxy->metaData(UBSettings::sessionSubjects).toString());
+    mpSchoolSubjectsBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
 
     currentIndex = mpSchoolTypeBox->findText(documentProxy->metaData(UBSettings::sessionType).toString());
     mpSchoolTypeBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
@@ -913,10 +913,10 @@ void UBTeacherGuidePageZeroWidget::persistData()
         UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
         documentProxy->setMetaData(UBSettings::sessionTitle,mpSessionTitle->text());
         documentProxy->setMetaData(UBSettings::sessionAuthors, mpAuthors->text());
-        documentProxy->setMetaData(UBSettings::sessionGoals,mpGoals->text());
+        documentProxy->setMetaData(UBSettings::sessionObjectives,mpObjectives->text());
         documentProxy->setMetaData(UBSettings::sessionKeywords,mpKeywords->text());
         documentProxy->setMetaData(UBSettings::sessionGradeLevel,mpSchoolLevelBox->currentText());
-        documentProxy->setMetaData(UBSettings::sessionBranch,mpSchoolBranchBox->currentText());
+        documentProxy->setMetaData(UBSettings::sessionSubjects,mpSchoolSubjectsBox->currentText());
         documentProxy->setMetaData(UBSettings::sessionType,mpSchoolTypeBox->currentText());
         documentProxy->setMetaData(UBSettings::sessionLicence,mpLicenceBox->currentText());
     }
@@ -942,16 +942,16 @@ void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
         mpAuthors->setReadOnly(false);
         mpAuthors->setStyleSheet(inputStyleSheet);
         mpAuthors->setTextColor(QColor(Qt::lightGray));
-        mpGoals->setReadOnly(false);
-        mpGoals->setStyleSheet(inputStyleSheet);
-        mpGoals->setTextColor(QColor(Qt::lightGray));
+        mpObjectives->setReadOnly(false);
+        mpObjectives->setStyleSheet(inputStyleSheet);
+        mpObjectives->setTextColor(QColor(Qt::lightGray));
         mpKeywords->setReadOnly(false);
         mpKeywords->setStyleSheet(inputStyleSheet);
         mpKeywords->setTextColor(QColor(Qt::lightGray));
         mpSchoolLevelValueLabel->hide();
         mpSchoolLevelBox->show();
-        mpSchoolBranchValueLabel->hide();
-        mpSchoolBranchBox->show();
+        mpSchoolSubjectsValueLabel->hide();
+        mpSchoolSubjectsBox->show();
         mpSchoolTypeValueLabel->hide();
         mpSchoolTypeBox->show();
         mpLicenceIcon->hide();
@@ -969,18 +969,18 @@ void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
         mpAuthors->setStyleSheet(inputStyleSheet);
         mpAuthors->setTextColor(QColor(Qt::black));
         mpAuthors->showText(mpAuthors->text());
-        mpGoals->setStyleSheet(inputStyleSheet);
-        mpGoals->setTextColor(QColor(Qt::black));
-        mpGoals->showText(mpGoals->text());
+        mpObjectives->setStyleSheet(inputStyleSheet);
+        mpObjectives->setTextColor(QColor(Qt::black));
+        mpObjectives->showText(mpObjectives->text());
         mpKeywords->setStyleSheet(inputStyleSheet);
         mpKeywords->setTextColor(QColor(Qt::black));
         mpKeywords->showText(mpKeywords->text());
         mpSchoolLevelValueLabel->setText(mpSchoolLevelBox->currentText());
         mpSchoolLevelValueLabel->show();
         mpSchoolLevelBox->hide();
-        mpSchoolBranchValueLabel->setText(mpSchoolBranchBox->currentText());
-        mpSchoolBranchValueLabel->show();
-        mpSchoolBranchBox->hide();
+        mpSchoolSubjectsValueLabel->setText(mpSchoolSubjectsBox->currentText());
+        mpSchoolSubjectsValueLabel->show();
+        mpSchoolSubjectsBox->hide();
         mpSchoolTypeValueLabel->setText(mpSchoolTypeBox->currentText());
         mpSchoolTypeValueLabel->show();
         mpSchoolTypeBox->hide();
@@ -1022,7 +1022,7 @@ QVector<tUBGEElementNode*> UBTeacherGuidePageZeroWidget::getData()
 
     elementNode = new tUBGEElementNode();
     elementNode->name = "goals";
-    elementNode->attributes.insert("value",mpGoals->text());
+    elementNode->attributes.insert("value",mpObjectives->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
@@ -1037,7 +1037,7 @@ QVector<tUBGEElementNode*> UBTeacherGuidePageZeroWidget::getData()
 
     elementNode = new tUBGEElementNode();
     elementNode->name = "schoolBranch";
-    elementNode->attributes.insert("value",mpSchoolBranchBox->currentText());
+    elementNode->attributes.insert("value",mpSchoolSubjectsBox->currentText());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();

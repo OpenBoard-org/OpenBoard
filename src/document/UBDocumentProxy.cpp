@@ -53,10 +53,10 @@ void UBDocumentProxy::init()
     //teacherGuide metadata
     setMetaData(UBSettings::sessionTitle,"");
     setMetaData(UBSettings::sessionAuthors,"");
-    setMetaData(UBSettings::sessionGoals,"");
+    setMetaData(UBSettings::sessionObjectives,"");
     setMetaData(UBSettings::sessionKeywords,"");
     setMetaData(UBSettings::sessionGradeLevel,"");
-    setMetaData(UBSettings::sessionBranch,"");
+    setMetaData(UBSettings::sessionSubjects,"");
     setMetaData(UBSettings::sessionType,"");
     setMetaData(UBSettings::sessionLicence,"");
 }

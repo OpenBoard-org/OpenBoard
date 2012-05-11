@@ -156,10 +156,10 @@ class UBSettings : public QObject
 
         static QString sessionTitle;
         static QString sessionAuthors;
-        static QString sessionGoals;
+        static QString sessionObjectives;
         static QString sessionKeywords;
         static QString sessionGradeLevel;
-        static QString sessionBranch;
+        static QString sessionSubjects;
         static QString sessionType;
         static QString sessionLicence;
 

@@ -112,10 +112,10 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
     // introduced in OpenSankore 1.40.00
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionTitle,proxy->metaData(UBSettings::sessionTitle).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionAuthors,proxy->metaData(UBSettings::sessionAuthors).toString());
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionGoals,proxy->metaData(UBSettings::sessionGoals).toString());
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionObjectives,proxy->metaData(UBSettings::sessionObjectives).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionKeywords,proxy->metaData(UBSettings::sessionKeywords).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionGradeLevel,proxy->metaData(UBSettings::sessionGradeLevel).toString());
-    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionBranch,proxy->metaData(UBSettings::sessionBranch).toString());
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionSubjects,proxy->metaData(UBSettings::sessionSubjects).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionType,proxy->metaData(UBSettings::sessionType).toString());
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::sessionLicence,proxy->metaData(UBSettings::sessionLicence).toString());
 
@@ -228,10 +228,10 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
                 {
                     metadata.insert(UBSettings::sessionAuthors, xml.readElementText());
                 }
-                else if (xml.name() == UBSettings::sessionGoals // introduced in OpenSankore 1.40.00
+                else if (xml.name() == UBSettings::sessionObjectives // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
-                    metadata.insert(UBSettings::sessionGoals, xml.readElementText());
+                    metadata.insert(UBSettings::sessionObjectives, xml.readElementText());
                 }
                 else if (xml.name() == UBSettings::sessionKeywords // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
@@ -243,10 +243,10 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
                 {
                     metadata.insert(UBSettings::sessionGradeLevel, xml.readElementText());
                 }
-                else if (xml.name() == UBSettings::sessionBranch // introduced in OpenSankore 1.40.00
+                else if (xml.name() == UBSettings::sessionSubjects // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
                 {
-                    metadata.insert(UBSettings::sessionBranch, xml.readElementText());
+                    metadata.insert(UBSettings::sessionSubjects, xml.readElementText());
                 }
                 else if (xml.name() == UBSettings::sessionType // introduced in OpenSankore 1.40.00
                          && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)

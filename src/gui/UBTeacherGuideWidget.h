@@ -150,9 +150,9 @@ private:
 
     QLabel* mpCreationLabel;
     QLabel* mpLastModifiedLabel;
-    QLabel* mpGoalsLabel;
-    UBTGAdaptableText* mpGoals;
-    QFrame* mpSeparatorGoals;
+    QLabel* mpObjectivesLabel;
+    UBTGAdaptableText* mpObjectives;
+    QFrame* mpSeparatorObjectives;
 
     QLabel* mpIndexLabel;
     QLabel* mpKeywordsLabel;
@@ -162,9 +162,9 @@ private:
     QComboBox* mpSchoolLevelBox;
     QLabel* mpSchoolLevelValueLabel;
 
-    QLabel* mpSchoolBranchItemLabel;
-    QComboBox* mpSchoolBranchBox;
-    QLabel* mpSchoolBranchValueLabel;
+    QLabel* mpSchoolSubjectsItemLabel;
+    QComboBox* mpSchoolSubjectsBox;
+    QLabel* mpSchoolSubjectsValueLabel;
 
     QLabel* mpSchoolTypeItemLabel;
     QComboBox* mpSchoolTypeBox;
