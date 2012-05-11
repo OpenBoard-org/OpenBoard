@@ -46,6 +46,12 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
         return;
     }
 
+    //setting item flags to given item
+    item->setSelected(false);
+    item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+    item->setFlag( QGraphicsItem::ItemIsMovable, false);
+    item->setFlag(QGraphicsItem::ItemIsFocusable, true);
+
     QTransform newItemTransform(itemTransform);
     item->setPos(mapFromItem(item, 0, 0));
     item->setParentItem(this);
@@ -130,20 +136,24 @@ void UBGraphicsGroupContainerItem::paint(QPainter *painter, const QStyleOptionGr
                                QWidget *widget)
 {
     Q_UNUSED(widget);
-    if (option->state & QStyle::State_Selected) {
-        painter->setBrush(Qt::NoBrush);
-        QPen tmpPen;
-        qreal tmpPenWidth = 1.0;
-        tmpPen.setWidth(tmpPenWidth);
-        tmpPen.setColor(Qt::lightGray);
-        painter->setPen(tmpPen);
-        painter->drawRect(itemsBoundingRect.adjusted(tmpPenWidth / 2, tmpPenWidth / 2, -tmpPenWidth / 2, -tmpPenWidth / 2));
-    }
+    Q_UNUSED(painter);
+    Q_UNUSED(option);
+
+//    we would not use paint smth for the moment
+//    if (option->state & QStyle::State_Selected) {
+//        painter->setBrush(Qt::NoBrush);
+//        QPen tmpPen;
+//        qreal tmpPenWidth = 1.0;
+//        tmpPen.setWidth(tmpPenWidth);
+//        tmpPen.setColor(Qt::lightGray);
+//        painter->setPen(tmpPen);
+//        painter->drawRect(itemsBoundingRect.adjusted(tmpPenWidth / 2, tmpPenWidth / 2, -tmpPenWidth / 2, -tmpPenWidth / 2));
+//    }
 }
 
 UBGraphicsScene *UBGraphicsGroupContainerItem::scene()
 {
-    UBGraphicsScene *castScene = dynamic_cast<UBGraphicsScene*>(scene());
+    UBGraphicsScene *castScene = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
 
     return castScene;
 }
@@ -178,7 +188,12 @@ void UBGraphicsGroupContainerItem::destroy() {
         item->setFlag(QGraphicsItem::ItemIsFocusable, true);
     }
 
-    mDelegate->remove(true);
+    remove();
+
+    if (scene()) {
+        qDebug() << "scene is well casted";
+        scene()->removeItem(this);
+    }
 }
 
 void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -186,9 +201,12 @@ void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *eve
     if (mDelegate->mousePressEvent(event)) {
         //NOOP
     } else {
-        QGraphicsItem::mousePressEvent(event);
+
+    QGraphicsItem::mousePressEvent(event);
         setSelected(true);
     }
+
+
 }
 
 void UBGraphicsGroupContainerItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -198,11 +216,12 @@ void UBGraphicsGroupContainerItem::mouseMoveEvent(QGraphicsSceneMouseEvent *even
     } else {
         QGraphicsItem::mouseMoveEvent(event);
     }
+
 }
 
 void UBGraphicsGroupContainerItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    mDelegate->mouseReleaseEvent(event);
+//    mDelegate->mouseReleaseEvent(event);
     QGraphicsItem::mouseReleaseEvent(event);
 }
 

@@ -17,6 +17,10 @@ protected:
     virtual void decorateMenu(QMenu *menu);
     virtual void buildButtons();
 
+    virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
+    virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    virtual bool mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
 private:
     DelegateButton *mDestroyGroupButton;
 };

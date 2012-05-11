@@ -294,9 +294,15 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     }
 
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(groupButtonProcessing()));
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
 
-    connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
+//  just a stub don't treat as a result code
+//    static int i = 0;
+//    i++;
+//    if (i == 1) {
+        connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
+//        qDebug() << "the connect is accepted";
+//    }
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -315,7 +321,7 @@ void UBGraphicsScene::selectionChangedProcessing()
         UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
                                                 + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
 }
-void UBGraphicsScene::groupButtonProcessing()
+void UBGraphicsScene::updateGroupButtonState()
 {
     QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
     QList<QGraphicsItem*> selItems = selectedItems();
@@ -351,11 +357,18 @@ void UBGraphicsScene::groupButtonClicked()
         UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
 
         foreach (QGraphicsItem *item, selItems) {
-            item->setSelected(false);
-            item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-            item->setFlag( QGraphicsItem::ItemIsMovable, false);
-            item->setFlag(QGraphicsItem::ItemIsFocusable);
-            groupItem->addToGroup(item);
+            if (item->type() == UBGraphicsGroupContainerItem::Type) {
+                QList<QGraphicsItem*> childItems = item->childItems();
+                UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+                if (currentGroup) {
+                    currentGroup->destroy();
+                }
+                foreach (QGraphicsItem *chItem, childItems) {
+                    groupItem->addToGroup(chItem);
+                }
+            } else {
+                groupItem->addToGroup(item);
+            }
         }
 
         addItem(groupItem);
@@ -374,26 +387,6 @@ void UBGraphicsScene::groupButtonClicked()
         }
     }
 
-}
-void UBGraphicsScene::processGroupItems()
-{
-    qDebug() << "processing grouping items";
-
-    UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
-
-    foreach (QGraphicsItem *item, selectedItems()) {
-        item->setSelected(false);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-        item->setFlag( QGraphicsItem::ItemIsMovable, false);
-        item->setFlag(QGraphicsItem::ItemIsFocusable, true);
-        groupItem->addToGroup(item);
-    }
-
-    addItem(groupItem);
-//    groupItem->setPos(50, 50);
-    groupItem->setVisible(true);
-    groupItem->setFocus();
-    qDebug() << groupItem->boundingRect();
 }
 
 // MARK: -

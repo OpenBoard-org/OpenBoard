@@ -30,6 +30,7 @@
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsStrokesGroup.h"
+#include "domain/ubgraphicsgroupcontaineritem.h"
 #include "domain/UBItem.h"
 
 #include "tools/UBGraphicsRuler.h"
@@ -929,8 +930,13 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
 {
+
+
     if (mScene->isModified())
     {
+        static int i = 0;
+        qDebug() << "persist call no is " << ++i;
+
         QBuffer buffer;
         buffer.open(QBuffer::WriteOnly);
         mXmlWriter.setDevice(&buffer);
@@ -1035,114 +1041,15 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
                 openStroke = 0;
             }
 
-            UBGraphicsPixmapItem *pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*> (item);
+            UBGraphicsGroupContainerItem *groupItem = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item);
 
-            if (pixmapItem && pixmapItem->isVisible())
+            if (groupItem && groupItem->isVisible())
             {
-                pixmapItemToLinkedImage(pixmapItem);
+                qDebug() << "came across the group during the parsing";
                 continue;
             }
 
-            UBGraphicsSvgItem *svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*> (item);
-
-            if (svgItem && svgItem->isVisible())
-            {
-                svgItemToLinkedSvg(svgItem);
-                continue;
-            }
-
-            UBGraphicsVideoItem *videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (item);
-
-            if (videoItem && videoItem->isVisible())
-            {
-                videoItemToLinkedVideo(videoItem);
-                continue;
-            }
-
-            UBGraphicsAudioItem* audioItem = qgraphicsitem_cast<UBGraphicsAudioItem*> (item);
-            if (audioItem && audioItem->isVisible()) {
-                audioItemToLinkedAudio(audioItem);
-                continue;
-            }
-
-            UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
-
-            if (appleWidgetItem && appleWidgetItem->isVisible())
-            {
-                graphicsAppleWidgetToSvg(appleWidgetItem);
-                continue;
-            }
-
-            UBGraphicsW3CWidgetItem *w3cWidgetItem = qgraphicsitem_cast<UBGraphicsW3CWidgetItem*> (item);
-
-            if (w3cWidgetItem && w3cWidgetItem->isVisible())
-            {
-                graphicsW3CWidgetToSvg(w3cWidgetItem);
-                continue;
-            }
-
-            UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*> (item);
-
-            if (pdfItem && pdfItem->isVisible())
-            {
-                pdfItemToLinkedPDF(pdfItem);
-                continue;
-            }
-
-            UBGraphicsTextItem *textItem = qgraphicsitem_cast<UBGraphicsTextItem*> (item);
-
-            if (textItem && textItem->isVisible())
-            {
-                textItemToSvg(textItem);
-                continue;
-            }
-
-            UBGraphicsCurtainItem *curtainItem = qgraphicsitem_cast<UBGraphicsCurtainItem*> (item);
-
-            if (curtainItem && curtainItem->isVisible())
-            {
-                curtainItemToSvg(curtainItem);
-                continue;
-            }
-
-            UBGraphicsRuler *ruler = qgraphicsitem_cast<UBGraphicsRuler*> (item);
-
-            if (ruler && ruler->isVisible())
-            {
-                rulerToSvg(ruler);
-                continue;
-            }
-
-            UBGraphicsCache* cache = qgraphicsitem_cast<UBGraphicsCache*>(item);
-            if(cache && cache->isVisible())
-            {
-                cacheToSvg(cache);
-                continue;
-            }
-
-            UBGraphicsCompass *compass = qgraphicsitem_cast<UBGraphicsCompass*> (item);
-
-            if (compass && compass->isVisible())
-            {
-                compassToSvg(compass);
-                continue;
-            }
-
-            UBGraphicsProtractor *protractor = qgraphicsitem_cast<UBGraphicsProtractor*> (item);
-
-            if (protractor && protractor->isVisible())
-            {
-                protractorToSvg(protractor);
-                continue;
-            }
-
-            UBGraphicsTriangle *triangle = qgraphicsitem_cast<UBGraphicsTriangle*> (item);
-
-            if (triangle && triangle->isVisible())
-            {
-                triangleToSvg(triangle);
-                continue;
-            }
+            parseCommonItems(item);
         }
 
         if (openStroke)
@@ -1173,6 +1080,121 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene()
 
     return true;
 }
+
+bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::parseCommonItems(QGraphicsItem *item)
+{
+    UBGraphicsPixmapItem *pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*> (item);
+
+    if (pixmapItem && pixmapItem->isVisible())
+    {
+        pixmapItemToLinkedImage(pixmapItem);
+        return true;
+    }
+
+    UBGraphicsSvgItem *svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*> (item);
+
+    if (svgItem && svgItem->isVisible())
+    {
+        svgItemToLinkedSvg(svgItem);
+        return true;
+    }
+
+    UBGraphicsVideoItem *videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (item);
+
+    if (videoItem && videoItem->isVisible())
+    {
+        videoItemToLinkedVideo(videoItem);
+        return true;
+    }
+
+    UBGraphicsAudioItem* audioItem = qgraphicsitem_cast<UBGraphicsAudioItem*> (item);
+    if (audioItem && audioItem->isVisible()) {
+        audioItemToLinkedAudio(audioItem);
+        return true;
+    }
+
+    UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
+
+    if (appleWidgetItem && appleWidgetItem->isVisible())
+    {
+        graphicsAppleWidgetToSvg(appleWidgetItem);
+        return true;
+    }
+
+    UBGraphicsW3CWidgetItem *w3cWidgetItem = qgraphicsitem_cast<UBGraphicsW3CWidgetItem*> (item);
+
+    if (w3cWidgetItem && w3cWidgetItem->isVisible())
+    {
+        graphicsW3CWidgetToSvg(w3cWidgetItem);
+        return true;
+    }
+
+    UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*> (item);
+
+    if (pdfItem && pdfItem->isVisible())
+    {
+        pdfItemToLinkedPDF(pdfItem);
+        return true;
+    }
+
+    UBGraphicsTextItem *textItem = qgraphicsitem_cast<UBGraphicsTextItem*> (item);
+
+    if (textItem && textItem->isVisible())
+    {
+        textItemToSvg(textItem);
+        return true;
+    }
+
+    UBGraphicsCurtainItem *curtainItem = qgraphicsitem_cast<UBGraphicsCurtainItem*> (item);
+
+    if (curtainItem && curtainItem->isVisible())
+    {
+        curtainItemToSvg(curtainItem);
+        return true;
+    }
+
+    UBGraphicsRuler *ruler = qgraphicsitem_cast<UBGraphicsRuler*> (item);
+
+    if (ruler && ruler->isVisible())
+    {
+        rulerToSvg(ruler);
+        return true;
+    }
+
+    UBGraphicsCache* cache = qgraphicsitem_cast<UBGraphicsCache*>(item);
+    if(cache && cache->isVisible())
+    {
+        cacheToSvg(cache);
+        return true;
+    }
+
+    UBGraphicsCompass *compass = qgraphicsitem_cast<UBGraphicsCompass*> (item);
+
+    if (compass && compass->isVisible())
+    {
+        compassToSvg(compass);
+        return true;
+    }
+
+    UBGraphicsProtractor *protractor = qgraphicsitem_cast<UBGraphicsProtractor*> (item);
+
+    if (protractor && protractor->isVisible())
+    {
+        protractorToSvg(protractor);
+        return true;
+    }
+
+    UBGraphicsTriangle *triangle = qgraphicsitem_cast<UBGraphicsTriangle*> (item);
+
+    if (triangle && triangle->isVisible())
+    {
+        triangleToSvg(triangle);
+        return true;
+    }
+
+    return true;
+}
+
 
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgLine(UBGraphicsPolygonItem* polygonItem, bool groupHoldsInfo)

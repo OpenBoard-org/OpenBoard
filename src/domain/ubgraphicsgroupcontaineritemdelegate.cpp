@@ -46,3 +46,24 @@ void UBGraphicsGroupContainerItemDelegate::buildButtons()
 {
     UBGraphicsItemDelegate::buildButtons();
 }
+
+bool UBGraphicsGroupContainerItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event)
+
+    return false;
+}
+
+bool UBGraphicsGroupContainerItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event)
+
+    return false;
+}
+
+bool UBGraphicsGroupContainerItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event)
+
+    return false;
+}

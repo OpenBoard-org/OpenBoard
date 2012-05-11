@@ -156,6 +156,7 @@ class UBSvgSubsetAdaptor
                 UBSvgSubsetWriter(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex);
 
                 bool persistScene();
+                bool parseCommonItems(QGraphicsItem *item);
 
                 virtual ~UBSvgSubsetWriter(){}
 
