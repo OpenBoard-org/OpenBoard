@@ -91,6 +91,11 @@ void UBGraphicsWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     mDelegate->hoverLeaveEvent(event);
     UBGraphicsProxyWidget::hoverLeaveEvent(event);
 }
+void UBGraphicsWidgetItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+    UBGraphicsProxyWidget::hoverMoveEvent(event);
+}
+
 
 bool UBGraphicsWidgetItem::eventFilter(QObject *obj, QEvent *event)
 {

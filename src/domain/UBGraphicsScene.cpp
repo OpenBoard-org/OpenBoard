@@ -65,6 +65,9 @@
 
 #include "core/memcheck.h"
 
+const QString groupText = "Group items";
+const QString ungroupText = "Ungroup items";
+
 qreal UBZLayerController::errorNumber = -20000001.0;
 
 UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
@@ -291,9 +294,15 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     }
 
     connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(enableGroupingButton()));
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
 
-    connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(processGroupItems()));
+//  just a stub don't treat as a result code
+//    static int i = 0;
+//    i++;
+//    if (i == 1) {
+        connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
+//        qDebug() << "the connect is accepted";
+//    }
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -308,39 +317,78 @@ UBGraphicsScene::~UBGraphicsScene()
 
 void UBGraphicsScene::selectionChangedProcessing()
 {
-    if (selectedItems().count())
+    if (selectedItems().count()){
+        qDebug() << "Selected item bounding rect: " << selectedItems().first()->boundingRect();
         UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
                                                 + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
+    }
 }
-void UBGraphicsScene::enableGroupingButton()
+void UBGraphicsScene::updateGroupButtonState()
 {
     QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
+    QList<QGraphicsItem*> selItems = selectedItems();
+    int selCount = selItems.count();
 
-    if (selectedItems().count() > 1) {
-        groupAction->setEnabled(true);
-    } else {
+    if (selCount < 1) {
         groupAction->setEnabled(false);
+        groupAction->setText(groupText);
+
+    } else if (selCount == 1) {
+        if (selItems.first()->type() == UBGraphicsGroupContainerItem::Type) {
+            groupAction->setEnabled(true);
+            groupAction->setText(ungroupText);
+        } else {
+            groupAction->setEnabled(false);
+        }
+
+    } else if (selCount > 1) {
+        groupAction->setEnabled(true);
+        groupAction->setText(groupText);
     }
 }
-void UBGraphicsScene::processGroupItems()
+void UBGraphicsScene::groupButtonClicked()
 {
-    qDebug() << "processing grouping items";
-
-    UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
-
-    foreach (QGraphicsItem *item, selectedItems()) {
-        item->setSelected(false);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-        item->setFlag( QGraphicsItem::ItemIsMovable, false);
-        item->setFlag(QGraphicsItem::ItemIsFocusable);
-        groupItem->addToGroup(item);
+    QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
+    QList<QGraphicsItem*> selItems = selectedItems();
+    if (!selItems.count()) {
+        qDebug() << "Got grouping request when there is no any selected item on the scene";
+        return;
     }
 
-    addItem(groupItem);
-//    groupItem->setPos(50, 50);
-    groupItem->setVisible(true);
-    groupItem->setFocus();
-    qDebug() << groupItem->boundingRect();
+    if (groupAction->text() == groupText) { //The only way to get information from item, considering using smth else
+        UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
+
+        foreach (QGraphicsItem *item, selItems) {
+            if (item->type() == UBGraphicsGroupContainerItem::Type) {
+                QList<QGraphicsItem*> childItems = item->childItems();
+                UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+                if (currentGroup) {
+                    currentGroup->destroy();
+                }
+                foreach (QGraphicsItem *chItem, childItems) {
+                    groupItem->addToGroup(chItem);
+                }
+            } else {
+                groupItem->addToGroup(item);
+            }
+        }
+
+        addItem(groupItem);
+        groupItem->setVisible(true);
+        groupItem->setFocus();
+
+    } else if (groupAction->text() == ungroupText) {
+        //Considering one selected item and it's a group
+        if (selItems.count() > 1) {
+            qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
+            return;
+        }
+        UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.first());
+        if (currentGroup) {
+            currentGroup->destroy();
+        }
+    }
+
 }
 
 // MARK: -
@@ -431,7 +479,6 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 
     return accepted;
 }
-
 
 bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pressure)
 {
@@ -567,7 +614,7 @@ bool UBGraphicsScene::inputDeviceRelease()
             }
         }else if (mCurrentStroke)
         {
-            if(eDrawingMode_Vector == dc->drawingMode()){
+            if(eDrawingMode_Vector == DRAWING_MODE){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
@@ -575,6 +622,7 @@ bool UBGraphicsScene::inputDeviceRelease()
                     mPreviousPolygonItems.removeAll(poly);
                     removeItem(poly);
                     UBCoreGraphicsScene::removeItemFromDeletion(poly);
+                    poly->setStrokesGroup(pStrokes);
                     pStrokes->addToGroup(poly);
                 }
 
@@ -746,6 +794,8 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
 
 void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 {
+//    QList<QGraphicsItem*> itemList;
+
     const QLineF line(mPreviousPoint, pEndPoint);
 
     const QPolygonF eraserPolygon = UBGeometryUtils::lineToPolygon(line, pWidth);
@@ -756,114 +806,208 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
     eraserPathVar.addPolygon(eraserPolygon);
     const QPainterPath eraserPath = eraserPathVar;
 
+    // Get all the items that are intersecting with the eraser path
     QList<QGraphicsItem*> collidItems = items(eraserBoundingRect, Qt::IntersectsItemBoundingRect);
 
-    QSet<QGraphicsItem*> toBeAddedItems;
-    QSet<QGraphicsItem*> toBeRemovedItems;
+    if(eDrawingMode_Vector == UBDrawingController::drawingController()->drawingMode()){
+        // NOTE: I decided to reuse the 'artistic' eraser all the time in order to have a better eraser
+        //       For this reason, the following code is not used but we will keep it for now, in case of
+        //       futur requirements.
+        foreach(QGraphicsItem* poly, collidItems){
+            UBGraphicsStrokesGroup* pGroup = dynamic_cast<UBGraphicsStrokesGroup*>(poly);
+            if(NULL != pGroup){
+                // TODO:    Ungroup the item, put back the polygons on the scene, deal with the
+                //          eraser's bounding rect, remove the polygons that must be removed
+                //          then create new groups.
 
-    int collidItemsSize = collidItems.size();
-
-    toBeAddedItems.reserve(collidItemsSize);
-    toBeRemovedItems.reserve(collidItemsSize);
-
-    if (mShouldUseOMP)
-    {
-#pragma omp parallel for
-        for (int i = 0; i < collidItemsSize; i++)
-        {
-            UBGraphicsPolygonItem *collidingPolygonItem
-                = qgraphicsitem_cast<UBGraphicsPolygonItem*> (collidItems.at(i));
-
-            if (collidingPolygonItem)
-            {
-                if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
-                {
-#pragma omp critical
-                    toBeRemovedItems << collidingPolygonItem;
-                }
-                else
-                {
-                    QPolygonF collidingPolygon = collidingPolygonItem->polygon();
-                    QPainterPath collidingPath;
-                    collidingPath.addPolygon(collidingPolygon);
-
-                    QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
-                    QPainterPath croppedPathSimplified = croppedPath.simplified();
-
-                    if (croppedPath == collidingPath)
-                    {
-                        // NOOP
-                    }
-                    else if (croppedPathSimplified.isEmpty())
-                    {
-#pragma omp critical
-                        toBeRemovedItems << collidingPolygonItem;
-                    }
-                    else
-                    {
-                        foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
-                        {
-                            UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
-#pragma omp critical
-                            toBeAddedItems << croppedPolygonItem;
+                // Get all substrokes and verify if they are part of the eraserpath then deal with it
+                foreach(QGraphicsItem* item, poly->childItems()){
+                    UBGraphicsPolygonItem* polygon = dynamic_cast<UBGraphicsPolygonItem*>(item);
+                    if(NULL != polygon){
+                        if(eraserBoundingRect.intersects(polygon->boundingRect())){
+                            pGroup->removeFromGroup(polygon);
+                            removeItem(polygon);
                         }
-#pragma omp critical
-                        toBeRemovedItems << collidingPolygonItem;
                     }
                 }
             }
         }
-    }
-    else
-    {
-        for (int i = 0; i < collidItemsSize; i++)
+
+    }else{
+        QSet<QGraphicsItem*> toBeAddedItems;
+        QSet<QGraphicsItem*> toBeRemovedItems;
+        int collidItemsSize = collidItems.size();
+        toBeAddedItems.reserve(collidItemsSize);
+        toBeRemovedItems.reserve(collidItemsSize);
+
+        if (mShouldUseOMP)
         {
-            UBGraphicsPolygonItem *collidingPolygonItem
-                = qgraphicsitem_cast<UBGraphicsPolygonItem*> (collidItems.at(i));
-
-            if (collidingPolygonItem)
+//    #pragma omp parallel for
+            for (int i = 0; i < collidItemsSize; i++)
             {
-                if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
-                {
-                    toBeRemovedItems << collidingPolygonItem;
-                }
-                else
-                {
-                    QPolygonF collidingPolygon = collidingPolygonItem->polygon();
-                    QPainterPath collidingPath;
-                    collidingPath.addPolygon(collidingPolygon);
+                UBGraphicsPolygonItem *collidingPolygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems.at(i));
 
-                    QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
-                    QPainterPath croppedPathSimplified = croppedPath.simplified();
+                if (NULL != collidingPolygonItem)
+                {
+                    collidingPolygonItem->setColor(QColor(Qt::green));
 
-                    if (croppedPath == collidingPath)
+                    UBGraphicsStrokesGroup* pGroup = collidingPolygonItem->strokesGroup();
+
+                    if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
                     {
-                        // NOOP
+//    #pragma omp critical
+                        qDebug() << "case 1";
+                        // Put the entire polygon into the remove list
+                        collidingPolygonItem->setColor(QColor(Qt::blue));
+                        toBeRemovedItems << collidingPolygonItem;
                     }
-                    else if (croppedPathSimplified.isEmpty())
+                    else
+                    {
+                        // Here we get the polygon of the colliding item
+
+                        QPolygonF collidingPolygon = collidingPolygonItem->polygon();
+                        QPainterPath collidingPath;
+                        collidingPath.addPolygon(collidingPolygon);
+
+                        // Then we substract the eraser path to the polygon and we simplify it
+                        QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
+                        QPainterPath croppedPathSimplified = croppedPath.simplified();
+
+                        /*if (croppedPath == collidingPath)
+                        {
+                            // NOOP
+                            qDebug() << "case 2";
+                            toBeRemovedItems << collidingPolygonItem;
+                        }
+                        else */if (croppedPathSimplified.isEmpty())
+                        {
+//    #pragma omp critical
+                            qDebug() << "case 3";
+                            // Put the entire polygon into the remove list if the eraser removes all its visible content
+                            collidingPolygonItem->setColor(QColor(Qt::blue));
+                            toBeRemovedItems << collidingPolygonItem;
+                        }
+                        else
+                        {
+                            //qDebug() << "case 4";
+                            // Then we convert the remaining path to a list of polygons that will be converted in
+                            // UBGraphicsPolygonItems and added to the scene
+                            foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
+                            {
+                                UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
+                                croppedPolygonItem->setColor(QColor(Qt::black));
+//    #pragma omp critical
+                                if(NULL != pGroup){
+                                    croppedPolygonItem->setStrokesGroup(pGroup);
+//                                    croppedPolygonItem->setTransform(pGroup->sceneTransform().inverted());
+                                }
+                                // Add this new polygon to the 'added' list
+                                toBeAddedItems << croppedPolygonItem;
+                            }
+//    #pragma omp critical
+                            // Remove the original polygonitem because it has been replaced by many smaller polygons
+                            collidingPolygonItem->setColor(QColor(Qt::blue));
+                            toBeRemovedItems << collidingPolygonItem;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < collidItemsSize; i++)
+            {
+                UBGraphicsPolygonItem *collidingPolygonItem = dynamic_cast<UBGraphicsPolygonItem*> (collidItems.at(i));
+
+                if (collidingPolygonItem)
+                {
+                    UBGraphicsStrokesGroup* pGroup = collidingPolygonItem->strokesGroup();
+
+                    if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
                     {
                         toBeRemovedItems << collidingPolygonItem;
                     }
                     else
                     {
-                        foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
-                        {
-                            UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
-                            toBeAddedItems << croppedPolygonItem;
-                        }
+                        QPolygonF collidingPolygon = collidingPolygonItem->polygon();
+                        QPainterPath collidingPath;
+                        collidingPath.addPolygon(collidingPolygon);
 
-                        toBeRemovedItems << collidingPolygonItem;
+                        QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
+                        QPainterPath croppedPathSimplified = croppedPath.simplified();
+
+                        if (croppedPath == collidingPath)
+                        {
+                            // NOOP
+                        }
+                        else if (croppedPathSimplified.isEmpty())
+                        {
+                            toBeRemovedItems << collidingPolygonItem;
+                        }
+                        else
+                        {
+                            foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
+                            {
+                                UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
+                                toBeAddedItems << croppedPolygonItem;
+                                if(NULL != pGroup){
+                                    croppedPolygonItem->setStrokesGroup(pGroup);
+                                }
+                            }
+
+                            toBeRemovedItems << collidingPolygonItem;
+                        }
                     }
                 }
             }
         }
+
+        if(eDrawingMode_Vector == DRAWING_MODE){
+            foreach(QGraphicsItem* item, toBeRemovedItems){
+                UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
+                if(NULL != poly){
+                    if(NULL != poly->strokesGroup()){
+                        poly->strokesGroup()->removeFromGroup(poly);
+                        removeItem(poly);
+                    }else{
+                        qDebug() << "No group present";
+                    }
+                }
+            }
+        }else{
+            removeItems(toBeRemovedItems);
+            mRemovedItems += toBeRemovedItems;
+        }
+
+//        bool hack = false;
+//        UBGraphicsStrokesGroup* pG = new UBGraphicsStrokesGroup();
+        if(eDrawingMode_Vector == DRAWING_MODE){
+            foreach(QGraphicsItem* item, toBeAddedItems){
+                UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
+                if(NULL != poly && NULL != poly->strokesGroup()){
+//                    if(!hack){
+//                        itemList = poly->strokesGroup()->childItems();
+//                        removeItem(poly->strokesGroup());
+
+//                        foreach(QGraphicsItem* it, itemList){
+//                            pG->addToGroup(it);
+//                        }
+//                        hack = true;
+//                    }
+                    qreal dx =  -poly->strokesGroup()->sceneTransform().inverted().dx();
+                    qreal dy =  -poly->strokesGroup()->sceneTransform().inverted().dy();
+
+                    //poly->setTransform(QTransform().translate(20, 0));
+                    poly->setTransform(QTransform().translate(dx, dy));
+                    poly->strokesGroup()/*pG*/->addToGroup(poly);
+                }
+            }
+            //addItem(pG);
+        }else{
+            addItems(toBeAddedItems);
+            mAddedItems += toBeAddedItems;
+        }
     }
-
-    addItems(toBeAddedItems);
-    mAddedItems += toBeAddedItems;
-
-    removeItems(toBeRemovedItems);
-    mRemovedItems += toBeRemovedItems;
 
     mPreviousPoint = pEndPoint;
 }
@@ -1758,7 +1902,6 @@ QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool
 
     return item;
 }
-
 
 void UBGraphicsScene::addRuler(QPointF center)
 {

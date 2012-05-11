@@ -31,10 +31,14 @@ signals:
 	void addToFavorite( const QMimeData &data );
 	void removeFromFavorite( const QMimeData &data );
     void addElementsToFavorite();
+    void removeElementsFromFavorite();
+    void deleteSelectedElements();
 private slots:
 	void onSearchTextChanged(QString txt);
 	void onActionNewFolder();
     void onActionFavorite();
+    void onActionRemoveFavorite();
+    void onActionTrash();
 protected:
 	//void dragMoveEvent(QDragMoveEvent *event);
 	void dragEnterEvent( QDragEnterEvent *event );

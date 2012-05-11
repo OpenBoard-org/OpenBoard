@@ -28,7 +28,7 @@ class UBGraphicsScene;
 class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipseItem, public UBItem
 {
 
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBGraphicsProtractor ();

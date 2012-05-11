@@ -123,7 +123,8 @@ struct UBGraphicsItemType
 		StrokeItemType,
 		TriangleItemType,
         MagnifierItemType,
-        cacheItemType
+        cacheItemType,
+        groupContainerType
     };
 };
 

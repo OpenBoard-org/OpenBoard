@@ -1259,10 +1259,12 @@ void UBBoardController::ClearUndoStack()
     while (itUniq.hasNext())
     {
         QGraphicsItem* item = itUniq.next();
-        UBGraphicsScene *scene = dynamic_cast<UBGraphicsScene*>(item->scene());
-        if(!scene)
-        {
-            mActiveScene->deleteItem(item);
+        if (item->scene()) {
+            UBGraphicsScene *scene = dynamic_cast<UBGraphicsScene*>(item->scene());
+            if(!scene)
+            {
+                mActiveScene->deleteItem(item);
+            }
         }
     }
 

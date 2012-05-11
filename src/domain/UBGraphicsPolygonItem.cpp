@@ -39,6 +39,7 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QPolygonF & polygon, QGraphi
     , mOriginalWidth(-1)
     , mIsNominalLine(false)
     , mStroke(0)
+    , mpGroup(NULL)
 {
     // NOOP
     initialize();
@@ -77,6 +78,10 @@ UBGraphicsPolygonItem::~UBGraphicsPolygonItem()
     clearStroke();
 }
 
+void UBGraphicsPolygonItem::setStrokesGroup(UBGraphicsStrokesGroup *group)
+{
+    mpGroup = group;
+}
 
 void UBGraphicsPolygonItem::setStroke(UBGraphicsStroke* stroke)
 {
@@ -156,7 +161,7 @@ UBGraphicsPolygonItem* UBGraphicsPolygonItem::deepCopy(const QPolygonF& pol) con
     copy->mIsNominalLine = false;
 
     copy->setStroke(this->stroke());
-    copy->setGroup(this->group());
+    copy->setStrokesGroup(this->strokesGroup());
     copy->setBrush(this->brush());
     copy->setPen(this->pen());
     copy->mHasAlpha = this->mHasAlpha;
@@ -184,18 +189,18 @@ void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphi
     QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-QPainterPath UBGraphicsPolygonItem::shape() const
-{
+//QPainterPath UBGraphicsPolygonItem::shape() const
+//{
 
-    QPainterPath path;
-    path.addRect(boundingRect());
+//    QPainterPath path;
+//    path.addRect(boundingRect());
 
-    return path;
+//    return path;
 
-//    static QPainterPath shapePath = QGraphicsPolygonItem::shape();
+////    static QPainterPath shapePath = QGraphicsPolygonItem::shape();
 
-//    return shapePath;
-}
+////    return shapePath;
+//}
 
 
 UBGraphicsScene* UBGraphicsPolygonItem::scene()

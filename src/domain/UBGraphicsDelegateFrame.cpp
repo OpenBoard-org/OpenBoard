@@ -583,7 +583,7 @@ void UBGraphicsDelegateFrame::positionHandles()
 {
     QRectF itemRect = delegated()->boundingRect();
     
-    if (mDelegate->getToolBarItem()->isVisibleOnBoard() 
+    if (mDelegate->getToolBarItem()->isVisibleOnBoard()
         && mDelegate->getToolBarItem()->isShifting())
         itemRect.setHeight(itemRect.height() + mDelegate->getToolBarItem()->rect().height() * mDelegate->antiScaleRatio() * 1.1);
 

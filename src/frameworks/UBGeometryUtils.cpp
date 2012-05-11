@@ -198,8 +198,9 @@ QRectF UBGeometryUtils::lineToInnerRect(const QLineF& pLine, const qreal& pWidth
     qreal centerX = (pLine.x1() + pLine.x2()) / 2;
     qreal centerY = (pLine.y1() + pLine.y2()) / 2;
 
+    // Please put a fucking comment here
     qreal side = sqrt((pWidth * pWidth) / 2);
-        qreal halfSide = side / 2;
+    qreal halfSide = side / 2;
 
     return QRectF(centerX - halfSide, centerY - halfSide, side, side);
 }

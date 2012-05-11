@@ -30,6 +30,7 @@
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsStrokesGroup.h"
+#include "domain/ubgraphicsgroupcontaineritem.h"
 #include "domain/UBItem.h"
 
 #include "tools/UBGraphicsRuler.h"
@@ -1004,8 +1005,13 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
+
+
     if (mScene->isModified())
     {
+        static int i = 0;
+        qDebug() << "persist call no is " << ++i;
+
         QBuffer buffer;
         buffer.open(QBuffer::WriteOnly);
         mXmlWriter.setDevice(&buffer);
@@ -1218,6 +1224,14 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 triangleToSvg(triangle);
                 continue;
             }
+
+            UBGraphicsGroupContainerItem *groupItem = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item);
+
+            if (groupItem && groupItem->isVisible())
+            {
+                qDebug() << "came across the group during the parsing";
+                continue;
+            }
         }
 
         if (openStroke)
@@ -1268,7 +1282,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 
     return true;
 }
-
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgLine(UBGraphicsPolygonItem* polygonItem, bool groupHoldsInfo)
 {

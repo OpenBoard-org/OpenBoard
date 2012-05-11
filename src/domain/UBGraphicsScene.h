@@ -306,8 +306,8 @@ public slots:
         void setToolCursor(int tool);
 
         void selectionChangedProcessing();
-        void enableGroupingButton();
-        void processGroupItems();
+        void updateGroupButtonState();
+        void groupButtonClicked();
 
         void moveMagnifier(QPoint newPos);
         void closeMagnifier();

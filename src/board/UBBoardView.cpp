@@ -50,6 +50,8 @@
 #include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsAudioItem.h"
 #include "domain/UBGraphicsSvgItem.h"
+#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsStrokesGroup.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -435,8 +437,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 || movingItem->type() == UBGraphicsCache::Type
                 || movingItem->type() == UBGraphicsTriangle::Type
                 || movingItem == this->scene()->backgroundObject()
-                || movingItem->group())
-                {
+                || (movingItem->parentItem() && movingItem->parentItem()->type() == UBGraphicsGroupContainerItem::Type))
+            {
                     movingItem = NULL;
                     QGraphicsView::mousePressEvent (event);
 
@@ -515,8 +517,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     }
 }
 
-QSet<QGraphicsItem*> mJustSelectedItems;
-
 void
 UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
@@ -562,7 +562,9 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
                       || item->type() == UBGraphicsPixmapItem::Type
                       || item->type() == UBGraphicsVideoItem::Type
                       || item->type() == UBGraphicsAudioItem::Type
-                      || item->type() == UBGraphicsSvgItem::Type) {
+                      || item->type() == UBGraphicsSvgItem::Type
+                      || item->type() == UBGraphicsTextItem::Type
+                      || item->type() == UBGraphicsStrokesGroup::Type) {
 
                   if (!mJustSelectedItems.contains(item)) {
                       item->setSelected(true);
