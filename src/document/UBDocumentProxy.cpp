@@ -50,13 +50,15 @@ void UBDocumentProxy::init()
 
     setDefaultDocumentSize(UBSettings::settings()->pageSize->get().toSize());
 
-    setSessionTitle("");
-    setSessionTarget("");
-    setSessionLicence("");
-    setSessionKeywords("");
-    setSessionLevel("");
-    setSessionTopic("");
-    setSessionAuthor("");
+    //teacherGuide metadata
+    setMetaData(UBSettings::sessionTitle,"");
+    setMetaData(UBSettings::sessionAuthors,"");
+    setMetaData(UBSettings::sessionObjectives,"");
+    setMetaData(UBSettings::sessionKeywords,"");
+    setMetaData(UBSettings::sessionGradeLevel,"");
+    setMetaData(UBSettings::sessionSubjects,"");
+    setMetaData(UBSettings::sessionType,"");
+    setMetaData(UBSettings::sessionLicence,"");
 }
 
 
@@ -204,101 +206,9 @@ void UBDocumentProxy::setUuid(const QUuid& uuid)
             UBSettings::uniboardDocumentNamespaceUri + "/" + UBStringUtils::toCanonicalUuid(uuid));
 }
 
-QString UBDocumentProxy::sessionTitle() const
-{
-    if(mMetaDatas.contains(UBSettings::sessionTitle))
-        return metaData(UBSettings::sessionTitle).toString();
-    else
-        return QString();
-}
-
-void UBDocumentProxy::setSessionTitle(const QString & sessionTitle)
-{
-    setMetaData(UBSettings::sessionTitle,QVariant(sessionTitle));
-}
-
-QString UBDocumentProxy::sessionTarget() const
-{
-    if(mMetaDatas.contains(UBSettings::sessionTarget))
-        return metaData(UBSettings::sessionTarget).toString();
-    else
-        return QString();
-}
-
-void UBDocumentProxy::setSessionTarget(const QString & sessionTarget)
-{
-    setMetaData(UBSettings::sessionTarget,QVariant(sessionTarget));
-}
-
-QString UBDocumentProxy::sessionLicence() const
-{
-    if(mMetaDatas.contains(UBSettings::sessionLicence))
-        return metaData(UBSettings::sessionLicence).toString();
-    else
-        return QString();
-}
-
-void UBDocumentProxy::setSessionLicence(const QString & sessionLicence)
-{
-    setMetaData(UBSettings::sessionLicence,QVariant(sessionLicence));
-}
-
-void UBDocumentProxy::setSessionKeywords(const QString &kw)
-{
-    setMetaData(UBSettings::sessionKeywords,QVariant(kw));
-}
-
-QString UBDocumentProxy::sessionKeywords()
-{
-    if(mMetaDatas.contains(UBSettings::sessionKeywords))
-        return metaData(UBSettings::sessionKeywords).toString();
-    else
-        return QString();
-}
-
-void UBDocumentProxy::setSessionLevel(const QString &level)
-{
-    setMetaData(UBSettings::sessionLevel,QVariant(level));
-}
-
-QString UBDocumentProxy::sessionLevel()
-{
-    if(mMetaDatas.contains(UBSettings::sessionLevel))
-        return metaData(UBSettings::sessionLevel).toString();
-    else
-        return QString();
-}
-
-void UBDocumentProxy::setSessionTopic(const QString &topic)
-{
-    setMetaData(UBSettings::sessionTopic,QVariant(topic));
-}
-
-QString UBDocumentProxy::sessionTopic()
-{
-    if(mMetaDatas.contains(UBSettings::sessionTopic))
-        return metaData(UBSettings::sessionTopic).toString();
-    else
-        return QString();
-}
-
-void UBDocumentProxy::setSessionAuthor(const QString &authors)
-{
-    setMetaData(UBSettings::sessionAuthors,QVariant(authors));
-}
-
-QString UBDocumentProxy::sessionAuthors()
-{
-    if(mMetaDatas.contains(UBSettings::sessionAuthors))
-        return metaData(UBSettings::sessionAuthors).toString();
-    else
-        return QString();
-}
 
 QDateTime UBDocumentProxy::documentDate()
 {
-    qDebug()<< UBSettings::documentDate;
-    qDebug()<<mMetaDatas;
     if(mMetaDatas.contains(UBSettings::documentDate))
         return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentDate).toString());
     return QDateTime::currentDateTime();

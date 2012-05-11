@@ -41,11 +41,12 @@ class UBPersistenceManager : public QObject
         static const QString videoDirectory;
         static const QString audioDirectory;
         static const QString widgetDirectory;
+        static const QString teacherGuideDirectory;
 
         static UBPersistenceManager* persistenceManager();
         static void destroy();
 
-		virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = true);
+        virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = true);
         virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = false);
 
         virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy);
@@ -79,6 +80,9 @@ class UBPersistenceManager : public QObject
         virtual QStringList allWidgets(const QDir& dir);
 
         virtual QString generateUniqueDocumentPath();
+
+        QString teacherGuideAbsoluteObjectPath(UBDocumentProxy* pDocumentProxy);
+        QString addObjectToTeacherGuideDirectory(UBDocumentProxy* proxy, QString pPath);
 
         virtual void addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
 
@@ -152,6 +156,8 @@ class UBPersistenceManager : public QObject
         QList<UBDocumentProxy*> mDocumentCreatedDuringSession;
 
         QString mDocumentRepositoryPath;
+
+        QHash<int,QString>teacherBarNodeString;
 
     private slots:
         void documentRepositoryChanged(const QString& path);

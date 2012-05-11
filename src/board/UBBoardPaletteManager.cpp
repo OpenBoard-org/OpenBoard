@@ -141,24 +141,26 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mpCachePropWidget = new UBCachePropertiesWidget();
 
     mpDownloadWidget = new UBDockDownloadWidget();
-    mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
-	mpFeaturesWidget = new UBFeaturesWidget();
 
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
 
     // LEFT palette widgets
+    mpPageNavigWidget = new UBPageNavigationWidget();
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
 
-    mLeftPalette->registerWidget(mpTeacherGuideWidget);
-    mLeftPalette->addTab(mpTeacherGuideWidget);
+    if(UBSettings::settings()->teacherGuidePageZeroActivated || UBSettings::settings()->teacherGuideLessonPagesActivated){
+        mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
+        mLeftPalette->registerWidget(mpTeacherGuideWidget);
+        mLeftPalette->addTab(mpTeacherGuideWidget);
+    }
 
     mLeftPalette->connectSignals();
 
     mRightPalette = new UBRightPalette(mContainer);
     // RIGHT palette widgets
-
+    mpFeaturesWidget = new UBFeaturesWidget();
 	mRightPalette->registerWidget(mpFeaturesWidget);
 	mRightPalette->addTab(mpFeaturesWidget);
 
@@ -542,7 +544,7 @@ void UBBoardPaletteManager::activeSceneChanged()
 
     if (mpPageNavigWidget)
     {
-        mpPageNavigWidget->setPageNumber(pageIndex + 1, activeScene->document()->pageCount());
+        mpPageNavigWidget->setPageNumber(UBApplication::boardController->pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
     }
 
     if (mZoomPalette)

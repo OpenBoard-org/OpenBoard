@@ -16,6 +16,11 @@
 #include "UBFileSystemUtils.h"
 
 #include <QtGui>
+
+#include "core/UBApplication.h"
+
+#include "board/UBBoardController.h"
+
 #include "globals/UBGlobals.h"
 
 THIRD_PARTY_WARNINGS_DISABLE
@@ -313,7 +318,8 @@ QString UBFileSystemUtils::normalizeFilePath(const QString& pFilePath)
 
 QString UBFileSystemUtils::digitFileFormat(const QString& s, int digit)
 {
-    return s.arg(digit, 3, 10, QLatin1Char('0'));
+    int pageDigit = UBApplication::boardController->pageFromSceneIndex(digit);
+    return s.arg(pageDigit, 3, 10, QLatin1Char('0'));
 }
 
 

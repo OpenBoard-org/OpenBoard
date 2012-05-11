@@ -23,8 +23,11 @@
 
 #include "UBTeacherGuideWidget.h"
 
+#include "adaptors/UBSvgSubsetAdaptor.h"
+
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+#include "core/UBSettings.h"
 
 #include "globals/UBGlobals.h"
 
@@ -40,9 +43,20 @@
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
 
+#include "domain/UBGraphicsTextItem.h"
+
 #include "core/memcheck.h"
 
 #define UBTG_SEPARATOR_FIXED_HEIGHT 3
+
+typedef enum
+{
+    eUBTGAddSubItemWidgetType_None,
+    eUBTGAddSubItemWidgetType_Action ,
+    eUBTGAddSubItemWidgetType_Media,
+    eUBTGAddSubItemWidgetType_Url
+}eUBTGAddSubItemWidgetType;
+
 
 
 /***************************************************************************
@@ -62,20 +76,21 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
   , mpAddAnActionItem(NULL)
   , mpAddAMediaItem(NULL)
   , mpAddALinkItem(NULL)
-  , mpTreeDelegate(NULL)
 {
     setObjectName(name);
 
     mpLayout = new QVBoxLayout(this);
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
-    mpPageNumberLabel->setObjectName("UBTGEditionPageNumberLabel");
+    mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
     mpLayout->addWidget(mpPageNumberLabel);
     // tree basic configuration
-    mpDocumentTitle = new QLabel(this);
-    mpDocumentTitle->setText("Document title");
-    mpDocumentTitle->setObjectName("UBTGEditionDocumentTitle");
-    mpLayout->addWidget(mpDocumentTitle);
+
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
+        mpDocumentTitle = new QLabel(this);
+        mpDocumentTitle->setObjectName("UBTGPresentationDocumentTitle");
+        mpLayout->addWidget(mpDocumentTitle);
+    }
 
     mpPageTitle = new UBTGAdaptableText(0,this);
     mpPageTitle->setObjectName("UBTGEditionPageTitle");
@@ -95,10 +110,7 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpTreeWidget = new QTreeWidget(this);
     mpLayout->addWidget(mpTreeWidget);
 
-    mpTreeDelegate = new UBTGWidgetTreeDelegate();
-
     mpRootWidgetItem = mpTreeWidget->invisibleRootItem();
-    //mpTreeWidget->setItemDelegate(mpTreeDelegate);
     mpTreeWidget->setRootIsDecorated(false);
     mpTreeWidget->setIndentation(0);
     mpTreeWidget->setDropIndicatorShown(false);
@@ -120,6 +132,11 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpRootWidgetItem->addChild(mpAddAnActionItem);
     mpRootWidgetItem->addChild(mpAddAMediaItem);
     mpRootWidgetItem->addChild(mpAddALinkItem);
+
+    if(UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
+        UBSvgSubsetAdaptor::addElementToBeStored(QString("teacherGuide"),this);
+        connect(UBApplication::boardController,SIGNAL(activeDocumentChanged()),this,SLOT(onActiveDocumentChanged()));
+    }
 }
 
 UBTeacherGuideEditionWidget::~UBTeacherGuideEditionWidget()
@@ -132,23 +149,103 @@ UBTeacherGuideEditionWidget::~UBTeacherGuideEditionWidget()
     DELETEPTR(mpAddAnActionItem);
     DELETEPTR(mpAddAMediaItem);
     DELETEPTR(mpAddALinkItem);
-    DELETEPTR(mpTreeDelegate);
     DELETEPTR(mpTreeWidget)
     DELETEPTR(mpLayout);
 }
 
 void UBTeacherGuideEditionWidget::showEvent(QShowEvent* event)
 {
-    mpPageTitle->setFocus();
-    mpComment->setFocus();
     setFocus();
     QWidget::showEvent(event);
 }
 
-void UBTeacherGuideEditionWidget::onActiveSceneChanged()
+void UBTeacherGuideEditionWidget::onActiveDocumentChanged()
+{
+    int activeSceneIndex = UBApplication::boardController->activeSceneIndex();
+    if(UBApplication::boardController->pageFromSceneIndex(activeSceneIndex) != 0)
+        load(UBSvgSubsetAdaptor::readTeacherGuideNode(activeSceneIndex));
+}
+
+void UBTeacherGuideEditionWidget::load(QString element)
 {
     cleanData();
-    mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->activeSceneIndex() + 1));
+    QDomDocument doc("TeacherGuide");
+    doc.setContent(element);
+
+    for(QDomElement element = doc.documentElement().firstChildElement(); !element.isNull(); element = element.nextSiblingElement()) {
+        QString tagName = element.tagName();
+        if(tagName == "title")
+            mpPageTitle->setInitialText(element.attribute("value"));
+        else if(tagName == "comment")
+            mpComment->setInitialText(element.attribute("value"));
+        else if(tagName == "media")
+            onAddItemClicked(mpAddAMediaItem,0,&element);
+        else if(tagName == "link")
+            onAddItemClicked(mpAddALinkItem,0,&element);
+        else if(tagName == "action")
+            onAddItemClicked(mpAddAnActionItem,0,&element);
+    }
+}
+
+
+
+QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save(int pageIndex)
+{
+    QVector<tIDataStorage*> result;
+    if(pageIndex != UBApplication::boardController->currentPage())
+        return result;
+    tIDataStorage* data = new tIDataStorage();
+    data->name = "teacherGuide";
+    data->type = eElementType_START;
+    data->attributes.insert("version","1.50");
+    result << data;
+
+    data = new tIDataStorage();
+    data->name = "title";
+    data->type = eElementType_UNIQUE;
+    data->attributes.insert("value",mpPageTitle->text());
+    result << data;
+
+    data = new tIDataStorage();
+    data->name = "comment";
+    data->type = eElementType_UNIQUE;
+    data->attributes.insert("value",mpComment->text());
+    result << data;
+
+    QList<QTreeWidgetItem*> children = getChildrenList(mpAddAnActionItem);
+    children << getChildrenList(mpAddAMediaItem);
+    children << getChildrenList(mpAddALinkItem);
+
+    foreach(QTreeWidgetItem* widgetItem, children){
+        tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget(widgetItem,0))->saveData();
+        if(node){
+            data = new tIDataStorage();
+            data->name = node->name;
+            data->type = eElementType_UNIQUE;
+            foreach(QString currentKey, node->attributes.keys())
+                data->attributes.insert(currentKey,node->attributes.value(currentKey));
+            result << data;
+        }
+    }
+
+    data = new tIDataStorage();
+    data->name = "teacherGuide";
+    data->type = eElementType_END;
+    result << data;
+    return result;
+}
+
+void UBTeacherGuideEditionWidget::onActiveSceneChanged()
+{
+    int currentPage = UBApplication::boardController->currentPage();
+    if(currentPage > 0){
+        cleanData();
+        load(UBSvgSubsetAdaptor::readTeacherGuideNode(UBApplication::boardController->activeSceneIndex()));
+        mpPageNumberLabel->setText(tr("Page: %0").arg(currentPage));
+        UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+        if(mpDocumentTitle)
+            mpDocumentTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
+    }
 }
 
 void UBTeacherGuideEditionWidget::cleanData()
@@ -162,7 +259,6 @@ void UBTeacherGuideEditionWidget::cleanData()
     foreach(QTreeWidgetItem* item, children){
         DELETEPTR(item);
     }
-
 }
 
 QList<QTreeWidgetItem*> UBTeacherGuideEditionWidget::getChildrenList(QTreeWidgetItem* widgetItem)
@@ -177,12 +273,12 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getPageAndCommentData()
 {
     QVector<tUBGEElementNode*>result;
     tUBGEElementNode* pageTitle = new tUBGEElementNode();
-    pageTitle->type = "pageTitle";
+    pageTitle->name = "pageTitle";
     pageTitle->attributes.insert("value",mpPageTitle->text());
     result << pageTitle;
 
     tUBGEElementNode* comment = new tUBGEElementNode();
-    comment->type = "comment";
+    comment->name = "comment";
     comment->attributes.insert("value",mpComment->text());
     result << comment;
     return result;
@@ -196,32 +292,42 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getData()
     children << getChildrenList(mpAddALinkItem);
     result << getPageAndCommentData();
     foreach(QTreeWidgetItem* widgetItem, children){
-        tUBGEElementNode* node = dynamic_cast<iUBTGSavableData*>(mpTreeWidget->itemWidget(widgetItem,0))->saveData();
+        tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget(widgetItem,0))->saveData();
         if(node)
             result << node;
     }
     return result;
 }
 
-void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int column)
+void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int column, QDomElement *element)
 {
     int addSubItemWidgetType = widget->data(column,Qt::UserRole).toInt();
-    if(column == 0 && addSubItemWidgetType != eUBTGAddSubItemWidgetType_None){
+    if(addSubItemWidgetType != eUBTGAddSubItemWidgetType_None){
         QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(widget);
         newWidgetItem->setData(column,Qt::UserRole,eUBTGAddSubItemWidgetType_None);
         newWidgetItem->setData(1,Qt::UserRole,eUBTGAddSubItemWidgetType_None);
         newWidgetItem->setIcon(1,QIcon(":images/close.svg"));
+
         switch(addSubItemWidgetType)
         {
-        case eUBTGAddSubItemWidgetType_Action:
-            mpTreeWidget->setItemWidget(newWidgetItem,0,new UBTGActionWidget(widget));
+        case eUBTGAddSubItemWidgetType_Action:{
+            UBTGActionWidget* actionWidget = new UBTGActionWidget(widget);
+            if(element) actionWidget->initializeWithDom(*element);
+            mpTreeWidget->setItemWidget(newWidgetItem,0,actionWidget);
             break;
-        case eUBTGAddSubItemWidgetType_Media:
-            mpTreeWidget->setItemWidget(newWidgetItem,0,new UBTGMediaWidget(widget));
+        }
+        case eUBTGAddSubItemWidgetType_Media:{
+            UBTGMediaWidget* mediaWidget = new UBTGMediaWidget(widget);
+            if(element) mediaWidget->initializeWithDom(*element);
+            mpTreeWidget->setItemWidget(newWidgetItem,0,mediaWidget);
             break;
-        case eUBTGAddSubItemWidgetType_Url:
-            mpTreeWidget->setItemWidget(newWidgetItem,0,new UBTGUrlWidget());
+        }
+        case eUBTGAddSubItemWidgetType_Url:{
+            UBTGUrlWidget* urlWidget = new UBTGUrlWidget();
+            if(element) urlWidget->initializeWithDom(*element);
+            mpTreeWidget->setItemWidget(newWidgetItem,0,urlWidget);
             break;
+        }
         default:
             delete newWidgetItem;
             qCritical() << "onAddItemClicked no action set";
@@ -237,6 +343,8 @@ void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int 
         }
     }
     else if(column == 1 && addSubItemWidgetType == eUBTGAddSubItemWidgetType_None){
+        UBTGMediaWidget* media = dynamic_cast<UBTGMediaWidget*>(mpTreeWidget->itemWidget(widget,0));
+        if(media) media->removeSource();
         int index = mpTreeWidget->currentIndex().row();
         QTreeWidgetItem* toBeDeletedWidgetItem = widget->parent()->takeChild(index);
         delete toBeDeletedWidgetItem;
@@ -280,7 +388,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
 
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
-    mpPageNumberLabel->setObjectName("UBTGPresentationPageNumberLabel");
+    mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
 
     mpLayout->addWidget(mpPageNumberLabel);
 
@@ -289,15 +397,16 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpModePushButton = new QPushButton(this);
     mpModePushButton->setIcon(QIcon(":images/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
+    mpModePushButton->installEventFilter(this);
 
     connect(mpModePushButton,SIGNAL(clicked()),parentWidget(),SLOT(changeMode()));
-
-    mpDocumentTitle = new QLabel(this);
-    mpDocumentTitle->setObjectName("UBTGPresentationDocumentTitle");
-    mpDocumentTitle->setText(tr("Document title"));
-
     mpButtonTitleLayout->addWidget(mpModePushButton);
-    mpButtonTitleLayout->addWidget(mpDocumentTitle);
+
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
+        mpDocumentTitle = new QLabel(this);
+        mpDocumentTitle->setObjectName("UBTGPresentationDocumentTitle");
+        mpButtonTitleLayout->addWidget(mpDocumentTitle);
+    }
 
     mpLayout->addLayout(mpButtonTitleLayout);
 
@@ -318,10 +427,11 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpSeparator->setObjectName("UBTGSepartor");
     mpLayout->addWidget(mpSeparator);
 
-    mpTreeWidget = new QTreeWidget(this);
+    mpTreeWidget = new UBTGDraggableTreeItem(this);
     mpLayout->addWidget(mpTreeWidget);
 
     mpRootWidgetItem = mpTreeWidget->invisibleRootItem();
+    mpTreeWidget->setDragEnabled(true);
     mpTreeWidget->setRootIsDecorated(false);
     mpTreeWidget->setIndentation(0);
     mpTreeWidget->setDropIndicatorShown(false);
@@ -345,6 +455,14 @@ UBTeacherGuidePresentationWidget::~UBTeacherGuidePresentationWidget()
     DELETEPTR(mpLayout);
 }
 
+bool UBTeacherGuidePresentationWidget::eventFilter(QObject* object, QEvent* event)
+{
+    Q_UNUSED(object);
+    if(event->type() == QEvent::HoverEnter || event->type() == QEvent::HoverMove || event->type() == QEvent::HoverLeave)
+        return true;
+    return false;
+}
+
 void UBTeacherGuidePresentationWidget::cleanData()
 {
     mpPageTitle->showText("");
@@ -361,15 +479,16 @@ void UBTeacherGuidePresentationWidget::cleanData()
 void UBTeacherGuidePresentationWidget::onActiveSceneChanged()
 {
     cleanData();
-    mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->activeSceneIndex() + 1));
+    mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->currentPage()));
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    if(mpDocumentTitle)
+        mpDocumentTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
 }
 
 void UBTeacherGuidePresentationWidget::createMediaButtonItem()
 {
     if(!mpMediaSwitchItem){
-        //create the media button
         mpMediaSwitchItem = new QTreeWidgetItem(mpRootWidgetItem);
-        //mpMediaSwitchItem->setIcon(0,QIcon(":images/plus.svg"));
         mpMediaSwitchItem->setText(0,"+");
         mpMediaSwitchItem->setExpanded(false);
         mpMediaSwitchItem->setData(0,tUBTGTreeWidgetItemRole_HasAnAction,tUBTGActionAssociateOnClickItem_EXPAND);
@@ -386,13 +505,14 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
     cleanData();
 
     foreach(tUBGEElementNode* element, data){
-        if(element->type == "pageTitle")
+        if(element->name == "pageTitle")
             mpPageTitle->showText(element->attributes.value("value"));
-        else if (element->type == "comment")
+        else if (element->name == "comment")
             mpComment->showText(element->attributes.value("value"));
-        else if(element->type == "action"){
+        else if(element->name == "action"){
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpRootWidgetItem);
             newWidgetItem->setText(0,element->attributes.value("task"));
+            newWidgetItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             QString colorString = element->attributes.value("owner").toInt() == 0 ? "red":"green";
             UBTGAdaptableText* textWidget = new UBTGAdaptableText(newWidgetItem,0);
             textWidget->bottomMargin(14);
@@ -403,13 +523,15 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
 
             mpRootWidgetItem->addChild(newWidgetItem);
         }
-        else if(element->type == "media"){
+        else if(element->name == "media"){
             createMediaButtonItem();
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpMediaSwitchItem);
             newWidgetItem->setIcon(0,QIcon(":images/teacherGuide/"+ element->attributes.value("mediaType") +".png"));
             newWidgetItem->setText(0,element->attributes.value("title"));
             newWidgetItem->setData(0,tUBTGTreeWidgetItemRole_HasAnAction,tUBTGActionAssociateOnClickItem_MEDIA);
             newWidgetItem->setData(0,Qt::FontRole, QVariant(QFont(QApplication::font().family(),11)));
+            newWidgetItem->setData(0, TG_USER_ROLE_MIME_TYPE, UBApplication::boardController->activeDocument()->persistencePath()+ "/" + element->attributes.value("relativePath"));
+            newWidgetItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             mpRootWidgetItem->addChild(newWidgetItem);
 
             QTreeWidgetItem* mediaItem = new QTreeWidgetItem(newWidgetItem);
@@ -418,7 +540,7 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
             newWidgetItem->setExpanded(false);
             mpTreeWidget->setItemWidget(mediaItem,0,mediaWidget);
         }
-        else if(element->type == "link"){
+        else if(element->name == "link"){
             createMediaButtonItem();
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpMediaSwitchItem);
             newWidgetItem->setIcon(0,QIcon(":images/teacherGuide/link.png"));
@@ -426,6 +548,7 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
             newWidgetItem->setData(0,tUBTGTreeWidgetItemRole_HasAnAction,tUBTGActionAssociateOnClickItem_URL);
             newWidgetItem->setData(0,tUBTGTreeWidgetItemRole_HasAnUrl,QVariant(element->attributes.value("url")));
             newWidgetItem->setData(0,Qt::FontRole, QVariant(QFont(QApplication::font().family(),11)));
+            newWidgetItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             mpRootWidgetItem->addChild(newWidgetItem);
         }
     }
@@ -461,7 +584,7 @@ void UBTeacherGuidePresentationWidget::onAddItemClicked(QTreeWidgetItem* widget,
 /***************************************************************************
  *              class   UBTeacherGuidePageZeroEditionWidget                *
  ***************************************************************************/
-UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget* parent, const char* name): QWidget(parent)
+UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, const char* name): QWidget(parent)
   , mpLayout(NULL)
   , mpButtonTitleLayout(NULL)
   , mpModePushButton(NULL)
@@ -473,18 +596,18 @@ UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget
   , mpSeparatorAuthors(NULL)
   , mpCreationLabel(NULL)
   , mpLastModifiedLabel(NULL)
-  , mpGoalsLabel(NULL)
-  , mpGoals(NULL)
-  , mpSeparatorGoals(NULL)
+  , mpObjectivesLabel(NULL)
+  , mpObjectives(NULL)
+  , mpSeparatorObjectives(NULL)
   , mpIndexLabel(NULL)
   , mpKeywordsLabel(NULL)
   , mpKeywords(NULL)
   , mpSchoolLevelItemLabel(NULL)
   , mpSchoolLevelBox(NULL)
   , mpSchoolLevelValueLabel(NULL)
-  , mpSchoolBranchItemLabel(NULL)
-  , mpSchoolBranchBox(NULL)
-  , mpSchoolBranchValueLabel(NULL)
+  , mpSchoolSubjectsItemLabel(NULL)
+  , mpSchoolSubjectsBox(NULL)
+  , mpSchoolSubjectsValueLabel(NULL)
   , mpSchoolTypeItemLabel(NULL)
   , mpSchoolTypeBox(NULL)
   , mpSchoolTypeValueLabel(NULL)
@@ -493,13 +616,15 @@ UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget
   , mpLicenceBox(NULL)
   , mpLicenceIcon(NULL)
   , mpLicenceLayout(NULL)
+  , mpSceneItemSessionTitle(NULL)
 {
     setObjectName(name);
-
-    mpLayout = new QVBoxLayout(this);
+    QString chapterStyle("QLabel {font-size:16px; font-weight:bold;}");
+    mpLayout = new QVBoxLayout(0);
+    setLayout(mpLayout);
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
-    mpPageNumberLabel->setObjectName("UBTGPresentationPageNumberLabel");
+    mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
     mpPageNumberLabel->setText(tr("Page 0"));
     mpLayout->addWidget(mpPageNumberLabel);
 
@@ -508,12 +633,12 @@ UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget
     mpModePushButton = new QPushButton(this);
     mpModePushButton->setIcon(QIcon(":images/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
+    mpModePushButton->installEventFilter(this);
     mpButtonTitleLayout->addWidget(mpModePushButton);
     connect(mpModePushButton,SIGNAL(clicked()),this,SLOT(switchToMode()));
 
-    mpSessionTitle = new UBTGAdaptableText(0,this);
+    mpSessionTitle = new UBTGAdaptableText(0,this,"UBTGSessionTitle");
     mpSessionTitle->setPlaceHolderText(tr("Type session title here ..."));
-    mpSessionTitle->setObjectName("UBTGEditionModeSessionTitle");
     mpButtonTitleLayout->addWidget(mpSessionTitle);
 
     mpLayout->addLayout(mpButtonTitleLayout);
@@ -526,6 +651,7 @@ UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget
     mpAuthorsLabel = new QLabel(this);
     mpAuthorsLabel->setObjectName("UBTGZeroPageEditionModeTitle");
     mpAuthorsLabel->setText(tr("Author(s)"));
+    mpAuthorsLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpAuthorsLabel);
 
     mpAuthors = new UBTGAdaptableText(0,this);
@@ -546,29 +672,32 @@ UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget
     mpSeparatorAuthors->setObjectName("UBTGSeparator");
     mpLayout->addWidget(mpSeparatorAuthors);
 
-    mpGoalsLabel = new QLabel(this);
-    mpGoalsLabel->setObjectName("UBTGZeroPageEditionModeTitle");
-    mpGoalsLabel->setText(tr("Goal(s)"));
-    mpLayout->addWidget(mpGoalsLabel);
+    mpObjectivesLabel = new QLabel(this);
+    mpObjectivesLabel->setObjectName("UBTGZeroPageEditionModeTitle");
+    mpObjectivesLabel->setText(tr("Objective(s)"));
+    mpObjectivesLabel->setStyleSheet(chapterStyle);
+    mpLayout->addWidget(mpObjectivesLabel);
 
-    mpGoals = new UBTGAdaptableText(0,this);
-    mpGoals->setObjectName("UBTGZeroPageInputText");
-    mpGoals->setPlaceHolderText(tr("Type goals here..."));
-    mpLayout->addWidget(mpGoals);
+    mpObjectives = new UBTGAdaptableText(0,this);
+    mpObjectives->setObjectName("UBTGZeroPageInputText");
+    mpObjectives->setPlaceHolderText(tr("Type objectives here..."));
+    mpLayout->addWidget(mpObjectives);
 
-    mpSeparatorGoals = new QFrame(this);
-    mpSeparatorGoals->setFixedHeight(UBTG_SEPARATOR_FIXED_HEIGHT);
-    mpSeparatorGoals->setObjectName("UBTGSeparator");
-    mpLayout->addWidget(mpSeparatorGoals);
+    mpSeparatorObjectives = new QFrame(this);
+    mpSeparatorObjectives->setFixedHeight(UBTG_SEPARATOR_FIXED_HEIGHT);
+    mpSeparatorObjectives->setObjectName("UBTGSeparator");
+    mpLayout->addWidget(mpSeparatorObjectives);
 
     mpIndexLabel = new QLabel(this);
     mpIndexLabel->setObjectName("UBTGZeroPageEditionModeTitle");
     mpIndexLabel->setText(tr("Resource indexing"));
+    mpIndexLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpIndexLabel);
 
     mpKeywordsLabel = new QLabel(this);
     mpKeywordsLabel->setObjectName("UBTGZeroPageItemLabel");
     mpKeywordsLabel->setText(tr("Keywords:"));
+    mpKeywordsLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpKeywordsLabel);
     mpKeywords = new UBTGAdaptableText(0,this);
     mpKeywords->setPlaceHolderText(tr("Type keywords here ..."));
@@ -577,29 +706,35 @@ UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget
     mpSchoolLevelItemLabel = new QLabel(this);
     mpSchoolLevelItemLabel->setObjectName("UBTGZeroPageItemLabel");
     mpSchoolLevelItemLabel->setText(tr("Level:"));
+    mpSchoolLevelItemLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpSchoolLevelItemLabel);
     mpSchoolLevelBox = new QComboBox(this);
+    mpSchoolLevelBox->setMinimumHeight(22);
     mpSchoolLevelBox->setObjectName("DockPaletteWidgetComboBox");
     connect(mpSchoolLevelBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(onSchoolLevelChanged(QString)));
     mpLayout->addWidget(mpSchoolLevelBox);
     mpSchoolLevelValueLabel = new QLabel(this);
     mpLayout->addWidget(mpSchoolLevelValueLabel);
 
-    mpSchoolBranchItemLabel = new QLabel(this);
-    mpSchoolBranchItemLabel->setObjectName("UBTGZeroPageItemLabel");
-    mpSchoolBranchItemLabel->setText(tr("Branch:"));
-    mpLayout->addWidget(mpSchoolBranchItemLabel);
-    mpSchoolBranchBox = new QComboBox(this);
-    mpSchoolBranchBox->setObjectName("DockPaletteWidgetComboBox");
-    mpLayout->addWidget(mpSchoolBranchBox);
-    mpSchoolBranchValueLabel = new QLabel(this);
-    mpLayout->addWidget(mpSchoolBranchValueLabel);
+    mpSchoolSubjectsItemLabel = new QLabel(this);
+    mpSchoolSubjectsItemLabel->setObjectName("UBTGZeroPageItemLabel");
+    mpSchoolSubjectsItemLabel->setText(tr("Subjects:"));
+    mpSchoolSubjectsItemLabel->setStyleSheet(chapterStyle);
+    mpLayout->addWidget(mpSchoolSubjectsItemLabel);
+    mpSchoolSubjectsBox = new QComboBox(this);
+    mpSchoolSubjectsBox->setMinimumHeight(22);
+    mpSchoolSubjectsBox->setObjectName("DockPaletteWidgetComboBox");
+    mpLayout->addWidget(mpSchoolSubjectsBox);
+    mpSchoolSubjectsValueLabel = new QLabel(this);
+    mpLayout->addWidget(mpSchoolSubjectsValueLabel);
 
     mpSchoolTypeItemLabel = new QLabel(this);
     mpSchoolTypeItemLabel->setObjectName("UBTGZeroPageItemLabel");
     mpSchoolTypeItemLabel->setText(tr("Type:"));
+    mpSchoolTypeItemLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpSchoolTypeItemLabel);
     mpSchoolTypeBox = new QComboBox(this);
+    mpSchoolTypeBox->setMinimumHeight(22);
     mpSchoolTypeBox->setObjectName("DockPaletteWidgetComboBox");
     mpLayout->addWidget(mpSchoolTypeBox);
     mpSchoolTypeValueLabel = new QLabel(this);
@@ -612,9 +747,11 @@ UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget
 
     mpLicenceLabel = new QLabel(this);
     mpLicenceLabel->setObjectName("UBTGZeroPageItemLabel");
-    mpLicenceLabel->setText(tr("Licence:"));
+    mpLicenceLabel->setText(tr("Licence"));
+    mpLicenceLabel->setStyleSheet(chapterStyle);
     mpLayout->addWidget(mpLicenceLabel);
     mpLicenceBox = new QComboBox(this);
+    mpLicenceBox->setMinimumHeight(22);
     mpLicenceBox->setObjectName("DockPaletteWidgetComboBox");
     mpLayout->addWidget(mpLicenceBox);
     mpLicenceLayout = new QHBoxLayout(0);
@@ -624,11 +761,13 @@ UBTeacherGuidePageZeroEditionWidget::UBTeacherGuidePageZeroEditionWidget(QWidget
     mpLicenceLayout->addWidget(mpLicenceValueLabel);
     mpLayout->addLayout(mpLicenceLayout);
     mpLayout->addStretch(1);
+
+
     connect(UBApplication::boardController,SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
     fillComboBoxes();
 }
 
-UBTeacherGuidePageZeroEditionWidget::~UBTeacherGuidePageZeroEditionWidget()
+UBTeacherGuidePageZeroWidget::~UBTeacherGuidePageZeroWidget()
 {
     DELETEPTR(mpPageNumberLabel);
     DELETEPTR(mpSessionTitle);
@@ -638,16 +777,16 @@ UBTeacherGuidePageZeroEditionWidget::~UBTeacherGuidePageZeroEditionWidget()
     DELETEPTR(mpSeparatorAuthors);
     DELETEPTR(mpCreationLabel);
     DELETEPTR(mpLastModifiedLabel);
-    DELETEPTR(mpGoalsLabel);
-    DELETEPTR(mpGoals);
-    DELETEPTR(mpSeparatorGoals);
+    DELETEPTR(mpObjectivesLabel);
+    DELETEPTR(mpObjectives);
+    DELETEPTR(mpSeparatorObjectives);
     DELETEPTR(mpIndexLabel);
     DELETEPTR(mpKeywordsLabel);
     DELETEPTR(mpKeywords);
     DELETEPTR(mpSchoolLevelItemLabel);
     DELETEPTR(mpSchoolLevelBox);
-    DELETEPTR(mpSchoolBranchItemLabel);
-    DELETEPTR(mpSchoolBranchBox);
+    DELETEPTR(mpSchoolSubjectsItemLabel);
+    DELETEPTR(mpSchoolSubjectsBox);
     DELETEPTR(mpSchoolTypeItemLabel);
     DELETEPTR(mpSchoolTypeBox);
     DELETEPTR(mpSeparatorIndex);
@@ -661,7 +800,15 @@ UBTeacherGuidePageZeroEditionWidget::~UBTeacherGuidePageZeroEditionWidget()
     DELETEPTR(mpLayout);
 }
 
-void UBTeacherGuidePageZeroEditionWidget::fillComboBoxes()
+bool UBTeacherGuidePageZeroWidget::eventFilter(QObject* object, QEvent* event)
+{
+    Q_UNUSED(object);
+    if(event->type() == QEvent::HoverEnter || event->type() == QEvent::HoverMove || event->type() == QEvent::HoverLeave)
+        return true;
+    return false;
+}
+
+void UBTeacherGuidePageZeroWidget::fillComboBoxes()
 {
     QString parametersConfigFilePath = UBSettings::settings()->applicationCustomizationDirectory() + "/teacherGuide/indexingParameters.xml";
     QFile parametersFile(parametersConfigFilePath);
@@ -702,49 +849,111 @@ void UBTeacherGuidePageZeroEditionWidget::fillComboBoxes()
 
     QStringList licences;
     licences << tr("Attribution CC BY") << tr("Attribution-NoDerivs CC BY-ND") << tr("Attribution-ShareAlike CC BY-SA") << tr("Attribution-NonCommercial CC BY-NC") << tr("Attribution-NonCommercial-NoDerivs CC BY-NC-ND") << tr("Attribution-NonCommercial-ShareAlike CC BY-NC-SA") << tr("Public domain") << tr("Copyright");
-
     mpLicenceBox->addItems(licences);
+    QStringList licenceIconList;
+    licenceIconList << ":images/licenses/ccby.png" << ":images/licenses/ccbynd.png" << ":images/licenses/ccbysa.png" << ":images/licenses/ccbync.png" << ":images/licenses/ccbyncnd.png" << ":images/licenses/ccbyncsa.png";
+    for(int i = 0; i < licenceIconList.count(); i+=1)
+        mpLicenceBox->setItemData(i,licenceIconList.at(i));
 }
 
-void UBTeacherGuidePageZeroEditionWidget::onSchoolLevelChanged(QString schoolLevel)
+void UBTeacherGuidePageZeroWidget::onSchoolLevelChanged(QString schoolLevel)
 {
     QStringList subjects = mSubjects.value(mGradeLevelsMap.value(schoolLevel));
-    mpSchoolBranchBox->clear();
+    mpSchoolSubjectsBox->clear();
     if(subjects.count()){
-        mpSchoolBranchItemLabel->setEnabled(true);
-        mpSchoolBranchBox->setEnabled(true);
-        mpSchoolBranchBox->addItems(subjects);
+        mpSchoolSubjectsItemLabel->setEnabled(true);
+        mpSchoolSubjectsBox->setEnabled(true);
+        mpSchoolSubjectsBox->addItems(subjects);
     }
     else{
-        mpSchoolBranchItemLabel->setDisabled(true);
-        mpSchoolBranchBox->setDisabled(true);
+        mpSchoolSubjectsItemLabel->setDisabled(true);
+        mpSchoolSubjectsBox->setDisabled(true);
     }
 }
 
-void UBTeacherGuidePageZeroEditionWidget::onActiveSceneChanged()
+void UBTeacherGuidePageZeroWidget::onActiveSceneChanged()
 {
-    UBDocumentProxy* documentProxy = UBApplication::documentController ? UBApplication::documentController->getCurrentDocument() : 0;
-    if(UBApplication::documentController && UBApplication::boardController->activeSceneIndex() == 0){
-//        QDateTime creationDate = documentProxy->documentDate();
-//        mpCreationLabel->setText(tr("Created the:") + creationDate.toString(Qt::SystemLocaleShortDate));
-//        QDateTime updatedDate = documentProxy->lastUpdate();
-//        mpLastModifiedLabel->setText(tr("Updated the:") + updatedDate.toString(Qt::SystemLocaleShortDate));
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    if(documentProxy && UBApplication::boardController->currentPage() == 0){
+        QDateTime creationDate = documentProxy->documentDate();
+        mpCreationLabel->setText(tr("Created the:\n") + creationDate.toString(Qt::DefaultLocaleShortDate));
+        QDateTime updatedDate = documentProxy->lastUpdate();
+        mpLastModifiedLabel->setText(tr("Updated the:\n") + updatedDate.toString(Qt::DefaultLocaleShortDate));
+        loadData();
+        updateSceneTitle();
     }
 }
 
+void UBTeacherGuidePageZeroWidget::hideEvent ( QHideEvent * event )
+{
+    persistData();
+    QWidget::hideEvent(event);
+}
 
-void UBTeacherGuidePageZeroEditionWidget::switchToMode(tUBTGZeroPageMode mode)
+void UBTeacherGuidePageZeroWidget::loadData()
+{
+    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    mpSessionTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
+    mpAuthors->setText(documentProxy->metaData(UBSettings::sessionAuthors).toString());
+    mpObjectives->setText(documentProxy->metaData(UBSettings::sessionObjectives).toString());
+    mpKeywords->setText(documentProxy->metaData(UBSettings::sessionKeywords).toString());
+
+    int currentIndex = mpSchoolLevelBox->findText(documentProxy->metaData(UBSettings::sessionGradeLevel).toString());
+    mpSchoolLevelBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
+
+    currentIndex = mpSchoolSubjectsBox->findText(documentProxy->metaData(UBSettings::sessionSubjects).toString());
+    mpSchoolSubjectsBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
+
+    currentIndex = mpSchoolTypeBox->findText(documentProxy->metaData(UBSettings::sessionType).toString());
+    mpSchoolTypeBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
+
+    currentIndex = mpLicenceBox->findText(documentProxy->metaData(UBSettings::sessionLicence).toString());
+    mpLicenceBox->setCurrentIndex((currentIndex!=-1) ? currentIndex : 0);
+}
+
+void UBTeacherGuidePageZeroWidget::persistData()
+{
+    // check necessary because at document closing hide event is send after boardcontroller set
+    // to NULL
+    if(UBApplication::boardController){
+        UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+        documentProxy->setMetaData(UBSettings::sessionTitle,mpSessionTitle->text());
+        documentProxy->setMetaData(UBSettings::sessionAuthors, mpAuthors->text());
+        documentProxy->setMetaData(UBSettings::sessionObjectives,mpObjectives->text());
+        documentProxy->setMetaData(UBSettings::sessionKeywords,mpKeywords->text());
+        documentProxy->setMetaData(UBSettings::sessionGradeLevel,mpSchoolLevelBox->currentText());
+        documentProxy->setMetaData(UBSettings::sessionSubjects,mpSchoolSubjectsBox->currentText());
+        documentProxy->setMetaData(UBSettings::sessionType,mpSchoolTypeBox->currentText());
+        documentProxy->setMetaData(UBSettings::sessionLicence,mpLicenceBox->currentText());
+    }
+}
+
+void UBTeacherGuidePageZeroWidget::updateSceneTitle()
+{
+    QString sessionTitle = mpSessionTitle->text();
+    if(!sessionTitle.isEmpty())
+        UBApplication::boardController->activeScene()->textForObjectName(mpSessionTitle->text());
+}
+
+void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
 {
     if(mode == tUBTGZeroPageMode_EDITION){
+        QString inputStyleSheet("QTextEdit { background: white; border-radius: 10px; border: 2px;}");
         mpModePushButton->hide();
         mpSessionTitle->setReadOnly(false);
+        mpSessionTitle->setStyleSheet(inputStyleSheet);
+        QFont titleFont(QApplication::font().family(),11,-1);
+        mpSessionTitle->document()->setDefaultFont(titleFont);
         mpAuthors->setReadOnly(false);
-        mpGoals->setReadOnly(false);
+        mpAuthors->setStyleSheet(inputStyleSheet);
+        mpObjectives->setReadOnly(false);
+        mpObjectives->setStyleSheet(inputStyleSheet);
         mpKeywords->setReadOnly(false);
+        mpKeywords->setStyleSheet(inputStyleSheet);
         mpSchoolLevelValueLabel->hide();
         mpSchoolLevelBox->show();
-        mpSchoolBranchValueLabel->hide();
-        mpSchoolBranchBox->show();
+        mpSchoolSubjectsValueLabel->hide();
+        mpSchoolSubjectsBox->show();
         mpSchoolTypeValueLabel->hide();
         mpSchoolTypeBox->show();
         mpLicenceIcon->hide();
@@ -752,84 +961,94 @@ void UBTeacherGuidePageZeroEditionWidget::switchToMode(tUBTGZeroPageMode mode)
         mpLicenceBox->show();
     }
     else{
+        QString inputStyleSheet("QTextEdit { background: transparent; border: none;}");
         mpModePushButton->show();
-        mpSessionTitle->setReadOnly(true);
-        mpAuthors->setReadOnly(true);
-        mpGoals->setReadOnly(true);
-        mpKeywords->setReadOnly(true);
+        mpSessionTitle->showText(mpSessionTitle->text());
+        mpSessionTitle->setStyleSheet(inputStyleSheet);
+        updateSceneTitle();
+        QFont titleFont(QApplication::font().family(),14,1);
+        mpSessionTitle->document()->setDefaultFont(titleFont);
+        mpAuthors->setStyleSheet(inputStyleSheet);
+        mpAuthors->setTextColor(QColor(Qt::black));
+        mpAuthors->showText(mpAuthors->text());
+        mpObjectives->setStyleSheet(inputStyleSheet);
+        mpObjectives->setTextColor(QColor(Qt::black));
+        mpObjectives->showText(mpObjectives->text());
+        mpKeywords->setStyleSheet(inputStyleSheet);
+        mpKeywords->setTextColor(QColor(Qt::black));
+        mpKeywords->showText(mpKeywords->text());
         mpSchoolLevelValueLabel->setText(mpSchoolLevelBox->currentText());
         mpSchoolLevelValueLabel->show();
         mpSchoolLevelBox->hide();
-        mpSchoolBranchValueLabel->setText(mpSchoolBranchBox->currentText());
-        mpSchoolBranchValueLabel->show();
-        mpSchoolBranchBox->hide();
+        mpSchoolSubjectsValueLabel->setText(mpSchoolSubjectsBox->currentText());
+        mpSchoolSubjectsValueLabel->show();
+        mpSchoolSubjectsBox->hide();
         mpSchoolTypeValueLabel->setText(mpSchoolTypeBox->currentText());
         mpSchoolTypeValueLabel->show();
         mpSchoolTypeBox->hide();
         mpLicenceValueLabel->setText(mpLicenceBox->currentText());
-        QStringList licenceIconList;
-        licenceIconList << ":images/licenses/ccby.png" << ":images/licenses/ccbynd.png" << ":images/licenses/ccbysa.png" << ":images/licenses/ccbync.png" << ":images/licenses/ccbyncnd.png" << ":images/licenses/ccbyncsa.png";
-        int licenceBoxCurrentIndex = mpLicenceBox->currentIndex();
-        // -1 is return if there is no values on the box
-        if(licenceBoxCurrentIndex > 0 && licenceBoxCurrentIndex < licenceIconList.count()){
-            mpLicenceIcon->setPixmap(licenceIconList.at(licenceBoxCurrentIndex));
+        QString licenceIconPath = mpLicenceBox->itemData(mpLicenceBox->currentIndex()).toString();
+        if(!licenceIconPath.isEmpty()){
+            mpLicenceIcon->setPixmap(QPixmap(licenceIconPath));
             mpLicenceIcon->show();
         }
         mpLicenceValueLabel->show();
         mpLicenceBox->hide();
+        persistData();
     }
+    update();
 }
 
-QVector<tUBGEElementNode*> UBTeacherGuidePageZeroEditionWidget::getData()
+QVector<tUBGEElementNode*> UBTeacherGuidePageZeroWidget::getData()
 {
     QVector<tUBGEElementNode*>result;
     tUBGEElementNode* elementNode = new tUBGEElementNode();
-    elementNode->type = "sessionTitle";
+    elementNode->name = "sessionTitle";
     elementNode->attributes.insert("value",mpSessionTitle->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "authors";
+    elementNode->name = "authors";
     elementNode->attributes.insert("value",mpAuthors->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "creationDate";
+    elementNode->name = "creationDate";
     elementNode->attributes.insert("value",mpCreationLabel->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "lastModifiedDate";
+    elementNode->name = "lastModifiedDate";
     elementNode->attributes.insert("value",mpLastModifiedLabel->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "goals";
-    elementNode->attributes.insert("value",mpGoals->text());
+    elementNode->name = "goals";
+    elementNode->attributes.insert("value",mpObjectives->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "keywords";
+    elementNode->name = "keywords";
     elementNode->attributes.insert("value",mpKeywords->text());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "schoolLevel";
+    elementNode->name = "schoolLevel";
     elementNode->attributes.insert("value",mpSchoolLevelBox->currentText());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "schoolBranch";
-    elementNode->attributes.insert("value",mpSchoolBranchBox->currentText());
+    elementNode->name = "schoolBranch";
+    elementNode->attributes.insert("value",mpSchoolSubjectsBox->currentText());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "schoolType";
+    elementNode->name = "schoolType";
     elementNode->attributes.insert("value",mpSchoolTypeBox->currentText());
     result << elementNode;
 
     elementNode = new tUBGEElementNode();
-    elementNode->type = "licence";
+    elementNode->name = "licence";
     elementNode->attributes.insert("value",mpLicenceBox->currentText());
     result << elementNode;
     return result;
@@ -839,31 +1058,44 @@ QVector<tUBGEElementNode*> UBTeacherGuidePageZeroEditionWidget::getData()
  *                    class    UBTeacherGuideWidget                        *
  ***************************************************************************/
 UBTeacherGuideWidget::UBTeacherGuideWidget(QWidget* parent, const char* name): QStackedWidget(parent)
-  , mpPageZeroEditonWidget(NULL)
+  , mpPageZeroWidget(NULL)
   , mpEditionWidget(NULL)
   , mpPresentationWidget(NULL)
 {
     setObjectName(name);
-
-    mpPageZeroEditonWidget = new UBTeacherGuidePageZeroEditionWidget(this);
-    addWidget(mpPageZeroEditonWidget);
-    setCurrentWidget(mpPageZeroEditonWidget);
-    //    mpEditionWidget = new UBTeacherGuideEditionWidget(this);
-//    addWidget(mpEditionWidget);
-//    mpPresentationWidget = new UBTeacherGuidePresentationWidget(this);
-//    addWidget(mpPresentationWidget);
-//    setCurrentWidget(mpPresentationWidget);
-
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
+        mpPageZeroWidget = new UBTeacherGuidePageZeroWidget(this);
+        addWidget(mpPageZeroWidget);
+    }
+    if(UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
+        mpEditionWidget = new UBTeacherGuideEditionWidget(this);
+        addWidget(mpEditionWidget);
+        mpPresentationWidget = new UBTeacherGuidePresentationWidget(this);
+        addWidget(mpPresentationWidget);
+    }
 
     connect(UBApplication::boardController->controlView(),SIGNAL(clickOnBoard()),this,SLOT(showPresentationMode()));
     connectToStylusPalette();
+    connect(UBApplication::boardController,SIGNAL(activeSceneChanged()),this,SLOT(onActiveSceneChanged()));
 }
 
 
 UBTeacherGuideWidget::~UBTeacherGuideWidget()
 {
+    DELETEPTR(mpPageZeroWidget);
     DELETEPTR(mpEditionWidget);
     DELETEPTR(mpPresentationWidget);
+}
+
+
+void UBTeacherGuideWidget::onActiveSceneChanged()
+{
+    if(UBApplication::boardController->currentPage() == 0){
+        setCurrentWidget(mpPageZeroWidget);
+        mpPageZeroWidget->switchToMode(tUBTGZeroPageMode_EDITION);
+    }else
+        setCurrentWidget(mpEditionWidget);
+
 }
 
 void UBTeacherGuideWidget::connectToStylusPalette()
@@ -871,14 +1103,14 @@ void UBTeacherGuideWidget::connectToStylusPalette()
     if(UBApplication::boardController->paletteManager())
         connect(UBApplication::boardController->paletteManager()->stylusPalette(),SIGNAL(itemOnActionPaletteChanged()),this,SLOT(showPresentationMode()));
     else
-        QTimer::singleShot(500,this,SLOT(connectToStylusPalette()));
+        QTimer::singleShot(100,this,SLOT(connectToStylusPalette()));
 }
 
 void UBTeacherGuideWidget::showPresentationMode()
 {
-    if(currentWidget()==mpPageZeroEditonWidget){
-        mCurrentData = mpPageZeroEditonWidget->getData();
-        mpPageZeroEditonWidget->switchToMode(tUBTGZeroPageMode_PRESENTATION);
+    if(currentWidget()==mpPageZeroWidget){
+        mCurrentData = mpPageZeroWidget->getData();
+        mpPageZeroWidget->switchToMode(tUBTGZeroPageMode_PRESENTATION);
     }
     else if(currentWidget()==mpEditionWidget){
         mCurrentData = mpEditionWidget->getData();

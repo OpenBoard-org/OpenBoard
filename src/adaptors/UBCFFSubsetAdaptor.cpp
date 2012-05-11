@@ -17,7 +17,9 @@
 #include <QSvgRenderer>
 
 #include "core/UBPersistenceManager.h"
+
 #include "document/UBDocumentProxy.h"
+
 #include "domain/UBItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBGraphicsStroke.h"

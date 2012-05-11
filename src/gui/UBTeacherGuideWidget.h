@@ -22,9 +22,12 @@ class QLabel;
 class QVBoxLayout;
 class QPushButton;
 class UBDocumentProxy;
+class UBGraphicsTextItem;
+
 
 #include "UBTeacherGuideWidgetsTools.h"
-#include "UBTGWidgetTreeDelegate.h"
+
+#include "interfaces/IDataStorage.h"
 
 typedef enum
 {
@@ -35,7 +38,7 @@ typedef enum
 /***************************************************************************
  *               class    UBTeacherGuideEditionWidget                      *
  ***************************************************************************/
-class UBTeacherGuideEditionWidget : public QWidget
+class UBTeacherGuideEditionWidget : public QWidget , public IDataStorage
 {
     Q_OBJECT
 public:
@@ -44,8 +47,11 @@ public:
     void cleanData();
     QVector<tUBGEElementNode*> getData();
 
+    void load(QString element);
+    QVector<tIDataStorage*> save(int pageIndex);
+
 public slots:
-    void onAddItemClicked(QTreeWidgetItem* widget, int column);
+    void onAddItemClicked(QTreeWidgetItem* widget, int column, QDomElement* element = 0);
     void onActiveSceneChanged();
     void showEvent(QShowEvent* event);
 
@@ -64,7 +70,9 @@ private:
     UBAddItem* mpAddAnActionItem;
     UBAddItem* mpAddAMediaItem;
     UBAddItem* mpAddALinkItem;
-    UBTGWidgetTreeDelegate* mpTreeDelegate;
+
+private slots:
+    void onActiveDocumentChanged();
 
 };
 
@@ -86,6 +94,8 @@ public slots:
     void onActiveSceneChanged();
 
 private:
+    bool eventFilter(QObject* object, QEvent* event);
+
     void createMediaButtonItem();
 
     UBTGAdaptableText* mpPageTitle;
@@ -96,22 +106,22 @@ private:
     QLabel* mpPageNumberLabel;
     QFrame* mpSeparator;
     QPushButton* mpModePushButton;
-    QTreeWidget* mpTreeWidget;
+    UBTGDraggableTreeItem* mpTreeWidget;
     QTreeWidgetItem* mpRootWidgetItem;
     QTreeWidgetItem* mpMediaSwitchItem;
 
 };
 
 /***************************************************************************
- *        class    UBTeacherGuidePageZeroPresentationWidget                *
+ *                  class    UBTeacherGuidePageZeroWidget                  *
  ***************************************************************************/
-class UBTeacherGuidePageZeroEditionWidget : public QWidget
+class UBTeacherGuidePageZeroWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit UBTeacherGuidePageZeroEditionWidget(QWidget* parent, const char* name = "UBTeacherGuidePageZeroEditionWidget");
-    ~UBTeacherGuidePageZeroEditionWidget();
+    explicit UBTeacherGuidePageZeroWidget(QWidget* parent, const char* name = "UBTeacherGuidePageZeroEditionWidget");
+    ~UBTeacherGuidePageZeroWidget();
 
     QVector<tUBGEElementNode*> getData();
 
@@ -122,6 +132,10 @@ public slots:
 
 private:
     void fillComboBoxes();
+    void loadData();
+    void hideEvent(QHideEvent* event);
+    bool eventFilter(QObject* object, QEvent* event);
+    void updateSceneTitle();
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonTitleLayout;
@@ -136,9 +150,9 @@ private:
 
     QLabel* mpCreationLabel;
     QLabel* mpLastModifiedLabel;
-    QLabel* mpGoalsLabel;
-    UBTGAdaptableText* mpGoals;
-    QFrame* mpSeparatorGoals;
+    QLabel* mpObjectivesLabel;
+    UBTGAdaptableText* mpObjectives;
+    QFrame* mpSeparatorObjectives;
 
     QLabel* mpIndexLabel;
     QLabel* mpKeywordsLabel;
@@ -148,9 +162,9 @@ private:
     QComboBox* mpSchoolLevelBox;
     QLabel* mpSchoolLevelValueLabel;
 
-    QLabel* mpSchoolBranchItemLabel;
-    QComboBox* mpSchoolBranchBox;
-    QLabel* mpSchoolBranchValueLabel;
+    QLabel* mpSchoolSubjectsItemLabel;
+    QComboBox* mpSchoolSubjectsBox;
+    QLabel* mpSchoolSubjectsValueLabel;
 
     QLabel* mpSchoolTypeItemLabel;
     QComboBox* mpSchoolTypeBox;
@@ -163,11 +177,14 @@ private:
     QLabel* mpLicenceIcon;
     QHBoxLayout* mpLicenceLayout;
 
+    UBGraphicsTextItem* mpSceneItemSessionTitle;
+
     QMap<QString,QString> mGradeLevelsMap;
     QMap<QString,QStringList> mSubjects;
 
 private slots:
     void onSchoolLevelChanged(QString schoolLevel);
+    void persistData();
 };
 
 /***************************************************************************
@@ -185,13 +202,13 @@ public slots:
     void changeMode();
     void showPresentationMode();
     void connectToStylusPalette();
+    void onActiveSceneChanged();
 
 private:
-    UBTeacherGuidePageZeroEditionWidget* mpPageZeroEditonWidget;
+    UBTeacherGuidePageZeroWidget* mpPageZeroWidget;
     UBTeacherGuideEditionWidget* mpEditionWidget;
     UBTeacherGuidePresentationWidget* mpPresentationWidget;
     QVector<tUBGEElementNode*>mCurrentData;
-
 };
 
 #endif // UBTEACHERGUIDEWIDGET_H

@@ -62,8 +62,11 @@
 #include "podcast/UBPodcastController.h"
 
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
+#include "adaptors/UBSvgSubsetAdaptor.h"
 
 #include "UBBoardPaletteManager.h"
+
+#include "core/UBSettings.h"
 
 #include "core/memcheck.h"
 //#include <typeinfo>
@@ -146,6 +149,27 @@ UBBoardController::~UBBoardController()
     delete mDisplayView;
 }
 
+
+int UBBoardController::currentPage()
+{
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+        return mActiveSceneIndex;
+    return mActiveSceneIndex + 1;
+}
+
+int UBBoardController::pageFromSceneIndex(int sceneIndex)
+{
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+        return sceneIndex;
+    return sceneIndex+1;
+}
+
+int UBBoardController::sceneIndexFromPage(int page)
+{
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+        return page-1;
+    return page;
+}
 
 void UBBoardController::setupViews()
 {
@@ -670,7 +694,7 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 void UBBoardController::handScroll(qreal dx, qreal dy)
 {
     mControlView->translate(dx, dy);
-	
+
     UBApplication::applicationController->adjustDisplayView();
 
     emit controlViewportChanged();
@@ -1535,17 +1559,17 @@ void UBBoardController::updateSystemScaleFactor()
     if (mActiveScene)
     {
         QSize pageNominalSize = mActiveScene->nominalSize();
-		//we're going to keep scale factor untouched if the size is custom
-		QMap<DocumentSizeRatio::Enum, QSize> sizesMap = UBSettings::settings()->documentSizes;
-		if(pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio16_9) || pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio4_3))
-		{
-			QSize controlSize = controlViewport();
+        //we're going to keep scale factor untouched if the size is custom
+        QMap<DocumentSizeRatio::Enum, QSize> sizesMap = UBSettings::settings()->documentSizes;
+        if(pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio16_9) || pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio4_3))
+        {
+            QSize controlSize = controlViewport();
 
-			qreal hFactor = ((qreal)controlSize.width()) / ((qreal)pageNominalSize.width());
-			qreal vFactor = ((qreal)controlSize.height()) / ((qreal)pageNominalSize.height());
+            qreal hFactor = ((qreal)controlSize.width()) / ((qreal)pageNominalSize.width());
+            qreal vFactor = ((qreal)controlSize.height()) / ((qreal)pageNominalSize.height());
 
-			newScaleFactor = qMin(hFactor, vFactor);
-		}
+            newScaleFactor = qMin(hFactor, vFactor);
+        }
     }
 
     if (mSystemScaleFactor != newScaleFactor)
