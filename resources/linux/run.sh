@@ -14,4 +14,4 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
-env LD_LIBRARY_PATH=$PWD/qtlib:$LD_LIBRARY_PATH ./Open-Sankore 
+env LD_LIBRARY_PATH=$PWD/qtlib:$PWD/plugins/cffadaptor:$LD_LIBRARY_PATH ./Open-Sankore 
