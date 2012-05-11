@@ -940,18 +940,14 @@ void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
         mpModePushButton->hide();
         mpSessionTitle->setReadOnly(false);
         mpSessionTitle->setStyleSheet(inputStyleSheet);
-        mpSessionTitle->setTextColor(QColor(Qt::lightGray));
         QFont titleFont(QApplication::font().family(),11,-1);
         mpSessionTitle->document()->setDefaultFont(titleFont);
         mpAuthors->setReadOnly(false);
         mpAuthors->setStyleSheet(inputStyleSheet);
-        mpAuthors->setTextColor(QColor(Qt::lightGray));
         mpObjectives->setReadOnly(false);
         mpObjectives->setStyleSheet(inputStyleSheet);
-        mpObjectives->setTextColor(QColor(Qt::lightGray));
         mpKeywords->setReadOnly(false);
         mpKeywords->setStyleSheet(inputStyleSheet);
-        mpKeywords->setTextColor(QColor(Qt::lightGray));
         mpSchoolLevelValueLabel->hide();
         mpSchoolLevelBox->show();
         mpSchoolSubjectsValueLabel->hide();
