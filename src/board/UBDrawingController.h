@@ -27,7 +27,7 @@ typedef enum{
     eDrawingMode_Vector
 }eDrawingMode;
 
-#define DRAWING_MODE    eDrawingMode_Artistic
+#define DRAWING_MODE    eDrawingMode_Vector
 
 class UBDrawingController : public QObject
 {
