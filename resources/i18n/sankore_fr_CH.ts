@@ -800,8 +800,12 @@
         <translation>Importer les anciens documents Sankoré et Uniboard</translation>
     </message>
     <message>
-        <source>Gtorup items</source>
-        <translation>Groupe les éléments</translation>
+        <source>Group Items</source>
+        <translation>Grouper</translation>
+    </message>
+    <message>
+        <source>Group items</source>
+        <translation>Grouper</translation>
     </message>
 </context>
 <context>
@@ -1220,23 +1224,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter au format IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter comme fichier IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Exportation du document...</translation>
+        <translation>Exportation du document en cours </translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Exportation terminée.</translation>
+        <translation>Exportation terminée.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">Exportation échouée.</translation>
+        <translation>Exportation échouée.</translation>
     </message>
 </context>
 <context>
@@ -1383,6 +1387,13 @@
     <message>
         <source>Create new folder</source>
         <translation>Créer un nouveau dossier</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesController</name>
+    <message>
+        <source>ImportedImage</source>
+        <translation type="unfinished">ImageImportée</translation>
     </message>
 </context>
 <context>
@@ -1948,14 +1959,6 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
         <translation>Auteur(s)</translation>
     </message>
     <message>
-        <source>Goal(s)</source>
-        <translation>Objectif(s)</translation>
-    </message>
-    <message>
-        <source>Type goals here...</source>
-        <translation>Objectifs</translation>
-    </message>
-    <message>
         <source>Resource indexing</source>
         <translation>Indexation de la ressource</translation>
     </message>
@@ -1970,10 +1973,6 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
     <message>
         <source>Level:</source>
         <translation>Niveau scolaire</translation>
-    </message>
-    <message>
-        <source>Branch:</source>
-        <translation>Discipline</translation>
     </message>
     <message>
         <source>Type:</source>
@@ -2024,6 +2023,18 @@ Voulez-vous ignorer les erreurs pour ce serveur?</translation>
         <source>Updated the:
 </source>
         <translation>Modifié le: </translation>
+    </message>
+    <message>
+        <source>Objective(s)</source>
+        <translation>Objectif(s)</translation>
+    </message>
+    <message>
+        <source>Type objectives here...</source>
+        <translation>Objectifs</translation>
+    </message>
+    <message>
+        <source>Subjects:</source>
+        <translation>Discipline:</translation>
     </message>
 </context>
 <context>
@@ -3002,7 +3013,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
+        <translation>Crédits</translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;

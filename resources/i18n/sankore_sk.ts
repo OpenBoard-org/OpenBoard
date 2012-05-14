@@ -800,7 +800,11 @@
         <translation>Vymazať anotáciu</translation>
     </message>
     <message>
-        <source>Gtorup items</source>
+        <source>Group Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group items</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1388,6 +1392,13 @@
     </message>
 </context>
 <context>
+    <name>UBFeaturesController</name>
+    <message>
+        <source>ImportedImage</source>
+        <translation type="unfinished">NahranýObrázok</translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
         <source>Locked</source>
@@ -1950,14 +1961,6 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Goal(s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Type goals here...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Resource indexing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1971,10 +1974,6 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
     <message>
         <source>Level:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Branch:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2025,6 +2024,18 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     <message>
         <source>Updated the:
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Objective(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type objectives here...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subjects:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
