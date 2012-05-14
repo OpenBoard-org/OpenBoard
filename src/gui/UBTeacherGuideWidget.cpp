@@ -204,13 +204,16 @@ QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save(int pageIndex)
     data->name = "title";
     data->type = eElementType_UNIQUE;
     data->attributes.insert("value",mpPageTitle->text());
-    result << data;
+    if(mpPageTitle->text().length()){
+        result << data;
+    }
 
     data = new tIDataStorage();
     data->name = "comment";
     data->type = eElementType_UNIQUE;
     data->attributes.insert("value",mpComment->text());
-    result << data;
+    if(mpComment->text().length())
+        result << data;
 
     QList<QTreeWidgetItem*> children = getChildrenList(mpAddAnActionItem);
     children << getChildrenList(mpAddAMediaItem);
