@@ -800,7 +800,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Gtorup items</source>
+        <source>Group Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group items</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1384,6 +1388,13 @@
     </message>
 </context>
 <context>
+    <name>UBFeaturesController</name>
+    <message>
+        <source>ImportedImage</source>
+        <translation type="unfinished">Importiertes Bild</translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
         <source>Locked</source>
@@ -1946,14 +1957,6 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Goal(s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Type goals here...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Resource indexing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1967,10 +1970,6 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     </message>
     <message>
         <source>Level:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Branch:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2021,6 +2020,18 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     <message>
         <source>Updated the:
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Objective(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type objectives here...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subjects:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
