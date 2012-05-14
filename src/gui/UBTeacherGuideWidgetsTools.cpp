@@ -230,11 +230,14 @@ void UBTGAdaptableText::bottomMargin(int newValue)
  *                      class   UBTGDraggableWeb                           *
  ***************************************************************************/
 UBDraggableWeb::UBDraggableWeb(QString& relativePath, QWidget* parent): QWebView(parent)
-  , mRelativePath(relativePath)
   , mDragStartPosition(QPoint(-1,-1))
   , mDragStarted(false)
 
 {
+	if(!relativePath.startsWith("file://"))
+		mRelativePath = QUrl::fromLocalFile(relativePath).toString();
+	else
+		mRelativePath = relativePath;
     //NOOP
 }
 
