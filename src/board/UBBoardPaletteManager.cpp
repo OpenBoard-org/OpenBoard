@@ -160,9 +160,11 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mRightPalette = new UBRightPalette(mContainer);
     // RIGHT palette widgets
+#ifndef USE_WEB_WIDGET
     mpFeaturesWidget = new UBFeaturesWidget();
 	mRightPalette->registerWidget(mpFeaturesWidget);
 	mRightPalette->addTab(mpFeaturesWidget);
+#endif
 
     //Do not show deprecated lib widget to prevent collisions. Uncomment to return lib widget
 
@@ -728,7 +730,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
             {
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
-                    WBBrowserWindow* brWnd = UBApplication::webController->GetCurrentWebBrowser();
+//                    tmp variable?
+//                    WBBrowserWindow* brWnd = UBApplication::webController->GetCurrentWebBrowser();
 
                     if(mKeyboardPalette->m_isVisible)
                     {

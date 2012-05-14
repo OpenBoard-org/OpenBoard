@@ -293,7 +293,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
             UBApplication::applicationController->initialVScroll()));
     }
 
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+//    Just for debug. Do not delete please
+//    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
 
 //  just a stub don't treat as a result code
