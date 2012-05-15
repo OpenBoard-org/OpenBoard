@@ -859,15 +859,10 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
                         // Then we substract the eraser path to the polygon and we simplify it
                         /**/
-                        QTransform polyTransform = collidingPolygonItem->sceneTransform();
-                        QPointF mTrPrevPoint;
-                        QPointF mTrEndPoint;
+                        QTransform polyTransform = collidingPolygonItem->sceneTransform().inverted();
+                        QPointF mTrPrevPoint = polyTransform.map(mPreviousPoint);
+                        QPointF mTrEndPoint = polyTransform.map(pEndPoint);
 
-                        // TODO: Handle the scale & rotation transform here
-                        mTrPrevPoint.setX(mPreviousPoint.x() - polyTransform.dx());
-                        mTrPrevPoint.setY(mPreviousPoint.y() - polyTransform.dy());
-                        mTrEndPoint.setX(pEndPoint.x() - polyTransform.dx());
-                        mTrEndPoint.setY(pEndPoint.y() - polyTransform.dy());
                         const QLineF trLine(mTrPrevPoint, mTrEndPoint);
                         const QPolygonF trEraserPolygon = UBGeometryUtils::lineToPolygon(trLine, pWidth);
 
