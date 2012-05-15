@@ -10,7 +10,7 @@
 #include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
 
-UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)
+UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)	
 {
     setObjectName(name);
     mName = "FeaturesWidget";
@@ -82,7 +82,6 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 	//pathListView->setMovement( QListView::Static );
 	pathListView->setDragDropMode( QAbstractItemView::DropOnly );
 
-	pathScene = new QGraphicsScene(this);
 	//pathViewer = new UBFeaturesPathViewer( QPixmap(":images/libpalette/home.png"), controller->getRootPath(), pathScene,  this );
 	featureProperties = new UBFeatureProperties(this);
 	webView = new UBFeaturesWebView(this);
@@ -131,6 +130,15 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
 		this, SLOT( onDisplayMetadata( QMap<QString,QString> ) ) );
     connect( UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray ) ), 
         this, SLOT( onAddDownloadedFileToLibrary( bool, QUrl, QString,QByteArray ) ) );
+}
+
+UBFeaturesWidget::~UBFeaturesWidget()
+{
+	if ( thumbSlider != NULL )
+    {
+        delete thumbSlider;
+        thumbSlider = NULL;
+    }
 }
 
 bool UBFeaturesWidget::eventFilter( QObject *target, QEvent *event )
@@ -444,9 +452,7 @@ void UBFeaturesWidget::currentPathChanged(const QString &path)
 */
 
 
-UBFeaturesWidget::~UBFeaturesWidget()
-{
-}
+
 
 UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) 
 : QListView(parent)
@@ -537,15 +543,18 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
 
 UBFeaturesWebView::~UBFeaturesWebView()
 {
-    if(NULL != mpSankoreAPI){
+    if( NULL != mpSankoreAPI )
+    {
         delete mpSankoreAPI;
         mpSankoreAPI = NULL;
     }
-    if(NULL != mpView){
+    if( NULL != mpView )
+    {
         delete mpView;
         mpView = NULL;
     }
-    if(NULL != mpLayout){
+    if( NULL != mpLayout )
+    {
         delete mpLayout;
         mpLayout = NULL;
     }
@@ -659,6 +668,55 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
 	connect( mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()) );
     connect( mpSetAsBackgroundButton, SIGNAL( clicked() ), this, SLOT( onSetAsBackground() ) );
     connect( mpAddToLibButton, SIGNAL( clicked() ), this, SLOT(onAddToLib() ) );
+}
+
+UBFeatureProperties::~UBFeatureProperties()
+{
+	if ( mpOrigPixmap )
+    {
+        delete mpOrigPixmap;
+        mpOrigPixmap = NULL;
+    }
+	if ( mpElement )
+	{
+		delete mpElement;
+		mpElement = NULL;
+	}
+    if ( mpThumbnail )
+    {
+        delete mpThumbnail;
+        mpThumbnail = NULL;
+    }
+    if ( mpButtonLayout )
+    {
+        delete mpButtonLayout;
+        mpButtonLayout = NULL;
+    }
+    if ( mpAddPageButton )
+    {
+        delete mpAddPageButton;
+        mpAddPageButton = NULL;
+    }
+    if ( mpSetAsBackgroundButton )
+    {
+        delete mpSetAsBackgroundButton;
+        mpSetAsBackgroundButton = NULL;
+    }
+    if ( mpAddToLibButton )
+    {
+        delete mpAddToLibButton;
+        mpAddToLibButton = NULL;
+    }
+    if ( mpObjInfoLabel )
+    {
+        delete mpObjInfoLabel;
+        mpObjInfoLabel = NULL;
+    }
+    if ( mpObjInfos )
+    {
+        delete mpObjInfos;
+        mpObjInfos = NULL;
+    }
 }
 
 void UBFeatureProperties::resizeEvent( QResizeEvent *event )
@@ -787,19 +845,7 @@ void UBFeatureProperties::onSetAsBackground()
     featuresWidget->getFeaturesController()->addItemAsBackground( *mpElement );
 }
 
-UBFeatureProperties::~UBFeatureProperties()
-{
-	if ( mpOrigPixmap )
-    {
-        delete mpOrigPixmap;
-        mpOrigPixmap = NULL;
-    }
-	if ( mpElement )
-	{
-		delete mpElement;
-		mpElement = NULL;
-	}
-}
+
 
 UBFeatureItemButton::UBFeatureItemButton(QWidget *parent, const char *name):QPushButton(parent)
 {

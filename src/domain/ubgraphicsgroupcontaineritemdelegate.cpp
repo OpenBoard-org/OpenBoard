@@ -45,21 +45,25 @@ void UBGraphicsGroupContainerItemDelegate::decorateMenu(QMenu *menu)
 void UBGraphicsGroupContainerItemDelegate::buildButtons()
 {
     UBGraphicsItemDelegate::buildButtons();
-
-    mDestroyGroupButton = new DelegateButton(":/images/font.svg", mDelegated, mFrame, Qt::TopLeftSection);
-
-    mButtons << mDestroyGroupButton;
-
-    connect(mDestroyGroupButton, SIGNAL(clicked()), (UBGraphicsGroupContainerItemDelegate*)this, SLOT(destroyGroup()));
 }
 
-void UBGraphicsGroupContainerItemDelegate::destroyGroup()
+bool UBGraphicsGroupContainerItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "got an event";
-    foreach (QGraphicsItem *item, delegated()->childItems()) {
-        delegated()->removeFromGroup(item);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    }
+    Q_UNUSED(event)
 
-    remove(true);
+    return false;
+}
+
+bool UBGraphicsGroupContainerItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event)
+
+    return false;
+}
+
+bool UBGraphicsGroupContainerItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event)
+
+    return false;
 }

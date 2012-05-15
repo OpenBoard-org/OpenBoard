@@ -65,6 +65,9 @@
 
 #include "core/memcheck.h"
 
+const QString groupText = "Group items";
+const QString ungroupText = "Ungroup items";
+
 qreal UBZLayerController::errorNumber = -20000001.0;
 
 UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
@@ -290,10 +293,17 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
             UBApplication::applicationController->initialVScroll()));
     }
 
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(enableGroupingButton()));
+//    Just for debug. Do not delete please
+//    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
 
-    connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(processGroupItems()));
+//  just a stub don't treat as a result code
+//    static int i = 0;
+//    i++;
+//    if (i == 1) {
+        connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
+//        qDebug() << "the connect is accepted";
+//    }
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -315,36 +325,73 @@ void UBGraphicsScene::selectionChangedProcessing()
     }
 }
 
-void UBGraphicsScene::enableGroupingButton()
+void UBGraphicsScene::updateGroupButtonState()
 {
     QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
+    QList<QGraphicsItem*> selItems = selectedItems();
+    int selCount = selItems.count();
 
-    if (selectedItems().count() > 1) {
-        groupAction->setEnabled(true);
-    } else {
+    if (selCount < 1) {
         groupAction->setEnabled(false);
+        groupAction->setText(groupText);
+
+    } else if (selCount == 1) {
+        if (selItems.first()->type() == UBGraphicsGroupContainerItem::Type) {
+            groupAction->setEnabled(true);
+            groupAction->setText(ungroupText);
+        } else {
+            groupAction->setEnabled(false);
+        }
+
+    } else if (selCount > 1) {
+        groupAction->setEnabled(true);
+        groupAction->setText(groupText);
     }
 }
 
-void UBGraphicsScene::processGroupItems()
+void UBGraphicsScene::groupButtonClicked()
 {
-    qDebug() << "processing grouping items";
-
-    UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
-
-    foreach (QGraphicsItem *item, selectedItems()) {
-        item->setSelected(false);
-        item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-        item->setFlag( QGraphicsItem::ItemIsMovable, false);
-        item->setFlag(QGraphicsItem::ItemIsFocusable);
-        groupItem->addToGroup(item);
+    QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
+    QList<QGraphicsItem*> selItems = selectedItems();
+    if (!selItems.count()) {
+        qDebug() << "Got grouping request when there is no any selected item on the scene";
+        return;
     }
 
-    addItem(groupItem);
-//    groupItem->setPos(50, 50);
-    groupItem->setVisible(true);
-    groupItem->setFocus();
-    qDebug() << groupItem->boundingRect();
+    if (groupAction->text() == groupText) { //The only way to get information from item, considering using smth else
+        UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
+
+        foreach (QGraphicsItem *item, selItems) {
+            if (item->type() == UBGraphicsGroupContainerItem::Type) {
+                QList<QGraphicsItem*> childItems = item->childItems();
+                UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+                if (currentGroup) {
+                    currentGroup->destroy();
+                }
+                foreach (QGraphicsItem *chItem, childItems) {
+                    groupItem->addToGroup(chItem);
+                }
+            } else {
+                groupItem->addToGroup(item);
+            }
+        }
+
+        addItem(groupItem);
+        groupItem->setVisible(true);
+        groupItem->setFocus();
+
+    } else if (groupAction->text() == ungroupText) {
+        //Considering one selected item and it's a group
+        if (selItems.count() > 1) {
+            qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
+            return;
+        }
+        UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.first());
+        if (currentGroup) {
+            currentGroup->destroy();
+        }
+    }
+
 }
 
 bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure)
@@ -397,15 +444,15 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             mAddedItems.clear();
             mRemovedItems.clear();
 
-			if (UBDrawingController::drawingController()->mActiveRuler)
+            if (UBDrawingController::drawingController()->mActiveRuler)
             {
                 UBDrawingController::drawingController()->mActiveRuler->StartLine(scenePos, width);
-			}
-			else
-			{
-				moveTo(scenePos);
+            }
+            else
+            {
+                moveTo(scenePos);
                 drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
-			}
+            }
             accepted = true;
         }
         else if (currentTool == UBStylusTool::Eraser)
@@ -590,8 +637,8 @@ bool UBGraphicsScene::inputDeviceRelease()
                 mCurrentStroke = 0;
             }
         }
-    } 
-   
+    }
+
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
     {
 
@@ -652,7 +699,7 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 // call this function when user release mouse button in Magnifier mode
 void UBGraphicsScene::DisposeMagnifierQWidgets()
 {
-    if(magniferControlViewWidget) 
+    if(magniferControlViewWidget)
     {
         magniferControlViewWidget->hide();
         magniferControlViewWidget->setParent(0);
@@ -660,7 +707,7 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
         magniferControlViewWidget = NULL;
     }
 
-    if(magniferDisplayViewWidget) 
+    if(magniferDisplayViewWidget)
     {
         magniferDisplayViewWidget->hide();
         magniferDisplayViewWidget->setParent(0);
@@ -677,7 +724,7 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
     catch (...)
     {
     }
-    
+
 }
 
 void UBGraphicsScene::moveTo(const QPointF &pPoint)
@@ -708,7 +755,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         }
     }
 
-	if (bLineStyle)
+    if (bLineStyle)
     {
         QSetIterator<QGraphicsItem*> itItems(mAddedItems);
 
@@ -733,7 +780,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
 
     mPreviousPolygonItems.append(polygonItem);
 
-	if (!bLineStyle)
+    if (!bLineStyle)
     {
         mPreviousPoint = pEndPoint;
         mPreviousWidth = pWidth;
@@ -1535,6 +1582,34 @@ UBGraphicsTextItem* UBGraphicsScene::addText(const QString& pString, const QPoin
             , UBSettings::settings()->isItalicFont());
 }
 
+UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, const QString& objectName)
+{
+    UBGraphicsTextItem* textItem = 0;
+    bool found = false;
+    //looking for a previous such item text
+    for(int i=0; i < mFastAccessItems.count() && !found ; i += 1){
+        UBGraphicsTextItem* currentItem = dynamic_cast<UBGraphicsTextItem*>(mFastAccessItems.at(i));
+        if(currentItem && (currentItem->objectName() == objectName || currentItem->toPlainText() == pString)){
+            // The second condition is necessary because the object name isn't stored. On reopeining the file we
+            // need another rule than the objectName
+            textItem = currentItem;
+            found=true;
+            if(currentItem->objectName() != objectName)
+                textItem->setObjectName(objectName);
+        }
+    }
+    if(!textItem){
+        textItem = addTextWithFont(pString,QPointF(0,0) ,72,UBSettings::settings()->fontFamily(),true,false);
+        textItem->setObjectName(objectName);
+    }
+
+    textItem->setPlainText(pString);
+    textItem->adjustSize();
+    QSizeF size = textItem->size();
+    textItem->setPos(QPointF(-size.width()/2.0,-size.height()/2.0));
+    return textItem;
+}
+
 UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, const QPointF& pTopLeft
             , int pointSize, const QString& fontFamily, bool bold, bool italic)
 {
@@ -1981,11 +2056,11 @@ void UBGraphicsScene::addCache()
 }
 
 void UBGraphicsScene::addMask(const QPointF &center)
-{ 
+{
     UBGraphicsCurtainItem* curtain = new UBGraphicsCurtainItem(); // mem : owned and destroyed by the scene
     mTools << curtain;
 
-	addItem(curtain);
+    addItem(curtain);
 
     QRectF rect = UBApplication::boardController->activeScene()->normalizedSceneRect();
     rect.setRect(center.x() - rect.width()/4, center.y() - rect.height()/4, rect.width()/2 , rect.height()/2);
@@ -2060,7 +2135,7 @@ void UBGraphicsScene::setNominalSize(int pWidth, int pHeight)
 }
 
 void UBGraphicsScene::setSelectedZLevel(QGraphicsItem * item)
-{    
+{
     item->setZValue(mZLayerController->generateZLevel(itemLayerType::SelectedItem));
 }
 
@@ -2230,7 +2305,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
                         UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
                         if (0 != wc3_widget)
                         if (!wc3_widget->hasFocus())
-                            wc3_widget->remove();                                                             
+                            wc3_widget->remove();
                         break;
                     }
                 case UBGraphicsAppleWidgetItem::Type:
@@ -2238,7 +2313,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
                         UBGraphicsAppleWidgetItem *Apple_widget = dynamic_cast<UBGraphicsAppleWidgetItem*>(item);
                         if (0 !=Apple_widget)
                         if (!Apple_widget->hasFocus())
-                            Apple_widget->remove();                          
+                            Apple_widget->remove();
                         break;
                     }
                 case UBGraphicsTextItem::Type:
@@ -2246,7 +2321,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
                         UBGraphicsTextItem *text_item = dynamic_cast<UBGraphicsTextItem*>(item);
                         if (0 != text_item)
                         if (!text_item->hasFocus())
-                            text_item->remove();                              
+                            text_item->remove();
                         break;
                     }
 
@@ -2256,7 +2331,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
                         if (0 != ubgi)
                             ubgi->remove();
                         else
-                            UBCoreGraphicsScene::removeItem(item);      
+                            UBCoreGraphicsScene::removeItem(item);
                     }
                 }
             }

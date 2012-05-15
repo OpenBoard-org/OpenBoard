@@ -27,7 +27,6 @@
 #include <phonon/VideoWidget>
 #include <phonon/AudioOutput>
 
-#include "interfaces/IResizeable.h"
 #include "UBActionableWidget.h"
 
 #define UBMEDIABUTTON_SIZE              32
@@ -91,7 +90,6 @@ private slots:
 private:
     void createMediaPlayer();
     void adaptSizeToVideo();
-//    void updateView(Phonon::State nextState);
 
     /** The current media type */
     eMediaType mType;
@@ -102,9 +100,9 @@ private:
     /** The audio renderer */
     Phonon::AudioOutput* mpAudioOutput;
     /** The principal layout of this widget */
-    QVBoxLayout mLayout;
+    QVBoxLayout* mpLayout;
     /** The seeker layout */
-    QHBoxLayout mSeekerLayout;
+    QHBoxLayout* mpSeekerLayout;
     /** The play-stop button */
     UBMediaButton* mpPlayStopButton;
     /** The pause button */
@@ -120,14 +118,11 @@ private:
     /** A widget that will contain the media */
     QWidget* mpMediaContainer;
     /** The media layout */
-    QHBoxLayout mMediaLayout;
+    QHBoxLayout* mMediaLayout;
     /** The audio cover */
     QLabel* mpCover;
     /** The media url */
     QString mUrl;
-
-//    QStackedWidget* mpVideoStackedWidget;
-//    QLabel* mpSnapshotVideoWidget;
 };
 
 #endif // UBMEDIAWIDGET_H

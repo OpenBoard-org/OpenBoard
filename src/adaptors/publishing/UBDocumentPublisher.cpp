@@ -28,6 +28,8 @@
 #include "core/UBPersistenceManager.h"
 #include "core/UBApplicationController.h"
 
+#include "board/UBBoardController.h"
+
 #include "gui/UBMainWindow.h"
 
 #include "document/UBDocumentProxy.h"
@@ -131,7 +133,7 @@ void UBDocumentPublisher::buildUbwFile()
         // remove all useless files
 
         for (int pageIndex = 0; pageIndex < mPublishingDocument->pageCount(); pageIndex++) {
-            QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex + 1);
+            QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",pageIndex);
 
             QFile::remove(filename);
         }
@@ -187,11 +189,11 @@ void UBDocumentPublisher::rasterizeScenes()
 
     for (int pageIndex = 0; pageIndex < mPublishingDocument->pageCount(); pageIndex++)
     {
-        UBApplication::showMessage(tr("Converting page %1/%2 ...").arg(pageIndex + 1).arg(mPublishingDocument->pageCount()), true);
+        UBApplication::showMessage(tr("Converting page %1/%2 ...").arg(UBApplication::boardController->pageFromSceneIndex(pageIndex)).arg(mPublishingDocument->pageCount()), true);
 
         UBSvgSubsetRasterizer rasterizer(mPublishingDocument, pageIndex);
 
-        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.jpg", pageIndex + 1);
+        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.jpg",pageIndex);
 
         rasterizer.rasterizeToFile(filename);
 
@@ -250,12 +252,12 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
             UBGraphicsW3CWidgetItem *widgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
 
             if(widgetItem){
-                generateWidgetPropertyScript(widgetItem, pageIndex + 1);
+                generateWidgetPropertyScript(widgetItem, UBApplication::boardController->pageFromSceneIndex(pageIndex));
                 widgets << widgetItem;
             }
         }
 
-        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.json", pageIndex + 1);
+        QString filename = mPublishingDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.json",pageIndex);
 
         QFile jsonFile(filename);
         if (jsonFile.open(QIODevice::WriteOnly | QIODevice::Truncate))

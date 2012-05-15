@@ -50,6 +50,7 @@
 #include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsAudioItem.h"
 #include "domain/UBGraphicsSvgItem.h"
+#include "domain/ubgraphicsgroupcontaineritem.h"
 #include "domain/UBGraphicsStrokesGroup.h"
 
 #include "document/UBDocumentProxy.h"
@@ -436,8 +437,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 || movingItem->type() == UBGraphicsCache::Type
                 || movingItem->type() == UBGraphicsTriangle::Type
                 || movingItem == this->scene()->backgroundObject()
-                || movingItem->group())
-                {
+                || (movingItem->parentItem() && movingItem->parentItem()->type() == UBGraphicsGroupContainerItem::Type))
+            {
                     movingItem = NULL;
                     QGraphicsView::mousePressEvent (event);
 
@@ -516,8 +517,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     }
 }
 
-QSet<QGraphicsItem*> mJustSelectedItems;
-
 void
 UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
@@ -564,6 +563,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
                       || item->type() == UBGraphicsVideoItem::Type
                       || item->type() == UBGraphicsAudioItem::Type
                       || item->type() == UBGraphicsSvgItem::Type
+                      || item->type() == UBGraphicsTextItem::Type
                       || item->type() == UBGraphicsStrokesGroup::Type) {
 
                   if (!mJustSelectedItems.contains(item)) {
@@ -586,9 +586,9 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
         else QGraphicsView::mouseMoveEvent (event);
     }
   else if ((UBDrawingController::drawingController()->isDrawingTool())
-  	&& !mMouseButtonIsPressed)
+    && !mMouseButtonIsPressed)
   {
-	  QGraphicsView::mouseMoveEvent (event);
+      QGraphicsView::mouseMoveEvent (event);
   }
   else if (currentTool == UBStylusTool::Text || currentTool == UBStylusTool::Capture)
     {
@@ -850,11 +850,12 @@ void UBBoardView::dropEvent (QDropEvent *event)
         graphicsWidget->processDropEvent(event);
         event->acceptProposedAction();
 
-	} else if (!event->source()
-             || dynamic_cast<UBThumbnailWidget *>(event->source())
-             || dynamic_cast<QWebView*>(event->source())
-             || dynamic_cast<UBTGMediaWidget*>(event->source())
-	         || dynamic_cast<QListView *>(event->source()) ) {
+    } else if (!event->source()
+               || dynamic_cast<UBThumbnailWidget *>(event->source())
+               || dynamic_cast<QWebView*>(event->source())
+               || dynamic_cast<UBTGMediaWidget*>(event->source())
+               || dynamic_cast<QListView *>(event->source())
+               || dynamic_cast<UBTGDraggableTreeItem*>(event->source())) {
 
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction();

@@ -41,6 +41,7 @@ class UBGraphicsStroke;
 class UBPersistenceManager;
 class UBGraphicsTriangle;
 class UBGraphicsCache;
+class IDataStorage;
 
 class UBSvgSubsetAdaptor
 {
@@ -58,8 +59,12 @@ class UBSvgSubsetAdaptor
         static QUuid sceneUuid(UBDocumentProxy* proxy, const int pageIndex);
         static void setSceneUuid(UBDocumentProxy* proxy, const int pageIndex, QUuid pUuid);
 
+        static bool addElementToBeStored(QString domName,IDataStorage* dataStorageClass);
+
         static void convertPDFObjectsToImages(UBDocumentProxy* proxy);
         static void convertSvgImagesToImages(UBDocumentProxy* proxy);
+
+        static QMap<QString,IDataStorage*> getAdditionalElementToStore() { return additionalElementToStore;}
 
         static const QString nsSvg;
         static const QString nsXLink;
@@ -73,6 +78,7 @@ class UBSvgSubsetAdaptor
         static const QString sFontWeightPrefix;
         static const QString sFontStylePrefix;
 
+        static QString readTeacherGuideNode(int sceneIndex);
     private:
 
         static UBGraphicsScene* loadScene(UBDocumentProxy* proxy, const QByteArray& pArray);
@@ -85,6 +91,9 @@ class UBSvgSubsetAdaptor
 
         static QString toSvgTransform(const QMatrix& matrix);
         static QMatrix fromSvgTransform(const QString& transform);
+
+        static QMap<QString,IDataStorage*> additionalElementToStore;
+
 
         class UBSvgSubsetReader
         {
@@ -155,7 +164,7 @@ class UBSvgSubsetAdaptor
 
                 UBSvgSubsetWriter(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex);
 
-                bool persistScene();
+                bool persistScene(int pageIndex);
 
                 virtual ~UBSvgSubsetWriter(){}
 
@@ -188,9 +197,9 @@ class UBSvgSubsetAdaptor
 
                         QLocale loc(QLocale::C);
                         sBuf = sBuf.arg(loc.toFloat(temp1)).arg(loc.toFloat(temp2));
-                        
+
                         svgPoints.insert(length, sBuf);
-                        length += sBuf.length(); 
+                        length += sBuf.length();
                     }
                     return svgPoints;
                 }

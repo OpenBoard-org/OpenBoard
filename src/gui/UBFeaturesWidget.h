@@ -80,7 +80,7 @@ private:
 	QSlider *thumbSlider;
 	QVBoxLayout *layout;
 	//UBFeaturesPathViewer *pathViewer;
-	QGraphicsScene *pathScene;
+	//QGraphicsScene *pathScene;
 	UBFeaturesActionBar *mActionBar;
 	UBFeatureProperties *featureProperties;
 	UBFeaturesWebView *webView;
@@ -88,7 +88,6 @@ private:
 	
 
 	int currentStackedWidget;
-	QModelIndex trashIndex;
 private slots:
 	void currentSelected( const QModelIndex & );
 	//void currentPathChanged(const QString &);
@@ -131,7 +130,7 @@ class UBFeaturesWebView : public QWidget
     Q_OBJECT
 public:
     UBFeaturesWebView(QWidget* parent = 0, const char* name = "UBFeaturesWebView");
-    ~UBFeaturesWebView();
+    virtual ~UBFeaturesWebView();
 
     void showElement(const UBFeature &elem);
 

@@ -62,7 +62,8 @@ nmake release-install
 
 
 copy %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm build\win32\release\product\i18n\
-copy resources\customizations build\win32\release\product\
+mkdir build\win32\release\product\customizations
+xcopy /s resources\customizations\* build\win32\release\product\customizations
 
 del build\win32\release\product\i18n\qt_help*
 

@@ -1643,10 +1643,10 @@
      <normaloff>:/images/toolbar/library.png</normaloff>:/images/toolbar/library.png</iconset>
    </property>
    <property name="text">
-    <string>Gtorup items</string>
+    <string>Group Items</string>
    </property>
    <property name="toolTip">
-    <string>Erase Content</string>
+    <string>Group items</string>
    </property>
   </action>
  </widget>

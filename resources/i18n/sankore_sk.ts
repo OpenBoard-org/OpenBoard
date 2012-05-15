@@ -799,6 +799,14 @@
         <source>Erase Annotation</source>
         <translation>Vymazať anotáciu</translation>
     </message>
+    <message>
+        <source>Group Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group items</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -1331,6 +1339,74 @@
     <message>
         <source>Export to Web Browser</source>
         <translation>Exportovať do webového prehliadača</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeatureProperties</name>
+    <message>
+        <source>Add to page</source>
+        <translation type="unfinished">Pridať na stránku</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Nastaviť ako pozadie</translation>
+    </message>
+    <message>
+        <source>Add to library</source>
+        <translation type="unfinished">Pridať do knižnice</translation>
+    </message>
+    <message>
+        <source>Object informations</source>
+        <translation type="unfinished">Informácie o objekte</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesActionBar</name>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="unfinished">Ajouter au favoris</translation>
+    </message>
+    <message>
+        <source>Share</source>
+        <translation type="unfinished">Partager</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Back to folder</source>
+        <translation type="unfinished">Retour au répertoire</translation>
+    </message>
+    <message>
+        <source>Remove from favorites</source>
+        <translation type="unfinished">Supprimer des favoris</translation>
+    </message>
+    <message>
+        <source>Create new folder</source>
+        <translation type="unfinished">Créer un nouveau dossier</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesController</name>
+    <message>
+        <source>ImportedImage</source>
+        <translation type="unfinished">NahranýObrázok</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsGroupContainerItemDelegate</name>
+    <message>
+        <source>Locked</source>
+        <translation type="unfinished">Zamknuté</translation>
+    </message>
+    <message>
+        <source>Visible on Extended Screen</source>
+        <translation type="unfinished">Vidieť to na rozšírenej obrazovke</translation>
     </message>
 </context>
 <context>
@@ -1867,11 +1943,104 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
 </context>
 <context>
-    <name>UBTeacherGuidePresentationWidget</name>
+    <name>UBTeacherGuidePageZeroWidget</name>
     <message>
-        <source>Document title</source>
+        <source>Page 0</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Type session title here ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type authors here ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resource indexing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keywords:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type keywords here ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Licence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution CC BY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-NoDerivs CC BY-ND</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-ShareAlike CC BY-SA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-NonCommercial CC BY-NC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-NonCommercial-NoDerivs CC BY-NC-ND</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attribution-NonCommercial-ShareAlike CC BY-NC-SA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Public domain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copyright</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Created the:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Updated the:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Objective(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type objectives here...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subjects:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBTeacherGuidePresentationWidget</name>
     <message>
         <source>Page: %0</source>
         <translation type="unfinished"></translation>
@@ -2846,6 +3015,21 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;GIPENA&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;20 Avenue Ségur Paris 75007&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;Téléphone : 01 43 17 68 08&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#3c3c3c;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;; font-size:12pt; font-weight:600;&quot;&gt;Fonts&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;;&quot;&gt;- Thanks to Henri ROGELET for Script-École 2, ScriptCase-École, Alphonetic (&lt;/span&gt;&lt;a href=&quot;http://pointecole.free.fr/polices.html&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;; text-decoration: underline; color:#0000ff;&quot;&gt;http://pointecole.free.fr/polices.html&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;;&quot;&gt;).&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;;&quot;&gt;- Andika Copyright (c) 2004-2011, SIL International (http://www.sil.org/). Licensed under the SIL Open Font License, Version 1.1 (http://scripts.sil.org/OFL), with Reserved Font Names &amp;quot;Andika&amp;quot; and &amp;quot;SIL&amp;quot;.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;; color:#000000;&quot;&gt;- Ecolier CC BY-NC-ND 2.0 (JM Douteau)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

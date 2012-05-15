@@ -40,6 +40,7 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsAudioItem.h"
 #include "domain/UBGraphicsVideoItem.h"
+#include "domain/ubgraphicsgroupcontaineritem.h"
 
 #include "web/UBWebController.h"
 
@@ -117,7 +118,7 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
 
 void UBGraphicsItemDelegate::init()
 {
-    //mToolBarItem = new UBGraphicsToolBarItem(delegated());
+    mToolBarItem = new UBGraphicsToolBarItem(delegated());
 
     mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
     mFrame->hide();
@@ -219,10 +220,9 @@ bool UBGraphicsItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     startUndoStep();
 
-    if (!mDelegated->isSelected())
+    if (!delegated()->isSelected())
     {
-        mDelegated->setSelected(true);
-        positionHandles();
+        delegated()->setSelected(true);
         return true;
     }
     else
@@ -238,33 +238,31 @@ void UBGraphicsItemDelegate::setMimeData(QMimeData *mimeData)
 
 bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if((NULL != mMimeData) && ((event->pos() - mDragStartPosition).manhattanLength() < QApplication::startDragDistance()))
-        {
-            QDrag* mDrag = new QDrag(event->widget());
-            mDrag->setMimeData(mMimeData);
-            if (!mDragPixmap.isNull()) {
-                mDrag->setPixmap(mDragPixmap);
-                mDrag->setHotSpot(mDragPixmap.rect().center());
-            }
-            mDrag->exec();
-            mDragPixmap = QPixmap();
-
-            return true;
+    if(mMimeData) {
+        QDrag* mDrag = new QDrag(event->widget());
+        mDrag->setMimeData(mMimeData);
+        if (!mDragPixmap.isNull()) {
+            mDrag->setPixmap(mDragPixmap);
+            mDrag->setHotSpot(mDragPixmap.rect().center());
         }
+        mDrag->exec();
+        mDragPixmap = QPixmap();
 
-    if(isLocked())
-    {
-        event->accept();
         return true;
     }
 
-    return true;
+    if(isLocked()) {
+        event->accept();
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
 {
     Q_UNUSED(event);
-    if( mDelegated->isSelected() )
+    if( delegated()->isSelected() )
     {
 //        event->accept();
         return true;
@@ -312,6 +310,18 @@ void UBGraphicsItemDelegate::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 //    }
 }
 
+QGraphicsItem *UBGraphicsItemDelegate::delegated()
+{
+    QGraphicsItem *curDelegate = 0;
+    if (mDelegated->parentItem() && mDelegated->parentItem()->type() == UBGraphicsGroupContainerItem::Type) {
+        curDelegate = mDelegated->parentItem(); // considering delegated item as an item's group which contains everything
+    } else {
+        curDelegate = mDelegated;
+    }
+
+    return curDelegate;
+}
+
 void UBGraphicsItemDelegate::positionHandles()
 {
     if (mDelegated->isSelected()) {
@@ -323,17 +333,17 @@ void UBGraphicsItemDelegate::positionHandles()
 
         updateButtons(true);
 
-//        if (mToolBarItem->isVisibleOnBoard())
-//        {
-//        updateToolBar();
-//           mToolBarItem->show();
-//        }
+        if (mToolBarItem->isVisibleOnBoard())
+        {
+        updateToolBar();
+           mToolBarItem->show();
+        }
     } else {
         foreach(DelegateButton* button, mButtons)
             button->hide();
 
         mFrame->hide();
-//        mToolBarItem->hide();
+        mToolBarItem->hide();
     }
 }
 
@@ -365,7 +375,7 @@ void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
 //    QGraphicsScene* scene = mDelegated->scene();
-    UBGraphicsScene* scene = (UBGraphicsScene*)(mDelegated->scene());
+    UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
     if (scene)
     {
         foreach(DelegateButton* button, mButtons)
@@ -373,7 +383,7 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
 
         scene->removeItem(mFrame);
         scene->removeItem(mDelegated);
-        //scene->removeItem(mToolBarItem);
+        scene->removeItem(mToolBarItem);
 
         if (canUndo)
         {

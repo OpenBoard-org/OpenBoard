@@ -234,17 +234,11 @@ QLabel#UBTGPresentationDocumentTitle
     font-weight:bold;
 }
 
-QLabel#UBTGEditionPageNumberLabel
+QLabel#UBTGPageNumberLabel
 {
     color: black;
     font-size : 12px;
     font-weight:bold;
-}
-
-QLabel#UBTGPresentationPageNumberLabel
-{
-    color: black;
-    font-size : 12px;
 }
 
 UBTGAdaptableText#UBTGEditionPageTitle,
@@ -272,4 +266,11 @@ UBTGAdaptableText#UBTGPresentationComment
 QFrame#UBTGSeparator
 {
     background-color: #cccccc;
+}
+
+UBTGAdaptableText {
+   background-color: white; 
+   border:1 solid #999999; 
+   border-radius : 10px; 
+   padding: 2px;
 }

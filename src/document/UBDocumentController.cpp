@@ -12,6 +12,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "UBDocumentController.h"
 
 #include <QtCore>
@@ -289,9 +290,9 @@ void UBDocumentController::refreshDocumentThumbnailsView()
             }
 
             items << pixmapItem;
-            labels << tr("Page %1").arg(i + 1);
+            labels << tr("Page %1").arg(UBApplication::boardController->pageFromSceneIndex(i));
 
-            itemsPath.append(QUrl::fromLocalFile(proxy->persistencePath() + QString("/pages/%1").arg(i + 1)));
+            itemsPath.append(QUrl::fromLocalFile(proxy->persistencePath() + QString("/pages/%1").arg(UBApplication::boardController->pageFromSceneIndex(i))));
         }
     }
 
@@ -305,15 +306,12 @@ void UBDocumentController::refreshDocumentThumbnailsView()
 
     mDocumentUI->thumbnailWidget->ensureVisible(0, 0, 10, 10);
 
-    if (selection)
-    {
-        disconnect(mDocumentUI->thumbnailWidget->scene(), SIGNAL(selectionChanged()),
-                   this, SLOT(pageSelectionChanged()));
+    if (selection) {
+        disconnect(mDocumentUI->thumbnailWidget->scene(), SIGNAL(selectionChanged()), this, SLOT(pageSelectionChanged()));
         UBSceneThumbnailPixmap *currentScene = dynamic_cast<UBSceneThumbnailPixmap*>(selection);
         if (currentScene)
             mDocumentUI->thumbnailWidget->hightlightItem(currentScene->sceneIndex());
-        connect(mDocumentUI->thumbnailWidget->scene(), SIGNAL(selectionChanged()),
-                this, SLOT(pageSelectionChanged()));
+        connect(mDocumentUI->thumbnailWidget->scene(), SIGNAL(selectionChanged()), this, SLOT(pageSelectionChanged()));
     }
 
     emit refreshThumbnails();
@@ -1425,7 +1423,8 @@ bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
     QString docVersion = proxy->metaData(UBSettings::documentVersion).toString();
 
     if (docVersion.isEmpty() || docVersion.startsWith("4.1") || docVersion.startsWith("4.2")
-            || docVersion.startsWith("4.3") || docVersion.startsWith("4.4") || docVersion.startsWith("4.5")) // TODO UB 4.7 update if necessary
+            || docVersion.startsWith("4.3") || docVersion.startsWith("4.4") || docVersion.startsWith("4.5")
+            || docVersion.startsWith("4.6")) // TODO UB 4.7 update if necessary
     {
         return true;
     }
@@ -1640,7 +1639,7 @@ int UBDocumentController::getSelectedItemIndex()
 
     if (selectedItems.count() > 0)
     {
-        UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (selectedItems.last()); 
+        UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (selectedItems.last());
         return thumb->sceneIndex();
     }
     else return -1;

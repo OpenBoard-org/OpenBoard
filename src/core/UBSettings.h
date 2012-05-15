@@ -153,13 +153,16 @@ class UBSettings : public QObject
         static QString documentIdentifer;
         static QString documentVersion;
         static QString documentUpdatedAt;
+
         static QString sessionTitle;
-        static QString sessionTarget;
-        static QString sessionLicence;
-        static QString sessionKeywords;
-        static QString sessionLevel;
-        static QString sessionTopic;
         static QString sessionAuthors;
+        static QString sessionObjectives;
+        static QString sessionKeywords;
+        static QString sessionGradeLevel;
+        static QString sessionSubjects;
+        static QString sessionType;
+        static QString sessionLicence;
+
         static QString documentDate;
 
         static QString trashedDocumentGroupNamePrefix;
@@ -330,6 +333,8 @@ class UBSettings : public QObject
 
         UBSetting* angleTolerance;
         UBSetting* historyLimit;
+        UBSetting* teacherGuidePageZeroActivated;
+        UBSetting* teacherGuideLessonPagesActivated;
 
     public slots:
 

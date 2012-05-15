@@ -3,8 +3,6 @@
 #include "UBPlatformUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
-#include "softwareupdate/UBSoftwareUpdate.h"
-#include "softwareupdate/UBSoftwareUpdateController.h"
 #include "frameworks/UBFileSystemUtils.h"
 
 #include <QWidget>

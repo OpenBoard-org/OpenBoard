@@ -112,9 +112,6 @@ class UBDocumentController : public QObject
         UBDocumentProxy* mCurrentDocument;
         QList<QPixmap> mDocumentThumbs;
 
-//        UBKeyboardPalette *mKeyboardPalette;
-
-
     private slots:
         void documentZoomSliderValueChanged (int value);
         void loadDocumentProxies();

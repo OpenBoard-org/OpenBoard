@@ -46,7 +46,8 @@ UBGraphicsRuler::UBGraphicsRuler()
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
 
-	updateResizeCursor();
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    updateResizeCursor();
 }
 
 void UBGraphicsRuler::updateResizeCursor()

@@ -13,28 +13,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UBSOFTWAREUPDATE_H_
-#define UBSOFTWAREUPDATE_H_
+#ifndef IDATASTORAGE_H
+#define IDATASTORAGE_H
 
-#include <QtCore>
+#include <QString>
+#include <QMap>
 
-#include "frameworks/UBVersion.h"
-
-class UBSoftwareUpdate
+typedef enum
 {
-    public:
-        UBSoftwareUpdate();
-        UBSoftwareUpdate(UBVersion& version, const QString &downloadUrl);
-        virtual ~UBSoftwareUpdate();
+    eElementType_START,
+    eElementType_END,
+    eElementType_UNIQUE
+}eElementType;
 
-        UBVersion     version() const;
-        QString   downloadUrl() const;
+typedef struct
+{
+    QString name;
+    QMap<QString,QString> attributes;
+    eElementType type;
+}tIDataStorage;
 
-        bool operator==(const UBSoftwareUpdate &other) const;
-
-    private:
-        UBVersion mVersion;
-        QString mDownloadUrl;
+class IDataStorage
+{
+public:
+    //virtual void load(QString element) = 0;
+    virtual QVector<tIDataStorage*>save(int pageIndex) = 0 ;
 };
-
-#endif // UBSOFTWAREUPDATE_H_
+#endif // IDATASTORAGE_H

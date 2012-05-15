@@ -44,7 +44,7 @@ class UBApplicationController;
 class UBDockTeacherGuideWidget;
 
 // Uncomment this to use old-styles lib paletter
-// #define USE_WEB_WIDGET
+ #define USE_WEB_WIDGET
 
 
 class UBBoardPaletteManager : public QObject
