@@ -45,7 +45,7 @@ UBDrawingController::UBDrawingController(QObject * parent)
     , mActiveRuler(NULL)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
-    , mDrawingMode(/*DRAWING_MODE*/eDrawingMode_Vector)
+    , mDrawingMode(DRAWING_MODE)
 
 {
     connect(UBSettings::settings(), SIGNAL(colorContextChanged()), this, SIGNAL(colorPaletteChanged()));
@@ -114,7 +114,7 @@ void UBDrawingController::setStylusTool(int tool)
             UBApplication::mainWindow->actionPen->setChecked(true);
         else if (mStylusTool == UBStylusTool::Eraser){
             UBApplication::mainWindow->actionEraser->setChecked(true);
-            //mDrawingMode = eDrawingMode_Artistic;
+            mDrawingMode = eDrawingMode_Artistic;
         }
         else if (mStylusTool == UBStylusTool::Marker)
             UBApplication::mainWindow->actionMarker->setChecked(true);
