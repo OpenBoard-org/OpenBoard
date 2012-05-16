@@ -24,9 +24,6 @@
 #include "core/UBDocumentManager.h"
 #include "core/UBDisplayManager.h"
 
-#include "softwareupdate/UBSoftwareUpdateController.h"
-#include "softwareupdate/UBSoftwareUpdate.h"
-
 #include "board/UBBoardView.h"
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
