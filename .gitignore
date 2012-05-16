@@ -45,6 +45,8 @@ Thumbs.db
 *.vcproj
 *.ncb
 *.pro.user
+.project
+.settings
 
 # Build files #
 ###############
