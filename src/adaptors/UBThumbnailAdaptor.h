@@ -29,6 +29,7 @@ private: UBThumbnailAdaptor() {}
 public:
     static void persistScene(const QString& pDocPath, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
 
+    static void generateMissingThumbnails(UBDocumentProxy* proxy);
     static QList<QPixmap> load(UBDocumentProxy* proxy);
 	static QPixmap load(UBDocumentProxy* proxy, int index);
 
