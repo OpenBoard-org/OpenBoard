@@ -586,7 +586,7 @@ QCursor    UBGraphicsTriangle::flipCursor() const
 void UBGraphicsTriangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     lastRect = rect().toRect();
-    lastPos = event->screenPos();
+    lastPos = transform().inverted().map(event->screenPos());
 
     if (resize1Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
     {
@@ -620,18 +620,13 @@ void UBGraphicsTriangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
  
-    QPoint currPos = event->screenPos();
-//     qDebug() << QString(" X: %1 ").arg(currPos.x());
-//     qDebug() << QString(" Y: %1 ").arg(currPos.y());
-
     if (!mResizing1 && !mResizing2 && !mRotating)
     {
         QGraphicsItem::mouseMoveEvent(event);
     }
     else
     {
-
-        //-----------------------------------------------//
+        QPoint currPos = transform().inverted().map(event->screenPos());
 
         if (mResizing1)
         {
