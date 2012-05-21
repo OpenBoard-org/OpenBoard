@@ -291,7 +291,6 @@ QImage UBLibraryController::createThumbnail(UBLibElement* pElement)
 {
     QString thumbnailPath = UBFileSystemUtils::thumbnailPath(pElement->path().toLocalFile());
     QString mimetype = UBFileSystemUtils::mimeTypeFromFileName(pElement->path().toLocalFile());
-    UBApplication::showMessage(tr("Creating image thumbnail for %1.").arg(pElement->name()));
 
     if (mimetype.contains("audio"))
         thumbnailPath = ":images/libpalette/soundIcon.svg";
@@ -309,6 +308,7 @@ QImage UBLibraryController::createThumbnail(UBLibElement* pElement)
                 pix.save(thumbnailPath);
                 UBThumbnailPixmap pixmap(pix);
                 UBPlatformUtils::hideFile(thumbnailPath);
+                UBApplication::showMessage(tr("Creating image thumbnail for %1.").arg(pElement->name()));
             }
             else{
                 thumbnailPath = ":images/libpalette/notFound.png";
