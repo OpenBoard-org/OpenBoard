@@ -35,8 +35,6 @@
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
 
-//#include "softwareupdate/UBSoftwareUpdateController.h"
-
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
 #include "board/UBBoardView.h"
