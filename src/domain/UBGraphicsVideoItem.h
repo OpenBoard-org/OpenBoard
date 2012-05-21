@@ -48,6 +48,7 @@ public:
     {
         UBGraphicsMediaItem::clearSource();
     }
+    virtual void setUuid(const QUuid &pUuid);
 
 public slots:
     void hasVideoChanged(bool hasVideo);

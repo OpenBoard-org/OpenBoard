@@ -46,6 +46,11 @@ QVariant UBGraphicsPDFItem::itemChange(GraphicsItemChange change, const QVariant
     return GraphicsPDFItem::itemChange(change, newValue);
 }
 
+void UBGraphicsPDFItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid));
+}
 
 void UBGraphicsPDFItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

@@ -46,6 +46,7 @@ class UBGraphicsStroke;
 class UBMagnifierParams;
 class UBMagnifier;
 class UBGraphicsCache;
+class UBGraphicsGroupContainerItem;
 
 const double PI = 4.0 * atan(1.0);
 
@@ -140,6 +141,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsTextItem* addTextHtml(const QString &pString = QString(), const QPointF& pTopLeft = QPointF(0, 0));
 
         UBGraphicsW3CWidgetItem* addOEmbed(const QUrl& pContentUrl, const QPointF& pPos = QPointF(0, 0));
+
+        UBGraphicsGroupContainerItem *createGroup(QList<QGraphicsItem*> items);
 
         QGraphicsItem* setAsBackgroundObject(QGraphicsItem* item, bool pAdaptTransformation = false, bool expand = false);
 
@@ -289,7 +292,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void setSelectedZLevel(QGraphicsItem *item);
         void setOwnZlevel(QGraphicsItem *item);
 
-        void groupItems(QList<QGraphicsItem *> &itemList);
 public slots:
 
         void hideEraser();
@@ -307,8 +309,6 @@ public slots:
 
         void selectionChangedProcessing();
         void updateGroupButtonState();
-        void groupButtonClicked();
-
         void moveMagnifier(QPoint newPos);
         void closeMagnifier();
         void zoomInMagnifier();

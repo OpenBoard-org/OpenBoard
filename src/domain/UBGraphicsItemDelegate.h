@@ -74,7 +74,7 @@ class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
 {
     public:
         UBGraphicsToolBarItem(QGraphicsItem * parent = 0);
-        virtual ~UBGraphicsToolBarItem() {};
+        virtual ~UBGraphicsToolBarItem() {;}
 
         bool isVisibleOnBoard() const { return mVisible; }
         void setVisibleOnBoard(bool visible) { mVisible = visible; }

@@ -71,6 +71,12 @@ QVariant UBGraphicsCurtainItem::itemChange(GraphicsItemChange change, const QVar
     return QGraphicsRectItem::itemChange(change, newValue);
 }
 
+void UBGraphicsCurtainItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
+}
+
 void UBGraphicsCurtainItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (mDelegate->mousePressEvent(event))

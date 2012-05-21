@@ -18,7 +18,7 @@
 class UBSettings : public QObject
 {
 
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
 
@@ -205,6 +205,9 @@ class UBSettings : public QObject
         UBSetting* productWebUrl;
 
         QString softwareHomeUrl;
+
+        QString actionGroupText;
+        QString actionUngroupText;
 
         UBSetting* appToolBarPositionedAtTop;
         UBSetting* appToolBarDisplayText;

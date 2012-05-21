@@ -65,9 +65,6 @@
 
 #include "core/memcheck.h"
 
-const QString groupText = "Group items";
-const QString ungroupText = "Ungroup items";
-
 qreal UBZLayerController::errorNumber = -20000001.0;
 
 UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
@@ -296,14 +293,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
-
-//  just a stub don't treat as a result code
-//    static int i = 0;
-//    i++;
-//    if (i == 1) {
-        connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
-//        qDebug() << "the connect is accepted";
-//    }
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -332,64 +321,20 @@ void UBGraphicsScene::updateGroupButtonState()
 
     if (selCount < 1) {
         groupAction->setEnabled(false);
-        groupAction->setText(groupText);
+        groupAction->setText(UBSettings::settings()->actionGroupText);
 
     } else if (selCount == 1) {
         if (selItems.first()->type() == UBGraphicsGroupContainerItem::Type) {
             groupAction->setEnabled(true);
-            groupAction->setText(ungroupText);
+            groupAction->setText(UBSettings::settings()->actionUngroupText);
         } else {
             groupAction->setEnabled(false);
         }
 
     } else if (selCount > 1) {
         groupAction->setEnabled(true);
-        groupAction->setText(groupText);
+        groupAction->setText(UBSettings::settings()->actionGroupText);
     }
-}
-void UBGraphicsScene::groupButtonClicked()
-{
-    QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
-    QList<QGraphicsItem*> selItems = selectedItems();
-    if (!selItems.count()) {
-        qDebug() << "Got grouping request when there is no any selected item on the scene";
-        return;
-    }
-
-    if (groupAction->text() == groupText) { //The only way to get information from item, considering using smth else
-        UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
-
-        foreach (QGraphicsItem *item, selItems) {
-            if (item->type() == UBGraphicsGroupContainerItem::Type) {
-                QList<QGraphicsItem*> childItems = item->childItems();
-                UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-                if (currentGroup) {
-                    currentGroup->destroy();
-                }
-                foreach (QGraphicsItem *chItem, childItems) {
-                    groupItem->addToGroup(chItem);
-                }
-            } else {
-                groupItem->addToGroup(item);
-            }
-        }
-
-        addItem(groupItem);
-        groupItem->setVisible(true);
-        groupItem->setFocus();
-
-    } else if (groupAction->text() == ungroupText) {
-        //Considering one selected item and it's a group
-        if (selItems.count() > 1) {
-            qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
-            return;
-        }
-        UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.first());
-        if (currentGroup) {
-            currentGroup->destroy();
-        }
-    }
-
 }
 
 // MARK: -
@@ -1582,6 +1527,39 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
     return widget;
 }
 
+UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *> items)
+{
+    UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
+
+    foreach (QGraphicsItem *item, items) {
+        if (item->type() == UBGraphicsGroupContainerItem::Type) {
+            QList<QGraphicsItem*> childItems = item->childItems();
+            UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+            if (currentGroup) {
+                currentGroup->destroy();
+            }
+            foreach (QGraphicsItem *chItem, childItems) {
+                groupItem->addToGroup(chItem);
+            }
+        } else {
+            groupItem->addToGroup(item);
+        }
+    }
+
+    addItem(groupItem);
+    groupItem->setVisible(true);
+    groupItem->setFocus();
+
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, groupItem);
+        UBApplication::undoStack->push(uc);
+    }
+
+    setDocumentUpdated();
+
+    return groupItem;
+}
+
 UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPointF& pPos)
 {
     QString path = pSvgFileUrl.toLocalFile();
@@ -2188,14 +2166,6 @@ void UBGraphicsScene::setOwnZlevel(QGraphicsItem *item)
 {
     item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
 }
-void UBGraphicsScene::groupItems(QList<QGraphicsItem *> &itemList)
-{
-    foreach (QGraphicsItem *item, itemList) {
-        qDebug() << "selected item found";
-        item->setSelected(false);
-    }
-}
-
 
 qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest)
 {

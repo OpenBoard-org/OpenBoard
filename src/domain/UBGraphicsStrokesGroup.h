@@ -21,6 +21,7 @@ public:
     {
         return Type;
     }
+    virtual void setUuid(const QUuid &pUuid);
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

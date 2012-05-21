@@ -384,6 +384,9 @@ void UBSettings::init()
     historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
     teacherGuidePageZeroActivated = new UBSetting(this,"DockPalette","TeacherGuideActivatePageZero",true);
     teacherGuideLessonPagesActivated = new UBSetting(this,"DockPalette","TeacherGuideActivateLessonPages",true);
+
+    actionGroupText = "Group items";
+    actionUngroupText = "Ungroup items";
 }
 
 

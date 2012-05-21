@@ -67,6 +67,11 @@ QVariant UBGraphicsProxyWidget::itemChange(GraphicsItemChange change, const QVar
     return QGraphicsProxyWidget::itemChange(change, newValue);
 }
 
+void UBGraphicsProxyWidget::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
+}
 
 void UBGraphicsProxyWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

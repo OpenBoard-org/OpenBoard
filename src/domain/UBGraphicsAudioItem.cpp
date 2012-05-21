@@ -118,3 +118,9 @@ void UBGraphicsAudioItem::tick ( qint64 time )
 
     mTimeLcd->display ( displayTime.toString ( "mm:ss" ) );
 }
+
+void UBGraphicsAudioItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid));
+}

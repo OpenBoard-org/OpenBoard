@@ -184,6 +184,7 @@ class UBBoardController : public QObject
         void nextScene();
         void firstScene();
         void lastScene();
+        void groupButtonClicked();
         void downloadURL(const QUrl& url, const QPointF& pPos = QPointF(0.0, 0.0), const QSize& pSize = QSize(), bool isBackground = false);
         void downloadFinished(bool pSuccess, QUrl sourceUrl, QString pHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground = false);
         void changeBackground(bool isDark, bool isCrossed);

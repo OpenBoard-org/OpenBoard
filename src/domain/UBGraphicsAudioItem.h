@@ -45,6 +45,7 @@ public:
     {
         UBGraphicsMediaItem::clearSource();
     }
+    void setUuid(const QUuid &pUuid);
 
 private slots:
 

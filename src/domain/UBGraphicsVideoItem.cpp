@@ -107,6 +107,12 @@ void UBGraphicsVideoItem::showOnDisplayChanged(bool shown)
         vid->toggleMute();
 }
 
+void UBGraphicsVideoItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
+}
+
 void UBGraphicsVideoItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     mShouldMove = (event->buttons() & Qt::LeftButton);

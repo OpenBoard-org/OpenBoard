@@ -28,6 +28,7 @@ public:
         return Type;
     }
 
+    virtual void setUuid(const QUuid &pUuid);
     void destroy();
 
 

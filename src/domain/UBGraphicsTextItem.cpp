@@ -296,6 +296,12 @@ QSizeF UBGraphicsTextItem::size() const
     return QSizeF(textWidth(), textHeight());
 }
 
+void UBGraphicsTextItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
+}
+
 
 void UBGraphicsTextItem::undoCommandAdded()
 {
