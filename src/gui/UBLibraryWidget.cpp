@@ -570,7 +570,7 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
 
     mpButtons = new QDialogButtonBox(Qt::Horizontal, this);
     mpLayout = new QVBoxLayout(this);
-    mpHLayout = new QHBoxLayout(this);
+    mpHLayout = new QHBoxLayout(0);
     setLayout(mpLayout);
     mpLayout->addLayout(mpHLayout, 0);
     mpHLayout->addWidget(mpLabel, 0);
