@@ -842,7 +842,7 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
             }
         }
     }
-    if(UBSettings::settings()->teacherGuidePageZeroActivated and sceneIndex()<=1)
+    if(UBSettings::settings()->teacherGuidePageZeroActivated && sceneIndex()<=1)
         bCanMoveUp = false;
 
     if(bCanDelete || bCanMoveUp || bCanMoveDown)

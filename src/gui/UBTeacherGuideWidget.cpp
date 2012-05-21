@@ -533,7 +533,13 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
             newWidgetItem->setText(0,element->attributes.value("title"));
             newWidgetItem->setData(0,tUBTGTreeWidgetItemRole_HasAnAction,tUBTGActionAssociateOnClickItem_MEDIA);
             newWidgetItem->setData(0,Qt::FontRole, QVariant(QFont(QApplication::font().family(),11)));
-            newWidgetItem->setData(0, TG_USER_ROLE_MIME_TYPE, UBApplication::boardController->activeDocument()->persistencePath()+ "/" + element->attributes.value("relativePath"));
+			QString mimeTypeString;
+#ifdef Q_WS_WIN
+			mimeTypeString =  QUrl::fromLocalFile(UBApplication::boardController->activeDocument()->persistencePath()+ "/" + element->attributes.value("relativePath")).toString();
+#else
+			mimeTypeString = UBApplication::boardController->activeDocument()->persistencePath()+ "/" + element->attributes.value("relativePath");
+#endif
+            newWidgetItem->setData(0, TG_USER_ROLE_MIME_TYPE, mimeTypeString);
             newWidgetItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             mpRootWidgetItem->addChild(newWidgetItem);
 

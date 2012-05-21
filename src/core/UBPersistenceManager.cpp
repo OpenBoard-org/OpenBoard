@@ -848,7 +848,12 @@ QString UBPersistenceManager::teacherGuideAbsoluteObjectPath(UBDocumentProxy* pD
 
 QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* pDocumentProxy, QString pPath)
 {
-    QFileInfo fi(pPath.replace("file://",""));
+	QString path = pPath;
+	//windows
+	path.replace("file:///","");
+	//others
+	path.replace("file://","");
+	QFileInfo fi(path);
     QString uuid = QUuid::createUuid();
 
     if (!fi.exists() || !pDocumentProxy)
@@ -862,7 +867,7 @@ QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* 
         QDir dir;
         dir.mkdir(pDocumentProxy->persistencePath() + "/" + UBPersistenceManager::teacherGuideDirectory);
 
-        QFile source(pPath);
+        QFile source(path);
 
         source.copy(destPath);
     }

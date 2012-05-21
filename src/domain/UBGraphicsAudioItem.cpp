@@ -96,6 +96,8 @@ UBItem* UBGraphicsAudioItem::deepCopy() const
 
     UBGraphicsAudioItem *copy = new UBGraphicsAudioItem(audioUrl, parentItem());
 
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), copy, SLOT(activeSceneChanged()));
+
     copy->setPos(this->pos());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);

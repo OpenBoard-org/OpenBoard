@@ -230,11 +230,14 @@ void UBTGAdaptableText::bottomMargin(int newValue)
  *                      class   UBTGDraggableWeb                           *
  ***************************************************************************/
 UBDraggableWeb::UBDraggableWeb(QString& relativePath, QWidget* parent): QWebView(parent)
-  , mRelativePath(relativePath)
   , mDragStartPosition(QPoint(-1,-1))
   , mDragStarted(false)
 
 {
+	if(!relativePath.startsWith("file://"))
+		mRelativePath = QUrl::fromLocalFile(relativePath).toString();
+	else
+		mRelativePath = relativePath;
     //NOOP
 }
 
@@ -372,7 +375,7 @@ tUBGEElementNode* UBTGMediaWidget::saveData()
     tUBGEElementNode* result = new tUBGEElementNode();
     QString relativePath = mMediaPath;
     relativePath = relativePath.replace(UBApplication::boardController->activeDocument()->persistencePath()+"/","");
-    result->name = "media";
+	result->name = "media";
     result->attributes.insert("title",mpTitle->text());
     result->attributes.insert("relativePath",relativePath);
     result->attributes.insert("mediaType",mMediaType);
@@ -499,7 +502,11 @@ void UBTGMediaWidget::mousePressEvent(QMouseEvent *event)
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData();
         QList<QUrl> urlList;
+#ifdef Q_WS_WIN
+		urlList << QUrl::fromLocalFile(mMediaPath);
+#else
         urlList << QUrl(mMediaPath);
+#endif
         mimeData->setUrls(urlList);
         drag->setMimeData(mimeData);
 

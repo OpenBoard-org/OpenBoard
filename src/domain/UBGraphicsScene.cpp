@@ -313,6 +313,7 @@ void UBGraphicsScene::selectionChangedProcessing()
                                                 + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
     }
 }
+
 void UBGraphicsScene::updateGroupButtonState()
 {
     QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
@@ -336,9 +337,6 @@ void UBGraphicsScene::updateGroupButtonState()
         groupAction->setText(UBSettings::settings()->actionGroupText);
     }
 }
-
-// MARK: -
-// MARK: Mouse/Tablet events handling
 
 bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure)
 {
@@ -509,7 +507,6 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     return accepted;
 }
 
-
 bool UBGraphicsScene::inputDeviceRelease()
 {
     /*
@@ -608,8 +605,6 @@ bool UBGraphicsScene::inputDeviceRelease()
     return accepted;
 }
 
-// MARK: -
-
 void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool isFirstDraw)
 {
     qreal eraserWidth = UBSettings::settings()->currentEraserWidth();
@@ -685,7 +680,6 @@ void UBGraphicsScene::moveTo(const QPointF &pPoint)
     mDrawWithCompass = false;
 }
 
-
 void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, bool bLineStyle)
 {
     if (mPreviousWidth == -1.0)
@@ -737,11 +731,8 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
     }
 }
 
-
 void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 {
-//    QList<QGraphicsItem*> itemList;
-
     const QLineF line(mPreviousPoint, pEndPoint);
 
     const QPolygonF eraserPolygon = UBGeometryUtils::lineToPolygon(line, pWidth);
@@ -778,7 +769,6 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                 }
             }
         }
-
     }else{
         QSet<QGraphicsItem*> toBeAddedItems;
         QSet<QGraphicsItem*> toBeRemovedItems;
@@ -788,23 +778,19 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
         if (mShouldUseOMP)
         {
-//    #pragma omp parallel for
+    #pragma omp parallel for
             for (int i = 0; i < collidItemsSize; i++)
             {
                 UBGraphicsPolygonItem *collidingPolygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems.at(i));
 
                 if (NULL != collidingPolygonItem)
                 {
-                    collidingPolygonItem->setColor(QColor(Qt::green));
-
                     UBGraphicsStrokesGroup* pGroup = collidingPolygonItem->strokesGroup();
 
                     if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
                     {
-//    #pragma omp critical
-                        qDebug() << "case 1";
+    #pragma omp critical
                         // Put the entire polygon into the remove list
-                        collidingPolygonItem->setColor(QColor(Qt::blue));
                         toBeRemovedItems << collidingPolygonItem;
                     }
                     else
@@ -816,43 +802,50 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                         collidingPath.addPolygon(collidingPolygon);
 
                         // Then we substract the eraser path to the polygon and we simplify it
-                        QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
+                        /**/
+                        QTransform polyTransform = collidingPolygonItem->sceneTransform().inverted();
+                        QPointF mTrPrevPoint = polyTransform.map(mPreviousPoint);
+                        QPointF mTrEndPoint = polyTransform.map(pEndPoint);
+
+                        const QLineF trLine(mTrPrevPoint, mTrEndPoint);
+                        const QPolygonF trEraserPolygon = UBGeometryUtils::lineToPolygon(trLine, pWidth);
+
+                        QPainterPath trEraser;
+                        trEraser.addPolygon(trEraserPolygon);
+                        QPainterPath croppedPath = collidingPath.subtracted(trEraser);
+                        /**/
+
+                        // Original
+                        //QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
                         QPainterPath croppedPathSimplified = croppedPath.simplified();
 
                         /*if (croppedPath == collidingPath)
                         {
                             // NOOP
-                            qDebug() << "case 2";
                             toBeRemovedItems << collidingPolygonItem;
                         }
                         else */if (croppedPathSimplified.isEmpty())
                         {
-//    #pragma omp critical
-                            qDebug() << "case 3";
+    #pragma omp critical
                             // Put the entire polygon into the remove list if the eraser removes all its visible content
-                            collidingPolygonItem->setColor(QColor(Qt::blue));
                             toBeRemovedItems << collidingPolygonItem;
                         }
                         else
                         {
-                            //qDebug() << "case 4";
                             // Then we convert the remaining path to a list of polygons that will be converted in
                             // UBGraphicsPolygonItems and added to the scene
                             foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
                             {
                                 UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
-                                croppedPolygonItem->setColor(QColor(Qt::black));
-//    #pragma omp critical
+    #pragma omp critical
                                 if(NULL != pGroup){
                                     croppedPolygonItem->setStrokesGroup(pGroup);
-//                                    croppedPolygonItem->setTransform(pGroup->sceneTransform().inverted());
                                 }
                                 // Add this new polygon to the 'added' list
                                 toBeAddedItems << croppedPolygonItem;
                             }
-//    #pragma omp critical
+    #pragma omp critical
                             // Remove the original polygonitem because it has been replaced by many smaller polygons
-                            collidingPolygonItem->setColor(QColor(Qt::blue));
                             toBeRemovedItems << collidingPolygonItem;
                         }
                     }
@@ -925,30 +918,14 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             mRemovedItems += toBeRemovedItems;
         }
 
-//        bool hack = false;
-//        UBGraphicsStrokesGroup* pG = new UBGraphicsStrokesGroup();
         if(eDrawingMode_Vector == DRAWING_MODE){
             foreach(QGraphicsItem* item, toBeAddedItems){
                 UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
                 if(NULL != poly && NULL != poly->strokesGroup()){
-//                    if(!hack){
-//                        itemList = poly->strokesGroup()->childItems();
-//                        removeItem(poly->strokesGroup());
-
-//                        foreach(QGraphicsItem* it, itemList){
-//                            pG->addToGroup(it);
-//                        }
-//                        hack = true;
-//                    }
-                    qreal dx =  -poly->strokesGroup()->sceneTransform().inverted().dx();
-                    qreal dy =  -poly->strokesGroup()->sceneTransform().inverted().dy();
-
-                    //poly->setTransform(QTransform().translate(20, 0));
-                    poly->setTransform(QTransform().translate(dx, dy));
-                    poly->strokesGroup()/*pG*/->addToGroup(poly);
+                    poly->setTransform(poly->strokesGroup()->transform());
+                    poly->strokesGroup()->addToGroup(poly);
                 }
             }
-            //addItem(pG);
         }else{
             addItems(toBeAddedItems);
             mAddedItems += toBeAddedItems;
@@ -957,7 +934,6 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
     mPreviousPoint = pEndPoint;
 }
-
 
 void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
 {
@@ -1070,7 +1046,6 @@ void UBGraphicsScene::recolorAllItems()
     }
 }
 
-
 UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, const qreal &pWidth)
 {
     UBGraphicsPolygonItem *polygonItem = new UBGraphicsPolygonItem(pLine, pWidth);
@@ -1079,7 +1054,6 @@ UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, c
 
     return polygonItem;
 }
-
 
 void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
 {
@@ -1112,14 +1086,12 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 }
 
-
 UBGraphicsPolygonItem* UBGraphicsScene::arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth)
 {
     QPolygonF polygon = UBGeometryUtils::arcToPolygon(pStartRadius, pSpanAngle, pWidth);
 
     return polygonToPolygonItem(polygon);
 }
-
 
 UBGraphicsPolygonItem* UBGraphicsScene::polygonToPolygonItem(const QPolygonF pPolygon)
 {
@@ -1130,13 +1102,11 @@ UBGraphicsPolygonItem* UBGraphicsScene::polygonToPolygonItem(const QPolygonF pPo
     return polygonItem;
 }
 
-
 void UBGraphicsScene::hideEraser()
 {
     if (mEraser)
         mEraser->hide();
 }
-
 
 void UBGraphicsScene::leaveEvent(QEvent * event)
 {
@@ -1212,12 +1182,10 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
     return copy;
 }
 
-
 UBItem* UBGraphicsScene::deepCopy() const
 {
     return sceneDeepCopy();
 }
-
 
 void UBGraphicsScene::clearItemsAndAnnotations()
 {
@@ -1249,7 +1217,6 @@ void UBGraphicsScene::clearItemsAndAnnotations()
 
     setDocumentUpdated();
 }
-
 
 void UBGraphicsScene::clearItems()
 {
@@ -1288,7 +1255,6 @@ void UBGraphicsScene::clearItems()
     setDocumentUpdated();
 }
 
-
 void UBGraphicsScene::clearAnnotations()
 {
     QSet<QGraphicsItem*> emptyList;
@@ -1318,7 +1284,6 @@ void UBGraphicsScene::clearAnnotations()
 
     setDocumentUpdated();
 }
-
 
 UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation)
 {
@@ -1359,7 +1324,6 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
     return pixmapItem;
 }
 
-
 void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
 {
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
@@ -1367,7 +1331,6 @@ void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
         UBApplication::undoStack->push(uc);
     }
 }
-
 
 UBGraphicsVideoItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos)
 {
@@ -1431,7 +1394,6 @@ UBGraphicsAudioItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool s
     return audioItem;
 }
 
-
 UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
 {
     int widgetType = UBAbstractWidget::widgetType(pWidgetUrl);
@@ -1451,7 +1413,6 @@ UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const Q
     }
 }
 
-
 UBGraphicsAppleWidgetItem* UBGraphicsScene::addAppleWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
 {
     UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(pWidgetUrl);
@@ -1460,7 +1421,6 @@ UBGraphicsAppleWidgetItem* UBGraphicsScene::addAppleWidget(const QUrl& pWidgetUr
 
     return appleWidget;
 }
-
 
 UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos, int widgetType)
 {
@@ -1501,7 +1461,6 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
         UBApplication::boardController->moveGraphicsWidgetToControlView(graphicsWidget);
     }
 }
-
 
 UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, const QPointF& pPos)
 {
@@ -1587,7 +1546,6 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     return svgItem;
 }
-
 
 UBGraphicsTextItem* UBGraphicsScene::addText(const QString& pString, const QPointF& pTopLeft)
 {
@@ -1680,6 +1638,7 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 
     return textItem;
 }
+
 UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const QPointF& pTopLeft)
 {
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
@@ -1743,7 +1702,6 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
     mFastAccessItems.removeAll(item);
 }
 
-
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
 {
     setModified(true);
@@ -1756,7 +1714,6 @@ void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
     foreach(QGraphicsItem* item, items)
         mFastAccessItems.removeAll(item);
 }
-
 
 void UBGraphicsScene::deselectAllItems()
 {
@@ -1803,7 +1760,6 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
     return item;
 }
 
-
 QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
 {
 
@@ -1843,7 +1799,6 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
     return normalizedRect;
 }
 
-
 void UBGraphicsScene::setDocument(UBDocumentProxy* pDocument)
 {
     if (pDocument != mDocument)
@@ -1857,7 +1812,6 @@ void UBGraphicsScene::setDocument(UBDocumentProxy* pDocument)
         setParent(pDocument);
     }
 }
-
 
 QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool center, int margin, bool expand)
 {
@@ -1896,7 +1850,6 @@ void UBGraphicsScene::addRuler(QPointF center)
     ruler->setVisible(true);
     setModified(true);
 }
-
 
 void UBGraphicsScene::addProtractor(QPointF center)
 {
@@ -2089,7 +2042,6 @@ void UBGraphicsScene::addMask(const QPointF &center)
     setModified(true);
 }
 
-
 void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQuality)
 {
     QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
@@ -2106,7 +2058,6 @@ void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQua
         }
     }
 }
-
 
 QList<QUrl> UBGraphicsScene::relativeDependencies() const
 {
@@ -2127,7 +2078,6 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
     return relativePathes;
 }
 
-
 QSize UBGraphicsScene::nominalSize()
 {
     if (mDocument && !mNominalSize.isValid())
@@ -2137,7 +2087,6 @@ QSize UBGraphicsScene::nominalSize()
 
     return mNominalSize;
 }
-
 
 void UBGraphicsScene::setNominalSize(const QSize& pSize)
 {
@@ -2152,7 +2101,6 @@ void UBGraphicsScene::setNominalSize(const QSize& pSize)
     }
 }
 
-
 void UBGraphicsScene::setNominalSize(int pWidth, int pHeight)
 {
      setNominalSize(QSize(pWidth, pHeight));
@@ -2162,6 +2110,7 @@ void UBGraphicsScene::setSelectedZLevel(QGraphicsItem * item)
 {
     item->setZValue(mZLayerController->generateZLevel(itemLayerType::SelectedItem));
 }
+
 void UBGraphicsScene::setOwnZlevel(QGraphicsItem *item)
 {
     item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
@@ -2183,7 +2132,6 @@ QGraphicsItem* UBGraphicsScene::rootItem(QGraphicsItem* item) const
 
     return root;
 }
-
 
 void UBGraphicsScene::drawItems (QPainter * painter, int numItems,
         QGraphicsItem * items[], const QStyleOptionGraphicsItem options[], QWidget * widget)
@@ -2359,13 +2307,13 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
     QGraphicsScene::keyReleaseEvent(keyEvent);
 }
 
-
 void UBGraphicsScene::setDocumentUpdated()
 {
     if (document())
         document()->setMetaData(UBSettings::documentUpdatedAt
                 , UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 }
+
 void UBGraphicsScene::createEraiser()
 {
     mEraser = new QGraphicsEllipseItem(); // mem : owned and destroyed by the scene
@@ -2379,6 +2327,7 @@ void UBGraphicsScene::createEraiser()
     addItem(mEraser);
 
 }
+
 void UBGraphicsScene::createPointer()
 {
     mPointer = new QGraphicsEllipseItem();  // mem : owned and destroyed by the scene

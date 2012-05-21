@@ -69,6 +69,8 @@ UBItem* UBGraphicsVideoItem::deepCopy() const
 
     UBGraphicsVideoItem *copy = new UBGraphicsVideoItem(videoUrl, parentItem());
 
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), copy, SLOT(activeSceneChanged()));
+
     copy->setPos(this->pos());
     copy->setTransform(this->transform());
     copy->setFlag(QGraphicsItem::ItemIsMovable, true);
