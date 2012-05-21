@@ -98,6 +98,7 @@ struct UBGraphicsItemData
         , ItemEditable//for text only
         , ItemOwnZValue
         , itemLayerType //use instead of deprecated ItemLayerType
+        , ItemUuid //storing uuid in QGraphicsItem for fast finding operations
     };
 };
 
