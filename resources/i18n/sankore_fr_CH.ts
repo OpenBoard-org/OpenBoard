@@ -1831,7 +1831,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation>Cache</translation>
+        <translation>Spot</translation>
     </message>
 </context>
 <context>
