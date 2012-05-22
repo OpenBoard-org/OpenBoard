@@ -162,14 +162,10 @@ QString UBAudioQueueRecorder::deviceNameFromDeviceID(AudioDeviceID id)
 
     if (noErr == AudioDeviceGetProperty(id, 0, true, kAudioObjectPropertyName, &size, &name))
     {
-        char *cname = new char[1024];
-
-        bool result = CFStringGetCString (name, cname, 1024, kCFStringEncodingUTF8);
-        int length = CFStringGetLength (name);
-
-        deviceName = QString::fromUtf8(cname, length);
-
-        delete cname;
+        char cname[1024];
+        memset(cname,0,1024);
+        CFStringGetCString (name, cname, 1024, kCFStringEncodingUTF8);
+        deviceName = QString::fromUtf8(cname);
     }
 
     CFRelease(name);
