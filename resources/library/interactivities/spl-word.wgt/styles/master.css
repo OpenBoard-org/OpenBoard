@@ -1,43 +1,49 @@
+html, body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;    
+    border-radius: 50px;
+}
+
 body{
-	background-color: #fff;
-	margin: 0px; padding: 0px;
-	font-family: arial;
-	font-size: 11pt;
-	color: #000;
+    background-image: url(../img/bg.png);
 }
 
 
 h1{
-	font-size:18px;
-	margin-bottom:20px;
-	margin-top:0px;
+    font-size:18px;
+    margin-bottom:20px;
+    margin-top:0px;
 }
 #ub-widget{
-	background-color: white;
-	padding: 20px;
-	border: 3px solid #aaaaaa;
+    width: 100%;
+    height: 100%;    
+    min-height: 180px;
+    overflow: auto;
+    color: white;
 }
 
 input{
-	font-size: 14pt;
+    font-size: 14pt;
 }
 
 .inputbox{
-	width:50px;
+    width:50px;
 }
 
 button{
-	width: 80px;
+    width: 80px;
 }
 
 input.percent{
-	width: 100%;
-	margin: 0px; padding: 0px;
-	border-width: 0px;
+    width: 100%;
+    margin: 0px; padding: 0px;
+    border-width: 0px;
 }
 .inputwrap{
-	border-style: solid;
-	border-width: 1px;
-	border-color: #dbdfe6;
-	border-top-color: #abadb3;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #dbdfe6;
+    border-top-color: #abadb3;
 }

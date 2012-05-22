@@ -8,22 +8,34 @@ var sankoreLang = {
     ball: "ball",
     shovel: "shovel",
     dog: "dog",
-    tree: "tree"
+    tree: "tree",
+    wgt_name: "Select the desired",
+    reload: "Reload",
+    slate: "Wood",
+    pad: "Pad"
 };
 
 //main function
 function start(){
     
-    $("#display_text").text(sankoreLang.display);
-    $("#edit_text").text(sankoreLang.edit);
+    $("#wgt_display").text(sankoreLang.display);
+    $("#wgt_edit").text(sankoreLang.edit);
+    $("#wgt_name").text(sankoreLang.wgt_name);
+    $("#wgt_reload").text(sankoreLang.reload);
+    $(".style_select option[value='1']").text(sankoreLang.slate);
+    $(".style_select option[value='2']").text(sankoreLang.pad);
     
     if(window.sankore){
         if(sankore.preference("selectionner","")){
             var data = jQuery.parseJSON(sankore.preference("selectionner",""));
             importData(data);
-        } else {
+        } else 
             showExample();
-        }
+        if(sankore.preference("sel_style","")){
+            changeStyle(sankore.preference("sel_style",""));
+            $(".style_select").val(sankore.preference("sel_style",""));
+        } else
+            changeStyle(1)
     } 
     else 
         showExample();
@@ -32,18 +44,26 @@ function start(){
     if (window.widget) {
         window.widget.onleave = function(){
             exportData();
+            sankore.setPreference("sel_style", $(".style_select").find("option:selected").val());
         }
     }
     
-    $("#display, #edit").click(function(event){
-        if(this.id == "display"){
+    $("#wgt_reload").click(function(){
+        window.location.reload();
+    });
+    
+    $(".style_select").change(function (event){
+        changeStyle($(this).find("option:selected").val());
+    })
+    
+    $("#wgt_display, #wgt_edit").click(function(event){
+        if(this.id == "wgt_display"){
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
                     sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
-                $("#display_img").removeClass("red_point").addClass("green_point");
-                $("#edit_img").removeClass("green_point").addClass("red_point");
-                $("#edit").removeClass("selected");
+                $("#wgt_edit").removeClass("selected");
+                $(".style_select").css("display","none");
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -62,15 +82,16 @@ function start(){
                     });                    
                 
                 });
+                $(this).css("display", "none");
+                $("#wgt_edit").css("display", "block");
             }
         } else {            
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
                     sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
-                $("#edit_img").removeClass("red_point").addClass("green_point");
-                $("#display_img").removeClass("green_point").addClass("red_point");
-                $("#display").removeClass("selected");
+                $("#wgt_display").removeClass("selected");
+                $(".style_select").css("display","block");
                 
                 $(".cont").each(function(){
                     var container = $(this);
@@ -95,7 +116,9 @@ function start(){
                     add_img.insertBefore(container.find(".clear"));
                 });
                 
-                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("body");
+                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
+                $(this).css("display", "none");
+                $("#wgt_display").css("display", "block");
             }
         }
     });
@@ -107,7 +130,7 @@ function start(){
     
     //checkbox events
     $("input:checkbox").live("click", function(){
-        if($("#display").hasClass("selected")){
+        if($("#wgt_display").hasClass("selected")){
             var flag = true;
             var block = $(this).parent().parent();
             block.find(".text_block, .img_block, .audio_block").each(function(){
@@ -228,7 +251,7 @@ function importData(data){
     var tmp = 0;    
     for(var i in data){
         
-        var container = $("<div class='cont'>").appendTo("body");
+        var container = $("<div class='cont'>").appendTo("#data");
         var sub_container = $("<div class='sub_cont'>").appendTo(container);
         var imgs_container = $("<div class='imgs_cont'>").appendTo(container); 
         $("<div class='clear'>").appendTo(imgs_container);
@@ -299,7 +322,7 @@ function showExample(){
     $("<input type='checkbox' class='ch_box'/>").appendTo(tmp5)
     $("<div class='clear'>").appendTo(imgs_container);
     
-    container.appendTo("body")
+    container.appendTo("#data")
 }
 
 //add new container
@@ -349,6 +372,39 @@ function stringToXML(text){
     return doc;
 }
 
+//changing the style
+function changeStyle(val){
+    if(val == 1){
+        $(".b_top_left").removeClass("btl_pad");
+        $(".b_top_center").removeClass("btc_pad");
+        $(".b_top_right").removeClass("btr_pad");
+        $(".b_center_left").removeClass("bcl_pad");
+        $(".b_center_right").removeClass("bcr_pad");
+        $(".b_bottom_right").removeClass("bbr_pad");
+        $(".b_bottom_left").removeClass("bbl_pad");
+        $(".b_bottom_center").removeClass("bbc_pad");
+        $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
+        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
+        $("#wgt_name").removeClass("pad_color");
+        $(".style_select").removeClass("pad_select");
+    } else {
+        $(".b_top_left").addClass("btl_pad");
+        $(".b_top_center").addClass("btc_pad");
+        $(".b_top_right").addClass("btr_pad");
+        $(".b_center_left").addClass("bcl_pad");
+        $(".b_center_right").addClass("bcr_pad");
+        $(".b_bottom_right").addClass("bbr_pad");
+        $(".b_bottom_left").addClass("bbl_pad");
+        $(".b_bottom_center").addClass("bbc_pad");
+        $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
+        $("#wgt_name").addClass("pad_color");
+        $(".style_select").addClass("pad_select");
+    }
+}
+
 function onDropTarget(obj, event) {
     if (event.dataTransfer) {
         var format = "text/plain";
@@ -359,6 +415,7 @@ function onDropTarget(obj, event) {
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
+        tmp = tmp.substr(1, tmp.length); 
         if(tmp_type.substr(0, 5) == "audio"){  
             var img_tmp = $("<div class='img_block'>").insertBefore($(obj).find(".add_img"));
             var audio_block = $("<div class='audio_block'>").appendTo(img_tmp)

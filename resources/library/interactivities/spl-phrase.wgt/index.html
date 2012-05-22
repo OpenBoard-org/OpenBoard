@@ -11,6 +11,8 @@
         <link rel="stylesheet" type="text/css" href="styles/master.css">
         <link rel="stylesheet" type="text/css" href="styles/wcontainer.css">
         <link rel="stylesheet" type="text/css" href="styles/app.css">
+        <link rel="stylesheet" href="styles/fonts/Lobster/stylesheet.css">
+	<link rel="stylesheet" href="styles/fonts/SF-Toontime/stylesheet.css">
         <!--Scripts-->
         <script type="text/javascript" src="scripts/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="scripts/ext.js"></script>
@@ -47,9 +49,38 @@
     </head>
 
     <body>
-        <div id="ub-widget">
-
-        </div>
+        <table class="body_table" cellpadding=0 cellspacing=0>
+            <tr style="height: 54px;">
+                <td class="b_top_left">&nbsp;</td>
+                <td class="b_top_center">
+                    <div id="wgt_name"></div>
+                    <div id="wgt_reload"></div>                    
+                    <div id="wgt_display" class="selected"></div>
+                    <div id="wgt_edit"></div>
+                    <select class="style_select">
+                        <option value="1"></option>
+                        <option value="2"></option>
+                    </select>
+                </td>
+                <td class="b_top_right">&nbsp;</td>
+            </tr>
+       
+            <tr>
+                <td class="b_center_left">&nbsp;</td>
+                <td>
+                    <div id="ub-widget">
+                        
+                    </div>
+                </td>
+                <td class="b_center_right">&nbsp;</td>
+            </tr>     
+        
+            <tr style="height: 54px;">
+                <td class="b_bottom_left">&nbsp;</td>
+                <td class="b_bottom_center">&nbsp;</td>
+                <td class="b_bottom_right">&nbsp;</td>
+            </tr>
+        </table>
     </body>
 
 </html>

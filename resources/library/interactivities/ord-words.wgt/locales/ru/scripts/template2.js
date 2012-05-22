@@ -29,7 +29,11 @@ function checkResponse()
 var sankoreLang = {
     view: "Показать", 
     edit: "Изменить",
-    example: "много*,*много*лет*назад*..."
+    example: "много*,*много*лет*назад*...",
+    wgt_name: "Порядок слов",
+    reload: "Обновить",
+    slate: "Узор",
+    pad: "Планшет"
 };
 
 var word = "";
@@ -56,8 +60,49 @@ var isBrowser = ( typeof( widget ) == "undefined" );
 
 // hardcoded parameters, not very good
 var input_width = 606;
-var widget_padding = 65;
+var widget_padding = 0;
 var min_view_width = 400;
+
+$(document).ready(function(){
+    if(sankore.preference("ord_words_style","")){
+        changeStyle(sankore.preference("ord_words_style",""));
+        $(".style_select").val(sankore.preference("ord_words_style",""));
+    } else
+        changeStyle(1)
+    $("#wgt_display").text(sankoreLang.view);
+    $("#wgt_edit").text(sankoreLang.edit);
+    $("#wgt_display, #wgt_edit").click(function(event){
+        if(this.id == "wgt_display"){
+            if(!$(this).hasClass("selected")){                
+                $(this).addClass("selected");
+                $("#wgt_edit").removeClass("selected");
+                $(".style_select").css("display","none");                
+                $(this).css("display", "none");
+                $("#wgt_edit").css("display", "block");
+                modeView();
+            }
+        } else {            
+            if(!$(this).hasClass("selected")){
+                $(this).addClass("selected");
+                $("#wgt_display").removeClass("selected");
+                $(".style_select").css("display","block");                
+                $(this).css("display", "none");
+                $("#wgt_display").css("display", "block");
+                modeEdit();
+            }
+        }
+    });
+    $("#wgt_name").text(sankoreLang.wgt_name);
+    $("#wgt_reload").text(sankoreLang.reload).click(function(){
+        window.location.reload();
+    });
+    $(".style_select option[value='1']").text(sankoreLang.slate);
+    $(".style_select option[value='2']").text(sankoreLang.pad);
+    
+    $(".style_select").change(function (event){
+        changeStyle($(this).find("option:selected").val());
+    })
+})
 
 /*
 =================
@@ -94,6 +139,38 @@ function createWordLetters( word )
     return letters;
 }
 
+//changing the style
+function changeStyle(val){
+    if(val == 1){
+        $(".b_top_left").removeClass("btl_pad");
+        $(".b_top_center").removeClass("btc_pad");
+        $(".b_top_right").removeClass("btr_pad");
+        $(".b_center_left").removeClass("bcl_pad");
+        $(".b_center_right").removeClass("bcr_pad");
+        $(".b_bottom_right").removeClass("bbr_pad");
+        $(".b_bottom_left").removeClass("bbl_pad");
+        $(".b_bottom_center").removeClass("bbc_pad");
+        $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
+        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
+        $("#wgt_name").removeClass("pad_color");
+        $(".style_select").removeClass("pad_select");
+    } else {
+        $(".b_top_left").addClass("btl_pad");
+        $(".b_top_center").addClass("btc_pad");
+        $(".b_top_right").addClass("btr_pad");
+        $(".b_center_left").addClass("bcl_pad");
+        $(".b_center_right").addClass("bcr_pad");
+        $(".b_bottom_right").addClass("bbr_pad");
+        $(".b_bottom_left").addClass("bbl_pad");
+        $(".b_bottom_center").addClass("bbc_pad");
+        $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
+        $("#wgt_name").addClass("pad_color");
+        $(".style_select").addClass("pad_select");
+    }
+}
 
 /*
 =====================
@@ -119,6 +196,8 @@ function checkWord()
     if( str == w ){
         $( "#mp_word .letter" ).addClass( "right" );
     //message( "Right!" );
+    } else {
+        $( "#mp_word .letter" ).removeClass( "right" );
     }
 }
 
@@ -154,14 +233,6 @@ function modeView()
 {
     if( editMode ){
         word = $( "#mp_word input:text" ).attr( "value" );
-    }
-	
-    // if no sankore api, insert edit button
-    if( !isSankore ){
-        $( "#mp_setup" ).empty().append( '<input type="button" value="' + sankoreLang.edit + '">' );
-        $( "#mp_setup input:button" ).click( function(){
-            modeEdit();
-        });
     }
 	
     // clean the previous word
@@ -207,25 +278,6 @@ function modeView()
         $( "#mp_word" ).css( "margin-left", 0 );
     }
 	
-    // apply new width
-    adjustWidth( width );
-	
-}
-
-/*
-============
-adjustWidth
-============
-*/
-function adjustWidth( width )
-{
-    $( "#ub-widget" ).animate( {
-        width: width
-    } );
-    // if viewed as a widget, resize the window
-    if( !isBrowser ){
-        window.resizeTo( width + widget_padding, widget.height );
-    }
 }
 
 /*
@@ -236,20 +288,13 @@ modeEdit
 function modeEdit()
 {
     editMode = true;
-    // if no sankore api, insert ok button
-    if( !isSankore )
-    {
-        $( "#mp_setup" ).empty().append( '<input type="button" value="' + sankoreLang.view + '">' );
-        $( "#mp_setup input:button" ).click( function(){
-            modeView();
-        });
-    }
     $( "#mp_word").css( "margin-left", 0 ).empty().append('<input value="'+word+'">');
-    adjustWidth( input_width );
+
 }
 
 if (window.widget) {
-    window.widget.onleave = function(){       
+    window.widget.onleave = function(){
+        sankore.setPreference("ord_words_style", $(".style_select").find("option:selected").val());
         if($( "#mp_word input:text" ).attr( "value" ))
         {
             modeView();

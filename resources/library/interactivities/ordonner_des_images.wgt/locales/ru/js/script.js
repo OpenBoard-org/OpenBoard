@@ -4,14 +4,22 @@ var sankoreLang = {
     edit: "Изменить", 
     short_desc: "Расположите картинки в порядке возрастания цифр.", 
     add: "Новый блок",
-    enter: "Введите текст ..."
+    enter: "Введите текст ...",
+    wgt_name: "Верный порядок",
+    reload: "Обновить",
+    slate: "Узор",
+    pad: "Планшет"
 };
 
 //main function
 function start(){
     
-    $("#display_text").text(sankoreLang.display);
-    $("#edit_text").text(sankoreLang.edit);
+    $("#wgt_display").text(sankoreLang.display);
+    $("#wgt_edit").text(sankoreLang.edit);
+    $("#wgt_name").text(sankoreLang.wgt_name);
+    $("#wgt_reload").text(sankoreLang.reload);
+    $(".style_select option[value='1']").text(sankoreLang.slate);
+    $(".style_select option[value='2']").text(sankoreLang.pad);
     
     if(window.sankore){
         if(sankore.preference("odr_des_imgs","")){
@@ -31,14 +39,21 @@ function start(){
         }
     }
     
-    $("#display, #edit").click(function(event){
-        if(this.id == "display"){
+    $("#wgt_reload").click(function(){
+        window.location.reload();
+    });
+    
+    $(".style_select").change(function (event){
+        changeStyle($(this).find("option:selected").val());
+    })
+    
+    $("#wgt_display, #wgt_edit").click(function(event){
+        if(this.id == "wgt_display"){
             if(!$(this).hasClass("selected")){
                 sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
-                $("#display_img").removeClass("red_point").addClass("green_point");
-                $("#edit_img").removeClass("green_point").addClass("red_point");
-                $("#edit").removeClass("selected");
+                $("#wgt_edit").removeClass("selected");
+                $(".style_select").css("display","none");
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -76,29 +91,29 @@ function start(){
                         update: checkResult
                     } );
                 });
+                $(this).css("display", "none");
+                $("#wgt_edit").css("display", "block");
             }
         } else {            
             if(!$(this).hasClass("selected")){
                 sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
-                $("#edit_img").removeClass("red_point").addClass("green_point");
-                $("#display_img").removeClass("green_point").addClass("red_point");
-                $("#display").removeClass("selected");
-                
+                $("#wgt_display").removeClass("selected");
+                $(".style_select").css("display","block");
                 $(".cont").each(function(){
                     var container = $(this);
     
                     $("<div class='close_cont'>").appendTo(container);
                     container.find(".text_cont").attr("contenteditable","true");
                     //container.find(".imgs_cont").sortable("destroy");
-                    container.find(".imgs_cont").css("background-color", "white");
+                    container.find(".imgs_cont").css("background-color", "");
                     
                     var add_img = $("<div class='add_img'>");
                     container.find(".img_block").each(function(){
                         $(this).attr("ondragenter", "return false;")
-                        .attr("ondragleave", "$(this).css(\"background-color\",\"white\"); return false;")
+                        .attr("ondragleave", "$(this).css(\"background-color\",\"\"); return false;")
                         .attr("ondragover", "$(this).css(\"background-color\",\"#ccc\"); return false;")
-                        .attr("ondrop", "$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);")
+                        .attr("ondrop", "$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);")
                         //.css("float","left");
                         $("<div class='close_img'>").appendTo($(this));
                         $("<div class='clear_img'>").appendTo($(this));
@@ -106,9 +121,11 @@ function start(){
                     });
                     rightOrder(container.find(".imgs_cont"));
                     container.find(".imgs_cont").append(add_img)
-                });
+                });                
                 
-                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("body");
+                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
+                $(this).css("display", "none");
+                $("#wgt_display").css("display", "block");
             }
         }
     });
@@ -166,6 +183,7 @@ function exportData(){
     }
     $(".cont").each(function(){
         var cont_obj = new Object();
+        cont_obj.style = $(".style_select").find("option:selected").val();
         cont_obj.text = $(this).find(".text_cont").text();
         cont_obj.right = $(this).find(".imgs_cont>input").val();
         cont_obj.imgs = [];
@@ -179,6 +197,13 @@ function exportData(){
         });
         array_to_export.push(cont_obj);
     });
+    
+    if($(".cont").size() == 0){
+        var cont_obj = new Object();
+        cont_obj.style = $(".style_select").find("option:selected").val();
+        cont_obj.tmp = "clear";
+        array_to_export.push(cont_obj);
+    }
     sankore.setPreference("odr_des_imgs", JSON.stringify(array_to_export));
 }
 
@@ -187,39 +212,49 @@ function importData(data){
     
     var tmp = 0;    
     for(var i in data){
-        var tmp_array = [];
-        var container = $("<div class='cont'>");
-        var sub_container = $("<div class='sub_cont'>").appendTo(container);
-        var imgs_container = $("<div class='imgs_cont'>").appendTo(container);    
+        if(data[i].tmp){
+            changeStyle(data[i].style);
+            $(".style_select").val(data[i].style);
+        }else{
+            if(i == 0){
+                changeStyle(data[i].style);
+                $(".style_select").val(data[i].style);
+            }
+            var tmp_array = [];
+            var container = $("<div class='cont'>");
+            var sub_container = $("<div class='sub_cont'>").appendTo(container);
+            var imgs_container = $("<div class='imgs_cont'>").appendTo(container);    
         
-        var number = $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
-        var text = $("<div class='text_cont'>" + data[i].text + "</div>").appendTo(sub_container);
+            var number = $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
+            var text = $("<div class='text_cont'>" + data[i].text + "</div>").appendTo(sub_container);
     
-        $("<input type='hidden' value='" + data[i].right + "'/>").appendTo(imgs_container);
+            $("<input type='hidden' value='" + data[i].right + "'/>").appendTo(imgs_container);
         
-        for(var j in data[i].imgs){
-            var img_block = $("<div class='img_block' style='text-align: center;'>");
-            var img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
-            img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
-            if((120 - data[i].imgs[j].ht) > 0)
-                img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
-            var hidden_input = $("<input type='hidden'>").val(data[i].imgs[j].value);
-            img_block.append(hidden_input).append(img);
-            tmp_array.push(img_block);
+            for(var j in data[i].imgs){
+                var img_block = $("<div class='img_block' style='text-align: center;'>");
+                var img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
+                img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
+                if((120 - data[i].imgs[j].ht) > 0)
+                    img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
+                var hidden_input = $("<input type='hidden'>").val(data[i].imgs[j].value);
+                img_block.append(hidden_input).append(img);
+                tmp_array.push(img_block);
+            }
+            tmp_array = shuffle(tmp_array);
+            for(j = 0; j<tmp_array.length;j++)
+                tmp_array[j].appendTo(imgs_container);
+            imgs_container.sortable( {
+                update: checkResult
+            } );   
+            container.appendTo("#data"); 
         }
-        tmp_array = shuffle(tmp_array);
-        for(j = 0; j<tmp_array.length;j++)
-            tmp_array[j].appendTo(imgs_container);
-        imgs_container.sortable( {
-            update: checkResult
-        } );   
-        container.appendTo("body");
     }
 }
 
 //example
 function showExample(){
     
+    changeStyle(1);
     var tmp_array = [];
     
     var container = $("<div class='cont'>");
@@ -255,13 +290,13 @@ function showExample(){
         update: checkResult
     } );
 
-    container.appendTo("body")
+    container.appendTo("#data");
 }
 
 //check result
 function checkResult(event)
 {
-    if($("#display").hasClass("selected")){
+    if($("#wgt_display").hasClass("selected")){
         var str = "";
         var right_str = $(event.target).find("input").val();
         $(event.target).find(".img_block").each(function(){
@@ -269,6 +304,8 @@ function checkResult(event)
         });
         if(str == right_str)
             $(event.target).css("background-color","#9f9");
+        else
+            $(event.target).css("background-color","");
     } else {
         refreshImgNumbers($(event.target));
     }
@@ -349,6 +386,39 @@ function refreshImgNumbers(source){
         $(this).find(".numb_img").text(tmp);
         tmp++;
     });
+}
+
+//changing the style
+function changeStyle(val){
+    if(val == 1){
+        $(".b_top_left").removeClass("btl_pad");
+        $(".b_top_center").removeClass("btc_pad");
+        $(".b_top_right").removeClass("btr_pad");
+        $(".b_center_left").removeClass("bcl_pad");
+        $(".b_center_right").removeClass("bcr_pad");
+        $(".b_bottom_right").removeClass("bbr_pad");
+        $(".b_bottom_left").removeClass("bbl_pad");
+        $(".b_bottom_center").removeClass("bbc_pad");
+        $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
+        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
+        $("#wgt_name").removeClass("pad_color");
+        $(".style_select").removeClass("pad_select");
+    } else {
+        $(".b_top_left").addClass("btl_pad");
+        $(".b_top_center").addClass("btc_pad");
+        $(".b_top_right").addClass("btr_pad");
+        $(".b_center_left").addClass("bcl_pad");
+        $(".b_center_right").addClass("bcr_pad");
+        $(".b_bottom_right").addClass("bbr_pad");
+        $(".b_bottom_left").addClass("bbl_pad");
+        $(".b_bottom_center").addClass("bbc_pad");
+        $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
+        $("#wgt_name").addClass("pad_color");
+        $(".style_select").addClass("pad_select");
+    }
 }
 
 function stringToXML(text){
