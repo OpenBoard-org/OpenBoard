@@ -1605,7 +1605,6 @@ void UBGraphicsScene::addTriangle(QPointF center)
     UBGraphicsTriangle* triangle = new UBGraphicsTriangle(); // mem : owned and destroyed by the scene
     mTools << triangle;
 
-//    triangle->setZValue(toolLayerStart + toolOffsetProtractor);
     UBGraphicsItem::assignZValue(triangle, toolLayerStart + toolOffsetTriangle);
 
     triangle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));

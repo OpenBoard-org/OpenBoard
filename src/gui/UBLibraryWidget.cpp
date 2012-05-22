@@ -559,7 +559,7 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
 {
     setObjectName(name);
     setWindowTitle(tr("Add new folder"));
-
+	setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     mpLabel = new QLabel(tr("New Folder name:"),this);
     mpLineEdit = new QLineEdit(this);
     mpAddButton = new QPushButton(tr("Add"));
@@ -570,7 +570,7 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
 
     mpButtons = new QDialogButtonBox(Qt::Horizontal, this);
     mpLayout = new QVBoxLayout(this);
-    mpHLayout = new QHBoxLayout(this);
+    mpHLayout = new QHBoxLayout(0);
     setLayout(mpLayout);
     mpLayout->addLayout(mpHLayout, 0);
     mpHLayout->addWidget(mpLabel, 0);
@@ -699,20 +699,8 @@ void UBLibraryWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl
     Q_UNUSED(pContentHeader);
     if(pSuccess)
     {
-//        QDir dir;
-//        dir.mkdir("tmp");
-//        QString qsFileName = QFileInfo(sourceUrl.toString()).fileName();
-//        QString qsFilePath = UBFileSystemUtils::normalizeFilePath(QString("tmp/%0").arg(qsFileName));
-//        QFile f(qsFilePath);
-//        if(f.open(QIODevice::WriteOnly))
-//        {
-//            f.write(pData);
-//            f.close();
-//        }
         QString urlString = sourceUrl.toString();
         mLibraryController->routeDataItem(urlString, pData);
-//        dir.remove(qsFileName);
-//        dir.rmdir("tmp");       // Due to Qt, the directoy will be removed only if it's empty :)
     }
 }
 

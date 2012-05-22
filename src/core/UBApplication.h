@@ -37,7 +37,6 @@ class UBSettings;
 class UBPersistenceManager;
 class UBApplicationController;
 class UBDocumentController;
-class UBSoftwareUpdateController;
 class UBMainWindow;
 
 class UBApplication : public QtSingleApplication
@@ -59,7 +58,6 @@ class UBApplication : public QtSingleApplication
         static UBBoardController* boardController;
         static UBWebController* webController;
         static UBDocumentController* documentController;
-        static UBSoftwareUpdateController* softwareUpdateController;
         static UniboardSankoreTransition* mUniboardSankoreTransition;
 
         static UBMainWindow* mainWindow;

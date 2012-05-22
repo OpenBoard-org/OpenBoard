@@ -940,19 +940,21 @@ void UBBoardView::virtualKeyboardActivated(bool b)
 
 // Apple remote desktop sends funny events when the transmission is bad
 
-bool
-UBBoardView::isAbsurdPoint (QPoint point)
+bool UBBoardView::isAbsurdPoint(QPoint point)
 {
-    QDesktopWidget *desktop = qApp->desktop ();
+#ifdef Q_WS_MACX
+    QDesktopWidget *desktop = qApp->desktop();
     bool isValidPoint = false;
 
-    for (int i = 0; i < desktop->numScreens (); i++)
-    {
-      QRect screenRect = desktop->screenGeometry (i);
-      isValidPoint = isValidPoint || screenRect.contains (point);
+    for (int i = 0; i < desktop->numScreens() && !isValidPoint; i++){
+      QRect screenRect = desktop->screenGeometry(i);
+      screenRect=QRect(QPoint(0,0),screenRect.size());
+      isValidPoint = isValidPoint || screenRect.contains(point);
     }
-
     return !isValidPoint;
+#else
+    return false;
+#endif
 }
 
 void
