@@ -63,7 +63,7 @@ QString UBPlatformUtils::preferredTranslation(QString pFilePrefix)
 
 QString UBPlatformUtils::preferredLanguage()
 {
-    return "fr";//QLocale::system().name();
+    return QLocale::system().name();
 }
 
 void UBPlatformUtils::runInstaller(const QString &installerFilePath)
