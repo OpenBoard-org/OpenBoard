@@ -2,6 +2,8 @@
 
 #include <QtGui>
 
+#include "UBGraphicsMediaItem.h"
+#include "UBGraphicsTextItem.h"
 #include "domain/UBGraphicsItemDelegate.h"
 #include "domain/ubgraphicsgroupcontaineritemdelegate.h"
 #include "domain/UBGraphicsScene.h"
@@ -10,6 +12,7 @@
 
 UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent)
     : QGraphicsItem(parent)
+    , mCurrentItem(NULL)
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
@@ -128,6 +131,29 @@ void UBGraphicsGroupContainerItem::removeFromGroup(QGraphicsItem *item)
     itemsBoundingRect = childrenBoundingRect();
 }
 
+void UBGraphicsGroupContainerItem::deselectCurrentItem()
+{
+    if (mCurrentItem)
+    {
+        switch(mCurrentItem->type())
+        {
+        case UBGraphicsTextItem::Type:
+              {
+                  dynamic_cast<UBGraphicsTextItem*>(mCurrentItem)->Delegate()->getToolBarItem()->hide();
+              }
+              break;
+        case UBGraphicsMediaItem::Type:
+              {
+                  dynamic_cast<UBGraphicsMediaItem*>(mCurrentItem)->Delegate()->getToolBarItem()->hide();
+              }
+              break;                   
+
+        }
+        mCurrentItem->setSelected(false);
+        mCurrentItem = NULL;
+    }
+}
+
 QRectF UBGraphicsGroupContainerItem::boundingRect() const
 {
     return itemsBoundingRect;
@@ -234,5 +260,20 @@ void UBGraphicsGroupContainerItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *e
 QVariant UBGraphicsGroupContainerItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     QVariant newValue = mDelegate->itemChange(change, value);
+
+    foreach(QGraphicsItem *child, children())
+    {
+        UBGraphicsItem *item = dynamic_cast<UBGraphicsItem*>(child);
+        if (item)
+        {
+            item->Delegate()->positionHandles();
+        }
+    }
+
+    if (QGraphicsItem::ItemSelectedChange == change)
+    {
+        deselectCurrentItem();
+    }
+
     return QGraphicsItem::itemChange(change, newValue);
 }

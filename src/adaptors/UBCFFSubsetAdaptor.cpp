@@ -26,8 +26,7 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
-#include "domain/UBGraphicsVideoItem.h"
-#include "domain/UBGraphicsAudioItem.h"
+#include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsTextItemDelegate.h"
@@ -823,7 +822,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
         ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
 #endif
     
-    UBGraphicsAudioItem *audioItem = mCurrentScene->addAudio(concreteUrl, false);
+    UBGraphicsMediaItem *audioItem = mCurrentScene->addAudio(concreteUrl, false);
     QTransform transform;
     QString textTransform = parentOfAudio.attribute(aTransform);
 
@@ -866,7 +865,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
         ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
 #endif
 
-    UBGraphicsVideoItem *videoItem = mCurrentScene->addVideo(concreteUrl, false);
+    UBGraphicsMediaItem *videoItem = mCurrentScene->addVideo(concreteUrl, false);
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 

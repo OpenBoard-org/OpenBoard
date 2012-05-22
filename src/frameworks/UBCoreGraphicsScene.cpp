@@ -15,8 +15,6 @@
 
 #include "UBCoreGraphicsScene.h"
 
-#include "domain/UBGraphicsAudioItem.h"
-#include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 
@@ -66,11 +64,8 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
         UBGraphicsItem* item_casted = 0;
         switch (item->type())
         {
-        case UBGraphicsAudioItem::Type:
-                item_casted = dynamic_cast<UBGraphicsAudioItem*>(item);
-                break;
-        case UBGraphicsVideoItem::Type:
-                item_casted = dynamic_cast<UBGraphicsVideoItem*>(item);
+        case UBGraphicsMediaItem::Type:
+                item_casted = dynamic_cast<UBGraphicsMediaItem*>(item);
                 break;
         case UBGraphicsW3CWidgetItem::Type:
                 item_casted = dynamic_cast<UBGraphicsWidgetItem*>(item);

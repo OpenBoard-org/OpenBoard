@@ -585,7 +585,10 @@ void UBGraphicsDelegateFrame::positionHandles()
     
     if (mDelegate->getToolBarItem()->isVisibleOnBoard()
         && mDelegate->getToolBarItem()->isShifting())
-        itemRect.setHeight(itemRect.height() + mDelegate->getToolBarItem()->rect().height() * mDelegate->antiScaleRatio() * 1.1);
+    {
+        QPointF graphicsItemPosition = itemRect.topLeft();
+        itemRect.setTopLeft(graphicsItemPosition-QPointF(0,mDelegate->getToolBarItem()->boundingRect().height()* mDelegate->antiScaleRatio()));
+    }
 
     QTransform itemTransform = delegated()->sceneTransform();
     QPointF topLeft = itemTransform.map(itemRect.topLeft());

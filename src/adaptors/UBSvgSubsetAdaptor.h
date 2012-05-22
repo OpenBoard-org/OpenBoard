@@ -26,8 +26,7 @@ class UBGraphicsPolygonItem;
 class UBGraphicsPixmapItem;
 class UBGraphicsPDFItem;
 class UBGraphicsWidgetItem;
-class UBGraphicsVideoItem;
-class UBGraphicsAudioItem;
+class UBGraphicsMediaItem;
 class UBGraphicsAppleWidgetItem;
 class UBGraphicsW3CWidgetItem;
 class UBGraphicsTextItem;
@@ -119,9 +118,9 @@ class UBSvgSubsetAdaptor
 
                 UBGraphicsPDFItem* pdfItemFromPDF();
 
-                UBGraphicsVideoItem* videoItemFromSvg();
+                UBGraphicsMediaItem* videoItemFromSvg();
 
-                UBGraphicsAudioItem* audioItemFromSvg();
+                UBGraphicsMediaItem* audioItemFromSvg();
 
                 UBGraphicsAppleWidgetItem* graphicsAppleWidgetFromSvg();
 
@@ -218,8 +217,8 @@ class UBSvgSubsetAdaptor
                 void pixmapItemToLinkedImage(UBGraphicsPixmapItem *pixmapItem);
                 void svgItemToLinkedSvg(UBGraphicsSvgItem *svgItem);
                 void pdfItemToLinkedPDF(UBGraphicsPDFItem *pdfItem);
-                void videoItemToLinkedVideo(UBGraphicsVideoItem *videoItem);
-                void audioItemToLinkedAudio(UBGraphicsAudioItem* audioItem);
+                void videoItemToLinkedVideo(UBGraphicsMediaItem *videoItem);
+                void audioItemToLinkedAudio(UBGraphicsMediaItem *audioItem);
                 void graphicsItemToSvg(QGraphicsItem *item);
                 void graphicsAppleWidgetToSvg(UBGraphicsAppleWidgetItem *item);
                 void graphicsW3CWidgetToSvg(UBGraphicsW3CWidgetItem *item);
