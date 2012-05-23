@@ -316,7 +316,9 @@ class UBSettings : public QObject
 
         UBSetting* navigPaletteWidth;
         UBSetting* rightLibPaletteWidth;
+        UBSetting* rightLibPaletteIsCollapsed;
         UBSetting* leftLibPaletteWidth;
+        UBSetting* leftLibPaletteIsCollapsed;
 
         UBSetting* communityUser;
         UBSetting* communityPsw;
