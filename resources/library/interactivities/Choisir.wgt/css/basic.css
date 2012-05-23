@@ -11,11 +11,16 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
+html, body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;    
+    border-radius: 50px;
+}
+
 body{
-    padding: 3px;
-    margin: 0 auto;
-    height: auto;
-    background-color: white;
+    background-image: url(../images/bg.png);
 }
 
 .toggleButton{
@@ -45,10 +50,11 @@ body{
 
 .addQstButton{    
     margin: 0;
-    border: none;
     background: none;
-    color: #99ccff;
+    color: white;
     cursor: pointer;
+    border: 3px solid #ccc;
+    border-radius: 20px;
 }
 
 #addQsqSpan1{
@@ -88,7 +94,7 @@ body{
     float: left;
     font-size: 30px;
     margin-left: 10px !important;
-    color: #00C6FF;
+    color: white;
 }
 
 .qstOptions{
@@ -97,38 +103,38 @@ body{
 
 .changeOptions{
     border: none;
-    background-image: url(../images/grayClose.png);
+    height: 25px;
     background-color: white;
-    background-repeat: no-repeat;
-    background-position: 0 50%;
     width: auto;
-    padding-left: 18px;
-    color: #00C6FF;
+    color: black;
+    font-weight: bold;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .applyChanges{
     border: none;
-    background-image: url(../images/blueClose.png);
+    height: 25px;
     background-color: white;
-    background-repeat: no-repeat;
-    background-position: 0 50%;
     width: auto;
-    padding-left: 18px;
-    color: #00C6FF;
+    color: black;
+    font-weight: bold;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .qstDelete{
     border: none;
-    background-image: url(../images/boldClose.png);
+    background-image: url(../images/bigBlackClose.png);
     background-color: white;
     background-repeat: no-repeat;
-    background-position: 0 50%;
-    width: auto;
-    padding-left: 28px;
-    line-height: 35px;
+    background-position: 45% 50%;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
     cursor: pointer;
+    border-radius: 15px;
+    margin: 0 5px;
 }
 
 .qstContent{
@@ -145,6 +151,7 @@ body{
     -moz-box-shadow: #dadada -1px 0 4px;
     -webkit-box-shadow: #dadada -1px 0 4px;
     box-shadow: #dadada -1px 0 4px;
+    color: white;
 }
 
 .qstContentDisplay{
@@ -153,7 +160,7 @@ body{
     margin: 10px;
     width: 100%;
     font-family: Verdana,Arial,Helvetica,sans-serif;
-    color:#333333;
+    color: white;
 }
 
 .ansDiv{
@@ -164,13 +171,13 @@ body{
 
 .ansAdd{
     border: none;
-    background: url(../images/blueClose.png) -0px -0px no-repeat;
+    height: 25px;
     background-color: white;
+    font-weight: bold;
     width: auto;
-    padding-left: 20px;
-    line-height: 24px;
-    color: #99ccff;
+    color: black;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .newAnswer{
@@ -183,8 +190,7 @@ body{
 
 .ansSpan{
     border: none;    
-    background-color: white;
-    color: #00C6FF;
+    color: white;
     font-size: 14px;
     float: left;
     margin: 0 3px;
@@ -192,9 +198,10 @@ body{
 }
 
 .ansSpanDisplay{
-    color: #00C6FF;
+    color: white;
     font-size: 14px;
     float: left;
+    font-weight: bold;
 }
 
 .ansContent{
@@ -210,6 +217,7 @@ body{
     -moz-box-shadow: #dadada -1px 0 4px;
     -webkit-box-shadow: #dadada -1px 0 4px;
     box-shadow: #dadada -1px 0 4px;
+    color: white;
 }
 
 .ansContentDisplay{
@@ -217,21 +225,26 @@ body{
     margin-left: 5px;
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-size: small;
+    font-weight: bold;
     width: 80%;
     float: left;
     -webkit-border-radius: 5px;
     border-radius: 5px;    
+    color: white;
 }
 
 .ansDelete{
+    width: 25px;
+    height: 25px;
     float: left;
     border: none;
-    background-image: url(../images/boldGreyClose.png);
-    background-color: white;
+    background-image: url(../images/bigBlackClose.png);
     background-repeat: no-repeat;
-    background-position: 0 50%;
+    background-position: 45% 50%;
+    background-color: white;
     cursor: pointer;
     margin: 0 5px;
+    border-radius: 15px;   
 }
 
 .qstOptChoice{    
@@ -356,7 +369,7 @@ body{
     text-align: center;
     border: 1px solid #B9B9B9;
     background-color: #eaebeb;
-    color: #666;
+    color: black;
     -webkit-border-radius: 5px;
     border-radius: 5px;
     -webkit-box-shadow: #dadada -1px 0 4px;
@@ -368,4 +381,188 @@ body{
     padding: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;
+}
+
+/*new design*/
+
+.body_table{
+    width: 100%;
+    height: 100%;
+    border-spacing: 0;
+}
+
+.selected{
+    
+}
+
+/*top*/
+
+.b_top_left{
+    width: 54px;
+    background-image: url(../images/top_left.png);
+    background-repeat: no-repeat;
+}
+
+.b_top_right{
+    width: 54px;
+    background-image: url(../images/top_right.png);
+    background-repeat: no-repeat;
+}
+
+.b_top_center{
+    height: 54px;
+    background-image: url(../images/top.png);
+    background-repeat: repeat-x;
+}
+
+/*bottom*/
+
+.b_bottom_left{
+    width: 54px;
+    background-image: url(../images/bottom_left.png);
+    background-repeat: no-repeat;
+}
+
+.b_bottom_right{
+    width: 54px;
+    background-image: url(../images/bottom_right.png);
+    background-repeat: no-repeat;
+}
+
+.b_bottom_center{
+    background-image: url(../images/bottom.png);
+    background-repeat: repeat-x;
+}
+
+/*center*/
+
+.b_center_left{
+    width: 54px;
+    background-image: url(../images/left.png);
+    background-repeat: repeat-y;
+}
+
+.b_center_right{
+    width: 54px;
+    background-image: url(../images/right.png);
+    background-repeat: repeat-y;
+}
+
+#data{
+    width: 100%;
+    height: 100%;    
+    min-height: 250px;
+    overflow: auto;
+}
+
+#wgt_name{
+    height: 44px;
+    width: 200px;
+    margin: 10px 10px 0 10px;
+    padding: 0;
+    float: left;
+    font-family: "Lobster13Regular";
+    font-size: 24px;
+    color: #8c5730;
+}
+
+#wgt_reload, #wgt_edit, #wgt_display{
+    cursor: pointer;
+    width: 80px;
+    height: 44px;
+    margin: 10px 10px 0 0;
+    float: right;
+    font-family: "Lobster13Regular";
+    font-size: 24px;   
+    color: #8c5730;
+}
+
+#wgt_display{
+    width: 100px;
+    padding-left: 40px;
+    background-image: url(../images/slate-edit.png);
+    background-repeat: no-repeat;
+    background-position: top 0;
+    display: none;
+}
+
+#wgt_edit{    
+    width: 100px;
+    padding-left: 40px;
+    background-image: url(../images/slate-edit.png);
+    background-repeat: no-repeat;
+    background-position: top 0;
+}
+
+#wgt_reload{
+    padding-left: 40px;
+    background-image: url(../images/slate-toolbar-reload.png);
+    background-repeat: no-repeat;
+    background-position: top 0;
+}
+
+.style_select{    
+    width: 120px;
+    font-family: "Lobster13Regular";
+    font-size: 24px;
+    float: right;
+    margin: 10px 20px 0 0;
+    border-radius: 10px;
+    background-image: url(../images/ar_down.png);
+    background-color: #d4aa79;
+    color: #8c5730;
+    background-position: 105px 11px;
+    background-repeat: no-repeat;
+    -webkit-appearance: menulist-text;
+    display: none;
+}
+
+.btl_pad{
+    background-image: url(../images/pad-top-left.png) !important;
+}
+
+.btc_pad{
+    background-image: url(../images/pad-top.png) !important;
+}
+
+.btr_pad{
+    background-image: url(../images/pad-top-right.png) !important;
+}
+
+.bcl_pad{
+    background-image: url(../images/pad-left.png) !important;
+}
+
+.bcr_pad{
+    background-image: url(../images/pad-right.png) !important;
+}
+
+.bbl_pad{
+    background-image: url(../images/pad-bottom-left.png) !important;
+}
+
+.bbc_pad{
+    background-image: url(../images/pad-bottom.png) !important;
+}
+
+.bbr_pad{
+    background-image: url(../images/pad-bottom-right.png) !important;
+}
+
+.pad_color{
+    color: white !important;
+}
+
+.pad_reload{
+    background-image: url(../images/slate-toolbar-reload-white.png) !important;
+}
+
+.pad_edit{
+    background-image: url(../images/slate-display.png) !important;
+}
+
+.pad_select{
+    background-color: black !important;
+    color: white !important;
+    background-image: url(../images/ar_down_white.png) !important;
 }

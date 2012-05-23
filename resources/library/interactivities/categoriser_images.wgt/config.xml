@@ -3,8 +3,8 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://uniboard.mnemis.com/widgets/notes" 
         version="1.2"
-        width="800"
-        height="600" 
+        width="950"
+        height="700" 
         ub:resizable="true">     
    
     <name>Notes</name>

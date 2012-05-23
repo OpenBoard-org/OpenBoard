@@ -3,14 +3,22 @@ var sankoreLang = {
     edit: "Edit", 
     short_desc: "Place the pictures in ascending order.", 
     add: "Add new block",
-    enter: "Enter your text here ..."
+    enter: "Enter your text here ...",
+    wgt_name: "Order images",
+    reload: "Reload",
+    slate: "Wood",
+    pad: "Pad"
 };
 
 //main function
 function start(){
     
-    $("#display_text").text(sankoreLang.display);
-    $("#edit_text").text(sankoreLang.edit);
+    $("#wgt_display").text(sankoreLang.display);
+    $("#wgt_edit").text(sankoreLang.edit);
+    $("#wgt_name").text(sankoreLang.wgt_name);
+    $("#wgt_reload").text(sankoreLang.reload);
+    $(".style_select option[value='1']").text(sankoreLang.slate);
+    $(".style_select option[value='2']").text(sankoreLang.pad);
     
     if(window.sankore){
         if(sankore.preference("odr_des_imgs","")){
@@ -22,7 +30,7 @@ function start(){
     } 
     else 
         showExample();
-    
+
     //events
     if (window.widget) {
         window.widget.onleave = function(){
@@ -30,14 +38,21 @@ function start(){
         }
     }
     
-    $("#display, #edit").click(function(event){
-        if(this.id == "display"){
+    $("#wgt_reload").click(function(){
+        window.location.reload();
+    });
+    
+    $(".style_select").change(function (event){
+        changeStyle($(this).find("option:selected").val());
+    })
+    
+    $("#wgt_display, #wgt_edit").click(function(event){
+        if(this.id == "wgt_display"){
             if(!$(this).hasClass("selected")){
                 sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
-                $("#display_img").removeClass("red_point").addClass("green_point");
-                $("#edit_img").removeClass("green_point").addClass("red_point");
-                $("#edit").removeClass("selected");
+                $("#wgt_edit").removeClass("selected");
+                $(".style_select").css("display","none");
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -75,29 +90,29 @@ function start(){
                         update: checkResult
                     } );
                 });
+                $(this).css("display", "none");
+                $("#wgt_edit").css("display", "block");
             }
         } else {            
             if(!$(this).hasClass("selected")){
                 sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
-                $("#edit_img").removeClass("red_point").addClass("green_point");
-                $("#display_img").removeClass("green_point").addClass("red_point");
-                $("#display").removeClass("selected");
-                
+                $("#wgt_display").removeClass("selected");
+                $(".style_select").css("display","block");
                 $(".cont").each(function(){
                     var container = $(this);
     
                     $("<div class='close_cont'>").appendTo(container);
                     container.find(".text_cont").attr("contenteditable","true");
                     //container.find(".imgs_cont").sortable("destroy");
-                    container.find(".imgs_cont").css("background-color", "white");
+                    container.find(".imgs_cont").css("background-color", "");
                     
                     var add_img = $("<div class='add_img'>");
                     container.find(".img_block").each(function(){
                         $(this).attr("ondragenter", "return false;")
-                        .attr("ondragleave", "$(this).css(\"background-color\",\"white\"); return false;")
+                        .attr("ondragleave", "$(this).css(\"background-color\",\"\"); return false;")
                         .attr("ondragover", "$(this).css(\"background-color\",\"#ccc\"); return false;")
-                        .attr("ondrop", "$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);")
+                        .attr("ondrop", "$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);")
                         //.css("float","left");
                         $("<div class='close_img'>").appendTo($(this));
                         $("<div class='clear_img'>").appendTo($(this));
@@ -105,18 +120,11 @@ function start(){
                     });
                     rightOrder(container.find(".imgs_cont"));
                     container.find(".imgs_cont").append(add_img)
-                });
+                });                
                 
-                //                $(".img_block").css("overflow", "auto");
-                //                setTimeout(function(){
-                //                    $(".img_block").css("overflow", "").width(121);
-                //                    setTimeout(function(){
-                //                        $(".img_block").width(120);
-                //                    }, 1);
-                //                }, 1);
-                
-                
-                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("body");
+                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
+                $(this).css("display", "none");
+                $("#wgt_display").css("display", "block");
             }
         }
     });
@@ -148,20 +156,6 @@ function start(){
         
     });
     
-    //    //turning an image
-    //    $(".fill_img").live("click",function(){
-    //        var tmp_back = $(this).css("background-image");
-    //        var lclImg = $(this).parent().find("img");
-    //        if(tmp_back.match(/fill_hor/)){
-    //            lclImg.removeAttr("height").attr("width", "120");
-    //            $(this).css("background-image","url(img/fill_vert.png)");
-    //        }
-    //        else{
-    //            lclImg.removeAttr("width").attr("height", "120");
-    //            $(this).css("background-image","url(img/fill_hor.png)");
-    //        }
-    //    });
-    
     //cleaning an image
     $(".clear_img").live("click",function(){
         //$(this).parent().find(".fill_img").remove();
@@ -188,6 +182,7 @@ function exportData(){
     }
     $(".cont").each(function(){
         var cont_obj = new Object();
+        cont_obj.style = $(".style_select").find("option:selected").val();
         cont_obj.text = $(this).find(".text_cont").text();
         cont_obj.right = $(this).find(".imgs_cont>input").val();
         cont_obj.imgs = [];
@@ -201,8 +196,13 @@ function exportData(){
         });
         array_to_export.push(cont_obj);
     });
-    //console.log(JSON.stringify(array_to_import));
-    //alert(JSON.stringify(array_to_export))
+    
+    if($(".cont").size() == 0){
+        var cont_obj = new Object();
+        cont_obj.style = $(".style_select").find("option:selected").val();
+        cont_obj.tmp = "clear";
+        array_to_export.push(cont_obj);
+    }
     sankore.setPreference("odr_des_imgs", JSON.stringify(array_to_export));
 }
 
@@ -211,39 +211,50 @@ function importData(data){
     
     var tmp = 0;    
     for(var i in data){
-        var tmp_array = [];
-        var container = $("<div class='cont'>");
-        var sub_container = $("<div class='sub_cont'>").appendTo(container);
-        var imgs_container = $("<div class='imgs_cont'>").appendTo(container);    
-        
-        var number = $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
-        var text = $("<div class='text_cont'>" + data[i].text + "</div>").appendTo(sub_container);
-    
-        $("<input type='hidden' value='" + data[i].right + "'/>").appendTo(imgs_container);
-        
-        for(var j in data[i].imgs){
-            var img_block = $("<div class='img_block' style='text-align: center;'>");
-            var img = $("<img src='" + data[i].imgs[j].link + "' style='display: inline;'>");
-            img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
-            if((120 - data[i].imgs[j].ht) > 0)
-                img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
-            var hidden_input = $("<input type='hidden'>").val(data[i].imgs[j].value);
-            img_block.append(hidden_input).append(img);
-            tmp_array.push(img_block);
+        if(data[i].tmp){
+            changeStyle(data[i].style);
+            $(".style_select").val(data[i].style);
         }
-        tmp_array = shuffle(tmp_array);
-        for(j = 0; j<tmp_array.length;j++)
-            tmp_array[j].appendTo(imgs_container);
-        imgs_container.sortable( {
-            update: checkResult
-        } );   
-        container.appendTo("body");
+        else {
+            if(i == 0){
+                changeStyle(data[i].style);
+                $(".style_select").val(data[i].style);
+            }
+            var tmp_array = [];
+            var container = $("<div class='cont'>");
+            var sub_container = $("<div class='sub_cont'>").appendTo(container);
+            var imgs_container = $("<div class='imgs_cont'>").appendTo(container);    
+        
+            var number = $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
+            var text = $("<div class='text_cont'>" + data[i].text + "</div>").appendTo(sub_container);
+    
+            $("<input type='hidden' value='" + data[i].right + "'/>").appendTo(imgs_container);
+        
+            for(var j in data[i].imgs){
+                var img_block = $("<div class='img_block' style='text-align: center;'>");
+                var img = $("<img src='" + data[i].imgs[j].link + "' style='display: inline;'>");
+                img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
+                if((120 - data[i].imgs[j].ht) > 0)
+                    img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
+                var hidden_input = $("<input type='hidden'>").val(data[i].imgs[j].value);
+                img_block.append(hidden_input).append(img);
+                tmp_array.push(img_block);
+            }
+            tmp_array = shuffle(tmp_array);
+            for(j = 0; j<tmp_array.length;j++)
+                tmp_array[j].appendTo(imgs_container);
+            imgs_container.sortable( {
+                update: checkResult
+            } );   
+            container.appendTo("#data"); 
+        }        
     }
 }
 
 //example
 function showExample(){
     
+    changeStyle(1);
     var tmp_array = [];
     
     var container = $("<div class='cont'>");
@@ -279,13 +290,13 @@ function showExample(){
         update: checkResult
     } );
 
-    container.appendTo("body")
+    container.appendTo("#data");
 }
 
 //check result
 function checkResult(event)
 {
-    if($("#display").hasClass("selected")){
+    if($("#wgt_display").hasClass("selected")){
         var str = "";
         var right_str = $(event.target).find("input").val();
         $(event.target).find(".img_block").each(function(){
@@ -293,6 +304,8 @@ function checkResult(event)
         });
         if(str == right_str)
             $(event.target).css("background-color","#9f9");
+        else
+            $(event.target).css("background-color","");
     } else {
         refreshImgNumbers($(event.target));
     }
@@ -315,7 +328,7 @@ function addContainer(){
 
 //add new img block
 function addImgBlock(dest){
-    var img_block = $("<div class='img_block' ondragenter='return false;' ondragleave='$(this).css(\"background-color\",\"white\"); return false;' ondragover='$(this).css(\"background-color\",\"#ccc\"); return false;' ondrop='$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);' style='text-align: center;'></div>").insertBefore(dest);
+    var img_block = $("<div class='img_block' ondragenter='return false;' ondragleave='$(this).css(\"background-color\",\"\"); return false;' ondragover='$(this).css(\"background-color\",\"#ccc\"); return false;' ondrop='$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);' style='text-align: center;'></div>").insertBefore(dest);
     var tmp_counter = dest.parent().find(".img_block").size();
     $("<div class='close_img'>").appendTo(img_block);
     $("<div class='clear_img'>").appendTo(img_block);
@@ -376,6 +389,39 @@ function refreshImgNumbers(source){
     });
 }
 
+//changing the style
+function changeStyle(val){
+    if(val == 1){
+        $(".b_top_left").removeClass("btl_pad");
+        $(".b_top_center").removeClass("btc_pad");
+        $(".b_top_right").removeClass("btr_pad");
+        $(".b_center_left").removeClass("bcl_pad");
+        $(".b_center_right").removeClass("bcr_pad");
+        $(".b_bottom_right").removeClass("bbr_pad");
+        $(".b_bottom_left").removeClass("bbl_pad");
+        $(".b_bottom_center").removeClass("bbc_pad");
+        $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
+        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
+        $("#wgt_name").removeClass("pad_color");
+        $(".style_select").removeClass("pad_select");
+    } else {
+        $(".b_top_left").addClass("btl_pad");
+        $(".b_top_center").addClass("btc_pad");
+        $(".b_top_right").addClass("btr_pad");
+        $(".b_center_left").addClass("bcl_pad");
+        $(".b_center_right").addClass("bcr_pad");
+        $(".b_bottom_right").addClass("bbr_pad");
+        $(".b_bottom_left").addClass("bbl_pad");
+        $(".b_bottom_center").addClass("bbc_pad");
+        $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
+        $("#wgt_name").addClass("pad_color");
+        $(".style_select").addClass("pad_select");
+    }
+}
+
 function stringToXML(text){
     if (window.ActiveXObject){
         var doc=new ActiveXObject('Microsoft.XMLDOM');
@@ -390,7 +436,6 @@ function stringToXML(text){
 
 function onDropTarget(obj, event) {
     $(obj).find("img").remove();
-    //alert(tmp_img.width() + " | " + tmp_img.height() + " | " + tmp_img.attr("src"));
     if (event.dataTransfer) {
         var format = "text/plain";
         var textData = event.dataTransfer.getData(format);
@@ -399,14 +444,9 @@ function onDropTarget(obj, event) {
         }
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
-        //alert(textData.getElementsByTagName("type")[0].firstChild.textContent + " | " + textData.getElementsByTagName("path")[0].firstChild.textContent);
+        tmp = tmp.substr(1, tmp.length);        
         var tmp_img = $("<img/>").attr("src", tmp);
-        //alert(1)
-        //alert(tmp_img.width() + " | " + tmp_img.height() + " | " + tmp_img.attr("src"));
-        //$("#dnd_1").html(textData);        
-        //tmp_img.css("display", "none");
         $(obj).append(tmp_img);
-        //alert(tmp_img.width() + " | " + tmp_img.height())
         setTimeout(function(){
             if(tmp_img.height() >= tmp_img.width())
                 tmp_img.attr("height", "120");
@@ -415,14 +455,6 @@ function onDropTarget(obj, event) {
                 tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
             }
         }, 6)
-    //alert(tmp_img.width() + " | " + tmp_img.height())
-    //        $(".img_block").css("overflow", "auto");
-    //        setTimeout(function(){
-    //            $(".img_block").css("overflow", "").width(121);
-    //            setTimeout(function(){
-    //                $(".img_block").width(120);
-    //            }, 1);
-    //        }, 1);
     }
     else {
         alert ("Your browser does not support the dataTransfer object.");

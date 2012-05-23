@@ -3,9 +3,9 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://uniboard.mnemis.com/widgets/webbrowser" 
         version="1.1"
-        width="700"
+        width="920"
         height="400" 
-		ub:resizable="false">   
+		ub:resizable="true">   
 		     
   		<name>Choisir</name>
 		<author href="http://www.getuniboard.com"

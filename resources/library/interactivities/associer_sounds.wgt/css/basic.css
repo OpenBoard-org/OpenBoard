@@ -3,7 +3,11 @@ html, body{
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: white;
+    border-radius: 50px;
+}
+
+body{
+    background-image: url(../img/bg.png);
 }
 
 .toggle_mode{
@@ -37,7 +41,7 @@ html, body{
 }
 
 .selected{
-    background-color: #666;
+    
 }
 
 #display:hover, #edit:hover{
@@ -75,7 +79,7 @@ html, body{
 }
 
 .imgs_answers_gray{
-    background-color: #f4f2f2;
+    
 }
 
 .imgs_answers_green{
@@ -191,7 +195,7 @@ html, body{
 }
 
 .dropBack{
-    background-color: #F4F2F2;
+
 }
 
 .audio_block{
@@ -235,4 +239,184 @@ html, body{
 
 .gray{
     background-color: #ccc;
+}
+
+/*new design*/
+
+.body_table{
+    width: 100%;
+    height: 100%;
+    border-spacing: 0;
+}
+
+/*top*/
+
+.b_top_left{
+    width: 54px;
+    background-image: url(../img/top_left.png);
+    background-repeat: no-repeat;
+}
+
+.b_top_right{
+    width: 54px;
+    background-image: url(../img/top_right.png);
+    background-repeat: no-repeat;
+}
+
+.b_top_center{
+    height: 54px;
+    background-image: url(../img/top.png);
+    background-repeat: repeat-x;
+}
+
+/*bottom*/
+
+.b_bottom_left{
+    width: 54px;
+    background-image: url(../img/bottom_left.png);
+    background-repeat: no-repeat;
+}
+
+.b_bottom_right{
+    width: 54px;
+    background-image: url(../img/bottom_right.png);
+    background-repeat: no-repeat;
+}
+
+.b_bottom_center{
+    background-image: url(../img/bottom.png);
+    background-repeat: repeat-x;
+}
+
+/*center*/
+
+.b_center_left{
+    width: 54px;
+    background-image: url(../img/left.png);
+    background-repeat: repeat-y;
+}
+
+.b_center_right{
+    width: 54px;
+    background-image: url(../img/right.png);
+    background-repeat: repeat-y;
+}
+
+#data{
+    width: 100%;
+    height: 100%;    
+    min-height: 250px;
+    overflow: auto;
+}
+
+#wgt_name{
+    height: 44px;
+    width: 200px;
+    margin: 10px 10px 0 10px;
+    padding: 0;
+    float: left;
+    font-family: "Lobster13Regular";
+    font-size: 24px;
+    color: #8c5730;
+}
+
+#wgt_reload, #wgt_edit, #wgt_display{
+    cursor: pointer;
+    width: 80px;
+    height: 44px;
+    margin: 10px 10px 0 0;
+    float: right;
+    font-family: "Lobster13Regular";
+    font-size: 24px;   
+    color: #8c5730;
+}
+
+#wgt_display{
+    width: 100px;
+    padding-left: 40px;
+    background-image: url(../img/slate-edit.png);
+    background-repeat: no-repeat;
+    background-position: top 0;
+    display: none;
+}
+
+#wgt_edit{    
+    width: 100px;
+    padding-left: 40px;
+    background-image: url(../img/slate-edit.png);
+    background-repeat: no-repeat;
+    background-position: top 0;
+}
+
+#wgt_reload{
+    padding-left: 40px;
+    background-image: url(../img/slate-toolbar-reload.png);
+    background-repeat: no-repeat;
+    background-position: top 0;
+}
+
+.style_select{    
+    width: 120px;
+    font-family: "Lobster13Regular";
+    font-size: 24px;
+    float: right;
+    margin: 10px 20px 0 0;
+    border-radius: 10px;
+    background-image: url(../img/ar_down.png);
+    background-color: #d4aa79;
+    color: #8c5730;
+    background-position: 105px 11px;
+    background-repeat: no-repeat;
+    -webkit-appearance: menulist-text;
+    display: none;
+}
+
+.btl_pad{
+    background-image: url(../img/pad-top-left.png) !important;
+}
+
+.btc_pad{
+    background-image: url(../img/pad-top.png) !important;
+}
+
+.btr_pad{
+    background-image: url(../img/pad-top-right.png) !important;
+}
+
+.bcl_pad{
+    background-image: url(../img/pad-left.png) !important;
+}
+
+.bcr_pad{
+    background-image: url(../img/pad-right.png) !important;
+}
+
+.bbl_pad{
+    background-image: url(../img/pad-bottom-left.png) !important;
+}
+
+.bbc_pad{
+    background-image: url(../img/pad-bottom.png) !important;
+}
+
+.bbr_pad{
+    background-image: url(../img/pad-bottom-right.png) !important;
+}
+
+.pad_color{
+    color: white !important;
+}
+
+.pad_reload{
+    background-image: url(../img/slate-toolbar-reload-white.png) !important;
+}
+
+.pad_edit{
+    background-image: url(../img/slate-display.png) !important;
+}
+
+.pad_select{
+    background-color: black !important;
+    color: white !important;
+    background-image: url(../img/ar_down_white.png) !important;
 }

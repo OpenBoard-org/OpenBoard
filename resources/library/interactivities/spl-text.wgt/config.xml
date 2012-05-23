@@ -4,9 +4,9 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
-        width="650"
-        height="320" 
-		ub:resizable="false">
+        width="750"
+        height="350" 
+		ub:resizable="true">
 		
 		<name>Split a text [alt]</name>
 		<description>Split a text into sentences</description>

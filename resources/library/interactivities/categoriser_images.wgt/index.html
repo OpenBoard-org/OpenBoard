@@ -4,6 +4,8 @@
         <title>D'n'd</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" type="text/css" href="css/basic.css"/>
+        <link rel="stylesheet" href="css/fonts/Lobster/stylesheet.css">
+	<link rel="stylesheet" href="css/fonts/SF-Toontime/stylesheet.css">
         <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
         <script type="text/javascript" src="js/script.js"></script>
@@ -40,20 +42,37 @@
         </script>
     </head>
     <body>        
-        <div class="toggle_mode">
-            <div style="width: 50%; height: 100%; float: left;">
-                <div id="display" style="float: right; width: 90px; cursor: pointer;" class="selected">
-                    <div id="display_img" style="float: right;" class="green_point"></div>
-                    <div id="display_text" style="float: right;"></div>                    
-                </div>
-            </div>
-            <div style="width: 50%; height: 100%; float: right;">
-                <div id="edit" style="float: left; width: 90px; cursor: pointer;">                    
-                    <div id="edit_img" style="float: left;" class="red_point"></div>
-                    <div id="edit_text" style="float: left;"></div>
-                </div>
-            </div>
-        </div>
-        <div style="width: 100%; height: 25px;"></div>
+        <table class="body_table" cellpadding=0 cellspacing=0>
+            <tr style="height: 54px;">
+                <td class="b_top_left">&nbsp;</td>
+                <td class="b_top_center">
+                    <div id="wgt_name"></div>
+                    <div id="wgt_reload"></div>                    
+                    <div id="wgt_display" class="selected"></div>
+                    <div id="wgt_edit"></div>
+                    <select class="style_select">
+                        <option value="1"></option>
+                        <option value="2"></option>
+                    </select>
+                </td>
+                <td class="b_top_right">&nbsp;</td>
+            </tr>
+       
+            <tr>
+                <td class="b_center_left">&nbsp;</td>
+                <td>
+                    <div id="data">
+                        
+                    </div>
+                </td>
+                <td class="b_center_right">&nbsp;</td>
+            </tr>     
+        
+            <tr style="height: 54px;">
+                <td class="b_bottom_left">&nbsp;</td>
+                <td class="b_bottom_center">&nbsp;</td>
+                <td class="b_bottom_right">&nbsp;</td>
+            </tr>
+        </table>
     </body>
 </html>

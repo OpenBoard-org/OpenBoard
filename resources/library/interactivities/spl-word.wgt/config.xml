@@ -4,9 +4,9 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
-        width="650"
+        width="750"
         height="320" 
-		ub:resizable="false">
+		ub:resizable="true">
 		
 		<name>Split a word</name>
 		<description>Split a word into syllables</description>
