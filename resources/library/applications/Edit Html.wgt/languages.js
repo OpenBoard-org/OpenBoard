@@ -19,9 +19,9 @@ var sankoreLang = {
     },
     "fr":{
         "enter_title": "Entrer le titre yuor ici ...",
-        "welcome":"Bienvenue à HTML Editor",
+        "welcome":"Bienvenue sur HTML Editor",
         "source":"Source",
-        "link":"Link",
+        "link":"Lien",
         "preview":"Aperçu",
         "text_to_link":"Votre texte à lier",
         "alt_text":"Texte alternatif"
