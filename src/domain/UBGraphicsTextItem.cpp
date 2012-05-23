@@ -14,7 +14,7 @@
  */
 
 #include <QtGui>
-#include "UBGraphicsGroupContainerItem.h"
+#include "ubgraphicsgroupcontaineritem.h"
 #include "UBGraphicsTextItem.h"
 #include "UBGraphicsTextItemDelegate.h"
 #include "UBGraphicsScene.h"

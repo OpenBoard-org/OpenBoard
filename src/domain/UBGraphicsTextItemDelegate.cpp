@@ -17,7 +17,7 @@
 #include <QtSvg>
 
 #include "core/UBApplication.h"
-#include "UBGraphicsGroupContainerItem.h"
+#include "ubgraphicsgroupcontaineritem.h"
 #include "UBGraphicsTextItemDelegate.h"
 #include "UBGraphicsScene.h"
 #include "gui/UBResources.h"
