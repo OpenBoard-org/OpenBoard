@@ -533,7 +533,7 @@ bool UBDockPalette::switchMode(eUBDockPaletteWidgetMode mode)
 {
 	bool hasVisibleElements = false;
 	//-------------------------------//
-	// get full right palette widgets list, parse it, show all widgets for BOARD mode, and hide all other
+	// get full palette widgets list, parse it, show all widgets for BOARD mode, and hide all other
 	for(int i = 0; i < mRegisteredWidgets.size(); i++)
 	{
 		UBDockPaletteWidget* pNextWidget = mRegisteredWidgets.at(i);

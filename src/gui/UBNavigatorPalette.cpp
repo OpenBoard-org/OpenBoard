@@ -24,18 +24,13 @@
  * @param name as the object name
  */
 UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):
-    UBDockPalette(eUBDockPaletteType_NAVIGATOR, parent, name)
+	UBDockPalette(eUBDockPaletteType_LEFT, parent, name)
 	, mNavigator(NULL)
 	, mLayout(NULL)
     , mHLayout(NULL)
     , mPageNbr(NULL)
     , mClock(NULL)
 {
-    setOrientation(eUBDockOrientation_Left);
-    setMaximumWidth(300);
-    resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), height());
-    mLastWidth = 300;
-
     // Build the gui
     mLayout = new QVBoxLayout(this);
     mLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());

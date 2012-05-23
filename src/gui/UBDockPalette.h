@@ -79,8 +79,7 @@ private:
 typedef enum
 {
     eUBDockPaletteType_LEFT,
-    eUBDockPaletteType_RIGHT,
-    eUBDockPaletteType_NAVIGATOR,
+    eUBDockPaletteType_RIGHT
 } eUBDockPaletteType;
 
 
