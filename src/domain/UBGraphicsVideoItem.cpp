@@ -120,6 +120,9 @@ void UBGraphicsVideoItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsVideoItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (mDelegate->delegated()->data(UBGraphicsItemData::ItemLocked).toBool())
+        return;
+
     if(mShouldMove && (event->buttons() & Qt::LeftButton))
     {
         QPointF offset = event->scenePos() - mMousePressPos;
