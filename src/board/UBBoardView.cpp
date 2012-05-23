@@ -426,6 +426,7 @@ UBBoardView::mousePressEvent (QMouseEvent *event)
 
             if (!movingItem 
                 || movingItem->isSelected()
+                || movingItem->data(UBGraphicsItemData::ItemLocked).toBool()
                 || movingItem->type() == UBGraphicsDelegateFrame::Type
                 || movingItem->type() == DelegateButton::Type 
                 || movingItem->type() == UBGraphicsCompass::Type
