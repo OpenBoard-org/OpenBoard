@@ -49,7 +49,7 @@
 #include "domain/UBW3CWidget.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBPageSizeUndoCommand.h"
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "tools/UBToolsManager.h"
 

@@ -29,7 +29,7 @@
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsStrokesGroup.h"
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBItem.h"
 
 #include "tools/UBGraphicsRuler.h"

@@ -40,7 +40,7 @@
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsMediaItem.h"
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "web/UBWebController.h"
 

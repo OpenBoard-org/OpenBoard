@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ubgraphicsgroupcontaineritem.h"
+#include "UBGraphicsGroupContainerItem.h"
 #include "UBGraphicsMediaItem.h"
 #include "UBGraphicsMediaItemDelegate.h"
 #include "UBGraphicsScene.h"

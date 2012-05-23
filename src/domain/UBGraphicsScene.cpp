@@ -56,7 +56,7 @@
 #include "UBGraphicsTextItem.h"
 #include "UBGraphicsStrokesGroup.h"
 
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "UBAppleWidget.h"
 #include "UBW3CWidget.h"
