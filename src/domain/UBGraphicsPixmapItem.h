@@ -52,6 +52,8 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
         virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate;}
         virtual void clearSource(){;}
 
+        virtual void setUuid(const QUuid &pUuid);
+
 protected:
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

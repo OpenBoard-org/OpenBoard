@@ -33,6 +33,7 @@ class UBToolWidget;
 class UBVersion;
 class UBSoftwareUpdate;
 class UBSoftwareUpdateDialog;
+class UBGraphicsMediaItem;
 class UBGraphicsVideoItem;
 class UBGraphicsAudioItem;
 class UBGraphicsWidgetItem;
@@ -184,6 +185,7 @@ class UBBoardController : public QObject
         void nextScene();
         void firstScene();
         void lastScene();
+        void groupButtonClicked();
         void downloadURL(const QUrl& url, const QPointF& pPos = QPointF(0.0, 0.0), const QSize& pSize = QSize(), bool isBackground = false);
         void downloadFinished(bool pSuccess, QUrl sourceUrl, QString pHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground = false);
         void changeBackground(bool isDark, bool isCrossed);
@@ -203,8 +205,8 @@ class UBBoardController : public QObject
         void grabScene(const QRectF& pSceneRect);
         void controlViewHidden();
         void controlViewShown();
-        UBGraphicsVideoItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos);
-        UBGraphicsAudioItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos);
+        UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos);
+        UBGraphicsMediaItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos);
         UBGraphicsWidgetItem *addW3cWidget(const QUrl& pUrl, const QPointF& pos);
 
         void cut();

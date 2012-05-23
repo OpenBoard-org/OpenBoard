@@ -78,6 +78,7 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         virtual QUrl getSnapshotPath(){return SnapshotFile;}
 
         virtual void clearSource();
+        virtual void setUuid(const QUuid &pUuid);
 
 
     protected:
@@ -129,6 +130,7 @@ class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
         }
 
         virtual UBItem* deepCopy() const;
+        virtual void setUuid(const QUuid &pUuid);
 
 };
 
@@ -155,6 +157,7 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         UBW3CWidget* w3cWidget() const;
 
         virtual void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget );
+        virtual void setUuid(const QUuid &pUuid);
 
     private slots:
 

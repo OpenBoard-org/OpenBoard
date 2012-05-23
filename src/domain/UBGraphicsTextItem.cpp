@@ -14,6 +14,7 @@
  */
 
 #include <QtGui>
+#include "UBGraphicsGroupContainerItem.h"
 #include "UBGraphicsTextItem.h"
 #include "UBGraphicsTextItemDelegate.h"
 #include "UBGraphicsScene.h"
@@ -97,8 +98,32 @@ QVariant UBGraphicsTextItem::itemChange(GraphicsItemChange change, const QVarian
 
 void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    
     if (mDelegate)
+    {
         mDelegate->mousePressEvent(event);
+        if (mDelegate && parentItem() && UBGraphicsGroupContainerItem::Type == parentItem()->type())
+        {
+            UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(parentItem());
+            if (group)
+            {
+                QGraphicsItem *curItem = group->getCurrentItem();
+                if (curItem && this != curItem)
+                {   
+                    group->deselectCurrentItem();    
+                }   
+                group->setCurrentItem(this);
+                this->setSelected(true);
+                mDelegate->positionHandles();
+            }       
+
+        }
+        else
+        {
+            mDelegate->getToolBarItem()->show();
+        }
+
+    }
 
     if (!data(UBGraphicsItemData::ItemEditable).toBool())
         return;
@@ -294,6 +319,12 @@ void UBGraphicsTextItem::resize(qreal w, qreal h)
 QSizeF UBGraphicsTextItem::size() const
 {
     return QSizeF(textWidth(), textHeight());
+}
+
+void UBGraphicsTextItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
 
 

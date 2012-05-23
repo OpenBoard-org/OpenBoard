@@ -22,6 +22,12 @@ UBGraphicsStrokesGroup::~UBGraphicsStrokesGroup()
     }
 }
 
+void UBGraphicsStrokesGroup::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
+}
+
 void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (mDelegate->mousePressEvent(event))

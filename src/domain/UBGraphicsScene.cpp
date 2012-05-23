@@ -50,8 +50,7 @@
 #include "UBGraphicsPixmapItem.h"
 #include "UBGraphicsSvgItem.h"
 #include "UBGraphicsPolygonItem.h"
-#include "UBGraphicsVideoItem.h"
-#include "UBGraphicsAudioItem.h"
+#include "UBGraphicsMediaItem.h"
 #include "UBGraphicsWidgetItem.h"
 #include "UBGraphicsPDFItem.h"
 #include "UBGraphicsTextItem.h"
@@ -64,9 +63,6 @@
 #include "UBGraphicsStroke.h"
 
 #include "core/memcheck.h"
-
-const QString groupText = "Group items";
-const QString ungroupText = "Ungroup items";
 
 qreal UBZLayerController::errorNumber = -20000001.0;
 
@@ -296,14 +292,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
-
-//  just a stub don't treat as a result code
-//    static int i = 0;
-//    i++;
-//    if (i == 1) {
-        connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
-//        qDebug() << "the connect is accepted";
-//    }
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -333,65 +321,20 @@ void UBGraphicsScene::updateGroupButtonState()
 
     if (selCount < 1) {
         groupAction->setEnabled(false);
-        groupAction->setText(groupText);
+        groupAction->setText(UBSettings::settings()->actionGroupText);
 
     } else if (selCount == 1) {
         if (selItems.first()->type() == UBGraphicsGroupContainerItem::Type) {
             groupAction->setEnabled(true);
-            groupAction->setText(ungroupText);
+            groupAction->setText(UBSettings::settings()->actionUngroupText);
         } else {
             groupAction->setEnabled(false);
         }
 
     } else if (selCount > 1) {
         groupAction->setEnabled(true);
-        groupAction->setText(groupText);
+        groupAction->setText(UBSettings::settings()->actionGroupText);
     }
-}
-
-void UBGraphicsScene::groupButtonClicked()
-{
-    QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
-    QList<QGraphicsItem*> selItems = selectedItems();
-    if (!selItems.count()) {
-        qDebug() << "Got grouping request when there is no any selected item on the scene";
-        return;
-    }
-
-    if (groupAction->text() == groupText) { //The only way to get information from item, considering using smth else
-        UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
-
-        foreach (QGraphicsItem *item, selItems) {
-            if (item->type() == UBGraphicsGroupContainerItem::Type) {
-                QList<QGraphicsItem*> childItems = item->childItems();
-                UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-                if (currentGroup) {
-                    currentGroup->destroy();
-                }
-                foreach (QGraphicsItem *chItem, childItems) {
-                    groupItem->addToGroup(chItem);
-                }
-            } else {
-                groupItem->addToGroup(item);
-            }
-        }
-
-        addItem(groupItem);
-        groupItem->setVisible(true);
-        groupItem->setFocus();
-
-    } else if (groupAction->text() == ungroupText) {
-        //Considering one selected item and it's a group
-        if (selItems.count() > 1) {
-            qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
-            return;
-        }
-        UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.first());
-        if (currentGroup) {
-            currentGroup->destroy();
-        }
-    }
-
 }
 
 bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure)
@@ -1388,67 +1331,48 @@ void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
         UBApplication::undoStack->push(uc);
     }
 }
-
-UBGraphicsVideoItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos)
+UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos)
 {
-    UBGraphicsVideoItem* videoItem = new UBGraphicsVideoItem(pVideoFileUrl);
+    UBGraphicsMediaItem* mediaItem = new UBGraphicsMediaItem(pMediaFileUrl);
+    if(mediaItem){
+        connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), mediaItem, SLOT(activeSceneChanged()));
+    }
 
-    videoItem->setPos(pPos);
+    mediaItem->setPos(pPos);
 
-    videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-    videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    mediaItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+    mediaItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    addItem(videoItem);
+    addItem(mediaItem);
 
-    videoItem->show();
+    mediaItem->show();
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, videoItem);
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, mediaItem);
         UBApplication::undoStack->push(uc);
     }
 
-    videoItem->mediaObject()->play();
+    mediaItem->mediaObject()->play();
 
     if (!shouldPlayAsap)
     {
-        videoItem->mediaObject()->pause();
-        videoItem->mediaObject()->seek(0);
+        mediaItem->mediaObject()->pause();
+        mediaItem->mediaObject()->seek(0);
     }
 
     setDocumentUpdated();
 
-    return videoItem;
+    return mediaItem;
 }
 
-UBGraphicsAudioItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool shouldPlayAsap, const QPointF& pPos)
+UBGraphicsMediaItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos)
 {
-    UBGraphicsAudioItem* audioItem = new UBGraphicsAudioItem(pAudioFileUrl);
+   return addMedia(pVideoFileUrl, shouldPlayAsap, pPos);
+}
 
-    audioItem->setPos(pPos);
-
-    audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-    audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-    addItem(audioItem);
-
-    audioItem->show();
-
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, audioItem);
-        UBApplication::undoStack->push(uc);
-    }
-
-    audioItem->mediaObject()->play();
-
-    if (!shouldPlayAsap)
-    {
-        audioItem->mediaObject()->pause();
-        audioItem->mediaObject()->seek(0);
-    }
-
-    setDocumentUpdated();
-
-    return audioItem;
+UBGraphicsMediaItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool shouldPlayAsap, const QPointF& pPos)
+{
+   return addMedia(pAudioFileUrl, shouldPlayAsap, pPos);
 }
 
 UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
@@ -1541,6 +1465,39 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
     }
 
     return widget;
+}
+
+UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *> items)
+{
+    UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
+
+    foreach (QGraphicsItem *item, items) {
+        if (item->type() == UBGraphicsGroupContainerItem::Type) {
+            QList<QGraphicsItem*> childItems = item->childItems();
+            UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+            if (currentGroup) {
+                currentGroup->destroy();
+            }
+            foreach (QGraphicsItem *chItem, childItems) {
+                groupItem->addToGroup(chItem);
+            }
+        } else {
+            groupItem->addToGroup(item);
+        }
+    }
+
+    addItem(groupItem);
+    groupItem->setVisible(true);
+    groupItem->setFocus();
+
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, groupItem);
+        UBApplication::undoStack->push(uc);
+    }
+
+    setDocumentUpdated();
+
+    return groupItem;
 }
 
 UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPointF& pPos)
@@ -2091,7 +2048,7 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
 
     while (itItems.hasNext())
     {
-        UBGraphicsVideoItem *videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (itItems.next());
+        UBGraphicsMediaItem *videoItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (itItems.next());
 
         if (videoItem && videoItem->mediaFileUrl().isRelative())
         {
@@ -2138,14 +2095,6 @@ void UBGraphicsScene::setSelectedZLevel(QGraphicsItem * item)
 void UBGraphicsScene::setOwnZlevel(QGraphicsItem *item)
 {
     item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-}
-
-void UBGraphicsScene::groupItems(QList<QGraphicsItem *> &itemList)
-{
-    foreach (QGraphicsItem *item, itemList) {
-        qDebug() << "selected item found";
-        item->setSelected(false);
-    }
 }
 
 qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest)

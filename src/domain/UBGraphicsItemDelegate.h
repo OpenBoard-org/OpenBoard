@@ -29,6 +29,7 @@ class UBGraphicsScene;
 class UBGraphicsProxyWidget;
 class UBGraphicsDelegateFrame;
 class UBGraphicsWidgetItem;
+class UBGraphicsMediaItem;
 
 class DelegateButton: public QGraphicsSvgItem
 {
@@ -70,29 +71,105 @@ class DelegateButton: public QGraphicsSvgItem
 
 };
 
+class MediaTimer: public QGraphicsRectItem
+{
+public:
+    MediaTimer(QGraphicsItem * parent = 0);
+    ~MediaTimer();
+
+    char* getSegments(char);
+    void addPoint(QPolygon&, const QPoint&);
+    void init();
+    void internalSetString(const QString& s);
+    void drawString(const QString& s, QPainter &, QBitArray * = 0, bool = true);
+    void drawDigit(const QPoint &, QPainter &, int, char, char = ' ');
+    void drawSegment(const QPoint &, char, QPainter &, int, bool = false);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                QWidget *widget);
+    void display(const QString &str);
+    void setNumDigits(int nDigits);
+
+private:
+    int ndigits;
+    QString digitStr;
+    QBitArray points;
+    double val;
+
+
+uint fill : 1;
+uint shadow : 1;
+uint smallPoint : 1;
+
+};
+
+class DelegateMediaControl: public QGraphicsRectItem
+{
+    public:
+
+        DelegateMediaControl(UBGraphicsMediaItem* pDelegated, QGraphicsItem * parent = 0);
+
+        virtual ~DelegateMediaControl()
+        {
+            // NOOP
+        }
+
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                QWidget *widget);
+
+        QPainterPath shape() const;
+
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void update();
+
+        void positionHandles();
+        void updateTicker(qint64 time);
+        void totalTimeChanged(qint64 newTotalTime);
+
+   protected:
+        void seekToMousePos(QPointF mousePos);
+
+        UBGraphicsMediaItem* mDelegate;
+        bool mDisplayCurrentTime;
+
+        qint64 mCurrentTimeInMs;
+        qint64 mTotalTimeInMs;
+
+    private:
+        int mStartWidth;
+
+        QRectF mSeecArea;
+        QRectF mLCDTimerArea;
+
+        MediaTimer *lcdTimer;
+};
+
 class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
 {
     public:
         UBGraphicsToolBarItem(QGraphicsItem * parent = 0);
-        virtual ~UBGraphicsToolBarItem() {};
+        virtual ~UBGraphicsToolBarItem() {;}
 
         bool isVisibleOnBoard() const { return mVisible; }
         void setVisibleOnBoard(bool visible) { mVisible = visible; }
         bool isShifting() const { return mShifting; }
         void setShifting(bool shifting) { mShifting = shifting; } 
-        int offsetOnToolBar() const { return mOffsetOnToolBar; }
-        void setOffsetOnToolBar(int pOffset) { mOffsetOnToolBar = pOffset; }
         QList<QGraphicsItem*> itemsOnToolBar() const { return mItemsOnToolBar; }
         void setItemsOnToolBar(QList<QGraphicsItem*> itemsOnToolBar) { mItemsOnToolBar = itemsOnToolBar;}
         int minWidth() { return mMinWidth; }
+        void positionHandles();
+        void update();
+
+    private:
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                 QWidget *widget);
 
     private:
         bool mShifting;
         bool mVisible;
-        int mOffsetOnToolBar;
         int mMinWidth;
+        int mInitialHeight;
         QList<QGraphicsItem*> mItemsOnToolBar;
 };
 
@@ -168,7 +245,7 @@ class UBGraphicsItemDelegate : public QObject
         void increaseZlevelBottom();
 
     protected:
-        virtual void buildButtons() {;}
+        virtual void buildButtons();
         virtual void decorateMenu(QMenu *menu);
         virtual void updateMenuActionState();
 
@@ -203,9 +280,6 @@ protected slots:
 private:
         void updateFrame();
         void updateButtons(bool showUpdated = false);
-        void updateToolBar();
-
-
 
         QPointF mOffset;
         QTransform mPreviousTransform;

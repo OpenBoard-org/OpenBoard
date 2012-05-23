@@ -51,6 +51,7 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
         virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
         virtual void clearSource(){;}
+        virtual void setUuid(const QUuid &pUuid);
 
     protected:
 

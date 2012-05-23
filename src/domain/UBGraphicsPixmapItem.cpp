@@ -52,6 +52,12 @@ QVariant UBGraphicsPixmapItem::itemChange(GraphicsItemChange change, const QVari
     return QGraphicsPixmapItem::itemChange(change, newValue);
 }
 
+void UBGraphicsPixmapItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid));
+}
+
 void UBGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QMimeData* pMime = new QMimeData();

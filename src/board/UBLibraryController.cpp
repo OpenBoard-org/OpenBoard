@@ -28,7 +28,7 @@
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
-#include "domain/UBGraphicsVideoItem.h"
+#include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 
 #include "tools/UBToolsManager.h"
@@ -698,7 +698,7 @@ void UBLibraryController::addVideosToCurrentPage(const QList<QUrl>& videos)
         mLastItemOffsetIndex++;
         mLastItemOffsetIndex = qMin(mLastItemOffsetIndex, 5);
 
-        UBGraphicsVideoItem* itemInScene = UBApplication::boardController->addVideo(url, false, pos);
+        UBGraphicsMediaItem* itemInScene = UBApplication::boardController->addVideo(url, false, pos);
         itemInScene->setPos(QPoint(pos.x() + 50 * mLastItemOffsetIndex, pos.y() + 50 * mLastItemOffsetIndex));
     }
 }

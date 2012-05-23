@@ -16,6 +16,8 @@
 #include <QtGui>
 #include <QtSvg>
 
+#include "core/UBApplication.h"
+#include "UBGraphicsGroupContainerItem.h"
 #include "UBGraphicsTextItemDelegate.h"
 #include "UBGraphicsScene.h"
 #include "gui/UBResources.h"
@@ -108,7 +110,7 @@ void UBGraphicsTextItemDelegate::buildButtons()
     QList<QGraphicsItem*> itemsOnToolBar;
     itemsOnToolBar << mFontButton << mColorButton << mDecreaseSizeButton << mIncreaseSizeButton;
     mToolBarItem->setItemsOnToolBar(itemsOnToolBar);
-
+    mToolBarItem->setShifting(true);
     mToolBarItem->setVisibleOnBoard(true);
 }
 
@@ -281,6 +283,39 @@ void UBGraphicsTextItemDelegate::updateMenuActionState()
 void UBGraphicsTextItemDelegate::positionHandles()
 {
     UBGraphicsItemDelegate::positionHandles();
+
+    if (mDelegated->isSelected() || (mDelegated->parentItem() && UBGraphicsGroupContainerItem::Type == mDelegated->parentItem()->type())) 
+    {
+        if (mToolBarItem->isVisibleOnBoard())
+        {
+            qreal AntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());    
+            mToolBarItem->setScale(AntiScaleRatio);
+            QRectF toolBarRect = mToolBarItem->rect();
+            toolBarRect.setWidth(delegated()->boundingRect().width()/AntiScaleRatio);
+            mToolBarItem->setRect(toolBarRect);           
+            mToolBarItem->positionHandles();
+            mToolBarItem->update();
+            if (mToolBarItem->isShifting())
+                mToolBarItem->setPos(0,-mToolBarItem->boundingRect().height()*AntiScaleRatio);
+            else
+                mToolBarItem->setPos(0, 0);
+
+            UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(mDelegated->parentItem());
+
+            mToolBarItem->hide();
+            if (group && group->getCurrentItem() == mDelegated && group->isSelected())
+                mToolBarItem->show();
+
+            if (!group)
+                 mToolBarItem->show();
+
+        }
+    }
+    else
+    {
+        mToolBarItem->hide();
+    }
+
     setEditable(isEditable());
 }
 

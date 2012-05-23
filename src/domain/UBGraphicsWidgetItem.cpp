@@ -58,6 +58,11 @@ void UBGraphicsWidgetItem::javaScriptWindowObjectCleared()
 
 }
 
+void UBGraphicsWidgetItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
+}
 
 void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -340,7 +345,11 @@ UBItem* UBGraphicsAppleWidgetItem::deepCopy() const
     return appleWidget;
 
 }
-
+void UBGraphicsAppleWidgetItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
+}
 
 UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent, int widgetType)
     : UBGraphicsWidgetItem(parent, widgetType)
@@ -387,6 +396,12 @@ void UBGraphicsW3CWidgetItem::paint(QPainter * painter, const QStyleOptionGraphi
     {
         UBGraphicsProxyWidget::paint(painter, option, widget);
     }
+}
+
+void UBGraphicsW3CWidgetItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
 
 void UBGraphicsW3CWidgetItem::javaScriptWindowObjectCleared()

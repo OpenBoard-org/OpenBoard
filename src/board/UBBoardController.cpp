@@ -44,12 +44,12 @@
 #include "domain/UBGraphicsProxyWidget.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
-#include "domain/UBGraphicsVideoItem.h"
-#include "domain/UBGraphicsAudioItem.h"
+#include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBW3CWidget.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBPageSizeUndoCommand.h"
+#include "domain/ubgraphicsgroupcontaineritem.h"
 
 #include "tools/UBToolsManager.h"
 
@@ -139,6 +139,8 @@ void UBBoardController::init()
     UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createDocument();
 
     setActiveDocumentScene(doc);
+
+    connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
 
     undoRedoStateChange(true);
 }
@@ -760,6 +762,32 @@ void UBBoardController::lastScene()
     emit pageChanged();
 }
 
+void UBBoardController::groupButtonClicked()
+{
+    QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
+    QList<QGraphicsItem*> selItems = activeScene()->selectedItems();
+    if (!selItems.count()) {
+        qDebug() << "Got grouping request when there is no any selected item on the scene";
+        return;
+    }
+
+    if (groupAction->text() == UBSettings::settings()->actionGroupText) { //The only way to get information from item, considering using smth else
+        UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
+        groupItem->setSelected(true);
+        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+
+    } else if (groupAction->text() == UBSettings::settings()->actionUngroupText) {
+        //Considering one selected item and it's a group
+        if (selItems.count() > 1) {
+            qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
+            return;
+        }
+        UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.first());
+        if (currentGroup) {
+            currentGroup->destroy();
+        }
+    }
+}
 
 void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const QSize& pSize, bool isBackground)
 {
@@ -922,27 +950,27 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
     {
         qDebug() << "accepting mime type" << mimeType << "as video";
 
-        UBGraphicsVideoItem *videoItem = 0;
+        UBGraphicsMediaItem *mediaVideoItem = 0;
 
         if (pData.length() > 0)
         {
             QUuid uuid = QUuid::createUuid();
 
             QUrl url = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-                                           ->addVideoFileToDocument(mActiveDocument, sourceUrl, pData, uuid));
+                ->addVideoFileToDocument(mActiveDocument, sourceUrl, pData, uuid));
 
-            videoItem = mActiveScene->addVideo(url, false, pPos);
+            mediaVideoItem = mActiveScene->addMedia(url, false, pPos);
 
-            videoItem->setSourceUrl(sourceUrl);
-            videoItem->setUuid(uuid);
+            mediaVideoItem->setSourceUrl(sourceUrl);
+            mediaVideoItem->setUuid(uuid);
         }
         else
         {
-            videoItem = addVideo(sourceUrl, false, pPos);
+            mediaVideoItem = addVideo(sourceUrl, false, pPos);
         }
 
-        if(videoItem){
-            connect(this, SIGNAL(activeSceneChanged()), videoItem, SLOT(activeSceneChanged()));
+        if(mediaVideoItem){
+            connect(this, SIGNAL(activeSceneChanged()), mediaVideoItem, SLOT(activeSceneChanged()));
         }
 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
@@ -951,27 +979,27 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
     {
         qDebug() << "accepting mime type" << mimeType << "as audio";
 
-        UBGraphicsAudioItem *audioItem = 0;
+        UBGraphicsMediaItem *audioMediaItem = 0;
 
         if (pData.length() > 0)
         {
             QUuid uuid = QUuid::createUuid();
 
             QUrl url = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-                                           ->addAudioFileToDocument(mActiveDocument, sourceUrl, pData, uuid));
+                ->addVideoFileToDocument(mActiveDocument, sourceUrl, pData, uuid));
 
-            audioItem = mActiveScene->addAudio(url, false, pPos);
+            audioMediaItem = mActiveScene->addMedia(url, false, pPos);
 
-            audioItem->setSourceUrl(sourceUrl);
-            audioItem->setUuid(uuid);
+            audioMediaItem->setSourceUrl(sourceUrl);
+            audioMediaItem->setUuid(uuid);
         }
         else
         {
-            audioItem = addAudio(sourceUrl, false, pPos);
+            audioMediaItem = addAudio(sourceUrl, false, pPos);
         }
 
-        if(audioItem){
-            connect(this, SIGNAL(activeSceneChanged()), audioItem, SLOT(activeSceneChanged()));
+        if(audioMediaItem){
+            connect(this, SIGNAL(activeSceneChanged()), audioMediaItem, SLOT(activeSceneChanged()));
         }
 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
@@ -1776,7 +1804,7 @@ void UBBoardController::controlViewShown()
 }
 
 
-UBGraphicsVideoItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
+UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
 {
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
@@ -1789,7 +1817,7 @@ UBGraphicsVideoItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
                                       ->addVideoFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
 #endif
 
-    UBGraphicsVideoItem* vi = mActiveScene->addVideo(concreteUrl, startPlay, pos);
+    UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     mActiveDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
     if (vi) {
@@ -1801,7 +1829,7 @@ UBGraphicsVideoItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
 
 }
 
-UBGraphicsAudioItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
+UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
 {
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
@@ -1814,15 +1842,15 @@ UBGraphicsAudioItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
                        ->addAudioFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
 #endif
 
-    UBGraphicsAudioItem* vi = mActiveScene->addAudio(concreteUrl, startPlay, pos);
+    UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     mActiveDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
-    if (vi){
-        vi->setUuid(uuid);
-        vi->setSourceUrl(pSourceUrl);
+    if (ai){
+        ai->setUuid(uuid);
+        ai->setSourceUrl(pSourceUrl);
     }
 
-    return vi;
+    return ai;
 
 }
 

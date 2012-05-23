@@ -48,7 +48,9 @@ class UBGraphicsCurtainItem : public QObject, public QGraphicsRectItem, public U
         //TODO UB 4.x not nice ...
         void triggerRemovedSignal();
         virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate;}
-        virtual void clearSource(){};
+        virtual void clearSource(){;}
+
+        virtual void setUuid(const QUuid &pUuid);
 
      signals:
 

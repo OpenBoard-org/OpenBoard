@@ -98,6 +98,7 @@ struct UBGraphicsItemData
         , ItemEditable//for text only
         , ItemOwnZValue
         , itemLayerType //use instead of deprecated ItemLayerType
+        , ItemUuid //storing uuid in QGraphicsItem for fast finding operations
     };
 };
 
@@ -110,8 +111,7 @@ struct UBGraphicsItemType
         PolygonItemType = QGraphicsItem::UserType + 1, 
 		PixmapItemType,
         SvgItemType, 
-		VideoItemType, 
-		AudioItemType, 
+		MediaItemType, 
 		AppleWidgetItemType, 
 		PDFItemType, 
 		TextItemType, 

@@ -50,7 +50,7 @@ void UBGraphicsGroupContainerItemDelegate::buildButtons()
 bool UBGraphicsGroupContainerItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event)
-
+    delegated()->deselectCurrentItem();
     return false;
 }
 
