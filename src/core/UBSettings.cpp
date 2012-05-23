@@ -204,10 +204,14 @@ void UBSettings::init()
     appEnableAutomaticSoftwareUpdates = new UBSetting(this, "App", "EnableAutomaticSoftwareUpdates", true);
     appEnableSoftwareUpdates = new UBSetting(this, "App", "EnableSoftwareUpdates", true);
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
-    rightLibPaletteWidth = new UBSetting(this, "Board", "RightLibPaletteWidth", 270);
-    rightLibPaletteIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteIsCollapsed",false);
-    leftLibPaletteWidth = new UBSetting(this, "Board", "LeftLibPaletteWidth",270);
-    leftLibPaletteIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteIsCollapsed",false);
+    rightLibPaletteBoardModeWidth = new UBSetting(this, "Board", "RightLibPaletteBoardModeWidth", 270);
+    rightLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteBoardModeIsCollapsed",false);
+    rightLibPaletteDesktopModeWidth = new UBSetting(this, "Board", "RightLibPaletteDesktopModeWidth", 270);
+    rightLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteDesktopModeIsCollapsed",false);
+    leftLibPaletteBoardModeWidth = new UBSetting(this, "Board", "LeftLibPaletteBoardModeWidth",270);
+    leftLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteBoardModeIsCollapsed",false);
+    leftLibPaletteDesktopModeWidth = new UBSetting(this, "Board", "LeftLibPaletteDesktopModeWidth",270);
+    leftLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteDesktopModeIsCollapsed",false);
 
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");

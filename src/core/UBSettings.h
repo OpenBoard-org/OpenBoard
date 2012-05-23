@@ -314,10 +314,14 @@ class UBSettings : public QObject
         UBSetting* gipThumbnailWidth;
         UBSetting* soundThumbnailWidth;
 
-        UBSetting* rightLibPaletteWidth;
-        UBSetting* rightLibPaletteIsCollapsed;
-        UBSetting* leftLibPaletteWidth;
-        UBSetting* leftLibPaletteIsCollapsed;
+        UBSetting* rightLibPaletteBoardModeWidth;
+        UBSetting* rightLibPaletteBoardModeIsCollapsed;
+        UBSetting* rightLibPaletteDesktopModeWidth;
+        UBSetting* rightLibPaletteDesktopModeIsCollapsed;
+        UBSetting* leftLibPaletteBoardModeWidth;
+        UBSetting* leftLibPaletteBoardModeIsCollapsed;
+        UBSetting* leftLibPaletteDesktopModeWidth;
+        UBSetting* leftLibPaletteDesktopModeIsCollapsed;
 
         UBSetting* communityUser;
         UBSetting* communityPsw;
