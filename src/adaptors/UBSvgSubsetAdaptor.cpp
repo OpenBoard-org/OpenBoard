@@ -2314,6 +2314,22 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
     QStringRef ubFillOnDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-dark-background");
     QStringRef ubFillOnLightBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-light-background");
 
+    if (!ubFillOnDarkBackground.isNull()) {
+        QColor color;
+        color.setNamedColor(ubFillOnDarkBackground.toString());
+        if (!color.isValid())
+            color = Qt::white;
+        textItem->setColorOnDarkBackground(color);
+    }
+
+    if (!ubFillOnLightBackground.isNull()) {
+        QColor color;
+        color.setNamedColor(ubFillOnLightBackground.toString());
+        if (!color.isValid())
+            color = Qt::black;
+            textItem->setColorOnLightBackground(color);
+    }
+
     QString text;
 
     while (!(mXmlReader.isEndElement() && (mXmlReader.name() == "font" || mXmlReader.name() == "foreignObject")))
@@ -2380,22 +2396,6 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     QColor textColor;
                     textColor.setNamedColor(fill.toString());
                     textItem->setDefaultTextColor(textColor);
-                }
-
-                if (!ubFillOnDarkBackground.isNull()) {
-                    QColor color;
-                    color.setNamedColor(ubFillOnDarkBackground.toString());
-                    if (!color.isValid())
-                        color = Qt::white;
-                    textItem->setColorOnDarkBackground(color);
-                }
-
-                if (!ubFillOnLightBackground.isNull()) {
-                    QColor color;
-                    color.setNamedColor(ubFillOnLightBackground.toString());
-                    if (!color.isValid())
-                        color = Qt::black;
-                    textItem->setColorOnLightBackground(color);
                 }
 
                 while (!(mXmlReader.isEndElement() && mXmlReader.name() == "font")) {
