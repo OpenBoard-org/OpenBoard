@@ -1229,7 +1229,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 
             if (groupItem && groupItem->isVisible())
             {
-                qDebug() << "came across the group during the parsing";
+                qDebug() << "came across the group during the parsing, uuid is " << groupItem->data(UBGraphicsItemData::ItemUuid).toString();
                 continue;
             }
         }

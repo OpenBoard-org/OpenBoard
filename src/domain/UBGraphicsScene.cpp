@@ -1509,6 +1509,11 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     groupItem->setVisible(true);
     groupItem->setFocus();
 
+    qDebug() << groupItem->uuid().toString();
+    if (groupItem->uuid().isNull()) {
+        groupItem->setUuid(QUuid::createUuid());
+    }
+
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, groupItem);
         UBApplication::undoStack->push(uc);
