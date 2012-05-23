@@ -52,7 +52,7 @@ if [ ! -f $QT_GUI_TRANSLATIONS ]; then
     exit 1
 else
     $LRELEASES $QT_GUI_TRANSLATIONS_PRO_FILE
-elif
+fi
 
 VERSION=`cat build/linux/release/version`
 if [ ! -f build/linux/release/version ]; then
@@ -62,8 +62,8 @@ else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
         echo creating a tag with the version $VERSION
-        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
-        git push origin --tags 
+#        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
+#        git push origin --tags 
     fi
 fi
 
