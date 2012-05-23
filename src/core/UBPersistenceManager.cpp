@@ -582,7 +582,6 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
     if (mSceneCache.contains(proxy, sceneIndex))
         return mSceneCache.value(proxy, sceneIndex);
     else {
-        qDebug() << "scene" << sceneIndex << "retrieved from file ...";
         UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
 
         if (scene)

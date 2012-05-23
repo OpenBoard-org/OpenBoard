@@ -47,10 +47,9 @@
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBItem.h"
-#include "domain/UBGraphicsVideoItem.h"
-#include "domain/UBGraphicsAudioItem.h"
+#include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsSvgItem.h"
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsStrokesGroup.h"
 
 #include "document/UBDocumentProxy.h"
@@ -560,8 +559,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
               if (item->type() == UBGraphicsW3CWidgetItem::Type
                       || item->type() == UBGraphicsPixmapItem::Type
-                      || item->type() == UBGraphicsVideoItem::Type
-                      || item->type() == UBGraphicsAudioItem::Type
+                      || item->type() == UBGraphicsMediaItem::Type
                       || item->type() == UBGraphicsSvgItem::Type
                       || item->type() == UBGraphicsTextItem::Type
                       || item->type() == UBGraphicsStrokesGroup::Type) {

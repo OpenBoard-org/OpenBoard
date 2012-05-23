@@ -18,6 +18,7 @@
 #include <QDrag>
 
 #include "UBGraphicsItemDelegate.h"
+#include "UBGraphicsMediaItemDelegate.h"
 #include "UBGraphicsDelegateFrame.h"
 #include "UBGraphicsScene.h"
 #include "UBGraphicsItemUndoCommand.h"
@@ -38,9 +39,8 @@
 
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsTextItem.h"
-#include "domain/UBGraphicsAudioItem.h"
-#include "domain/UBGraphicsVideoItem.h"
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsMediaItem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "web/UBWebController.h"
 
@@ -112,13 +112,14 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mRespectRatio(respectRatio)
     , mMimeData(NULL)
     , mFlippable(false)
+    , mToolBarItem(NULL)
 {
     // NOOP
 }
 
 void UBGraphicsItemDelegate::init()
 {
-    mToolBarItem = new UBGraphicsToolBarItem(delegated());
+    mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
 
     mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
     mFrame->hide();
@@ -152,10 +153,10 @@ void UBGraphicsItemDelegate::init()
     {
         if (button->getSection() != Qt::TitleBarArea)
         {
-        button->hide();
-        button->setFlag(QGraphicsItem::ItemIsSelectable, true);
+            button->hide();
+            button->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        }
     }
-}
 }
 
 
@@ -335,8 +336,9 @@ void UBGraphicsItemDelegate::positionHandles()
 
         if (mToolBarItem->isVisibleOnBoard())
         {
-        updateToolBar();
-           mToolBarItem->show();
+            mToolBarItem->positionHandles();
+            mToolBarItem->update();
+            mToolBarItem->show();
         }
     } else {
         foreach(DelegateButton* button, mButtons)
@@ -518,6 +520,10 @@ void UBGraphicsItemDelegate::commitUndoStep()
 }
 
 
+void UBGraphicsItemDelegate::buildButtons()
+{
+}
+
 void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
 {
     mLockAction = menu->addAction(tr("Locked"), this, SLOT(lock(bool)));
@@ -650,36 +656,6 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
     }
 }
 
-void UBGraphicsItemDelegate::updateToolBar()
-{
-    QTransform transformForToolbarButtons;
-    transformForToolbarButtons.scale(mAntiScaleRatio, 1);
-
-    QRectF toolBarRect = mToolBarItem->rect();
-    toolBarRect.setWidth(delegated()->boundingRect().width() - 10);
-    mToolBarItem->setRect(toolBarRect);
-
-    if (mToolBarItem->isShifting())
-        mToolBarItem->setPos(delegated()->boundingRect().bottomLeft() + QPointF(5 * mAntiScaleRatio, 0));
-    else mToolBarItem->setPos(delegated()->boundingRect().bottomLeft() - QPointF(-5 * mAntiScaleRatio, mToolBarItem->rect().height() * 1.1 * mAntiScaleRatio));
-
-    int offsetOnToolBar = 5 * mAntiScaleRatio;
-    QList<QGraphicsItem*> itemList = mToolBarItem->itemsOnToolBar();
-    foreach (QGraphicsItem* item, itemList)
-    {
-        item->setPos(offsetOnToolBar, 0);
-        offsetOnToolBar += (item->boundingRect().width() + 5) * mAntiScaleRatio;
-        item->setTransform(transformForToolbarButtons);
-        item->show();
-    }
-
-    mToolBarItem->setOffsetOnToolBar(offsetOnToolBar);
-
-    QTransform tr;
-    tr.scale(1, mAntiScaleRatio);
-    mToolBarItem->setTransform(tr);
-}
-
 void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
 {
     foreach(DelegateButton* pButton, mButtons){
@@ -687,19 +663,41 @@ void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
     }
 }
 
+
 UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) : 
     QGraphicsRectItem(parent),
     mShifting(true),
     mVisible(false),
-    mMinWidth(200)
+    mMinWidth(200),
+    mInitialHeight(26)
 {
     QRectF rect = this->rect();
-    rect.setHeight(26);
+    rect.setHeight(mInitialHeight);
+    rect.setWidth(parent->boundingRect().width());
     this->setRect(rect);
 
     setBrush(QColor(UBSettings::paletteColor));             
     setPen(Qt::NoPen);
     hide();
+
+    update();
+}
+
+
+void UBGraphicsToolBarItem::positionHandles()
+{
+    int itemXOffset = 0;
+    foreach (QGraphicsItem* item, mItemsOnToolBar)
+    {
+        item->setPos(itemXOffset, 0);
+        itemXOffset += (item->boundingRect().width());
+        item->show();
+    }
+}
+
+void UBGraphicsToolBarItem::update()
+{
+    QGraphicsRectItem::update();
 }
 
 void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -711,4 +709,553 @@ void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     path.addRoundedRect(rect(), 10, 10);  
 
     painter->fillPath(path, brush());
+}
+
+MediaTimer::MediaTimer(QGraphicsItem * parent): QGraphicsRectItem(parent) 
+{}
+
+MediaTimer::~MediaTimer()
+{}
+
+void MediaTimer::drawString(const QString &s, QPainter &p,
+                                   QBitArray *newPoints, bool newString)
+{
+    QPoint  pos;
+
+    int digitSpace = smallPoint ? 2 : 1;
+    int xSegLen    = (rect().width()/1)*5/(ndigits*(5 + digitSpace) + digitSpace);
+    int ySegLen    = rect().height()*5/12;
+    int segLen     = ySegLen > xSegLen ? xSegLen : ySegLen;
+    int xAdvance   = segLen*(5 + digitSpace)/5;
+    int xOffset    = rect().x() + (rect().width()/1 - ndigits*xAdvance + segLen/5)/2;
+    int yOffset    = (rect().height() - segLen*2)/2;
+
+    for (int i=0;  i<ndigits; i++) {
+        pos = QPoint(xOffset + xAdvance*i, yOffset);
+        if (newString)
+            drawDigit(pos, p, segLen, s[i].toLatin1(), digitStr[i].toLatin1());
+        else
+            drawDigit(pos, p, segLen, s[i].toLatin1());
+        if (newPoints) {
+            char newPoint = newPoints->testBit(i) ? '.' : ' ';
+            if (newString) {
+                char oldPoint = points.testBit(i) ? '.' : ' ';
+                drawDigit(pos, p, segLen, newPoint, oldPoint);
+            } else {
+                drawDigit(pos, p, segLen, newPoint);
+            }
+        }
+    }
+    if (newString) {
+        digitStr = s;
+        digitStr.truncate(ndigits);
+        if (newPoints)
+            points = *newPoints;
+    }
+}
+
+void MediaTimer::drawDigit(const QPoint &pos, QPainter &p, int segLen,
+                                  char newCh, char oldCh)
+{
+     char updates[18][2];        // can hold 2 times number of segments, only
+                                 // first 9 used if segment table is correct
+     int  nErases;
+     int  nUpdates;
+     const char *segs;
+     int  i,j;
+ 
+     const char erase      = 0;
+     const char draw       = 1;
+     const char leaveAlone = 2;
+ 
+     segs = getSegments(oldCh);
+     for (nErases=0; segs[nErases] != 99; nErases++) {
+         updates[nErases][0] = erase;            // get segments to erase to
+         updates[nErases][1] = segs[nErases];    // remove old char
+     }
+     nUpdates = nErases;
+     segs = getSegments(newCh);
+     for(i = 0 ; segs[i] != 99 ; i++) {
+         for (j=0;  j<nErases; j++)
+             if (segs[i] == updates[j][1]) {   // same segment ?
+                 updates[j][0] = leaveAlone;     // yes, already on screen
+                 break;
+             }
+         if (j == nErases) {                   // if not already on screen
+             updates[nUpdates][0] = draw;
+             updates[nUpdates][1] = segs[i];
+             nUpdates++;
+         }
+     }
+     for (i=0; i<nUpdates; i++) {
+         if (updates[i][0] == draw)
+             drawSegment(pos, updates[i][1], p, segLen);
+         if (updates[i][0] == erase)
+             drawSegment(pos, updates[i][1], p, segLen, true);
+     }
+}
+
+char* MediaTimer::getSegments(char ch)               // gets list of segments for ch
+{
+     char segments[30][8] =
+        { 
+              { 0, 1, 2, 4, 5, 6,99, 0},             // 0    0
+              { 2, 5,99, 0, 0, 0, 0, 0},             // 1    1
+              { 0, 2, 3, 4, 6,99, 0, 0},             // 2    2
+              { 0, 2, 3, 5, 6,99, 0, 0},             // 3    3
+              { 1, 2, 3, 5,99, 0, 0, 0},             // 4    4
+              { 0, 1, 3, 5, 6,99, 0, 0},             // 5    5
+              { 0, 1, 3, 4, 5, 6,99, 0},             // 6    6
+              { 0, 2, 5,99, 0, 0, 0, 0},             // 7    7
+              { 0, 1, 2, 3, 4, 5, 6,99},             // 8    8
+              { 0, 1, 2, 3, 5, 6,99, 0},             // 9    9
+              { 8, 9,99, 0, 0, 0, 0, 0},             // 10   :
+              {99, 0, 0, 0, 0, 0, 0, 0}              // 11   empty
+        };
+ 
+     int n;
+     if (ch >= '0' && ch <= '9')
+        return segments[ch - '0'];
+     if (ch == ':')
+        n = 10;
+     if (ch == ' ')
+        n = 11;
+     
+     return segments[n];
+}
+
+void MediaTimer::drawSegment(const QPoint &pos, char segmentNo, QPainter &p,
+                                    int segLen, bool erase)
+{
+    Q_UNUSED(erase);
+
+    QPoint ppt;
+    QPoint pt = pos;
+    int width = segLen/5;
+ 
+#define LINETO(X,Y) addPoint(a, QPoint(pt.x() + (X),pt.y() + (Y)))
+#define LIGHT
+#define DARK
+
+    if (fill) {
+        QPolygon a(0);
+        switch (segmentNo) {
+        case 0 :
+            ppt = pt;
+            LIGHT;
+            LINETO(segLen - 1,0);
+            DARK;
+            LINETO(segLen - width - 1,width);
+            LINETO(width,width);
+            LINETO(0,0);
+            break;
+        case 1 :
+            pt += QPoint(0 , 1);
+            ppt = pt;
+            LIGHT;
+            LINETO(width,width);
+            DARK;
+            LINETO(width,segLen - width/2 - 2);
+            LINETO(0,segLen - 2);
+            LIGHT;
+            LINETO(0,0);
+            break;
+        case 2 :
+            pt += QPoint(segLen - 1 , 1);
+            ppt = pt;
+            DARK;
+            LINETO(0,segLen - 2);
+            LINETO(-width,segLen - width/2 - 2);
+            LIGHT;
+            LINETO(-width,width);
+            LINETO(0,0);
+            break;
+        case 3 :
+            pt += QPoint(0 , segLen);
+            ppt = pt;
+            LIGHT;
+            LINETO(width,-width/2);
+            LINETO(segLen - width - 1,-width/2);
+            LINETO(segLen - 1,0);
+            DARK;
+            if (width & 1) {            // adjust for integer division error
+                LINETO(segLen - width - 3,width/2 + 1);
+                LINETO(width + 2,width/2 + 1);
+            } else {
+                LINETO(segLen - width - 1,width/2);
+                LINETO(width,width/2);
+            }
+            LINETO(0,0);
+            break;
+        case 4 :
+            pt += QPoint(0 , segLen + 1);
+            ppt = pt;
+            LIGHT;
+            LINETO(width,width/2);
+            DARK;
+            LINETO(width,segLen - width - 2);
+            LINETO(0,segLen - 2);
+            LIGHT;
+            LINETO(0,0);
+            break;
+        case 5 :
+            pt += QPoint(segLen - 1 , segLen + 1);
+            ppt = pt;
+            DARK;
+            LINETO(0,segLen - 2);
+            LINETO(-width,segLen - width - 2);
+            LIGHT;
+            LINETO(-width,width/2);
+            LINETO(0,0);
+            break;
+        case 6 :
+            pt += QPoint(0 , segLen*2);
+            ppt = pt;
+            LIGHT;
+            LINETO(width,-width);
+            LINETO(segLen - width - 1,-width);
+            LINETO(segLen - 1,0);
+            DARK;
+            LINETO(0,0);
+            break;
+        case 7 :
+            pt += QPoint(segLen/2 , segLen*2);
+            ppt = pt;
+            DARK;
+            LINETO(width,0);
+            LINETO(width,-width);
+            LIGHT;
+            LINETO(0,-width);
+            LINETO(0,0);
+            break;
+        case 8 :
+            pt += QPoint(segLen/2 - width/2 + 1 , segLen/2 + width);
+            ppt = pt;
+            DARK;
+            LINETO(width,0);
+            LINETO(width,-width);
+            LIGHT;
+            LINETO(0,-width);
+            LINETO(0,0);
+            break;
+        case 9 :
+            pt += QPoint(segLen/2 - width/2 + 1 , 3*segLen/2 + width);
+            ppt = pt;
+            DARK;
+            LINETO(width,0);
+            LINETO(width,-width);
+            LIGHT;
+            LINETO(0,-width);
+            LINETO(0,0);
+            break;
+        default :
+            break;
+        }
+        // End exact copy
+        p.setPen(Qt::white);
+        p.setBrush(Qt::white);
+        p.drawPolygon(a);
+        p.setBrush(Qt::NoBrush);
+
+        pt = pos;
+    }
+#undef LINETO
+#undef LIGHT
+#undef DARK
+}
+
+void MediaTimer::addPoint(QPolygon &a, const QPoint &p)
+{
+    uint n = a.size();
+    a.resize(n + 1);
+    a.setPoint(n, p);
+}
+
+void MediaTimer::paint(QPainter *p,
+        const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    QFont f = p->font();
+    f.setPointSizeF(f.pointSizeF());
+    p->setFont(f);
+
+    if (smallPoint)
+        drawString(digitStr, *p, &points, false);
+    else
+        drawString(digitStr, *p, 0, false);
+}
+
+void MediaTimer::internalSetString(const QString& s)
+{
+    QString buffer;
+    int i;
+    int len = s.length();
+    QBitArray newPoints(ndigits);
+
+    if (!smallPoint) {
+        if (len == ndigits)
+            buffer = s;
+        else
+            buffer = s.right(ndigits).rightJustified(ndigits, QLatin1Char(' '));
+    } else {
+        int  index = -1;
+        bool lastWasPoint = true;
+        newPoints.clearBit(0);
+        for (i=0; i<len; i++) {
+            if (s[i] == QLatin1Char('.')) {
+                if (lastWasPoint) {           // point already set for digit?
+                    if (index == ndigits - 1) // no more digits
+                        break;
+                    index++;
+                    buffer[index] = QLatin1Char(' ');        // 2 points in a row, add space
+                }
+                newPoints.setBit(index);        // set decimal point
+                lastWasPoint = true;
+            } else {
+                if (index == ndigits - 1)
+                    break;
+                index++;
+                buffer[index] = s[i];
+                newPoints.clearBit(index);      // decimal point default off
+                lastWasPoint = false;
+            }
+        }
+        if (index < ((int) ndigits) - 1) {
+            for(i=index; i>=0; i--) {
+                buffer[ndigits - 1 - index + i] = buffer[i];
+                newPoints.setBit(ndigits - 1 - index + i,
+                                   newPoints.testBit(i));
+            }
+            for(i=0; i<ndigits-index-1; i++) {
+                buffer[i] = QLatin1Char(' ');
+                newPoints.clearBit(i);
+            }
+        }
+    }
+
+    if (buffer == digitStr)
+        return;
+
+    digitStr = buffer;
+    if (smallPoint)
+        points = newPoints;
+    update();
+}
+
+void MediaTimer::init()
+{
+    val        = 0;
+    smallPoint = false;
+    setNumDigits(4);
+}
+
+void MediaTimer::display(const QString &s)
+{
+    val = 0;
+    bool ok = false;
+    double v = s.toDouble(&ok);
+    if (ok)
+        val = v;
+    internalSetString(s);
+}
+
+void MediaTimer::setNumDigits(int numDigits)
+{
+    if (numDigits > 99) {
+        qWarning("QLCDNumber::setNumDigits: (%s) Max 99 digits allowed");
+        numDigits = 99;
+    }
+    if (numDigits < 0) {
+        qWarning("QLCDNumber::setNumDigits: (%s) Min 0 digits allowed");
+        numDigits = 0;
+    }
+    if (digitStr.isNull()) {                  // from constructor
+        ndigits = numDigits;
+        digitStr.fill(QLatin1Char(' '), ndigits);
+        points.fill(0, ndigits);
+        digitStr[ndigits - 1] = QLatin1Char('0');            // "0" is the default number
+    } else {
+        if (numDigits == ndigits)             // no change
+            return;
+        register int i;
+        int dif;
+        if (numDigits > ndigits) {            // expand
+            dif = numDigits - ndigits;
+            QString buf;
+            buf.fill(QLatin1Char(' '), dif);
+            digitStr.insert(0, buf);
+            points.resize(numDigits);
+            for (i=numDigits-1; i>=dif; i--)
+                points.setBit(i, points.testBit(i-dif));
+            for (i=0; i<dif; i++)
+                points.clearBit(i);
+        } else {                                        // shrink
+            dif = ndigits - numDigits;
+            digitStr = digitStr.right(numDigits);
+            QBitArray tmpPoints = points;
+            points.resize(numDigits);
+            for (i=0; i<(int)numDigits; i++)
+                points.setBit(i, tmpPoints.testBit(i+dif));
+        }
+        ndigits = numDigits;
+        update();
+    }
+}
+
+DelegateMediaControl::DelegateMediaControl(UBGraphicsMediaItem* pDelegated, QGraphicsItem * parent)
+    : QGraphicsRectItem(parent)
+    , mDelegate(pDelegated)
+    , mDisplayCurrentTime(false)
+    , mCurrentTimeInMs(0)
+    , mTotalTimeInMs(0)
+    , mStartWidth(200)
+{
+    setAcceptedMouseButtons(Qt::LeftButton);
+    setBrush(QBrush(Qt::white));
+    setPen(Qt::NoPen);
+    setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+
+    lcdTimer = new MediaTimer(this);
+    lcdTimer->init();
+
+    update();
+}
+
+
+void DelegateMediaControl::paint(QPainter *painter,
+        const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+    
+    QPainterPath path;
+
+    mLCDTimerArea.setHeight(rect().height());
+    mLCDTimerArea.setWidth(rect().height());
+
+    mSeecArea = rect();
+    mSeecArea.setWidth(rect().width()-mLCDTimerArea.width());
+
+    path.addRoundedRect(mSeecArea, mSeecArea.height()/2, mSeecArea.height()/2);
+    painter->fillPath(path, brush());
+
+    qreal frameWidth = rect().height() / 2;
+    int position = frameWidth;
+
+    if (mTotalTimeInMs > 0)
+    {
+        position = frameWidth + ((mSeecArea.width() - (2 * frameWidth)) / mTotalTimeInMs) * mCurrentTimeInMs;
+    }
+
+    int clearance = 2;
+    int radius = frameWidth-clearance;
+    QRectF r(position - radius, clearance, radius * 2, radius * 2);
+
+    painter->setBrush(UBSettings::documentViewLightColor);
+    painter->drawEllipse(r);
+}
+
+
+QPainterPath DelegateMediaControl::shape() const
+{
+    QPainterPath path;
+    path.addRoundedRect(rect(), rect().height()/ 2, rect().height()/2);
+    return path;
+}
+
+void DelegateMediaControl::positionHandles()
+{
+    mLCDTimerArea.setWidth(parentItem()->boundingRect().height());
+    mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
+    lcdTimer->setRect(mLCDTimerArea);
+    lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
+
+    mSeecArea.setWidth(rect().width()-mLCDTimerArea.width());
+
+    QRectF selfRect = rect();
+    selfRect.setHeight(parentItem()->boundingRect().height());
+    setRect(selfRect);
+
+    lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
+
+}
+
+void DelegateMediaControl::update()
+{
+    QTime t;
+    t = t.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
+    lcdTimer->display(t.toString("m:ss"));
+
+    QGraphicsRectItem::update();
+}
+
+void DelegateMediaControl::updateTicker(qint64 time )
+{
+    mCurrentTimeInMs = time;
+    update();
+}
+
+
+void DelegateMediaControl::totalTimeChanged(qint64 newTotalTime)
+{
+    mTotalTimeInMs = newTotalTime;
+    update();
+}
+
+
+void DelegateMediaControl::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+   qreal frameWidth =  mSeecArea.height()/2;
+    if (boundingRect().contains(event->pos() - QPointF(frameWidth,0)) 
+        && boundingRect().contains(event->pos() + QPointF(frameWidth,0)))
+    {  
+        mDisplayCurrentTime = true;
+        seekToMousePos(event->pos());
+        this->update();
+        event->accept();
+    }
+}
+
+void DelegateMediaControl::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    qreal frameWidth = rect().height() / 2;
+    if (boundingRect().contains(event->pos() - QPointF(frameWidth,0)) 
+        && boundingRect().contains(event->pos() + QPointF(frameWidth,0)))
+    {   
+        seekToMousePos(event->pos());
+        this->update();
+        event->accept();
+    }
+}
+
+void DelegateMediaControl::seekToMousePos(QPointF mousePos)
+{
+    qreal minX, length;
+    qreal frameWidth = rect().height() / 2;
+
+    minX = frameWidth;
+    length = mSeecArea.width() - lcdTimer->rect().width();
+
+    qreal mouseX = mousePos.x();
+    if (mouseX >= (mSeecArea.width() - mSeecArea.height()/2))
+        mouseX = mSeecArea.width() - mSeecArea.height()/2;
+
+    if (mTotalTimeInMs > 0 && length > 0 && mDelegate
+        && mDelegate->mediaObject() && mDelegate->mediaObject()->isSeekable())
+    {
+        qint64 tickPos = (mTotalTimeInMs/length)* (mouseX - minX);
+        mDelegate->mediaObject()->seek(tickPos);
+
+        //OSX is a bit lazy
+        updateTicker(tickPos);
+    }
+}
+
+void DelegateMediaControl::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    mDisplayCurrentTime = false;
+    this->update();
+    event->accept();
 }

@@ -13,18 +13,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "UBGraphicsGroupContainerItem.h"
 #include "UBGraphicsMediaItem.h"
+#include "UBGraphicsMediaItemDelegate.h"
 #include "UBGraphicsScene.h"
 #include "UBGraphicsDelegateFrame.h"
-
 #include "document/UBDocumentProxy.h"
-
 #include "core/UBApplication.h"
-
 #include "board/UBBoardController.h"
-
 #include "frameworks/UBFileSystemUtils.h"
-
 #include "core/memcheck.h"
 
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
@@ -35,8 +32,63 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         , mMutedByUserAction(sIsMutedByDefault)
         , mMediaFileUrl(pMediaFileUrl)
         , mInitialPos(0)
+        , mVideoWidget(NULL)
+        , mAudioWidget(NULL)
 {
-    //NOOP
+    
+    update();
+
+    QString s = pMediaFileUrl.toLocalFile();
+
+    mMediaObject = new Phonon::MediaObject(this);
+    if (pMediaFileUrl.toLocalFile().contains("videos")) 
+    {
+        mMediaType = mediaType_Video;
+
+        mAudioOutput = new Phonon::AudioOutput(Phonon::VideoCategory, this);
+        mMediaObject->setTickInterval(50);
+        mVideoWidget = new Phonon::VideoWidget(); // owned and destructed by the scene ...
+        Phonon::createPath(mMediaObject, mVideoWidget);
+
+        /*
+         * The VideoVidget should recover the size from the original movie, but this is not always true expecially on
+         * windows and linux os. I don't know why?
+         * In this case the wiget size is equal to QSize(1,1).
+         */
+
+        if(mVideoWidget->sizeHint() == QSize(1,1)){
+            mVideoWidget->resize(320,240);
+        }
+        setWidget(mVideoWidget);
+    }
+    else    
+    if (pMediaFileUrl.toLocalFile().contains("audios"))
+    {
+        mMediaType = mediaType_Audio;
+        mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+
+        mMediaObject->setTickInterval(1000);
+        mAudioWidget = new QWidget();
+        mAudioWidget->resize(320,26);
+        setWidget(mAudioWidget);
+    }
+
+    Phonon::createPath(mMediaObject, mAudioOutput);
+    
+    mSource = Phonon::MediaSource(pMediaFileUrl);
+    mMediaObject->setCurrentSource(mSource);
+
+    UBGraphicsMediaItemDelegate* itemDelegate = new UBGraphicsMediaItemDelegate(this, mMediaObject);
+    itemDelegate->init();
+    setDelegate(itemDelegate);
+
+    mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
+
+    connect(mDelegate, SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
+    connect(mMediaObject, SIGNAL(hasVideoChanged(bool)), this, SLOT(hasMediaChanged(bool)));
+
 }
 
 
@@ -106,8 +158,14 @@ void UBGraphicsMediaItem::toggleMute()
 
 void UBGraphicsMediaItem::hasMediaChanged(bool hasMedia)
 {
+    if(hasMedia && mMediaObject->isSeekable())
+    {
     Q_UNUSED(hasMedia);
     mMediaObject->seek(mInitialPos);
+        UBGraphicsMediaItemDelegate *med = dynamic_cast<UBGraphicsMediaItemDelegate *>(mDelegate);
+        if (med)
+            med->updateTicker(initialPos());
+    }
 }
 
 
@@ -138,4 +196,105 @@ void UBGraphicsMediaItem::showOnDisplayChanged(bool shown)
         mMuted = false;
         mAudioOutput->setMuted(mMuted);
     }
+}
+
+UBItem* UBGraphicsMediaItem::deepCopy() const
+{
+    QUrl url = this->mediaFileUrl();
+    UBGraphicsMediaItem *copy;
+    
+    copy = new UBGraphicsMediaItem(url, parentItem());
+
+    copy->setPos(this->pos());
+    copy->setTransform(this->transform());
+    copy->setFlag(QGraphicsItem::ItemIsMovable, true);
+    copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+    copy->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+    copy->setUuid(this->uuid()); // this is OK as long as Videos are imutable
+    copy->setSourceUrl(this->sourceUrl());
+    copy->resize(this->size());
+
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), copy, SLOT(activeSceneChanged()));
+    // TODO UB 4.7 complete all members
+
+    return copy;
+}
+
+void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+//    QDrag* mDrag = new QDrag(event->widget());
+//    QMimeData* pMime = new QMimeData();
+//    mDrag->setMimeData(pMime);
+//    mDrag->start();
+
+//    UBApplication::boardController->activeScene()->setActiveItem(this);
+
+
+    if (mDelegate)
+    {
+        mDelegate->mousePressEvent(event);
+        if (mDelegate && parentItem() && UBGraphicsGroupContainerItem::Type == parentItem()->type())
+        {
+            UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(parentItem());
+            if (group)
+            {
+                QGraphicsItem *curItem = group->getCurrentItem();
+                if (curItem && this != curItem)
+                {   
+                    group->deselectCurrentItem();    
+                }   
+                group->setCurrentItem(this);
+                this->setSelected(true);
+                mDelegate->positionHandles();
+            }       
+
+        }
+        else
+        {
+            mDelegate->getToolBarItem()->show();
+        }
+
+    }
+
+    if (parentItem() && parentItem()->type() == UBGraphicsGroupContainerItem::Type)
+    {
+        mShouldMove = false;
+        if (!Delegate()->mousePressEvent(event))
+        {
+            event->accept();
+        }
+    }
+    else 
+    {
+        mShouldMove = (event->buttons() & Qt::LeftButton);
+        mMousePressPos = event->scenePos();
+        mMouseMovePos = mMousePressPos;
+
+        event->accept();
+        setSelected(true);
+    }
+
+}
+
+void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(mShouldMove && (event->buttons() & Qt::LeftButton))
+    {
+        QPointF offset = event->scenePos() - mMousePressPos;
+
+        if (offset.toPoint().manhattanLength() > QApplication::startDragDistance())
+        {
+            QPointF mouseMovePos = mapFromScene(mMouseMovePos);
+            QPointF eventPos = mapFromScene( event->scenePos());
+
+            QPointF translation = eventPos - mouseMovePos;
+            translate(translation.x(), translation.y());
+        }
+
+        mMouseMovePos = event->scenePos();
+    }
+
+    event->accept();
+
 }

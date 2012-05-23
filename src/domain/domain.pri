@@ -10,7 +10,6 @@ HEADERS      += src/domain/UBGraphicsScene.h \
                 src/domain/UBGraphicsSvgItem.h \
                 src/domain/UBGraphicsPolygonItem.h \
                 src/domain/UBItem.h \
-                src/domain/UBGraphicsVideoItem.h \
                 src/domain/UBGraphicsWidgetItem.h \
                 src/domain/UBAppleWidget.h \
                 src/domain/UBGraphicsPDFItem.h \
@@ -20,19 +19,17 @@ HEADERS      += src/domain/UBGraphicsScene.h \
                 src/domain/UBResizableGraphicsItem.h \
                 src/domain/UBGraphicsStroke.h \
     src/domain/UBGraphicsMediaItem.h \
-    src/domain/UBGraphicsAudioItem.h \
-    src/domain/UBGraphicsAudioItemDelegate.h \
     src/domain/UBAbstractUndoCommand.h\
     src/domain/UBAngleWidget.h \
-    src/domain/ubgraphicsgroupcontaineritem.h \
-    src/domain/ubgraphicsgroupcontaineritemdelegate.h \
+    src/domain/UBGraphicsGroupContainerItem.h \
+    src/domain/UBGraphicsGroupContainerItemDelegate.h \
     src/domain/UBGraphicsStrokesGroup.h
                 
 HEADERS      += src/domain/UBGraphicsItemDelegate.h \
-				src/domain/UBGraphicsVideoItemDelegate.h \
 				src/domain/UBGraphicsTextItemDelegate.h \
                 src/domain/UBGraphicsDelegateFrame.h \
-                src/domain/UBGraphicsWidgetItemDelegate.h
+                src/domain/UBGraphicsWidgetItemDelegate.h \
+                src/domain/UBGraphicsMediaItemDelegate.h
                 
                 
 SOURCES      += src/domain/UBGraphicsScene.cpp \
@@ -56,8 +53,6 @@ SOURCES      += src/domain/UBGraphicsScene.cpp \
                 src/domain/UBResizableGraphicsItem.cpp \
                 src/domain/UBGraphicsStroke.cpp \
     src/domain/UBGraphicsMediaItem.cpp \
-    src/domain/UBGraphicsAudioItem.cpp \
-    src/domain/UBGraphicsAudioItemDelegate.cpp \
     src/domain/UBAbstractUndoCommand.cpp \
     src/domain/UBAngleWidget.cpp \
     src/domain/ubgraphicsgroupcontaineritem.cpp \
@@ -65,8 +60,8 @@ SOURCES      += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsStrokesGroup.cpp
                 
 SOURCES      += src/domain/UBGraphicsItemDelegate.cpp \
-				src/domain/UBGraphicsVideoItemDelegate.cpp \
-				src/domain/UBGraphicsTextItemDelegate.cpp \
+			src/domain/UBGraphicsTextItemDelegate.cpp \
+                src/domain/UBGraphicsMediaItemDelegate.cpp \
                 src/domain/UBGraphicsDelegateFrame.cpp \
-                src/domain/UBGraphicsWidgetItemDelegate.cpp
+                src/domain/UBGraphicsWidgetItemDelegate.cpp \
                 

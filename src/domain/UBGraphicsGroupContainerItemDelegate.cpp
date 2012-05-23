@@ -1,4 +1,4 @@
-#include "ubgraphicsgroupcontaineritemdelegate.h"
+#include "UBGraphicsGroupContainerItemDelegate.h"
 
 #include <QtGui>
 
@@ -6,7 +6,7 @@
 #include "gui/UBResources.h"
 
 #include "domain/UBGraphicsDelegateFrame.h"
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "board/UBBoardController.h"
 
@@ -50,7 +50,7 @@ void UBGraphicsGroupContainerItemDelegate::buildButtons()
 bool UBGraphicsGroupContainerItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event)
-
+    delegated()->deselectCurrentItem();
     return false;
 }
 

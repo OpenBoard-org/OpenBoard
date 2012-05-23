@@ -13,6 +13,10 @@ public:
 
     void addToGroup(QGraphicsItem *item);
     void removeFromGroup(QGraphicsItem *item);
+    void setCurrentItem(QGraphicsItem *item){mCurrentItem = item;}
+    QGraphicsItem *getCurrentItem() const {return mCurrentItem;}
+    void deselectCurrentItem();
+
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
@@ -41,6 +45,7 @@ protected:
 
 private:
     QRectF itemsBoundingRect;
+    QGraphicsItem *mCurrentItem;
 
 };
 

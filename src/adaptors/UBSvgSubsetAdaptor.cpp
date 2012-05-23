@@ -22,15 +22,14 @@
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsProxyWidget.h"
 #include "domain/UBGraphicsPolygonItem.h"
-#include "domain/UBGraphicsVideoItem.h"
-#include "domain/UBGraphicsAudioItem.h"
+#include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsStrokesGroup.h"
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBItem.h"
 
 #include "tools/UBGraphicsRuler.h"
@@ -544,6 +543,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         if(strokesGroup){
                             polygonItem->setTransform(strokesGroup->transform());
                             strokesGroup->addToGroup(polygonItem);
+                            polygonItem->setStrokesGroup(strokesGroup);
                         }
                     }else{
                         scene->addItem(polygonItem);
@@ -639,7 +639,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             }
             else if (mXmlReader.name() == "audio")
             {
-                UBGraphicsAudioItem* audioItem = audioItemFromSvg();
+                UBGraphicsMediaItem* audioItem = audioItemFromSvg();
 
                 if (audioItem)
                 {
@@ -660,7 +660,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             }
             else if (mXmlReader.name() == "video")
             {
-                UBGraphicsVideoItem* videoItem = videoItemFromSvg();
+                UBGraphicsMediaItem* videoItem = videoItemFromSvg();
 
                 if (videoItem)
                 {
@@ -1005,8 +1005,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
-
-
     if (mScene->isModified())
     {
         static int i = 0;
@@ -1029,6 +1027,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 
         writeSvgElement();
 
+        // Get the items from the scene
         QList<QGraphicsItem*> items = mScene->items();
 
         qSort(items.begin(), items.end(), itemZIndexComp);
@@ -1041,10 +1040,32 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         {
             QGraphicsItem *item = items.takeFirst();
 
-            UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
+            // Is the item a strokes group?
+            UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
+            if(strokesGroupItem && strokesGroupItem->isVisible()){
+            	mXmlWriter.writeStartElement("g");
+            	QMatrix matrix = item->sceneMatrix();
+				if (!matrix.isIdentity()){
+					mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
+				}
 
+				// Add the polygons
+				foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
+					UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+					if(NULL != poly){
+						polygonItemToSvgPolygon(poly, true);
+						items.removeOne(poly);
+					}
+				}
+
+            	mXmlWriter.writeEndElement(); //g
+            }
+
+            // Is the item a polygon?
+            UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
             if (polygonItem && polygonItem->isVisible())
             {
+
                 UBGraphicsStroke* currentStroke = polygonItem->stroke();
 
                 if (openStroke && (currentStroke != openStroke))
@@ -1116,84 +1137,82 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 openStroke = 0;
             }
 
+            // Is the item a picture?
             UBGraphicsPixmapItem *pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*> (item);
-
             if (pixmapItem && pixmapItem->isVisible())
             {
                 pixmapItemToLinkedImage(pixmapItem);
                 continue;
             }
 
+            // Is the item a shape?
             UBGraphicsSvgItem *svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*> (item);
-
             if (svgItem && svgItem->isVisible())
             {
                 svgItemToLinkedSvg(svgItem);
                 continue;
             }
 
-            UBGraphicsVideoItem *videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (item);
+            UBGraphicsMediaItem *mediaItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (item);
 
-            if (videoItem && videoItem->isVisible())
+            if (mediaItem && mediaItem->isVisible())
             {
-                videoItemToLinkedVideo(videoItem);
+                if (UBGraphicsMediaItem::mediaType_Video == mediaItem->getMediaType())
+                    videoItemToLinkedVideo(mediaItem);
+                else
+                    audioItemToLinkedAudio(mediaItem);
                 continue;
             }
 
-            UBGraphicsAudioItem* audioItem = qgraphicsitem_cast<UBGraphicsAudioItem*> (item);
-            if (audioItem && audioItem->isVisible()) {
-                audioItemToLinkedAudio(audioItem);
-                continue;
-            }
-
+            // Is the item an app?
             UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
-
             if (appleWidgetItem && appleWidgetItem->isVisible())
             {
                 graphicsAppleWidgetToSvg(appleWidgetItem);
                 continue;
             }
 
+            // Is the item a W3C?
             UBGraphicsW3CWidgetItem *w3cWidgetItem = qgraphicsitem_cast<UBGraphicsW3CWidgetItem*> (item);
-
             if (w3cWidgetItem && w3cWidgetItem->isVisible())
             {
                 graphicsW3CWidgetToSvg(w3cWidgetItem);
                 continue;
             }
 
+            // Is the item a PDF?
             UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*> (item);
-
             if (pdfItem && pdfItem->isVisible())
             {
                 pdfItemToLinkedPDF(pdfItem);
                 continue;
             }
 
+            // Is the item a text?
             UBGraphicsTextItem *textItem = qgraphicsitem_cast<UBGraphicsTextItem*> (item);
-
             if (textItem && textItem->isVisible())
             {
                 textItemToSvg(textItem);
                 continue;
             }
 
+            // Is the item a curtain?
             UBGraphicsCurtainItem *curtainItem = qgraphicsitem_cast<UBGraphicsCurtainItem*> (item);
-
             if (curtainItem && curtainItem->isVisible())
             {
                 curtainItemToSvg(curtainItem);
                 continue;
             }
 
+            // Is the item a ruler?
             UBGraphicsRuler *ruler = qgraphicsitem_cast<UBGraphicsRuler*> (item);
-
             if (ruler && ruler->isVisible())
             {
                 rulerToSvg(ruler);
                 continue;
             }
 
+            // Is the item a cache?
             UBGraphicsCache* cache = qgraphicsitem_cast<UBGraphicsCache*>(item);
             if(cache && cache->isVisible())
             {
@@ -1201,32 +1220,32 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 continue;
             }
 
+            // Is the item a compass
             UBGraphicsCompass *compass = qgraphicsitem_cast<UBGraphicsCompass*> (item);
-
             if (compass && compass->isVisible())
             {
                 compassToSvg(compass);
                 continue;
             }
 
+            // Is the item a protractor?
             UBGraphicsProtractor *protractor = qgraphicsitem_cast<UBGraphicsProtractor*> (item);
-
             if (protractor && protractor->isVisible())
             {
                 protractorToSvg(protractor);
                 continue;
             }
 
+            // Is the item a triangle?
             UBGraphicsTriangle *triangle = qgraphicsitem_cast<UBGraphicsTriangle*> (item);
-
             if (triangle && triangle->isVisible())
             {
                 triangleToSvg(triangle);
                 continue;
             }
 
+            // Is the item a group?
             UBGraphicsGroupContainerItem *groupItem = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item);
-
             if (groupItem && groupItem->isVisible())
             {
                 qDebug() << "came across the group during the parsing, uuid is " << groupItem->data(UBGraphicsItemData::ItemUuid).toString();
@@ -1949,7 +1968,7 @@ UBGraphicsPDFItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pdfItemFromPDF()
     return pdfItem;
 }
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsAudioItem* audioItem)
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMediaItem* audioItem)
 {
     mXmlWriter.writeStartElement("audio");
 
@@ -1967,7 +1986,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsAud
 }
 
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsVideoItem* videoItem)
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMediaItem* videoItem)
 {
     /* w3c sample
      *
@@ -1991,7 +2010,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsVid
     mXmlWriter.writeEndElement();
 }
 
-UBGraphicsAudioItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
+UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
 {
 
     QStringRef audioHref = mXmlReader.attributes().value(nsXLink, "href");
@@ -2011,7 +2030,11 @@ UBGraphicsAudioItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
 
-    UBGraphicsAudioItem* audioItem = new UBGraphicsAudioItem(QUrl::fromLocalFile(href));
+    UBGraphicsMediaItem* audioItem = new UBGraphicsMediaItem(QUrl::fromLocalFile(href));
+    if(audioItem){
+        audioItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), audioItem, SLOT(activeSceneChanged()));
+    }
+
     graphicsItemFromSvg(audioItem);
     QStringRef ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
 
@@ -2025,7 +2048,7 @@ UBGraphicsAudioItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
     return audioItem;
 }
 
-UBGraphicsVideoItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
+UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
 {
 
     QStringRef videoHref = mXmlReader.attributes().value(nsXLink, "href");
@@ -2045,7 +2068,11 @@ UBGraphicsVideoItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
 
-    UBGraphicsVideoItem* videoItem = new UBGraphicsVideoItem(href);
+    UBGraphicsMediaItem* videoItem = new UBGraphicsMediaItem(QUrl::fromLocalFile(href));
+    if(videoItem){
+        videoItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), videoItem, SLOT(activeSceneChanged()));
+    }
+
     graphicsItemFromSvg(videoItem);
     QStringRef ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
 

@@ -50,14 +50,13 @@
 #include "UBGraphicsPixmapItem.h"
 #include "UBGraphicsSvgItem.h"
 #include "UBGraphicsPolygonItem.h"
-#include "UBGraphicsVideoItem.h"
-#include "UBGraphicsAudioItem.h"
+#include "UBGraphicsMediaItem.h"
 #include "UBGraphicsWidgetItem.h"
 #include "UBGraphicsPDFItem.h"
 #include "UBGraphicsTextItem.h"
 #include "UBGraphicsStrokesGroup.h"
 
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "UBAppleWidget.h"
 #include "UBW3CWidget.h"
@@ -778,18 +777,17 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
         if (mShouldUseOMP)
         {
-    #pragma omp parallel for
+    //#pragma omp parallel for
             for (int i = 0; i < collidItemsSize; i++)
             {
                 UBGraphicsPolygonItem *collidingPolygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems.at(i));
-
-                if (NULL != collidingPolygonItem)
+                if(NULL != collidingPolygonItem)
                 {
                     UBGraphicsStrokesGroup* pGroup = collidingPolygonItem->strokesGroup();
 
                     if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
                     {
-    #pragma omp critical
+    //#pragma omp critical
                         // Put the entire polygon into the remove list
                         toBeRemovedItems << collidingPolygonItem;
                     }
@@ -826,7 +824,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                         }
                         else */if (croppedPathSimplified.isEmpty())
                         {
-    #pragma omp critical
+    //#pragma omp critical
                             // Put the entire polygon into the remove list if the eraser removes all its visible content
                             toBeRemovedItems << collidingPolygonItem;
                         }
@@ -837,14 +835,15 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                             foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
                             {
                                 UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
-    #pragma omp critical
+    //#pragma omp critical
                                 if(NULL != pGroup){
                                     croppedPolygonItem->setStrokesGroup(pGroup);
+                                    //pGroup->addToGroup(croppedPolygonItem);
                                 }
                                 // Add this new polygon to the 'added' list
                                 toBeAddedItems << croppedPolygonItem;
                             }
-    #pragma omp critical
+    //#pragma omp critical
                             // Remove the original polygonitem because it has been replaced by many smaller polygons
                             toBeRemovedItems << collidingPolygonItem;
                         }
@@ -905,8 +904,9 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             foreach(QGraphicsItem* item, toBeRemovedItems){
                 UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
                 if(NULL != poly){
-                    if(NULL != poly->strokesGroup()){
-                        poly->strokesGroup()->removeFromGroup(poly);
+                	UBGraphicsStrokesGroup* group = poly->strokesGroup();
+                    if(NULL != group){
+                        group->removeFromGroup(poly);
                         removeItem(poly);
                     }else{
                         qDebug() << "No group present";
@@ -1331,67 +1331,48 @@ void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
         UBApplication::undoStack->push(uc);
     }
 }
-
-UBGraphicsVideoItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos)
+UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos)
 {
-    UBGraphicsVideoItem* videoItem = new UBGraphicsVideoItem(pVideoFileUrl);
+    UBGraphicsMediaItem* mediaItem = new UBGraphicsMediaItem(pMediaFileUrl);
+    if(mediaItem){
+        connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), mediaItem, SLOT(activeSceneChanged()));
+    }
 
-    videoItem->setPos(pPos);
+    mediaItem->setPos(pPos);
 
-    videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-    videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    mediaItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+    mediaItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    addItem(videoItem);
+    addItem(mediaItem);
 
-    videoItem->show();
+    mediaItem->show();
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, videoItem);
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, mediaItem);
         UBApplication::undoStack->push(uc);
     }
 
-    videoItem->mediaObject()->play();
+    mediaItem->mediaObject()->play();
 
     if (!shouldPlayAsap)
     {
-        videoItem->mediaObject()->pause();
-        videoItem->mediaObject()->seek(0);
+        mediaItem->mediaObject()->pause();
+        mediaItem->mediaObject()->seek(0);
     }
 
     setDocumentUpdated();
 
-    return videoItem;
+    return mediaItem;
 }
 
-UBGraphicsAudioItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool shouldPlayAsap, const QPointF& pPos)
+UBGraphicsMediaItem* UBGraphicsScene::addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos)
 {
-    UBGraphicsAudioItem* audioItem = new UBGraphicsAudioItem(pAudioFileUrl);
+   return addMedia(pVideoFileUrl, shouldPlayAsap, pPos);
+}
 
-    audioItem->setPos(pPos);
-
-    audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-    audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-    addItem(audioItem);
-
-    audioItem->show();
-
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, audioItem);
-        UBApplication::undoStack->push(uc);
-    }
-
-    audioItem->mediaObject()->play();
-
-    if (!shouldPlayAsap)
-    {
-        audioItem->mediaObject()->pause();
-        audioItem->mediaObject()->seek(0);
-    }
-
-    setDocumentUpdated();
-
-    return audioItem;
+UBGraphicsMediaItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool shouldPlayAsap, const QPointF& pPos)
+{
+   return addMedia(pAudioFileUrl, shouldPlayAsap, pPos);
 }
 
 UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
@@ -2072,7 +2053,7 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
 
     while (itItems.hasNext())
     {
-        UBGraphicsVideoItem *videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (itItems.next());
+        UBGraphicsMediaItem *videoItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (itItems.next());
 
         if (videoItem && videoItem->mediaFileUrl().isRelative())
         {
