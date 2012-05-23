@@ -29,7 +29,10 @@ UBLeftPalette::UBLeftPalette(QWidget *parent, const char *name):
     mLastWidth = UBSettings::settings()->leftLibPaletteWidth->get().toInt();
     mCollapseWidth = 150;
 
-    resize(mLastWidth, parentWidget()->height());
+    if(UBSettings::settings()->leftLibPaletteIsCollapsed->get().toBool())
+    	resize(0,parentWidget()->height());
+    else
+    	resize(mLastWidth, parentWidget()->height());
 }
 
 /**
@@ -54,6 +57,9 @@ void UBLeftPalette::updateMaxWidth()
  */
 void UBLeftPalette::resizeEvent(QResizeEvent *event)
 {
-    UBSettings::settings()->leftLibPaletteWidth->set(width());
+	int newWidth = width();
+	if(newWidth > mCollapseWidth)
+		UBSettings::settings()->leftLibPaletteWidth->set(newWidth);
+    UBSettings::settings()->leftLibPaletteIsCollapsed->set(newWidth == 0);
     UBDockPalette::resizeEvent(event);
 }

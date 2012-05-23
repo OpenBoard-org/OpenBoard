@@ -27,11 +27,13 @@ UBRightPalette::UBRightPalette(QWidget *parent, const char *name):
 {
     setObjectName(name);
     setOrientation(eUBDockOrientation_Right);
-
-    mLastWidth = UBSettings::settings()->rightLibPaletteWidth->get().toInt();
     mCollapseWidth = 150;
 
-    resize(mLastWidth, parentWidget()->height());
+    mLastWidth = UBSettings::settings()->rightLibPaletteWidth->get().toInt();
+    if(UBSettings::settings()->rightLibPaletteIsCollapsed->get().toBool())
+    	resize(0,parentWidget()->height());
+    else
+    	resize(mLastWidth, parentWidget()->height());
 }
 
 /**
@@ -59,8 +61,11 @@ void UBRightPalette::mouseMoveEvent(QMouseEvent *event)
  */
 void UBRightPalette::resizeEvent(QResizeEvent *event)
 {
+	int newWidth = width();
+	if(newWidth > mCollapseWidth)
+		UBSettings::settings()->rightLibPaletteWidth->set(newWidth);
+    UBSettings::settings()->rightLibPaletteIsCollapsed->set(newWidth == 0);
     UBDockPalette::resizeEvent(event);
-    UBSettings::settings()->rightLibPaletteWidth->set(width());
     emit resized();
 }
 
