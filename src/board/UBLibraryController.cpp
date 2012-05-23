@@ -505,7 +505,7 @@ void UBLibraryController::setItemAsBackground(UBLibElement* image)
     }
     else{
         QPixmap pix(image->path().toLocalFile());
-        UBGraphicsPixmapItem* boardItem = activeScene()->addPixmap(pix, QPointF(0, 0));
+        UBGraphicsPixmapItem* boardItem = activeScene()->addPixmap(pix, activeScene()->backgroundObject(), QPointF(0, 0));
         activeScene()->setAsBackgroundObject(boardItem, true);
     }
 }
@@ -679,7 +679,7 @@ void UBLibraryController::addImagesToCurrentPage(const QList<QUrl>& images)
                 itemInScene = activeScene()->addSvg(url, pos);
             } else {
                 itemInScene = activeScene()->addPixmap(QPixmap(
-                        url.toLocalFile()), pos);
+                        url.toLocalFile()), NULL, pos);
             }
         }
 

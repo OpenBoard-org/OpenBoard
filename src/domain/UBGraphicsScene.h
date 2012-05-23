@@ -279,7 +279,11 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void deselectAllItems();
 
-        UBGraphicsPixmapItem* addPixmap(const QPixmap& pPixmap, const QPointF& pPos = QPointF(0,0), qreal scaleFactor = 1.0, bool pUseAnimation = false);
+        UBGraphicsPixmapItem* addPixmap(const QPixmap& pPixmap, 
+            QGraphicsItem* replaceFor,
+            const QPointF& pPos = QPointF(0,0), 
+            qreal scaleFactor = 1.0, 
+            bool pUseAnimation = false);
 
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 

@@ -1044,7 +1044,7 @@ void UBGraphicsScene::clearAnnotations()
 }
 
 
-UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation)
+UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphicsItem* replaceFor, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation)
 {
     UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
 
@@ -1061,7 +1061,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
     addItem(pixmapItem);
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, pixmapItem);
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, replaceFor, pixmapItem);
         UBApplication::undoStack->push(uc);
     }
 

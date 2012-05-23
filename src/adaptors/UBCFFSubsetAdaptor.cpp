@@ -738,7 +738,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
         }
     }
 
-   UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix);
+   UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix, NULL);
    QTransform transform;
    QString textTransform = element.attribute(aTransform);
 
