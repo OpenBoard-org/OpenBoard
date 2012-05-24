@@ -1,11 +1,11 @@
-#include "ubgraphicsgroupcontaineritem.h"
+#include "UBGraphicsGroupContainerItem.h"
 
 #include <QtGui>
 
 #include "UBGraphicsMediaItem.h"
 #include "UBGraphicsTextItem.h"
 #include "domain/UBGraphicsItemDelegate.h"
-#include "domain/ubgraphicsgroupcontaineritemdelegate.h"
+#include "domain/UBGraphicsGroupContainerItemDelegate.h"
 #include "domain/UBGraphicsScene.h"
 
 #include "core/memcheck.h"

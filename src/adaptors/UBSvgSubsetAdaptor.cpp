@@ -29,7 +29,7 @@
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsStrokesGroup.h"
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBItem.h"
 
 #include "tools/UBGraphicsRuler.h"
@@ -543,6 +543,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         if(strokesGroup){
                             polygonItem->setTransform(strokesGroup->transform());
                             strokesGroup->addToGroup(polygonItem);
+                            polygonItem->setStrokesGroup(strokesGroup);
                         }
                     }else{
                         scene->addItem(polygonItem);
@@ -1004,8 +1005,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
-
-
     if (mScene->isModified())
     {
         static int i = 0;
@@ -1028,6 +1027,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 
         writeSvgElement();
 
+        // Get the items from the scene
         QList<QGraphicsItem*> items = mScene->items();
 
         qSort(items.begin(), items.end(), itemZIndexComp);
@@ -1040,10 +1040,32 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         {
             QGraphicsItem *item = items.takeFirst();
 
-            UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
+            // Is the item a strokes group?
+            UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
+            if(strokesGroupItem && strokesGroupItem->isVisible()){
+            	mXmlWriter.writeStartElement("g");
+            	QMatrix matrix = item->sceneMatrix();
+				if (!matrix.isIdentity()){
+					mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
+				}
 
+				// Add the polygons
+				foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
+					UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+					if(NULL != poly){
+						polygonItemToSvgPolygon(poly, true);
+						items.removeOne(poly);
+					}
+				}
+
+            	mXmlWriter.writeEndElement(); //g
+            }
+
+            // Is the item a polygon?
+            UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
             if (polygonItem && polygonItem->isVisible())
             {
+
                 UBGraphicsStroke* currentStroke = polygonItem->stroke();
 
                 if (openStroke && (currentStroke != openStroke))
@@ -1115,16 +1137,16 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 openStroke = 0;
             }
 
+            // Is the item a picture?
             UBGraphicsPixmapItem *pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*> (item);
-
             if (pixmapItem && pixmapItem->isVisible())
             {
                 pixmapItemToLinkedImage(pixmapItem);
                 continue;
             }
 
+            // Is the item a shape?
             UBGraphicsSvgItem *svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*> (item);
-
             if (svgItem && svgItem->isVisible())
             {
                 svgItemToLinkedSvg(svgItem);
@@ -1142,54 +1164,55 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 continue;
             }
 
+            // Is the item an app?
             UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
-
             if (appleWidgetItem && appleWidgetItem->isVisible())
             {
                 graphicsAppleWidgetToSvg(appleWidgetItem);
                 continue;
             }
 
+            // Is the item a W3C?
             UBGraphicsW3CWidgetItem *w3cWidgetItem = qgraphicsitem_cast<UBGraphicsW3CWidgetItem*> (item);
-
             if (w3cWidgetItem && w3cWidgetItem->isVisible())
             {
                 graphicsW3CWidgetToSvg(w3cWidgetItem);
                 continue;
             }
 
+            // Is the item a PDF?
             UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*> (item);
-
             if (pdfItem && pdfItem->isVisible())
             {
                 pdfItemToLinkedPDF(pdfItem);
                 continue;
             }
 
+            // Is the item a text?
             UBGraphicsTextItem *textItem = qgraphicsitem_cast<UBGraphicsTextItem*> (item);
-
             if (textItem && textItem->isVisible())
             {
                 textItemToSvg(textItem);
                 continue;
             }
 
+            // Is the item a curtain?
             UBGraphicsCurtainItem *curtainItem = qgraphicsitem_cast<UBGraphicsCurtainItem*> (item);
-
             if (curtainItem && curtainItem->isVisible())
             {
                 curtainItemToSvg(curtainItem);
                 continue;
             }
 
+            // Is the item a ruler?
             UBGraphicsRuler *ruler = qgraphicsitem_cast<UBGraphicsRuler*> (item);
-
             if (ruler && ruler->isVisible())
             {
                 rulerToSvg(ruler);
                 continue;
             }
 
+            // Is the item a cache?
             UBGraphicsCache* cache = qgraphicsitem_cast<UBGraphicsCache*>(item);
             if(cache && cache->isVisible())
             {
@@ -1197,35 +1220,35 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 continue;
             }
 
+            // Is the item a compass
             UBGraphicsCompass *compass = qgraphicsitem_cast<UBGraphicsCompass*> (item);
-
             if (compass && compass->isVisible())
             {
                 compassToSvg(compass);
                 continue;
             }
 
+            // Is the item a protractor?
             UBGraphicsProtractor *protractor = qgraphicsitem_cast<UBGraphicsProtractor*> (item);
-
             if (protractor && protractor->isVisible())
             {
                 protractorToSvg(protractor);
                 continue;
             }
 
+            // Is the item a triangle?
             UBGraphicsTriangle *triangle = qgraphicsitem_cast<UBGraphicsTriangle*> (item);
-
             if (triangle && triangle->isVisible())
             {
                 triangleToSvg(triangle);
                 continue;
             }
 
+            // Is the item a group?
             UBGraphicsGroupContainerItem *groupItem = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item);
-
             if (groupItem && groupItem->isVisible())
             {
-                qDebug() << "came across the group during the parsing";
+                qDebug() << "came across the group during the parsing, uuid is " << groupItem->data(UBGraphicsItemData::ItemUuid).toString();
                 continue;
             }
         }

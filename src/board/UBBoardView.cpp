@@ -49,7 +49,7 @@
 #include "domain/UBItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsSvgItem.h"
-#include "domain/ubgraphicsgroupcontaineritem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsStrokesGroup.h"
 
 #include "document/UBDocumentProxy.h"

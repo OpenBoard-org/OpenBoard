@@ -21,8 +21,8 @@ HEADERS      += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsMediaItem.h \
     src/domain/UBAbstractUndoCommand.h\
     src/domain/UBAngleWidget.h \
-    src/domain/ubgraphicsgroupcontaineritem.h \
-    src/domain/ubgraphicsgroupcontaineritemdelegate.h \
+    src/domain/UBGraphicsGroupContainerItem.h \
+    src/domain/UBGraphicsGroupContainerItemDelegate.h \
     src/domain/UBGraphicsStrokesGroup.h
                 
 HEADERS      += src/domain/UBGraphicsItemDelegate.h \
