@@ -531,6 +531,7 @@ void UBDockPalette::setVisible(bool visible)
 
 bool UBDockPalette::switchMode(eUBDockPaletteWidgetMode mode)
 {
+	mCurrentMode = mode;
 	bool hasVisibleElements = false;
 	//-------------------------------//
 	// get full palette widgets list, parse it, show all widgets for BOARD mode, and hide all other

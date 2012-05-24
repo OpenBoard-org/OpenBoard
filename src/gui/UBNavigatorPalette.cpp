@@ -145,7 +145,6 @@ void UBNavigatorPalette::resizeEvent(QResizeEvent *event)
     {
         mNavigator->setMinimumHeight(height() - 2*border());
     }
-    UBSettings::settings()->navigPaletteWidth->set(width());
 }
 
 void UBNavigatorPalette::timerEvent(QTimerEvent *event)
