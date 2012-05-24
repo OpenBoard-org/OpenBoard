@@ -49,9 +49,6 @@
 
 #include "document/UBDocumentProxy.h"
 
-#include "customWidgets/UBDraggableLabel.h"
-#include "customWidgets/UBDraggableMedia.h"
-
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsCache.h"
 #include "tools/UBGraphicsTriangle.h"
@@ -813,14 +810,11 @@ void UBBoardView::dropEvent (QDropEvent *event)
     UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
 
     if (graphicsWidget && graphicsWidget->acceptDrops()) {
-
         graphicsWidget->processDropEvent(event);
         event->acceptProposedAction();
 
-    } else if (!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source())
-               || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBDraggableMediaPlayer *>(event->source())
-               || dynamic_cast<UBDraggableLabel *>(event->source()) || dynamic_cast<UBDraggableMedia *>(event->source())) {
-
+    }
+    else if (!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source())){
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction();
     }
