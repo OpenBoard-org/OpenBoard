@@ -1823,8 +1823,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
            tmpItem->widgetWebView()->takeSnapshot().save(snapshotPath, "PNG");
 
     }
-
-    return 0;
+    return w3cWidgetItem;
 }
 
 void UBBoardController::cut()
