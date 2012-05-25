@@ -362,16 +362,8 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
         if (pMimeData->hasUrls()){
             QList<QUrl> urlList = pMimeData->urls();
             for (int i = 0; i < urlList.size() && i < 32; ++i){
-                QString filePath;
                 QString crntPath = urlList.at(i).toString();
-
-                if(crntPath.startsWith("file:") || crntPath.startsWith("/")){
-                    filePath = QUrl(crntPath).toLocalFile();
-                }else{
-                    filePath = crntPath;
-                }
-
-                mLibraryController->importItemOnLibrary(filePath);
+                mLibraryController->importItemOnLibrary(crntPath);
                 bDropAccepted = true;
             }
         }

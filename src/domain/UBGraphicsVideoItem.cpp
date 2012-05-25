@@ -67,6 +67,8 @@ UBItem* UBGraphicsVideoItem::deepCopy() const
 
     UBGraphicsVideoItem *copy = new UBGraphicsVideoItem(videoUrl, parentItem());
 
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), copy, SLOT(activeSceneChanged()));
+
     copy->setPos(this->pos());
 //    copy->setZValue(this->zValue());
     UBGraphicsItem::assignZValue(copy, this->zValue());
