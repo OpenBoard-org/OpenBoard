@@ -23,6 +23,7 @@ class UBRightPalette : public UBDockPalette
 public:
     UBRightPalette(QWidget* parent=0, const char* name="UBRightPalette");
     ~UBRightPalette();
+    bool switchMode(eUBDockPaletteWidgetMode mode);
 
 signals:
     void resized();
@@ -31,6 +32,7 @@ protected:
     void updateMaxWidth();
     void mouseMoveEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *event);
+
 };
 
 #endif // UBRIGHTPALETTE_H

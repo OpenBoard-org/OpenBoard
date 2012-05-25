@@ -467,7 +467,10 @@ void UBWidgetUniboardAPI::sendFileMetadata(QString metaData)
 
 void UBWidgetUniboardAPI::enableDropOnWidget(bool enable)
 {
-    mGraphicsWidget->setAcceptDrops(enable);
+    if (mGraphicsWidget)
+    {
+        mGraphicsWidget->setAcceptDrops(enable);
+    }
 }
 
 void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)

@@ -181,27 +181,31 @@ void UBGraphicsItemDelegate::setMimeData(QMimeData *mimeData)
 
 bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if((NULL != mMimeData) && ((event->pos() - mDragStartPosition).manhattanLength() < QApplication::startDragDistance()))
-        {
-            QDrag* mDrag = new QDrag(event->widget());
-            mDrag->setMimeData(mMimeData);
-            if (!mDragPixmap.isNull()) {
-                mDrag->setPixmap(mDragPixmap);
-                mDrag->setHotSpot(mDragPixmap.rect().center());
-            }
-            mDrag->exec();
-            mDragPixmap = QPixmap();
-
-            return true;
+    if(mMimeData)
+    {
+        QDrag* mDrag = new QDrag(event->widget());
+        mDrag->setMimeData(mMimeData);
+        if (!mDragPixmap.isNull()) {
+            mDrag->setPixmap(mDragPixmap);
+            mDrag->setHotSpot(mDragPixmap.rect().center());
         }
+        mDrag->exec();
+        mDragPixmap = QPixmap();
+
+        return true;
+    }
 
     if(isLocked())
     {
         event->accept();
         return true;
     }
+    else
+    {
+        return false;
+    }
 
-    return true;
+    
 }
 
 bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)

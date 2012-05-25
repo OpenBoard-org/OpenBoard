@@ -52,7 +52,6 @@ include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/transition/transition.pri)
-include(src/customWidgets/customWidgets.pri)
 include(src/interfaces/interfaces.pri)
 
 DEPENDPATH += src/pdf-merger

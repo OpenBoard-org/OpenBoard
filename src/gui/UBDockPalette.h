@@ -79,8 +79,7 @@ private:
 typedef enum
 {
     eUBDockPaletteType_LEFT,
-    eUBDockPaletteType_RIGHT,
-    eUBDockPaletteType_NAVIGATOR,
+    eUBDockPaletteType_RIGHT
 } eUBDockPaletteType;
 
 
@@ -115,6 +114,8 @@ public:
     void connectSignals();
 
     bool switchMode(eUBDockPaletteWidgetMode mode);
+
+    eUBDockPaletteWidgetMode mCurrentMode;
 
     QVector<UBDockPaletteWidget*> GetWidgetsList() { return mRegisteredWidgets; }
 

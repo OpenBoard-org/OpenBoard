@@ -415,7 +415,6 @@ function onDropTarget(obj, event) {
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
-        tmp = tmp.substr(1, tmp.length); 
         if(tmp_type.substr(0, 5) == "audio"){  
             var img_tmp = $("<div class='img_block'>").insertBefore($(obj).find(".add_img"));
             var audio_block = $("<div class='audio_block'>").appendTo(img_tmp)

@@ -698,7 +698,6 @@ function onDropTarget(obj, event) {
         textData = stringToXML(textData);
         if(textData.getElementsByTagName("ready")[0].firstChild.textContent == "true"){
             var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
-            tmp = tmp.substr(1, tmp.length);       
             var img_block = $("<div class='img_block' style='text-align: center;'>");
             $("<div class='close_img'>").appendTo(img_block);            
             $("<input type='hidden' value='" + $(obj).find("input[name='mask']").val() + "'/>").appendTo(img_block);

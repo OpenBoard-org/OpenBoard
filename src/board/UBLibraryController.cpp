@@ -155,7 +155,7 @@ void UBLibraryController::routeItem(QString& pItem, QString pMiddleDirectory)
         }
         destination = UBFileSystemUtils::normalizeFilePath(destination + "/" + itemToRoute.fileName());
 
-        QFile::copy(pItem, destination);
+        UBFileSystemUtils::copyFile(QUrl(pItem).toLocalFile(), destination, false);
     }
 }
 
