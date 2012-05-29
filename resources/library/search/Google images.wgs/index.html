@@ -157,7 +157,19 @@
                 var hide = false; //hide or no main panel
     
                 //basic containers and elements    
-                var disclaimer = $("<div id='disclaimer' class='disclaimer'>Disclaimer<div>").appendTo("body");    
+                var lang = ""; //locale language
+                var disclaimer;
+		if(window.sankore){
+		  lang = sankore.locale().substr(0,2);
+		  lang = "fr";
+		  if(lang == "en"){
+		    disclaimer = $("<div id='disclaimer' class='disclaimer'>EN<div>").appendTo("body");
+		  }
+		  else{
+		    disclaimer = $("<div id='disclaimer' class='disclaimer'>FR<div>").appendTo("body");
+		  }
+		}
+                    
                 var search = $("<div id='search' class='search'>").appendTo("body");
 				
 				disclaimer.width($("body").width()-20);

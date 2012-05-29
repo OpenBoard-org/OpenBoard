@@ -416,14 +416,13 @@ function onDropTarget(obj, event) {
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
-        tmp = tmp.substr(1, tmp.length); 
         if(tmp_type.substr(0, 5) == "audio"){  
             var img_tmp = $("<div class='img_block'>").insertBefore($(obj).find(".add_img"));
             var audio_block = $("<div class='audio_block'>").appendTo(img_tmp)
             $("<div class='close_img'>").appendTo(img_tmp);
             $("<div class='play'>").appendTo(audio_block);
             $("<div class='replay'>").appendTo(audio_block);
-            var source = $("<source/>").attr("src", "../../" + tmp);
+            var source = $("<source/>").attr("src",tmp);
             var audio = $("<audio>").appendTo(audio_block);
             audio.append(source);
             $("<input type='hidden' value='0'/>").appendTo(img_tmp); 
@@ -433,7 +432,7 @@ function onDropTarget(obj, event) {
             $("<div class='close_img'>").appendTo(img_block);
             $("<input type='hidden' value='0'/>").appendTo(img_block); 
             $("<input type='checkbox' class='ch_box'/>").appendTo(img_block)
-            var tmp_img = $("<img src=\"../../" + tmp + "\" style=\"display: inline;\"/>").appendTo(img_block);
+            var tmp_img = $("<img src=\"" + tmp + "\" style=\"display: inline;\"/>").appendTo(img_block);
             setTimeout(function(){
                 if(tmp_img.height() >= tmp_img.width())
                     tmp_img.attr("height", "120");

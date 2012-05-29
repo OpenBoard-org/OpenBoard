@@ -797,10 +797,9 @@ function onDropAudio(obj, event) {
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
         if(tmp_type.substr(0, 5) == "audio"){       
             var audio_block = $(obj).find(".audio_block");
-            tmp = tmp.substr(1, tmp.length);            
             $(obj).find("audio").remove();
             audio_block.find(":first-child").removeClass("stop").addClass("play");
-            var source = $("<source/>").attr("src", "../../" + tmp);
+            var source = $("<source/>").attr("src",tmp);
             var audio = $("<audio>").appendTo(audio_block);
             audio.append(source);
         }
