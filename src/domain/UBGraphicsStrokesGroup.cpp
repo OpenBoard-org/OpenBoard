@@ -9,6 +9,7 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent):QGraphicsI
     mDelegate->setFlippable(true);
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
+    setUuid(QUuid::createUuid());
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);

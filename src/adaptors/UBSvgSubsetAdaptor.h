@@ -41,6 +41,7 @@ class UBPersistenceManager;
 class UBGraphicsTriangle;
 class UBGraphicsCache;
 class IDataStorage;
+class UBGraphicsGroupContainerItem;
 
 class UBSvgSubsetAdaptor
 {
@@ -94,6 +95,8 @@ class UBSvgSubsetAdaptor
         static QMap<QString,IDataStorage*> additionalElementToStore;
 
 
+
+
         class UBSvgSubsetReader
         {
             public:
@@ -140,9 +143,14 @@ class UBSvgSubsetAdaptor
 
                 UBGraphicsCache* cacheFromSvg();
 
+                void readGroupRoot();
+                QGraphicsItem *readElementFromGroup();
+                UBGraphicsGroupContainerItem* readGroup();
+
                 void graphicsItemFromSvg(QGraphicsItem* gItem);
 
                 qreal getZValueFromSvg();
+                QUuid getUuidFromSvg();
 
                 QXmlStreamReader mXmlReader;
                 int mFileVersion;
@@ -155,6 +163,7 @@ class UBSvgSubsetAdaptor
                 bool mGroupHasInfo;
 
                 QString mNamespaceUri;
+                UBGraphicsScene *mScene;
         };
 
         class UBSvgSubsetWriter
@@ -169,6 +178,7 @@ class UBSvgSubsetAdaptor
 
             private:
 
+                void persistGroupToDom(QGraphicsItem *groupItem, QDomElement *curParent, QDomDocument *curDomDocument);
                 void polygonItemToSvgPolygon(UBGraphicsPolygonItem* polygonItem, bool groupHoldsInfo);
                 void polygonItemToSvgLine(UBGraphicsPolygonItem* polygonItem, bool groupHoldsInfo);
                 void strokeToSvgPolyline(UBGraphicsStroke* stroke, bool groupHoldsInfo);

@@ -25,6 +25,8 @@ UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent
 
     UBGraphicsGroupContainerItem::setAcceptHoverEvents(true);
 
+    setUuid(QUuid::createUuid());
+
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
 }

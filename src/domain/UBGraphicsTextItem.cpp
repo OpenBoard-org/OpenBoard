@@ -53,6 +53,8 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
 
     setTextInteractionFlags(Qt::TextEditorInteraction);
 
+    setUuid(QUuid::createUuid());
+
     connect(document(), SIGNAL(contentsChanged()), mDelegate, SLOT(contentsChanged()));
     connect(document(), SIGNAL(undoCommandAdded()), this, SLOT(undoCommandAdded()));
 

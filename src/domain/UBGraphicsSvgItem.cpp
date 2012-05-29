@@ -63,6 +63,8 @@ void UBGraphicsSvgItem::init()
     setMaximumCacheSize(boundingRect().size().toSize() * UB_MAX_ZOOM);
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
+
+    setUuid(QUuid::createUuid());
 }
 
 
@@ -193,4 +195,10 @@ UBGraphicsPixmapItem* UBGraphicsSvgItem::toPixmapItem() const
     pixmapItem->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
 
     return pixmapItem;
+}
+
+void UBGraphicsSvgItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }

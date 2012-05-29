@@ -1490,7 +1490,22 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     groupItem->setVisible(true);
     groupItem->setFocus();
 
-    qDebug() << groupItem->uuid().toString();
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, groupItem);
+        UBApplication::undoStack->push(uc);
+    }
+
+    setDocumentUpdated();
+
+    return groupItem;
+}
+
+void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
+{
+    addItem(groupItem);
+    groupItem->setVisible(true);
+    groupItem->setFocus();
+
     if (groupItem->uuid().isNull()) {
         groupItem->setUuid(QUuid::createUuid());
     }
@@ -1501,8 +1516,6 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     }
 
     setDocumentUpdated();
-
-    return groupItem;
 }
 
 UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPointF& pPos)
@@ -1783,6 +1796,20 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
     }
 
     return normalizedRect;
+}
+
+QGraphicsItem *UBGraphicsScene::itemByUuid(QUuid uuid)
+{
+    QGraphicsItem *result = 0;
+
+    //simple search before implementing container for fast access
+    foreach (QGraphicsItem *item, items()) {
+        if (UBGraphicsScene::getPersonalUuid(item) == uuid && !uuid.isNull()) {
+            result = item;
+        }
+    }
+
+    return result;
 }
 
 void UBGraphicsScene::setDocument(UBDocumentProxy* pDocument)
@@ -2100,6 +2127,12 @@ void UBGraphicsScene::setSelectedZLevel(QGraphicsItem * item)
 void UBGraphicsScene::setOwnZlevel(QGraphicsItem *item)
 {
     item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+}
+
+QUuid UBGraphicsScene::getPersonalUuid(QGraphicsItem *item)
+{
+    QString idCandidate = item->data(UBGraphicsItemData::ItemUuid).toString();
+    return idCandidate == QUuid().toString() ? QUuid() : QUuid(idCandidate);
 }
 
 qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest)
