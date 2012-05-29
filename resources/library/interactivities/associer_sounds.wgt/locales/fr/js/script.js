@@ -299,13 +299,13 @@ function exportData(){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
-            cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
+            cont_obj.audio = $(this).find("source").attr("src");
             cont_obj.mode = "edit";
             cont_obj.imgs = [];
             $(this).find(".img_block").each(function(){
                 var img_obj = new Object();
                 img_obj.value = $(this).find("input").val();
-                img_obj.link = $(this).find("img").attr("src").replace("../../","");
+                img_obj.link = $(this).find("img").attr("src");
                 img_obj.ht = $(this).find("img").height();
                 img_obj.wd = $(this).find("img").width();
                 cont_obj.imgs.push(img_obj);
@@ -316,14 +316,14 @@ function exportData(){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
-            cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
+            cont_obj.audio = $(this).find("source").attr("src");
             cont_obj.mode = "display";
             cont_obj.imgs = [];
             if($(this).find(".imgs_answers").children()[0].tagName == "DIV"){
                 var tmp_cont = $(this).find(".imgs_answers").find(".img_block");
                 var img_obj = new Object();
                 img_obj.value = tmp_cont.find("input").val();
-                img_obj.link = tmp_cont.find("img").attr("src").replace("../../","");
+                img_obj.link = tmp_cont.find("img").attr("src");
                 img_obj.ht = tmp_cont.find("img").height();
                 img_obj.wd = tmp_cont.find("img").width();
                 img_obj.cont = "answers";
@@ -332,7 +332,7 @@ function exportData(){
             $(this).find(".imgs_cont .img_block").each(function(){
                 var img_obj = new Object();
                 img_obj.value = $(this).find("input").val();
-                img_obj.link = $(this).find("img").attr("src").replace("../../","");
+                img_obj.link = $(this).find("img").attr("src");
                 img_obj.ht = $(this).find("img").height();
                 img_obj.wd = $(this).find("img").width();
                 img_obj.cont = "cont";
@@ -361,7 +361,7 @@ function importData(data){
             var audio_block = $("<div class='audio_block'>").appendTo(text);
             $("<div class='play'>").appendTo(audio_block);
             $("<div class='replay'>").appendTo(audio_block);
-            var source = $("<source/>").attr("src","../../" + data[i].audio);
+            var source = $("<source/>").attr("src",data[i].audio);
             var audio = $("<audio>").appendTo(audio_block);
             audio.append(source);
             $("<input type='hidden'/>").appendTo(audio_block);
@@ -369,7 +369,7 @@ function importData(data){
         
             for(var j in data[i].imgs){
                 var img_block = $("<div class='img_block img_gray' style='text-align: center;'>");
-                var img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
+                var img = $("<img src='"data[i].imgs[j].link + "' style='display: inline;'>");
                 img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
                 if((120 - data[i].imgs[j].ht) > 0)
                     img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
@@ -452,7 +452,7 @@ function importData(data){
             audio_block = $("<div class='audio_block'>").appendTo(text);
             $("<div class='play'>").appendTo(audio_block);
             $("<div class='replay'>").appendTo(audio_block);
-            source = $("<source/>").attr("src","../../" + data[i].audio);
+            source = $("<source/>").attr("src",data[i].audio);
             audio = $("<audio>").appendTo(audio_block);
             audio.append(source);
             $("<input type='hidden'/>").appendTo(audio_block);
@@ -460,7 +460,7 @@ function importData(data){
         
             for(j in data[i].imgs){
                 img_block = $("<div class='img_block img_gray' style='text-align: center;'>");
-                img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
+                img = $("<img src='"data[i].imgs[j].link + "' style='display: inline;'>");
                 img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
                 if((120 - data[i].imgs[j].ht) > 0)
                     img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
@@ -556,7 +556,7 @@ function showExample(){
     var audio_block = $("<div class='audio_block'>").appendTo(text);
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
-    var source = $("<source/>").attr("src", "../../objects/beep.wav");
+    var source = $("<source/>").attr("src", "objects/beep.wav");
     var audio = $("<audio>").appendTo(audio_block);
     audio.append(source);
     $("<input type='hidden'/>").appendTo(audio_block);
@@ -566,19 +566,19 @@ function showExample(){
     
     var img1 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='0'/>").appendTo(img1);
-    $("<img src=\"../../objects/0.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img1);
+    $("<img src=\"objects/0.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img1);
     var img2 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='1'/>").appendTo(img2);
-    $("<img src=\"../../objects/1.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img2);
+    $("<img src=\"objects/1.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img2);
     var img3 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='0'/>").appendTo(img3);
-    $("<img src=\"../../objects/2.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img3);
+    $("<img src=\"objects/2.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img3);
     var img4 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='0'/>").appendTo(img4);
-    $("<img src=\"../../objects/3.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img4);
+    $("<img src=\"objects/3.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img4);
     var img5 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='0'/>").appendTo(img5);
-    $("<img src=\"../../objects/4.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img5);  
+    $("<img src=\"objects/4.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img5);  
     
     tmp_array.push(img1, img2, img3, img4, img5);
     tmp_array = shuffle(tmp_array);
@@ -759,8 +759,7 @@ function onDropTarget(obj, event) {
         }
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
-        tmp = tmp.substr(1, tmp.length);
-        var tmp_img = $("<img/>").attr("src","../../" + tmp);
+        var tmp_img = $("<img/>").attr("src",tmp);
         $(obj).append(tmp_img);
         setTimeout(function(){
             if(tmp_img.height() >= tmp_img.width())

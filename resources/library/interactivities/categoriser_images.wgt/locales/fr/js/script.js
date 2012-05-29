@@ -214,7 +214,7 @@ function exportData(){
                 $(this).find(".img_block").each(function(){
                     var img_obj = new Object();
                     img_obj.value = $(this).find("input").val();
-                    img_obj.link = $(this).find("img").attr("src").replace("../../","");
+                    img_obj.link = $(this).find("img").attr("src");
                     ;
                     img_obj.ht = $(this).find("img").height();
                     img_obj.wd = $(this).find("img").width();
@@ -239,7 +239,7 @@ function exportData(){
                 $(this).find(".img_block").each(function(){
                     var img_obj = new Object();
                     img_obj.value = $(this).find("input").val();
-                    img_obj.link = $(this).find("img").attr("src").replace("../../","");
+                    img_obj.link = $(this).find("img").attr("src");
                     ;
                     img_obj.ht = $(this).find("img").height();
                     img_obj.wd = $(this).find("img").width();
@@ -251,7 +251,7 @@ function exportData(){
             $(this).find(".all_imgs .img_block").each(function(){
                 var img = new Object();
                 img.value = $(this).find("input").val();
-                img.link = $(this).find("img").attr("src").replace("../../","");
+                img.link = $(this).find("img").attr("src");
                 ;
                 img.ht = $(this).find("img").height();
                 img.wd = $(this).find("img").width();
@@ -300,7 +300,7 @@ function importData(data){
                     for(var k in data[i].conts[j].imgs){
                         var block_img = $("<div class='img_block' style='text-align: center;'></div>");
                         $("<input type='hidden' value='" + data[i].conts[j].imgs[k].value + "'/>").appendTo(block_img);
-                        var img = $("<img src=\"../../" + data[i].conts[j].imgs[k].link + "\" style=\"display: inline;\"/>").appendTo(block_img);
+                        var img = $("<img src=\"" + data[i].conts[j].imgs[k].link + "\" style=\"display: inline;\"/>").appendTo(block_img);
                         if(data[i].conts[j].imgs[k].ht >= data[i].conts[j].imgs[k].wd)
                             img.attr("height", "120");
                         else{
@@ -365,7 +365,7 @@ function importData(data){
                     for(k in data[i].conts[j].imgs){
                         block_img = $("<div class='img_block' style='text-align: center;'></div>");
                         $("<input type='hidden' value='" + data[i].conts[j].imgs[k].value + "'/>").appendTo(block_img);
-                        img = $("<img src=\"../../" + data[i].conts[j].imgs[k].link + "\" style=\"display: inline;\"/>").appendTo(block_img);
+                        img = $("<img src=\"" + data[i].conts[j].imgs[k].link + "\" style=\"display: inline;\"/>").appendTo(block_img);
                         if(data[i].conts[j].imgs[k].ht >= data[i].conts[j].imgs[k].wd)
                             img.attr("height", "120");
                         else{
@@ -403,7 +403,7 @@ function importData(data){
                 for(j in data[i].all_imgs){            
                     block_img = $("<div class='img_block' style='text-align: center;'></div>");
                     $("<input type='hidden' value='" + data[i].all_imgs[j].value + "'/>").appendTo(block_img);
-                    $("<img src=\"../../" + data[i].all_imgs[j].link + "\" style=\"display: inline;\" height=\"" + data[i].all_imgs[j].ht + "\"/>").appendTo(block_img);
+                    $("<img src=\"" + data[i].all_imgs[j].link + "\" style=\"display: inline;\" height=\"" + data[i].all_imgs[j].ht + "\"/>").appendTo(block_img);
                     all_imgs_arr.push(block_img);
                 } 
             
@@ -463,19 +463,19 @@ function showExample(){
     
     var img1 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='2'/>").appendTo(img1);
-    $("<img src=\"../../objects/0.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img1);
+    $("<img src=\"objects/0.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img1);
     var img2 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='1'/>").appendTo(img2);
-    $("<img src=\"../../objects/1.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img2);
+    $("<img src=\"objects/1.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img2);
     var img3 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='2'/>").appendTo(img3);
-    $("<img src=\"../../objects/2.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img3);
+    $("<img src=\"objects/2.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img3);
     var img4 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='1'/>").appendTo(img4);
-    $("<img src=\"../../objects/3.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img4);
+    $("<img src=\"objects/3.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img4);
     var img5 = $("<div class='img_block' style='text-align: center;'></div>");
     $("<input type='hidden' value='2'/>").appendTo(img5);
-    $("<img src=\"../../objects/4.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img5);  
+    $("<img src=\"objects/4.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img5);  
     
     tmp_array.push(img1, img2, img3, img4, img5);
     tmp_array = shuffle(tmp_array);

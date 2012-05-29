@@ -220,7 +220,7 @@ function exportData(){
             var tmp_block = new Object();
             if($(this).hasClass("img_block")){
                 if($(this).find(".audio_block").size() == 0){
-                    tmp_block.src = $(this).find("img").attr("src").replace("../../","");
+                    tmp_block.src = $(this).find("img").attr("src");
                     tmp_block.hidden = $(this).find("input:hidden").val();
                     tmp_block.h = $(this).find("img").height();
                     tmp_block.w = $(this).find("img").width(); 
@@ -228,7 +228,7 @@ function exportData(){
                 }
             }
             if($(this).hasClass("audio_block")){
-                tmp_block.src = $(this).find("source").attr("src").replace("../../","");
+                tmp_block.src = $(this).find("source").attr("src");
                 tmp_block.hidden = $(this).parent().find("input:hidden").val();
                 tmp_block.type = "audio";
             }
@@ -271,7 +271,7 @@ function importData(data){
                     var img_block = $("<div class='img_block' style='text-align: center;'></div>").insertBefore(imgs_container.find(".clear"));
                     $("<input type='hidden' value='" + data[i].blocks[j].hidden + "'/>").appendTo(img_block); 
                     $("<input type='checkbox' class='ch_box'/>").appendTo(img_block)
-                    $("<img src=\"../../" + data[i].blocks[j].src + "\" width='" + data[i].blocks[j].w + "' height='" + data[i].blocks[j].h + "' style=\"display: inline;\"/>").appendTo(img_block);
+                    $("<img src=\"" + data[i].blocks[j].src + "\" width='" + data[i].blocks[j].w + "' height='" + data[i].blocks[j].h + "' style=\"display: inline;\"/>").appendTo(img_block);
                     break;
                 case "audio":
                     var img_tmp = $("<div class='img_block'>").insertBefore(imgs_container.find(".clear"));
@@ -279,7 +279,7 @@ function importData(data){
                     $("<div class='close_img'>").appendTo(img_tmp);
                     $("<div class='play'>").appendTo(audio_block);
                     $("<div class='replay'>").appendTo(audio_block);
-                    var source = $("<source/>").attr("src", "../../" + data[i].blocks[j].src);
+                    var source = $("<source/>").attr("src",data[i].blocks[j].src);
                     var audio = $("<audio>").appendTo(audio_block);
                     audio.append(source);
                     $("<input type='hidden' value='" + data[i].blocks[j].hidden + "'/>").appendTo(img_tmp); 

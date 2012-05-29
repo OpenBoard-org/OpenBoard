@@ -216,7 +216,7 @@ function exportData(){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
-            cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
+            cont_obj.audio = $(this).find("source").attr("src");
             cont_obj.answer = $(this).find(".audio_answer").text();            
             array_to_export.push(cont_obj);
         });
@@ -224,7 +224,7 @@ function exportData(){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
-            cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
+            cont_obj.audio = $(this).find("source").attr("src");
             cont_obj.answer = $(this).find(".imgs_cont input").val(); 
             array_to_export.push(cont_obj);
         });
@@ -247,7 +247,7 @@ function importData(data){
         var audio_block = $("<div class='audio_block'>").appendTo(text);
         $("<div class='play'>").appendTo(audio_block);
         $("<div class='replay'>").appendTo(audio_block);
-        var source = $("<source/>").attr("src", "../../" + data[i].audio);
+        var source = $("<source/>").attr("src",data[i].audio);
         var audio = $("<audio>").appendTo(audio_block);
         audio.append(source);
         $("<input type='hidden'/>").appendTo(audio_block);
@@ -280,7 +280,7 @@ function showExample(){
     var audio_block = $("<div class='audio_block'>").appendTo(text);
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
-    var source = $("<source/>").attr("src", "../../objects/beep.wav");
+    var source = $("<source/>").attr("src", "objects/beep.wav");
     var audio = $("<audio>").appendTo(audio_block);
     audio.append(source);
     $("<input type='hidden'/>").appendTo(audio_block);
