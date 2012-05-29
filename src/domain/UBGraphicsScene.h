@@ -145,6 +145,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsW3CWidgetItem* addOEmbed(const QUrl& pContentUrl, const QPointF& pPos = QPointF(0, 0));
 
         UBGraphicsGroupContainerItem *createGroup(QList<QGraphicsItem*> items);
+        void addGroup(UBGraphicsGroupContainerItem *groupItem);
 
         QGraphicsItem* setAsBackgroundObject(QGraphicsItem* item, bool pAdaptTransformation = false, bool expand = false);
 
@@ -161,6 +162,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         QGraphicsItem* scaleToFitDocumentSize(QGraphicsItem* item, bool center = false, int margin = 0, bool expand = false);
 
         QRectF normalizedSceneRect(qreal ratio = -1.0);
+
+        QGraphicsItem *itemByUuid(QUuid uuid);
 
         void moveTo(const QPointF& pPoint);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pWidth, bool bLineStyle);
@@ -293,6 +296,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void setSelectedZLevel(QGraphicsItem *item);
         void setOwnZlevel(QGraphicsItem *item);
+
+        static QUuid getPersonalUuid(QGraphicsItem *item);
 
 public slots:
 

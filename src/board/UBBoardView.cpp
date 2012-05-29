@@ -562,7 +562,8 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
                       || item->type() == UBGraphicsMediaItem::Type
                       || item->type() == UBGraphicsSvgItem::Type
                       || item->type() == UBGraphicsTextItem::Type
-                      || item->type() == UBGraphicsStrokesGroup::Type) {
+                      || item->type() == UBGraphicsStrokesGroup::Type
+                      || item->type() == UBGraphicsGroupContainerItem::Type) {
 
                   if (!mJustSelectedItems.contains(item)) {
                       item->setSelected(true);

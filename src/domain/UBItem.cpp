@@ -18,7 +18,7 @@
 #include "core/memcheck.h"
 
 UBItem::UBItem()
-    : mUuid(QUuid::createUuid())
+    : mUuid(QUuid())
     , mRenderingQuality(UBItem::RenderingQualityNormal)
 {
     // NOOP
