@@ -3,7 +3,7 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://uniboard.mnemis.com/widgets/notes" 
         version="1.2"
-        width="950"
+        width="800"
         height="400" 
         ub:resizable="true">     
    

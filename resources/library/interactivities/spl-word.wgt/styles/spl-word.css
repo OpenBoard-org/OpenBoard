@@ -1,219 +1,35 @@
 /* custom */
 
 #mp_content span.upper{
-    font-size: 24pt;
-    cursor: pointer;
+	font-size: 24pt;
+	cursor: pointer;
 }
 #mp_content span.upper span.dash{
-    display: none;
-    color: black;
-    text-align: center;
+	display: none;
+	color: black;
+	text-align: center;
 }
 #mp_content span.upper:hover span.dash{
-    display: inline-block;
-    width: 30px; height: 30px;
-    background-image: url( "separator-hover.png" );
-    background-position: 0px 5px;
-    color: transparent;
+	display: inline-block;
+	width: 30px; height: 30px;
+	background-image: url( "separator-hover.png" );
+	background-position: 0px 5px;
+	color: transparent;
 }
 
 #mp_content span.upper span.fixed{
-    display: inline-block;
-    color: #66cc00;
-    width: 30px; height: 30px;
-    background-image: none;
+	display: inline-block;
+	color: #00b8e4;
+	width: 30px; height: 30px;
+	background-image: none;
 }
 #mp_content span.upper:hover span.fixed, #mp_content span.upper span.fixed:hover{
-    color: transparent;
-    width: 30px; height: 30px;
-    background-image: url( "separator-activated.png" );
-    background-position: 0px 5px;
+	color: transparent;
+	width: 30px; height: 30px;
+	background-image: url( "separator-activated.png" );
+	background-position: 0px 5px;
 }
 
 .answerRight span.upper{
-    color: #66cc00;
-}
-
-/*new design*/
-
-.selected{
-
-}
-
-.body_table{
-    width: 100%;
-    height: 100%;
-    border-spacing: 0;
-}
-
-/*top*/
-
-.b_top_left{
-    width: 54px;
-    background-image: url(../img/top_left.png);
-    background-repeat: no-repeat;
-}
-
-.b_top_right{
-    width: 54px;
-    background-image: url(../img/top_right.png);
-    background-repeat: no-repeat;
-}
-
-.b_top_center{
-    height: 54px;
-    background-image: url(../img/top.png);
-    background-repeat: repeat-x;
-}
-
-/*bottom*/
-
-.b_bottom_left{
-    width: 54px;
-    background-image: url(../img/bottom_left.png);
-    background-repeat: no-repeat;
-}
-
-.b_bottom_right{
-    width: 54px;
-    background-image: url(../img/bottom_right.png);
-    background-repeat: no-repeat;
-}
-
-.b_bottom_center{
-    background-image: url(../img/bottom.png);
-    background-repeat: repeat-x;
-}
-
-/*center*/
-
-.b_center_left{
-    width: 54px;
-    background-image: url(../img/left.png);
-    background-repeat: repeat-y;
-}
-
-.b_center_right{
-    width: 54px;
-    background-image: url(../img/right.png);
-    background-repeat: repeat-y;
-}
-
-#data{
-    width: 100%;
-    height: 100%;    
-    min-height: 250px;
-    overflow: auto;
-}
-
-#wgt_name{
-    height: 44px;
-    width: 200px;
-    margin: 10px 10px 0 10px;
-    padding: 0;
-    float: left;
-    font-family: "Lobster13Regular";
-    font-size: 24px;
-    color: #8c5730;
-}
-
-#wgt_reload, #wgt_edit, #wgt_display{
-    cursor: pointer;
-    width: 80px;
-    height: 44px;
-    margin: 10px 10px 0 0;
-    float: right;
-    font-family: "Lobster13Regular";
-    font-size: 24px;   
-    color: #8c5730;
-}
-
-#wgt_display{
-    width: 100px;
-    padding-left: 40px;
-    background-image: url(../img/slate-edit.png);
-    background-repeat: no-repeat;
-    background-position: top 0;
-    display: none;
-}
-
-#wgt_edit{    
-    width: 100px;
-    padding-left: 40px;
-    background-image: url(../img/slate-edit.png);
-    background-repeat: no-repeat;
-    background-position: top 0;
-}
-
-#wgt_reload{
-    padding-left: 40px;
-    background-image: url(../img/slate-toolbar-reload.png);
-    background-repeat: no-repeat;
-    background-position: top 0;
-}
-
-.style_select{    
-    width: 120px;
-    font-family: "Lobster13Regular";
-    font-size: 24px;
-    float: right;
-    margin: 10px 20px 0 0;
-    border-radius: 10px;
-    background-image: url(../img/ar_down.png);
-    background-color: #d4aa79;
-    color: #8c5730;
-    background-position: 105px 11px;
-    background-repeat: no-repeat;
-    -webkit-appearance: menulist-text;
-    display: none;
-}
-
-.btl_pad{
-    background-image: url(../img/pad-top-left.png) !important;
-}
-
-.btc_pad{
-    background-image: url(../img/pad-top.png) !important;
-}
-
-.btr_pad{
-    background-image: url(../img/pad-top-right.png) !important;
-}
-
-.bcl_pad{
-    background-image: url(../img/pad-left.png) !important;
-}
-
-.bcr_pad{
-    background-image: url(../img/pad-right.png) !important;
-}
-
-.bbl_pad{
-    background-image: url(../img/pad-bottom-left.png) !important;
-}
-
-.bbc_pad{
-    background-image: url(../img/pad-bottom.png) !important;
-}
-
-.bbr_pad{
-    background-image: url(../img/pad-bottom-right.png) !important;
-}
-
-.pad_color{
-    color: white !important;
-}
-
-.pad_reload{
-    background-image: url(../img/slate-toolbar-reload-white.png) !important;
-}
-
-.pad_edit{
-    background-image: url(../img/slate-display.png) !important;
-}
-
-.pad_select{
-    background-color: black !important;
-    color: white !important;
-    background-image: url(../img/ar_down_white.png) !important;
+	color: #00b8e4;
 }

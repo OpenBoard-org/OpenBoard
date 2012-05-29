@@ -1,11 +1,7 @@
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
-    example: "so*phis*ti*qué",
-    wgt_name: "Diviser un mot",
-    reload: "Recharger",
-    slate: "Bois",
-    pad: "Pad"
+    example: "so*phis*ti*qué"
 };
 
 // if use the "view/edit" button or rely on the api instead
@@ -24,6 +20,9 @@ function wcontainer( containerID )
     this.minHeight = 100;
     this.minWidth = 400;
 	
+    // set to 0 for no max width restriction
+    this.maxWidth = 0;
+	
     // links to the elements of the widget
     this.elements = {};
 	
@@ -36,10 +35,18 @@ function wcontainer( containerID )
     this.create = function( containerID )
     {
         var html = 
-        '<div id="mp_content">' +
+        '<div id="mp_setup">' +
         '<div class="viewmode">' +
+        '<button>' + sankoreLang.edit + '</button>' +
         '</div>' +
         '<div class="editmode">' +
+        '<button>' + sankoreLang.view + '</button>' +
+        '</div>' +
+        '</div>' +
+        '<div id="mp_content">' +
+        '<div class="viewmode" id="mp_view">' +
+        '</div>' +
+        '<div class="editmode" id="mp_edit">' +
         '</div>' +
         '</div>';
 		
@@ -49,14 +56,15 @@ function wcontainer( containerID )
         this.elements.edit = container.find( ".editmode" );
         this.elements.view = container.find( ".viewmode" );
         this.elements.container = container;
-        this.elements.containerView = container.find( "#mp_content .viewmode" );
-        this.elements.containerEdit = container.find( "#mp_content .editmode" );
+        this.elements.subcontainer = container.find( "#mp_content" );
+        this.elements.containerView = this.elements.subcontainer.find( ".viewmode" );
+        this.elements.containerEdit = this.elements.subcontainer.find( ".editmode" );
 		
-        $("#wgt_edit").live("click", function(){
+        container.find( ".viewmode button" ).click( function(){
             thisInstance.modeEdit();
         } );
 		
-        $("#wgt_display").live("click", function(){
+        container.find( ".editmode button" ).click( function(){
             thisInstance.modeView();
         } );
     };
@@ -100,7 +108,7 @@ function wcontainer( containerID )
         this.elements.edit.removeClass( "hide" );
         this.elements.view.addClass( "hide" );
 		
-        //this.adjustSize();
+        this.adjustSize();
     };
     this.modeView = function()
     {
@@ -109,10 +117,71 @@ function wcontainer( containerID )
         this.elements.edit.addClass( "hide" );
         this.elements.view.removeClass( "hide" );
 		
-        //this.adjustSize();
+        this.adjustSize();
     };
 	
-
+	
+	
+    /*
+	================
+	adjustSize
+	================
+	- changes the widget size (window and container)
+	*/
+    this.adjustSize = function( width, height )
+    {
+        // retrieve the arguments
+        if( arguments.length < 2 )
+        {
+            var s = ( this.editMode )? this.editSize() : this.viewSize();
+            var width = s.w;
+            var height = s.h;
+        }
+		
+        // check for validity
+        if( width + height == 0 )
+            return;
+		
+        // add view/edit bar height
+        if( !isSankore ){
+            height += $( this.elements.container ).find( "#mp_setup" ).outerHeight();
+        }
+		
+        // apply min and max restrictions
+        width = Math.max( this.minWidth, width );
+        height = Math.max( this.minHeight, height );
+        if( this.maxWidth ){
+            width = Math.min( width, this.maxWidth );
+        }
+		
+        // if viewed as a widget, resize the window
+        if( !isBrowser )
+        {
+            var dw = this.getData( "dw" );
+            var dh = this.getData( "dh" );
+			
+            if( width == 0 ){
+                width = widget.width;
+            }
+            if( height == 0 ){
+                height = widget.height;
+            }
+            window.resizeTo( width + dw, height + dh );
+        }
+		
+        // resize the container
+        var params = {};
+        if( width != 0 ){
+            params.width = width;
+        }
+        if( height != 0 ){
+            params.height = height;
+        }
+		
+        this.elements.container.animate( params );
+		
+    };
+	
     /*
 	======================
 	setData and getData

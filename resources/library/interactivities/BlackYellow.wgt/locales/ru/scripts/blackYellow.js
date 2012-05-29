@@ -13,19 +13,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var sankoreLang = {
-    display: "Показать", 
-    edit: "Изменить", 
-    add: "Добавить", 
-    enter_data: "Введите вопрос:", 
-    enter_result: "Введите ответ:", 
-    ok: "Ок", 
-    cancel: "Отмена",
-    wgt_name: "Черный/желтый",
-    reload: "Обновить",
-    slate: "Узор",
-    pad: "Планшет"
-};
+var sankoreLang = {display: "Показать", edit: "Изменить", add: "Добавить", enter_data: "Введите вопрос:", enter_result: "Введите ответ:", ok: "Ок", cancel: "Отмена"};
+
 function init(){
 
     //variables
@@ -53,14 +42,6 @@ function init(){
     
     var opacityChanged = false;
     
-    $("#wgt_display").text(sankoreLang.display);
-    $("#wgt_edit").text(sankoreLang.edit);
-    $("#wgt_add").text(sankoreLang.add);
-    $("#wgt_name").text(sankoreLang.wgt_name);
-    $("#wgt_reload").text(sankoreLang.reload);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    
     if(window.sankore){
         if(sankore.preference("blackYellowData","")){
             var importArray = jQuery.parseJSON(sankore.preference("blackYellowData",""));
@@ -73,7 +54,7 @@ function init(){
                 .css("position","absolute")
                 .css("top",importArray[i].top)
                 .css("left",importArray[i].left);                                
-                tmpReadyTask.appendTo("#data");
+                tmpReadyTask.appendTo("body");
             }      
         }
         $(document).disableTextSelect();
@@ -81,22 +62,20 @@ function init(){
     
     /* ------------- BUTTONS -------------*/
     
-    if(sankore.preference("by_style","")){
-        changeStyle(sankore.preference("by_style",""));
-        $(".style_select").val(sankore.preference("by_style",""));
-    } else
-        changeStyle(1)
-
-    $("#wgt_display, #wgt_edit").click(function(event){
-        if(this.id == "wgt_display"){
-            if(!$(this).hasClass("selected")){                
-                $(this).addClass("selected");
-                $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");                
-                $(this).css("display", "none");
-                $("#wgt_add").css("display", "none");
-                $("#wgt_edit").css("display", "block");
+    // toggle button
+    var buttonDiv = $("<div id='buttonDiv' class='buttonDiv'>").appendTo("body");
+    var toggleButton = $("<button id='toggleButton' class='toggleButton'><</button>").appendTo("#buttonDiv");
+    buttonDiv.css({
+        top:"10px",
+        right:0
+    });    
+          
+    //toggle mode
+    toggleButton.click(function(){
+        if(!shadowOver){
+            if(mode){
                 mode = false;
+                addButtonDiv.css("display","none");
                 $(".leftDiv, .rightDiv").animate({
                     "opacity":"1"
                 },"slow",function(){
@@ -112,23 +91,16 @@ function init(){
                                 .find(".taskContainer").removeAttr("contenteditable");                                
                                 
                                 $(domElem).remove();
-                                tmpReadyTask.appendTo("#data");
+                                tmpReadyTask.appendTo("body");
                             });
                         }
                         opacityChanged = false;
                     }
                 });
-                $(document).disableTextSelect(); 
-            }
-        } else {            
-            if(!$(this).hasClass("selected")){
-                $(this).addClass("selected");
-                $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");                
-                $(this).css("display", "none");
-                $("#wgt_add").css("display", "block");
-                $("#wgt_display").css("display", "block");
-                mode = true; 
+                $(document).disableTextSelect();   
+            } else {            
+                mode = true;
+                addButtonDiv.css("display","block");  
                 $(document).enableTextSelect(); 
                 $(".leftDiv, .rightDiv").animate({
                     "opacity":"0.4"
@@ -136,7 +108,7 @@ function init(){
                     if(!opacityChanged){
                         if($(".readyTask").size() != 0){
                             $(".readyTask").each(function(index, domElem){     
-                                var editContent = $("<div class='editContainer'>").width($(domElem).width() + 10).height($(domElem) + 10).appendTo("#data");
+                                var editContent = $("<div class='editContainer'>").width($(domElem).width() + 10).height($(domElem) + 10).appendTo("body");
                                 var closeItem = $("<div class='closeItem'>").appendTo(editContent);
                                 var rightResize = $("<div class='rightResize'>").appendTo(editContent);
                                 var bottomResize = $("<div class='bottomResize'>").appendTo(editContent);
@@ -151,38 +123,99 @@ function init(){
                         opacityChanged = true;
                     }
                 });
+                
+            }
+            toggleButton.trigger("mouseout");
+        }
+    });
+    
+    // toggle button events
+    toggleButton.mouseover(function(){
+        if(!shadowOver){
+            if(!toggleFlag && !endFlag){
+                endFlag = true;
+                toggleButton.animate({
+                    width:"115px"
+                },"fast",function(){
+                    toggleFlag = true;
+                    if(!mode)
+                        toggleButton.text(sankoreLang.edit);
+                    else
+                        toggleButton.text(sankoreLang.display);
+                });
             }
         }
     });
-
-    $("#wgt_reload").click(function(){
-        window.location.reload();
+    
+    toggleButton.mouseout(function(){
+        if(!shadowOver){
+            if(toggleFlag && endFlag){
+                endFlag = false;
+                toggleButton.animate({
+                    width:"20px"
+                },"fast", function(){
+                    toggleButton.text("<");
+                    toggleFlag = false;
+                });
+            }
+        }
     });
     
-    $("#wgt_add").click(function(){
+    //add button
+    var addButtonDiv = $("<div id='addButtonDiv' class='addButtonDiv'>").appendTo("body");
+    var addButton = $("<button id='addButton' class='addButton'>+</button>").appendTo("#addButtonDiv");
+    addButtonDiv.css({
+        top:"47px",
+        right:0
+    });    
+    
+    // add button events
+    addButton.click(function(){
         shadowDiv.show("fast", function(){
             shadowOver = true;
             popupBack.show("slow");            
         });
         $(document).disableTextSelect();
+        addButton.trigger("mouseout");
+    });
+     
+    addButton.mouseover(function(){
+        if(!shadowOver){
+            if(!addToggleStart && !addToggleEnd){
+                addToggleEnd = true;
+                addButton.animate({
+                    width:"115px"
+                },"fast",function(){
+                    addToggleStart = true;
+                    addButton.text(sankoreLang.add);
+                });
+            }
+        }
     });
     
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    
-    $(".style_select").change(function (event){
-        changeStyle($(this).find("option:selected").val());
-    })
+    addButton.mouseout(function(){
+        if(!shadowOver){
+            if(addToggleStart && addToggleEnd){
+                addToggleEnd = false;
+                addButton.animate({
+                    width:"20px"
+                },"fast", function(){
+                    addButton.text("+");
+                    addToggleStart = false;
+                });
+            }
+        }
+    });
     
     /* -------------- END OF WORK WITH BUTTONS ---------------*/
     
     //basic divs
-    var leftDiv = $("<div id='leftDiv' class='leftDiv'>").appendTo("#data");
-    var rightDiv = $("<div id='rightDiv' class='rightDiv'>").appendTo("#data");
+    var leftDiv = $("<div id='leftDiv' class='leftDiv'>").appendTo("body");
+    var rightDiv = $("<div id='rightDiv' class='rightDiv'>").appendTo("body");
     
     //divs for adding a new item
-    var shadowDiv = $("<div id='shadowDiv' class='shadowDiv'>").appendTo("#data");
-    var popupBack = $("<div id='popupBack' class='popupBack'>").appendTo("#data");
+    var shadowDiv = $("<div id='shadowDiv' class='shadowDiv'>").appendTo("body");
+    var popupBack = $("<div id='popupBack' class='popupBack'>").appendTo("body");
     
     //input fields and buttons for a popup window
     var expressionDiv = $("<div id='expressionDiv' class='popupContainers'>").appendTo(popupBack);
@@ -231,11 +264,11 @@ function init(){
     /* -------------- THE END OF WORK WITH POPUP BUTTONS AND FIELDS ---------------*/    
     
     // a work with dragging possibility    
-    $("input:text, .style_select").mouseover(function(){
+    $("input:text").mouseover(function(){
         $(document).enableTextSelect(); 
     });
                         
-    $("input:text, .style_select").mouseout(function(){
+    $("input:text").mouseout(function(){
         $(document).disableTextSelect(); 
     });
                     
@@ -287,22 +320,20 @@ function init(){
         }
     });
     
-    //$("#leftDiv,#rightDiv,#shadowDiv").css("height", $(window).height());
+    $("#leftDiv,#rightDiv,#shadowDiv").css("height", $(window).height());
     popupBack.css("top", ($(window).height() - 138)*50/$(window).height() + "%");
     popupBack.css("left", ($(window).width() - 360)*50/$(window).width() + "%");
     
     $(window).resize(function(){
-        //$("#leftDiv,#rightDiv,#shadowDiv").css("height", $(window).height());
+        $("#leftDiv,#rightDiv,#shadowDiv").css("height", $(window).height());
         popupBack.css("top", ($(window).height() - 138)*50/$(window).height() + "%");
         popupBack.css("left", ($(window).width() - 360)*50/$(window).width() + "%");
     });
     
-    if (window.widget) {
-        window.widget.onleave = function(){
-            exportToSankore();
-            sankore.setPreference("by_style", $(".style_select").find("option:selected").val());
-        }
-    }
+    $("html").mouseout(function(){
+        if(window.sankore)
+            exportToSankore();        
+    });
     
     // export data
     function exportToSankore(){        
@@ -366,7 +397,7 @@ function checkEmptyFields(field){
 
 //adding a new task to the page
 function addTask(expression, result){
-    var editContent = $("<div class='editContainer'>").width(240).height(70).appendTo("#data");
+    var editContent = $("<div class='editContainer'>").width(240).height(70).appendTo("body");
     var closeItem = $("<div class='closeItem'>").appendTo(editContent);
     var rightResize = $("<div class='rightResize'>").appendTo(editContent);
     var bottomResize = $("<div class='bottomResize'>").appendTo(editContent);
@@ -374,39 +405,4 @@ function addTask(expression, result){
     var exprContainer = $("<div class='taskContainer' style='color: yellow;' contenteditable='true'>" + expression + "</div>").appendTo(main);
     var resContainer = $("<div class='taskContainer' style='color: black;' contenteditable='true'>"+ result + "</div>").appendTo(main);
     main.appendTo(editContent);
-}
-
-//changing the style
-function changeStyle(val){
-    if(val == 1){
-        $(".b_top_left").removeClass("btl_pad");
-        $(".b_top_center").removeClass("btc_pad");
-        $(".b_top_right").removeClass("btr_pad");
-        $(".b_center_left").removeClass("bcl_pad");
-        $(".b_center_right").removeClass("bcr_pad");
-        $(".b_bottom_right").removeClass("bbr_pad");
-        $(".b_bottom_left").removeClass("bbl_pad");
-        $(".b_bottom_center").removeClass("bbc_pad");
-        $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
-        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_add").removeClass("pad_color").removeClass("pad_add");
-        $("#wgt_name").removeClass("pad_color");
-        $(".style_select").removeClass("pad_select");
-    } else {
-        $(".b_top_left").addClass("btl_pad");
-        $(".b_top_center").addClass("btc_pad");
-        $(".b_top_right").addClass("btr_pad");
-        $(".b_center_left").addClass("bcl_pad");
-        $(".b_center_right").addClass("bcr_pad");
-        $(".b_bottom_right").addClass("bbr_pad");
-        $(".b_bottom_left").addClass("bbl_pad");
-        $(".b_bottom_center").addClass("bbc_pad");
-        $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
-        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_add").addClass("pad_color").addClass("pad_add");
-        $("#wgt_name").addClass("pad_color");
-        $(".style_select").addClass("pad_select");
-    }
 }

@@ -28,11 +28,7 @@ function checkResponse()
 var sankoreLang = {
     edit: "Изменить",
     view: "Просмотр",
-    example: "это\nпример\nпредложения",
-    wgt_name: "Порядок фраз",
-    reload: "Обновить",
-    slate: "Узор",
-    pad: "Планшет"
+    example: "это\nпример\nпредложения"
 }
 
 
@@ -60,48 +56,8 @@ var isBrowser = ( typeof( widget ) == "undefined" );
 
 // hardcoded parameters, not very good
 var input_width = 606;
-var widget_padding = 0;
+var widget_padding = 100;
 
-$(document).ready(function(){
-    if(sankore.preference("ord_phrases_style","")){
-        changeStyle(sankore.preference("ord_phrases_style",""));
-        $(".style_select").val(sankore.preference("ord_phrases_style",""));
-    } else
-        changeStyle(1)
-    $("#wgt_display").text(sankoreLang.view);
-    $("#wgt_edit").text(sankoreLang.edit);
-    $("#wgt_display, #wgt_edit").click(function(event){
-        if(this.id == "wgt_display"){
-            if(!$(this).hasClass("selected")){                
-                $(this).addClass("selected");
-                $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");                
-                $(this).css("display", "none");
-                $("#wgt_edit").css("display", "block");
-                modeView();
-            }
-        } else {            
-            if(!$(this).hasClass("selected")){
-                $(this).addClass("selected");
-                $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");                
-                $(this).css("display", "none");
-                $("#wgt_display").css("display", "block");
-                modeEdit();
-            }
-        }
-    });
-    $("#wgt_name").text(sankoreLang.wgt_name);
-    $("#wgt_reload").text(sankoreLang.reload).click(function(){
-        window.location.reload();
-    });
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    
-    $(".style_select").change(function (event){
-        changeStyle($(this).find("option:selected").val());
-    })
-})
 
 function str_replace( w, b, s ){
     while( s.indexOf( w ) != -1 ){
@@ -151,38 +107,6 @@ function createElements( sentence )
     return elements;
 }
 
-//changing the style
-function changeStyle(val){
-    if(val == 1){
-        $(".b_top_left").removeClass("btl_pad");
-        $(".b_top_center").removeClass("btc_pad");
-        $(".b_top_right").removeClass("btr_pad");
-        $(".b_center_left").removeClass("bcl_pad");
-        $(".b_center_right").removeClass("bcr_pad");
-        $(".b_bottom_right").removeClass("bbr_pad");
-        $(".b_bottom_left").removeClass("bbl_pad");
-        $(".b_bottom_center").removeClass("bbc_pad");
-        $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
-        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_name").removeClass("pad_color");
-        $(".style_select").removeClass("pad_select");
-    } else {
-        $(".b_top_left").addClass("btl_pad");
-        $(".b_top_center").addClass("btc_pad");
-        $(".b_top_right").addClass("btr_pad");
-        $(".b_center_left").addClass("bcl_pad");
-        $(".b_center_right").addClass("bcr_pad");
-        $(".b_bottom_right").addClass("bbr_pad");
-        $(".b_bottom_left").addClass("bbl_pad");
-        $(".b_bottom_center").addClass("bbc_pad");
-        $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
-        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_name").addClass("pad_color");
-        $(".style_select").addClass("pad_select");
-    }
-}
 
 function checkSentence()
 {
@@ -194,10 +118,9 @@ function checkSentence()
     {
         ph.push( $( this ).text() );
     });
+	
     if( ph.join( "\n" ) == str_replace( "\r", "", sentence ) ){
         $( "#mp_word .phrase" ).addClass( "right" );
-    } else {
-        $( "#mp_word .phrase" ).removeClass( "right" );
     }
 }
 
@@ -222,6 +145,14 @@ function modeView()
         sentence = p2.join( "\n" );
     }
 	
+    // if no sankore api, insert edit button
+    if( !isSankore ){
+        $( "#mp_setup" ).empty().append( '<input type="button" value="' + sankoreLang.edit + '">' );
+        $( "#mp_setup input:button" ).click( function(){
+            modeEdit();
+        });
+    }
+	
     // clean the previous word
     $( "#mp_word" ).empty();
 	
@@ -244,7 +175,30 @@ function modeView()
             update: checkSentence
         } );
     } else 
-        $( "#mp_word" ).sortable();	
+        $( "#mp_word" ).sortable();
+
+    // adjustHeight
+    var aHeight = $( phrases[0] ).outerHeight( true );
+	
+    // apply new width
+    adjust( aHeight * phrases.length );
+	
+}
+
+/*
+============
+adjust width or height
+============
+*/
+function adjust( height )
+{
+    $( "#mp_word" ).animate( {
+        height: height
+    } );
+    // if viewed as a widget, resize the window
+    if( !isBrowser ){
+        window.resizeTo( widget.width, height + widget_padding );
+    }
 }
 
 /*
@@ -256,14 +210,20 @@ function modeEdit()
 {
     editMode = true;
     // if no sankore api, insert ok button
-
+    if( !isSankore )
+    {
+        $( "#mp_setup" ).empty().append( '<input type="button" value="' + sankoreLang.view + '">' );
+        $( "#mp_setup input:button" ).click( function(){
+            modeView();
+        });
+    }
     $( "#mp_word").css( "margin-left", 0 ).empty()
     .append('<textarea cols="50" rows="5">'+sentence+'</textarea>');
+    adjust( $( "#mp_word textarea" ).outerHeight() );
 }
 
 if (window.widget) {
     window.widget.onleave = function(){
-        sankore.setPreference("ord_phrases_style", $(".style_select").find("option:selected").val());
         if($( "#mp_word textarea" ).val())
         {
             modeView();

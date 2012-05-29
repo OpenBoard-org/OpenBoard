@@ -3,63 +3,42 @@ var sankoreLang = {
     edit: "Изменить", 
     short_desc: "Сколько сигналов вы слышите?", 
     add: "Новый блок",
-    enter: "Введите описание ...",
-    wgt_name: "Что звучит",
-    reload: "Обновить",
-    slate: "Узор",
-    pad: "Планшет"
+    enter: "Введите описание ..."
 };
 
 //main function
 function start(){
 
-    $("#wgt_display").text(sankoreLang.display);
-    $("#wgt_edit").text(sankoreLang.edit);
-    $("#wgt_name").text(sankoreLang.wgt_name);
-    $("#wgt_reload").text(sankoreLang.reload);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
+    $("#display_text").text(sankoreLang.display);
+    $("#edit_text").text(sankoreLang.edit);
     
     if(window.sankore){
         if(sankore.preference("associer_sound","")){
             var data = jQuery.parseJSON(sankore.preference("associer_sound",""));
             importData(data);
         }
-        else 
+        else {
             showExample();
-        if(sankore.preference("as_snd_style","")){
-            changeStyle(sankore.preference("as_snd_style",""));
-            $(".style_select").val(sankore.preference("as_snd_style",""));
-        } else
-            changeStyle(1)
+        }
     } 
     else 
         showExample();
-    
     //events
     if (window.widget) {
         window.widget.onleave = function(){
             exportData();
-            sankore.setPreference("as_snd_style", $(".style_select").find("option:selected").val());
         }
     }
     
-    $("#wgt_reload").click(function(){
-        window.location.reload();
-    });
-    
-    $(".style_select").change(function (event){
-        changeStyle($(this).find("option:selected").val());
-    })
-    
-    $("#wgt_display, #wgt_edit").click(function(event){
-        if(this.id == "wgt_display"){
+    $("#display, #edit").click(function(event){
+        if(this.id == "display"){
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
                     sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
-                $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");
+                $("#display_img").removeClass("red_point").addClass("green_point");
+                $("#edit_img").removeClass("green_point").addClass("red_point");
+                $("#edit").removeClass("selected");
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -96,7 +75,7 @@ function start(){
                         tmp_array[i].draggable({
                             helper:'clone',
                             zIndex:100,
-                            appendTo: '#data'
+                            appendTo: 'body'
                         });
                         tmp_array[i].appendTo(container.find(".imgs_cont"));
                     }
@@ -156,16 +135,15 @@ function start(){
                         }
                     });
                 });
-                $(this).css("display", "none");
-                $("#wgt_edit").css("display", "block");
             }
         } else {            
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
                     sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
-                $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");
+                $("#edit_img").removeClass("red_point").addClass("green_point");
+                $("#display_img").removeClass("green_point").addClass("red_point");
+                $("#display").removeClass("selected");
                 
                 $(".cont").each(function(){
                     var container = $(this);
@@ -174,7 +152,7 @@ function start(){
                     });
                     container.find(".imgs_answers").remove();
                     $("<div class='close_cont'>").appendTo(container);
-                    container.find(".imgs_cont").css("background-color", "");
+                    container.find(".imgs_cont").css("background-color", "white");
                     container.find(".text_cont .audio_desc").attr("contenteditable","true");
                     container.find(".text_cont").attr("ondragenter", "return false;")
                     .attr("ondragleave", "$(this).removeClass('gray'); return false;")
@@ -184,9 +162,9 @@ function start(){
                     container.find(".img_block").each(function(){
                         $(this).draggable("destroy");
                         $(this).attr("ondragenter", "return false;")
-                        .attr("ondragleave", "$(this).css(\"background-color\",\"\"); return false;")
+                        .attr("ondragleave", "$(this).css(\"background-color\",\"white\"); return false;")
                         .attr("ondragover", "$(this).css(\"background-color\",\"#ccc\"); return false;")
-                        .attr("ondrop", "$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);")
+                        .attr("ondrop", "$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);")
                         .css("float","left");
                         $("<div class='close_img'>").appendTo($(this));
                         if($(this).find("input").val() == "1"){
@@ -199,9 +177,7 @@ function start(){
                     container.find(".imgs_cont").append(add_img)
                 });                
                 
-                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
-                $(this).css("display", "none");
-                $("#wgt_display").css("display", "block");
+                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("body");
             }
         }
         
@@ -296,17 +272,17 @@ function start(){
 //export
 function exportData(){
     var array_to_export = [];
-    if($("#wgt_edit").hasClass("selected")){
+    if($("#edit").hasClass("selected")){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
-            cont_obj.audio = $(this).find("source").attr("src");
+            cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
             cont_obj.mode = "edit";
             cont_obj.imgs = [];
             $(this).find(".img_block").each(function(){
                 var img_obj = new Object();
                 img_obj.value = $(this).find("input").val();
-                img_obj.link = $(this).find("img").attr("src");
+                img_obj.link = $(this).find("img").attr("src").replace("../../","");
                 img_obj.ht = $(this).find("img").height();
                 img_obj.wd = $(this).find("img").width();
                 cont_obj.imgs.push(img_obj);
@@ -317,14 +293,14 @@ function exportData(){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
-            cont_obj.audio = $(this).find("source").attr("src");
+            cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
             cont_obj.mode = "display";
             cont_obj.imgs = [];
             if($(this).find(".imgs_answers").children()[0].tagName == "DIV"){
                 var tmp_cont = $(this).find(".imgs_answers").find(".img_block");
                 var img_obj = new Object();
                 img_obj.value = tmp_cont.find("input").val();
-                img_obj.link = tmp_cont.find("img").attr("src");
+                img_obj.link = tmp_cont.find("img").attr("src").replace("../../","");
                 img_obj.ht = tmp_cont.find("img").height();
                 img_obj.wd = tmp_cont.find("img").width();
                 img_obj.cont = "answers";
@@ -333,7 +309,7 @@ function exportData(){
             $(this).find(".imgs_cont .img_block").each(function(){
                 var img_obj = new Object();
                 img_obj.value = $(this).find("input").val();
-                img_obj.link = $(this).find("img").attr("src");
+                img_obj.link = $(this).find("img").attr("src").replace("../../","");
                 img_obj.ht = $(this).find("img").height();
                 img_obj.wd = $(this).find("img").width();
                 img_obj.cont = "cont";
@@ -362,7 +338,7 @@ function importData(data){
             var audio_block = $("<div class='audio_block'>").appendTo(text);
             $("<div class='play'>").appendTo(audio_block);
             $("<div class='replay'>").appendTo(audio_block);
-            var source = $("<source/>").attr("src", data[i].audio);
+            var source = $("<source/>").attr("src","../../" + data[i].audio);
             var audio = $("<audio>").appendTo(audio_block);
             audio.append(source);
             $("<input type='hidden'/>").appendTo(audio_block);
@@ -370,7 +346,7 @@ function importData(data){
         
             for(var j in data[i].imgs){
                 var img_block = $("<div class='img_block img_gray' style='text-align: center;'>");
-                var img = $("<img src='" + data[i].imgs[j].link + "' style='display: inline;'>");
+                var img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
                 img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
                 if((120 - data[i].imgs[j].ht) > 0)
                     img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
@@ -383,7 +359,7 @@ function importData(data){
                 tmp_array[j].draggable({
                     helper:'clone',
                     zIndex:100,
-                    appendTo: '#data'
+                    appendTo: 'body'
                 });
                 tmp_array[j].appendTo(imgs_container);
             }
@@ -440,7 +416,7 @@ function importData(data){
                     }
                 }
             }); 
-            container.appendTo("#data");
+            container.appendTo("body");
         } else {
             container = $("<div class='cont'>");
             sub_container = $("<div class='sub_cont'>").appendTo(container);
@@ -453,7 +429,7 @@ function importData(data){
             audio_block = $("<div class='audio_block'>").appendTo(text);
             $("<div class='play'>").appendTo(audio_block);
             $("<div class='replay'>").appendTo(audio_block);
-            source = $("<source/>").attr("src",data[i].audio);
+            source = $("<source/>").attr("src","../../" + data[i].audio);
             audio = $("<audio>").appendTo(audio_block);
             audio.append(source);
             $("<input type='hidden'/>").appendTo(audio_block);
@@ -461,7 +437,7 @@ function importData(data){
         
             for(j in data[i].imgs){
                 img_block = $("<div class='img_block img_gray' style='text-align: center;'>");
-                img = $("<img src='" + data[i].imgs[j].link + "' style='display: inline;'>");
+                img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
                 img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
                 if((120 - data[i].imgs[j].ht) > 0)
                     img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
@@ -470,7 +446,7 @@ function importData(data){
                 img_block.draggable({
                     helper:'clone',
                     zIndex:100,
-                    appendTo: '#data'
+                    appendTo: 'body'
                 });
                 if(data[i].imgs[j].cont == "cont")
                     img_block.appendTo(imgs_container);
@@ -537,7 +513,7 @@ function importData(data){
                     }
                 }
             }); 
-            container.appendTo("#data");
+            container.appendTo("body");
         }
     }
 }
@@ -547,7 +523,7 @@ function showExample(){
     
     var tmp_array = [];
     
-    var container = $("<div class='cont'>").appendTo("#data");
+    var container = $("<div class='cont'>").appendTo("body");
     var sub_container = $("<div class='sub_cont'>").appendTo(container);
     var imgs_answers = $("<div class='imgs_answers imgs_answers_gray'><img src='img/drop_img.png' style='margin-top: 11px;'/></div>").appendTo(container);
     var imgs_container = $("<div class='imgs_cont'>").appendTo(container);
@@ -557,7 +533,7 @@ function showExample(){
     var audio_block = $("<div class='audio_block'>").appendTo(text);
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
-    var source = $("<source/>").attr("src", "objects/beep.wav");
+    var source = $("<source/>").attr("src", "../../objects/beep.wav");
     var audio = $("<audio>").appendTo(audio_block);
     audio.append(source);
     $("<input type='hidden'/>").appendTo(audio_block);
@@ -567,19 +543,19 @@ function showExample(){
     
     var img1 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='0'/>").appendTo(img1);
-    $("<img src=\"objects/0.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img1);
+    $("<img src=\"../../objects/0.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img1);
     var img2 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='1'/>").appendTo(img2);
-    $("<img src=\"objects/1.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img2);
+    $("<img src=\"../../objects/1.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img2);
     var img3 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='0'/>").appendTo(img3);
-    $("<img src=\"objects/2.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img3);
+    $("<img src=\"../../objects/2.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img3);
     var img4 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='0'/>").appendTo(img4);
-    $("<img src=\"objects/3.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img4);
+    $("<img src=\"../../objects/3.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img4);
     var img5 = $("<div class='img_block img_gray' style='text-align: center;'></div>");
     $("<input type='hidden' value='0'/>").appendTo(img5);
-    $("<img src=\"objects/4.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img5);  
+    $("<img src=\"../../objects/4.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img5);  
     
     tmp_array.push(img1, img2, img3, img4, img5);
     tmp_array = shuffle(tmp_array);
@@ -587,7 +563,7 @@ function showExample(){
         tmp_array[i].draggable({
             helper:'clone',
             zIndex:100,
-            appendTo: '#data'
+            appendTo: 'body'
         });
         tmp_array[i].appendTo(imgs_container);
     }
@@ -717,39 +693,6 @@ function stringToXML(text){
     return doc;
 }
 
-//changing the style
-function changeStyle(val){
-    if(val == 1){
-        $(".b_top_left").removeClass("btl_pad");
-        $(".b_top_center").removeClass("btc_pad");
-        $(".b_top_right").removeClass("btr_pad");
-        $(".b_center_left").removeClass("bcl_pad");
-        $(".b_center_right").removeClass("bcr_pad");
-        $(".b_bottom_right").removeClass("bbr_pad");
-        $(".b_bottom_left").removeClass("bbl_pad");
-        $(".b_bottom_center").removeClass("bbc_pad");
-        $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
-        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_name").removeClass("pad_color");
-        $(".style_select").removeClass("pad_select");
-    } else {
-        $(".b_top_left").addClass("btl_pad");
-        $(".b_top_center").addClass("btc_pad");
-        $(".b_top_right").addClass("btr_pad");
-        $(".b_center_left").addClass("bcl_pad");
-        $(".b_center_right").addClass("bcr_pad");
-        $(".b_bottom_right").addClass("bbr_pad");
-        $(".b_bottom_left").addClass("bbl_pad");
-        $(".b_bottom_center").addClass("bbc_pad");
-        $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
-        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_name").addClass("pad_color");
-        $(".style_select").addClass("pad_select");
-    }
-}
-
 function onDropTarget(obj, event) {
     $(obj).find("img").remove();
     if (event.dataTransfer) {
@@ -760,7 +703,8 @@ function onDropTarget(obj, event) {
         }
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
-        var tmp_img = $("<img/>").attr("src",tmp);
+        tmp = tmp.substr(1, tmp.length);
+        var tmp_img = $("<img/>").attr("src","../../" + tmp);
         $(obj).append(tmp_img);
         setTimeout(function(){
             if(tmp_img.height() >= tmp_img.width())
@@ -796,9 +740,10 @@ function onDropAudio(obj, event) {
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
         if(tmp_type.substr(0, 5) == "audio"){       
             var audio_block = $(obj).find(".audio_block");
+            tmp = tmp.substr(1, tmp.length);            
             $(obj).find("audio").remove();
             audio_block.find(":first-child").removeClass("stop").addClass("play");
-            var source = $("<source/>").attr("src",tmp);
+            var source = $("<source/>").attr("src", "../../" + tmp);
             var audio = $("<audio>").appendTo(audio_block);
             audio.append(source);
         }

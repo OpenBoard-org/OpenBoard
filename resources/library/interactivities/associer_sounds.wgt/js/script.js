@@ -3,63 +3,42 @@ var sankoreLang = {
     edit: "Edit", 
     short_desc: "How many signals do you hear?", 
     add: "Add new block",
-    enter: "Enter your description here ...",
-    wgt_name: "Associate the sound",
-    reload: "Reload",
-    slate: "Wood",
-    pad: "Pad"
+    enter: "Enter your description here ..."
 };
 
 //main function
 function start(){
 
-    $("#wgt_display").text(sankoreLang.display);
-    $("#wgt_edit").text(sankoreLang.edit);
-    $("#wgt_name").text(sankoreLang.wgt_name);
-    $("#wgt_reload").text(sankoreLang.reload);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
+    $("#display_text").text(sankoreLang.display);
+    $("#edit_text").text(sankoreLang.edit);
     
     if(window.sankore){
         if(sankore.preference("associer_sound","")){
             var data = jQuery.parseJSON(sankore.preference("associer_sound",""));
             importData(data);
         }
-        else 
+        else {
             showExample();
-        if(sankore.preference("as_snd_style","")){
-            changeStyle(sankore.preference("as_snd_style",""));
-            $(".style_select").val(sankore.preference("as_snd_style",""));
-        } else
-            changeStyle(1)
+        }
     } 
     else 
         showExample();
-    
     //events
     if (window.widget) {
         window.widget.onleave = function(){
             exportData();
-            sankore.setPreference("as_snd_style", $(".style_select").find("option:selected").val());
         }
     }
     
-    $("#wgt_reload").click(function(){
-        window.location.reload();
-    });
-    
-    $(".style_select").change(function (event){
-        changeStyle($(this).find("option:selected").val());
-    })
-    
-    $("#wgt_display, #wgt_edit").click(function(event){
-        if(this.id == "wgt_display"){
+    $("#display, #edit").click(function(event){
+        if(this.id == "display"){
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
                     sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
-                $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");
+                $("#display_img").removeClass("red_point").addClass("green_point");
+                $("#edit_img").removeClass("green_point").addClass("red_point");
+                $("#edit").removeClass("selected");
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -96,7 +75,7 @@ function start(){
                         tmp_array[i].draggable({
                             helper:'clone',
                             zIndex:100,
-                            appendTo: '#data'
+                            appendTo: 'body'
                         });
                         tmp_array[i].appendTo(container.find(".imgs_cont"));
                     }
@@ -156,16 +135,15 @@ function start(){
                         }
                     });
                 });
-                $(this).css("display", "none");
-                $("#wgt_edit").css("display", "block");
             }
         } else {            
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
                     sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
-                $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");
+                $("#edit_img").removeClass("red_point").addClass("green_point");
+                $("#display_img").removeClass("green_point").addClass("red_point");
+                $("#display").removeClass("selected");
                 
                 $(".cont").each(function(){
                     var container = $(this);
@@ -174,7 +152,7 @@ function start(){
                     });
                     container.find(".imgs_answers").remove();
                     $("<div class='close_cont'>").appendTo(container);
-                    container.find(".imgs_cont").css("background-color", "");
+                    container.find(".imgs_cont").css("background-color", "white");
                     container.find(".text_cont .audio_desc").attr("contenteditable","true");
                     container.find(".text_cont").attr("ondragenter", "return false;")
                     .attr("ondragleave", "$(this).removeClass('gray'); return false;")
@@ -184,9 +162,9 @@ function start(){
                     container.find(".img_block").each(function(){
                         $(this).draggable("destroy");
                         $(this).attr("ondragenter", "return false;")
-                        .attr("ondragleave", "$(this).css(\"background-color\",\"\"); return false;")
+                        .attr("ondragleave", "$(this).css(\"background-color\",\"white\"); return false;")
                         .attr("ondragover", "$(this).css(\"background-color\",\"#ccc\"); return false;")
-                        .attr("ondrop", "$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);")
+                        .attr("ondrop", "$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);")
                         .css("float","left");
                         $("<div class='close_img'>").appendTo($(this));
                         if($(this).find("input").val() == "1"){
@@ -199,9 +177,7 @@ function start(){
                     container.find(".imgs_cont").append(add_img)
                 });                
                 
-                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
-                $(this).css("display", "none");
-                $("#wgt_display").css("display", "block");
+                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("body");
             }
         }
         
@@ -298,7 +274,7 @@ function start(){
 //export
 function exportData(){
     var array_to_export = [];
-    if($("#wgt_edit").hasClass("selected")){
+    if($("#edit").hasClass("selected")){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
@@ -385,7 +361,7 @@ function importData(data){
                 tmp_array[j].draggable({
                     helper:'clone',
                     zIndex:100,
-                    appendTo: '#data'
+                    appendTo: 'body'
                 });
                 tmp_array[j].appendTo(imgs_container);
             }
@@ -442,7 +418,7 @@ function importData(data){
                     }
                 }
             }); 
-            container.appendTo("#data");
+            container.appendTo("body");
         } else {
             container = $("<div class='cont'>");
             sub_container = $("<div class='sub_cont'>").appendTo(container);
@@ -472,7 +448,7 @@ function importData(data){
                 img_block.draggable({
                     helper:'clone',
                     zIndex:100,
-                    appendTo: '#data'
+                    appendTo: 'body'
                 });
                 if(data[i].imgs[j].cont == "cont")
                     img_block.appendTo(imgs_container);
@@ -539,7 +515,7 @@ function importData(data){
                     }
                 }
             }); 
-            container.appendTo("#data");
+            container.appendTo("body");
         }
     }
 }
@@ -549,7 +525,7 @@ function showExample(){
     
     var tmp_array = [];
     
-    var container = $("<div class='cont'>").appendTo("#data");
+    var container = $("<div class='cont'>").appendTo("body");
     var sub_container = $("<div class='sub_cont'>").appendTo(container);
     var imgs_answers = $("<div class='imgs_answers imgs_answers_gray'><img src='img/drop_img.png' style='margin-top: 11px;'/></div>").appendTo(container);
     var imgs_container = $("<div class='imgs_cont'>").appendTo(container);
@@ -589,7 +565,7 @@ function showExample(){
         tmp_array[i].draggable({
             helper:'clone',
             zIndex:100,
-            appendTo: '#data'
+            appendTo: 'body'
         });
         tmp_array[i].appendTo(imgs_container);
     }
@@ -731,39 +707,6 @@ function stringToXML(text){
     return doc;
 }
 
-//changing the style
-function changeStyle(val){
-    if(val == 1){
-        $(".b_top_left").removeClass("btl_pad");
-        $(".b_top_center").removeClass("btc_pad");
-        $(".b_top_right").removeClass("btr_pad");
-        $(".b_center_left").removeClass("bcl_pad");
-        $(".b_center_right").removeClass("bcr_pad");
-        $(".b_bottom_right").removeClass("bbr_pad");
-        $(".b_bottom_left").removeClass("bbl_pad");
-        $(".b_bottom_center").removeClass("bbc_pad");
-        $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
-        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_name").removeClass("pad_color");
-        $(".style_select").removeClass("pad_select");
-    } else {
-        $(".b_top_left").addClass("btl_pad");
-        $(".b_top_center").addClass("btc_pad");
-        $(".b_top_right").addClass("btr_pad");
-        $(".b_center_left").addClass("bcl_pad");
-        $(".b_center_right").addClass("bcr_pad");
-        $(".b_bottom_right").addClass("bbr_pad");
-        $(".b_bottom_left").addClass("bbl_pad");
-        $(".b_bottom_center").addClass("bbc_pad");
-        $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
-        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_name").addClass("pad_color");
-        $(".style_select").addClass("pad_select");
-    }
-}
-
 function onDropTarget(obj, event) {
     $(obj).find("img").remove();
     if (event.dataTransfer) {
@@ -774,7 +717,6 @@ function onDropTarget(obj, event) {
         }
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
-        tmp = tmp.substr(1, tmp.length);
         var tmp_img = $("<img/>").attr("src", tmp);
         $(obj).append(tmp_img);
         setTimeout(function(){
@@ -811,6 +753,7 @@ function onDropAudio(obj, event) {
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
         if(tmp_type.substr(0, 5) == "audio"){       
             var audio_block = $(obj).find(".audio_block");
+            tmp = tmp.substr(1, tmp.length);            
             $(obj).find("audio").remove();
             audio_block.find(":first-child").removeClass("stop").addClass("play");
             var source = $("<source/>").attr("src", tmp);

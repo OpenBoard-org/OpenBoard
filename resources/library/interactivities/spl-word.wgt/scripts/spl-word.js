@@ -15,60 +15,8 @@ function createWord( word )
     return s;
 }
 
-var w;
-
-if (window.widget) {
-    window.widget.onleave = function(){
-        sankore.setPreference("spl_word_style", $(".style_select").find("option:selected").val());
-        if(w.editMode)
-            sankore.setPreference("ordSplWords", w.elements.container.find( "input" ).val().trim( ['*'] ));
-        else
-            sankore.setPreference("ordSplWords", w.getData( "word" ));
-    }
-}
-
 $(document).ready(function()
 {
-    if(sankore.preference("spl_word_style","")){
-        changeStyle(sankore.preference("spl_word_style",""));
-        $(".style_select").val(sankore.preference("spl_word_style",""));
-    } else
-        changeStyle(1)
-    $("#wgt_display").text(sankoreLang.view);
-    $("#wgt_edit").text(sankoreLang.edit);
-    $("#wgt_display, #wgt_edit").click(function(event){
-        if(this.id == "wgt_display"){
-            if(!$(this).hasClass("selected")){                
-                $(this).addClass("selected");
-                $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");                
-                $(this).css("display", "none");
-                $("#wgt_edit").css("display", "block");
-                w.modeView();
-            }
-        } else {            
-            if(!$(this).hasClass("selected")){
-                $(this).addClass("selected");
-                $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");                
-                $(this).css("display", "none");
-                $("#wgt_display").css("display", "block");
-                w.modeEdit();
-            }
-        }
-    });
-    $("#wgt_name").text(sankoreLang.wgt_name);
-    $("#wgt_reload").text(sankoreLang.reload).click(function(){
-        window.location.reload();
-    });
-    
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    
-    $(".style_select").change(function (event){
-        changeStyle($(this).find("option:selected").val());
-    })
-    
     var w = new wcontainer( "#ub-widget" );
     var words = "";
         
@@ -85,11 +33,13 @@ $(document).ready(function()
     w.onViewMode = function()
     {
         var word = w.elements.container.find( "input" ).val().trim( ['*'] );
+		
         w.setData( "word", word );
         word = word.replace( /\*/g, '' );
         w.setViewContent( createWord( word ) );
         w.elements.container.find( "span.upper" ).click( function(){
             $( this ).find( "span.dash" ).toggleClass( "fixed" );
+            w.adjustSize();
             w.checkAnswer();
         });
         w.checkAnswer();
@@ -119,7 +69,7 @@ $(document).ready(function()
     {
         return {
             w: winstance.elements.containerEdit.find( "input" ).outerWidth( true ),
-            h: winstance.elements.containerEdit.find( "input" ).outerHeight( true )
+            h: winstance.elements.containerEdit.find( "input" ).outerHeight( true ),
         };
     };
 	
@@ -154,36 +104,12 @@ $(document).ready(function()
 	
     w.modeView();
     
-    //changing the style
-    function changeStyle(val){
-        if(val == 1){
-            $(".b_top_left").removeClass("btl_pad");
-            $(".b_top_center").removeClass("btc_pad");
-            $(".b_top_right").removeClass("btr_pad");
-            $(".b_center_left").removeClass("bcl_pad");
-            $(".b_center_right").removeClass("bcr_pad");
-            $(".b_bottom_right").removeClass("bbr_pad");
-            $(".b_bottom_left").removeClass("bbl_pad");
-            $(".b_bottom_center").removeClass("bbc_pad");
-            $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
-            $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select");
-        } else {
-            $(".b_top_left").addClass("btl_pad");
-            $(".b_top_center").addClass("btc_pad");
-            $(".b_top_right").addClass("btr_pad");
-            $(".b_center_left").addClass("bcl_pad");
-            $(".b_center_right").addClass("bcr_pad");
-            $(".b_bottom_right").addClass("bbr_pad");
-            $(".b_bottom_left").addClass("bbl_pad");
-            $(".b_bottom_center").addClass("bbc_pad");
-            $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
-            $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select");
+    if (window.widget) {
+        window.widget.onleave = function(){
+            if(w.editMode)
+                sankore.setPreference("ordSplWords", w.elements.container.find( "input" ).val().trim( ['*'] ));
+            else
+                sankore.setPreference("ordSplWords", w.getData("word"));
         }
     }
 	

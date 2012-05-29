@@ -4,9 +4,9 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.example.net/widgets/helloworld" 
         version="1.1"
-        width="750"
-        height="320" 
-		ub:resizable="true">
+        width="538"
+        height="170" 
+		ub:resizable="false">
 		
 		<name>Words/Letters sortable</name>
 		<description>Sort the words/letters to make the right phrase/word.</description>

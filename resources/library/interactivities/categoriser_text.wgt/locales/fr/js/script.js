@@ -1,31 +1,23 @@
 var sankoreLang = {
-    display: "D'affichage", 
+    display: "Afficher", 
     edit: "Modifier", 
     first_desc: "Fruits", 
     second_desc: "Légumes",
-    potatoes: "Pommes de terre",
+    potatoes: "Pomme de terre",
     carrot: "Carotte",
     onion: "Oignon",
     apple: "Pomme",
     pear: "Poire",
-    enter: "Entrez votre nom de la catégorie ici ...",
+    enter: "Saisir le nom de la catégorie ici ...",
     add: "Nouveau bloc",
-    text: "Texte",
-    wgt_name: "Ordonner des images",
-    reload: "Recharger",
-    slate: "Bois",
-    pad: "Pad"
+    text: "Texte"
 };
 
 //main function
 function start(){
     
-    $("#wgt_display").text(sankoreLang.display);
-    $("#wgt_edit").text(sankoreLang.edit);
-    $("#wgt_name").text(sankoreLang.wgt_name);
-    $("#wgt_reload").text(sankoreLang.reload);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
+    $("#display_text").text(sankoreLang.display);
+    $("#edit_text").text(sankoreLang.edit);
     
     if(window.sankore){
         if(sankore.preference("categoriser_text","")){
@@ -44,20 +36,13 @@ function start(){
         }
     }
     
-    $("#wgt_reload").click(function(){
-        window.location.reload();
-    });
-    
-    $(".style_select").change(function (event){
-        changeStyle($(this).find("option:selected").val());
-    })
-    
-    $("#wgt_display, #wgt_edit").click(function(event){
-        if(this.id == "wgt_display"){
+    $("#display, #edit").click(function(event){
+        if(this.id == "display"){
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
-                $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");
+                $("#display_img").removeClass("red_point").addClass("green_point");
+                $("#edit_img").removeClass("green_point").addClass("red_point");
+                $("#edit").removeClass("selected");
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -105,7 +90,7 @@ function start(){
                         tmp_array[i].draggable({
                             helper:'clone',
                             zIndex:100,
-                            appendTo: '#data'
+                            appendTo: 'body'
                         });
                         tmp_array[i].appendTo(all_imgs);
                     }
@@ -123,14 +108,13 @@ function start(){
                         }
                     });
                 });
-                $(this).css("display", "none");
-                $("#wgt_edit").css("display", "block");
             }
         } else {            
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
-                $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");
+                $("#edit_img").removeClass("red_point").addClass("green_point");
+                $("#display_img").removeClass("green_point").addClass("red_point");
+                $("#display").removeClass("selected");
                 $(".cont").each(function(){
                     var container = $(this);
                     
@@ -160,9 +144,7 @@ function start(){
                 });
                 
                 
-                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
-                $(this).css("display", "none");
-                $("#wgt_display").css("display", "block");
+                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("body");
             }
         }
     });
@@ -207,14 +189,13 @@ function start(){
 //export
 function exportData(){
     var array_to_export = [];
-    if($("#wgt_edit").hasClass("selected")){
+    if($("#edit").hasClass("selected")){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.mode = "edit";
             cont_obj.conts = [];
             $(this).find(".imgs_cont").each(function(){
                 var img_cont = new Object();
-                cont_obj.style = $(".style_select").find("option:selected").val();
                 img_cont.mask = $(this).find("input[name='mask']").val();
                 img_cont.count = $(this).find(".img_block").size();
                 img_cont.text = $(this).find(".cat_desc").val();
@@ -236,7 +217,6 @@ function exportData(){
             cont_obj.conts = [];
             $(this).find(".imgs_cont").each(function(){
                 var img_cont = new Object();
-                cont_obj.style = $(".style_select").find("option:selected").val();
                 img_cont.mask = $(this).find("input[name='mask']").val();
                 img_cont.count = $(this).find("input[name='count']").val();
                 img_cont.text = $(this).find(".cat_desc").val();
@@ -259,14 +239,6 @@ function exportData(){
             array_to_export.push(cont_obj);
         });
     }
-    
-    if($(".cont").size() == 0){
-        var cont_obj = new Object();
-        cont_obj.style = $(".style_select").find("option:selected").val();
-        cont_obj.tmp = "clear";
-        array_to_export.push(cont_obj);
-    }
-    
     sankore.setPreference("categoriser_text", JSON.stringify(array_to_export));
 }
 
@@ -275,155 +247,145 @@ function importData(data){
     
     var tmp = 0;    
     for(var i in data){
-        if(data[i].tmp){
-            changeStyle(data[i].style);
-            $(".style_select").val(data[i].style);
-        }
-        else {
-            if(i == 0){
-                changeStyle(data[i].style);
-                $(".style_select").val(data[i].style);
-            }
-            if(data[i].mode == "edit"){          
-                var tmp_array = [];
-                var container = $("<div class='cont'>").appendTo("#data");
-                var sub_container = $("<div class='sub_cont'>").appendTo(container);                  
-                $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
+        if(data[i].mode == "edit"){          
+            var tmp_array = [];
+            var container = $("<div class='cont'>").appendTo("body");
+            var sub_container = $("<div class='sub_cont'>").appendTo(container);                  
+            $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
         
-                for(var j in data[i].conts){
-                    var imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);
+            for(var j in data[i].conts){
+                var imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);
     
-                    $("<input type='hidden' name='mask' value='" + data[i].conts[j].mask + "'/>").appendTo(imgs_container);
-                    $("<input type='hidden' name='count' value='" + data[i].conts[j].count + "'/>").appendTo(imgs_container);
-                    var tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
-                    $("<input type='text' class='cat_desc' value='" + data[i].conts[j].text + "' disabled/>").appendTo(tmp_div);
-                    for(var k in data[i].conts[j].imgs){
-                        var block_img = $("<div class='img_block' style='text-align: center;'></div>");
-                        $("<input type='hidden' value='" + data[i].conts[j].imgs[k].value + "'/>").appendTo(block_img);                    
-                        $("<div class='text_cont'>" + data[i].conts[j].imgs[k].text + "</div>").appendTo(block_img);
-                        tmp_array.push(block_img);
-                    }
+                $("<input type='hidden' name='mask' value='" + data[i].conts[j].mask + "'/>").appendTo(imgs_container);
+                $("<input type='hidden' name='count' value='" + data[i].conts[j].count + "'/>").appendTo(imgs_container);
+                var tmp_div = $("<div style='width: 100%'>").appendTo(imgs_container);
+                $("<input type='text' class='cat_desc' value='" + data[i].conts[j].text + "' disabled/>").appendTo(tmp_div);
+                for(var k in data[i].conts[j].imgs){
+                    var block_img = $("<div class='img_block' style='text-align: center;'></div>");
+                    $("<input type='hidden' value='" + data[i].conts[j].imgs[k].value + "'/>").appendTo(block_img);                    
+                    $("<div class='text_cont'>" + data[i].conts[j].imgs[k].text + "</div>").appendTo(block_img);
+                    tmp_array.push(block_img);
+                }
                 
-                    imgs_container.droppable({
-                        hoverClass: 'dropHere',
-                        drop: function(event, ui) {
-                            if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
-                                var tmp_ui = $(ui.draggable).parent();
-                                checkOnDrop($(this), $(ui.draggable));
-                                checkCorrectness(tmp_ui);
-                            }
-                        }
-                    });                                
-                }
-            
-                var all_imgs = $("<div class='all_imgs'>").appendTo(container); 
-            
-                tmp_array = shuffle(tmp_array);
-                for(j in tmp_array){
-                    tmp_array[j].draggable({
-                        helper:'clone',
-                        zIndex:100,
-                        appendTo: '#data'
-                    });
-                    tmp_array[j].appendTo(all_imgs);
-                    var tmp_text = tmp_array[j].find(".text_cont");
-                    tmp_text.css("margin", (tmp_array[j].height() - tmp_text.height())/2 + "px 0px");
-                }
-            
-                all_imgs.sortable();
-            
-                all_imgs.droppable({
-                    hoverClass: 'dropBack',
+                imgs_container.droppable({
+                    hoverClass: 'dropHere',
                     drop: function(event, ui) {
                         if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
-                            if(this != $(ui.draggable).parent()[0]){
-                                var tmp_ui = $(ui.draggable).parent();                    
-                                $(this).append($(ui.draggable));
-                                checkCorrectness(tmp_ui);
-                            }
+                            var tmp_ui = $(ui.draggable).parent();
+                            checkOnDrop($(this), $(ui.draggable));
+                            checkCorrectness(tmp_ui);
                         }
                     }
-                });
-            } else {
-                container = $("<div class='cont'>").appendTo("#data");
-                sub_container = $("<div class='sub_cont'>").appendTo(container);                  
-                $("<div class='number_cont'>" + (++tmp) + "</div>").appendTo(sub_container);
-        
-                for(j in data[i].conts){
-                    var tmp_img_array = [];
-                    imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);    
-                    $("<input type='hidden' name='mask' value='" + data[i].conts[j].mask + "'/>").appendTo(imgs_container);
-                    $("<input type='hidden' name='count' value='" + data[i].conts[j].count + "'/>").appendTo(imgs_container);
-                    tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
-                    $("<input type='text' class='cat_desc' value='" + data[i].conts[j].text + "' disabled/>").appendTo(tmp_div);
-                    for(k in data[i].conts[j].imgs){
-                        block_img = $("<div class='img_block' style='text-align: center;'></div>");
-                        $("<input type='hidden' value='" + data[i].conts[j].imgs[k].value + "'/>").appendTo(block_img);                   
-                        $("<div class='text_cont'>" + data[i].conts[j].imgs[k].text + "</div>").appendTo(block_img);
-                        tmp_img_array.push(block_img);
-                    }
-                
-                    tmp_img_array = shuffle(tmp_img_array);
-                    for(k in tmp_img_array){
-                        tmp_img_array[k].draggable({
-                            helper:'clone',
-                            zIndex:100,
-                            appendTo: '#data'
-                        });
-                        tmp_img_array[k].appendTo(imgs_container);
-                        tmp_text = tmp_img_array[k].find(".text_cont");
-                        tmp_text.css("margin", (tmp_img_array[k].height() - tmp_text.height())/2 + "px 0px");
-                    }
-                
-                    imgs_container.droppable({
-                        hoverClass: 'dropHere',
-                        drop: function(event, ui) {
-                            if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
-                                var tmp_ui = $(ui.draggable).parent();
-                                checkOnDrop($(this), $(ui.draggable));
-                                checkCorrectness(tmp_ui);
-                            }
-                        }
-                    });        
-                    checkCorrectness(imgs_container);
-                }
-            
-                all_imgs = $("<div class='all_imgs'>").appendTo(container); 
-                var all_imgs_arr = [];
-                for(j in data[i].all_imgs){            
-                    block_img = $("<div class='img_block' style='text-align: center;'></div>");
-                    $("<input type='hidden' value='" + data[i].all_imgs[j].value + "'/>").appendTo(block_img);                
-                    $("<div class='text_cont'>" + data[i].all_imgs[j].text + "</div>").appendTo(block_img);
-                    all_imgs_arr.push(block_img);
-                } 
-            
-                all_imgs_arr = shuffle(all_imgs_arr);
-                for(k in all_imgs_arr){
-                    all_imgs_arr[k].draggable({
-                        helper:'clone',
-                        zIndex:100,
-                        appendTo: '#data'
-                    });
-                    all_imgs_arr[k].appendTo(all_imgs);
-                    tmp_text = all_imgs_arr[k].find(".text_cont");
-                    tmp_text.css("margin", (all_imgs_arr[k].height() - tmp_text.height())/2 + "px 0px");
-                }
-            
-                all_imgs.sortable();
-            
-                all_imgs.droppable({
-                    hoverClass: 'dropBack',
-                    drop: function(event, ui) {
-                        if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
-                            if(this != $(ui.draggable).parent()[0]){
-                                var tmp_ui = $(ui.draggable).parent();                    
-                                $(this).append($(ui.draggable));
-                                checkCorrectness(tmp_ui);
-                            }
-                        }
-                    }
-                });            
+                });                                
             }
+            
+            var all_imgs = $("<div class='all_imgs'>").appendTo(container); 
+            
+            tmp_array = shuffle(tmp_array);
+            for(j in tmp_array){
+                tmp_array[j].draggable({
+                    helper:'clone',
+                    zIndex:100,
+                    appendTo: 'body'
+                });
+                tmp_array[j].appendTo(all_imgs);
+                var tmp_text = tmp_array[j].find(".text_cont");
+                tmp_text.css("margin", (tmp_array[j].height() - tmp_text.height())/2 + "px 0px");
+            }
+            
+            all_imgs.sortable();
+            
+            all_imgs.droppable({
+                hoverClass: 'dropBack',
+                drop: function(event, ui) {
+                    if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
+                        if(this != $(ui.draggable).parent()[0]){
+                            var tmp_ui = $(ui.draggable).parent();                    
+                            $(this).append($(ui.draggable));
+                            checkCorrectness(tmp_ui);
+                        }
+                    }
+                }
+            });
+        } else {
+            container = $("<div class='cont'>").appendTo("body");
+            sub_container = $("<div class='sub_cont'>").appendTo(container);                  
+            $("<div class='number_cont'>" + (++tmp) + "</div>").appendTo(sub_container);
+        
+            for(j in data[i].conts){
+                var tmp_img_array = [];
+                imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);    
+                $("<input type='hidden' name='mask' value='" + data[i].conts[j].mask + "'/>").appendTo(imgs_container);
+                $("<input type='hidden' name='count' value='" + data[i].conts[j].count + "'/>").appendTo(imgs_container);
+                tmp_div = $("<div style='width: 100%'>").appendTo(imgs_container);
+                $("<input type='text' class='cat_desc' value='" + data[i].conts[j].text + "' disabled/>").appendTo(tmp_div);
+                for(k in data[i].conts[j].imgs){
+                    block_img = $("<div class='img_block' style='text-align: center;'></div>");
+                    $("<input type='hidden' value='" + data[i].conts[j].imgs[k].value + "'/>").appendTo(block_img);                   
+                    $("<div class='text_cont'>" + data[i].conts[j].imgs[k].text + "</div>").appendTo(block_img);
+                    tmp_img_array.push(block_img);
+                }
+                
+                tmp_img_array = shuffle(tmp_img_array);
+                for(k in tmp_img_array){
+                    tmp_img_array[k].draggable({
+                        helper:'clone',
+                        zIndex:100,
+                        appendTo: 'body'
+                    });
+                    tmp_img_array[k].appendTo(imgs_container);
+                    tmp_text = tmp_img_array[k].find(".text_cont");
+                    tmp_text.css("margin", (tmp_img_array[k].height() - tmp_text.height())/2 + "px 0px");
+                }
+                
+                imgs_container.droppable({
+                    hoverClass: 'dropHere',
+                    drop: function(event, ui) {
+                        if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
+                            var tmp_ui = $(ui.draggable).parent();
+                            checkOnDrop($(this), $(ui.draggable));
+                            checkCorrectness(tmp_ui);
+                        }
+                    }
+                });        
+                checkCorrectness(imgs_container);
+            }
+            
+            all_imgs = $("<div class='all_imgs'>").appendTo(container); 
+            var all_imgs_arr = [];
+            for(j in data[i].all_imgs){            
+                block_img = $("<div class='img_block' style='text-align: center;'></div>");
+                $("<input type='hidden' value='" + data[i].all_imgs[j].value + "'/>").appendTo(block_img);                
+                $("<div class='text_cont'>" + data[i].all_imgs[j].text + "</div>").appendTo(block_img);
+                all_imgs_arr.push(block_img);
+            } 
+            
+            all_imgs_arr = shuffle(all_imgs_arr);
+            for(k in all_imgs_arr){
+                all_imgs_arr[k].draggable({
+                    helper:'clone',
+                    zIndex:100,
+                    appendTo: 'body'
+                });
+                all_imgs_arr[k].appendTo(all_imgs);
+                tmp_text = all_imgs_arr[k].find(".text_cont");
+                tmp_text.css("margin", (all_imgs_arr[k].height() - tmp_text.height())/2 + "px 0px");
+            }
+            
+            all_imgs.sortable();
+            
+            all_imgs.droppable({
+                hoverClass: 'dropBack',
+                drop: function(event, ui) {
+                    if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
+                        if(this != $(ui.draggable).parent()[0]){
+                            var tmp_ui = $(ui.draggable).parent();                    
+                            $(this).append($(ui.draggable));
+                            checkCorrectness(tmp_ui);
+                        }
+                    }
+                }
+            });            
         }
     }
 }
@@ -431,10 +393,9 @@ function importData(data){
 //example
 function showExample(){
     
-    changeStyle(1);
     var tmp_array = [];
     
-    var container = $("<div class='cont'>").appendTo("#data");
+    var container = $("<div class='cont'>").appendTo("body");
     var sub_container = $("<div class='sub_cont'>").appendTo(container);
     var imgs_container_one = $("<div class='imgs_cont def_cont'>").appendTo(container);
     var imgs_container_two = $("<div class='imgs_cont def_cont'>").appendTo(container);
@@ -444,12 +405,12 @@ function showExample(){
     
     $("<input type='hidden' name='mask' value='1'/>").appendTo(imgs_container_one);
     $("<input type='hidden' name='count' value='2'/>").appendTo(imgs_container_one);
-    var tmp_div_one = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container_one);
+    var tmp_div_one = $("<div style='width: 100%'>").appendTo(imgs_container_one);
     $("<input type='text' class='cat_desc' value='" + sankoreLang.first_desc + "' disabled/>").appendTo(tmp_div_one);
     
     $("<input type='hidden' name='mask' value='2'/>").appendTo(imgs_container_two);
     $("<input type='hidden' name='count' value='3'/>").appendTo(imgs_container_two);
-    var tmp_div_two = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container_two);
+    var tmp_div_two = $("<div style='width: 100%'>").appendTo(imgs_container_two);
     $("<input type='text' class='cat_desc' value='" + sankoreLang.second_desc + "' disabled/>").appendTo(tmp_div_two);
     
     var text1 = $("<div class='img_block' style='text-align: center;'></div>");
@@ -474,7 +435,7 @@ function showExample(){
         tmp_array[i].draggable({
             helper:'clone',
             zIndex:100,
-            appendTo: '#data'
+            appendTo: 'body'
         });
         tmp_array[i].find(".text_cont").css("margin", "21px 0px");
         tmp_array[i].appendTo(all_imgs);
@@ -531,7 +492,7 @@ function addCategory(obj){
     var imgs_container = $("<div class='imgs_cont def_cont'>").insertAfter(obj);    
     $("<input type='hidden' name='mask' value='" + returnId() + "'/>").appendTo(imgs_container);   
     $("<input type='hidden' name='count' value=''/>").appendTo(imgs_container); 
-    var tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
+    var tmp_div = $("<div style='width: 100%'>").appendTo(imgs_container);
     $("<input type='text' class='cat_desc' value='" + sankoreLang.enter + "'>").appendTo(tmp_div);  
     $("<button class='del_category'></button>").appendTo(imgs_container);
     $("<button class='add_category'></button>").appendTo(imgs_container);
@@ -549,7 +510,7 @@ function addContainer(){
     
     $("<input type='hidden' name='mask' value='" + returnId() + "'/>").appendTo(imgs_container);
     $("<input type='hidden' name='count' value=''/>").appendTo(imgs_container); 
-    var tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
+    var tmp_div = $("<div style='width: 100%'>").appendTo(imgs_container);
     $("<input type='text' class='cat_desc' value='" + sankoreLang.enter + "'/>").appendTo(tmp_div);    
     $("<button class='del_category'></button>").appendTo(imgs_container);
     $("<button class='add_category'></button>").appendTo(imgs_container);
@@ -597,39 +558,6 @@ function returnId(){
     return tmp.substr(2);
 }
 
-//changing the style
-function changeStyle(val){
-    if(val == 1){
-        $(".b_top_left").removeClass("btl_pad");
-        $(".b_top_center").removeClass("btc_pad");
-        $(".b_top_right").removeClass("btr_pad");
-        $(".b_center_left").removeClass("bcl_pad");
-        $(".b_center_right").removeClass("bcr_pad");
-        $(".b_bottom_right").removeClass("bbr_pad");
-        $(".b_bottom_left").removeClass("bbl_pad");
-        $(".b_bottom_center").removeClass("bbc_pad");
-        $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
-        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_name").removeClass("pad_color");
-        $(".style_select").removeClass("pad_select");
-    } else {
-        $(".b_top_left").addClass("btl_pad");
-        $(".b_top_center").addClass("btc_pad");
-        $(".b_top_right").addClass("btr_pad");
-        $(".b_center_left").addClass("bcl_pad");
-        $(".b_center_right").addClass("bcr_pad");
-        $(".b_bottom_right").addClass("bbr_pad");
-        $(".b_bottom_left").addClass("bbl_pad");
-        $(".b_bottom_center").addClass("bbc_pad");
-        $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
-        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_name").addClass("pad_color");
-        $(".style_select").addClass("pad_select");
-    }
-}
-
 //a func for checking when smth will drop
 function checkOnDrop(dest, source){
     dest.append(source); 
@@ -675,11 +603,7 @@ function checkCorrectness(source){
                 source.removeClass("def_cont")
                 .removeClass("green_cont")
                 .addClass("red_cont");
-        } else if(source.find(".img_block").size() == 0)
-            source.addClass("def_cont")
-            .removeClass("green_cont")
-            .removeClass("red_cont");
-        else 
+        } else 
             source.removeClass("def_cont")
             .removeClass("green_cont")
             .addClass("red_cont");

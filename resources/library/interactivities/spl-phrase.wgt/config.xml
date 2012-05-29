@@ -4,9 +4,9 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
-        width="750"
-        height="300" 
-		ub:resizable="true">
+        width="650"
+        height="320" 
+		ub:resizable="false">
 		
 		<name>Split a phrase</name>
 		<description>Split a phrase into words</description>
