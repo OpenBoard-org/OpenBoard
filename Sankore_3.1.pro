@@ -3,6 +3,7 @@ TEMPLATE = app
 
 THIRD_PARTY_PATH=../Sankore-ThirdParty
 
+CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
 

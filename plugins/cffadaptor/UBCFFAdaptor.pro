@@ -16,7 +16,7 @@ linux-g++-64: SUB_DIR = linux
 THIRD_PARTY_PATH = ../../../Sankore-ThirdParty
 QUAZIP_DIR   = "$$PWD/../../../Sankore-ThirdParty/quazip/quazip-0.3"
 
-BUILD_DIR = $$PWD/build/$$SUB_DIR
+BUILD_DIR = build/$$SUB_DIR
 CONFIG(debug, debug|release):BUILD_DIR = $$BUILD_DIR/debug
 CONFIG(release, debug|release) {
    BUILD_DIR = $$BUILD_DIR/release
@@ -31,12 +31,19 @@ OBJECTS_DIR = $$BUILD_DIR/objects
 MOC_DIR = $$BUILD_DIR/moc
 DESTDIR = $$BUILD_DIR/lib
 RCC_DIR = $$BUILD_DIR/rcc
+SANKORE_DIR = ../..
+win32:{
+    QMAKE_POST_LINK += copy $$replace(DESTDIR,/,\\)\\CFF_Adaptor.dll" $$replace(SANKORE_DIR,/,\\)\\CFF_Adaptor.dll /y"
+}
+macx:{
+    QMAKE_POST_LINK += bash postScript_mac.sh "$$DESTDIR" "$$SANKORE_DIR/$$BUILD_DIR/product/Open-Sankore.app/Contents/MacOS"
+}
 
 LIBS     += "-L$$THIRD_PARTY_PATH/quazip/lib/$$SUB_DIR" "-lquazip"
 
 QT       += xml xmlpatterns core
 QT       += gui
-QT       += svg 
+QT       += svg
 
 
 DEFINES += UBCFFADAPTOR_LIBRARY

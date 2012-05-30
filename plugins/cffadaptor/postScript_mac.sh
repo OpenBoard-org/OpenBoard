@@ -1,0 +1,5 @@
+#!/bin/bash
+SOURCE=$1
+DESTINATION=$2
+mkdir -p $DESTINATION
+cp -R $SOURCE/ $DESTINATION
