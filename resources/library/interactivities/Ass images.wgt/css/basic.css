@@ -112,7 +112,7 @@ body{
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     padding-left: 10px;
-    font-family: 'SFToontimeRegular';
+    /*font-family: 'SFToontimeRegular';*/
 }
 
 .close_cont{
@@ -278,7 +278,7 @@ body{
     margin: 10px 10px 0 10px;
     padding: 0;
     float: left;
-    font-family: "Lobster13Regular";
+    /*font-family: "Lobster13Regular";*/
     font-size: 24px;
     color: #8c5730;
 }
@@ -289,7 +289,7 @@ body{
     height: 44px;
     margin: 10px 10px 0 0;
     float: right;
-    font-family: "Lobster13Regular";
+    /*font-family: "Lobster13Regular";*/
     font-size: 24px;   
     color: #8c5730;
 }
@@ -320,7 +320,7 @@ body{
 
 .style_select{    
     width: 120px;
-    font-family: "Lobster13Regular";
+    /*font-family: "Lobster13Regular";*/
     font-size: 24px;
     float: right;
     margin: 10px 20px 0 0;
