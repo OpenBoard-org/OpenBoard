@@ -1,0 +1,23 @@
+#scene {
+	position: relative;
+}
+
+#dices {
+	display: block;
+	margin: 0 auto;
+}
+
+#launch {
+	text-align: center;
+}
+
+#launch button {
+	margin: 0;
+	padding-top: 90px;	
+	background: url("images/arrow-up.png") center top no-repeat;
+	border: none;
+	cursor: pointer;
+	font-family: "SFToontimeRegular";
+	font-size: 24px;
+	color: #FFF;
+}
