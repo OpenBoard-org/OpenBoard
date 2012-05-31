@@ -35,7 +35,6 @@ public:
     virtual void setUuid(const QUuid &pUuid);
     void destroy();
 
-
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -43,7 +42,10 @@ protected:
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
+    void pRemoveFromGroup(QGraphicsItem *item);
+
 private:
+
     QRectF itemsBoundingRect;
     QGraphicsItem *mCurrentItem;
 

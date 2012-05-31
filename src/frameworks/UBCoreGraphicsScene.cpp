@@ -17,6 +17,7 @@
 
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "core/memcheck.h"
 
@@ -40,6 +41,12 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
 
 void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
 {
+    if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count()) {
+        foreach (QGraphicsItem *curItem, item->childItems()) {
+            removeItemFromDeletion(curItem);
+        }
+    }
+
     mItemsToDelete << item;
 
     if (item->scene() != this)
@@ -87,5 +94,12 @@ void UBCoreGraphicsScene::removeItemFromDeletion(QGraphicsItem *item)
 {
     if(NULL != item){
         mItemsToDelete.remove(item);
+    }
+}
+
+void UBCoreGraphicsScene::addItemToDeletion(QGraphicsItem *item)
+{
+    if (item) {
+        mItemsToDelete.insert(item);
     }
 }

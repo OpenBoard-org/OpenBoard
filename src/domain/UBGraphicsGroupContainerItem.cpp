@@ -88,49 +88,16 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
 void UBGraphicsGroupContainerItem::removeFromGroup(QGraphicsItem *item)
 {
     if (!item) {
-        qWarning("QGraphicsItemGroup::removeFromGroup: cannot remove null item");
-        return;
+        qDebug() << "can't specify the item because of the null pointer";
     }
 
-    QGraphicsItem *newParent = parentItem();
+    UBGraphicsScene *groupScene = scene();
+    if (groupScene) {
+        groupScene->addItemToDeletion(item);
+    }
 
-    // COMBINE
-    bool ok;
-    QTransform itemTransform;
-    if (newParent)
-        itemTransform = item->itemTransform(newParent, &ok);
-    else
-        itemTransform = item->sceneTransform();
+    pRemoveFromGroup(item);
 
-    QPointF oldPos = item->mapToItem(newParent, 0, 0);
-    item->setParentItem(newParent);
-    item->setPos(oldPos);
-
-    // removing position from translation component of the new transform
-    if (!item->pos().isNull())
-        itemTransform *= QTransform::fromTranslate(-item->x(), -item->y());
-
-    // removing additional transformations properties applied
-    // with itemTransform() or sceneTransform()
-    QPointF origin = item->transformOriginPoint();
-    QMatrix4x4 m;
-    QList<QGraphicsTransform*> transformList = item->transformations();
-    for (int i = 0; i < transformList.size(); ++i)
-        transformList.at(i)->applyTo(&m);
-    itemTransform *= m.toTransform().inverted();
-    itemTransform.translate(origin.x(), origin.y());
-    itemTransform.rotate(-item->rotation());
-    itemTransform.scale(1 / item->scale(), 1 / item->scale());
-    itemTransform.translate(-origin.x(), -origin.y());
-
-    // ### Expensive, we could maybe use dirtySceneTransform bit for optimization
-
-    item->setTransform(itemTransform);
-//    item->d_func()->setIsMemberOfGroup(item->group() != 0);
-
-    // ### Quite expensive. But removeFromGroup() isn't called very often.
-    prepareGeometryChange();
-    itemsBoundingRect = childrenBoundingRect();
 }
 
 void UBGraphicsGroupContainerItem::deselectCurrentItem()
@@ -216,18 +183,21 @@ void UBGraphicsGroupContainerItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsGroupContainerItem::destroy() {
 
+    UBGraphicsScene *groupScene = scene();
+
+
     foreach (QGraphicsItem *item, childItems()) {
-        removeFromGroup(item);
+
+        if (groupScene) {
+            groupScene->addItemToDeletion(item);
+        }
+
+        pRemoveFromGroup(item);
         item->setFlag(QGraphicsItem::ItemIsSelectable, true);
         item->setFlag(QGraphicsItem::ItemIsFocusable, true);
     }
 
     remove();
-
-    if (scene()) {
-        qDebug() << "scene is well casted";
-        scene()->removeItem(this);
-    }
 }
 
 void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -278,4 +248,52 @@ QVariant UBGraphicsGroupContainerItem::itemChange(GraphicsItemChange change, con
     }
 
     return QGraphicsItem::itemChange(change, newValue);
+}
+
+void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
+{
+    if (!item) {
+        qWarning("QGraphicsItemGroup::removeFromGroup: cannot remove null item");
+        return;
+    }
+
+    QGraphicsItem *newParent = parentItem();
+
+    // COMBINE
+    bool ok;
+    QTransform itemTransform;
+    if (newParent)
+        itemTransform = item->itemTransform(newParent, &ok);
+    else
+        itemTransform = item->sceneTransform();
+
+    QPointF oldPos = item->mapToItem(newParent, 0, 0);
+    item->setParentItem(newParent);
+    item->setPos(oldPos);
+
+    // removing position from translation component of the new transform
+    if (!item->pos().isNull())
+        itemTransform *= QTransform::fromTranslate(-item->x(), -item->y());
+
+    // removing additional transformations properties applied
+    // with itemTransform() or sceneTransform()
+    QPointF origin = item->transformOriginPoint();
+    QMatrix4x4 m;
+    QList<QGraphicsTransform*> transformList = item->transformations();
+    for (int i = 0; i < transformList.size(); ++i)
+        transformList.at(i)->applyTo(&m);
+    itemTransform *= m.toTransform().inverted();
+    itemTransform.translate(origin.x(), origin.y());
+    itemTransform.rotate(-item->rotation());
+    itemTransform.scale(1 / item->scale(), 1 / item->scale());
+    itemTransform.translate(-origin.x(), -origin.y());
+
+    // ### Expensive, we could maybe use dirtySceneTransform bit for optimization
+
+    item->setTransform(itemTransform);
+//    item->d_func()->setIsMemberOfGroup(item->group() != 0);
+
+    // ### Quite expensive. But removeFromGroup() isn't called very often.
+    prepareGeometryChange();
+    itemsBoundingRect = childrenBoundingRect();
 }
