@@ -30,6 +30,7 @@
 #include "gui/UBFeaturesWidget.h"
 
 
+class UBWebToolsPalette;
 class UBStylusPalette;
 class UBClockPalette;
 class UBPageNumberPalette;
@@ -65,6 +66,9 @@ class UBBoardPaletteManager : public QObject
         void refreshPalettes();
 
         UBKeyboardPalette *mKeyboardPalette;
+
+        void setCurrentWebToolsPalette(UBWebToolsPalette *palette) {mWebToolsCurrentPalette = palette;}
+        UBWebToolsPalette* mWebToolsCurrentPalette;
 
         void processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode);
         void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
