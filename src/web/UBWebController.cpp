@@ -424,7 +424,7 @@ void UBWebController::setupPalettes()
     if(!(*mToolsCurrentPalette))
     {
         (*mToolsCurrentPalette) = new UBWebToolsPalette(UBApplication::mainWindow, false);
-
+        UBApplication::boardController->paletteManager()->setCurrentWebToolsPalette(*mToolsCurrentPalette);
 #ifndef Q_WS_WIN
         if (UBPlatformUtils::hasVirtualKeyboard() && UBApplication::boardController->paletteManager()->mKeyboardPalette)
             connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(closed()),

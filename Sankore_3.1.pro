@@ -3,6 +3,7 @@ TEMPLATE = app
 
 THIRD_PARTY_PATH=../Sankore-ThirdParty
 
+CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
 
@@ -133,8 +134,9 @@ win32 {
 macx {
    LIBS += -framework Foundation 
    LIBS += -lcrypto
-   LIBS += -framework AppKit 
-   LIBS += -framework WebKit
+   #commented because Sankore crashes on Java Script. It seems to backends dependencies.
+   #LIBS += -framework AppKit 
+   #LIBS += -framework WebKit
 
    CONFIG(release, debug|release):CONFIG += x86
 

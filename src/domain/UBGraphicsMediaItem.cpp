@@ -223,14 +223,6 @@ UBItem* UBGraphicsMediaItem::deepCopy() const
 
 void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-//    QDrag* mDrag = new QDrag(event->widget());
-//    QMimeData* pMime = new QMimeData();
-//    mDrag->setMimeData(pMime);
-//    mDrag->start();
-
-//    UBApplication::boardController->activeScene()->setActiveItem(this);
-
-
     if (mDelegate)
     {
         mDelegate->mousePressEvent(event);
@@ -279,6 +271,9 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (data(UBGraphicsItemData::ItemLocked).toBool())
+        return;
+
     if(mShouldMove && (event->buttons() & Qt::LeftButton))
     {
         QPointF offset = event->scenePos() - mMousePressPos;

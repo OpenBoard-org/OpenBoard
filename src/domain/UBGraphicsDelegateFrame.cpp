@@ -249,6 +249,9 @@ bool UBGraphicsDelegateFrame::canResizeBottomRight(qreal width, qreal height, qr
 
 void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (mDelegate->delegated()->data(UBGraphicsItemData::ItemLocked).toBool())
+        return;
+
     QLineF move(mStartingPoint, event->scenePos());
     qreal moveX = move.length() * cos((move.angle() - mAngle) * PI / 180);
     qreal moveY = -move.length() * sin((move.angle() - mAngle) * PI / 180);
@@ -390,9 +393,6 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             QSizeF newSize = resizableItem->size() + incVector;
 
-            if (!(mDelegate->getToolBarItem()->isVisibleOnBoard()
-                && (newSize.width() < mDelegate->getToolBarItem()->minWidth() / mDelegate->antiScaleRatio()
-                || newSize.height() < mDelegate->getToolBarItem()->minWidth() / mDelegate->antiScaleRatio() * 3/4)))
                     resizableItem->resize(newSize);
         }
     }

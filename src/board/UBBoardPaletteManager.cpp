@@ -29,6 +29,7 @@
 #include "gui/UBKeyboardPalette.h"
 #include "gui/UBToolWidget.h"
 #include "gui/UBZoomPalette.h"
+#include "gui/UBWebToolsPalette.h"
 #include "gui/UBActionPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
 #include "gui/UBDockTeacherGuideWidget.h"
@@ -73,6 +74,7 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mRightPalette(NULL)
     , mBackgroundsPalette(0)
     , mToolsPalette(0)
+    , mWebToolsCurrentPalette(0)
     , mAddItemPalette(0)
     , mErasePalette(NULL)
     , mPagePalette(NULL)
@@ -683,6 +685,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
                 if( !isInit )
                     containerResized();
+                if (mWebToolsCurrentPalette)
+                    mWebToolsCurrentPalette->hide();
             }
             break;
 
@@ -723,6 +727,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
                 if( !isInit )
                     UBApplication::applicationController->uninotesController()->TransparentWidgetResized();
+
+                if (mWebToolsCurrentPalette)
+                    mWebToolsCurrentPalette->hide();
             }
             break;
 
@@ -764,6 +771,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     else
                         mKeyboardPalette->setParent(UBApplication::documentController->controlView());
                 }
+                if (mWebToolsCurrentPalette)
+                    mWebToolsCurrentPalette->hide();
             }
             break;
 

@@ -122,6 +122,9 @@ UBDocumentProxyTreeItem* UBDocumentController::findDocument(UBDocumentProxy* pro
 
 void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument)
 {
+    if (!proxy)
+        return;
+
     QTreeWidgetItemIterator it(mDocumentUI->documentTreeWidget);
 
     mDocumentUI->documentTreeWidget->clearSelection();
