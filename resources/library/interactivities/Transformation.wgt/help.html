@@ -1,0 +1,66 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<!--
+	<link rel="stylesheet" href="css/fonts/Lobster/stylesheet.css">
+	<link rel="stylesheet" href="css/fonts/SF-Toontime/stylesheet.css">	
+    -->
+
+	<link rel="stylesheet" href="css/ubw-help.css">
+
+	<script src="js/lib/modernizr.js" type="text/javascript"></script>
+	<script src="js/lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+	<script src="js/lib/mustache.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div id="core">
+		<div class="wrapper">
+			<div>
+				<script>
+					function loadFile(filename, locale) {
+						var toload = filename;
+						var nextlocale = undefined;
+						
+						if(locale.length >= 5) {
+							toload += '_' + locale.substring(0, 5) +'-template.js';
+							nextlocale = locale.substring(0, 2);
+						}
+							
+						else if(locale.length >= 2){
+							toload += '_' + locale.substring(0, 2) +'-template.js';
+							nextlocale = '';
+						}
+						else
+							toload += '-template.js';
+						    
+						$.ajax({
+					        url:        toload,
+					        async:      false,
+					        contentType:'text/plain;charset=UTF-8',
+					        dataType:   'text',
+					        success:    function(data, status) {
+								$("#core>.wrapper>div").html(Mustache.render(data, window));                   
+							},
+							statusCode: {
+								404: function() {
+									if(nextlocale !== undefined)
+										loadFile(filename, nextlocale);
+								}
+							}
+					    });
+					}
+					$(document).ready(function(){
+						var locale = window.parent.sankore ? window.parent.sankore.locale() : "";
+						loadFile("js/help", locale);
+					});
+				</script>
+			</div>
+		</div>
+    </div>
+</body>
+
+</html>

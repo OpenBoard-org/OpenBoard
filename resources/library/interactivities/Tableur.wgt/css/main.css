@@ -1,0 +1,102 @@
+#lecture {
+	position: absolute;
+	background: url("images/sens-lecture.png") left top no-repeat;
+	width: 50px;
+	height: 40px;
+	left: -25px;
+	top: -25px;
+}
+
+#table {
+	display: table;
+	table-layout: fixed;
+	text-align: center;
+	border-collapse: collapse;
+	font-family: "SFToontimeRegular";
+	font-size: 24px;
+	color: #FFF;
+	margin-top: 25px;
+}
+
+#table > div {
+	display: table-row;
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #999;	
+}
+
+#table > div:first-child, #table > div:first-child > div {
+	border-top: none;
+	border-bottom: 1px solid #FFF;
+}
+
+#table > div:last-child, #table > div:last-child > div {
+	border-bottom: none;
+	height: 18px;
+}
+
+#table > div > div {
+	display: table-cell;
+	width: 52px;
+	height: 35px;
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+	position: relative;	
+}
+
+#table > div > div:first-child {
+	border-left: none;
+	border-right: 1px solid #FFF;
+	width: 25px;
+}
+
+#table > div > div:last-child {
+	border-right: none;
+	width: 25px;
+}
+
+#table .head {
+	width: 100%;
+	height: 100%;
+}
+
+#table .head, .card > div {
+	line-height: 35px;
+}
+
+.card {
+	cursor: pointer;
+}
+
+.card-container {
+	width:100%;
+	height: 100%;
+}
+.card {
+	position: relative;
+	width:100%;
+	height: 100%;
+}
+.card > div {
+	position: absolute;
+	width:100%;
+	height: 100%;
+}
+
+.card > div:first-child {
+	background: url("images/rature.png") center no-repeat;
+	text-indent: -99999px;
+}
+.card > div:last-child {
+	visibility: hidden;
+}
+
+.card > div:last-child > div {
+	display: inline;
+	font-size: 13px;
+}
+.card.flip > div:first-child {
+	visibility: hidden;
+}
+.card.flip > div:last-child {
+	visibility: visible;
+}

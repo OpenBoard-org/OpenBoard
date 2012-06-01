@@ -493,30 +493,29 @@ void UBApplication::decorateActionMenu(QAction* action)
             menu->addAction(mainWindow->actionCut);
             menu->addAction(mainWindow->actionCopy);
             menu->addAction(mainWindow->actionPaste);
-
-            menu->addSeparator();
-            menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionHideApplication);
             menu->addAction(mainWindow->actionSleep);
 
             menu->addSeparator();
-            menu->addAction(mainWindow->actionSankoreEditor);
-
+            menu->addAction(mainWindow->actionPreferences);
+            menu->addAction(mainWindow->actionMultiScreen);
+            menu->addAction(mainWindow->actionImportUniboardDocuments);
             // SANKORE-48: Hide the check update action if the setting
             // EnableAutomaticSoftwareUpdates is false in Uniboard.config
-            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
+            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool())
                 menu->addAction(mainWindow->actionCheckUpdate);
-            }
-            else{
+            else
                 mainWindow->actionCheckUpdate->setEnabled(false);
-            }
+
+            menu->addSeparator();
+            menu->addAction(mainWindow->actionTutorial);
+            menu->addAction(mainWindow->actionSankoreEditor);
 
 #ifndef Q_WS_X11 // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
             mainWindow->actionPodcast->setText(tr("Podcast"));
 #endif
-            menu->addAction(mainWindow->actionMultiScreen);
-            menu->addAction(mainWindow->actionImportUniboardDocuments);
+
             menu->addSeparator();
             menu->addAction(mainWindow->actionQuit);
 

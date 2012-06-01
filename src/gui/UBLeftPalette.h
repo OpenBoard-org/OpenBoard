@@ -23,6 +23,8 @@ public:
     UBLeftPalette(QWidget* parent=0, const char* name="UBLeftPalette");
     ~UBLeftPalette();
 
+    bool switchMode(eUBDockPaletteWidgetMode mode);
+
 protected:
     void updateMaxWidth();
     void resizeEvent(QResizeEvent *event);

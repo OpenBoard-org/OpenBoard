@@ -115,6 +115,8 @@ public:
 
     bool switchMode(eUBDockPaletteWidgetMode mode);
 
+    eUBDockPaletteWidgetMode mCurrentMode;
+
     QVector<UBDockPaletteWidget*> GetWidgetsList() { return mRegisteredWidgets; }
 
 public:

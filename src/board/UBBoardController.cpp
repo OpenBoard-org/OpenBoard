@@ -1823,8 +1823,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
            tmpItem->widgetWebView()->takeSnapshot().save(snapshotPath, "PNG");
 
     }
-
-    return 0;
+    return w3cWidgetItem;
 }
 
 void UBBoardController::cut()
@@ -1959,8 +1958,12 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         if("" != url)
         {
             downloadURL(url, pPos);
-            return;
         }
+        else
+        {
+            mActiveScene->addTextHtml(qsHtml, pPos);
+        }
+        return;
     }
 
     if (pMimeData->hasUrls())
@@ -1996,11 +1999,11 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         if("" != pMimeData->text()){
             // Sometimes, it is possible to have an URL as text. we check here if it is the case
             QString qsTmp = pMimeData->text().remove(QRegExp("[\\0]"));
-            if(qsTmp.startsWith("http")){
+            if(qsTmp.startsWith("http://") || qsTmp.startsWith("https://")){
                 downloadURL(QUrl(qsTmp), pPos);
             }
             else{
-                mActiveScene->addTextHtml(pMimeData->html(), pPos);
+                mActiveScene->addTextHtml(pMimeData->text(), pPos);
             }
         }
         else{
