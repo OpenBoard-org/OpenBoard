@@ -1806,6 +1806,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsAud
     }
 
     QString audioFileHref = audioItem->mediaFileUrl().toString();
+    if(audioFileHref.startsWith("file://"))
+    	audioFileHref = audioFileHref.replace("file://" + mDocumentPath + "/","");
     mXmlWriter.writeAttribute(nsXLink, "href", audioFileHref);
     mXmlWriter.writeEndElement();
 }
