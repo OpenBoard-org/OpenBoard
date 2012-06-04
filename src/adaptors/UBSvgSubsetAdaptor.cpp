@@ -1833,6 +1833,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsVid
     }
 
     QString videoFileHref = videoItem->mediaFileUrl().toString();
+    if(videoFileHref.startsWith("file://"))
+    	videoFileHref = videoFileHref.replace("file://" + mDocumentPath + "/","");
     mXmlWriter.writeAttribute(nsXLink, "href", videoFileHref);
     mXmlWriter.writeEndElement();
 }
