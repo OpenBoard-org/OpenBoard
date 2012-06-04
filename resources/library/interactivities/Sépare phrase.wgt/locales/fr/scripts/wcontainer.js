@@ -1,8 +1,8 @@
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
-    example: "c'est un tas de mots qui ne devraient être répartis à part",
-    wgt_name: "Diviser une phrase",
+    example: "Ceci est une série de mots à séparer correctement",
+    wgt_name: "Séparer une phrase",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

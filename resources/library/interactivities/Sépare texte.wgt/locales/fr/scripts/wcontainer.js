@@ -1,8 +1,8 @@
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
     example: "bonjour, ceci est la première phrase. salut, c'est la deuxième phrase. bonjour à nouveau, c'est la troisième phrase. bonjour, c'est la quatrième phrase. salut, désolé, je suis en retard, je suis la cinquième phrase.",
-    wgt_name: "Divisez le texte",
+    wgt_name: "Séparer texte",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

@@ -1,8 +1,8 @@
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
     example: "so*phis*ti*qué",
-    wgt_name: "Diviser un mot",
+    wgt_name: "Syllabage",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

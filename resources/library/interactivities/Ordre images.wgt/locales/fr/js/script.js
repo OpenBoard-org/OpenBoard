@@ -1,11 +1,11 @@
 
 var sankoreLang = {
-    display: "Affichage", 
+    display: "Afficher", 
     edit: "Modifier", 
     short_desc: "Placez les photos dans l'ordre croissant.", 
     add: "Nouveau bloc",
-    enter: "Saisissez votre texte ici ...",
-    wgt_name: "Ordonner des phrases",
+    enter: "Saisir votre texte ici ...",
+    wgt_name: "Ordonner des images",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

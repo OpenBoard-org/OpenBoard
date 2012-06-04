@@ -1,9 +1,9 @@
 var sankoreLang = {
-    display: "D'affichage", 
+    display: "Afficher", 
     edit: "Modifier",
     first_desc: "Les nombres impairs", 
-    second_desc: "Même les chiffres", 
-    enter: "Entrez votre nom de la catégorie ici ...",
+    second_desc: "Les nombres pairs", 
+    enter: "Saisir le nom de la catégorie ici ...",
     add: "Nouveau bloc",
     wgt_name: "Categoriser des images",
     reload: "Recharger",

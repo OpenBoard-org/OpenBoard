@@ -27,10 +27,10 @@ function checkResponse()
 */
 
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
-    example: "une*longue*,*il*ya*bien*longtemps*...",
-    wgt_name: "Ordonner des words",
+    example: "Il*était*une*fois*...",
+    wgt_name: "Ordonner des mots",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

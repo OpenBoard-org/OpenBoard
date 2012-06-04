@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "D'affichage", 
+    display: "Afficher", 
     edit: "Modifier", 
     first_desc: "Fruits", 
     second_desc: "Légumes",
@@ -8,10 +8,10 @@ var sankoreLang = {
     onion: "Oignon",
     apple: "Pomme",
     pear: "Poire",
-    enter: "Entrez votre nom de la catégorie ici ...",
+    enter: "Saisir le nom de la catégorie ici ...",
     add: "Nouveau bloc",
     text: "Texte",
-    wgt_name: "Ordonner des images",
+    wgt_name: "Categoriser des images",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

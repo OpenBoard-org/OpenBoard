@@ -1,9 +1,9 @@
 var sankoreLang = {
-    display: "Affichage", 
+    display: "Afficher", 
     edit: "Modifier", 
-    short_desc: "Sélectionnez les animaux de la liste suivante:", 
+    short_desc: "Sélectionner les animaux de la liste suivante:", 
     add: "Nouveau bloc",
-    enter: "Saisissez votre texte ici ...",
+    enter: "Saisir votre texte ici ...",
     cat: "chat",
     ball: "balle",
     shovel: "pelle",

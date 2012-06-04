@@ -26,10 +26,10 @@ function checkResponse()
 */
 
 var sankoreLang = {
-    view: "D'affichage", 
+    view: "Afficher", 
     edit: "Modifier",
-    example: "il\ns'agit\nd'une\nphrase\nd'exemple",
-    wgt_name: "Ordonner des images",
+    example: "Cette phrase\nest un\nexample",
+    wgt_name: "Ordonner des phrases",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"
