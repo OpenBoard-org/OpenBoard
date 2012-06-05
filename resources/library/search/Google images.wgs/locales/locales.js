@@ -31,7 +31,7 @@ var locales = {
 		'image_type_photo': 'Photo',
 		'image_type_clipart': 'Clipart',
 		'image_type_lineart': 'Lineart',
-		'image_license_title': 'Image type',
+		'image_license_title': 'Licence',
 		'image_license_reuse': 'Reuse',
 		'image_license_comm_reuse': 'Commercial reuse',
 		'image_license_modif': 'Modification',
