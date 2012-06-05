@@ -1,5 +1,5 @@
 var sankoreLang = {
-    view: "View", 
+    view: "Display", 
     edit: "Edit",
     example: "this is a bunch of words which should be split apart",
     wgt_name: "Split a phrase",

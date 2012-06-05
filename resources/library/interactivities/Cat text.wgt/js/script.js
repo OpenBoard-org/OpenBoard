@@ -3,7 +3,7 @@ var sankoreLang = {
     edit: "Edit", 
     first_desc: "Fruits", 
     second_desc: "Vegetables",
-    potatoes: "Potatoes",
+    potatoes: "Potato",
     carrot: "Carrot",
     onion: "Onion",
     apple: "Apple",

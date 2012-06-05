@@ -3,7 +3,7 @@ var sankoreLang = {
     edit: "Edit", 
     short_desc: "Select animals from the following list:", 
     add: "Add new block",
-    enter: "Enter your text here ...",
+    enter: "Enter your instruction here ...",
     cat: "cat",
     ball: "ball",
     shovel: "shovel",

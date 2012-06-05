@@ -5,7 +5,7 @@ var sankoreLang = {
     second_desc: "Les nombres pairs", 
     enter: "Saisir le nom de la catégorie ici ...",
     add: "Nouveau bloc",
-    wgt_name: "Categoriser des images",
+    wgt_name: "Catégoriser des images",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

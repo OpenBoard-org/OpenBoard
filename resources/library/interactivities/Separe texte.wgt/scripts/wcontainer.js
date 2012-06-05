@@ -1,5 +1,5 @@
 var sankoreLang = {
-    view: "View", 
+    view: "Display", 
     edit: "Edit",
     example: "hello, this is the first sentence. hi, this is the second sentence. hello again, this is the third sentence. good morning, this is the fourth sentence. hi, sorry, i\'m late, i\'m the fifth sentence.",
     wgt_name: "Split a text",
