@@ -19,8 +19,8 @@ public:
 
     void setElement(UBLibElement* elem);
 
-private slots:
-    void onLoadFinished(bool ok);
+protected slots:
+    virtual void javaScriptWindowObjectCleared();
 
 private:
     QWebView* mpView;

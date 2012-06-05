@@ -24,20 +24,9 @@ UBLibWebView::UBLibWebView(QWidget* parent, const char* name):QWidget(parent)
     mpView = new QWebView(this);
     mpView->setObjectName("SearchEngineView");
     mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
-    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-
-    mpWebSettings = QWebSettings::globalSettings();
-    mpWebSettings->setAttribute(QWebSettings::JavaEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::PluginsEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-    mpWebSettings->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+    connect(mpView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
 
     mpLayout->addWidget(mpView);
-
-    connect(mpView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
 }
 
 UBLibWebView::~UBLibWebView()
@@ -88,14 +77,11 @@ void UBLibWebView::setElement(UBLibElement *elem)
                 f.close();
             }
         }
-
         mpView->load(QUrl::fromLocalFile(QString("%0/%1").arg(path).arg(qsWidgetName)));
     }
 }
 
-void UBLibWebView::onLoadFinished(bool ok)
+void UBLibWebView::javaScriptWindowObjectCleared()
 {
-    if(ok && NULL != mpSankoreAPI){
-        mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-    }
+    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
 }
