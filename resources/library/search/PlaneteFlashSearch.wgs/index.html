@@ -71,21 +71,19 @@
                         // We use titleNoFormatting so that no HTML tags are left in the 
                         // title
                         title.innerHTML = result.title;
-                        if (thumbnails) {
                            	var newImg = document.createElement('img');
 
                         	// There is also a result.file property which has the escaped version
-                        	newImg.src = result.file;
+                            if (thumbnails) {
+        	                   	newImg.src = result.file;
+                            } else {
+        	                   	newImg.src = "./images/thumbnail_icon.png";
+            				}
                         	var imgWidth = (result.tbWidth > minWidth)?result.tbWidth:minWidth;
                         	var imgHeight = (result.tbHeight > minHeight)?result.tbHeight:minHeight;
                         	imgContainer.width(imgWidth).height(imgHeight);
                         	imgContainer.append($(newImg));
-			} else {
-                        	var imgWidth = (result.tbWidth > minWidth)?result.tbWidth:minWidth;
-                        	var imgHeight = (result.tbHeight > minHeight)?result.tbHeight:minHeight;
-                        	imgContainer.width(imgWidth).height(imgHeight);
-			}
-                        iUrl.attr("value", result.file);
+			            iUrl.attr("value", result.file);
                         iContent.attr("value", result.title);
      		        iHeight.attr("value", result.height);
                         iWidth.attr("value", result.width);
