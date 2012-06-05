@@ -20,7 +20,7 @@ var sankoreLang = {
     example_question:"Ceci est un exemple de question",
     answer:"Ceci est un exemple de réponse",
     q:"Q",
-    add_new_question:"Ajouter une nouvelle question ...",
+    add_new_question:" Ajouter une nouvelle question ...",
     options:"Les options",
     close:"Fermer",
     delete_question:"Supprimer la question",

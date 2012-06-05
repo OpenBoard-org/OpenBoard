@@ -19,9 +19,9 @@ var sankoreLang = {
     add: "Ajouter", 
     enter_data: "Saisir la donnée:", 
     enter_result: "Saisir le résultat:", 
-    ok: "Accepter", 
+    ok: "Ok", 
     cancel: "Annuler",
-    wgt_name: "Noir/jaune",
+    wgt_name: "Constraste",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

@@ -840,7 +840,7 @@ QString UBPersistenceManager::addVideoFileToDocument(UBDocumentProxy* pDocumentP
 
     }
 
-    return fileName;
+    return destPath;
 
 }
 
@@ -872,7 +872,7 @@ QString UBPersistenceManager::addVideoFileToDocument(UBDocumentProxy* pDocumentP
         }
     }
 
-    return fileName;
+    return destPath;
 
 }
 

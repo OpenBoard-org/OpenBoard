@@ -1806,7 +1806,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsAud
     }
 
     QString audioFileHref = audioItem->mediaFileUrl().toString();
-    if(audioFileHref.startsWith("file://"))
+    //on windows
+	if(audioFileHref.startsWith("file:///"))
+    	audioFileHref = audioFileHref.replace("file:///" + mDocumentPath + "/","");
+	//mac and linux
+	if(audioFileHref.startsWith("file://"))
     	audioFileHref = audioFileHref.replace("file://" + mDocumentPath + "/","");
     mXmlWriter.writeAttribute(nsXLink, "href", audioFileHref);
     mXmlWriter.writeEndElement();
@@ -1833,7 +1837,13 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsVid
     }
 
     QString videoFileHref = videoItem->mediaFileUrl().toString();
-    mXmlWriter.writeAttribute(nsXLink, "href", videoFileHref);
+	//on windows
+    if(videoFileHref.startsWith("file:///"))
+    	videoFileHref = videoFileHref.replace("file:///" + mDocumentPath + "/","");
+	//on mac and linux
+	if(videoFileHref.startsWith("file://"))
+    	videoFileHref = videoFileHref.replace("file://" + mDocumentPath + "/","");
+	mXmlWriter.writeAttribute(nsXLink, "href", videoFileHref);
     mXmlWriter.writeEndElement();
 }
 

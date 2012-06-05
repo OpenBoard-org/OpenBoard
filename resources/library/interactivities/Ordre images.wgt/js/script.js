@@ -3,7 +3,7 @@ var sankoreLang = {
     edit: "Edit", 
     short_desc: "Place the pictures in ascending order.", 
     add: "Add new block",
-    enter: "Enter your text here ...",
+    enter: "Enter your instruction here ...",
     wgt_name: "Order images",
     reload: "Reload",
     slate: "Wood",

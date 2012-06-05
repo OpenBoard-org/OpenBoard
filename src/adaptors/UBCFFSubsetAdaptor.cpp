@@ -853,13 +853,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
 
     QUuid uuid = QUuid::createUuid();
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mCurrentScene->document()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-        ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
         ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#endif
 
     UBGraphicsVideoItem *videoItem = mCurrentScene->addVideo(concreteUrl, false);
     QTransform transform;

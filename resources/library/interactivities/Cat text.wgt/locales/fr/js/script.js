@@ -3,7 +3,7 @@ var sankoreLang = {
     edit: "Modifier", 
     first_desc: "Fruits", 
     second_desc: "Légumes",
-    potatoes: "Pommes de terre",
+    potatoes: "Pomme de terre",
     carrot: "Carotte",
     onion: "Oignon",
     apple: "Pomme",
@@ -11,7 +11,7 @@ var sankoreLang = {
     enter: "Saisir le nom de la catégorie ici ...",
     add: "Nouveau bloc",
     text: "Texte",
-    wgt_name: "Categoriser des images",
+    wgt_name: "Catégoriser des textes",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

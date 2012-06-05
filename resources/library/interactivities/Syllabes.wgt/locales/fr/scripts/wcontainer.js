@@ -2,7 +2,7 @@ var sankoreLang = {
     view: "Afficher", 
     edit: "Modifier",
     example: "so*phis*ti*qué",
-    wgt_name: "Syllabage",
+    wgt_name: "Syllabe",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

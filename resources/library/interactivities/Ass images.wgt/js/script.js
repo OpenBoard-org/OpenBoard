@@ -3,7 +3,7 @@ var sankoreLang = {
     edit: "Edit", 
     short_desc: "Select the number \"three\".", 
     add: "Add new block",
-    enter: "Enter your condition here ...",
+    enter: "Enter your instruction here ...",
     wgt_name: "Associate images",
     reload: "Reload",
     slate: "Wood",
