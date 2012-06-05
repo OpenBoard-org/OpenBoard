@@ -4,7 +4,7 @@ var sankoreLang = {
     short_desc: "Combien de signaux entendez-vous?", 
     add: "Nouveau bloc",
     enter: "Saisir votre description ici ...",
-    wgt_name: "Associer le son",
+    wgt_name: "Associer aux sons",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad"

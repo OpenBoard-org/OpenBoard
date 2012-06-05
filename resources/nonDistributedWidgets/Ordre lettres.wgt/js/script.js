@@ -3,7 +3,7 @@ var sankoreLang = {
     edit: "Edit", 
     short_desc: "Listen to the sound and make the correct word.", 
     add: "Add new block",
-    enter: "Enter your description here ...",
+    enter: "Enter your instruction here ...",
     example: "example",
     wgt_name: "Order the letters",
     reload: "Reload",

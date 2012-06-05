@@ -3,8 +3,8 @@ var sankoreLang = {
     edit: "Edit", 
     short_desc: "How many signals do you hear?", 
     add: "Add new block",
-    enter: "Enter your description here ...",
-    wgt_name: "Associate the sound",
+    enter: "Enter your instruction here ...",
+    wgt_name: "Associate to the audio",
     reload: "Reload",
     slate: "Wood",
     pad: "Pad"
