@@ -815,13 +815,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
 
     QUuid uuid = QUuid::createUuid();
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mCurrentScene->document()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-        ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
         ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#endif
     
     UBGraphicsAudioItem *audioItem = mCurrentScene->addAudio(concreteUrl, false);
     QTransform transform;

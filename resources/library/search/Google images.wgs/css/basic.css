@@ -1,4 +1,4 @@
-body{
+html, body{
     width: 100%;
     padding: 0;
     height: auto;
@@ -6,10 +6,13 @@ body{
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
 .disclaimer{
-    width: 90%;
-    height: 50px;
-    position: absolute;
+    height: 30px;
+    position: fixed;
     left: 0;
     bottom: 0;
     margin-left: 1px;
@@ -27,14 +30,16 @@ body{
     z-index: 10;
 }
 
+#searchResult {
+    overflow: hidden;
+    text-align: center;
+}
+
 .search{
     width: 90%;    
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    margin-left: 1px;
-    margin-right: 1px;
-    margin-top: 0px;
     padding: 5px;
     background-color: #BBBBBB;
     -webkit-border-bottom-left-radius: 15px;
@@ -46,47 +51,62 @@ body{
     z-index: 101;
 }
 
+.search,
+.disclaimer {
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
 .togglePages{
     padding: 0;
     position: absolute;
-    bottom: -14px;
-    left: 43%;
-    width: 15%;
-    height: 10px;
+    bottom: -19px;
+    left: 40%;
+    width: 22%;
+    height: 15px;
     background-color: #666;
-    -webkit-border-bottom-left-radius: 5px;
-    -webkit-border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 20px;
+    -webkit-border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
     -webkit-box-shadow: #dadada -1px 0 4px;
     box-shadow: #dadada -1px 0 4px;
     cursor: pointer;
 	z-index: 100;
+    text-align: center;
 }
 
 .toggleIcon{
+    display: inline-block;
     width: 14px;
-    height: 10px;
-    background-image: url(../images/trgUp.png);
+    height: 14px;
+    background: url(../images/trgUp.png) 50% no-repeat;
+    
 }
 
 .searchInput{
-    margin: 10px 5px 10px 5px;
-    padding: 2px;
-    padding-left: 8px;
-    padding-right:8px;
+    padding: 3px;
     float: left;
-    width: 60%;
-    border-radius: 15px;
+    width: 100%;
+    border-radius: 3px;
     border-style: none;
+    height: 22px;
+    line-height: 18px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 .searchButton{
-    width: 32px;
-    height: 32px;
-    margin: 5px 5px;
-    background-image: url(../images/search.png);
-    float: left;
+    background: url("../images/search_app.png") -38px -38px no-repeat;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    position: absolute;
+    right: 30px;
+    top: 9px;
+    margin-left: -2px;
     cursor: pointer;
 }
 
@@ -98,6 +118,10 @@ body{
 #subSearchInput{
     width: 100%;
     float: left;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    padding: 5px;
+    padding-right: 26px;
 }
 
 #subSearchFilter{
@@ -113,7 +137,7 @@ body{
 }
 
 .imgContainer{
-    float: left;
+    display: inline-block;
     padding: 3px;
     margin: 3px;
     text-align: center;
@@ -125,6 +149,7 @@ body{
     -webkit-box-shadow: #dadada -1px 0 4px;
     -webkit-border-radius: 5px;
     box-shadow: #666 -1px 0 4px;
+    vertical-align: top;
 }
 
 .resultFooter{
@@ -135,12 +160,13 @@ body{
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-weight: bold;
     font-size: x-large;
+    text-align: center;
 }
 
 #branding{
     position: absolute;
     top: 0;
-    left: 10px;
+    left: 0;
     z-index: 2;
 }
 
@@ -159,6 +185,8 @@ body{
     -moz-border-radius-topright: 15px;
     -moz-border-radius-bottomright: 15px;
     border-top-right-radius: 15px;
+    margin-top: 2px;
+    width: 100%;
 }
 
 span{    
@@ -177,9 +205,121 @@ span{
     background-position: center;
     background-image: url(../images/down.png);
     position: absolute;
-    bottom: 2px;
-    right: 2px;
+    top: 11px;
+    right: 6px;
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+
+.colors_line {
+    float: left;
+    margin: 4px;
+    margin-right: 0;
+    clear: left;
+}
+
+.custom {
+    opacity: 0;
+    position: absolute;
+    left: -10000px;
+}
+
+.filter_button.button.color {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #EBEBEB;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.filter_button.button.color:hover {
+  border: 1px solid rgb(128,128,128);
+  cursor: pointer;
+}
+
+input[type="radio"]:checked + .filter_button.button.color {
+  border: 1px solid rgb(255,255,255);
+  box-shadow: 0 0 0px 1px #000;
+  -webkit-box-shadow: 0 0 0px 1px #000;
+}
+
+#allcolor {
+    background: white url('../images/search_app.png') -43px -144px no-repeat;
+}
+
+#colored {
+    background: white url('../images/search_app.png') -43px -244px no-repeat;
+}
+
+#grayed {
+    background: white url('../images/search_app.png') -45px -343px no-repeat;
+}
+
+#black{
+    background-color:#ffffff;
+}
+#blue{
+    background-color:#0000FF;
+}
+#brown{
+    background-color:rgba(139, 82, 16, 1);
+}
+
+#gray{
+    background-color:#999999;
+}
+
+#green{
+    background-color:#00CC00;
+}
+
+#orange{
+    background-color:#FB940B;
+}
+
+#pink{
+    background-color:#FF98BF;
+} 
+
+#purple{
+    background-color:#762CA7;
+}
+
+#red{
+    background-color:#CC0000;
+}
+
+#teal{
+    background-color:#03C0C6;
+}
+
+#white{
+    background-color:#000000;
+}
+
+#yellow{
+    background-color:#FFFF00;
+}
+
+.selectBox-dropdown, .selectBox-options li a { 
+    line-height: 1.3 !important;
+    font-size: 13px;
+}
+
+.pager_button {
+    padding: 3px 5px;
+    font-size: 16px;
+    color: black;
+    display: inline-block;
+}
+
+.pager_button.active {
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background-color: gray;
+    color: white;
 }

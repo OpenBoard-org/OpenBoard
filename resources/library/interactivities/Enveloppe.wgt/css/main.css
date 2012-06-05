@@ -1,0 +1,49 @@
+#scene > div {
+	position: relative;
+	display: table;
+	background: url("images/arrow-down.png") 120px 50px no-repeat;
+}
+
+#scene > div > div {
+	display: table-cell;
+	vertical-align: top;	
+}
+
+#box {
+	position: relative;
+	width: 320px;
+	height: 240px;	
+	margin-top: 140px;
+	background: url("images/box-bg.png") center top no-repeat;	
+}
+
+#box.onReset, #box.ui-state-hover {
+	margin-top: 0px;
+	height: 380px;
+	background-position-x: center;
+	background-position-y: bottom;
+}
+
+#objects {
+	padding: 140px 20px 20px 80px;
+	max-width: 325px;
+}
+
+#objects > div {
+	width: 65px;
+	height: 80px;
+	float: left;
+	background: url("images/trombonne.png") center no-repeat;
+}
+
+#objects > div .tools {
+	display: none;
+}
+
+.onEdit #objects > div .tools {
+	display: block;
+}
+
+#objects > div.inBox {
+	visibility: hidden;
+}

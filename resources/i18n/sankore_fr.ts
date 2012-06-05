@@ -213,7 +213,7 @@
     </message>
     <message>
         <source>Line</source>
-        <translation>Droite</translation>
+        <translation>Trait</translation>
     </message>
     <message>
         <source>Quit</source>

@@ -3,10 +3,12 @@
     <head>
         <title>Google Image Search</title>
         <link rel="stylesheet" type="text/css" href="css/basic.css"/>
+        <script type="text/javascript" src="locales/locales.js"></script>
         <script type="text/javascript" src="http://www.google.com/uds"></script>
         <script type="text/javascript" src="scripts/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="select/jquery.selectBox.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="select/jquery.selectBox.css" />
         <script type="text/javascript">
-
             //begin google API
             google.load("search","1");
 
@@ -23,19 +25,10 @@
                 var pagesDiv = $("<div id='resultFooter' class='resultFooter'>");
                 for (var i = 0; i < cursor.pages.length; i++) {
                     var page = cursor.pages[i];
-                    if (curPage == i) { 
 
-                        // If we are on the current page, then don't make a link.
-                        var label = document.createTextNode(' ' + page.label + ' ');
-                        pagesDiv.append($(label));
-                    } else {
-
-                        // Create links to other pages using gotoPage() on the searcher.
-                        var link = document.createElement('a');
-                        link.href = 'javascript:imageSearch.gotoPage('+i+');';
-                        link.innerHTML = page.label;
-                        link.style.marginRight = '2px';
-                        pagesDiv.append($(link));
+                    var link = $("<a class='pager_button'></a>").attr('href', 'javascript:imageSearch.gotoPage('+i+');').html(page.label).appendTo(pagesDiv);
+                    if (curPage == i) {
+                        link.addClass('active');
                     }
                 }
 
@@ -59,7 +52,6 @@
             }
 
             function searchComplete() {
-
                 // Check that we got results
                 if (imageSearch.results && imageSearch.results.length > 0) {
 
@@ -68,6 +60,7 @@
 
                     // Loop through our results, printing them to the page.
                     var results = imageSearch.results;
+                    console.log(results);
                     for (var i = 0; i < results.length; i++) {
                         // For each result write it's title and image to the screen
                         var result = results[i];
@@ -109,6 +102,10 @@
                     // Now add links to additional pages of search results.
                     addPaginationLinks(imageSearch);
                 }
+                setTimeout(function(){
+                    $(window).trigger('resize');
+                }, 1000);
+                
             }
 
             function OnLoad() {
@@ -157,14 +154,17 @@
                 var hide = false; //hide or no main panel
     
                 //basic containers and elements    
-                var disclaimer = $("<div id='disclaimer' class='disclaimer'>Disclaimer<div>").appendTo("body");    
+                var lang = window.sankore ? sankore.locale().substr(0,2) : "en"; //locale language
+
+                //localization
+                locale = locales[lang];
+
+                var disclaimer = $("<div id='disclaimer' class='disclaimer'>"+locale.disclaimer_title+"<div>").appendTo("body");
+                    
                 var search = $("<div id='search' class='search'>").appendTo("body");
-				
-				disclaimer.width($("body").width()-20);
-                search.width($("body").width()-20);
     
                 var togglePages = $("<div id='togglePages' class='togglePages'>").appendTo(search);
-                var toggleIcon = $("<div id='toggleIcon' class='toggleIcon'>").appendTo(togglePages).css("margin-left",(togglePages.width()/2 - 7));
+                var toggleIcon = $("<div id='toggleIcon' class='toggleIcon'>").appendTo(togglePages);
     
                 var subSearchInput = $("<div id='subSearchInput' class='subSearch'>").appendTo(search);
                 var subSearchFilter = $("<div id='subSearchFilter' class='subSearch'>").appendTo(search);
@@ -175,58 +175,70 @@
     
                 //adding filters to the wgt
                 var selectFilter = $("<select id='sizeFilter' class='filterSelect'>")
-                .append($("<option value='0'>Any</option>"))
-                .append($("<option value='1'>Small</option>"))
-                .append($("<option value='2'>Medium</option>"))
-                .append($("<option value='3'>Large</option>"))
-                .append($("<option value='4'>Extra large</option>"));
-                $("<div class='filterContainer'>").append("<span>Size:</span>").append(selectFilter).appendTo(subSearchFilter);
-                
-                selectFilter = $("<select id='colorizFilter' class='filterSelect'>")
-                .append($("<option value='0'>Any</option>"))
-                .append($("<option value='1'>Grayscale</option>"))
-                .append($("<option value='2'>Color</option>"));
-                $("<div class='filterContainer'>").append("<span>Colorization:</span>").append(selectFilter).appendTo(subSearchFilter);
-                 
-                selectFilter = $("<select id='colorFilter' class='filterSelect'>")
-                .append($("<option value='0'>Any</option>"))
-                .append($("<option value='1'>Black</option>"))
-                .append($("<option value='2'>Blue</option>"))
-                .append($("<option value='3'>Brown</option>"))
-                .append($("<option value='4'>Gray</option>"))
-                .append($("<option value='5'>Green</option>"))
-                .append($("<option value='6'>Orange</option>"))
-                .append($("<option value='7'>Pink</option>"))
-                .append($("<option value='8'>Purple</option>"))
-                .append($("<option value='9'>Red</option>"))
-                .append($("<option value='10'>Teal</option>"))
-                .append($("<option value='11'>White</option>"))
-                .append($("<option value='12'>Yellow</option>"));
-                $("<div class='filterContainer'>").append("<span>Main color:</span>").append(selectFilter).appendTo(subSearchFilter);
+                .append($("<option value='0'>"+locale.def_opts_val+"</option>"))
+                .append($("<option value='1'>"+locale.size_small+"</option>"))
+                .append($("<option value='2'>"+locale.size_medium+"</option>"))
+                .append($("<option value='3'>"+locale.size_large+"</option>"))
+                .append($("<option value='4'>"+locale.size_extra_large+"</option>"));
+                $("<div class='filterContainer'>").append("<span>"+locale.size_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
                  
                 selectFilter = $("<select id='fileTypeFilter' class='filterSelect'>")
-                .append($("<option value='0'>Any</option>"))
+                .append($("<option value='0'>"+locale.def_opts_val+"</option>"))
                 .append($("<option value='1'>*.JPG</option>"))
                 .append($("<option value='2'>*.PNG</option>"))
                 .append($("<option value='3'>*.GIF</option>"))
                 .append($("<option value='4'>*.BMP</option>"));
-                $("<div class='filterContainer'>").append("<span>File type:</span>").append(selectFilter).appendTo(subSearchFilter);
+                $("<div class='filterContainer'>").append("<span>"+locale.file_type_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
                 
                 selectFilter = $("<select id='typeFilter' class='filterSelect'>")
-                .append($("<option value='0'>Any</option>"))
-                .append($("<option value='1'>Faces</option>"))
-                .append($("<option value='2'>Photo</option>"))
-                .append($("<option value='3'>Clipart</option>"))
-                .append($("<option value='4'>Lineart</option>"));
-                $("<div class='filterContainer'>").append("<span>Image type:</span>").append(selectFilter).appendTo(subSearchFilter);
+                .append($("<option value='0'>"+locale.def_opts_val+"</option>"))
+                .append($("<option value='1'>"+locale.image_type_faces+"</option>"))
+                .append($("<option value='2'>"+locale.image_type_photo+"</option>"))
+                .append($("<option value='3'>"+locale.image_type_clipart+"</option>"))
+                .append($("<option value='4'>"+locale.image_type_lineart+"</option>"));
+                $("<div class='filterContainer'>").append("<span>"+locale.image_type_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
                 
                 selectFilter = $("<select id='rightsFilter' class='filterSelect'>")
-                .append($("<option value='0'>Any</option>"))
-                .append($("<option value='1'>Reuse</option>"))
-                .append($("<option value='2'>Comercial reuse</option>"))
-                .append($("<option value='3'>Modification</option>"))
-                .append($("<option value='4'>Comercial modification</option>"));
-                $("<div class='filterContainer'>").append("<span>Image type:</span>").append(selectFilter).appendTo(subSearchFilter);
+                .append($("<option value='0'>"+locale.def_opts_val+"</option>"))
+                .append($("<option value='1'>"+locale.image_license_reuse+"</option>"))
+                .append($("<option value='2'>"+locale.image_license_comm_reuse+"</option>"))
+                .append($("<option value='3'>"+locale.image_license_modif+"</option>"))
+                .append($("<option value='4'>"+locale.image_license_comm_modif+"</option>"));
+                $("<div class='filterContainer'>").append("<span>"+locale.image_type_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
+
+                var colors_line = $('<div class="colors_line"></div>');
+                subSearchFilter.append(colors_line);
+                colors_line.html('<input type="radio" value="allcolor" id="color_shem_allcolor" class="custom" name="color" checked="true">\
+                    <label id="allcolor" class="filter_button button color active" for="color_shem_allcolor"></label>\
+                    <input type="radio" value="color" id="color_shem_color" class="custom" name="color">\
+                    <label id="colored" class="filter_button button color" for="color_shem_color"></label>\
+                    <input type="radio" value="grayscale" id="color_shem_gray" class="custom" name="color">\
+                    <label id="grayed" class="filter_button button color" for="color_shem_gray"></label>\
+                    <label style="border-right: 1px solid #fff; margin-right:7px; margin-left:7px; height: 15px; display: inline-block;"></label>\
+                    <input type="radio" value="red" id="design9" class="custom" name="color">\
+                    <label id="red" class="filter_button button color" for="design9"></label>\
+                    <input type="radio" value="orange" id="design6" class="custom" name="color">\
+                    <label id="orange" class="filter_button button color" for="design6"></label>\
+                    <input type="radio" value="yellow" id="design12" class="custom" name="color">\
+                    <label id="yellow" class="filter_button button color" for="design12"></label>\
+                    <input type="radio" value="green" id="design5" class="custom" name="color">\
+                    <label id="green" class="filter_button button color" for="design5"></label>\
+                    <input type="radio" value="teal" id="design10" class="custom" name="color">\
+                    <label id="teal" class="filter_button button color" for="design10"></label>\
+                    <input type="radio" value="blue" id="design2" class="custom" name="color">\
+                    <label id="blue" class="filter_button button color" for="design2"></label>\
+                    <input type="radio" value="purple" id="design8" class="custom" name="color">\
+                    <label id="purple" class="filter_button button color" for="design8"></label>\
+                    <input type="radio" value="pink" id="design7" class="custom" name="color">\
+                    <label id="pink" class="filter_button button color" for="design7"></label>\
+                    <input type="radio" value="white" id="design11" class="custom" name="color">\
+                    <label id="white" class="filter_button button color" for="design11"></label>\
+                    <input type="radio" value="gray" id="design4" class="custom" name="color">\
+                    <label id="gray" class="filter_button button color" for="design4"></label>\
+                    <input type="radio" value="black" id="design1" class="custom" name="color">\
+                    <label id="black" class="filter_button button color" for="design1"></label>\
+                    <input type="radio" value="brown" id="design3" class="custom" name="color">\
+                    <label id="brown" class="filter_button button color" for="design3"></label>');
                 
                 //mouse click actions
                 toggleFilters.click(function(){
@@ -244,14 +256,14 @@
                 togglePages.click(function(event){
                     if(mode){
                         hide = false;
-                        $("#search, #disclaimer").slideDown('slow', function(){
+                        $("#search, #disclaimer").slideDown('fast', function(){
                             toggleIcon.css("background-image","url(images/trgUp.png)");
                             togglePages.appendTo("#search").css("top","").css("bottom","-14px");                            
                         });
                         mode = false;
                     } else {
                         hide = true;
-                        $("#search, #disclaimer").slideUp('slow', function(){
+                        $("#search, #disclaimer").slideUp('fast', function(){
                             toggleIcon.css("background-image","url(images/trgDown.png)");
                             togglePages.appendTo("body").css("top","0");                            
                         });
@@ -275,11 +287,14 @@
                               
                     }
                 });
-                (
+
+                $('.filterSelect, .colors_line input[name=color]').change(function(){
+                    checkFilters(imageSearch).execute(searchInput.val());
+                });
+
                 $(".imgContainer").live("click",function(){
-                    //alert(createMetaData($(this)));
 					sankore.sendFileMetadata(createMetaData($(this)));
-                }));
+                });
                 
                 //checking filters
                 function checkFilters(imgSearch){
@@ -302,58 +317,53 @@
                             break;
                     }
                     
-                    value = $("#colorizFilter option:selected").val();
+                    value = $(".colors_line input[name=color]:checked").val();
+                    imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,null);
+                    imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORIZATION,null);
                     switch(value){
-                        case "0":
+                        case "allcolor":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORIZATION,null);
                             break;
-                        case "1":
+                        case "grayscale":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORIZATION,google.search.ImageSearch.COLORIZATION_GRAYSCALE);
                             break;
-                        case "2":
+                        case "color":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORIZATION,google.search.ImageSearch.COLORIZATION_COLOR);
                             break;
-                    }
-                    
-                    value = $("#colorFilter option:selected").val();
-                    switch(value){
-                        case "0":
-                            imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,null);
-                            break;
-                        case "1":
+                        case "black":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_BLACK);
                             break;
-                        case "2":
+                        case "blue":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_BLUE);
                             break;
-                        case "3":
+                        case "brown":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_BROWN);
                             break;
-                        case "4":
+                        case "gray":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_GRAY);
                             break;
-                        case "5":
+                        case "green":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_GREEN);
                             break;
-                        case "6":
+                        case "orange":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_ORANGE);
                             break;
-                        case "7":
+                        case "pink":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_PINK);
                             break;
-                        case "8":
+                        case "purple":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_PURPLE);
                             break;
-                        case "9":
+                        case "red":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_RED);
                             break;
-                        case "10":
+                        case "teal":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_TEAL);
                             break;
-                        case "11":
+                        case "white":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_WHITE);
                             break;
-                        case "12":
+                        case "yellow":
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_COLORFILTER,google.search.ImageSearch.COLOR_YELLOW);
                             break;
                     }
@@ -417,19 +427,26 @@
                     return imgSearch;
                 }
                 
-				$(window).resize(function(){
-                    disclaimer.width($("body").width()-20);
-                    search.width($("body").width()-20);
-                    toggleIcon.css("margin-left",(togglePages.width()/2 - 7));
-                })
+                $(window).resize(function(){
+		  var width = "200px";
+		  if ($('#search').width() < 230) {
+		    width = $("#search").width()-40;
+		  } else {
+		    width = "200px";
+		  }
+		  $('select').selectBox('destroy').css('width', width).selectBox();
+                });
+                
+                $(window).trigger("resize");
 				
             });
             
             function createMetaData(parent){
                 var meta = "";
-                //alert($(this).find("input:hidden").eq(0).val());
                 meta = "<metadata><data><key>Type</key><value>Image</value></data><data><key>Url</key><value>" + 
                     parent.find("input:hidden").eq(0).val() + 
+                    "</value></data><data><key>thumbnailUrl</key><value>" + 
+                    parent.find("img").attr("src") + 
                     "</value></data><data><key>Content</key><value>" + 
                     parent.find("input:hidden").eq(1).val() +
                     "</value></data><data><key>Height</key><value>" + 
