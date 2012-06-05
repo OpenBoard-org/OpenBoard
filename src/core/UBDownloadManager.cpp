@@ -306,8 +306,11 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
     connect(http, SIGNAL(downloadProgress(int, qint64,qint64)), this, SLOT(onDownloadProgress(int,qint64,qint64)));
     connect(http, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
 
+    //the desc.url is encoded. So we have to decode it before.
+    QUrl url;
+    url.setEncodedUrl(desc.url.toUtf8());
     // We send here the request and store its reply in order to be able to cancel it if needed
-    mReplies[desc.id] = http->get(QUrl(desc.url), desc.pos, desc.size, desc.isBackground);
+    mReplies[desc.id] = http->get(url, desc.pos, desc.size, desc.isBackground);
 }
 
 /**
