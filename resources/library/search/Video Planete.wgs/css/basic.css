@@ -11,7 +11,7 @@ a {
 }
 
 .disclaimer{
-    height: 30px;
+    height: 60px;
     position: fixed;
     left: 0;
     bottom: 0;
@@ -322,4 +322,19 @@ input[type="radio"]:checked + .filter_button.button.color {
     -webkit-border-radius: 3px;
     background-color: gray;
     color: white;
+}
+
+/*
+Planete Sankore Changes
+*/
+.searchButton{
+    right: 10px;
+}
+
+#subSearchInput{
+    padding-right: 5px;
+}
+
+.imgContainer img {
+    width: 100px;
 }

@@ -1,4 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Google Image Search</title>
@@ -175,7 +176,7 @@
     
                 //adding filters to the wgt
                 var selectFilter = $("<select id='sizeFilter' class='filterSelect'>")
-                .append($("<option value='0'>"+locale.def_opts_val+"</option>"))
+                .append($("<option value='0'>"+locale.def_opts_val_size+"</option>"))
                 .append($("<option value='1'>"+locale.size_small+"</option>"))
                 .append($("<option value='2'>"+locale.size_medium+"</option>"))
                 .append($("<option value='3'>"+locale.size_large+"</option>"))
@@ -183,7 +184,7 @@
                 $("<div class='filterContainer'>").append("<span>"+locale.size_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
                  
                 selectFilter = $("<select id='fileTypeFilter' class='filterSelect'>")
-                .append($("<option value='0'>"+locale.def_opts_val+"</option>"))
+                .append($("<option value='0'>"+locale.def_opts_val_type+"</option>"))
                 .append($("<option value='1'>*.JPG</option>"))
                 .append($("<option value='2'>*.PNG</option>"))
                 .append($("<option value='3'>*.GIF</option>"))
@@ -191,7 +192,7 @@
                 $("<div class='filterContainer'>").append("<span>"+locale.file_type_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
                 
                 selectFilter = $("<select id='typeFilter' class='filterSelect'>")
-                .append($("<option value='0'>"+locale.def_opts_val+"</option>"))
+                .append($("<option value='0'>"+locale.def_opts_val_image+"</option>"))
                 .append($("<option value='1'>"+locale.image_type_faces+"</option>"))
                 .append($("<option value='2'>"+locale.image_type_photo+"</option>"))
                 .append($("<option value='3'>"+locale.image_type_clipart+"</option>"))
@@ -199,12 +200,12 @@
                 $("<div class='filterContainer'>").append("<span>"+locale.image_type_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
                 
                 selectFilter = $("<select id='rightsFilter' class='filterSelect'>")
-                .append($("<option value='0'>"+locale.def_opts_val+"</option>"))
+                .append($("<option value='0'>"+locale.def_opts_val_copyright+"</option>"))
                 .append($("<option value='1'>"+locale.image_license_reuse+"</option>"))
                 .append($("<option value='2'>"+locale.image_license_comm_reuse+"</option>"))
                 .append($("<option value='3'>"+locale.image_license_modif+"</option>"))
                 .append($("<option value='4'>"+locale.image_license_comm_modif+"</option>"));
-                $("<div class='filterContainer'>").append("<span>"+locale.image_type_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
+                $("<div class='filterContainer'>").append("<span>"+locale.image_license_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
 
                 var colors_line = $('<div class="colors_line"></div>');
                 subSearchFilter.append(colors_line);

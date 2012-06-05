@@ -1,12 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Planete Sankore Image Search</title>
         <link rel="stylesheet" type="text/css" href="css/basic.css"/>
         <script type="text/javascript" src="scripts/jquery-1.6.2.min.js"></script>
         <script type="text/javascript">
-            var category = "video";
-            var thumbnails = false;
+            var category = "image";
+            var thumbnails = true;
             var minHeight = 180;
             var minWidth = 150;
             
@@ -127,7 +128,7 @@
                 var hide = false; //hide or no main panel
     
                 //basic containers and elements    
-                var disclaimer = $("<div id='disclaimer' class='disclaimer'>Disclaimer<div>").appendTo("body");    
+                var disclaimer = $("<div id='disclaimer' class='disclaimer'>Recherche d'images sur Planète Sankoré<div>").appendTo("body");    
                 var search = $("<div id='search' class='search'>").appendTo("body");
 				    
                 var togglePages = $("<div id='togglePages' class='togglePages'>").appendTo(search);
