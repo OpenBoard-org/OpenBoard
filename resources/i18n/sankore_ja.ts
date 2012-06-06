@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="ja_JP" sourcelanguage="en_US">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -769,35 +769,35 @@
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Quit Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoreを終了</translation>
     </message>
     <message utf8="true">
         <source>Open-Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré発行者</translation>
     </message>
     <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoréのウィジェット発行者を掲示する</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoréを隠す</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoréを隠す</translation>
     </message>
     <message>
         <source>Import Uniboard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Uniboardの書類を移入する</translation>
     </message>
     <message>
         <source>Import old Sankore or Uniboard documents</source>
-        <translation type="unfinished"></translation>
+        <translation>古いSankore書類やUniboard書類を移入する</translation>
     </message>
 </context>
 <context>
@@ -1104,8 +1104,8 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>選抜した資料から%nページを除けたいですか？</numerusform>
         </translation>
     </message>
 </context>
@@ -1194,8 +1194,8 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>ページを%1枚をコピーしました</numerusform>
         </translation>
     </message>
 </context>
@@ -1203,11 +1203,11 @@
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルをダウンロードしています</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">キャンセル</translation>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -1336,7 +1336,7 @@
     </message>
     <message>
         <source>Editable</source>
-        <translation type="unfinished"></translation>
+        <translation>編集できます</translation>
     </message>
 </context>
 <context>
@@ -1389,7 +1389,7 @@
     </message>
     <message>
         <source>Open-Sankore (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankore(*ubz)</translation>
     </message>
 </context>
 <context>
@@ -1448,7 +1448,7 @@
     <name>UBKeyboardPalette</name>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter</translation>
     </message>
 </context>
 <context>
@@ -1562,7 +1562,7 @@
     <message>
         <source>Web Search</source>
         <comment>Web search category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>ウエブに経験する</translation>
     </message>
 </context>
 <context>
@@ -1584,11 +1584,11 @@
     <name>UBMediaPlayer</name>
     <message>
         <source>Open Location</source>
-        <translation type="unfinished"></translation>
+        <translation>用地を開く</translation>
     </message>
     <message>
         <source>Please enter a valid address here:</source>
-        <translation type="unfinished"></translation>
+        <translation>ここに正しいアドレスを書いて下さい：</translation>
     </message>
 </context>
 <context>
@@ -1894,7 +1894,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Remind me later</source>
-        <translation type="unfinished"></translation>
+        <translation>あとで覚える</translation>
     </message>
 </context>
 <context>
@@ -2014,11 +2014,11 @@ Please reboot the application to access the updated documents.</source>
     <name>UniboardSankoreTransition</name>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation type="unfinished"></translation>
+        <translation>古いSankore書類やUniboard書類を移入する</translation>
     </message>
     <message>
         <source>There are no documents that should be imported</source>
-        <translation type="unfinished"></translation>
+        <translation>移入できる資料がありません</translation>
     </message>
 </context>
 <context>
@@ -2475,55 +2475,55 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>映写機や二号スクリーンにウエブページを掲示する</translation>
     </message>
     <message>
         <source>Multi display</source>
-        <translation type="unfinished"></translation>
+        <translation>複数表記</translation>
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation type="unfinished"></translation>
+        <translation>点検表記と視覚表記を逆にする</translation>
     </message>
     <message>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>モード</translation>
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation type="unfinished"></translation>
+        <translation>最初モード：</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished">ボード</translation>
+        <translation>ボード</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>デスクトップ</translation>
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation type="unfinished"></translation>
+        <translation>プロキシ利用者：</translation>
     </message>
     <message>
         <source>Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>パスワード：</translation>
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Planète SankoréのID</translation>
     </message>
     <message>
         <source>User:</source>
-        <translation type="unfinished"></translation>
+        <translation>利用者：</translation>
     </message>
     <message>
         <source>Pass: </source>
-        <translation type="unfinished"></translation>
+        <translation>パスワード：</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2531,7 +2531,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
