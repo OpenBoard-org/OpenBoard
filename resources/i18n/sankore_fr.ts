@@ -77,7 +77,7 @@
     </message>
     <message>
         <source>Backgrounds</source>
-        <translation>Fonds</translation>
+        <translation>Fond</translation>
     </message>
     <message>
         <source>Undo</source>
