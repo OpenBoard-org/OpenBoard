@@ -11,7 +11,7 @@ a {
 }
 
 .disclaimer{
-    height: 60px;
+    height: auto;
     position: fixed;
     left: 0;
     bottom: 0;
@@ -28,6 +28,7 @@ a {
     border: solid 4px #EEEEEE;
     border-bottom: none;
     z-index: 10;
+    font-size: 12px;
 }
 
 #searchResult {
@@ -322,19 +323,4 @@ input[type="radio"]:checked + .filter_button.button.color {
     -webkit-border-radius: 3px;
     background-color: gray;
     color: white;
-}
-
-/*
-Planete Sankore Changes
-*/
-.searchButton{
-    right: 10px;
-}
-
-#subSearchInput{
-    padding-right: 5px;
-}
-
-.imgContainer img {
-    width: 100px;
 }
