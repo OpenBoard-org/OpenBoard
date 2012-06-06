@@ -788,7 +788,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
 {
     QString mimeType = pContentTypeHeader;
 
-    // In some cases "image/jpeg;charset=" is retourned by the drag-n-drop. That is
+    // In some cases "image/jpeg;charset=" is returned by the drag-n-drop. That is
     // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
     int position=mimeType.indexOf(";");
     if(position != -1)
