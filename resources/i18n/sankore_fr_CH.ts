@@ -1488,15 +1488,15 @@
     <name>UBLibItemProperties</name>
     <message>
         <source>Add to page</source>
-        <translation>Ajouter à la page</translation>
+        <translation>+ page</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Ajouter en arrière-plan</translation>
+        <translation>+ arrière-plan</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation>Ajouter à la bibliothèque</translation>
+        <translation type="unfinished">+ bibliothèque</translation>
     </message>
     <message>
         <source>Object informations</source>
@@ -2280,11 +2280,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Line Width</source>
-        <translation>Largeur de ligne</translation>
+        <translation>Épaisseur du trait</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation>Moyen</translation>
+        <translation>Moyenne</translation>
     </message>
     <message>
         <source>Strong</source>
@@ -2292,7 +2292,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Fine</source>
-        <translation>Fin</translation>
+        <translation>Fine</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
@@ -2396,7 +2396,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation>Positionné en haut (recommandé pour les tablettes)</translation>
+        <translation>Positionnée en haut (recommandé pour les tablettes)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
