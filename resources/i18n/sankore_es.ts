@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="en_US">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Stop</source>
-        <translation>Parar</translation>
+        <translation>Detener</translation>
     </message>
     <message>
         <source>Open</source>
@@ -185,7 +185,7 @@
     </message>
     <message>
         <source>Medium Eraser</source>
-        <translation>Borrador medio</translation>
+        <translation>Borrador mediano</translation>
     </message>
     <message>
         <source>Large Eraser</source>
@@ -229,23 +229,23 @@
     </message>
     <message>
         <source>Bookmarks</source>
-        <translation>Marcadores</translation>
+        <translation>Favoritos</translation>
     </message>
     <message>
         <source>Show Bookmarks</source>
-        <translation>Mostrar marcadores</translation>
+        <translation>Mostrar favoritos</translation>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation>Marcador</translation>
+        <translation>Favorito</translation>
     </message>
     <message>
         <source>Add Bookmark</source>
-        <translation>Añadir marcador</translation>
+        <translation>Añadir a favoritos</translation>
     </message>
     <message>
         <source>Display Board</source>
-        <translation>Mostrar marcador</translation>
+        <translation>Mostrar pizarra</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
@@ -417,7 +417,7 @@
     </message>
     <message>
         <source>Wide Size (16/9)</source>
-        <translation>Tamaña ancho (16/9)</translation>
+        <translation>Tamaño ancho (16/9)</translation>
     </message>
     <message>
         <source>Use Document Wide Size (16/9)</source>
@@ -537,7 +537,7 @@
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation>Eliminar todos los elementos</translation>
+        <translation>Borrar todos los elementos</translation>
     </message>
     <message>
         <source>Pen</source>
@@ -689,7 +689,7 @@
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation>Poner en pausa la grabación de Podcast</translation>
+        <translation>Pausar la grabación de Podcast</translation>
     </message>
     <message>
         <source>Podcast Config</source>
@@ -701,19 +701,19 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Trampa flash</translation>
+        <translation>Captura de elemento Flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Contenido de la trampa de flash</translation>
+        <translation>Capturar contenido Flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>Trampa web</translation>
+        <translation>Captura de contenido web</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>Contenido de la trampa web</translation>
+        <translation>Capturar contenido web</translation>
     </message>
     <message>
         <source>Custom Capture</source>
@@ -866,7 +866,7 @@
     <name>UBApplication</name>
     <message>
         <source>Page Size</source>
-        <translation>Tamaño de  página</translation>
+        <translation>Tamaño de página</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -893,14 +893,14 @@
     </message>
     <message>
         <source>Update</source>
-        <translation>Actualización</translation>
+        <translation>Actualizar</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation>Fallo de descarga de  contenido %1</translation>
+        <translation>Fallo al descargar contenido %1</translation>
     </message>
     <message>
         <source>Download finished</source>
@@ -1056,11 +1056,11 @@
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>Importando archivo %1</translation>
+        <translation>Importando archivo %1...</translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation>Fallo de la importación de archivo...</translation>
+        <translation>Fallo al importar archivo ...</translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
@@ -1104,7 +1104,8 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
+        <translation>
+            <numerusform>¿Está seguro de que desea eliminar %n página(s) del documento seleccionado &apos;%1&apos;?</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1113,19 +1114,19 @@
     <name>UBDocumentManager</name>
     <message>
         <source>images</source>
-        <translation>imágenes</translation>
+        <translation>Imágenes</translation>
     </message>
     <message>
         <source>videos</source>
-        <translation>vídeos</translation>
+        <translation>Vídeos</translation>
     </message>
     <message>
         <source>objects</source>
-        <translation>objetos</translation>
+        <translation>Objetos</translation>
     </message>
     <message>
         <source>widgets</source>
-        <translation>widgets</translation>
+        <translation>Widgets</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
@@ -1167,7 +1168,7 @@
     </message>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translation>Todavía no se han rellenado las credenciales.</translation>
+        <translation>Todavía no se han completado las credenciales.</translation>
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
@@ -1194,7 +1195,8 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
+            <numerusform>%1 páginas copiadas</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1245,7 +1247,7 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportando documento</translation>
+        <translation>Exportando documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1389,7 +1391,7 @@
     </message>
     <message>
         <source>Open-Sankore (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankore (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1430,7 +1432,7 @@
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation>Error mientras se publicaba vídeo en intranet (%1)</translation>
+        <translation>Error el publicar vídeo en intranet (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
@@ -1448,7 +1450,7 @@
     <name>UBKeyboardPalette</name>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrar</translation>
     </message>
 </context>
 <context>
@@ -1562,7 +1564,7 @@
     <message>
         <source>Web Search</source>
         <comment>Web search category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Buscade en la Web</translation>
     </message>
 </context>
 <context>
@@ -1584,11 +1586,11 @@
     <name>UBMediaPlayer</name>
     <message>
         <source>Open Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir ubicación</translation>
     </message>
     <message>
         <source>Please enter a valid address here:</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, ingrese una dirección válida aquí:</translation>
     </message>
 </context>
 <context>
@@ -1609,13 +1611,7 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
-        <translation>Errores SSL:
-
-%1
-
-%2
-
-¿Desea ignorar estos errores para este servidor?</translation>
+        <translation>Errores SSL: %1 %2 ¿Desea ignorar estos errores para este servidor?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -1657,7 +1653,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation>Sankore ha perdido acceso al depósito de documentos &apos;%1&apos;. Desafortunadamente la aplicación debe cerrarse para evitar la corrupción de los datos. También se podrían perder los últimos cambios.</translation>
+        <translation>Sankore ha perdido acceso al depósito de documentos &apos;%1&apos;. Desafortunadamente la aplicación debe cerrarse para evitar daños en los datos. También se podrían perder los últimos cambios.</translation>
     </message>
 </context>
 <context>
@@ -1688,7 +1684,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation>Error de grabación de podcast (%1)</translation>
+        <translation>Error en la grabación de podcast (%1)</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
@@ -1873,11 +1869,11 @@ Do you want to ignore these errors for this host?</source>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
         <translation>¡Actualización de archivos satisfactoria!
-Por favor reinicie la aplicación para acceder a los documentos actualizados.</translation>
+Por favor, reinicie la aplicación para acceder a los documentos actualizados.</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation>Ha ocurrido un error durante la actualización. Los archivos no se han afectado.</translation>
+        <translation>Ha ocurrido un error durante la actualización. Los archivos no han sido afectados.</translation>
     </message>
     <message>
         <source>Files update results</source>
@@ -1928,11 +1924,11 @@ Por favor reinicie la aplicación para acceder a los documentos actualizados.</t
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation>Fallo en la autentificación de YouTube</translation>
+        <translation>Fallo en la autentificación de YouTube.</translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
-        <translation>Error mientras se cargaba el vídeo a YouTube (%1)</translation>
+        <translation>Error al cargar el vídeo a YouTube (%1)</translation>
     </message>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
@@ -1963,7 +1959,7 @@ Por favor reinicie la aplicación para acceder a los documentos actualizados.</t
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation>Viaje &amp; Eventos</translation>
+        <translation>Viajes &amp; Eventos</translation>
     </message>
     <message>
         <source>Gaming</source>
@@ -2132,34 +2128,34 @@ Por favor reinicie la aplicación para acceder a los documentos actualizados.</t
     <name>WBTabBar</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation>Nueva &amp;Ficha</translation>
+        <translation>Nueva &amp;Pestaña</translation>
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation>Ficha Clon</translation>
+        <translation>Duplicar pestaña</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation>Ficha &amp;Cerrar</translation>
+        <translation>&amp;Cerrar pestaña</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation>Ficha Cerrar &amp; Otros</translation>
+        <translation>Cerrar &amp; Otras pestañas</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation>Ficha Recargar</translation>
+        <translation>Recargar pestaña</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
-        <translation>Volver a cargar todas las fichas</translation>
+        <translation>Volver a cargar todas las pestañas</translation>
     </message>
 </context>
 <context>
     <name>WBTabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
-        <translation>Fichas cerradas recientemente</translation>
+        <translation>Pestañas cerradas recientemente</translation>
     </message>
     <message>
         <source>(Untitled)</source>
@@ -2193,7 +2189,7 @@ Por favor reinicie la aplicación para acceder a los documentos actualizados.</t
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation>Añadir al documento reciente</translation>
+        <translation>Añadir al documento actual</translation>
     </message>
     <message>
         <source>PDF</source>
@@ -2212,7 +2208,7 @@ Por favor reinicie la aplicación para acceder a los documentos actualizados.</t
     <name>WBWebView</name>
     <message>
         <source>Open in New Tab</source>
-        <translation>Abrir en nueva ficha</translation>
+        <translation>Abrir en nueva pestaña</translation>
     </message>
 </context>
 <context>
@@ -2259,7 +2255,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Al hacer clic en &apos;Descargar&apos; usted certifica que posee todos los derechos sobre el contenido o que está autorizado por el propietario a publicar el contenido en YouTube, y que éste  cumple con los términos de servicio de YouTube que aparecen en&lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Al hacer clic en &apos;Descargar&apos; usted certifica que posee todos los derechos sobre el contenido o que está autorizado por el propietario a publicar el contenido en YouTube, y que éste cumple con los términos de servicio de YouTube que aparecen en&lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -2309,7 +2305,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>E-mail</source>
-        <translation>Correo-e</translation>
+        <translation>Correo electrónico</translation>
     </message>
     <message>
         <source>Author</source>
@@ -2332,7 +2328,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>E-mail</source>
-        <translation>Correo-e</translation>
+        <translation>Correo electrónico</translation>
     </message>
     <message>
         <source>Author</source>
@@ -2344,7 +2340,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Attach Downloadable PDF Version</source>
-        <translation>Adjuntarla versión del PDF descargable</translation>
+        <translation>Adjuntar la versión del PDF descargable</translation>
     </message>
     <message>
         <source>Attach Downloadable Uniboard File (UBZ)</source>
@@ -2352,7 +2348,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Warning: This documents contains video, which will not be displayed properly on the Web</source>
-        <translation>Advertencia: este documento contiene vídeo, el cual no se mostrará adecuadamente en la web</translation>
+        <translation>Advertencia: Este documento contiene vídeo, el cual no se mostrará adecuadamente en la web</translation>
     </message>
 </context>
 <context>
@@ -2410,11 +2406,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation>Posicionado en la parte superior (recomendado para la tabletas)</translation>
+        <translation>Colocar en la parte superior (recomendado para computadores tipo tablet)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>Posicionado en la parte inferior (recomendado para pizarras blancas)</translation>
+        <translation>Colocar en la parte inferior (recomendado para pizarras blancas)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
@@ -2482,51 +2478,51 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar el contenido de la página web en un monitor secundario o proyector</translation>
     </message>
     <message>
         <source>Multi display</source>
-        <translation type="unfinished"></translation>
+        <translation>Pantalla múltiple</translation>
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation type="unfinished"></translation>
+        <translation>Intercambiar control de pantalla y vista de pantalla</translation>
     </message>
     <message>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modalidad</translation>
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation type="unfinished"></translation>
+        <translation>Comenzar en modalidad :</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished">Pizarra</translation>
+        <translation>Pizarra</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Escritorio</translation>
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de usuario Proxy:</translation>
     </message>
     <message>
         <source>Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña:</translation>
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Planète Sankoré</translation>
     </message>
     <message>
         <source>User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de usuario:</translation>
     </message>
     <message>
         <source>Pass: </source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2534,18 +2530,22 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Las licencias están en Inglés para respetar la traducción oficial y legal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>Atrapar flash</translation>
+        <translation>Capturar elemento flash</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Seleccionar un flash para atrapar</translation>
+        <translation>Seleccionar un flash para capturar</translation>
     </message>
     <message>
         <source>about:blank</source>
