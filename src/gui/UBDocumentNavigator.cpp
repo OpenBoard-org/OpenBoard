@@ -55,8 +55,8 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
 
     setFrameShadow(QFrame::Plain);
 
-    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(addNewPage()));
-    connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(generateThumbnails()));
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(generateThumbnails()));
+    connect(UBApplication::boardController, SIGNAL(newPageAdded()), this, SLOT(addNewPage()));
     connect(mScene, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
     connect(UBApplication::boardController, SIGNAL(documentReorganized(int)), this, SLOT(onMovedToIndex(int)));
     connect(UBApplication::boardController, SIGNAL(scrollToSelectedPage()), this, SLOT(onScrollToSelectedPage()));
@@ -91,7 +91,6 @@ void UBDocumentNavigator::setDocument(UBDocumentProxy *document)
     if(document)
     {
         mCrntDoc = document;
-        generateThumbnails();
     }
 }
 
@@ -322,11 +321,11 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
 					}
 				updateSpecificThumbnail(iOldPage);
 				mCrntItem = pCrntItem;
-			}
 
-			// Then display the related page
-			emit changeCurrentPage();
-			refreshScene();
+                // Then display the related page
+                emit changeCurrentPage();
+                refreshScene();
+			}
 		}
         
 		bNavig = false;

@@ -751,7 +751,7 @@ UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBD
     , bCanMoveUp(false)
     , bCanMoveDown(false)
 {
-    if(UBApplication::boardController->pageFromSceneIndex(pSceneIndex)){
+    if(0 <= UBApplication::boardController->pageFromSceneIndex(pSceneIndex)){
         setAcceptsHoverEvents(true);
         setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
@@ -826,7 +826,7 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
     bCanMoveDown = false;
 
     UBDocumentProxy* p = proxy();
-    if(NULL != p && UBApplication::boardController->pageFromSceneIndex(sceneIndex()))
+    if(NULL != p && 0 <= UBApplication::boardController->pageFromSceneIndex(sceneIndex()))
     {
         int iNbPages = p->pageCount();
         if(1 < iNbPages)
@@ -842,7 +842,7 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
             }
         }
     }
-    if(UBSettings::settings()->teacherGuidePageZeroActivated && sceneIndex()<=1)
+    if(UBSettings::settings()->teacherGuidePageZeroActivated && sceneIndex()<1)
         bCanMoveUp = false;
 
     if(bCanDelete || bCanMoveUp || bCanMoveDown)

@@ -119,7 +119,6 @@ void UBPageNavigationWidget::setDocument(UBDocumentProxy *document)
     if(mNavigator->currentDoc() != document)
     {
         mNavigator->setDocument(document);
-        UBApplication::boardController->notifyPageChanged();
     }
 }
 

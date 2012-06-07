@@ -478,6 +478,7 @@ void UBBoardController::addScene()
 
     setActiveDocumentScene(mActiveDocument, mActiveSceneIndex + 1);
     QApplication::restoreOverrideCursor();
+    emit newPageAdded();
 }
 
 
@@ -1233,11 +1234,11 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     if(documentChange)
     {
         emit activeDocumentChanged();
+        // Notify the navigator palette that the document has changed        
+        emit setDocOnPageNavigator(pDocumentProxy);
         UBGraphicsTextItem::lastUsedTextColor = QColor();
     }
 
-    // Notify the navigator palette that the document has changed
-    emit setDocOnPageNavigator(pDocumentProxy);
 
     if (sceneChange)
     {
