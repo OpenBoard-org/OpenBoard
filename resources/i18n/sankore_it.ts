@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -765,27 +767,27 @@
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Open-Sankoré</source>
         <translation>Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Quit Open-Sankoré</source>
         <translation>Chiudi Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Open-Sankoré Editor</source>
         <translation>Editore Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
         <translation>Mostra l&apos;editore dei Widgets Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Open-Sankoré</source>
         <translation>Nascondi Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
         <translation>Nascondi l&apos;applicazione Open-Sankoré</translation>
     </message>
@@ -847,6 +849,26 @@
         <source>/Home</source>
         <comment>Category list label on navigation tool bar</comment>
         <translation>/Home</translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1100,9 +1122,11 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Il documento &apos;%1&apos; è stato generato con una versione più recente di Sankore (%2). Aprendolo, si potrebbero perdere alcune informazioni. Vuoi continuare?</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>
+        </numerusform>
         </translation>
     </message>
 </context>
@@ -1189,9 +1213,11 @@
         <source>Copying page %1/%2</source>
         <translation>Sto copiando pagina %1/%2</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>%1 pagine copiate
+        <translation type="unfinished">
+            <numerusform>%1 pagine copiate
+        </numerusform>
         </translation>
     </message>
 </context>
@@ -1654,6 +1680,29 @@ Vuoi ignorare gli errori per questo host?</translation>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Sankore ha perso l&apos;accesso all&apos;archivio dei documenti &apos;%1&apos;. Purtroppo l&apos;applicazione deve chiudere per evitare la corruzione dei dati. Potrebbero essere andate perse anche le ultime modifiche.</translation>
+    </message>
+</context>
+<context>
+    <name>UBPlatformUtils</name>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2364,7 +2413,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Preferenze</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>version : …</source>
         <translation>versione: ...</translation>
     </message>
@@ -2472,7 +2521,7 @@ p, li { white-space: pre-wrap; }
         <source>Network</source>
         <translation>Rete</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Open-Sankoré</source>
         <translation>Open-Sankoré</translation>
     </message>
@@ -2512,7 +2561,7 @@ p, li { white-space: pre-wrap; }
         <source>Pass:</source>
         <translation>Password:</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Planète Sankoré ID</source>
         <translation>ID Planete Sankoré</translation>
     </message>

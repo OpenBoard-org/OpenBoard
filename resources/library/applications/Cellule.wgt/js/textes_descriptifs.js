@@ -159,7 +159,7 @@ switch(lang){
         txt_mitoch = 	"<h2>Mitochondrie<br/>Piles</h2>"+
         "<h4>Structure :</h4><span><p>Deux bichouches phospholipidiques appelées membranes mitochondriales, une externe et une interne. La mitochondrie contient des ribosomes, de l'ATP de l'ADN et bien d'autres molécules.</p></span>"+
         "<h4>Rôle :</h4><span><p>Centrale énergétique de la cellule.</p></span>"+
-        "<h4>Fonctionnement :</h4><span><p>L'énergie - sous forme d'ATP (adénosine triphosphate) - est issue de différentes étapes de réactions chimique partant d'une molécule de glucose.</p></span>"
+        "<h4>Fonctionnement :</h4><span><p>L'énergie - sous forme d'ATP (adénosine triphosphate) - est issue de différentes étapes de réactions chimiques partant d'une molécule de glucose.</p></span>"
  
         txt_golgi =	"<h2>Appareil de Golgi<br/>Usines miniatures</h2>"+
         "<h4>Structure :</h4><span><p>Formé d'un empilement de saccules membranaires applatis.</p></span>"+

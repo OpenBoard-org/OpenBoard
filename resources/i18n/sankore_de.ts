@@ -850,6 +850,26 @@
         <comment>Category list label on navigation tool bar</comment>
         <translation>/Startseite</translation>
     </message>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
@@ -1658,6 +1678,29 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Sankore hat den Zugang zum Dokumentenarchiv &apos;%1&apos; verloren. Die Anwendung muss leider beendet werden, um Datenkorruption zu vermeiden. Der Verlust kürzlich vorgenommener Änderungen ist möglich.</translation>
+    </message>
+</context>
+<context>
+    <name>UBPlatformUtils</name>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

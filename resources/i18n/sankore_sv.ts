@@ -850,6 +850,26 @@
         <comment>Category list label on navigation tool bar</comment>
         <translation>Hem</translation>
     </message>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
@@ -1658,6 +1678,29 @@ Vill du ignorera felen för den här värden?</translation>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Sankore har förlorat access till dokumentarkiv &apos;%1&apos;. Tyvärr måste programmet stängas ner för att undvika korruption av data. De senaste ändringarna kan gå förlorade.</translation>
+    </message>
+</context>
+<context>
+    <name>UBPlatformUtils</name>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -850,6 +850,26 @@
         <comment>Category list label on navigation tool bar</comment>
         <translation>/Acasă</translation>
     </message>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
@@ -1658,6 +1678,29 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Sankore a pierdut accesul la depozitul de documente &apos;%1&apos;. Din păcate, aplicaţia trebuie închisă pentru a evita coruperea datelor. Este posibil şi ca ultimele modificări să fie pierdute.</translation>
+    </message>
+</context>
+<context>
+    <name>UBPlatformUtils</name>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
