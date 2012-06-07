@@ -850,33 +850,9 @@
         <comment>Category list label on navigation tool bar</comment>
         <translation>/Accueil</translation>
     </message>
-    <message>
-        <source>English</source>
-        <translation type="Anglais"></translation>
-    </message>
-    <message>
-        <source>Russian</source>
-        <translation type="Russe"></translation>
-    </message>
-    <message>
-        <source>French</source>
-        <translation type="Français"></translation>
-    </message>
-    <message>
-        <source>Swiss French</source>
-        <translation type="Français suisse"></translation>
-    </message>
-    <message>
-        <source>German</source>
-        <translation type="Allemand"></translation>
-    </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
-    <message>
-        <source>Cannot load content</source>
-        <translation>Impossible de charger le contenu</translation>
-    </message>
     <message>
         <source>Loading ...</source>
         <translation>Chargement en cours ...</translation>
@@ -1680,29 +1656,6 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Open-Sankoré a perdu l&apos;accès au répertoire des documents &apos;%1&apos;. L&apos;application doit malheureusement être fermée pour éviter tout risque de corruption de vos fichiers. Les dernières modifications effectuées risquent d&apos;être perdues.</translation>
-    </message>
-</context>
-<context>
-    <name>UBPlatformUtils</name>
-    <message>
-        <source>English</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Russian</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>French</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Swiss French</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>German</source>
-        <translation></translation>
     </message>
 </context>
 <context>

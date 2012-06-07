@@ -850,33 +850,9 @@
         <comment>Category list label on navigation tool bar</comment>
         <translation>/Начало</translation>
     </message>
-    <message>
-        <source>English</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Russian</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>French</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Swiss French</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>German</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
-    <message>
-        <source>Cannot load content</source>
-        <translation>Страницата не се зарежда</translation>
-    </message>
     <message>
         <source>Loading ...</source>
         <translation>Зареждане...</translation>
@@ -1682,29 +1658,6 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Санкоре изгуби достъп до хранилището за докумети &apos;%1&apos;. За съжаление приложението ще се затвори, за да не се повредят файловете. Последните промени могат да бъдат изгубени.</translation>
-    </message>
-</context>
-<context>
-    <name>UBPlatformUtils</name>
-    <message>
-        <source>English</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Russian</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>French</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Swiss French</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>German</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -858,10 +858,6 @@
 <context>
     <name>UBAbstractWidget</name>
     <message>
-        <source>Cannot load content</source>
-        <translation>Nie można wczytać zawartości</translation>
-    </message>
-    <message>
         <source>Loading ...</source>
         <translation>Wczytywanie...</translation>
     </message>

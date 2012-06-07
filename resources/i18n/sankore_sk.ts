@@ -852,36 +852,12 @@
         <comment>Pictures category element</comment>
         <translation type="unfinished">Kôš</translation>
     </message>
-    <message>
-        <source>English</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Russian</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>French</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Swiss French</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>German</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBAbstractWidget</name>
     <message>
         <source>Loading ...</source>
         <translation>Nahráva sa...</translation>
-    </message>
-    <message>
-        <source>Cannot load content</source>
-        <translation>Súbor sa nedá spustiť</translation>
     </message>
 </context>
 <context>
@@ -1684,29 +1660,6 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     <message>
         <source>Document Repository Loss</source>
         <translation>Strata depozitára s dokumentami</translation>
-    </message>
-</context>
-<context>
-    <name>UBPlatformUtils</name>
-    <message>
-        <source>English</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Russian</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>French</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Swiss French</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>German</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
