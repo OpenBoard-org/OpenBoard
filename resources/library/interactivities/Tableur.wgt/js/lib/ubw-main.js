@@ -127,8 +127,8 @@ var Parameters = (function(){
 			value: function(key, value) {
 				if(value === undefined) {
 					var val = this.delegate.preference(key);
-					log("Retrieve parameter value ["+val+"] for key : ["+key+"]");
-					return (val !== undefined && (typeof val === "string" && val)) ? val : $("#ubwidget").data(key);
+					log("Retrieve parameter value ["+val+"] as type ["+(typeof val)+"] for key : ["+key+"]");
+					return (val !== undefined && (typeof val !== "string" || val)) ? val : $("#ubwidget").data(key);
 				}
 				else {
 					log("Set parameter value ["+value+"] for key : ["+key+"]");

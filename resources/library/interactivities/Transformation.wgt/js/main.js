@@ -35,7 +35,10 @@ function cards(app, index) {
 	var before = $("<div rel='before'><div class='card'><div class='text'><div>"+( beforecontent !== undefined ? beforecontent : "" )+"</div></div><div class='picture'><div></div></div></div></div>");
 	var after = $("<div rel='after'><div class='card'><div class='text'><div>"+( aftercontent !== undefined ? aftercontent : "" )+"</div></div><div class='picture'><div></div></div></div></div>");
 	
-	if(parameters.value("#UsePicture"+index+"before")) {
+	var usePicture = parameters.value("#UsePicture"+index+"before") === "true"
+	|| parameters.value("#UsePicture"+index+"before") == true;
+	
+	if(usePicture) {
 		before.addClass("usePicture");	
 		var f = $.parseJSON(parameters.value("#Picture"+index+"before"));
 		if(f !== null) {
@@ -43,7 +46,11 @@ function cards(app, index) {
 			before.find(".picture>div:eq(0)").append($img);	
 		}
 	}
-	if(parameters.value("#UsePicture"+index+"after")) {
+	
+	usePicture = parameters.value("#UsePicture"+index+"after") === "true"
+	|| parameters.value("#UsePicture"+index+"after") == true;
+	
+	if(usePicture) {
 		after.addClass("usePicture");
 		var f = $.parseJSON(parameters.value("#Picture"+index+"after"));
 		if(f !== null) {
@@ -70,7 +77,8 @@ function makeEditable(app, row, index) {
 	var checkbox = row.find("input[name='switch']");
 	
 	function setSwicth() {
-		var val = parameters.value("#UsePicture"+key) === "true";
+		var val = parameters.value("#UsePicture"+key) === "true"
+		|| parameters.value("#UsePicture"+key) === true;
 		if(val) {
 			row.addClass("usePicture");
 		}else {

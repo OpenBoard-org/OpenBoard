@@ -25,7 +25,7 @@ var parametersTemplate =
 			'</div>'+
 			'<div class="inline">'+
 				'<label>{{fr.njin.i18n.memory.parameters.label.timeout}}'+
-					'<input name="timeout" role="parameter" type="range" min="1" max="60" value="1"/><span id="timeoutValue"></span>'+
+					'<input name="timeout" role="parameter" type="text" min="1" max="60" value="1"/><span> (s)</span>'+
 				'</label>'+
 			'</div>';
 			

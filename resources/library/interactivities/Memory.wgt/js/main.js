@@ -80,10 +80,12 @@ function onTemplateLoadedCallback() {
 			$(select).append(option);
 		}
 	});
+	/*
 	$("#timeoutValue").text($("input[name=timeout]").val());	
 	$("input[name=timeout]").change(function(){
 		$("#timeoutValue").text($(this).val());
 	});
+	*/
 }
 
 function reloadApp(app) {
