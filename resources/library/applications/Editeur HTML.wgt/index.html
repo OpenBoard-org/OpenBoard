@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>markItUp! Universal markup editor</title>
+        <link rel="stylesheet" type="text/css" href="images/style.css" />
+        <script type="text/javascript" src="jquery.pack.js"></script>
+        <script type="text/javascript" src="languages.js"></script>
+        <script type="text/javascript" src="markitup/jquery.markitup.js"></script>
+        <script type="text/javascript" src="markitup/sets/html/set.js"></script>
+        <link rel="stylesheet" type="text/css" href="markitup/skins/markitup/style.css" />
+        <link rel="stylesheet" type="text/css" href="markitup/sets/html/style.css" />
+
+    </head>
+    <body>
+        <script type="text/javascript" >
+            var lang = "";
+
+            if(window.sankore){
+                try{
+                    lang = sankore.locale().substr(0,2);
+                    sankoreLang[lang].welcome;
+                } catch(e){
+                    lang = "en";
+                }
+            } else 
+                lang = "en";
+            
+            $(document).ready(function(){
+
+                $("#reset-btn").hide();
+
+                $('#markItUp').markItUp(mySettings);
+                $("#markItUp").width($(window).width()-100)
+                .height($(window).height()-80);
+                $('iframe').width($(window).width()-24)
+                .height($(window).height()-46);
+                if(window.sankore){
+                    var html = window.sankore.preference("iHtml", sankoreLang[lang].welcome);
+                    $("#markItUp").val(html);
+                };
+
+                $("#markItUp").keyup(function(){
+                    if(window.sankore){
+                        window.sankore.setPreference("iHtml", $("#markItUp").val());
+                    }
+                });
+
+                $("li").mouseout(function(){
+                    if(window.sankore){
+                        window.sankore.setPreference("iHtml", $("#markItUp").val());
+                    }
+                });
+
+                $("#reset-btn").click(function(){
+                    $(this).data("hidden", true).hide();
+                    $('textarea').show(); 
+                    $('iframe').remove();
+                    $("#fakebar").show();
+                    $("#menu").show();
+                });
+            });
+
+            $(window).resize(function(){		
+                $("#markItUp").width($(window).width()-100)
+                .height($(window).height()-80);
+                $('iframe').width($(window).width()-24)
+                .height($(window).height()-46);	
+                $('#markItUpFooter').width($(window).width()-30);
+
+                $("#markitUp").html(sankoreLang[lang].welcome);
+            });
+        </script>
+
+        <div id='fakebar'></div>
+        <textarea id="markItUp" cols="80" rows="20">
+Welcome to HTML EDITOR
+        </textarea>
+        <img id="reset-btn" src="images/bts.png" style="position:absolute; top:0; left:5"/>
+
+    </body>
+</html>

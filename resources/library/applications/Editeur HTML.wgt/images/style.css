@@ -1,0 +1,26 @@
+body {
+	font: 13px "Trebuchet MS", Arial, Verdana;
+	padding-top:0px;
+	color: gray;
+}
+
+a {
+	text-decoration:none;
+	color:#3C769D;
+}
+h1 a,
+p em a {
+	display:block;
+	overflow:hidden;
+	text-indent:-1000px;
+	position:absolute;
+	top:0px; left:0px;
+}
+h1 a {
+	width:245px; height:85px;
+	top:28px; 
+}
+p em a {
+	width:120px; height:28px;
+	left:30px;
+}

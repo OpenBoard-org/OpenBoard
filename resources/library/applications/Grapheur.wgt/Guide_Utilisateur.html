@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>GraphMe - User's guide.</title>
+		<link rel="stylesheet" type="text/css" href="Style/Guide_Utilisateur.css"/>
+	</head>
+	<body>
+		<h1>GraphMe</h1>
+		<img src="Images/GraphMe.png"/>
+		<h1>User's guide</h1>
+		<ol id="Sommaire">
+			<li><a href="#Introduction">Introduction</a></li>
+			<li><a href="#Installation">Installation</a></li>
+			<li><a href="#AfficherLeWidget">Review widget</a></li>
+			<li><a href="#PresentationAffichage">View presentation</a></li>
+			<li><a href="#DessinerFonction">Drawing the function</a></li>
+			<li><a href="#DeplacerAffichage">Offset function</a></li>
+			<li><a href="#MenuOptions">The options menu</a></li>
+			<li><a href="#MenuOutils">the tools menu</a></li>
+			<li><a href="#PlusieursFonctions">Drawing some functions</a></li>
+			<li><a href="#MaJ">GraphMe update</a></li>
+			<li><a href="#Contact">Contact</a></li>
+		</ol>
+		<h2 id="Introduction">1. Introduction</h2>
+		<p>
+			GraphMe is a app that is developed using html, javascript and css. It can be used for drawing graphs. This document must explain how to use GraphMe. This app have a different functions and some useful advices for users.
+		</p>
+
+		<h2 id="Installation">2. Installation</h2>
+		<p>
+			This widget can be downloaded from the Internet in a packed format. Before using it must be unpacked. GraphMe was developed for using in web-browsers and integration in Sankore. To add this app in Sankore you should copy folder named "GraphMe.wgt" in "../library/interactive/". For example, on "windows OS" GraphMe must be in folder with following path: "C: / Program Files / Sankore 4/library/interactive/GraphMe.wgt". If you have no Sankore then you can get it on <a href="http://getuniboard.com">http://getuniboard.com/</a>.
+                </p>
+
+		<h2 id="AfficherLeWidget">3. Review widget</h2>
+		<div class="droite"><img src="Images/Guide_Navigateur.png"/>Display GraphMe in browsers</div>
+		<p>
+			A) To display this app in browser just enough to open the file named "Grapheur.xhtml" (it's in root folder) with your browser. But some browsers can not display app correctly. Below is the list of browsers that are able to display app:
+		</p>
+		<ul>
+			<li>Mozilla Firefox (3.5) : Everything works fine.</li>
+			<li>Internet Explorer (8.0) : Cannot open a widget, because .xhtml format is not recognized.</li>
+			<li>Internet Explorer (pré-version 9.0) : Widget works but just using SVG. Canvas not supported yet.</li>
+			<li>Konqueror (4.3.4) : Widget can be opened but there is some problems with displaying. It still occur when   choosed display method "canvas".</li>
+			<li>Opera (10.51) : Widget quite useful.</li>
+			<li>Google Chrome (4.1) : Everything works very nice! 3D-display is faster as compared with other browsers.</li>
+		</ul>
+		<p>
+			B) To open widget in Sankore you should first open folder "Application" that is at the left of the screen. Then you must find this app and add it to the page.
+		</p>
+		<div class="gauche"><img src="Images/Guide_Uniboard.png"/>Display GraphMe in Sankore</div>
+		<img src="Images/Guide_AjouterWidget.png"/>
+
+		<h2 id="PresentationAffichage">4. View presentation</h2>
+		<ol>
+			<li>Place for functions display.</li>
+			<li>Button for beginning the work.</li>
+			<li>Button for adding new function or for getting access to functions history.</li>
+			<li>Display.</li>
+			<li>Parameters that define the part of graph that will be displayed.</li>
+			<li>Buttons for zoom.</li>
+			<li>Button for color changing.</li>
+			<li>Buttons for access to menu.</li>
+			<li>Tab-button that toggles 2D and 3D modes.</li>
+			<li>Button for maximize the widget.</li>
+		</ol>
+		<img src="Images/Guide_Presentation.png"/>
+
+		<h2 id="DessinerFonction">5. Drawing the function</h2>
+		<p>
+			To draw mathematical function just enter it at the top of widget and press button "Display". You can use different functions and predefined constants.
+		</p>
+		<h4>Basic operations:</h4>
+		<ul>
+			<li>Addition → +</li>
+			<li>Subtraction → -</li>
+			<li>Multiplication → *</li>
+			<li>Division → /</li>
+			<li>Mod → %</li>
+		</ul>
+		<h4>Trigonometric functions</h4>
+		<ul>
+			<li>sin(x), cos(x), tan(x), cot(x)</li>
+			<li>asin(x), acos(x), atan(x), acot(x) ( ou arcsin(x), arccos(x), arctan(x), arccot(x) )</li>
+		</ul>
+		<h4>Square roots and degrees</h4>
+		<ul>
+			<li>sqrt(x) is square root from x</li>
+			<li>pow(x, y). Variable x to the power y. For examle:<br/>x² → pow(x, 2)<br/>(x+3)⁵ → pow((x+3), 5)</li>
+			<li>root(x, y). Root y of x</li>
+		</ul>
+		<h4>Exponential and logarithm</h4>
+		<ul>
+			<li>exp(x)</li>
+			<li>ln(x) is natural logarithm.</li>
+			<li>log(x) is decimal logarithm.</li>
+		</ul>
+		<h4>Rounding</h4>
+		<ul>
+			<li>round(x) → rounding to the nearest whole number</li>
+			<li>ceil(x) → rounding to the nearest whole number in a big way</li>
+			<li>floor(x) → rounding to the nearest whole number the smaller side</li>
+		</ul>
+		<h4>Other predefined function</h4>
+		<ul>
+			<li>abs(x) → Absolute number value</li>
+			<li>random() → Return random number between 0 and 1</li>
+		</ul>
+		<h4>Also are available some constants:</h4>
+		<ul>
+			<li>pi = 4 * atan(1) ≈  3.141592653589793</li>
+			<li>e = exp(1) ≈ 2.718281828459045 </li>
+		</ul>
+		<p>
+			Not always it's easy to understand how to record a required function. Really if anywhere you err then graph will not displayed. Also do not forget about "*" (multiply) to multiply and "." (decimal point) to write point.
+		</p>
+		<p>
+			The two-dimensional function must be written as  y=[...]  and the three-dimensional function nust be written as z=[...]. Other examples are available to use in menu "Help" if you have some difficulties with function definition.
+		</p>
+
+		<h2 id="DeplacerAffichage">6. Offset function</h2>
+		<p>
+			Sometimes when you draw the function you don't see all necessary information about this function. In this case you can change position of graph.
+		</p>
+		<img src="Images/Guide_Deplacement.png"/>
+		<p>
+			To move the function graph just use a navigation arrows that are in the four edges of the display or mouse move tool (menu Service).
+		</p>
+		<p>
+			To define place to display you should enter a custom values in the left side of the widget. The left value must be less than the right value. In other case graph will not displayed.
+		</p>
+		<p>
+			You can increase or decrease the scale of displaying using buttons that are in the left menu. So you'll see more information about function. Zoom can be reset in options.
+		</p>
+		<h2 id="MenuOptions">7. The options menu</h2>
+		<p>
+			To open the menu you should click a button "Options" that is in the left of the widget. If you click on this button again then menu will close. There are some buttons for navigation between options. Their short description:
+		</p>
+		<ul>
+			<li>Changing a background image and color. In Sankore changing background theme used for displaying widget on black and white background.</li>
+			<li>Display-method used for defining displaying function. There are 6 possibilities: <br/>
+				<ol>
+					<li>SVG is a vector format of image and it can be built in HTML-page. It's compatible in most of browsers and Sankore support it very well so is it selected default.</li>
+					<li>There is a big difference between SVG (image) and display method SVG. If you have a compatibility problems then you should not use this method.</li>
+					<li>"Canvas" is a new tag that used in HTML 5.0. It define a area in which you can place some images. This display-method is faster than SVG-method, but Sankore does not fully support it. It's desirable to choose this method when you use no Sankore widget.</li>
+					<li>"Canvas" (point) also uses a canvas but draws a points instead of lines.</li>
+					<li>XPM format is little known so it's compatible just with a minority of browsers.</li>
+					<li>Display method "Uniboard" allows to draw directly on the page using Sankore drawing.</li>
+				</ol>
+				<img src="Images/Guide_Options.png"/>
+			</li>
+			<li>Default zoom button returns display into original state. It helps alsoto return to the origin.</li>
+			<li>Display options allow to display or not a grid, axis and scale. They make a mapping more readable. Also you can change the thickness of function line.</li>
+			<li>Offset of graph not used usually. But if you use it then you can move a mapping in any direction when a center isn't in the right place. It's avaliable in some browsers.</li>
+			<li>The accuracy of calculations of the graph will increase or decrease the number of points calculated. The higher the number, the more accuracy. It is useful to set this value to "0.01" if you draw functions like 0.5 * sin (10 * x * x).</li>
+			<li>Options in 3D, the display style to choose how the function is designed: with small points or polygons (areas). Most functions are prettier drawing surface between the points calculated. However, it is better to draw points for functions such as the hemisphere: sqrt (12 - x*x - y*y).</li>
+			<li>In the last tab you can change such options 3D, as the accuracy of the calculations and the color of the function.</li>
+		</ul>
+		<h2 id="MenuOutils">8. The tools menu.</h2>
+		<p>
+			This menu allows you to choose first action of the mouse on the graph. There is a choice of three options:
+		</p>
+		<ul>
+			<li>The selected tool is the default. By moving the mouse, a point moves on the function and the coordinates of this point are shown in the top left of the display.</li>
+			<li>The second tool is moving. It allows you to move the chart with the mouse. Just keep clicking on the display and move the mouse. Unfortunately, this tool can be slow on some browsers.</li>
+			<li>The third tool is the tangent. This tool draws the tangent to the function at the point where is a mouse cursor.</li>
+		</ul>
+		<p>
+			Then, this menu also allows to calculate a point of the function. Simply enter the coordinate "x" from the point where we want to find the coordinate "y" and press the "Evaluate". For example, if the function is "x * x" and that defined "x = 2", then the point whose coordinate on the X axis is "2" will be to coordinate on the Y axis "4".
+		</p>
+		<p>
+			Another useful tool is the analysis of function. To analyse the function click on "start the analysis". Analyses based on this widget are not 100% reliable, but are complementary to a analysis of function that you are doing yourself. It may be that this tool will be improved in a future version of the widget.
+		</p>
+		<p>
+			In this menu there are also tests the display. They can try different methods to display and see if they work on the browser used.
+		</p>
+		<h2 id="PlusieursFonctions">9. Drawing some functions</h2>
+		<p>
+			To draw multiple functions simultaneously, click the small "+" button which is located to the right of "View" (point 1). Then, a menu appears.
+		</p>
+		<img src="Images/Guide_Plus.png"/>
+		<p>
+			The tabs in this menu can go to the history or the additional features (point 2). To add a function click the button to the right of the current function (point 3). Below is a list that contains all the displayed functions (point 4). To remove a function, just click on the "-" button next to it. It is also possible to change the color of each function separately.
+		</p>
+		<p>
+			History can review all the functions that have already been drawn. When you click on a function of history current function replaced by the function of history.
+		</p>
+		<p>
+			"Drawing several functions simultaneously" mode is only possible with the display method "canvas" in two dimensions, but the history can be used with all methods of display.
+		</p>
+		<h2 id="MaJ">10. GraphMe update</h2>
+		<p>
+			The latest version of the widget can be downloaded from the following page: <a href="http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15">http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15</a>. To update GraphMe, you can also click on "Update" in the options menu.
+		</p>
+		<h2 id="Contact">11. Contact</h2>
+		<p>
+			If you want to report a bug, have a suggestion from the widget or just want to ask a question, please contact me by e-mail at: <a href="mailto:yannick.vessaz@gmail.com">yannick.vessaz@gmail.com</a>.
+		</p>
+	</body>
+</html>

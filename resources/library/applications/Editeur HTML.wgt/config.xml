@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://uniboard.mnemis.com/widgets/htmleditor" 
+        version="1.1"
+        width="542"
+        height="350" 
+		ub:resizable="true">  
+		    
+  		<name>Html Editor</name>
+		<author href="http://www.getuniboard.com"
+	            email="info@mnemis.com">Mnemis SA</author>
+		<description>Simple Html editor</description>
+  		
+		<content src="index.html"/> 
+</widget>

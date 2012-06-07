@@ -1,0 +1,41 @@
+body{
+	background-color: rgba(255,255,255,0.6);
+}
+h1{
+	font-size: 250%;
+	text-align: center;
+	text-decoration: underline;
+}
+h2{
+	margin-top: 40px;
+}
+h4{
+	margin-top: 20px;
+	margin-bottom: 0px;
+}
+img{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+p{
+	text-align: justify;
+}
+li{
+	text-align: justify;
+}
+.droite{
+	float: right;
+	font-size: 80%;
+	font-style: italic;
+	margin: 5px;
+}
+.gauche{
+	float: left;
+	font-size: 80%;
+	font-style: italic;
+}
+#Sommaire{
+	margin-top: 100px;
+	margin-bottom: 100px;
+}
