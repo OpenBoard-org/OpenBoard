@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In  -->
+<!DOCTYPE svg [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.2" baseProfile="tiny"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="107px" height="107px" viewBox="0 0 107 107" overflow="visible" xml:space="preserve">
+<defs>
+</defs>
+<g>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="53.666" y1="0" x2="53.666" y2="107.333">
+		<stop  offset="0" style="stop-color:#727270"/>
+		<stop  offset="1" style="stop-color:#41413F"/>
+		<a:midPointStop  offset="0" style="stop-color:#727270"/>
+		<a:midPointStop  offset="0.5" style="stop-color:#727270"/>
+		<a:midPointStop  offset="1" style="stop-color:#41413F"/>
+	</linearGradient>
+	<path fill="url(#SVGID_1_)" d="M107.3,99.3c0,4.4-3.6,8-8,8H8c-4.4,0-8-3.6-8-8V8c0-4.4,3.6-8,8-8h91.3c4.4,0,8,3.6,8,8V99.3z"/>
+</g>
+<g>
+	<g  a:adobe-opacity-share="1">
+		<path fill="#33342E"  a:adobe-opacity-share="0" d="M44.9,15C44,20.9,38.4,67,40.2,85.1c0.9,8.7,2.2,13,2.2,13s2.3-25.8,2.5-35.7
+			c0.2-9.9,2.6-42.4,2.4-46.4S45.3,12.6,44.9,15z"/>
+	</g>
+	<g>
+		<path fill="#67C8F0" d="M42.9,12C42,17.9,36.4,64,38.2,82.1c0.9,8.7,2.2,13,2.2,13s2.3-25.8,2.5-35.7c0.2-9.9,2.6-42.4,2.4-46.4
+			S43.3,9.6,42.9,12z"/>
+	</g>
+</g>
+<rect x="10.7" y="49.4" fill="#FFFFFF" width="21" height="8"/>
+<rect x="67.6" y="49.4" fill="#FFFFFF" width="16.8" height="8"/>
+<rect x="50.2" y="49.4" fill="#FFFFFF" width="11.7" height="8"/>
+<rect x="89.7" y="49.4" fill="#FFFFFF" width="7.9" height="8"/>
+</svg>

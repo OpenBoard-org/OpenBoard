@@ -33,7 +33,7 @@ function start(){
     //events
     if (window.widget) {
         window.widget.onleave = function(){
-            exportData();
+            //exportData();
         }
     }
     
@@ -303,7 +303,6 @@ function exportData(){
 
 //import
 function importData(data){
-    
     var tmp = 0;    
     for(var i in data){
         if(data[i].tmp){
@@ -330,9 +329,12 @@ function importData(data){
                     img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
                     if((120 - data[i].imgs[j].ht) > 0)
                         img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
+
+
                     var hidden_input = $("<input type='hidden'>").val(data[i].imgs[j].value);
                     img_block.append(hidden_input).append(img);
                     tmp_array.push(img_block);
+                    
                 }
                 tmp_array = shuffle(tmp_array);
                 for(j in tmp_array){
@@ -714,7 +716,9 @@ function onDropTarget(obj, event) {
                 tmp_img.attr("width","120");
                 tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
             }
+            exportData();
         }, 6)
+        
     }
     else {
         alert ("Your browser does not support the dataTransfer object.");

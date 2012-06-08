@@ -101,6 +101,10 @@ $(document).ready(function(){
     $(".style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
+
+    $( "#mp_word textarea" ).live("change", function(){
+        saveData();
+    })
 })
 
 function str_replace( w, b, s ){
@@ -261,8 +265,8 @@ function modeEdit()
     .append('<textarea cols="50" rows="5">'+sentence+'</textarea>');
 }
 
-if (window.widget) {
-    window.widget.onleave = function(){
+function saveData() {
+    if (window.widget) {
         sankore.setPreference("ord_phrases_style", $(".style_select").find("option:selected").val());
         if($( "#mp_word textarea" ).val())
         {
@@ -271,7 +275,7 @@ if (window.widget) {
             $( "#mp_word .phrase" ).each( function()
             {
                 ph.push( $( this ).text() );
-            });	
+            }); 
             sankore.setPreference("currentOrdPhrases", ph.join( "\n" ));            
             modeEdit();
         }
@@ -280,7 +284,7 @@ if (window.widget) {
             $( "#mp_word .phrase" ).each( function()
             {
                 ph.push( $( this ).text() );
-            });		
+            });     
             sankore.setPreference("currentOrdPhrases", ph.join( "\n" ));
         }
         sankore.setPreference("rightOrdPhrases", sentence);

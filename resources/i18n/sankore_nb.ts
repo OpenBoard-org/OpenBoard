@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="nb_NO">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -769,35 +769,37 @@
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Åpne-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Quit Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Avslutt Åpne-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Open-Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>I have kept Editor, as it seems like a name...</translatorcomment>
+        <translation>Åpne-Sankoré Editor</translation>
     </message>
     <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>I have kept Sankoré Widgets Editor as it seems like a name...</translatorcomment>
+        <translation>Vis Åpne-Sankoré Widgets Editor</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Skjul Åpne-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Skjul Åpne-Sankoré-applikasjon</translation>
     </message>
     <message>
         <source>Import Uniboard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer Uniboard-dokumenter</translation>
     </message>
     <message>
         <source>Import old Sankore or Uniboard documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer gamle Sankore eller Uniboard-dokumenter</translation>
     </message>
 </context>
 <context>
@@ -853,6 +855,10 @@
 </context>
 <context>
     <name>UBAbstractWidget</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation>Kan ikke laste innhold</translation>
+    </message>
     <message>
         <source>Loading ...</source>
         <translation>Laster ...</translation>
@@ -1101,7 +1107,8 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
+        <translation>
+            <numerusform>Er du sikker på at du vil fjerne %n siden(e) fra det valgte dokumentet &apos;%1&apos;?</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1191,7 +1198,8 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
+            <numerusform>%1 sider kopiert</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1200,11 +1208,11 @@
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
-        <translation type="unfinished"></translation>
+        <translation>Nedlasting av filer</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Kanseller</translation>
+        <translation>Avbryt</translation>
     </message>
 </context>
 <context>
@@ -1333,7 +1341,7 @@
     </message>
     <message>
         <source>Editable</source>
-        <translation type="unfinished"></translation>
+        <translation>Redigerbar</translation>
     </message>
 </context>
 <context>
@@ -1386,7 +1394,7 @@
     </message>
     <message>
         <source>Open-Sankore (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Åpne-Sankore  (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1445,7 +1453,8 @@
     <name>UBKeyboardPalette</name>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Translation of the key on the keyboard - if it is &quot;Enter the numer X&quot; - It should be &quot;Tast inn nummeret X&quot;</translatorcomment>
+        <translation>Enter</translation>
     </message>
 </context>
 <context>
@@ -1559,7 +1568,7 @@
     <message>
         <source>Web Search</source>
         <comment>Web search category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nettsøk</translation>
     </message>
 </context>
 <context>
@@ -1581,11 +1590,11 @@
     <name>UBMediaPlayer</name>
     <message>
         <source>Open Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Åpne sted</translation>
     </message>
     <message>
         <source>Please enter a valid address here:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tast inn en gyldig adresse her:</translation>
     </message>
 </context>
 <context>
@@ -1883,7 +1892,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Remind me later</source>
-        <translation type="unfinished"></translation>
+        <translation>Minn meg på det senere</translation>
     </message>
 </context>
 <context>
@@ -2003,11 +2012,11 @@ Please reboot the application to access the updated documents.</source>
     <name>UniboardSankoreTransition</name>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importer gamle Uniboard/Sankore-dokumenter</translation>
     </message>
     <message>
         <source>There are no documents that should be imported</source>
-        <translation type="unfinished"></translation>
+        <translation>Det er ingen dokumenter som skal importeres</translation>
     </message>
 </context>
 <context>
@@ -2468,55 +2477,56 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Åpne-Sankoré</translation>
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis innhold fra internt nettsted på annen skjerm eller projektor</translation>
     </message>
     <message>
         <source>Multi display</source>
-        <translation type="unfinished"></translation>
+        <translation>Multidisplay</translation>
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>I have translated this as swap between cd and vd</translatorcomment>
+        <translation>Bytt mellom kontrolldisplay og se display</translation>
     </message>
     <message>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modus</translation>
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation type="unfinished"></translation>
+        <translation>Modus å starte i:</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished">Tavle</translation>
+        <translation>Tavle</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrivebord</translation>
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy-bruker</translation>
     </message>
     <message>
         <source>Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pass:</translation>
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Planet Sankoré-ID</translation>
     </message>
     <message>
         <source>User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bruker:</translation>
     </message>
     <message>
         <source>Pass: </source>
-        <translation type="unfinished"></translation>
+        <translation>Pass:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2524,7 +2534,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisensene er på engelsk for å respektere den offisielle og juridisk godkjente oversettelsen.</translation>
     </message>
 </context>
 <context>

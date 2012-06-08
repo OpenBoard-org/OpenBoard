@@ -40,7 +40,7 @@ function start(){
 
     if (window.widget) {
         window.widget.onleave = function(){
-            exportData();
+            //exportData();
         }
     }
     
@@ -201,6 +201,13 @@ function start(){
         } else {
             $(this).parent().remove();
         }
+    });
+
+    $(".text_cont").live("blur", function(){
+        exportData();
+    }).live("keyup", function(e){
+        if (e.keyCode == 13) 
+            exportData();
     });
 }
 

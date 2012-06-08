@@ -34,7 +34,7 @@ function start(){
 
     if (window.widget) {
         window.widget.onleave = function(){
-            exportData();
+            //exportData();
         }
     }
     
@@ -734,6 +734,7 @@ function onDropTarget(obj, event) {
                 }
             }  
         }
+        exportData();
     }
     else {
         alert ("Your browser does not support the dataTransfer object.");

@@ -17,16 +17,6 @@ function createWord( word )
 
 var w;
 
-if (window.widget) {
-    window.widget.onleave = function(){
-        sankore.setPreference("spl_word_style", $(".style_select").find("option:selected").val());
-        if(w.editMode)
-            sankore.setPreference("ordSplWords", w.elements.container.find( "input" ).val().trim( ['*'] ));
-        else
-            sankore.setPreference("ordSplWords", w.getData( "word" ));
-    }
-}
-
 $(document).ready(function()
 {
     if(sankore.preference("spl_word_style","")){
@@ -80,6 +70,14 @@ $(document).ready(function()
     w.setViewContent( '<span class="upper"><span class="dash fixed">&mdash;</span></span>' );
     w.setData( "dashWidth", w.elements.container.find( "span.dash" ).outerWidth() );
     w.setViewContent( "" );
+
+    w.elements.container.find( "input" ).live("change", function(){
+        sankore.setPreference("spl_word_style", $(".style_select").find("option:selected").val());
+        if(w.editMode)
+            sankore.setPreference("ordSplWords", w.elements.container.find( "input" ).val().trim( ['*'] ));
+        else
+            sankore.setPreference("ordSplWords", w.getData( "word" ));
+    })
 	
     // onViewMode
     w.onViewMode = function()

@@ -102,6 +102,10 @@ $(document).ready(function(){
     $(".style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
+
+    $("#mp_word input:text").live("change", function(){
+        saveData();
+    });
 })
 
 /*
@@ -292,8 +296,8 @@ function modeEdit()
 
 }
 
-if (window.widget) {
-    window.widget.onleave = function(){
+function saveData() {
+    if (window.widget) {
         sankore.setPreference("ord_words_style", $(".style_select").find("option:selected").val());
         if($( "#mp_word input:text" ).attr( "value" ))
         {

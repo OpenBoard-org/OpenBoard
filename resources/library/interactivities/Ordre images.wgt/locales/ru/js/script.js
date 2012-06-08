@@ -35,7 +35,7 @@ function start(){
     //events
     if (window.widget) {
         window.widget.onleave = function(){
-            exportData();
+            //exportData();
         }
     }
     
@@ -452,6 +452,7 @@ function onDropTarget(obj, event) {
                 tmp_img.attr("width","120");
                 tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
             }
+            exportData();
         }, 6)
     }
     else {
