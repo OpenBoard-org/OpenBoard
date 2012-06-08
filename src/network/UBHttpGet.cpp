@@ -65,26 +65,6 @@ QNetworkReply* UBHttpGet::get(QUrl pUrl, QPointF pPos, QSize pSize, bool isBackg
 
     return mReply;
 }
-//QNetworkReply* UBHttpGet::get(const sDownloadFileDesc &downlinfo)
-//{
-//    mDownloadInfo.size = downlinfo.size;
-//    mDownloadInfo.isBackground = downlinfo.isBackground;
-//    mDownloadInfo.pos = downlinfo.pos;
-
-//    if (mReply)
-//        delete mReply;
-
-//    UBNetworkAccessManager * nam = UBNetworkAccessManager::defaultAccessManager();
-//    mReply = nam->get(QNetworkRequest(QUrl(downlinfo.url))); //mReply deleted by this destructor
-
-//    mDownloadedBytes.clear();
-
-//    connect(mReply, SIGNAL(finished()), this, SLOT(requestFinished()));
-//    connect(mReply, SIGNAL(readyRead()), this, SLOT(readyRead()));
-//    connect(mReply, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgressed(qint64, qint64)));
-
-//    return mReply;
-//}
 
 void UBHttpGet::readyRead()
 {

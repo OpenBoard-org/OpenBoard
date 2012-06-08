@@ -387,7 +387,6 @@ void UBPlatformUtils::initializeKeyboardLayouts()
     keyboardLayouts[2] = new UBKeyboardLocale("German", "de", "", new QIcon(":/images/flags/de.png"), GERMAN_LOCALE);
     keyboardLayouts[3] = new UBKeyboardLocale("French", "fr", "", new QIcon(":/images/flags/fr.png"), FRENCH_LOCALE);
     keyboardLayouts[4] = new UBKeyboardLocale("Swiss French", "fr", "", new QIcon(":/images/flags/fr.png"), SWISS_FRENCH_LOCALE);
-
 }
 
 void UBPlatformUtils::destroyKeyboardLayouts()

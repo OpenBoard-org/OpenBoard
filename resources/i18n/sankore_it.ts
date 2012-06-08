@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="it" sourcelanguage="en">
+<TS version="2.0">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -129,11 +129,11 @@
     </message>
     <message>
         <source>Next</source>
-        <translation>Prossimo</translation>
+        <translation>Successivo</translation>
     </message>
     <message>
         <source>Next Page</source>
-        <translation>Prossima pagina</translation>
+        <translation>Pagina successiva</translation>
     </message>
     <message>
         <source>PgDown</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
         <source>Show Library</source>
-        <translation>Visualizza libreria</translation>
+        <translation>Visualizza biblioteca</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
@@ -349,11 +349,11 @@
     </message>
     <message>
         <source>Open in Board</source>
-        <translation>Apri nella scheda</translation>
+        <translation>Apri nella lavagna</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translation>Apri la pagina nella scheda</translation>
+        <translation>Apri la pagina nella lavagna</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -461,11 +461,11 @@
     </message>
     <message>
         <source>Sleep</source>
-        <translation>Sleep</translation>
+        <translation>Sospendi</translation>
     </message>
     <message>
         <source>Put Presentation to Sleep</source>
-        <translation>Metti la presentazione in modalità sleep</translation>
+        <translation>Sospendi la presentazione</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
@@ -649,11 +649,11 @@
     </message>
     <message>
         <source>Add To Library</source>
-        <translation>Aggiungi alla libreria</translation>
+        <translation>Aggiungi alla biblioteca</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translation>Aggiungi oggetto alla libreria</translation>
+        <translation>Aggiungi oggetto alla biblioteca</translation>
     </message>
     <message>
         <source>Pages</source>
@@ -781,7 +781,7 @@
     </message>
     <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
-        <translation>Mostra l&apos;editore Open-Sankoré</translation>
+        <translation>Mostra l&apos;editore dei Widgets Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré</source>
@@ -789,7 +789,7 @@
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
-        <translation>Nascondi Open-Sankoré</translation>
+        <translation>Nascondi l&apos;applicazione Open-Sankoré</translation>
     </message>
     <message>
         <source>Import Uniboard Documents</source>
@@ -854,10 +854,6 @@
 <context>
     <name>UBAbstractWidget</name>
     <message>
-        <source>Cannot load content</source>
-        <translation>Impossibile caricare il contenuto</translation>
-    </message>
-    <message>
         <source>Loading ...</source>
         <translation>Caricamento in corso...</translation>
     </message>
@@ -908,11 +904,11 @@
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translation>Tipo di strumento sconosciuto %1</translation>
+        <translation>Tipo di strumento %1 sconosciuto</translation>
     </message>
     <message>
         <source>Unknown content type %1</source>
-        <translation>Contentuto sconosciuto %1</translation>
+        <translation>Tipo di contentuto %1 sconosciuto</translation>
     </message>
     <message>
         <source>Add Item</source>
@@ -927,7 +923,7 @@
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation>Errore durante l&apos;aggiunta dell&apos;immagine alla libreria</translation>
+        <translation>Errore durante l&apos;aggiunta dell&apos;immagine alla biblioteca</translation>
     </message>
 </context>
 <context>
@@ -1104,9 +1100,9 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
-            <numerusform>Siete sicuri di voler rimouvere %n pagina(e) dal documento &apos;%1&apos;?</numerusform>
-            <numerusform></numerusform>
+        <translation type="unfinished">
+            <numerusform>
+        </numerusform>
         </translation>
     </message>
 </context>
@@ -1195,9 +1191,9 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
-            <numerusform>%1 pagina copiata</numerusform>
-            <numerusform>%1 pagine copiate</numerusform>
+        <translation type="unfinished">
+            <numerusform>%1 pagine copiate
+        </numerusform>
         </translation>
     </message>
 </context>
@@ -1205,7 +1201,7 @@
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
-        <translation type="unfinished"></translation>
+        <translation>Download in corso</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1338,7 +1334,7 @@
     </message>
     <message>
         <source>Editable</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificabile</translation>
     </message>
 </context>
 <context>
@@ -1450,7 +1446,7 @@
     <name>UBKeyboardPalette</name>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Invio</translation>
     </message>
 </context>
 <context>
@@ -1564,7 +1560,7 @@
     <message>
         <source>Web Search</source>
         <comment>Web search category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ricerca Web</translation>
     </message>
 </context>
 <context>
@@ -1586,7 +1582,7 @@
     <name>UBMediaPlayer</name>
     <message>
         <source>Open Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri collegamento</translation>
     </message>
     <message>
         <source>Please enter a valid address here:</source>
@@ -1895,7 +1891,7 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>Remind me later</source>
-        <translation type="unfinished"></translation>
+        <translation>Ricordamelo in seguito</translation>
     </message>
 </context>
 <context>
@@ -2015,11 +2011,11 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <name>UniboardSankoreTransition</name>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importa documenti Uniboard/Snkore dai formati precedenti</translation>
     </message>
     <message>
         <source>There are no documents that should be imported</source>
-        <translation type="unfinished"></translation>
+        <translation>Non ci sono documenti da importare</translation>
     </message>
 </context>
 <context>
@@ -2484,51 +2480,51 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra il contenuto della pagina web locale  sullo schermo secondario o sul proiettore</translation>
     </message>
     <message>
         <source>Multi display</source>
-        <translation type="unfinished"></translation>
+        <translation>Multi schermo</translation>
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation type="unfinished"></translation>
+        <translation>Scambia lo schermo di controllo con quello di visualizzazione</translation>
     </message>
     <message>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modalità</translation>
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation type="unfinished"></translation>
+        <translation>Modalità di avvio:</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished">Lavagna</translation>
+        <translation>Lavagna</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Desktop</translation>
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Utente proxy:</translation>
     </message>
     <message>
         <source>Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Password:</translation>
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Planete Sankoré</translation>
     </message>
     <message>
         <source>User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Utente:</translation>
     </message>
     <message>
         <source>Pass: </source>
-        <translation type="unfinished"></translation>
+        <translation>Password:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2536,7 +2532,11 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;(new line)
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;(new line)
+p, li { white-space: pre-wrap; }(new line)
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;(new line)
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

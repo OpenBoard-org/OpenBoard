@@ -788,7 +788,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
 {
     QString mimeType = pContentTypeHeader;
 
-    // In some cases "image/jpeg;charset=" is retourned by the drag-n-drop. That is
+    // In some cases "image/jpeg;charset=" is returned by the drag-n-drop. That is
     // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
     int position=mimeType.indexOf(";");
     if(position != -1)
@@ -934,7 +934,6 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
 
             QUrl url = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
                                            ->addAudioFileToDocument(mActiveDocument, sourceUrl, pData, uuid));
-
             audioItem = mActiveScene->addAudio(url, false, pPos);
 
             audioItem->setSourceUrl(sourceUrl);
@@ -1754,13 +1753,8 @@ UBGraphicsVideoItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mActiveDocument->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-                                      ->addVideoFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
                                       ->addVideoFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
-#endif
 
     UBGraphicsVideoItem* vi = mActiveScene->addVideo(concreteUrl, startPlay, pos);
     mActiveDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -1779,13 +1773,8 @@ UBGraphicsAudioItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mActiveDocument->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-                       ->addAudioFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
                        ->addAudioFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
-#endif
 
     UBGraphicsAudioItem* vi = mActiveScene->addAudio(concreteUrl, startPlay, pos);
     mActiveDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -1823,8 +1812,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
            tmpItem->widgetWebView()->takeSnapshot().save(snapshotPath, "PNG");
 
     }
-
-    return 0;
+    return w3cWidgetItem;
 }
 
 void UBBoardController::cut()

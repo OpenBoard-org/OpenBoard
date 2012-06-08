@@ -293,6 +293,7 @@ void UBWebController::show(WebInstance type)
         break;
     case Paraschool:
         paraschoolWebInstance();
+        break;
     default:
         qCritical() << __FILE__ << " non supported web instance type " << QString::number(type) ;
         break;

@@ -394,8 +394,6 @@ KEYBT GERMAN_LOCALE[] = {
 	/* . : */ KEYBTDECL(0x2e, 0x3a, true),
 	/* _ - */ KEYBTDECL(0x5f, 0x2d, false)};
 
-
-
 void UBPlatformUtils::initializeKeyboardLayouts()
 {
 	nKeyboardLayouts = 5;

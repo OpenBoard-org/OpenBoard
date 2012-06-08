@@ -1,0 +1,46 @@
+html, body {
+	margin:0;
+	padding: 0;
+	height: 100%;
+	font-family: "helvetica neue";
+	font-size: 14px;
+	color: #666666;
+}
+
+#body {
+	
+}
+
+#core {
+	width: 100%;
+	height: 100%;
+	
+	position: relative;
+	
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	-ms-border-radius: 8px;
+	border-radius: 8px;
+	
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+	-ms-box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+	box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+	background-image: linear-gradient(top, white 0%, #CCC 100%);
+	background-image: -o-linear-gradient(top, white 0%, #CCC 100%);
+	background-image: -moz-linear-gradient(top, white 0%, #CCC 100%);
+	background-image: -webkit-linear-gradient(top, white 0%, #CCC 100%);
+	background-image: -ms-linear-gradient(top, white 0%, #CCC 100%);
+	background-image: -webkit-gradient( linear, 50% top, 50% bottom, color-stop(0, white), color-stop(1, #CCC) );
+}
+
+#core .wrapper {
+	width: 100%;
+	height: 100%;
+	
+	overflow: auto;
+}
+
+#core .wrapper > div {
+	padding: 10px 20px;
+}

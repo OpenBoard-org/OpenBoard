@@ -3,7 +3,7 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://uniboard.mnemis.com/widgets/webbrowser" 
         version="1.1"
-        width="750"
+        width="900"
         height="400" 
 		ub:resizable="true">   
 		     
@@ -11,6 +11,5 @@
 		<author href="http://www.getuniboard.com"
 	            email="info@mnemis.com">Mnemis SA</author>
 		<description>Choisir widget</description> 
-
  		<content src="index.html"/> 
 </widget>

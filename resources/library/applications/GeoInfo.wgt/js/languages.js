@@ -1510,7 +1510,7 @@ var sankoreLang = {
         },
         "NG":{
             "city":"Abuja",
-            "country":"Nigéria"
+            "country":"Nigeria"
         },
         "BJ":{
             "city":"Porto-Novo",
@@ -1917,7 +1917,7 @@ var sankoreLang = {
             "country":"République tchèque"
         },
         "RO":{
-            "city":"Bucharest",
+            "city":"Bucarest",
             "country":"Roumanie"
         },
         "UK":{

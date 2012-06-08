@@ -12,7 +12,7 @@
     <name>DownloadDialog</name>
     <message>
         <source>0 Items</source>
-        <translation>0 objektov</translation>
+        <translation>0 položiek</translation>
     </message>
     <message>
         <source>Clean Up</source>
@@ -20,7 +20,7 @@
     </message>
     <message>
         <source>Downloads</source>
-        <translation>Stiahnutia</translation>
+        <translation>Na stiahnutie</translation>
     </message>
 </context>
 <context>
@@ -54,15 +54,15 @@
     </message>
     <message>
         <source>Author</source>
-        <translation>Auteur</translation>
+        <translation>Autor</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Description</translation>
+        <translation>Popis</translation>
     </message>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation>Publier le Podcast sur YouTube</translation>
+        <translation>Publikovať podcast na YouTube</translation>
     </message>
 </context>
 <context>
@@ -73,7 +73,7 @@
     </message>
     <message>
         <source>Del</source>
-        <translation>Del</translation>
+        <translation>Vymazať</translation>
     </message>
     <message>
         <source>Cut</source>
@@ -89,6 +89,7 @@
     </message>
     <message>
         <source>Back</source>
+        <translatorcomment>oproti reťazcu ďalšia strana</translatorcomment>
         <translation>Predošlá</translation>
     </message>
     <message>
@@ -117,6 +118,7 @@
     </message>
     <message>
         <source>Next</source>
+        <translatorcomment>strana</translatorcomment>
         <translation>Ďalšia</translation>
     </message>
     <message>
@@ -197,7 +199,7 @@
     </message>
     <message>
         <source>Put Presentation to Sleep</source>
-        <translation>Pozastaviť prezentáciu</translation>
+        <translation>Uspať prezentáciu</translation>
     </message>
     <message>
         <source>New Document</source>
@@ -205,7 +207,7 @@
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translation>Čisté tmavé pozadie</translation>
+        <translation>Úplne tmavé pozadie</translation>
     </message>
     <message>
         <source>Podcast Config</source>
@@ -261,7 +263,7 @@
     </message>
     <message>
         <source>Scroll Page</source>
-        <translation>Posunúť stránku</translation>
+        <translation>Posunúť sa po stránke</translation>
     </message>
     <message>
         <source>Small Line</source>
@@ -377,7 +379,7 @@
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Označiť obsah Flashu</translation>
+        <translation>Označiť obsah vo Flashi</translation>
     </message>
     <message>
         <source>Import</source>
@@ -417,7 +419,7 @@
     </message>
     <message utf8="true">
         <source>Quit Open-Sankoré</source>
-        <translation>Skončiť Open-Sankoré</translation>
+        <translation>Opustiť Open-Sankoré</translation>
     </message>
     <message>
         <source>Custom Size</source>
@@ -425,7 +427,7 @@
     </message>
     <message>
         <source>Laser Pointer</source>
-        <translation>Laserové ukazovadlko</translation>
+        <translation>Laserové ukazovadlo</translation>
     </message>
     <message>
         <source>Wide Size (16/9)</source>
@@ -441,7 +443,7 @@
     </message>
     <message>
         <source>Duplicate Selected Content</source>
-        <translation>Duplikovať vybrané</translation>
+        <translation>Duplikovať vybraný obsah</translation>
     </message>
     <message>
         <source>Bookmarks</source>
@@ -457,7 +459,7 @@
     </message>
     <message>
         <source>Import old Sankore or Uniboard documents</source>
-        <translation>Nahrať staré dokumenty Sankoré 3.1 alebo dokumenty Uniboard</translation>
+        <translation>Nahrať staré dokumenty Sankoré alebo Uniboard</translation>
     </message>
     <message>
         <source>Zoom Out</source>
@@ -497,7 +499,7 @@
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
-        <translation>Pridať vybrané do otvoreného dokumentu</translation>
+        <translation>Pridať vybraný obsah do otvoreného dokumentu</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
@@ -581,7 +583,7 @@
     </message>
     <message>
         <source>Delete Selected Content</source>
-        <translation>Vymazať vybrané</translation>
+        <translation>Vymazať vybraný obsah</translation>
     </message>
     <message>
         <source>Add Item To New Page</source>
@@ -601,7 +603,7 @@
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation>Zachytiť internetový obsah, ktorý sa dá vložiť</translation>
+        <translation>Označiť obsah z internetu, ktorý sa dá vložiť</translation>
     </message>
     <message>
         <source>Write Text</source>
@@ -745,7 +747,7 @@
     </message>
     <message>
         <source>Capture a Window</source>
-        <translation>Zachytiť okno</translation>
+        <translation>Označiť okno</translation>
     </message>
     <message>
         <source>Virtual Laser Pointer</source>
@@ -753,7 +755,7 @@
     </message>
     <message>
         <source>Plain Light Background</source>
-        <translation>Čisté svetlé pozadie</translation>
+        <translation>Úplne svetlé pozadie</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
@@ -777,7 +779,7 @@
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>Pridať do dokumentu, ktorý sa práve upravuje</translation>
+        <translation>Pridať do aktuálneho dokumentu</translation>
     </message>
     <message>
         <source>Highlight </source>
@@ -856,10 +858,6 @@
     <message>
         <source>Loading ...</source>
         <translation>Nahráva sa...</translation>
-    </message>
-    <message>
-        <source>Cannot load content</source>
-        <translation>Súbor sa nedá spustiť</translation>
     </message>
 </context>
 <context>
@@ -961,7 +959,7 @@
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation>Skopírovať obrazovku</translation>
+        <translation>Označiť obrazovku</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
@@ -969,7 +967,7 @@
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>Skopírovať časť obrazovky</translation>
+        <translation>Označiť časť obrazovky</translation>
     </message>
     <message>
         <source>Show Uniboard</source>
@@ -1366,7 +1364,7 @@
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Nahrávanie súborur %1 sa nepodarilo.</translation>
+        <translation>Nahrávanie súboru %1 sa nepodarilo.</translation>
     </message>
     <message>
         <source>Common File Format (</source>
@@ -1459,31 +1457,31 @@
     <name>UBLibActionBar</name>
     <message>
         <source>Share</source>
-        <translation>Partager</translation>
+        <translation>Podeliť sa</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation>Retour au répertoire</translation>
+        <translation>Späť na priečinok</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation>Supprimer des favoris</translation>
+        <translation>Odstrániť z obľúbených položiek</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Supprimer</translation>
+        <translation>Vymazať</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation>Rechercher</translation>
+        <translation>Hľadať</translation>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation>Ajouter au favoris</translation>
+        <translation>Pridať do obľúbených položiek</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation>Créer un nouveau dossier</translation>
+        <translation>Vytvoriť nový priečinok</translation>
     </message>
 </context>
 <context>
@@ -1509,11 +1507,11 @@
     <name>UBLibraryController</name>
     <message>
         <source>Creating image thumbnail for %1.</source>
-        <translation>Vytvára sa miniatúra obrázka %1.</translation>
+        <translation>Vytvára sa miniatúra obrázka z(o) %1.</translation>
     </message>
     <message>
         <source>Adding to page failed for item %1.</source>
-        <translation>Na stránku sa nepodarilo pridať %1.</translation>
+        <translation>Na stránku sa nepodarilo pridať položku %1.</translation>
     </message>
     <message>
         <source>Added 1 Image to Library</source>
@@ -1731,7 +1729,7 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation>Verzia: </translation>
+        <translation>verzia: </translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
@@ -1746,7 +1744,7 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
     <message>
         <source>Proxy Login</source>
-        <translation>Prihl. meno na proxy</translation>
+        <translation>Prihlásenie na proxy</translation>
     </message>
     <message>
         <source>Username:</source>
@@ -1918,7 +1916,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation>Publikovať dokumenty na stránku Sankoré</translation>
+        <translation>Publikovať dokument na webe Sankoré</translation>
     </message>
 </context>
 <context>
@@ -2021,7 +2019,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation>Nahrať staré dokumenty vo formáte Uniboard alebo Sankoré</translation>
+        <translation>Nahrať staré dokumenty Uniboard/Sankoré</translation>
     </message>
 </context>
 <context>
@@ -2047,11 +2045,11 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation>- zostáva %4 %5 </translation>
+        <translation>– zostáva %4 %5 </translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation>minút</translation>
+        <translation>minút(y)</translation>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
@@ -2071,7 +2069,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation>%1 z(o) %2 - zastavené</translation>
+        <translation>%1 z(o) %2 – zastavené</translation>
     </message>
     <message>
         <source>Save File</source>
@@ -2100,7 +2098,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
-        <translation type="unfinished">%1 stiahnutie (stiahnutí)</translation>
+        <translation type="unfinished">%1 stiahnutí</translation>
     </message>
 </context>
 <context>
@@ -2111,7 +2109,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>Address</source>
-        <translation>Adresse</translation>
+        <translation>Adresa</translation>
     </message>
 </context>
 <context>
@@ -2122,7 +2120,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>Earlier Today</source>
-        <translation>na začiatku tohto dňa</translation>
+        <translation>dnes skoro ráno</translation>
     </message>
 </context>
 <context>
@@ -2156,7 +2154,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>New &amp;Tab</source>
-        <translation>Novál &amp;karta</translation>
+        <translation>Nová &amp;karta</translation>
     </message>
 </context>
 <context>
@@ -2363,7 +2361,7 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>Uniboard Documents</source>
-        <translation>Documenty Uniboard</translation>
+        <translation>Dokumenty Uniboard</translation>
     </message>
 </context>
 <context>
@@ -2442,7 +2440,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Home Page:</source>
-        <translation>Domovská stránka:</translation>
+        <translation>Úvodná stránka:</translation>
     </message>
     <message>
         <source>Check software update at launch</source>
@@ -2545,7 +2543,7 @@ p, li { white-space: pre-wrap; }
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>Skopírovať obsah flashu</translation>
+        <translation>Skopírovať obsah vo flashi</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>

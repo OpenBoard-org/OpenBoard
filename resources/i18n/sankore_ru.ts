@@ -769,35 +769,35 @@
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Quit Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Выйти из Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Open-Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактор Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать редактор виджетов Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Свернуть Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Свернуть приложение Open-Sankoré</translation>
     </message>
     <message>
         <source>Import Uniboard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортировать Uniboard документы</translation>
     </message>
     <message>
         <source>Import old Sankore or Uniboard documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортировать старые Sankore и Uniboard документы</translation>
     </message>
 </context>
 <context>
@@ -853,10 +853,6 @@
 </context>
 <context>
     <name>UBAbstractWidget</name>
-    <message>
-        <source>Cannot load content</source>
-        <translation>Невозможно загрузить содержимое</translation>
-    </message>
     <message>
         <source>Loading ...</source>
         <translation>Загрузка...</translation>
@@ -1195,9 +1191,9 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 страницы скопировано</numerusform>
+            <numerusform>%1 страниц скопировано</numerusform>
         </translation>
     </message>
 </context>
@@ -1205,11 +1201,11 @@
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузить файлы</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1338,7 +1334,7 @@
     </message>
     <message>
         <source>Editable</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактируемый</translation>
     </message>
 </context>
 <context>
@@ -1391,7 +1387,7 @@
     </message>
     <message>
         <source>Open-Sankore (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankore (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1450,7 +1446,7 @@
     <name>UBKeyboardPalette</name>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Ввод</translation>
     </message>
 </context>
 <context>
@@ -1564,7 +1560,7 @@
     <message>
         <source>Web Search</source>
         <comment>Web search category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Веб поиск</translation>
     </message>
 </context>
 <context>
@@ -1586,11 +1582,11 @@
     <name>UBMediaPlayer</name>
     <message>
         <source>Open Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть местоположение</translation>
     </message>
     <message>
         <source>Please enter a valid address here:</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите правильный адрес сюда:</translation>
     </message>
 </context>
 <context>
@@ -2015,11 +2011,11 @@ Please reboot the application to access the updated documents.</source>
     <name>UniboardSankoreTransition</name>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт старых Uniboard/Sankore документов</translation>
     </message>
     <message>
         <source>There are no documents that should be imported</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет документов для импортирования</translation>
     </message>
 </context>
 <context>
@@ -2480,55 +2476,55 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать содежимое веб страницы на втором мониторе</translation>
     </message>
     <message>
         <source>Multi display</source>
-        <translation type="unfinished"></translation>
+        <translation>Несколько монитров</translation>
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation type="unfinished"></translation>
+        <translation>Инвертировать первый и второй монитор</translation>
     </message>
     <message>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим</translation>
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим при загрузке:</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished">Доска</translation>
+        <translation>Доска</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Десктоп</translation>
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Прокси пользователь:</translation>
     </message>
     <message>
         <source>Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль:</translation>
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Планета Sankoré ID</translation>
     </message>
     <message>
         <source>User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользователь:</translation>
     </message>
     <message>
         <source>Pass: </source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;

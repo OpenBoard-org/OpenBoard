@@ -405,12 +405,14 @@ void UBAbstractWidget::paintEvent(QPaintEvent * event)
     else
     {
          QPainter p(this);
-         QString message;
+         QString message = tr("Loading ...");
 
-         if (mLoadIsErronous)
-             message = tr("Cannot load content");
-         else
-             message = tr("Loading ...");
+         // this is the right way of doing but we receive two callback and the one return always that the
+         // load as failed... to check
+//         if (mLoadIsErronous)
+//             message = tr("Cannot load content");
+//         else
+//             message = tr("Loading ...");
 
          p.setFont(QFont("Arial", 12));
 

@@ -13,7 +13,7 @@ linux-g++-64 {
 VERSION_MAJ = 1
 VERSION_MIN = 40 
 VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 07
+VERSION_PATCH = 08
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
@@ -305,12 +305,18 @@ macx {
    }
 
    exists(resources/i18n/sankore_sk.qm) {
-       TRANSLATION_pt.files = resources/i18n/sankore_sk.qm \
+       TRANSLATION_sk.files = resources/i18n/sankore_sk.qm \
            resources/i18n/Localizable.strings
-       TRANSLATION_pt.path = "$$RESOURCES_DIR/sk.lproj"
+       TRANSLATION_sk.path = "$$RESOURCES_DIR/sk.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_sk
    }
    
+   exists(resources/i18n/sankore_bg.qm) {
+       TRANSLATION_bg.files = resources/i18n/sankore_bg.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_bg.path = "$$RESOURCES_DIR/bg.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_bg
+   }
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
        UB_FONTS \
@@ -362,6 +368,7 @@ linux-g++-32 {
 
 linux-g++-64 { 
     LIBS += -lcrypto
+    LIBS += -lX11
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp
     QMAKE_LFLAGS += -fopenmp
@@ -399,7 +406,8 @@ TRANSLATIONS = resources/i18n/sankore_en.ts \
    resources/i18n/sankore_ar.ts \
    resources/i18n/sankore_iw.ts \
    resources/i18n/sankore_pt.ts \
-   resources/i18n/sankore_sk.ts
+   resources/i18n/sankore_sk.ts \
+   resources/i18n/sankore_bg.ts
 
 INSTALLS = UB_ETC \
    UB_I18N \

@@ -93,6 +93,7 @@ UBItem* UBGraphicsAudioItem::deepCopy() const
     QUrl audioUrl = this->mediaFileUrl();
 
     UBGraphicsAudioItem *copy = new UBGraphicsAudioItem(audioUrl, parentItem());
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), copy, SLOT(activeSceneChanged()));
 
     copy->setPos(this->pos());
 //    copy->setZValue(this->zValue());

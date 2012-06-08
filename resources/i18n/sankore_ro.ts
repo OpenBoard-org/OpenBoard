@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="en_GB">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -769,35 +769,35 @@
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Quit Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Ieşire din Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Open-Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare Editor widget-uri Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Ascundere Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Ascundere aplicaţie Open-Sankoré</translation>
     </message>
     <message>
         <source>Import Uniboard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare documente Uniboard</translation>
     </message>
     <message>
         <source>Import old Sankore or Uniboard documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare documente vechi Sankore sau Uniboard</translation>
     </message>
 </context>
 <context>
@@ -853,10 +853,6 @@
 </context>
 <context>
     <name>UBAbstractWidget</name>
-    <message>
-        <source>Cannot load content</source>
-        <translation>Conţinutul nu poate fi încărcat</translation>
-    </message>
     <message>
         <source>Loading ...</source>
         <translation>Încărcare ...</translation>
@@ -1104,8 +1100,9 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Sunteţi sigur că doriţi să eliminaţi %n pagină din documentul selectat &apos;%1&apos;?</numerusform>
+            <numerusform>Sunteţi sigur că doriţi să eliminaţi %n pagini din documentul selectat &apos;%1&apos;?</numerusform>
         </translation>
     </message>
 </context>
@@ -1194,7 +1191,8 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
+            <numerusform>%1 pagini copiate</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1203,11 +1201,11 @@
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
-        <translation type="unfinished"></translation>
+        <translation>Descărcare fişiere</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anulare</translation>
+        <translation>Anulare</translation>
     </message>
 </context>
 <context>
@@ -1336,7 +1334,7 @@
     </message>
     <message>
         <source>Editable</source>
-        <translation type="unfinished"></translation>
+        <translation>Editabil</translation>
     </message>
 </context>
 <context>
@@ -1389,7 +1387,7 @@
     </message>
     <message>
         <source>Open-Sankore (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankore (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1448,7 +1446,7 @@
     <name>UBKeyboardPalette</name>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Intrare</translation>
     </message>
 </context>
 <context>
@@ -1562,7 +1560,7 @@
     <message>
         <source>Web Search</source>
         <comment>Web search category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Căutare web</translation>
     </message>
 </context>
 <context>
@@ -1584,11 +1582,11 @@
     <name>UBMediaPlayer</name>
     <message>
         <source>Open Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Deschidere locaţie</translation>
     </message>
     <message>
         <source>Please enter a valid address here:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vă rugăm să introduceţi o adresă valabilă aici:</translation>
     </message>
 </context>
 <context>
@@ -1893,7 +1891,7 @@ Vă rugăm să reporniţi aplicaţia pentru a accesa documentele actualizate.</t
     </message>
     <message>
         <source>Remind me later</source>
-        <translation type="unfinished"></translation>
+        <translation>Reaminteşte-mi mai târziu</translation>
     </message>
 </context>
 <context>
@@ -2013,11 +2011,11 @@ Vă rugăm să reporniţi aplicaţia pentru a accesa documentele actualizate.</t
     <name>UniboardSankoreTransition</name>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importare documente vechi Uniboard/Sankore</translation>
     </message>
     <message>
         <source>There are no documents that should be imported</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu există documente care trebuie importate</translation>
     </message>
 </context>
 <context>
@@ -2478,55 +2476,55 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare conţinut pagină de web intern pe ecranul secundar sau pe proiector</translation>
     </message>
     <message>
         <source>Multi display</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişare multiplă</translation>
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare control afişare cu vizualizare afişare</translation>
     </message>
     <message>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mod</translation>
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation type="unfinished"></translation>
+        <translation>Modul în care se porneşte: </translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished">Tablă</translation>
+        <translation>Tablă</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Desktop</translation>
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizator Proxy:</translation>
     </message>
     <message>
         <source>Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă:</translation>
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Planète Sankoré</translation>
     </message>
     <message>
         <source>User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizator:</translation>
     </message>
     <message>
         <source>Pass: </source>
-        <translation type="unfinished"></translation>
+        <translation>Parolă:</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2534,7 +2532,11 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Licenţele sunt în engleză pentru a respecta traducerea aprobată oficial şi legal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

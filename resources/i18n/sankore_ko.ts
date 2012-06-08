@@ -854,10 +854,6 @@
 <context>
     <name>UBAbstractWidget</name>
     <message>
-        <source>Cannot load content</source>
-        <translation>콘텐츠를 불러올 수 없습니다</translation>
-    </message>
-    <message>
         <source>Loading ...</source>
         <translation>불러오는 중 ...</translation>
     </message>

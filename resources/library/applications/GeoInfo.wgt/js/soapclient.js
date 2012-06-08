@@ -143,6 +143,7 @@ SOAPClient._loadWsdl = function(url, method, parameters, async, callback)
 		}
 	}
 	xmlHttp.send(null);
+
 	if (!async)
 		return SOAPClient._onLoadWsdl(url, method, parameters, async, callback, xmlHttp);
 }
@@ -154,6 +155,7 @@ SOAPClient._onLoadWsdl = function(url, method, parameters, async, callback, req)
 }
 SOAPClient._sendSoapRequest = function(url, method, parameters, async, callback, wsdl)
 {
+	alert();
 	// get namespace
 	var ns = (wsdl.documentElement.attributes["targetNamespace"] + "" == "undefined") ? wsdl.documentElement.attributes.getNamedItem("targetNamespace").nodeValue : wsdl.documentElement.attributes["targetNamespace"].value;
 	// build SOAP request
