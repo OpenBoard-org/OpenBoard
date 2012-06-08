@@ -8,21 +8,19 @@
 
 #include "core/memcheck.h"
 
-void UBKeyboardButton::sendUnicodeSymbol(unsigned int nSymbol1, unsigned int nSymbol2, bool shift)
+void UBKeyboardButton::sendUnicodeSymbol(KEYCODE keycode)
 {
-	unsigned int nSymbol = shift? nSymbol2 : nSymbol1;
-
 	INPUT input[2];
 	input[0].type = INPUT_KEYBOARD;
 	input[0].ki.wVk = 0;
-	input[0].ki.wScan = nSymbol;
+    input[0].ki.wScan = keycode.symbol;
 	input[0].ki.dwFlags = KEYEVENTF_UNICODE;
 	input[0].ki.time = 0;
 	input[0].ki.dwExtraInfo = 0;
 
 	input[1].type = INPUT_KEYBOARD;
 	input[1].ki.wVk = 0;
-	input[1].ki.wScan = nSymbol;
+    input[1].ki.wScan = keycode.symbol;
 	input[1].ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
 	input[1].ki.time = 0;
 	input[1].ki.dwExtraInfo = 0;
@@ -57,11 +55,10 @@ void UBKeyboardPalette::createCtrlButtons()
 
     ctrlButtons[ctrlID++] = new UBCntrlButton(this, 0x08, "backspace");// Backspace
     ctrlButtons[ctrlID++] = new UBCntrlButton(this, 0x09, "tab");      // Tab
-//     ctrlButtons[ctrlID++] = new UBKeyButton(this);                  // Row 2 Stub
-//     ctrlButtons[ctrlID++] = new UBKeyButton(this);                  // Row 3 Stub
+    ctrlButtons[ctrlID++] = new UBCapsLockButton(this, "capslock");    // Shift
     ctrlButtons[ctrlID++] = new UBCntrlButton(this, tr("Enter"), 0x0d);    // Enter
-    ctrlButtons[ctrlID++] = new UBCapsLockButton(this, "capslock");    // Caps Lock
-    ctrlButtons[ctrlID++] = new UBCapsLockButton(this, "capslock");    // Caps Lock
+    ctrlButtons[ctrlID++] = new UBShiftButton(this, "shift");    // Shift
+    ctrlButtons[ctrlID++] = new UBShiftButton(this, "shift");    // Shift
     ctrlButtons[ctrlID++] = new UBLocaleButton(this);                  // Language Switch 
     ctrlButtons[ctrlID++] = new UBCntrlButton(this, "", 0x20);         // Space
     ctrlButtons[ctrlID++] = new UBLocaleButton(this);                  // Language Switch 
@@ -69,10 +66,6 @@ void UBKeyboardPalette::createCtrlButtons()
 
 void UBKeyboardPalette::onActivated(bool)
 {
-}
-void UBKeyboardPalette::onDeactivated()
-{
-
 }
 void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* )
 {}

@@ -10,8 +10,12 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Carbon/Carbon.h>
 #import <APELite.h>
+
+/*
+// commented because Sankore crashes on Java Script. It seems to backends dependencies.
 #import <WebKit/WebKit.h>
 #import <AppKit/AppKit.h>
+*/
 
 
 NSString* bundleShortVersion(NSBundle *bundle)
@@ -20,8 +24,8 @@ NSString* bundleShortVersion(NSBundle *bundle)
 }
 
 OSStatus emptySetSystemUIMode (
-        SystemUIMode inMode,
-        SystemUIOptions inOptions)
+   SystemUIMode inMode,
+   SystemUIOptions inOptions)
 {
     Q_UNUSED(inMode);
     Q_UNUSED(inOptions);
@@ -33,7 +37,7 @@ void *originalSetSystemUIMode = 0;
 
 void UBPlatformUtils::init()
 {
-    initializeKeyboardLayouts();
+        initializeKeyboardLayouts();
 
     // qwidget_mac.mm qt_mac_set_fullscreen_mode uses kUIModeAllSuppressed which is unfortunate in our case
     //
@@ -252,7 +256,7 @@ void UBPlatformUtils::runInstaller(const QString &installerFilePath)
         bool success = process.startDetached(escaped);
 
         if(success)
-            return;
+           return;
     }
 
     // did not work .. lets load the dmg ...
@@ -336,206 +340,206 @@ void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivabl
 }
 
 QPixmap qpixmapFromIconRef(IconRef iconRef, int size) {
-    OSErr result;
-    int iconSize;
-    OSType elementType;
+      OSErr result;
+      int iconSize;
+      OSType elementType;
 
-    // Determine elementType and iconSize
-    if (size <= 16) {
-        elementType = kSmall32BitData;
-        iconSize = 16;
-    } else if (size <= 32) {
-        elementType = kLarge32BitData;
-        iconSize = 32;
-    } else {
-        elementType = kThumbnail32BitData;
-        iconSize = 128;
-    }
+      // Determine elementType and iconSize
+      if (size <= 16) {
+            elementType = kSmall32BitData;
+            iconSize = 16;
+      } else if (size <= 32) {
+            elementType = kLarge32BitData;
+            iconSize = 32;
+      } else {
+            elementType = kThumbnail32BitData;
+            iconSize = 128;
+      }
 
-    // Get icon into an IconFamily
-    IconFamilyHandle hIconFamily = 0;
-    IconRefToIconFamily(iconRef, kSelectorAllAvailableData, &hIconFamily);
+      // Get icon into an IconFamily
+      IconFamilyHandle hIconFamily = 0;
+      IconRefToIconFamily(iconRef, kSelectorAllAvailableData, &hIconFamily);
 
-    // Extract data
-    Handle hRawBitmapData = NewHandle(iconSize * iconSize * 4);
-    result = GetIconFamilyData( hIconFamily, elementType, hRawBitmapData );
-    if (result != noErr) {
-        DisposeHandle(hRawBitmapData);
-        return QPixmap();
-    }
+      // Extract data
+      Handle hRawBitmapData = NewHandle(iconSize * iconSize * 4);
+      result = GetIconFamilyData( hIconFamily, elementType, hRawBitmapData );
+      if (result != noErr) {
+            DisposeHandle(hRawBitmapData);
+            return QPixmap();
+      }
 
-    // Convert data to QImage
-    QImage image(iconSize, iconSize, QImage::Format_ARGB32);
-    HLock(hRawBitmapData);
-    unsigned long* data = (unsigned long*) *hRawBitmapData;
-    for (int posy=0; posy<iconSize; ++posy, data+=iconSize) {
-#ifdef __BIG_ENDIAN__
-        uchar* line = image.scanLine(posy);
-        memcpy(line, data, iconSize * 4);
-#else
-        uchar* src = (uchar*) data;
-        uchar* dst = image.scanLine(posy);
-        for (int posx=0; posx<iconSize; src+=4, dst+=4, ++posx) {
-            dst[0] = src[3];
-            dst[1] = src[2];
-            dst[2] = src[1];
-            dst[3] = src[0];
-        }
-#endif
-    }
-    HUnlock(hRawBitmapData);
-    DisposeHandle( hRawBitmapData );
+      // Convert data to QImage
+      QImage image(iconSize, iconSize, QImage::Format_ARGB32);
+      HLock(hRawBitmapData);
+      unsigned long* data = (unsigned long*) *hRawBitmapData;
+      for (int posy=0; posy<iconSize; ++posy, data+=iconSize) {
+      #ifdef __BIG_ENDIAN__
+            uchar* line = image.scanLine(posy);
+            memcpy(line, data, iconSize * 4);
+      #else
+            uchar* src = (uchar*) data;
+            uchar* dst = image.scanLine(posy);
+            for (int posx=0; posx<iconSize; src+=4, dst+=4, ++posx) {
+                  dst[0] = src[3];
+                  dst[1] = src[2];
+                  dst[2] = src[1];
+                  dst[3] = src[0];
+            }
+      #endif
+      }
+      HUnlock(hRawBitmapData);
+      DisposeHandle( hRawBitmapData );
 
-    // Scale to wanted size
-    image = image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    return QPixmap::fromImage(image);
+      // Scale to wanted size
+      image = image.scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+      return QPixmap::fromImage(image);
 }
 
 QString QStringFromStringRef(CFStringRef stringRef)
 {
-    if (stringRef!=NULL)
-    {
-        char tmp[1024];
-        CFStringGetCString(stringRef, tmp, 1024, 0);
-        return QString(tmp);
-    }
-    else
-        return QString();
+   if (stringRef!=NULL)
+        {
+		char tmp[1024];
+		CFStringGetCString(stringRef, tmp, 1024, 0);
+		return QString(tmp);
+	}
+	else
+		return QString();
 }
 
 
 KEYBT* createKeyBt(const UCKeyboardLayout* keyLayout, int vkk)
 {
-    UInt32 deadKeyState = 0L;
-    UInt32 kbdType = kKeyboardISO;
+	UInt32 deadKeyState = 0L;
+	UInt32 kbdType = kKeyboardISO;
 
-    UniCharCount cnt1, cnt2;
-    UniChar unicodeString1[100], unicodeString2[100];
+    UniCharCount cnt1, cnt2, cnt3;
+    UniChar unicodeString1[100], unicodeString2[100], unicodeString3[100];
 
-    UCKeyTranslate(keyLayout, vkk, kUCKeyActionDisplay, 0, kbdType,  kUCKeyTranslateNoDeadKeysBit, &deadKeyState, 100, &cnt1, unicodeString1);
-    UCKeyTranslate(keyLayout, vkk, kUCKeyActionDisplay, (shiftKey >> 8) & 0xff, kbdType,  kUCKeyTranslateNoDeadKeysBit, &deadKeyState, 100, &cnt2, unicodeString2);
+	UCKeyTranslate(keyLayout, vkk, kUCKeyActionDisplay, 0, kbdType,  kUCKeyTranslateNoDeadKeysBit, &deadKeyState, 100, &cnt1, unicodeString1);
+	UCKeyTranslate(keyLayout, vkk, kUCKeyActionDisplay, (shiftKey >> 8) & 0xff, kbdType,  kUCKeyTranslateNoDeadKeysBit, &deadKeyState, 100, &cnt2, unicodeString2);
+    UCKeyTranslate(keyLayout, vkk, kUCKeyActionDisplay, (alphaLock >> 8) & 0xff, kbdType,  kUCKeyTranslateNoDeadKeysBit, &deadKeyState, 100, &cnt2, unicodeString3);
 
-    return new KEYBT(unicodeString1[0], vkk, unicodeString2[0], vkk);
-}
+    return new KEYBT(unicodeString1[0], unicodeString2[0], unicodeString1[0] != unicodeString3[0], 0,0, KEYCODE(0, vkk, 0), KEYCODE(0, vkk, 1));
+ }
 
 
 void UBPlatformUtils::initializeKeyboardLayouts()
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceIsEnableCapable, kTISPropertyInputSourceIsSelectCapable };
-    const void* values[] = { kTISCategoryKeyboardInputSource, kCFBooleanTrue, kCFBooleanTrue };
-    CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 3, NULL, NULL);
-    CFArrayRef kbds = TISCreateInputSourceList(dict, false);
+	CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceIsEnableCapable, kTISPropertyInputSourceIsSelectCapable };
+	const void* values[] = { kTISCategoryKeyboardInputSource, kCFBooleanTrue, kCFBooleanTrue };
+	CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 3, NULL, NULL);
+	CFArrayRef kbds = TISCreateInputSourceList(dict, false);
 
-    int count = CFArrayGetCount(kbds);
-    QList<UBKeyboardLocale*> result;
+	int count = CFArrayGetCount(kbds);
+	QList<UBKeyboardLocale*> result;
 
-    for(int i=0; i<count; i++)
-    {
-        TISInputSourceRef keyLayoutRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, i);
-        if (keyLayoutRef==NULL)
-            continue;
+	for(int i=0; i<count; i++)
+	{
+		TISInputSourceRef keyLayoutRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, i);
+		if (keyLayoutRef==NULL)
+			continue;
 
-        CFDataRef ref = (CFDataRef) TISGetInputSourceProperty(keyLayoutRef,
-                                                              kTISPropertyUnicodeKeyLayoutData);
-        if (ref==NULL)
-            continue;
-        const UCKeyboardLayout* keyLayout = (const UCKeyboardLayout*) CFDataGetBytePtr(ref);
-        if (keyLayoutRef==NULL)
-            continue;
+		CFDataRef ref = (CFDataRef) TISGetInputSourceProperty(keyLayoutRef,
+					 kTISPropertyUnicodeKeyLayoutData);
+		if (ref==NULL)
+			continue;
+		const UCKeyboardLayout* keyLayout = (const UCKeyboardLayout*) CFDataGetBytePtr(ref);
+		if (keyLayoutRef==NULL)
+			continue;
 
-        KEYBT** keybt = new KEYBT*[SYMBOL_KEYS_COUNT];
+		KEYBT** keybt = new KEYBT*[SYMBOL_KEYS_COUNT];
 
-        keybt[0] = createKeyBt(keyLayout, 10);
-        keybt[1] = createKeyBt(keyLayout, 18);
-        keybt[2] = createKeyBt(keyLayout, 19);
-        keybt[3] = createKeyBt(keyLayout, 20);
-        keybt[4] = createKeyBt(keyLayout, 21);
-        keybt[5] = createKeyBt(keyLayout, 23);
-        keybt[6] = createKeyBt(keyLayout, 22);
-        keybt[7] = createKeyBt(keyLayout, 26);
-        keybt[8] = createKeyBt(keyLayout, 28);
-        keybt[9] = createKeyBt(keyLayout, 25);
-        keybt[10] = createKeyBt(keyLayout, 29);
-        keybt[11] = createKeyBt(keyLayout, 27);
-        keybt[12] = createKeyBt(keyLayout, 24);
+		keybt[0] = createKeyBt(keyLayout, 10);
+		keybt[1] = createKeyBt(keyLayout, 18);
+		keybt[2] = createKeyBt(keyLayout, 19);
+		keybt[3] = createKeyBt(keyLayout, 20);
+		keybt[4] = createKeyBt(keyLayout, 21);
+		keybt[5] = createKeyBt(keyLayout, 23);
+		keybt[6] = createKeyBt(keyLayout, 22);
+		keybt[7] = createKeyBt(keyLayout, 26);
+		keybt[8] = createKeyBt(keyLayout, 28);
+		keybt[9] = createKeyBt(keyLayout, 25);
+		keybt[10] = createKeyBt(keyLayout, 29);
+		keybt[11] = createKeyBt(keyLayout, 27);
+		keybt[12] = createKeyBt(keyLayout, 24);
 
-        keybt[13] = createKeyBt(keyLayout, 12);
-        keybt[14] = createKeyBt(keyLayout, 13);
-        keybt[15] = createKeyBt(keyLayout, 14);
-        keybt[16] = createKeyBt(keyLayout, 15);
-        keybt[17] = createKeyBt(keyLayout, 17);
-        keybt[18] = createKeyBt(keyLayout, 16);
-        keybt[19] = createKeyBt(keyLayout, 32);
-        keybt[20] = createKeyBt(keyLayout, 34);
-        keybt[21] = createKeyBt(keyLayout, 31);
-        keybt[22] = createKeyBt(keyLayout, 35);
-        keybt[23] = createKeyBt(keyLayout, 33);
-        keybt[24] = createKeyBt(keyLayout, 30);
+		keybt[13] = createKeyBt(keyLayout, 12);
+		keybt[14] = createKeyBt(keyLayout, 13);
+		keybt[15] = createKeyBt(keyLayout, 14);
+		keybt[16] = createKeyBt(keyLayout, 15);
+		keybt[17] = createKeyBt(keyLayout, 17);
+		keybt[18] = createKeyBt(keyLayout, 16);
+		keybt[19] = createKeyBt(keyLayout, 32);
+		keybt[20] = createKeyBt(keyLayout, 34);
+		keybt[21] = createKeyBt(keyLayout, 31);
+		keybt[22] = createKeyBt(keyLayout, 35);
+		keybt[23] = createKeyBt(keyLayout, 33);
+		keybt[24] = createKeyBt(keyLayout, 30);
 
-        keybt[25] = createKeyBt(keyLayout, 0);
-        keybt[26] = createKeyBt(keyLayout, 1);
-        keybt[27] = createKeyBt(keyLayout, 2);
-        keybt[28] = createKeyBt(keyLayout, 3);
-        keybt[29] = createKeyBt(keyLayout, 5);
-        keybt[30] = createKeyBt(keyLayout, 4);
-        keybt[31] = createKeyBt(keyLayout, 38);
-        keybt[32] = createKeyBt(keyLayout, 40);
-        keybt[33] = createKeyBt(keyLayout, 37);
-        keybt[34] = createKeyBt(keyLayout, 41);
-        keybt[35] = createKeyBt(keyLayout, 39);
-        keybt[36] = createKeyBt(keyLayout, 42);
+		keybt[25] = createKeyBt(keyLayout, 0);
+		keybt[26] = createKeyBt(keyLayout, 1);
+		keybt[27] = createKeyBt(keyLayout, 2);
+		keybt[28] = createKeyBt(keyLayout, 3);
+		keybt[29] = createKeyBt(keyLayout, 5);
+		keybt[30] = createKeyBt(keyLayout, 4);
+		keybt[31] = createKeyBt(keyLayout, 38);
+		keybt[32] = createKeyBt(keyLayout, 40);
+		keybt[33] = createKeyBt(keyLayout, 37);
+		keybt[34] = createKeyBt(keyLayout, 41);
+		keybt[35] = createKeyBt(keyLayout, 39);
+		keybt[36] = createKeyBt(keyLayout, 42);
 
-        keybt[37] = createKeyBt(keyLayout, 6);
-        keybt[38] = createKeyBt(keyLayout, 7);
-        keybt[39] = createKeyBt(keyLayout, 8);
-        keybt[40] = createKeyBt(keyLayout, 9);
-        keybt[41] = createKeyBt(keyLayout, 11);
-        keybt[42] = createKeyBt(keyLayout, 45);
-        keybt[43] = createKeyBt(keyLayout, 46);
-        keybt[44] = createKeyBt(keyLayout, 43);
-        keybt[45] = createKeyBt(keyLayout, 47);
-        keybt[46] = createKeyBt(keyLayout, 44);
+		keybt[37] = createKeyBt(keyLayout, 6);
+		keybt[38] = createKeyBt(keyLayout, 7);
+		keybt[39] = createKeyBt(keyLayout, 8);
+		keybt[40] = createKeyBt(keyLayout, 9);
+		keybt[41] = createKeyBt(keyLayout, 11);
+		keybt[42] = createKeyBt(keyLayout, 45);
+		keybt[43] = createKeyBt(keyLayout, 46);
+		keybt[44] = createKeyBt(keyLayout, 43);
+		keybt[45] = createKeyBt(keyLayout, 47);
+		keybt[46] = createKeyBt(keyLayout, 44);
 
 
-        CFStringRef sr = (CFStringRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyInputSourceID);
-        QString ID = QStringFromStringRef(sr);
+		CFStringRef sr = (CFStringRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyInputSourceID);
+		QString ID = QStringFromStringRef(sr);
 
-        sr = (CFStringRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyLocalizedName);
-        QString fullName = QString::fromUtf8([sr UTF8String], strlen([sr UTF8String]));
+		sr = (CFStringRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyLocalizedName);
+		QString fullName = QStringFromStringRef(sr);
 
-        CFArrayRef langs = (CFArrayRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyInputSourceLanguages);
+                CFArrayRef langs = (CFArrayRef) TISGetInputSourceProperty(keyLayoutRef, kTISPropertyInputSourceLanguages);
 
-        QString name = "??";
-        if (CFArrayGetCount(langs)>0)
-        {
-            CFStringRef langRef = (CFStringRef)CFArrayGetValueAtIndex(langs, 0);
-            name = QStringFromStringRef(langRef);
-            qDebug() << "name is " + name;
+                QString name = "??";
+		if (CFArrayGetCount(langs)>0)
+		{
+			CFStringRef langRef = (CFStringRef)CFArrayGetValueAtIndex(langs, 0);
+			name = QStringFromStringRef(langRef);
+                        qDebug() << "name is " + name;
 
-        }
+		}
 
-        //IconRef iconRef = (IconRef)TISGetInputSourceProperty(kTISPropertyIconRef, kTISPropertyInputSourceLanguages);
+                //IconRef iconRef = (IconRef)TISGetInputSourceProperty(kTISPropertyIconRef, kTISPropertyInputSourceLanguages);
 
-        const QString resName = ":/images/flags/" + name + ".png";
-        QIcon *iconLang = new QIcon(resName);
+                const QString resName = ":/images/flags/" + name + ".png";
+                QIcon *iconLang = new QIcon(resName);
 
-        result.append(new UBKeyboardLocale(fullName, name, ID, iconLang, keybt));
-    }
+                result.append(new UBKeyboardLocale(fullName, name, ID, iconLang, keybt));
+	}
 
-    if (result.size()==0)
-    {
-        nKeyboardLayouts = 0;
-        keyboardLayouts = NULL;
-    }
-    else
-    {
-        nKeyboardLayouts = result.size();
-        keyboardLayouts = new UBKeyboardLocale*[nKeyboardLayouts];
-        for(int i=0; i<nKeyboardLayouts; i++)
-            keyboardLayouts[i] = result[i];
-    }
-    [pool drain];
+	if (result.size()==0)
+	{
+		nKeyboardLayouts = 0;
+		keyboardLayouts = NULL;
+	}
+	else
+	{
+		nKeyboardLayouts = result.size();
+		keyboardLayouts = new UBKeyboardLocale*[nKeyboardLayouts];
+		for(int i=0; i<nKeyboardLayouts; i++)
+			keyboardLayouts[i] = result[i];
+	}
+
 }
 
 void UBPlatformUtils::destroyKeyboardLayouts()
@@ -544,13 +548,14 @@ void UBPlatformUtils::destroyKeyboardLayouts()
 QString UBPlatformUtils::urlFromClipboard()
 {
     QString qsRet;
-
+/*  
+    // commented because Sankore crashes on Java Script. It seems to backends dependencies.
     NSPasteboard* pPasteboard = [NSPasteboard pasteboardWithName:@"Apple CFPasteboard drag"];
     WebArchive* pArchive = [[WebArchive alloc] initWithData:[pPasteboard dataForType:@"com.apple.webarchive"]];
 
     qsRet = [[[[pArchive mainResource] URL] absoluteString] UTF8String];
 
     [pArchive release];
-
+*/
     return qsRet;
 }

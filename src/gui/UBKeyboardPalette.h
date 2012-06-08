@@ -64,7 +64,9 @@ class UBKeyboardPalette : public UBActionPalette
 
 friend class UBKeyboardButton;
 friend class UBCapsLockButton;
+friend class UBShiftButton;
 friend class UBLocaleButton;
+friend class UBKeyButton;
 
 public:
     UBKeyboardPalette(QWidget *parent);
@@ -97,9 +99,13 @@ private slots:
 
 protected:
     bool capsLock;
+    bool shift;
     int nCurrentLocale;
     int nLocalesCount;
     UBKeyboardLocale** locales;
+
+    int nSpecialModifierIndex;
+    KEYCODE specialModifier;
 
     QString strSize;
     int btnWidth;
@@ -113,7 +119,7 @@ protected:
     virtual void  paintEvent(QPaintEvent *event);
     virtual void  moveEvent ( QMoveEvent * event );
 
-    void sendKeyEvent(const KEYBT& keybt);
+    void sendKeyEvent(KEYCODE keyCode);
 
     void setLocale(int nLocale);
 
@@ -170,11 +176,11 @@ protected:
     virtual void onRelease() = 0;
     virtual void paintContent(QPainter& painter) = 0;
 
-    bool capsLock(){return keyboard->capsLock;}
+    virtual bool isPressed();
 
     UBKeyboardPalette* keyboard;
 
-    void sendUnicodeSymbol(unsigned int nSymbol1, unsigned int nSymbol2, bool shift);
+    void sendUnicodeSymbol(KEYCODE keycode);
     void sendControlSymbol(int nSymbol);
 
 private:
@@ -197,6 +203,7 @@ public:
     virtual void paintContent(QPainter& painter);
 
 private:
+    bool shifted();
     const KEYBT* keybt;
 };
 
@@ -229,7 +236,27 @@ public:
     virtual void onPress();
     virtual void onRelease();
     virtual void paintContent(QPainter& painter);
+
+protected:
+    virtual bool isPressed();
 };
+
+class UBShiftButton : public UBKeyboardButton
+{
+    Q_OBJECT
+
+public:
+    UBShiftButton(UBKeyboardPalette* parent, const QString _contentImagePath);
+    ~UBShiftButton();
+
+    virtual void onPress();
+    virtual void onRelease();
+    virtual void paintContent(QPainter& painter);
+
+protected:
+    virtual bool isPressed();
+};
+
 
 class UBLocaleButton : public UBKeyboardButton
 {

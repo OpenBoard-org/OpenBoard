@@ -299,6 +299,7 @@
         <file>images/virtual.keyboard/41/right-active.png</file>
         <file>images/virtual.keyboard/41/backspace.png</file>
         <file>images/virtual.keyboard/41/capslock.png</file>
+        <file>images/virtual.keyboard/41/shift.png</file>
         <file>images/virtual.keyboard/41/tab.png</file>
         <file>images/virtual.keyboard/29/centre-passive.png</file>
         <file>images/virtual.keyboard/29/left-passive.png</file>
@@ -308,6 +309,7 @@
         <file>images/virtual.keyboard/29/right-active.png</file>
         <file>images/virtual.keyboard/29/backspace.png</file>
         <file>images/virtual.keyboard/29/capslock.png</file>
+        <file>images/virtual.keyboard/29/shift.png</file>
         <file>images/virtual.keyboard/29/tab.png</file>
         <file>images/toolPalette/cacheTool.png</file>
         <file>images/libpalette/FlashCategory.svg</file>
