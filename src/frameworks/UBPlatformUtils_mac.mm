@@ -10,8 +10,12 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Carbon/Carbon.h>
 #import <APELite.h>
+
+/*
+// commented because Sankore crashes on Java Script. It seems to backends dependencies.
 #import <WebKit/WebKit.h>
 #import <AppKit/AppKit.h>
+*/
 
 
 NSString* bundleShortVersion(NSBundle *bundle)
@@ -409,14 +413,15 @@ KEYBT* createKeyBt(const UCKeyboardLayout* keyLayout, int vkk)
 	UInt32 deadKeyState = 0L;
 	UInt32 kbdType = kKeyboardISO;
 
-	UniCharCount cnt1, cnt2;
-	UniChar unicodeString1[100], unicodeString2[100];
+    UniCharCount cnt1, cnt2, cnt3;
+    UniChar unicodeString1[100], unicodeString2[100], unicodeString3[100];
 
 	UCKeyTranslate(keyLayout, vkk, kUCKeyActionDisplay, 0, kbdType,  kUCKeyTranslateNoDeadKeysBit, &deadKeyState, 100, &cnt1, unicodeString1);
 	UCKeyTranslate(keyLayout, vkk, kUCKeyActionDisplay, (shiftKey >> 8) & 0xff, kbdType,  kUCKeyTranslateNoDeadKeysBit, &deadKeyState, 100, &cnt2, unicodeString2);
+    UCKeyTranslate(keyLayout, vkk, kUCKeyActionDisplay, (alphaLock >> 8) & 0xff, kbdType,  kUCKeyTranslateNoDeadKeysBit, &deadKeyState, 100, &cnt2, unicodeString3);
 
-	return new KEYBT(unicodeString1[0], vkk, unicodeString2[0], vkk);
-}
+    return new KEYBT(unicodeString1[0], unicodeString2[0], unicodeString1[0] != unicodeString3[0], 0,0, KEYCODE(0, vkk, 0), KEYCODE(0, vkk, 1));
+ }
 
 
 void UBPlatformUtils::initializeKeyboardLayouts()
@@ -543,13 +548,14 @@ void UBPlatformUtils::destroyKeyboardLayouts()
 QString UBPlatformUtils::urlFromClipboard()
 {
     QString qsRet;
-
+/*  
+    // commented because Sankore crashes on Java Script. It seems to backends dependencies.
     NSPasteboard* pPasteboard = [NSPasteboard pasteboardWithName:@"Apple CFPasteboard drag"];
     WebArchive* pArchive = [[WebArchive alloc] initWithData:[pPasteboard dataForType:@"com.apple.webarchive"]];
 
     qsRet = [[[[pArchive mainResource] URL] absoluteString] UTF8String];
 
     [pArchive release];
-
+*/
     return qsRet;
 }

@@ -58,3 +58,4 @@ UBKeyboardLocale** UBPlatformUtils::getKeyboardLayouts(int& nCount)
 	nCount = nKeyboardLayouts;
 	return keyboardLayouts;
 }
+
