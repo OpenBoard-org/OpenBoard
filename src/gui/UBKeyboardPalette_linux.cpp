@@ -73,6 +73,7 @@ void x11SendKey(Display *display, int keyCode, int modifiers)
 
 }
 
+/*
 void traceKeyCodes()
 {
     Display *display = XOpenDisplay(0);
@@ -102,6 +103,7 @@ void traceKeyCodes()
 
     XCloseDisplay(display);
 }
+*/
 
 
 void UBKeyboardButton::sendUnicodeSymbol(KEYCODE keycode)
@@ -184,15 +186,7 @@ void UBKeyboardPalette::onActivated(bool activated)
 
         XCloseDisplay(display);
 
-        qDebug() << "------------ ORIGINAL --------------------------------------------------";
-        traceKeyCodes();
-
         onLocaleChanged(locales[nCurrentLocale]);
-
-        qDebug() << "------------ CUSTOM  ------------------------------------------------";
-        traceKeyCodes();
-        qDebug() << "----------------------------------------------------------------------";
-
 
     }
     else
