@@ -220,7 +220,7 @@ const KEYBT FRENCH_LOCALE[] = {
         /* ? 7 */ KEYBT(0xe8, XK_egrave, 0x37, 0x37),
         /* _ 8 */ KEYBT(0x5f, 0x38),
         /* ? 9 */ KEYBT(0xe7, XK_ccedilla, 0x39, 0x39),
-        /* ? 0 */ KEYBT(0xe0, 0x29),
+        /* ? 0 */ KEYBT(0xe0, 0x30),
         /* ) ? */ KEYBT(0x29, 0xb0),
         /* = + */ KEYBT(0x3d, 0x2b),
 
