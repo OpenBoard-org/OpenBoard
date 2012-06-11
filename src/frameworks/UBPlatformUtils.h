@@ -23,6 +23,16 @@ class QMainWindow;
 
 #define SYMBOL_KEYS_COUNT 47
 
+
+/*
+    Declaration for single keycode (code, which will be sent to output after pressing of button)
+    Each button has several codes, associated with shift state and modifier
+
+    symbol - (Windows only) Unide symbol to send
+    code - (LINUX, MAC) - code of key to press. Phisical keycode on MAC, position in keys table on LINUX
+    modifier (LINUX) - offset in keys table
+*/
+
 struct KEYCODE{
     KEYCODE()
         :symbol(0)
@@ -55,7 +65,19 @@ struct KEYCODE{
     int modifier;
 };
 
-
+/*
+    Declaration of single button. Properties:
+    symbol1, symbol2 - symbols to display under obscreen keyboard on normal/shifted modes
+    capsLockSwitch - if true, CapsLock button switched keystate to "shifted"
+    modifier1/modifier2 - if >0 means modified symbol for next press (modifier * 2 + shiststate index in codes array)
+                        If this code dedined (not empty), this symbol will sent to output. For French keyboard layout
+    codes[i] - code for pressed symbol.
+        code[0] - normal symbol
+        code[1] - shifted symbol
+        code[2] - modifier = 1, normal symbol
+        code[3] - modifier = 1, shifted symbol
+        ...
+*/
 struct KEYBT
 {
     QChar symbol1;
