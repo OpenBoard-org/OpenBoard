@@ -247,7 +247,7 @@ KEYBT FRENCH_LOCALE[] = {
 	/* ? 7 */ KEYBTDECL(0xe8, 0x37, true),
 	/* _ 8 */ KEYBTDECL(0x5f, 0x38, true),
 	/* ? 9 */ KEYBTDECL(0xe7, 0x39, true),
-	/* ? 0 */ KEYBTDECL(0xe0, 0x29, true),
+	/* ? 0 */ KEYBTDECL(0xe0, 0x30, true),
 	/* ) ? */ KEYBTDECL(0x29, 0xb0, true),
 	/* = + */ KEYBTDECL(0x3d, 0x2b, true),
 
@@ -401,7 +401,7 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 	keyboardLayouts[0] = new UBKeyboardLocale("English", "en", "", new QIcon(":/images/flags/en.png"), ENGLISH_LOCALE);
 	keyboardLayouts[1] = new UBKeyboardLocale("Russian", "ru", "", new QIcon(":/images/flags/ru.png"),RUSSIAN_LOCALE);
 	keyboardLayouts[2] = new UBKeyboardLocale("French", "fr", "", new QIcon(":/images/flags/fr.png"), FRENCH_LOCALE);
-    keyboardLayouts[3] = new UBKeyboardLocale("Swiss French", "fr", "", new QIcon(":/images/flags/fr.png"), SWISS_FRENCH_LOCALE);
+    keyboardLayouts[3] = new UBKeyboardLocale("Swiss French", "fr-CH", "", new QIcon(":/images/flags/fr.png"), SWISS_FRENCH_LOCALE);
 	keyboardLayouts[4] = new UBKeyboardLocale("German", "de", "", new QIcon(":/images/flags/de.png"), GERMAN_LOCALE);    
 }
 

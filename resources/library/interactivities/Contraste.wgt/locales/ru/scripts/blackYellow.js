@@ -222,6 +222,7 @@ function init(){
                 shadowDiv.hide("fast");
                 shadowOver = false;
                 addTask(expresionText.val(), resultText.val());
+                exportToSankore();
                 $("#resultText, #expresionText").val("")
                 .css("background-color", "#ffc");
             })
@@ -263,6 +264,9 @@ function init(){
     
     $("body").mouseup(function(event){
         if(!shadowOver){
+            if (dragElement) {
+                exportToSankore();
+            }
             dragElement = null;
             resizeObj.x = false;
             resizeObj.y = false;
@@ -299,7 +303,7 @@ function init(){
     
     if (window.widget) {
         window.widget.onleave = function(){
-            exportToSankore();
+            //exportToSankore();
             sankore.setPreference("by_style", $(".style_select").find("option:selected").val());
         }
     }
@@ -366,7 +370,10 @@ function checkEmptyFields(field){
 
 //adding a new task to the page
 function addTask(expression, result){
-    var editContent = $("<div class='editContainer'>").width(240).height(70).appendTo("#data");
+    var lastItem = $(".editContainer:last"),
+        lastItemPos = lastItem.length ? lastItem.position().top : 45,
+        lastItemHeight = lastItem.length ? lastItem.height() : 0;
+    var editContent = $("<div class='editContainer'>").width(240).height(70).css("top", lastItemPos + lastItemHeight + 15 + "px").appendTo("#data");
     var closeItem = $("<div class='closeItem'>").appendTo(editContent);
     var rightResize = $("<div class='rightResize'>").appendTo(editContent);
     var bottomResize = $("<div class='bottomResize'>").appendTo(editContent);

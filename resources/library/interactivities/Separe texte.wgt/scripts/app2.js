@@ -19,16 +19,6 @@ function createElements( text )
     return s;
 }
 
-if (window.widget) {
-    window.widget.onleave = function(){
-        sankore.setPreference("spl_text_style", $(".style_select").find("option:selected").val());
-        if(w.editMode)
-            sankore.setPreference("ordSplText", w.elements.container.find( "textarea" ).val());
-        else
-            sankore.setPreference("ordSplText", w.getData( "text" ));
-    }
-}
-
 $(document).ready(function()
 {
     if(sankore.preference("spl_text_style","")){
@@ -79,6 +69,14 @@ $(document).ready(function()
         sentences = (sankore.preference("ordSplText", ""))?sankore.preference("ordSplText", ""):sankoreLang.example;
     else
         sentences = sankoreLang.example;
+
+    w.elements.container.find( "textarea" ).live("change", function(){
+        sankore.setPreference("spl_text_style", $(".style_select").find("option:selected").val());
+        if(w.editMode)
+            sankore.setPreference("ordSplText", w.elements.container.find( "textarea" ).val());
+        else
+            sankore.setPreference("ordSplText", w.getData( "text" ));
+    })
     
     w.maxWidth = 600;
 	

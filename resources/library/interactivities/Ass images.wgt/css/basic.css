@@ -143,6 +143,7 @@ body{
     cursor: pointer;
     display: inline-block;
     position: relative;
+    text-align: center;
 }
 
 .img_gray{

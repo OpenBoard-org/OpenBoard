@@ -17,15 +17,6 @@ function createElements( phrase )
     return s;
 }
 
-if (window.widget) {
-    window.widget.onleave = function(){
-        sankore.setPreference("spl_phrase_style", $(".style_select").find("option:selected").val());
-        if(w.editMode)
-            sankore.setPreference("ordSplPhrases", w.elements.container.find( "textarea" ).val());
-        else
-            sankore.setPreference("ordSplPhrases", w.getData("phrase"));
-    }
-}
 
 $(document).ready(function()
 {
@@ -75,6 +66,14 @@ $(document).ready(function()
         sentence = (sankore.preference("ordSplPhrases", ""))?sankore.preference("ordSplPhrases", ""):sankoreLang.example;
     else
         sentence = sankoreLang.example;
+
+    w.elements.container.find( "textarea" ).live("change", function(){
+        sankore.setPreference("spl_phrase_style", $(".style_select").find("option:selected").val());
+        if(w.editMode)
+            sankore.setPreference("ordSplPhrases", w.elements.container.find( "textarea" ).val());
+        else
+            sankore.setPreference("ordSplPhrases", w.getData("phrase"));
+    })
     
 	
     w.maxWidth = 600;
