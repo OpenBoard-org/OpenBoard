@@ -296,8 +296,7 @@ KEYBT FRENCH_LOCALE[] = {
     /* i I */ KEYBTDECLEX6(0x69, 0x49, true, 23, 0x69, 0x49, 0xec, 0xcc, 0xef, 0xcf),
     /* o O */ KEYBTDECLEX6(0x6f, 0x4f, true, 24, 0x6f, 0x4f, 0xf2, 0xd2, 0xf6, 0xd6),
     /* p P */ KEYBTDECL(0x70, 0x50, true, 25),
-//    /* ^ ? */ KEYBT(0x5e, 0xa8, true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
-    /* ^ ? */ KEYBT(0x5e, 0xa8, true, 1, 2, 0x5e, 0xa8),
+    /* ^ ? */ KEYBT(0x5e, 0xa8, true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
     /* $ ? } */ KEYBTDECL(0x24, 0xa3, true, 27),
 
     /* q Q */ KEYBTDECL(0x71, 0x51, true, 30),
@@ -387,7 +386,7 @@ void UBPlatformUtils::initializeKeyboardLayouts()
     keyboardLayouts[1] = new UBKeyboardLocale("Russian", "ru", "", new QIcon(":/images/flags/ru.png"),RUSSIAN_LOCALE);
     keyboardLayouts[2] = new UBKeyboardLocale("German", "de", "", new QIcon(":/images/flags/de.png"), GERMAN_LOCALE);
     keyboardLayouts[3] = new UBKeyboardLocale("French", "fr", "", new QIcon(":/images/flags/fr.png"), FRENCH_LOCALE);
-    keyboardLayouts[4] = new UBKeyboardLocale("Swiss French", "fr", "", new QIcon(":/images/flags/fr.png"), SWISS_FRENCH_LOCALE);
+    keyboardLayouts[4] = new UBKeyboardLocale("Swiss French", "fr-CH", "", new QIcon(":/images/flags/fr.png"), SWISS_FRENCH_LOCALE);
 }
 
 void UBPlatformUtils::destroyKeyboardLayouts()

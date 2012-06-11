@@ -401,7 +401,7 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 	keyboardLayouts[0] = new UBKeyboardLocale("English", "en", "", new QIcon(":/images/flags/en.png"), ENGLISH_LOCALE);
 	keyboardLayouts[1] = new UBKeyboardLocale("Russian", "ru", "", new QIcon(":/images/flags/ru.png"),RUSSIAN_LOCALE);
 	keyboardLayouts[2] = new UBKeyboardLocale("French", "fr", "", new QIcon(":/images/flags/fr.png"), FRENCH_LOCALE);
-    keyboardLayouts[3] = new UBKeyboardLocale("Swiss French", "fr", "", new QIcon(":/images/flags/fr.png"), SWISS_FRENCH_LOCALE);
+    keyboardLayouts[3] = new UBKeyboardLocale("Swiss French", "fr-CH", "", new QIcon(":/images/flags/fr.png"), SWISS_FRENCH_LOCALE);
 	keyboardLayouts[4] = new UBKeyboardLocale("German", "de", "", new QIcon(":/images/flags/de.png"), GERMAN_LOCALE);    
 }
 
