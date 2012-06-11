@@ -215,6 +215,7 @@ class UBBoardController : public QObject
         void stopScript();
 
     signals:
+        void newPageAdded();
         void activeSceneWillBePersisted();
         void activeSceneWillChange();
         void activeSceneChanged();
