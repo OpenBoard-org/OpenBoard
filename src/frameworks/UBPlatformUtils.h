@@ -160,6 +160,8 @@ struct KEYBT
 
 class UBPlatformUtils
 {
+    Q_DECLARE_TR_FUNCTIONS(UBPlatformUtils)
+
     private:
         UBPlatformUtils();
         virtual ~UBPlatformUtils();
@@ -169,7 +171,7 @@ class UBPlatformUtils
         static int nKeyboardLayouts;
         static UBKeyboardLocale** keyboardLayouts;
 
-    public:
+public:
         static void init();
         static void destroy();
         static QString applicationResourcesDirectory();

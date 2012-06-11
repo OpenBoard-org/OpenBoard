@@ -1659,6 +1659,29 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
 </context>
 <context>
+    <name>UBPlatformUtils</name>
+    <message>
+        <source>English</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>

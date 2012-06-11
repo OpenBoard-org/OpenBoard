@@ -1659,6 +1659,29 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
+    <name>UBPlatformUtils</name>
+    <message>
+        <source>English</source>
+        <translation>Английский</translation>
+    </message>
+    <message>
+        <source>Russian</source>
+        <translation>Русский</translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation>Немецкий</translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation>Французский</translation>
+    </message>
+    <message>
+        <source>Swiss French</source>
+        <translation>Шв. французский</translation>
+    </message>
+</context>
+<context>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>

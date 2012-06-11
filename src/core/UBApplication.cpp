@@ -128,7 +128,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
         || args.contains("-log")
         || args.contains("log");
 
-    UBPlatformUtils::init();
+
     UBResources::resources();
 
     if (!undoStack)
@@ -153,6 +153,8 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
 
     QLocale::setDefault(QLocale(localString));
     qDebug() << "Running application in:" << localString;
+
+    UBPlatformUtils::init();
 
     UBSettings *settings = UBSettings::settings();
 
