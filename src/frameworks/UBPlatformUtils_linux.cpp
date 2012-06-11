@@ -282,7 +282,7 @@ KEYBT FRENCH_LOCALE[] = {
     /* ? 7 */ KEYBTDECL(0xe8, 0x37, true, 8),
     /* _ 8 */ KEYBTDECL(0x5f, 0x38, true, 9),
     /* ? 9 */ KEYBTDECL(0xe7, 0x39, true, 10),
-    /* ? 0 */ KEYBTDECL(0xe0, 0x29, true, 11),
+    /* ? 0 */ KEYBTDECL(0xe0, 0x30, true, 11),
     /* ) ? */ KEYBTDECL(0x29, 0xb0, true, 12),
     /* = + */ KEYBTDECL(0x3d, 0x2b, true, 13),
 
@@ -296,7 +296,8 @@ KEYBT FRENCH_LOCALE[] = {
     /* i I */ KEYBTDECLEX6(0x69, 0x49, true, 23, 0x69, 0x49, 0xec, 0xcc, 0xef, 0xcf),
     /* o O */ KEYBTDECLEX6(0x6f, 0x4f, true, 24, 0x6f, 0x4f, 0xf2, 0xd2, 0xf6, 0xd6),
     /* p P */ KEYBTDECL(0x70, 0x50, true, 25),
-    /* ^ ? */ KEYBT(0x5e, 0xa8, true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
+//    /* ^ ? */ KEYBT(0x5e, 0xa8, true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
+    /* ^ ? */ KEYBT(0x5e, 0xa8, true, 1, 2, 0x5e, 0xa8),
     /* $ ? } */ KEYBTDECL(0x24, 0xa3, true, 27),
 
     /* q Q */ KEYBTDECL(0x71, 0x51, true, 30),
