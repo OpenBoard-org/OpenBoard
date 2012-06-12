@@ -856,10 +856,6 @@
 <context>
     <name>UBAbstractWidget</name>
     <message>
-        <source>Cannot load content</source>
-        <translation type="obsolete">Kan ikke laste innhold</translation>
-    </message>
-    <message>
         <source>Loading ...</source>
         <translation>Laster ...</translation>
     </message>
