@@ -33,13 +33,13 @@ class UBDisplayManager : public QObject
 
         int numPreviousViews();
 
-        void setAsControl(QWidget* pControlWidget, bool init = false);
+        void setControlWidget(QWidget* pControlWidget);
 
-        void setAsDisplay(QWidget* pDisplayWidget);
+        void setDisplayWidget(QWidget* pDisplayWidget);
 
-        void setAsDesktop(QWidget* pControlWidget);
+        void setDesktopWidget(QWidget* pControlWidget);
 
-        void setAsPreviousDisplays(QList<UBBoardView*> pPreviousViews);
+        void setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousViews);
 
         bool hasControl()
         {
@@ -77,7 +77,7 @@ class UBDisplayManager : public QObject
 
    public slots:
 
-        void swapScreens(bool bswap);
+        void reinitScreens(bool bswap);
 
         void adjustScreens(int screen);
 

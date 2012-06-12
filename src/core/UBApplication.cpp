@@ -298,7 +298,6 @@ int UBApplication::exec(const QString& pFileToImport)
 
     bool bUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
     mainWindow->actionMultiScreen->setChecked(bUseMultiScreen);
-    applicationController->useMultiScreen(bUseMultiScreen);
     connect(mainWindow->actionMultiScreen, SIGNAL(triggered(bool)), applicationController, SLOT(useMultiScreen(bool)));
     connect(mainWindow->actionWidePageSize, SIGNAL(triggered(bool)), boardController, SLOT(setWidePageSize(bool)));
     connect(mainWindow->actionRegularPageSize, SIGNAL(triggered(bool)), boardController, SLOT(setRegularPageSize(bool)));
@@ -308,7 +307,7 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionCopy, SIGNAL(triggered()), applicationController, SLOT(actionCopy()));
     connect(mainWindow->actionPaste, SIGNAL(triggered()), applicationController, SLOT(actionPaste()));
 
-    applicationController->initScreenLayout();
+    applicationController->initScreenLayout(bUseMultiScreen);
     boardController->setupLayout();
 
     if (pFileToImport.length() > 0)

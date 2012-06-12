@@ -123,11 +123,6 @@ void UBDisplayManager::setAsControl(QWidget* pControlWidget, bool init)
     if(hasControl() && pControlWidget && (pControlWidget != mControlWidget))
     {
         mControlWidget = pControlWidget;
-        mControlWidget->hide();
-        mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
-
-        if (!init)
-        mControlWidget->showFullScreen();
 		// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
 //        mControlWidget->setAttribute(Qt::WA_MacNoShadow);
@@ -140,8 +135,6 @@ void UBDisplayManager::setAsDesktop(QWidget* pControlWidget )
     if(pControlWidget && (pControlWidget != mControlWidget))
     {
         mDesktopWidget = pControlWidget;
-        mDesktopWidget->hide();
-        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
         // !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
         //        mControlWidget->setAttribute(Qt::WA_MacNoShadow);
@@ -154,9 +147,6 @@ void UBDisplayManager::setAsDisplay(QWidget* pDisplayWidget)
     if(pDisplayWidget && (pDisplayWidget != mDisplayWidget))
     {
         mDisplayWidget = pDisplayWidget;
-        mDisplayWidget->hide();
-        mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
-        mDisplayWidget->showFullScreen();
 		// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
 //        mDisplayWidget->setAttribute(Qt::WA_MacNoShadow);
@@ -309,6 +299,5 @@ void UBDisplayManager::setRoleToScreen(DisplayRole role, int screenIndex)
 void UBDisplayManager::setUseMultiScreen(bool pUse)
 {
     mUseMultiScreen = pUse;
-    adjustScreens(0);
 }
 
