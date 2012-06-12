@@ -1,7 +1,7 @@
 <h3>Tableur</h3>
 <h4>Calcul mental</h4>
 
-<p>L’App tableur permet de vérifier les propriétés des différentes opérations et de réviser les tables d’addition, soustraction, multiplication et division. Cliquer dans la case voulue pour afficher ou masquer la réponse</p>
+<p>L’App tableur permet de vérifier les propriétés des différentes opérations et de réviser les tables d’addition, de soustraction, de multiplication et de division. Cliquer dans la case voulue pour afficher ou masquer la réponse</p>
 
 <p>Le bouton "éditer" vous permet de choisir :</p>
 <ul>

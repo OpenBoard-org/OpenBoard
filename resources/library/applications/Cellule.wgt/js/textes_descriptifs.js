@@ -179,7 +179,7 @@ switch(lang){
         txt_rel = 	"<h2>Reticulum endoplasmique lisse - REL</h2>"+
         "<h4>Structure :</h4><span><p>Similaire à celle du RER, à la différence que sa membrane n'est pas parsemée de ribosomes, d'où son aspect <i>lisse</i>.</p></span>"+
         "<h4>Rôle :</h4><span><p>Synthèse des phospholipides, stockage du calcium, transformation de certaines molécules extérieures (médicament, alcool, ...). Dans certaines cellules, le REL remplit aussi des fonctions supplémentaires, telles la production d'hormones, d'acide gastrique, etc.</p></span>"+
-        "<h4>Fonctionnement :</h4><span><p>Il est le siège de beaucoup de réactions chimiques complexes (ex: détoxification, différentes synthèses).</p></span>"
+        "<h4>Fonctionnement :</h4><span><p>Il est le siège de nombreuses réactions chimiques complexes (ex: détoxification, différentes synthèses).</p></span>"
  
         txt_adn =	"<h2>ADN - Le livre de la vie</h2>"+
         "<h4>Structure :</h4><span><p>Échelle à la célèbre forme de double hélice composée de deux colonnes sucre-phosphate-sucre-phosphate-... et dont les échelons sont appelés bases azotées.</p></span>"+
@@ -197,7 +197,7 @@ switch(lang){
         "<h4>Fonctionnement :</h4><span><p>Un brin d'ARNm (messager) passe dans le ribosome et un ARNt (de transfert) entre dans la grande sous-unité si son codon (groupe de trois bases azotées) correspond à celui qui est en face sur l'ARNm. Cet ARNt porte avec lui un acide aminé spécifique qui est ajouté à la chaîne déja assemblée.</p></span>"
 
         txt_arn =	"<h2>ARN - Multifonction</h2>"+
-        "<h4>Structure :</h4><span><p>Très similaire à l'ADN à la différence qu'il ne possède qu'un brin et que la thymine (T) de l'ADN est remplacée par l'uracile (U). De plus, il est chimiquement plus instable que l'ADN, c'est pourquoi il n'est pas utilisé pour le stockage d'informations à long terme..</p></span>"+
+        "<h4>Structure :</h4><span><p>Très similaire à l'ADN à la différence qu'il ne possède qu'un brin et que la thymine (T) de l'ADN est remplacée par l'uracile (U). De plus, il est chimiquement plus instable que l'ADN, c'est pourquoi il n'est pas utilisé pour le stockage d'informations à long terme.</p></span>"+
         "<h4>Rôle :</h4><span><p>Multiples, il existe des ARN de transport, messagers, régulateurs, guides, satellites, ...</p></span>"+
         "<h4>Fonctionnement :</h4><span><p>La copie d'informations génétiques se fait grâce à l'ouverture de la double-hélice d'ADN, puis la copie des codons sur l'ARN. Celui-ci peut alors sortir du noyau, ce que l'ADN ne peut pas faire.</p></span>"
 

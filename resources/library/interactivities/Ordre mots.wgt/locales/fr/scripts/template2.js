@@ -32,8 +32,8 @@ var sankoreLang = {
     example: "Il*était*une*fois*...",
     wgt_name: "Ordonner des mots",
     reload: "Recharger",
-    slate: "Bois",
-    pad: "Pad"
+    slate: "Ardoise",
+    pad: "Tablette"
 };
 
 var word = "";

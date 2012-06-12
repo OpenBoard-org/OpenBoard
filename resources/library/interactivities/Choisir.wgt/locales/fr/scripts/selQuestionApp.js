@@ -37,8 +37,8 @@ var sankoreLang = {
     a:"R",
     wgt_name: "Choisir",
     reload: "Recharger",
-    slate: "Bois",
-    pad: "Pad"
+    slate: "Ardoise",
+    pad: "Tablette"
 };
 
 

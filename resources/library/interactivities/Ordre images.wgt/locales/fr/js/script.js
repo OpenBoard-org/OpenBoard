@@ -7,8 +7,8 @@ var sankoreLang = {
     enter: "Saisir votre consigne ici ...",
     wgt_name: "Ordonner des images",
     reload: "Recharger",
-    slate: "Bois",
-    pad: "Pad"
+    slate: "Ardoise",
+    pad: "Tablette"
 };
 
 //main function
