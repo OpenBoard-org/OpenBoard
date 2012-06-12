@@ -59,7 +59,6 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
     connect(UBApplication::boardController, SIGNAL(newPageAdded()), this, SLOT(addNewPage()));
     connect(mScene, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
     connect(UBApplication::boardController, SIGNAL(documentReorganized(int)), this, SLOT(onMovedToIndex(int)));
-    connect(UBApplication::boardController, SIGNAL(scrollToSelectedPage()), this, SLOT(onScrollToSelectedPage()));
 }
 
 /**
