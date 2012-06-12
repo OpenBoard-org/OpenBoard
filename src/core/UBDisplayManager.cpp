@@ -118,7 +118,7 @@ int UBDisplayManager::numPreviousViews()
 }
 
 
-void UBDisplayManager::setAsControl(QWidget* pControlWidget, bool init)
+void UBDisplayManager::setControlWidget(QWidget* pControlWidget)
 {
     if(hasControl() && pControlWidget && (pControlWidget != mControlWidget))
     {
@@ -130,7 +130,7 @@ void UBDisplayManager::setAsControl(QWidget* pControlWidget, bool init)
     }
 }
 
-void UBDisplayManager::setAsDesktop(QWidget* pControlWidget )
+void UBDisplayManager::setDesktopWidget(QWidget* pControlWidget )
 {
     if(pControlWidget && (pControlWidget != mControlWidget))
     {
@@ -142,7 +142,7 @@ void UBDisplayManager::setAsDesktop(QWidget* pControlWidget )
     }
 }
 
-void UBDisplayManager::setAsDisplay(QWidget* pDisplayWidget)
+void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
 {
     if(pDisplayWidget && (pDisplayWidget != mDisplayWidget))
     {
@@ -155,7 +155,7 @@ void UBDisplayManager::setAsDisplay(QWidget* pDisplayWidget)
 }
 
 
-void UBDisplayManager::setAsPreviousDisplays(QList<UBBoardView*> pPreviousViews)
+void UBDisplayManager::setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousViews)
 {
     mPreviousDisplayWidgets = pPreviousViews;
 }
@@ -171,7 +171,7 @@ QRect UBDisplayManager::displayGeometry()
     return mDesktop->screenGeometry(mDisplayScreenIndex);
 }
 
-void UBDisplayManager::swapScreens(bool swap)
+void UBDisplayManager::reinitScreens(bool swap)
 {
     Q_UNUSED(swap);
     adjustScreens(-1);
