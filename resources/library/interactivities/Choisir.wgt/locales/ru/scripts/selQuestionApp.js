@@ -75,7 +75,7 @@ function init(){
     
     //import saved data
     if(window.sankore){
-        if(sankore.preference("qstArrayData","")){
+        if(sankore.preference("qstArrayData","") && sankore.preference("qstArrayData","") != "[]"){
             questionArray = jQuery.parseJSON(sankore.preference("qstArrayData",""));
             for(var i in questionArray){
                 addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
@@ -114,6 +114,8 @@ function init(){
                 $("#wgt_edit").css("display", "block");
                 displayData(true);
                 mode = true;
+                sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
+                sankore.setPreference("choisir_style", $(".style_select").find("option:selected").val());
             }
         } else {            
             if(!$(this).hasClass("selected")){
@@ -129,7 +131,10 @@ function init(){
     });
 
     $("#wgt_reload").text(sankoreLang.reload).click(function(){
-        window.location.reload();
+        if($("#wgt_edit").css("display") == "none")
+            $("#wgt_display").trigger("click");
+        else
+            window.location.reload();
     });
     
     $(".style_select option[value='1']").text(sankoreLang.slate);
@@ -225,7 +230,13 @@ function init(){
                 questionArray[i].rightAns = questionArray[i].rightAns.replace($("#" + currentQstId + " #" + id + " input:checkbox").val(),"");
                 for(var j in questionArray[i].answers)
                     if(questionArray[i].answers[j].id == id){
-                        delete questionArray[i].answers[j];
+                        if(j == 0)
+                            questionArray[i].answers.shift();
+                        else
+                        if((j+1) == questionArray[i].answers.length)
+                            questionArray[i].answers.pop();
+                        else
+                            questionArray[i].answers = questionArray[i].answers.slice(0,j).concat(questionArray[i].answers.slice(j+1));  
                         break;
                     }
             }
@@ -238,7 +249,13 @@ function init(){
         $("#" + currentQstId).remove();
         for(var i in questionArray)
             if(questionArray[i].id == currentQstId){
-                delete questionArray[i];
+                if(i == 0)
+                    questionArray.shift();
+                else
+                if((i+1) == questionArray.length)
+                    questionArray.pop();
+                else
+                    questionArray = questionArray.slice(0,i).concat(questionArray.slice(i+1));                
                 break;
             }
         refreshQst();
