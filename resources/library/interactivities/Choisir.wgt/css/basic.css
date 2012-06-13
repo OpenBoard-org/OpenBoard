@@ -363,7 +363,7 @@ body{
     position: absolute;
     display: none;
     width: 100px;
-    height: 20px;
+    min-height: 20px;
     top: 0;
     left: 0;
     text-align: center;
