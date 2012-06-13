@@ -104,10 +104,7 @@ $(document).ready(function(){
 	
             // create new set of letters
             var letters;
-            if(window.sankore && curWord && !editMode)
-                letters = createWordLetters( curWord );
-            else
-                letters = shuffle( createWordLetters( word ) );
+            letters = shuffle( createWordLetters( word ) );
     
             for( i in letters ){
                 $("#mp_word").append( letters[i] );

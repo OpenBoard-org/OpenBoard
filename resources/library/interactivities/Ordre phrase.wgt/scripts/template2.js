@@ -54,6 +54,8 @@ var phrases = [];
 
 var editMode = false; // just a flag
 
+var wgtState = false; // just another flag
+
 // if use the "edit" button or rely on the api instead
 var isSankore = false;
 // whether to do window.resize or not (window = widget area)
@@ -93,18 +95,38 @@ $(document).ready(function(){
         }
     });
     $("#wgt_name").text(sankoreLang.wgt_name);
+    
     $("#wgt_reload").text(sankoreLang.reload).click(function(){
-        window.location.reload();
+        if(wgtState)
+            $("#wgt_display").trigger("click");
+        else
+        {
+            $( "#mp_word" ).empty();
+	
+            var phrases;
+            phrases = shuffle( createElements( sentence ) );
+    
+            for( i in phrases ){
+                $("#mp_word").append( phrases[i] );
+            }
+	
+            // in sankore api there would be a function to check 
+            // the answer, so no update parameter would be needed
+            $( "#mp_word" ).sortable();
+            if( !isSankore ){
+                $( "#mp_word" ).sortable( {
+                    update: checkSentence
+                } );
+            } else 
+                $( "#mp_word" ).sortable();
+        }
     });
+    
     $(".style_select option[value='1']").text(sankoreLang.slate);
     $(".style_select option[value='2']").text(sankoreLang.pad);
     
     $(".style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
-    })
-
-    $( "#mp_word textarea" ).live("change", function(){
-        saveData();
     })
 })
 
@@ -227,6 +249,8 @@ function modeView()
         sentence = p2.join( "\n" );
     }
 	
+    wgtState = false;
+    
     // clean the previous word
     $( "#mp_word" ).empty();
 	
@@ -249,7 +273,9 @@ function modeView()
             update: checkSentence
         } );
     } else 
-        $( "#mp_word" ).sortable();	
+        $( "#mp_word" ).sortable();
+    
+    checkSentence();
 }
 
 /*
@@ -260,14 +286,14 @@ modeEdit
 function modeEdit()
 {
     editMode = true;
-    // if no sankore api, insert ok button
+    wgtState = true;
 
     $( "#mp_word").css( "margin-left", 0 ).empty()
     .append('<textarea cols="50" rows="5">'+sentence+'</textarea>');
 }
 
-function saveData() {
-    if (window.widget) {
+if (window.widget) {
+    window.widget.onleave = function(){
         sankore.setPreference("ord_phrases_style", $(".style_select").find("option:selected").val());
         if($( "#mp_word textarea" ).val())
         {
@@ -276,7 +302,7 @@ function saveData() {
             $( "#mp_word .phrase" ).each( function()
             {
                 ph.push( $( this ).text() );
-            }); 
+            });	
             sankore.setPreference("currentOrdPhrases", ph.join( "\n" ));            
             modeEdit();
         }
@@ -285,7 +311,7 @@ function saveData() {
             $( "#mp_word .phrase" ).each( function()
             {
                 ph.push( $( this ).text() );
-            });     
+            });		
             sankore.setPreference("currentOrdPhrases", ph.join( "\n" ));
         }
         sankore.setPreference("rightOrdPhrases", sentence);
