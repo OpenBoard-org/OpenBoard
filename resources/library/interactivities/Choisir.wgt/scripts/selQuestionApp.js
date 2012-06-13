@@ -131,12 +131,6 @@ function init(){
     });
 
     $("#wgt_reload").text(sankoreLang.reload).click(function(){
-        //window.location.reload();
-        //        if(!sankore.preference("qstArrayData","") || sankore.preference("qstArrayData","") == "[]" || sankore.preference("qstArrayData","") == "[null]"){
-        //            $(".qstDivDisplay").remove();
-        //            displayData(false);
-        //        }
-        //        else
         if($("#wgt_edit").css("display") == "none")
             $("#wgt_display").trigger("click");
         else
