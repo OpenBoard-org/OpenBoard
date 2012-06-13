@@ -45,23 +45,16 @@ set EDITION=MNEMIS_EDITION
 
 %LRELEASE% Sankore_3.1.pro
 
-REM set /p VERSION= < build\win32\release\version
-REM git rev-list --tags --max-count=1 > tmp
-REM set /p LAST_TAG= < tmp
-REM erase tmp
-REM git describe %LAST_TAG% > tmp
-REM set /p LAST_TAG_VERSION=< tmp
-REM erase tmp
-
 echo %VERSION%
 echo %LAST_TAG_VERSION%
 
-REM if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
 
 nmake release-install
 
-
-copy %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm build\win32\release\product\i18n\
+set I18n=build\win32\release\product\i18n
+mkdir %I18n%
+xcopy /s resources\i18n\*.qm %I18n%
+xcopy /s %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm %I18n%\
 del build\win32\release\product\i18n\qt_help*
 
 del ".\build\win32\release\product\Sankore.pdb"
@@ -72,5 +65,3 @@ set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 
 call "%INNO_EXE%" "Sankore 3.1.iss" /F"%INSTALLER_NAME%"
 
-:EXIT_WITH_ERROR
-	echo ERROR
