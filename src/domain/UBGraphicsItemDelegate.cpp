@@ -330,7 +330,9 @@ void UBGraphicsItemDelegate::positionHandles()
         showHide(shownOnDisplay);
         lock(isLocked());
         updateFrame();
-        mFrame->show();
+
+        if (UBStylusTool::Play != UBDrawingController::drawingController()->stylusTool())
+            mFrame->show();
 
         updateButtons(true);
 

@@ -250,13 +250,19 @@ void UBGraphicsProtractor::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (scene())
         scene()->setModified(true);
 
+    if (!mShowButtons)
+    {
+        mShowButtons = true;
+        update();
+    }
+
     mCurrentTool = None;
 }
 
 
 void UBGraphicsProtractor::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+    if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector && UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Play)
         return;
 
     if (!mShowButtons)
@@ -291,12 +297,6 @@ void UBGraphicsProtractor::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
         return;
 
     Tool currentTool = toolFromPos(event->pos());
-
-    if (!mShowButtons)
-    {
-        mShowButtons = true;
-        update();
-    }
 
     if (currentTool == Move)
         setCursor(Qt::SizeAllCursor);

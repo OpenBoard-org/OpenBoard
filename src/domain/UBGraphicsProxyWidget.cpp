@@ -82,9 +82,10 @@ void UBGraphicsProxyWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
     else
     {
         // QT Proxy Widget is a bit lazy, we force the selection ...
-        QGraphicsProxyWidget::mousePressEvent(event);
+
         setSelected(true);
     }
+    QGraphicsProxyWidget::mousePressEvent(event);
 }
 
 

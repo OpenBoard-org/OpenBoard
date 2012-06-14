@@ -455,6 +455,12 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
             event->accept();
         }
+        else if (currentTool == UBStylusTool::Play)
+        {
+            QGraphicsView::mousePressEvent (event);
+
+            event->accept();
+        }
         else if (currentTool == UBStylusTool::Text)
         {
             int frameWidth = UBSettings::settings ()->objectFrameWidth;
@@ -584,6 +590,10 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
         }
         else QGraphicsView::mouseMoveEvent (event);
     }
+  else if (currentTool == UBStylusTool::Play)
+  {
+      QGraphicsView::mouseMoveEvent (event);
+  }
   else if ((UBDrawingController::drawingController()->isDrawingTool())
     && !mMouseButtonIsPressed)
   {
@@ -616,9 +626,6 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-    scene ()->setToolCursor (currentTool);
-    setToolCursor (currentTool);
-
   // first propagate device release to the scene
   if (scene ())
     scene ()->inputDeviceRelease ();
@@ -644,6 +651,10 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
       QGraphicsView::mouseReleaseEvent (event);
     }
+  else if (currentTool == UBStylusTool::Play)
+  {
+      QGraphicsView::mouseReleaseEvent (event);
+  }
   else if (currentTool == UBStylusTool::Text)
     {
       if (mRubberBand)
@@ -1026,6 +1037,9 @@ UBBoardView::setToolCursor (int tool)
       break;
     case UBStylusTool::Selector:
       controlViewport->setCursor (UBResources::resources ()->arrowCursor);
+      break;
+    case UBStylusTool::Play:
+      controlViewport->setCursor (UBResources::resources ()->drawLineRulerCursor);
       break;
     case UBStylusTool::Line:
       controlViewport->setCursor (UBResources::resources ()->penCursor);

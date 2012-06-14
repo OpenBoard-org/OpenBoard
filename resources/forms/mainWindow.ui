@@ -1649,6 +1649,22 @@
     <string>Group items</string>
    </property>
   </action>
+  <action name="actionPlay">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/stylusPalette/handPlay.png</normaloff>
+     <normalon>:/images/stylusPalette/handPlayOn.png</normalon>:/images/stylusPalette/handPlay.png</iconset>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+   <property name="toolTip">
+    <string>Interact with items</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../sankore.qrc"/>
