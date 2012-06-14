@@ -677,9 +677,9 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     QTextCharFormat textFormat;
     textFormat.setFontPointSize(12 * 72 / QApplication::desktop()->physicalDpiY());
     textFormat.setForeground(qApp->palette().foreground().color());
-//    textFormat.setFontFamily("Arial");
-//    textFormat.setFontItalic(false);
-//    textFormat.setFontWeight(QFont::Normal);
+    textFormat.setFontFamily("Arial");
+    textFormat.setFontItalic(false);
+    textFormat.setFontWeight(QFont::Normal);
 
     readTextBlockAttr(element, blockFormat);
     readTextCharAttr(element, textFormat);
