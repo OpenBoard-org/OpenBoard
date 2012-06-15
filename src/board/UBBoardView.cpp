@@ -626,6 +626,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
+  setToolCursor (currentTool);
   // first propagate device release to the scene
   if (scene ())
     scene ()->inputDeviceRelease ();
@@ -1019,6 +1020,7 @@ UBBoardView::setToolCursor (int tool)
       break;
     case UBStylusTool::Eraser:
       controlViewport->setCursor (UBResources::resources ()->eraserCursor);
+      scene()->hideEraser();
       break;
     case UBStylusTool::Marker:
       controlViewport->setCursor (UBResources::resources ()->markerCursor);

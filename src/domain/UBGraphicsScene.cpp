@@ -2372,9 +2372,4 @@ void UBGraphicsScene::setToolCursor(int tool)
     {
         deselectAllItems();
     }
-
-    if (tool != (int)UBStylusTool::Eraser)
-    {
-        hideEraser();
-    }
 }

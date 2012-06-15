@@ -47,6 +47,10 @@ UBGraphicsProxyWidget::~UBGraphicsProxyWidget()
 
 QVariant UBGraphicsProxyWidget::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    if (change == QGraphicsItem::ItemCursorHasChanged &&  scene())
+    {
+        unsetCursor();
+    }
     if ((change == QGraphicsItem::ItemSelectedHasChanged)
               &&  scene())
     {
