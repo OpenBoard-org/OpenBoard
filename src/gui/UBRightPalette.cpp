@@ -69,7 +69,7 @@ void UBRightPalette::resizeEvent(QResizeEvent *event)
  */
 void UBRightPalette::updateMaxWidth()
 {
-    setMaximumWidth((int)((parentWidget()->width() * 2)/3));
+    setMaximumWidth((int)(parentWidget()->width() * 0.45));
     setMaximumHeight(parentWidget()->height());
     setMinimumHeight(parentWidget()->height());
 }

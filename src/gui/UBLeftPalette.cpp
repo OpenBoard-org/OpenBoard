@@ -45,7 +45,7 @@ UBLeftPalette::~UBLeftPalette()
  */
 void UBLeftPalette::updateMaxWidth()
 {
-    setMaximumWidth(270);
+	setMaximumWidth((int)(parentWidget()->width() * 0.45));
 }
 
 /**
