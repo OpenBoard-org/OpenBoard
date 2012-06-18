@@ -216,6 +216,8 @@ void UBKeyboardPalette::onActivated(bool activated)
 
 void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)
 {
+    const int maxMapOffset = 3; //Suppose to have at least 2 keysym groups due to X11 xlib specification
+
     Display *display = XOpenDisplay(0);
     if(display == NULL)
        return;
@@ -232,7 +234,7 @@ void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)
             KEYCODE& kc = (*locale)[i]->codes[j];
             if (!kc.empty())
             {
-                if (kc.modifier <= 5)
+                if (kc.modifier <= maxMapOffset)
                     keySyms[kc.code * byte_per_code + kc.modifier] = kc.symbol;
 
             }
@@ -248,10 +250,10 @@ void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)
             KEYCODE& kc = (*locale)[i]->codes[j];
             if (!kc.empty())
             {
-                if (kc.modifier > 5)
+                if (kc.modifier > maxMapOffset)
                 {
                     for(int i1=0; i1<SYMBOL_KEYS_COUNT; i1++)
-                        for(int j1=0; j1<=5; j1++)
+                        for(int j1=0; j1<=maxMapOffset; j1++)
                             if (keySyms[i1 * byte_per_code + j1]==NoSymbol)
                             {
                                 kc.code =i1;
