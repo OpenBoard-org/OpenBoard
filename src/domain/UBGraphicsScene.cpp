@@ -154,10 +154,6 @@ UBGraphicsScene::~UBGraphicsScene()
 
 void UBGraphicsScene::selectionChangedProcessing()
 {
-    if (selectedItems().count())
-        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f'));
-
-
     QList<QGraphicsItem *> allItemsList = items();
     qreal maxZ = 0.;
     for( int i = 0; i < allItemsList.size(); i++ ) {
