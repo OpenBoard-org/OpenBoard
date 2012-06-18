@@ -18,6 +18,7 @@
 
 #include <QtGui>
 #include <phonon/MediaObject>
+#include <QTimer>
 
 #include "core/UB.h"
 #include "UBGraphicsItemDelegate.h"
@@ -54,6 +55,8 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         void totalTimeChanged(qint64 newTotalTime);
 
+        void hideToolBar();
+
     protected:
         virtual void buildButtons();
 
@@ -65,6 +68,9 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
         DelegateMediaControl *mMediaControl;
 
         Phonon::MediaObject* mMedia;
+
+        QTimer *mToolBarShowTimer;
+        int m_iToolBarShowingInterval;
 };
 
 #endif /* UBGRAPHICSMEDIAITEMDELEGATE_H_ */

@@ -303,11 +303,14 @@ void UBGraphicsTextItemDelegate::positionHandles()
             UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(mDelegated->parentItem());
 
             mToolBarItem->hide();
-            if (group && group->getCurrentItem() == mDelegated && group->isSelected())
-                mToolBarItem->show();
+            if (mToolBarItem->parentItem() && !mToolBarItem->parentItem()->data(UBGraphicsItemData::ItemLocked).toBool())
+            {
+                if (group && group->getCurrentItem() == mDelegated && group->isSelected())
+                    mToolBarItem->show();
 
-            if (!group)
-                 mToolBarItem->show();
+                if (!group)
+                     mToolBarItem->show();
+            }
 
         }
     }

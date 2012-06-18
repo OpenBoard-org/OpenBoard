@@ -73,6 +73,8 @@ public:
         return mVideoWidget;
     }
 
+    bool hasLinkedImage(){return haveLinkedImage;}
+
     mediaType getMediaType() { return mMediaType; }
 
     virtual UBGraphicsScene* scene();
@@ -115,6 +117,8 @@ private:
     QPointF mMousePressPos;
     QPointF mMouseMovePos;
 
+    bool haveLinkedImage;
+    QGraphicsPixmapItem *mLinkedImage;
 };
 
 

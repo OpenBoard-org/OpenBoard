@@ -51,6 +51,10 @@ class UBBoardView : public QGraphicsView
 
     protected:
 
+        bool hasToolBarAsParent(QGraphicsItem *item);
+        bool itemIsLocked(QGraphicsItem *item);
+        bool itemHaveType(QGraphicsItem *item, int type);
+
         virtual bool event (QEvent * e);
 
         virtual void keyPressEvent(QKeyEvent *event);
