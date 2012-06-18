@@ -86,8 +86,14 @@ QString UBPlatformUtils::osUserLoginName()
 
 QString UBPlatformUtils::computerName()
 {
-    // TODO Linux implement me
-    return "Not Implemented";
+    char hostname[256];
+    memset(hostname,0,256);
+    // if the name is longer than 255 the name is truncated but os doesn't ensure
+    // that the last character returned is a null character
+    if(!gethostname(hostname,255))
+        return QString::fromAscii(hostname);
+    else
+        return "NOT FOUND";
 }
 
 void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivable)
