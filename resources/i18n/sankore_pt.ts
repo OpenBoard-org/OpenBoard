@@ -769,35 +769,35 @@
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Quit Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Sair do Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Open-Sankoré Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar o Editor de Widgets do Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar o Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar a Aplicação Open-Sankoré</translation>
     </message>
     <message>
         <source>Import Uniboard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar Documentos Uniboard</translation>
     </message>
     <message>
         <source>Import old Sankore or Uniboard documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar Antigas Versões de Documentos Uniboard ou Sankoré</translation>
     </message>
 </context>
 <context>
@@ -891,7 +891,7 @@
     </message>
     <message>
         <source>Update</source>
-        <translation type="unfinished">Atualizar</translation>
+        <translation>Atualizar</translation>
     </message>
 </context>
 <context>
@@ -1102,8 +1102,8 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Tem a certeza que quer apagar %n página(s) do documento selecionado &apos;%1&apos;?</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1193,8 +1193,8 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 de páginas copiadas</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1203,11 +1203,11 @@
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
-        <translation type="unfinished"></translation>
+        <translation>A descarregar ficheiro</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1336,7 +1336,7 @@
     </message>
     <message>
         <source>Editable</source>
-        <translation type="unfinished"></translation>
+        <translation>Editável</translation>
     </message>
 </context>
 <context>
@@ -1389,7 +1389,7 @@
     </message>
     <message>
         <source>Open-Sankore (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankore (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1448,7 +1448,7 @@
     <name>UBKeyboardPalette</name>
     <message>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter</translation>
     </message>
 </context>
 <context>
@@ -1562,7 +1562,7 @@
     <message>
         <source>Web Search</source>
         <comment>Web search category element</comment>
-        <translation type="unfinished"></translation>
+        <translation>Procurar na Web</translation>
     </message>
 </context>
 <context>
@@ -1577,18 +1577,18 @@
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
     <name>UBMediaPlayer</name>
     <message>
         <source>Open Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir Localização</translation>
     </message>
     <message>
         <source>Please enter a valid address here:</source>
-        <translation type="unfinished"></translation>
+        <translation>Coloque um endereço válido aqui:</translation>
     </message>
 </context>
 <context>
@@ -1619,11 +1619,11 @@ Quer ignorar estes erros, deste servidor?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished">Sim</translation>
+        <translation>Sim</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished">Não</translation>
+        <translation>Não</translation>
     </message>
 </context>
 <context>
@@ -1638,11 +1638,11 @@ Quer ignorar estes erros, deste servidor?</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Adicionar</translation>
+        <translation>Adicionar</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1664,23 +1664,23 @@ Quer ignorar estes erros, deste servidor?</translation>
     <name>UBPlatformUtils</name>
     <message>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>Inglês</translation>
     </message>
     <message>
         <source>Russian</source>
-        <translation type="unfinished"></translation>
+        <translation>Russo</translation>
     </message>
     <message>
         <source>German</source>
-        <translation type="unfinished"></translation>
+        <translation>Alemão</translation>
     </message>
     <message>
         <source>French</source>
-        <translation type="unfinished"></translation>
+        <translation>Francês</translation>
     </message>
     <message>
         <source>Swiss French</source>
-        <translation type="unfinished"></translation>
+        <translation>Francês (Suiço)</translation>
     </message>
 </context>
 <context>
@@ -1909,7 +1909,7 @@ Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</transl
     </message>
     <message>
         <source>Remind me later</source>
-        <translation type="unfinished"></translation>
+        <translation>Lembrar-me depois</translation>
     </message>
 </context>
 <context>
@@ -2029,11 +2029,12 @@ Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</transl
     <name>UniboardSankoreTransition</name>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar versões antigas de documentos Uniboard/Sankoré</translation>
     </message>
     <message>
         <source>There are no documents that should be imported</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>&quot;There are no documents that should be imported&quot;</translatorcomment>
+        <translation>Não há documentos para importar</translation>
     </message>
 </context>
 <context>
@@ -2496,55 +2497,58 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Multi display</source>
-        <translation type="unfinished"></translation>
+        <translation>Écrans Múltiplos</translation>
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar o conteúdo interno da página web num ecrã ou projetor secundário</translation>
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Trocar entre o ecrã de controlo e apresentação?</translatorcomment>
+        <translation>Trocar entre o ecrã de controlo e visualização</translation>
     </message>
     <message>
         <source>Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo</translation>
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>&quot;Mode to start in:&quot;</translatorcomment>
+        <translation>Modo iniciar:</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="unfinished">Quadro</translation>
+        <translation>Quadro</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Área de Trabalho</translation>
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy User:</translation>
     </message>
     <message>
         <source>Pass:</source>
-        <translation type="unfinished"></translation>
+        <translation>Senha:</translation>
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>&quot;Planète Sankoré ID&quot;</translatorcomment>
+        <translation>Planète Sankoré ID</translation>
     </message>
     <message>
         <source>User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizador:</translation>
     </message>
     <message>
         <source>Pass: </source>
-        <translation type="unfinished"></translation>
+        <translation>Senha:</translation>
     </message>
     <message utf8="true">
         <source>Open-Sankoré</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2566,22 +2570,6 @@ p, li { white-space: pre-wrap; }
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
-&lt;tr&gt;
-&lt;td style=&quot;border: none;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;Open-Sankoré  version , Copyright (C) 2010  Open-Sankoré comes with ABSOLUTELY NO WARRANTY.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3030,6 +3018,22 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                     END OF TERMS AND CONDITIONS&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;Open-Sankoré  version , Copyright (C) 2010  Open-Sankoré comes with ABSOLUTELY NO WARRANTY.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;    &lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt; color:#35382a;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#35382a;&quot;&gt;You should have received a copy of the GNU General Public License along with this program.  If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
