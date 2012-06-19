@@ -111,14 +111,15 @@ QMAKE_CMD="$QMAKE -spec macx-g++"
 
 $QMAKE_CMD
 
+notify "Translations ..."
+$LRELEASE "Sankore_3.1.pro"
+
 # build
 notify "Compiling ..."
 make -j4 release
 
 
-notify "Translations ..."
-$LRELEASE "Sankore_3.1.pro"
-
+notify "Qt Translations ..."
 addQtTranslations
 
 
