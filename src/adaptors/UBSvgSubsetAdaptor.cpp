@@ -2268,50 +2268,22 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
                               , "fill-on-light-background", colorLightBg.name());
 
     //for new documents from version 4.5.0
-    if (true) {
-        mXmlWriter.writeStartElement("itemTextContent");
-        mXmlWriter.writeCDATA(item->toHtml());
-        mXmlWriter.writeEndElement(); //itemTextContent
+    mXmlWriter.writeStartElement("itemTextContent");
 
-    //tracking for back capability with older versions
-    } else if (false) {
-        mXmlWriter.writeStartElement(nsXHtml, "body");
-        mXmlWriter.writeStartElement(nsXHtml, "div");
-        mXmlWriter.writeStartElement(nsXHtml, "font");
-
-        QFont font = item->font();
-
-        mXmlWriter.writeAttribute("face", font.family());
-
-        QFontInfo fi(font);
-        int pixelSize = fi.pixelSize();
-
-        mXmlWriter.writeAttribute("style", sFontSizePrefix + QString(" %1").arg(pixelSize) + sPixelUnit + "; " +
-                                  sFontWeightPrefix + " " + (fi.bold() ? "bold" : "normal") + "; " +
-                                  sFontStylePrefix + " " + (fi.italic() ? "italic" : "normal") + ";");
-        mXmlWriter.writeAttribute("color", item->defaultTextColor().name());
-
-        QString text = item->toPlainText();
-        QStringList lines = text.split("\n");
-
-        for (int i = 0; i < lines.length() ; i++)
-        {
-            mXmlWriter.writeCharacters(lines.at(i));
-
-            if (i < lines.length() - 1)
-                mXmlWriter.writeEmptyElement(nsXHtml, "br");
-        }
-
-        mXmlWriter.writeEndElement(); //font
-        mXmlWriter.writeEndElement(); //div
-        mXmlWriter.writeEndElement(); //body
-    }
+    //TODO:
+    // This is only a workaround that works quite well. The font sizes are expressed on
+    // px instead of pt because px is less sensitive to the physicalDPI of the Os. The
+    // main problem in fact appears when the file is used on another platform than the
+    // one used to create it.
+    // But a different solution has to be implemented to avoid some annoying case that
+    // are already present with this hack.
+    QString htmlString = item->toHtml();
+    QRegExp regExp("font-size:([0-9]{,3})pt");
+    htmlString = htmlString.replace(regExp,"font-size:\\1px");
+    mXmlWriter.writeCDATA(htmlString);
+    mXmlWriter.writeEndElement(); //itemTextContent
 
     mXmlWriter.writeEndElement(); //foreignObject
-
-//    QtLogger::start("/home/ilia/Documents/tmp/10/log.log");
-//    QtLogger::appendl(item->toHtml());
-//    QtLogger::finish();
 }
 
 UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
@@ -2361,7 +2333,6 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     text = mXmlReader.readElementText();
                     textItem->setHtml(text);
                     textItem->resize(width, height);
-
                     if (textItem->toPlainText().isEmpty()) {
                         delete textItem;
                         textItem = 0;
