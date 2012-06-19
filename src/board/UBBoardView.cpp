@@ -375,21 +375,6 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
 
 }
 
-bool UBBoardView::hasToolBarAsParent(QGraphicsItem *item)
-{
-    if (!item)
-        return false;
-
-    if (!item->parentItem())
-        return hasToolBarAsParent(0); 
-
-    if (UBGraphicsToolBarItem::Type == item->parentItem()->type())
-        return true;
-
-    else 
-        return hasToolBarAsParent(item->parentItem());        
-}
-
 bool UBBoardView::itemIsLocked(QGraphicsItem *item)
 {
     if (!item)
@@ -402,7 +387,7 @@ bool UBBoardView::itemIsLocked(QGraphicsItem *item)
 
 }
 
-bool UBBoardView::itemHaveType(QGraphicsItem *item, int type)
+bool UBBoardView::itemHaveParentWithType(QGraphicsItem *item, int type)
 {
     if (!item)
         return false;
@@ -410,8 +395,22 @@ bool UBBoardView::itemHaveType(QGraphicsItem *item, int type)
     if (type == item->type())
         return true;
     
-    return itemHaveType(item->parentItem(), type);
+    return itemHaveParentWithType(item->parentItem(), type);
 
+}
+
+QGraphicsItem* UBBoardView::determinedItemToMove()
+{
+    // groupConteinerItem should be moved instead of it's owned items
+    if(movingItem && movingItem->parentItem() &&
+        (UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type() ||
+        UBGraphicsStrokesGroup::Type       == movingItem->parentItem()->type()    
+        )
+        )
+    {
+        movingItem = movingItem->parentItem(); 
+    }
+    return movingItem;
 }
 
 void UBBoardView::mousePressEvent (QMouseEvent *event)
@@ -477,8 +476,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 || movingItem == this->scene()->backgroundObject()
                 || (movingItem->parentItem() && movingItem->parentItem()->type() == UBGraphicsGroupContainerItem::Type))
             {
-                if (!itemIsLocked(movingItem)
-                    || itemHaveType(movingItem, UBGraphicsMediaItem::Type))
+                if (movingItem && !itemIsLocked(movingItem)
+                    || itemHaveParentWithType(movingItem, UBGraphicsMediaItem::Type))
                 {
 
                     QGraphicsView::mousePressEvent (event);
@@ -499,25 +498,41 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         }
         else if (currentTool == UBStylusTool::Play)
         {
-
             movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
 
             mLastPressedMousePos = mapToScene(event->pos());
 
-            if (movingItem 
-                && (UBGraphicsGroupContainerItem::Type == movingItem->type()
-                    || UBGraphicsMediaItem::Type == movingItem->type()
-                    || hasToolBarAsParent(movingItem)))
+            // items, who shouldn't receive mouse press event 
+            if (movingItem &&    
+                UBGraphicsTextItem ::Type != movingItem->type()
+                )
             {
-                movingItem = NULL;
-                QGraphicsView::mousePressEvent (event);
-                return;
+                QGraphicsView::mousePressEvent(event); 
             }
 
-            if(movingItem && movingItem->parentItem() && movingItem->parentItem()->type() == UBGraphicsGroupContainerItem::Type)
+            // items, who should receive suspended mouse press event
+            if (movingItem &&
+                    UBGraphicsMediaItem::Type == movingItem->type()
+               )
             {
-                movingItem = movingItem->parentItem(); 
-            }                
+                if (suspendedMousePressEvent)
+                {
+                    delete suspendedMousePressEvent;
+                }
+                suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers()); // удалить
+            }
+            
+            // groups shouldn't be moved independant of items)
+            if(movingItem && 
+                  (UBGraphicsGroupContainerItem::Type == movingItem->type() ||
+                   UBGraphicsStrokesGroup::Type       == movingItem->type()
+                  )
+              )
+            {
+                movingItem = NULL;
+            }
+
+            movingItem = determinedItemToMove(); 
 
             event->accept();
         }
@@ -653,6 +668,17 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
     }
   else if (currentTool == UBStylusTool::Play)
   {
+
+      // items, who shouldn't receive mouse move events
+      if (movingItem &&
+             (UBGraphicsW3CWidgetItem::Type == movingItem->type() ||
+              itemHaveParentWithType(movingItem, UBGraphicsToolBarItem::Type)
+              )
+         )
+      {
+          movingItem = NULL;
+      }
+
       if (movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) &&
           !movingItem->data(UBGraphicsItemData::ItemLocked).toBool())
       {
@@ -734,6 +760,14 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     }
   else if (currentTool == UBStylusTool::Play)
   {
+      if (suspendedMousePressEvent && !movingItem->data(UBGraphicsItemData::ItemLocked).toBool())       
+      {
+          QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
+          movingItem = NULL;
+          delete suspendedMousePressEvent;
+          suspendedMousePressEvent = NULL;
+      }
+
       QGraphicsView::mouseReleaseEvent (event);
   }
   else if (currentTool == UBStylusTool::Text)
