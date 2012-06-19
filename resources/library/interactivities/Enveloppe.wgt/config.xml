@@ -5,7 +5,7 @@
         version="1.0"
         width="760"
         height="580" 
-        ub:resizable="true">     
+        ub:resizable="false">     
    
 		<name>La boite</name>
 		<author href="http://www.njin.fr" email="contact@njin.fr">njin</author>

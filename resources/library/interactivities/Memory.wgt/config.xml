@@ -5,7 +5,7 @@
         version="1.0"
         width="820"
         height="575" 
-        ub:resizable="true">     
+        ub:resizable="false">     
    
 		<name>Memory</name>
 		<author href="http://www.njin.fr" email="contact@njin.fr">njin</author>

@@ -6,7 +6,7 @@
         version="1.0"
         width="750"
         height="300" 
-		ub:resizable="true">
+	ub:resizable="false">
 		
 		<name>Split a phrase</name>
 		<description>Split a phrase into words</description>

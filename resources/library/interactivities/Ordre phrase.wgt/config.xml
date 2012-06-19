@@ -6,7 +6,7 @@
         version="1.0"
         width="850"
         height="400" 
-		ub:resizable="true">
+		ub:resizable="false">
 		
 		<name>Phrases sortable</name>
 		<description>Sort the phrases to make the right sentence.</description>

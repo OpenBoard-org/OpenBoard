@@ -6,7 +6,7 @@
         version="1.0"
         width="750"
         height="350" 
-		ub:resizable="true">
+		ub:resizable="false">
 		
 		<name>Split a text [alt]</name>
 		<description>Split a text into sentences</description>
