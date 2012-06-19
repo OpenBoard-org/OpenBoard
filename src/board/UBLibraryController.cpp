@@ -370,15 +370,19 @@ QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPat
     for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end(); fileInfo += 1) {
         eUBLibElementType fileType = fileInfo->isDir() ? eUBLibElementType_Folder : eUBLibElementType_Item;
 
-        QString fileName = fileInfo->fileName();
-        if (UBFileSystemUtils::mimeTypeFromFileName(fileName).contains("application")) {
+        QString itemName = fileInfo->fileName();
+        QString extension="";
+        if (UBFileSystemUtils::mimeTypeFromFileName(itemName).contains("application")) {
             fileType = eUBLibElementType_InteractiveItem;
+            itemName = fileInfo->baseName();
+            extension = fileInfo->completeSuffix();
         }
 
-        // This is necessary because of the w3c widget directory (xxxx.wgt).
-        QString itemName = (fileType != eUBLibElementType_Item) ? fileName : fileInfo->completeBaseName();
 
         UBLibElement *element = new UBLibElement(fileType, QUrl::fromLocalFile(fileInfo->absoluteFilePath()), itemName);
+
+        if(!extension.isEmpty())
+            element->setExtension(extension);
 
         if (fileType == eUBLibElementType_Folder) {
             element->setThumbnail(QImage(":images/libpalette/folder.svg"));
