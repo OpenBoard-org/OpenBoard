@@ -41,10 +41,10 @@ var sankoreLang = {
     pad: "Pad"
 };
 
-
 var questionArray;
 var currentQstId = "";
 var lang = ""; //locale language
+var begin = true;
 
 function init(){
 
@@ -84,11 +84,15 @@ function init(){
             }
             displayData(true);
         } 
-        else 
+        else{ 
             displayData(false);
+            begin = false;
+        }
     }
-    else 
+    else{ 
         displayData(false);
+        begin = false;
+    }
     
     //saving widget data into sankore object for a correct import
     if (window.widget) {
@@ -133,8 +137,12 @@ function init(){
     $("#wgt_reload").text(sankoreLang.reload).click(function(){
         if($("#wgt_edit").css("display") == "none")
             $("#wgt_display").trigger("click");
-        else
-            window.location.reload();
+        else{
+            editData();
+            mode = false;
+            displayData(true);
+            mode = true;
+        }
     });
     
     $(".style_select option[value='1']").text(sankoreLang.slate);
@@ -302,11 +310,13 @@ function init(){
             }
         } else {
             if(event.target.type == "radio"){
+                checkingAnswers("radio", getNeededElement(questionArray, currentQstId).answers, event.target.value);
                 if(event.target.value == getNeededElement(questionArray, currentQstId).rightAns)
                     $(event.target).next().next().find("span").css("background-color","#6c0");
                 else
                     $(event.target).next().next().find("span").css("background-color","red");
             } else {
+                checkingAnswers("box", getNeededElement(questionArray, currentQstId).answers, event.target.value, event.target.checked);
                 if(getNeededElement(questionArray, currentQstId).rightAns.replace(/,/g,"").indexOf(event.target.value + " ", 0) != -1)
                     $(event.target).next().next().find("span").css("background-color","#6c0");
                 else
@@ -378,10 +388,13 @@ function init(){
     
     $("select").live('change', function(evt){
         if(mode){
+            checkingAnswers("sel", getNeededElement(questionArray, currentQstId).answers, event.target.value);
             if(event.target.value == getNeededElement(questionArray, currentQstId).rightAns)
                 $(event.target).css("background-color","#6c0");
             else
                 $(event.target).css("background-color","red");
+            if(event.target.value == 0)
+                $(event.target).css("background-color","");
             flagForSelect = false;
         }
     });
@@ -403,6 +416,12 @@ function init(){
     
     //set widget in edit mode
     function editData(){
+        for(var i in questionArray)            
+            for(var j in questionArray[i].answers){
+                questionArray[i].answers[j].state = "";
+                questionArray[i].answers[j].was = false
+            }               
+                
         $(".qstDivDisplay").remove();
         
         $("#addQstDiv").show('fast');
@@ -434,21 +453,41 @@ function init(){
                 for(var j in array[i].answers){  
                     switch(type){
                         case "1":
+                            var local_state = "";
+                            var local_color = "";
+                            if(begin){
+                                local_state = array[i].answers[j].state;
+                                local_color = (array[i].answers[j].value == array[i].rightAns)?((array[i].answers[j].was)?"style='background-color: #6c0;'":""):((array[i].answers[j].was)?"style='background-color: red;'":"");
+                            }
                             newAnswer = $("<div class='newAnswer'>");
-                            var ansInput = $("<input type='radio' name='" + counter + "' value='" + array[i].answers[j].value + "' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
+                            var ansInput = $("<input type='radio' name='" + counter + "' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             var ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                            var ansContent = $("<div class='ansContentDisplay'><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
+                            var ansContent = $("<div class='ansContentDisplay'><span id='answerText' " + local_color + ">" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "2":
+                            local_state = "";
+                            local_color = "";
+                            if(begin){
+                                local_state = (array[i].answers[j].state)?"checked":"";
+                                local_color = (array[i].rightAns.replace(/,/g,"").indexOf(array[i].answers[j].value + " ", 0) != -1)?((array[i].answers[j].was)?"style='background-color: #6c0;'":""):((array[i].answers[j].was)?"style='background-color: red;'":"");
+                            }
                             newAnswer = $("<div class='newAnswer'>");
-                            ansInput = $("<input type='checkbox' value='" + array[i].answers[j].value + "' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
+                            ansInput = $("<input type='checkbox' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                            ansContent = $("<div class='ansContentDisplay'><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
+                            ansContent = $("<div class='ansContentDisplay'><span id='answerText' " + local_color + ">" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "3":
-                            ansInput = $("<option value='" + array[i].answers[j].value + "'>" + array[i].answers[j].text + "</option>").appendTo(selInput);
+                            local_state = "";
+                            local_color = "";
+                            if(begin){
+                                local_state = (array[i].answers[j].state)?"selected":"";
+                                local_color = (array[i].answers[j].value == array[i].rightAns)?((array[i].answers[j].was)?"#6c0":""):((array[i].answers[j].was)?"red":"");
+                            }
+                            ansInput = $("<option value='" + array[i].answers[j].value + "' " + local_state + ">" + array[i].answers[j].text + "</option>").appendTo(selInput);
+                            if(local_state && local_color)
+                                selInput.css("background-color",local_color);
                             break;
                     }               
                     ansCount++;
@@ -456,6 +495,7 @@ function init(){
                 qstDiv.appendTo("#data");
                 counter++;
             }
+            begin = false;
         } else {
             counter = 1;
             qstDiv = $("<div class='qstDivDisplay'>");        
@@ -606,6 +646,35 @@ function refreshQst(){
     $("#addQsqSpan1").text(sankoreLang.q + ++count);
 }
 
+//check answers
+function checkingAnswers(type, array, value, state){
+    switch(type){
+        case "radio":
+            for(var i in array)
+                if(array[i].value == value){
+                    array[i].state = "checked";
+                    array[i].was = true;
+                } else 
+                    array[i].state = "";                
+            break;
+        case "box":
+            for(i in array)
+                if(array[i].value == value){
+                    array[i].state = state;
+                    array[i].was = true;
+                }     
+            break;
+        case "sel":
+            for(i in array)
+                if(array[i].value == value){
+                    array[i].state = "selected";
+                    array[i].was = true;
+                } else 
+                    array[i].state = ""; 
+            break;
+    }
+}
+
 //question constructor
 function Question(){
 
@@ -629,6 +698,10 @@ function Answer(){
     this.text = "";
     
     this.value = "";
+    
+    this.state = "";
+    
+    this.was = false;
 }
 
 //changing the style
