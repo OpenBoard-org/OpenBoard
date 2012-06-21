@@ -2278,9 +2278,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
     // But a different solution has to be implemented to avoid some annoying case that
     // are already present with this hack.
     QString htmlString = item->toHtml();
+    qDebug() << htmlString;
     QRegExp regExp("font-size:([0-9]{,3})pt");
     htmlString = htmlString.replace(regExp,"font-size:\\1px");
-    mXmlWriter.writeCDATA(htmlString);
+    qDebug() << htmlString;
+    //mXmlWriter.writeCDATA(htmlString);
+    mXmlWriter.writeCharacters(htmlString);
     mXmlWriter.writeEndElement(); //itemTextContent
 
     mXmlWriter.writeEndElement(); //foreignObject
