@@ -52,8 +52,13 @@ class UBBoardView : public QGraphicsView
     protected:
 
         bool itemIsLocked(QGraphicsItem *item);
+        bool itemShouldReceiveMousePressEvent(QGraphicsItem *item);
+        bool itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item);
         bool itemHaveParentWithType(QGraphicsItem *item, int type);
-        QGraphicsItem* determinedItemToMove();
+        bool itemShouldBeMoved(QGraphicsItem *item);
+        QGraphicsItem* determineItemToMove(QGraphicsItem *item);
+        void handleItemMousePress(QMouseEvent *event);
+        void handleItemMouseMove(QMouseEvent *event);
 
         virtual bool event (QEvent * e);
 
