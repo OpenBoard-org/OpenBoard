@@ -246,9 +246,7 @@ QString UBW3CWidget::createNPAPIWrapperInDir(const QString& pUrl, const QDir& pD
     const QString& pName)
 {
     QString url = pUrl;
-    // if the file name start with file:// it has be removed because QFileInfo doesn't support this form
-    url = url.replace("file:///","");
-    url = url.replace("file://","");
+    url = UBFileSystemUtils::removeLocalFilePrefix(url);
     QString name = pName;
 
     QFileInfo fi(url);
@@ -305,8 +303,7 @@ QString UBW3CWidget::createNPAPIWrapperInDir(const QString& pUrl, const QDir& pD
         if (fi.exists()){
             QString target = widgetLibraryPath + "/" + fi.fileName();
             QString source = pUrl;
-            source = source.replace("file:///","");
-            source = source.replace("file://","");
+            source = UBFileSystemUtils::removeLocalFilePrefix(source);
             QFile::copy(source, target);
         }
 

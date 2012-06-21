@@ -39,6 +39,22 @@ UBFileSystemUtils::~UBFileSystemUtils()
     // NOOP
 }
 
+
+QString UBFileSystemUtils::removeLocalFilePrefix(QString input)
+{
+#ifdef Q_WS_WIN
+    if(input.startsWith("file:///"))
+        return input.mid(8);
+    else
+        return input;
+#else
+    if(input.startsWith("file://"))
+        return input.mid(7);
+    else
+        return input;
+#endif
+}
+
 bool UBFileSystemUtils::isAZipFile(QString &filePath)
 {
    if(QFileInfo(filePath).isDir()) return false;
