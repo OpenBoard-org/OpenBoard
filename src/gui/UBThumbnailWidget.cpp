@@ -887,11 +887,6 @@ void UBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal heigh
         qreal scaleFactor = qMin(scaleWidth, scaleHeight);
         UBThumbnail* pix = dynamic_cast<UBThumbnail*>(this->thumbnail);
 
-        if(pix)
-        {
-            scaleFactor = qMin(scaleFactor, 1.0);
-        }
-
         QTransform transform;
         transform.scale(scaleFactor, scaleFactor);
 
