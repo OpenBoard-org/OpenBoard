@@ -235,10 +235,12 @@ void UBApplication::setupTranslator(QString forcedLanguage)
 
 
 	    mQtGuiTranslator->load(UBPlatformUtils::translationPath(QString("qt_"),language));
-	    if(mQtGuiTranslator){
+	    if(!mQtGuiTranslator->isEmpty()){
 	    	// checked because this translation could be not available
 	    	installTranslator(mQtGuiTranslator);
 	    }
+		else
+			qDebug() << "Qt gui translation in " << language << " are not available";
 	}
 
 

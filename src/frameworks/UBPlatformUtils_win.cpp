@@ -20,6 +20,7 @@
 #include <windows.h>
 #include <shellapi.h>
 
+#include "frameworks/UBFileSystemUtils.h"
 #include "core/memcheck.h"
 
 void UBPlatformUtils::init()
