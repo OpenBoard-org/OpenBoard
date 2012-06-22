@@ -715,11 +715,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             mPreviousPoint = event->posF ();
             event->accept ();
         }
-        else if (currentTool == UBStylusTool::Eraser)
-        {
-            connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
-            mLongPressTimer.start();
-        }
         else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
         {
             movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
@@ -797,6 +792,11 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
             if (scene () && !mTabletStylusIsPressed)
             {
+                if (currentTool == UBStylusTool::Eraser)
+                {
+                    connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
+                    mLongPressTimer.start();
+                }
                 scene ()->inputDevicePress (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())));
             }
             event->accept ();
@@ -809,11 +809,13 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
   if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())) 
   {
-    return;
+      return;
   }
 
   mIsDragInProgress = true;
   UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
+
+  mLongPressTimer.stop();
 
   if (isAbsurdPoint (event->pos ()))
     {
@@ -830,17 +832,11 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
       mPreviousPoint = eventPosition;
       event->accept ();
     }
-  else if (currentTool == UBStylusTool::Eraser)
-  {
-      mLongPressTimer.stop();
-  }
   else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
   {
       if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
           return;
       }
-
-      mLongPressTimer.stop();
 
       if (!movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) && mUBRubberBand && mUBRubberBand->isVisible()) {
 
@@ -899,7 +895,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
   else
     {
       if (!mTabletStylusIsPressed && scene ())
-      {
+      {           
           scene ()->inputDeviceMove (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())), mMouseButtonIsPressed);
       }
       event->accept ();
