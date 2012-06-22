@@ -20,6 +20,8 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
+#include "frameworks/UBFileSystemUtils.h"
+
 
 void UBPlatformUtils::init()
 {
@@ -55,13 +57,22 @@ void UBPlatformUtils::fadeDisplayIn()
     // NOOP
 }
 
-QString UBPlatformUtils::preferredTranslation(QString pFilePrefix)
+QStringList UBPlatformUtils::availableTranslations()
 {
-    QString qmPath = applicationResourcesDirectory() + "/" + "i18n" + "/" + pFilePrefix + preferredLanguage() + ".qm";
+	QString translationsPath = applicationResourcesDirectory() + "/" + "i18n" + "/";
+	QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath);
+	QRegExp sankoreTranslationFiles(".*sankore_.*.qm");
+	translationsList=translationsList.filter(sankoreTranslationFiles);
+	return translationsList.replaceInStrings(QRegExp("(.*)sankore_(.*).qm"),"\\2");
+}
+
+QString UBPlatformUtils::translationPath(QString pFilePrefix,QString pLanguage)
+{
+    QString qmPath = applicationResourcesDirectory() + "/" + "i18n" + "/" + pFilePrefix + pLanguage + ".qm";
     return qmPath;
 }
 
-QString UBPlatformUtils::preferredLanguage()
+QString UBPlatformUtils::systemLanguage()
 {
     return QLocale::system().name();
 }

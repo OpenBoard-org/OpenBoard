@@ -121,6 +121,7 @@ class UBApplication : public QtSingleApplication
 
     private:
         void updateProtoActionsState();
+        void setupTranslator(QString forcedLanguage);
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
 

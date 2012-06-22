@@ -135,27 +135,13 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
     UBResources::resources();
 
     if (!undoStack)
-    {
         undoStack = new QUndoStack(staticMemoryCleaner);
-    }
 
-    mApplicationTranslator = new QTranslator(this);
-    mApplicationTranslator->load(UBPlatformUtils::preferredTranslation(QString("sankore_")));
-    installTranslator(mApplicationTranslator);
+    QString forcedLanguage("");
+    if(args.contains("-lang"))
+    	forcedLanguage=args.at(args.indexOf("-lang") + 1);
 
-    QString localString;
-    if (!mApplicationTranslator->isEmpty())
-        localString = UBPlatformUtils::preferredLanguage();
-    else
-        localString = "en_US";
-
-    mQtGuiTranslator = new QTranslator(this);
-    mQtGuiTranslator->load(UBPlatformUtils::preferredTranslation(QString("qt_")));
-    installTranslator(mQtGuiTranslator);
-
-
-    QLocale::setDefault(QLocale(localString));
-    qDebug() << "Running application in:" << localString;
+    setupTranslator(forcedLanguage);
 
     UBSettings *settings = UBSettings::settings();
 
@@ -215,6 +201,49 @@ UBApplication::~UBApplication()
 
     delete staticMemoryCleaner;
     staticMemoryCleaner = 0;
+}
+
+
+void UBApplication::setupTranslator(QString forcedLanguage)
+{
+	QStringList availablesTranslations = UBPlatformUtils::availableTranslations();
+	QString language("");
+	if(!forcedLanguage.isEmpty()){
+		if(availablesTranslations.contains(forcedLanguage,Qt::CaseInsensitive))
+			language = forcedLanguage;
+		else
+			qDebug() << "forced language " << forcedLanguage << " not available";
+	}
+	else{
+		QString systemLanguage = UBPlatformUtils::systemLanguage();
+		if(availablesTranslations.contains(systemLanguage,Qt::CaseInsensitive))
+			language = systemLanguage;
+		else
+			qDebug() << "translation for system language " << systemLanguage << " not found";
+	}
+
+	if(language.isEmpty()){
+		language = "en_US";
+		//fallback if no translation are available
+	}
+	else{
+	    mApplicationTranslator = new QTranslator(this);
+	    mQtGuiTranslator = new QTranslator(this);
+
+	    mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("sankore_"),language));
+	    installTranslator(mApplicationTranslator);
+
+
+	    mQtGuiTranslator->load(UBPlatformUtils::translationPath(QString("qt_"),language));
+	    if(mQtGuiTranslator){
+	    	// checked because this translation could be not available
+	    	installTranslator(mQtGuiTranslator);
+	    }
+	}
+
+
+    QLocale::setDefault(QLocale(language));
+    qDebug() << "Running application in:" << language;
 }
 
 int UBApplication::exec(const QString& pFileToImport)
