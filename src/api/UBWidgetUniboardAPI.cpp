@@ -123,6 +123,10 @@ void UBWidgetUniboardAPI::setTool(const QString& toolString)
     {
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
     }
+    else if (lower == "play")
+    {
+        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Play);
+    }
     else if (lower == "line")
     {
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Line);

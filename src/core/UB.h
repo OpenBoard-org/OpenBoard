@@ -28,6 +28,7 @@ struct UBStylusTool
 		Eraser, 
  		Marker, 
 		Selector, 
+        Play,
 		Hand, 
 		ZoomIn, 
 		ZoomOut, 

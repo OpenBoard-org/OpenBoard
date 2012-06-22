@@ -89,6 +89,8 @@ class UBBoardPaletteManager : public QObject
         void slot_changeMainMode(UBApplicationController::MainMode);
         void slot_changeDesktopMode(bool);
 
+        void toggleErasePalette(bool ckecked);
+
     private:
 
         void setupPalettes();
@@ -168,7 +170,6 @@ class UBBoardPaletteManager : public QObject
         void erasePaletteButtonPressed();
         void erasePaletteButtonReleased();
 
-        void toggleErasePalette(bool ckecked);
         void erasePaletteClosed();
 
         void togglePagePalette(bool ckecked);

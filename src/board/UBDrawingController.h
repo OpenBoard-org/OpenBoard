@@ -88,6 +88,7 @@ class UBDrawingController : public QObject
         void eraserToolSelected(bool checked);
         void markerToolSelected(bool checked);
         void selectorToolSelected(bool checked);
+        void playToolSelected(bool checked);
         void handToolSelected(bool checked);
         void zoomInToolSelected(bool checked);
         void zoomOutToolSelected(bool checked);

@@ -34,8 +34,8 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         , mInitialPos(0)
         , mVideoWidget(NULL)
         , mAudioWidget(NULL)
+        , mLinkedImage(NULL)
 {
-    
     update();
 
     QString s = pMediaFileUrl.toLocalFile();
@@ -60,6 +60,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
             mVideoWidget->resize(320,240);
         }
         setWidget(mVideoWidget);
+        haveLinkedImage = true;
     }
     else    
     if (pMediaFileUrl.toLocalFile().contains("audios"))
@@ -71,6 +72,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mAudioWidget = new QWidget();
         mAudioWidget->resize(320,26);
         setWidget(mAudioWidget);
+        haveLinkedImage = false;
     }
 
     Phonon::createPath(mMediaObject, mAudioOutput);
@@ -226,7 +228,7 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (mDelegate)
     {
         mDelegate->mousePressEvent(event);
-        if (mDelegate && parentItem() && UBGraphicsGroupContainerItem::Type == parentItem()->type())
+        if (parentItem() && UBGraphicsGroupContainerItem::Type == parentItem()->type())
         {
             UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(parentItem());
             if (group)
@@ -242,11 +244,6 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }       
 
         }
-        else
-        {
-            mDelegate->getToolBarItem()->show();
-        }
-
     }
 
     if (parentItem() && parentItem()->type() == UBGraphicsGroupContainerItem::Type)
@@ -271,9 +268,6 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (data(UBGraphicsItemData::ItemLocked).toBool())
-        return;
-
     if(mShouldMove && (event->buttons() & Qt::LeftButton))
     {
         QPointF offset = event->scenePos() - mMousePressPos;

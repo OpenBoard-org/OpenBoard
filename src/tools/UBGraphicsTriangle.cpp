@@ -763,7 +763,9 @@ void UBGraphicsTriangle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-    if (currentTool == UBStylusTool::Selector)  {
+    if (currentTool == UBStylusTool::Selector ||
+        currentTool == UBStylusTool::Play)
+    {
         mCloseSvgItem->setParentItem(this);
 
         mShowButtons = true;
@@ -813,7 +815,8 @@ void UBGraphicsTriangle::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-    if (currentTool == UBStylusTool::Selector)
+    if (currentTool == UBStylusTool::Selector ||
+        currentTool == UBStylusTool::Play)
     {
         mCloseSvgItem->setVisible(mShowButtons);
         mVFlipSvgItem->setVisible(mShowButtons);

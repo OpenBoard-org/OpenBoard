@@ -42,6 +42,9 @@ class UBBoardView : public QGraphicsView
 
         void setToolCursor(int tool);
 
+        void rubberItems();
+        void moveRubberedItems(QPointF movingVector);
+
     signals:
 
         void resized(QResizeEvent* event);
@@ -50,6 +53,15 @@ class UBBoardView : public QGraphicsView
         void clickOnBoard();
 
     protected:
+
+        bool itemIsLocked(QGraphicsItem *item);
+        bool itemShouldReceiveMousePressEvent(QGraphicsItem *item);
+        bool itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item);
+        bool itemHaveParentWithType(QGraphicsItem *item, int type);
+        bool itemShouldBeMoved(QGraphicsItem *item);
+        QGraphicsItem* determineItemToMove(QGraphicsItem *item);
+        void handleItemMousePress(QMouseEvent *event);
+        void handleItemMouseMove(QMouseEvent *event);
 
         virtual bool event (QEvent * e);
 
@@ -124,8 +136,16 @@ class UBBoardView : public QGraphicsView
         QGraphicsItem *movingItem;
         QMouseEvent *suspendedMousePressEvent;
 
+        bool moveRubberBand;
         UBRubberBand *mUBRubberBand;
+        
+        QList<QGraphicsItem *> mRubberedItems;
         QSet<QGraphicsItem*> mJustSelectedItems;
+
+        int mLongPressInterval;
+        QTimer mLongPressTimer;
+
+        bool mIsDragInProgress;
 
     private slots:
 
@@ -134,6 +154,7 @@ class UBBoardView : public QGraphicsView
 	public slots:
 
 		void virtualKeyboardActivated(bool b);
+        void longPressEvent();
 
 };
 

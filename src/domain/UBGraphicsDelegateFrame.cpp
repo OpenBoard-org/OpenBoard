@@ -249,8 +249,8 @@ bool UBGraphicsDelegateFrame::canResizeBottomRight(qreal width, qreal height, qr
 
 void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->delegated()->data(UBGraphicsItemData::ItemLocked).toBool())
-        return;
+    if (None == mCurrentTool)
+        return; 
 
     QLineF move(mStartingPoint, event->scenePos());
     qreal moveX = move.length() * cos((move.angle() - mAngle) * PI / 180);
@@ -713,8 +713,8 @@ QGraphicsItem* UBGraphicsDelegateFrame::delegated()
 
 UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF pos)
 {
-        if(mDelegate->isLocked())
-                return None;
+    if(mDelegate->isLocked())
+        return None;
     else if (bottomRightResizeGripRect().contains(pos))
         return ResizeBottomRight;
     else if (bottomResizeGripRect().contains(pos)){

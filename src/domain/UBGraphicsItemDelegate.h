@@ -102,8 +102,10 @@ uint smallPoint : 1;
 
 };
 
-class DelegateMediaControl: public QGraphicsRectItem
+class DelegateMediaControl: public QObject, public QGraphicsRectItem
 {
+    Q_OBJECT
+
     public:
 
         DelegateMediaControl(UBGraphicsMediaItem* pDelegated, QGraphicsItem * parent = 0);
@@ -127,7 +129,10 @@ class DelegateMediaControl: public QGraphicsRectItem
         void updateTicker(qint64 time);
         void totalTimeChanged(qint64 newTotalTime);
 
-   protected:
+    signals:
+        void used();
+
+    protected:
         void seekToMousePos(QPointF mousePos);
 
         UBGraphicsMediaItem* mDelegate;

@@ -328,9 +328,11 @@ void UBGraphicsItemDelegate::positionHandles()
     if (mDelegated->isSelected()) {
         bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
         showHide(shownOnDisplay);
-        lock(isLocked());
+        mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked()));
         updateFrame();
-        mFrame->show();
+
+        if (UBStylusTool::Play != UBDrawingController::drawingController()->stylusTool())
+            mFrame->show();
 
         updateButtons(true);
 
@@ -451,6 +453,7 @@ void UBGraphicsItemDelegate::lock(bool locked)
     }
 
     mDelegated->update();
+    positionHandles();
     mFrame->positionHandles();
 }
 
@@ -676,7 +679,7 @@ UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) :
     rect.setWidth(parent->boundingRect().width());
     this->setRect(rect);
 
-    setBrush(QColor(UBSettings::paletteColor));             
+  //  setBrush(QColor(UBSettings::paletteColor));             
     setPen(Qt::NoPen);
     hide();
 
@@ -707,6 +710,17 @@ void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsI
 
     QPainterPath path;
     path.addRoundedRect(rect(), 10, 10);  
+
+    if (parentItem() && parentItem()->data(UBGraphicsItemData::ItemLocked).toBool())
+    {
+        QColor baseColor = UBSettings::paletteColor;
+        baseColor.setAlphaF(baseColor.alphaF() / 3);
+        setBrush(QBrush(baseColor));
+    }
+    else
+    {
+        setBrush(QBrush(UBSettings::paletteColor));
+    }
 
     painter->fillPath(path, brush());
 }
@@ -1215,6 +1229,7 @@ void DelegateMediaControl::mousePressEvent(QGraphicsSceneMouseEvent *event)
         seekToMousePos(event->pos());
         this->update();
         event->accept();
+        emit used();
     }
 }
 
@@ -1227,6 +1242,7 @@ void DelegateMediaControl::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         seekToMousePos(event->pos());
         this->update();
         event->accept();
+        emit used();
     }
 }
 
@@ -1251,6 +1267,7 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
         //OSX is a bit lazy
         updateTicker(tickPos);
     }
+    emit used();
 }
 
 void DelegateMediaControl::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

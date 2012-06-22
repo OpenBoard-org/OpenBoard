@@ -33,6 +33,8 @@
 UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated, parent, true, false)
     , mMedia(pMedia)
+    , mToolBarShowTimer(NULL)
+    , m_iToolBarShowingInterval(5000)
 {
     QPalette palette;
     palette.setBrush ( QPalette::Light, Qt::darkGray );
@@ -42,27 +44,47 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
     connect(mMedia, SIGNAL(finished()), this, SLOT(updatePlayPauseState()));
     connect(mMedia, SIGNAL(tick(qint64)), this, SLOT(updateTicker(qint64)));
     connect(mMedia, SIGNAL(totalTimeChanged(qint64)), this, SLOT(totalTimeChanged(qint64)));
+
+    if (delegated()->hasLinkedImage())
+    {
+        mToolBarShowTimer = new QTimer();
+        connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
+        mToolBarShowTimer->setInterval(m_iToolBarShowingInterval);
+    }
 }
 
 bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     mToolBarItem->show();
+
+    if (mToolBarShowTimer)
+        mToolBarShowTimer->start();
+
     return UBGraphicsItemDelegate::mousePressEvent(event);
+}
+
+void UBGraphicsMediaItemDelegate::hideToolBar()
+{
+    mToolBarItem->hide();
 }
 
 void UBGraphicsMediaItemDelegate::buildButtons()
 {
     mPlayPauseButton = new DelegateButton(":/images/play.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     connect(mPlayPauseButton, SIGNAL(clicked(bool)), this, SLOT(togglePlayPause()));
+    connect(mPlayPauseButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+    
 
     mStopButton = new DelegateButton(":/images/stop.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     connect(mStopButton, SIGNAL(clicked(bool)), mMedia, SLOT(stop()));
+    connect(mStopButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
 
     mMediaControl = new DelegateMediaControl(delegated(), mToolBarItem);
     mMediaControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
     UBGraphicsItem::assignZValue(mMediaControl, delegated()->zValue());
-
+    connect(mMediaControl, SIGNAL(used()), mToolBarShowTimer, SLOT(start()));
+    
     if (delegated()->isMuted())
         mMuteButton = new DelegateButton(":/images/soundOff.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     else
@@ -70,6 +92,7 @@ void UBGraphicsMediaItemDelegate::buildButtons()
 
     connect(mMuteButton, SIGNAL(clicked(bool)), delegated(), SLOT(toggleMute())); 
     connect(mMuteButton, SIGNAL(clicked(bool)), this, SLOT(toggleMute())); // for changing button image
+    connect(mMuteButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
 
     mButtons << mPlayPauseButton << mStopButton << mMuteButton;
 
@@ -89,7 +112,8 @@ void UBGraphicsMediaItemDelegate::buildButtons()
 
 UBGraphicsMediaItemDelegate::~UBGraphicsMediaItemDelegate()
 {
-    //NOOP
+    if (mToolBarShowTimer)
+        delete mToolBarShowTimer;
 }
 
 void UBGraphicsMediaItemDelegate::positionHandles()

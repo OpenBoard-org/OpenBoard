@@ -2366,14 +2366,10 @@ void UBGraphicsScene::createPointer()
 
 void UBGraphicsScene::setToolCursor(int tool)
 {
-    if (tool != (int)UBStylusTool::Selector
-            && tool != (int)UBStylusTool::Text)
+    if (tool == (int)UBStylusTool::Selector ||
+             tool == (int)UBStylusTool::Text || 
+                tool == (int)UBStylusTool::Play)
     {
         deselectAllItems();
-    }
-
-    if (tool != (int)UBStylusTool::Eraser)
-    {
-        hideEraser();
     }
 }

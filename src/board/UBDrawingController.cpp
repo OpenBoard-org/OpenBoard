@@ -54,6 +54,7 @@ UBDrawingController::UBDrawingController(QObject * parent)
     connect(UBApplication::mainWindow->actionEraser, SIGNAL(triggered(bool)), this, SLOT(eraserToolSelected(bool)));
     connect(UBApplication::mainWindow->actionMarker, SIGNAL(triggered(bool)), this, SLOT(markerToolSelected(bool)));
     connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered(bool)), this, SLOT(selectorToolSelected(bool)));
+    connect(UBApplication::mainWindow->actionPlay, SIGNAL(triggered(bool)), this, SLOT(playToolSelected(bool)));
     connect(UBApplication::mainWindow->actionHand, SIGNAL(triggered(bool)), this, SLOT(handToolSelected(bool)));
     connect(UBApplication::mainWindow->actionZoomIn, SIGNAL(triggered(bool)), this, SLOT(zoomInToolSelected(bool)));
     connect(UBApplication::mainWindow->actionZoomOut, SIGNAL(triggered(bool)), this, SLOT(zoomOutToolSelected(bool)));
@@ -120,6 +121,8 @@ void UBDrawingController::setStylusTool(int tool)
             UBApplication::mainWindow->actionMarker->setChecked(true);
         else if (mStylusTool == UBStylusTool::Selector)
             UBApplication::mainWindow->actionSelector->setChecked(true);
+        else if (mStylusTool == UBStylusTool::Play)
+            UBApplication::mainWindow->actionPlay->setChecked(true);
         else if (mStylusTool == UBStylusTool::Hand)
             UBApplication::mainWindow->actionHand->setChecked(true);
         else if (mStylusTool == UBStylusTool::ZoomIn)
@@ -345,6 +348,12 @@ void UBDrawingController::selectorToolSelected(bool checked)
 {
     if (checked)
         setStylusTool(UBStylusTool::Selector);
+}
+
+void UBDrawingController::playToolSelected(bool checked)
+{
+    if (checked)
+        setStylusTool(UBStylusTool::Play);
 }
 
 void UBDrawingController::handToolSelected(bool checked)

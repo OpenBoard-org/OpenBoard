@@ -268,7 +268,7 @@ void UBGraphicsRuler::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
 	UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-	if (currentTool == UBStylusTool::Selector)
+	if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
 	{
 		mCloseSvgItem->setVisible(mShowButtons);
 		mResizeSvgItem->setVisible(mShowButtons);
@@ -376,7 +376,8 @@ void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-	if (currentTool == UBStylusTool::Selector)
+	if (currentTool == UBStylusTool::Selector ||
+        currentTool == UBStylusTool::Play)
 	{
 		mCloseSvgItem->setParentItem(this);
 	    mResizeSvgItem->setParentItem(this);
