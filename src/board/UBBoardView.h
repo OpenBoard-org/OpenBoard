@@ -142,6 +142,11 @@ class UBBoardView : public QGraphicsView
         QList<QGraphicsItem *> mRubberedItems;
         QSet<QGraphicsItem*> mJustSelectedItems;
 
+        int mLongPressInterval;
+        QTimer mLongPressTimer;
+
+        bool mIsDragInProgress;
+
     private slots:
 
         void settingChanged(QVariant newValue);
@@ -149,6 +154,7 @@ class UBBoardView : public QGraphicsView
 	public slots:
 
 		void virtualKeyboardActivated(bool b);
+        void longPressEvent();
 
 };
 
