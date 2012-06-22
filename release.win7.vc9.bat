@@ -65,6 +65,9 @@ copy %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm build\win32\release\product\i18n\
 mkdir build\win32\release\product\customizations
 xcopy /s resources\customizations\* build\win32\release\product\customizations
 
+copy plugins\cffadaptor\build\win32\release\lib\CFF_Adaptor.dll build\win32\release\product\
+
+
 del build\win32\release\product\i18n\qt_help*
 
 del "build\win32\release\product\Sankore.pdb"

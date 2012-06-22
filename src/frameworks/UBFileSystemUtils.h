@@ -37,7 +37,7 @@ class UBFileSystemUtils
 
         static QFileInfoList allElementsInDirectory(const QString& pDirPath);
 
-        static QStringList allFiles(const QString& pDirPath);
+        static QStringList allFiles(const QString& pDirPath, const bool isRecurive=true);
 
         static bool deleteDir(const QString& pDirPath);
 

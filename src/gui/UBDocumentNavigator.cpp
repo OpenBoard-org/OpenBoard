@@ -263,14 +263,6 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
     // Update the thumbnails width
     mThumbnailWidth = (width() > mThumbnailMinWidth) ? width() - 2*border() : mThumbnailMinWidth;
 
-    // Update the scene rect
-    //    QRect sceneRect;
-    //    sceneRect.setWidth(width() - 2*border());
-    //    sceneRect.setHeight(height() - 2*border());
-    //    sceneRect.moveLeft(border());
-    //    sceneRect.moveTop(border());
-    //    scene()->setSceneRect(sceneRect);
-
     // Refresh the scene
     refreshScene();
 }
