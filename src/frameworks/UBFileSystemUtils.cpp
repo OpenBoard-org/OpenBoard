@@ -177,7 +177,7 @@ void UBFileSystemUtils::cleanupGhostTempFolders(const QString& templateString)
 }
 
 
-QStringList UBFileSystemUtils::allFiles(const QString& pDirPath)
+QStringList UBFileSystemUtils::allFiles(const QString& pDirPath, bool isRecursive)
 {
     QStringList result;
     if (pDirPath == "" || pDirPath == "." || pDirPath == "..")
@@ -187,7 +187,7 @@ QStringList UBFileSystemUtils::allFiles(const QString& pDirPath)
 
     foreach(QFileInfo dirContent, dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot , QDir::Name))
     {
-        if (dirContent.isDir())
+        if (isRecursive && dirContent.isDir())
         {
             result << allFiles(dirContent.absoluteFilePath());
         }
