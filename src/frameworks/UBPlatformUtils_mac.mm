@@ -184,31 +184,64 @@ void UBPlatformUtils::fadeDisplayIn()
     }
 }
 
-QString UBPlatformUtils::preferredTranslation(QString pFilePrefix)
+
+//QString UBPlatformUtils::preferredTranslation(QString pFilePrefix)
+//{
+//    QString qmPath;
+//    NSString* filePrefix = [[NSString alloc] initWithUTF8String:(const char*)(pFilePrefix.toUtf8())];
+
+//    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+//    NSString *lprojPath = [[[NSBundle mainBundle] pathForResource:@"Localizable" ofType:@"strings"] stringByDeletingLastPathComponent];
+//    if (lprojPath)
+//    {
+//        NSString *lang = [[lprojPath lastPathComponent] stringByDeletingPathExtension];
+//        NSString *translationFilePath = [lprojPath stringByAppendingPathComponent:[[filePrefix stringByAppendingString:lang] stringByAppendingPathExtension:@"qm"]];
+//        qmPath = QString::fromUtf8([translationFilePath UTF8String], strlen([translationFilePath UTF8String]));
+//    }
+
+//    [pool drain];
+//    return qmPath;
+//}
+
+//QString UBPlatformUtils::preferredLanguage()
+//{
+//    QFileInfo qmFileInfo = QFileInfo(preferredTranslation("sankore_"));
+//    QDir lprojPath = qmFileInfo.dir();
+//    QFileInfo lprojFileInfo = QFileInfo(lprojPath.absolutePath());
+//    return lprojFileInfo.baseName();
+//}
+
+QStringList UBPlatformUtils::availableTranslations()
 {
-    QString qmPath;
-    NSString* filePrefix = [[NSString alloc] initWithUTF8String:(const char*)(pFilePrefix.toUtf8())];
-
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-    NSString *lprojPath = [[[NSBundle mainBundle] pathForResource:@"Localizable" ofType:@"strings"] stringByDeletingLastPathComponent];
-    if (lprojPath)
-    {
-        NSString *lang = [[lprojPath lastPathComponent] stringByDeletingPathExtension];
-        NSString *translationFilePath = [lprojPath stringByAppendingPathComponent:[[filePrefix stringByAppendingString:lang] stringByAppendingPathExtension:@"qm"]];
-        qmPath = QString::fromUtf8([translationFilePath UTF8String], strlen([translationFilePath UTF8String]));
-    }
-
+    NSString *lprojPath = [[NSBundle mainBundle] resourcePath];
+    QString translationsPath =  QString::fromUtf8([lprojPath UTF8String], strlen([lprojPath UTF8String]));
+    QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath, false);
+    QRegExp sankoreTranslationFiles(".*lproj");
+    translationsList=translationsList.filter(sankoreTranslationFiles);
     [pool drain];
-    return qmPath;
+    return translationsList.replaceInStrings(QRegExp("(.*)/(.*).lproj"),"\\2");
 }
 
-QString UBPlatformUtils::preferredLanguage()
+QString UBPlatformUtils::translationPath(QString pFilePrefix, QString pLanguage)
 {
-    QFileInfo qmFileInfo = QFileInfo(preferredTranslation("sankore_"));
-    QDir lprojPath = qmFileInfo.dir();
-    QFileInfo lprojFileInfo = QFileInfo(lprojPath.absolutePath());
-    return lprojFileInfo.baseName();
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSString *lprojPath = [[NSBundle mainBundle] resourcePath];
+    QString translationsPath =  QString::fromUtf8([lprojPath UTF8String], strlen([lprojPath UTF8String]));
+    [pool drain];
+    return translationsPath + "/" + pLanguage + ".lproj/" + pFilePrefix + pLanguage + ".qm";
+}
+
+QString UBPlatformUtils::systemLanguage()
+{
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    NSUserDefaults* defs = [NSUserDefaults standardUserDefaults];
+    NSArray* languages = [defs objectForKey:@"AppleLanguages"];
+    NSString* preferredLang = [languages objectAtIndex:0];
+    QString result = QString::fromUtf8([preferredLang UTF8String], strlen([preferredLang UTF8String]));
+    [pool drain];
+    return result;
 }
 
 void UBPlatformUtils::runInstaller(const QString &installerFilePath)

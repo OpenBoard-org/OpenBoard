@@ -103,8 +103,8 @@ class UBPlatformUtils
         static void setFileType(const QString &filePath, unsigned long fileType);
         static void fadeDisplayOut();
         static void fadeDisplayIn();
-        static QString preferredTranslation(QString pFilePrefix);
-        static QString preferredLanguage();
+        static QString translationPath(QString pFilePrefix, QString pLanguage);
+        static QString systemLanguage();
         static bool hasVirtualKeyboard();
         //static void showVirtualKeyboard();
         static void runInstaller(const QString &installerFilePath);
@@ -115,6 +115,7 @@ class UBPlatformUtils
         static QString computerName();
         static UBKeyboardLocale** getKeyboardLayouts(int& nCount);
         static QString urlFromClipboard();
+        static QStringList availableTranslations();
 };
 
 

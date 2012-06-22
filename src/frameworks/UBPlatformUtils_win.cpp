@@ -20,6 +20,7 @@
 #include <windows.h>
 #include <shellapi.h>
 
+#include "frameworks/UBFileSystemUtils.h"
 #include "core/memcheck.h"
 
 void UBPlatformUtils::init()
@@ -59,14 +60,22 @@ void UBPlatformUtils::fadeDisplayIn()
     // NOOP
 }
 
-QString UBPlatformUtils::preferredTranslation(QString pFilePrefix)
+QStringList UBPlatformUtils::availableTranslations()
 {
-    QString localPreferredLanguage = preferredLanguage();
-    QString qmPath = applicationResourcesDirectory() + "/" + "i18n" + "/" + pFilePrefix + localPreferredLanguage + ".qm";
+	QString translationsPath = applicationResourcesDirectory() + "/" + "i18n" + "/";
+	QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath);
+	QRegExp sankoreTranslationFiles(".*sankore_.*.qm");
+	translationsList=translationsList.filter(sankoreTranslationFiles);
+	return translationsList.replaceInStrings(QRegExp("(.*)sankore_(.*).qm"),"\\2");
+}
+
+QString UBPlatformUtils::translationPath(QString pFilePrefix,QString pLanguage)
+{
+    QString qmPath = applicationResourcesDirectory() + "/" + "i18n" + "/" + pFilePrefix + pLanguage + ".qm";
     return qmPath;
 }
 
-QString UBPlatformUtils::preferredLanguage()
+QString UBPlatformUtils::systemLanguage()
 {
     return QLocale::system().name();
 }
