@@ -613,6 +613,37 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
     }
 }
 
+void UBBoardView::rubberItems()
+{
+    if (mUBRubberBand)
+        mRubberedItems = items(mUBRubberBand->geometry());
+}
+
+void UBBoardView::moveRubberedItems(QPointF movingVector)
+{
+//     QRect bandRect = mUBRubberBand->geometry();
+// 
+     QRectF invalidateRect = scene()->itemsBoundingRect();
+//     QList<QGraphicsItem *> rubberItems = items(bandRect);
+
+    foreach (QGraphicsItem *item, mRubberedItems) 
+    {
+
+        if (item->type() == UBGraphicsW3CWidgetItem::Type
+              || item->type() == UBGraphicsPixmapItem::Type
+              || item->type() == UBGraphicsMediaItem::Type
+              || item->type() == UBGraphicsSvgItem::Type
+              || item->type() == UBGraphicsTextItem::Type
+              || item->type() == UBGraphicsStrokesGroup::Type
+              || item->type() == UBGraphicsGroupContainerItem::Type) 
+        {
+              item->setPos(item->pos()+movingVector);       
+        }    
+    }
+
+    scene()->invalidate(invalidateRect);
+}
+
 void UBBoardView::mousePressEvent (QMouseEvent *event)
 {
     if (isAbsurdPoint (event->pos ()))
@@ -649,7 +680,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             mPreviousPoint = event->posF ();
             event->accept ();
         }
-        else if (currentTool == UBStylusTool::Selector)
+        else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
         {
             movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
             
@@ -661,14 +692,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 mUBRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
                 mUBRubberBand->show();
             }
-
-            handleItemMousePress(event);
-
-            event->accept();
-        }
-        else if (currentTool == UBStylusTool::Play)
-        {
-            movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
 
             handleItemMousePress(event);
             event->accept();
@@ -754,14 +777,16 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
       mPreviousPoint = eventPosition;
       event->accept ();
     }
-  else if (currentTool == UBStylusTool::Selector)
+  else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
   {
       if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
           return;
       }
 
-      if (mUBRubberBand && mUBRubberBand->isVisible()) {
+      if (!movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) && mUBRubberBand && mUBRubberBand->isVisible()) {
+
           QRect bandRect(mMouseDownPos, event->pos());
+
           bandRect = bandRect.normalized();
 
           mUBRubberBand->setGeometry(bandRect);
@@ -773,6 +798,8 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
                   mJustSelectedItems.remove(item);
               }
           }
+
+          if (currentTool == UBStylusTool::Selector)
           foreach (QGraphicsItem *item, items(bandRect)) {
 
               if (item->type() == UBGraphicsW3CWidgetItem::Type
@@ -793,10 +820,6 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
       handleItemMouseMove(event);
     }
-  else if (currentTool == UBStylusTool::Play)
-  {
-      handleItemMouseMove(event);
-  }
   else if ((UBDrawingController::drawingController()->isDrawingTool())
     && !mMouseButtonIsPressed)
   {
@@ -859,7 +882,8 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           if (mUBRubberBand && mUBRubberBand->isVisible()) {
               mUBRubberBand->hide();
       }
-                        QGraphicsView::mouseReleaseEvent (event);
+
+      QGraphicsView::mouseReleaseEvent (event);
     }
   else if (currentTool == UBStylusTool::Play)
   {

@@ -42,6 +42,9 @@ class UBBoardView : public QGraphicsView
 
         void setToolCursor(int tool);
 
+        void rubberItems();
+        void moveRubberedItems(QPointF movingVector);
+
     signals:
 
         void resized(QResizeEvent* event);
@@ -133,7 +136,10 @@ class UBBoardView : public QGraphicsView
         QGraphicsItem *movingItem;
         QMouseEvent *suspendedMousePressEvent;
 
+        bool moveRubberBand;
         UBRubberBand *mUBRubberBand;
+        
+        QList<QGraphicsItem *> mRubberedItems;
         QSet<QGraphicsItem*> mJustSelectedItems;
 
     private slots:
