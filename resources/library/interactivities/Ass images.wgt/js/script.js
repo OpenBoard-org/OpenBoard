@@ -33,12 +33,21 @@ function start(){
     //events
     if (window.widget) {
         window.widget.onleave = function(){
-            //exportData();
+            exportData();
         }
     }
     
     $("#wgt_reload").click(function(){
-        window.location.reload();
+        if($("#wgt_display").hasClass("selected")){
+            $("#wgt_edit").trigger("click");
+            $("#wgt_display").trigger("click");
+        } else {
+            $("#wgt_display").trigger("click");
+        }
+    });
+    
+    $("#wgt_reload, #wgt_display, #wgt_edit").mouseover(function(){
+        exportData();
     });
     
     $(".style_select").change(function (event){
