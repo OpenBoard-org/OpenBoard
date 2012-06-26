@@ -1,5 +1,5 @@
-
-
+//just a flag
+var flag = true;
 
 function createElements( text )
 {
@@ -21,11 +21,45 @@ function createElements( text )
 
 $(document).ready(function()
 {
+    var w = new wcontainer( "#ub-widget" );
+    
+    var sentences = "";
+    
+    if(window.sankore)
+        sentences = (sankore.preference("ordSplText", ""))?sankore.preference("ordSplText", ""):sankoreLang.example;
+    else
+        sentences = sankoreLang.example;
+    
+    w.elements.container.find( "textarea" ).live("change", function(){
+        sankore.setPreference("spl_text_style", $(".style_select").find("option:selected").val());
+        if(w.editMode)
+            sankore.setPreference("ordSplText", w.elements.container.find( "textarea" ).val());
+        else
+            sankore.setPreference("ordSplText", w.getData( "text" ));
+    })
+    
+    if (window.widget) {
+        window.widget.onleave = function(){
+            sankore.setPreference("spl_text_style", $(".style_select").find("option:selected").val());
+            if(w.editMode){
+                sankore.setPreference("ordSplText", w.elements.container.find( "textarea" ).val());
+                sankore.setPreference("ordSplTextState", "0");
+            }
+            else{
+                sankore.setPreference("ordSplTextCode", $("#mp_view").html());
+                sankore.setPreference("ordSplTextState", "1");
+                sankore.setPreference("ordSplTextAnswer", ($("#mp_view").hasClass("answerRight"))?"answerRight":"");
+                sankore.setPreference("ordSplText", w.getData( "text" ));              
+            }
+        }
+    }
+    
     if(sankore.preference("spl_text_style","")){
         changeStyle(sankore.preference("spl_text_style",""));
         $(".style_select").val(sankore.preference("spl_text_style",""));
     } else
         changeStyle(1)
+    
     $("#wgt_display").text(sankoreLang.view);
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_display, #wgt_edit").click(function(event){
@@ -36,7 +70,7 @@ $(document).ready(function()
                 $(".style_select").css("display","none");                
                 $(this).css("display", "none");
                 $("#wgt_edit").css("display", "block");
-                modeView();
+                w.modeView();
             }
         } else {            
             if(!$(this).hasClass("selected")){
@@ -45,13 +79,19 @@ $(document).ready(function()
                 $(".style_select").css("display","block");                
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
-                modeEdit();
+                w.modeEdit();
             }
         }
     });
     $("#wgt_name").text(sankoreLang.wgt_name);
+    
     $("#wgt_reload").text(sankoreLang.reload).click(function(){
-        window.location.reload();
+        if($("#wgt_display").hasClass("selected")){
+            $("#wgt_edit").trigger("click");
+            $("#wgt_display").trigger("click");
+        } else {
+            $("#wgt_display").trigger("click");
+        }
     });
     
     $(".style_select option[value='1']").text(sankoreLang.slate);
@@ -59,24 +99,7 @@ $(document).ready(function()
     
     $(".style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
-    })
-    
-    var w = new wcontainer( "#ub-widget" );
-    
-    var sentences = "";
-    
-    if(window.sankore)
-        sentences = (sankore.preference("ordSplText", ""))?sankore.preference("ordSplText", ""):sankoreLang.example;
-    else
-        sentences = sankoreLang.example;
-
-    w.elements.container.find( "textarea" ).live("change", function(){
-        sankore.setPreference("spl_text_style", $(".style_select").find("option:selected").val());
-        if(w.editMode)
-            sankore.setPreference("ordSplText", w.elements.container.find( "textarea" ).val());
-        else
-            sankore.setPreference("ordSplText", w.getData( "text" ));
-    })
+    })  
     
     w.maxWidth = 600;
 	
@@ -102,7 +125,15 @@ $(document).ready(function()
         text = text.replace( /\. /g, ' ' ).trim( ["."] );
 		
         // create the html
-        w.setViewContent( createElements( text ) );
+        if(sankore.preference("ordSplTextState", "") == "1" && flag){
+            $("#mp_view").html(sankore.preference("ordSplTextCode", ""));
+            if(sankore.preference("ordSplTextAnswer", ""))
+                $("#mp_view").addClass(sankore.preference("ordSplTextAnswer", ""));
+            flag = false;
+        } 
+        else
+            w.setViewContent( createElements( text ) );
+        
 		
         // the behaviour
         w.elements.containerView.find( ".letter" )

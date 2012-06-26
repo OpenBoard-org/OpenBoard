@@ -4,7 +4,7 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
-        width="750"
+        width="850"
         height="350" 
 		ub:resizable="true">
 		
