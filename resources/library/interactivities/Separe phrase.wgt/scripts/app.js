@@ -1,4 +1,5 @@
-
+//just a flag
+var flag = true;
 
 
 function createElements( phrase )
@@ -19,12 +20,37 @@ function createElements( phrase )
 
 
 $(document).ready(function()
-{
+{    
+    var w = new wcontainer( "#ub-widget" );
+    var sentence = "";
+        
+    if(window.sankore)
+        sentence = (sankore.preference("ordSplPhrases", ""))?sankore.preference("ordSplPhrases", ""):sankoreLang.example;
+    else
+        sentence = sankoreLang.example;
+    
+    if (window.widget) {
+        window.widget.onleave = function(){
+            sankore.setPreference("spl_phrase_style", $(".style_select").find("option:selected").val());
+            if(w.editMode){
+                sankore.setPreference("ordSplPhrases", w.elements.container.find( "textarea" ).val());
+                sankore.setPreference("ordSplPhrasesState", "0");
+            }
+            else{
+                sankore.setPreference("ordSplPhrasesCode", $("#mp_view").html());
+                sankore.setPreference("ordSplPhrasesState", "1");
+                sankore.setPreference("ordSplPhrasesAnswer", ($("#mp_view").hasClass("answerRight"))?"answerRight":"");
+                sankore.setPreference("ordSplPhrases", w.elements.container.find( "textarea" ).val());                
+            }
+        }
+    }
+    
     if(sankore.preference("spl_phrase_style","")){
         changeStyle(sankore.preference("spl_phrase_style",""));
         $(".style_select").val(sankore.preference("spl_phrase_style",""));
     } else
         changeStyle(1)
+    
     $("#wgt_display").text(sankoreLang.view);
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_display, #wgt_edit").click(function(event){
@@ -35,7 +61,7 @@ $(document).ready(function()
                 $(".style_select").css("display","none");                
                 $(this).css("display", "none");
                 $("#wgt_edit").css("display", "block");
-                modeView();
+                w.modeView();
             }
         } else {            
             if(!$(this).hasClass("selected")){
@@ -44,14 +70,21 @@ $(document).ready(function()
                 $(".style_select").css("display","block");                
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
-                modeEdit();
+                w.modeEdit();
             }
         }
     });
     $("#wgt_name").text(sankoreLang.wgt_name);
+    
     $("#wgt_reload").text(sankoreLang.reload).click(function(){
-        window.location.reload();
+        if($("#wgt_display").hasClass("selected")){
+            $("#wgt_edit").trigger("click");
+            $("#wgt_display").trigger("click");
+        } else {
+            $("#wgt_display").trigger("click");
+        }
     });
+    
     $(".style_select option[value='1']").text(sankoreLang.slate);
     $(".style_select option[value='2']").text(sankoreLang.pad);
     
@@ -59,23 +92,6 @@ $(document).ready(function()
         changeStyle($(this).find("option:selected").val());
     })
     
-    var w = new wcontainer( "#ub-widget" );
-    var sentence = "";
-        
-    if(window.sankore)
-        sentence = (sankore.preference("ordSplPhrases", ""))?sankore.preference("ordSplPhrases", ""):sankoreLang.example;
-    else
-        sentence = sankoreLang.example;
-
-    w.elements.container.find( "textarea" ).live("change", function(){
-        sankore.setPreference("spl_phrase_style", $(".style_select").find("option:selected").val());
-        if(w.editMode)
-            sankore.setPreference("ordSplPhrases", w.elements.container.find( "textarea" ).val());
-        else
-            sankore.setPreference("ordSplPhrases", w.getData("phrase"));
-    })
-    
-	
     w.maxWidth = 600;
 	
     w.setEditContent( '<div class="inputwrap"><textarea class="percent">' + sentence + '</textarea></div>' );
@@ -89,6 +105,7 @@ $(document).ready(function()
     // onViewMode
     w.onViewMode = function()
     {
+        
         // clean up the text
         var phrase = w.elements.container.find( "textarea" ).val()
         .replace( /\r/g, '' ).replace( /\n/g, ' ' ).replace( /  /g, ' ' ).trim();
@@ -100,7 +117,14 @@ $(document).ready(function()
         phrase = phrase.replace( / /g, '' );
 		
         // create the html
-        w.setViewContent( createElements( phrase ) );
+        if(sankore.preference("ordSplPhrasesState", "") == "1" && flag){
+            $("#mp_view").html(sankore.preference("ordSplPhrasesCode", ""));
+            if(sankore.preference("ordSplPhrasesAnswer", ""))
+                $("#mp_view").addClass(sankore.preference("ordSplPhrasesAnswer", ""));
+            flag = false;
+        } 
+        else
+            w.setViewContent( createElements( phrase ) );
 		
 		
         // the behaviour
@@ -202,7 +226,7 @@ $(document).ready(function()
                 phrase += ch;
             }
         });
-		
+        //alert(phrase + " | " + this.getData( "phrase" ))	
         if( phrase == this.getData( "phrase" ) ){
             this.elements.containerView.addClass( "answerRight" );
         }
@@ -214,7 +238,7 @@ $(document).ready(function()
 	
     window.w = w;
     window.winstance = w;
-	
+
     w.modeView();
     
     //changing the style
