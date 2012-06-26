@@ -6,8 +6,8 @@ var sankoreLang = {
     enter: "Saisir la consigne ici ...",
     wgt_name: "Associer des images",
     reload: "Recharger",
-    slate: "Ardoise",
-    pad: "Tablette"
+    slate: "ardoise",
+    pad: "tablette"
 };
 
 //main function

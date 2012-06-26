@@ -4,8 +4,8 @@ var sankoreLang = {
     example: "bonjour, ceci est la première phrase. salut, c'est la deuxième phrase. bonjour à nouveau, c'est la troisième phrase. bonjour, c'est la quatrième phrase. salut, désolé, je suis en retard, je suis la cinquième phrase.",
     wgt_name: "Séparer un texte",
     reload: "Recharger",
-    slate: "Ardoise",
-    pad: "Tablette"
+    slate: "ardoise",
+    pad: "tablette"
 };
 
 // if use the "view/edit" button or rely on the api instead

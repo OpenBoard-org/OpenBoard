@@ -13,8 +13,8 @@ var sankoreLang = {
     text: "Texte",
     wgt_name: "Catégoriser des textes",
     reload: "Recharger",
-    slate: "Bois",
-    pad: "Pad"
+    slate: "ardoise",
+    pad: "tablette"
 };
 
 //main function

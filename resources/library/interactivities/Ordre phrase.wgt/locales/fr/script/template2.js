@@ -31,8 +31,8 @@ var sankoreLang = {
     example: "Cette phrase\nest un\nexample",
     wgt_name: "Ordonner des phrases",
     reload: "Recharger",
-    slate: "Bois",
-    pad: "Pad"
+    slate: "ardoise",
+    pad: "tablette"
 };
 
 

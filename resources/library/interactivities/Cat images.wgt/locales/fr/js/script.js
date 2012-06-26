@@ -7,8 +7,8 @@ var sankoreLang = {
     add: "Nouveau bloc",
     wgt_name: "Catégoriser des images",
     reload: "Recharger",
-    slate: "Ardoise",
-    pad: "Tablette"
+    slate: "ardoise",
+    pad: "tablette"
 };
 
 //main function

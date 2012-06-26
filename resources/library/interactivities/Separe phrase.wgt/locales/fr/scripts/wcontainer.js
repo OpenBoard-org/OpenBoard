@@ -4,8 +4,8 @@ var sankoreLang = {
     example: "Ceci est une série de mots à séparer correctement",
     wgt_name: "Séparer une phrase",
     reload: "Recharger",
-    slate: "Ardoise",
-    pad: "Tablette"
+    slate: "ardoise",
+    pad: "tablette"
 };
 
 // if use the "view/edit" button or rely on the api instead

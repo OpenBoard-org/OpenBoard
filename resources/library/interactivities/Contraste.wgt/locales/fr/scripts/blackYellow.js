@@ -23,8 +23,8 @@ var sankoreLang = {
     cancel: "Annuler",
     wgt_name: "Contraste",
     reload: "Recharger",
-    slate: "Ardoise",
-    pad: "Tablette"
+    slate: "ardoise",
+    pad: "tablette"
 };
 function init(){
 

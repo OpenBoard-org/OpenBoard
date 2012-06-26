@@ -4,8 +4,8 @@ var sankoreLang = {
     example: "so*phi*sti*qué",
     wgt_name: "Syllabe",
     reload: "Recharger",
-    slate: "Ardoise",
-    pad: "Tablette"
+    slate: "ardoise",
+    pad: "tablette"
 };
 
 // if use the "view/edit" button or rely on the api instead
