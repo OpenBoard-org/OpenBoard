@@ -34,12 +34,21 @@ function start(){
     //events
     if (window.widget) {
         window.widget.onleave = function(){
-            //exportData();
+            exportData();
         }
     }
     
     $("#wgt_reload").click(function(){
-        window.location.reload();
+        if($("#wgt_display").hasClass("selected")){
+            $("#wgt_edit").trigger("click");
+            $("#wgt_display").trigger("click");
+        } else {
+            $("#wgt_display").trigger("click");
+        }
+    });
+    
+    $("#wgt_reload, #wgt_display, #wgt_edit").mouseover(function(){
+        exportData();
     });
     
     $(".style_select").change(function (event){
@@ -204,6 +213,10 @@ function exportData(){
         array_to_export.push(cont_obj);
     }
     sankore.setPreference("odr_des_imgs", JSON.stringify(array_to_export));
+    if($("#wgt_display").hasClass("selected"))
+        sankore.setPreference("odr_des_imgs_state", "display");
+    else
+        sankore.setPreference("odr_des_imgs_state", "edit");
 }
 
 //import
@@ -240,13 +253,19 @@ function importData(data){
                 img_block.append(hidden_input).append(img);
                 tmp_array.push(img_block);
             }
-            tmp_array = shuffle(tmp_array);
+            if(sankore.preference("odr_des_imgs_state","")){
+                if(sankore.preference("odr_des_imgs_state","") == "edit")
+                    tmp_array = shuffle(tmp_array);
+            } else 
+                tmp_array = shuffle(tmp_array);
+            
             for(j = 0; j<tmp_array.length;j++)
                 tmp_array[j].appendTo(imgs_container);
-            imgs_container.sortable( {
-                update: checkResult
-            } );   
+            imgs_container.sortable().bind('sortupdate', function(event, ui) {
+                checkResult(event);
+            }); 
             container.appendTo("#data"); 
+            imgs_container.trigger("sortupdate")                          
         }        
     }
 }
@@ -286,9 +305,9 @@ function showExample(){
     tmp_array = shuffle(tmp_array);
     for(var i = 0; i<tmp_array.length;i++)
         tmp_array[i].appendTo(imgs_container);
-    imgs_container.sortable( {
-        update: checkResult
-    } );
+    imgs_container.sortable().bind('sortupdate', function(event, ui) {
+        checkResult(event);
+    });
 
     container.appendTo("#data");
 }

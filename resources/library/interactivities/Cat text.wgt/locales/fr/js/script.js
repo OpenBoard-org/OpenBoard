@@ -13,8 +13,8 @@ var sankoreLang = {
     text: "Texte",
     wgt_name: "Catégoriser des textes",
     reload: "Recharger",
-    slate: "Ardoise",
-    pad: "Tablette"
+    slate: "Bois",
+    pad: "Pad"
 };
 
 //main function
@@ -40,12 +40,21 @@ function start(){
 
     if (window.widget) {
         window.widget.onleave = function(){
-            //exportData();
+            exportData();
         }
     }
     
     $("#wgt_reload").click(function(){
-        window.location.reload();
+        if($("#wgt_display").hasClass("selected")){
+            $("#wgt_edit").trigger("click");
+            $("#wgt_display").trigger("click");
+        } else {
+            $("#wgt_display").trigger("click");
+        }
+    });
+    
+    $("#wgt_reload, #wgt_display, #wgt_edit").mouseover(function(){
+        exportData();
     });
     
     $(".style_select").change(function (event){
@@ -201,13 +210,6 @@ function start(){
         } else {
             $(this).parent().remove();
         }
-    });
-
-    $(".text_cont").live("blur", function(){
-        exportData();
-    }).live("keyup", function(e){
-        if (e.keyCode == 13) 
-            exportData();
     });
 }
 
