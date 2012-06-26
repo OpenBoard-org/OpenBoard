@@ -40,7 +40,7 @@ $(document).ready(function()
                 sankore.setPreference("ordSplPhrasesCode", $("#mp_view").html());
                 sankore.setPreference("ordSplPhrasesState", "1");
                 sankore.setPreference("ordSplPhrasesAnswer", ($("#mp_view").hasClass("answerRight"))?"answerRight":"");
-                sankore.setPreference("ordSplPhrases", w.elements.container.find( "textarea" ).val());                
+                sankore.setPreference("ordSplPhrases", w.getData("phrase"));                
             }
         }
     }
