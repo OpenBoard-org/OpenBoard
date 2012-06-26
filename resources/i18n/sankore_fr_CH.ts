@@ -20,7 +20,7 @@
     </message>
     <message>
         <source>0 Items</source>
-        <translation>0 éléments</translation>
+        <translation>0 élément</translation>
     </message>
 </context>
 <context>
@@ -50,7 +50,7 @@
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation>Publier le podcast sur YouTube</translation>
+        <translation>Publier Podcast sur YouTube</translation>
     </message>
     <message>
         <source>Title</source>
@@ -129,7 +129,7 @@
     </message>
     <message>
         <source>Marker</source>
-        <translation>Marqueur</translation>
+        <translation>Surligneur</translation>
     </message>
     <message>
         <source>Selector</source>
@@ -169,7 +169,7 @@
     </message>
     <message>
         <source>Pages</source>
-        <translation>Page(s)</translation>
+        <translation>Pages</translation>
     </message>
     <message>
         <source>New Page</source>
@@ -221,7 +221,7 @@
     </message>
     <message>
         <source>Pen</source>
-        <translation>Stylo</translation>
+        <translation>Stylet</translation>
     </message>
     <message>
         <source>Eraser</source>
@@ -377,7 +377,7 @@
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation>Afficher le bureau</translation>
+        <translation>Bureau</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -393,11 +393,11 @@
     </message>
     <message>
         <source>Use Document Wide Size (16/9)</source>
-        <translation>Utiliser le format de document 16/9</translation>
+        <translation>Utiliser un format de document 16/9</translation>
     </message>
     <message>
         <source>Use Document Regular Size (4/3)</source>
-        <translation>Utiliser le format de document 4/3</translation>
+        <translation>Utiliser un format de document 4/3</translation>
     </message>
     <message>
         <source>Use Custom Document Size</source>
@@ -461,7 +461,7 @@
     </message>
     <message>
         <source>Highlight </source>
-        <translation>Mettre en surbrillance</translation>
+        <translation>Surligner</translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -469,15 +469,15 @@
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation>Sélectionner et modifier un objet</translation>
+        <translation>Sélectionner et modifier des objets</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation></translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <source>Scroll Page</source>
-        <translation>Se déplacer dans la page</translation>
+        <translation>Faire défiler la page</translation>
     </message>
     <message>
         <source>Laser Pointer</source>
@@ -489,7 +489,7 @@
     </message>
     <message>
         <source>Ctrl+G</source>
-        <translation></translation>
+        <translation>Ctrl+G</translation>
     </message>
     <message>
         <source>Draw Lines</source>
@@ -501,11 +501,11 @@
     </message>
     <message>
         <source>Write Text</source>
-        <translation>Ecrire du texte</translation>
+        <translation>Ecrire un texte</translation>
     </message>
     <message>
         <source>Ctrl+K</source>
-        <translation></translation>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
@@ -561,7 +561,7 @@
     </message>
     <message>
         <source>Ctrl+H</source>
-        <translation></translation>
+        <translation>Ctrl+H</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
@@ -609,7 +609,7 @@
     </message>
     <message>
         <source>Stop Loading</source>
-        <translation>Arrêter le chargement</translation>
+        <translation>Arrêter</translation>
     </message>
     <message>
         <source>Sleep</source>
@@ -645,15 +645,15 @@
     </message>
     <message>
         <source>Wide Size (16/9)</source>
-        <translation>Taille cinéma</translation>
+        <translation>Format 16/9</translation>
     </message>
     <message>
         <source>Regular Size (4/3)</source>
-        <translation>Taille nominale</translation>
+        <translation>Format 4/3</translation>
     </message>
     <message>
         <source>Custom Size</source>
-        <translation>Taille personnalisée</translation>
+        <translation>Format personnalisé</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
@@ -701,7 +701,7 @@
     </message>
     <message>
         <source>Multi Screen</source>
-        <translation>Multi-écran</translation>
+        <translation>Multi-écrans</translation>
     </message>
     <message>
         <source>New Folder</source>
@@ -729,7 +729,7 @@
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>Ajouter au document en cours</translation>
+        <translation>Ajouter au document</translation>
     </message>
     <message>
         <source>Add</source>
@@ -741,7 +741,7 @@
     </message>
     <message>
         <source>Home</source>
-        <translation>Page d&apos;accueil</translation>
+        <translation>Accueil</translation>
     </message>
     <message>
         <source>Bookmarks</source>
@@ -785,11 +785,11 @@
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré</source>
-        <translation>Cacher Open-Sankoré</translation>
+        <translation>Masquer Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
-        <translation>Cacher Open-Sankoré</translation>
+        <translation>Masquer Open-Sankoré</translation>
     </message>
     <message>
         <source>Import Uniboard Documents</source>
@@ -823,7 +823,7 @@
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation>Se connecter au proxy</translation>
+        <translation>Se connecter par le proxy</translation>
     </message>
     <message>
         <source>Username:</source>
@@ -1000,7 +1000,7 @@
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation>Ajouter des pages d&apos;un fichier</translation>
+        <translation>Ajouter des pages depuis un fichier</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
@@ -1216,7 +1216,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportation terminée.</translation>
+        <translation>Export réussi.</translation>
     </message>
     <message>
         <source>Page</source>
@@ -1232,7 +1232,7 @@
     </message>
     <message>
         <source>Export to Sankore Format</source>
-        <translation>Exportation au format Sankoré</translation>
+        <translation>Exporter au format Sankoré</translation>
     </message>
 </context>
 <context>
@@ -1293,7 +1293,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportation terminée.</translation>
+        <translation>Exportation réussie.</translation>
     </message>
     <message>
         <source>Export failed.</source>
@@ -1341,7 +1341,7 @@
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translation>Gelé</translation>
+        <translation>Figé</translation>
     </message>
     <message>
         <source>Transform as Tool </source>
@@ -1421,7 +1421,7 @@
     </message>
     <message>
         <source>PDF import successful.</source>
-        <translation>Importation PDF terminée.</translation>
+        <translation>Importation PDF réussie.</translation>
     </message>
 </context>
 <context>
@@ -1484,15 +1484,15 @@
     <name>UBLibItemProperties</name>
     <message>
         <source>Add to page</source>
-        <translation>+ page</translation>
+        <translation>Ajout à la page</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation>+ arrière-plan</translation>
+        <translation>Ajout en fond</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished">+ bibliothèque</translation>
+        <translation>Ajout à la bibliothèque</translation>
     </message>
     <message>
         <source>Object informations</source>
@@ -1586,7 +1586,7 @@
     </message>
     <message>
         <source>Please enter a valid address here:</source>
-        <translation>Saisissez une adresse valide ici :</translation>
+        <translation>Saisir une adresse valide ici :</translation>
     </message>
 </context>
 <context>
@@ -1597,7 +1597,7 @@
     </message>
     <message>
         <source>Failed to log to Proxy</source>
-        <translation>Erreur d&apos;identification au proxy</translation>
+        <translation>Connexion au proxy impossible</translation>
     </message>
     <message>
         <source>SSL Errors:
@@ -1729,7 +1729,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>Full</source>
-        <translation>Complet</translation>
+        <translation>Maximum</translation>
     </message>
     <message>
         <source>Publish to Intranet</source>
@@ -1748,7 +1748,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBPreferencesController</name>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translation>Marqueur sensible à la pression</translation>
+        <translation>Stylet sensible à la pression</translation>
     </message>
     <message>
         <source>version: </source>
@@ -2020,7 +2020,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Science &amp; Technology</source>
-        <translation>Science et technologie</translation>
+        <translation>Sciences et technologies</translation>
     </message>
 </context>
 <context>
@@ -2080,7 +2080,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 restante</translation>
+        <translation>- %4 %5 restant(s)</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
@@ -2268,7 +2268,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>YouTube Password</source>
-        <translation>Mot de passe</translation>
+        <translation>Mot de passe YouTube</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2280,7 +2280,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;En cliquant sur le bouton &quot;Téléchargement&quot;, vous certifiez que vous respectez les conditions générales de YouTube &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;En cliquant sur le bouton &quot;Téléchargement&quot;, vous certifiez que vous respectez les conditions générales d&apos;utilisation de YouTube &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -2299,7 +2299,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Line Width</source>
-        <translation>Épaisseur du trait</translation>
+        <translation>Largeur de ligne</translation>
     </message>
     <message>
         <source>Medium</source>
@@ -2330,7 +2330,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>E-mail</source>
-        <translation>E-mail</translation>
+        <translation>Courriel</translation>
     </message>
     <message>
         <source>Author</source>
@@ -2353,7 +2353,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>E-mail</source>
-        <translation>E-mail</translation>
+        <translation>Courriel</translation>
     </message>
     <message>
         <source>Author</source>
@@ -2399,7 +2399,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Display</source>
-        <translation>Affichage</translation>
+        <translation>Afficher</translation>
     </message>
     <message>
         <source>Show Page with External Browser</source>
@@ -2419,7 +2419,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>Positionné en bas (recommandé pour les tableaux blancs)</translation>
+        <translation>Positionnée en bas (recommandé pour les tableaux interactifs)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
@@ -2431,7 +2431,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation>Vérifier la mise à jour logicielle au lancement</translation>
+        <translation>Vérifier la mise à jour au lancement</translation>
     </message>
     <message>
         <source>Internet</source>
@@ -2451,7 +2451,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation>Barre d&apos;outils du stylet</translation>
+        <translation>Barre du stylet</translation>
     </message>
     <message>
         <source>Horizontal</source>
@@ -2467,7 +2467,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Marker</source>
-        <translation>Marqueur</translation>
+        <translation>Surligneur</translation>
     </message>
     <message>
         <source>About</source>
@@ -2539,7 +2539,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation>Planète Sankoré ID</translation>
+        <translation>Identifiant Planète Sankoré</translation>
     </message>
     <message>
         <source>User:</source>
