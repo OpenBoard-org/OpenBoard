@@ -1,3 +1,5 @@
+//just a flag
+var flag = true;
 
 function createWord( word )
 {
@@ -19,11 +21,41 @@ var w;
 
 $(document).ready(function()
 {
+    var w = new wcontainer( "#ub-widget" );
+    var words = "";
+        
+    if(window.sankore)
+        words = (sankore.preference("ordSplWords", ""))?sankore.preference("ordSplWords", ""):sankoreLang.example;
+    else
+        words = sankoreLang.example;
+    
+    w.setEditContent( '<div class="inputwrap"><input class="percent" value="' + words + '"></div>' );
+    w.setViewContent( '<span class="upper"><span class="dash fixed">&mdash;</span></span>' );
+    w.setData( "dashWidth", w.elements.container.find( "span.dash" ).outerWidth() );
+    w.setViewContent( "" );
+
+    if (window.widget) {
+        window.widget.onleave = function(){
+            sankore.setPreference("spl_word_style", $(".style_select").find("option:selected").val());
+            if(w.editMode){
+                sankore.setPreference("ordSplWords", w.elements.container.find( "input" ).val().trim( ['*'] ));
+                sankore.setPreference("ordSplWordsState", "0");
+            }
+            else{
+                sankore.setPreference("ordSplWordsCode", $(".viewmode").html());
+                sankore.setPreference("ordSplWordsState", "1");
+                sankore.setPreference("ordSplWordsAnswer", ($("#ub-widget").hasClass("answerRight"))?"answerRight":"");
+                sankore.setPreference("ordSplWords", w.getData( "word" ));              
+            }
+        }
+    }
+
     if(sankore.preference("spl_word_style","")){
         changeStyle(sankore.preference("spl_word_style",""));
         $(".style_select").val(sankore.preference("spl_word_style",""));
     } else
         changeStyle(1)
+
     $("#wgt_display").text(sankoreLang.view);
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_display, #wgt_edit").click(function(event){
@@ -48,8 +80,14 @@ $(document).ready(function()
         }
     });
     $("#wgt_name").text(sankoreLang.wgt_name);
+    
     $("#wgt_reload").text(sankoreLang.reload).click(function(){
-        window.location.reload();
+        if($("#wgt_display").hasClass("selected")){
+            $("#wgt_edit").trigger("click");
+            $("#wgt_display").trigger("click");
+        } else {
+            $("#wgt_display").trigger("click");
+        }
     });
     
     $(".style_select option[value='1']").text(sankoreLang.slate);
@@ -58,34 +96,23 @@ $(document).ready(function()
     $(".style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
-    
-    var w = new wcontainer( "#ub-widget" );
-    var words = "";
-        
-    if(window.sankore)
-        words = (sankore.preference("ordSplWords", ""))?sankore.preference("ordSplWords", ""):sankoreLang.example;
-    else
-        words = sankoreLang.example;
-    w.setEditContent( '<div class="inputwrap"><input class="percent" value="' + words + '"></div>' );
-    w.setViewContent( '<span class="upper"><span class="dash fixed">&mdash;</span></span>' );
-    w.setData( "dashWidth", w.elements.container.find( "span.dash" ).outerWidth() );
-    w.setViewContent( "" );
 
-    w.elements.container.find( "input" ).live("change", function(){
-        sankore.setPreference("spl_word_style", $(".style_select").find("option:selected").val());
-        if(w.editMode)
-            sankore.setPreference("ordSplWords", w.elements.container.find( "input" ).val().trim( ['*'] ));
-        else
-            sankore.setPreference("ordSplWords", w.getData( "word" ));
-    })
-	
     // onViewMode
     w.onViewMode = function()
     {
         var word = w.elements.container.find( "input" ).val().trim( ['*'] );
         w.setData( "word", word );
         word = word.replace( /\*/g, '' );
-        w.setViewContent( createWord( word ) );
+        
+        if(sankore.preference("ordSplWordsState", "") == "1" && flag){
+            $(".viewmode").html(sankore.preference("ordSplWordsCode", ""));
+            if(sankore.preference("ordSplWordsAnswer", ""))
+                $("#ub-widget").addClass(sankore.preference("ordSplWordAnswer", ""));
+            flag = false;
+        } 
+        else
+            w.setViewContent( createWord( word ) );
+        
         w.elements.container.find( "span.upper" ).click( function(){
             $( this ).find( "span.dash" ).toggleClass( "fixed" );
             w.checkAnswer();

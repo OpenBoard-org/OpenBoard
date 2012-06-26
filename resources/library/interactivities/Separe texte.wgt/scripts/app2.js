@@ -30,14 +30,6 @@ $(document).ready(function()
     else
         sentences = sankoreLang.example;
     
-    w.elements.container.find( "textarea" ).live("change", function(){
-        sankore.setPreference("spl_text_style", $(".style_select").find("option:selected").val());
-        if(w.editMode)
-            sankore.setPreference("ordSplText", w.elements.container.find( "textarea" ).val());
-        else
-            sankore.setPreference("ordSplText", w.getData( "text" ));
-    })
-    
     if (window.widget) {
         window.widget.onleave = function(){
             sankore.setPreference("spl_text_style", $(".style_select").find("option:selected").val());
