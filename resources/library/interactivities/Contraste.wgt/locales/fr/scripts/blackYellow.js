@@ -21,7 +21,7 @@ var sankoreLang = {
     enter_result: "Saisir le résultat:", 
     ok: "Ok", 
     cancel: "Annuler",
-    wgt_name: "Constraste",
+    wgt_name: "Contraste",
     reload: "Recharger",
     slate: "Ardoise",
     pad: "Tablette"
