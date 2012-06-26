@@ -36,8 +36,6 @@
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
 
-//#include "softwareupdate/UBSoftwareUpdateController.h"
-
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
 #include "board/UBBoardView.h"
@@ -202,7 +200,6 @@ UBApplication::~UBApplication()
     delete staticMemoryCleaner;
     staticMemoryCleaner = 0;
 }
-
 
 void UBApplication::setupTranslator(QString forcedLanguage)
 {

@@ -376,6 +376,7 @@ void UBBoardController::connectToolbar()
     connect(mMainWindow->actionClearPage, SIGNAL(triggered()), this, SLOT(clearScene()));
     connect(mMainWindow->actionEraseItems, SIGNAL(triggered()), this, SLOT(clearSceneItems()));
     connect(mMainWindow->actionEraseAnnotations, SIGNAL(triggered()), this, SLOT(clearSceneAnnotation()));
+    connect(mMainWindow->actionEraseBackground,SIGNAL(triggered()),this,SLOT(clearSceneBackground()));
 
     connect(mMainWindow->actionUndo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(undo()));
     connect(mMainWindow->actionRedo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(redo()));
@@ -580,6 +581,14 @@ void UBBoardController::clearSceneAnnotation()
     }
 }
 
+void UBBoardController::clearSceneBackground()
+{
+    if (mActiveScene)
+    {
+        mActiveScene->clearBackground();
+        updateActionStates();
+    }
+}
 
 void UBBoardController::showDocumentsDialog()
 {

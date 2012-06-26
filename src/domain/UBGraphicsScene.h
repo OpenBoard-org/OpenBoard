@@ -113,6 +113,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void clearItemsAndAnnotations();
         void clearItems();
         void clearAnnotations();
+        void clearBackground();
 
         bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
         bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);

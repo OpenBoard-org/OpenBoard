@@ -66,6 +66,7 @@
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
     : QObject(container)
     , mKeyboardPalette(0)
+    , mWebToolsCurrentPalette(0)
     , mContainer(container)
     , mBoardControler(pBoardController)
     , mStylusPalette(0)
@@ -74,7 +75,6 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mRightPalette(NULL)
     , mBackgroundsPalette(0)
     , mToolsPalette(0)
-    , mWebToolsCurrentPalette(0)
     , mAddItemPalette(0)
     , mErasePalette(NULL)
     , mPagePalette(NULL)
@@ -304,6 +304,7 @@ void UBBoardPaletteManager::setupPalettes()
     eraseActions << UBApplication::mainWindow->actionEraseAnnotations;
     eraseActions << UBApplication::mainWindow->actionEraseItems;
     eraseActions << UBApplication::mainWindow->actionClearPage;
+    eraseActions << UBApplication::mainWindow->actionEraseBackground;
 
     mErasePalette = new UBActionPalette(eraseActions, Qt::Horizontal , mContainer);
     mErasePalette->setButtonIconSize(QSize(128, 128));
@@ -447,6 +448,7 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionEraseItems, SIGNAL(triggered()), mErasePalette, SLOT(close()));
     connect(UBApplication::mainWindow->actionEraseAnnotations, SIGNAL(triggered()), mErasePalette, SLOT(close()));
     connect(UBApplication::mainWindow->actionClearPage, SIGNAL(triggered()), mErasePalette, SLOT(close()));
+    connect(UBApplication::mainWindow->actionEraseBackground,SIGNAL(triggered()),mErasePalette,SLOT(close()));
     connect(mErasePalette, SIGNAL(closed()), this, SLOT(erasePaletteClosed()));
 
     foreach(QWidget *widget, UBApplication::mainWindow->actionErase->associatedWidgets())

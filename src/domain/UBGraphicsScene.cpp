@@ -1286,6 +1286,17 @@ void UBGraphicsScene::clearAnnotations()
     setDocumentUpdated();
 }
 
+void UBGraphicsScene::clearBackground()
+{
+    if(mBackgroundObject){
+        removeItem(mBackgroundObject);
+        mBackgroundObject = 0;
+    }
+    update(sceneRect());
+
+    setDocumentUpdated();
+}
+
 UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation)
 {
     UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();

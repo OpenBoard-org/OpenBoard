@@ -849,9 +849,9 @@ QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* 
 {
 	QString path = pPath;
 	//windows
-	path.replace("file:///","");
+    //path=path.replace("file:///","");
 	//others
-	path.replace("file://","");
+    path=path.replace("file://","");
 	QFileInfo fi(path);
     QString uuid = QUuid::createUuid();
 

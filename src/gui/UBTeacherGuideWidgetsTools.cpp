@@ -339,6 +339,7 @@ void UBTGMediaWidget::initializeWithDom(QDomElement element)
     mIsInitializationMode = true;
     setAcceptDrops(false);
     mMediaPath = UBApplication::boardController->activeDocument()->persistencePath() + "/" + element.attribute("relativePath");
+    qDebug() << mMediaPath;
     createWorkWidget();
     setFixedHeight(200);
     mpTitle->setInitialText(element.attribute("title"));

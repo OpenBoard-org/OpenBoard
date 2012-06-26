@@ -1665,6 +1665,18 @@
     <string>Interact with items</string>
    </property>
   </action>
+  <action name="actionEraseBackground">
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/erasePalette/eraseBackground.svg</normaloff>:/images/erasePalette/eraseBackground.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Erase Background</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove the backgound</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../sankore.qrc"/>

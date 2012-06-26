@@ -174,6 +174,7 @@ class UBBoardController : public QObject
         void clearScene();
         void clearSceneItems();
         void clearSceneAnnotation();
+        void clearSceneBackground();
         void zoomIn(QPointF scenePoint = QPointF(0,0));
         void zoomOut(QPointF scenePoint = QPointF(0,0));
         void zoomRestore();

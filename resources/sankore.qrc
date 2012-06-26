@@ -173,6 +173,7 @@
         <file>images/erasePalette/eraseAll.svg</file>
         <file>images/erasePalette/eraseItem.svg</file>
         <file>images/erasePalette/eraseAnnotation.svg</file>
+        <file>images/erasePalette/eraseBackground.svg</file>
         <file>images/cursors/eraser.png</file>
         <file>images/cursors/laser.png</file>
         <file>images/cursors/marker.png</file>
