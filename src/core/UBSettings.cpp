@@ -206,6 +206,8 @@ void UBSettings::init()
     appEnableAutomaticSoftwareUpdates = new UBSetting(this, "App", "EnableAutomaticSoftwareUpdates", true);
     appEnableSoftwareUpdates = new UBSetting(this, "App", "EnableSoftwareUpdates", true);
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
+    appPreferredLanguage = new UBSetting(this,"App","PreferredLanguage", "");
+
     navigPaletteWidth = new UBSetting(this, "Board", "NavigPaletteWidth", 270);
     rightLibPaletteWidth = new UBSetting(this, "Board", "RightLibPaletteWidth", 270);
     leftLibPaletteWidth = new UBSetting(this, "Board", "LeftLibPaletteWidth",270);

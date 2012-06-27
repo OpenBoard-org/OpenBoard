@@ -214,6 +214,7 @@ class UBSettings : public QObject
         UBSetting* appEnableAutomaticSoftwareUpdates;
         UBSetting* appEnableSoftwareUpdates;
         UBSetting* appToolBarOrientationVertical;
+        UBSetting* appPreferredLanguage;
 
         UBSetting* appIsInSoftwareUpdateProcess;
 

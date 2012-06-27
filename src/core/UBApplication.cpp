@@ -135,13 +135,17 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
     if (!undoStack)
         undoStack = new QUndoStack(staticMemoryCleaner);
 
+    UBSettings *settings = UBSettings::settings();
+
     QString forcedLanguage("");
     if(args.contains("-lang"))
     	forcedLanguage=args.at(args.indexOf("-lang") + 1);
-
+    else{
+    	QString setLanguage = settings->appPreferredLanguage->get().toString();
+    	if(!setLanguage.isEmpty())
+    		forcedLanguage = setLanguage;
+    }
     setupTranslator(forcedLanguage);
-
-    UBSettings *settings = UBSettings::settings();
 
     connect(settings->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(toolBarPositionChanged(QVariant)));
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));

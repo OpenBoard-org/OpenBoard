@@ -92,7 +92,8 @@ QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
             QPixmap pix;
             //Warning. Works only with modified Qt
 #ifdef Q_WS_X11
-            pix.load(fileName, 0, Qt::AutoColor);
+            //pix.load(fileName, 0, Qt::AutoColor);
+            pix.load(fileName, 0);
 #else
             pix.load(fileName, 0, Qt::AutoColor, false);
 #endif

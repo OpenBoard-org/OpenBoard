@@ -15,6 +15,7 @@
 #include <QRegExp>
 #include <QSvgGenerator>
 #include <QSvgRenderer>
+#include <QPixmap>
 
 #include "core/UBPersistenceManager.h"
 
