@@ -271,6 +271,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 			return mPreviousPoint;
 		}
 
+		void initStroke();
+
     public slots:
 
         void hideEraser();

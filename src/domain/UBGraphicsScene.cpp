@@ -680,6 +680,7 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     penWidth /= UBApplication::boardController->currentZoom();
 
     mArcPolygonItem = arcToPolygonItem(QLineF(pCenterPoint, mPreviousPoint), pSpanAngle, penWidth);
+    mArcPolygonItem->setStroke(mCurrentStroke);
     mAddedItems.insert(mArcPolygonItem);
     addItem(mArcPolygonItem);
 
@@ -2000,4 +2001,8 @@ void UBGraphicsScene::setToolCursor(int tool)
     {
         hideEraser();
     }
+}
+
+void UBGraphicsScene::initStroke(){
+	mCurrentStroke = new UBGraphicsStroke();
 }

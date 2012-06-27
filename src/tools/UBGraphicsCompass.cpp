@@ -192,6 +192,7 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
         {
             mSpanAngleInDegrees = 0;
             mSceneArcStartPoint = mapToScene(pencilPosition());
+            scene()->initStroke();
             scene()->moveTo(mSceneArcStartPoint);
         }
 
