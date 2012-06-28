@@ -111,7 +111,6 @@ body{
     background-color: #999;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    padding-left: 10px;
 }
 
 .close_cont{
@@ -142,7 +141,6 @@ body{
     cursor: pointer;
     display: inline-block;
     position: relative;
-    background-color: white;
 }
 
 .img_gray{
@@ -201,8 +199,15 @@ body{
 .audio_block{
     width: 120px;
     height: 30px;
-    margin: 5px 0;    
+    padding: 5px 0 5px 10px;    
     float: left;
+    border-right: 3px solid white;
+}
+
+.audio_gray{
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: white;
 }
 
 .audio_desc{

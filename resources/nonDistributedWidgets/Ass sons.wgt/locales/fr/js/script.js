@@ -44,7 +44,16 @@ function start(){
     }
     
     $("#wgt_reload").click(function(){
-        window.location.reload();
+        if($("#wgt_display").hasClass("selected")){
+            $("#wgt_edit").trigger("click");
+            $("#wgt_display").trigger("click");
+        } else {
+            $("#wgt_display").trigger("click");
+        }
+    });
+    
+    $("#wgt_reload, #wgt_display, #wgt_edit").mouseover(function(){
+        exportData();
     });
     
     $(".style_select").change(function (event){
@@ -66,7 +75,7 @@ function start(){
                     var tmp_array = [];
                     
                     container.find(".text_cont .audio_desc").removeAttr("contenteditable");
-                    container.find(".text_cont").removeAttr("ondragenter")
+                    container.find(".audio_block").removeAttr("ondragenter")
                     .removeAttr("ondragleave")
                     .removeAttr("ondragover")
                     .removeAttr("ondrop")
@@ -175,10 +184,10 @@ function start(){
                     $("<div class='close_cont'>").appendTo(container);
                     container.find(".imgs_cont").css("background-color", "");
                     container.find(".text_cont .audio_desc").attr("contenteditable","true");
-                    container.find(".text_cont").attr("ondragenter", "return false;")
-                    .attr("ondragleave", "$(this).removeClass('gray'); return false;")
-                    .attr("ondragover", "$(this).addClass('gray'); return false;")
-                    .attr("ondrop", "$(this).removeClass('gray'); return onDropAudio(this,event);");
+                    container.find(".audio_block").attr("ondragenter", "return false;")
+                    .attr("ondragleave", "$(this).removeClass('audio_gray'); return false;")
+                    .attr("ondragover", "$(this).addClass('audio_gray'); return false;")
+                    .attr("ondrop", "$(this).removeClass('audio_gray'); return onDropAudio(this,event);");
                     var add_img = $("<div class='add_img'>");
                     container.find(".img_block").each(function(){
                         $(this).draggable("destroy");
@@ -674,7 +683,7 @@ function addContainer(){
 
 //add new img block
 function addImgBlock(dest){
-    var img_block = $("<div class='img_block img_gray' ondragenter='return false;' ondragleave='$(this).css(\"background-color\",\"white\"); return false;' ondragover='$(this).css(\"background-color\",\"#ccc\"); return false;' ondrop='$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);' style='text-align: center; float: left;'></div>").insertBefore(dest);
+    var img_block = $("<div class='img_block img_gray' ondragenter='return false;' ondragleave='$(this).css(\"background-color\",\"\"); return false;' ondragover='$(this).css(\"background-color\",\"#ccc\"); return false;' ondrop='$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);' style='text-align: center; float: left;'></div>").insertBefore(dest);
     $("<div class='close_img'>").appendTo(img_block);
     $("<div class='true_img'>").appendTo(img_block);
     $("<input type='hidden' value='0'/>").appendTo(img_block);
