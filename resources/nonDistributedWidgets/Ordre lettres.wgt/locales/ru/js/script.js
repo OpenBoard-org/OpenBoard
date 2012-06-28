@@ -11,6 +11,7 @@ var sankoreLang = {
     pad: "Планшет"
 };
 
+
 //main function
 function start(){
 
@@ -45,7 +46,16 @@ function start(){
     }
     
     $("#wgt_reload").click(function(){
-        window.location.reload();
+        if($("#wgt_display").hasClass("selected")){
+            $("#wgt_edit").trigger("click");
+            $("#wgt_display").trigger("click");
+        } else {
+            $("#wgt_display").trigger("click");
+        }
+    });
+    
+    $("#wgt_reload, #wgt_display, #wgt_edit").mouseover(function(){
+        exportData();
     });
     
     $(".style_select").change(function (event){
@@ -67,7 +77,7 @@ function start(){
                     var imgs_container = container.find(".imgs_cont");
                     
                     container.find(".text_cont .audio_desc").removeAttr("contenteditable");
-                    container.find(".text_cont").removeAttr("ondragenter")
+                    container.find(".audio_block").removeAttr("ondragenter")
                     .removeAttr("ondragleave")
                     .removeAttr("ondragover")
                     .removeAttr("ondrop")
@@ -105,10 +115,10 @@ function start(){
                     .addClass("imgs_answers_gray")
                     .sortable("destroy");
                     container.find(".text_cont .audio_desc").attr("contenteditable","true");
-                    container.find(".text_cont").attr("ondragenter", "return false;")
-                    .attr("ondragleave", "$(this).removeClass('gray'); return false;")
-                    .attr("ondragover", "$(this).addClass('gray'); return false;")
-                    .attr("ondrop", "$(this).removeClass('gray'); return onDropAudio(this,event);");
+                    container.find(".audio_block").attr("ondragenter", "return false;")
+                    .attr("ondragleave", "$(this).removeClass('audio_gray'); return false;")
+                    .attr("ondragover", "$(this).addClass('audio_gray'); return false;")
+                    .attr("ondrop", "$(this).removeClass('audio_gray'); return onDropAudio(this,event);");
                     container.find(".img_block").remove();
                     $("<div class='audio_answer' contenteditable>" + container.find(".imgs_cont input").val() + "</div>").appendTo(container.find(".imgs_cont"));
                 });                
@@ -217,7 +227,8 @@ function exportData(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
             cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
-            cont_obj.answer = $(this).find(".audio_answer").text();            
+            cont_obj.answer = $(this).find(".audio_answer").text();
+            cont_obj.cur_answer = "";            
             array_to_export.push(cont_obj);
         });
     } else {
@@ -226,10 +237,15 @@ function exportData(){
             cont_obj.text = $(this).find(".audio_desc").text();
             cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
             cont_obj.answer = $(this).find(".imgs_cont input").val(); 
+            cont_obj.cur_answer = getAnswer($(this).find(".imgs_cont"));
             array_to_export.push(cont_obj);
         });
     }
     sankore.setPreference("associer_sound", JSON.stringify(array_to_export));
+    if($("#wgt_display").hasClass("selected"))
+        sankore.setPreference("associer_sound_state", "display");
+    else
+        sankore.setPreference("associer_sound_state", "edit");
 }
 
 //import
@@ -253,16 +269,31 @@ function importData(data){
         $("<input type='hidden'/>").appendTo(audio_block);
         $("<div class='audio_desc'>" + data[i].text + "</div>").appendTo(text);
         $("<input type='hidden' value='" + data[i].answer + "'/>").appendTo(imgs_container);
-        for(var j in data[i].answer){
-            var tmp_letter = $("<div class='img_block' style='text-align: center;'>" + data[i].answer[j] + "</div>");
-            tmp_array.push(tmp_letter);
-        }                        
-        tmp_array = shuffle(tmp_array);
+        if(data[i].cur_answer)
+            for(var j in data[i].cur_answer){
+                var tmp_letter = $("<div class='img_block' style='text-align: center;'>" + data[i].cur_answer[j] + "</div>");
+                tmp_array.push(tmp_letter);
+            } 
+        else
+            for(j in data[i].answer){
+                tmp_letter = $("<div class='img_block' style='text-align: center;'>" + data[i].answer[j] + "</div>");
+                tmp_array.push(tmp_letter);
+            }
+        
+        if(sankore.preference("associer_sound_state","")){
+            if(sankore.preference("associer_sound_state","") == "edit")
+                tmp_array = shuffle(tmp_array);
+        } else 
+            tmp_array = shuffle(tmp_array);
+        
         for(j = 0; j<tmp_array.length;j++)
             tmp_array[j].appendTo(imgs_container);
-        imgs_container.sortable( {
-            update: checkResult
-        } );
+        
+        imgs_container.sortable().bind('sortupdate', function(event, ui) {
+            checkResult(event);
+        }); 
+        if(data[i].cur_answer)
+            imgs_container.trigger("sortupdate")
     }
 }
 
@@ -296,9 +327,9 @@ function showExample(){
     tmp_array = shuffle(tmp_array);
     for(var i = 0; i<tmp_array.length;i++)
         tmp_array[i].appendTo(imgs_container);
-    imgs_container.sortable( {
-        update: checkResult
-    } );
+    imgs_container.sortable().bind('sortupdate', function(event, ui) {
+        checkResult(event);
+    });
 }
 
 //check result
@@ -455,6 +486,15 @@ function onDropAudio(obj, event) {
         event.cancelBubble = true;
     }
     return false;
+}
+
+//get text
+function getAnswer(obj){
+    var answer = "";
+    obj.find(".img_block").each(function(){
+        answer += $(this).text();
+    });
+    return answer;
 }
 
 if (window.widget) {
