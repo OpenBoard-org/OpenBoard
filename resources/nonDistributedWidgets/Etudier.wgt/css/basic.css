@@ -76,6 +76,28 @@ body{
     cursor: pointer;
 }
 
+.size_up{
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    position: absolute;
+    background-image: url(../img/size_up.png);    
+    top: -15px;   
+    right: 20px;
+    cursor: pointer;
+}
+
+.size_down{
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    position: absolute;
+    background-image: url(../img/size_down.png);
+    top: -15px;   
+    right: 45px;
+    cursor: pointer;
+}
+
 .dropHere{
     background-color: #ccc;
 }
@@ -183,6 +205,8 @@ li>div{
     position: absolute;
     top: 50px;
     left: 100px;
+    background-color: white;
+    border-radius: 10px;
 }
 
 .block_border{

@@ -32,6 +32,21 @@
             $("a","#nextBtn").trigger("click");   
     }
 
+    $.fn.goToSlide = function(dest){
+        t = dest;
+        p = (t*w*-1);
+        $("ul",$(this)).animate(
+        {
+            marginLeft: p
+        }, 
+        0
+        );
+    }
+    
+    $.fn.getPage = function(){
+        return t;
+    }
+
     $.fn.easySlider = function(options){
 	  
         // default configuration properties
@@ -96,13 +111,13 @@
             });		
 			
             function animate(dir,clicked){
-                var ot = t;				
+                var ot = t;
                 switch(dir){
                     case "next":
-                        t = (ot>=ts) ? (options.continuous ? 0 : ts) : t+1;						
+                        t = (ot>=ts) ? (options.continuous ? 0 : ts) : ++t;
                         break; 
                     case "prev":
-                        t = (t<=0) ? (options.continuous ? ts : 0) : t-1;
+                        t = (t<=0) ? (options.continuous ? ts : 0) : --t;
                         break; 
                     case "first":
                         t = 0;
@@ -113,18 +128,17 @@
                     default:
                         break; 
                 };	
-				
+
                 var diff = Math.abs(ot-t);
                 var speed = diff*options.speed;						
                 if(!options.vertical) {
                     p = (t*w*-1);
-                    console.log(w + " | " + h + " | " + p);
                     $("ul",obj).animate(
                     {
                         marginLeft: p
                     }, 
                     speed
-                    );				
+                    );
                 } else {
                     p = (t*h*-1);
                     $("ul",obj).animate(
