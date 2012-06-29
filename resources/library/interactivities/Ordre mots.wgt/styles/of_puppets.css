@@ -40,13 +40,13 @@ body{
 #mp_word{
     height: 60px;
     text-align: center;
-    overflow: hidden;
 }
 
 #mp_word input{
     font: 32px tahoma;
     letter-spacing: 0.1em;
-    width: 100%;
+    width: 98%;
+    overflow: auto;
 }
 
 #mp_msg{
