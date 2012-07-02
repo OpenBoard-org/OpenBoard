@@ -187,7 +187,7 @@ void WBWebPage::handleUnsupportedContent(QNetworkReply *reply)
     if (!isPDF && reply->error() == QNetworkReply::NoError)
     {
         if(contentType == "application/widget")
-            WBBrowserWindow::downloadManager()->handleUnsupportedContent(reply,false, UBSettings::settings()->applicationGipLibraryDirectory());
+            WBBrowserWindow::downloadManager()->handleUnsupportedContent(reply,false, UBSettings::settings()->userGipLibraryDirectory());
         else
             WBBrowserWindow::downloadManager()->handleUnsupportedContent(reply);
         return;

@@ -113,9 +113,10 @@ class UBSettings : public QObject
         static QString userInteractiveFavoritesDirectory();
         static QString userPodcastRecordingDirectory();
 
-        //application directory
+		QString userGipLibraryDirectory();
+        
+		//application directory
         QString applicationShapeLibraryDirectory();
-        QString applicationGipLibraryDirectory();
         QString applicationImageLibraryDirectory();
         QString applicationApplicationsLibraryDirectory();
         QString applicationInteractivesDirectory();
