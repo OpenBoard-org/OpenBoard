@@ -2266,20 +2266,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
     //for new documents from version 4.5.0
     mXmlWriter.writeStartElement("itemTextContent");
 
-    //TODO:
-    // This is only a workaround that works quite well. The font sizes are expressed on
-    // px instead of pt because px is less sensitive to the physicalDPI of the Os. The
-    // main problem in fact appears when the file is used on another platform than the
-    // one used to create it.
-    // But a different solution has to be implemented to avoid some annoying case that
-    // are already present with this hack.
-    QString htmlString = item->toHtml();
-    qDebug() << htmlString;
-    QRegExp regExp("font-size:([0-9]{,3})pt");
-    htmlString = htmlString.replace(regExp,"font-size:\\1px");
-    qDebug() << htmlString;
-    //mXmlWriter.writeCDATA(htmlString);
-    mXmlWriter.writeCharacters(htmlString);
+    // Note: don't use mXmlWriter.writeCDATA(htmlString); because it doesn't escape characters sequences correctly.
+    // Texts copied from other programs like Open-Office can truncate the svg file.
+    mXmlWriter.writeCharacters(item->toHtml());
     mXmlWriter.writeEndElement(); //itemTextContent
 
     mXmlWriter.writeEndElement(); //foreignObject
