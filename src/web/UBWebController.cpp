@@ -32,7 +32,6 @@
 #include "network/UBNetworkAccessManager.h"
 
 #include "gui/UBWidgetMirror.h"
-#include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBKeyboardPalette.h"

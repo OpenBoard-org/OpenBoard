@@ -775,7 +775,7 @@ void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos, 
     mPos = pos;
     mScaleFactor = scaleFactor;
 
-     QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
+    QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
 
     mAddItemPalette->show();
     mAddItemPalette->adjustSizeAndPosition();

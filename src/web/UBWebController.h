@@ -23,7 +23,6 @@
 
 class WBBrowserWindow;
 class UBApplication;
-class UBScreenMirror;
 class UBTrapFlashController;
 class UBMainWindow;
 class UBWebToolsPalette;
