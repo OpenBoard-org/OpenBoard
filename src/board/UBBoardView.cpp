@@ -948,6 +948,7 @@ bool UBBoardView::isAbsurdPoint(QPoint point)
     }
     return !isValidPoint;
 #else
+	Q_UNUSED(point);
     return false;
 #endif
 }

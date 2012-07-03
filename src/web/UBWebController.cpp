@@ -211,6 +211,8 @@ void UBWebController::tutorialWebInstance()
             (*mCurrentWebBrowser)->tabWidget()->lineEdits()->hide();
 
         }
+        else
+        	(*mCurrentWebBrowser)->loadUrl(currentUrl);
 
         UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
 

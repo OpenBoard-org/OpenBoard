@@ -150,7 +150,7 @@ QStringList UBPersistenceManager::allShapes()
 
 QStringList UBPersistenceManager::allGips()
 {
-    QString gipLibraryPath = UBSettings::settings()->applicationGipLibraryDirectory();
+    QString gipLibraryPath = UBSettings::settings()->userGipLibraryDirectory();
 
     QDir dir(gipLibraryPath);
 

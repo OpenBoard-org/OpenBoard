@@ -882,6 +882,17 @@ QString UBSettings::userTrashDirPath()
 }
 
 
+QString UBSettings::userGipLibraryDirectory()
+{
+    static QString dirPath = "";
+    if(dirPath.isEmpty()){
+        dirPath = userDataDirectory() + "/library/gips";
+        checkDirectory(dirPath);
+    }
+    return dirPath;
+}
+
+
 QString UBSettings::applicationShapeLibraryDirectory()
 {
     QString defaultRelativePath = QString("./library/shape");
@@ -894,16 +905,6 @@ QString UBSettings::applicationShapeLibraryDirectory()
     else {
         return configPath;
     }
-}
-
-QString UBSettings::applicationGipLibraryDirectory()
-{
-    static QString dirPath = "";
-    if(dirPath.isEmpty()){
-        dirPath = UBPlatformUtils::applicationResourcesDirectory() + "/library/gips";
-        checkDirectory(dirPath);
-    }
-    return dirPath;
 }
 
 QString UBSettings::userSearchDirectory()
