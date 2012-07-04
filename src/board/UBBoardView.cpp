@@ -732,7 +732,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             }
             else
             {
-                mUBRubberBand->hide();
+                if(mUBRubberBand)
+                    mUBRubberBand->hide();
             }
 
             handleItemMousePress(event);
