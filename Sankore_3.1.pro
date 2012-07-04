@@ -12,8 +12,8 @@ linux-g++-64 {
 
 VERSION_MAJ = 1
 VERSION_MIN = 40 
-VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 09
+VERSION_TYPE = r # a = alpha, b = beta, r = release, other => error
+VERSION_PATCH = 00
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
