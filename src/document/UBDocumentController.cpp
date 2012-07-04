@@ -1645,3 +1645,29 @@ int UBDocumentController::getSelectedItemIndex()
     }
     else return -1;
 }
+
+bool UBDocumentController::pageCanBeMovedUp(int page)
+{
+	if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+		return page >= 2;
+	else
+		return page >= 1;
+}
+
+bool UBDocumentController::pageCanBeMovedDown(int page)
+{
+	if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+		return page != 0 && page < mCurrentDocument->pageCount() - 1;
+	else
+		return page < mCurrentDocument->pageCount() - 1;
+}
+
+bool UBDocumentController::pageCanBeDuplicated(int page)
+{
+	return page != 0;
+}
+
+bool UBDocumentController::pageCanBeDeleted(int page)
+{
+	return page != 0;
+}

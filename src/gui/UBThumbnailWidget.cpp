@@ -823,40 +823,22 @@ void UBSceneThumbnailNavigPixmap::mousePressEvent(QGraphicsSceneMouseEvent *even
 
 void UBSceneThumbnailNavigPixmap::updateButtonsState()
 {
-    bCanDelete = false;
+
+	bCanDelete = false;
     bCanMoveUp = false;
     bCanMoveDown = false;
-    bCanDuplicate = true;
+    bCanDuplicate = false;
 
-    UBDocumentProxy* p = proxy();
-    if(NULL != p && 0 <= UBApplication::boardController->pageFromSceneIndex(sceneIndex()))
-    {
-        int iNbPages = p->pageCount();
-        if(1 < iNbPages)
-        {
-            bCanDelete = true;
-            if(sceneIndex() > 0)
-            {
-                bCanMoveUp = true;
-            }
-            if(sceneIndex() != iNbPages - 1)
-            {
-                bCanMoveDown = true;
-            }
-        }
-    }
-    if(UBSettings::settings()->teacherGuidePageZeroActivated && sceneIndex()<=1)
-        bCanMoveUp = false;
-
-    if(UBSettings::settings()->teacherGuidePageZeroActivated && sceneIndex() == 0){
-    	bCanDelete = false;
-    	bCanDuplicate = false;
-    	bCanMoveUp = false;
-    	bCanMoveDown = false;
+    if(proxy()){
+    	int pageIndex = UBApplication::boardController->pageFromSceneIndex(sceneIndex());
+    	UBDocumentController* documentController = UBApplication::documentController;
+    	bCanDelete = documentController->pageCanBeDeleted(pageIndex);
+        bCanMoveUp = documentController->pageCanBeMovedUp(pageIndex);
+        bCanMoveDown = documentController->pageCanBeMovedDown(pageIndex);
+        bCanDuplicate = documentController->pageCanBeDuplicated(pageIndex);
     }
 
-
-    if(bCanDelete || bCanMoveUp || bCanMoveDown)
+    if(bCanDelete || bCanMoveUp || bCanMoveDown || bCanDuplicate)
         bButtonsVisible = true;
 }
 

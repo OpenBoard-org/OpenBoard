@@ -51,6 +51,11 @@ class UBDocumentController : public QObject
         void deletePages(QList<QGraphicsItem*> itemsToDelete);
         int getSelectedItemIndex();
 
+        bool pageCanBeMovedUp(int page);
+        bool pageCanBeMovedDown(int page);
+        bool pageCanBeDuplicated(int page);
+        bool pageCanBeDeleted(int page);
+
     signals:
         void refreshThumbnails();
         void exportDone();
