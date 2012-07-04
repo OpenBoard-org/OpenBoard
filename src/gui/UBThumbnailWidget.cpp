@@ -750,6 +750,7 @@ UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBD
     , bCanDelete(false)
     , bCanMoveUp(false)
     , bCanMoveDown(false)
+    , bCanDuplicate(false)
 {
     if(0 <= UBApplication::boardController->pageFromSceneIndex(pSceneIndex)){
         setAcceptsHoverEvents(true);
@@ -788,14 +789,18 @@ void UBSceneThumbnailNavigPixmap::paint(QPainter *painter, const QStyleOptionGra
             painter->drawPixmap(0, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/close.svg"));
         else
             painter->drawPixmap(0, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/closeDisabled.svg"));
+        if(bCanDuplicate)
+            painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/duplicate.svg"));
+        else
+            painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/duplicateDisabled.svg"));
         if(bCanMoveUp)
-            painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUp.svg"));
+            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUp.svg"));
         else
-            painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUpDisabled.svg"));
+            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUpDisabled.svg"));
         if(bCanMoveDown)
-            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menu.svg"));
+            painter->drawPixmap(3*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menu.svg"));
         else
-            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menuDisabled.svg"));
+            painter->drawPixmap(3*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menuDisabled.svg"));
     }
 }
 
@@ -805,17 +810,14 @@ void UBSceneThumbnailNavigPixmap::mousePressEvent(QGraphicsSceneMouseEvent *even
 
     // Here we check the position of the click and verify if it has to trig an action or not.
     if(bCanDelete && p.x() >= 0 && p.x() <= BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
-    {
         deletePage();
-    }
-    if(bCanMoveUp && p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= 2*BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
-    {
+    if(bCanDuplicate && p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= 2*BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
+        duplicatePage();
+    if(bCanMoveUp && p.x() >= 2*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 3*BUTTONSIZE + 2*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
         moveUpPage();
-    }
-    if(bCanMoveDown && p.x() >= 2*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 2*(BUTTONSIZE + BUTTONSPACING) + BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
-    {
+    if(bCanMoveDown && p.x() >= 3*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 4*BUTTONSIZE + 3*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
         moveDownPage();
-    }
+
     event->accept();
 }
 
@@ -824,6 +826,7 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
     bCanDelete = false;
     bCanMoveUp = false;
     bCanMoveDown = false;
+    bCanDuplicate = true;
 
     UBDocumentProxy* p = proxy();
     if(NULL != p && 0 <= UBApplication::boardController->pageFromSceneIndex(sceneIndex()))
@@ -842,13 +845,19 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
             }
         }
     }
-    if(UBSettings::settings()->teacherGuidePageZeroActivated && sceneIndex()<1)
+    if(UBSettings::settings()->teacherGuidePageZeroActivated && sceneIndex()<=1)
         bCanMoveUp = false;
 
-    if(bCanDelete || bCanMoveUp || bCanMoveDown)
-    {
-        bButtonsVisible = true;
+    if(UBSettings::settings()->teacherGuidePageZeroActivated && sceneIndex() == 0){
+    	bCanDelete = false;
+    	bCanDuplicate = false;
+    	bCanMoveUp = false;
+    	bCanMoveDown = false;
     }
+
+
+    if(bCanDelete || bCanMoveUp || bCanMoveDown)
+        bButtonsVisible = true;
 }
 
 void UBSceneThumbnailNavigPixmap::deletePage()
@@ -857,6 +866,14 @@ void UBSceneThumbnailNavigPixmap::deletePage()
     itemsToDelete << this;
 
     UBApplication::documentController->deletePages(itemsToDelete);
+}
+
+void UBSceneThumbnailNavigPixmap::duplicatePage()
+{
+    QList<int> itemsToDelete;
+    itemsToDelete << sceneIndex();
+
+	UBApplication::documentController->duplicateScenes(proxy(),itemsToDelete);
 }
 
 void UBSceneThumbnailNavigPixmap::moveUpPage()

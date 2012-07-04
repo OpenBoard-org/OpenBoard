@@ -355,5 +355,6 @@
         <file>images/teacherGuide/link.png</file>
         <file>images/teacherGuide/movie.png</file>
         <file>images/teacherGuide/w3c.png</file>
+        <file>images/duplicateDisabled.svg</file>
     </qresource>
 </RCC>

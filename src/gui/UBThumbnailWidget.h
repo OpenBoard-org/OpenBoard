@@ -306,6 +306,7 @@ class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
     private:
         void updateButtonsState();
         void deletePage();
+        void duplicatePage();
         void moveUpPage();
         void moveDownPage();
 
@@ -313,6 +314,7 @@ class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
         bool bCanDelete;
         bool bCanMoveUp;
         bool bCanMoveDown;
+        bool bCanDuplicate;
 };
 
 class UBThumbnailVideo : public UBThumbnailPixmap
