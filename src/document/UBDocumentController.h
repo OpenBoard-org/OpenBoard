@@ -50,8 +50,6 @@ class UBDocumentController : public QObject
         UBDocumentProxy* getCurrentDocument() { return mCurrentDocument; };
         void deletePages(QList<QGraphicsItem*> itemsToDelete);
         int getSelectedItemIndex();
-        void duplicateScenes(UBDocumentProxy* proxy, QList<int> scenesIndex);
-
 
     signals:
         void refreshThumbnails();

@@ -534,21 +534,6 @@ void UBDocumentController::openSelectedItem()
     QApplication::restoreOverrideCursor();
 }
 
-
-void UBDocumentController::duplicateScenes(UBDocumentProxy* proxy, QList<int> scenesIndex)
-{
-	if(scenesIndex.count()){
-		int offset = 0;
-        foreach (int eachSceneIndex, scenesIndex){
-			UBPersistenceManager::persistenceManager()->duplicateDocumentScene(proxy, eachSceneIndex + offset);
-            mDocumentThumbs.insert(eachSceneIndex + offset, mDocumentThumbs.at(eachSceneIndex + offset));
-            UBApplication::boardController->setActiveDocumentScene(proxy,eachSceneIndex+offset+1);
-            offset++;
-        }
-	}
-
-}
-
 void UBDocumentController::duplicateSelectedItem()
 {
     if (UBApplication::applicationController->displayMode() != UBApplicationController::Document)

@@ -870,10 +870,7 @@ void UBSceneThumbnailNavigPixmap::deletePage()
 
 void UBSceneThumbnailNavigPixmap::duplicatePage()
 {
-    QList<int> itemsToDelete;
-    itemsToDelete << sceneIndex();
-
-	UBApplication::documentController->duplicateScenes(proxy(),itemsToDelete);
+	UBApplication::boardController->duplicateScene();
 }
 
 void UBSceneThumbnailNavigPixmap::moveUpPage()
