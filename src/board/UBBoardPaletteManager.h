@@ -37,7 +37,6 @@ class UBPageNumberPalette;
 class UBZoomPalette;
 class UBActionPalette;
 class UBBoardController;
-class UBFloatingPalette;
 class UBServerXMLHttpRequest;
 class UBKeyboardPalette;
 class UBMainWindow;
@@ -45,7 +44,7 @@ class UBApplicationController;
 class UBDockTeacherGuideWidget;
 
 // Uncomment this to use old-styles lib paletter
- #define USE_WEB_WIDGET
+// #define USE_WEB_WIDGET
 
 
 class UBBoardPaletteManager : public QObject

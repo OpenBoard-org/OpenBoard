@@ -346,6 +346,24 @@ void UBBoardPaletteManager::pagePaletteButtonReleased()
     {
         if( mPageButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
         {
+        	// The palette is reinstanciate because the duplication depends on the current scene
+        	delete(mPagePalette);
+        	mPagePalette = 0;
+        	QList<QAction*>pageActions;
+        	pageActions << UBApplication::mainWindow->actionNewPage;
+        	UBBoardController* boardController = UBApplication::boardController;
+        	if(UBApplication::documentController->pageCanBeDuplicated(boardController->pageFromSceneIndex(boardController->activeSceneIndex())))
+        		pageActions << UBApplication::mainWindow->actionDuplicatePage;
+            pageActions << UBApplication::mainWindow->actionImportPage;
+
+            mPagePalette = new UBActionPalette(pageActions, Qt::Horizontal , mContainer);
+            mPagePalette->setButtonIconSize(QSize(128, 128));
+            mPagePalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+            mPagePalette->groupActions();
+            mPagePalette->setClosable(true);
+            mPagePalette->adjustSizeAndPosition();
+
+
             togglePagePalette(true);
         }
         else

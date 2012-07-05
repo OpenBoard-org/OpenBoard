@@ -1177,7 +1177,27 @@ void UBDocumentController::selectionChanged()
 
     mMainWindow->actionNewDocument->setEnabled((groupSelected || docSelected || pageSelected) && !trashSelected);
     mMainWindow->actionExport->setEnabled((docSelected || pageSelected) && !trashSelected);
-    mMainWindow->actionDuplicate->setEnabled((docSelected || pageSelected) && !trashSelected);
+	bool firstSceneSelected = false;
+    if(docSelected)
+    	mMainWindow->actionDuplicate->setEnabled(!trashSelected);
+    else if(pageSelected){
+    	QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
+    	if(pageCount == 1)
+    		mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBApplication::boardController->pageFromSceneIndex(0)));
+    	else{
+    		for(int i = 0; i < selection.count() && !firstSceneSelected; i += 1){
+    			if(dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i))->sceneIndex() == 0){
+    				mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBApplication::boardController->pageFromSceneIndex(0)));
+    				firstSceneSelected = true;
+    			}
+    		}
+    		if(!firstSceneSelected)
+    			mMainWindow->actionDuplicate->setEnabled(!trashSelected);
+    	}
+    }
+    else
+    	mMainWindow->actionDuplicate->setEnabled(false);
+
     mMainWindow->actionOpen->setEnabled((docSelected || pageSelected) && !trashSelected);
     mMainWindow->actionRename->setEnabled((groupSelected || docSelected) && !trashSelected && !defaultGroupSelected);
 
@@ -1204,6 +1224,9 @@ void UBDocumentController::selectionChanged()
     {
         deleteEnabled = false;
     }
+
+    if(pageSelected && firstSceneSelected)
+    	deleteEnabled = false;
 
     mMainWindow->actionDelete->setEnabled(deleteEnabled);
 
@@ -1671,3 +1694,4 @@ bool UBDocumentController::pageCanBeDeleted(int page)
 {
 	return page != 0;
 }
+

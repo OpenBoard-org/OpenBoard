@@ -19,6 +19,10 @@
 #include "core/UBMimeData.h"
 #include "core/UBSettings.h"
 
+#include "board/UBBoardController.h"
+
+#include "document/UBDocumentController.h"
+
 #include "core/memcheck.h"
 
 
@@ -51,8 +55,7 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
     if (!(event->buttons() & Qt::LeftButton))
         return;
 
-    if ((event->pos() - mMousePressPos).manhattanLength()
-             < QApplication::startDragDistance())
+    if ((event->pos() - mMousePressPos).manhattanLength() < QApplication::startDragDistance())
              return;
 
     QList<QGraphicsItem*> graphicsItems = items(mMousePressPos);
@@ -60,24 +63,25 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
     UBSceneThumbnailPixmap* sceneItem = 0;
 
     while (!graphicsItems.isEmpty() && !sceneItem)
-    {
         sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(graphicsItems.takeFirst());
-    }
 
     if (sceneItem)
     {
-        QDrag *drag = new QDrag(this);
-        QList<UBMimeDataItem> mimeDataItems;
-        foreach (QGraphicsItem *item, selectedItems())
-            mimeDataItems.append(UBMimeDataItem(sceneItem->proxy(), mGraphicItems.indexOf(item)));
-        UBMimeData *mime = new UBMimeData(mimeDataItems);
-        drag->setMimeData(mime);
+        int pageIndex = UBApplication::boardController->pageFromSceneIndex(sceneItem->sceneIndex());
+        if(pageIndex != 0){
+        	QDrag *drag = new QDrag(this);
+        	QList<UBMimeDataItem> mimeDataItems;
+        	foreach (QGraphicsItem *item, selectedItems())
+        		mimeDataItems.append(UBMimeDataItem(sceneItem->proxy(), mGraphicItems.indexOf(item)));
 
-        drag->setPixmap(sceneItem->pixmap().scaledToWidth(100));
-        drag->setHotSpot(QPoint(drag->pixmap().width()/2,
-                                     drag->pixmap().height() / 2));
+        	UBMimeData *mime = new UBMimeData(mimeDataItems);
+        	drag->setMimeData(mime);
 
-        drag->exec(Qt::MoveAction);
+        	drag->setPixmap(sceneItem->pixmap().scaledToWidth(100));
+        	drag->setHotSpot(QPoint(drag->pixmap().width()/2, drag->pixmap().height() / 2));
+
+        	drag->exec(Qt::MoveAction);
+        }
     }
 
     UBThumbnailWidget::mouseMoveEvent(event);
@@ -104,6 +108,7 @@ void UBDocumentThumbnailWidget::dragLeaveEvent(QDragLeaveEvent *event)
 		mScrollTimer->stop();
 	}
     deleteDropCaret();
+    UBThumbnailWidget::dragLeaveEvent(event);
 }
 
 void UBDocumentThumbnailWidget::autoScroll()
@@ -145,6 +150,14 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
     QGraphicsItem *underlyingItem = itemAt(event->pos());
     mClosestDropItem = dynamic_cast<UBSceneThumbnailPixmap*>(underlyingItem);
 
+    int pageIndex = -1;
+    if(mClosestDropItem){
+    	pageIndex = UBApplication::boardController->pageFromSceneIndex(mClosestDropItem->sceneIndex());
+    	if(pageIndex == 0){
+    		 event->acceptProposedAction();
+    		 return;
+    	}
+    }
     if (!mClosestDropItem)
     {
         foreach (UBSceneThumbnailPixmap *item, pixmapItems)
@@ -159,11 +172,12 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
             {
                 mClosestDropItem = item;
                 minDistance = distance;
+                pageIndex = UBApplication::boardController->pageFromSceneIndex(mClosestDropItem->sceneIndex());
             }
         }
     }
 
-    if (mClosestDropItem)
+    if (mClosestDropItem && pageIndex != 0)
     {
         qreal scale = mClosestDropItem->transform().m11();
 
@@ -206,6 +220,10 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
     if (mClosestDropItem)
     {
         int targetIndex = mDropIsRight ? mGraphicItems.indexOf(mClosestDropItem) + 1 : mGraphicItems.indexOf(mClosestDropItem);
+        if(UBApplication::boardController->pageFromSceneIndex(targetIndex) == 0){
+        	event->ignore();
+        	return;
+        }
 
         QList<UBMimeDataItem> mimeDataItems;
         if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage))
@@ -233,7 +251,6 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
                 actualSourceIndex += sourceIndexOffset;
 
             event->acceptProposedAction();
-
             if (sourceItem.sceneIndex() < targetIndex)
             {
                 if (actualSourceIndex != actualTargetIndex - 1)
@@ -248,6 +265,7 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
             }
         }
     }
+
 }
 
 void UBDocumentThumbnailWidget::deleteDropCaret()

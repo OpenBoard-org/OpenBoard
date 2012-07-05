@@ -208,9 +208,18 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
 {
     mClickTime = QTime::currentTime();
     mMousePressPos = event->pos();
+
+    UBSceneThumbnailPixmap* sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(itemAt(mMousePressPos));
+    if(sceneItem){
+    	int pageIndex = UBApplication::boardController->pageFromSceneIndex(sceneItem->sceneIndex());
+    	if(pageIndex == 0){
+            event->ignore();
+            return;
+    	}
+    }
+
     mMousePressScenePos = mapToScene(mMousePressPos);
     QGraphicsItem* underlyingItem = itemAt(mMousePressPos);
-
     UBThumbnail *previousSelectedThumbnail = mLastSelectedThumbnail;
 
     if (!dynamic_cast<UBThumbnail*>(underlyingItem))

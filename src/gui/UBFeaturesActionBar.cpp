@@ -28,7 +28,6 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mButtonGroup = new QButtonGroup(this);
     mSearchBar = new QLineEdit(this);
     mSearchBar->setStyleSheet(QString("background-color:white; border-radius : 10px; padding : 2px;"));
-    //connect(mSearchBar, SIGNAL(returnPressed()), this, SLOT(onActionSearch()));
 
     mLayout = new QHBoxLayout();
     setLayout(mLayout);
@@ -47,7 +46,6 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     // Create the buttons
     mpFavoriteBtn = new UBActionButton(this, mpFavoriteAction);
     mpSocialBtn = new UBActionButton(this, mpSocialAction);
-    //mpSearchBtn = new UBActionButton(this, mpSearchAction);
     mpDeleteBtn = new UBActionButton(this, mpDeleteAction);
     mpCloseBtn = new UBActionButton(this, mpCloseAction);
     mpRemoveFavoriteBtn = new UBActionButton(this, mpRemoveFavorite);
