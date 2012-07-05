@@ -33,6 +33,7 @@ UBDocumentThumbnailWidget::UBDocumentThumbnailWidget(QWidget* parent)
 	, mDragEnabled(true)
     , mScrollMagnitude(0)
 {
+	bCanDrag = false;
     mScrollTimer = new QTimer(this);
 	connect(mScrollTimer, SIGNAL(timeout()), this, SLOT(autoScroll()));
 }
@@ -250,7 +251,7 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
             if (sourceItem.sceneIndex() >= targetIndex)
                 actualSourceIndex += sourceIndexOffset;
 
-            event->acceptProposedAction();
+            //event->acceptProposedAction();
             if (sourceItem.sceneIndex() < targetIndex)
             {
                 if (actualSourceIndex != actualTargetIndex - 1)
@@ -265,7 +266,7 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
             }
         }
     }
-
+    UBThumbnailWidget::dropEvent(event);
 }
 
 void UBDocumentThumbnailWidget::deleteDropCaret()
