@@ -1,7 +1,7 @@
 var sankoreLang = {
     display: "Afficher", 
     edit: "Modifier", 
-    short_desc: "Sélectionner les animaux dans la liste suivante:", 
+    short_desc: "Sélectionner les animaux dans la liste suivante :", 
     add: "Nouveau bloc",
     enter: "Saisir votre consigne ici ...",
     cat: "chat",
@@ -11,8 +11,8 @@ var sankoreLang = {
     tree: "arbre",
     wgt_name: "Sélectionner",
     reload: "Recharger",
-    slate: "Bois",
-    pad: "Pad"
+    slate: "ardoise",
+    pad: "tablette"
 };
 
 //main function
