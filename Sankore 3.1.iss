@@ -117,7 +117,7 @@ Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Righ
 
 [Run]
 Filename: "{tmp}\vcredist_x86.exe";WorkingDir:"{tmp}"; Parameters: "/q:a/c:""VCREDI~3.EXE /q:a /c:""""msiexec /i vcredist.msi /qn"""""""; StatusMsg: Installing CRT ...
-Filename: "{app}\Open-Sankore.exe"; Description: "{cm:LaunchProgram,Open-Sankore}"; Flags: nowait postinstall
+Filename: "{app}\Open-Sankore.exe"; Description: "{cm:LaunchProgram,Open-Sankore}"; Flags: nowait postinstall skipifsilent 
 
 [UninstallDelete]
 ; cleanup and delete whole installation directory

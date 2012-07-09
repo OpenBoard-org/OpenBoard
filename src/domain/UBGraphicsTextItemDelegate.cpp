@@ -387,7 +387,7 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
         cursor.setPosition (iCursorPos, QTextCursor::MoveAnchor);
     }
 
-    delegated()->document()->adjustSize();
+    //delegated()->document()->adjustSize();
     delegated()->setFont(curFont);
     UBSettings::settings()->setFontPointSize(iPointSize);
     //returning initial selection

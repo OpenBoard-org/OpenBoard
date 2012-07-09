@@ -71,7 +71,6 @@
    <addaction name="actionErase"/>
    <addaction name="actionGroupItems"/>
    <addaction name="actionBoard"/>
-   <addaction name="actionTutorial"/>
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>
@@ -117,7 +116,6 @@
    <addaction name="actionWebSmaller"/>
    <addaction name="separator"/>
    <addaction name="actionBoard"/>
-   <addaction name="actionTutorial"/>
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>
@@ -167,7 +165,6 @@
    <addaction name="actionAddToWorkingDocument"/>
    <addaction name="actionDocumentAdd"/>
    <addaction name="actionBoard"/>
-   <addaction name="actionTutorial"/>
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>

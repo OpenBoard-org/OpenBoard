@@ -738,7 +738,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
         }
     }
 
-   UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix);
+   UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix, NULL);
    QTransform transform;
    QString textTransform = element.attribute(aTransform);
 
@@ -815,13 +815,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
 
     QUuid uuid = QUuid::createUuid();
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mCurrentScene->document()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-        ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
         ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#endif
     
     UBGraphicsMediaItem *audioItem = mCurrentScene->addAudio(concreteUrl, false);
     QTransform transform;
@@ -858,13 +853,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
 
     QUuid uuid = QUuid::createUuid();
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mCurrentScene->document()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-        ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
         ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#endif
 
     UBGraphicsMediaItem *videoItem = mCurrentScene->addVideo(concreteUrl, false);
     QTransform transform;

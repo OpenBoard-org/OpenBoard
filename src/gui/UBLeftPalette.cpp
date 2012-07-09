@@ -25,11 +25,22 @@ UBLeftPalette::UBLeftPalette(QWidget *parent, const char *name):
 {
     setObjectName(name);
     setOrientation(eUBDockOrientation_Left);
-
-    mLastWidth = UBSettings::settings()->leftLibPaletteWidth->get().toInt();
     mCollapseWidth = 150;
 
-    resize(mLastWidth, parentWidget()->height());
+    bool isCollapsed = false;
+    if(mCurrentMode == eUBDockPaletteWidget_BOARD){
+    	mLastWidth = UBSettings::settings()->leftLibPaletteBoardModeWidth->get().toInt();
+    	isCollapsed = UBSettings::settings()->leftLibPaletteBoardModeIsCollapsed->get().toBool();
+    }
+    else{
+    	mLastWidth = UBSettings::settings()->leftLibPaletteDesktopModeWidth->get().toInt();
+    	isCollapsed = UBSettings::settings()->leftLibPaletteDesktopModeIsCollapsed->get().toBool();
+    }
+
+    if(isCollapsed)
+    	resize(0,parentWidget()->height());
+    else
+    	resize(mLastWidth, parentWidget()->height());
 }
 
 /**
@@ -54,6 +65,36 @@ void UBLeftPalette::updateMaxWidth()
  */
 void UBLeftPalette::resizeEvent(QResizeEvent *event)
 {
-    UBSettings::settings()->leftLibPaletteWidth->set(width());
+	int newWidth = width();
+	if(mCurrentMode == eUBDockPaletteWidget_BOARD){
+		if(newWidth > mCollapseWidth)
+			UBSettings::settings()->leftLibPaletteBoardModeWidth->set(newWidth);
+		UBSettings::settings()->leftLibPaletteBoardModeIsCollapsed->set(newWidth == 0);
+	}
+	else{
+		if(newWidth > mCollapseWidth)
+			UBSettings::settings()->leftLibPaletteDesktopModeWidth->set(newWidth);
+		UBSettings::settings()->leftLibPaletteDesktopModeIsCollapsed->set(newWidth == 0);
+	}
     UBDockPalette::resizeEvent(event);
+}
+
+
+bool UBLeftPalette::switchMode(eUBDockPaletteWidgetMode mode)
+{
+	int newModeWidth;
+	if(mode == eUBDockPaletteWidget_BOARD){
+		mLastWidth = UBSettings::settings()->leftLibPaletteBoardModeWidth->get().toInt();
+		newModeWidth = mLastWidth;
+		if(UBSettings::settings()->leftLibPaletteBoardModeIsCollapsed->get().toBool())
+			newModeWidth = 0;
+	}
+	else{
+		mLastWidth = UBSettings::settings()->leftLibPaletteDesktopModeWidth->get().toInt();
+		newModeWidth = mLastWidth;
+		if(UBSettings::settings()->leftLibPaletteDesktopModeIsCollapsed->get().toBool())
+			newModeWidth = 0;
+	}
+	resize(newModeWidth,height());
+	return UBDockPalette::switchMode(mode);
 }

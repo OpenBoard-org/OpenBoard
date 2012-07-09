@@ -248,10 +248,8 @@ bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         }
         mDrag->exec();
         mDragPixmap = QPixmap();
-
         return true;
     }
-
     if(isLocked()) {
         event->accept();
         return true;

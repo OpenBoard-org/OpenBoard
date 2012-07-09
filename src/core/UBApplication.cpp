@@ -129,11 +129,13 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
         || args.contains("-log")
         || args.contains("log");
 
-    UBPlatformUtils::init();
+
     UBResources::resources();
 
     if (!undoStack)
         undoStack = new QUndoStack(staticMemoryCleaner);
+
+    UBPlatformUtils::init();
 
     UBSettings *settings = UBSettings::settings();
 
@@ -358,31 +360,31 @@ int UBApplication::exec(const QString& pFileToImport)
         applicationController->showBoard();
 
 
-    if (UBSettings::settings()->appIsInSoftwareUpdateProcess->get().toBool())
-    {
-        UBSettings::settings()->appIsInSoftwareUpdateProcess->set(false);
+//    if (UBSettings::settings()->appIsInSoftwareUpdateProcess->get().toBool())
+//    {
+//        UBSettings::settings()->appIsInSoftwareUpdateProcess->set(false);
 
-        // clean potential updater in temp directory
-        UBFileSystemUtils::cleanupGhostTempFolders();
+//        // clean potential updater in temp directory
+//        UBFileSystemUtils::cleanupGhostTempFolders();
 
-        QUuid docUuid( UBSettings::settings()->appLastSessionDocumentUUID->get().toString());
+//        QUuid docUuid( UBSettings::settings()->appLastSessionDocumentUUID->get().toString());
 
-        if (!docUuid.isNull())
-        {
-            UBDocumentProxy* proxy = UBPersistenceManager::persistenceManager()->documentByUuid(docUuid);
+//        if (!docUuid.isNull())
+//        {
+//            UBDocumentProxy* proxy = UBPersistenceManager::persistenceManager()->documentByUuid(docUuid);
 
-            if (proxy)
-            {
-                bool ok;
-                int lastSceneIndex = UBSettings::settings()->appLastSessionPageIndex->get().toInt(&ok);
+//            if (proxy)
+//            {
+//                bool ok;
+//                int lastSceneIndex = UBSettings::settings()->appLastSessionPageIndex->get().toInt(&ok);
 
-                if (!ok)
-                    lastSceneIndex = 0;
+//                if (!ok)
+//                    lastSceneIndex = 0;
 
-                boardController->setActiveDocumentScene(proxy, lastSceneIndex);
-            }
-        }
-    }
+//                boardController->setActiveDocumentScene(proxy, lastSceneIndex);
+//            }
+//        }
+//    }
 
     return QApplication::exec();
 }
@@ -525,30 +527,29 @@ void UBApplication::decorateActionMenu(QAction* action)
             menu->addAction(mainWindow->actionCut);
             menu->addAction(mainWindow->actionCopy);
             menu->addAction(mainWindow->actionPaste);
-
-            menu->addSeparator();
-            menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionHideApplication);
             menu->addAction(mainWindow->actionSleep);
 
             menu->addSeparator();
-            menu->addAction(mainWindow->actionSankoreEditor);
-
+            menu->addAction(mainWindow->actionPreferences);
+            menu->addAction(mainWindow->actionMultiScreen);
+            menu->addAction(mainWindow->actionImportUniboardDocuments);
             // SANKORE-48: Hide the check update action if the setting
             // EnableAutomaticSoftwareUpdates is false in Uniboard.config
-            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
+            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool())
                 menu->addAction(mainWindow->actionCheckUpdate);
-            }
-            else{
+            else
                 mainWindow->actionCheckUpdate->setEnabled(false);
-            }
+
+            menu->addSeparator();
+            menu->addAction(mainWindow->actionTutorial);
+            menu->addAction(mainWindow->actionSankoreEditor);
 
 #ifndef Q_WS_X11 // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
             mainWindow->actionPodcast->setText(tr("Podcast"));
 #endif
-            menu->addAction(mainWindow->actionMultiScreen);
-            menu->addAction(mainWindow->actionImportUniboardDocuments);
+
             menu->addSeparator();
             menu->addAction(mainWindow->actionQuit);
 

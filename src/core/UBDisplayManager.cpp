@@ -152,6 +152,8 @@ void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
             pDisplayWidget->setWindowFlags(mDisplayWidget->windowFlags());
         }
         mDisplayWidget = pDisplayWidget;
+        mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
+        mDisplayWidget->showFullScreen();
 		// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
 //        mDisplayWidget->setAttribute(Qt::WA_MacNoShadow);

@@ -155,7 +155,7 @@ QStringList UBPersistenceManager::allShapes()
 
 QStringList UBPersistenceManager::allGips()
 {
-    QString gipLibraryPath = UBSettings::settings()->applicationGipLibraryDirectory();
+    QString gipLibraryPath = UBSettings::settings()->userGipLibraryDirectory();
 
     QDir dir(gipLibraryPath);
 
@@ -897,7 +897,7 @@ QString UBPersistenceManager::addVideoFileToDocument(UBDocumentProxy* pDocumentP
 
     }
 
-    return fileName;
+    return destPath;
 
 }
 
@@ -929,7 +929,7 @@ QString UBPersistenceManager::addVideoFileToDocument(UBDocumentProxy* pDocumentP
         }
     }
 
-    return fileName;
+    return destPath;
 
 }
 
@@ -957,7 +957,7 @@ QString UBPersistenceManager::addAudioFileToDocument(UBDocumentProxy* pDocumentP
 
     }
 
-    return fileName;
+    return destPath;
 
 }
 
@@ -989,7 +989,8 @@ QString UBPersistenceManager::addAudioFileToDocument(UBDocumentProxy* pDocumentP
         }
     }
 
-    return fileName;
+    //return fileName;
+    return destPath;
 
 }
 

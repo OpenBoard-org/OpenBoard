@@ -32,7 +32,6 @@
 #include "network/UBNetworkAccessManager.h"
 
 #include "gui/UBWidgetMirror.h"
-#include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBKeyboardPalette.h"
@@ -212,6 +211,8 @@ void UBWebController::tutorialWebInstance()
             (*mCurrentWebBrowser)->tabWidget()->lineEdits()->hide();
 
         }
+        else
+        	(*mCurrentWebBrowser)->loadUrl(currentUrl);
 
         UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
 
@@ -293,6 +294,7 @@ void UBWebController::show(WebInstance type)
         break;
     case Paraschool:
         paraschoolWebInstance();
+        break;
     default:
         qCritical() << __FILE__ << " non supported web instance type " << QString::number(type) ;
         break;

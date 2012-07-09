@@ -19,7 +19,7 @@ var sankoreLang = {
     },
     "fr":{
         "previous":"Précédente",
-        "next":"Suivant",
+        "next":"Suivante",
         "show":"Voir",
         "prev_page":"Page précédente",
         "next_page":"Page suivante",

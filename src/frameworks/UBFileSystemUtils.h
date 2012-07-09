@@ -28,6 +28,8 @@ class UBFileSystemUtils
         UBFileSystemUtils();
         virtual ~UBFileSystemUtils();
 
+        static QString removeLocalFilePrefix(QString input);
+
         static QString defaultTempDirName() { return QCoreApplication::applicationName(); }
         static QString defaultTempDirPath();
         static QString createTempDir(const QString& templateString = defaultTempDirName(), bool autoDeleteOnExit = true);

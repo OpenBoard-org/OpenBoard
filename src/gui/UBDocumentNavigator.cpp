@@ -150,9 +150,10 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
         if(UBApplication::boardController)
         {
             UBApplication::boardController->persistCurrentScene();
+        }else
+        {
+            UBThumbnailAdaptor::persistScene(mCrntDoc->persistencePath(), pScene, iPage);
         }
-
-        UBThumbnailAdaptor::persistScene(mCrntDoc->persistencePath(), pScene, iPage);
 
         // Load it
         QPixmap pix = UBThumbnailAdaptor::load(mCrntDoc, iPage);

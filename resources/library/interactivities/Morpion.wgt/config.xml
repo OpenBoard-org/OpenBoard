@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://www.njin.fr/sankore/apps/morpion" 
+        version="1.0"
+        width="760"
+        height="610" 
+        ub:resizable="false">     
+   
+		<name>Morpion</name>
+		<author href="http://www.njin.fr" email="contact@njin.fr">njin</author>
+		<description>Le jeu du morpion</description>
+		
+		<content src="index.html"/>
+</widget>

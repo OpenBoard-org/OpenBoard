@@ -2145,7 +2145,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMed
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
-    QString audioFileHref = audioItem->mediaFileUrl().toLocalFile();
+    QString audioFileHref = audioItem->mediaFileUrl().toString();
+    audioFileHref = UBFileSystemUtils::removeLocalFilePrefix(audioFileHref);
+    if(audioFileHref.startsWith(mDocumentPath))
+        audioFileHref = audioFileHref.replace(mDocumentPath + "/","");
+
     mXmlWriter.writeAttribute(nsXLink, "href", audioFileHref);
     mXmlWriter.writeEndElement();
 }
@@ -2170,7 +2174,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMed
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
-    QString videoFileHref = videoItem->mediaFileUrl().toLocalFile();
+    QString videoFileHref = videoItem->mediaFileUrl().toString();
+
+    videoFileHref = UBFileSystemUtils::removeLocalFilePrefix(videoFileHref);
+    if(videoFileHref.startsWith(mDocumentPath))
+        videoFileHref = videoFileHref.replace(mDocumentPath + "/","");
+    
     mXmlWriter.writeAttribute(nsXLink, "href", videoFileHref);
     mXmlWriter.writeEndElement();
 }
@@ -2629,50 +2638,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
                               , "fill-on-light-background", colorLightBg.name());
 
     //for new documents from version 4.5.0
-    if (true) {
-        mXmlWriter.writeStartElement("itemTextContent");
-        mXmlWriter.writeCDATA(item->toHtml());
-        mXmlWriter.writeEndElement(); //itemTextContent
+    mXmlWriter.writeStartElement("itemTextContent");
 
-    //tracking for back capability with older versions
-    } else if (false) {
-        mXmlWriter.writeStartElement(nsXHtml, "body");
-        mXmlWriter.writeStartElement(nsXHtml, "div");
-        mXmlWriter.writeStartElement(nsXHtml, "font");
-
-        QFont font = item->font();
-
-        mXmlWriter.writeAttribute("face", font.family());
-
-        QFontInfo fi(font);
-        int pixelSize = fi.pixelSize();
-
-        mXmlWriter.writeAttribute("style", sFontSizePrefix + QString(" %1").arg(pixelSize) + sPixelUnit + "; " +
-                                  sFontWeightPrefix + " " + (fi.bold() ? "bold" : "normal") + "; " +
-                                  sFontStylePrefix + " " + (fi.italic() ? "italic" : "normal") + ";");
-        mXmlWriter.writeAttribute("color", item->defaultTextColor().name());
-
-        QString text = item->toPlainText();
-        QStringList lines = text.split("\n");
-
-        for (int i = 0; i < lines.length() ; i++)
-        {
-            mXmlWriter.writeCharacters(lines.at(i));
-
-            if (i < lines.length() - 1)
-                mXmlWriter.writeEmptyElement(nsXHtml, "br");
-        }
-
-        mXmlWriter.writeEndElement(); //font
-        mXmlWriter.writeEndElement(); //div
-        mXmlWriter.writeEndElement(); //body
-    }
+    // Note: don't use mXmlWriter.writeCDATA(htmlString); because it doesn't escape characters sequences correctly.
+    // Texts copied from other programs like Open-Office can truncate the svg file.
+    mXmlWriter.writeCharacters(item->toHtml());
+    mXmlWriter.writeEndElement(); //itemTextContent
 
     mXmlWriter.writeEndElement(); //foreignObject
-
-//    QtLogger::start("/home/ilia/Documents/tmp/10/log.log");
-//    QtLogger::appendl(item->toHtml());
-//    QtLogger::finish();
 }
 
 UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
@@ -2686,6 +2659,22 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
 
     QStringRef ubFillOnDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-dark-background");
     QStringRef ubFillOnLightBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-light-background");
+
+    if (!ubFillOnDarkBackground.isNull()) {
+        QColor color;
+        color.setNamedColor(ubFillOnDarkBackground.toString());
+        if (!color.isValid())
+            color = Qt::white;
+        textItem->setColorOnDarkBackground(color);
+    }
+
+    if (!ubFillOnLightBackground.isNull()) {
+        QColor color;
+        color.setNamedColor(ubFillOnLightBackground.toString());
+        if (!color.isValid())
+            color = Qt::black;
+            textItem->setColorOnLightBackground(color);
+    }
 
     QString text;
 
@@ -2706,7 +2695,6 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     text = mXmlReader.readElementText();
                     textItem->setHtml(text);
                     textItem->resize(width, height);
-
                     if (textItem->toPlainText().isEmpty()) {
                         delete textItem;
                         textItem = 0;
@@ -2753,22 +2741,6 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     QColor textColor;
                     textColor.setNamedColor(fill.toString());
                     textItem->setDefaultTextColor(textColor);
-                }
-
-                if (!ubFillOnDarkBackground.isNull()) {
-                    QColor color;
-                    color.setNamedColor(ubFillOnDarkBackground.toString());
-                    if (!color.isValid())
-                        color = Qt::white;
-                    textItem->setColorOnDarkBackground(color);
-                }
-
-                if (!ubFillOnLightBackground.isNull()) {
-                    QColor color;
-                    color.setNamedColor(ubFillOnLightBackground.toString());
-                    if (!color.isValid())
-                        color = Qt::black;
-                    textItem->setColorOnLightBackground(color);
                 }
 
                 while (!(mXmlReader.isEndElement() && mXmlReader.name() == "font")) {

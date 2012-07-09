@@ -13,8 +13,8 @@ linux-g++-64 {
 
 VERSION_MAJ = 1
 VERSION_MIN = 50 
-VERSION_TYPE = a # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 20
+VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
+VERSION_PATCH = 01
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
@@ -54,7 +54,6 @@ include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/transition/transition.pri)
-include(src/customWidgets/customWidgets.pri)
 include(src/interfaces/interfaces.pri)
 
 DEPENDPATH += src/pdf-merger
@@ -311,12 +310,18 @@ macx {
    }
 
    exists(resources/i18n/sankore_sk.qm) {
-       TRANSLATION_pt.files = resources/i18n/sankore_sk.qm \
+       TRANSLATION_sk.files = resources/i18n/sankore_sk.qm \
            resources/i18n/Localizable.strings
-       TRANSLATION_pt.path = "$$RESOURCES_DIR/sk.lproj"
+       TRANSLATION_sk.path = "$$RESOURCES_DIR/sk.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_sk
    }
    
+   exists(resources/i18n/sankore_bg.qm) {
+       TRANSLATION_bg.files = resources/i18n/sankore_bg.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_bg.path = "$$RESOURCES_DIR/bg.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_bg
+   }
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
        UB_FONTS \
@@ -407,7 +412,8 @@ TRANSLATIONS = resources/i18n/sankore_en.ts \
    resources/i18n/sankore_ar.ts \
    resources/i18n/sankore_iw.ts \
    resources/i18n/sankore_pt.ts \
-   resources/i18n/sankore_sk.ts
+   resources/i18n/sankore_sk.ts \
+   resources/i18n/sankore_bg.ts
 
 INSTALLS = UB_ETC \
    UB_I18N \

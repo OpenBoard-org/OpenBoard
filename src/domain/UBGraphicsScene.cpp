@@ -950,6 +950,7 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     penWidth /= UBApplication::boardController->currentZoom();
 
     mArcPolygonItem = arcToPolygonItem(QLineF(pCenterPoint, mPreviousPoint), pSpanAngle, penWidth);
+    mArcPolygonItem->setStroke(mCurrentStroke);
     mAddedItems.insert(mArcPolygonItem);
     addItem(mArcPolygonItem);
 
@@ -1297,7 +1298,7 @@ void UBGraphicsScene::clearBackground()
     setDocumentUpdated();
 }
 
-UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation)
+UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphicsItem* replaceFor, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation)
 {
     UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
 
@@ -1312,7 +1313,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
     addItem(pixmapItem);
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, pixmapItem);
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, replaceFor, pixmapItem);
         UBApplication::undoStack->push(uc);
     }
 
@@ -2383,4 +2384,8 @@ void UBGraphicsScene::setToolCursor(int tool)
     {
         deselectAllItems();
     }
+}
+
+void UBGraphicsScene::initStroke(){
+	mCurrentStroke = new UBGraphicsStroke();
 }

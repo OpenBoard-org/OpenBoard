@@ -831,7 +831,7 @@ void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos, 
     mPos = pos;
     mScaleFactor = scaleFactor;
 
-     QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
+    QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
 
     mAddItemPalette->show();
     mAddItemPalette->adjustSizeAndPosition();
@@ -849,7 +849,7 @@ void UBBoardPaletteManager::addItemToCurrentPage()
         UBApplication::boardController->downloadURL(mItemUrl);
     else
     {
-        UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, mPos, mScaleFactor);
+        UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, NULL, mPos, mScaleFactor);
 
         item->setSourceUrl(mItemUrl);
         item->setSelected(true);

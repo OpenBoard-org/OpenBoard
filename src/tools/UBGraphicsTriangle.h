@@ -131,6 +131,8 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         bool mResizing2;
         bool mRotating;
         QRect lastRect;
+
+        // Coordinates are transformed....
         QPoint lastPos;
 
         QGraphicsSvgItem* mHFlipSvgItem;

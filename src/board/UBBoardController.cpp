@@ -851,7 +851,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
 {
     QString mimeType = pContentTypeHeader;
 
-    // In some cases "image/jpeg;charset=" is retourned by the drag-n-drop. That is
+    // In some cases "image/jpeg;charset=" is returned by the drag-n-drop. That is
     // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
     int position=mimeType.indexOf(";");
     if(position != -1)
@@ -879,7 +879,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         img.loadFromData(pData);
         QPixmap pix = QPixmap::fromImage(img);
 
-        UBGraphicsPixmapItem* pixItem = mActiveScene->addPixmap(pix, pPos, 1.);
+        UBGraphicsPixmapItem* pixItem = mActiveScene->addPixmap(pix, NULL, pPos, 1.);
         pixItem->setSourceUrl(sourceUrl);
 
         if (isBackground)
@@ -999,7 +999,6 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
                 ->addVideoFileToDocument(mActiveDocument, sourceUrl, pData, uuid));
 
             audioMediaItem = mActiveScene->addMedia(url, false, pPos);
-
             audioMediaItem->setSourceUrl(sourceUrl);
             audioMediaItem->setUuid(uuid);
         }
@@ -1243,6 +1242,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     if(documentChange)
     {
         emit activeDocumentChanged();
+        // Notify the navigator palette that the document has changed        
         emit setDocOnPageNavigator(pDocumentProxy);
         UBGraphicsTextItem::lastUsedTextColor = QColor();
     }
@@ -1818,13 +1818,8 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mActiveDocument->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-                                      ->addVideoFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
                                       ->addVideoFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
-#endif
 
     UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     mActiveDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -1843,13 +1838,8 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mActiveDocument->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-                       ->addAudioFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
                        ->addAudioFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
-#endif
 
     UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     mActiveDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -1887,8 +1877,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
            tmpItem->widgetWebView()->takeSnapshot().save(snapshotPath, "PNG");
 
     }
-
-    return 0;
+    return w3cWidgetItem;
 }
 
 void UBBoardController::cut()
@@ -2021,8 +2010,12 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         if("" != url)
         {
             downloadURL(url, pPos);
-            return;
         }
+        else
+        {
+            mActiveScene->addTextHtml(qsHtml, pPos);
+        }
+        return;
     }
 
     if (pMimeData->hasUrls())
@@ -2048,7 +2041,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         // validate that the image is really an image, webkit does not fill properly the image mime data
         if (pix.width() != 0 && pix.height() != 0)
         {
-            mActiveScene->addPixmap(pix, pPos, 1.);
+            mActiveScene->addPixmap(pix, NULL, pPos, 1.);
             return;
         }
     }
@@ -2058,11 +2051,11 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         if("" != pMimeData->text()){
             // Sometimes, it is possible to have an URL as text. we check here if it is the case
             QString qsTmp = pMimeData->text().remove(QRegExp("[\\0]"));
-            if(qsTmp.startsWith("http")){
+            if(qsTmp.startsWith("http://") || qsTmp.startsWith("https://")){
                 downloadURL(QUrl(qsTmp), pPos);
             }
             else{
-                mActiveScene->addTextHtml(pMimeData->html(), pPos);
+                mActiveScene->addTextHtml(pMimeData->text(), pPos);
             }
         }
         else{

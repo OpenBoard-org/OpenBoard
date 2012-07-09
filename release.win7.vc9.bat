@@ -56,14 +56,12 @@ REM erase tmp
 REM echo %VERSION%
 REM echo %LAST_TAG_VERSION%
 
-REM if not v%VERSION%==%LAST_TAG_VERSION% GOTO EXIT_WITH_ERROR
-
 nmake release-install
 
-
-copy %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm build\win32\release\product\i18n\
-mkdir build\win32\release\product\customizations
-xcopy /s resources\customizations\* build\win32\release\product\customizations
+set I18n=build\win32\release\product\i18n
+mkdir %I18n%
+xcopy /s resources\i18n\*.qm %I18n%
+xcopy /s %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm %I18n%\
 
 del build\win32\release\product\i18n\qt_help*
 
@@ -75,5 +73,3 @@ set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 
 call "%INNO_EXE%" "Sankore 3.1.iss" /F"%INSTALLER_NAME%"
 
-:EXIT_WITH_ERROR
-	echo ERROR

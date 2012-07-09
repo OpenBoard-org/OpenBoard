@@ -112,9 +112,10 @@ class UBSettings : public QObject
         static QString userInteractiveFavoritesDirectory();
         static QString userPodcastRecordingDirectory();
 
-        //application directory
+		QString userGipLibraryDirectory();
+        
+		//application directory
         QString applicationShapeLibraryDirectory();
-        QString applicationGipLibraryDirectory();
         QString applicationImageLibraryDirectory();
         QString applicationApplicationsLibraryDirectory();
         QString applicationInteractivesDirectory();
@@ -323,9 +324,14 @@ class UBSettings : public QObject
         UBSetting* gipThumbnailWidth;
         UBSetting* soundThumbnailWidth;
 
-        UBSetting* navigPaletteWidth;
-        UBSetting* rightLibPaletteWidth;
-        UBSetting* leftLibPaletteWidth;
+        UBSetting* rightLibPaletteBoardModeWidth;
+        UBSetting* rightLibPaletteBoardModeIsCollapsed;
+        UBSetting* rightLibPaletteDesktopModeWidth;
+        UBSetting* rightLibPaletteDesktopModeIsCollapsed;
+        UBSetting* leftLibPaletteBoardModeWidth;
+        UBSetting* leftLibPaletteBoardModeIsCollapsed;
+        UBSetting* leftLibPaletteDesktopModeWidth;
+        UBSetting* leftLibPaletteDesktopModeIsCollapsed;
 
         UBSetting* communityUser;
         UBSetting* communityPsw;

@@ -208,9 +208,14 @@ void UBSettings::init()
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
     appPreferredLanguage = new UBSetting(this,"App","PreferredLanguage", "");
 
-    navigPaletteWidth = new UBSetting(this, "Board", "NavigPaletteWidth", 270);
-    rightLibPaletteWidth = new UBSetting(this, "Board", "RightLibPaletteWidth", 270);
-    leftLibPaletteWidth = new UBSetting(this, "Board", "LeftLibPaletteWidth",270);
+    rightLibPaletteBoardModeWidth = new UBSetting(this, "Board", "RightLibPaletteBoardModeWidth", 270);
+    rightLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteBoardModeIsCollapsed",false);
+    rightLibPaletteDesktopModeWidth = new UBSetting(this, "Board", "RightLibPaletteDesktopModeWidth", 270);
+    rightLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteDesktopModeIsCollapsed",false);
+    leftLibPaletteBoardModeWidth = new UBSetting(this, "Board", "LeftLibPaletteBoardModeWidth",270);
+    leftLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteBoardModeIsCollapsed",false);
+    leftLibPaletteDesktopModeWidth = new UBSetting(this, "Board", "LeftLibPaletteDesktopModeWidth",270);
+    leftLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteDesktopModeIsCollapsed",false);
 
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
@@ -889,6 +894,17 @@ QString UBSettings::userTrashDirPath()
 }
 
 
+QString UBSettings::userGipLibraryDirectory()
+{
+    static QString dirPath = "";
+    if(dirPath.isEmpty()){
+        dirPath = userDataDirectory() + "/library/gips";
+        checkDirectory(dirPath);
+    }
+    return dirPath;
+}
+
+
 QString UBSettings::applicationShapeLibraryDirectory()
 {
     QString defaultRelativePath = QString("./library/shape");
@@ -914,16 +930,6 @@ QString UBSettings::applicationCustomFontDirectory()
 {
     QString defaultFontDirectory = "/fonts";
     return applicationCustomizationDirectory() + defaultFontDirectory;
-}
-
-QString UBSettings::applicationGipLibraryDirectory()
-{
-    static QString dirPath = "";
-    if(dirPath.isEmpty()){
-        dirPath = UBPlatformUtils::applicationResourcesDirectory() + "/library/gips";
-        checkDirectory(dirPath);
-    }
-    return dirPath;
 }
 
 QString UBSettings::userSearchDirectory()

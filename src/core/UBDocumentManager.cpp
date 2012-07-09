@@ -266,7 +266,7 @@ int UBDocumentManager::addImageAsPageToDocument(const QStringList& filenames, UB
                 }
                 else
                 {
-                    gi = scene->addPixmap(pix, QPointF(0, 0));
+                    gi = scene->addPixmap(pix, NULL, QPointF(0, 0));
                 }
             }
 

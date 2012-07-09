@@ -1,0 +1,236 @@
+#table {
+	display: table;
+	text-align: center;
+}
+#table > div {
+	display: table-row;
+}
+#table > div > div {
+	display: table-cell;
+}
+
+.card-container {
+	padding: 20px 10px;
+}
+
+.switch {
+	display: none;
+	color: #FFF;
+}
+
+.onEdit .switch {
+	display: block;
+}
+
+.onEdit .front .switch {
+	visibility: hidden;
+}
+
+.card {
+	position: relative;
+	white-space: normal;
+	width: 180px;
+	height: 180px;
+	
+	overflow: hidden;
+	
+	-webkit-border-radius: 8px;
+	   -moz-border-radius: 8px;
+		-ms-border-radius: 8px;
+			border-radius: 8px;
+}
+
+.front .card {
+	background: url("images/pile-bg.png") center no-repeat, url("images/mark.png") center no-repeat;
+}
+
+.back .card {
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+	   -moz-box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+		-ms-box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+			box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+	
+	background-image: linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+	background-image: -o-linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+	background-image: -moz-linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+	background-image: -webkit-linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+	background-image: -ms-linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+
+	background-image: -webkit-gradient(
+		linear,
+		50% top,
+		50% bottom,
+		color-stop(0, rgb(255,255,255)),
+		color-stop(1, rgb(204,204,204))
+	);
+}
+
+.card > div {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	width: 180px;
+	height: 180px;
+}
+
+.card .text {
+	padding: 0px 20px;
+	font-family: "SFToontimeRegular";
+	font-size: 28px;
+	color: #000;
+}
+
+.usePicture .card .text, .front .card .text {
+	display: none;
+}
+
+.card .picture {
+	display: none;
+	
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	-webkit-border-radius: 8px;
+	   -moz-border-radius: 8px;
+		-ms-border-radius: 8px;
+			border-radius: 8px;
+}
+
+.usePicture .card .picture {
+	display: block;
+}
+
+.card .picture > div {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	-webkit-border-radius: 8px;
+	   -moz-border-radius: 8px;
+		-ms-border-radius: 8px;
+			border-radius: 8px;
+}
+
+.card .picture > div:first-child {
+	position: relative;
+	display: table-cell;
+	vertical-align: middle;
+	width: 180px;
+	height: 180px;	
+}
+.card .picture > div img {
+	max-width: 100%;
+	vertical-align: middle;
+}
+
+.card .picture > div.dropzone {
+	border: 1px dashed black;
+	display: none;
+}
+
+.onEdit .card .picture > div.dropzone {
+	display: block;
+}
+
+.card .picture > div.dropzone div {
+	padding: 10px 10px 10px 50px;
+	text-align: left;
+	color: rgba(255, 255, 255, 0.5);
+	background: rgba(0, 0, 0, 0.4) url("images/drop-label-bg.png") 10px center no-repeat;
+	
+	-webkit-border-radius: 8px 8px 0 0;
+	   -moz-border-radius: 8px 8px 0 0;
+		-ms-border-radius: 8px 8px 0 0;
+			border-radius: 8px 8px 0 0;
+}
+
+.card .picture > div.dropzone.hover div {
+	background-image: url("images/drop-label-ondrop-bg.png");
+	color: rgba(255, 255, 255, 1);
+}
+
+.card-container .actions {
+	position: relative;
+	margin-top: -35px;
+	display: none;
+	color: #FFF;
+}
+
+.onEdit .card-container .actions {
+	display: block;
+}
+
+.actions button[role="flip"] {
+	margin: 0;
+	padding: 0;
+	border: none;
+	cursor: pointer;
+	width: 50px;
+	height: 50px;
+	background: url("images/flip.png") left center no-repeat;
+	text-indent: -99999px;
+}
+
+.card-container {
+  	-webkit-perspective: 600px;
+	position: relative;
+	width: 180px;
+	height: 180px;
+}
+
+.onEdit .card-container {
+	height: 200px;
+}
+
+.cards {
+	position: relative;
+	width:100%;
+	height: 100%;
+}
+
+.cards > div {
+	position: absolute;
+}
+
+.csstransforms3d .cards > div {
+	-webkit-transform-style: preserve-3d;
+  	-webkit-transition: all .5s ease-in-out;
+	-webkit-backface-visibility: hidden;	
+}
+
+.csstransforms3d .cards > div:first-child {
+	-webkit-transform: rotateY( 0deg );
+}
+
+.no-csstransforms3d .cards > div:first-child {
+	display: block;
+}
+
+.csstransforms3d .cards > div:last-child {
+	-webkit-transform: rotateY( -180deg );
+}
+
+.no-csstransforms3d .cards > div:last-child {
+	display: none;
+}
+
+.csstransforms3d .cards.flip > div:first-child {
+	-webkit-transform: rotateY( 180deg );
+}
+
+.no-csstransforms3d .cards.flip > div:first-child {
+	display: none;
+}
+
+.csstransforms3d .cards.flip > div:last-child {
+	-webkit-transform: rotateY( 0deg );
+}
+
+.no-csstransforms3d .cards.flip > div:last-child {
+	display: block;
+}
