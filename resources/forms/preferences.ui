@@ -1374,7 +1374,7 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>Credits</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_31">
        <item>
         <widget class="QTextBrowser" name="credentialTextBrowser">
          <property name="html">

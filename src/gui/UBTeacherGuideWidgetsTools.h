@@ -39,6 +39,7 @@ class QTextEdit;
 class QWidget;
 class UBTGAdaptableText;
 class QDomElement;
+class UBMediaWidget;
 
 typedef struct
 {

@@ -36,6 +36,8 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 
+#include "customWidgets/UBMediaWidget.h"
+
 #include "core/memcheck.h"
 
 
