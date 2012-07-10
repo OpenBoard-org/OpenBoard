@@ -43,6 +43,7 @@
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
+#include "board/UBBoardView.h"
 
 #include "UBGraphicsItemUndoCommand.h"
 #include "UBGraphicsTextItemUndoCommand.h"
@@ -1453,6 +1454,8 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     {
         UBApplication::boardController->moveGraphicsWidgetToControlView(graphicsWidget);
     }
+
+    UBApplication::boardController->controlView()->setFocus();
 }
 
 UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, const QPointF& pPos)

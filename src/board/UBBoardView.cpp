@@ -481,9 +481,9 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
     case UBGraphicsPixmapItem::Type:
     case UBGraphicsTextItem::Type:
     case UBGraphicsW3CWidgetItem::Type:
-        if (currentTool != UBStylusTool::Play && !item->isSelected() && item->parentItem())
+        if (currentTool == UBStylusTool::Selector && !item->isSelected() && item->parentItem())
             return true;
-        if (currentTool != UBStylusTool::Play && !item->isSelected())
+        if (currentTool == UBStylusTool::Selector && item->isSelected())
             return true;
         break;
     
@@ -580,11 +580,20 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     if (itemShouldReceiveMousePressEvent(movingItem))
         QGraphicsView::mousePressEvent (event);
     else
-    if (itemShouldReceiveSuspendedMousePressEvent(movingItem))
     {
+        if (movingItem)
+            movingItem->clearFocus();
+
         if (suspendedMousePressEvent)
+        {
             delete suspendedMousePressEvent;
-        suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers());
+            suspendedMousePressEvent = NULL;
+        }
+    
+        if (itemShouldReceiveSuspendedMousePressEvent(movingItem))
+        {
+            suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers());
+        }
     }
 }
 
@@ -917,30 +926,34 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     scene ()->inputDeviceRelease ();
 
   if (currentTool == UBStylusTool::Selector)
-    {
+  {
       if (mWidgetMoved)
       {
           mWidgetMoved = false;
           movingItem = NULL;
       }
       else 
-          if (movingItem)
-          {         
-              if (suspendedMousePressEvent && !movingItem->data(UBGraphicsItemData::ItemLocked).toBool())       
-              {
-                  QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
-                  movingItem = NULL;
-                  delete suspendedMousePressEvent;
-                  suspendedMousePressEvent = NULL;                       
-              }
+      if (movingItem)
+      {         
+          if (suspendedMousePressEvent && !movingItem->data(UBGraphicsItemData::ItemLocked).toBool())       
+          {
+              QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
+              movingItem = NULL;
+              delete suspendedMousePressEvent;
+              suspendedMousePressEvent = NULL;                       
           }
+          else
+          {
+              movingItem->setSelected(true);              
+          }
+      }
 
-          if (mUBRubberBand && mUBRubberBand->isVisible()) {
-              mUBRubberBand->hide();
+      if (mUBRubberBand && mUBRubberBand->isVisible()) {
+          mUBRubberBand->hide();
       }
 
       QGraphicsView::mouseReleaseEvent (event);
-    }
+  }
   else if (currentTool == UBStylusTool::Play)
   {
       if (mWidgetMoved)
