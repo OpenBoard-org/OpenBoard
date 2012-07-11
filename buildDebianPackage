@@ -14,6 +14,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
+MAKE_TAG=true
+
+if [ $# == "1" ]; then
+   if [ $1 == "notag" ]; then
+      MAKE_TAG=false;
+   fi
+fi
 
 notifyError(){
     notify-send -t 0 "Error occoured" "An error occours during the sankore build:\n\t$1" -i /usr/share/icons/oxygen/64x64/status/dialog-error.png
@@ -23,11 +30,11 @@ notifyError(){
 rm -rf "build/linux/release"
 rm -rf install
 
-QT_PATH="/usr/local/Trolltech/Qt-4.7.3"
+QT_PATH="/usr/local/Trolltech/Qt-4.8.0"
 PLUGINS_PATH="$QT_PATH/plugins"
 QMAKE_PATH="$QT_PATH/bin/qmake"
-LRELEASES="/usr/local/Trolltech/Qt-4.7.3/bin/lrelease"
-GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-sankore3.1/translations"
+LRELEASES="$QT_PATH/bin/lrelease"
+GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-4.8/translations"
 ARCHITECTURE=`uname -m`
 
 if [ ! -e "$QMAKE_PATH" ]; then
@@ -41,9 +48,9 @@ fi
 notify-send "Open-Sankore" "Building Open-Sankore ..."
 
 if [ "$ARCHITECTURE" == "x86_64" ]; then
-    $QMAKE_PATH -spec linux-g++-64
+    $QMAKE_PATH Sankore_3.1.pro -spec linux-g++-64
 else
-    $QMAKE_PATH -spec linux-g++
+    $QMAKE_PATH Sankore_3.1.pro -spec linux-g++
 fi
 
 make -j 4 release-install
@@ -56,8 +63,10 @@ else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
         echo creating a tag with the version $VERSION
-        git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
-        git push origin --tags 
+	if [ $MAKE_TAG == true ]; then
+            git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
+            git push origin --tags
+        fi 
     fi
 fi
 
@@ -75,14 +84,13 @@ mkdir $QT_LIBRARY_DEST_PATH
 QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
 
 copyQtLibrary(){
-    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.3" ]; then
+    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4.8.0" ]; then
         notifyError "$1 library not found in path: $QT_LIBRARY_SOURCE_PATH"
     fi
     cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4" "$QT_LIBRARY_DEST_PATH/"
-    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4.7.3" "$QT_LIBRARY_DEST_PATH/"
+    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4.8.0" "$QT_LIBRARY_DEST_PATH/"
 }
 
-copyQtLibrary libQtWebKit
 copyQtLibrary libQtDBus
 copyQtLibrary libQtScript
 copyQtLibrary libQtSvg
@@ -99,6 +107,12 @@ else
     cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
 fi
 
+if [ ! -e "$QT_LIBRARY_SOURCE_PATH/libQtWebKit.so.4.9.0" ]; then
+    notifyError "webkit library not found in path: $QT_LIBRARY_SOURCE_PATH"
+else
+    cp "$QT_LIBRARY_SOURCE_PATH/libQtWebKit.so.4" "$QT_LIBRARY_DEST_PATH/"
+    cp "$QT_LIBRARY_SOURCE_PATH/libQtWebKit.so.4.9.0" "$QT_LIBRARY_DEST_PATH/"
+fi
 
 notify-send "QT" "Internalization ..."
 if [ ! -e $GUI_TRANSLATIONS_DIRECTORY_PATH ]; then
