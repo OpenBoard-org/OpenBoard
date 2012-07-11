@@ -349,7 +349,22 @@ function init(){
     }
 
     function compute(){
-        var result = eval(calc)	
+        var result;
+        //alert(calc)
+        if(calc.length <= 1)
+            result = eval(calc);
+        else{
+            var fNumber, lNumber, operation = "", fMinus = "";
+            if(calc.charAt(0) == '-'){
+                fMinus = "-";
+                calc = calc.substr(1, calc.length);
+            }
+            operation = (calc.indexOf("+", 0) != -1)?calc.charAt(calc.indexOf("+", 0)):((calc.indexOf("*", 0) != -1)?calc.charAt(calc.indexOf("*", 0)):((calc.indexOf("/", 0) != -1)?calc.charAt(calc.indexOf("/", 0)):((calc.indexOf("-", 0) != -1)?calc.charAt(calc.indexOf("-", 0)):"")));
+            fNumber = fMinus + calc.substring(0, calc.indexOf(operation, 0));
+            lNumber = calc.substring(calc.indexOf(operation, 0)+1, calc.length);
+            //alert(fNumber + " | " + operation + " | " + lNumber)
+            result = calcIt(fNumber, operation, lNumber);
+        }
 
         $("#display").text(updateDisplay(result));
         lastResult = result;
@@ -365,14 +380,40 @@ function init(){
 	
         if(window.sankore){
             window.sankore.setPreference('historyTxt', $("#historyBox").val());
-        };
+        }
 	
         lastHistory = $("#historyBox").val();
+    }
+
+    function calcIt(fNumber, operation, lNumber){
+        var result, fCount = "", lCount = "", length = 0;
+        fCount = (fNumber.indexOf(".", 0) != -1)?fNumber.substring(fNumber.indexOf(".", 0)+1, fNumber.length):"";
+        lCount = (lNumber.indexOf(".", 0) != -1)?lNumber.substring(lNumber.indexOf(".", 0)+1, lNumber.length):"";
+        length = (fCount.length >= lCount.length)?fCount.length:lCount.length;
+        length = Math.pow(10, length);
+        fNumber = fNumber * length;
+        lNumber = lNumber * length;
+        switch(operation){
+            case "+":                
+                result = (fNumber + lNumber)/length;
+                break;
+            case "-":
+                result = (fNumber - lNumber)/length;
+                break;
+            case "*":
+                result = (fNumber * lNumber)/Math.pow(length, 2);
+                break;
+            case "/":
+                result = fNumber/lNumber;
+                break;
+        }
+        return result;
     }
 
     function reset(){
         $("#display").text("0");
         calc="";
+        lastchar.type = "NaN";
         displayTrunk="";
         historyTrunk="";
         $("#historyBox").val(lastHistory);
