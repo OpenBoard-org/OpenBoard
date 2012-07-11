@@ -109,7 +109,7 @@ MOC_DIR = $$BUILD_DIR/moc
 RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
-LIBS += "-Lplugins/cffadaptor/$$BUILD_DIR/lib" "-lCFF_Adaptor"
+#LIBS += "-Lplugins/cffadaptor/$$BUILD_DIR/lib" "-lCFF_Adaptor"
 
 win32 {
    RC_FILE = resources/win/sankore.rc
@@ -145,8 +145,8 @@ macx {
    # are not yet available in 64bits.
    CONFIG(debug, debug|release):CONFIG += x86
 
-   QMAKE_MAC_SDK = "/Developer/SDKs/MacOSX10.5.sdk"
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.4"
+   QMAKE_MAC_SDK = "/Developer/SDKs/MacOSX10.6.sdk"
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.5"
 
    VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
 
@@ -420,4 +420,13 @@ INSTALLS = UB_ETC \
    UB_I18N \
    UB_LIBRARY \
    UB_THIRDPARTY_INTERACTIVE
+
+HEADERS += \
+    plugins/cffadaptor/src/UBGlobals.h \
+    plugins/cffadaptor/src/UBCFFConstants.h \
+    plugins/cffadaptor/src/UBCFFAdaptor.h \
+    plugins/cffadaptor/src/UBCFFAdaptor_global.h
+
+SOURCES += \
+    plugins/cffadaptor/src/UBCFFAdaptor.cpp
 
