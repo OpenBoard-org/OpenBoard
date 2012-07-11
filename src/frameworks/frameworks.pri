@@ -26,7 +26,7 @@ win32 {
 
 macx {                
 
-    SOURCES  += src/frameworks/UBPlatformUtils_mac.mm
+    OBJECTIVE_SOURCES  += src/frameworks/UBPlatformUtils_mac.mm
                 
 }       
 
