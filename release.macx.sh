@@ -15,7 +15,7 @@
 # ---------------------------------------------------------------------
 
 
-BASE_TROLLTECH_DIRECTORY=/usr/local/Trolltech/Qt-4.7.3
+BASE_TROLLTECH_DIRECTORY=/usr/local/Trolltech/Qt-4.8.0
 # Executables
 QMAKE=$BASE_TROLLTECH_DIRECTORY/bin/qmake
 MACDEPLOYQT=$BASE_TROLLTECH_DIRECTORY/bin/macdeployqt
@@ -29,7 +29,7 @@ LRELEASE=$BASE_TROLLTECH_DIRECTORY/bin/lrelease
 # Directories
 BUILD_DIR="build/macx/release"
 PRODUCT_DIR="$BUILD_DIR/product"
-BASE_QT_TRANSLATIONS_DIRECTORY=../Qt-sankore3.1/translations
+BASE_QT_TRANSLATIONS_DIRECTORY=../Qt4.8/translations
 
 function notify {
     GROWLNOTIFY=`which growlnotify`
@@ -104,24 +104,23 @@ checkExecutable "$LRELEASE"
 notify "Cleaning ..."
 rm -rf "$BUILD_DIR"
 
-notify "Translations ..."
+# application translations
+notify "Generating applications translatons"
 $LRELEASE "Sankore_3.1.pro"
 
 # generate Makefiles
 notify "Generating Makefile ..."
 
-QMAKE_CMD="$QMAKE -spec macx-g++"
+QMAKE_CMD="$QMAKE Sankore_3.1.pro -spec macx-g++"
 
 $QMAKE_CMD
-
-notify "Translations ..."
-$LRELEASE "Sankore_3.1.pro"
 
 # build
 notify "Compiling ..."
 make -j4 release
 
 notify "Qt Translations ..."
+$LRELEASE $BASE_QT_TRANSLATIONS_DIRECTORY/translations.pro 
 addQtTranslations
 
 cp -R resources/customizations $PRODUCT_DIR/Open-Sankore.app/Contents/Resources
@@ -135,8 +134,8 @@ else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
 	echo creating a tag with the version $VERSION
-	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
-	git push origin --tags
+	#git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
+	#git push origin --tags
     fi
 fi
   
