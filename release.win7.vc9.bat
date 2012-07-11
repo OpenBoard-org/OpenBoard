@@ -13,7 +13,7 @@ REM You should have received a copy of the GNU General Public License
 REM along with this program.  If not, see <http://www.gnu.org/licenses/>.
 REM ---------------------------------------------------------------------
 
-set QT_DIR=..\Qt-sankore3.1
+set QT_DIR=..\Qt-4.8
 set QT_BIN=%QT_DIR%\bin
 
 set PROGRAMS_FILE_PATH=C:\Program Files
@@ -35,15 +35,16 @@ echo %PATH%
 REM this checks if the custom qt directory path
 REM is correct. This is important because installer
 REM pick up dll from this directory
-IF NOT EXIST "..\Qt-sankore3.1\lib\QtCore4.dll" GOTO EXIT_WITH_ERROR
+IF NOT EXIST "%QT_DIR%\lib\QtCore4.dll" GOTO EXIT_WITH_ERROR
 
 rmdir /S /Q %BUILD_DIR%
 
 set EDITION=MNEMIS_EDITION
 
-"%QT_BIN%\qmake.exe" "DEFINES+=%EDITION%"
+"%QT_BIN%\qmake.exe" Sankore_3.1.pro "DEFINES+=%EDITION%"
 
 %LRELEASE% Sankore_3.1.pro
+%LRELEASE% %BASE_QT_TRANSLATIONS_DIRECTORY%\translations.pro
 
 REM set /p VERSION= < build\win32\release\version
 REM git rev-list --tags --max-count=1 > tmp
