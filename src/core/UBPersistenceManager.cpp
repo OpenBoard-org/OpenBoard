@@ -847,11 +847,7 @@ QString UBPersistenceManager::teacherGuideAbsoluteObjectPath(UBDocumentProxy* pD
 
 QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* pDocumentProxy, QString pPath)
 {
-	QString path = pPath;
-	//windows
-    //path=path.replace("file:///","");
-	//others
-    path=path.replace("file://","");
+    QString path = UBFileSystemUtils::removeLocalFilePrefix(pPath);
 	QFileInfo fi(path);
     QString uuid = QUuid::createUuid();
 
