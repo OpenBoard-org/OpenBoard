@@ -10,7 +10,9 @@
 #include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
 
-UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)	
+UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
+    : UBDockPaletteWidget(parent)
+    , imageGatherer(NULL) 
 {
     setObjectName(name);
     mName = "FeaturesWidget";
@@ -139,6 +141,8 @@ UBFeaturesWidget::~UBFeaturesWidget()
         delete thumbSlider;
         thumbSlider = NULL;
     }
+    if (NULL != imageGatherer)
+        delete imageGatherer;
 }
 
 bool UBFeaturesWidget::eventFilter( QObject *target, QEvent *event )
@@ -353,12 +357,34 @@ void UBFeaturesWidget::thumbnailSizeChanged( int value )
 
 void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 {
-	UBFeature feature( QString(), QPixmap(":images/libpalette/notFound.png"), QString(), metadata["Url"], FEATURE_ITEM );
+    QString previewImageUrl;
+
+    previewImageUrl = ":images/libpalette/loading.png";
+
+    if (!imageGatherer)
+        imageGatherer = new UBDownloadHttpFile(0, this);
+
+    connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+
+    // We send here the request and store its reply in order to be able to cancel it if needed
+    imageGatherer->get(QUrl(metadata["Url"]), QPoint(0,0), QSize(), false);
+
+	UBFeature feature( QString(), QPixmap(previewImageUrl), QString(), metadata["Url"], FEATURE_ITEM );
 	feature.setMetadata( metadata );
 
 	featureProperties->showElement( feature );
 	switchToProperties();
 	mActionBar->setCurrentState( IN_PROPERTIES );
+}
+
+
+void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
+{
+    QImage img;
+    img.loadFromData(pData);
+    QPixmap pix = QPixmap::fromImage(img);
+    featureProperties->setOrigPixmap(pix);
+    featureProperties->setThumbnail(pix);
 }
 
 void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData)
@@ -738,6 +764,20 @@ UBFeature UBFeatureProperties::getCurrentElement() const
     return UBFeature();
 }
 
+void UBFeatureProperties::setOrigPixmap(QPixmap &pix)
+{
+    
+    if (mpOrigPixmap)
+        delete mpOrigPixmap;
+
+    mpOrigPixmap = new QPixmap(pix);
+}
+
+void UBFeatureProperties::setThumbnail(QPixmap &pix)
+{  
+    mpThumbnail->setPixmap(pix.scaledToWidth(THUMBNAIL_WIDTH));
+}
+
 void UBFeatureProperties::adaptSize()
 {
     if( NULL != mpOrigPixmap )
@@ -819,7 +859,8 @@ void UBFeatureProperties::onAddToPage()
 {
 	QWidget *w = parentWidget()->parentWidget();
     UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
-    featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
+    if (featuresWidget)
+        featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
 }
 
 void UBFeatureProperties::onAddToLib()

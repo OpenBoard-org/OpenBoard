@@ -88,7 +88,11 @@ private:
 	
 
 	int currentStackedWidget;
+
+    UBDownloadHttpFile* imageGatherer;
+
 private slots:
+    void onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
 	void currentSelected( const QModelIndex & );
 	//void currentPathChanged(const QString &);
 	void currentPathChanged( const QModelIndex & );
@@ -153,6 +157,9 @@ public:
 
     void showElement(const UBFeature &elem);
     UBFeature getCurrentElement() const;
+    void setOrigPixmap(QPixmap &pix);
+    void setThumbnail(QPixmap &pix);
+
 protected:
     void resizeEvent(QResizeEvent *event);
     void showEvent(QShowEvent *event);
