@@ -32,8 +32,8 @@
                         link.addClass('active');
                     }
                 }
-
-                pagesDiv.appendTo($('#searchResult'));
+                $("#disc_nav_cont #resultFooter").remove();
+                pagesDiv.insertBefore($('#disclaimer'));
                 
                 $(".imgContainer").each(function(){
                     this.addEventListener("dragstart", imageDragging, false);
@@ -160,8 +160,8 @@
                 //localization
                 locale = locales[lang];
 
-                var disclaimer = $("<div id='disclaimer' class='disclaimer'>"+locale.disclaimer_title+"<div>").appendTo("body");
-                    
+                var disc_nav_cont = $("<div id='disc_nav_cont' class='disc_nav_cont'>").appendTo("body");    
+                var disclaimer = $("<div id='disclaimer' class='disclaimer'>"+locale.disclaimer_title+"<div>").appendTo(disc_nav_cont);
                 var search = $("<div id='search' class='search'>").appendTo("body");
     
                 //var togglePages = $("<div id='togglePages' class='togglePages'>").appendTo(search);

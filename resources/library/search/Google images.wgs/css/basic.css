@@ -42,17 +42,31 @@ a {
     text-decoration: underline;    
 }
 
-.disclaimer{
+#disc_nav_cont{
     height: auto;
     position: fixed;
     left: 0;
     bottom: 0;    
+    width: 100%;
+}
+
+.disclaimer{  
     padding: 5px;
     text-align: center;
     background-color: #BBBBBB;    
     border-top: solid 4px #EEEEEE;
     border-bottom: none;
     font-size: 12px;
+}
+
+.resultFooter{    
+    width: 100%;    
+    padding: 3px;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    font-size: x-large;
+    text-align: center;
+    background-color: white;
 }
 
 #searchResult {
@@ -147,20 +161,6 @@ a {
     font-size: small;
     font-family: Verdana,Arial,Helvetica,sans-serif;
     vertical-align: top;
-}
-
-.resultFooter{
-    position: fixed;
-    left: 0;
-    bottom: 50px; 
-    margin: 5px;
-    padding: 3px;
-    width: 100%;
-    font-family: Verdana,Arial,Helvetica,sans-serif;
-    font-weight: bold;
-    font-size: x-large;
-    text-align: center;
-    background-color: white;
 }
 
 .filterContainer{
