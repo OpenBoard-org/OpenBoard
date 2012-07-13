@@ -10,7 +10,7 @@
   		<name>Choisir</name>
 		<author href="http://www.getuniboard.com"
 	            email="info@mnemis.com">Mnemis SA</author>
-		<description>Choisir widget</description> 
+		<description>Google Image Search</description> 
 
  		<content src="index.html"/> 
 </widget>

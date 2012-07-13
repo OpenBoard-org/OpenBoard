@@ -66,7 +66,7 @@
                         // For each result write it's title and image to the screen
                         var result = results[i];
                         var imgContainer = $("<div class='imgContainer' draggable='true'>");
-                        var title = document.createElement('div');
+                        //var title = document.createElement('div');
                         var iUrl = $("<input type='hidden'/>");
                         var iContent = $("<input type='hidden'/>");
                         var iHeight = $("<input type='hidden'/>");
@@ -75,7 +75,7 @@
             
                         // We use titleNoFormatting so that no HTML tags are left in the 
                         // title
-                        title.innerHTML = result.title;
+                        //title.innerHTML = result.title;
                         var newImg = document.createElement('img');
 
                         // There is also a result.url property which has the escaped version
@@ -89,7 +89,7 @@
                         var imgHeight = (result.tbHeight > minHeight)?result.tbHeight:minHeight;
                         imgContainer.width(imgWidth).height(imgHeight);
                         imgContainer.append($(newImg));
-                        imgContainer.append($(title));  
+                        //imgContainer.append($(title));  
                         imgContainer.append(iUrl);
                         imgContainer.append(iContent);
                         imgContainer.append(iHeight);
@@ -164,8 +164,8 @@
                     
                 var search = $("<div id='search' class='search'>").appendTo("body");
     
-                var togglePages = $("<div id='togglePages' class='togglePages'>").appendTo(search);
-                var toggleIcon = $("<div id='toggleIcon' class='toggleIcon'>").appendTo(togglePages);
+                //var togglePages = $("<div id='togglePages' class='togglePages'>").appendTo(search);
+                //var toggleIcon = $("<div id='toggleIcon' class='toggleIcon'>").appendTo(togglePages);
     
                 var subSearchInput = $("<div id='subSearchInput' class='subSearch'>").appendTo(search);
                 var subSearchFilter = $("<div id='subSearchFilter' class='subSearch'>").appendTo(search);
@@ -245,16 +245,18 @@
                 toggleFilters.click(function(){
                     if(filtersDisplayed){
                         subSearchFilter.hide();
+                        //$("#search").height(46);
                         toggleFilters.css("background-image","url(images/down.png)");
                         filtersDisplayed = false;
                     } else {
+                        //$("#search").height(120);
                         subSearchFilter.show();
                         toggleFilters.css("background-image","url(images/up.png)");
                         filtersDisplayed = true;
                     }
                 });
                 
-                togglePages.click(function(event){
+                /*togglePages.click(function(event){
                     if(mode){
                         hide = false;
                         $("#search, #disclaimer").slideDown('fast', function(){
@@ -270,12 +272,12 @@
                         });
                         mode = true;
                     }
-                });
+                });*/
                 
                 searchButton.click(function(){
                     if(!hide){
                         checkFilters(imageSearch).execute(searchInput.val());
-                        togglePages.trigger("click");
+                        //togglePages.trigger("click");
                     }
                 });
                 
@@ -283,7 +285,7 @@
                     if(!hide){
                         if((event.keyCode == 0xA)||(event.keyCode == 0xD)){
                             checkFilters(imageSearch).execute(searchInput.val());
-                            togglePages.trigger("click");
+                            //togglePages.trigger("click");
                         }
                               
                     }
@@ -463,7 +465,6 @@
 
     </head>
     <body style="font-family: Arial;border: 0 none;">
-        <div id="branding"  style="float: left;"></div><br />
         <div id="searchResult"></div>
     </body>
 </html>
