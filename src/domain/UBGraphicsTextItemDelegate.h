@@ -29,10 +29,17 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 {
     Q_OBJECT
 
+    enum textChangeMode
+    {
+        changeSize = 0,
+        scaleSize
+    };
+
     public:
         UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject * parent = 0);
         virtual ~UBGraphicsTextItemDelegate();
         bool isEditable();
+        void scaleTextSize(qreal multiplyer);
 
     public slots:
         void contentsChanged();
@@ -61,7 +68,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 
     private:
         void customize(QFontDialog &fontDialog);
-        void ChangeTextSize(int delta);
+        void ChangeTextSize(qreal factor, textChangeMode changeMode);
 
         QFont createDefaultFont();
         QAction *mEditableAction;

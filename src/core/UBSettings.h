@@ -337,6 +337,7 @@ class UBSettings : public QObject
         UBSetting* communityPsw;
 
         UBSetting* pageSize;
+        UBSetting* pageDpi;
 
         UBSetting* KeyboardLocale;
         UBSetting* swapControlAndDisplayScreens;

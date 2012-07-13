@@ -241,6 +241,8 @@ void UBSettings::init()
     ValidateKeyboardPaletteKeyBtnSize();
 
     pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
+
+    pageDpi = new UBSetting(this, "Board", "pageDpi", 0);
     
     QStringList penLightBackgroundColors;
     penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A";

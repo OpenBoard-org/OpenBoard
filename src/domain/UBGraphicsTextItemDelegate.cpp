@@ -237,12 +237,12 @@ void UBGraphicsTextItemDelegate::pickColor()
 
 void UBGraphicsTextItemDelegate::decreaseSize()
 {
-    ChangeTextSize(-delta);
+    ChangeTextSize(-delta, changeSize);
 }
 
 void UBGraphicsTextItemDelegate::increaseSize()
 {
-   ChangeTextSize(delta);
+   ChangeTextSize(delta, changeSize);
 }
 
 UBGraphicsTextItem* UBGraphicsTextItemDelegate::delegated()
@@ -322,9 +322,9 @@ void UBGraphicsTextItemDelegate::positionHandles()
     setEditable(isEditable());
 }
 
-void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
+void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)
 {
-    if (0 == delta)
+    if (0 == factor)
         return;
 
     QTextCursor cursor = delegated()->textCursor();
@@ -378,7 +378,7 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
 
 
         //setting new parameners
-        int iNewPointSize = iPointSize + delta;
+        int iNewPointSize = (changeSize == changeMode) ? (iPointSize + factor) : (iPointSize * factor);
         curFont.setPointSize( (iNewPointSize > 0)?iNewPointSize:1);
         textFormat.setFont(curFont);
         cursor.mergeCharFormat(textFormat);
@@ -387,7 +387,6 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
         cursor.setPosition (iCursorPos, QTextCursor::MoveAnchor);
     }
 
-    //delegated()->document()->adjustSize();
     delegated()->setFont(curFont);
     UBSettings::settings()->setFontPointSize(iPointSize);
     //returning initial selection
@@ -395,4 +394,9 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
     cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
 
     delegated()->setTextCursor(cursor);
+}
+
+void UBGraphicsTextItemDelegate::scaleTextSize(qreal multiplyer)
+{
+    ChangeTextSize(multiplyer, scaleSize);
 }

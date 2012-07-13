@@ -26,6 +26,7 @@
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsTextItem.h"
+#include "domain/UBGraphicsTextItemDelegate.h"
 #include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsStrokesGroup.h"
@@ -452,6 +453,13 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         qWarning() << "cannot make sense of 'viewBox' value " << svgViewBox.toString();
                     }
+                }
+
+                QStringRef pageDpi = mXmlReader.attributes().value("pageDpi");
+
+                if (!pageDpi.isNull())
+                {
+                    UBSettings::settings()->pageDpi->set(pageDpi.toString());
                 }
 
                 bool darkBackground = false;
@@ -883,6 +891,15 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     UBGraphicsTextItem* textItem = textItemFromSvg();
 
+                    UBGraphicsTextItemDelegate *textDelegate = dynamic_cast<UBGraphicsTextItemDelegate*>(textItem->Delegate());
+                    if (textDelegate)
+                    {
+                        QDesktopWidget* desktop = UBApplication::desktop();
+                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+                        qreal textSizeMultiplier = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
+                        textDelegate->scaleTextSize(textSizeMultiplier);
+                    }
+
                     if (textItem)
                     {
                         textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -1103,6 +1120,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "dark-background", mScene->isDarkBackground() ? xmlTrue : xmlFalse);
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", mScene->isCrossedBackground() ? xmlTrue : xmlFalse);
+
+    QDesktopWidget* desktop = UBApplication::desktop();
+    mXmlWriter.writeAttribute("pageDpi", QString("%1").arg((desktop->physicalDpiX() + desktop->physicalDpiY()) / 2));
 
     mXmlWriter.writeStartElement("rect");
     mXmlWriter.writeAttribute("fill", mScene->isDarkBackground() ? "black" : "white");
