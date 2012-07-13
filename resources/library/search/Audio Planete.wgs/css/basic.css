@@ -6,6 +6,38 @@ html, body{
     margin: 0;
 }
 
+::-webkit-scrollbar {
+    width: 14px;
+    background-color:white;
+}
+
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px; 
+    background-color:lightgray;
+    border: 2px solid gray;
+}
+
+::-webkit-scrollbar-button:vertical:start{
+    border-radius: 10px;
+    background-color:lightgray;
+    background-image: url(../images/trgUp.png);
+    background-size: 8px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid gray;
+}
+
+::-webkit-scrollbar-button:vertical:end{
+    border-radius: 10px;
+    background-color:lightgray;
+    background-image: url(../images/trgDown.png);
+    background-size: 8px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid gray;
+}
+
 a {
     text-decoration: underline;
 }
