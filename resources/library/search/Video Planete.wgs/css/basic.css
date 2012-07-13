@@ -6,10 +6,6 @@ html, body{
     margin: 0;
 }
 
-a {
-    text-decoration: none;
-}
-
 ::-webkit-scrollbar {
     width: 14px;
     background-color:white;
@@ -42,46 +38,51 @@ a {
     border: 2px solid gray;
 }
 
-.disclaimer{
+a {
+    text-decoration: underline;
+}
+
+#disc_nav_cont{
     height: auto;
     position: fixed;
     left: 0;
-    bottom: 0;
-    margin-left: 1px;
-    margin-right: 1px;
-    margin-bottom: 0px;
+    bottom: 0;    
+    width: 100%;
+}
+
+.disclaimer{  
     padding: 5px;
     text-align: center;
-    background-color: #BBBBBB;
-    -webkit-border-top-left-radius: 15px;
-    -webkit-border-top-right-radius: 15px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    border: solid 4px #EEEEEE;
+    background-color: #BBBBBB;    
+    border-top: solid 4px #EEEEEE;
     border-bottom: none;
     font-size: 12px;
-    z-index: 10;
+}
+
+.resultFooter{    
+    width: 100%;    
+    padding: 3px;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-weight: bold;
+    font-size: x-large;
+    text-align: center;
+    background-color: white;
 }
 
 #searchResult {
     overflow: hidden;
     text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .search{
-    width: 90%;    
     position: fixed;
     top: 0;
     left: 0;
     padding: 5px;
     background-color: #BBBBBB;
-    -webkit-border-bottom-left-radius: 15px;
-    -webkit-border-bottom-right-radius: 15px;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    border: solid 4px #EEEEEE;
-    border-top: none;
-    z-index: 101;
+    border-bottom: solid 4px #EEEEEE;
 }
 
 .search,
@@ -89,33 +90,6 @@ a {
     width: 100%;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
-}
-
-.togglePages{
-    padding: 0;
-    position: absolute;
-    bottom: -19px;
-    left: 40%;
-    width: 22%;
-    height: 15px;
-    background-color: #666;
-    -webkit-border-bottom-left-radius: 20px;
-    -webkit-border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    -webkit-box-shadow: #dadada -1px 0 4px;
-    box-shadow: #dadada -1px 0 4px;
-    cursor: pointer;
-	z-index: 100;
-    text-align: center;
-}
-
-.toggleIcon{
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    background: url(../images/trgUp.png) 50% no-repeat;
-    
 }
 
 .searchInput{
@@ -185,23 +159,6 @@ a {
     vertical-align: top;
 }
 
-.resultFooter{
-    float: left;
-    margin: 5px;
-    padding: 3px;
-    width: 100%;
-    font-family: Verdana,Arial,Helvetica,sans-serif;
-    font-weight: bold;
-    font-size: x-large;
-    text-align: center;
-}
-
-#branding{
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-}
 
 .filterContainer{
     float: left;
@@ -355,19 +312,4 @@ input[type="radio"]:checked + .filter_button.button.color {
     -webkit-border-radius: 3px;
     background-color: gray;
     color: white;
-}
-
-/*
-Planete Sankore Changes
-*/
-.searchButton{
-    right: 10px;
-}
-
-#subSearchInput{
-    padding-right: 5px;
-}
-
-.imgContainer img {
-    width: 100px;
 }

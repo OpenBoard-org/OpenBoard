@@ -19,17 +19,18 @@
             function addPaginationLinks(totalResults) {
                 var curPage = currentIndex; // check what page the app is on
                 var pagesDiv = $("<div id='resultFooter' class='resultFooter'>");
-                for (var i = 0; i < 10; i++) {
+                for (var i = 0; i < 8; i++) {
                     if (i * limit < totalResults) {
                    
-                    var link = $("<a class='pager_button'></a>").attr('href', 'javascript:gotoPage('+i+');').html(i).appendTo(pagesDiv);
+                    var link = $("<a class='pager_button'></a>").attr('href', 'javascript:gotoPage('+i+');').html(i+1).appendTo(pagesDiv);
                     if (curPage == i) {
                         link.addClass('active');
                     }
                     }
                 }
 
-                pagesDiv.appendTo($('#searchResult'));
+                $("#disc_nav_cont #resultFooter").remove();
+                pagesDiv.insertBefore($('#disclaimer'));
                 
                 $(".imgContainer").each(function(){
                     this.addEventListener("dragstart", imageDragging, false);
@@ -62,7 +63,7 @@
                         // For each result write it's title and image to the screen
                         var result = results[i];
                         var imgContainer = $("<div class='imgContainer' draggable='true'>");
-                        var title = document.createElement('div');
+                        //var title = document.createElement('div');
                         var iUrl = $("<input type='hidden'/>");
                         var iContent = $("<input type='hidden'/>");
                         var iHeight = $("<input type='hidden'/>");
@@ -71,7 +72,7 @@
             
                         // We use titleNoFormatting so that no HTML tags are left in the 
                         // title
-                        title.innerHTML = result.title;
+                        //title.innerHTML = result.title;
                            	var newImg = document.createElement('img');
 
                         	// There is also a result.file property which has the escaped version
@@ -89,7 +90,7 @@
      		        iHeight.attr("value", result.height);
                         iWidth.attr("value", result.width);
                         iTitle.attr("value",result.title);
-                        imgContainer.append($(title));  
+                        //imgContainer.append($(title));  
                         imgContainer.append(iUrl);
                         imgContainer.append(iContent);
                         imgContainer.append(iHeight);
@@ -128,7 +129,9 @@
                 var hide = false; //hide or no main panel
     
                 //basic containers and elements    
-                var disclaimer = $("<div id='disclaimer' class='disclaimer'>Recherche d'images sur Planète Sankoré<div>").appendTo("body");    
+                
+                var disc_nav_cont = $("<div id='disc_nav_cont' class='disc_nav_cont'>").appendTo("body");    
+                var disclaimer = $("<div id='disclaimer' class='disclaimer'>Recherche d'images sur Planète Sankoré<div>").appendTo(disc_nav_cont);
                 var search = $("<div id='search' class='search'>").appendTo("body");
 				    
                 var togglePages = $("<div id='togglePages' class='togglePages'>").appendTo(search);
@@ -165,7 +168,7 @@
                 });
                 */
 
-		togglePages.click(function(event){
+		/*togglePages.click(function(event){
                     if(mode){
                         hide = false;
                         $("#search, #disclaimer").slideDown('slow', function(){
@@ -181,12 +184,12 @@
                         });
                         mode = true;
                     }
-                });
+                });*/
                 
                 searchButton.click(function(){
                     if(!hide){
                         runSearch(searchInput.val(), 0);
-                        togglePages.trigger("click");
+                        //togglePages.trigger("click");
                     }
                 });
                 
@@ -194,7 +197,7 @@
                     if(!hide){
                         if((event.keyCode == 0xA)||(event.keyCode == 0xD)){
                             runSearch(searchInput.val(), 0);
-                            togglePages.trigger("click");
+                            //togglePages.trigger("click");
                         }
                               
                     }
@@ -204,11 +207,11 @@
 		    sankore.sendFileMetadata(createMetaData($(this)));
                 }));
                 
-				$(window).resize(function(){
+				/*$(window).resize(function(){
                     disclaimer.width($("body").width()-20);
                     search.width($("body").width()-20);
                     toggleIcon.css("margin-left",(togglePages.width()/2 - 7));
-                })
+                })*/
 				
             });
             
@@ -250,7 +253,6 @@
 
     </head>
     <body style="font-family: Arial;border: 0 none;">
-        <div id="branding"  style="float: left;"></div><br />
         <div id="searchResult"></div>
     </body>
 </html>
