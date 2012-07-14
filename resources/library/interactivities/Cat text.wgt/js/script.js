@@ -275,8 +275,8 @@ function exportData(){
         cont_obj.tmp = "clear";
         array_to_export.push(cont_obj);
     }
-    
-    sankore.setPreference("categoriser_text", JSON.stringify(array_to_export));
+    if(window.sankore)
+        sankore.setPreference("categoriser_text", JSON.stringify(array_to_export));
 }
 
 //import

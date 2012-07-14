@@ -208,7 +208,7 @@ function start(){
 //export
 function exportData(){
     var array_to_export = [];
-    if($("#edit").hasClass("selected")){
+    if($("#wgt_edit").hasClass("selected")){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.style = $(".style_select").find("option:selected").val();

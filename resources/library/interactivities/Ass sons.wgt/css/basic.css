@@ -107,6 +107,7 @@ body{
 .text_cont{
     width: 80%;
     min-height: 40px;
+    max-height: 60px;
     float: right;
     background-color: #999;
     border-top-left-radius: 20px;
@@ -211,9 +212,10 @@ body{
 }
 
 .audio_desc{
-    min-height: 30px;
-    margin: 5px 0;
-    float: left;
+    width: 73%;
+    max-height: 40px;
+    overflow-y: auto;
+    float: right;
     margin-left: 20px;
 }
 

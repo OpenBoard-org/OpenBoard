@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <link rel="stylesheet" type="text/css" href="css/basic.css"/>
         <link rel="stylesheet" href="css/fonts/Lobster/stylesheet.css">
-	<link rel="stylesheet" href="css/fonts/SF-Toontime/stylesheet.css">
+        <link rel="stylesheet" href="css/fonts/SF-Toontime/stylesheet.css">
         <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
         <script type="text/javascript" src="js/script.js"></script>
@@ -17,7 +17,8 @@
                 } else 
                     lang = "en";
                 if(lang == "en"){
-                    sankore.enableDropOnWidget(false);
+                    if(window.sankore)
+                        sankore.enableDropOnWidget(false);
                     start();
                 }
                 else{
@@ -60,17 +61,17 @@
                 </td>
                 <td class="b_top_right">&nbsp;</td>
             </tr>
-       
+
             <tr>
                 <td class="b_center_left">&nbsp;</td>
                 <td>
                     <div id="data">
-                        
+
                     </div>
                 </td>
                 <td class="b_center_right">&nbsp;</td>
             </tr>     
-        
+
             <tr style="height: 54px;">
                 <td class="b_bottom_left">&nbsp;</td>
                 <td class="b_bottom_center">&nbsp;</td>

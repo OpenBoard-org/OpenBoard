@@ -107,12 +107,13 @@ body{
 .text_cont{
     width: 80%;
     min-height: 40px;
+    max-height: 60px;
     float: right;
+    overflow: auto;
     background-color: #ccc;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    padding-left: 10px;
-    /*font-family: 'SFToontimeRegular';*/
+    padding-left: 10px;    
 }
 
 .close_cont{

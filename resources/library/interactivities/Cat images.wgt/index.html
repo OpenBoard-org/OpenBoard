@@ -17,7 +17,8 @@
                 } else 
                     lang = "en";
                 if(lang == "en"){
-                    sankore.enableDropOnWidget(false);
+                    if(window.sankore)
+                        sankore.enableDropOnWidget(false);
                     start();
                 }
                 else{

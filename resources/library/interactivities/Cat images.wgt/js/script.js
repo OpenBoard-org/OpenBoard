@@ -61,7 +61,8 @@ function start(){
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
                 $(".style_select").css("display","none");
-                sankore.enableDropOnWidget(false);
+                if(window.sankore)    
+                    sankore.enableDropOnWidget(false);
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -131,7 +132,8 @@ function start(){
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
                 $(".style_select").css("display","block");
-                sankore.enableDropOnWidget(true);
+                if(window.sankore)
+                    sankore.enableDropOnWidget(true);
                 $(".cont").each(function(){
                     var container = $(this);
                     
@@ -208,7 +210,7 @@ function start(){
 //export
 function exportData(){
     var array_to_export = [];
-    if($("#edit").hasClass("selected")){
+    if($("#wgt_edit").hasClass("selected")){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.style = $(".style_select").find("option:selected").val();
@@ -273,8 +275,8 @@ function exportData(){
         cont_obj.tmp = "clear";
         array_to_export.push(cont_obj);
     }
-    
-    sankore.setPreference("categoriser_images", JSON.stringify(array_to_export));
+    if(window.sankore)
+        sankore.setPreference("categoriser_images", JSON.stringify(array_to_export));
 }
 
 //import
@@ -290,7 +292,7 @@ function importData(data){
                 changeStyle(data[i].style);
                 $(".style_select").val(data[i].style);
             }
-            if(data[i].mode == "edit"){          
+            if(data[i].mode == "edit"){
                 var tmp_array = [];
                 var container = $("<div class='cont'>");
                 var sub_container = $("<div class='sub_cont'>").appendTo(container);                  

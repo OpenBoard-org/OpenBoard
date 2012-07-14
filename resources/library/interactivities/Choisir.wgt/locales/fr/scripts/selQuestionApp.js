@@ -102,11 +102,12 @@ function init(){
         }
     }
     
-    if(sankore.preference("choisir_style","")){
-        changeStyle(sankore.preference("choisir_style",""));
-        $(".style_select").val(sankore.preference("choisir_style",""));
-    } else
-        changeStyle(1)
+    if(window.sankore)
+        if(sankore.preference("choisir_style","")){
+            changeStyle(sankore.preference("choisir_style",""));
+            $(".style_select").val(sankore.preference("choisir_style",""));
+        } else
+            changeStyle(1)
 
     $("#wgt_display, #wgt_edit").click(function(event){
         if(this.id == "wgt_display"){
@@ -118,8 +119,10 @@ function init(){
                 $("#wgt_edit").css("display", "block");
                 displayData(true);
                 mode = true;
-                sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
-                sankore.setPreference("choisir_style", $(".style_select").find("option:selected").val());
+                if(window.sankore){
+                    sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
+                    sankore.setPreference("choisir_style", $(".style_select").find("option:selected").val());
+                }
             }
         } else {            
             if(!$(this).hasClass("selected")){
@@ -312,15 +315,15 @@ function init(){
             if(event.target.type == "radio"){
                 checkingAnswers("radio", getNeededElement(questionArray, currentQstId).answers, event.target.value);
                 if(event.target.value == getNeededElement(questionArray, currentQstId).rightAns)
-                    $(event.target).next().next().find("span").css("background-color","#6c0");
+                    $(event.target).next().next().css("background-color","#6c0");
                 else
-                    $(event.target).next().next().find("span").css("background-color","red");
+                    $(event.target).next().next().css("background-color","red");
             } else {
                 checkingAnswers("box", getNeededElement(questionArray, currentQstId).answers, event.target.value, event.target.checked);
                 if(getNeededElement(questionArray, currentQstId).rightAns.replace(/,/g,"").indexOf(event.target.value + " ", 0) != -1)
-                    $(event.target).next().next().find("span").css("background-color","#6c0");
+                    $(event.target).next().next().css("background-color","#6c0");
                 else
-                    $(event.target).next().next().find("span").css("background-color","red");
+                    $(event.target).next().next().css("background-color","red");
             }
         }
     });
@@ -462,7 +465,7 @@ function init(){
                             newAnswer = $("<div class='newAnswer'>");
                             var ansInput = $("<input type='radio' name='" + counter + "' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             var ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                            var ansContent = $("<div class='ansContentDisplay'><span id='answerText' " + local_color + ">" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
+                            var ansContent = $("<div class='ansContentDisplay' " + local_color + "><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "2":
@@ -475,7 +478,7 @@ function init(){
                             newAnswer = $("<div class='newAnswer'>");
                             ansInput = $("<input type='checkbox' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                            ansContent = $("<div class='ansContentDisplay'><span id='answerText' " + local_color + ">" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
+                            ansContent = $("<div class='ansContentDisplay' " + local_color + "><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "3":

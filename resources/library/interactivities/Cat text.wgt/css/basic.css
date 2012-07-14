@@ -96,8 +96,11 @@ body{
 }
 
 .text_cont{
-    width: 100%;
+    min-width: 150px;
+    max-width: 200px;
     min-height: 20px;
+    max-height: 60px;
+    overflow: hidden;
     display: block;
     cursor: pointer;
 }
@@ -113,7 +116,8 @@ body{
 }
 
 .img_block{
-    width: 150px;
+    min-width: 150px;
+    max-width: 200px;
     height: 60px;
     margin: 10px;
     display: inline-table;

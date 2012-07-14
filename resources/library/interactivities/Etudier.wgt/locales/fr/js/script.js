@@ -83,7 +83,8 @@ function start(){
                         $(this).find(".size_up").remove();
                         $(this).find(".size_down").remove();
                         $(this).find(".resize_block").remove();
-                        $(this).removeAttr("contenteditable").removeClass("block_border");
+                        $(this).find(".real_text").removeAttr("contenteditable");
+                        $(this).removeClass("block_border");
                         $(this).css("position","absolute");
                     });
                     
@@ -132,7 +133,8 @@ function start(){
                         $("<div class='size_up' contenteditable='false'>").appendTo($(this));
                         $("<div class='size_down' contenteditable='false'>").appendTo($(this));
                         $("<div class='resize_block' contenteditable='false'>").appendTo($(this));
-                        $(this).attr("contenteditable", "true").addClass("block_border");
+                        $(this).find(".real_text").attr("contenteditable", "true");
+                        $(this).addClass("block_border");
                     });
                     
                     container.find(".img_block").each(function(){
@@ -334,13 +336,13 @@ function start(){
     
     $(".add_text").live("click", function(){
         var container = $(this).parent();
-        var text_block = $("<div class='text_block'>" + sankoreLang.new_txt + "</div>").appendTo(container);
+        var text_block = $("<div class='text_block'><div class='real_text' contenteditable='true'>" + sankoreLang.new_txt + "</div></div>").appendTo(container);
         $("<div class='move_block' contenteditable='false'>").appendTo(text_block);
         $("<div class='close_img' contenteditable='false'>").appendTo(text_block);
         $("<div class='size_up' contenteditable='false'>").appendTo(text_block);
         $("<div class='size_down' contenteditable='false'>").appendTo(text_block);
         $("<div class='resize_block' contenteditable='false'>").appendTo(text_block);
-        text_block.attr("contenteditable", "true").addClass("block_border");
+        text_block.addClass("block_border");
     });
 }
 
@@ -359,7 +361,7 @@ function exportData(){
             txt_block.h = $(this).height();
             txt_block.w = $(this).width();
             txt_block.fz = $(this).css("font-size");
-            txt_block.val = $(this).text();
+            txt_block.val = $(this).find(".real_text").html();
             cont_obj.text.push(txt_block);
         });
         cont_obj.imgs = [];
@@ -401,7 +403,7 @@ function importData(data){
         var div = $("<div>").appendTo(li);
         
         for(var j in data[i].text){
-            var text_div = $("<div class='text_block'>" + data[i].text[j].val + "</div>");
+            var text_div = $("<div class='text_block'><div class='real_text'>" + data[i].text[j].val + "</div></div>");
             text_div.draggable().css("position","absolute")
             .width(data[i].text[j].w)
             .height(data[i].text[j].h)
@@ -455,7 +457,7 @@ function showExample(){
     
     var li1 = $("<li>");
     var div1 = $("<div>").appendTo(li1);
-    $("<div class='text_block'>" + sankoreLang.text_content + "</div>").draggable().appendTo(div1)
+    $("<div class='text_block'><div class='real_text'>" + sankoreLang.text_content + "</div></div>").draggable().appendTo(div1)
     li1.width($("#slider").width()).height($("#slider").height());
     $("#slider ul").append(li1);
     var li2 = $("<li>");
@@ -476,7 +478,7 @@ function showExample(){
     $("#slider ul").append(li3);
     var li4 = $("<li>");
     var div4 = $("<div>").appendTo(li4);
-    $("<div class='text_block'>" + sankoreLang.text_content + "</div>").draggable().appendTo(div4);
+    $("<div class='text_block'><div class='real_text'>" + sankoreLang.text_content + "</div></div>").draggable().appendTo(div4);
     var img2 = $("<div class='img_block' style='text-align: center;'></div>").draggable().appendTo(div4);
     $("<img src=\"../../objects/1.gif\" style=\"display: inline;\" height=\"120\"/>").appendTo(img2);
     var audio_block2 = $("<div class='audio_block'>").draggable().appendTo(div4);
