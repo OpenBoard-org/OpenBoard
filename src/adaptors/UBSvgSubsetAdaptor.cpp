@@ -891,7 +891,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     UBGraphicsTextItem* textItem = textItemFromSvg();
 
-                    UBGraphicsTextItemDelegate *textDelegate = dynamic_cast<UBGraphicsTextItemDelegate*>(textItem->Delegate());
+                    UBGraphicsTextItemDelegate *textDelegate = 0;
+
+                    if (textItem)
+                        textDelegate = dynamic_cast<UBGraphicsTextItemDelegate*>(textItem->Delegate());
+
                     if (textDelegate)
                     {
                         QDesktopWidget* desktop = UBApplication::desktop();
