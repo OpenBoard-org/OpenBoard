@@ -327,6 +327,11 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
     if (0 == factor)
         return;
 
+    UBGraphicsTextItem *item = dynamic_cast<UBGraphicsTextItem*>(delegated());
+
+    if (item && (QString() == item->toPlainText()))
+        return;
+
     QTextCursor cursor = delegated()->textCursor();
     QTextCharFormat textFormat;
 
