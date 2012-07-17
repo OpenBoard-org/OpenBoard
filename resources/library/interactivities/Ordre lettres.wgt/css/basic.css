@@ -166,9 +166,10 @@ body{
 }
 
 .audio_desc{
-    min-height: 30px;
-    margin: 5px 0;
-    float: left;
+    width: 73%;
+    max-height: 40px;
+    overflow-x: hidden;
+    float: right;
     margin-left: 20px;
 }
 

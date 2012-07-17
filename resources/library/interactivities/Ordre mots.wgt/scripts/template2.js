@@ -64,11 +64,12 @@ var widget_padding = 0;
 var min_view_width = 400;
 
 $(document).ready(function(){
-    if(sankore.preference("ord_words_style","")){
-        changeStyle(sankore.preference("ord_words_style",""));
-        $(".style_select").val(sankore.preference("ord_words_style",""));
-    } else
-        changeStyle(1)
+    if(window.sankore)
+        if(sankore.preference("ord_words_style","")){
+            changeStyle(sankore.preference("ord_words_style",""));
+            $(".style_select").val(sankore.preference("ord_words_style",""));
+        } else
+            changeStyle(1)
     $("#wgt_display").text(sankoreLang.view);
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_display, #wgt_edit").click(function(event){

@@ -240,11 +240,16 @@ function exportData(){
             array_to_export.push(cont_obj);
         });
     }
-    sankore.setPreference("associer_sound", JSON.stringify(array_to_export));
-    if($("#wgt_display").hasClass("selected"))
-        sankore.setPreference("associer_sound_state", "display");
-    else
-        sankore.setPreference("associer_sound_state", "edit");
+    if(window.sankore)
+        sankore.setPreference("associer_sound", JSON.stringify(array_to_export));
+    if($("#wgt_display").hasClass("selected")){
+        if(window.sankore)
+            sankore.setPreference("associer_sound_state", "display");
+    }
+    else{
+        if(window.sankore)
+            sankore.setPreference("associer_sound_state", "edit");
+    }
 }
 
 //import

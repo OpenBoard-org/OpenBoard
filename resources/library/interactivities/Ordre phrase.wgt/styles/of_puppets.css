@@ -24,7 +24,7 @@ body{
     background-color: #fff;
 }
 .phrase{
-    height: 40px;
+    min-height: 40px;
     border: solid 1px #ccc;
     margin: 4px;
     padding: 4px 10px;
@@ -33,7 +33,7 @@ body{
     text-align: center;
     cursor: pointer;
     text-transform: uppercase;
-
+    overflow: hidden;
 }
 
 .right{

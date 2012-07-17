@@ -11,11 +11,13 @@ body{
 }
 
 .letter{
-    min-width: 30px; height: 40px;
+    min-width: 30px; 
+    max-width: 500px;
+    height: 40px;
+    overflow: hidden;
     border: solid 1px #ccc;
     margin: 4px;
     padding: 4px 10px;
-
     float: left;
     font: 28px tahoma;
     text-align: center;

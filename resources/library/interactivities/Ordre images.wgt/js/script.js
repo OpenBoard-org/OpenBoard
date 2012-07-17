@@ -58,7 +58,8 @@ function start(){
     $("#wgt_display, #wgt_edit").click(function(event){
         if(this.id == "wgt_display"){
             if(!$(this).hasClass("selected")){
-                sankore.enableDropOnWidget(false);
+                if(window.sankore)
+                    sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
                 $(".style_select").css("display","none");
@@ -104,7 +105,8 @@ function start(){
             }
         } else {            
             if(!$(this).hasClass("selected")){
-                sankore.enableDropOnWidget(true);
+                if(window.sankore)
+                    sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
                 $(".style_select").css("display","block");
@@ -212,11 +214,16 @@ function exportData(){
         cont_obj.tmp = "clear";
         array_to_export.push(cont_obj);
     }
-    sankore.setPreference("odr_des_imgs", JSON.stringify(array_to_export));
-    if($("#wgt_display").hasClass("selected"))
-        sankore.setPreference("odr_des_imgs_state", "display");
-    else
-        sankore.setPreference("odr_des_imgs_state", "edit");
+    if(window.sankore)
+        sankore.setPreference("odr_des_imgs", JSON.stringify(array_to_export));
+    if($("#wgt_display").hasClass("selected")){
+        if(window.sankore)
+            sankore.setPreference("odr_des_imgs_state", "display");
+    }
+    else{
+        if(window.sankore)
+            sankore.setPreference("odr_des_imgs_state", "edit");
+    }
 }
 
 //import

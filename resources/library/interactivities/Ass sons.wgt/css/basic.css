@@ -214,7 +214,7 @@ body{
 .audio_desc{
     width: 73%;
     max-height: 40px;
-    overflow-y: auto;
+    overflow-x: hidden;
     float: right;
     margin-left: 20px;
 }

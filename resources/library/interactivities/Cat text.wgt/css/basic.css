@@ -103,6 +103,7 @@ body{
     overflow: hidden;
     display: block;
     cursor: pointer;
+    word-wrap: break-word;
 }
 
 .close_cont{

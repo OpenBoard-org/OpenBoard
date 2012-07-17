@@ -66,11 +66,12 @@ var input_width = 606;
 var widget_padding = 0;
 
 $(document).ready(function(){
-    if(sankore.preference("ord_phrases_style","")){
-        changeStyle(sankore.preference("ord_phrases_style",""));
-        $(".style_select").val(sankore.preference("ord_phrases_style",""));
-    } else
-        changeStyle(1)
+    if(window.sankore)
+        if(sankore.preference("ord_phrases_style","")){
+            changeStyle(sankore.preference("ord_phrases_style",""));
+            $(".style_select").val(sankore.preference("ord_phrases_style",""));
+        } else
+            changeStyle(1)
     $("#wgt_display").text(sankoreLang.view);
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_display, #wgt_edit").click(function(event){
