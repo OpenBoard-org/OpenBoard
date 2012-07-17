@@ -75,6 +75,6 @@ var locales = {
 		'image_license_comm_reuse': 'Usage, distribution, commercial',
 		'image_license_modif': 'Usage, distribution, modification',
 		'image_license_comm_modif': 'Usage, distribution, modification, commercial',
-		'disclaimer_title': 'Cette API de recherche repose sur les services de Google Images. Veuillez vous référez aux conditions d\'utilisation de ce service.'
+		'disclaimer_title': 'Cette recherche utilise les services de Google Images. Veuillez vous référer aux conditions d\'utilisation de ce service.'
 	}
 };

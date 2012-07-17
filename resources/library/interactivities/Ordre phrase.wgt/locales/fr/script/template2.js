@@ -28,7 +28,7 @@ function checkResponse()
 var sankoreLang = {
     view: "Afficher", 
     edit: "Modifier",
-    example: "Cette phrase\nest un\nexample",
+    example: "Cette phrase\nest un\nexemple",
     wgt_name: "Ordonner des phrases",
     reload: "Recharger",
     slate: "ardoise",
