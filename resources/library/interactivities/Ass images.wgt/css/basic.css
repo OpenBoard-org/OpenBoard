@@ -6,6 +6,10 @@ html, body{
     border-radius: 50px;
 }
 
+.without_radius{
+    border-radius: 0 !important;
+}
+
 body{
     background-image: url(../img/bg.png);
 }
@@ -207,6 +211,9 @@ body{
 
 /* new design */
 
+.without_back{
+    background: none !important;
+}
 
 .body_table{
     width: 100%;
@@ -382,6 +389,12 @@ body{
 
 .pad_select{
     background-color: black !important;
+    color: white !important;
+    background-image: url(../img/ar_down_white.png) !important;
+}
+
+.none_select{
+    background-color: #333 !important;
     color: white !important;
     background-image: url(../img/ar_down_white.png) !important;
 }
