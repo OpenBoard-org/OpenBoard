@@ -27,6 +27,22 @@ notifyError(){
     exit 1
 }
 
+alertIfPreviousVersionInstalled(){
+    APT_CACHE=`which apt-cache`
+    if [ ! -e "$APT_CACHE" ]; then
+        notifyError "apt-cache command not found"
+    else
+        SEARCH_RESULT=`$APT_CACHE search open-sankore`
+        if [ `echo $SEARCH_RESULT | grep -c open-sankore` -ge 1 ]; then
+            notifyError "Found a previous version of Open-Sankore. Remove it to avoid to put it as dependency"
+        fi
+    fi
+}
+
+
+alertIfPreviousVersionInstalled
+
+
 rm -rf "build/linux/release"
 rm -rf install
 
