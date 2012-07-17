@@ -11,10 +11,10 @@ linux-g++-64 {
     CONFIG += link_prl
 }
 
-VERSION_MAJ = 1
-VERSION_MIN = 50 
-VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 01
+VERSION_MAJ = 2
+VERSION_MIN = 00 
+VERSION_TYPE = a # a = alpha, b = beta, r = release, other => error
+VERSION_PATCH = 30
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
@@ -323,6 +323,14 @@ macx {
        TRANSLATION_bg.path = "$$RESOURCES_DIR/bg.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_bg
    }
+   
+   exists(resources/i18n/sankore_ca.qm) {
+       TRANSLATION_ca.files = resources/i18n/sankore_ca.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_ca.path = "$$RESOURCES_DIR/ca.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_ca
+   }
+   
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
        UB_FONTS \
@@ -414,7 +422,8 @@ TRANSLATIONS = resources/i18n/sankore_en.ts \
    resources/i18n/sankore_iw.ts \
    resources/i18n/sankore_pt.ts \
    resources/i18n/sankore_sk.ts \
-   resources/i18n/sankore_bg.ts
+   resources/i18n/sankore_bg.ts \
+   resources/i18n/sankore_ca.ts
 
 INSTALLS = UB_ETC \
    UB_I18N \
