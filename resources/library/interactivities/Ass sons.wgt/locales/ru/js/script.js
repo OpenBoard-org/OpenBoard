@@ -7,7 +7,8 @@ var sankoreLang = {
     wgt_name: "Что звучит",
     reload: "Обновить",
     slate: "Узор",
-    pad: "Планшет"
+    pad: "Планшет",
+    none: "Нет"
 };
 
 //main function
