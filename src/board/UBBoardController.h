@@ -222,6 +222,7 @@ class UBBoardController : public QObject
         void freezeW3CWidget(QGraphicsItem* item, bool freeze);
         void startScript();
         void stopScript();
+        bool cacheIsVisible();
 
     signals:
         void newPageAdded();
@@ -282,6 +283,7 @@ class UBBoardController : public QObject
         qreal mSystemScaleFactor;
         bool mCleanupDone;
         QMap<QAction*, QPair<QString, QString> > mActionTexts;
+        bool mCacheWidgetIsEnabled;
 
     private slots:
         void stylusToolDoubleClicked(int tool);

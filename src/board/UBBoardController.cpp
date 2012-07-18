@@ -88,6 +88,7 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mIsClosing(false)
     , mSystemScaleFactor(1.0)
     , mCleanupDone(false)
+    , mCacheWidgetIsEnabled(false)
 {
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
@@ -397,6 +398,11 @@ void UBBoardController::startScript()
 void UBBoardController::stopScript()
 {
     freezeW3CWidgets(true);
+}
+
+bool UBBoardController::cacheIsVisible()
+{
+    return mCacheWidgetIsEnabled;
 }
 
 void UBBoardController::initToolbarTexts()
@@ -1685,6 +1691,8 @@ void UBBoardController::notifyCache(bool visible)
     {
         emit cacheDisabled();
     }
+
+    mCacheWidgetIsEnabled = visible;
 }
 
 void UBBoardController::updatePageSizeState()

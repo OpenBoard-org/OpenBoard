@@ -729,7 +729,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
 
             connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
-            mLongPressTimer.start();
+            if (!movingItem && !mController->cacheIsVisible())
+                mLongPressTimer.start();
             
             if (!movingItem) {
                 // Rubberband selection implementation
