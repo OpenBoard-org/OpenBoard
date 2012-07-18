@@ -47,6 +47,7 @@ class UBResources : public QObject
          QCursor zoomInCursor;
          QCursor zoomOutCursor;
          QCursor arrowCursor;
+         QCursor playCursor;
          QCursor textCursor;
          QCursor rotateCursor;
 		 QCursor drawLineRulerCursor;

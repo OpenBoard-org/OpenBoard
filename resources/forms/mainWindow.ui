@@ -1637,7 +1637,8 @@
    </property>
    <property name="icon">
     <iconset resource="../sankore.qrc">
-     <normaloff>:/images/toolbar/library.png</normaloff>:/images/toolbar/library.png</iconset>
+     <normaloff>:/images/toolbar/group.png</normaloff>
+     <normalon>:/images/toolbar/ungroup.png</normalon>:/images/toolbar/group.png</iconset>
    </property>
    <property name="text">
     <string>Group Items</string>
