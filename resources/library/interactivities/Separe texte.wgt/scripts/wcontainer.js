@@ -5,7 +5,8 @@ var sankoreLang = {
     wgt_name: "Split a text",
     reload: "Reload",
     slate: "Wood",
-    pad: "Pad"
+    pad: "Pad",
+    none: "None"
 };
 
 // if use the "view/edit" button or rely on the api instead
