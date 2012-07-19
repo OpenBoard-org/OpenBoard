@@ -12,7 +12,7 @@
     <name>DownloadDialog</name>
     <message>
         <source>Downloads</source>
-        <translation>Téléchargements</translation>
+        <translation>Téléchargement(s)</translation>
     </message>
     <message>
         <source>Clean Up</source>
@@ -477,7 +477,7 @@
     </message>
     <message>
         <source>Scroll Page</source>
-        <translation>Faire défiler la page</translation>
+        <translation>Déplacer la page</translation>
     </message>
     <message>
         <source>Laser Pointer</source>
@@ -1192,11 +1192,11 @@
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation>Fichier Open-Sankoré en cours de transfert sur le Web.</translation>
+        <translation>Fichier Open-Sankoré en cours de transfert vers Planète Sankoré.</translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
-        <translation>Document correctement transféré sur le Web.</translation>
+        <translation>Document Open-Sankoré correctement transféré sur Planète Sankoré.</translation>
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
@@ -1279,7 +1279,7 @@
     </message>
     <message>
         <source>Export to Sankore Format</source>
-        <translation>Exporter au format Sankoré</translation>
+        <translation>Exporter au format Open-Sankoré</translation>
     </message>
 </context>
 <context>
@@ -1456,7 +1456,7 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Format de fichier courant (</translation>
+        <translation>Format de fichier CFF (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
@@ -1867,7 +1867,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publier le document sur le Web</translation>
+        <translation>Publier un fichier Open-Sankoré sur Planète Sankoré</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -2192,7 +2192,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation>Publier le document sur Planète Sankoré</translation>
+        <translation>Publier un fichier Open-Sankoré sur Planète Sankoré</translation>
     </message>
 </context>
 <context>
@@ -2368,13 +2368,13 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
 <context>
     <name>WBDownloadManager</name>
     <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 téléchargements</translation>
+        <source>1 Download</source>
+        <translation>1 téléchargement(s)</translation>
     </message>
     <message>
-        <source>1 Download</source>
-        <translation>1 téléchargement</translation>
+        <source>%1 Downloads</source>
+        <comment>always &gt;= 2</comment>
+        <translation>%1 téléchargement(s)</translation>
     </message>
 </context>
 <context>

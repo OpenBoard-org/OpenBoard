@@ -1867,7 +1867,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publier un ficher Open-Sankoré sur Planète Sankoré</translation>
+        <translation>Publier un fichier Open-Sankoré sur Planète Sankoré</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -2192,7 +2192,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation>Publier le document sur Planète Sankoré</translation>
+        <translation>Publier un fichier Open-Sankoré sur Planète Sankoré</translation>
     </message>
 </context>
 <context>
@@ -2368,13 +2368,13 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
 <context>
     <name>WBDownloadManager</name>
     <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 téléchargements</translation>
+        <source>1 Download</source>
+        <translation>1 téléchargement(s)</translation>
     </message>
     <message>
-        <source>1 Download</source>
-        <translation>1 téléchargement</translation>
+        <source>%1 Downloads</source>
+        <comment>always &gt;= 2</comment>
+        <translation>%1 téléchargement(s)</translation>
     </message>
 </context>
 <context>
