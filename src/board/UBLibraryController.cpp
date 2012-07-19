@@ -268,7 +268,6 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     element->setMoveable(false);
     categories << element;
 
-//  Note : FEATURE IN DEVELOPMENT, DO NOT ERASE (or you will get problems) !!!!
     mSearchCategoryPath = QUrl::fromLocalFile(UBSettings::userSearchDirectory());
     element = new UBLibElement(eUBLibElementType_Folder, mSearchCategoryPath, tr("Web Search", "Web search category element"));
     element->setThumbnail(QImage(":images/libpalette/WebSearchCategory.svg"));
@@ -357,8 +356,18 @@ QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QS
     else if (pPath == mInteractiveCategoryPath.toLocalFile()){
         content << listElementsInPath(UBSettings::settings()->applicationInteractivesDirectory());
     }
+    else if (pPath == mAudioStandardDirectoryPath.toLocalFile()){
+    	content << listElementsInPath(UBSettings::settings()->applicationAudiosLibraryDirectory());
+    }
+    else if (pPath == mVideoStandardDirectoryPath.toLocalFile()){
+    	content << listElementsInPath(UBSettings::settings()->applicationVideosLibraryDirectory());
+    }
+    else if (pPath == mAnimationUserDirectoryPath.toLocalFile()){
+    	content << listElementsInPath(UBSettings::settings()->applicationAnimationsLibraryDirectory());
+    }
 
     return content;
+
 }
 
 QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPath)

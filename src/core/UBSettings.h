@@ -121,7 +121,9 @@ class UBSettings : public QObject
         QString applicationInteractivesDirectory();
         QString applicationCustomizationDirectory();
         QString applicationCustomFontDirectory();
-
+        QString applicationAudiosLibraryDirectory();
+        QString applicationVideosLibraryDirectory();
+        QString applicationAnimationsLibraryDirectory();
 
         QNetworkProxy* httpProxy();
 

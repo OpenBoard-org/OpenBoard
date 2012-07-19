@@ -112,13 +112,14 @@ private:
     QUrl mUserAnimationDirectoryPath;
 
 	QString libraryPath;
-	QUrl mLibAudioDirectoryPath;
-    QUrl mLibVideoDirectoryPath;
     QUrl mLibPicturesDirectoryPath;
+	QUrl mLibAudiosDirectoryPath;
+	QUrl mLibVideosDirectoryPath;
     QUrl mLibInteractiveDirectoryPath;
-    QUrl mLibAnimationDirectoryPath;
+    QUrl mLibAnimationsDirectoryPath;
 	QUrl mLibApplicationsDirectoryPath;
 	QUrl mLibShapesDirectoryPath;
+
 	QUrl trashDirectoryPath;
 	QUrl mLibSearchDirectoryPath;
 

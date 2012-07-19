@@ -71,11 +71,15 @@ void UBFeaturesController::initDirectoryTree()
     mUserAnimationDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->userAnimationDirectory() );
 
 	mLibPicturesDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->applicationImageLibraryDirectory() );
+	qDebug() << mLibPicturesDirectoryPath;
 	mLibInteractiveDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->applicationInteractivesDirectory() );
 	mLibApplicationsDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->applicationApplicationsLibraryDirectory() );
 	mLibShapesDirectoryPath = QUrl::fromLocalFile( UBSettings::settings()->applicationShapeLibraryDirectory() );
 	mLibSearchDirectoryPath =QUrl::fromLocalFile(  UBSettings::settings()->userSearchDirectory() );
 	trashDirectoryPath = QUrl::fromLocalFile( UBSettings::userTrashDirPath() );
+	mLibAudiosDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationAudiosLibraryDirectory());
+	mLibVideosDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationVideosLibraryDirectory());
+	mLibAnimationsDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationAnimationsLibraryDirectory());
 
 	featuresList = new QList <UBFeature>();
 
@@ -135,7 +139,9 @@ void UBFeaturesController::initDirectoryTree()
 	fileSystemScan( trashDirectoryPath, trashPath );
 	fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
 	
-
+	fileSystemScan( mLibAudiosDirectoryPath, audiosPath);
+	fileSystemScan( mLibVideosDirectoryPath, moviesPath);
+	fileSystemScan( mLibAnimationsDirectoryPath, flashPath);
 }
 
 void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QString & currVirtualPath)

@@ -946,9 +946,9 @@ QString UBSettings::userSearchDirectory()
 
 QString UBSettings::applicationImageLibraryDirectory()
 {
-    QString defaultRelativePath = QString("./library/image");
+    QString defaultRelativePath = QString("./library/pictures");
 
-    QString configPath = value("Library/ImageDirectory", QVariant(defaultRelativePath)).toString();
+	QString configPath = value("Library/ImageDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
         return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
@@ -1015,6 +1015,48 @@ QString UBSettings::applicationApplicationsLibraryDirectory()
     }
 }
 
+
+QString UBSettings::applicationAudiosLibraryDirectory()
+{
+    QString defaultRelativePath = QString("./library/audios");
+
+    QString configPath = value("Library/AudiosDirectory", QVariant(defaultRelativePath)).toString();
+
+    if (configPath.startsWith(".")) {
+        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+    }
+    else {
+        return configPath;
+    }
+}
+
+QString UBSettings::applicationVideosLibraryDirectory()
+{
+    QString defaultRelativePath = QString("./library/videos");
+
+    QString configPath = value("Library/VideosDirectory", QVariant(defaultRelativePath)).toString();
+
+    if (configPath.startsWith(".")) {
+        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+    }
+    else {
+        return configPath;
+    }
+}
+
+QString UBSettings::applicationAnimationsLibraryDirectory()
+{
+    QString defaultRelativePath = QString("./library/animations");
+
+    QString configPath = value("Library/AnimationsDirectory", QVariant(defaultRelativePath)).toString();
+
+    if (configPath.startsWith(".")) {
+        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+    }
+    else {
+        return configPath;
+    }
+}
 
 QString UBSettings::userInteractiveFavoritesDirectory()
 {
