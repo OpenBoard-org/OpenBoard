@@ -42,6 +42,8 @@
         <file>images/currentDocument.png</file>
         <file>images/minus.svg</file>
         <file>images/plus.svg</file>
+        <file>images/z_layer_up.svg</file>
+        <file>images/z_layer_down.svg</file>
         <file>images/trash.png</file>
         <file>images/pin.svg</file>
         <file>images/unpin.svg</file>
@@ -49,6 +51,8 @@
         <file>images/reload.svg</file>
         <file>images/frozen.svg</file>
         <file>images/unfrozen.svg</file>
+        <file>images/toolbar/group.png</file>
+        <file>images/toolbar/ungroup.png</file>
         <file>images/toolbar/window.png</file>
         <file>images/toolbar/plusBlack.png</file>
         <file>images/toolbar/plusBlackOn.png</file>
@@ -183,6 +187,7 @@
         <file>images/cursors/resize.png</file>
         <file>images/cursors/drawCompass.png</file>
         <file>images/cursors/drawRulerLine.png</file>
+        <file>images/cursors/play.png</file>
         <file>images/print/onepage.png</file>
         <file>images/print/thumbnails.png</file>
         <file>images/print/twopages.png</file>

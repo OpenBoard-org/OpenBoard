@@ -6,7 +6,8 @@ var sankoreLang = {
     new_slide: "This is new slide.",
     wgt_name: "Slider",
     slate: "Wood",
-    pad: "Pad"
+    pad: "Pad",
+    none: "None"
 };
 
 //some flags
@@ -28,6 +29,7 @@ function start(){
     $("#wgt_name").text(sankoreLang.wgt_name);
     $(".style_select option[value='1']").text(sankoreLang.slate);
     $(".style_select option[value='2']").text(sankoreLang.pad);
+    $(".style_select option[value='3']").text(sankoreLang.none);
     
     if(window.sankore){
         if(sankore.preference("etudier","")){
@@ -40,7 +42,7 @@ function start(){
             changeStyle(sankore.preference("etudier_style",""));
             $(".style_select").val(sankore.preference("etudier_style",""));
         } else
-            changeStyle(1)
+            changeStyle("3")
     } 
     else 
         showExample();
@@ -513,32 +515,55 @@ function stringToXML(text){
 
 //changing the style
 function changeStyle(val){
-    if(val == 1){
-        $(".b_top_left").removeClass("btl_pad");
-        $(".b_top_center").removeClass("btc_pad");
-        $(".b_top_right").removeClass("btr_pad");
-        $(".b_center_left").removeClass("bcl_pad");
-        $(".b_center_right").removeClass("bcr_pad");
-        $(".b_bottom_right").removeClass("bbr_pad");
-        $(".b_bottom_left").removeClass("bbl_pad");
-        $(".b_bottom_center").removeClass("bbc_pad");
-        $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
-        $("#wgt_name").removeClass("pad_color");
-        $(".style_select").removeClass("pad_select");
-    } else {
-        $(".b_top_left").addClass("btl_pad");
-        $(".b_top_center").addClass("btc_pad");
-        $(".b_top_right").addClass("btr_pad");
-        $(".b_center_left").addClass("bcl_pad");
-        $(".b_center_right").addClass("bcr_pad");
-        $(".b_bottom_right").addClass("bbr_pad");
-        $(".b_bottom_left").addClass("bbl_pad");
-        $(".b_bottom_center").addClass("bbc_pad");
-        $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_display").addClass("pad_color").addClass("pad_edit");
-        $("#wgt_name").addClass("pad_color");
-        $(".style_select").addClass("pad_select");
+    switch(val){
+        case "1":
+            $(".b_top_left").removeClass("btl_pad").removeClass("without_back");
+            $(".b_top_center").removeClass("btc_pad").removeClass("without_back");
+            $(".b_top_right").removeClass("btr_pad").removeClass("without_back");
+            $(".b_center_left").removeClass("bcl_pad").removeClass("without_back");
+            $(".b_center_right").removeClass("bcr_pad").removeClass("without_back");
+            $(".b_bottom_right").removeClass("bbr_pad").removeClass("without_back");
+            $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
+            $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
+            $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+            $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
+            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
+            $("#wgt_name").removeClass("pad_color");
+            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
+            $("body, html").removeClass("without_radius");
+            break;
+        case "2":
+            $(".b_top_left").addClass("btl_pad").removeClass("without_back");
+            $(".b_top_center").addClass("btc_pad").removeClass("without_back");
+            $(".b_top_right").addClass("btr_pad").removeClass("without_back");
+            $(".b_center_left").addClass("bcl_pad").removeClass("without_back");
+            $(".b_center_right").addClass("bcr_pad").removeClass("without_back");
+            $(".b_bottom_right").addClass("bbr_pad").removeClass("without_back");
+            $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
+            $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
+            $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_name").addClass("pad_color");
+            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
+            $("body, html").removeClass("without_radius");
+            break;
+        case "3":
+            $(".b_top_left").addClass("without_back").removeClass("btl_pad");
+            $(".b_top_center").addClass("without_back").removeClass("btc_pad");
+            $(".b_top_right").addClass("without_back").removeClass("btr_pad");
+            $(".b_center_left").addClass("without_back").removeClass("bcl_pad");
+            $(".b_center_right").addClass("without_back").removeClass("bcr_pad");
+            $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
+            $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
+            $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
+            $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_name").addClass("pad_color");
+            $(".style_select").addClass("none_select").val(val);
+            $("body, html").addClass("without_radius");
+            break;
     }
 }
 

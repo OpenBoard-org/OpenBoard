@@ -5,7 +5,8 @@ var sankoreLang = {
     wgt_name: "Séparer une phrase",
     reload: "Recharger",
     slate: "ardoise",
-    pad: "tablette"
+    pad: "tablette",
+    none: "aucun"
 };
 
 // if use the "view/edit" button or rely on the api instead

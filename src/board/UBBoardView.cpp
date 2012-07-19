@@ -637,6 +637,12 @@ void UBBoardView::rubberItems()
 {
     if (mUBRubberBand)
         mRubberedItems = items(mUBRubberBand->geometry());
+
+    foreach(QGraphicsItem *item, mRubberedItems)
+    {
+        if (item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type())
+            mRubberedItems.removeOne(item);
+    }
 }
 
 void UBBoardView::moveRubberedItems(QPointF movingVector)
@@ -945,7 +951,9 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           }
           else
           {
-              movingItem->setSelected(true);              
+             if (   QGraphicsSvgItem::Type !=  movingItem->type()
+                 && UBGraphicsDelegateFrame::Type !=  movingItem->type())
+                 movingItem->setSelected(true);
           }
       }
 
@@ -1360,7 +1368,7 @@ UBBoardView::setToolCursor (int tool)
       controlViewport->setCursor (UBResources::resources ()->arrowCursor);
       break;
     case UBStylusTool::Play:
-      controlViewport->setCursor (UBResources::resources ()->drawLineRulerCursor);
+      controlViewport->setCursor (UBResources::resources ()->playCursor);
       break;
     case UBStylusTool::Line:
       controlViewport->setCursor (UBResources::resources ()->penCursor);

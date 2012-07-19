@@ -137,12 +137,12 @@ void UBGraphicsItemDelegate::init()
     connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
     mButtons << mMenuButton;
 
-    mZOrderUpButton = new DelegateButton(":/images/plus.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
     connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
     connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
     mButtons << mZOrderUpButton;
 
-    mZOrderDownButton = new DelegateButton(":/images/minus.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
     connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
     connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
     mButtons << mZOrderDownButton;

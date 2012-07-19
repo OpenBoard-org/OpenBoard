@@ -244,3 +244,16 @@ body{
     background-image: url(../img/ar_down_white.png) !important;
 }
 
+.without_radius{
+    border-radius: 0 !important;
+}
+
+.without_back{
+    background: none !important;
+}
+
+.none_select{
+    background-color: #333 !important;
+    color: white !important;
+    background-image: url(../img/ar_down_white.png) !important;
+}

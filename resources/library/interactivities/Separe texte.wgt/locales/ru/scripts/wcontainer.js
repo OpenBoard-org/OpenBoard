@@ -5,7 +5,8 @@ var sankoreLang = {
     wgt_name: "Разделить текст",
     reload: "Обновить",
     slate: "Узор",
-    pad: "Планшет"
+    pad: "Планшет",
+    none: "Нет"
 };
 
 // if use the "view/edit" button or rely on the api instead
