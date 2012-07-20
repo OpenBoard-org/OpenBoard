@@ -317,8 +317,6 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
 #endif
 
-    connect(documentController, SIGNAL(movedToIndex(int)), boardController, SIGNAL(documentReorganized(int)));
-
     mPreferencesController = new UBPreferencesController(mainWindow);
 
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));

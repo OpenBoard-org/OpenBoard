@@ -87,6 +87,7 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mIsClosing(false)
     , mSystemScaleFactor(1.0)
     , mCleanupDone(false)
+    , mCacheWidgetIsEnabled(false)
 {
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
@@ -1712,6 +1713,7 @@ void UBBoardController::notifyCache(bool visible)
     {
         emit cacheDisabled();
     }
+    mCacheWidgetIsEnabled = visible;
 }
 
 void UBBoardController::updatePageSizeState()

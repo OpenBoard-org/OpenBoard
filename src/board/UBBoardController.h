@@ -159,6 +159,8 @@ class UBBoardController : public UBDocumentContainer
         void duplicateScene(int index);
         void deleteScene(int index);
 
+        bool cacheIsVisible() {return mCacheWidgetIsEnabled;}
+
     public slots:
         void showDocumentsDialog();
         void showKeyboard(bool show);
@@ -277,6 +279,7 @@ class UBBoardController : public UBDocumentContainer
         qreal mSystemScaleFactor;
         bool mCleanupDone;
         QMap<QAction*, QPair<QString, QString> > mActionTexts;
+        bool mCacheWidgetIsEnabled;
 
     private slots:
         void stylusToolDoubleClicked(int tool);
