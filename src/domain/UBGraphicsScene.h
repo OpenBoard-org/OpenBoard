@@ -102,6 +102,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
     //        tmp stub for divide addings scene objects from undo mechanism implementation
     void setURStackEnable(bool set = true) {enableUndoRedoStack = set;}
+    bool isURStackIsEnabled(){ return enableUndoRedoStack;}
 
     UBGraphicsScene(UBDocumentProxy *parent);
         virtual ~UBGraphicsScene();

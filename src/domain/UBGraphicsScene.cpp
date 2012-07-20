@@ -1292,6 +1292,11 @@ void UBGraphicsScene::clearBackground()
 {
     if(mBackgroundObject){
         removeItem(mBackgroundObject);
+
+        if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, mBackgroundObject, NULL);
+            UBApplication::undoStack->push(uc);
+        }
         mBackgroundObject = 0;
     }
     update(sceneRect());

@@ -59,6 +59,10 @@ REM echo %LAST_TAG_VERSION%
 
 nmake release-install
 
+set CUSTOMIZATIONS=build\win32\release\product\customizations
+mkdir %CUSTOMIZATIONS%
+xcopy /s resources\customizations %CUSTOMIZATIONS%
+
 set I18n=build\win32\release\product\i18n
 mkdir %I18n%
 xcopy /s resources\i18n\*.qm %I18n%

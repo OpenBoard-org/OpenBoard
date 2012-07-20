@@ -91,8 +91,15 @@ void UBGraphicsItemUndoCommand::undo()
     while (itRemoved.hasNext())
     {
         QGraphicsItem* item = itRemoved.next();
-        mScene->addItem(item);
-        UBApplication::boardController->freezeW3CWidget(item, false);
+        if (item)
+        {
+            if (UBItemLayerType::FixedBackground == item->data(UBGraphicsItemData::ItemLayerType))
+                mScene->setAsBackgroundObject(item);
+            else
+                mScene->addItem(item);
+
+            UBApplication::boardController->freezeW3CWidget(item, false);
+        }
     }
 
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
@@ -123,8 +130,15 @@ void UBGraphicsItemUndoCommand::redo()
         while (itAdded.hasNext())
         {
             QGraphicsItem* item = itAdded.next();
-            mScene->addItem(item);
-            UBApplication::boardController->freezeW3CWidget(item, false);
+            if (item)
+            {
+                if (UBItemLayerType::FixedBackground == item->data(UBGraphicsItemData::ItemLayerType))
+                    mScene->setAsBackgroundObject(item);
+                else
+                    mScene->addItem(item);
+
+                UBApplication::boardController->freezeW3CWidget(item, false);
+            }
         }
 
         // force refresh, QT is a bit lazy and take a lot of time (nb item ^2) to trigger repaint

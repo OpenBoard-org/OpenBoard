@@ -855,6 +855,10 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
 
 void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
+    QGraphicsItem *oldBackgroundObject = NULL;
+    if (isBackground) 
+        oldBackgroundObject = mActiveScene->backgroundObject();
+
     QString mimeType = pContentTypeHeader;
 
     // In some cases "image/jpeg;charset=" is returned by the drag-n-drop. That is
@@ -1192,6 +1196,15 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
     {
         UBApplication::showMessage(tr("Unknown content type %1").arg(pContentTypeHeader));
         qWarning() << "ignoring mime type" << pContentTypeHeader ;
+    }
+
+    if (isBackground && oldBackgroundObject != mActiveScene->backgroundObject())
+    {
+        if (mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, oldBackgroundObject, mActiveScene->backgroundObject());
+            UBApplication::undoStack->push(uc);
+        }
+
     }
 }
 
