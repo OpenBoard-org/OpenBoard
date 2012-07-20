@@ -126,6 +126,13 @@ void UBFeaturesController::initDirectoryTree()
 			featuresList->append( UBFeature( favoritePath, tool.icon, tool.label, QUrl( tool.id ), FEATURE_INTERNAL ) );
 		}
 	}
+	// Claudio:
+	// don't change the order of the scans
+	fileSystemScan( mLibAudiosDirectoryPath, audiosPath);
+	fileSystemScan( mLibVideosDirectoryPath, moviesPath);
+	fileSystemScan( mLibAnimationsDirectoryPath, flashPath);
+	fileSystemScan( mLibPicturesDirectoryPath, picturesPath  );
+
 	fileSystemScan( mUserInteractiveDirectoryPath, appPath  );
 	fileSystemScan( mUserAudioDirectoryPath, audiosPath  );
 	fileSystemScan( mUserPicturesDirectoryPath, picturesPath  );
@@ -133,15 +140,12 @@ void UBFeaturesController::initDirectoryTree()
 	fileSystemScan( mUserAnimationDirectoryPath, flashPath  );
 
 	fileSystemScan( mLibApplicationsDirectoryPath, appPath  );
-	fileSystemScan( mLibPicturesDirectoryPath, picturesPath  );
 	fileSystemScan( mLibShapesDirectoryPath, shapesPath  );
 	fileSystemScan( mLibInteractiveDirectoryPath, interactPath  );
 	fileSystemScan( trashDirectoryPath, trashPath );
 	fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
 	
-	fileSystemScan( mLibAudiosDirectoryPath, audiosPath);
-	fileSystemScan( mLibVideosDirectoryPath, moviesPath);
-	fileSystemScan( mLibAnimationsDirectoryPath, flashPath);
+
 }
 
 void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QString & currVirtualPath)
