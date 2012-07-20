@@ -58,8 +58,6 @@ private:
     QString mTimeFormat;
     int mTimerID;
 
-private slots:
-    void changeCurrentPage();
 };
 
 

@@ -142,8 +142,8 @@ void UBGraphicsMediaItem::clearSource()
 {
     QString path = mediaFileUrl().toLocalFile();
     //if path is absolute clean duplicated path string
-    if (!path.contains(UBApplication::boardController->activeDocument()->persistencePath()))
-        path = UBApplication::boardController->activeDocument()->persistencePath() + "/" + path;
+    if (!path.contains(UBApplication::boardController->selectedDocument()->persistencePath()))
+        path = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + path;
 
     if (!UBFileSystemUtils::deleteFile(path))
         qDebug() << "cannot delete file: " << path;

@@ -20,6 +20,7 @@
 #include "core/UBApplication.h"
 
 #include "board/UBBoardController.h"
+#include "document/UBDocumentContainer.h"
 
 #include "globals/UBGlobals.h"
 
@@ -334,7 +335,7 @@ QString UBFileSystemUtils::normalizeFilePath(const QString& pFilePath)
 
 QString UBFileSystemUtils::digitFileFormat(const QString& s, int digit)
 {
-    int pageDigit = UBApplication::boardController->pageFromSceneIndex(digit);
+    int pageDigit = UBDocumentContainer::pageFromSceneIndex(digit);
     return s.arg(pageDigit, 3, 10, QLatin1Char('0'));
 }
 

@@ -134,8 +134,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     //------------------------------------------------//
     // Create the widgets for the dock palettes
 
-    mpPageNavigWidget = new UBPageNavigationWidget();
-
 #ifdef USE_WEB_WIDGET
     mpLibWidget = new UBLibWidget();
 #endif
@@ -352,7 +350,7 @@ void UBBoardPaletteManager::pagePaletteButtonReleased()
         	QList<QAction*>pageActions;
         	pageActions << UBApplication::mainWindow->actionNewPage;
         	UBBoardController* boardController = UBApplication::boardController;
-        	if(UBApplication::documentController->pageCanBeDuplicated(boardController->pageFromSceneIndex(boardController->activeSceneIndex())))
+        	if(UBApplication::documentController->pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(boardController->activeSceneIndex())))
         		pageActions << UBApplication::mainWindow->actionDuplicatePage;
             pageActions << UBApplication::mainWindow->actionImportPage;
 
@@ -568,7 +566,7 @@ void UBBoardPaletteManager::activeSceneChanged()
 
     if (mpPageNavigWidget)
     {
-        mpPageNavigWidget->setPageNumber(UBApplication::boardController->pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
+        mpPageNavigWidget->setPageNumber(UBDocumentContainer::pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
     }
 
     if (mZoomPalette)

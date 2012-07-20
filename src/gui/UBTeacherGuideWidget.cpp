@@ -245,7 +245,7 @@ void UBTeacherGuideEditionWidget::onActiveSceneChanged()
         cleanData();
         load(UBSvgSubsetAdaptor::readTeacherGuideNode(UBApplication::boardController->activeSceneIndex()));
         mpPageNumberLabel->setText(tr("Page: %0").arg(currentPage));
-        UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+        UBDocumentProxy* documentProxy = UBApplication::boardController->selectedDocument();
         if(mpDocumentTitle)
             mpDocumentTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
     }
@@ -483,7 +483,7 @@ void UBTeacherGuidePresentationWidget::onActiveSceneChanged()
 {
     cleanData();
     mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->currentPage()));
-    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    UBDocumentProxy* documentProxy = UBApplication::boardController->selectedDocument();
     if(mpDocumentTitle)
         mpDocumentTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
 }
@@ -535,9 +535,9 @@ void UBTeacherGuidePresentationWidget::showData(QVector<tUBGEElementNode*> data)
             newWidgetItem->setData(0,Qt::FontRole, QVariant(QFont(QApplication::font().family(),11)));
 			QString mimeTypeString;
 #ifdef Q_WS_WIN
-			mimeTypeString =  QUrl::fromLocalFile(UBApplication::boardController->activeDocument()->persistencePath()+ "/" + element->attributes.value("relativePath")).toString();
+            mimeTypeString =  QUrl::fromLocalFile(UBApplication::boardController->selectedDocument()->persistencePath()+ "/" + element->attributes.value("relativePath")).toString();
 #else
-			mimeTypeString = UBApplication::boardController->activeDocument()->persistencePath()+ "/" + element->attributes.value("relativePath");
+			mimeTypeString = UBApplication::boardController->selectedDocument()->persistencePath()+ "/" + element->attributes.value("relativePath");
 #endif
             newWidgetItem->setData(0, TG_USER_ROLE_MIME_TYPE, mimeTypeString);
             newWidgetItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
@@ -882,7 +882,7 @@ void UBTeacherGuidePageZeroWidget::onSchoolLevelChanged(QString schoolLevel)
 
 void UBTeacherGuidePageZeroWidget::onActiveSceneChanged()
 {
-    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    UBDocumentProxy* documentProxy = UBApplication::boardController->selectedDocument();
     if(documentProxy && UBApplication::boardController->currentPage() == 0){
         QDateTime creationDate = documentProxy->documentDate();
         mpCreationLabel->setText(tr("Created the:\n") + creationDate.toString(Qt::DefaultLocaleShortDate));
@@ -901,7 +901,7 @@ void UBTeacherGuidePageZeroWidget::hideEvent ( QHideEvent * event )
 
 void UBTeacherGuidePageZeroWidget::loadData()
 {
-    UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+    UBDocumentProxy* documentProxy = UBApplication::boardController->selectedDocument();
     mpSessionTitle->setText(documentProxy->metaData(UBSettings::sessionTitle).toString());
     mpAuthors->setText(documentProxy->metaData(UBSettings::sessionAuthors).toString());
     mpObjectives->setText(documentProxy->metaData(UBSettings::sessionObjectives).toString());
@@ -925,7 +925,7 @@ void UBTeacherGuidePageZeroWidget::persistData()
     // check necessary because at document closing hide event is send after boardcontroller set
     // to NULL
     if(UBApplication::boardController){
-        UBDocumentProxy* documentProxy = UBApplication::boardController->activeDocument();
+        UBDocumentProxy* documentProxy = UBApplication::boardController->selectedDocument();
         documentProxy->setMetaData(UBSettings::sessionTitle,mpSessionTitle->text());
         documentProxy->setMetaData(UBSettings::sessionAuthors, mpAuthors->text());
         documentProxy->setMetaData(UBSettings::sessionObjectives,mpObjectives->text());

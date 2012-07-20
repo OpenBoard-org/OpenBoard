@@ -26,7 +26,9 @@ class UBGraphicsScene;
 
 class UBDocumentProxy : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
+
+    friend class UBPersistenceManager;
 
     public:
 
@@ -60,6 +62,8 @@ class UBDocumentProxy : public QObject
         bool isModified() const;
 
         int pageCount();
+
+    protected:
         void setPageCount(int pPageCount);
         int incPageCount();
         int decPageCount();

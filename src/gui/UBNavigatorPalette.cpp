@@ -63,8 +63,7 @@ UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):
     mTimeFormat = mTimeFormat.remove(":s");
     mTimerID = startTimer(1000);
 
-    connect(mNavigator, SIGNAL(changeCurrentPage()), this, SLOT(changeCurrentPage()));  
-}
+}  
 
 /**
  * \brief Destructor
@@ -104,34 +103,12 @@ UBNavigatorPalette::~UBNavigatorPalette()
  * \brief Set the current document in the navigator
  * @param document as the given document
  */
-void UBNavigatorPalette::setDocument(UBDocumentProxy *document)
-{
-    if(mNavigator->currentDoc() != document)
-    {
-	mNavigator->setDocument(document);
-    }
-}
-
-/**
- * \brief Change the current page
- */
-void UBNavigatorPalette::changeCurrentPage()
-{
-    //	Get the index of the page to display
-    int iPage = mNavigator->selectedPageNumber();
-    if(NO_PAGESELECTED != iPage)
-    {
-	// Display the selected page
-    UBApplication::boardController->setActiveDocumentScene(mNavigator->currentDoc(), iPage);
-    }
-}
 
 /**
  * \brief Refresh the thumbnails widget
  */
 void UBNavigatorPalette::refresh()
 {
-    mNavigator->setDocument(UBApplication::boardController->activeDocument());
 }
 
 /**

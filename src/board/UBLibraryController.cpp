@@ -562,7 +562,7 @@ void UBLibraryController::removeBackground()
 
 UBGraphicsScene* UBLibraryController::activeScene()
 {
-    if (mBoardController->activeDocument())
+    if (mBoardController->selectedDocument())
         return mBoardController->activeScene();
 
     return 0;
