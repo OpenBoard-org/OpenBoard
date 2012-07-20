@@ -1472,7 +1472,7 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
 
     foreach(QString widgetPath, widgetPaths)
     {
-        if (widgetPath.contains("VideoPicker"))
+        if (widgetPath.contains("Sel video"))
         {
             widget = addW3CWidget(QUrl::fromLocalFile(widgetPath), pPos);
 
