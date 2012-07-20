@@ -346,7 +346,7 @@ QString UBWidgetUniboardAPI::pageThumbnail(const int pageNumber)
     if (UBApplication::boardController->activeScene() != mScene)
         return "";
 
-    UBDocumentProxy *doc = UBApplication::boardController->activeDocument();
+    UBDocumentProxy *doc = UBApplication::boardController->selectedDocument();
 
     if (!doc)
         return "";

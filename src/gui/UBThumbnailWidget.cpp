@@ -211,7 +211,7 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
 
     UBSceneThumbnailPixmap* sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(itemAt(mMousePressPos));
     if(sceneItem){
-    	int pageIndex = UBApplication::boardController->pageFromSceneIndex(sceneItem->sceneIndex());
+    	int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneItem->sceneIndex());
     	if(pageIndex == 0){
             event->ignore();
             return;
@@ -761,7 +761,7 @@ UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBD
     , bCanMoveDown(false)
     , bCanDuplicate(false)
 {
-    if(0 <= UBApplication::boardController->pageFromSceneIndex(pSceneIndex)){
+    if(0 <= UBDocumentContainer::pageFromSceneIndex(pSceneIndex)){
         setAcceptsHoverEvents(true);
         setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
@@ -839,7 +839,7 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
     bCanDuplicate = false;
 
     if(proxy()){
-    	int pageIndex = UBApplication::boardController->pageFromSceneIndex(sceneIndex());
+    	int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneIndex());
     	UBDocumentController* documentController = UBApplication::documentController;
     	bCanDelete = documentController->pageCanBeDeleted(pageIndex);
         bCanMoveUp = documentController->pageCanBeMovedUp(pageIndex);
@@ -853,25 +853,24 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
 
 void UBSceneThumbnailNavigPixmap::deletePage()
 {
-    QList<QGraphicsItem*> itemsToDelete;
-    itemsToDelete << this;
-
-    UBApplication::documentController->deletePages(itemsToDelete);
+	UBApplication::boardController->deleteScene(sceneIndex());
 }
 
 void UBSceneThumbnailNavigPixmap::duplicatePage()
 {
-	UBApplication::boardController->duplicateScene();
+	UBApplication::boardController->duplicateScene(sceneIndex());
 }
 
 void UBSceneThumbnailNavigPixmap::moveUpPage()
 {
-    UBApplication::documentController->moveSceneToIndex(proxy(), sceneIndex(), sceneIndex() - 1);
+    if (sceneIndex()!=0)
+        UBApplication::boardController->moveSceneToIndex(sceneIndex(), sceneIndex() - 1);
 }
 
 void UBSceneThumbnailNavigPixmap::moveDownPage()
 {
-    UBApplication::documentController->moveSceneToIndex(proxy(), sceneIndex(), sceneIndex() + 1);
+    if (sceneIndex() < UBApplication::boardController->selectedDocument()->pageCount()-1)
+        UBApplication::boardController->moveSceneToIndex(sceneIndex(), sceneIndex() + 1);
 }
 
 void UBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal height)

@@ -608,9 +608,9 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
     if (pScene->isModified())
     {
-        UBThumbnailAdaptor::persistScene(pDocumentProxy->persistencePath(), pScene, pSceneIndex);
-
         UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+
+        UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
 
         pScene->setModified(false);
     }

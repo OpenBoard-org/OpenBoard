@@ -340,8 +340,7 @@ void UBApplicationController::showBoard()
         int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
         if (selectedSceneIndex != -1)
         {
-            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->getCurrentDocument(), selectedSceneIndex);
-            UBApplication::boardController->emitScrollSignal();
+            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->selectedDocument(), selectedSceneIndex, true);
         }
     }
 

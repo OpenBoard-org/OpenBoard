@@ -1078,7 +1078,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistCurrentScene()
 {
     if (mCurrentScene != 0 && mCurrentScene->isModified())
     {
-        UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), mCurrentScene, mProxy->pageCount() - 1);
+        UBThumbnailAdaptor::persistScene(mProxy, mCurrentScene, mProxy->pageCount() - 1);
         UBSvgSubsetAdaptor::persistScene(mProxy, mCurrentScene, mProxy->pageCount() - 1);
 
         mCurrentScene->setModified(false);
@@ -1102,7 +1102,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
         UBSvgSubsetAdaptor::persistScene(mProxy, mCurrentScene, i);
         UBGraphicsScene *tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
         tmpScene->setModified(true);
-        UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), tmpScene, i);
+        UBThumbnailAdaptor::persistScene(mProxy, tmpScene, i);
         delete tmpScene;
 
         mCurrentScene->setModified(false);

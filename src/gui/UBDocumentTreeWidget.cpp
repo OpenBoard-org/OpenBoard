@@ -200,7 +200,9 @@ void UBDocumentTreeWidget::focusInEvent(QFocusEvent *event)
 {
     Q_UNUSED(event);
 
-    itemSelectionChanged();
+    // Tolik
+    //itemSelectionChanged();
+
     QTreeWidget::focusInEvent(event);
 }
 

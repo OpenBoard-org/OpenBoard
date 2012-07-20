@@ -17,6 +17,8 @@
 
 #include "board/UBBoardController.h"
 
+#include "document/UBDocumentContainer.h"
+
 #include "globals/UBGlobals.h"
 
 #include "core/memcheck.h"
@@ -72,8 +74,8 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
     mTimeFormat = mTimeFormat.remove(":s");
     mTimerID = startTimer(1000);
 
-    connect(mNavigator, SIGNAL(changeCurrentPage()), this, SLOT(changeCurrentPage()));
-    connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(onSetDocOnPageNavigator(UBDocumentProxy*)));
+    //connect(mNavigator, SIGNAL(changeCurrentPage()), this, SLOT(changeCurrentPage()));
+    //connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(onSetDocOnPageNavigator(UBDocumentProxy*)));
 }
 
 /**
@@ -110,41 +112,14 @@ UBPageNavigationWidget::~UBPageNavigationWidget()
     }
 }
 
-/**
- * \brief Set the current document in the navigator
- * @param document as the given document
- */
-void UBPageNavigationWidget::setDocument(UBDocumentProxy *document)
-{
-    if(mNavigator->currentDoc() != document)
-    {
-        mNavigator->setDocument(document);
-    }
-}
-
-/**
- * \brief Change the current page
- */
-void UBPageNavigationWidget::changeCurrentPage()
-{
-    //	Get the index of the page to display
-    int iPage = mNavigator->selectedPageNumber();
-    if(NO_PAGESELECTED != iPage)
-    {
-        // Display the selected page
-        UBApplication::boardController->setActiveDocumentScene(mNavigator->currentDoc(), iPage);
-
-        // emit here the signal to indicate that page change
-        UBApplication::boardController->notifyPageChanged();
-    }
-}
 
 /**
  * \brief Refresh the thumbnails widget
  */
 void UBPageNavigationWidget::refresh()
 {
-    mNavigator->setDocument(UBApplication::boardController->activeDocument());
+    // TOLIK!!!
+    // mNavigator->setDocument(UBApplication::boardController->activeDocument());
 }
 
 /**
@@ -175,7 +150,7 @@ void UBPageNavigationWidget::updateTime()
  */
 void UBPageNavigationWidget::setPageNumber(int current, int total)
 {
-    mPageNbr->setText(QString("%1 / %2").arg(current).arg(UBApplication::boardController->sceneIndexFromPage(total)));
+    mPageNbr->setText(QString("%1 / %2").arg(current).arg(UBDocumentContainer::sceneIndexFromPage(total)));
 }
 
 /**
@@ -196,11 +171,3 @@ int UBPageNavigationWidget::border()
     return 15;
 }
 
-/**
- * \brief Set the current document
- * @param doc as the current document
- */
-void UBPageNavigationWidget::onSetDocOnPageNavigator(UBDocumentProxy *doc)
-{
-    setDocument(doc);
-}

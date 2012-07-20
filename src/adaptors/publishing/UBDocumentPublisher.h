@@ -106,7 +106,12 @@ private slots:
 private:
 
     UBDocumentProxy *mSourceDocument;
-    UBDocumentProxy *mPublishingDocument;
+
+    //UBDocumentProxy *mPublishingDocument;
+    QString mPublishingPath;
+    int mPublishingSize;
+
+
     void init();
     void sendUbw(QString username, QString password);
     QString getBase64Of(QString stringToEncode);
