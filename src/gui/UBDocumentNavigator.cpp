@@ -94,12 +94,6 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
 		mScene->addItem(pixmapItem);
 		mScene->addItem(labelItem);
-
-        // Get the selected item
-        if(UBApplication::boardController->activeSceneIndex() == i)
-        {
-            pixmapItem->setSelected(true);
-        }
     }
     
 	// Draw the items
@@ -108,13 +102,13 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
 void UBDocumentNavigator::onScrollToSelectedPage(int index)
 {
+    qDebug() << "Selection in widet: " << index;
     int c  = 0;
     foreach(UBImgTextThumbnailElement el, mThumbsWithLabels)
     {
         if (c==index)
         {
             el.getThumbnail()->setSelected(true);
-            centerOn(el.getThumbnail());
         }
         else
         {
@@ -122,7 +116,7 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
         }
         c++;
     }
-    refreshScene();
+    centerOn(mThumbsWithLabels[index].getThumbnail());
 }
 
 /**
@@ -267,8 +261,13 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
                 break;
             }
         }
+        qDebug() << "Selected Scene: " << index;
         UBApplication::boardController->setActiveDocumentScene(index);
 	}
 	QGraphicsView::mousePressEvent(event);
 }
 
+void UBDocumentNavigator::mouseReleaseEvent(QMouseEvent *event)
+{
+    event->accept();
+}

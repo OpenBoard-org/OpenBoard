@@ -78,18 +78,17 @@ const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
         generateMissingThumbnails(proxy);
     }
 
+    QPixmap* pix = new QPixmap();
     if (file.exists())
     {
-        QPixmap* pix = new QPixmap();
         //Warning. Works only with modified Qt
 #ifdef Q_WS_X11
         pix->load(fileName, 0, Qt::AutoColor);
 #else
         pix->load(fileName, 0, Qt::AutoColor, false);
 #endif
-        return pix;
     }
-    return NULL;
+    return pix;
 }
 
 void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<const QPixmap*>& list)
