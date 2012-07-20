@@ -47,8 +47,6 @@ if(window.sankore){
     word = sankoreLang.example;
 }
 
-var doCheckWord = true;
-
 // array of dom elements
 var letters = [];
 
@@ -67,10 +65,13 @@ var widget_padding = 0;
 var min_view_width = 400;
 
 $(document).ready(function(){
-    if(sankore.preference("ord_words_style","")){
-        changeStyle(sankore.preference("ord_words_style",""));
-        $(".style_select").val(sankore.preference("ord_words_style",""));
-    } else
+    if(window.sankore){
+        if(sankore.preference("ord_words_style","")){
+            changeStyle(sankore.preference("ord_words_style",""));
+            $(".style_select").val(sankore.preference("ord_words_style",""));
+        } else
+            changeStyle("3")
+    } else 
         changeStyle("3")
     $("#wgt_display").text(sankoreLang.view);
     $("#wgt_edit").text(sankoreLang.edit);
@@ -300,7 +301,7 @@ turns the widget into the view mode
 function modeView()
 {
     if( editMode ){
-        word = $( "#mp_word input:text" ).attr( "value" );
+        word = $( "#mp_word .wgt_cont" ).val();
     }
     
     wgtState = false;
@@ -360,14 +361,15 @@ function modeEdit()
 {
     editMode = true;
     wgtState = true;
-    $( "#mp_word").css( "margin-left", 0 ).empty().append('<input value="'+word+'">');
+    $( "#mp_word").sortable( "destroy" );
+    $( "#mp_word").css( "margin-left", 0 ).empty().append('<textarea class="wgt_cont">'+word+'</textarea>');
 
 }
 
 if (window.widget) {
     window.widget.onleave = function(){
         sankore.setPreference("ord_words_style", $(".style_select").find("option:selected").val());
-        if($( "#mp_word input:text" ).attr( "value" ))
+        if($( "#mp_word .wgt_cont" ).val())
         {
             modeView();
             var str = "";

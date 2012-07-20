@@ -1040,6 +1040,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
   mMouseButtonIsPressed = false;
   mPendingStylusReleaseEvent = false;
   mTabletStylusIsPressed = false;
+  movingItem = NULL;
 
   mLongPressTimer.stop();
 }
