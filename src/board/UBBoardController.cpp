@@ -1848,8 +1848,8 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     QUrl concreteUrl = pSourceUrl;
 
 #ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mActiveDocument->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-                                      ->addVideoFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
+    concreteUrl = QUrl::fromLocalFile(selectedDocument()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
+                                      ->addVideoFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
 #else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
                                       ->addVideoFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
@@ -1873,8 +1873,8 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     QUrl concreteUrl = pSourceUrl;
 
 #ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mActiveDocument->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-                       ->addAudioFileToDocument(mActiveDocument, pSourceUrl.toLocalFile(), uuid));
+    concreteUrl = QUrl::fromLocalFile(selectedDocument()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
+                       ->addAudioFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
 #else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
                        ->addAudioFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
