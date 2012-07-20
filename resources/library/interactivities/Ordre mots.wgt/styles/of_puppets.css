@@ -12,7 +12,7 @@ body{
 
 .letter{
     min-width: 30px; 
-    max-width: 500px;
+    max-width: 600px;
     height: 40px;
     overflow: hidden;
     border: solid 1px #ccc;
@@ -43,11 +43,12 @@ body{
     text-align: center;
 }
 
-#mp_word input{
+#mp_word .wgt_cont{
     font: 32px tahoma;
     letter-spacing: 0.1em;
     width: 98%;
-    overflow: auto;
+    min-height: 200px;
+    resize: vertical;
 }
 
 #mp_msg{
