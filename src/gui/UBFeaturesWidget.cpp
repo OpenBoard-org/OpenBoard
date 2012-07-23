@@ -17,6 +17,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     setObjectName(name);
     mName = "FeaturesWidget";
     mVisibleState = true;
+    int currentIconSize = UBSettings::settings()->libraryIconSize();
 
 	SET_STYLE_SHEET();
     //setAttribute(Qt::WA_StyledBackground, true);
@@ -63,8 +64,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
 	featuresListView->setItemDelegate( itemDelegate );
 	//featuresListView->setSelectionRectVisible(false);
 
-	featuresListView->setIconSize( QSize(defaultThumbnailSize, defaultThumbnailSize) );
-	featuresListView->setGridSize( QSize(defaultThumbnailSize * 1.75, defaultThumbnailSize * 1.75) );
+	featuresListView->setIconSize( QSize(currentIconSize, currentIconSize) );
+	featuresListView->setGridSize( QSize(currentIconSize * 1.75, currentIconSize * 1.75) );
 
 	//pathListView->setStyleSheet( QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;") );
 	pathListView->setModel( featuresPathModel );
@@ -104,7 +105,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
 	thumbSlider = new QSlider( Qt::Horizontal, featuresListView );
 	thumbSlider->setMinimum( minThumbnailSize );
 	thumbSlider->setMaximum( maxThumbnailSize );
-	thumbSlider->setValue( defaultThumbnailSize );
+	thumbSlider->setValue(currentIconSize);
+
 	//qDebug() << "init" << featuresListView->height();
 	thumbSlider->move( 0, featuresListView->height()  );
 	thumbSlider->resize( thumbSlider->width(), thumbSlider->height() + 4 );
@@ -353,6 +355,7 @@ void UBFeaturesWidget::thumbnailSizeChanged( int value )
 {
 	featuresListView->setIconSize( QSize( value, value ) );
 	featuresListView->setGridSize( QSize( value * 1.75, value * 1.75 ) );
+	UBSettings::settings()->setLibraryIconsize(value);
 }
 
 void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )

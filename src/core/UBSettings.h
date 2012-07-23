@@ -96,6 +96,9 @@ class UBSettings : public QObject
         QString communityPassword();
         void setCommunityPassword(const QString& password);
 
+        int libraryIconSize();
+        void setLibraryIconsize(const int& size);
+
         void init();
         
         //user directories
@@ -177,6 +180,7 @@ class UBSettings : public QObject
 
         static const int maxThumbnailWidth;
         static const int defaultThumbnailWidth;
+        static const int defaultLibraryIconSize;
 
         static const int defaultImageWidth;
         static const int defaultShapeWidth;
@@ -204,6 +208,8 @@ class UBSettings : public QObject
 
         static QString defaultDocumentGroupName;
         static QString documentTrashGroupName;
+
+        //static int libIconSize;
 
         UBSetting* productWebUrl;
 
@@ -348,6 +354,8 @@ class UBSettings : public QObject
         UBSetting* historyLimit;
         UBSetting* teacherGuidePageZeroActivated;
         UBSetting* teacherGuideLessonPagesActivated;
+
+        UBSetting* libIconSize;
 
     public slots:
 

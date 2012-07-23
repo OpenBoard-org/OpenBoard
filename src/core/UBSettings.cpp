@@ -78,6 +78,7 @@ QPointer<QSettings> UBSettings::sAppSettings = 0;
 
 const int UBSettings::maxThumbnailWidth = 400;
 const int UBSettings::defaultThumbnailWidth = 150;
+const int UBSettings::defaultLibraryIconSize = 80;
 
 const int UBSettings::defaultGipWidth = 150;
 const int UBSettings::defaultSoundWidth = 50;
@@ -393,6 +394,8 @@ void UBSettings::init()
     historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
     teacherGuidePageZeroActivated = new UBSetting(this,"DockPalette","TeacherGuideActivatePageZero",true);
     teacherGuideLessonPagesActivated = new UBSetting(this,"DockPalette","TeacherGuideActivateLessonPages",true);
+
+    libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
 
     actionGroupText = "Group items";
     actionUngroupText = "Ungroup items";
@@ -1184,6 +1187,13 @@ void UBSettings::setCommunityPassword(const QString &password)
     communityPsw->set(QVariant(password));
 }
 
+int UBSettings::libraryIconSize(){
+	return libIconSize->get().toInt();
+}
+
+void UBSettings::setLibraryIconsize(const int& size){
+	libIconSize->set(QVariant(size));
+}
 
 bool UBSettings::checkDirectory(QString& dirPath)
 {
