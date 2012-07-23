@@ -1847,13 +1847,7 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(selectedDocument()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-                                      ->addVideoFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
-#else
-    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-                                      ->addVideoFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
-#endif
+    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addVideoFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
 
     UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -1872,13 +1866,7 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(selectedDocument()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-                       ->addAudioFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
-#else
-    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-                       ->addAudioFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
-#endif
+    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addAudioFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
 
     UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));

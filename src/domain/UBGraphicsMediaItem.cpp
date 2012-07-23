@@ -38,8 +38,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 {
     update();
 
-    QString s = pMediaFileUrl.toLocalFile();
-
     mMediaObject = new Phonon::MediaObject(this);
     if (pMediaFileUrl.toLocalFile().contains("videos")) 
     {
