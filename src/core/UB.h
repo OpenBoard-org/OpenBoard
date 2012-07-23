@@ -20,6 +20,23 @@
 
 #define UB_MAX_ZOOM 15
 
+struct UBMimeType
+{
+    enum Enum
+    {
+        RasterImage = 0,
+        VectorImage,
+        AppleWidget,
+        W3CWidget,
+        Video,
+        Audio,
+        Flash,
+        PDF,
+        UniboardTool,
+        UNKNOWN
+    };
+};
+
 struct UBStylusTool
 {
     enum Enum

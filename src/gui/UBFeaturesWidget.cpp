@@ -359,27 +359,52 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 {
     QString previewImageUrl;
 
-    previewImageUrl = ":images/libpalette/loading.png";
+    switch (UBFileSystemUtils::mimeTypeFromUrl(QUrl(metadata["Url"])))
+    {
+    case UBMimeType::RasterImage:
+    case UBMimeType::VectorImage:
+        {
+            previewImageUrl = ":images/libpalette/loading.png";
 
-    if (!imageGatherer)
-        imageGatherer = new UBDownloadHttpFile(0, this);
+            if (!imageGatherer)
+                imageGatherer = new UBDownloadHttpFile(0, this);
 
-    connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+            connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
 
-    // We send here the request and store its reply in order to be able to cancel it if needed
-    imageGatherer->get(QUrl(metadata["Url"]), QPoint(0,0), QSize(), false);
+            // We send here the request and store its reply in order to be able to cancel it if needed
+            imageGatherer->get(QUrl(metadata["Url"]), QPoint(0,0), QSize(), false);
+        } break;
+    case UBMimeType::Audio:
+        {
+           previewImageUrl = ":images/libpalette/soundIcon.svg";
+        }break;
+    case UBMimeType::Video:
+        {
+            previewImageUrl = ":images/libpalette/movieIcon.svg";
+        }break;
+    case UBMimeType::Flash:
+        {
+            previewImageUrl = ":images/libpalette/FlashIcon.svg";
+        }break;
+    }
 
-	UBFeature feature( QString(), QPixmap(previewImageUrl), QString(), metadata["Url"], FEATURE_ITEM );
-	feature.setMetadata( metadata );
+    UBFeature feature( QString(), QPixmap(previewImageUrl), QString(), metadata["Url"], FEATURE_ITEM );
+    feature.setMetadata( metadata );
 
-	featureProperties->showElement( feature );
-	switchToProperties();
-	mActionBar->setCurrentState( IN_PROPERTIES );
+    featureProperties->showElement( feature );
+    switchToProperties();
+    mActionBar->setCurrentState( IN_PROPERTIES );
 }
 
 
 void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
+    Q_UNUSED(id);
+    Q_UNUSED(pSuccess);
+    Q_UNUSED(isBackground);
+    Q_UNUSED(pSize);
+    Q_UNUSED(pPos);
+
     QImage img;
     img.loadFromData(pData);
     QPixmap pix = QPixmap::fromImage(img);
@@ -776,6 +801,7 @@ void UBFeatureProperties::setOrigPixmap(QPixmap &pix)
 void UBFeatureProperties::setThumbnail(QPixmap &pix)
 {  
     mpThumbnail->setPixmap(pix.scaledToWidth(THUMBNAIL_WIDTH));
+    adaptSize();
 }
 
 void UBFeatureProperties::adaptSize()

@@ -868,6 +868,8 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
     if(position != -1)
         mimeType=mimeType.left(position);
 
+    UBMimeType::Enum itemMimeType = UBFileSystemUtils::mimeTypeFromString(mimeType);
+
     if (!pSuccess)
     {
         UBApplication::showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
@@ -877,11 +879,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
     if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("uniboardTool://"))
         UBApplication::showMessage(tr("Download finished"));
 
-    if (mimeType == "image/jpeg"
-            || mimeType == "image/png"
-            || mimeType == "image/gif"
-            || mimeType == "image/tiff"
-            || mimeType == "image/bmp")
+    if (UBMimeType::RasterImage == itemMimeType)
     {
 
         qDebug() << "accepting mime type" << mimeType << "as raster image";
@@ -904,7 +902,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
     }
-    else if (mimeType == "image/svg+xml")
+    else if (UBMimeType::VectorImage == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "as vecto image";
 
@@ -922,7 +920,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
     }
-    else if (mimeType == "application/vnd.apple-widget") //mime type invented by us :-(
+    else if (UBMimeType::AppleWidget == itemMimeType) //mime type invented by us :-(
     {
         qDebug() << "accepting mime type" << mimeType << "as Apple widget";
 
@@ -946,7 +944,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
     }
-    else if (mimeType == "application/widget")
+    else if (UBMimeType::W3CWidget == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "as W3C widget";
         QUrl widgetUrl = sourceUrl;
@@ -967,7 +965,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
     }
-    else if (mimeType.startsWith("video/"))
+    else if (UBMimeType::Video == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "as video";
 
@@ -996,7 +994,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
     }
-    else if (mimeType.startsWith("audio/"))
+    else if (UBMimeType::Audio == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "as audio";
 
@@ -1026,7 +1024,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
     }
 
-    else if (mimeType.startsWith("application/x-shockwave-flash"))
+    else if (UBMimeType::Flash == itemMimeType)
     {
 
         qDebug() << "accepting mime type" << mimeType << "as flash";
@@ -1073,7 +1071,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             delete eduMediaFile;
 
     }
-    else if (mimeType.startsWith("application/pdf"))
+    else if (UBMimeType::PDF == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "as PDF";
         qDebug() << "pdf data length: " << pData.size();
@@ -1097,7 +1095,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         }
     }
-    else if (mimeType.startsWith("application/vnd.mnemis-uniboard-tool"))
+    else if (UBMimeType::UniboardTool == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "as Uniboard Tool";
 

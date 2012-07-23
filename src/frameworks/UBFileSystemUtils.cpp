@@ -535,6 +535,59 @@ QString UBFileSystemUtils::fileExtensionFromMimeType(const QString& pMimeType)
 }
 
 
+UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString)
+{
+    UBMimeType::Enum type = UBMimeType::UNKNOWN;
+
+    if (typeString == "image/jpeg"
+        || typeString == "image/png"
+        || typeString == "image/gif"
+        || typeString == "image/tiff"
+        || typeString == "image/bmp")
+    {
+        type = UBMimeType::RasterImage;
+    }
+    else if (typeString == "image/svg+xml")
+    {
+        type = UBMimeType::VectorImage;
+    }
+    else if (typeString == "application/vnd.apple-widget")
+    {
+        type = UBMimeType::AppleWidget;
+    }
+    else if (typeString == "application/widget")
+    {
+        type = UBMimeType::W3CWidget;
+    }
+    else if (typeString.startsWith("video/"))
+    {
+        type = UBMimeType::Video;
+    }
+    else if (typeString.startsWith("audio/"))
+    {
+        type = UBMimeType::Audio;
+    }
+    else if (typeString.startsWith("application/x-shockwave-flash"))
+    {
+        type = UBMimeType::Flash;
+    }
+    else if (typeString.startsWith("application/pdf"))
+    {
+        type = UBMimeType::PDF;
+    }
+    else if (typeString.startsWith("application/vnd.mnemis-uniboard-tool"))
+    {
+        type = UBMimeType::UniboardTool;
+    }
+
+    return type;
+}
+
+UBMimeType::Enum UBFileSystemUtils::mimeTypeFromUrl(const QUrl& url)
+{
+    return mimeTypeFromString(mimeTypeFromFileName(url.toString()));
+}
+
 QString UBFileSystemUtils::getFirstExistingFileFromList(const QString& path, const QStringList& files)
 {
 

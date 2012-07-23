@@ -18,6 +18,8 @@
 
 #include <QtCore>
 
+#include "core/UB.h"
+
 class QuaZipFile;
 class UBProcessingProgressListener;
 
@@ -56,6 +58,10 @@ class UBFileSystemUtils
         static QString mimeTypeFromFileName(const QString& filename);
 
         static QString fileExtensionFromMimeType(const QString& pMimeType);
+
+        static UBMimeType::Enum mimeTypeFromString(const QString& typeString);
+
+        static UBMimeType::Enum mimeTypeFromUrl(const QUrl& url);
 
         static QString normalizeFilePath(const QString& pFilePath);
 
