@@ -38,6 +38,7 @@ class UBGraphicsCurtainItemDelegate : public UBGraphicsItemDelegate
 
         virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value);
+        virtual void positionHandles();
 
    public slots:
 
