@@ -52,8 +52,10 @@ UBLibNavigatorWidget::UBLibNavigatorWidget(QWidget *parent, const char *name):QW
     mSlider = new QSlider(Qt::Horizontal, this);
     mSlider->setMinimumHeight(20);
     mSlider->setRange(lowBoundForSlider, topBoundForSlider);
-    mSliderWidthSetting = new UBSetting(UBSettings::settings(), "Library", "LibWidgetWidth", topBoundForSlider);
-    int defaultWidth = mSliderWidthSetting->get().toInt();
+    //mSliderWidthSetting = new UBSetting(UBSettings::settings(), "Library", "LibWidgetWidth", topBoundForSlider);
+    //int defaultWidth = mSliderWidthSetting->get().toInt();
+    int defaultWidth = UBSettings::settings()->libraryIconSize();
+    qDebug() << defaultWidth;
     mSlider->setValue(defaultWidth);
     mSlider->setTickInterval(tickIntervalForSlider);
     mLayout->addWidget(mSlider, 0);
@@ -181,6 +183,7 @@ void UBLibNavigatorWidget::onDisplaySearchEngine(UBLibElement *elem)
  */
 void UBLibNavigatorWidget::updateThumbnailsSize(int newSize)
 {
-    mSliderWidthSetting->set(newSize);
+    //mSliderWidthSetting->set(newSize);
+	UBSettings::settings()->setLibraryIconsize(newSize);
     mLibWidget->updateThumbnailsSize(newSize);
 }
