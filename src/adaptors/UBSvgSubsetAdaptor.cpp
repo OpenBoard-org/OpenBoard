@@ -56,6 +56,8 @@
 
 #include "interfaces/IDataStorage.h"
 
+#include "document/UBDocumentContainer.h"
+
 #include "pdf/PDFRenderer.h"
 
 #include "core/memcheck.h"
@@ -313,7 +315,7 @@ QString UBSvgSubsetAdaptor::readTeacherGuideNode(int sceneIndex)
 {
     QString result;
 
-    QString fileName = UBApplication::boardController->activeDocument()->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sceneIndex);
+    QString fileName = UBApplication::boardController->selectedDocument()->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sceneIndex);
     QFile file(fileName);
     file.open(QIODevice::ReadOnly);
     QByteArray fileByteArray=file.readAll();

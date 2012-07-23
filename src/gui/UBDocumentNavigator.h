@@ -22,6 +22,7 @@
 #include <QThread>
 
 #include "document/UBDocumentProxy.h"
+#include "document/UBDocumentContainer.h"
 #include "UBThumbnailWidget.h"
 
 #define NO_PAGESELECTED		    -1
@@ -33,42 +34,31 @@ public:
     UBDocumentNavigator(QWidget* parent=0, const char* name="documentNavigator");
     ~UBDocumentNavigator();
 
-    void setDocument(UBDocumentProxy* document);
     void setNbColumns(int nbColumns);
     int nbColumns();
     void setThumbnailMinWidth(int width);
     int thumbnailMinWidth();
-    int selectedPageNumber();
-    UBDocumentProxy* currentDoc();
-
-signals:
-    void changeCurrentPage();
 
 public slots:
-    void onMovedToIndex(int index);
-    void onScrollToSelectedPage() { centerOn(mCrntItem); }
+    void onScrollToSelectedPage(int index);// { if (mCrntItem) centerOn(mCrntItem); }
+    void generateThumbnails(UBDocumentContainer* source);
+    void updateSpecificThumbnail(int iPage);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
-
-private slots:
-    void addNewPage();
-    void onSelectionChanged();
-    void generateThumbnails();
+    virtual void mouseReleaseEvent(QMouseEvent *event);
 
 private:
+    
     void refreshScene();
-	void updateSpecificThumbnail(int iPage);
     int border();
 
 
     /** The scene */
     QGraphicsScene* mScene;
     /** The current selected item */
-    UBSceneThumbnailNavigPixmap* mCrntItem;
-    /** The current document */
-    UBDocumentProxy* mCrntDoc;
+    //UBSceneThumbnailNavigPixmap* mCrntItem;
 	/** The list of current thumbnails with labels*/
 	QList<UBImgTextThumbnailElement> mThumbsWithLabels;
     /** The current number of columns */
@@ -77,8 +67,6 @@ private:
     int mThumbnailWidth;
     /** The current thumbnails minimum width */
     int mThumbnailMinWidth;
-    /** A flag indicating that a thumbnail refresh is in progress */
-    bool bNavig;
 };
-
+ 
 #endif // UBDOCUMENTNAVIGATOR_H

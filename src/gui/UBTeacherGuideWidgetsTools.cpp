@@ -316,7 +316,7 @@ UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWi
   , mIsInitializationMode(false)
 {
     setObjectName(name);
-    mMediaPath = UBApplication::boardController->activeDocument()->persistencePath()+ "/" + mediaPath;
+    mMediaPath = UBApplication::boardController->selectedDocument()->persistencePath()+ "/" + mediaPath;
     setAcceptDrops(false);
     createWorkWidget();
     setFixedHeight(200);
@@ -340,7 +340,7 @@ void UBTGMediaWidget::initializeWithDom(QDomElement element)
 {
     mIsInitializationMode = true;
     setAcceptDrops(false);
-    mMediaPath = UBApplication::boardController->activeDocument()->persistencePath() + "/" + element.attribute("relativePath");
+    mMediaPath = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + element.attribute("relativePath");
     qDebug() << mMediaPath;
     createWorkWidget();
     setFixedHeight(200);
@@ -377,7 +377,7 @@ tUBGEElementNode* UBTGMediaWidget::saveData()
         return 0;
     tUBGEElementNode* result = new tUBGEElementNode();
     QString relativePath = mMediaPath;
-    relativePath = relativePath.replace(UBApplication::boardController->activeDocument()->persistencePath()+"/","");
+    relativePath = relativePath.replace(UBApplication::boardController->selectedDocument()->persistencePath()+"/","");
 	result->name = "media";
     result->attributes.insert("title",mpTitle->text());
     result->attributes.insert("relativePath",relativePath);
@@ -394,7 +394,7 @@ void UBTGMediaWidget::createWorkWidget()
 {
     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mMediaPath);
     bool setMedia = true;
-    UBDocumentProxy* proxyDocument = UBApplication::boardController->activeDocument();
+    UBDocumentProxy* proxyDocument = UBApplication::boardController->selectedDocument();
     if(mimeType.contains("audio") || mimeType.contains("video")){
         mMediaType = mimeType.contains("audio")? "audio":"movie";
         mpMediaWidget = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);

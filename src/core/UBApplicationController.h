@@ -134,8 +134,7 @@ class UBApplicationController : public QObject
         void checkUpdateAtLaunch();
 
     private slots:
-        void ftpCommandFinished(int id, bool error);
-        void runCheckUpdate(int id, bool error);
+        void updateRequestFinished(int id, bool error);
 
     protected:
 
@@ -152,7 +151,6 @@ class UBApplicationController : public QObject
         UBScreenMirror* mMirror;
 
         int mInitialHScroll, mInitialVScroll;
-        QFtp* mFtp;
 
     private:
 

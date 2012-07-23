@@ -19,6 +19,7 @@
 #include <QtGui>
 
 #include <QObject>
+#include "document/UBDocumentContainer.h"
 
 class UBMainWindow;
 class UBApplication;
@@ -40,7 +41,7 @@ class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
 
 
-class UBBoardController : public QObject
+class UBBoardController : public UBDocumentContainer
 {
     Q_OBJECT
 
@@ -50,7 +51,7 @@ class UBBoardController : public QObject
 
         void init();
         void setupLayout();
-        UBDocumentProxy* activeDocument() const;
+
         UBGraphicsScene* activeScene() const;
         int activeSceneIndex() const;
         QSize displayViewport();
@@ -59,14 +60,6 @@ class UBBoardController : public QObject
         void closing();
 
         int currentPage();
-
-        int pageFromSceneIndex(int sceneIndex);
-        int sceneIndexFromPage(int page);
-
-        UBDocumentProxy* activeDocument()
-        {
-            return mActiveDocument;
-        }
 
         QWidget* controlContainer()
         {
@@ -158,10 +151,17 @@ class UBBoardController : public QObject
         void displayMetaData(QMap<QString, QString> metadatas);
 
         void ClearUndoStack();
-        void emitScrollSignal() { emit scrollToSelectedPage(); }
+
+        void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false);
+        void setActiveDocumentScene(int pSceneIndex);
+
+        void moveSceneToIndex(int source, int target);
+        void duplicateScene(int index);
+        void deleteScene(int index);
+
+        bool cacheIsVisible() {return mCacheWidgetIsEnabled;}
 
     public slots:
-        void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0);
         void showDocumentsDialog();
         void showKeyboard(bool show);
         void togglePodcast(bool checked);
@@ -222,14 +222,12 @@ class UBBoardController : public QObject
         void freezeW3CWidget(QGraphicsItem* item, bool freeze);
         void startScript();
         void stopScript();
-        bool cacheIsVisible();
 
     signals:
         void newPageAdded();
         void activeSceneWillBePersisted();
         void activeSceneWillChange();
         void activeSceneChanged();
-        void activeDocumentChanged();
         void zoomChanged(qreal pZoomFactor);
         void systemScaleFactorChanged(qreal pSystemScaleFactor);
         void penColorChanged();
@@ -238,10 +236,9 @@ class UBBoardController : public QObject
         void cacheEnabled();
         void cacheDisabled();
         void pageChanged();
-        void setDocOnPageNavigator(UBDocumentProxy* doc);
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
-        void scrollToSelectedPage();
+        void pageSelectionChanged(int index);
 
     protected:
         void setupViews();
@@ -263,7 +260,6 @@ class UBBoardController : public QObject
         void adjustDisplayViews();
 
         UBMainWindow *mMainWindow;
-        UBDocumentProxy* mActiveDocument;
         UBGraphicsScene* mActiveScene;
         int mActiveSceneIndex;
         UBBoardPaletteManager *mPaletteManager;

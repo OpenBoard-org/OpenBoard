@@ -107,7 +107,6 @@
 
             function imageDragging(e){
                 e.dataTransfer.setData("text/plain",$(this).find("input:hidden").eq(0).val());
-                // alert($(this).find("input:hidden").eq(0).val());
             }
             
             function imageDragleave(e){
@@ -235,15 +234,12 @@
             function createMetaData(parent){
                 var meta = "";
                 //alert($(this).find("input:hidden").eq(0).val());
-                meta = "<metadata><data><key>Type</key><value>Image</value></data><data><key>Url</key><value>" + 
+                meta = "<metadata><data><key>Type</key><value>Audio</value></data><data><key>Url</key><value>" + 
                     parent.find("input:hidden").eq(0).val() + 
                     "</value></data><data><key>Content</key><value>" + 
                     parent.find("input:hidden").eq(1).val() +
-                    "</value></data><data><key>Height</key><value>" + 
-                    parent.find("input:hidden").eq(2).val() +
-                    "</value></data><data><key>Width</key><value>" +
-                    parent.find("input:hidden").eq(3).val() +
-                    "</value></data><data><key>Title</key><value>" +
+                    "</value></data><data><key>Height</key><value>n/a</value></data>"+
+                    "<data><key>Width</key><value>n/a</value></data><data><key>Title</key><value>" +
                     parent.find("input:hidden").eq(4).val() +
                     "</value></data></metadata>";
                 return meta;

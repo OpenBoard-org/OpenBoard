@@ -68,7 +68,7 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
     if (sceneItem)
     {
-        int pageIndex = UBApplication::boardController->pageFromSceneIndex(sceneItem->sceneIndex());
+        int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneItem->sceneIndex());
         if(pageIndex != 0){
         	QDrag *drag = new QDrag(this);
         	QList<UBMimeDataItem> mimeDataItems;
@@ -153,7 +153,7 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
 
     int pageIndex = -1;
     if(mClosestDropItem){
-    	pageIndex = UBApplication::boardController->pageFromSceneIndex(mClosestDropItem->sceneIndex());
+    	pageIndex = UBDocumentContainer::pageFromSceneIndex(mClosestDropItem->sceneIndex());
     	if(pageIndex == 0){
     		 event->acceptProposedAction();
     		 return;
@@ -173,7 +173,7 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
             {
                 mClosestDropItem = item;
                 minDistance = distance;
-                pageIndex = UBApplication::boardController->pageFromSceneIndex(mClosestDropItem->sceneIndex());
+                pageIndex = UBDocumentContainer::pageFromSceneIndex(mClosestDropItem->sceneIndex());
             }
         }
     }
@@ -221,7 +221,7 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
     if (mClosestDropItem)
     {
         int targetIndex = mDropIsRight ? mGraphicItems.indexOf(mClosestDropItem) + 1 : mGraphicItems.indexOf(mClosestDropItem);
-        if(UBApplication::boardController->pageFromSceneIndex(targetIndex) == 0){
+        if(UBDocumentContainer::pageFromSceneIndex(targetIndex) == 0){
         	event->ignore();
         	return;
         }
@@ -278,7 +278,6 @@ void UBDocumentThumbnailWidget::deleteDropCaret()
         mDropCaretRectItem = 0;
     }
 }
-
 
 void UBDocumentThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems,
     const QList<QUrl>& pItemPaths, const QStringList pLabels,

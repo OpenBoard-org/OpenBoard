@@ -40,6 +40,8 @@ void UBGraphicsCurtainItemDelegate::init()
 {
     UBGraphicsItemDelegate::init();
     mFrame->hide();
+    mZOrderUpButton->hide();
+    mZOrderDownButton->hide();
 }
 
 
@@ -87,6 +89,12 @@ QVariant UBGraphicsCurtainItemDelegate::itemChange(QGraphicsItem::GraphicsItemCh
     return UBGraphicsItemDelegate::itemChange(change, value);
 }
 
+void UBGraphicsCurtainItemDelegate::positionHandles()
+{
+    UBGraphicsItemDelegate::positionHandles();
+    mZOrderUpButton->hide();
+    mZOrderDownButton->hide();
+}
 
 void UBGraphicsCurtainItemDelegate::remove(bool checked, bool canUndo)
 {

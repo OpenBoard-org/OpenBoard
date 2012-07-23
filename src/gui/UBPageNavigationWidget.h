@@ -33,7 +33,7 @@ class UBPageNavigationWidget : public UBDockPaletteWidget
 public:
     UBPageNavigationWidget(QWidget* parent=0, const char* name="UBPageNavigationWidget");
     ~UBPageNavigationWidget();
-    void setDocument(UBDocumentProxy* document);
+    //void setDocument(UBDocumentProxy* document);
     void refresh();
 
     bool visibleInMode(eUBDockPaletteWidgetMode mode)
@@ -50,8 +50,6 @@ public slots:
 protected:
     virtual void timerEvent(QTimerEvent *event);
 
-private slots:
-    void onSetDocOnPageNavigator(UBDocumentProxy* doc);
 
 private:
     void updateTime();
@@ -68,8 +66,6 @@ private:
     QString mTimeFormat;
     int mTimerID;
 
-private slots:
-    void changeCurrentPage();
 };
 
 #endif // UBPAGENAVIGATIONWIDGET_H

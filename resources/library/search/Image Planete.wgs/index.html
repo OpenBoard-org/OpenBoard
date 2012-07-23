@@ -22,10 +22,10 @@
                 for (var i = 0; i < 8; i++) {
                     if (i * limit < totalResults) {
                    
-                    var link = $("<a class='pager_button'></a>").attr('href', 'javascript:gotoPage('+i+');').html(i+1).appendTo(pagesDiv);
-                    if (curPage == i) {
-                        link.addClass('active');
-                    }
+                        var link = $("<a class='pager_button'></a>").attr('href', 'javascript:gotoPage('+i+');').html(i+1).appendTo(pagesDiv);
+                        if (curPage == i) {
+                            link.addClass('active');
+                        }
                     }
                 }
 
@@ -50,59 +50,65 @@
             }
 
             function searchFail(jqXHR, textStatus, errorThrown) {
-              alert('Impossible to connect to Planete Sankore: ' + textStatus + ' ' + errorThrown);
+                alert('Impossible to connect to Planete Sankore: ' + textStatus + ' ' + errorThrown);
             }
 
             function searchComplete(json) {
-                    // Grab our content div, clear it.
-                    var totalResults = json.totalResults;
-                    var contentDiv = $('#searchResult').empty();
-                    // Loop through our results, printing them to the page.
-                    var results = json.rows;
-                    for (var i = 0; i < results.length; i++) {
-                        // For each result write it's title and image to the screen
-                        var result = results[i];
-                        var imgContainer = $("<div class='imgContainer' draggable='true'>");
-                        //var title = document.createElement('div');
-                        var iUrl = $("<input type='hidden'/>");
-                        var iContent = $("<input type='hidden'/>");
-                        var iHeight = $("<input type='hidden'/>");
-                        var iWidth = $("<input type='hidden'/>");
-                        var iTitle = $("<input type='hidden'/>");
+                // Grab our content div, clear it.
+                var totalResults = json.totalResults;
+                var contentDiv = $('#searchResult').empty();
+                // Loop through our results, printing them to the page.
+                var results = json.rows;
+                for (var i = 0; i < results.length; i++) {
+                    // For each result write it's title and image to the screen
+                    var result = results[i];
+                    var imgContainer = $("<div class='imgContainer' draggable='true'>");
+                    //var title = document.createElement('div');
+                    var iUrl = $("<input type='hidden'/>");
+                    var iContent = $("<input type='hidden'/>");
+                    var iHeight = $("<input type='hidden'/>");
+                    var iWidth = $("<input type='hidden'/>");
+                    var iTitle = $("<input type='hidden'/>");
             
-                        // We use titleNoFormatting so that no HTML tags are left in the 
-                        // title
-                        //title.innerHTML = result.title;
-                           	var newImg = document.createElement('img');
+                    // We use titleNoFormatting so that no HTML tags are left in the 
+                    // title
+                    //title.innerHTML = result.title;
+                    var newImg = document.createElement('img');
 
-                        	// There is also a result.file property which has the escaped version
-                            if (thumbnails) {
-        	                   	newImg.src = result.file;
-                            } else {
-        	                   	newImg.src = "./images/thumbnail_icon.png";
-            				}
-                        	var imgWidth = (result.tbWidth > minWidth)?result.tbWidth:minWidth;
-                        	var imgHeight = (result.tbHeight > minHeight)?result.tbHeight:minHeight;
-                        	imgContainer.width(imgWidth).height(imgHeight);
-                        	imgContainer.append($(newImg));
-			            iUrl.attr("value", result.file);
-                        iContent.attr("value", result.title);
-     		        iHeight.attr("value", result.height);
-                        iWidth.attr("value", result.width);
-                        iTitle.attr("value",result.title);
-                        //imgContainer.append($(title));  
-                        imgContainer.append(iUrl);
-                        imgContainer.append(iContent);
-                        imgContainer.append(iHeight);
-                        imgContainer.append(iWidth);
-                        imgContainer.append(iTitle);
-
-                        // Put our title + image in the content
-                        imgContainer.appendTo(contentDiv);
-
+                    // There is also a result.file property which has the escaped version
+                    if (thumbnails) {
+                        newImg.src = result.file;
+                        if(result.height >= result.width)
+                            newImg.height = minHeight;
+                        else{
+                            newImg.width = minWidth;
+                            //newImg.style.margin = (120 - result.height)/2 + "px 0";
+                        }
+                    } else {
+                        newImg.src = "./images/thumbnail_icon.png";
                     }
-                    // Now add links to additional pages of search results.
-                    addPaginationLinks(totalResults);
+                    var imgWidth = (result.tbWidth > minWidth)?result.tbWidth:minWidth;
+                    var imgHeight = (result.tbHeight > minHeight)?result.tbHeight:minHeight;
+                    imgContainer.width(imgWidth).height(imgHeight);
+                    imgContainer.append($(newImg));
+                    iUrl.attr("value", result.file);
+                    iContent.attr("value", result.title);
+                    iHeight.attr("value", result.height);
+                    iWidth.attr("value", result.width);
+                    iTitle.attr("value",result.title);
+                    //imgContainer.append($(title));  
+                    imgContainer.append(iUrl);
+                    imgContainer.append(iContent);
+                    imgContainer.append(iHeight);
+                    imgContainer.append(iWidth);
+                    imgContainer.append(iTitle);
+
+                    // Put our title + image in the content
+                    imgContainer.appendTo(contentDiv);
+
+                }
+                // Now add links to additional pages of search results.
+                addPaginationLinks(totalResults);
             }
 
             function imageDragging(e){
@@ -166,9 +172,9 @@
                         filtersDisplayed = true;
                     }
                 });
-                */
+                 */
 
-		/*togglePages.click(function(event){
+                /*togglePages.click(function(event){
                     if(mode){
                         hide = false;
                         $("#search, #disclaimer").slideDown('slow', function(){
@@ -204,10 +210,10 @@
                 });
                 (
                 $(".imgContainer").live("click",function(){
-		    sankore.sendFileMetadata(createMetaData($(this)));
+                    sankore.sendFileMetadata(createMetaData($(this)));
                 }));
                 
-				/*$(window).resize(function(){
+                /*$(window).resize(function(){
                     disclaimer.width($("body").width()-20);
                     search.width($("body").width()-20);
                     toggleIcon.css("margin-left",(togglePages.width()/2 - 7));
@@ -216,21 +222,21 @@
             });
             
             function gotoPage(i) { 
-		runSearch(currentTerm, i);             
+                runSearch(currentTerm, i);             
             } 
 
             // launching the search on planete sankore 
             function runSearch(term, index) {
                 currentTerm = term;
                 currentIndex = index;
-		var start = index * limit;
+                var start = index * limit;
                 var url = "http://planete.sankore.org/xwiki/bin/view/Search/Resources?xpage=plain&category=" + category + "&level=&sort=title&dir=ASC&terms=" + escape(term) + "&start=" + start + "&limit=" + limit;
-		$.ajax({
-			url: url,
-  			success: searchComplete,
-  			error: searchFail,
-                        dataType: "json"
-		});
+                $.ajax({
+                    url: url,
+                    success: searchComplete,
+                    error: searchFail,
+                    dataType: "json"
+                });
             }
  
             function createMetaData(parent){

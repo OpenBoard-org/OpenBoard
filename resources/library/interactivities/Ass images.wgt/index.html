@@ -16,6 +16,7 @@
                     lang = sankore.locale().substr(0,2);    
                 } else 
                     lang = "en";
+                lang = "fr";
                 if(lang == "en"){
                     if(window.sankore)
                         sankore.enableDropOnWidget(false);
@@ -51,6 +52,7 @@
                 <td class="b_top_left">&nbsp;</td>
                 <td class="b_top_center">
                     <div id="wgt_name"></div>
+                    <div id="wgt_help"></div> 
                     <div id="wgt_reload"></div>                    
                     <div id="wgt_display" class="selected"></div>
                     <div id="wgt_edit"></div>
@@ -66,6 +68,7 @@
             <tr>
                 <td class="b_center_left">&nbsp;</td>
                 <td>
+                    <div id="help"></div>
                     <div id="data">
 
                     </div>

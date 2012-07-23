@@ -63,7 +63,6 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
     , mControlView(pControlView)
     , mDisplayView(pDisplayView)
     , mMirror(0)
-    , mFtp(0)
     , mMainMode(Board)
     , mDisplayManager(0)
     , mAutomaticCheckForUpdates(false)
@@ -120,7 +119,6 @@ UBApplicationController::~UBApplicationController()
 
     delete mBlackScene;
     delete mMirror;
-	if (mFtp) delete mFtp;
     if (mHttp) delete mHttp;
 }
 
@@ -340,8 +338,7 @@ void UBApplicationController::showBoard()
         int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
         if (selectedSceneIndex != -1)
         {
-            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->getCurrentDocument(), selectedSceneIndex);
-            UBApplication::boardController->emitScrollSignal();
+            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->selectedDocument(), selectedSceneIndex, true);
         }
     }
 
@@ -522,42 +519,27 @@ void UBApplicationController::showSankoreEditor()
     emit mainModeChanged(mMainMode);
 }
 
-void UBApplicationController::runCheckUpdate(int id, bool error)
-{
-	Q_UNUSED(id);
-    if(!error){
-        if(mFtp!=NULL)
-            delete mFtp;
-        mFtp = new QFtp(this);
-        connect(mFtp, SIGNAL(commandFinished(int,bool)), this, SLOT(ftpCommandFinished(int,bool)));
-        mFtp->connectToHost("91.121.248.138",21);
-        mFtp->login("anonymous", "anonymous");
-        mFtp->get("update.json",0);
-    }
-}
-
 void UBApplicationController::checkUpdate()
 {
-    //TODO change this when upgrade the qt version
-    // networkAccessible : NetworkAccessibility not yet available
-    if(mHttp)
+	if(mHttp)
         delete mHttp;
-    QUrl url("http://www.google.com");
+    QUrl url("http://ftp.open-sankore.org/update.json");
     mHttp = new QHttp(url.host());
-    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(runCheckUpdate(int,bool)));
+    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
     mHttp->get(url.path());
 }
 
-void UBApplicationController::ftpCommandFinished(int id, bool error)
+void UBApplicationController::updateRequestFinished(int id, bool error)
 {
    if (error){
-       qWarning() << "ftp command id" << id << "return the error: " << mFtp->errorString();
-       mFtp->close();
+       qWarning() << "http command id" << id << "return the error: " << mHttp->errorString();
+       mHttp->close();
    }
    else{
-       QString responseString =  QString(mFtp->readAll());
+       QString responseString =  QString(mHttp->readAll());
+       qDebug() << responseString;
        if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
-           mFtp->close();
+           mHttp->close();
            downloadJsonFinished(responseString);
        }
    }

@@ -544,7 +544,6 @@ void UBGraphicsDelegateFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if(isResizing()){
         mResizing = false;
     }
-    mDelegate->setButtonsVisible(true);
 }
 
 

@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -40,12 +40,9 @@
  */
 UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGraphicsView(parent)
   , mScene(NULL)
-  , mCrntItem(NULL)
-  , mCrntDoc(NULL)
   , mNbColumns(1)
   , mThumbnailWidth(0)
   , mThumbnailMinWidth(100)
-  , bNavig(false)
 {
     setObjectName(name);
     mScene = new QGraphicsScene(this);
@@ -55,11 +52,9 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
 
     setFrameShadow(QFrame::Plain);
 
-    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(generateThumbnails()));
-    connect(UBApplication::boardController, SIGNAL(newPageAdded()), this, SLOT(addNewPage()));
-    connect(mScene, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
-    connect(UBApplication::boardController, SIGNAL(documentReorganized(int)), this, SLOT(onMovedToIndex(int)));
-    connect(UBApplication::boardController, SIGNAL(scrollToSelectedPage()), this, SLOT(onScrollToSelectedPage()));
+    connect(UBApplication::boardController, SIGNAL(documentThumbnailsUpdated(UBDocumentContainer*)), this, SLOT(generateThumbnails(UBDocumentContainer*)));
+    connect(UBApplication::boardController, SIGNAL(documentPageUpdated(int)), this, SLOT(updateSpecificThumbnail(int)));
+    connect(UBApplication::boardController, SIGNAL(pageSelectionChanged(int)), this, SLOT(onScrollToSelectedPage(int)));
 }
 
 /**
@@ -67,12 +62,6 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
  */
 UBDocumentNavigator::~UBDocumentNavigator()
 {
-    if(NULL != mCrntItem)
-    {
-        delete mCrntItem;
-        mCrntItem = NULL;
-    }
-
     if(NULL != mScene)
     {
         delete mScene;
@@ -81,26 +70,10 @@ UBDocumentNavigator::~UBDocumentNavigator()
 }
 
 /**
- * \brief Set the current document
- * @param document as the new document
- */
-void UBDocumentNavigator::setDocument(UBDocumentProxy *document)
-{
-    //	Here we set a new document to the navigator. We must clear the current
-    // content and add all the pages of the given document.
-    if(document)
-    {
-        mCrntDoc = document;
-    }
-}
-
-/**
  * \brief Generate the thumbnails
  */
-void UBDocumentNavigator::generateThumbnails()
+void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 {
-	// Get the thumbnails
-    QList<QPixmap> thumbs = UBThumbnailAdaptor::load(mCrntDoc);
 
 	mThumbsWithLabels.clear();
 	foreach(QGraphicsItem* it, mScene->items())
@@ -109,11 +82,11 @@ void UBDocumentNavigator::generateThumbnails()
         delete it;
     }
 
-	for(int i = 0; i < thumbs.count(); i++)
+    for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
     {
-        QPixmap pix = thumbs.at(i);
-        QGraphicsPixmapItem* pixmapItem = new UBSceneThumbnailNavigPixmap(pix, mCrntDoc, i);
-        UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(tr("Page %0").arg(UBApplication::boardController->pageFromSceneIndex(i)));
+        const QPixmap* pix = source->pageAt(i);
+        UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(*pix, source->selectedDocument(), i);
+        UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(tr("Page %0").arg(UBDocumentContainer::pageFromSceneIndex(i)));
 
 		UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
 		thumbWithText.setBorder(border());
@@ -121,17 +94,29 @@ void UBDocumentNavigator::generateThumbnails()
 
 		mScene->addItem(pixmapItem);
 		mScene->addItem(labelItem);
-
-        // Get the selected item
-        if(UBApplication::boardController->activeSceneIndex() == i)
-        {
-            mCrntItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(pixmapItem);
-            mCrntItem->setSelected(true);
-        }
     }
     
 	// Draw the items
     refreshScene();
+}
+
+void UBDocumentNavigator::onScrollToSelectedPage(int index)
+{
+    qDebug() << "Selection in widet: " << index;
+    int c  = 0;
+    foreach(UBImgTextThumbnailElement el, mThumbsWithLabels)
+    {
+        if (c==index)
+        {
+            el.getThumbnail()->setSelected(true);
+        }
+        else
+        {
+            el.getThumbnail()->setSelected(false);
+        }
+        c++;
+    }
+//    centerOn(mThumbsWithLabels[index].getThumbnail());
 }
 
 /**
@@ -141,54 +126,22 @@ void UBDocumentNavigator::generateThumbnails()
 void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
 {
     // Generate the new thumbnail
-    UBGraphicsScene* pScene = UBApplication::boardController->activeScene();
+    //UBGraphicsScene* pScene = UBApplication::boardController->activeScene();
 
-    if(NULL != pScene)
+    const QPixmap* pix = UBApplication::boardController->pageAt(iPage);
+    UBSceneThumbnailNavigPixmap* newItem = new UBSceneThumbnailNavigPixmap(*pix, 
+        UBApplication::boardController->selectedDocument(), iPage);
+
+    // Get the old thumbnail
+    UBSceneThumbnailNavigPixmap* oldItem = mThumbsWithLabels.at(iPage).getThumbnail();
+    if(NULL != oldItem)
     {
-        // Save the current state of the scene
-        pScene->setModified(true);
-        if(UBApplication::boardController)
-        {
-            UBApplication::boardController->persistCurrentScene();
-        }else
-        {
-            UBThumbnailAdaptor::persistScene(mCrntDoc->persistencePath(), pScene, iPage);
-        }
-
-        // Load it
-        QPixmap pix = UBThumbnailAdaptor::load(mCrntDoc, iPage);
-        UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(pix, mCrntDoc, iPage);
-        if(pixmapItem)
-        {
-            // Get the old thumbnail
-            QGraphicsItem* pItem = mThumbsWithLabels.at(iPage).getThumbnail();
-            if(NULL != pItem)
-            {
-                mScene->removeItem(pItem);
-                mScene->addItem(pixmapItem);
-                mThumbsWithLabels[iPage].setThumbnail(pixmapItem);
-                delete pItem;
-            }
-        }
+        mScene->removeItem(oldItem);
+        mScene->addItem(newItem);
+        mThumbsWithLabels[iPage].setThumbnail(newItem);
+        delete oldItem;
     }
-}
 
-/**
- * \brief Add a new page to the thumbnails list
- *
- * This method is called automatically by the board controller each time the user
- * adds a new page, duplicates a page or imports a document.
- */
-void UBDocumentNavigator::addNewPage()
-{
-    if(!bNavig)
-    {
-        generateThumbnails();
-        if(NULL != mCrntItem)
-        {
-            mCrntItem->setSelected(true);
-        }
-    }
 }
 
 /**
@@ -277,7 +230,6 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
     QGraphicsItem* pClickedItem = itemAt(event->pos());
     if(NULL != pClickedItem)
     {
-        bNavig = true;
 
         // First, select the clicked item
         UBSceneThumbnailNavigPixmap* pCrntItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(pClickedItem);
@@ -286,99 +238,36 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
         {
             // If we fall here we may have clicked on the label instead of the thumbnail
             UBThumbnailTextItem* pTextItem = dynamic_cast<UBThumbnailTextItem*>(pClickedItem);
-            if(NULL != pTextItem)
+            if(NULL != pTextItem) 
             {
                 for(int i = 0; i < mThumbsWithLabels.size(); i++)
 				{
 					const UBImgTextThumbnailElement& el = mThumbsWithLabels.at(i);
 					if(el.getCaption() == pTextItem)
 					{
-						pCrntItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(el.getThumbnail());
+						pCrntItem = el.getThumbnail();
 						break;
 					}
 				}
             }
         }
-		else
-		{
-			if(NULL != mCrntItem && mCrntItem != pCrntItem)
-			{
-				// Unselect the previous item
-				mCrntItem->setSelected(false);
-				int iOldPage = -1;
-				for(int i = 0; i < mThumbsWithLabels.size(); i++)
-					if (mThumbsWithLabels.at(i).getThumbnail() == mCrntItem)
-					{
-						iOldPage = i;
-						break;
-					}
-				updateSpecificThumbnail(iOldPage);
-				mCrntItem = pCrntItem;
 
-                // Then display the related page
-                emit changeCurrentPage();
-                refreshScene();
-			}
-		}
-        
-		bNavig = false;
-    }
+        int index = 0;
+		for(int i = 0; i < mThumbsWithLabels.size(); i++)
+        {
+		    if (mThumbsWithLabels.at(i).getThumbnail() == pCrntItem)
+            {
+                index = i;
+                break;
+            }
+        }
+        qDebug() << "Selected Scene: " << index;
+        UBApplication::boardController->setActiveDocumentScene(index);
+	}
 	QGraphicsView::mousePressEvent(event);
 }
 
-/**
- * \brief Get the selected page number
- * @return the selected page number
- */
-int UBDocumentNavigator::selectedPageNumber()
+void UBDocumentNavigator::mouseReleaseEvent(QMouseEvent *event)
 {
-    int nbr = NO_PAGESELECTED;
-
-    if(NULL != mCrntItem)
-    {
-		for(int i = 0; i < mThumbsWithLabels.size(); i++)
-			if (mThumbsWithLabels.at(i).getThumbnail() == mCrntItem)
-			{
-				nbr = i;
-				break;
-			}
-    }
-
-    return nbr;
-}
-
-/**
- * \brief Get the current document
- * @return the current document
- */
-UBDocumentProxy* UBDocumentNavigator::currentDoc()
-{
-    return mCrntDoc;
-}
-
-/**
- * \brief Occurs when the selection changed
- */
-void UBDocumentNavigator::onSelectionChanged()
-{
-    //    QList<QGraphicsItem*> qlItems = mScene->selectedItems();
-    //    qDebug() << "The number of selected items is " << qlItems.count();
-}
-
-/**
- * \brief Occurs when a page has been moved to another index in the document
- * @param index as the new index
- */
-void UBDocumentNavigator::onMovedToIndex(int index)
-{
-    if(index < mThumbsWithLabels.size()){
-        UBSceneThumbnailNavigPixmap* pItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(mThumbsWithLabels.at(index).getThumbnail());
-        if(NULL != pItem)
-        {
-            if(mCrntItem) mCrntItem->setSelected(false);//deselecting previous one
-			mCrntItem = pItem;
-            mCrntItem->setSelected(true);
-            centerOn(mCrntItem);
-        }
-    }
+    event->accept();
 }

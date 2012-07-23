@@ -400,19 +400,19 @@ class UBThumbnailTextItem : public QGraphicsTextItem
 class UBImgTextThumbnailElement
 {
 private:
-	QGraphicsItem* thumbnail;
+	UBSceneThumbnailNavigPixmap* thumbnail;
 	UBThumbnailTextItem* caption;
 	int border;
 
 public:
-	UBImgTextThumbnailElement(QGraphicsItem* thumb, UBThumbnailTextItem* text): border(0)
+	UBImgTextThumbnailElement(UBSceneThumbnailNavigPixmap* thumb, UBThumbnailTextItem* text): border(0)
 	{
 		this->thumbnail = thumb;
 		this->caption = text;
 	}
 
-	QGraphicsItem* getThumbnail() const { return this->thumbnail; }
-	void setThumbnail(QGraphicsItem* newGItem) { this->thumbnail = newGItem; }
+	UBSceneThumbnailNavigPixmap* getThumbnail() const { return this->thumbnail; }
+	void setThumbnail(UBSceneThumbnailNavigPixmap* newGItem) { this->thumbnail = newGItem; }
 
 	UBThumbnailTextItem* getCaption() const { return this->caption; }
 	void setCaption(UBThumbnailTextItem* newcaption) { this->caption = newcaption; }

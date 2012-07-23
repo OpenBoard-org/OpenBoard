@@ -25,15 +25,18 @@ class UBThumbnailAdaptor //static class
 {
 	Q_DECLARE_TR_FUNCTIONS(UBThumbnailAdaptor)
 
-private: UBThumbnailAdaptor() {}
 public:
-    static void persistScene(const QString& pDocPath, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
-
-    static void generateMissingThumbnails(UBDocumentProxy* proxy);
-    static QList<QPixmap> load(UBDocumentProxy* proxy);
-	static QPixmap load(UBDocumentProxy* proxy, int index);
-
     static QUrl thumbnailUrl(UBDocumentProxy* proxy, int pageIndex);
+
+    static void persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
+
+    static const QPixmap* get(UBDocumentProxy* proxy, int index);
+    static void load(UBDocumentProxy* proxy, QList<const QPixmap*>& list);
+
+private:
+    static void generateMissingThumbnails(UBDocumentProxy* proxy);
+
+    UBThumbnailAdaptor() {}
 };
 
 #endif // UBTHUMBNAILADAPTOR_H
