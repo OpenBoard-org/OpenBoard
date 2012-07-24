@@ -35,6 +35,7 @@ public:
 
 private:
     static void generateMissingThumbnails(UBDocumentProxy* proxy);
+    static void updateDocumentToHandleZeroPage(UBDocumentProxy* proxy);
 
     UBThumbnailAdaptor() {}
 };

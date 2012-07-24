@@ -91,9 +91,22 @@ const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
     return pix;
 }
 
+void UBThumbnailAdaptor::updateDocumentToHandleZeroPage(UBDocumentProxy* proxy)
+{
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
+    	QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", 0);
+    	QFile file(fileName);
+    	qDebug() << fileName;
+    	if(!file.exists()){
+    		UBPersistenceManager::persistenceManager()->persistDocumentScene(proxy,new UBGraphicsScene(proxy),0);
+    	}
+    }
+}
+
 void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<const QPixmap*>& list)
 {
-    generateMissingThumbnails(proxy);
+    updateDocumentToHandleZeroPage(proxy);
+	generateMissingThumbnails(proxy);
 
     foreach(const QPixmap* pm, list)
         delete pm;
@@ -102,81 +115,10 @@ void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<const QPixmap*>& lis
         list.append(get(proxy, i));
 }
 
-
-/*
-QList<QPixmap> UBThumbnailAdaptor::load(UBDocumentProxy* proxy)
-{
-    QList<QPixmap> thumbnails;
-
-    qDebug() << "Loadinf thumbnails for " << proxy->name();
-
-    if (!proxy || proxy->persistencePath().isEmpty())
-        return thumbnails;
-
-    //compatibility with older formats (<= 4.0.b.2.0) : generate missing thumbnails
-    generateMissingThumbnails(proxy);
-
-    //end compatibility with older format
-
-    bool moreToProcess = true;
-    int pageCount = UBApplication::boardController->sceneIndexFromPage(0);
-
-    while (moreToProcess) {
-        pageCount++;
-        QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageCount);
-
-        QFile file(fileName);
-        if (file.exists()) {
-            QPixmap pix;
-            //Warning. Works only with modified Qt
-#ifdef Q_WS_X11
-            //pix.load(fileName, 0, Qt::AutoColor);
-            pix.load(fileName, 0);
-#else
-            pix.load(fileName, 0, Qt::AutoColor, false);
-#endif
-            thumbnails.append(pix);
-        } else {
-            moreToProcess = false;
-        }
-    }
-    return thumbnails;
-}
-
-QPixmap UBThumbnailAdaptor::load(UBDocumentProxy* proxy, int index)
-{
-    qDebug() << "Loadinf thumbnails for " << proxy->name();
-
-    int existingPageCount = proxy->pageCount();
-
-    if (!proxy || proxy->persistencePath().size() == 0 || index < 0 || index > existingPageCount)
-        return QPixmap();
-    //compatibility with older formats (<= 4.0.b.2.0) : generate missing thumbnails
-    generateMissingThumbnails(proxy);
-
-    //end compatibility with older format
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", index);
-
-    QFile file(fileName);
-    if (file.exists())
-    {
-        QPixmap pix;
-        //Warning. Works only with modified Qt
-#ifdef Q_WS_X11
-        pix.load(fileName, 0, Qt::AutoColor);
-#else
-        pix.load(fileName, 0, Qt::AutoColor, false);
-#endif
-        return pix;
-    }
-    return QPixmap();
-}
-*/
-
 void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified)
 {
 
-    qDebug() << "Persiste scene on path " << proxy->persistencePath() << ", index " << pageIndex;
+    qDebug() << "Persist scene on path " << proxy->persistencePath() << ", index " << pageIndex;
 
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
