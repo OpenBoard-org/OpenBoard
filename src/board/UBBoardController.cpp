@@ -69,7 +69,6 @@
 #include "core/UBSettings.h"
 
 #include "core/memcheck.h"
-//#include <typeinfo>
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : UBDocumentContainer(mainWindow->centralWidget())
