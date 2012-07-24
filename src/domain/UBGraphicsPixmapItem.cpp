@@ -28,7 +28,7 @@
 UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
 {
-    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true);
+    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true, false);
     mDelegate->init();
 
     mDelegate->setFlippable(true);

@@ -25,7 +25,7 @@
 #include "core/memcheck.h"
 
 UBGraphicsCurtainItemDelegate::UBGraphicsCurtainItemDelegate(UBGraphicsCurtainItem* pDelegated, QObject * parent)
-    : UBGraphicsItemDelegate(pDelegated, parent, false)
+    : UBGraphicsItemDelegate(pDelegated, parent, false, false, false)
 {
     setCanDuplicate(false);
 }

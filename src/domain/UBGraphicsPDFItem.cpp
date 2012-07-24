@@ -28,7 +28,7 @@ UBGraphicsPDFItem::UBGraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGra
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object); //deprecated
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::BackgroundItem)); //Necessary to set if we want z value to be assigned correctly
-    mDelegate = new UBGraphicsItemDelegate(this,0);
+    mDelegate = new UBGraphicsItemDelegate(this,0, true, false, false);
     mDelegate->init();
 }
 
