@@ -417,7 +417,7 @@ bool UBBoardView::itemShouldReceiveMousePressEvent(QGraphicsItem *item)
         return true;
 
     if (item == scene()->backgroundObject())
-        return true;
+        return false;
 
     if (itemIsLocked(item))
         return false;
@@ -577,10 +577,17 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
 {
     mLastPressedMousePos = mapToScene(event->pos());
 
-    foreach (QGraphicsItem *item, scene()->items())
+
+    if (movingItem && QGraphicsSvgItem::Type !=  movingItem->type()
+        && UBGraphicsDelegateFrame::Type !=  movingItem->type())
     {
-        if (movingItem != item)
-            item->setSelected(false);
+        foreach(QGraphicsItem *item, scene()->selectedItems())
+        {
+            if (item != movingItem)
+            {
+                item->setSelected(false);
+            }
+        }
     }
 
     if (itemShouldReceiveMousePressEvent(movingItem))
@@ -710,7 +717,9 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
     mMouseDownPos = event->pos ();
 
-    emit clickOnBoard();
+    movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
+    if (!movingItem)
+        emit clickOnBoard();
 
     if (event->button () == Qt::LeftButton && isInteractive ())
     {
@@ -738,8 +747,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         }
         else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
         {
-            movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
-
             connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
             if (!movingItem && !mController->cacheIsVisible())
                 mLongPressTimer.start();
@@ -1004,6 +1011,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           UBDrawingController::drawingController ()->setStylusTool (UBStylusTool::Selector);
 
           textItem->setSelected (true);
+          textItem->setFocus();
         }
       else
         {
