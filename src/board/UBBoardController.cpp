@@ -69,7 +69,6 @@
 #include "core/UBSettings.h"
 
 #include "core/memcheck.h"
-//#include <typeinfo>
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : UBDocumentContainer(mainWindow->centralWidget())
@@ -105,18 +104,6 @@ void UBBoardController::init()
 {
     setupViews();
     setupToolbar();
-
-    //connect(UBPersistenceManager::persistenceManager(), SIGNAL(documentWillBeDeleted(UBDocumentProxy*))
-    //        , this, SLOT(documentWillBeDeleted(UBDocumentProxy*)));
-
-    //connect(UBPersistenceManager::persistenceManager(), SIGNAL(documentSceneCreated(UBDocumentProxy*, int))
-    //        , this, SLOT(documentSceneChanged(UBDocumentProxy*, int)));
-
-    //connect(UBPersistenceManager::persistenceManager(), SIGNAL(documentSceneDeleted(UBDocumentProxy*, int))
-    //        , this, SLOT(documentSceneChanged(UBDocumentProxy*, int)));
-
-    //connect(UBPersistenceManager::persistenceManager(), SIGNAL(documentSceneMoved(UBDocumentProxy*, int))
-    //        , this, SLOT(documentSceneChanged(UBDocumentProxy*, int)));
 
     connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
@@ -467,7 +454,6 @@ void UBBoardController::addScene()
     setActiveDocumentScene(mActiveSceneIndex + 1);
     QApplication::restoreOverrideCursor();
 }
-
 
 void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmpty)
 {

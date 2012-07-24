@@ -676,7 +676,7 @@ int UBPersistenceManager::sceneCountInDir(const QString& pPath)
         }
         else
         {
-            if(UBSettings::settings()->teacherGuidePageZeroActivated && pageIndex == 0){
+            if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() && pageIndex == 0){
                 // the document has no zero file but doesn't means that it hasn't any file
                 // at all. Just importing a document without the first page using a configuartion
                 // that enables zero page.

@@ -57,9 +57,7 @@ class UBDocumentController : public UBDocumentContainer
         bool pageCanBeDeleted(int page);
 
     signals:
-        //void refreshThumbnails();
         void exportDone();
-        //void movedToIndex(int index);
 
     public slots:
         void createNewDocument();
@@ -80,7 +78,6 @@ class UBDocumentController : public UBDocumentContainer
         void copy();
         void paste();
         void focusChanged(QWidget *old, QWidget *current);
-        //void reloadThumbs();
 
     protected:
         virtual void setupViews();

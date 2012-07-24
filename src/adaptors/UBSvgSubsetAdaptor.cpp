@@ -1405,7 +1405,10 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         }
 
         QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
-        QVector<tIDataStorage*> dataStorageItems = elements.value("teacherGuide")->save(pageIndex);
+        QVector<tIDataStorage*> dataStorageItems;
+
+        if(elements.value("teacherGuide"))
+        	dataStorageItems = elements.value("teacherGuide")->save(pageIndex);
         foreach(tIDataStorage* eachItem, dataStorageItems){
             if(eachItem->type == eElementType_START){
                 mXmlWriter.writeStartElement(eachItem->name);
