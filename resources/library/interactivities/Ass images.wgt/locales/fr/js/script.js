@@ -766,6 +766,8 @@ function onDropTarget(obj, event) {
                 tmp_img.attr("height", "120");
             else{
                 tmp_img.attr("width","120");
+                var h = tmp_img.height();
+                tmp_img.attr("height",h);
                 tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
             }
             exportData();

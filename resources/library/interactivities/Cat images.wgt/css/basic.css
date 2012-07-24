@@ -4,6 +4,7 @@ html, body{
     margin: 0;
     padding: 0;
     border-radius: 50px;
+    overflow: hidden;
 }
 
 body{
@@ -175,7 +176,7 @@ body{
 }
 
 .dropBack{
-   
+
 }
 
 .def_cont{
@@ -260,7 +261,6 @@ body{
 
 #wgt_name{
     height: 44px;
-    width: 300px;
     margin: 10px 10px 0 10px;
     padding: 0;
     float: left;
@@ -269,9 +269,8 @@ body{
     color: #8c5730;
 }
 
-#wgt_reload, #wgt_edit, #wgt_display{
+#wgt_reload, #wgt_edit, #wgt_display, #wgt_help{
     cursor: pointer;
-    width: 80px;
     height: 44px;
     margin: 10px 10px 0 0;
     float: right;
@@ -281,7 +280,6 @@ body{
 }
 
 #wgt_display{
-    width: 100px;
     padding-left: 40px;
     background-image: url(../img/slate-edit.png);
     background-repeat: no-repeat;
@@ -290,7 +288,6 @@ body{
 }
 
 #wgt_edit{    
-    width: 100px;
     padding-left: 40px;
     background-image: url(../img/slate-edit.png);
     background-repeat: no-repeat;
@@ -382,4 +379,28 @@ body{
     background-color: #333 !important;
     color: white !important;
     background-image: url(../img/ar_down_white.png) !important;
+}
+
+.pad_help{
+    background-image: url(../img/slate-help-white.png) !important;
+}
+
+#wgt_help{
+    padding-left: 32px;
+    background-image: url(../img/slate-help.png);
+    background-repeat: no-repeat;
+    background-position: top 0;
+}
+
+#help{
+    width: 100%;
+    height: 100%;    
+    overflow: auto;
+    display: none;
+    background-color: #ccc;
+    padding: 5px;
+}
+
+.open{
+    
 }
