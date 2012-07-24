@@ -577,6 +577,12 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
 {
     mLastPressedMousePos = mapToScene(event->pos());
 
+    foreach (QGraphicsItem *item, scene()->items())
+    {
+        if (movingItem != item)
+            item->setSelected(false);
+    }
+
     if (itemShouldReceiveMousePressEvent(movingItem))
         QGraphicsView::mousePressEvent (event);
     else
