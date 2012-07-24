@@ -94,7 +94,7 @@ void DelegateButton::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     event->setAccepted(!mIsTransparentToMouseEvent);
 }
 
-UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, bool respectRatio, bool canRotate)
+UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, bool respectRatio, bool canRotate, bool useToolBar)
     : QObject(parent)
     , mDelegated(pDelegated)
     , mDeleteButton(NULL)
@@ -113,13 +113,15 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mMimeData(NULL)
     , mFlippable(false)
     , mToolBarItem(NULL)
+    , mToolBarUsed(useToolBar)
 {
     // NOOP
 }
 
 void UBGraphicsItemDelegate::init()
 {
-    mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
+    if (mToolBarUsed)
+        mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
 
     mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
     mFrame->hide();
@@ -334,7 +336,7 @@ void UBGraphicsItemDelegate::positionHandles()
 
         updateButtons(true);
 
-        if (mToolBarItem->isVisibleOnBoard())
+        if (mToolBarItem && mToolBarItem->isVisibleOnBoard())
         {
             mToolBarItem->positionHandles();
             mToolBarItem->update();
@@ -345,7 +347,8 @@ void UBGraphicsItemDelegate::positionHandles()
             button->hide();
 
         mFrame->hide();
-        mToolBarItem->hide();
+        if (mToolBarItem)
+            mToolBarItem->hide();
     }
 }
 
@@ -385,7 +388,6 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
 
         scene->removeItem(mFrame);
         scene->removeItem(mDelegated);
-        scene->removeItem(mToolBarItem);
 
         if (canUndo)
         {

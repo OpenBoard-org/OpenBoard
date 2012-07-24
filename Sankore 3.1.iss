@@ -6,8 +6,8 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{E63D17F8-D9DA-479D-B9B5-0D101A03703B}
-AppName=Open-Sankore
-AppVerName=Open-Sankore
+AppName=Open-Sankoré
+AppVerName=Open-Sankoré
 AppPublisher=Open-Sankore
 
 AppPublisherURL=http://dev.open-sankore.org
@@ -15,7 +15,7 @@ AppSupportURL=http://dev.open-sankore.org
 AppUpdatesURL=http://dev.open-sankore.org
 
 DefaultDirName={pf}\Open-Sankore
-DefaultGroupName=Open-Sankore
+DefaultGroupName=Open-Sankoré
 
 OutputDir=.\install\win32\
 OutputBaseFilename=Open-Sankore
@@ -86,10 +86,10 @@ Source: "..\Qt-4.8\plugins\phonon_backend\phonon_ds94.dll"; DestDir: "{app}\phon
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"
-Name: "{group}\{cm:UninstallProgram,Open-Sankore}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"; Tasks: quicklaunchicon
+Name: "{group}\Open-Sankoré"; Filename: "{app}\Open-Sankore.exe"
+Name: "{group}\{cm:UninstallProgram,Open-Sankoré}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\Open-Sankoré"; Filename: "{app}\Open-Sankore.exe"; Tasks: desktopicon
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Open-Sankoré"; Filename: "{app}\Open-Sankore.exe"; Tasks: quicklaunchicon
 
 [Registry]
 Root: HKCR; Subkey: ".ubz"; ValueType: string; ValueName: ""; ValueData: "SankoreFile"; Flags: uninsdeletevalue
@@ -112,12 +112,12 @@ Root: HKLM64; Subkey: "SOFTWARE\Open-Sankore"; ValueType: dword; ValueName: "EMF
 Root: HKLM64; Subkey: "SOFTWARE\Open-Sankore\Defaults"; ValueType: dword; ValueName: "PDF: Enabled"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: dword; ValueName: "Policy"; ValueData: "3"; Flags: uninsdeletevalue; Check: isProcessorX64
-Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppName"; ValueData: "Sankore 3.1.exe"; Flags: uninsdeletevalue; Check: isProcessorX64
+Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppName"; ValueData: "Open-Sankore.exe"; Flags: uninsdeletevalue; Check: isProcessorX64
 Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppPath"; ValueData: "{app}"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 [Run]
 Filename: "{tmp}\vcredist_x86.exe";WorkingDir:"{tmp}"; Parameters: "/q:a/c:""VCREDI~3.EXE /q:a /c:""""msiexec /i vcredist.msi /qn"""""""; StatusMsg: Installing CRT ...
-Filename: "{app}\Open-Sankore.exe"; Description: "{cm:LaunchProgram,Open-Sankore}"; Flags: nowait postinstall skipifsilent 
+Filename: "{app}\Open-Sankore.exe"; Description: "{cm:LaunchProgram,Open-Sankoré}"; Flags: nowait postinstall skipifsilent 
 
 [UninstallDelete]
 ; cleanup and delete whole installation directory

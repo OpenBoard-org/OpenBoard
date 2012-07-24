@@ -183,7 +183,7 @@ class UBGraphicsItemDelegate : public QObject
     Q_OBJECT
 
     public:
-        UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0,  bool respectRatio = true, bool canRotate = false);
+        UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0,  bool respectRatio = true, bool canRotate = false, bool useToolBar = true);
 
         virtual ~UBGraphicsItemDelegate();
 
@@ -300,6 +300,7 @@ private:
 
         /** A boolean saying that this object can be flippable (mirror effect) */
         bool mFlippable;
+        bool mToolBarUsed;
 };
 
 

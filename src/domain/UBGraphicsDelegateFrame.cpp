@@ -582,7 +582,7 @@ void UBGraphicsDelegateFrame::positionHandles()
 {
     QRectF itemRect = delegated()->boundingRect();
     
-    if (mDelegate->getToolBarItem()->isVisibleOnBoard()
+    if (mDelegate->getToolBarItem() && mDelegate->getToolBarItem()->isVisibleOnBoard()
         && mDelegate->getToolBarItem()->isShifting())
     {
         QPointF graphicsItemPosition = itemRect.topLeft();
