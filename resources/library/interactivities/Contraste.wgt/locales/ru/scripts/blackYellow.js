@@ -25,7 +25,9 @@ var sankoreLang = {
     reload: "Обновить",
     slate: "Узор",
     pad: "Планшет",
-    none: "Нет"
+    none: "Нет",
+    help: "Помощь",
+    help_content: "Пример текста помощи ..."
 };
 
 function init(){
@@ -60,6 +62,8 @@ function init(){
     $("#wgt_add").text(sankoreLang.add);
     $("#wgt_name").text(sankoreLang.wgt_name);
     $("#wgt_reload").text(sankoreLang.reload);
+    $("#wgt_help").text(sankoreLang.help);
+    $("#help").html(sankoreLang.help_content);
     $(".style_select option[value='1']").text(sankoreLang.slate);
     $(".style_select option[value='2']").text(sankoreLang.pad);
     $(".style_select option[value='3']").text(sankoreLang.none);
@@ -155,6 +159,21 @@ function init(){
                     }
                 });
             }
+        }
+    });
+    
+    $("#wgt_help").click(function(){
+        var tmp = $(this);
+        if($(this).hasClass("open")){
+            $("#help").slideUp("100", function(){
+                tmp.removeClass("open");
+                $("#data").show();
+            });
+        } else {            
+            $("#data").hide();
+            $("#help").slideDown("100", function(){
+                tmp.addClass("open");
+            });
         }
     });
 
@@ -400,6 +419,7 @@ function changeStyle(val){
             $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
+            $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_add").removeClass("pad_color").removeClass("pad_add");
             $("#wgt_name").removeClass("pad_color");
@@ -417,6 +437,7 @@ function changeStyle(val){
             $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_add").addClass("pad_color").addClass("pad_add");
             $("#wgt_name").addClass("pad_color");
@@ -434,6 +455,7 @@ function changeStyle(val){
             $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_add").addClass("pad_color").addClass("pad_add");
             $("#wgt_name").addClass("pad_color");
