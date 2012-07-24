@@ -705,6 +705,7 @@ void UBTabDockPalette::mouseMoveEvent(QMouseEvent *event)
 		case eUBDockOrientation_Right:
 			p.setX(p.x() - 2 * dock->border());
 			if((dock->x() + p.x() > dock->parentWidget()->width() - dock->collapseWidth()) && (dock->x() + p.x() < dock->parentWidget()->width())) {
+                dock->update();
 				dock->resize(0, dock->height());
 				//dock->mLastWidth = dock->collapseWidth() + 1;
 				dock->mResized = true;
