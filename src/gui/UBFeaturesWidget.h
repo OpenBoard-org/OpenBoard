@@ -107,6 +107,7 @@ private slots:
     void addElementsToFavorite();
     void removeElementsFromFavorite();
     void deleteSelectedElements();
+
 protected:
 	bool eventFilter(QObject *target, QEvent *event);
 };

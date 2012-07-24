@@ -129,7 +129,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     connect( mActionBar, SIGNAL( deleteSelectedElements() ), this, SLOT( deleteSelectedElements() ) );
 	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
 		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
-	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
+	//connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
+	connect(thumbSlider, SIGNAL(valueChanged(int)), this, SLOT(thumbnailSizeChanged(int)));
 	connect( UBApplication::boardController, SIGNAL( displayMetadata( QMap<QString,QString> ) ), 
 		this, SLOT( onDisplayMetadata( QMap<QString,QString> ) ) );
     connect( UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray ) ), 
