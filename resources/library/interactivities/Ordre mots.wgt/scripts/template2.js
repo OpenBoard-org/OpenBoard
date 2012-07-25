@@ -34,7 +34,9 @@ var sankoreLang = {
     reload: "Reload",
     slate: "Wood",
     pad: "Pad",
-    none: "None"
+    none: "None",
+    help: "Help",
+    help_content: "This is an example of help content ..."
 };
 
 var word = "";
@@ -75,6 +77,9 @@ $(document).ready(function(){
         changeStyle("3")
     $("#wgt_display").text(sankoreLang.view);
     $("#wgt_edit").text(sankoreLang.edit);
+    $("#wgt_help").text(sankoreLang.help);
+    $("#help").html(sankoreLang.help_content);
+    
     $("#wgt_display, #wgt_edit").click(function(event){
         if(this.id == "wgt_display"){
             if(!$(this).hasClass("selected")){                
@@ -98,6 +103,21 @@ $(document).ready(function(){
     });
     
     $("#wgt_name").text(sankoreLang.wgt_name);
+    
+    $("#wgt_help").click(function(){
+        var tmp = $(this);
+        if($(this).hasClass("open")){
+            $("#help").slideUp("100", function(){
+                tmp.removeClass("open");
+                $("#ub-widget").show();
+            });
+        } else {            
+            $("#ub-widget").hide();
+            $("#help").slideDown("100", function(){
+                tmp.addClass("open");
+            });
+        }
+    });
     
     $("#wgt_reload").text(sankoreLang.reload).click(function(){
         if(wgtState)
@@ -202,6 +222,7 @@ function changeStyle(val){
             $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+            $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
@@ -218,6 +239,7 @@ function changeStyle(val){
             $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
@@ -233,6 +255,7 @@ function changeStyle(val){
             $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
             $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
             $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
