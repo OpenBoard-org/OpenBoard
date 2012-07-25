@@ -318,8 +318,6 @@ void UBGraphicsTextItemDelegate::positionHandles()
     {
         mToolBarItem->hide();
     }
-
-    setEditable(isEditable());
 }
 
 void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)

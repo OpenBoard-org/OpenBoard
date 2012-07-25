@@ -135,7 +135,8 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
 
     if(UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
         UBSvgSubsetAdaptor::addElementToBeStored(QString("teacherGuide"),this);
-        connect(UBApplication::boardController,SIGNAL(activeDocumentChanged()),this,SLOT(onActiveDocumentChanged()));
+        //connect(UBApplication::boardController,SIGNAL(activeDocumentChanged()),this,SLOT(onActiveDocumentChanged()));
+        connect(UBApplication::boardController,SIGNAL(documentSet(UBDocumentProxy*)),this,SLOT(onActiveDocumentChanged()));
     }
 }
 

@@ -357,7 +357,7 @@ function importData(data){
                 for(var j in data[i].imgs){
                     var img_block = $("<div class='img_block img_gray' style='text-align: center;'>");
                     var img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
-                    img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
+                    img.height(data[i].imgs[j].ht);
                     if((120 - data[i].imgs[j].ht) > 0)
                         img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
                     var hidden_input = $("<input type='hidden'>").val(data[i].imgs[j].value);
@@ -440,7 +440,7 @@ function importData(data){
                 for(j in data[i].imgs){
                     img_block = $("<div class='img_block img_gray' style='text-align: center;'>");
                     img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
-                    img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
+                    img.height(data[i].imgs[j].ht);
                     if((120 - data[i].imgs[j].ht) > 0)
                         img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
                     hidden_input = $("<input type='hidden'>").val(data[i].imgs[j].value);
@@ -766,6 +766,8 @@ function onDropTarget(obj, event) {
                 tmp_img.attr("height", "120");
             else{
                 tmp_img.attr("width","120");
+                var h = tmp_img.height();
+                tmp_img.attr("height",h);
                 tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
             }
             exportData();

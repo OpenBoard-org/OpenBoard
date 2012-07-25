@@ -6,7 +6,9 @@ var sankoreLang = {
     reload: "Reload",
     slate: "Wood",
     pad: "Pad",
-    none: "None"
+    none: "None",
+    help: "Help",
+    help_content: "This is an example of help content ..."
 };
 
 // if use the "view/edit" button or rely on the api instead

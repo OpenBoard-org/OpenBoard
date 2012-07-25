@@ -9,7 +9,9 @@ var sankoreLang = {
     reload: "Reload",
     slate: "Wood",
     pad: "Pad",
-    none: "None"
+    none: "None",
+    help: "Help",
+    help_content: "This is an example of help content ..."
 };
 
 //main function
@@ -19,6 +21,8 @@ function start(){
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_name").text(sankoreLang.wgt_name);
     $("#wgt_reload").text(sankoreLang.reload);
+    $("#wgt_help").text(sankoreLang.help);
+    $("#help").html(sankoreLang.help_content);
     $(".style_select option[value='1']").text(sankoreLang.slate);
     $(".style_select option[value='2']").text(sankoreLang.pad);
     $(".style_select option[value='3']").text(sankoreLang.none);
@@ -39,6 +43,21 @@ function start(){
             exportData();
         }
     }
+    
+    $("#wgt_help").click(function(){
+        var tmp = $(this);
+        if($(this).hasClass("open")){
+            $("#help").slideUp("100", function(){
+                tmp.removeClass("open");
+                $("#data").show();
+            });
+        } else {            
+            $("#data").hide();
+            $("#help").slideDown("100", function(){
+                tmp.addClass("open");
+            });
+        }
+    });
     
     $("#wgt_reload").click(function(){
         if($("#wgt_display").hasClass("selected")){
@@ -212,7 +231,7 @@ function start(){
 //export
 function exportData(){
     var array_to_export = [];
-    if($("#edit").hasClass("selected")){
+    if($("#wgt_edit").hasClass("selected")){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.style = $(".style_select").find("option:selected").val();
@@ -310,13 +329,10 @@ function importData(data){
                     for(var k in data[i].conts[j].imgs){
                         var block_img = $("<div class='img_block' style='text-align: center;'></div>");
                         $("<input type='hidden' value='" + data[i].conts[j].imgs[k].value + "'/>").appendTo(block_img);
-                        var img = $("<img src=\"" + data[i].conts[j].imgs[k].link + "\" style=\"display: inline;\"/>").appendTo(block_img);
-                        if(data[i].conts[j].imgs[k].ht >= data[i].conts[j].imgs[k].wd)
-                            img.attr("height", "120");
-                        else{
-                            img.attr("width","120");
+                        var img = $("<img src=\"" + data[i].conts[j].imgs[k].link + "\" style=\"display: inline;\"/>").appendTo(block_img);                        
+                        img.height(data[i].conts[j].imgs[k].ht);
+                        if((120 - data[i].conts[j].imgs[k].ht) > 0)
                             img.css("margin",(120 - data[i].conts[j].imgs[k].ht)/2 + "px 0");
-                        }
                         tmp_array.push(block_img);
                     }
                 
@@ -376,12 +392,9 @@ function importData(data){
                         block_img = $("<div class='img_block' style='text-align: center;'></div>");
                         $("<input type='hidden' value='" + data[i].conts[j].imgs[k].value + "'/>").appendTo(block_img);
                         img = $("<img src=\"" + data[i].conts[j].imgs[k].link + "\" style=\"display: inline;\"/>").appendTo(block_img);
-                        if(data[i].conts[j].imgs[k].ht >= data[i].conts[j].imgs[k].wd)
-                            img.attr("height", "120");
-                        else{
-                            img.attr("width","120");
+                        img.height(data[i].conts[j].imgs[k].ht);
+                        if((120 - data[i].conts[j].imgs[k].ht) > 0)
                             img.css("margin",(120 - data[i].conts[j].imgs[k].ht)/2 + "px 0");
-                        }
                         tmp_img_array.push(block_img);
                     }
                 
@@ -413,7 +426,10 @@ function importData(data){
                 for(j in data[i].all_imgs){            
                     block_img = $("<div class='img_block' style='text-align: center;'></div>");
                     $("<input type='hidden' value='" + data[i].all_imgs[j].value + "'/>").appendTo(block_img);
-                    $("<img src=\"" + data[i].all_imgs[j].link + "\" style=\"display: inline;\" height=\"" + data[i].all_imgs[j].ht + "\"/>").appendTo(block_img);
+                    img = $("<img src=\"" + data[i].all_imgs[j].link + "\" style=\"display: inline;\"/>").appendTo(block_img);
+                    img.height(data[i].all_imgs[j].ht);
+                    if((120 - data[i].all_imgs[j].ht) > 0)
+                        img.css("margin",(120 - data[i].all_imgs[j].ht)/2 + "px 0");
                     all_imgs_arr.push(block_img);
                 } 
             
@@ -607,6 +623,7 @@ function changeStyle(val){
             $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+            $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
@@ -623,6 +640,7 @@ function changeStyle(val){
             $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
@@ -638,6 +656,7 @@ function changeStyle(val){
             $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
             $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
             $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
@@ -750,6 +769,8 @@ function onDropTarget(obj, event) {
                             tmp_img.attr("height", "120");
                         else{
                             tmp_img.attr("width","120");
+                            var h = tmp_img.height();
+                            tmp_img.attr("height",h);
                             tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
                         }
                         clearInterval(tmp_id);
@@ -760,6 +781,8 @@ function onDropTarget(obj, event) {
                     tmp_img.attr("height", "120");
                 else{
                     tmp_img.attr("width","120");
+                    var h = tmp_img.height();
+                    tmp_img.attr("height",h);
                     tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
                 }
             }  

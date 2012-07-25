@@ -74,14 +74,8 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
     setupToolbar();
     this->selectDocument(UBApplication::boardController->selectedDocument());
     connect(this, SIGNAL(exportDone()), mMainWindow, SLOT(onExportDone()));
-    //connect(mMainWindow->actionNewPage, SIGNAL(triggered()), this, SLOT(reloadThumbs()));
     connect(this, SIGNAL(documentThumbnailsUpdated(UBDocumentContainer*)), this, SLOT(refreshDocumentThumbnailsView(UBDocumentContainer*)));
 }
-
-//void UBDocumentController::reloadThumbs()
-//{
-//    UBThumbnailAdaptor::load(selectedDocumentProxy(), mDocumentThumbs);
-//}
 
 UBDocumentController::~UBDocumentController()
 {
@@ -1654,6 +1648,5 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
         connect(mDocumentUI->thumbnailWidget->scene(), SIGNAL(selectionChanged()), this, SLOT(pageSelectionChanged()));
     }
 
-    //emit refreshThumbnails();
     QApplication::restoreOverrideCursor();
 }

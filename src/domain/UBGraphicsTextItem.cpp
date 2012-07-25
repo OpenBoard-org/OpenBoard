@@ -73,23 +73,6 @@ UBGraphicsTextItem::~UBGraphicsTextItem()
 
 QVariant UBGraphicsTextItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    if (QGraphicsItem::ItemSelectedChange == change)
-    {
-        bool selected = value.toBool();
-
-        if (selected)
-        {
-            setTextInteractionFlags(Qt::TextEditorInteraction);
-        }
-        else
-        {
-            QTextCursor tc = textCursor();
-            tc.clearSelection();
-            setTextCursor(tc);
-            setTextInteractionFlags(Qt::NoTextInteraction);
-        }
-    }
-
     QVariant newValue = value;
 
     if(mDelegate)

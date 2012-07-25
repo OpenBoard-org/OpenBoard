@@ -25,7 +25,9 @@ var sankoreLang = {
     reload: "Reload",
     slate: "Wood",
     pad: "Pad",
-    none: "None"
+    none: "None",
+    help: "Help",
+    help_content: "This is an example of help content ..."
 };
 
 function init(){
@@ -60,6 +62,8 @@ function init(){
     $("#wgt_add").text(sankoreLang.add);
     $("#wgt_name").text(sankoreLang.wgt_name);
     $("#wgt_reload").text(sankoreLang.reload);
+    $("#wgt_help").text(sankoreLang.help);
+    $("#help").html(sankoreLang.help_content);
     $(".style_select option[value='1']").text(sankoreLang.slate);
     $(".style_select option[value='2']").text(sankoreLang.pad);
     $(".style_select option[value='3']").text(sankoreLang.none);
@@ -155,6 +159,21 @@ function init(){
                     }
                 });
             }
+        }
+    });
+
+    $("#wgt_help").click(function(){
+        var tmp = $(this);
+        if($(this).hasClass("open")){
+            $("#help").slideUp("100", function(){
+                tmp.removeClass("open");
+                $("#data").show();
+            });
+        } else {            
+            $("#data").hide();
+            $("#help").slideDown("100", function(){
+                tmp.addClass("open");
+            });
         }
     });
 
@@ -374,8 +393,8 @@ function checkEmptyFields(field){
 //adding a new task to the page
 function addTask(expression, result){
     var lastItem = $(".editContainer:last"),
-        lastItemPos = lastItem.length ? lastItem.position().top : 45,
-        lastItemHeight = lastItem.length ? lastItem.height() : 0;
+    lastItemPos = lastItem.length ? lastItem.position().top : 45,
+    lastItemHeight = lastItem.length ? lastItem.height() : 0;
     var editContent = $("<div class='editContainer'>").width(240).height(70).css("top", lastItemPos + lastItemHeight + 15 + "px").appendTo("#data");
     var closeItem = $("<div class='closeItem'>").appendTo(editContent);
     var rightResize = $("<div class='rightResize'>").appendTo(editContent);
@@ -400,6 +419,7 @@ function changeStyle(val){
             $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
+            $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_add").removeClass("pad_color").removeClass("pad_add");
             $("#wgt_name").removeClass("pad_color");
@@ -417,6 +437,7 @@ function changeStyle(val){
             $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_add").addClass("pad_color").addClass("pad_add");
             $("#wgt_name").addClass("pad_color");
@@ -434,6 +455,7 @@ function changeStyle(val){
             $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_add").addClass("pad_color").addClass("pad_add");
             $("#wgt_name").addClass("pad_color");
