@@ -89,7 +89,7 @@
 					url: "http://api.geonames.org/searchJSON",
 					dataType: 'json',
 					data: { 
-						q: unescape(encodeURIComponent(query)),
+						q: encodeURIComponent(query),
 						maxRows: "1",
 						username: geonamesUser
 					},
@@ -100,11 +100,47 @@
 							coordinates["lng"] = data["geonames"][0].lng;
 							coordinates["lat"] = data["geonames"][0].lat;
 							
-							/* if position represents a city, setting the zoom to 6 */
+							/* if position represents a country, setting the zoom to 6 */
 							if (data["geonames"][0].fcl == "A")
 								coordinates["zoom"] = 6;
 							else
 								coordinates["zoom"] = 12;
+							
+							updateMap(coordinates);
+						}
+					}
+					
+	  	  		});
+			}
+
+			/* 
+			 * doNominatim() could use Nominatim API (http://wiki.openstreetmap.org/wiki/Nominatim).
+			 * It is not used because first result is not always pertinent and we want to avoid user to make a choice after his request.
+			 * Bounding box info provided by Nominatim could be a good way to set the right zoom for request (instead of having a determined zoom for countries and cities). 
+			 * Nominatim allows user (the developer in this case) to set the language to display informations provided in sankoré user native language.
+			 */
+			function doNominatim(query) {
+				$.ajax({
+					url: "http://nominatim.openstreetmap.org/search",
+					dataType: "json",
+					data: { 
+						q: query,
+						format: "json",
+						limit: "10",
+						addressdetails: "1"
+					},
+					success: function(data) {	
+						/* updating the map if response is ok */
+						if (typeof data[0]!= 'undefined') {
+							var coordinates = new Array();
+							coordinates["lng"] = data[0].lon;
+							coordinates["lat"] = data[0].lat;
+							
+							/* if position represents a city, setting the zoom to 12 */
+							if (data[0].address.state)
+								coordinates["zoom"] = 12;
+							else
+								coordinates["zoom"] = 6;
 							
 							updateMap(coordinates);
 						}
