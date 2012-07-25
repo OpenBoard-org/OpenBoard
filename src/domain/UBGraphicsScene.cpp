@@ -558,7 +558,7 @@ bool UBGraphicsScene::inputDeviceRelease()
             }
         }else if (mCurrentStroke)
         {
-            if(eDrawingMode_Vector == DRAWING_MODE){
+            if(eDrawingMode_Vector == UBDrawingController::drawingController()->drawingMode()){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
@@ -902,7 +902,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             }
         }
 
-        if(eDrawingMode_Vector == DRAWING_MODE){
+        if(eDrawingMode_Vector == UBDrawingController::drawingController()->drawingMode()){
             foreach(QGraphicsItem* item, toBeRemovedItems){
                 UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
                 if(NULL != poly){
@@ -920,7 +920,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             mRemovedItems += toBeRemovedItems;
         }
 
-        if(eDrawingMode_Vector == DRAWING_MODE){
+        if(eDrawingMode_Vector == UBDrawingController::drawingController()->drawingMode()){
             foreach(QGraphicsItem* item, toBeAddedItems){
                 UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
                 if(NULL != poly && NULL != poly->strokesGroup()){
