@@ -61,6 +61,10 @@ class UBDrawingController : public QObject
 
         UBAbstractDrawRuler* mActiveRuler;
 
+        void setInDestopMode(bool mode){
+        	mIsDesktopMode = mode;
+        }
+
     public slots:
 
         void setStylusTool(int tool);
@@ -79,6 +83,7 @@ class UBDrawingController : public QObject
         UBStylusTool::Enum mStylusTool;
         UBStylusTool::Enum mLatestDrawingTool;
         eDrawingMode mDrawingMode;
+        bool mIsDesktopMode;
 
         static UBDrawingController* sDrawingController;
 

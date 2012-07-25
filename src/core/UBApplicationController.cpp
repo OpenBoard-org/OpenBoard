@@ -69,7 +69,6 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
     , mCheckingForUpdates(false)
     , mIsShowingDesktop(false)
     , mHttp(0)
-
 {
     mDisplayManager = new UBDisplayManager(this);
 
@@ -457,6 +456,7 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
         UBPlatformUtils::bringPreviousProcessToFront();
     }
 
+    UBDrawingController::drawingController()->setInDestopMode(true);
     UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Artistic);
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 }
