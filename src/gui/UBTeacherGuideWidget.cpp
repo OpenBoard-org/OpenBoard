@@ -135,7 +135,6 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
 
     if(UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
         UBSvgSubsetAdaptor::addElementToBeStored(QString("teacherGuide"),this);
-        //connect(UBApplication::boardController,SIGNAL(activeDocumentChanged()),this,SLOT(onActiveDocumentChanged()));
         connect(UBApplication::boardController,SIGNAL(documentSet(UBDocumentProxy*)),this,SLOT(onActiveDocumentChanged()));
     }
 }
@@ -198,7 +197,7 @@ QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save(int pageIndex)
     tIDataStorage* data = new tIDataStorage();
     data->name = "teacherGuide";
     data->type = eElementType_START;
-    data->attributes.insert("version","1.50");
+    data->attributes.insert("version","2.00");
     result << data;
 
     data = new tIDataStorage();
@@ -635,7 +634,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
     mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
-    mpPageNumberLabel->setText(tr("Page 0"));
+    mpPageNumberLabel->setText(tr("Title page"));
     mpLayout->addWidget(mpPageNumberLabel);
 
     mpButtonTitleLayout = new QHBoxLayout(0);
