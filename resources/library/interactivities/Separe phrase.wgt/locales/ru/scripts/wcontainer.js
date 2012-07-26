@@ -6,7 +6,9 @@ var sankoreLang = {
     reload: "Обновить",
     slate: "Узор",
     pad: "Планшет",
-    none: "Нет"
+    none: "Нет",
+    help: "Помощь",
+    help_content: "Пример текста помощи ..."
 };
 
 // if use the "view/edit" button or rely on the api instead

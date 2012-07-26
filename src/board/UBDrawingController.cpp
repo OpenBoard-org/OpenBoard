@@ -46,7 +46,7 @@ UBDrawingController::UBDrawingController(QObject * parent)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
     , mDrawingMode(DRAWING_MODE)
-
+	, mIsDesktopMode(false)
 {
     connect(UBSettings::settings(), SIGNAL(colorContextChanged()), this, SIGNAL(colorPaletteChanged()));
 
@@ -107,7 +107,7 @@ void UBDrawingController::setStylusTool(int tool)
         mStylusTool = (UBStylusTool::Enum)tool;
 
 
-        if(eDrawingMode_Vector == DRAWING_MODE){
+        if(eDrawingMode_Vector == DRAWING_MODE && !mIsDesktopMode){
             mDrawingMode = eDrawingMode_Vector;
         }
 

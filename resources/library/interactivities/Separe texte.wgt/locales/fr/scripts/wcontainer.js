@@ -6,7 +6,9 @@ var sankoreLang = {
     reload: "Recharger",
     slate: "ardoise",
     pad: "tablette",
-    none: "aucun"
+    none: "aucun",
+    help: "aide",
+    help_content: "Ceci est un exemple de contenu de l'aide ..."
 };
 
 // if use the "view/edit" button or rely on the api instead

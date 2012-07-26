@@ -9,7 +9,9 @@ var sankoreLang = {
     reload: "Recharger",
     slate: "ardoise",
     pad: "tablette",
-    none: "aucun"
+    none: "aucun",
+    help: "aide",
+    help_content: "Ceci est un exemple de contenu de l'aide ..."
 };
 
 //main function
@@ -19,6 +21,8 @@ function start(){
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_name").text(sankoreLang.wgt_name);
     $("#wgt_reload").text(sankoreLang.reload);
+    $("#wgt_help").text(sankoreLang.help);
+    $("#help").html(sankoreLang.help_content);
     $(".style_select option[value='1']").text(sankoreLang.slate);
     $(".style_select option[value='2']").text(sankoreLang.pad);
     $(".style_select option[value='3']").text(sankoreLang.none);
@@ -40,6 +44,21 @@ function start(){
             exportData();
         }
     }
+    
+    $("#wgt_help").click(function(){
+        var tmp = $(this);
+        if($(this).hasClass("open")){
+            $("#help").slideUp("100", function(){
+                tmp.removeClass("open");
+                $("#data").show();
+            });
+        } else {            
+            $("#data").hide();
+            $("#help").slideDown("100", function(){
+                tmp.addClass("open");
+            });
+        }
+    });
     
     $("#wgt_reload").click(function(){
         if($("#wgt_display").hasClass("selected")){
@@ -248,7 +267,7 @@ function importData(data){
             for(var j in data[i].imgs){
                 var img_block = $("<div class='img_block' style='text-align: center;'>");
                 var img = $("<img src='../../" + data[i].imgs[j].link + "' style='display: inline;'>");
-                img.height(data[i].imgs[j].ht).width(data[i].imgs[j].wd);
+                img.height(data[i].imgs[j].ht);
                 if((120 - data[i].imgs[j].ht) > 0)
                     img.css("margin",(120 - data[i].imgs[j].ht)/2 + "px 0");
                 var hidden_input = $("<input type='hidden'>").val(data[i].imgs[j].value);
@@ -349,7 +368,7 @@ function addContainer(){
 
 //add new img block
 function addImgBlock(dest){
-    var img_block = $("<div class='img_block' ondragenter='return false;' ondragleave='$(this).css(\"background-color\",\"white\"); return false;' ondragover='$(this).css(\"background-color\",\"#ccc\"); return false;' ondrop='$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);' style='text-align: center;'></div>").insertBefore(dest);
+    var img_block = $("<div class='img_block' ondragenter='return false;' ondragleave='$(this).css(\"background-color\",\"\"); return false;' ondragover='$(this).css(\"background-color\",\"#ccc\"); return false;' ondrop='$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);' style='text-align: center;'></div>").insertBefore(dest);
     var tmp_counter = dest.parent().find(".img_block").size();
     $("<div class='close_img'>").appendTo(img_block);
     $("<div class='clear_img'>").appendTo(img_block);
@@ -422,6 +441,7 @@ function changeStyle(val){
             $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+            $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
@@ -438,6 +458,7 @@ function changeStyle(val){
             $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
@@ -453,6 +474,7 @@ function changeStyle(val){
             $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
             $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
             $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
@@ -492,9 +514,10 @@ function onDropTarget(obj, event) {
                 tmp_img.attr("height", "120");
             else{
                 tmp_img.attr("width","120");
+                var h = tmp_img.height();
+                tmp_img.attr("height",h);
                 tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
             }
-            exportData();
         }, 6)
     }
     else {
