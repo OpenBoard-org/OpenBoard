@@ -45,6 +45,7 @@
 #include "board/UBBoardView.h"
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
+#include "board/UBBoardPaletteManager.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
@@ -53,6 +54,9 @@
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBApplication.h"
+
+#include "gui/UBTeacherGuideWidget.h"
+#include "gui/UBDockTeacherGuideWidget.h"
 
 #include "interfaces/IDataStorage.h"
 
@@ -1142,7 +1146,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
-    if (mScene->isModified())
+    if (mScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()))
     {
 
         //Creating dom structure to store information

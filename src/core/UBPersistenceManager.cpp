@@ -25,6 +25,9 @@
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 
+#include "gui/UBDockTeacherGuideWidget.h"
+#include "gui/UBTeacherGuideWidget.h"
+
 #include "document/UBDocumentProxy.h"
 
 #include "adaptors/UBExportPDF.h"
@@ -33,6 +36,7 @@
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
 #include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
 
 #include "interfaces/IDataStorage.h"
 
@@ -591,7 +595,6 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
     }
 }
 
-
 void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex)
 {
     checkIfDocumentRepositoryExists();
@@ -603,10 +606,15 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
 
-    if (pDocumentProxy->isModified())
+    UBBoardPaletteManager* paletteManager = UBApplication::boardController->paletteManager();
+    bool teacherGuideModified = false;
+    if(paletteManager->teacherGuideDockWidget())
+    	teacherGuideModified = paletteManager->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
+
+    if (pDocumentProxy->isModified() || teacherGuideModified)
         UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
 
-    if (pScene->isModified())
+    if (pScene->isModified() || teacherGuideModified)
     {
         UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
 

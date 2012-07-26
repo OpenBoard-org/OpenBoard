@@ -38,6 +38,9 @@
 #include "gui/UBToolWidget.h"
 #include "gui/UBKeyboardPalette.h"
 #include "gui/UBMagnifer.h"
+#include "gui/UBDockPaletteWidget.h"
+#include "gui/UBDockTeacherGuideWidget.h"
+#include "gui/UBTeacherGuideWidget.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
@@ -1464,7 +1467,10 @@ void UBBoardController::lastWindowClosed()
 {
     if (!mCleanupDone)
     {
-        if (selectedDocument()->pageCount() == 1 && (!mActiveScene || mActiveScene->isEmpty()))
+        bool teacherGuideModified = false;
+        if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget())
+            teacherGuideModified = UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
+        if (selectedDocument()->pageCount() == 1 && (!mActiveScene || mActiveScene->isEmpty()) && !teacherGuideModified)
         {
             UBPersistenceManager::persistenceManager()->deleteDocument(selectedDocument());
         }
@@ -1591,7 +1597,7 @@ void UBBoardController::persistCurrentScene()
     if(UBPersistenceManager::persistenceManager()
             && selectedDocument() && mActiveScene
             && (mActiveSceneIndex >= 0)
-            && mActiveScene->isModified())
+            && (mActiveScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified())))
     {
         emit activeSceneWillBePersisted();
 

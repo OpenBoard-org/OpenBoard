@@ -31,6 +31,8 @@ public:
 
     bool visibleInMode(eUBDockPaletteWidgetMode mode){ return mode == eUBDockPaletteWidget_BOARD; }
 
+    UBTeacherGuideWidget* teacherGuideWidget();
+
 private:
     QVBoxLayout* mpLayout;
     UBTeacherGuideWidget* mpTeacherGuideWidget;

@@ -69,6 +69,8 @@ class UBBoardPaletteManager : public QObject
         void setCurrentWebToolsPalette(UBWebToolsPalette *palette) {mWebToolsCurrentPalette = palette;}
         UBWebToolsPalette* mWebToolsCurrentPalette;
 
+        UBDockTeacherGuideWidget* teacherGuideDockWidget() { return mpTeacherGuideWidget;}
+
         void processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode);
         void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
         void startDownloads();
