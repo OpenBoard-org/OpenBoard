@@ -40,6 +40,8 @@
 
 #include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBDockTeacherGuideWidget.h"
+#include "gui/UBTeacherGuideWidget.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBW3CWidget.h"
@@ -418,7 +420,7 @@ void UBApplicationController::showDocument()
 
     if (UBApplication::boardController)
     {
-        if (UBApplication::boardController->activeScene()->isModified())
+        if (UBApplication::boardController->activeScene()->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()))
             UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->hide();
     }

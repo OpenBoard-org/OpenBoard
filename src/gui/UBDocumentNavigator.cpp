@@ -86,7 +86,9 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
     {
         const QPixmap* pix = source->pageAt(i);
         UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(*pix, source->selectedDocument(), i);
-        UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(tr("Page %0").arg(UBDocumentContainer::pageFromSceneIndex(i)));
+        int pageIndex = UBDocumentContainer::pageFromSceneIndex(i);
+        QString label = pageIndex == 0 ? tr("Title page") :  tr("Page %0").arg(pageIndex);
+        UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(label);
 
 		UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
 		thumbWithText.setBorder(border());

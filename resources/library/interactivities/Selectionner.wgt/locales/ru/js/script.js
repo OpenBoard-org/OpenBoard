@@ -13,7 +13,9 @@ var sankoreLang = {
     reload: "Обновить",
     slate: "Узор",
     pad: "Планшет",
-    none: "Нет"
+    none: "Нет",
+    help: "Помощь",
+    help_content: "Пример текста помощи ..."
 };
 
 //main function
@@ -23,6 +25,8 @@ function start(){
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_name").text(sankoreLang.wgt_name);
     $("#wgt_reload").text(sankoreLang.reload);
+    $("#wgt_help").text(sankoreLang.help);
+    $("#help").html(sankoreLang.help_content);
     $(".style_select option[value='1']").text(sankoreLang.slate);
     $(".style_select option[value='2']").text(sankoreLang.pad);
     $(".style_select option[value='3']").text(sankoreLang.none);
@@ -50,8 +54,33 @@ function start(){
         }
     }
     
+    $("#wgt_help").click(function(){
+        var tmp = $(this);
+        if($(this).hasClass("open")){
+            $("#help").slideUp("100", function(){
+                tmp.removeClass("open");
+                $("#data").show();
+            });
+        } else {            
+            $("#data").hide();
+            $("#help").slideDown("100", function(){
+                tmp.addClass("open");
+            });
+        }
+    });
+    
     $("#wgt_reload").click(function(){
-        window.location.reload();
+        if($("#wgt_display").hasClass("selected")){
+            $(".cont").each(function(){
+                var container = $(this);
+                container.find(".img_block, .text_block").each(function(){
+                    $(this).find("input:checkbox").removeAttr("checked");
+                    $(this).find("input:checkbox").parent().parent().removeClass("right");
+                });          
+            });
+        }
+        else
+            $("#wgt_display").trigger("click");
     });
     
     $(".style_select").change(function (event){
@@ -149,31 +178,31 @@ function start(){
             if($(this).is(":checked"))
                 $(this).parent().find("input:hidden").val(1);
             else
-                $(this).parent().find("input:hidden").val(0);
-        }
-    });
-    
-    //play/pause event
-    $(".play, .stop").live("click", function(){
-        var tmp_audio = $(this);
-        var audio = tmp_audio.parent().find("audio").get(0);
-        if($(this).hasClass("play")){            
-            if(tmp_audio.parent().find("source").attr("src")){
-                tmp_audio.removeClass("play").addClass("stop");
-                var id = setInterval(function(){
-                    if(audio.currentTime == audio.duration){
-                        clearInterval(id);
-                        tmp_audio.removeClass("stop").addClass("play");
-                    }
-                }, 10);
-                tmp_audio.parent().find("input").val(id);
-                audio.play();
+            $(this).parent().find("input:hidden").val(0);
             }
-        } else {
-            $(this).removeClass("stop").addClass("play");
-            clearInterval( tmp_audio.parent().find("input").val())
-            audio.pause();
-        }
+            });
+    
+        //play/pause event
+        $(".play, .stop").live("click", function(){
+            var tmp_audio = $(this);
+            var audio = tmp_audio.parent().find("audio").get(0);
+            if($(this).hasClass("play")){            
+            if(tmp_audio.parent().find("source").attr("src")){
+            tmp_audio.removeClass("play").addClass("stop");
+            var id = setInterval(function(){
+                if(audio.currentTime == audio.duration){
+                clearInterval(id);
+                tmp_audio.removeClass("stop").addClass("play");
+                }
+                }, 10);
+            tmp_audio.parent().find("input").val(id);
+            audio.play();
+            }
+            } else {
+        $(this).removeClass("stop").addClass("play");
+        clearInterval( tmp_audio.parent().find("input").val())
+        audio.pause();
+    }
     });
     
     $(".replay").live("click", function(){
@@ -209,6 +238,8 @@ function start(){
     $(".close_img").live("click", function(){
         $(this).parent().remove();
     });
+
+    
 }
 
 //export
@@ -238,7 +269,7 @@ function exportData(){
                 tmp_block.src = $(this).find("source").attr("src").replace("../../","");
                 tmp_block.hidden = $(this).parent().find("input:hidden").val();
                 tmp_block.type = "audio";
-                tmp_block.checked = $(this).find("input:checkbox").attr("checked");
+                tmp_block.checked = $(this).parent().find("input:checkbox").attr("checked");
             }
             if($(this).hasClass("text_block")){
                 tmp_block.text = $(this).find(".text_subblock").text();
@@ -280,7 +311,10 @@ function importData(data){
                     var img_block = $("<div class='img_block' style='text-align: center;'></div>").insertBefore(imgs_container.find(".clear"));
                     $("<input type='hidden' value='" + data[i].blocks[j].hidden + "'/>").appendTo(img_block); 
                     $("<input type='checkbox' class='ch_box'/>").attr("checked",(data[i].blocks[j].state == "display")?((data[i].blocks[j].checked == "checked")?true:false):false).appendTo(img_block)
-                    $("<img src=\"../../" + data[i].blocks[j].src + "\" width='" + data[i].blocks[j].w + "' height='" + data[i].blocks[j].h + "' style=\"display: inline;\"/>").appendTo(img_block);
+                    var img = $("<img src=\"../../" + data[i].blocks[j].src + "\" style=\"display: inline;\"/>").appendTo(img_block);
+                    img.height(data[i].blocks[j].h);
+                    if((120 - data[i].blocks[j].h) > 0)
+                        img.css("margin",(120 - data[i].blocks[j].h)/2 + "px 0");
                     break;
                 case "audio":
                     var img_tmp = $("<div class='img_block'>").insertBefore(imgs_container.find(".clear"));
@@ -409,6 +443,7 @@ function changeStyle(val){
             $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+            $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
@@ -425,6 +460,7 @@ function changeStyle(val){
             $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
@@ -440,6 +476,7 @@ function changeStyle(val){
             $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
             $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
             $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
@@ -482,6 +519,8 @@ function onDropTarget(obj, event) {
                     tmp_img.attr("height", "120");
                 else{
                     tmp_img.attr("width","120");
+                    var h = tmp_img.height();
+                    tmp_img.attr("height",h);
                     tmp_img.css("margin",(120 - tmp_img.height())/2 + "px 0");
                 }
             }, 6);

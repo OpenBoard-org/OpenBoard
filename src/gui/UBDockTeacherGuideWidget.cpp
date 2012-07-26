@@ -44,3 +44,8 @@ UBDockTeacherGuideWidget::~UBDockTeacherGuideWidget()
     DELETEPTR(mpTeacherGuideWidget);
     DELETEPTR(mpLayout);
 }
+
+UBTeacherGuideWidget* UBDockTeacherGuideWidget::teacherGuideWidget()
+{
+	return mpTeacherGuideWidget;
+}
