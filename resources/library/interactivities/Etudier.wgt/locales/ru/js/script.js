@@ -7,7 +7,9 @@ var sankoreLang = {
     wgt_name: "Слайдер",
     slate: "Узор",
     pad: "Планшет",
-    none: "Нет"
+    none: "Нет",
+    help: "Помощь",
+    help_content: "Пример текста помощи ..."
 };
 
 //some flags
@@ -27,6 +29,8 @@ function start(){
     $("#wgt_display").text(sankoreLang.display);
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_name").text(sankoreLang.wgt_name);
+    $("#wgt_help").text(sankoreLang.help);
+    $("#help").html(sankoreLang.help_content);
     $(".style_select option[value='1']").text(sankoreLang.slate);
     $(".style_select option[value='2']").text(sankoreLang.pad);
     $(".style_select option[value='3']").text(sankoreLang.none);
@@ -50,17 +54,37 @@ function start(){
     //events
     if (window.widget) {
         window.widget.onleave = function(){
-            exportData();
-            sankore.setPreference("etudier_style", $(".style_select").find("option:selected").val());
-            sankore.setPreference("etudier_cur_page", $("#slider").getPage());
-            sankore.setPreference("etudier_left_nav", $("#prevBtn a").css("display"));
-            sankore.setPreference("etudier_right_nav", $("#nextBtn a").css("display"));
+            if(!$("#wgt_help").hasClass("open")){
+                exportData();
+                sankore.setPreference("etudier_style", $(".style_select").find("option:selected").val());
+                sankore.setPreference("etudier_cur_page", $("#slider").getPage());
+                sankore.setPreference("etudier_left_nav", $("#prevBtn a").css("display"));
+                sankore.setPreference("etudier_right_nav", $("#nextBtn a").css("display"));
+            }
         }
     }
     
     $(".style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
+    
+    $("#wgt_help").click(function(){
+        var tmp = $(this);
+        if($(this).hasClass("open")){
+            $("#help").hide();
+            tmp.removeClass("open");
+            $("#slider").show();
+        } else {
+            exportData();
+            sankore.setPreference("etudier_style", $(".style_select").find("option:selected").val());
+            sankore.setPreference("etudier_cur_page", $("#slider").getPage());
+            sankore.setPreference("etudier_left_nav", $("#prevBtn a").css("display"));
+            sankore.setPreference("etudier_right_nav", $("#nextBtn a").css("display"));            
+            $("#slider").hide();
+            $("#help").show();
+            tmp.addClass("open");
+        }
+    });
     
     $("#wgt_display, #wgt_edit").click(function(event){
         if(this.id == "wgt_display"){
@@ -123,9 +147,9 @@ function start(){
                 $("#slider li>div").each(function(){
                     var container = $(this);
                     container.attr("ondragenter", "return false;")
-                    .attr("ondragleave", "$(this).css(\"background-color\",\"white\"); return false;")
+                    .attr("ondragleave", "$(this).css(\"background\",\"none\"); return false;")
                     .attr("ondragover", "$(this).css(\"background-color\",\"#ccc\"); return false;")
-                    .attr("ondrop", "$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);");
+                    .attr("ondrop", "$(this).css(\"background\",\"none\"); return onDropTarget(this,event);");
                     
                     container.find(".text_block").each(function(){
                         $(this).draggable("destroy");
@@ -154,6 +178,7 @@ function start(){
                     $("<div class='add_right'>").appendTo(container);
                     $("<div class='close_slide'>").appendTo(container);
                     $("<div class='add_text'>").appendTo(container);
+                    $(window).trigger("resize")
                 });        
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
@@ -264,13 +289,13 @@ function start(){
         if(resize_obj.clicked){
             if(resize_obj.object.parent().hasClass("text_block")){                
                 var width = resize_obj.object.parent().width() - resize_obj.left + event.clientX;
-                var height = resize_obj.object.parent().height() - resize_obj.top + event.clientY;
+                //var height = resize_obj.object.parent().height() - resize_obj.top + event.clientY;
                 resize_obj.left = event.clientX;
                 resize_obj.top = event.clientY;
-                resize_obj.object.parent().width(width).height(height);
+                resize_obj.object.parent().width(width).height("");
             } else {
                 width = resize_obj.object.parent().width() - resize_obj.left + event.clientX;
-                height = resize_obj.object.parent().height() - resize_obj.top + event.clientY;
+                var height = resize_obj.object.parent().height() - resize_obj.top + event.clientY;
                 var img_width = resize_obj.object.parent().find("img").width() - resize_obj.left + event.clientX;
                 var img_height = resize_obj.object.parent().find("img").height() - resize_obj.top + event.clientY;
                 resize_obj.left = event.clientX;
@@ -294,12 +319,15 @@ function start(){
         new_li.width(cur_li.width()).height(cur_li.height()).css("float","left");
         var new_div = $("<div>").appendTo(new_li);
         new_div.attr("ondragenter", "return false;")
-        .attr("ondragleave", "$(this).css(\"background-color\",\"white\"); return false;")
+        .attr("ondragleave", "$(this).css(\"background-color\",\"\"); return false;")
         .attr("ondragover", "$(this).css(\"background-color\",\"#ccc\"); return false;")
-        .attr("ondrop", "$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);");
-        var example = $("<div class='text_block' contenteditable='true'>" + sankoreLang.new_slide + "</div>").addClass("block_border");
+        .attr("ondrop", "$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);");
+        var example = $("<div class='text_block' style='position: absolute;'>").addClass("block_border");
+        $("<div class='real_text' contenteditable='true'>" + sankoreLang.new_slide + "</div>").appendTo(example);
         $("<div class='move_block' contenteditable='false'>").appendTo(example);
         $("<div class='close_img' contenteditable='false'>").appendTo(example);
+        $("<div class='size_up' contenteditable='false'>").appendTo(example);
+        $("<div class='size_down' contenteditable='false'>").appendTo(example);
         $("<div class='resize_block' contenteditable='false'>").appendTo(example);
         example.css("top","40%").css("left","40%");
         new_div.append(example);
@@ -317,12 +345,15 @@ function start(){
         new_li.width(cur_li.width()).height(cur_li.height()).css("float","left");
         var new_div = $("<div>").appendTo(new_li);
         new_div.attr("ondragenter", "return false;")
-        .attr("ondragleave", "$(this).css(\"background-color\",\"white\"); return false;")
+        .attr("ondragleave", "$(this).css(\"background-color\",\"\"); return false;")
         .attr("ondragover", "$(this).css(\"background-color\",\"#ccc\"); return false;")
-        .attr("ondrop", "$(this).css(\"background-color\",\"white\"); return onDropTarget(this,event);");
-        var example = $("<div class='text_block' contenteditable='true'>" + sankoreLang.new_slide + "</div>").addClass("block_border");
+        .attr("ondrop", "$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);");
+        var example = $("<div class='text_block' style='position: absolute;'>").addClass("block_border");
+        $("<div class='real_text' contenteditable='true'>" + sankoreLang.new_slide + "</div>").appendTo(example);
         $("<div class='move_block' contenteditable='false'>").appendTo(example);
         $("<div class='close_img' contenteditable='false'>").appendTo(example);
+        $("<div class='size_up' contenteditable='false'>").appendTo(example);
+        $("<div class='size_down' contenteditable='false'>").appendTo(example);
         $("<div class='resize_block' contenteditable='false'>").appendTo(example);
         example.css("top","40%").css("left","40%");
         new_div.append(example);
@@ -358,7 +389,6 @@ function exportData(){
             var txt_block = new Object();
             txt_block.top = $(this).position().top;
             txt_block.left = $(this).position().left;
-            txt_block.h = $(this).height();
             txt_block.w = $(this).width();
             txt_block.fz = $(this).css("font-size");
             txt_block.val = $(this).text();
@@ -406,7 +436,6 @@ function importData(data){
             var text_div = $("<div class='text_block'>" + data[i].text[j].val + "</div>");
             text_div.draggable().css("position","absolute")
             .width(data[i].text[j].w)
-            .height(data[i].text[j].h)
             .css("top", data[i].text[j].top)
             .css("left", data[i].text[j].left)
             .css("font-size", data[i].text[j].fz)
@@ -524,7 +553,7 @@ function changeStyle(val){
             $(".b_bottom_right").removeClass("bbr_pad").removeClass("without_back");
             $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
-            $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+            $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
@@ -540,7 +569,7 @@ function changeStyle(val){
             $(".b_bottom_right").addClass("bbr_pad").removeClass("without_back");
             $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
-            $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
@@ -556,7 +585,7 @@ function changeStyle(val){
             $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
             $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
             $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
-            $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
@@ -579,7 +608,7 @@ function onDropTarget(obj, event) {
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
         if(tmp_type.substr(0, 5) == "audio"){                              
             var audio_block = $("<div class='audio_block'>").draggable().appendTo($(obj));
-            audio_block.css("position","absolute").css("top",event.clientY).css("left",event.clientX);
+            audio_block.css("position","absolute").css("top",event.clientY - 54).css("left",event.clientX - 54);
             $("<div class='close_img' contenteditable='false'>").appendTo(audio_block);
             audio_block.addClass("block_border");
             $("<div class='play'>").appendTo(audio_block);
@@ -589,7 +618,7 @@ function onDropTarget(obj, event) {
             audio.append(source);
         } else {
             var img_block = $("<div class='img_block' style='text-align: center;'></div>").appendTo($(obj));
-            img_block.css("top",event.clientY).css("left",event.clientX);
+            img_block.css("top",event.clientY - 54).css("left",event.clientX - 54);
             $("<div class='move_block' contenteditable='false'>").appendTo(img_block);
             $("<div class='close_img' contenteditable='false'>").appendTo(img_block);
             $("<div class='resize_block' contenteditable='false'>").appendTo(img_block);
