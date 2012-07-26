@@ -105,6 +105,7 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpLayout->addWidget(mpSeparator);
 
     mpTreeWidget = new QTreeWidget(this);
+    mpTreeWidget->setStyleSheet("selection-background-color:transparent; padding-bottom:5px; padding-top:5px;");
     mpLayout->addWidget(mpTreeWidget);
 
     mpRootWidgetItem = mpTreeWidget->invisibleRootItem();
@@ -118,6 +119,7 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     mpTreeWidget->header()->setResizeMode(0, QHeaderView::Stretch);
     mpTreeWidget->header()->setResizeMode(1, QHeaderView::Fixed);
     mpTreeWidget->header()->setDefaultSectionSize(18);
+    mpTreeWidget->setSelectionMode(QAbstractItemView::NoSelection);
 
     connect(mpTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
@@ -215,16 +217,13 @@ QVector<tIDataStorage*> UBTeacherGuideEditionWidget::save(int pageIndex)
     children << getChildrenList(mpAddALinkItem);
 
     foreach(QTreeWidgetItem* widgetItem, children) {
-        tUBGEElementNode* node =
-                dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget(
-                                                 widgetItem, 0))->saveData();
+        tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node) {
             data = new tIDataStorage();
             data->name = node->name;
             data->type = eElementType_UNIQUE;
             foreach(QString currentKey, node->attributes.keys())
-                data->attributes.insert(currentKey,
-                                        node->attributes.value(currentKey));
+                data->attributes.insert(currentKey, node->attributes.value(currentKey));
             result << data;
         }
     }
@@ -293,9 +292,7 @@ QVector<tUBGEElementNode*> UBTeacherGuideEditionWidget::getData()
     children << getChildrenList(mpAddALinkItem);
     result << getPageAndCommentData();
     foreach(QTreeWidgetItem* widgetItem, children) {
-        tUBGEElementNode* node =
-                dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget(
-                                                 widgetItem, 0))->saveData();
+        tUBGEElementNode* node = dynamic_cast<iUBTGSaveData*>(mpTreeWidget->itemWidget( widgetItem, 0))->saveData();
         if (node)
             result << node;
     }
@@ -346,14 +343,13 @@ void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int 
             widget->setExpanded(false);
             widget->setExpanded(true);
         }
-    } else if (column == 1
-               && addSubItemWidgetType == eUBTGAddSubItemWidgetType_None) {
+    }
+    else if (column == 1 && addSubItemWidgetType == eUBTGAddSubItemWidgetType_None) {
         UBTGMediaWidget* media = dynamic_cast<UBTGMediaWidget*>(mpTreeWidget->itemWidget(widget, 0));
         if (media)
             media->removeSource();
         int index = mpTreeWidget->currentIndex().row();
-        QTreeWidgetItem* toBeDeletedWidgetItem = widget->parent()->takeChild(
-                    index);
+        QTreeWidgetItem* toBeDeletedWidgetItem = widget->parent()->takeChild(index);
         delete toBeDeletedWidgetItem;
     }
 }
@@ -447,12 +443,14 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpLayout->addWidget(mpTreeWidget);
 
     mpRootWidgetItem = mpTreeWidget->invisibleRootItem();
+    mpTreeWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mpTreeWidget->setDragEnabled(true);
     mpTreeWidget->setRootIsDecorated(false);
     mpTreeWidget->setIndentation(0);
     mpTreeWidget->setDropIndicatorShown(false);
     mpTreeWidget->header()->close();
     mpTreeWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    mpTreeWidget->setStyleSheet("selection-background-color:transparent; padding-bottom:5px; padding-top:5px; ");
     connect(mpTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
 }
@@ -495,7 +493,7 @@ void UBTeacherGuidePresentationWidget::cleanData()
 void UBTeacherGuidePresentationWidget::onActiveSceneChanged()
 {
     cleanData();
-    mpPageNumberLabel->setText( tr("Page: %0").arg(UBApplication::boardController->currentPage()));
+    mpPageNumberLabel->setText(tr("Page: %0").arg(UBApplication::boardController->currentPage()));
     UBDocumentProxy* documentProxy = UBApplication::boardController->selectedDocument();
     if (mpDocumentTitle)
         mpDocumentTitle->setText( documentProxy->metaData(UBSettings::sessionTitle).toString());
@@ -529,8 +527,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
             newWidgetItem->setText(0, element->attributes.value("task"));
             newWidgetItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             QString colorString = element->attributes.value("owner").toInt() == 0 ? "red" : "green";
-            UBTGAdaptableText* textWidget = new UBTGAdaptableText(newWidgetItem,
-                                                                  0);
+            UBTGAdaptableText* textWidget = new UBTGAdaptableText(newWidgetItem, 0);
             textWidget->bottomMargin(14);
             textWidget->setStyleSheet( "QWidget {background: #EEEEEE; border:none; color:" + colorString + ";}");
             textWidget->showText(element->attributes.value("task"));
