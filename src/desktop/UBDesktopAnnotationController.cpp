@@ -386,7 +386,10 @@ void UBDesktopAnnotationController::goToUniboard()
 
     UBPlatformUtils::setDesktopMode(false);
     UBDrawingController::drawingController()->setInDestopMode(false);
-    UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
+
+    if(UBStylusTool::Eraser != UBDrawingController::drawingController()->stylusTool()){
+    	UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
+    }
 
     emit restoreUniboard();
 }

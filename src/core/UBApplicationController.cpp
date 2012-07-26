@@ -586,7 +586,10 @@ void UBApplicationController::checkUpdateRequest()
 void UBApplicationController::hideDesktop()
 {
     mDisplayManager->adjustScreens(-1);
-    UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
+
+    if(UBStylusTool::Eraser != UBDrawingController::drawingController()->stylusTool()){
+    	UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
+    }
 
     if (mMainMode == Board)
     {
