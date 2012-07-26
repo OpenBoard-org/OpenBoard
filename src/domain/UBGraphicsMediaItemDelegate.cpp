@@ -18,6 +18,7 @@
 
 #include "UBGraphicsMediaItem.h"
 #include "UBGraphicsMediaItemDelegate.h"
+#include "UBGraphicsDelegateFrame.h"
 
 #include "UBGraphicsScene.h"
 
@@ -125,19 +126,25 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     UBGraphicsMediaItem *mediaItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
     if (mediaItem)
     {
-        if (mediaItem->getMediaType() != UBGraphicsMediaItem::mediaType_Audio)
+       
+        mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height()*AntiScaleRatio);
+        mToolBarItem->setScale(AntiScaleRatio);
+        QRectF toolBarRect = mToolBarItem->rect();
+        toolBarRect.setWidth(delegated()->boundingRect().width()/AntiScaleRatio);
+
+        if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
         {
-            mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height()*AntiScaleRatio);
-            mToolBarItem->setScale(AntiScaleRatio);
-            QRectF toolBarRect = mToolBarItem->rect();
-            toolBarRect.setWidth(delegated()->boundingRect().width()/AntiScaleRatio);
-            mToolBarItem->setRect(toolBarRect);           
-        }
-        else
-        {
-            mToolBarItem->setPos(0, 0);
+            int borderSize = 0;
+            UBGraphicsMediaItem::UBAudioPresentationWidget *audioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(delegated()->widget());
+            if (audioWidget)
+                borderSize = audioWidget->borderSize();
+
+            toolBarRect.setWidth(delegated()->boundingRect().width()/AntiScaleRatio-2*borderSize);
+            mToolBarItem->setPos(borderSize,borderSize);
             mToolBarItem->show();
         }
+
+        mToolBarItem->setRect(toolBarRect);
     }
 
     int mediaItemWidth = mToolBarItem->boundingRect().width();

@@ -28,6 +28,29 @@ class UBGraphicsMediaItem : public UBGraphicsProxyWidget
     Q_OBJECT
 
 public:
+    class UBAudioPresentationWidget : public QWidget
+    {
+        public:
+            UBAudioPresentationWidget::UBAudioPresentationWidget(QWidget *parent = NULL)
+                :QWidget(parent)
+                , mBorderSize(7)
+            {}
+
+            int borderSize(){return mBorderSize;}
+
+        private:
+            virtual void paintEvent(QPaintEvent *event)
+            {
+                QPainter painter(this);
+                painter.fillRect(rect(), QBrush(Qt::black));
+
+                QWidget::paintEvent(event);
+            }
+
+        int mBorderSize;
+    };
+
+public:
     typedef enum{
         mediaType_Video,
         mediaType_Audio
@@ -118,15 +141,6 @@ private:
     QPointF mMouseMovePos;
 
     bool haveLinkedImage;
-    QGraphicsPixmapItem *mLinkedImage;
+    QGraphicsPixmapItem *mLinkedImage;    
 };
-
-
-class UBGraphicsUnitedMediaItem : public UBGraphicsMediaItem 
-{
-public:
-    UBGraphicsUnitedMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
-
-};
-
 #endif // UBGRAPHICSMEDIAITEM_H

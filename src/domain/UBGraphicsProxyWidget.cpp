@@ -153,10 +153,30 @@ void UBGraphicsProxyWidget::resize(const QSizeF & pSize)
 {
     if (pSize != size())
     {
-        QGraphicsProxyWidget::setMaximumSize(pSize.width(), pSize.height());
-        QGraphicsProxyWidget::resize(pSize.width(), pSize.height());
+        qreal sizeX = 0;
+        qreal sizeY = 0;
+
         if (widget())
-            widget()->resize(pSize.width(), pSize.height());
+        {
+            
+            QSizeF minimumItemSize(widget()->minimumSize());
+            if (minimumItemSize.width() > pSize.width())
+                sizeX = minimumItemSize.width();
+            else
+                sizeX = pSize.width();
+
+            if (minimumItemSize.height() > pSize.height())
+                sizeY = minimumItemSize.height();
+            else
+                sizeY = pSize.height();
+        }
+        QSizeF size(sizeX, sizeY);
+
+
+        QGraphicsProxyWidget::setMaximumSize(size.width(), size.height());
+        QGraphicsProxyWidget::resize(size.width(), size.height());
+        if (widget())
+            widget()->resize(size.width(), size.height());
         if (mDelegate)
             mDelegate->positionHandles();
         if (scene())
