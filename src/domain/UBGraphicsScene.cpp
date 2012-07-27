@@ -779,7 +779,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
         if (mShouldUseOMP)
         {
-    //#pragma omp parallel for
+    #pragma omp parallel for
             for (int i = 0; i < collidItemsSize; i++)
             {
                 UBGraphicsPolygonItem *collidingPolygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems.at(i));
@@ -789,7 +789,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
                     if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
                     {
-    //#pragma omp critical
+    #pragma omp critical
                         // Put the entire polygon into the remove list
                         toBeRemovedItems << collidingPolygonItem;
                     }
@@ -826,7 +826,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                         }
                         else */if (croppedPathSimplified.isEmpty())
                         {
-    //#pragma omp critical
+    #pragma omp critical
                             // Put the entire polygon into the remove list if the eraser removes all its visible content
                             toBeRemovedItems << collidingPolygonItem;
                         }
@@ -837,7 +837,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                             foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
                             {
                                 UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
-    //#pragma omp critical
+    #pragma omp critical
                                 if(NULL != pGroup){
                                     croppedPolygonItem->setStrokesGroup(pGroup);
                                     //pGroup->addToGroup(croppedPolygonItem);
@@ -845,7 +845,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                                 // Add this new polygon to the 'added' list
                                 toBeAddedItems << croppedPolygonItem;
                             }
-    //#pragma omp critical
+    #pragma omp critical
                             // Remove the original polygonitem because it has been replaced by many smaller polygons
                             toBeRemovedItems << collidingPolygonItem;
                         }
@@ -902,7 +902,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             }
         }
 
-        if(eDrawingMode_Vector == UBDrawingController::drawingController()->drawingMode()){
+        if(eDrawingMode_Vector == DRAWING_MODE && !UBDrawingController::drawingController()->isInDesktopMode()){
             foreach(QGraphicsItem* item, toBeRemovedItems){
                 UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
                 if(NULL != poly){
@@ -920,7 +920,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             mRemovedItems += toBeRemovedItems;
         }
 
-        if(eDrawingMode_Vector == UBDrawingController::drawingController()->drawingMode()){
+        if(eDrawingMode_Vector == DRAWING_MODE && !UBDrawingController::drawingController()->isInDesktopMode()){
             foreach(QGraphicsItem* item, toBeAddedItems){
                 UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
                 if(NULL != poly && NULL != poly->strokesGroup()){

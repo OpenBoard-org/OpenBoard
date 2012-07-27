@@ -1100,6 +1100,7 @@ UBTeacherGuideWidget::UBTeacherGuideWidget(QWidget* parent, const char* name) :
   , mpPageZeroWidget(NULL)
   , mpEditionWidget(NULL)
   , mpPresentationWidget(NULL)
+  , mKeyboardActionFired(false)
 {
     setObjectName(name);
     if (UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()) {
@@ -1113,11 +1114,9 @@ UBTeacherGuideWidget::UBTeacherGuideWidget(QWidget* parent, const char* name) :
         addWidget(mpPresentationWidget);
     }
 
-    connect(UBApplication::boardController->controlView(),
-            SIGNAL(clickOnBoard()), this, SLOT(showPresentationMode()));
+    connect(UBApplication::boardController->controlView(), SIGNAL(clickOnBoard()), this, SLOT(showPresentationMode()));
     connectToStylusPalette();
-    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this,
-            SLOT(onActiveSceneChanged()));
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
 }
 
 UBTeacherGuideWidget::~UBTeacherGuideWidget()
@@ -1138,12 +1137,38 @@ void UBTeacherGuideWidget::onActiveSceneChanged()
 
 }
 
+#include "core/UBApplication.h"
+#include "gui/UBMainWindow.h"
+
+void UBTeacherGuideWidget::onTriggeredAction(bool checked)
+{
+	Q_UNUSED(checked);
+	if(!mKeyboardActionFired)
+		showPresentationMode();
+	mKeyboardActionFired=false;
+}
+
+void UBTeacherGuideWidget::onTriggeredKeyboardAction(bool checked)
+{
+	Q_UNUSED(checked);
+	mKeyboardActionFired = true;
+}
+
 void UBTeacherGuideWidget::connectToStylusPalette()
 {
-    if (UBApplication::boardController->paletteManager())
-        connect( UBApplication::boardController->paletteManager()->stylusPalette(), SIGNAL(itemOnActionPaletteChanged()), this, SLOT(showPresentationMode()));
-    else
-        QTimer::singleShot(100, this, SLOT(connectToStylusPalette()));
+	connect(UBApplication::mainWindow->actionPen, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionEraser, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionMarker, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionPlay, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionZoomIn, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionZoomOut, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionCapture, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionHand, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionLine, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionText, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
+	connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(onTriggeredKeyboardAction(bool)));
 }
 
 void UBTeacherGuideWidget::showPresentationMode()
