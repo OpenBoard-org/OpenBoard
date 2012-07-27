@@ -65,6 +65,10 @@ class UBDrawingController : public QObject
         	mIsDesktopMode = mode;
         }
 
+        bool isInDesktopMode(){
+        	return mIsDesktopMode;
+        }
+
     public slots:
 
         void setStylusTool(int tool);
