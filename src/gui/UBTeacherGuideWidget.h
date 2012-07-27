@@ -214,6 +214,11 @@ private:
     UBTeacherGuideEditionWidget* mpEditionWidget;
     UBTeacherGuidePresentationWidget* mpPresentationWidget;
     QVector<tUBGEElementNode*>mCurrentData;
+    bool mKeyboardActionFired;
+
+private slots:
+	void onTriggeredAction(bool checked);
+	void onTriggeredKeyboardAction(bool checked);
 };
 
 #endif // UBTEACHERGUIDEWIDGET_H
