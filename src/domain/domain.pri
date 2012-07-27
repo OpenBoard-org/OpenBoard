@@ -7,6 +7,7 @@ HEADERS      += src/domain/UBGraphicsScene.h \
                 src/domain/UBDocumentUndoCommand.h \
                 src/domain/UBPageSizeUndoCommand.h \
                 src/domain/UBGraphicsProxyWidget.h \
+                src/domain/UBGraphicsWebView.h \
                 src/domain/UBGraphicsSvgItem.h \
                 src/domain/UBGraphicsPolygonItem.h \
                 src/domain/UBItem.h \
@@ -40,6 +41,7 @@ SOURCES      += src/domain/UBGraphicsScene.cpp \
                 src/domain/UBDocumentUndoCommand.cpp \
                 src/domain/UBPageSizeUndoCommand.cpp \
                 src/domain/UBGraphicsProxyWidget.cpp \
+                src/domain/UBGraphicsWebView.cpp \
                 src/domain/UBGraphicsSvgItem.cpp \
                 src/domain/UBGraphicsPolygonItem.cpp \
                 src/domain/UBItem.cpp \

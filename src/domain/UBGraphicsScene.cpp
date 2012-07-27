@@ -1422,9 +1422,9 @@ UBGraphicsAppleWidgetItem* UBGraphicsScene::addAppleWidget(const QUrl& pWidgetUr
     return appleWidget;
 }
 
-UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos, int widgetType)
+UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
 {
-    UBGraphicsW3CWidgetItem *w3CWidget = new UBGraphicsW3CWidgetItem(pWidgetUrl, 0, widgetType);
+    UBGraphicsW3CWidgetItem *w3CWidget = new UBGraphicsW3CWidgetItem(pWidgetUrl, 0);
 
     addGraphicsWidget(w3CWidget, pPos);
 
@@ -1444,7 +1444,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     graphicsWidget->setPos(QPointF(pPos.x() - graphicsWidget->boundingRect().width() / 2,
         pPos.y() - graphicsWidget->boundingRect().height() / 2));
 
-    if (graphicsWidget->widgetWebView()->canBeContent())
+    if (graphicsWidget->canBeContent())
     {
 //        graphicsWidget->widgetWebView()->loadMainHtml();
 

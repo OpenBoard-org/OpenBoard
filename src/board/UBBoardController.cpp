@@ -1885,7 +1885,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
         w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
         UBGraphicsWidgetItem *tmpItem = dynamic_cast<UBGraphicsWidgetItem*>(w3cWidgetItem);
         if (tmpItem)
-           tmpItem->widgetWebView()->takeSnapshot().save(snapshotPath, "PNG");
+           tmpItem->takeSnapshot().save(snapshotPath, "PNG");
 
     }
 
@@ -2092,7 +2092,7 @@ void UBBoardController::togglePodcast(bool checked)
 
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
-    QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
+    /*QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
 
     graphicsWidget->setSelected(false);
 
@@ -2105,13 +2105,13 @@ void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* gr
 
     toolWidget->centerOn(mControlView->mapTo(mControlContainer, controlViewPos));
 
-    toolWidget->show();
+    toolWidget->show();*/
 }
 
 
 void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
-    int xIsOdd = toolWidget->width() % 2;
+    /*int xIsOdd = toolWidget->width() % 2;
     int yIsOdd = toolWidget->height() % 2;
 
     QPoint mainWindowCenter = toolWidget->mapTo(mMainWindow, QPoint(toolWidget->width(), toolWidget->height()) / 2);
@@ -2141,7 +2141,7 @@ void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
     mActiveScene->addGraphicsWidget(graphicsWidget, scenePos);
 
     toolWidget->hide();
-    toolWidget->deleteLater();
+    toolWidget->deleteLater();*/
 }
 
 
@@ -2227,8 +2227,8 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
             return;
 
         if (freeze) {
-            item_casted->widgetWebView()->page()->mainFrame()->setContent(UBW3CWidget::freezedWidgetPage().toAscii());
+            item_casted->page()->mainFrame()->setContent(UBW3CWidget::freezedWidgetPage().toAscii());
         } else
-            item_casted->widgetWebView()->loadMainHtml();
+            item_casted->loadMainHtml();
     }
 }

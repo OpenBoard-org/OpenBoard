@@ -20,7 +20,7 @@
 
 #include "core/UB.h"
 
-#include "UBGraphicsProxyWidget.h"
+#include "UBGraphicsWebView.h"
 #include "UBW3CWidget.h"
 #include "UBAppleWidget.h"
 
@@ -32,7 +32,7 @@ class UBW3CWidgetWebStorageAPI;
 class UBGraphiscItem;
 class UBGraphiscItemDelegate;
 
-class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
+class UBGraphicsWidgetItem : public UBGraphicsWebView
 {
     Q_OBJECT
 
@@ -42,26 +42,25 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
 
         virtual UBGraphicsScene* scene();
 
-        UBAbstractWidget* widgetWebView();
-
         virtual void initialize();
 
         virtual UBItem* deepCopy() const = 0;
 
-        virtual void resize ( qreal w, qreal h );
-        virtual void resize ( const QSizeF & size );
-
+        /* preferences */
         void setPreference(const QString& key, QString value);
         QString preference(const QString& key) const;
         QMap<QString, QString> preferences() const;
         void removePreference(const QString& key);
         void removeAllPreferences();
 
+        /* datastore */
+
         void setDatastoreEntry(const QString& key, QString value);
         QString datastoreEntry(const QString& key) const;
         QMap<QString, QString> datastoreEntries() const;
         void removeDatastoreEntry(const QString& key);
         void removeAllDatastoreEntries();
+
         virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate; }
 
         virtual void remove();
@@ -80,6 +79,73 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         virtual void clearSource();
         virtual void setUuid(const QUuid &pUuid);
 
+    /* from UBAbstractWidget */
+        void loadMainHtml();
+
+        QUrl mainHtml()
+        {
+            return mMainHtmlUrl;
+        }
+
+        QUrl widgetUrl()
+        {
+            return mWidgetUrl;
+        }
+
+        QString mainHtmlFileName()
+        {
+            return mMainHtmlFileName;
+        }
+
+        bool hasEmbededObjects();
+        bool hasEmbededFlash();
+
+        void resize(qreal width, qreal height);
+
+        QSize nominalSize() const
+        {
+            return mNominalSize;
+        }
+
+        bool canBeContent();
+        bool canBeTool();
+
+        bool hasLoadedSuccessfully() const
+        {
+            return (mInitialLoadDone && !mLoadIsErronous);
+        }
+
+        bool freezable() 
+        { 
+            return mIsFreezable;
+        }
+
+        bool resizable()
+        { 
+            return mIsResizable;
+        }
+
+        static QString iconFilePath(const QUrl& pUrl);
+        static QString widgetName(const QUrl& pUrl);
+        static int widgetType(const QUrl& pUrl);
+
+        bool isFrozen()
+        { 
+            return mIsFrozen;
+        }
+
+        QPixmap snapshot(){
+            return mSnapshot;
+        }
+
+        void setSnapshot(const QPixmap& pix);
+
+        QPixmap takeSnapshot();
+
+    public slots:
+        void freeze();
+        void unFreeze();
+    /* end from */
 
     protected:
 
@@ -96,14 +162,44 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         virtual void sendJSEnterEvent();
         virtual void sendJSLeaveEvent();
 
-        UBAbstractWidget* mWebKitWidget;
-
         QMap<QString, QString> mPreferences;
         QMap<QString, QString> mDatastore;
+
+        /* from UBAbstractWidget*/
+        bool mMouseIsPressed;
+        bool mFirstReleaseAfterMove;
+        QUrl mMainHtmlUrl;
+        QString mMainHtmlFileName;
+        QUrl mWidgetUrl;
+        QSize mNominalSize;
+        bool mIsResizable;
+        bool mInitialLoadDone;
+        bool mLoadIsErronous;
+
+        bool mIsFreezable;
+        int mCanBeContent;
+        int mCanBeTool;
+        enum OSType
+        {
+            type_NONE = 0, // 0000
+            type_WIN  = 1, // 0001
+            type_MAC  = 2, // 0010
+            type_UNIX = 4, // 0100
+            type_ALL  = 7, // 0111
+        };
+
+        virtual void injectInlineJavaScript();
+        virtual void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+
+        virtual void dropEvent(QDropEvent *);
+        /* end from */
 
     protected slots:
         void geometryChangeRequested(const QRect& geom);
         virtual void javaScriptWindowObjectCleared();
+        /* from UBAbstractWidget*/
+        void mainFrameLoadFinished(bool ok);
+        /* end from */
 
     private:
         QPointF mLastMousePos;
@@ -111,6 +207,14 @@ class UBGraphicsWidgetItem : public UBGraphicsProxyWidget
         UBWidgetUniboardAPI* mUniboardAPI;
         QUrl ownFolder;
         QUrl SnapshotFile;
+
+        /* from UBAbstractWidget*/
+        static QStringList sInlineJavaScripts;
+        static bool sInlineJavaScriptLoaded;
+        bool mIsFrozen;
+        QPixmap mSnapshot;
+        bool mIsTakingSnapshot;
+        /* end from */
 };
 
 class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
@@ -119,7 +223,6 @@ class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
 
     public:
         UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
-        UBGraphicsAppleWidgetItem(UBAppleWidget *appleWidget, QGraphicsItem *parent = 0);
         ~UBGraphicsAppleWidgetItem();
 
         enum { Type = UBGraphicsItemType::AppleWidgetItemType };
@@ -139,8 +242,7 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
     Q_OBJECT
 
     public:
-        UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0, int widgetType = UBGraphicsItemType::W3CWidgetItemType);
-        UBGraphicsW3CWidgetItem(UBW3CWidget *w3cWidget, QGraphicsItem *parent = 0, int widgetType = UBGraphicsItemType::W3CWidgetItemType);
+        UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
         ~UBGraphicsW3CWidgetItem();
 
         enum { Type = UBGraphicsItemType::W3CWidgetItemType };
@@ -152,12 +254,45 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
 
         virtual UBItem* deepCopy() const;
 
-        UBW3CWidget::Metadata metadatas() const;
-
         UBW3CWidget* w3cWidget() const;
 
         virtual void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget );
         virtual void setUuid(const QUuid &pUuid);
+
+        static QString createNPAPIWrapper(const QString& url,
+            const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150),
+            const QString& pName = QString());
+
+        static QString createNPAPIWrapperInDir(const QString& url, const QDir& pDir,
+            const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150),
+            const QString& pName = QString());
+
+        static QString createHtmlWrapperInDir(const QString& html, const QDir& pDir,
+            const QSize& sizeHint,  const QString& pName);
+
+        static QString freezedWidgetPage();
+
+        static bool hasNPAPIWrapper(const QString& pMimeType);
+
+        class Metadata
+        {
+            public:
+                QString id;
+                QString name;
+                QString description;
+                QString author;
+                QString authorEmail;
+                QString authorHref;
+                QString version;
+        };
+
+
+        Metadata metadatas() const
+        {
+            return mMetadatas;
+        }
+
+        Metadata mMetadatas;
 
     private slots:
 
@@ -165,8 +300,17 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
 
     private:
 
-        UBW3CWidget* mW3CWidget;
         UBW3CWidgetAPI* mW3CWidgetAPI;
+
+        static bool sTemplateLoaded;
+
+        static QMap<QString, QString> sNPAPIWrapperTemplates;
+
+        static QString sNPAPIWrappperConfigTemplate;
+
+        static void loadNPAPIWrappersTemplates();
+
+        static QString textForSubElementByLocale(QDomElement rootElement, QString subTagName, QLocale locale);
 
 
 };

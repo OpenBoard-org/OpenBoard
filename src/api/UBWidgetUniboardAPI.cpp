@@ -736,9 +736,9 @@ void UBDocumentDatastoreAPI::removeItem(const QString& key)
 {
     mGraphicsW3CWidget->removeDatastoreEntry(key);
 }
+void
 
-
-void UBDocumentDatastoreAPI::clear()
+ UBDocumentDatastoreAPI::clear()
 {
     mGraphicsW3CWidget->removeAllDatastoreEntries();
 }
