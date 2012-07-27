@@ -57,6 +57,8 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         void hideToolBar();
 
+        void onZoomChanged();
+
     protected:
         virtual void buildButtons();
 
@@ -71,6 +73,7 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         QTimer *mToolBarShowTimer;
         int m_iToolBarShowingInterval;
+        bool mToolBarIsShown;
 };
 
 #endif /* UBGRAPHICSMEDIAITEMDELEGATE_H_ */

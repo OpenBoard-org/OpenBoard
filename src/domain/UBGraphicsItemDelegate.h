@@ -128,6 +128,7 @@ class DelegateMediaControl: public QObject, public QGraphicsRectItem
         void positionHandles();
         void updateTicker(qint64 time);
         void totalTimeChanged(qint64 newTotalTime);
+        QSizeF lcdAreaSize(){return mLCDTimerArea.size();}
 
     signals:
         void used();
@@ -165,6 +166,7 @@ class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
         int minWidth() { return mMinWidth; }
         void positionHandles();
         void update();
+        int getElementsPadding(){return mElementsPadding;}
 
     private:
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -175,6 +177,7 @@ class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
         bool mVisible;
         int mMinWidth;
         int mInitialHeight;
+        int mElementsPadding;
         QList<QGraphicsItem*> mItemsOnToolBar;
 };
 

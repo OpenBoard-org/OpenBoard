@@ -21,7 +21,6 @@
 #include "document/UBDocumentProxy.h"
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
-#include "frameworks/UBFileSystemUtils.h"
 #include "core/memcheck.h"
 
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
@@ -56,7 +55,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         if(mVideoWidget->sizeHint() == QSize(1,1)){
             mVideoWidget->resize(320,240);
-            mVideoWidget->setMinimumSize(131,26);
+            mVideoWidget->setMinimumSize(140,26);
         }
         setWidget(mVideoWidget);
         haveLinkedImage = true;
@@ -69,9 +68,15 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         mMediaObject->setTickInterval(1000);
         mAudioWidget = new UBGraphicsMediaItem::UBAudioPresentationWidget();
-        int borderSize = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(mAudioWidget)->borderSize();
-        mAudioWidget->resize(320+2*borderSize,26+2*borderSize);
-        mAudioWidget->setMinimumSize(147,26+2*borderSize);
+        int borderSize = 0;
+        UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(mAudioWidget);
+        if (pAudioWidget)
+        {
+            borderSize = pAudioWidget->borderSize();
+        }
+
+        mAudioWidget->resize(320,26+3*borderSize);
+        mAudioWidget->setMinimumSize(150,26+borderSize);
         setWidget(mAudioWidget);
         haveLinkedImage = false;
     }

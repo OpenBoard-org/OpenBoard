@@ -36,6 +36,7 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
     , mMedia(pMedia)
     , mToolBarShowTimer(NULL)
     , m_iToolBarShowingInterval(5000)
+    , mToolBarIsShown(false)
 {
     QPalette palette;
     palette.setBrush ( QPalette::Light, Qt::darkGray );
@@ -52,12 +53,18 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
         connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
         mToolBarShowTimer->setInterval(m_iToolBarShowingInterval);
     }
+
+    if (delegated()->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
+    {
+        connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
+    }
 }
 
 bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     mToolBarItem->show();
+    mToolBarIsShown = true;
 
     if (mToolBarShowTimer)
         mToolBarShowTimer->start();
@@ -68,6 +75,14 @@ bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *even
 void UBGraphicsMediaItemDelegate::hideToolBar()
 {
     mToolBarItem->hide();
+    mToolBarIsShown = false;
+}
+
+void UBGraphicsMediaItemDelegate::onZoomChanged()
+{
+    positionHandles();
+    if (!mToolBarIsShown)
+        hideToolBar();
 }
 
 void UBGraphicsMediaItemDelegate::buildButtons()
@@ -126,32 +141,45 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     UBGraphicsMediaItem *mediaItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
     if (mediaItem)
     {
-       
-        mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height()*AntiScaleRatio);
-        mToolBarItem->setScale(AntiScaleRatio);
         QRectF toolBarRect = mToolBarItem->rect();
-        toolBarRect.setWidth(delegated()->boundingRect().width()/AntiScaleRatio);
+        if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
+        {      
+            mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());//*AntiScaleRatio);
+           // mToolBarItem->setScale(AntiScaleRatio);
 
-        if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
+            toolBarRect.setWidth(delegated()->boundingRect().width());//AntiScaleRatio);
+        }
+        else if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
         {
             int borderSize = 0;
             UBGraphicsMediaItem::UBAudioPresentationWidget *audioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(delegated()->widget());
             if (audioWidget)
                 borderSize = audioWidget->borderSize();
 
-            toolBarRect.setWidth(delegated()->boundingRect().width()/AntiScaleRatio-2*borderSize);
-            mToolBarItem->setPos(borderSize,borderSize);
+            mToolBarItem->setPos(borderSize,delegated()->boundingRect().height()-(mToolBarItem->rect().height() + borderSize));//*AntiScaleRatio);
+            toolBarRect.setWidth((delegated()->boundingRect().width()-2*borderSize));///AntiScaleRatio);
             mToolBarItem->show();
         }
 
         mToolBarItem->setRect(toolBarRect);
     }
 
+    int toolBarMinimumWidth = 0;
     int mediaItemWidth = mToolBarItem->boundingRect().width();
     foreach (DelegateButton* button, mButtons)
     {
         if (button->getSection() == Qt::TitleBarArea)
-            mediaItemWidth -= button->boundingRect().width();
+        {
+            mediaItemWidth -= button->boundingRect().width() + mToolBarItem->getElementsPadding();
+            toolBarMinimumWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
+        }
+    }
+    toolBarMinimumWidth += mToolBarItem->boundingRect().height();
+
+    UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(delegated()->widget());
+    if (pAudioWidget)
+    {
+       pAudioWidget->setMinimumSize(toolBarMinimumWidth + (int)mMediaControl->lcdAreaSize().width() + (int)mMediaControl->rect().height(),26+pAudioWidget->borderSize());
     }
 
     QRectF mediaItemRect = mMediaControl->rect();

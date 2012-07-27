@@ -672,7 +672,8 @@ UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) :
     mShifting(true),
     mVisible(false),
     mMinWidth(200),
-    mInitialHeight(26)
+    mInitialHeight(26),
+    mElementsPadding(2)
 {
     QRectF rect = this->rect();
     rect.setHeight(mInitialHeight);
@@ -693,7 +694,7 @@ void UBGraphicsToolBarItem::positionHandles()
     foreach (QGraphicsItem* item, mItemsOnToolBar)
     {
         item->setPos(itemXOffset, 0);
-        itemXOffset += (item->boundingRect().width());
+        itemXOffset += (item->boundingRect().width()+mElementsPadding);
         item->show();
     }
 }
@@ -1150,7 +1151,7 @@ void DelegateMediaControl::paint(QPainter *painter,
     mLCDTimerArea.setWidth(rect().height());
 
     mSeecArea = rect();
-    mSeecArea.setWidth(rect().width()-mLCDTimerArea.width());
+    mSeecArea.setWidth(rect().width()-mLCDTimerArea.width()-2);
 
     path.addRoundedRect(mSeecArea, mSeecArea.height()/2, mSeecArea.height()/2);
     painter->fillPath(path, brush());

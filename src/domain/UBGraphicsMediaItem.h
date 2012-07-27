@@ -21,6 +21,7 @@
 #include <phonon/VideoWidget>
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 
 class UBGraphicsMediaItem : public UBGraphicsProxyWidget
@@ -33,10 +34,16 @@ public:
         public:
             UBAudioPresentationWidget::UBAudioPresentationWidget(QWidget *parent = NULL)
                 :QWidget(parent)
-                , mBorderSize(7)
+                , mBorderSize(10)
+                , mTitleSize(10)
             {}
 
-            int borderSize(){return mBorderSize;}
+            int borderSize()
+            {
+                return mBorderSize;
+            }
+            void setTitle(QString title = QString()){mTitle = title;}
+            QString getTitle(){return mTitle;}
 
         private:
             virtual void paintEvent(QPaintEvent *event)
@@ -44,10 +51,22 @@ public:
                 QPainter painter(this);
                 painter.fillRect(rect(), QBrush(Qt::black));
 
+                if (QString() != mTitle)
+                {
+                    painter.setPen(QPen(Qt::white));                 
+                    QRect titleRect = rect();
+                    titleRect.setX(mBorderSize);
+                    titleRect.setY(2);
+                    titleRect.setHeight(15);
+                    painter.drawText(titleRect, mTitle);
+                }
+
                 QWidget::paintEvent(event);
             }
 
         int mBorderSize;
+        int mTitleSize;
+        QString mTitle;
     };
 
 public:
@@ -103,6 +122,17 @@ public:
     virtual UBGraphicsScene* scene();
 
     virtual UBItem* deepCopy() const;
+
+    virtual void setSourceUrl(const QUrl &pSourceUrl)
+    {
+        UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(mAudioWidget);
+        if (pAudioWidget)
+        {
+            pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toLocalFile()));
+        }
+
+        UBItem::setSourceUrl(pSourceUrl);
+    }
 
 public slots:
 
