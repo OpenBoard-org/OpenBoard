@@ -48,29 +48,17 @@ UBGraphicsWebView::~UBGraphicsWebView()
 
 QVariant UBGraphicsWebView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    /*if (change == QGraphicsItem::ItemCursorHasChanged &&  scene())
-    {
-        unsetCursor();
-    }
-    if ((change == QGraphicsItem::ItemSelectedHasChanged)
-              &&  scene())
-    {
+    if ((change == QGraphicsItem::ItemSelectedHasChanged) &&  scene()) {
         if (isSelected())
-        {
             scene()->setActiveWindow(this);
-        }
-        else
-        {
+        else {
             if(scene()->activeWindow() == this)
-            {
                 scene()->setActiveWindow(0);
-            }
         }
-    }*/
+    }
 
     QVariant newValue = mDelegate->itemChange(change, value);
     return QGraphicsWebView::itemChange(change, newValue);
-    //return QGraphicsWebView::itemChange(change, value);
 }
 
 void UBGraphicsWebView::setUuid(const QUuid &pUuid)
