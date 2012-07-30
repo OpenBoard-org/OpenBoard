@@ -924,9 +924,9 @@ UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
 
     copy->resize(this->size().width(), this->size().height());
 
-    foreach(QString key, mPreferences.keys())
+    foreach(QString key, UBGraphicsWidgetItem::preferences().keys())
     {
-        copy->setPreference(key, mPreferences.value(key));
+        copy->setPreference(key, UBGraphicsWidgetItem::preferences().value(key));
     }
 
     foreach(QString key, mDatastore.keys())

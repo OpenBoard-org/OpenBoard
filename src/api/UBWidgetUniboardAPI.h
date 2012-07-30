@@ -57,7 +57,7 @@ class UBWidgetUniboardAPI : public QObject
      *
      * some potential values are
      *
-     * enlocale
+     * en
      * en-UK
      * fr
      * fr-CH

@@ -48,7 +48,7 @@ UBGraphicsWebView::~UBGraphicsWebView()
 
 QVariant UBGraphicsWebView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemCursorHasChanged &&  scene())
+    /*if (change == QGraphicsItem::ItemCursorHasChanged &&  scene())
     {
         unsetCursor();
     }
@@ -66,10 +66,11 @@ QVariant UBGraphicsWebView::itemChange(GraphicsItemChange change, const QVariant
                 scene()->setActiveWindow(0);
             }
         }
-    }
+    }*/
 
     QVariant newValue = mDelegate->itemChange(change, value);
     return QGraphicsWebView::itemChange(change, newValue);
+    //return QGraphicsWebView::itemChange(change, value);
 }
 
 void UBGraphicsWebView::setUuid(const QUuid &pUuid)

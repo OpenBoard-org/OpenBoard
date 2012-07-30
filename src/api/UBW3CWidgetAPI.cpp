@@ -118,7 +118,7 @@ void UBW3CWidgetAPI::openURL(const QString& url)
 }
 
 
-UBW3CWidgetPreferenceAPI::UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QOBject *parent)
+UBW3CWidgetPreferenceAPI::UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QObject *parent)
     : UBW3CWebStorage(parent)
     , mGraphicsW3CWidget(graphicsWidget)
 {
@@ -133,7 +133,7 @@ UBW3CWidgetPreferenceAPI::~UBW3CWidgetPreferenceAPI()
 
 QString UBW3CWidgetPreferenceAPI::key(int index)
 {
-  QMap<QString, UBGraphicsWidgetItem::PreferenceValue> w3CPrefs = mGraphicsW3CWidget->preferences();
+  QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3CPrefs = mGraphicsW3CWidget->preferences();
 
   if (index < w3CPrefs.size())
     return w3CPrefs.keys().at(index);
@@ -141,22 +141,28 @@ QString UBW3CWidgetPreferenceAPI::key(int index)
     return "";
 }
 
-
 QString UBW3CWidgetPreferenceAPI::getItem(const QString& key)
 {
   if (mGraphicsW3CWidget) {
-    QMap<QString, UBGraphicsWidgetItem::PreferenceValue> w3cPref = mGraphicsW3CWidget->preferences();
-
-    if (w3cPref.contains(key))
-      return w3cPref.value(key).value;
+    QMap<QString, QString> docPref = mGraphicsW3CWidget->UBGraphicsWidgetItem::preferences();
+    if (docPref.contains(key))
+      return docPref.value(key);
   }
-  return "";
-}
 
+  QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
+
+  if (w3cPrefs.contains(key)) {
+    UBGraphicsW3CWidgetItem::PreferenceValue pref = w3cPrefs.value(key);
+    return pref.value;
+  }
+
+  else
+    return "";
+}
 
 int UBW3CWidgetPreferenceAPI::length()
 {
-   QMap<QString, UBGraphicsWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget-->preferences();
+   QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
 
    return w3cPrefs.size();
 }
@@ -165,12 +171,14 @@ int UBW3CWidgetPreferenceAPI::length()
 void UBW3CWidgetPreferenceAPI::setItem(const QString& key, const QString& value)
 {
   if (mGraphicsW3CWidget) {
-    QMap<QString, UBGraphicsWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
+    QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
 
     if (w3cPrefs.contains(key) && !w3cPrefs.value(key).readonly)
       mGraphicsW3CWidget->setPreference(key, value);
   }
 }
+
+
 
 
 void UBW3CWidgetPreferenceAPI::removeItem(const QString& key)

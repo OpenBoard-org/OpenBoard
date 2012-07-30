@@ -17,7 +17,7 @@
 
 #include "core/UBApplication.h"
 
-#include "domain/UBGraphicsWidget.h"
+#include "domain/UBGraphicsWebView.h"
 
 #include "core/memcheck.h"
 

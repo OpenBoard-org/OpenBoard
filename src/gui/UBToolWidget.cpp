@@ -131,12 +131,12 @@ void UBToolWidget::javaScriptWindowObjectCleared()
 
     mToolWidget->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
 
-    UBW3CWidget* w3c = dynamic_cast<UBW3CWidget*>(mToolWidget);
+    /*UBW3CWidget* w3c = dynamic_cast<UBW3CWidget*>(mToolWidget);
     if (w3c)
     {
         UBW3CWidgetAPI* widgetAPI = new UBW3CWidgetAPI(w3c);
         mToolWidget->page()->mainFrame()->addToJavaScriptWindowObject("widget", widgetAPI);
-    }
+    }*/
 }
 
 

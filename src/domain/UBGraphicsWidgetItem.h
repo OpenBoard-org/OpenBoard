@@ -100,8 +100,6 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
         bool hasEmbededObjects();
         bool hasEmbededFlash();
 
-        void resize(qreal width, qreal height);
-
         QSize nominalSize() const
         {
             return mNominalSize;
@@ -191,7 +189,7 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
         virtual void injectInlineJavaScript();
         virtual void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-        virtual void dropEvent(QDropEvent *);
+        //virtual void dropEvent(QDropEvent *);
         /* end from */
 
     protected slots:
@@ -274,6 +272,26 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
 
         static bool hasNPAPIWrapper(const QString& pMimeType);
 
+        class PreferenceValue
+        {
+            public:
+
+                PreferenceValue()
+                {
+                    // NOOP
+                }
+                
+
+                PreferenceValue(const QString& pValue, bool pReadonly)
+                {
+                    value = pValue;
+                    readonly = pReadonly;
+                }
+
+                QString value;
+                bool readonly;
+         };
+
         class Metadata
         {
             public:
@@ -286,6 +304,10 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
                 QString version;
         };
 
+        QMap<QString, PreferenceValue> preferences()
+        {
+            return mPreferences;
+        }
 
         Metadata metadatas() const
         {
@@ -299,6 +321,8 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void javaScriptWindowObjectCleared();
 
     private:
+
+        QMap<QString, PreferenceValue> mPreferences;
 
         UBW3CWidgetAPI* mW3CWidgetAPI;
 

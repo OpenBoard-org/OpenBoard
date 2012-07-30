@@ -108,7 +108,7 @@ class UBW3CWidgetPreferenceAPI : public UBW3CWebStorage
     Q_OBJECT;
 
     public:
-        UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QOBject *parent = 0);
+        UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QObject *parent = 0);
 
         virtual ~UBW3CWidgetPreferenceAPI();
 

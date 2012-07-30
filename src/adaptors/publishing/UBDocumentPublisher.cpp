@@ -301,7 +301,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
                 QString startFile = widget->mainHtmlFileName();
                 jsonFile.write(QString("      \"startFile\": \"%1\",\n").arg(startFile).toUtf8());
 
-                QMap<QString, QString> preferences = widget->preferences();
+                QMap<QString, QString> preferences = widget->UBGraphicsWidgetItem::preferences();
 
                 jsonFile.write(QString("      \"preferences\": {\n").toUtf8());
 
@@ -360,7 +360,7 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *widgetItem, int pageNumber)
 {
 
-    QMap<QString, QString> preferences = widgetItem->preferences();
+    QMap<QString, QString> preferences = widgetItem->UBGraphicsWidgetItem::preferences();
     QMap<QString, QString> datastoreEntries = widgetItem->datastoreEntries();
 
     QString startFileName = widgetItem->mainHtmlFileName();
