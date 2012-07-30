@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 13.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.0" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1206.59px"
+	 height="1121.583px" viewBox="0 0 1206.59 1121.583" enable-background="new 0 0 1206.59 1121.583" xml:space="preserve">
+<switch>
+
+	<g i:extraneous="self">
+		<g id="Arrière-plan">
+		</g>
+		<g id="Guides">
+		</g>
+		<g id="Premier_plan">
+			<g>
+				<g>
+					<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="1140.2407" y1="51.2153" x2="451.9729" y2="733.2268">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+						<stop  offset="1" style="stop-color:#EDFFFF"/>
+					</linearGradient>
+					<polygon fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_1_)" points="1131.978,56.837 1132.222,707.661 
+						480.173,707.801 480.168,56.788 					"/>
+					<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="10.6201" y1="413.2202" x2="480.0916" y2="706.8041">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+						<stop  offset="1" style="stop-color:#FFF5FF"/>
+					</linearGradient>
+					<polygon fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_2_)" points="44.015,433.498 44.26,1084.322 
+						480.173,707.801 480.168,56.788 					"/>
+					<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="705.7593" y1="1093.8228" x2="472.1647" y2="699.6325">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+						<stop  offset="1" style="stop-color:#FFFFDC"/>
+					</linearGradient>
+					<polygon fill-rule="evenodd" clip-rule="evenodd" fill="url(#SVGID_3_)" points="699.716,1084.131 44.26,1084.322 
+						480.173,707.801 1132.434,707.058 					"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="480.333" y1="707.702" x2="38.006" y2="1089.623"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="480.19" y1="707.802" x2="1187.203" y2="707.758"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="480.172" y1="707.814" x2="480.172" y2="9.556"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="436.565" y1="745.475" x2="436.565" y2="74.479"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="392.884" y1="783.2" x2="392.884" y2="111.872"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="349.209" y1="820.917" x2="349.209" y2="149.261"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="305.534" y1="858.635" x2="305.534" y2="186.649"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="261.859" y1="896.355" x2="261.859" y2="224.039"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="218.185" y1="934.073" x2="218.185" y2="261.427"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="174.51" y1="971.791" x2="174.51" y2="298.815"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="130.834" y1="1009.508" x2="130.834" y2="336.203"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="87.16" y1="1047.226" x2="87.16" y2="373.592"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="524.78" y1="707.696" x2="524.78" y2="34.299"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="568.194" y1="707.649" x2="568.194" y2="34.18"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="611.597" y1="707.604" x2="611.597" y2="34.062"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="655" y1="707.558" x2="655" y2="33.945"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="698.403" y1="707.511" x2="698.403" y2="33.826"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="741.806" y1="707.465" x2="741.806" y2="33.708"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="785.199" y1="707.42" x2="785.199" y2="33.589"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="828.602" y1="707.375" x2="828.602" y2="33.471"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="872.016" y1="707.327" x2="872.016" y2="33.353"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="915.419" y1="707.284" x2="915.419" y2="33.234"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="958.824" y1="707.237" x2="958.824" y2="33.116"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="1002.215" y1="707.191" x2="1002.215" y2="32.998"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="1045.618" y1="707.145" x2="1045.618" y2="32.88"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.9159" stroke-miterlimit="3.8637" x1="1089.021" y1="707.1" x2="1089.021" y2="32.762"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="1132.426" y1="707.054" x2="1132.426" y2="32.644"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="524.887" y1="707.726" x2="76.231" y2="1098.628"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="568.294" y1="707.678" x2="119.638" y2="1098.58"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="611.69" y1="707.631" x2="163.035" y2="1098.534"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="655.086" y1="707.583" x2="206.43" y2="1098.487"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="698.484" y1="707.536" x2="249.827" y2="1098.436"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="741.879" y1="707.487" x2="293.223" y2="1098.389"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="785.265" y1="707.441" x2="336.608" y2="1098.34"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="828.661" y1="707.392" x2="380.004" y2="1098.294"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="872.068" y1="707.344" x2="423.411" y2="1098.246"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="915.462" y1="707.297" x2="466.807" y2="1098.2"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="958.859" y1="707.25" x2="510.203" y2="1098.153"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="1002.245" y1="707.202" x2="553.589" y2="1098.104"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="1045.641" y1="707.156" x2="596.985" y2="1098.055"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.6397" stroke-miterlimit="3.8637" x1="1089.038" y1="707.106" x2="640.381" y2="1098.009"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="1132.434" y1="707.058" x2="699.608" y2="1084.142"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="480.169" y1="56.775" x2="1166.026" y2="56.689"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.169" y1="100.179" x2="1166.056" y2="100.092"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.169" y1="143.582" x2="1166.083" y2="143.496"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.169" y1="186.985" x2="1166.115" y2="186.898"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.17" y1="230.389" x2="1166.143" y2="230.302"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="480.17" y1="273.78" x2="1166.172" y2="273.694"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.17" y1="317.184" x2="1166.203" y2="317.097"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.17" y1="360.598" x2="1166.233" y2="360.511"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.17" y1="404.001" x2="1166.261" y2="403.914"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.172" y1="447.405" x2="1166.291" y2="447.318"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="480.172" y1="490.797" x2="1166.32" y2="490.711"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.172" y1="534.2" x2="1166.349" y2="534.113"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.172" y1="577.603" x2="1166.379" y2="577.516"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.172" y1="621.006" x2="1166.409" y2="620.919"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.927" stroke-miterlimit="3.8637" x1="480.172" y1="664.41" x2="1166.439" y2="664.324"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="480.173" y1="707.801" x2="1191.486" y2="707.751"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="28.121" y1="447.149" x2="480.169" y2="56.768"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.159" y1="490.519" x2="480.169" y2="100.171"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.197" y1="533.889" x2="480.17" y2="143.575"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.235" y1="577.259" x2="480.17" y2="186.979"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.274" y1="620.628" x2="480.17" y2="230.383"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="28.312" y1="663.988" x2="480.172" y2="273.774"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.352" y1="707.358" x2="480.172" y2="317.178"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.389" y1="750.74" x2="480.172" y2="360.594"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.428" y1="794.11" x2="480.173" y2="403.997"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.466" y1="837.479" x2="480.175" y2="447.401"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="28.505" y1="880.84" x2="480.176" y2="490.793"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.543" y1="924.209" x2="480.176" y2="534.197"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.582" y1="967.579" x2="480.176" y2="577.6"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.62" y1="1010.951" x2="480.177" y2="621.004"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.8446" stroke-miterlimit="3.8637" x1="28.659" y1="1054.317" x2="480.177" y2="664.408"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="12.276" y1="1112.514" x2="480.179" y2="707.801"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.7285" stroke-miterlimit="3.8637" x1="436.571" y1="745.471" x2="1122.935" y2="745.385"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.7285" stroke-miterlimit="3.8637" x1="392.896" y1="783.2" x2="1079.262" y2="783.113"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.7285" stroke-miterlimit="3.8637" x1="349.229" y1="820.923" x2="1035.592" y2="820.836"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.7285" stroke-miterlimit="3.8637" x1="305.561" y1="858.646" x2="991.924" y2="858.559"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="261.893" y1="896.369" x2="948.256" y2="896.282"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.7285" stroke-miterlimit="3.8637" x1="218.225" y1="934.094" x2="904.588" y2="934.005"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.7285" stroke-miterlimit="3.8637" x1="174.557" y1="971.818" x2="860.922" y2="971.731"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.7285" stroke-miterlimit="3.8637" x1="130.889" y1="1009.541" x2="817.252" y2="1009.454"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="0.7285" stroke-miterlimit="3.8637" x1="87.221" y1="1047.264" x2="773.584" y2="1047.177"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="43.984" y1="1084.631" x2="43.984" y2="410.521"/>
+					
+						<line fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFEB" stroke="#231F20" stroke-width="1.8318" stroke-miterlimit="3.8637" x1="44.003" y1="1084.194" x2="730.408" y2="1084.107"/>
+				</g>
+				<g>
+					<polygon fill-rule="evenodd" clip-rule="evenodd" points="480.638,0 490.458,16.188 470.817,16.159 					"/>
+				</g>
+				<g>
+					<polygon fill-rule="evenodd" clip-rule="evenodd" points="1206.59,707.576 1190.417,717.372 1190.417,697.732 					"/>
+				</g>
+				<g>
+					<polygon fill-rule="evenodd" clip-rule="evenodd" points="0,1121.583 6.699,1103.895 18.79,1119.391 					"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</switch>
+
+</svg>

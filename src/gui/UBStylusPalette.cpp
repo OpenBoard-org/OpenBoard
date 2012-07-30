@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -39,6 +39,7 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     actions << UBApplication::mainWindow->actionEraser;
     actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionSelector;
+    actions << UBApplication::mainWindow->actionPlay;
 
     actions << UBApplication::mainWindow->actionHand;
     actions << UBApplication::mainWindow->actionZoomIn;

@@ -1,0 +1,19 @@
+/* frame */
+
+#mp_setup{
+	text-align: right;
+}
+
+#mp_content{
+	margin-top: 5px;
+}
+
+.viewmode{
+	/* empty */
+}
+.editmode{
+	/* empty */
+}
+.hide{
+	display: none;
+}

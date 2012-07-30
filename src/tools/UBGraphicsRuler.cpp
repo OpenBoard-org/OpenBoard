@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -268,7 +268,7 @@ void UBGraphicsRuler::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
 	UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-	if (currentTool == UBStylusTool::Selector)
+	if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
 	{
 		mCloseSvgItem->setVisible(mShowButtons);
 		mResizeSvgItem->setVisible(mShowButtons);
@@ -376,7 +376,8 @@ void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-	if (currentTool == UBStylusTool::Selector)
+	if (currentTool == UBStylusTool::Selector ||
+        currentTool == UBStylusTool::Play)
 	{
 		mCloseSvgItem->setParentItem(this);
 	    mResizeSvgItem->setParentItem(this);

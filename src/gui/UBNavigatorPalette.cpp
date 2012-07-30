@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -24,19 +24,13 @@
  * @param name as the object name
  */
 UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):
-    UBDockPalette(eUBDockPaletteType_NAVIGATOR, parent, name)
+	UBDockPalette(eUBDockPaletteType_LEFT, parent, name)
 	, mNavigator(NULL)
 	, mLayout(NULL)
     , mHLayout(NULL)
     , mPageNbr(NULL)
     , mClock(NULL)
 {
-    setOrientation(eUBDockOrientation_Left);
-    setMaximumWidth(300);
-
-    resize(UBSettings::settings()->navigPaletteWidth->get().toInt(), height());
-    mLastWidth = 300;
-
     // Build the gui
     mLayout = new QVBoxLayout(this);
     mLayout->setContentsMargins(customMargin(), customMargin(), 2*border() + customMargin(), customMargin());
@@ -69,8 +63,7 @@ UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):
     mTimeFormat = mTimeFormat.remove(":s");
     mTimerID = startTimer(1000);
 
-    connect(mNavigator, SIGNAL(changeCurrentPage()), this, SLOT(changeCurrentPage()));  
-}
+}  
 
 /**
  * \brief Destructor
@@ -110,34 +103,12 @@ UBNavigatorPalette::~UBNavigatorPalette()
  * \brief Set the current document in the navigator
  * @param document as the given document
  */
-void UBNavigatorPalette::setDocument(UBDocumentProxy *document)
-{
-    if(mNavigator->currentDoc() != document)
-    {
-	mNavigator->setDocument(document);
-    }
-}
-
-/**
- * \brief Change the current page
- */
-void UBNavigatorPalette::changeCurrentPage()
-{
-    //	Get the index of the page to display
-    int iPage = mNavigator->selectedPageNumber();
-    if(NO_PAGESELECTED != iPage)
-    {
-	// Display the selected page
-    UBApplication::boardController->setActiveDocumentScene(mNavigator->currentDoc(), iPage);
-    }
-}
 
 /**
  * \brief Refresh the thumbnails widget
  */
 void UBNavigatorPalette::refresh()
 {
-    mNavigator->setDocument(UBApplication::boardController->activeDocument());
 }
 
 /**
@@ -151,7 +122,6 @@ void UBNavigatorPalette::resizeEvent(QResizeEvent *event)
     {
         mNavigator->setMinimumHeight(height() - 2*border());
     }
-    UBSettings::settings()->navigPaletteWidth->set(width());
 }
 
 void UBNavigatorPalette::timerEvent(QTimerEvent *event)

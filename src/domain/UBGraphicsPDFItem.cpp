@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -28,7 +28,7 @@ UBGraphicsPDFItem::UBGraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGra
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object); //deprecated
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::BackgroundItem)); //Necessary to set if we want z value to be assigned correctly
-    mDelegate = new UBGraphicsItemDelegate(this,0);
+    mDelegate = new UBGraphicsItemDelegate(this,0, true, false, false);
     mDelegate->init();
 }
 

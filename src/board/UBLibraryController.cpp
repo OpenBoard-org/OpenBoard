@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -155,7 +155,7 @@ void UBLibraryController::routeItem(QString& pItem, QString pMiddleDirectory)
         }
         destination = UBFileSystemUtils::normalizeFilePath(destination + "/" + itemToRoute.fileName());
 
-        QFile::copy(pItem, destination);
+        UBFileSystemUtils::copyFile(QUrl(pItem).toLocalFile(), destination, false);
     }
 }
 
@@ -262,13 +262,12 @@ QList<UBLibElement*> UBLibraryController::rootCategoriesList()
     element->setMoveable(false);
     categories << element;
 
-    mInteractiveCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationGipLibraryDirectory());
+    mInteractiveCategoryPath = QUrl::fromLocalFile(UBSettings::settings()->userGipLibraryDirectory());
     element = new UBLibElement(eUBLibElementType_Folder, mInteractiveCategoryPath, tr("Interactivities", "Interactives category element"));
     element->setThumbnail(QImage(":images/libpalette/InteractivesCategory.svg"));
     element->setMoveable(false);
     categories << element;
 
-//  Note : FEATURE IN DEVELOPMENT, DO NOT ERASE (or you will get problems) !!!!
     mSearchCategoryPath = QUrl::fromLocalFile(UBSettings::userSearchDirectory());
     element = new UBLibElement(eUBLibElementType_Folder, mSearchCategoryPath, tr("Web Search", "Web search category element"));
     element->setThumbnail(QImage(":images/libpalette/WebSearchCategory.svg"));
@@ -291,7 +290,6 @@ QImage UBLibraryController::createThumbnail(UBLibElement* pElement)
 {
     QString thumbnailPath = UBFileSystemUtils::thumbnailPath(pElement->path().toLocalFile());
     QString mimetype = UBFileSystemUtils::mimeTypeFromFileName(pElement->path().toLocalFile());
-    UBApplication::showMessage(tr("Creating image thumbnail for %1.").arg(pElement->name()));
 
     if (mimetype.contains("audio"))
         thumbnailPath = ":images/libpalette/soundIcon.svg";
@@ -309,6 +307,7 @@ QImage UBLibraryController::createThumbnail(UBLibElement* pElement)
                 pix.save(thumbnailPath);
                 UBThumbnailPixmap pixmap(pix);
                 UBPlatformUtils::hideFile(thumbnailPath);
+                UBApplication::showMessage(tr("Creating image thumbnail for %1.").arg(pElement->name()));
             }
             else{
                 thumbnailPath = ":images/libpalette/notFound.png";
@@ -357,8 +356,18 @@ QList<UBLibElement*> UBLibraryController::addVirtualElementsForItemPath(const QS
     else if (pPath == mInteractiveCategoryPath.toLocalFile()){
         content << listElementsInPath(UBSettings::settings()->applicationInteractivesDirectory());
     }
+    else if (pPath == mAudioStandardDirectoryPath.toLocalFile()){
+    	content << listElementsInPath(UBSettings::settings()->applicationAudiosLibraryDirectory());
+    }
+    else if (pPath == mVideoStandardDirectoryPath.toLocalFile()){
+    	content << listElementsInPath(UBSettings::settings()->applicationVideosLibraryDirectory());
+    }
+    else if (pPath == mAnimationUserDirectoryPath.toLocalFile()){
+    	content << listElementsInPath(UBSettings::settings()->applicationAnimationsLibraryDirectory());
+    }
 
     return content;
+
 }
 
 QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPath)
@@ -370,15 +379,19 @@ QList<UBLibElement*> UBLibraryController::listElementsInPath(const QString& pPat
     for (fileInfo = fileInfoList.begin(); fileInfo != fileInfoList.end(); fileInfo += 1) {
         eUBLibElementType fileType = fileInfo->isDir() ? eUBLibElementType_Folder : eUBLibElementType_Item;
 
-        QString fileName = fileInfo->fileName();
-        if (UBFileSystemUtils::mimeTypeFromFileName(fileName).contains("application")) {
+        QString itemName = fileInfo->fileName();
+        QString extension="";
+        if (UBFileSystemUtils::mimeTypeFromFileName(itemName).contains("application")) {
             fileType = eUBLibElementType_InteractiveItem;
+            itemName = fileInfo->baseName();
+            extension = fileInfo->completeSuffix();
         }
 
-        // This is necessary because of the w3c widget directory (xxxx.wgt).
-        QString itemName = (fileType != eUBLibElementType_Item) ? fileName : fileInfo->completeBaseName();
 
         UBLibElement *element = new UBLibElement(fileType, QUrl::fromLocalFile(fileInfo->absoluteFilePath()), itemName);
+
+        if(!extension.isEmpty())
+            element->setExtension(extension);
 
         if (fileType == eUBLibElementType_Folder) {
             element->setThumbnail(QImage(":images/libpalette/folder.svg"));
@@ -505,7 +518,7 @@ void UBLibraryController::setItemAsBackground(UBLibElement* image)
     }
     else{
         QPixmap pix(image->path().toLocalFile());
-        UBGraphicsPixmapItem* boardItem = activeScene()->addPixmap(pix, QPointF(0, 0));
+        UBGraphicsPixmapItem* boardItem = activeScene()->addPixmap(pix, activeScene()->backgroundObject(), QPointF(0, 0));
         activeScene()->setAsBackgroundObject(boardItem, true);
     }
 }
@@ -549,7 +562,7 @@ void UBLibraryController::removeBackground()
 
 UBGraphicsScene* UBLibraryController::activeScene()
 {
-    if (mBoardController->activeDocument())
+    if (mBoardController->selectedDocument())
         return mBoardController->activeScene();
 
     return 0;
@@ -679,7 +692,7 @@ void UBLibraryController::addImagesToCurrentPage(const QList<QUrl>& images)
                 itemInScene = activeScene()->addSvg(url, pos);
             } else {
                 itemInScene = activeScene()->addPixmap(QPixmap(
-                        url.toLocalFile()), pos);
+                        url.toLocalFile()), NULL, pos);
             }
         }
 

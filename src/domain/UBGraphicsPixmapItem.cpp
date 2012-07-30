@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -28,7 +28,7 @@
 UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
 {
-    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true);
+    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true, false);
     mDelegate->init();
 
     mDelegate->setFlippable(true);
@@ -65,8 +65,9 @@ void UBGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QMimeData* pMime = new QMimeData();
     pMime->setImageData(pixmap().toImage());
     mDelegate->setMimeData(pMime);
-    int k = pixmap().width() / 100;
-    QSize newSize(pixmap().width() / k, pixmap().height() / k);
+    qreal k = (qreal)pixmap().width() / 100.0;
+
+    QSize newSize((int)(pixmap().width() / k), (int)(pixmap().height() / k));
 
     mDelegate->setDragPixmap(pixmap().scaled(newSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 

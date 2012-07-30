@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -35,8 +35,6 @@
 #include "UBPreferencesController.h"
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
-
-//#include "softwareupdate/UBSoftwareUpdateController.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -131,33 +129,25 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
         || args.contains("-log")
         || args.contains("log");
 
-    UBPlatformUtils::init();
+
     UBResources::resources();
 
     if (!undoStack)
-    {
         undoStack = new QUndoStack(staticMemoryCleaner);
-    }
 
-    mApplicationTranslator = new QTranslator(this);
-    mApplicationTranslator->load(UBPlatformUtils::preferredTranslation(QString("sankore_")));
-    installTranslator(mApplicationTranslator);
-
-    QString localString;
-    if (!mApplicationTranslator->isEmpty())
-        localString = UBPlatformUtils::preferredLanguage();
-    else
-        localString = "en_US";
-
-    mQtGuiTranslator = new QTranslator(this);
-    mQtGuiTranslator->load(UBPlatformUtils::preferredTranslation(QString("qt_")));
-    installTranslator(mQtGuiTranslator);
-
-
-    QLocale::setDefault(QLocale(localString));
-    qDebug() << "Running application in:" << localString;
+    UBPlatformUtils::init();
 
     UBSettings *settings = UBSettings::settings();
+
+    QString forcedLanguage("");
+    if(args.contains("-lang"))
+    	forcedLanguage=args.at(args.indexOf("-lang") + 1);
+    else{
+    	QString setLanguage = settings->appPreferredLanguage->get().toString();
+    	if(!setLanguage.isEmpty())
+    		forcedLanguage = setLanguage;
+    }
+    setupTranslator(forcedLanguage);
 
     connect(settings->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(toolBarPositionChanged(QVariant)));
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));
@@ -215,6 +205,50 @@ UBApplication::~UBApplication()
 
     delete staticMemoryCleaner;
     staticMemoryCleaner = 0;
+}
+
+void UBApplication::setupTranslator(QString forcedLanguage)
+{
+	QStringList availablesTranslations = UBPlatformUtils::availableTranslations();
+	QString language("");
+	if(!forcedLanguage.isEmpty()){
+		if(availablesTranslations.contains(forcedLanguage,Qt::CaseInsensitive))
+			language = forcedLanguage;
+		else
+			qDebug() << "forced language " << forcedLanguage << " not available";
+	}
+	else{
+		QString systemLanguage = UBPlatformUtils::systemLanguage();
+		if(availablesTranslations.contains(systemLanguage,Qt::CaseInsensitive))
+			language = systemLanguage;
+		else
+			qDebug() << "translation for system language " << systemLanguage << " not found";
+	}
+
+	if(language.isEmpty()){
+		language = "en_US";
+		//fallback if no translation are available
+	}
+	else{
+	    mApplicationTranslator = new QTranslator(this);
+	    mQtGuiTranslator = new QTranslator(this);
+
+	    mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("sankore_"),language));
+	    installTranslator(mApplicationTranslator);
+
+
+	    mQtGuiTranslator->load(UBPlatformUtils::translationPath(QString("qt_"),language));
+	    if(!mQtGuiTranslator->isEmpty()){
+	    	// checked because this translation could be not available
+	    	installTranslator(mQtGuiTranslator);
+	    }
+		else
+			qDebug() << "Qt gui translation in " << language << " are not available";
+	}
+
+
+    QLocale::setDefault(QLocale(language));
+    qDebug() << "Running application in:" << language;
 }
 
 int UBApplication::exec(const QString& pFileToImport)
@@ -283,8 +317,6 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
 #endif
 
-    connect(documentController, SIGNAL(movedToIndex(int)), boardController, SIGNAL(documentReorganized(int)));
-
     mPreferencesController = new UBPreferencesController(mainWindow);
 
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
@@ -326,31 +358,31 @@ int UBApplication::exec(const QString& pFileToImport)
         applicationController->showBoard();
 
 
-    if (UBSettings::settings()->appIsInSoftwareUpdateProcess->get().toBool())
-    {
-        UBSettings::settings()->appIsInSoftwareUpdateProcess->set(false);
+//    if (UBSettings::settings()->appIsInSoftwareUpdateProcess->get().toBool())
+//    {
+//        UBSettings::settings()->appIsInSoftwareUpdateProcess->set(false);
 
-        // clean potential updater in temp directory
-        UBFileSystemUtils::cleanupGhostTempFolders();
+//        // clean potential updater in temp directory
+//        UBFileSystemUtils::cleanupGhostTempFolders();
 
-        QUuid docUuid( UBSettings::settings()->appLastSessionDocumentUUID->get().toString());
+//        QUuid docUuid( UBSettings::settings()->appLastSessionDocumentUUID->get().toString());
 
-        if (!docUuid.isNull())
-        {
-            UBDocumentProxy* proxy = UBPersistenceManager::persistenceManager()->documentByUuid(docUuid);
+//        if (!docUuid.isNull())
+//        {
+//            UBDocumentProxy* proxy = UBPersistenceManager::persistenceManager()->documentByUuid(docUuid);
 
-            if (proxy)
-            {
-                bool ok;
-                int lastSceneIndex = UBSettings::settings()->appLastSessionPageIndex->get().toInt(&ok);
+//            if (proxy)
+//            {
+//                bool ok;
+//                int lastSceneIndex = UBSettings::settings()->appLastSessionPageIndex->get().toInt(&ok);
 
-                if (!ok)
-                    lastSceneIndex = 0;
+//                if (!ok)
+//                    lastSceneIndex = 0;
 
-                boardController->setActiveDocumentScene(proxy, lastSceneIndex);
-            }
-        }
-    }
+//                boardController->setActiveDocumentScene(proxy, lastSceneIndex);
+//            }
+//        }
+//    }
 
     return QApplication::exec();
 }
@@ -493,30 +525,29 @@ void UBApplication::decorateActionMenu(QAction* action)
             menu->addAction(mainWindow->actionCut);
             menu->addAction(mainWindow->actionCopy);
             menu->addAction(mainWindow->actionPaste);
-
-            menu->addSeparator();
-            menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionHideApplication);
             menu->addAction(mainWindow->actionSleep);
 
             menu->addSeparator();
-            menu->addAction(mainWindow->actionSankoreEditor);
-
+            menu->addAction(mainWindow->actionPreferences);
+            menu->addAction(mainWindow->actionMultiScreen);
+            menu->addAction(mainWindow->actionImportUniboardDocuments);
             // SANKORE-48: Hide the check update action if the setting
             // EnableAutomaticSoftwareUpdates is false in Uniboard.config
-            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
+            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool())
                 menu->addAction(mainWindow->actionCheckUpdate);
-            }
-            else{
+            else
                 mainWindow->actionCheckUpdate->setEnabled(false);
-            }
+
+            menu->addSeparator();
+            menu->addAction(mainWindow->actionTutorial);
+            menu->addAction(mainWindow->actionSankoreEditor);
 
 #ifndef Q_WS_X11 // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
             mainWindow->actionPodcast->setText(tr("Podcast"));
 #endif
-            menu->addAction(mainWindow->actionMultiScreen);
-            menu->addAction(mainWindow->actionImportUniboardDocuments);
+
             menu->addSeparator();
             menu->addAction(mainWindow->actionQuit);
 

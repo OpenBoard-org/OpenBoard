@@ -113,6 +113,7 @@ notify-send "Git Hub" "Make a tag of the delivered version"
 VERSION=`cat $RELEASE_DIR/version`
 if [ ! -f $RELEASE_DIR/version ]; then
     notifyError "version not found"
+    exit 1
 else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then

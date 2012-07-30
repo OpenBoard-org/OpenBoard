@@ -4,7 +4,7 @@
 
 UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent):QGraphicsItemGroup(parent)
 {
-    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true);
+    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true, false);
     mDelegate->init();
     mDelegate->setFlippable(true);
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);

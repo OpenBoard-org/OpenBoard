@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,6 +16,8 @@
 #include "core/UBApplication.h"
 
 #include "board/UBBoardController.h"
+
+#include "document/UBDocumentContainer.h"
 
 #include "globals/UBGlobals.h"
 
@@ -72,8 +74,6 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
     mTimeFormat = mTimeFormat.remove(":s");
     mTimerID = startTimer(1000);
 
-    connect(mNavigator, SIGNAL(changeCurrentPage()), this, SLOT(changeCurrentPage()));
-    connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(onSetDocOnPageNavigator(UBDocumentProxy*)));
 }
 
 /**
@@ -110,42 +110,14 @@ UBPageNavigationWidget::~UBPageNavigationWidget()
     }
 }
 
-/**
- * \brief Set the current document in the navigator
- * @param document as the given document
- */
-void UBPageNavigationWidget::setDocument(UBDocumentProxy *document)
-{
-    if(mNavigator->currentDoc() != document)
-    {
-        mNavigator->setDocument(document);
-        UBApplication::boardController->notifyPageChanged();
-    }
-}
-
-/**
- * \brief Change the current page
- */
-void UBPageNavigationWidget::changeCurrentPage()
-{
-    //	Get the index of the page to display
-    int iPage = mNavigator->selectedPageNumber();
-    if(NO_PAGESELECTED != iPage)
-    {
-        // Display the selected page
-        UBApplication::boardController->setActiveDocumentScene(mNavigator->currentDoc(), iPage);
-
-        // emit here the signal to indicate that page change
-        UBApplication::boardController->notifyPageChanged();
-    }
-}
 
 /**
  * \brief Refresh the thumbnails widget
  */
 void UBPageNavigationWidget::refresh()
 {
-    mNavigator->setDocument(UBApplication::boardController->activeDocument());
+    // TOLIK!!!
+    // mNavigator->setDocument(UBApplication::boardController->activeDocument());
 }
 
 /**
@@ -176,7 +148,7 @@ void UBPageNavigationWidget::updateTime()
  */
 void UBPageNavigationWidget::setPageNumber(int current, int total)
 {
-    mPageNbr->setText(QString("%1 / %2").arg(current).arg(UBApplication::boardController->sceneIndexFromPage(total)));
+    mPageNbr->setText(QString("%1 / %2").arg(current).arg(UBDocumentContainer::sceneIndexFromPage(total)));
 }
 
 /**
@@ -197,11 +169,3 @@ int UBPageNavigationWidget::border()
     return 15;
 }
 
-/**
- * \brief Set the current document
- * @param doc as the current document
- */
-void UBPageNavigationWidget::onSetDocOnPageNavigator(UBDocumentProxy *doc)
-{
-    setDocument(doc);
-}

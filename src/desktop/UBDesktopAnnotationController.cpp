@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -69,7 +69,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, 0); // deleted in UBDesktopAnnotationController::destructor
 
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
-	// !!!! Should be included into Windows after QT recompilation
 #ifdef Q_WS_MAC
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
 #endif
@@ -112,8 +111,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 
 
-    connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int))
-            , this, SLOT(stylusToolChanged(int)));
+    connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int)), this, SLOT(stylusToolChanged(int)));
 
     // Add the desktop associated palettes
     mDesktopPenPalette = new UBDesktopPenPalette(mTransparentDrawingView);
@@ -148,38 +146,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
 
 #ifdef Q_WS_X11
     connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
-//    connect(mRightPalette, SIGNAL(resized()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
 #endif
     onDesktopPaletteMaximized();
 }
-
-// void UBDesktopAnnotationController::showKeyboard(bool show)
-// {
-//     #ifdef Q_WS_X11
-//         if (!mTransparentDrawingView->isVisible())
-//             return;
-//     #endif
-// 
-//     if(mKeyboardPalette)
-//     {
-//         if(show)
-//             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-//         mKeyboardPalette->setVisible(show);
-// 
-//         #ifdef Q_WS_X11
-//             updateMask(true);
-//         #endif
-//         
-//     }
-// 
-// }
-
-// void UBDesktopAnnotationController::showKeyboard()
-// {
-//     if (UBApplication::mainWindow->actionVirtualKeyboard->isChecked())
-//         mKeyboardPalette->show();
-// }
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
 {
@@ -415,6 +385,11 @@ void UBDesktopAnnotationController::goToUniboard()
     hideWindow();
 
     UBPlatformUtils::setDesktopMode(false);
+    UBDrawingController::drawingController()->setInDestopMode(false);
+
+    if(UBStylusTool::Eraser != UBDrawingController::drawingController()->stylusTool()){
+    	UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
+    }
 
     emit restoreUniboard();
 }

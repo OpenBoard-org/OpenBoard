@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -70,22 +70,61 @@ void x11SendKey(Display *display, int keyCode, int modifiers)
 // Send a fake key release event to the window.
    event = createKeyEvent(display, winFocus, winRoot, false, keyCode, modifiers);
    XSendEvent(event.display, event.window, True, KeyPressMask, (XEvent *)&event);
+
 }
 
-void UBKeyboardButton::sendUnicodeSymbol(unsigned int nSymbol1, unsigned int nSymbol2, bool shift)
+/*
+void traceKeyCodes()
 {
-    unsigned int nSymbol = shift ? nSymbol2 : nSymbol1;
+    Display *display = XOpenDisplay(0);
+    if(display == NULL)
+       return;
 
+    int min_keycodes, max_keycodes, byte_per_code;
+
+    XDisplayKeycodes(display, &min_keycodes, &max_keycodes);
+    KeySym* keySyms = XGetKeyboardMapping(display, min_keycodes,
+                       max_keycodes - min_keycodes, &byte_per_code);
+
+    qDebug() << "Codes table, min_keycodes: " << min_keycodes << ", max_keycodes: "
+             << max_keycodes << ", bytes_per_code:" << byte_per_code;
+    for(int i=0; i<max_keycodes - min_keycodes; i++)
+    {
+        QString str;
+        for(int j=0; j<byte_per_code;j++)
+        {
+            str += QString::number(keySyms[i*byte_per_code + j], 16);
+            str += ":";
+        }
+        qDebug() << i << ":" << str;
+    }
+
+    XFree(keySyms);
+
+    XCloseDisplay(display);
+}
+*/
+
+
+void UBKeyboardButton::sendUnicodeSymbol(KEYCODE keycode)
+{
     // Obtain the X11 display.
     Display *display = XOpenDisplay(0);
     if(display == NULL)
        return;
 
-    KeyCode keyCode = XKeysymToKeycode(display, nSymbol);
-
-    if (keyCode != NoSymbol)
+    if (!keycode.empty())
     {
-        x11SendKey(display, keyCode, shift);
+        int modifier = keycode.modifier;
+        if (keycode.modifier==2) modifier = 0x2000;
+        if (keycode.modifier==3) modifier = 0x2001;
+        if (keycode.modifier==4) modifier = 0x4000;
+        if (keycode.modifier==5) modifier = 0x4001;
+        //modifiers 6 and 7 seems are not available.... They are reassigned in layout creationtime
+        //if (keycode.modifier==6) modifier = 0x6000;
+        //if (keycode.modifier==7) modifier = 0x6001;
+
+        x11SendKey(display, keycode.code + keyboard->min_keycodes , modifier);
     }
 
     XCloseDisplay(display);
@@ -111,16 +150,17 @@ void UBKeyboardButton::sendControlSymbol(int nSymbol)
 
 void UBKeyboardPalette::createCtrlButtons()
 {
-        ctrlButtons = new UBKeyboardButton*[8];
+        ctrlButtons = new UBKeyboardButton*[9];
 
-        ctrlButtons[0] = new UBCntrlButton(this, "<-", XK_BackSpace);
-        ctrlButtons[1] = new UBCntrlButton(this, "<->", XK_Tab);
-        ctrlButtons[2] = new UBCntrlButton(this, tr("Enter"), XK_Return);
-        ctrlButtons[3] = new UBCapsLockButton(this, "capslock");
-        ctrlButtons[4] = new UBCapsLockButton(this, "capslock");
-        ctrlButtons[5] = new UBLocaleButton(this);
-        ctrlButtons[6] = new UBCntrlButton(this, "", XK_space);
-        ctrlButtons[7] = new UBLocaleButton(this);
+        ctrlButtons[0] = new UBCntrlButton(this, XK_BackSpace, "backspace");
+        ctrlButtons[1] = new UBCntrlButton(this, XK_Tab, "tab");
+        ctrlButtons[2] = new UBCapsLockButton(this, "capslock");
+        ctrlButtons[3] = new UBCntrlButton(this, tr("Enter"), XK_Return);
+        ctrlButtons[4] = new UBShiftButton(this, "shift");
+        ctrlButtons[5] = new UBShiftButton(this, "shift");
+        ctrlButtons[6] = new UBLocaleButton(this);
+        ctrlButtons[7] = new UBCntrlButton(this, "", XK_space);
+        ctrlButtons[8] = new UBLocaleButton(this);
 }
 
 
@@ -128,90 +168,108 @@ void UBKeyboardPalette::onActivated(bool activated)
 {
     if (activated)
     {
+        if (storage)
+        {
+            qDebug() << "Keybard already activated....";
+            return;
+        }
+
         Display *display = XOpenDisplay(0);
         if(display == NULL)
            return;
 
         XDisplayKeycodes(display, &this->min_keycodes, &this->max_keycodes);
         KeySym* keySyms = XGetKeyboardMapping(display, min_keycodes,
-                           max_keycodes - min_keycodes, &this->byte_per_code);
+                           max_keycodes - min_keycodes, &byte_per_code);
 
         storage = keySyms;
 
         XCloseDisplay(display);
 
         onLocaleChanged(locales[nCurrentLocale]);
+
     }
     else
     {
         Display *display = XOpenDisplay(0);
         if(display == NULL)
-           return;
+        {
+            qDebug() << "Keybard not activated....";
+            return;
+        }
 
         KeySym* keySyms = (KeySym*)storage;
         if (keySyms!=NULL)
         {
+            qDebug() << "Default key table restored.....";
 
             XChangeKeyboardMapping(display, min_keycodes, byte_per_code,
                                    keySyms, max_keycodes - min_keycodes);
 
             XFree(keySyms);
-         }
+            storage = NULL;
+        }
 
         XCloseDisplay(display);
     }
-
-}
-void UBKeyboardPalette::onDeactivated()
-{
-    Display *display = XOpenDisplay(0);
-
-    if(display == NULL)
-       return;
-
-    KeySym* keySyms = (KeySym*)storage;
-    if (keySyms!=NULL) {
-        XChangeKeyboardMapping(display, min_keycodes, byte_per_code,
-                               keySyms, max_keycodes - min_keycodes);
-    }
-    XCloseDisplay(display);
-}
-
-void setSymbolsFromButton(Display *display,
-                          const UBKeyboardLocale& locale,
-                          int byte_per_code,
-                          int nFromSymbol,
-                          int nFromButton,
-                          int count)
-{
-    KeySym* keySyms = new KeySym[count * byte_per_code];
-    for(int i = 0; i < count; i++)
-    {
-        keySyms[byte_per_code * i + 0] =
-                keySyms[byte_per_code * i + 2] = locale[nFromButton + i]->code1;
-
-        keySyms[byte_per_code * i + 1] =
-                keySyms[byte_per_code * i + 3] = locale[nFromButton + i]->code2;
-
-        for(int j=4; j<byte_per_code; j++)
-            keySyms[byte_per_code * i + j] = NoSymbol;
-    }
-
-    XChangeKeyboardMapping(display, nFromSymbol, byte_per_code, keySyms, count);
-    delete [] keySyms;
 }
 
 void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)
 {
+    const int maxMapOffset = 3; //Suppose to have at least 2 keysym groups due to X11 xlib specification
+
     Display *display = XOpenDisplay(0);
     if(display == NULL)
        return;
 
-    setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 41, 0, 1);
-    setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 2,  1, 12);
-    setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 16,  13, 12);
-    setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 30,  25, 11);
-    setSymbolsFromButton(display, *locale, byte_per_code, min_keycodes + 44,  37, 10);
+    int byte_per_code;
+    KeySym* keySyms = XGetKeyboardMapping(display, min_keycodes,
+                       max_keycodes - min_keycodes, &byte_per_code);
+
+    for(int i=0; i<SYMBOL_KEYS_COUNT; i++)
+    {
+        // loop by keybt
+        for(int j=0; j<8; j++)
+        {
+            KEYCODE& kc = (*locale)[i]->codes[j];
+            if (!kc.empty())
+            {
+                if (kc.modifier <= maxMapOffset)
+                    keySyms[kc.code * byte_per_code + kc.modifier] = kc.symbol;
+
+            }
+        }
+    }
+
+    //Now look for modifiers > 5 and reassign them to free places
+    for(int i=0; i<SYMBOL_KEYS_COUNT; i++)
+    {
+        // loop by keybt
+        for(int j=0; j<8; j++)
+        {
+            KEYCODE& kc = (*locale)[i]->codes[j];
+            if (!kc.empty())
+            {
+                if (kc.modifier > maxMapOffset)
+                {
+                    for(int i1=0; i1<SYMBOL_KEYS_COUNT; i1++)
+                        for(int j1=0; j1<=maxMapOffset; j1++)
+                            if (keySyms[i1 * byte_per_code + j1]==NoSymbol)
+                            {
+                                kc.code =i1;
+                                kc.modifier =j1;
+                                break;
+                            }
+
+                }
+                keySyms[kc.code * byte_per_code + kc.modifier] = kc.symbol;
+            }
+        }
+    }
+
+
+    XChangeKeyboardMapping(display, min_keycodes, byte_per_code, keySyms, max_keycodes - min_keycodes);
+    XFree(keySyms);
 
     XCloseDisplay(display);
 }

@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -20,6 +20,23 @@
 
 #define UB_MAX_ZOOM 15
 
+struct UBMimeType
+{
+    enum Enum
+    {
+        RasterImage = 0,
+        VectorImage,
+        AppleWidget,
+        W3CWidget,
+        Video,
+        Audio,
+        Flash,
+        PDF,
+        UniboardTool,
+        UNKNOWN
+    };
+};
+
 struct UBStylusTool
 {
     enum Enum
@@ -28,6 +45,7 @@ struct UBStylusTool
 		Eraser, 
  		Marker, 
 		Selector, 
+        Play,
 		Hand, 
 		ZoomIn, 
 		ZoomOut, 

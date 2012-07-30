@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -237,12 +237,12 @@ void UBGraphicsTextItemDelegate::pickColor()
 
 void UBGraphicsTextItemDelegate::decreaseSize()
 {
-    ChangeTextSize(-delta);
+    ChangeTextSize(-delta, changeSize);
 }
 
 void UBGraphicsTextItemDelegate::increaseSize()
 {
-   ChangeTextSize(delta);
+   ChangeTextSize(delta, changeSize);
 }
 
 UBGraphicsTextItem* UBGraphicsTextItemDelegate::delegated()
@@ -303,11 +303,14 @@ void UBGraphicsTextItemDelegate::positionHandles()
             UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(mDelegated->parentItem());
 
             mToolBarItem->hide();
-            if (group && group->getCurrentItem() == mDelegated && group->isSelected())
-                mToolBarItem->show();
+            if (mToolBarItem->parentItem() && !mToolBarItem->parentItem()->data(UBGraphicsItemData::ItemLocked).toBool())
+            {
+                if (group && group->getCurrentItem() == mDelegated && group->isSelected())
+                    mToolBarItem->show();
 
-            if (!group)
-                 mToolBarItem->show();
+                if (!group)
+                     mToolBarItem->show();
+            }
 
         }
     }
@@ -315,13 +318,16 @@ void UBGraphicsTextItemDelegate::positionHandles()
     {
         mToolBarItem->hide();
     }
-
-    setEditable(isEditable());
 }
 
-void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
+void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)
 {
-    if (0 == delta)
+    if (0 == factor)
+        return;
+
+    UBGraphicsTextItem *item = dynamic_cast<UBGraphicsTextItem*>(delegated());
+
+    if (item && (QString() == item->toPlainText()))
         return;
 
     QTextCursor cursor = delegated()->textCursor();
@@ -375,7 +381,7 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
 
 
         //setting new parameners
-        int iNewPointSize = iPointSize + delta;
+        int iNewPointSize = (changeSize == changeMode) ? (iPointSize + factor) : (iPointSize * factor);
         curFont.setPointSize( (iNewPointSize > 0)?iNewPointSize:1);
         textFormat.setFont(curFont);
         cursor.mergeCharFormat(textFormat);
@@ -384,7 +390,6 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
         cursor.setPosition (iCursorPos, QTextCursor::MoveAnchor);
     }
 
-    delegated()->document()->adjustSize();
     delegated()->setFont(curFont);
     UBSettings::settings()->setFontPointSize(iPointSize);
     //returning initial selection
@@ -392,4 +397,9 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(int delta)
     cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
 
     delegated()->setTextCursor(cursor);
+}
+
+void UBGraphicsTextItemDelegate::scaleTextSize(qreal multiplyer)
+{
+    ChangeTextSize(multiplyer, scaleSize);
 }

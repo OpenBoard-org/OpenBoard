@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -306,8 +306,11 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
     connect(http, SIGNAL(downloadProgress(int, qint64,qint64)), this, SLOT(onDownloadProgress(int,qint64,qint64)));
     connect(http, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
 
+    //the desc.url is encoded. So we have to decode it before.
+    QUrl url;
+    url.setEncodedUrl(desc.url.toUtf8());
     // We send here the request and store its reply in order to be able to cancel it if needed
-    mReplies[desc.id] = http->get(QUrl(desc.url), desc.pos, desc.size, desc.isBackground);
+    mReplies[desc.id] = http->get(url, desc.pos, desc.size, desc.isBackground);
 }
 
 /**

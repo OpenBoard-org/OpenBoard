@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -122,6 +122,10 @@ void UBWidgetUniboardAPI::setTool(const QString& toolString)
     else if (lower == "arrow")
     {
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+    }
+    else if (lower == "play")
+    {
+        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Play);
     }
     else if (lower == "line")
     {
@@ -342,7 +346,7 @@ QString UBWidgetUniboardAPI::pageThumbnail(const int pageNumber)
     if (UBApplication::boardController->activeScene() != mScene)
         return "";
 
-    UBDocumentProxy *doc = UBApplication::boardController->activeDocument();
+    UBDocumentProxy *doc = UBApplication::boardController->selectedDocument();
 
     if (!doc)
         return "";
@@ -467,7 +471,10 @@ void UBWidgetUniboardAPI::sendFileMetadata(QString metaData)
 
 void UBWidgetUniboardAPI::enableDropOnWidget(bool enable)
 {
-    mGraphicsWidget->setAcceptDrops(enable);
+    if (mGraphicsWidget)
+    {
+        mGraphicsWidget->setAcceptDrops(enable);
+    }
 }
 
 void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)

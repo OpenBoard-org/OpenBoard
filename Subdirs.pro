@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-CONFIG += recursive
+CONFIG += ordered
 CONFIG += debug_and_release
 
 win32:        SUB_DIR = win32
@@ -23,11 +23,11 @@ SANKORE_PLUGINS_DIR = $$SANKORE_DIR/plugins
 PLUGIN_CFF_ADAPTOR_DIR = $$SANKORE_PLUGINS_DIR/cffadaptor
 PLUGIN_CFF_ADAPTOR_PRO = $$PLUGIN_CFF_ADAPTOR_DIR/UBCFFAdaptor.pro
 
-if(exists($$PLUGIN_CFF_ADAPTOR_DIR)){
-    SUBDIRS += $$PLUGIN_CFF_ADAPTOR_PRO
-    $$SANKORE_PRO.depends = $$PLUGIN_CFF_ADAPTOR_PRO
+#visoal studio sets first project as executable
+contains(TEMPLATE, vcsubdirs):{
+    SUBDIRS = $$SANKORE_PRO $$PLUGIN_CFF_ADAPTOR_PRO
+} else:{
+    SUBDIRS = $$PLUGIN_CFF_ADAPTOR_PRO $$SANKORE_PRO
 }
-SUBDIRS += $$SANKORE_PRO
 
-recurse_target = $$SANKORE_PRO
-
+$$SANKORE_PRO.depends = $$PLUGIN_CFF_ADAPTOR_PRO    

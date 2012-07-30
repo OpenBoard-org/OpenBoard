@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -94,7 +94,7 @@ void DelegateButton::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     event->setAccepted(!mIsTransparentToMouseEvent);
 }
 
-UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, bool respectRatio, bool canRotate)
+UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, bool respectRatio, bool canRotate, bool useToolBar)
     : QObject(parent)
     , mDelegated(pDelegated)
     , mDeleteButton(NULL)
@@ -113,13 +113,15 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mMimeData(NULL)
     , mFlippable(false)
     , mToolBarItem(NULL)
+    , mToolBarUsed(useToolBar)
 {
     // NOOP
 }
 
 void UBGraphicsItemDelegate::init()
 {
-    mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
+    if (mToolBarUsed)
+        mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
 
     mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
     mFrame->hide();
@@ -137,12 +139,12 @@ void UBGraphicsItemDelegate::init()
     connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
     mButtons << mMenuButton;
 
-    mZOrderUpButton = new DelegateButton(":/images/plus.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
     connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
     connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
     mButtons << mZOrderUpButton;
 
-    mZOrderDownButton = new DelegateButton(":/images/minus.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
     connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
     connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
     mButtons << mZOrderDownButton;
@@ -248,10 +250,8 @@ bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         }
         mDrag->exec();
         mDragPixmap = QPixmap();
-
         return true;
     }
-
     if(isLocked()) {
         event->accept();
         return true;
@@ -328,13 +328,15 @@ void UBGraphicsItemDelegate::positionHandles()
     if (mDelegated->isSelected()) {
         bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
         showHide(shownOnDisplay);
-        lock(isLocked());
+        mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked()));
         updateFrame();
-        mFrame->show();
+
+        if (UBStylusTool::Play != UBDrawingController::drawingController()->stylusTool())
+            mFrame->show();
 
         updateButtons(true);
 
-        if (mToolBarItem->isVisibleOnBoard())
+        if (mToolBarItem && mToolBarItem->isVisibleOnBoard())
         {
             mToolBarItem->positionHandles();
             mToolBarItem->update();
@@ -345,7 +347,8 @@ void UBGraphicsItemDelegate::positionHandles()
             button->hide();
 
         mFrame->hide();
-        mToolBarItem->hide();
+        if (mToolBarItem)
+            mToolBarItem->hide();
     }
 }
 
@@ -385,7 +388,6 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
 
         scene->removeItem(mFrame);
         scene->removeItem(mDelegated);
-        scene->removeItem(mToolBarItem);
 
         if (canUndo)
         {
@@ -451,6 +453,7 @@ void UBGraphicsItemDelegate::lock(bool locked)
     }
 
     mDelegated->update();
+    positionHandles();
     mFrame->positionHandles();
 }
 
@@ -669,14 +672,15 @@ UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) :
     mShifting(true),
     mVisible(false),
     mMinWidth(200),
-    mInitialHeight(26)
+    mInitialHeight(26),
+    mElementsPadding(2)
 {
     QRectF rect = this->rect();
     rect.setHeight(mInitialHeight);
     rect.setWidth(parent->boundingRect().width());
     this->setRect(rect);
 
-    setBrush(QColor(UBSettings::paletteColor));             
+  //  setBrush(QColor(UBSettings::paletteColor));             
     setPen(Qt::NoPen);
     hide();
 
@@ -690,7 +694,7 @@ void UBGraphicsToolBarItem::positionHandles()
     foreach (QGraphicsItem* item, mItemsOnToolBar)
     {
         item->setPos(itemXOffset, 0);
-        itemXOffset += (item->boundingRect().width());
+        itemXOffset += (item->boundingRect().width()+mElementsPadding);
         item->show();
     }
 }
@@ -707,6 +711,17 @@ void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsI
 
     QPainterPath path;
     path.addRoundedRect(rect(), 10, 10);  
+
+    if (parentItem() && parentItem()->data(UBGraphicsItemData::ItemLocked).toBool())
+    {
+        QColor baseColor = UBSettings::paletteColor;
+        baseColor.setAlphaF(baseColor.alphaF() / 3);
+        setBrush(QBrush(baseColor));
+    }
+    else
+    {
+        setBrush(QBrush(UBSettings::paletteColor));
+    }
 
     painter->fillPath(path, brush());
 }
@@ -1136,7 +1151,7 @@ void DelegateMediaControl::paint(QPainter *painter,
     mLCDTimerArea.setWidth(rect().height());
 
     mSeecArea = rect();
-    mSeecArea.setWidth(rect().width()-mLCDTimerArea.width());
+    mSeecArea.setWidth(rect().width()-mLCDTimerArea.width()-2);
 
     path.addRoundedRect(mSeecArea, mSeecArea.height()/2, mSeecArea.height()/2);
     painter->fillPath(path, brush());
@@ -1215,6 +1230,7 @@ void DelegateMediaControl::mousePressEvent(QGraphicsSceneMouseEvent *event)
         seekToMousePos(event->pos());
         this->update();
         event->accept();
+        emit used();
     }
 }
 
@@ -1227,6 +1243,7 @@ void DelegateMediaControl::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         seekToMousePos(event->pos());
         this->update();
         event->accept();
+        emit used();
     }
 }
 
@@ -1251,6 +1268,7 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
         //OSX is a bit lazy
         updateTicker(tickPos);
     }
+    emit used();
 }
 
 void DelegateMediaControl::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

@@ -13,64 +13,169 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var sankoreLang = {
+    edit: "Edit",
+    display:"Display",
+    question:"Question",
+    example_question:"This is an example of the question",
+    answer:"This is one possible answer",
+    q:"Q",
+    add_new_question:" Add a new question ...",
+    options:"Options",
+    close:"Close",
+    delete_question:"Delete question",
+    delete_answer:"Delete the possibility",
+    right_answer:"Right answer",
+    template_question:"Enter your question here ...",
+    template_answer:"Enter one possible answer here ...",
+    add_answer:"Add one possible answer",
+    select_text:"Choose the right answer",
+    options_desc:"You can choose one of the three options of displaying possibilities.",
+    radio_desc:"One right answer only and the possibilities are displayed as radio buttons.",
+    checkbox_desc:"Several right answers and possibilities are displayed as checkboxes.",
+    select_desc:"One right answer only and possibilities are displayed as pull-down menu.",
+    a:"A",
+    wgt_name: "Choose the right answer",
+    reload: "Reload",
+    slate: "Wood",
+    pad: "Pad",
+    none: "None",
+    help: "Help",
+    help_content: "This is an example of help content ..."
+};
+
 var questionArray;
 var currentQstId = "";
 var lang = ""; //locale language
+var begin = true;
 
 function init(){
 
     //variables
     var toggleFlag = false;
     var endFlag = false;
-    var mode = false;
+    var mode = true;
     questionArray = new Array();  
     var popupFlag = false
     var flagForSelect = false;    
     
-    if(window.sankore){
-        try{
-            lang = sankore.locale().substr(0,2);
-            sankoreLang[lang].edit;
-        } catch(e){
-            lang = "en";
-        }
-    } else 
-        lang = "en";
+    $("#wgt_display").text(sankoreLang.display);
+    $("#wgt_edit").text(sankoreLang.edit);
+    $("#wgt_name").text(sankoreLang.wgt_name);
+    $("#wgt_reload").text(sankoreLang.reload);
+    $("#wgt_help").text(sankoreLang.help);
+    $("#help").html(sankoreLang.help_content);
+    $(".style_select option[value='1']").text(sankoreLang.slate);
+    $(".style_select option[value='2']").text(sankoreLang.pad);
+    $(".style_select option[value='3']").text(sankoreLang.none);
     
-    // toggle button
-    var buttonDiv = $("<div id='buttonDiv' class='buttonDiv'>").appendTo("body");
-    var toggleButton = $("<button id='toggleButton' class='toggleButton'><</button>").appendTo("#buttonDiv");
-    buttonDiv.css({
-        top:"10px",
-        right:0
-    });
     
     //popup message
-    var popupText = $("<div id='popupWordInfo' class='popupWordInfo'></div>").appendTo("body");
+    var popupText = $("<div id='popupWordInfo' class='popupWordInfo'></div>").appendTo("#data");
     
     // adding question block
-    var addQstDiv = $("<div id='addQstDiv' class='addQstDiv'>").appendTo("body");
+    var addQstDiv = $("<div id='addQstDiv' class='addQstDiv'>").appendTo("#data");
     var addQstButton = $("<button id='addQstButton' class='addQstButton'>").appendTo("#addQstDiv");    
-    var addQsqSpan1 = $("<span id='addQsqSpan1'>" + sankoreLang[lang].q + "1</span>").appendTo("#addQstButton");
-    var addQsqSpan2 = $("<span id='addQsqSpan2'>" + sankoreLang[lang].add_new_question + "</span>").appendTo("#addQstButton");
+    var addQsqSpan1 = $("<span id='addQsqSpan1'>" + sankoreLang.q + "1</span>").appendTo("#addQstButton");
+    var addQsqSpan2 = $("<span id='addQsqSpan2'>" + sankoreLang.add_new_question + "</span>").appendTo("#addQstButton");
     
     //import saved data
     if(window.sankore){
-        if(sankore.preference("qstArrayData","")){
+        if(sankore.preference("qstArrayData","") && sankore.preference("qstArrayData","") != "[]"){
             questionArray = jQuery.parseJSON(sankore.preference("qstArrayData",""));
             for(var i in questionArray){
                 addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
                 for(var j in questionArray[i].answers)
                     addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text, true, questionArray[i].rightAns, questionArray[i].type);
-            }      
+            }
+            displayData(true);
+        } 
+        else{ 
+            displayData(false);
+            begin = false;
         }
+    }
+    else{ 
+        displayData(false);
+        begin = false;
     }
     
     //saving widget data into sankore object for a correct import
-    $("body").mouseout(function(){
-        if(window.sankore)
+    if (window.widget) {
+        window.widget.onleave = function(){
             sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
+            sankore.setPreference("choisir_style", $(".style_select").find("option:selected").val());
+        }
+    }
+    
+    if(window.sankore)
+        if(sankore.preference("choisir_style","")){
+            changeStyle(sankore.preference("choisir_style",""));
+            $(".style_select").val(sankore.preference("choisir_style",""));
+        } else
+            changeStyle("3")
+
+    $("#wgt_display, #wgt_edit").click(function(event){
+        if(this.id == "wgt_display"){
+            if(!$(this).hasClass("selected")){                
+                $(this).addClass("selected");
+                $("#wgt_edit").removeClass("selected");
+                $(".style_select").css("display","none");                
+                $(this).css("display", "none");
+                $("#wgt_edit").css("display", "block");
+                displayData(true);
+                mode = true;
+                if(window.sankore){
+                    sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
+                    sankore.setPreference("choisir_style", $(".style_select").find("option:selected").val());
+                }
+            }
+        } else {            
+            if(!$(this).hasClass("selected")){
+                $(this).addClass("selected");
+                $("#wgt_display").removeClass("selected");
+                $(".style_select").css("display","block");                
+                $(this).css("display", "none");
+                $("#wgt_display").css("display", "block");
+                editData();
+                mode = false;
+            }
+        }
+    });
+
+    $("#wgt_help").click(function(){
+        var tmp = $(this);
+        if($(this).hasClass("open")){
+            $("#help").slideUp("100", function(){
+                tmp.removeClass("open");
+                $("#data").show();
+            });
+        } else {            
+            $("#data").hide();
+            $("#help").slideDown("100", function(){
+                tmp.addClass("open");
+            });
+        }
+    });
+
+    $("#wgt_reload").text(sankoreLang.reload).click(function(){
+        if($("#wgt_edit").css("display") == "none")
+            $("#wgt_display").trigger("click");
+        else{
+            editData();
+            mode = false;
+            displayData(true);
+            mode = true;
+        }
+    });
+    
+    $(".style_select option[value='1']").text(sankoreLang.slate);
+    $(".style_select option[value='2']").text(sankoreLang.pad);
+    
+    $(".style_select").change(function (event){
+        changeStyle($(this).find("option:selected").val());
     })
+    
     // add question
     addQstButton.click(function(){        
         //question block
@@ -79,57 +184,10 @@ function init(){
         obj.id = id;
         questionArray.push(obj);
         
-        addQstBlock(id, sankoreLang[lang].template_question, "","");
+        addQstBlock(id, sankoreLang.template_question, "","");
                 
         if(window.sankore)
             sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
-    });
-    
-    //toggle mode
-    toggleButton.click(function(){
-        if(mode){
-            editData();
-            mode = false;
-        } else {
-            
-            if(window.sankore)
-                sankore.setPreference("qstArrayData", JSON.stringify(questionArray));  
-            
-            if(checkArrayOnFill(questionArray) != 0)
-                displayData(true);
-            else
-                displayData(false);
-            mode = true;
-        }
-        toggleButton.trigger("mouseout");
-    });
-    
-    // toggle button events
-    toggleButton.mouseover(function(){
-        if(!toggleFlag && !endFlag){
-            endFlag = true;
-            toggleButton.animate({
-                width:"115px"
-            },"fast",function(){
-                toggleFlag = true;
-                if(!mode)
-                    toggleButton.text(sankoreLang[lang].display);
-                else
-                    toggleButton.text(sankoreLang[lang].edit);
-            });
-        }
-    });
-    
-    toggleButton.mouseout(function(){
-        if(toggleFlag && endFlag){
-            endFlag = false;
-            toggleButton.animate({
-                width:"20px"
-            },"fast", function(){
-                toggleButton.text("<");
-                toggleFlag = false;
-            });
-        }
     });
     
     //set used at this moment question id into the variable 
@@ -151,7 +209,7 @@ function init(){
         obj.id = id;
         getNeededElement(questionArray, currentQstId).answers.push(obj);
         
-        addAnsBlock(id, currentQstId, sankoreLang[lang].template_answer);
+        addAnsBlock(id, currentQstId, sankoreLang.template_answer);
     });
     
     //set answer text
@@ -204,7 +262,13 @@ function init(){
                 questionArray[i].rightAns = questionArray[i].rightAns.replace($("#" + currentQstId + " #" + id + " input:checkbox").val(),"");
                 for(var j in questionArray[i].answers)
                     if(questionArray[i].answers[j].id == id){
-                        delete questionArray[i].answers[j];
+                        if(j == 0)
+                            questionArray[i].answers.shift();
+                        else
+                        if((j+1) == questionArray[i].answers.length)
+                            questionArray[i].answers.pop();
+                        else
+                            questionArray[i].answers = questionArray[i].answers.slice(0,j).concat(questionArray[i].answers.slice(j+1));  
                         break;
                     }
             }
@@ -217,7 +281,13 @@ function init(){
         $("#" + currentQstId).remove();
         for(var i in questionArray)
             if(questionArray[i].id == currentQstId){
-                delete questionArray[i];
+                if(i == 0)
+                    questionArray.shift();
+                else
+                if((i+1) == questionArray.length)
+                    questionArray.pop();
+                else
+                    questionArray = questionArray.slice(0,i).concat(questionArray.slice(i+1));                
                 break;
             }
         refreshQst();
@@ -264,15 +334,17 @@ function init(){
             }
         } else {
             if(event.target.type == "radio"){
+                checkingAnswers("radio", getNeededElement(questionArray, currentQstId).answers, event.target.value);
                 if(event.target.value == getNeededElement(questionArray, currentQstId).rightAns)
-                    $(event.target).next().next().find("span").css("background-color","#6c0");
+                    $(event.target).next().next().css("background-color","#6c0");
                 else
-                    $(event.target).next().next().find("span").css("background-color","red");
+                    $(event.target).next().next().css("background-color","red");
             } else {
+                checkingAnswers("box", getNeededElement(questionArray, currentQstId).answers, event.target.value, event.target.checked);
                 if(getNeededElement(questionArray, currentQstId).rightAns.replace(/,/g,"").indexOf(event.target.value + " ", 0) != -1)
-                    $(event.target).next().next().find("span").css("background-color","#6c0");
+                    $(event.target).next().next().css("background-color","#6c0");
                 else
-                    $(event.target).next().next().find("span").css("background-color","red");
+                    $(event.target).next().next().css("background-color","red");
             }
         }
     });
@@ -280,7 +352,7 @@ function init(){
     //popup messages
     $(".qstDelete").live('mouseover', function(evt){
         popupFlag = true;
-        popupText.text(sankoreLang[lang].delete_question)
+        popupText.text(sankoreLang.delete_question)
         .css("top", evt.pageY + 15)
         .css("left", evt.pageX - 40)
         .css({
@@ -294,7 +366,7 @@ function init(){
     
     $(".ansDelete").live('mouseover', function(evt){
         popupFlag = true;
-        popupText.text(sankoreLang[lang].delete_answer)
+        popupText.text(sankoreLang.delete_answer)
         .css("top", evt.pageY + 15)
         .css("left", evt.pageX - 40)
         .css({
@@ -309,7 +381,7 @@ function init(){
     $(".newAnswer input").live('mouseover', function(evt){
         if(!mode){
             popupFlag = true;
-            popupText.text(sankoreLang[lang].right_answer)
+            popupText.text(sankoreLang.right_answer)
             .css("top", evt.pageY + 15)
             .css("left", evt.pageX - 40)
             .css({
@@ -340,10 +412,13 @@ function init(){
     
     $("select").live('change', function(evt){
         if(mode){
+            checkingAnswers("sel", getNeededElement(questionArray, currentQstId).answers, event.target.value);
             if(event.target.value == getNeededElement(questionArray, currentQstId).rightAns)
-                $(event.target).parent().css("background-color","#6c0");
+                $(event.target).css("background-color","#6c0");
             else
-                $(event.target).parent().css("background-color","red");
+                $(event.target).css("background-color","red");
+            if(event.target.value == 0)
+                $(event.target).css("background-color","");
             flagForSelect = false;
         }
     });
@@ -355,7 +430,7 @@ function init(){
     });
     
     //toggle button click trigger
-    toggleButton.trigger("click");
+    //toggleButton.trigger("click");
     //show data in display mode
     function displayData(flag){
         $("#addQstDiv").hide();
@@ -365,6 +440,12 @@ function init(){
     
     //set widget in edit mode
     function editData(){
+        for(var i in questionArray)            
+            for(var j in questionArray[i].answers){
+                questionArray[i].answers[j].state = "";
+                questionArray[i].answers[j].was = false
+            }               
+                
         $(".qstDivDisplay").remove();
         
         $("#addQstDiv").show('fast');
@@ -379,7 +460,7 @@ function init(){
 
                 var qstDiv = $("<div class='qstDivDisplay' id='" + array[i].id + "qstDivDisplay'>");        
                 var spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
-                var qstNumber = $("<span class='qstNumber'>" + sankoreLang[lang].question + " " + counter + "</span>").appendTo(spanOptConn);        
+                var qstNumber = $("<span class='qstNumber'>" + sankoreLang.question + " " + counter + "</span>").appendTo(spanOptConn);        
                 var qstContent = $("<div class='qstContentDisplay'>" + array[i].text + "</div>").appendTo(qstDiv);        
                 var ansDiv = $("<div class='ansDiv' id='" + array[i].id + "ansDiv'>").appendTo(qstDiv);
 
@@ -391,39 +472,60 @@ function init(){
                     newAnswer.appendTo(ansDiv);
                     var selectSpan = $("<span id='answerText'>").appendTo(newAnswer);
                     selInput.appendTo(selectSpan);
-                    $("<option value='0'>" + sankoreLang[lang].select_text + "</option>").appendTo(selInput);
+                    $("<option value='0'>" + sankoreLang.select_text + "</option>").appendTo(selInput);
                 }
                 for(var j in array[i].answers){  
                     switch(type){
                         case "1":
+                            var local_state = "";
+                            var local_color = "";
+                            if(begin){
+                                local_state = array[i].answers[j].state;
+                                local_color = (array[i].answers[j].value == array[i].rightAns)?((array[i].answers[j].was)?"style='background-color: #6c0;'":""):((array[i].answers[j].was)?"style='background-color: red;'":"");
+                            }
                             newAnswer = $("<div class='newAnswer'>");
-                            var ansInput = $("<input type='radio' name='" + counter + "' value='" + array[i].answers[j].value + "' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
+                            var ansInput = $("<input type='radio' name='" + counter + "' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             var ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                            var ansContent = $("<div class='ansContentDisplay'><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
+                            var ansContent = $("<div class='ansContentDisplay' " + local_color + "><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "2":
+                            local_state = "";
+                            local_color = "";
+                            if(begin){
+                                local_state = (array[i].answers[j].state)?"checked":"";
+                                local_color = (array[i].rightAns.replace(/,/g,"").indexOf(array[i].answers[j].value + " ", 0) != -1)?((array[i].answers[j].was)?"style='background-color: #6c0;'":""):((array[i].answers[j].was)?"style='background-color: red;'":"");
+                            }
                             newAnswer = $("<div class='newAnswer'>");
-                            ansInput = $("<input type='checkbox' value='" + array[i].answers[j].value + "' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
+                            ansInput = $("<input type='checkbox' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                             ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                            ansContent = $("<div class='ansContentDisplay'><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
+                            ansContent = $("<div class='ansContentDisplay' " + local_color + "><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
                             newAnswer.appendTo(ansDiv);
                             break;
                         case "3":
-                            ansInput = $("<option value='" + array[i].answers[j].value + "'>" + array[i].answers[j].text + "</option>").appendTo(selInput);
+                            local_state = "";
+                            local_color = "";
+                            if(begin){
+                                local_state = (array[i].answers[j].state)?"selected":"";
+                                local_color = (array[i].answers[j].value == array[i].rightAns)?((array[i].answers[j].was)?"#6c0":""):((array[i].answers[j].was)?"red":"");
+                            }
+                            ansInput = $("<option value='" + array[i].answers[j].value + "' " + local_state + ">" + array[i].answers[j].text + "</option>").appendTo(selInput);
+                            if(local_state && local_color)
+                                selInput.css("background-color",local_color);
                             break;
                     }               
                     ansCount++;
                 }
-                qstDiv.appendTo("body");
+                qstDiv.appendTo("#data");
                 counter++;
             }
+            begin = false;
         } else {
             counter = 1;
             qstDiv = $("<div class='qstDivDisplay'>");        
             spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
-            qstNumber = $("<span class='qstNumber'>" + sankoreLang[lang].question + " " + counter + "</span>").appendTo(spanOptConn);        
-            qstContent = $("<div class='qstContentDisplay'>" + sankoreLang[lang].example_question + "</div>").appendTo(qstDiv);        
+            qstNumber = $("<span class='qstNumber'>" + sankoreLang.question + " " + counter + "</span>").appendTo(spanOptConn);        
+            qstContent = $("<div class='qstContentDisplay'>" + sankoreLang.example_question + "</div>").appendTo(qstDiv);        
             ansDiv = $("<div class='ansDiv'>").appendTo(qstDiv);
             
             ansCount = 1;
@@ -431,11 +533,11 @@ function init(){
                 newAnswer = $("<div class='newAnswer'>");
                 ansInput = $("<input type='radio' name='1' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
                 ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                ansContent = $("<div class='ansContentDisplay'>" + sankoreLang[lang].answer + " " + ansCount + ".</div>").appendTo(newAnswer);
+                ansContent = $("<div class='ansContentDisplay'>" + sankoreLang.answer + " " + ansCount + ".</div>").appendTo(newAnswer);
                 newAnswer.appendTo(ansDiv);                        
                 ansCount++;
             }
-            qstDiv.appendTo("body");
+            qstDiv.appendTo("#data");
         }
     }
 }
@@ -446,32 +548,32 @@ function addQstBlock(id, text, type, style){
     var spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);
         
     var count = $(".qstNumber").size();       
-    var qstNumber = $("<span class='qstNumber'>" + sankoreLang[lang].q + (count + 1) + "</span>").appendTo(spanOptConn);
+    var qstNumber = $("<span class='qstNumber'>" + sankoreLang.q + (count + 1) + "</span>").appendTo(spanOptConn);
         
     var qstOptions = $("<div class='qstOptions' id='" + id + "qstOptions'>").appendTo(spanOptConn);
-    var changeOptions = $("<button class='changeOptions'>" + sankoreLang[lang].options + "</button>").appendTo(qstOptions);
-    var applyChanges = $("<button class='applyChanges' style='display: none;'>" + sankoreLang[lang].close + "</button>").appendTo(qstOptions);
+    var changeOptions = $("<button class='changeOptions'>" + sankoreLang.options + "</button>").appendTo(qstOptions);
+    var applyChanges = $("<button class='applyChanges' style='display: none;'>" + sankoreLang.close + "</button>").appendTo(qstOptions);
     var qstDelete = $("<button class='qstDelete'>").appendTo(qstOptions);
         
     var qstOptChoice = $("<div class='qstOptChoice' id='" + id + "qstOptChoice' style='display: none;'>").appendTo(qstDiv);
     var optDesc = $("<div style='height: 65px;'>").appendTo(qstOptChoice);
     var optDescImg = $("<div class='optDescImg'>").appendTo(optDesc);
-    var optDescText = $("<div class='optDescText'>" + sankoreLang[lang].options_desc + "</div>").appendTo(optDesc);
+    var optDescText = $("<div class='optDescText'>" + sankoreLang.options_desc + "</div>").appendTo(optDesc);
         
     var type1 = $("<div class='type'>").appendTo(qstOptChoice);
     var contentType1 = $("<div class='contentType'>").appendTo(type1);
     var divType1 = $("<div class='divType1'>").appendTo(contentType1);
-    var textType1 = $("<div class='textType'>" + sankoreLang[lang].radio_desc + "</div>").appendTo(contentType1);
+    var textType1 = $("<div class='textType'>" + sankoreLang.radio_desc + "</div>").appendTo(contentType1);
         
     var type2 = $("<div class='type'>").appendTo(qstOptChoice);
     var contentType2 = $("<div class='contentType'>").appendTo(type2);
     var divType2 = $("<div class='divType2'>").appendTo(contentType2);
-    var textType2 = $("<div class='textType'>" + sankoreLang[lang].checkbox_desc + "</div>").appendTo(contentType2);
+    var textType2 = $("<div class='textType'>" + sankoreLang.checkbox_desc + "</div>").appendTo(contentType2);
         
     var type3 = $("<div class='type'>").appendTo(qstOptChoice);
     var contentType3 = $("<div class='contentType'>").appendTo(type3);
     var divType3 = $("<div class='divType3'>").appendTo(contentType3);
-    var textType3 = $("<div class='textType'>" + sankoreLang[lang].select_desc + "</div>").appendTo(contentType3);
+    var textType3 = $("<div class='textType'>" + sankoreLang.select_desc + "</div>").appendTo(contentType3);
 
     switch(type){
         case "1":
@@ -499,9 +601,9 @@ function addQstBlock(id, text, type, style){
     var qstContent = $("<div class='qstContent' id='" + id + "qstContent' contenteditable='true'>" + text + "</div>").appendTo(qstDiv);
         
     var ansDiv = $("<div class='ansDiv' id='" + id + "ansDiv'>").appendTo(qstDiv);
-    var ansAdd = $("<button class='ansAdd'>" + sankoreLang[lang].add_answer + "</button>").appendTo(ansDiv);
+    var ansAdd = $("<button class='ansAdd'>" + sankoreLang.add_answer + "</button>").appendTo(ansDiv);
     qstDiv.insertBefore("#addQstDiv");
-    $("#addQsqSpan1").text(sankoreLang[lang].q + (count + 2));
+    $("#addQsqSpan1").text(sankoreLang.q + (count + 2));
 }
 
 //add answers
@@ -527,7 +629,7 @@ function addAnsBlock(id, currId, text, stage, rightAns, type){
     }
     var count = $("#" + currId + " .newAnswer").size() + 1;
     var input = $("<input type='checkbox' style='float: left;' value='" + value + "' " + check + ">").appendTo(newAnswer);
-    var ansSpan = $("<span class='ansSpan'>" + sankoreLang[lang].a + count + "</span>").appendTo(newAnswer);
+    var ansSpan = $("<span class='ansSpan'>" + sankoreLang.a + count + "</span>").appendTo(newAnswer);
     var ansContent = $("<div class='ansContent' id='" + id +"ansContent' contenteditable='true'>" + text + "</div>").appendTo(newAnswer);
     var ansDelete = $("<button class='ansDelete' id='" + id + "ansDelete'>").appendTo(newAnswer);
     newAnswer.insertBefore("#" + currId + "ansDiv .ansAdd");    
@@ -557,15 +659,44 @@ function checkArrayOnFill(array){
 function refreshAns(){
     var count = $("#" + currentQstId + " .newAnswer").size();        
     for(var i = 0; i < count; i ++)
-        $($("#" + currentQstId + " .newAnswer span")[i]).text(sankoreLang[lang].a + (i+1));
+        $($("#" + currentQstId + " .newAnswer span")[i]).text(sankoreLang.a + (i+1));
 }
 
 //refresh questions numbers
 function refreshQst(){
     var count = $(".qstNumber").size();        
     for(var i = 0; i < count; i ++)
-        $($(".qstNumber")[i]).text(sankoreLang[lang].q + (i+1));
-    $("#addQsqSpan1").text(sankoreLang[lang].q + ++count);
+        $($(".qstNumber")[i]).text(sankoreLang.q + (i+1));
+    $("#addQsqSpan1").text(sankoreLang.q + ++count);
+}
+
+//check answers
+function checkingAnswers(type, array, value, state){
+    switch(type){
+        case "radio":
+            for(var i in array)
+                if(array[i].value == value){
+                    array[i].state = "checked";
+                    array[i].was = true;
+                } else 
+                    array[i].state = "";                
+            break;
+        case "box":
+            for(i in array)
+                if(array[i].value == value){
+                    array[i].state = state;
+                    array[i].was = true;
+                }     
+            break;
+        case "sel":
+            for(i in array)
+                if(array[i].value == value){
+                    array[i].state = "selected";
+                    array[i].was = true;
+                } else 
+                    array[i].state = ""; 
+            break;
+    }
 }
 
 //question constructor
@@ -591,4 +722,65 @@ function Answer(){
     this.text = "";
     
     this.value = "";
+    
+    this.state = "";
+    
+    this.was = false;
+}
+
+//changing the style
+function changeStyle(val){
+    switch(val){
+        case "1":
+            $(".b_top_left").removeClass("btl_pad").removeClass("without_back");
+            $(".b_top_center").removeClass("btc_pad").removeClass("without_back");
+            $(".b_top_right").removeClass("btr_pad").removeClass("without_back");
+            $(".b_center_left").removeClass("bcl_pad").removeClass("without_back");
+            $(".b_center_right").removeClass("bcr_pad").removeClass("without_back");
+            $(".b_bottom_right").removeClass("bbr_pad").removeClass("without_back");
+            $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
+            $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
+            $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+            $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
+            $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
+            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
+            $("#wgt_name").removeClass("pad_color");
+            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
+            $("body, html").removeClass("without_radius");
+            break;
+        case "2":
+            $(".b_top_left").addClass("btl_pad").removeClass("without_back");
+            $(".b_top_center").addClass("btc_pad").removeClass("without_back");
+            $(".b_top_right").addClass("btr_pad").removeClass("without_back");
+            $(".b_center_left").addClass("bcl_pad").removeClass("without_back");
+            $(".b_center_right").addClass("bcr_pad").removeClass("without_back");
+            $(".b_bottom_right").addClass("bbr_pad").removeClass("without_back");
+            $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
+            $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
+            $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
+            $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_name").addClass("pad_color");
+            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
+            $("body, html").removeClass("without_radius");
+            break;
+        case "3":
+            $(".b_top_left").addClass("without_back").removeClass("btl_pad");
+            $(".b_top_center").addClass("without_back").removeClass("btc_pad");
+            $(".b_top_right").addClass("without_back").removeClass("btr_pad");
+            $(".b_center_left").addClass("without_back").removeClass("bcl_pad");
+            $(".b_center_right").addClass("without_back").removeClass("bcr_pad");
+            $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
+            $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
+            $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
+            $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+            $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
+            $("#wgt_name").addClass("pad_color");
+            $(".style_select").addClass("none_select").val(val);
+            $("body, html").addClass("without_radius");
+            break;
+    }
 }

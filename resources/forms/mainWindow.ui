@@ -71,7 +71,6 @@
    <addaction name="actionErase"/>
    <addaction name="actionGroupItems"/>
    <addaction name="actionBoard"/>
-   <addaction name="actionTutorial"/>
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>
@@ -117,7 +116,6 @@
    <addaction name="actionWebSmaller"/>
    <addaction name="separator"/>
    <addaction name="actionBoard"/>
-   <addaction name="actionTutorial"/>
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>
@@ -167,7 +165,6 @@
    <addaction name="actionAddToWorkingDocument"/>
    <addaction name="actionDocumentAdd"/>
    <addaction name="actionBoard"/>
-   <addaction name="actionTutorial"/>
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>
@@ -1640,13 +1637,42 @@
    </property>
    <property name="icon">
     <iconset resource="../sankore.qrc">
-     <normaloff>:/images/toolbar/library.png</normaloff>:/images/toolbar/library.png</iconset>
+     <normaloff>:/images/toolbar/group.png</normaloff>
+     <normalon>:/images/toolbar/ungroup.png</normalon>:/images/toolbar/group.png</iconset>
    </property>
    <property name="text">
     <string>Group Items</string>
    </property>
    <property name="toolTip">
     <string>Group items</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/stylusPalette/handPlay.png</normaloff>
+     <normalon>:/images/stylusPalette/handPlayOn.png</normalon>:/images/stylusPalette/handPlay.png</iconset>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+   <property name="toolTip">
+    <string>Interact with items</string>
+   </property>
+  </action>
+  <action name="actionEraseBackground">
+   <property name="icon">
+    <iconset resource="../sankore.qrc">
+     <normaloff>:/images/erasePalette/eraseBackground.svg</normaloff>:/images/erasePalette/eraseBackground.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Erase Background</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove the backgound</string>
    </property>
   </action>
  </widget>

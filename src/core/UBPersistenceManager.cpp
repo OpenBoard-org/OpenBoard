@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -25,6 +25,9 @@
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 
+#include "gui/UBDockTeacherGuideWidget.h"
+#include "gui/UBTeacherGuideWidget.h"
+
 #include "document/UBDocumentProxy.h"
 
 #include "adaptors/UBExportPDF.h"
@@ -33,6 +36,7 @@
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
 #include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
 
 #include "interfaces/IDataStorage.h"
 
@@ -155,7 +159,7 @@ QStringList UBPersistenceManager::allShapes()
 
 QStringList UBPersistenceManager::allGips()
 {
-    QString gipLibraryPath = UBSettings::settings()->applicationGipLibraryDirectory();
+    QString gipLibraryPath = UBSettings::settings()->userGipLibraryDirectory();
 
     QDir dir(gipLibraryPath);
 
@@ -591,7 +595,6 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
     }
 }
 
-
 void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex)
 {
     checkIfDocumentRepositoryExists();
@@ -603,14 +606,19 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
 
-    if (pDocumentProxy->isModified())
+    UBBoardPaletteManager* paletteManager = UBApplication::boardController->paletteManager();
+    bool teacherGuideModified = false;
+    if(paletteManager->teacherGuideDockWidget())
+    	teacherGuideModified = paletteManager->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
+
+    if (pDocumentProxy->isModified() || teacherGuideModified)
         UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
 
-    if (pScene->isModified())
+    if (pScene->isModified() || teacherGuideModified)
     {
-        UBThumbnailAdaptor::persistScene(pDocumentProxy->persistencePath(), pScene, pSceneIndex);
-
         UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+
+        UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
 
         pScene->setModified(false);
     }
@@ -676,7 +684,7 @@ int UBPersistenceManager::sceneCountInDir(const QString& pPath)
         }
         else
         {
-            if(UBSettings::settings()->teacherGuidePageZeroActivated && pageIndex == 0){
+            if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() && pageIndex == 0){
                 // the document has no zero file but doesn't means that it hasn't any file
                 // at all. Just importing a document without the first page using a configuartion
                 // that enables zero page.
@@ -847,11 +855,7 @@ QString UBPersistenceManager::teacherGuideAbsoluteObjectPath(UBDocumentProxy* pD
 
 QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* pDocumentProxy, QString pPath)
 {
-	QString path = pPath;
-	//windows
-	path.replace("file:///","");
-	//others
-	path.replace("file://","");
+    QString path = UBFileSystemUtils::removeLocalFilePrefix(pPath);
 	QFileInfo fi(path);
     QString uuid = QUuid::createUuid();
 
@@ -897,7 +901,7 @@ QString UBPersistenceManager::addVideoFileToDocument(UBDocumentProxy* pDocumentP
 
     }
 
-    return fileName;
+    return destPath;
 
 }
 
@@ -929,7 +933,7 @@ QString UBPersistenceManager::addVideoFileToDocument(UBDocumentProxy* pDocumentP
         }
     }
 
-    return fileName;
+    return destPath;
 
 }
 
@@ -957,7 +961,7 @@ QString UBPersistenceManager::addAudioFileToDocument(UBDocumentProxy* pDocumentP
 
     }
 
-    return fileName;
+    return destPath;
 
 }
 
@@ -989,7 +993,8 @@ QString UBPersistenceManager::addAudioFileToDocument(UBDocumentProxy* pDocumentP
         }
     }
 
-    return fileName;
+    //return fileName;
+    return destPath;
 
 }
 

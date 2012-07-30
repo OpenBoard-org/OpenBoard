@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -37,7 +37,6 @@ class UBPageNumberPalette;
 class UBZoomPalette;
 class UBActionPalette;
 class UBBoardController;
-class UBFloatingPalette;
 class UBServerXMLHttpRequest;
 class UBKeyboardPalette;
 class UBMainWindow;
@@ -70,6 +69,8 @@ class UBBoardPaletteManager : public QObject
         void setCurrentWebToolsPalette(UBWebToolsPalette *palette) {mWebToolsCurrentPalette = palette;}
         UBWebToolsPalette* mWebToolsCurrentPalette;
 
+        UBDockTeacherGuideWidget* teacherGuideDockWidget() { return mpTeacherGuideWidget;}
+
         void processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode);
         void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
         void startDownloads();
@@ -88,6 +89,8 @@ class UBBoardPaletteManager : public QObject
 
         void slot_changeMainMode(UBApplicationController::MainMode);
         void slot_changeDesktopMode(bool);
+
+        void toggleErasePalette(bool ckecked);
 
     private:
 
@@ -168,7 +171,6 @@ class UBBoardPaletteManager : public QObject
         void erasePaletteButtonPressed();
         void erasePaletteButtonReleased();
 
-        void toggleErasePalette(bool ckecked);
         void erasePaletteClosed();
 
         void togglePagePalette(bool ckecked);

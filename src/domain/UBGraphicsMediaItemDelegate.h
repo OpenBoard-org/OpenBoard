@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,6 +18,7 @@
 
 #include <QtGui>
 #include <phonon/MediaObject>
+#include <QTimer>
 
 #include "core/UB.h"
 #include "UBGraphicsItemDelegate.h"
@@ -54,6 +55,8 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         void totalTimeChanged(qint64 newTotalTime);
 
+        void hideToolBar();
+
     protected:
         virtual void buildButtons();
 
@@ -65,6 +68,9 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
         DelegateMediaControl *mMediaControl;
 
         Phonon::MediaObject* mMedia;
+
+        QTimer *mToolBarShowTimer;
+        int m_iToolBarShowingInterval;
 };
 
 #endif /* UBGRAPHICSMEDIAITEMDELEGATE_H_ */

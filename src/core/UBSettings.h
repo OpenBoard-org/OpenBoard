@@ -96,6 +96,9 @@ class UBSettings : public QObject
         QString communityPassword();
         void setCommunityPassword(const QString& password);
 
+        int libraryIconSize();
+        void setLibraryIconsize(const int& size);
+
         void init();
         
         //user directories
@@ -112,15 +115,18 @@ class UBSettings : public QObject
         static QString userInteractiveFavoritesDirectory();
         static QString userPodcastRecordingDirectory();
 
-        //application directory
+		QString userGipLibraryDirectory();
+        
+		//application directory
         QString applicationShapeLibraryDirectory();
-        QString applicationGipLibraryDirectory();
         QString applicationImageLibraryDirectory();
         QString applicationApplicationsLibraryDirectory();
         QString applicationInteractivesDirectory();
         QString applicationCustomizationDirectory();
         QString applicationCustomFontDirectory();
-
+        QString applicationAudiosLibraryDirectory();
+        QString applicationVideosLibraryDirectory();
+        QString applicationAnimationsLibraryDirectory();
 
         QNetworkProxy* httpProxy();
 
@@ -174,6 +180,7 @@ class UBSettings : public QObject
 
         static const int maxThumbnailWidth;
         static const int defaultThumbnailWidth;
+        static const int defaultLibraryIconSize;
 
         static const int defaultImageWidth;
         static const int defaultShapeWidth;
@@ -202,6 +209,8 @@ class UBSettings : public QObject
         static QString defaultDocumentGroupName;
         static QString documentTrashGroupName;
 
+        //static int libIconSize;
+
         UBSetting* productWebUrl;
 
         QString softwareHomeUrl;
@@ -214,6 +223,7 @@ class UBSettings : public QObject
         UBSetting* appEnableAutomaticSoftwareUpdates;
         UBSetting* appEnableSoftwareUpdates;
         UBSetting* appToolBarOrientationVertical;
+        UBSetting* appPreferredLanguage;
 
         UBSetting* appIsInSoftwareUpdateProcess;
 
@@ -324,14 +334,20 @@ class UBSettings : public QObject
         UBSetting* gipThumbnailWidth;
         UBSetting* soundThumbnailWidth;
 
-        UBSetting* navigPaletteWidth;
-        UBSetting* rightLibPaletteWidth;
-        UBSetting* leftLibPaletteWidth;
+        UBSetting* rightLibPaletteBoardModeWidth;
+        UBSetting* rightLibPaletteBoardModeIsCollapsed;
+        UBSetting* rightLibPaletteDesktopModeWidth;
+        UBSetting* rightLibPaletteDesktopModeIsCollapsed;
+        UBSetting* leftLibPaletteBoardModeWidth;
+        UBSetting* leftLibPaletteBoardModeIsCollapsed;
+        UBSetting* leftLibPaletteDesktopModeWidth;
+        UBSetting* leftLibPaletteDesktopModeIsCollapsed;
 
         UBSetting* communityUser;
         UBSetting* communityPsw;
 
         UBSetting* pageSize;
+        UBSetting* pageDpi;
 
         UBSetting* KeyboardLocale;
         UBSetting* swapControlAndDisplayScreens;
@@ -340,6 +356,8 @@ class UBSettings : public QObject
         UBSetting* historyLimit;
         UBSetting* teacherGuidePageZeroActivated;
         UBSetting* teacherGuideLessonPagesActivated;
+
+        UBSetting* libIconSize;
 
     public slots:
 

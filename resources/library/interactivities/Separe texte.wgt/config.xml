@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://www.example.net/widgets/helloworld" 
+        version="1.0"
+        width="850"
+        height="350" 
+		ub:resizable="true">
+		
+		<name>Split a text [alt]</name>
+		<description>Split a text into sentences</description>
+		<preference name="skin"
+		            value="uniboard"/>
+		<content src="index.html"/> 
+</widget>

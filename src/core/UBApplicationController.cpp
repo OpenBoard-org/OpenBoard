@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -40,6 +40,8 @@
 
 #include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBDockTeacherGuideWidget.h"
+#include "gui/UBTeacherGuideWidget.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBW3CWidget.h"
@@ -63,14 +65,12 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
     , mControlView(pControlView)
     , mDisplayView(pDisplayView)
     , mMirror(0)
-    , mFtp(0)
     , mMainMode(Board)
     , mDisplayManager(0)
     , mAutomaticCheckForUpdates(false)
     , mCheckingForUpdates(false)
     , mIsShowingDesktop(false)
     , mHttp(0)
-
 {
     mDisplayManager = new UBDisplayManager(this);
 
@@ -120,7 +120,6 @@ UBApplicationController::~UBApplicationController()
 
     delete mBlackScene;
     delete mMirror;
-	if (mFtp) delete mFtp;
     if (mHttp) delete mHttp;
 }
 
@@ -340,8 +339,7 @@ void UBApplicationController::showBoard()
         int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
         if (selectedSceneIndex != -1)
         {
-            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->getCurrentDocument(), selectedSceneIndex);
-            UBApplication::boardController->emitScrollSignal();
+            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->selectedDocument(), selectedSceneIndex, true);
         }
     }
 
@@ -422,7 +420,7 @@ void UBApplicationController::showDocument()
 
     if (UBApplication::boardController)
     {
-        if (UBApplication::boardController->activeScene()->isModified())
+        if (UBApplication::boardController->activeScene()->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()))
             UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->hide();
     }
@@ -460,6 +458,7 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
         UBPlatformUtils::bringPreviousProcessToFront();
     }
 
+    UBDrawingController::drawingController()->setInDestopMode(true);
     UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Artistic);
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 }
@@ -474,23 +473,30 @@ void UBApplicationController::showTutorial()
         UBApplication::boardController->hide();
     }
 
-    // it's needed not to duplicate webbrowser search in web mode. If I've breaked smbd's code let Ivan know
-    UBApplication::webController->show(UBWebController::Tutorial);
+    if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
+    {
+        showDesktop(true);
+        UBApplication::webController->show(UBWebController::Tutorial);
 
-    mMainWindow->webToolBar->hide();
-    mMainWindow->boardToolBar->hide();
-    mMainWindow->documentToolBar->hide();
-    mMainWindow->tutorialToolBar->show();
+    }
+    else{
+    	mMainWindow->webToolBar->hide();
+    	mMainWindow->boardToolBar->hide();
+    	mMainWindow->documentToolBar->hide();
+    	mMainWindow->tutorialToolBar->show();
 
 
-    mMainMode = Tutorial;
+    	mMainMode = Tutorial;
 
-    adaptToolBar();
+    	adaptToolBar();
 
-    mUninoteController->hideWindow();
+    	mUninoteController->hideWindow();
 
-    mirroringEnabled(false);
-    emit mainModeChanged(mMainMode);
+    	UBApplication::webController->show(UBWebController::Tutorial);
+
+    	mirroringEnabled(false);
+    	emit mainModeChanged(mMainMode);
+    }
 }
 
 
@@ -522,42 +528,26 @@ void UBApplicationController::showSankoreEditor()
     emit mainModeChanged(mMainMode);
 }
 
-void UBApplicationController::runCheckUpdate(int id, bool error)
-{
-	Q_UNUSED(id);
-    if(!error){
-        if(mFtp!=NULL)
-            delete mFtp;
-        mFtp = new QFtp(this);
-        connect(mFtp, SIGNAL(commandFinished(int,bool)), this, SLOT(ftpCommandFinished(int,bool)));
-        mFtp->connectToHost("91.121.248.138",21);
-        mFtp->login("anonymous", "anonymous");
-        mFtp->get("update.json",0);
-    }
-}
-
 void UBApplicationController::checkUpdate()
 {
-    //TODO change this when upgrade the qt version
-    // networkAccessible : NetworkAccessibility not yet available
-    if(mHttp)
+	if(mHttp)
         delete mHttp;
-    QUrl url("http://www.google.com");
+    QUrl url("http://ftp.open-sankore.org/update.json");
     mHttp = new QHttp(url.host());
-    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(runCheckUpdate(int,bool)));
+    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
     mHttp->get(url.path());
 }
 
-void UBApplicationController::ftpCommandFinished(int id, bool error)
+void UBApplicationController::updateRequestFinished(int id, bool error)
 {
    if (error){
-       qWarning() << "ftp command id" << id << "return the error: " << mFtp->errorString();
-       mFtp->close();
+       qWarning() << "http command id" << id << "return the error: " << mHttp->errorString();
+       mHttp->close();
    }
    else{
-       QString responseString =  QString(mFtp->readAll());
+       QString responseString =  QString(mHttp->readAll());
        if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
-           mFtp->close();
+           mHttp->close();
            downloadJsonFinished(responseString);
        }
    }
@@ -604,7 +594,10 @@ void UBApplicationController::checkUpdateRequest()
 void UBApplicationController::hideDesktop()
 {
     mDisplayManager->adjustScreens(-1);
-    UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
+
+    if(UBStylusTool::Eraser != UBDrawingController::drawingController()->stylusTool()){
+    	UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
+    }
 
     if (mMainMode == Board)
     {

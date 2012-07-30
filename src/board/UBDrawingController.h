@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -61,6 +61,14 @@ class UBDrawingController : public QObject
 
         UBAbstractDrawRuler* mActiveRuler;
 
+        void setInDestopMode(bool mode){
+        	mIsDesktopMode = mode;
+        }
+
+        bool isInDesktopMode(){
+        	return mIsDesktopMode;
+        }
+
     public slots:
 
         void setStylusTool(int tool);
@@ -79,6 +87,7 @@ class UBDrawingController : public QObject
         UBStylusTool::Enum mStylusTool;
         UBStylusTool::Enum mLatestDrawingTool;
         eDrawingMode mDrawingMode;
+        bool mIsDesktopMode;
 
         static UBDrawingController* sDrawingController;
 
@@ -88,6 +97,7 @@ class UBDrawingController : public QObject
         void eraserToolSelected(bool checked);
         void markerToolSelected(bool checked);
         void selectorToolSelected(bool checked);
+        void playToolSelected(bool checked);
         void handToolSelected(bool checked);
         void zoomInToolSelected(bool checked);
         void zoomOutToolSelected(bool checked);

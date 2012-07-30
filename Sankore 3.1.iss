@@ -6,8 +6,8 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{E63D17F8-D9DA-479D-B9B5-0D101A03703B}
-AppName=Open-Sankore
-AppVerName=Open-Sankore
+AppName=Open-Sankoré
+AppVerName=Open-Sankoré
 AppPublisher=Open-Sankore
 
 AppPublisherURL=http://dev.open-sankore.org
@@ -15,7 +15,7 @@ AppSupportURL=http://dev.open-sankore.org
 AppUpdatesURL=http://dev.open-sankore.org
 
 DefaultDirName={pf}\Open-Sankore
-DefaultGroupName=Open-Sankore
+DefaultGroupName=Open-Sankoré
 
 OutputDir=.\install\win32\
 OutputBaseFilename=Open-Sankore
@@ -48,48 +48,48 @@ Source: "..\Sankore-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
 Source: "build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;Sankore plugins
-Source: "plugins\cffadaptor\build\win32\release\lib\CFF_Adaptor.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "plugins\cffadaptor\build\win32\release\lib\CFF_Adaptor.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ;OpenSSL
 Source: "..\Sankore-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "..\Sankore-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
 ;Qt base dll
-Source: "..\Qt-sankore3.1\lib\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\lib\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\lib\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\lib\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\lib\QtWebKit4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\lib\phonon4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\lib\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\lib\QtSvg4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtWebKit4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\phonon4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtSvg4.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ;Qt plugins
-Source: "..\Qt-sankore3.1\plugins\accessible\qtaccessiblecompatwidgets4.dll"; DestDir: "{app}\accessible"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\accessible\qtaccessiblewidgets4.dll"; DestDir: "{app}\accessible"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\bearer\qgenericbearer4.dll"; DestDir: "{app}\bearer"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\bearer\qnativewifibearer4.dll"; DestDir: "{app}\bearer"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\codecs\qcncodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\codecs\qjpcodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\codecs\qkrcodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\codecs\qtwcodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\graphicssystems\qglgraphicssystem4.dll"; DestDir: "{app}\graphicssystems"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\graphicssystems\qtracegraphicssystem4.dll"; DestDir: "{app}\graphicssystems"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\iconengines\qsvgicon4.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\imageformats\qgif4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\imageformats\qico4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\imageformats\qmng4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-sankore3.1\plugins\phonon_backend\phonon_ds94.dll"; DestDir: "{app}\phonon_backend"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\accessible\qtaccessiblecompatwidgets4.dll"; DestDir: "{app}\accessible"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\accessible\qtaccessiblewidgets4.dll"; DestDir: "{app}\accessible"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\bearer\qgenericbearer4.dll"; DestDir: "{app}\bearer"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\bearer\qnativewifibearer4.dll"; DestDir: "{app}\bearer"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\codecs\qcncodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\codecs\qjpcodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\codecs\qkrcodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\codecs\qtwcodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\graphicssystems\qglgraphicssystem4.dll"; DestDir: "{app}\graphicssystems"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\graphicssystems\qtracegraphicssystem4.dll"; DestDir: "{app}\graphicssystems"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\iconengines\qsvgicon4.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\imageformats\qgif4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\imageformats\qico4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\imageformats\qmng4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "..\Qt-4.8\plugins\phonon_backend\phonon_ds94.dll"; DestDir: "{app}\phonon_backend"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"
-Name: "{group}\{cm:UninstallProgram,Open-Sankore}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Open-Sankore"; Filename: "{app}\Open-Sankore.exe"; Tasks: quicklaunchicon
+Name: "{group}\Open-Sankoré"; Filename: "{app}\Open-Sankore.exe"
+Name: "{group}\{cm:UninstallProgram,Open-Sankoré}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\Open-Sankoré"; Filename: "{app}\Open-Sankore.exe"; Tasks: desktopicon
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Open-Sankoré"; Filename: "{app}\Open-Sankore.exe"; Tasks: quicklaunchicon
 
 [Registry]
 Root: HKCR; Subkey: ".ubz"; ValueType: string; ValueName: ""; ValueData: "SankoreFile"; Flags: uninsdeletevalue
@@ -112,12 +112,12 @@ Root: HKLM64; Subkey: "SOFTWARE\Open-Sankore"; ValueType: dword; ValueName: "EMF
 Root: HKLM64; Subkey: "SOFTWARE\Open-Sankore\Defaults"; ValueType: dword; ValueName: "PDF: Enabled"; ValueData: "1"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: dword; ValueName: "Policy"; ValueData: "3"; Flags: uninsdeletevalue; Check: isProcessorX64
-Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppName"; ValueData: "Sankore 3.1.exe"; Flags: uninsdeletevalue; Check: isProcessorX64
+Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppName"; ValueData: "Open-Sankore.exe"; Flags: uninsdeletevalue; Check: isProcessorX64
 Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppPath"; ValueData: "{app}"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 [Run]
 Filename: "{tmp}\vcredist_x86.exe";WorkingDir:"{tmp}"; Parameters: "/q:a/c:""VCREDI~3.EXE /q:a /c:""""msiexec /i vcredist.msi /qn"""""""; StatusMsg: Installing CRT ...
-Filename: "{app}\Open-Sankore.exe"; Description: "{cm:LaunchProgram,Open-Sankore}"; Flags: nowait postinstall
+Filename: "{app}\Open-Sankore.exe"; Description: "{cm:LaunchProgram,Open-Sankoré}"; Flags: nowait postinstall skipifsilent 
 
 [UninstallDelete]
 ; cleanup and delete whole installation directory

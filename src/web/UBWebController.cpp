@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -32,7 +32,6 @@
 #include "network/UBNetworkAccessManager.h"
 
 #include "gui/UBWidgetMirror.h"
-#include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBKeyboardPalette.h"
@@ -178,10 +177,8 @@ void UBWebController::tutorialWebInstance()
     QString tutorialPath = "/etc/Tutorial/tutorial" + language + "/index.html";
 #if defined(Q_WS_MAC)
     tutorialHtmlIndexFile = QApplication::applicationDirPath()+ "/../Resources" + tutorialPath;
-#elif defined(Q_WS_WIN)
-    tutorialHtmlIndexFile = QApplication::applicationDirPath()+ tutorialPath;
 #else
-    tutorialHtmlIndexFile = QApplication::applicationDirPath()+ tutorialPath;
+    tutorialHtmlIndexFile = QApplication::applicationDirPath() + tutorialPath;
 #endif
 
     QUrl currentUrl = QUrl::fromLocalFile(tutorialHtmlIndexFile);
@@ -212,6 +209,8 @@ void UBWebController::tutorialWebInstance()
             (*mCurrentWebBrowser)->tabWidget()->lineEdits()->hide();
 
         }
+        else
+        	(*mCurrentWebBrowser)->loadUrl(currentUrl);
 
         UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
 
@@ -293,6 +292,7 @@ void UBWebController::show(WebInstance type)
         break;
     case Paraschool:
         paraschoolWebInstance();
+        break;
     default:
         qCritical() << __FILE__ << " non supported web instance type " << QString::number(type) ;
         break;

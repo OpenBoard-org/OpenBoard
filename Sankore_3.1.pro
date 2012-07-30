@@ -11,10 +11,10 @@ linux-g++-64 {
     CONFIG += link_prl
 }
 
-VERSION_MAJ = 1
-VERSION_MIN = 50 
-VERSION_TYPE = a # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 20
+VERSION_MAJ = 2
+VERSION_MIN = 00 
+VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
+VERSION_PATCH = 01
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
@@ -54,8 +54,8 @@ include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/transition/transition.pri)
-include(src/customWidgets/customWidgets.pri)
 include(src/interfaces/interfaces.pri)
+include(src/customWidgets/customWidgets.pri)
 
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
@@ -109,7 +109,7 @@ MOC_DIR = $$BUILD_DIR/moc
 RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
-LIBS += "-Lplugins/cffadaptor/$$BUILD_DIR/lib" "-lCFF_Adaptor"
+#LIBS += "-Lplugins/cffadaptor/$$BUILD_DIR/lib" "-lCFF_Adaptor"
 
 win32 {
    RC_FILE = resources/win/sankore.rc
@@ -145,8 +145,8 @@ macx {
    # are not yet available in 64bits.
    CONFIG(debug, debug|release):CONFIG += x86
 
-   QMAKE_MAC_SDK = "/Developer/SDKs/MacOSX10.5.sdk"
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.4"
+   QMAKE_MAC_SDK = "/Developer/SDKs/MacOSX10.6.sdk"
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.5"
 
    VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
 
@@ -311,10 +311,24 @@ macx {
    }
 
    exists(resources/i18n/sankore_sk.qm) {
-       TRANSLATION_pt.files = resources/i18n/sankore_sk.qm \
+       TRANSLATION_sk.files = resources/i18n/sankore_sk.qm \
            resources/i18n/Localizable.strings
-       TRANSLATION_pt.path = "$$RESOURCES_DIR/sk.lproj"
+       TRANSLATION_sk.path = "$$RESOURCES_DIR/sk.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_sk
+   }
+   
+   exists(resources/i18n/sankore_bg.qm) {
+       TRANSLATION_bg.files = resources/i18n/sankore_bg.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_bg.path = "$$RESOURCES_DIR/bg.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_bg
+   }
+   
+   exists(resources/i18n/sankore_ca.qm) {
+       TRANSLATION_ca.files = resources/i18n/sankore_ca.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_ca.path = "$$RESOURCES_DIR/ca.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_ca
    }
    
    QMAKE_BUNDLE_DATA += UB_ETC \
@@ -407,10 +421,21 @@ TRANSLATIONS = resources/i18n/sankore_en.ts \
    resources/i18n/sankore_ar.ts \
    resources/i18n/sankore_iw.ts \
    resources/i18n/sankore_pt.ts \
-   resources/i18n/sankore_sk.ts
+   resources/i18n/sankore_sk.ts \
+   resources/i18n/sankore_bg.ts \
+   resources/i18n/sankore_ca.ts
 
 INSTALLS = UB_ETC \
    UB_I18N \
    UB_LIBRARY \
    UB_THIRDPARTY_INTERACTIVE
+
+HEADERS += \
+    plugins/cffadaptor/src/UBGlobals.h \
+    plugins/cffadaptor/src/UBCFFConstants.h \
+    plugins/cffadaptor/src/UBCFFAdaptor.h \
+    plugins/cffadaptor/src/UBCFFAdaptor_global.h
+
+SOURCES += \
+    plugins/cffadaptor/src/UBCFFAdaptor.cpp
 

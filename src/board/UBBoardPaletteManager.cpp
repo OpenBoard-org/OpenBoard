@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -66,6 +66,7 @@
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
     : QObject(container)
     , mKeyboardPalette(0)
+    , mWebToolsCurrentPalette(0)
     , mContainer(container)
     , mBoardControler(pBoardController)
     , mStylusPalette(0)
@@ -74,7 +75,6 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mRightPalette(NULL)
     , mBackgroundsPalette(0)
     , mToolsPalette(0)
-    , mWebToolsCurrentPalette(0)
     , mAddItemPalette(0)
     , mErasePalette(NULL)
     , mPagePalette(NULL)
@@ -152,7 +152,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
 
-    if(UBSettings::settings()->teacherGuidePageZeroActivated || UBSettings::settings()->teacherGuideLessonPagesActivated){
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() || UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
         mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
         mLeftPalette->registerWidget(mpTeacherGuideWidget);
         mLeftPalette->addTab(mpTeacherGuideWidget);
@@ -304,6 +304,7 @@ void UBBoardPaletteManager::setupPalettes()
     eraseActions << UBApplication::mainWindow->actionEraseAnnotations;
     eraseActions << UBApplication::mainWindow->actionEraseItems;
     eraseActions << UBApplication::mainWindow->actionClearPage;
+    eraseActions << UBApplication::mainWindow->actionEraseBackground;
 
     mErasePalette = new UBActionPalette(eraseActions, Qt::Horizontal , mContainer);
     mErasePalette->setButtonIconSize(QSize(128, 128));
@@ -345,6 +346,24 @@ void UBBoardPaletteManager::pagePaletteButtonReleased()
     {
         if( mPageButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
         {
+        	// The palette is reinstanciate because the duplication depends on the current scene
+        	delete(mPagePalette);
+        	mPagePalette = 0;
+        	QList<QAction*>pageActions;
+        	pageActions << UBApplication::mainWindow->actionNewPage;
+        	UBBoardController* boardController = UBApplication::boardController;
+        	if(UBApplication::documentController->pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(boardController->activeSceneIndex())))
+        		pageActions << UBApplication::mainWindow->actionDuplicatePage;
+            pageActions << UBApplication::mainWindow->actionImportPage;
+
+            mPagePalette = new UBActionPalette(pageActions, Qt::Horizontal , mContainer);
+            mPagePalette->setButtonIconSize(QSize(128, 128));
+            mPagePalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+            mPagePalette->groupActions();
+            mPagePalette->setClosable(true);
+            mPagePalette->adjustSizeAndPosition();
+
+
             togglePagePalette(true);
         }
         else
@@ -447,6 +466,7 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionEraseItems, SIGNAL(triggered()), mErasePalette, SLOT(close()));
     connect(UBApplication::mainWindow->actionEraseAnnotations, SIGNAL(triggered()), mErasePalette, SLOT(close()));
     connect(UBApplication::mainWindow->actionClearPage, SIGNAL(triggered()), mErasePalette, SLOT(close()));
+    connect(UBApplication::mainWindow->actionEraseBackground,SIGNAL(triggered()),mErasePalette,SLOT(close()));
     connect(mErasePalette, SIGNAL(closed()), this, SLOT(erasePaletteClosed()));
 
     foreach(QWidget *widget, UBApplication::mainWindow->actionErase->associatedWidgets())
@@ -548,7 +568,7 @@ void UBBoardPaletteManager::activeSceneChanged()
 
     if (mpPageNavigWidget)
     {
-        mpPageNavigWidget->setPageNumber(UBApplication::boardController->pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
+        mpPageNavigWidget->setPageNumber(UBDocumentContainer::pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
     }
 
     if (mZoomPalette)
@@ -811,7 +831,7 @@ void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos, 
     mPos = pos;
     mScaleFactor = scaleFactor;
 
-     QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
+    QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
 
     mAddItemPalette->show();
     mAddItemPalette->adjustSizeAndPosition();
@@ -829,7 +849,7 @@ void UBBoardPaletteManager::addItemToCurrentPage()
         UBApplication::boardController->downloadURL(mItemUrl);
     else
     {
-        UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, mPos, mScaleFactor);
+        UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, NULL, mPos, mScaleFactor);
 
         item->setSourceUrl(mItemUrl);
         item->setSelected(true);

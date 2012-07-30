@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -587,7 +587,7 @@ QCursor    UBGraphicsTriangle::flipCursor() const
 void UBGraphicsTriangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     lastRect = rect().toRect();
-    lastPos = event->screenPos();
+    lastPos = transform().inverted().map(event->screenPos());
 
     if (resize1Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
     {
@@ -621,18 +621,13 @@ void UBGraphicsTriangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
  
-    QPoint currPos = event->screenPos();
-//     qDebug() << QString(" X: %1 ").arg(currPos.x());
-//     qDebug() << QString(" Y: %1 ").arg(currPos.y());
-
     if (!mResizing1 && !mResizing2 && !mRotating)
     {
         QGraphicsItem::mouseMoveEvent(event);
     }
     else
     {
-
-        //-----------------------------------------------//
+        QPoint currPos = transform().inverted().map(event->screenPos());
 
         if (mResizing1)
         {
@@ -763,7 +758,9 @@ void UBGraphicsTriangle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-    if (currentTool == UBStylusTool::Selector)  {
+    if (currentTool == UBStylusTool::Selector ||
+        currentTool == UBStylusTool::Play)
+    {
         mCloseSvgItem->setParentItem(this);
 
         mShowButtons = true;
@@ -813,7 +810,8 @@ void UBGraphicsTriangle::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-    if (currentTool == UBStylusTool::Selector)
+    if (currentTool == UBStylusTool::Selector ||
+        currentTool == UBStylusTool::Play)
     {
         mCloseSvgItem->setVisible(mShowButtons);
         mVFlipSvgItem->setVisible(mShowButtons);

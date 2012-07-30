@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In  -->
+<!DOCTYPE svg [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+]>
+<svg version="1.2" baseProfile="tiny"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="107px" height="107px" viewBox="0 0 107 107" overflow="visible" xml:space="preserve">
+<defs>
+</defs>
+<g>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="53.666" y1="0" x2="53.666" y2="107.3335">
+		<stop  offset="0" style="stop-color:#727270"/>
+		<stop  offset="1" style="stop-color:#41413F"/>
+		<a:midPointStop  offset="0" style="stop-color:#727270"/>
+		<a:midPointStop  offset="0.5" style="stop-color:#727270"/>
+		<a:midPointStop  offset="1" style="stop-color:#41413F"/>
+	</linearGradient>
+	<path fill="url(#SVGID_1_)" d="M107.3,99.3c0,4.4-3.6,8-8,8H8c-4.4,0-8-3.6-8-8V8c0-4.4,3.6-8,8-8h91.3c4.4,0,8,3.6,8,8V99.3z"/>
+</g>
+<rect x="11.3" y="77.6" fill="#FFFFFF" width="26.8" height="9.5"/>
+<g>
+	<g  a:adobe-opacity-share="1">
+		<rect x="70.5" y="72.1" fill="#33342E"  a:adobe-opacity-share="0" width="29.2" height="9.5"/>
+	</g>
+	<g>
+		<rect x="68.5" y="69.1" fill="#FFFFFF" width="29.2" height="9.5"/>
+	</g>
+</g>
+<rect x="43.5" y="77.6" fill="#FFFFFF" width="13.4" height="9.5"/>
+<g>
+	<polyline fill="none" stroke="#B7B7B8" stroke-width="2" stroke-miterlimit="10" points="49.4,45 49.4,47 47.4,47 	"/>
+	
+		<line fill="none" stroke="#B7B7B8" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="3.8122,3.8122" x1="43.6" y1="47" x2="15" y2="47"/>
+	<polyline fill="none" stroke="#B7B7B8" stroke-width="2" stroke-miterlimit="10" points="13.1,47 11.1,47 11.1,45 	"/>
+	
+		<line fill="none" stroke="#B7B7B8" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="3.936,3.936" x1="11.1" y1="41" x2="11.1" y2="19.4"/>
+	<polyline fill="none" stroke="#B7B7B8" stroke-width="2" stroke-miterlimit="10" points="11.1,17.4 11.1,15.4 13.1,15.4 	"/>
+	
+		<line fill="none" stroke="#B7B7B8" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="3.8122,3.8122" x1="16.9" y1="15.4" x2="45.5" y2="15.4"/>
+	<polyline fill="none" stroke="#B7B7B8" stroke-width="2" stroke-miterlimit="10" points="47.4,15.4 49.4,15.4 49.4,17.4 	"/>
+	
+		<line fill="none" stroke="#B7B7B8" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="3.936,3.936" x1="49.4" y1="21.4" x2="49.4" y2="43"/>
+</g>
+<g>
+	<polyline fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" points="96.2,45 96.2,47 94.2,47 	"/>
+	
+		<line fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="3.8122,3.8122" x1="90.4" y1="47" x2="61.8" y2="47"/>
+	<polyline fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" points="59.9,47 57.9,47 57.9,45 	"/>
+	
+		<line fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="3.936,3.936" x1="57.9" y1="41" x2="57.9" y2="19.4"/>
+	<polyline fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" points="57.9,17.4 57.9,15.4 59.9,15.4 	"/>
+	
+		<line fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="3.8122,3.8122" x1="63.7" y1="15.4" x2="92.3" y2="15.4"/>
+	<polyline fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" points="94.2,15.4 96.2,15.4 96.2,17.4 	"/>
+	
+		<line fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" stroke-dasharray="3.936,3.936" x1="96.2" y1="21.4" x2="96.2" y2="43"/>
+</g>
+<path fill="#33342E" d="M93.3,39.8c0,0-7.4-6.5-15.9-12.4c0,0,0.6,7.8,0.9,19.6l5.6-2.7c4.6,10.6,4.7,16.2,4.8,30h1
+	c0,0,5.5-13.9-1.5-32L93.3,39.8z"/>
+<path fill="#67C8F0" d="M90.9,36.3c0,0-7.4-6.5-15.9-12.4c0,0,0.6,7.8,0.9,19.6l5.6-2.7c4.6,10.6,7,19.7,7.1,33.4h1
+	c0,0,3.2-17.4-3.8-35.5L90.9,36.3z"/>
+</svg>

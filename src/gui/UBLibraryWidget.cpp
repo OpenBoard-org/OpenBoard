@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -362,16 +362,8 @@ void UBLibraryWidget::dropEvent(QDropEvent *event)
         if (pMimeData->hasUrls()){
             QList<QUrl> urlList = pMimeData->urls();
             for (int i = 0; i < urlList.size() && i < 32; ++i){
-                QString filePath;
                 QString crntPath = urlList.at(i).toString();
-
-                if(crntPath.startsWith("file:") || crntPath.startsWith("/")){
-                    filePath = QUrl(crntPath).toLocalFile();
-                }else{
-                    filePath = crntPath;
-                }
-
-                mLibraryController->importItemOnLibrary(filePath);
+                mLibraryController->importItemOnLibrary(crntPath);
                 bDropAccepted = true;
             }
         }
@@ -559,7 +551,7 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
 {
     setObjectName(name);
     setWindowTitle(tr("Add new folder"));
-
+	setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     mpLabel = new QLabel(tr("New Folder name:"),this);
     mpLineEdit = new QLineEdit(this);
     mpAddButton = new QPushButton(tr("Add"));
@@ -570,7 +562,7 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
 
     mpButtons = new QDialogButtonBox(Qt::Horizontal, this);
     mpLayout = new QVBoxLayout(this);
-    mpHLayout = new QHBoxLayout(this);
+    mpHLayout = new QHBoxLayout(0);
     setLayout(mpLayout);
     mpLayout->addLayout(mpHLayout, 0);
     mpHLayout->addWidget(mpLabel, 0);
@@ -699,20 +691,8 @@ void UBLibraryWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl
     Q_UNUSED(pContentHeader);
     if(pSuccess)
     {
-//        QDir dir;
-//        dir.mkdir("tmp");
-//        QString qsFileName = QFileInfo(sourceUrl.toString()).fileName();
-//        QString qsFilePath = UBFileSystemUtils::normalizeFilePath(QString("tmp/%0").arg(qsFileName));
-//        QFile f(qsFilePath);
-//        if(f.open(QIODevice::WriteOnly))
-//        {
-//            f.write(pData);
-//            f.close();
-//        }
         QString urlString = sourceUrl.toString();
         mLibraryController->routeDataItem(urlString, pData);
-//        dir.remove(qsFileName);
-//        dir.rmdir("tmp");       // Due to Qt, the directoy will be removed only if it's empty :)
     }
 }
 

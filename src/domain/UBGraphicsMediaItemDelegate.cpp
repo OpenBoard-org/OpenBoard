@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,6 +18,7 @@
 
 #include "UBGraphicsMediaItem.h"
 #include "UBGraphicsMediaItemDelegate.h"
+#include "UBGraphicsDelegateFrame.h"
 
 #include "UBGraphicsScene.h"
 
@@ -33,6 +34,8 @@
 UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated, parent, true, false)
     , mMedia(pMedia)
+    , mToolBarShowTimer(NULL)
+    , m_iToolBarShowingInterval(5000)
 {
     QPalette palette;
     palette.setBrush ( QPalette::Light, Qt::darkGray );
@@ -42,27 +45,47 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
     connect(mMedia, SIGNAL(finished()), this, SLOT(updatePlayPauseState()));
     connect(mMedia, SIGNAL(tick(qint64)), this, SLOT(updateTicker(qint64)));
     connect(mMedia, SIGNAL(totalTimeChanged(qint64)), this, SLOT(totalTimeChanged(qint64)));
+
+    if (delegated()->hasLinkedImage())
+    {
+        mToolBarShowTimer = new QTimer();
+        connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
+        mToolBarShowTimer->setInterval(m_iToolBarShowingInterval);
+    }
 }
 
 bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     mToolBarItem->show();
+
+    if (mToolBarShowTimer)
+        mToolBarShowTimer->start();
+
     return UBGraphicsItemDelegate::mousePressEvent(event);
+}
+
+void UBGraphicsMediaItemDelegate::hideToolBar()
+{
+    mToolBarItem->hide();
 }
 
 void UBGraphicsMediaItemDelegate::buildButtons()
 {
     mPlayPauseButton = new DelegateButton(":/images/play.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     connect(mPlayPauseButton, SIGNAL(clicked(bool)), this, SLOT(togglePlayPause()));
+    connect(mPlayPauseButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+    
 
     mStopButton = new DelegateButton(":/images/stop.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     connect(mStopButton, SIGNAL(clicked(bool)), mMedia, SLOT(stop()));
+    connect(mStopButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
 
     mMediaControl = new DelegateMediaControl(delegated(), mToolBarItem);
     mMediaControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
     UBGraphicsItem::assignZValue(mMediaControl, delegated()->zValue());
-
+    connect(mMediaControl, SIGNAL(used()), mToolBarShowTimer, SLOT(start()));
+    
     if (delegated()->isMuted())
         mMuteButton = new DelegateButton(":/images/soundOff.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     else
@@ -70,6 +93,7 @@ void UBGraphicsMediaItemDelegate::buildButtons()
 
     connect(mMuteButton, SIGNAL(clicked(bool)), delegated(), SLOT(toggleMute())); 
     connect(mMuteButton, SIGNAL(clicked(bool)), this, SLOT(toggleMute())); // for changing button image
+    connect(mMuteButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
 
     mButtons << mPlayPauseButton << mStopButton << mMuteButton;
 
@@ -89,38 +113,56 @@ void UBGraphicsMediaItemDelegate::buildButtons()
 
 UBGraphicsMediaItemDelegate::~UBGraphicsMediaItemDelegate()
 {
-    //NOOP
+    if (mToolBarShowTimer)
+        delete mToolBarShowTimer;
 }
 
 void UBGraphicsMediaItemDelegate::positionHandles()
 {
     UBGraphicsItemDelegate::positionHandles();
 
-    qreal AntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());           
-
     UBGraphicsMediaItem *mediaItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
     if (mediaItem)
     {
-        if (mediaItem->getMediaType() != UBGraphicsMediaItem::mediaType_Audio)
-        {
-            mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height()*AntiScaleRatio);
-            mToolBarItem->setScale(AntiScaleRatio);
-            QRectF toolBarRect = mToolBarItem->rect();
-            toolBarRect.setWidth(delegated()->boundingRect().width()/AntiScaleRatio);
-            mToolBarItem->setRect(toolBarRect);           
+        QRectF toolBarRect = mToolBarItem->rect();
+        if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
+        {      
+            mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());
+           // mToolBarItem->setScale(AntiScaleRatio);
+
+            toolBarRect.setWidth(delegated()->boundingRect().width());
         }
-        else
+        else if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
         {
-            mToolBarItem->setPos(0, 0);
+            int borderSize = 0;
+            UBGraphicsMediaItem::UBAudioPresentationWidget *audioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(delegated()->widget());
+            if (audioWidget)
+                borderSize = audioWidget->borderSize();
+
+            mToolBarItem->setPos(borderSize,delegated()->boundingRect().height()-(mToolBarItem->rect().height() + borderSize));
+            toolBarRect.setWidth((delegated()->boundingRect().width()-2*borderSize));
             mToolBarItem->show();
         }
+
+        mToolBarItem->setRect(toolBarRect);
     }
 
+    int toolBarMinimumWidth = 0;
     int mediaItemWidth = mToolBarItem->boundingRect().width();
     foreach (DelegateButton* button, mButtons)
     {
         if (button->getSection() == Qt::TitleBarArea)
-            mediaItemWidth -= button->boundingRect().width();
+        {
+            mediaItemWidth -= button->boundingRect().width() + mToolBarItem->getElementsPadding();
+            toolBarMinimumWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
+        }
+    }
+    toolBarMinimumWidth += mToolBarItem->boundingRect().height();
+
+    UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(delegated()->widget());
+    if (pAudioWidget)
+    {
+       pAudioWidget->setMinimumSize(toolBarMinimumWidth + (int)mMediaControl->lcdAreaSize().width() + (int)mMediaControl->rect().height(),26+pAudioWidget->borderSize());
     }
 
     QRectF mediaItemRect = mMediaControl->rect();

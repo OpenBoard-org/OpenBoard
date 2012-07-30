@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -170,7 +170,8 @@ QVariant UBGraphicsCompass::itemChange(GraphicsItemChange change, const QVariant
 
 void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector &&
+        UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Play)
 		return;
 
     if (resizeButtonRect().contains(event->pos()))
@@ -193,6 +194,7 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
         {
             mSpanAngleInDegrees = 0;
             mSceneArcStartPoint = mapToScene(pencilPosition());
+            scene()->initStroke();
             scene()->moveTo(mSceneArcStartPoint);
         }
 
@@ -205,7 +207,8 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector &&
+        UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Play)
 		return;
 
     if (!mResizing && !mRotating && !mDrawing)
@@ -249,7 +252,8 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsCompass::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector &&
+        UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Play)
 		return;
 
     if (mResizing)
@@ -289,7 +293,8 @@ void UBGraphicsCompass::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsCompass::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector && 
+        UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Play)
 		return;
 
     mOuterCursor = cursor();
@@ -318,7 +323,8 @@ void UBGraphicsCompass::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void UBGraphicsCompass::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector &&
+        UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Play)
 		return;
 
     mShowButtons = false;
@@ -331,7 +337,8 @@ void UBGraphicsCompass::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void UBGraphicsCompass::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
-	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+	if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector &&
+        UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Play)
 		return;
 
     mShowButtons = shape().contains(event->pos());

@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -23,6 +23,7 @@ class UBRightPalette : public UBDockPalette
 public:
     UBRightPalette(QWidget* parent=0, const char* name="UBRightPalette");
     ~UBRightPalette();
+    bool switchMode(eUBDockPaletteWidgetMode mode);
 
 signals:
     void resized();
@@ -31,6 +32,7 @@ protected:
     void updateMaxWidth();
     void mouseMoveEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *event);
+
 };
 
 #endif // UBRIGHTPALETTE_H

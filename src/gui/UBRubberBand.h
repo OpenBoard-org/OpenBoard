@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -27,7 +27,31 @@ class UBRubberBand : public QRubberBand
         virtual ~UBRubberBand();
 
     private:
+        enum enm_resizingMode
+        {
+            None,
+            Top,
+            TopLeft,
+            TopRight,
+            Bottom,
+            BottomLeft,
+            BottomRight,
+            Left,
+            Right
+        };
+
+        enm_resizingMode determineResizingMode(QPoint pos);
+        virtual void mousePressEvent(QMouseEvent *event);
+        virtual void mouseMoveEvent(QMouseEvent *event);
+        virtual void mouseReleaseEvent(QMouseEvent *event);
+
+    private:
         QStyle* customStyle;
+        enm_resizingMode mResizingMode;
+        int mResizingBorderHeight;
+        bool mMouseIsPressed;
+        QPoint mLastPressedPoint;
+        QPoint mLastMousePos;
 };
 
 #endif /* UBRUBBERBAND_H_ */

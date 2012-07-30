@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -22,15 +22,13 @@
 #include <QMap>
 #include <QString>
 
-void UBKeyboardButton::sendUnicodeSymbol(unsigned int nSymbol1, unsigned int nSymbol2, bool shift)
+void UBKeyboardButton::sendUnicodeSymbol(KEYCODE keycode)
 {
-	unsigned int nSymbol = (shift)? nSymbol2 : nSymbol1;
-
-	if (shift)
+    if (keycode.modifier)
 		CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 56, true));
-	CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, nSymbol, true));
-	CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, nSymbol, false));
-	if (shift)
+    CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, keycode.code, true));
+    CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, keycode.code, false));
+    if (keycode.modifier)
 		CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 56, false));
 	
 }
@@ -46,16 +44,17 @@ void UBKeyboardButton::sendControlSymbol(int nSymbol)
 
 void UBKeyboardPalette::createCtrlButtons()
 {
-        ctrlButtons = new UBKeyboardButton*[7];
+        ctrlButtons = new UBKeyboardButton*[9];
 
-        ctrlButtons[0] = new UBCntrlButton(this, "<-", 51);
-        ctrlButtons[1] = new UBCntrlButton(this, "<->", 48);
-        ctrlButtons[2] = new UBCntrlButton(this, tr("Enter"), 76);
-        ctrlButtons[3] = new UBCapsLockButton(this, "capslock");
-        ctrlButtons[4] = new UBCapsLockButton(this, "capslock");
-        ctrlButtons[5] = new UBLocaleButton(this);
-        ctrlButtons[6] = new UBCntrlButton(this, "", 49);
-        ctrlButtons[7] = new UBLocaleButton(this);
+        ctrlButtons[0] = new UBCntrlButton(this, 51, "backspace");
+        ctrlButtons[1] = new UBCntrlButton(this, 48, "tab");
+        ctrlButtons[2] = new UBCapsLockButton(this, "capslock");
+        ctrlButtons[3] = new UBCntrlButton(this, tr("Enter"), 76);
+        ctrlButtons[4] = new UBShiftButton(this, "shift");
+        ctrlButtons[5] = new UBShiftButton(this, "shift");
+        ctrlButtons[6] = new UBLocaleButton(this);
+        ctrlButtons[7] = new UBCntrlButton(this, "", 49);
+        ctrlButtons[8] = new UBLocaleButton(this);
 }
 
 void SetMacLocaleByIdentifier(const QString& id)
@@ -102,10 +101,7 @@ void UBKeyboardPalette::onActivated(bool activated)
 			SetMacLocaleByIdentifier(activeLocale);
 	}
 }
-void UBKeyboardPalette::onDeactivated()
-{
-    SetMacLocaleByIdentifier(activeLocale);
-}
+
 void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)
 {
 	SetMacLocaleByIdentifier(locale->id);

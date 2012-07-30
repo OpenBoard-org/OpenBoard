@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -250,13 +250,19 @@ void UBGraphicsProtractor::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (scene())
         scene()->setModified(true);
 
+    if (!mShowButtons)
+    {
+        mShowButtons = true;
+        update();
+    }
+
     mCurrentTool = None;
 }
 
 
 void UBGraphicsProtractor::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-    if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector)
+    if (UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Selector && UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Play)
         return;
 
     if (!mShowButtons)
@@ -291,12 +297,6 @@ void UBGraphicsProtractor::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
         return;
 
     Tool currentTool = toolFromPos(event->pos());
-
-    if (!mShowButtons)
-    {
-        mShowButtons = true;
-        update();
-    }
 
     if (currentTool == Move)
         setCursor(Qt::SizeAllCursor);

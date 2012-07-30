@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -60,6 +60,7 @@ void UBResources::init()
     zoomInCursor    = QCursor(QPixmap(":/images/cursors/zoomIn.png"), 9, 9);
     zoomOutCursor   = QCursor(QPixmap(":/images/cursors/zoomOut.png"), 9, 9);
     arrowCursor     = QCursor(Qt::ArrowCursor);
+    playCursor      = QCursor(QPixmap(":/images/cursors/play.png"), 6, 1);
     textCursor      = QCursor(Qt::ArrowCursor);
     rotateCursor    = QCursor(QPixmap(":/images/cursors/rotate.png"), 16, 16);
     drawLineRulerCursor = QCursor(QPixmap(":/images/cursors/drawRulerLine.png"), 3, 12);

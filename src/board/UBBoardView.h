@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -42,6 +42,9 @@ class UBBoardView : public QGraphicsView
 
         void setToolCursor(int tool);
 
+        void rubberItems();
+        void moveRubberedItems(QPointF movingVector);
+
     signals:
 
         void resized(QResizeEvent* event);
@@ -50,6 +53,15 @@ class UBBoardView : public QGraphicsView
         void clickOnBoard();
 
     protected:
+
+        bool itemIsLocked(QGraphicsItem *item);
+        bool itemShouldReceiveMousePressEvent(QGraphicsItem *item);
+        bool itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item);
+        bool itemHaveParentWithType(QGraphicsItem *item, int type);
+        bool itemShouldBeMoved(QGraphicsItem *item);
+        QGraphicsItem* determineItemToMove(QGraphicsItem *item);
+        void handleItemMousePress(QMouseEvent *event);
+        void handleItemMouseMove(QMouseEvent *event);
 
         virtual bool event (QEvent * e);
 
@@ -124,8 +136,16 @@ class UBBoardView : public QGraphicsView
         QGraphicsItem *movingItem;
         QMouseEvent *suspendedMousePressEvent;
 
+        bool moveRubberBand;
         UBRubberBand *mUBRubberBand;
+        
+        QList<QGraphicsItem *> mRubberedItems;
         QSet<QGraphicsItem*> mJustSelectedItems;
+
+        int mLongPressInterval;
+        QTimer mLongPressTimer;
+
+        bool mIsDragInProgress;
 
     private slots:
 
@@ -134,6 +154,7 @@ class UBBoardView : public QGraphicsView
 	public slots:
 
 		void virtualKeyboardActivated(bool b);
+        void longPressEvent();
 
 };
 

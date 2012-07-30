@@ -77,10 +77,13 @@ function init(){
 				
             if(window.sankore){
                 window.sankore.setPreference("fontSize", newFontSize);
-            };
+            }
 				
             if(!checkMinimize)
                 textField.focus();
+            
+            var sel = window.getSelection();
+            sel.removeAllRanges();
         });
 			
     fontUp.click(
@@ -95,10 +98,12 @@ function init(){
 				
             if(window.sankore){
                 window.sankore.setPreference("fontSize", newFontSize);
-            };
+            }
 				
             if(!checkMinimize)
                 textField.focus();
+            var sel = window.getSelection();
+            sel.removeAllRanges();
         });
 			
     minimize.click(
@@ -228,5 +233,12 @@ function init(){
             $('.ubw-container').height(winheight-40);
 
         controlTextField();  
+    }
+    
+    if (window.widget) {
+        window.widget.onleave = function(){
+            window.sankore.setPreference("noteText", textField.html());
+            window.sankore.setPreference("fontSize", newFontSize);
+        }
     }
 }

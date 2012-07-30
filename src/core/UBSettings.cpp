@@ -78,6 +78,7 @@ QPointer<QSettings> UBSettings::sAppSettings = 0;
 
 const int UBSettings::maxThumbnailWidth = 400;
 const int UBSettings::defaultThumbnailWidth = 150;
+const int UBSettings::defaultLibraryIconSize = 80;
 
 const int UBSettings::defaultGipWidth = 150;
 const int UBSettings::defaultSoundWidth = 50;
@@ -206,9 +207,16 @@ void UBSettings::init()
     appEnableAutomaticSoftwareUpdates = new UBSetting(this, "App", "EnableAutomaticSoftwareUpdates", true);
     appEnableSoftwareUpdates = new UBSetting(this, "App", "EnableSoftwareUpdates", true);
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
-    navigPaletteWidth = new UBSetting(this, "Board", "NavigPaletteWidth", 270);
-    rightLibPaletteWidth = new UBSetting(this, "Board", "RightLibPaletteWidth", 270);
-    leftLibPaletteWidth = new UBSetting(this, "Board", "LeftLibPaletteWidth",270);
+    appPreferredLanguage = new UBSetting(this,"App","PreferredLanguage", "");
+
+    rightLibPaletteBoardModeWidth = new UBSetting(this, "Board", "RightLibPaletteBoardModeWidth", 270);
+    rightLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteBoardModeIsCollapsed",false);
+    rightLibPaletteDesktopModeWidth = new UBSetting(this, "Board", "RightLibPaletteDesktopModeWidth", 270);
+    rightLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteDesktopModeIsCollapsed",false);
+    leftLibPaletteBoardModeWidth = new UBSetting(this, "Board", "LeftLibPaletteBoardModeWidth",270);
+    leftLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteBoardModeIsCollapsed",false);
+    leftLibPaletteDesktopModeWidth = new UBSetting(this, "Board", "LeftLibPaletteDesktopModeWidth",270);
+    leftLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteDesktopModeIsCollapsed",false);
 
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
@@ -236,6 +244,8 @@ void UBSettings::init()
     ValidateKeyboardPaletteKeyBtnSize();
 
     pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
+
+    pageDpi = new UBSetting(this, "Board", "pageDpi", 0);
     
     QStringList penLightBackgroundColors;
     penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A";
@@ -386,6 +396,8 @@ void UBSettings::init()
     historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
     teacherGuidePageZeroActivated = new UBSetting(this,"DockPalette","TeacherGuideActivatePageZero",true);
     teacherGuideLessonPagesActivated = new UBSetting(this,"DockPalette","TeacherGuideActivateLessonPages",true);
+
+    libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
 
     actionGroupText = "Group items";
     actionUngroupText = "Ungroup items";
@@ -889,6 +901,17 @@ QString UBSettings::userTrashDirPath()
 }
 
 
+QString UBSettings::userGipLibraryDirectory()
+{
+    static QString dirPath = "";
+    if(dirPath.isEmpty()){
+        dirPath = userDataDirectory() + "/library/gips";
+        checkDirectory(dirPath);
+    }
+    return dirPath;
+}
+
+
 QString UBSettings::applicationShapeLibraryDirectory()
 {
     QString defaultRelativePath = QString("./library/shape");
@@ -916,16 +939,6 @@ QString UBSettings::applicationCustomFontDirectory()
     return applicationCustomizationDirectory() + defaultFontDirectory;
 }
 
-QString UBSettings::applicationGipLibraryDirectory()
-{
-    static QString dirPath = "";
-    if(dirPath.isEmpty()){
-        dirPath = UBPlatformUtils::applicationResourcesDirectory() + "/library/gips";
-        checkDirectory(dirPath);
-    }
-    return dirPath;
-}
-
 QString UBSettings::userSearchDirectory()
 {
     static QString dirPath = "";
@@ -938,9 +951,9 @@ QString UBSettings::userSearchDirectory()
 
 QString UBSettings::applicationImageLibraryDirectory()
 {
-    QString defaultRelativePath = QString("./library/image");
+    QString defaultRelativePath = QString("./library/pictures");
 
-    QString configPath = value("Library/ImageDirectory", QVariant(defaultRelativePath)).toString();
+	QString configPath = value("Library/ImageDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
         return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
@@ -1007,6 +1020,48 @@ QString UBSettings::applicationApplicationsLibraryDirectory()
     }
 }
 
+
+QString UBSettings::applicationAudiosLibraryDirectory()
+{
+    QString defaultRelativePath = QString("./library/audios");
+
+    QString configPath = value("Library/AudiosDirectory", QVariant(defaultRelativePath)).toString();
+
+    if (configPath.startsWith(".")) {
+        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+    }
+    else {
+        return configPath;
+    }
+}
+
+QString UBSettings::applicationVideosLibraryDirectory()
+{
+    QString defaultRelativePath = QString("./library/videos");
+
+    QString configPath = value("Library/VideosDirectory", QVariant(defaultRelativePath)).toString();
+
+    if (configPath.startsWith(".")) {
+        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+    }
+    else {
+        return configPath;
+    }
+}
+
+QString UBSettings::applicationAnimationsLibraryDirectory()
+{
+    QString defaultRelativePath = QString("./library/animations");
+
+    QString configPath = value("Library/AnimationsDirectory", QVariant(defaultRelativePath)).toString();
+
+    if (configPath.startsWith(".")) {
+        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+    }
+    else {
+        return configPath;
+    }
+}
 
 QString UBSettings::userInteractiveFavoritesDirectory()
 {
@@ -1134,6 +1189,13 @@ void UBSettings::setCommunityPassword(const QString &password)
     communityPsw->set(QVariant(password));
 }
 
+int UBSettings::libraryIconSize(){
+	return libIconSize->get().toInt();
+}
+
+void UBSettings::setLibraryIconsize(const int& size){
+	libIconSize->set(QVariant(size));
+}
 
 bool UBSettings::checkDirectory(QString& dirPath)
 {

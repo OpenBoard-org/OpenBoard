@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -80,7 +80,7 @@ bool UBImportPDF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFi
 
     for(int pdfPageNumber = 1; pdfPageNumber <= pdfPageCount; pdfPageNumber++)
     {
-        int pageIndex = documentPageCount + (pdfPageNumber - 1);
+        int pageIndex = documentPageCount + pdfPageNumber;
         UBApplication::showMessage(tr("Importing page %1 of %2").arg(pdfPageNumber).arg(pdfPageCount), true);
 
         UBGraphicsScene* scene = 0;

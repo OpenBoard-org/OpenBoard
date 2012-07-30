@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -21,11 +21,53 @@
 #include <phonon/VideoWidget>
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 
 class UBGraphicsMediaItem : public UBGraphicsProxyWidget
 {
     Q_OBJECT
+
+public:
+    class UBAudioPresentationWidget : public QWidget
+    {
+        public:
+            UBAudioPresentationWidget(QWidget *parent = NULL)
+                :QWidget(parent)
+                , mBorderSize(10)
+                , mTitleSize(10)
+            {}
+
+            int borderSize()
+            {
+                return mBorderSize;
+            }
+            void setTitle(QString title = QString()){mTitle = title;}
+            QString getTitle(){return mTitle;}
+
+        private:
+            virtual void paintEvent(QPaintEvent *event)
+            {
+                QPainter painter(this);
+                painter.fillRect(rect(), QBrush(Qt::black));
+
+                if (QString() != mTitle)
+                {
+                    painter.setPen(QPen(Qt::white));                 
+                    QRect titleRect = rect();
+                    titleRect.setX(mBorderSize);
+                    titleRect.setY(2);
+                    titleRect.setHeight(15);
+                    painter.drawText(titleRect, mTitle);
+                }
+
+                QWidget::paintEvent(event);
+            }
+
+        int mBorderSize;
+        int mTitleSize;
+        QString mTitle;
+    };
 
 public:
     typedef enum{
@@ -73,11 +115,24 @@ public:
         return mVideoWidget;
     }
 
+    bool hasLinkedImage(){return haveLinkedImage;}
+
     mediaType getMediaType() { return mMediaType; }
 
     virtual UBGraphicsScene* scene();
 
     virtual UBItem* deepCopy() const;
+
+    virtual void setSourceUrl(const QUrl &pSourceUrl)
+    {
+        UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(mAudioWidget);
+        if (pAudioWidget)
+        {
+            pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toLocalFile()));
+        }
+
+        UBItem::setSourceUrl(pSourceUrl);
+    }
 
 public slots:
 
@@ -115,14 +170,7 @@ private:
     QPointF mMousePressPos;
     QPointF mMouseMovePos;
 
+    bool haveLinkedImage;
+    QGraphicsPixmapItem *mLinkedImage;    
 };
-
-
-class UBGraphicsUnitedMediaItem : public UBGraphicsMediaItem 
-{
-public:
-    UBGraphicsUnitedMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
-
-};
-
 #endif // UBGRAPHICSMEDIAITEM_H

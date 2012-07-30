@@ -185,6 +185,27 @@ void UBFeaturesController::scanFS()
     fileSystemScan( mLibInteractiveDirectoryPath, interactPath);
     fileSystemScan( trashDirectoryPath, trashPath);
     fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search");
+//=======
+//	// Claudio:
+//	// don't change the order of the scans
+//	fileSystemScan( mLibAudiosDirectoryPath, audiosPath);
+//	fileSystemScan( mLibVideosDirectoryPath, moviesPath);
+//	fileSystemScan( mLibAnimationsDirectoryPath, flashPath);
+//	fileSystemScan( mLibPicturesDirectoryPath, picturesPath  );
+
+//	fileSystemScan( mUserInteractiveDirectoryPath, appPath  );
+//	fileSystemScan( mUserAudioDirectoryPath, audiosPath  );
+//	fileSystemScan( mUserPicturesDirectoryPath, picturesPath  );
+//	fileSystemScan( mUserVideoDirectoryPath, moviesPath  );
+//	fileSystemScan( mUserAnimationDirectoryPath, flashPath  );
+
+//	fileSystemScan( mLibApplicationsDirectoryPath, appPath  );
+//	fileSystemScan( mLibShapesDirectoryPath, shapesPath  );
+//	fileSystemScan( mLibInteractiveDirectoryPath, interactPath  );
+//	fileSystemScan( trashDirectoryPath, trashPath );
+//	fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
+	
+//>>>>>>> e38b24544e8b8b1d5bd41dabdeaf588df7d45185
 
 }
 

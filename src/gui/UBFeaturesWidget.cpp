@@ -18,7 +18,8 @@ const int FeatureListBorderOffset = 10;
 const char featureTypeSplitter = ':';
 static const QString mimeSankoreFeatureTypes = "Sankore/featureTypes";
 
-UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)	
+UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent), imageGatherer(NULL)
+
 {
     setObjectName(name);
     mName = "FeaturesWidget";
@@ -29,7 +30,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
     mIconToLeft = QPixmap(":images/library_open.png");
     mIconToRight = QPixmap(":images/library_close.png");
     setAcceptDrops(true);
-	
+
     //Main UBFeature functionality
     controller = new UBFeaturesController(this);
 
@@ -86,10 +87,122 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPale
     connect(pathListView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(currentSelected(const QModelIndex &)));
     connect( UBApplication::boardController, SIGNAL(displayMetadata(QMap<QString,QString>)), this, SLOT(onDisplayMetadata( QMap<QString,QString>)));
     connect( UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray)), this, SLOT(onAddDownloadedFileToLibrary(bool, QUrl, QString,QByteArray)));
+//=======
+//	stackedWidget = new QStackedWidget(this);
+//	layout = new QVBoxLayout(this);
+
+//	controller = new UBFeaturesController(this);
+
+//	featuresModel = new UBFeaturesModel(this);
+//	featuresModel->setFeaturesList( controller->getFeatures() );
+//	featuresModel->setSupportedDragActions( Qt::CopyAction | Qt::MoveAction );
+//	featuresListView = new UBFeaturesListView(this);
+//	pathListView = new UBFeaturesListView(this);
+
+
+//	featuresProxyModel = new UBFeaturesProxyModel(this);
+//	featuresProxyModel->setFilterFixedString( controller->getRootPath() );
+//	featuresProxyModel->setSourceModel( featuresModel );
+//	featuresProxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
+
+//	featuresSearchModel = new UBFeaturesSearchProxyModel(this);
+//	featuresSearchModel->setSourceModel( featuresModel );
+//	featuresSearchModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
+
+//	featuresPathModel = new UBFeaturesPathProxyModel(this);
+//	featuresPathModel->setPath( controller->getRootPath() );
+//	featuresPathModel->setSourceModel( featuresModel );
+	
+
+//	//featuresListView->setStyleSheet( QString("background: #EEEEEE;border-radius: 10px;border: 2px solid #999999;") );
+//	featuresListView->setDragDropMode( QAbstractItemView::DragDrop );
+//	featuresListView->setSelectionMode( QAbstractItemView::ContiguousSelection );
+//	featuresListView->setModel( featuresProxyModel );
+
+//	featuresListView->setResizeMode( QListView::Adjust );
+//	featuresListView->setViewMode( QListView::IconMode );
+//	itemDelegate = new UBFeaturesItemDelegate( this, featuresListView );
+//	featuresListView->setItemDelegate( itemDelegate );
+//	//featuresListView->setSelectionRectVisible(false);
+
+//	featuresListView->setIconSize( QSize(currentIconSize, currentIconSize) );
+//	featuresListView->setGridSize( QSize(currentIconSize * 1.75, currentIconSize * 1.75) );
+
+//	//pathListView->setStyleSheet( QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;") );
+//	pathListView->setModel( featuresPathModel );
+//	pathListView->setViewMode( QListView::IconMode );
+//	pathListView->setIconSize( QSize(defaultThumbnailSize - 10, defaultThumbnailSize - 10) );
+//	pathListView->setGridSize( QSize(defaultThumbnailSize + 10, defaultThumbnailSize - 10) );
+//	pathListView->setFixedHeight( 60 );
+//	pathItemDelegate = new UBFeaturesPathItemDelegate( this );
+//	pathListView->setItemDelegate( pathItemDelegate );
+//	pathListView->setSelectionMode( QAbstractItemView::NoSelection );
+//	pathListView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+//    pathListView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+//	pathListView->setFlow( QListView::LeftToRight );
+//	pathListView->setWrapping(false);
+	
+//	//pathListView->setResizeMode( QListView::Adjust );
+//	//pathListView->setMovement( QListView::Static );
+//	pathListView->setDragDropMode( QAbstractItemView::DropOnly );
+
+//	//pathViewer = new UBFeaturesPathViewer( QPixmap(":images/libpalette/home.png"), controller->getRootPath(), pathScene,  this );
+//	featureProperties = new UBFeatureProperties(this);
+//	webView = new UBFeaturesWebView(this);
+	
+//	//layout->addWidget( pathViewer );
+//	//pathViewer->show();
+//	//layout->addWidget( featuresListView );
+//	layout->addWidget( pathListView );
+//	layout->addWidget( stackedWidget );
+
+//	stackedWidget->addWidget( featuresListView );
+//	stackedWidget->addWidget( featureProperties );
+//	stackedWidget->addWidget( webView );
+//	stackedWidget->setCurrentIndex(ID_LISTVIEW);
+//    currentStackedWidget = ID_LISTVIEW;
+
+//	mActionBar = new UBFeaturesActionBar(controller, this);
+//	thumbSlider = new QSlider( Qt::Horizontal, featuresListView );
+//	thumbSlider->setMinimum( minThumbnailSize );
+//	thumbSlider->setMaximum( maxThumbnailSize );
+//	thumbSlider->setValue(currentIconSize);
+
+//	//qDebug() << "init" << featuresListView->height();
+//	thumbSlider->move( 0, featuresListView->height()  );
+//	thumbSlider->resize( thumbSlider->width(), thumbSlider->height() + 4 );
+//	thumbSlider->show();
+//	featuresListView->installEventFilter(this);
+//	//layout->addWidget( thumbSlider );
+//	layout->addWidget( mActionBar );
+
+//	/*connect(featuresListView->selectionModel(), SIGNAL(currentChanged ( const QModelIndex &, const QModelIndex & )),
+//		this, SLOT(currentSelected(const QModelIndex &)));*/
+//	connect( featuresListView, SIGNAL(clicked ( const QModelIndex & ) ),
+//		this, SLOT( currentSelected(const QModelIndex &) ) );
+//	connect( mActionBar, SIGNAL( searchElement(const QString &) ), this, SLOT( searchStarted(const QString &) ) );
+//	connect( mActionBar, SIGNAL( newFolderToCreate() ), this, SLOT( createNewFolder()  ) );
+//	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &) ), this, SLOT( deleteElements(const QMimeData &) ) );
+//	connect( mActionBar, SIGNAL( addToFavorite(const QMimeData &) ), this, SLOT( addToFavorite(const QMimeData &) ) );
+//	connect( mActionBar, SIGNAL( removeFromFavorite(const QMimeData &) ), this, SLOT( removeFromFavorite(const QMimeData &) ) );
+//    connect( mActionBar, SIGNAL( addElementsToFavorite() ), this, SLOT ( addElementsToFavorite() ) );
+//    connect( mActionBar, SIGNAL( removeElementsFromFavorite() ), this, SLOT ( removeElementsFromFavorite() ) );
+//    connect( mActionBar, SIGNAL( deleteSelectedElements() ), this, SLOT( deleteSelectedElements() ) );
+//	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
+//		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
+//	//connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
+//	connect(thumbSlider, SIGNAL(valueChanged(int)), this, SLOT(thumbnailSizeChanged(int)));
+//	connect( UBApplication::boardController, SIGNAL( displayMetadata( QMap<QString,QString> ) ),
+//		this, SLOT( onDisplayMetadata( QMap<QString,QString> ) ) );
+//    connect( UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray ) ),
+//        this, SLOT( onAddDownloadedFileToLibrary( bool, QUrl, QString,QByteArray ) ) );
+//>>>>>>> e38b24544e8b8b1d5bd41dabdeaf588df7d45185
 }
 
 UBFeaturesWidget::~UBFeaturesWidget()
 {
+    if (NULL != imageGatherer)
+        delete imageGatherer;
 }
 
 void UBFeaturesWidget::searchStarted(const QString &pattern)
@@ -230,12 +343,59 @@ void UBFeaturesWidget::removeFromFavorite( const UBFeaturesMimeData * mimeData )
 
 void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 {
-	UBFeature feature( QString(), QPixmap(":images/libpalette/notFound.png"), QString(), metadata["Url"], FEATURE_ITEM );
-	feature.setMetadata( metadata );
+    QString previewImageUrl;
 
-	featureProperties->showElement( feature );
-	switchToProperties();
-	mActionBar->setCurrentState( IN_PROPERTIES );
+    switch (UBFileSystemUtils::mimeTypeFromUrl(QUrl(metadata["Url"])))
+    {
+    case UBMimeType::RasterImage:
+    case UBMimeType::VectorImage:
+        {
+            previewImageUrl = ":images/libpalette/loading.png";
+
+            if (!imageGatherer)
+                imageGatherer = new UBDownloadHttpFile(0, this);
+
+            connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+
+            // We send here the request and store its reply in order to be able to cancel it if needed
+            imageGatherer->get(QUrl(metadata["Url"]), QPoint(0,0), QSize(), false);
+        } break;
+    case UBMimeType::Audio:
+        {
+           previewImageUrl = ":images/libpalette/soundIcon.svg";
+        }break;
+    case UBMimeType::Video:
+        {
+            previewImageUrl = ":images/libpalette/movieIcon.svg";
+        }break;
+    case UBMimeType::Flash:
+        {
+            previewImageUrl = ":images/libpalette/FlashIcon.svg";
+        }break;
+    }
+
+    UBFeature feature( QString(), QPixmap(previewImageUrl), QString(), metadata["Url"], FEATURE_ITEM );
+    feature.setMetadata( metadata );
+
+    featureProperties->showElement( feature );
+    switchToProperties();
+    mActionBar->setCurrentState( IN_PROPERTIES );
+}
+
+
+void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
+{
+    Q_UNUSED(id);
+    Q_UNUSED(pSuccess);
+    Q_UNUSED(isBackground);
+    Q_UNUSED(pSize);
+    Q_UNUSED(pPos);
+
+    QImage img;
+    img.loadFromData(pData);
+    QPixmap pix = QPixmap::fromImage(img);
+    featureProperties->setOrigPixmap(pix);
+    featureProperties->setThumbnail(pix);
 }
 
 void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData)
@@ -681,6 +841,21 @@ UBFeature UBFeatureProperties::getCurrentElement() const
     return UBFeature();
 }
 
+void UBFeatureProperties::setOrigPixmap(QPixmap &pix)
+{
+    
+    if (mpOrigPixmap)
+        delete mpOrigPixmap;
+
+    mpOrigPixmap = new QPixmap(pix);
+}
+
+void UBFeatureProperties::setThumbnail(QPixmap &pix)
+{  
+    mpThumbnail->setPixmap(pix.scaledToWidth(THUMBNAIL_WIDTH));
+    adaptSize();
+}
+
 void UBFeatureProperties::adaptSize()
 {
     if( NULL != mpOrigPixmap )
@@ -762,7 +937,8 @@ void UBFeatureProperties::onAddToPage()
 {
 	QWidget *w = parentWidget()->parentWidget();
     UBFeaturesWidget* featuresWidget = dynamic_cast<UBFeaturesWidget*>( w );
-    featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
+    if (featuresWidget)
+        featuresWidget->getFeaturesController()->addItemToPage( *mpElement );
 }
 
 void UBFeatureProperties::onAddToLib()

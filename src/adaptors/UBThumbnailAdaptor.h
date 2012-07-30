@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -25,15 +25,19 @@ class UBThumbnailAdaptor //static class
 {
 	Q_DECLARE_TR_FUNCTIONS(UBThumbnailAdaptor)
 
-private: UBThumbnailAdaptor() {}
 public:
-    static void persistScene(const QString& pDocPath, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
-
-    static void generateMissingThumbnails(UBDocumentProxy* proxy);
-    static QList<QPixmap> load(UBDocumentProxy* proxy);
-	static QPixmap load(UBDocumentProxy* proxy, int index);
-
     static QUrl thumbnailUrl(UBDocumentProxy* proxy, int pageIndex);
+
+    static void persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
+
+    static const QPixmap* get(UBDocumentProxy* proxy, int index);
+    static void load(UBDocumentProxy* proxy, QList<const QPixmap*>& list);
+
+private:
+    static void generateMissingThumbnails(UBDocumentProxy* proxy);
+    static void updateDocumentToHandleZeroPage(UBDocumentProxy* proxy);
+
+    UBThumbnailAdaptor() {}
 };
 
 #endif // UBTHUMBNAILADAPTOR_H

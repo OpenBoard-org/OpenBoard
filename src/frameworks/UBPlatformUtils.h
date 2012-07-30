@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -23,30 +23,104 @@ class QMainWindow;
 
 #define SYMBOL_KEYS_COUNT 47
 
+
+/*
+    Declaration for single keycode (code, which will be sent to output after pressing of button)
+    Each button has several codes, associated with shift state and modifier
+
+    symbol - (Windows only) Unide symbol to send
+    code - (LINUX, MAC) - code of key to press. Phisical keycode on MAC, position in keys table on LINUX
+    modifier (LINUX) - offset in keys table
+*/
+
+struct KEYCODE{
+    KEYCODE()
+        :symbol(0)
+        ,code(0)
+        ,modifier(0)
+    {}
+
+    KEYCODE(int _symbol)
+        :symbol(_symbol)
+        ,code(0)
+        ,modifier(0)
+    {}
+
+    KEYCODE(int _symbol,
+            unsigned char _code,
+            int _modifier)
+        :symbol(_symbol)
+        ,code(_code)
+        ,modifier(_modifier)
+    {}
+
+
+    bool empty() const
+    {
+        return symbol == 0;
+    }
+
+    int symbol;
+    unsigned char code;
+    int modifier;
+};
+
+/*
+    Declaration of single button. Properties:
+    symbol1, symbol2 - symbols to display under obscreen keyboard on normal/shifted modes
+    capsLockSwitch - if true, CapsLock button switched keystate to "shifted"
+    modifier1/modifier2 - if >0 means modified symbol for next press (modifier * 2 + shiststate index in codes array)
+                        If this code dedined (not empty), this symbol will sent to output. For French keyboard layout
+    codes[i] - code for pressed symbol.
+        code[0] - normal symbol
+        code[1] - shifted symbol
+        code[2] - modifier = 1, normal symbol
+        code[3] - modifier = 1, shifted symbol
+        ...
+*/
 struct KEYBT
 {
-	const QChar symbol1;
-	const int code1;
-	const QChar symbol2;
-    const int code2;
+    QChar symbol1;
+	QChar symbol2;
+    bool capsLockSwitch;
+    int modifier1;
+    int modifier2;
+    KEYCODE codes[8];
 
-	KEYBT(unsigned int _symbol1,
-		unsigned int _symbol2):
-        symbol1(_symbol1),
-        code1(_symbol1),
-        symbol2(_symbol2),
-        code2(_symbol2){}
+    KEYBT(  QChar _symbol1,
+		    QChar _symbol2,
+            bool _capsLockSwitch,
+            int _modifier1,
+            int _modifier2,
+            KEYCODE c1 = 0,
+            KEYCODE c2 = 0,
+            KEYCODE c3 = 0,
+            KEYCODE c4 = 0,
+            KEYCODE c5 = 0,
+            KEYCODE c6 = 0,
+            KEYCODE c7 = 0,
+            KEYCODE c8 = 0)
+                :symbol1(_symbol1)
+                ,symbol2(_symbol2)
+                ,capsLockSwitch(_capsLockSwitch)
+                ,modifier1(_modifier1)
+                ,modifier2(_modifier2)
+    {
+        codes[0] = c1;
+        codes[1] = c2;
+        codes[2] = c3;
+        codes[3] = c4;
+        codes[4] = c5;
+        codes[5] = c6;
+        codes[6] = c7;
+        codes[7] = c8;
+    }
 
-
-    KEYBT(QChar _symbol1,
-		int _code1,
-		QChar _symbol2,
-		int _code2):
-			symbol1(_symbol1),
-            code1(_code1),
-            symbol2(_symbol2),
-            code2(_code2){}
-    };
+    ~KEYBT()
+    {}
+};
+    
+    
 
 	class UBKeyboardLocale
 	{
@@ -63,7 +137,7 @@ struct KEYBT
 			const QString& _name,
 			const QString& _id,
 			QIcon* _icon,
-			const KEYBT _symbols[])
+            KEYBT _symbols[])
 			:fullName(_fullName),name(_name),  id(_id), icon(_icon),
                         constSymbols(_symbols), varSymbols(NULL)
 		{}
@@ -74,18 +148,20 @@ struct KEYBT
 		const QString name;
 		const QString id;
 		QIcon* icon;
-		const KEYBT* operator[] (int index) const
+        KEYBT* operator[] (int index) const
 		{
 			return (varSymbols==NULL)? constSymbols + index : varSymbols[index];
 		}
 	private:
-		const KEYBT* constSymbols;
+        KEYBT* constSymbols;
 		KEYBT** varSymbols;
 	};
 
 
 class UBPlatformUtils
 {
+    Q_DECLARE_TR_FUNCTIONS(UBPlatformUtils)
+
     private:
         UBPlatformUtils();
         virtual ~UBPlatformUtils();
@@ -95,7 +171,7 @@ class UBPlatformUtils
         static int nKeyboardLayouts;
         static UBKeyboardLocale** keyboardLayouts;
 
-    public:
+public:
         static void init();
         static void destroy();
         static QString applicationResourcesDirectory();
@@ -103,8 +179,8 @@ class UBPlatformUtils
         static void setFileType(const QString &filePath, unsigned long fileType);
         static void fadeDisplayOut();
         static void fadeDisplayIn();
-        static QString preferredTranslation(QString pFilePrefix);
-        static QString preferredLanguage();
+        static QString translationPath(QString pFilePrefix, QString pLanguage);
+        static QString systemLanguage();
         static bool hasVirtualKeyboard();
         //static void showVirtualKeyboard();
         static void runInstaller(const QString &installerFilePath);
@@ -115,6 +191,7 @@ class UBPlatformUtils
         static QString computerName();
         static UBKeyboardLocale** getKeyboardLayouts(int& nCount);
         static QString urlFromClipboard();
+        static QStringList availableTranslations();
 };
 
 

@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -246,10 +246,7 @@ QString UBW3CWidget::createNPAPIWrapperInDir(const QString& pUrl, const QDir& pD
     const QString& pName)
 {
     QString url = pUrl;
-    // if the file name start with file:// it has be removed because QFileInfo doesn't support this form
-	//
-	url = url.replace("file:///","");
-	url = url.replace("file://","");
+    url = UBFileSystemUtils::removeLocalFilePrefix(url);
     QString name = pName;
 
     QFileInfo fi(url);
@@ -306,8 +303,7 @@ QString UBW3CWidget::createNPAPIWrapperInDir(const QString& pUrl, const QDir& pD
         if (fi.exists()){
             QString target = widgetLibraryPath + "/" + fi.fileName();
             QString source = pUrl;
-            source.replace("file:///","");
-			source.replace("file://","");
+            source = UBFileSystemUtils::removeLocalFilePrefix(source);
             QFile::copy(source, target);
         }
 

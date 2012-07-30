@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -21,7 +21,6 @@
 #include "document/UBDocumentProxy.h"
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
-#include "frameworks/UBFileSystemUtils.h"
 #include "core/memcheck.h"
 
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
@@ -34,11 +33,9 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         , mInitialPos(0)
         , mVideoWidget(NULL)
         , mAudioWidget(NULL)
+        , mLinkedImage(NULL)
 {
-    
     update();
-
-    QString s = pMediaFileUrl.toLocalFile();
 
     mMediaObject = new Phonon::MediaObject(this);
     if (pMediaFileUrl.toLocalFile().contains("videos")) 
@@ -58,8 +55,10 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         if(mVideoWidget->sizeHint() == QSize(1,1)){
             mVideoWidget->resize(320,240);
+            mVideoWidget->setMinimumSize(140,26);
         }
         setWidget(mVideoWidget);
+        haveLinkedImage = true;
     }
     else    
     if (pMediaFileUrl.toLocalFile().contains("audios"))
@@ -68,9 +67,18 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 
         mMediaObject->setTickInterval(1000);
-        mAudioWidget = new QWidget();
-        mAudioWidget->resize(320,26);
+        mAudioWidget = new UBGraphicsMediaItem::UBAudioPresentationWidget();
+        int borderSize = 0;
+        UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(mAudioWidget);
+        if (pAudioWidget)
+        {
+            borderSize = pAudioWidget->borderSize();
+        }
+
+        mAudioWidget->resize(320,26+3*borderSize);
+        mAudioWidget->setMinimumSize(150,26+borderSize);
         setWidget(mAudioWidget);
+        haveLinkedImage = false;
     }
 
     Phonon::createPath(mMediaObject, mAudioOutput);
@@ -82,7 +90,10 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     itemDelegate->init();
     setDelegate(itemDelegate);
 
-    mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+    if (mediaType_Audio == mMediaType)
+        mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
+    else
+        mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
@@ -140,8 +151,8 @@ void UBGraphicsMediaItem::clearSource()
 {
     QString path = mediaFileUrl().toLocalFile();
     //if path is absolute clean duplicated path string
-    if (!path.contains(UBApplication::boardController->activeDocument()->persistencePath()))
-        path = UBApplication::boardController->activeDocument()->persistencePath() + "/" + path;
+    if (!path.contains(UBApplication::boardController->selectedDocument()->persistencePath()))
+        path = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + path;
 
     if (!UBFileSystemUtils::deleteFile(path))
         qDebug() << "cannot delete file: " << path;
@@ -226,7 +237,7 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (mDelegate)
     {
         mDelegate->mousePressEvent(event);
-        if (mDelegate && parentItem() && UBGraphicsGroupContainerItem::Type == parentItem()->type())
+        if (parentItem() && UBGraphicsGroupContainerItem::Type == parentItem()->type())
         {
             UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(parentItem());
             if (group)
@@ -242,11 +253,6 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }       
 
         }
-        else
-        {
-            mDelegate->getToolBarItem()->show();
-        }
-
     }
 
     if (parentItem() && parentItem()->type() == UBGraphicsGroupContainerItem::Type)
@@ -271,9 +277,6 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (data(UBGraphicsItemData::ItemLocked).toBool())
-        return;
-
     if(mShouldMove && (event->buttons() & Qt::LeftButton))
     {
         QPointF offset = event->scenePos() - mMousePressPos;

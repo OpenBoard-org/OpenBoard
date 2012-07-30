@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,6 +19,7 @@
 #include <QtGui>
 
 #include <QObject>
+#include "document/UBDocumentContainer.h"
 
 class UBMainWindow;
 class UBApplication;
@@ -40,7 +41,7 @@ class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
 
 
-class UBBoardController : public QObject
+class UBBoardController : public UBDocumentContainer
 {
     Q_OBJECT
 
@@ -50,7 +51,7 @@ class UBBoardController : public QObject
 
         void init();
         void setupLayout();
-        UBDocumentProxy* activeDocument() const;
+
         UBGraphicsScene* activeScene() const;
         int activeSceneIndex() const;
         QSize displayViewport();
@@ -59,14 +60,6 @@ class UBBoardController : public QObject
         void closing();
 
         int currentPage();
-
-        int pageFromSceneIndex(int sceneIndex);
-        int sceneIndexFromPage(int page);
-
-        UBDocumentProxy* activeDocument()
-        {
-            return mActiveDocument;
-        }
 
         QWidget* controlContainer()
         {
@@ -158,10 +151,17 @@ class UBBoardController : public QObject
         void displayMetaData(QMap<QString, QString> metadatas);
 
         void ClearUndoStack();
-        void emitScrollSignal() { emit scrollToSelectedPage(); }
+
+        void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false);
+        void setActiveDocumentScene(int pSceneIndex);
+
+        void moveSceneToIndex(int source, int target);
+        void duplicateScene(int index);
+        void deleteScene(int index);
+
+        bool cacheIsVisible() {return mCacheWidgetIsEnabled;}
 
     public slots:
-        void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0);
         void showDocumentsDialog();
         void showKeyboard(bool show);
         void togglePodcast(bool checked);
@@ -174,6 +174,7 @@ class UBBoardController : public QObject
         void clearScene();
         void clearSceneItems();
         void clearSceneAnnotation();
+        void clearSceneBackground();
         void zoomIn(QPointF scenePoint = QPointF(0,0));
         void zoomOut(QPointF scenePoint = QPointF(0,0));
         void zoomRestore();
@@ -223,10 +224,10 @@ class UBBoardController : public QObject
         void stopScript();
 
     signals:
+        void newPageAdded();
         void activeSceneWillBePersisted();
         void activeSceneWillChange();
         void activeSceneChanged();
-        void activeDocumentChanged();
         void zoomChanged(qreal pZoomFactor);
         void systemScaleFactorChanged(qreal pSystemScaleFactor);
         void penColorChanged();
@@ -235,10 +236,9 @@ class UBBoardController : public QObject
         void cacheEnabled();
         void cacheDisabled();
         void pageChanged();
-        void setDocOnPageNavigator(UBDocumentProxy* doc);
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
-        void scrollToSelectedPage();
+        void pageSelectionChanged(int index);
 
     protected:
         void setupViews();
@@ -260,7 +260,6 @@ class UBBoardController : public QObject
         void adjustDisplayViews();
 
         UBMainWindow *mMainWindow;
-        UBDocumentProxy* mActiveDocument;
         UBGraphicsScene* mActiveScene;
         int mActiveSceneIndex;
         UBBoardPaletteManager *mPaletteManager;
@@ -280,6 +279,7 @@ class UBBoardController : public QObject
         qreal mSystemScaleFactor;
         bool mCleanupDone;
         QMap<QAction*, QPair<QString, QString> > mActionTexts;
+        bool mCacheWidgetIsEnabled;
 
     private slots:
         void stylusToolDoubleClicked(int tool);

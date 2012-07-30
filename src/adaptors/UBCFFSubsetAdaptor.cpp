@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -15,6 +15,7 @@
 #include <QRegExp>
 #include <QSvgGenerator>
 #include <QSvgRenderer>
+#include <QPixmap>
 
 #include "core/UBPersistenceManager.h"
 
@@ -737,7 +738,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
         }
     }
 
-   UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix);
+   UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix, NULL);
    QTransform transform;
    QString textTransform = element.attribute(aTransform);
 
@@ -814,13 +815,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
 
     QUuid uuid = QUuid::createUuid();
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mCurrentScene->document()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-        ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
         ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#endif
     
     UBGraphicsMediaItem *audioItem = mCurrentScene->addAudio(concreteUrl, false);
     QTransform transform;
@@ -857,13 +853,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
 
     QUuid uuid = QUuid::createUuid();
 
-#ifdef Q_WS_X11
-    concreteUrl = QUrl::fromLocalFile(mCurrentScene->document()->persistencePath() + "/" + UBPersistenceManager::persistenceManager()
-        ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#else
     concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
         ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
-#endif
 
     UBGraphicsMediaItem *videoItem = mCurrentScene->addVideo(concreteUrl, false);
     QTransform transform;
@@ -1087,7 +1078,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistCurrentScene()
 {
     if (mCurrentScene != 0 && mCurrentScene->isModified())
     {
-        UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), mCurrentScene, mProxy->pageCount() - 1);
+        UBThumbnailAdaptor::persistScene(mProxy, mCurrentScene, mProxy->pageCount() - 1);
         UBSvgSubsetAdaptor::persistScene(mProxy, mCurrentScene, mProxy->pageCount() - 1);
 
         mCurrentScene->setModified(false);
@@ -1111,7 +1102,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
         UBSvgSubsetAdaptor::persistScene(mProxy, mCurrentScene, i);
         UBGraphicsScene *tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
         tmpScene->setModified(true);
-        UBThumbnailAdaptor::persistScene(mProxy->persistencePath(), tmpScene, i);
+        UBThumbnailAdaptor::persistScene(mProxy, tmpScene, i);
         delete tmpScene;
 
         mCurrentScene->setModified(false);

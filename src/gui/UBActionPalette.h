@@ -61,7 +61,6 @@ class UBActionPalette : public UBFloatingPalette
         void closed();
         void buttonGroupClicked(int id);
         void customMouseReleased();
-        void itemOnActionPaletteChanged();
 
     protected:
         virtual void paintEvent(QPaintEvent *event);

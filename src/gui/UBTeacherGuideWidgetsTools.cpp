@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -35,6 +35,8 @@
 #include "globals/UBGlobals.h"
 
 #include "frameworks/UBFileSystemUtils.h"
+
+#include "customWidgets/UBMediaWidget.h"
 
 #include "core/memcheck.h"
 
@@ -314,7 +316,7 @@ UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWi
   , mIsInitializationMode(false)
 {
     setObjectName(name);
-    mMediaPath = UBApplication::boardController->activeDocument()->persistencePath()+ "/" + mediaPath;
+    mMediaPath = UBApplication::boardController->selectedDocument()->persistencePath()+ "/" + mediaPath;
     setAcceptDrops(false);
     createWorkWidget();
     setFixedHeight(200);
@@ -338,7 +340,8 @@ void UBTGMediaWidget::initializeWithDom(QDomElement element)
 {
     mIsInitializationMode = true;
     setAcceptDrops(false);
-    mMediaPath = UBApplication::boardController->activeDocument()->persistencePath() + "/" + element.attribute("relativePath");
+    mMediaPath = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + element.attribute("relativePath");
+    qDebug() << mMediaPath;
     createWorkWidget();
     setFixedHeight(200);
     mpTitle->setInitialText(element.attribute("title"));
@@ -374,7 +377,7 @@ tUBGEElementNode* UBTGMediaWidget::saveData()
         return 0;
     tUBGEElementNode* result = new tUBGEElementNode();
     QString relativePath = mMediaPath;
-    relativePath = relativePath.replace(UBApplication::boardController->activeDocument()->persistencePath()+"/","");
+    relativePath = relativePath.replace(UBApplication::boardController->selectedDocument()->persistencePath()+"/","");
 	result->name = "media";
     result->attributes.insert("title",mpTitle->text());
     result->attributes.insert("relativePath",relativePath);
@@ -391,7 +394,7 @@ void UBTGMediaWidget::createWorkWidget()
 {
     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mMediaPath);
     bool setMedia = true;
-    UBDocumentProxy* proxyDocument = UBApplication::boardController->activeDocument();
+    UBDocumentProxy* proxyDocument = UBApplication::boardController->selectedDocument();
     if(mimeType.contains("audio") || mimeType.contains("video")){
         mMediaType = mimeType.contains("audio")? "audio":"movie";
         mpMediaWidget = new UBMediaWidget(mimeType.contains("audio")?eMediaType_Audio:eMediaType_Video);

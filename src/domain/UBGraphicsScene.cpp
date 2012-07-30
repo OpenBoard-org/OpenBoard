@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -43,6 +43,7 @@
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
+#include "board/UBBoardView.h"
 
 #include "UBGraphicsItemUndoCommand.h"
 #include "UBGraphicsTextItemUndoCommand.h"
@@ -255,6 +256,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mDocument(parent)
     , mDarkBackground(false)
     , mCrossedBackground(false)
+    , mZoomFactor(1)
     , mIsDesktopMode(false)
     , mIsModified(true)
     , mBackgroundObject(0)
@@ -556,7 +558,7 @@ bool UBGraphicsScene::inputDeviceRelease()
             }
         }else if (mCurrentStroke)
         {
-            if(eDrawingMode_Vector == DRAWING_MODE){
+            if(eDrawingMode_Vector == UBDrawingController::drawingController()->drawingMode()){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
@@ -777,7 +779,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
         if (mShouldUseOMP)
         {
-    //#pragma omp parallel for
+    #pragma omp parallel for
             for (int i = 0; i < collidItemsSize; i++)
             {
                 UBGraphicsPolygonItem *collidingPolygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems.at(i));
@@ -787,7 +789,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
                     if(eraserInnerRect.contains(collidingPolygonItem->boundingRect()))
                     {
-    //#pragma omp critical
+    #pragma omp critical
                         // Put the entire polygon into the remove list
                         toBeRemovedItems << collidingPolygonItem;
                     }
@@ -824,7 +826,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                         }
                         else */if (croppedPathSimplified.isEmpty())
                         {
-    //#pragma omp critical
+    #pragma omp critical
                             // Put the entire polygon into the remove list if the eraser removes all its visible content
                             toBeRemovedItems << collidingPolygonItem;
                         }
@@ -835,7 +837,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                             foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
                             {
                                 UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
-    //#pragma omp critical
+    #pragma omp critical
                                 if(NULL != pGroup){
                                     croppedPolygonItem->setStrokesGroup(pGroup);
                                     //pGroup->addToGroup(croppedPolygonItem);
@@ -843,7 +845,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                                 // Add this new polygon to the 'added' list
                                 toBeAddedItems << croppedPolygonItem;
                             }
-    //#pragma omp critical
+    #pragma omp critical
                             // Remove the original polygonitem because it has been replaced by many smaller polygons
                             toBeRemovedItems << collidingPolygonItem;
                         }
@@ -900,7 +902,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             }
         }
 
-        if(eDrawingMode_Vector == DRAWING_MODE){
+        if(eDrawingMode_Vector == DRAWING_MODE && !UBDrawingController::drawingController()->isInDesktopMode()){
             foreach(QGraphicsItem* item, toBeRemovedItems){
                 UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
                 if(NULL != poly){
@@ -918,7 +920,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             mRemovedItems += toBeRemovedItems;
         }
 
-        if(eDrawingMode_Vector == DRAWING_MODE){
+        if(eDrawingMode_Vector == DRAWING_MODE && !UBDrawingController::drawingController()->isInDesktopMode()){
             foreach(QGraphicsItem* item, toBeAddedItems){
                 UBGraphicsPolygonItem* poly = dynamic_cast<UBGraphicsPolygonItem*>(item);
                 if(NULL != poly && NULL != poly->strokesGroup()){
@@ -949,6 +951,7 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     penWidth /= UBApplication::boardController->currentZoom();
 
     mArcPolygonItem = arcToPolygonItem(QLineF(pCenterPoint, mPreviousPoint), pSpanAngle, penWidth);
+    mArcPolygonItem->setStroke(mCurrentStroke);
     mAddedItems.insert(mArcPolygonItem);
     addItem(mArcPolygonItem);
 
@@ -1285,7 +1288,23 @@ void UBGraphicsScene::clearAnnotations()
     setDocumentUpdated();
 }
 
-UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation)
+void UBGraphicsScene::clearBackground()
+{
+    if(mBackgroundObject){
+        removeItem(mBackgroundObject);
+
+        if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, mBackgroundObject, NULL);
+            UBApplication::undoStack->push(uc);
+        }
+        mBackgroundObject = 0;
+    }
+    update(sceneRect());
+
+    setDocumentUpdated();
+}
+
+UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphicsItem* replaceFor, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation)
 {
     UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
 
@@ -1300,7 +1319,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, const Q
     addItem(pixmapItem);
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, pixmapItem);
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, replaceFor, pixmapItem);
         UBApplication::undoStack->push(uc);
     }
 
@@ -1441,6 +1460,8 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     {
         UBApplication::boardController->moveGraphicsWidgetToControlView(graphicsWidget);
     }
+
+    UBApplication::boardController->controlView()->setFocus();
 }
 
 UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, const QPointF& pPos)
@@ -1451,7 +1472,7 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
 
     foreach(QString widgetPath, widgetPaths)
     {
-        if (widgetPath.contains("VideoPicker"))
+        if (widgetPath.contains("Sel video"))
         {
             widget = addW3CWidget(QUrl::fromLocalFile(widgetPath), pPos);
 
@@ -1572,12 +1593,14 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
     if(!textItem){
         textItem = addTextWithFont(pString,QPointF(0,0) ,72,UBSettings::settings()->fontFamily(),true,false);
         textItem->setObjectName(objectName);
+        QSizeF size = textItem->size();
+        textItem->setPos(QPointF(-size.width()/2.0,-size.height()/2.0));
     }
 
     textItem->setPlainText(pString);
     textItem->adjustSize();
-    QSizeF size = textItem->size();
-    textItem->setPos(QPointF(-size.width()/2.0,-size.height()/2.0));
+    textItem->clearFocus();
+    textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     return textItem;
 }
 
@@ -2365,14 +2388,14 @@ void UBGraphicsScene::createPointer()
 
 void UBGraphicsScene::setToolCursor(int tool)
 {
-    if (tool != (int)UBStylusTool::Selector
-            && tool != (int)UBStylusTool::Text)
+    if (tool == (int)UBStylusTool::Selector ||
+             tool == (int)UBStylusTool::Text || 
+                tool == (int)UBStylusTool::Play)
     {
         deselectAllItems();
     }
+}
 
-    if (tool != (int)UBStylusTool::Eraser)
-    {
-        hideEraser();
-    }
+void UBGraphicsScene::initStroke(){
+	mCurrentStroke = new UBGraphicsStroke();
 }

@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -249,8 +249,8 @@ bool UBGraphicsDelegateFrame::canResizeBottomRight(qreal width, qreal height, qr
 
 void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->delegated()->data(UBGraphicsItemData::ItemLocked).toBool())
-        return;
+    if (None == mCurrentTool)
+        return; 
 
     QLineF move(mStartingPoint, event->scenePos());
     qreal moveX = move.length() * cos((move.angle() - mAngle) * PI / 180);
@@ -359,7 +359,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             }
         }
     }
-    else if (mOperationMode == Resizing)
+    else if (mOperationMode == Resizing || mOperationMode == ResizingHorizontally)
     {
         mTranslateX = moveX;
         UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(delegated());
@@ -544,7 +544,6 @@ void UBGraphicsDelegateFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if(isResizing()){
         mResizing = false;
     }
-    mDelegate->setButtonsVisible(true);
 }
 
 
@@ -583,7 +582,7 @@ void UBGraphicsDelegateFrame::positionHandles()
 {
     QRectF itemRect = delegated()->boundingRect();
     
-    if (mDelegate->getToolBarItem()->isVisibleOnBoard()
+    if (mDelegate->getToolBarItem() && mDelegate->getToolBarItem()->isVisibleOnBoard()
         && mDelegate->getToolBarItem()->isShifting())
     {
         QPointF graphicsItemPosition = itemRect.topLeft();
@@ -676,19 +675,22 @@ void UBGraphicsDelegateFrame::positionHandles()
 
     QVariant vLocked = delegated()->data(UBGraphicsItemData::ItemLocked);
     bool isLocked = (vLocked.isValid() && vLocked.toBool());
+    bool bShowHorizontalResizers = ResizingHorizontally == mOperationMode;
+    bool bShowVerticalResizers   = ResizingHorizontally != mOperationMode;
+    bool bShowAllResizers        = Resizing == mOperationMode || Scaling == mOperationMode ;
 
-    mBottomRightResizeGripSvgItem->setVisible(!isLocked);
-    mBottomResizeGripSvgItem->setVisible(!isLocked);
-    mLeftResizeGripSvgItem->setVisible(!isLocked);
-    mRightResizeGripSvgItem->setVisible(!isLocked);
-    mTopResizeGripSvgItem->setVisible(!isLocked);
+    mBottomRightResizeGripSvgItem->setVisible(!isLocked && bShowAllResizers);
+    mBottomResizeGripSvgItem->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
+    mLeftResizeGripSvgItem->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
+    mRightResizeGripSvgItem->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
+    mTopResizeGripSvgItem->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
     mRotateButton->setVisible(mDelegate->canRotate() && !isLocked);
 
-    mBottomRightResizeGrip->setVisible(!isLocked);
-    mBottomResizeGrip->setVisible(!isLocked);
-    mLeftResizeGrip->setVisible(!isLocked);
-    mRightResizeGrip->setVisible(!isLocked);
-    mTopResizeGrip->setVisible(!isLocked);
+    mBottomRightResizeGrip->setVisible(!isLocked && bShowAllResizers);
+    mBottomResizeGrip->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
+    mLeftResizeGrip->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
+    mRightResizeGrip->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
+    mTopResizeGrip->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
 
     if (isLocked)
     {
@@ -713,11 +715,11 @@ QGraphicsItem* UBGraphicsDelegateFrame::delegated()
 
 UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF pos)
 {
-        if(mDelegate->isLocked())
-                return None;
-    else if (bottomRightResizeGripRect().contains(pos))
+    if(mDelegate->isLocked())
+        return None;
+    else if (bottomRightResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode)
         return ResizeBottomRight;
-    else if (bottomResizeGripRect().contains(pos)){
+    else if (bottomResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode){
             if(mMirrorY){
                 return ResizeTop;
             }else{
@@ -739,7 +741,7 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
                 return ResizeRight;
             }
         }
-    else if (topResizeGripRect().contains(pos)){
+    else if (topResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode){
             if(mMirrorY){
                 return ResizeBottom;
             }else{

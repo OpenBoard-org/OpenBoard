@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This prograscenem is distributed in the hope that it will be useful,
@@ -102,8 +102,10 @@ uint smallPoint : 1;
 
 };
 
-class DelegateMediaControl: public QGraphicsRectItem
+class DelegateMediaControl: public QObject, public QGraphicsRectItem
 {
+    Q_OBJECT
+
     public:
 
         DelegateMediaControl(UBGraphicsMediaItem* pDelegated, QGraphicsItem * parent = 0);
@@ -126,8 +128,12 @@ class DelegateMediaControl: public QGraphicsRectItem
         void positionHandles();
         void updateTicker(qint64 time);
         void totalTimeChanged(qint64 newTotalTime);
+        QSizeF lcdAreaSize(){return mLCDTimerArea.size();}
 
-   protected:
+    signals:
+        void used();
+
+    protected:
         void seekToMousePos(QPointF mousePos);
 
         UBGraphicsMediaItem* mDelegate;
@@ -160,6 +166,7 @@ class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
         int minWidth() { return mMinWidth; }
         void positionHandles();
         void update();
+        int getElementsPadding(){return mElementsPadding;}
 
     private:
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -170,6 +177,7 @@ class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
         bool mVisible;
         int mMinWidth;
         int mInitialHeight;
+        int mElementsPadding;
         QList<QGraphicsItem*> mItemsOnToolBar;
 };
 
@@ -178,7 +186,7 @@ class UBGraphicsItemDelegate : public QObject
     Q_OBJECT
 
     public:
-        UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0,  bool respectRatio = true, bool canRotate = false);
+        UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0,  bool respectRatio = true, bool canRotate = false, bool useToolBar = true);
 
         virtual ~UBGraphicsItemDelegate();
 
@@ -295,6 +303,7 @@ private:
 
         /** A boolean saying that this object can be flippable (mirror effect) */
         bool mFlippable;
+        bool mToolBarUsed;
 };
 
 

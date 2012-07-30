@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://www.njin.fr/sankore/apps/memory" 
+        version="1.0"
+        width="820"
+        height="575" 
+        ub:resizable="true">     
+   
+		<name>Memory</name>
+		<author href="http://www.njin.fr" email="contact@njin.fr">njin</author>
+		<description>Correspondances/mémorisation de cartes deux à deux</description>
+		
+		<content src="index.html"/>
+</widget>

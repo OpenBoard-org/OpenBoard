@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,6 +17,7 @@
 #define UBDOCUMENTCONTROLLER_H_
 
 #include <QtGui>
+#include "document/UBDocumentContainer.h"
 
 namespace Ui
 {
@@ -35,7 +36,7 @@ class UBDocumentProxyTreeItem;
 class UBMainWindow;
 class UBDocumentToolsPalette;
 
-class UBDocumentController : public QObject
+class UBDocumentController : public UBDocumentContainer
 {
     Q_OBJECT;
 
@@ -47,14 +48,16 @@ class UBDocumentController : public QObject
         QWidget* controlView();
         UBDocumentProxyTreeItem* findDocument(UBDocumentProxy* proxy);
         bool addFileToDocument(UBDocumentProxy* document);
-        UBDocumentProxy* getCurrentDocument() { return mCurrentDocument; };
         void deletePages(QList<QGraphicsItem*> itemsToDelete);
         int getSelectedItemIndex();
 
+        bool pageCanBeMovedUp(int page);
+        bool pageCanBeMovedDown(int page);
+        bool pageCanBeDuplicated(int page);
+        bool pageCanBeDeleted(int page);
+
     signals:
-        void refreshThumbnails();
         void exportDone();
-        void movedToIndex(int index);
 
     public slots:
         void createNewDocument();
@@ -75,14 +78,12 @@ class UBDocumentController : public QObject
         void copy();
         void paste();
         void focusChanged(QWidget *old, QWidget *current);
-        void reloadThumbs();
 
     protected:
         virtual void setupViews();
         virtual void setupToolbar();
         void setupPalettes();
         bool isOKToOpenDocument(UBDocumentProxy* proxy);
-        UBGraphicsScene* activeScene();
         UBDocumentProxy* selectedDocumentProxy();
         UBDocumentProxyTreeItem* selectedDocumentProxyTreeItem();
         UBDocumentGroupTreeItem* selectedDocumentGroupTreeItem();
@@ -109,14 +110,11 @@ class UBDocumentController : public QObject
         UBDocumentToolsPalette *mToolsPalette;
         bool mToolsPalettePositionned;
         UBDocumentGroupTreeItem* mTrashTi;
-        UBDocumentProxy* mCurrentDocument;
-        QList<QPixmap> mDocumentThumbs;
 
     private slots:
         void documentZoomSliderValueChanged (int value);
         void loadDocumentProxies();
         void itemSelectionChanged();
-        void refreshDocumentThumbnailsView();
         void exportDocument();
         void itemChanged(QTreeWidgetItem * item, int column);
         void thumbnailViewResized();
@@ -133,6 +131,7 @@ class UBDocumentController : public QObject
         void addFileToDocument();
         void addImages();
 
+        void refreshDocumentThumbnailsView(UBDocumentContainer* source);
 };
 
 

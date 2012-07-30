@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,6 +18,8 @@
 
 #include <QtCore>
 
+#include "core/UB.h"
+
 class QuaZipFile;
 class UBProcessingProgressListener;
 
@@ -28,6 +30,8 @@ class UBFileSystemUtils
         UBFileSystemUtils();
         virtual ~UBFileSystemUtils();
 
+        static QString removeLocalFilePrefix(QString input);
+
         static QString defaultTempDirName() { return QCoreApplication::applicationName(); }
         static QString defaultTempDirPath();
         static QString createTempDir(const QString& templateString = defaultTempDirName(), bool autoDeleteOnExit = true);
@@ -37,7 +41,7 @@ class UBFileSystemUtils
 
         static QFileInfoList allElementsInDirectory(const QString& pDirPath);
 
-        static QStringList allFiles(const QString& pDirPath);
+        static QStringList allFiles(const QString& pDirPath, const bool isRecurive=true);
 
         static bool deleteDir(const QString& pDirPath);
 
@@ -58,6 +62,10 @@ class UBFileSystemUtils
         static QString mimeTypeFromFileName(const QString& filename);
 
         static QString fileExtensionFromMimeType(const QString& pMimeType);
+
+        static UBMimeType::Enum mimeTypeFromString(const QString& typeString);
+
+        static UBMimeType::Enum mimeTypeFromUrl(const QUrl& url);
 
         static QString normalizeFilePath(const QString& pFilePath);
 

@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -29,7 +29,7 @@ UBGraphicsProxyWidget::UBGraphicsProxyWidget(QGraphicsItem* parent)
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-    mDelegate = new UBGraphicsItemDelegate(this,0);
+    mDelegate = new UBGraphicsItemDelegate(this,0, true, false, false);
     mDelegate->init();
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
@@ -47,6 +47,10 @@ UBGraphicsProxyWidget::~UBGraphicsProxyWidget()
 
 QVariant UBGraphicsProxyWidget::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    if (change == QGraphicsItem::ItemCursorHasChanged &&  scene())
+    {
+        unsetCursor();
+    }
     if ((change == QGraphicsItem::ItemSelectedHasChanged)
               &&  scene())
     {
@@ -82,9 +86,10 @@ void UBGraphicsProxyWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
     else
     {
         // QT Proxy Widget is a bit lazy, we force the selection ...
-        QGraphicsProxyWidget::mousePressEvent(event);
+
         setSelected(true);
     }
+    QGraphicsProxyWidget::mousePressEvent(event);
 }
 
 
@@ -148,10 +153,30 @@ void UBGraphicsProxyWidget::resize(const QSizeF & pSize)
 {
     if (pSize != size())
     {
-        QGraphicsProxyWidget::setMaximumSize(pSize.width(), pSize.height());
-        QGraphicsProxyWidget::resize(pSize.width(), pSize.height());
+        qreal sizeX = 0;
+        qreal sizeY = 0;
+
         if (widget())
-            widget()->resize(pSize.width(), pSize.height());
+        {
+            
+            QSizeF minimumItemSize(widget()->minimumSize());
+            if (minimumItemSize.width() > pSize.width())
+                sizeX = minimumItemSize.width();
+            else
+                sizeX = pSize.width();
+
+            if (minimumItemSize.height() > pSize.height())
+                sizeY = minimumItemSize.height();
+            else
+                sizeY = pSize.height();
+        }
+        QSizeF size(sizeX, sizeY);
+
+
+        QGraphicsProxyWidget::setMaximumSize(size.width(), size.height());
+        QGraphicsProxyWidget::resize(size.width(), size.height());
+        if (widget())
+            widget()->resize(size.width(), size.height());
         if (mDelegate)
             mDelegate->positionHandles();
         if (scene())

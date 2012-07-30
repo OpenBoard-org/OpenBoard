@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -102,6 +102,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
     //        tmp stub for divide addings scene objects from undo mechanism implementation
     void setURStackEnable(bool set = true) {enableUndoRedoStack = set;}
+    bool isURStackIsEnabled(){ return enableUndoRedoStack;}
 
     UBGraphicsScene(UBDocumentProxy *parent);
         virtual ~UBGraphicsScene();
@@ -113,6 +114,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void clearItemsAndAnnotations();
         void clearItems();
         void clearAnnotations();
+        void clearBackground();
 
         bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
         bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);
@@ -300,7 +302,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         static QUuid getPersonalUuid(QGraphicsItem *item);
 
 public slots:
-
+		void initStroke();
         void hideEraser();
 
         void setBackground(bool pIsDark, bool pIsCrossed);
@@ -308,7 +310,11 @@ public slots:
         void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
-        UBGraphicsPixmapItem* addPixmap(const QPixmap& pPixmap, const QPointF& pPos = QPointF(0,0), qreal scaleFactor = 1.0, bool pUseAnimation = false);
+        UBGraphicsPixmapItem* addPixmap(const QPixmap& pPixmap, 
+            QGraphicsItem* replaceFor,
+            const QPointF& pPos = QPointF(0,0), 
+            qreal scaleFactor = 1.0, 
+            bool pUseAnimation = false);
 
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 

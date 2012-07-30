@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -37,7 +37,6 @@ class UBSettings;
 class UBPersistenceManager;
 class UBApplicationController;
 class UBDocumentController;
-class UBSoftwareUpdateController;
 class UBMainWindow;
 
 class UBApplication : public QtSingleApplication
@@ -59,7 +58,6 @@ class UBApplication : public QtSingleApplication
         static UBBoardController* boardController;
         static UBWebController* webController;
         static UBDocumentController* documentController;
-        static UBSoftwareUpdateController* softwareUpdateController;
         static UniboardSankoreTransition* mUniboardSankoreTransition;
 
         static UBMainWindow* mainWindow;
@@ -121,6 +119,7 @@ class UBApplication : public QtSingleApplication
 
     private:
         void updateProtoActionsState();
+        void setupTranslator(QString forcedLanguage);
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
 

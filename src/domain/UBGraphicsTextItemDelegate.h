@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -29,10 +29,17 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 {
     Q_OBJECT
 
+    enum textChangeMode
+    {
+        changeSize = 0,
+        scaleSize
+    };
+
     public:
         UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject * parent = 0);
         virtual ~UBGraphicsTextItemDelegate();
         bool isEditable();
+        void scaleTextSize(qreal multiplyer);
 
     public slots:
         void contentsChanged();
@@ -61,7 +68,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 
     private:
         void customize(QFontDialog &fontDialog);
-        void ChangeTextSize(int delta);
+        void ChangeTextSize(qreal factor, textChangeMode changeMode);
 
         QFont createDefaultFont();
         QAction *mEditableAction;

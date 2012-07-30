@@ -1,7 +1,7 @@
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -49,6 +49,8 @@ public:
 
     void load(QString element);
     QVector<tIDataStorage*> save(int pageIndex);
+
+    bool isModified();
 
 public slots:
     void onAddItemClicked(QTreeWidgetItem* widget, int column, QDomElement* element = 0);
@@ -124,6 +126,7 @@ public:
     ~UBTeacherGuidePageZeroWidget();
 
     QVector<tUBGEElementNode*> getData();
+    bool isModified();
 
 
 public slots:
@@ -198,6 +201,8 @@ public:
     explicit UBTeacherGuideWidget(QWidget* parent = 0, const char* name="UBTeacherGuideWidget");
     ~UBTeacherGuideWidget();
 
+    bool isModified();
+
 public slots:
     void changeMode();
     void showPresentationMode();
@@ -209,6 +214,11 @@ private:
     UBTeacherGuideEditionWidget* mpEditionWidget;
     UBTeacherGuidePresentationWidget* mpPresentationWidget;
     QVector<tUBGEElementNode*>mCurrentData;
+    bool mKeyboardActionFired;
+
+private slots:
+	void onTriggeredAction(bool checked);
+	void onTriggeredKeyboardAction(bool checked);
 };
 
 #endif // UBTEACHERGUIDEWIDGET_H
