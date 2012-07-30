@@ -473,23 +473,30 @@ void UBApplicationController::showTutorial()
         UBApplication::boardController->hide();
     }
 
-    // it's needed not to duplicate webbrowser search in web mode. If I've breaked smbd's code let Ivan know
-    UBApplication::webController->show(UBWebController::Tutorial);
+    if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
+    {
+        showDesktop(true);
+        UBApplication::webController->show(UBWebController::Tutorial);
 
-    mMainWindow->webToolBar->hide();
-    mMainWindow->boardToolBar->hide();
-    mMainWindow->documentToolBar->hide();
-    mMainWindow->tutorialToolBar->show();
+    }
+    else{
+    	mMainWindow->webToolBar->hide();
+    	mMainWindow->boardToolBar->hide();
+    	mMainWindow->documentToolBar->hide();
+    	mMainWindow->tutorialToolBar->show();
 
 
-    mMainMode = Tutorial;
+    	mMainMode = Tutorial;
 
-    adaptToolBar();
+    	adaptToolBar();
 
-    mUninoteController->hideWindow();
+    	mUninoteController->hideWindow();
 
-    mirroringEnabled(false);
-    emit mainModeChanged(mMainMode);
+    	UBApplication::webController->show(UBWebController::Tutorial);
+
+    	mirroringEnabled(false);
+    	emit mainModeChanged(mMainMode);
+    }
 }
 
 
@@ -539,7 +546,6 @@ void UBApplicationController::updateRequestFinished(int id, bool error)
    }
    else{
        QString responseString =  QString(mHttp->readAll());
-       qDebug() << responseString;
        if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
            mHttp->close();
            downloadJsonFinished(responseString);
