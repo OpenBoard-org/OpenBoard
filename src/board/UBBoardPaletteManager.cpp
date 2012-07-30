@@ -83,9 +83,9 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mPendingPanButtonPressed(false)
     , mPendingEraseButtonPressed(false)
     , mpPageNavigWidget(NULL)
-#ifdef USE_WEB_WIDGET
+//#ifdef USE_WEB_WIDGET
     , mpLibWidget(NULL)
-#endif
+//#endif
     , mpCachePropWidget(NULL)
     , mpDownloadWidget(NULL)
     , mpDesktopLibWidget(NULL)
@@ -136,9 +136,9 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     mpPageNavigWidget = new UBPageNavigationWidget();
 
-#ifdef USE_WEB_WIDGET
+//#ifdef USE_WEB_WIDGET
     mpLibWidget = new UBLibWidget();
-#endif
+//#endif
 
     mpCachePropWidget = new UBCachePropertiesWidget();
 
@@ -170,10 +170,10 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     //Do not show deprecated lib widget to prevent collisions. Uncomment to return lib widget
 
-#ifdef USE_WEB_WIDGET
+//#ifdef USE_WEB_WIDGET
     mRightPalette->registerWidget(mpLibWidget);
     mRightPalette->addTab(mpLibWidget);
-#endif
+//#endif
 
 
     // The cache widget will be visible only if a cache is put on the page

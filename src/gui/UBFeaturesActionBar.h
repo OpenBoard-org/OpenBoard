@@ -7,6 +7,8 @@
 #include "UBLibActionBar.h"
 #include "board/UBFeaturesController.h"
 
+class UBFeaturesMimeData;
+
 enum UBFeaturesActionBarState
 {
 	IN_ROOT,
@@ -24,25 +26,30 @@ public:
     ~UBFeaturesActionBar();
 	
 	void setCurrentState( UBFeaturesActionBarState state );
+
 signals:
 	void searchElement(const QString &text);
 	void newFolderToCreate();
-	void deleteElements( const QMimeData &data );
-	void addToFavorite( const QMimeData &data );
-	void removeFromFavorite( const QMimeData &data );
+    void deleteElements(const UBFeaturesMimeData *data);
+    void addToFavorite(const UBFeaturesMimeData *data);
+    void removeFromFavorite(const UBFeaturesMimeData *data);
     void addElementsToFavorite();
     void removeElementsFromFavorite();
     void deleteSelectedElements();
+    void rescanModel();
+
 private slots:
 	void onSearchTextChanged(QString txt);
 	void onActionNewFolder();
     void onActionFavorite();
     void onActionRemoveFavorite();
     void onActionTrash();
+    void onActionRescanModel();
+
 protected:
-	//void dragMoveEvent(QDragMoveEvent *event);
-	void dragEnterEvent( QDragEnterEvent *event );
+    void dragEnterEvent( QDragEnterEvent *event );
 	void dropEvent( QDropEvent *event );
+
 private:
 	void setButtons();
 	UBFeaturesController *featuresController;
@@ -56,6 +63,7 @@ private:
     QHBoxLayout* mLayout;
     QAction* mpFavoriteAction;
     QAction* mpSocialAction;
+    QAction* mpRescanModelAction;
     QAction* mpDeleteAction;
     QAction* mpSearchAction;
     QAction* mpCloseAction;
@@ -63,13 +71,11 @@ private:
     QAction* mpNewFolderAction;
     UBActionButton* mpFavoriteBtn;
     UBActionButton* mpSocialBtn;
+    UBActionButton* mpRescanModelBtn;
     UBActionButton* mpDeleteBtn;
-    //UBActionButton* mpSearchBtn;
     UBActionButton* mpCloseBtn;
     UBActionButton* mpRemoveFavoriteBtn;
     UBActionButton* mpNewFolderBtn;
-
 };
-
 
 #endif

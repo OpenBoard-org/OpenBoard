@@ -35,7 +35,7 @@ UBRubberBand::UBRubberBand(Shape s, QWidget * p)
 #elif defined(Q_WS_MAC)
     customStyle = new QMacStyle();
 #elif defined(Q_WS_X11)
-//    customStyle = QStyleFactory::create("oxygen");
+    customStyle = QStyleFactory::create("oxygen");
 #endif
 
     if (customStyle)

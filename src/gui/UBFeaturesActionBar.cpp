@@ -1,5 +1,6 @@
 #include "UBFeaturesActionBar.h"
 #include "core/memcheck.h"
+#include "gui/UBFeaturesWidget.h"
 
 UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWidget* parent, const char* name ) : QWidget (parent)
 	, featuresController(controller)
@@ -8,6 +9,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     , mLayout(NULL)
     , mpFavoriteAction(NULL)
     , mpSocialAction(NULL)
+    , mpRescanModelAction(NULL)
     , mpDeleteAction(NULL)
     , mpSearchAction(NULL)
     , mpCloseAction(NULL)
@@ -15,6 +17,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     , mpNewFolderAction(NULL)
     , mpFavoriteBtn(NULL)
     , mpSocialBtn(NULL)
+    , mpRescanModelBtn(NULL)
     , mpDeleteBtn(NULL)
     , mpCloseBtn(NULL)
     , mpRemoveFavoriteBtn(NULL)
@@ -39,6 +42,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mpFavoriteAction = new QAction(QIcon(":/images/libpalette/miniFavorite.png"), tr("Add to favorites"), this);
     mpSocialAction = new QAction(QIcon(":/images/libpalette/social.png"), tr("Share"), this);
     mpSearchAction = new QAction(QIcon(":/images/libpalette/miniSearch.png"), tr("Search"), this);
+    mpRescanModelAction = new QAction(QIcon(":/images/cursors/rotate.png"), tr("Rescan file system"), this);
     mpDeleteAction = new QAction(QIcon(":/images/libpalette/miniTrash.png"), tr("Delete"), this);
     mpCloseAction = new QAction(QIcon(":/images/close.svg"), tr("Back to folder"), this);
     mpRemoveFavorite = new QAction(QIcon(":/images/libpalette/trash_favorite.svg"), tr("Remove from favorites"), this);
@@ -48,6 +52,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mpFavoriteBtn = new UBActionButton(this, mpFavoriteAction);
     mpSocialBtn = new UBActionButton(this, mpSocialAction);
     //mpSearchBtn = new UBActionButton(this, mpSearchAction);
+    mpRescanModelBtn = new UBActionButton(this, mpRescanModelAction);
     mpDeleteBtn = new UBActionButton(this, mpDeleteAction);
     mpCloseBtn = new UBActionButton(this, mpCloseAction);
     mpRemoveFavoriteBtn = new UBActionButton(this, mpRemoveFavorite);
@@ -79,7 +84,9 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
 	connect(mSearchBar, SIGNAL(textChanged(QString)), this, SLOT(onSearchTextChanged(QString)));
 	connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));
     connect(mpRemoveFavorite, SIGNAL(triggered()), this, SLOT(onActionRemoveFavorite()));
+    connect(mpRescanModelAction, SIGNAL(triggered()), this , SLOT(onActionRescanModel()));
     connect(mpDeleteAction,SIGNAL(triggered()), this, SLOT(onActionTrash()));
+
 
     // Build the default toolbar
     mLayout->addWidget(mpFavoriteBtn);
@@ -87,6 +94,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mLayout->addWidget(mpNewFolderBtn);
     mLayout->addWidget(mSearchBar);
     //mLayout->addWidget(mpSearchBtn);
+    mLayout->addWidget(mpRescanModelBtn);
     mLayout->addWidget(mpDeleteBtn);
     mLayout->addWidget(mpCloseBtn);
     mLayout->addWidget(mpRemoveFavoriteBtn);
@@ -115,6 +123,7 @@ void UBFeaturesActionBar::setButtons()
         mpNewFolderBtn->show();
 		mpNewFolderBtn->setEnabled(true);
 		mpDeleteBtn->setEnabled(true);
+        mpRescanModelBtn->show();
 		break;
     case IN_ROOT:
         mpFavoriteBtn->show();
@@ -126,6 +135,7 @@ void UBFeaturesActionBar::setButtons()
         mpNewFolderBtn->show();
 		mpNewFolderBtn->setEnabled(false);
 		mpDeleteBtn->setEnabled(false);
+        mpRescanModelBtn->show();
         break;
     case IN_PROPERTIES:
         mpFavoriteBtn->show();
@@ -136,6 +146,7 @@ void UBFeaturesActionBar::setButtons()
         mpCloseBtn->hide();
         mpRemoveFavoriteBtn->hide();
         mpNewFolderBtn->hide();
+        mpRescanModelBtn->hide();
         break;
     case IN_FAVORITE:
         mpFavoriteBtn->hide();
@@ -146,6 +157,7 @@ void UBFeaturesActionBar::setButtons()
         mpCloseBtn->hide();
         mpRemoveFavoriteBtn->show();
         mpNewFolderBtn->hide();
+        mpRescanModelBtn->hide();
         break;
 	case IN_TRASH:
 		mpFavoriteBtn->hide();
@@ -158,6 +170,7 @@ void UBFeaturesActionBar::setButtons()
         mpCloseBtn->hide();
         //mpRemoveFavoriteBtn->show();
         mpNewFolderBtn->hide();
+        mpRescanModelBtn->hide();
 		break;
     default:
         break;
@@ -189,48 +202,57 @@ void UBFeaturesActionBar::onActionTrash()
 {
     emit deleteSelectedElements();
 }
-
-/*
-void UBFeaturesActionBar::dragMoveEvent(QDragMoveEvent *event)
+void UBFeaturesActionBar::onActionRescanModel()
 {
-    event->acceptProposedAction();
+    emit rescanModel();
 }
-*/
 
 void UBFeaturesActionBar::dragEnterEvent( QDragEnterEvent *event )
 {
-    if (event->mimeData()->hasFormat("text/uri-list"))
-	{
+    const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
+    if (fMimeData) {
         event->acceptProposedAction();
-	}
+    } else {
+        event->ignore();
+    }
 }
 
-void UBFeaturesActionBar::dropEvent( QDropEvent *event )
+void UBFeaturesActionBar::dropEvent(QDropEvent *event)
 {	
-	QWidget *dest = childAt( event->pos() );
-	if ( dest == mpDeleteBtn )
-	{
-		QList <QUrl> urls = event->mimeData()->urls();
-		foreach ( QUrl url, urls )
-		{
-			if ( !UBFeaturesController::isDeletable( url ) )
-				return;
-		}
+    const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
+
+    if (!fMimeData) {
+        qWarning() << "data came from not supported widget";
+        event->ignore();
+        return;
+    }
+
+    QWidget *dest = childAt(event->pos());
+    if (dest == mpDeleteBtn) {
+        QList<UBFeature> featuresList = fMimeData->features();
+        foreach (UBFeature curFeature, featuresList) {
+            if (!curFeature.isDeletable()) {
+                qWarning() << "Undeletable feature found, stopping deleting process";
+                event->ignore();
+                return;
+            }
+        }
+        event->setDropAction(Qt::MoveAction);
+		event->accept();
+
+        emit deleteElements(fMimeData);
+
+    } else if (dest == mpFavoriteBtn) {
+        event->setDropAction( Qt::CopyAction);
+		event->accept();
+
+        emit addToFavorite(fMimeData);
+
+    } else if (dest == mpRemoveFavoriteBtn) {
 		event->setDropAction( Qt::MoveAction );
 		event->accept();
-		emit deleteElements( *event->mimeData() );
-	}
-	else if ( dest == mpFavoriteBtn )
-	{
-		event->setDropAction( Qt::CopyAction );
-		event->accept();
-		emit addToFavorite( *event->mimeData() );
-	}
-	else if ( dest == mpRemoveFavoriteBtn )
-	{
-		event->setDropAction( Qt::MoveAction );
-		event->accept();
-		emit removeFromFavorite( *event->mimeData() );
+
+        emit removeFromFavorite(fMimeData);
 	}
 }
 

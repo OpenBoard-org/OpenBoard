@@ -74,6 +74,10 @@ void UBSetting::setString(const QString& pValue)
 {
     set(pValue);
 }
+void UBSetting::setInt(int pValue)
+{
+    set(pValue);
+}
 
 
 UBColorListSetting::UBColorListSetting(UBSettings* parent)

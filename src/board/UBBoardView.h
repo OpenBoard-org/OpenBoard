@@ -28,7 +28,7 @@ class UBRubberBand;
 
 class UBBoardView : public QGraphicsView
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
 

@@ -239,6 +239,8 @@ class UBSettings : public QObject
 
         UBSetting* appStartMode;
 
+        UBSetting* featureSliderPosition;
+
         UBColorListSetting* boardPenLightBackgroundColors;
         UBColorListSetting* boardPenLightBackgroundSelectedColors;
 

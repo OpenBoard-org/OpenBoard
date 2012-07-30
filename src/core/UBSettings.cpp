@@ -217,6 +217,8 @@ void UBSettings::init()
 
     appStartMode = new UBSetting(this, "App", "StartMode", "");
 
+    featureSliderPosition = new UBSetting(this, "Board", "FeatureSliderPosition", 40);
+
     boardPenFineWidth = new UBSetting(this, "Board", "PenFineWidth", 1.5);
     boardPenMediumWidth = new UBSetting(this, "Board", "PenMediumWidth", 3.0);
     boardPenStrongWidth = new UBSetting(this, "Board", "PenStrongWidth", 8.0);

@@ -10,345 +10,222 @@
 #include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
 
+const char *objNamePathList = "PathList";
+const char *objNameFeatureList = "FeatureList";
+
+const QMargins FeatureListMargins(0, 0, 0, 30);
+const int FeatureListBorderOffset = 10;
+const char featureTypeSplitter = ':';
+static const QString mimeSankoreFeatureTypes = "Sankore/featureTypes";
+
 UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent)	
 {
     setObjectName(name);
     mName = "FeaturesWidget";
     mVisibleState = true;
 
-	SET_STYLE_SHEET();
-    //setAttribute(Qt::WA_StyledBackground, true);
-    //setStyleSheet(UBApplication::globalStyleSheet());
+    SET_STYLE_SHEET();
 
     mIconToLeft = QPixmap(":images/library_open.png");
     mIconToRight = QPixmap(":images/library_close.png");
     setAcceptDrops(true);
 	
-	stackedWidget = new QStackedWidget(this);
-	layout = new QVBoxLayout(this);
+    //Main UBFeature functionality
+    controller = new UBFeaturesController(this);
 
-	controller = new UBFeaturesController(this);
+    //Main layout including all the widgets in palette
+    layout = new QVBoxLayout(this);
 
-	featuresModel = new UBFeaturesModel(this);
-	featuresModel->setFeaturesList( controller->getFeatures() );
-	featuresModel->setSupportedDragActions( Qt::CopyAction | Qt::MoveAction );
-	featuresListView = new UBFeaturesListView(this);
-	pathListView = new UBFeaturesListView(this);
+    //Path icon view on the top of the palette
+    pathListView = new UBFeaturesListView(this, objNamePathList);
+    controller->assignPathListView(pathListView);
 
+    //Maintains the view of the main part of the palette. Consists of
+    //mNavigator
+    //featureProperties
+    //webVeiw
+    stackedWidget = new QStackedWidget(this);
 
-	featuresProxyModel = new UBFeaturesProxyModel(this);
-	featuresProxyModel->setFilterFixedString( controller->getRootPath() );
-	featuresProxyModel->setSourceModel( featuresModel );
-	featuresProxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
+    //Main features icon view with QSlider on the bottom
+    mNavigator = new UBFeaturesNavigatorWidget(this);
+    controller->assignFeaturesListVeiw(mNavigator->listView());
+    mNavigator->setSliderPosition(UBSettings::settings()->featureSliderPosition->get().toInt());
 
-	featuresSearchModel = new UBFeaturesSearchProxyModel(this);
-	featuresSearchModel->setSourceModel( featuresModel );
-	featuresSearchModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
+    //Specifies the properties of a standalone element
+    featureProperties = new UBFeatureProperties(this);
 
-	featuresPathModel = new UBFeaturesPathProxyModel(this);
-	featuresPathModel->setPath( controller->getRootPath() );
-	featuresPathModel->setSourceModel( featuresModel );
-	
+    //Used to show search bar on the search widget
+    webView = new UBFeaturesWebView(this);
 
-	//featuresListView->setStyleSheet( QString("background: #EEEEEE;border-radius: 10px;border: 2px solid #999999;") );
-	featuresListView->setDragDropMode( QAbstractItemView::DragDrop );
-	featuresListView->setSelectionMode( QAbstractItemView::ContiguousSelection );
-	featuresListView->setModel( featuresProxyModel );
+        //filling stackwidget
+        stackedWidget->addWidget(mNavigator);
+        stackedWidget->addWidget(featureProperties);
+        stackedWidget->addWidget(webView);
+        stackedWidget->setCurrentIndex(ID_LISTVIEW);
+        currentStackedWidget = ID_LISTVIEW;
 
-	featuresListView->setResizeMode( QListView::Adjust );
-	featuresListView->setViewMode( QListView::IconMode );
-	itemDelegate = new UBFeaturesItemDelegate( this, featuresListView );
-	featuresListView->setItemDelegate( itemDelegate );
-	//featuresListView->setSelectionRectVisible(false);
-
-	featuresListView->setIconSize( QSize(defaultThumbnailSize, defaultThumbnailSize) );
-	featuresListView->setGridSize( QSize(defaultThumbnailSize * 1.75, defaultThumbnailSize * 1.75) );
-
-	//pathListView->setStyleSheet( QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;") );
-	pathListView->setModel( featuresPathModel );
-	pathListView->setViewMode( QListView::IconMode );
-	pathListView->setIconSize( QSize(defaultThumbnailSize - 10, defaultThumbnailSize - 10) );
-	pathListView->setGridSize( QSize(defaultThumbnailSize + 10, defaultThumbnailSize - 10) );
-	pathListView->setFixedHeight( 60 );
-	pathItemDelegate = new UBFeaturesPathItemDelegate( this );
-	pathListView->setItemDelegate( pathItemDelegate );
-	pathListView->setSelectionMode( QAbstractItemView::NoSelection );
-	pathListView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    pathListView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
-	pathListView->setFlow( QListView::LeftToRight );
-	pathListView->setWrapping(false);
-	
-	//pathListView->setResizeMode( QListView::Adjust );
-	//pathListView->setMovement( QListView::Static );
-	pathListView->setDragDropMode( QAbstractItemView::DropOnly );
-
-	//pathViewer = new UBFeaturesPathViewer( QPixmap(":images/libpalette/home.png"), controller->getRootPath(), pathScene,  this );
-	featureProperties = new UBFeatureProperties(this);
-	webView = new UBFeaturesWebView(this);
-	
-	//layout->addWidget( pathViewer );
-	//pathViewer->show();
-	//layout->addWidget( featuresListView );
-	layout->addWidget( pathListView );
+    //Bottom actionbar for DnD, quick search etc
+    mActionBar = new UBFeaturesActionBar(controller, this);
+		
+    //Filling main layout
+    layout->addWidget( pathListView );
 	layout->addWidget( stackedWidget );
+    layout->addWidget(mActionBar);
 
-	stackedWidget->addWidget( featuresListView );
-	stackedWidget->addWidget( featureProperties );
-	stackedWidget->addWidget( webView );
-	stackedWidget->setCurrentIndex(ID_LISTVIEW);
-    currentStackedWidget = ID_LISTVIEW;
+    connect(mNavigator->listView(), SIGNAL(clicked(const QModelIndex &)), this, SLOT(currentSelected(const QModelIndex &)));
+    connect(mActionBar, SIGNAL(searchElement(const QString &)), this, SLOT( searchStarted(const QString &)));
+    connect(mActionBar, SIGNAL(newFolderToCreate()), this, SLOT(createNewFolder()));
+    connect(mActionBar, SIGNAL(deleteElements(const UBFeaturesMimeData *)), this, SLOT(deleteElements(const UBFeaturesMimeData *)));
+    connect(mActionBar, SIGNAL(deleteSelectedElements()), this, SLOT(deleteSelectedElements()));
+    connect(mActionBar, SIGNAL(addToFavorite(const UBFeaturesMimeData *)), this, SLOT(addToFavorite(const UBFeaturesMimeData *)));
+    connect(mActionBar, SIGNAL(removeFromFavorite(const UBFeaturesMimeData *)), this, SLOT(removeFromFavorite(const UBFeaturesMimeData *)));
+    connect(mActionBar, SIGNAL(addElementsToFavorite() ), this, SLOT ( addElementsToFavorite()) );
+    connect(mActionBar, SIGNAL(removeElementsFromFavorite()), this, SLOT (removeElementsFromFavorite()));
 
-	mActionBar = new UBFeaturesActionBar(controller, this);
-	thumbSlider = new QSlider( Qt::Horizontal, featuresListView );
-	thumbSlider->setMinimum( minThumbnailSize );
-	thumbSlider->setMaximum( maxThumbnailSize );
-	thumbSlider->setValue( defaultThumbnailSize );
-	//qDebug() << "init" << featuresListView->height();
-	thumbSlider->move( 0, featuresListView->height()  );
-	thumbSlider->resize( thumbSlider->width(), thumbSlider->height() + 4 );
-	thumbSlider->show();
-	featuresListView->installEventFilter(this);
-	//layout->addWidget( thumbSlider );
-	layout->addWidget( mActionBar );
-
-	/*connect(featuresListView->selectionModel(), SIGNAL(currentChanged ( const QModelIndex &, const QModelIndex & )),
-		this, SLOT(currentSelected(const QModelIndex &)));*/
-	connect( featuresListView, SIGNAL(clicked ( const QModelIndex & ) ),
-		this, SLOT( currentSelected(const QModelIndex &) ) );
-	connect( mActionBar, SIGNAL( searchElement(const QString &) ), this, SLOT( searchStarted(const QString &) ) );
-	connect( mActionBar, SIGNAL( newFolderToCreate() ), this, SLOT( createNewFolder()  ) );
-	connect( mActionBar, SIGNAL( deleteElements(const QMimeData &) ), this, SLOT( deleteElements(const QMimeData &) ) ); 
-	connect( mActionBar, SIGNAL( addToFavorite(const QMimeData &) ), this, SLOT( addToFavorite(const QMimeData &) ) );
-	connect( mActionBar, SIGNAL( removeFromFavorite(const QMimeData &) ), this, SLOT( removeFromFavorite(const QMimeData &) ) );
-    connect( mActionBar, SIGNAL( addElementsToFavorite() ), this, SLOT ( addElementsToFavorite() ) );
-    connect( mActionBar, SIGNAL( removeElementsFromFavorite() ), this, SLOT ( removeElementsFromFavorite() ) );
-    connect( mActionBar, SIGNAL( deleteSelectedElements() ), this, SLOT( deleteSelectedElements() ) );
-	connect( pathListView, SIGNAL(clicked( const QModelIndex & ) ),
-		this, SLOT( currentPathChanged( const QModelIndex & ) ) );
-	connect( thumbSlider, SIGNAL( sliderMoved(int) ), this, SLOT(thumbnailSizeChanged( int ) ) );
-	connect( UBApplication::boardController, SIGNAL( displayMetadata( QMap<QString,QString> ) ), 
-		this, SLOT( onDisplayMetadata( QMap<QString,QString> ) ) );
-    connect( UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray ) ), 
-        this, SLOT( onAddDownloadedFileToLibrary( bool, QUrl, QString,QByteArray ) ) );
+    connect( mActionBar, SIGNAL(rescanModel()), this, SLOT(rescanModel()));
+    connect(pathListView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(currentSelected(const QModelIndex &)));
+    connect( UBApplication::boardController, SIGNAL(displayMetadata(QMap<QString,QString>)), this, SLOT(onDisplayMetadata( QMap<QString,QString>)));
+    connect( UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray)), this, SLOT(onAddDownloadedFileToLibrary(bool, QUrl, QString,QByteArray)));
 }
 
 UBFeaturesWidget::~UBFeaturesWidget()
 {
-	if ( thumbSlider != NULL )
-    {
-        delete thumbSlider;
-        thumbSlider = NULL;
-    }
 }
 
-bool UBFeaturesWidget::eventFilter( QObject *target, QEvent *event )
+void UBFeaturesWidget::searchStarted(const QString &pattern)
 {
-	if ( target == featuresListView && event->type() == QEvent::Resize )
-	{
-		thumbSlider->move( 10, featuresListView->height() - thumbSlider->height() - 10 );
-		thumbSlider->resize( featuresListView->width() - 20, thumbSlider->height() );
-		//qDebug() << featuresListView->height();
-		//return true;
-	}
-	return UBDockPaletteWidget::eventFilter(target, event);
-}
-
-void UBFeaturesWidget::searchStarted( const QString &pattern )
-{
-	if ( pattern.isEmpty() )
-	{
-		featuresListView->setModel( featuresProxyModel );
-		featuresProxyModel->invalidate();
-	}
-	else if ( pattern.size() > 2 )
-	{
-		featuresSearchModel->setFilterWildcard( "*" + pattern + "*" );
-		featuresListView->setModel( featuresSearchModel );
-		featuresSearchModel->invalidate();
-	}
+    controller->searchStarted(pattern, mNavigator->listView());
 }
 
 void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 {
-	if (current.isValid())
-	{
-		QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
-		/*QString name = model->data(current).toString();
-		QString path = model->data(current, Qt::UserRole).toString();
-		eUBLibElementType type = (eUBLibElementType)model->data(current, Qt::UserRole + 1).toInt();*/
-		UBFeature feature = model->data(current, Qt::UserRole + 1).value<UBFeature>();
+    if (!current.isValid()) {
+        qWarning() << "SLOT:currentSelected, invalid index catched";
+        return;
+    }
 
-		if ( feature.isFolder() )
-		{
-			QString newPath = feature.getFullVirtualPath();
-			//pathViewer->addPathElement( feature.getThumbnail(), newPath );
-			controller->setCurrentElement( feature );
+    QString objName = sender()->objectName();
 
-			model->setFilterFixedString( newPath );
-			model->invalidate();
-			switchToListView();
+    if (objName.isEmpty()) {
+        qWarning() << "incorrrect sender";
+    }
 
-			featuresPathModel->setPath( newPath );
-			featuresPathModel->invalidate();
-			if ( feature.getType() == FEATURE_FAVORITE )
-			{
-				mActionBar->setCurrentState( IN_FAVORITE );
-			}
-			else if (feature.getType() == FEATURE_TRASH)
-			{
-				mActionBar->setCurrentState( IN_TRASH );
-			}
-			else
-			{
-				mActionBar->setCurrentState( IN_FOLDER );
-			}
-		}
-		else if ( feature.getType() == FEATURE_SEARCH )
-		{
-			webView->showElement( feature );
-			switchToWebView();
-		}
-		else
-		{
-			featureProperties->showElement( feature );
-			switchToProperties();
-			mActionBar->setCurrentState( IN_PROPERTIES );
-		}
-		
-	}
-}
+    QListView *calledList = 0;
+    if (objName == objNamePathList) {
+        calledList = pathListView;
+    } else if (objName == objNameFeatureList) {
+        calledList = mNavigator->listView();
+    }
 
-void UBFeaturesWidget::currentPathChanged(const QModelIndex &index)
-{
-	if ( index.isValid() )	
-	{
-		UBFeature feature = featuresPathModel->data(index, Qt::UserRole + 1).value<UBFeature>();
-		QString newPath = feature.getFullVirtualPath();
+    UBFeature feature = controller->getFeature(current, calledList);
+//    QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( mNavigator->listView()->model() );
+//    UBFeature feature = model->data(current, Qt::UserRole + 1).value<UBFeature>();
 
-		featuresPathModel->setPath( newPath );
-		featuresPathModel->invalidate();
+    if ( feature.isFolder() ) {
+        QString newPath = feature.getFullVirtualPath();
 
-		featuresListView->setModel( featuresProxyModel );
-		featuresProxyModel->setFilterFixedString(newPath);
-		featuresProxyModel->invalidate();
-		switchToListView();
-		controller->setCurrentElement( feature );
-		if ( feature.getType() == FEATURE_CATEGORY && feature.getName() == "root" )
-		{
-			mActionBar->setCurrentState( IN_ROOT );
-		}
-		else if (feature.getType() == FEATURE_FAVORITE)
-		{
-			mActionBar->setCurrentState( IN_FAVORITE );
-		}
-		else if (feature.getType() == FEATURE_TRASH)
-		{
-			mActionBar->setCurrentState( IN_TRASH );
-		}
-		else
-		{
-			mActionBar->setCurrentState( IN_FOLDER );
-		}
-	}
+        controller->setCurrentElement(feature);
+        controller->siftElements(newPath);
+
+        switchToListView();
+
+        if ( feature.getType() == FEATURE_FAVORITE ) {
+            mActionBar->setCurrentState( IN_FAVORITE );
+
+        }  else   if ( feature.getType() == FEATURE_CATEGORY && feature.getName() == "root" ) {
+            mActionBar->setCurrentState( IN_ROOT );
+
+        } else if (feature.getType() == FEATURE_TRASH) {
+            mActionBar->setCurrentState( IN_TRASH );
+
+        } else {
+            mActionBar->setCurrentState( IN_FOLDER );
+        }
+
+    } else if ( feature.getType() == FEATURE_SEARCH ) {
+        webView->showElement( feature );
+        switchToWebView();
+
+    } else {
+        featureProperties->showElement( feature );
+        switchToProperties();
+        mActionBar->setCurrentState( IN_PROPERTIES );
+    }
 }
 
 void UBFeaturesWidget::createNewFolder()
 {
 	UBNewFolderDlg dlg;
-    if(QDialog::Accepted == dlg.exec())
-    {
-		UBFeature newFolder = controller->newFolder( dlg.folderName() );
-		featuresModel->addItem( newFolder );
-		featuresProxyModel->invalidate();
+    if(QDialog::Accepted == dlg.exec())  {
+        controller->addNewFolder(dlg.folderName());
     }
 }
 
-void UBFeaturesWidget::deleteElements( const QMimeData & mimeData )
+void UBFeaturesWidget::deleteElements( const UBFeaturesMimeData * mimeData )
 {
-	if ( !mimeData.hasUrls() )
-		return;
-	QList<QUrl> urls = mimeData.urls();
+    if (!mimeData->features().count() )
+        return;
+
+    QList<UBFeature> featuresList = mimeData->features();
 	
-	foreach ( QUrl url, urls )
-	{
-		if ( controller->isTrash( url ) )
-		{
-			controller->deleteItem( url );
-		}
-		else
-		{
-			UBFeature elem = controller->moveItemToFolder( url, controller->getTrashElement() );
-			controller->removeFromFavorite( url );
-			featuresModel->addItem( elem );
-			featuresModel->deleteFavoriteItem( UBFeaturesController::fileNameFromUrl( url ) );
-		}
-	}
-	QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
-	model->invalidate();
+    foreach ( UBFeature curFeature, featuresList ) {
+        if ( curFeature.inTrash()) {
+            controller->deleteItem(curFeature.getFullPath());
+
+        } else {
+           controller->moveToTrash(curFeature);
+        }
+    }
+
+    controller->refreshModels();
 }
 
 void UBFeaturesWidget::deleteSelectedElements()
 {
-    QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
-    QList <QUrl> urls;
+    QModelIndexList selected = mNavigator->listView()->selectionModel()->selectedIndexes();
+
     foreach ( QModelIndex sel, selected )
     {
-        UBFeature feature = sel.data( Qt::UserRole + 1 ).value<UBFeature>();
-        if ( feature.isDeletable() )
-            urls.append( feature.getFullPath() );
+        UBFeature feature = sel.data(Qt::UserRole + 1).value<UBFeature>();
+        if (feature.isDeletable()) {
+            if (feature.inTrash()) {
+                controller->deleteItem(feature);
+            } else {
+                controller->moveToTrash(feature, true);
+            }
+        }
+    }
+   controller->refreshModels();
+}
+
+void UBFeaturesWidget::rescanModel()
+{
+    controller->rescanModel();
+}
+
+void UBFeaturesWidget::addToFavorite( const UBFeaturesMimeData * mimeData )
+{
+    if ( !mimeData->hasUrls() )
+        return;
+
+    QList<QUrl> urls = mimeData->urls();
+    foreach ( QUrl url, urls ) {
+        controller->addToFavorite(url);
     }
 
-    foreach (QUrl url, urls)
-    {
-        if ( controller->isTrash( url ) )
-		{
-			controller->deleteItem( url );
-		}
-		else
-		{
-			UBFeature elem = controller->moveItemToFolder( url, controller->getTrashElement() );
-			controller->removeFromFavorite( url );
-			featuresModel->addItem( elem );
-            featuresModel->deleteFavoriteItem( url.toString() );
-		}
-        featuresModel->deleteItem( url.toString() );
+    controller->refreshModels();
+}
+
+void UBFeaturesWidget::removeFromFavorite( const UBFeaturesMimeData * mimeData )
+{
+    if ( !mimeData->hasUrls() )
+        return;
+
+    QList<QUrl> urls = mimeData->urls();
+
+    foreach( QUrl url, urls ) {
+        controller->removeFromFavorite(url);
     }
-    
-    QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
-	model->invalidate();
-}
-
-void UBFeaturesWidget::addToFavorite( const QMimeData & mimeData )
-{
-	if ( !mimeData.hasUrls() )
-		return;
-	QList<QUrl> urls = mimeData.urls();
-	
-	foreach ( QUrl url, urls )
-	{
-		UBFeature elem = controller->addToFavorite( url );
-		if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull() )
-			featuresModel->addItem( elem );
-	}
-	QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
-	model->invalidate();
-}
-
-void UBFeaturesWidget::removeFromFavorite( const QMimeData & mimeData )
-{
-	if ( !mimeData.hasUrls() )
-		return;
-	QList<QUrl> urls = mimeData.urls();
-	foreach( QUrl url, urls )
-	{
-		controller->removeFromFavorite( url );
-	}
-}
-
-void UBFeaturesWidget::thumbnailSizeChanged( int value )
-{
-	featuresListView->setIconSize( QSize( value, value ) );
-	featuresListView->setGridSize( QSize( value * 1.75, value * 1.75 ) );
 }
 
 void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
@@ -363,61 +240,53 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 
 void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData)
 {
+    Q_UNUSED(pContentHeader)
+
     if ( pSuccess )
     {
         UBFeature newFeature = controller->addDownloadedFile( sourceUrl, pData );
         if ( newFeature != UBFeature() )
         {
             featuresModel->addItem( newFeature );
-	        QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
-	        model->invalidate();
+            QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( mNavigator->listView()->model() );
+            model->invalidate();
         }
     }
 }
 
 void UBFeaturesWidget::addElementsToFavorite()
 {
-    if ( currentStackedWidget == ID_PROPERTIES )
-    {
+    if ( currentStackedWidget == ID_PROPERTIES ) {
         UBFeature feature = featureProperties->getCurrentElement();
-        if ( feature != UBFeature() && !UBApplication::isFromWeb( feature.getFullPath().toString() ) )
-        {
-            UBFeature elem = controller->addToFavorite( feature.getFullPath() );
-            featuresModel->addItem( elem );
+        if ( feature != UBFeature() && !UBApplication::isFromWeb(feature.getFullPath().toString())) {
+            controller->addToFavorite( feature.getFullPath() );
         }
-    }
-    else if ( currentStackedWidget == ID_LISTVIEW )
-    {
-        QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
-        for ( int i = 0; i < selected.size(); ++i )
-        {
+
+    } else if ( currentStackedWidget == ID_LISTVIEW ) {
+        QModelIndexList selected = mNavigator->listView()->selectionModel()->selectedIndexes();
+        for ( int i = 0; i < selected.size(); ++i ) {
             UBFeature feature = selected.at(i).data( Qt::UserRole + 1 ).value<UBFeature>();
-            UBFeature elem = controller->addToFavorite( feature.getFullPath() );
-		    if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull() )
-			    featuresModel->addItem( elem );
-        }
+            controller->addToFavorite(feature.getFullPath());
+       }
     }
-    QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
-	model->invalidate();
+
+    controller->refreshModels();
 }
 
 void UBFeaturesWidget::removeElementsFromFavorite()
 {
-    QModelIndexList selected = featuresListView->selectionModel()->selectedIndexes();
-    //qSort( selected.begin(), selected.end(), qGreater<QModelIndex>() );
+    QModelIndexList selected = mNavigator->listView()->selectionModel()->selectedIndexes();
     QList <QUrl> items;
-    for ( int i = 0; i < selected.size(); ++i )
-    {
+    for ( int i = 0; i < selected.size(); ++i )  {
         UBFeature feature = selected.at(i).data( Qt::UserRole + 1 ).value<UBFeature>();
         items.append( feature.getFullPath() );
     }
-    foreach ( QUrl url, items )
-    {
-        controller->removeFromFavorite( url );
-        featuresModel->deleteFavoriteItem( url.toString() );
+
+    foreach ( QUrl url, items )  {
+        controller->removeFromFavorite(url, true);
     }
-    QSortFilterProxyModel *model = dynamic_cast<QSortFilterProxyModel *>( featuresListView->model() );
-	model->invalidate();
+
+    controller->refreshModels();
 }
 
 void UBFeaturesWidget::switchToListView()
@@ -438,6 +307,21 @@ void UBFeaturesWidget::switchToWebView()
 	currentStackedWidget = ID_WEBVIEW;
 }
 
+void UBFeaturesWidget::updateSliderPosition()
+{
+//    //Calculating the topleft position of the slider
+//    int scrollBarVOffset = featuresListView->horizontalScrollBar()->isVisible() ? featuresListView->horizontalScrollBar()->height() : 0;
+//    int xSlider = scrollbarHorisontalPadding();
+//    int ySlider = featuresListView->height() - (thumbSlider->height() + scrollbarVerticalIndent() + scrollBarVOffset);
+//    thumbSlider->move( xSlider, ySlider);
+
+//    //Calculating new slider's size
+//    int scrollBarHOffset = featuresListView->verticalScrollBar()->isVisible() ? featuresListView->verticalScrollBar()->width() : 0;
+//    int wSlider = featuresListView->width() - 2 * scrollbarHorisontalPadding() - scrollBarHOffset;
+//    int hSlider = thumbSlider->height();
+//    thumbSlider->resize(wSlider, hSlider);
+}
+
 /*
 
 void UBFeaturesWidget::currentPathChanged(const QString &path)
@@ -451,14 +335,16 @@ void UBFeaturesWidget::currentPathChanged(const QString &path)
 }
 */
 
-
+QStringList UBFeaturesMimeData::formats() const
+{
+    return QMimeData::formats();
+}
 
 
 UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) 
 : QListView(parent)
 {
 	setObjectName(name);
-	//rubberBand = new UBRubberBand( QRubberBand::Rectangle, this ); 
 }
 
 /*
@@ -495,19 +381,75 @@ void UBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
 
 void UBFeaturesListView::dragMoveEvent( QDragMoveEvent *event )
 {
-    if ( event->mimeData()->hasUrls() || event->mimeData()->hasImage() )
+    const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
+    QModelIndex index = indexAt(event->pos());
+    UBFeature onFeature = model()->data(index, Qt::UserRole + 1).value<UBFeature>();
+    if (fMimeData) {
+        if (!index.isValid() || !onFeature.isFolder()) {
+            event->ignore();
+            return;
+        }
+     }
+
+    if ( event->mimeData()->hasUrls() || event->mimeData()->hasImage() ) {
         event->acceptProposedAction();
+    } else {
+        event->ignore();
+    }
 }
 
 void UBFeaturesListView::dropEvent( QDropEvent *event )
 {
-	if( event->source() && dynamic_cast<UBFeaturesListView *>( event->source() ) )
-	{
-		event->setDropAction( Qt::MoveAction );
-	}
-	QListView::dropEvent( event ); 
+    QWidget *eventSource = event->source();
+    if (eventSource && eventSource->objectName() == objNameFeatureList) {
+        event->setDropAction( Qt::MoveAction );
+    }
+
+    QListView::dropEvent( event );
 }
 
+void UBFeaturesListView::thumbnailSizeChanged( int value )
+{
+    setIconSize(QSize(value, value));
+    setGridSize(QSize(value + 20, value + 20 ));
+
+    UBSettings::settings()->featureSliderPosition->set(value);
+}
+
+UBFeaturesNavigatorWidget::UBFeaturesNavigatorWidget(QWidget *parent, const char *name) :
+    QWidget(parent), mListView(0), mListSlder(0)
+
+{
+//    if ('\0' == name) {
+        name = "UBFeaturesNavigatorWidget";
+//    }
+
+    setObjectName(name);
+    SET_STYLE_SHEET()
+
+    mListView = new UBFeaturesListView(this, objNameFeatureList);
+
+    mListSlder = new QSlider(Qt::Horizontal, this);
+
+    mListSlder->setMinimum(UBFeaturesWidget::minThumbnailSize);
+    mListSlder->setMaximum(UBFeaturesWidget::maxThumbnailSize);
+    mListSlder->setValue(UBFeaturesWidget::minThumbnailSize);
+    mListSlder->setMinimumHeight(20);
+
+    mListView->setParent(this);
+    QVBoxLayout *mainLayer = new QVBoxLayout(this);
+
+    mainLayer->addWidget(mListView, 1);
+    mainLayer->addWidget(mListSlder, 0);
+
+
+    connect(mListSlder, SIGNAL(valueChanged(int)), mListView, SLOT(thumbnailSizeChanged(int)));
+}
+
+void UBFeaturesNavigatorWidget::setSliderPosition(int pValue)
+{
+    mListSlder->setValue(pValue);
+}
 
 UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(parent)
     , mpView(NULL)
@@ -609,10 +551,10 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     , mpAddToLibButton(NULL)
     , mpSetAsBackgroundButton(NULL)
     , mpObjInfoLabel(NULL)
+    , mpObjInfos(NULL)
     , mpThumbnail(NULL)
     , mpOrigPixmap(NULL)
     , mpElement(NULL)
-    , mpObjInfos(NULL)
 {
 	setObjectName(name);
 
@@ -735,6 +677,7 @@ UBFeature UBFeatureProperties::getCurrentElement() const
 {
     if ( mpElement )
         return *mpElement;
+
     return UBFeature();
 }
 
@@ -863,18 +806,17 @@ QVariant UBFeaturesModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid())
         return QVariant();
 
-	if (role == Qt::DisplayRole)
+    if (role == Qt::DisplayRole) {
 		return featuresList->at(index.row()).getName();
-	else if (role == Qt::DecorationRole)
-	{
+    }
+
+    else if (role == Qt::DecorationRole) {
 		return QIcon( featuresList->at(index.row()).getThumbnail() );
-	}
-	else if (role == Qt::UserRole)
-	{
+
+    } else if (role == Qt::UserRole) {
 		return featuresList->at(index.row()).getVirtualPath();
-	}
-	else if (role == Qt::UserRole + 1)
-	{
+
+    }	else if (role == Qt::UserRole + 1) {
 		//return featuresList->at(index.row()).getType();
 		UBFeature f = featuresList->at(index.row());
 		return QVariant::fromValue( f );
@@ -885,26 +827,29 @@ QVariant UBFeaturesModel::data(const QModelIndex &index, int role) const
 
 QMimeData* UBFeaturesModel::mimeData(const QModelIndexList &indexes) const
 {
-	QMimeData *mimeData = new QMimeData();
+    UBFeaturesMimeData *mimeData = new UBFeaturesMimeData();
 	QList <QUrl> urlList;
+    QList <UBFeature> featuresList;
+    QByteArray typeData;
 
-	foreach (QModelIndex index, indexes)
-	{
-		if ( index.isValid() )
-		{
-			UBFeature element = data( index, Qt::UserRole + 1 ).value<UBFeature>();
+    foreach (QModelIndex index, indexes) {
+
+        if (index.isValid()) {
+            UBFeature element = data(index, Qt::UserRole + 1).value<UBFeature>();
             urlList.push_back( element.getFullPath() );
-			/*if ( element.getType() == FEATURE_INTERNAL )
-			{
-				urlList.push_back( QUrl( element.getFullPath() ) );
-			}
-			else if ( element.getType() == FEATURE_INTERACTIVE || element.getType() == FEATURE_ITEM )
-			{
-				urlList.push_back( element.getFullPath() );
-			}*/
+            QString curPath = element.getFullPath().toLocalFile();
+            featuresList.append(element);
+
+            if (!typeData.isNull()) {
+                typeData += UBFeaturesController::featureTypeSplitter();
+            }
+            typeData += QString::number(element.getType()).toAscii();
 		}
 	}
-	mimeData->setUrls( urlList );
+
+    mimeData->setUrls(urlList);
+    mimeData->setFeatures(featuresList);
+    mimeData->setData(mimeSankoreFeatureTypes, typeData);
 
     return mimeData;
 }
@@ -913,50 +858,41 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 {
     Q_UNUSED(row)
 
-    if ( !mimeData->hasUrls() && !mimeData->hasImage() )
+    const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(mimeData);
+    bool dataFromSameModel = false;
+
+    if (fMimeData)
+        dataFromSameModel = true;
+
+    if ((!mimeData->hasUrls() && !mimeData->hasImage()) )
 		return false;
 	if ( action == Qt::IgnoreAction )
 		return true;
 	if ( column > 0 )
 		return false;
 
-    int endRow = 0;
-
-	UBFeature parentFeature;
-    if ( !parent.isValid() )
-	{
+    UBFeature parentFeature;
+    if (!parent.isValid()) {
 		parentFeature = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->getCurrentElement();
-    } 
-	else
-	{
-		parentFeature = parent.data( Qt::UserRole + 1).value<UBFeature>();
-	}
-
-    if ( mimeData->hasUrls() )
-    {
-	    QList<QUrl> urls = mimeData->urls();
-    	
-	    foreach ( QUrl url, urls )
-	    {
-	        UBFeature element;
-    		
-	        if ( action == Qt::MoveAction )
-	        {
-		        element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->moveItemToFolder( url, parentFeature );
-	        }
-	        else
-	        {
-		        element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->copyItemToFolder( url, parentFeature );
-	        }
-	        addItem( element );
-	    }
+    } else {
+        parentFeature = parent.data( Qt::UserRole + 1).value<UBFeature>();
     }
-    else if ( mimeData->hasImage() )
-    {
+
+    if (mimeData->hasUrls()) {
+        QList<UBFeature> featList = fMimeData->features();
+        for (int i = 0; i < featList.count(); i++) {
+            UBFeature sourceElement;
+            if (dataFromSameModel) {
+                sourceElement = featList.at(i);
+                moveData(sourceElement, parentFeature, Qt::MoveAction);
+            }
+        }
+    } else if ( mimeData->hasImage() ) {
         QImage image = qvariant_cast<QImage>( mimeData->imageData() );
         UBFeature element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->importImage( image, parentFeature );
         addItem( element );
     }
+
 	return true;
 }
 
@@ -992,6 +928,16 @@ void UBFeaturesModel::deleteItem( const QString &path )
 	}
 }
 
+void UBFeaturesModel::deleteItem(const UBFeature &feature)
+{
+    int i = featuresList->indexOf(feature);
+    if (i == -1) {
+        qDebug() << "no matches in deleting item from UBFEaturesModel";
+        return;
+    }
+    removeRow(i, QModelIndex());
+}
+
 bool UBFeaturesModel::removeRows( int row, int count, const QModelIndex & parent )
 {
 	if ( row < 0 )
@@ -1018,39 +964,100 @@ bool UBFeaturesModel::removeRow(  int row, const QModelIndex & parent )
 	return true;
 }
 
+void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destination
+                               , Qt::DropAction action = Qt::CopyAction, bool deleteManualy)
+{
+    UBFeaturesController *curController = qobject_cast<UBFeaturesController *>(QObject::parent());
+    if (!curController)
+        return;
+
+    QString sourcePath = source.getFullPath().toLocalFile();
+    QString sourceVirtualPath = source.getVirtualPath();
+
+    UBFeatureElementType sourceType = source.getType();
+    QPixmap sourceIcon = source.getThumbnail();
+
+    Q_ASSERT( QFileInfo( sourcePath ).exists() );
+
+    QString name = QFileInfo( sourcePath ).fileName();
+    QString destPath = destination.getFullPath().toLocalFile();
+
+    QString destVirtualPath = destination.getFullVirtualPath();
+    QString destFullPath = destPath + "/" + name;
+
+    if ( sourcePath.compare(destFullPath, Qt::CaseInsensitive ) || destination.getType() != FEATURE_TRASH)
+    {
+        UBFileSystemUtils::copy(sourcePath, destFullPath);
+        if (action == Qt::MoveAction) {
+            curController->deleteItem( source.getFullPath() );
+        }
+    }
+
+    //Passing all the source container ubdating dependancy pathes
+    if (sourceType == FEATURE_FOLDER) {
+        for (int i = 0; i < featuresList->count(); i++) {
+
+            UBFeature &curFeature = (*featuresList)[i];
+
+            QString curFeatureFullPath = curFeature.getFullPath().toLocalFile();
+            QString curFeatureVirtualPath = curFeature.getVirtualPath();
+
+            if (curFeatureFullPath.contains(sourcePath) && curFeatureFullPath != sourcePath) {
+
+                UBFeature copyFeature = curFeature;
+                QUrl newPath = QUrl::fromLocalFile(curFeatureFullPath.replace(sourcePath, destFullPath));
+                QString newVirtualPath = curFeatureVirtualPath.replace(sourceVirtualPath, destVirtualPath);
+                //when copying to trash don't change the real path
+                if (destination.getType() != FEATURE_TRASH) {
+                    // processing copy or move action for real FS
+                    if (action == Qt::CopyAction) {
+                        copyFeature.setFullPath(newPath);
+                    } else {
+                        curFeature.setFullPath(newPath);
+                    }
+                }
+                // processing copy or move action for real FS
+                if (action == Qt::CopyAction) {
+                    copyFeature.setFullVirtualPath(newVirtualPath);
+                } else {
+                    curFeature.setFullVirtualPath(newVirtualPath);
+                }
+
+                if (action == Qt::CopyAction) {
+                    addItem(copyFeature);
+                }
+            }
+        }
+    }
+
+    UBFeature newElement( destVirtualPath, sourceIcon, name, QUrl::fromLocalFile(destFullPath), sourceType );
+    addItem(newElement);
+
+    if (deleteManualy) {
+        deleteItem(source);
+    }
+
+    emit dataRestructured();
+}
 
 Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 {
-	Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+    Qt::ItemFlags resultFlags = QAbstractItemModel::flags(index);
 	if ( index.isValid() )
 	{
 		UBFeature item = index.data( Qt::UserRole + 1 ).value<UBFeature>();
-        if ( item.getType() == FEATURE_INTERACTIVE ||
-            item.getType() == FEATURE_ITEM ||
-			item.getType() == FEATURE_INTERNAL )
-			return Qt::ItemIsDragEnabled | defaultFlags;
-		if ( item.isFolder() && !item.getVirtualPath().isNull() )
-			return defaultFlags | Qt::ItemIsDropEnabled;
-		else return defaultFlags | Qt::ItemIsDropEnabled;
-	}
-	/*if ( index.isValid() )
-	{
-		UBFeature item = index.data( Qt::UserRole + 1 ).value<UBFeature>();
-		switch( item.getType() )
-		{
-		case FEATURE_CATEGORY:
-		case FEATURE_FOLDER:
-		case FEATURE_FAVORITE:
-		case FEATURE_TRASH:
-			return Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
-		case FEATURE_INTERACTIVE:
-		case FEATURE_INTERNAL:
-		case FEATURE_ITEM:		
-			return Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-		default:;
-		}
-	}*/
-	return defaultFlags | Qt::ItemIsDropEnabled;
+        if ( item.getType() == FEATURE_INTERACTIVE
+            || item.getType() == FEATURE_ITEM
+            || item.getType() == FEATURE_INTERNAL
+            || item.getType() == FEATURE_FOLDER)
+
+            resultFlags |= Qt::ItemIsDragEnabled;
+
+        if ( item.isFolder() && !item.getVirtualPath().isNull() )
+            resultFlags |= Qt::ItemIsDropEnabled;
+    }
+
+    return resultFlags;
 }
 
 
@@ -1063,12 +1070,11 @@ QStringList UBFeaturesModel::mimeTypes() const
 
 int UBFeaturesModel::rowCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
+    if (parent.isValid() || !featuresList)
         return 0;
     else
         return featuresList->size();
 }
-
 
 bool UBFeaturesProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
 {
@@ -1085,10 +1091,10 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 	eUBLibElementType type = (eUBLibElementType)sourceModel()->data(index, Qt::UserRole + 1).toInt();*/
 
 	UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
-    bool isFile = feature.getType() == FEATURE_INTERACTIVE ||
-		feature.getType() == FEATURE_INTERNAL ||
-        feature.getType() == FEATURE_ITEM;
-	
+    bool isFile = feature.getType() == FEATURE_INTERACTIVE
+        || feature.getType() == FEATURE_INTERNAL
+        || feature.getType() == FEATURE_ITEM;
+
 	return isFile && filterRegExp().exactMatch( feature.getName() );
 }
 
@@ -1111,13 +1117,13 @@ QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLoc
 	if (listView)
 	{
 		const QFontMetrics fm = listView->fontMetrics();
-		const QSize iSize = listView->iconSize();
+        const QSize iSize = listView->gridSize();
 		return elidedText( fm, iSize.width(), Qt::ElideRight, text );
 	}
 	return text;
 }
 
-UBFeaturesPathItemDelegate::UBFeaturesPathItemDelegate(QWidget *parent) : QStyledItemDelegate(parent)
+UBFeaturesPathItemDelegate::UBFeaturesPathItemDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
 	arrowPixmap = new QPixmap(":images/navig_arrow.png");
 }

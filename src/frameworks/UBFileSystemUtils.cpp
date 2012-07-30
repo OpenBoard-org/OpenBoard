@@ -61,14 +61,14 @@ bool UBFileSystemUtils::isAZipFile(QString &filePath)
    return result;
 }
 
-bool UBFileSystemUtils::copyFile(const QString &source, const QString &Destination, bool overwrite)
+bool UBFileSystemUtils::copyFile(const QString &source, const QString &destination, bool overwrite)
 {
     if (!QFile::exists(source)) {
         qDebug() << "file" << source << "does not present in fs";
         return false;
     }
 
-    QString normalizedDestination = Destination;
+    QString normalizedDestination = destination;
     if (QFile::exists(normalizedDestination)) {
         if  (QFileInfo(normalizedDestination).isFile() && overwrite) {
             QFile::remove(normalizedDestination);
@@ -84,6 +84,15 @@ bool UBFileSystemUtils::copyFile(const QString &source, const QString &Destinati
         }
     }
     return QFile::copy(source, normalizedDestination);
+}
+
+bool UBFileSystemUtils::copy(const QString &source, const QString &destination, bool overwrite)
+{
+    if (QFileInfo(source).isDir()) {
+        return copyDir(source, destination);
+    } else {
+        return copyFile(source, destination, overwrite);
+    }
 }
 
 bool UBFileSystemUtils::deleteFile(const QString &path)
