@@ -32,7 +32,7 @@ public:
     class UBAudioPresentationWidget : public QWidget
     {
         public:
-            UBAudioPresentationWidget::UBAudioPresentationWidget(QWidget *parent = NULL)
+            UBAudioPresentationWidget(QWidget *parent = NULL)
                 :QWidget(parent)
                 , mBorderSize(10)
                 , mTitleSize(10)

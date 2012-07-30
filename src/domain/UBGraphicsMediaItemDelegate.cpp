@@ -36,7 +36,6 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
     , mMedia(pMedia)
     , mToolBarShowTimer(NULL)
     , m_iToolBarShowingInterval(5000)
-    , mToolBarIsShown(false)
 {
     QPalette palette;
     palette.setBrush ( QPalette::Light, Qt::darkGray );
@@ -53,18 +52,12 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
         connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
         mToolBarShowTimer->setInterval(m_iToolBarShowingInterval);
     }
-
-    if (delegated()->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
-    {
-        connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
-    }
 }
 
 bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     mToolBarItem->show();
-    mToolBarIsShown = true;
 
     if (mToolBarShowTimer)
         mToolBarShowTimer->start();
@@ -75,14 +68,6 @@ bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *even
 void UBGraphicsMediaItemDelegate::hideToolBar()
 {
     mToolBarItem->hide();
-    mToolBarIsShown = false;
-}
-
-void UBGraphicsMediaItemDelegate::onZoomChanged()
-{
-    positionHandles();
-    if (!mToolBarIsShown)
-        hideToolBar();
 }
 
 void UBGraphicsMediaItemDelegate::buildButtons()
@@ -136,18 +121,16 @@ void UBGraphicsMediaItemDelegate::positionHandles()
 {
     UBGraphicsItemDelegate::positionHandles();
 
-    qreal AntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());           
-
     UBGraphicsMediaItem *mediaItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
     if (mediaItem)
     {
         QRectF toolBarRect = mToolBarItem->rect();
         if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
         {      
-            mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());//*AntiScaleRatio);
+            mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());
            // mToolBarItem->setScale(AntiScaleRatio);
 
-            toolBarRect.setWidth(delegated()->boundingRect().width());//AntiScaleRatio);
+            toolBarRect.setWidth(delegated()->boundingRect().width());
         }
         else if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
         {
@@ -156,8 +139,8 @@ void UBGraphicsMediaItemDelegate::positionHandles()
             if (audioWidget)
                 borderSize = audioWidget->borderSize();
 
-            mToolBarItem->setPos(borderSize,delegated()->boundingRect().height()-(mToolBarItem->rect().height() + borderSize));//*AntiScaleRatio);
-            toolBarRect.setWidth((delegated()->boundingRect().width()-2*borderSize));///AntiScaleRatio);
+            mToolBarItem->setPos(borderSize,delegated()->boundingRect().height()-(mToolBarItem->rect().height() + borderSize));
+            toolBarRect.setWidth((delegated()->boundingRect().width()-2*borderSize));
             mToolBarItem->show();
         }
 
