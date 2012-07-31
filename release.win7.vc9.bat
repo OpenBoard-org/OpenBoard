@@ -1,7 +1,7 @@
 REM --------------------------------------------------------------------
 REM This program is free software: you can redistribute it and/or modify
 REM it under the terms of the GNU General Public License as published by
-REM the Free Software Foundation, either version 3 of the License, or
+REM the Free Software Foundation, either version 2 of the License, or
 REM (at your option) any later version.
 REM 
 REM This program is distributed in the hope that it will be useful,
@@ -85,7 +85,7 @@ set INSTALL_DIRECTORY=install\win32\
 
 xcopy *.pdf %INSTALL_DIRECTORY%
 cd %INSTALL_DIRECTORY%
-call %SEVEN_ZIP_EXE% a Open-Sankore_Windows_%VERSION%.zip *.exe *.pdf 
+call %SEVEN_ZIP_EXE% a Open-Sankor‚_Windows_%VERSION%.zip *.exe *.pdf
 cd ..\..\
 GOTO END
 
@@ -95,3 +95,5 @@ GOTO :EOF
 
 :END
 echo "Open-Sankore's build finished"
+
+:EOF
