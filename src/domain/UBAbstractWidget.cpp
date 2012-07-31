@@ -172,8 +172,10 @@ bool UBAbstractWidget::hasEmbededFlash()
 
 void UBAbstractWidget::resize(qreal width, qreal height)
 {
-    QWebView::page()->setViewportSize(QSize(width, height));
-    QWebView::setFixedSize(QSize(width, height));
+    qreal w = qMax((qreal)mNominalSize.width(), width);
+    qreal h = qMax((qreal)mNominalSize.height(), height);
+    QWebView::page()->setViewportSize(QSize(w, h));
+    QWebView::setFixedSize(QSize(w, h));
 }
 
 
