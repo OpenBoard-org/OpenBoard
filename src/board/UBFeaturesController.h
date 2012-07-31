@@ -55,8 +55,6 @@ public:
     void setFullVirtualPath(const QString &newVirtualPath) {virtualDir = newVirtualPath;}
     UBFeatureElementType getType() const { return elementType; }
 
-
-
 	bool isFolder() const;
 	bool isDeletable() const;
     bool inTrash() const;

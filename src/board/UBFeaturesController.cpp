@@ -25,7 +25,6 @@ const QString UBFeaturesController::virtualRootName = "root";
 UBFeature::UBFeature(const QString &url, const QPixmap &icon, const QString &name, const QUrl &realPath, UBFeatureElementType type)
 : virtualDir(url), mThumbnail(icon), mName(name), mPath(realPath), elementType(type)
 {
-	
 }
 
 UBFeature::~UBFeature()
@@ -43,8 +42,7 @@ QString UBFeature::getUrl() const
 {
 	if ( elementType == FEATURE_INTERNAL )
         return getFullPath().toString();
-	/*if ( UBApplication::isFromWeb( getFullPath() ) )
-		return QUrl( getFullPath() );*/
+
     return getFullPath().toLocalFile();
 }
 
@@ -185,28 +183,6 @@ void UBFeaturesController::scanFS()
     fileSystemScan( mLibInteractiveDirectoryPath, interactPath);
     fileSystemScan( trashDirectoryPath, trashPath);
     fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search");
-//=======
-//	// Claudio:
-//	// don't change the order of the scans
-//	fileSystemScan( mLibAudiosDirectoryPath, audiosPath);
-//	fileSystemScan( mLibVideosDirectoryPath, moviesPath);
-//	fileSystemScan( mLibAnimationsDirectoryPath, flashPath);
-//	fileSystemScan( mLibPicturesDirectoryPath, picturesPath  );
-
-//	fileSystemScan( mUserInteractiveDirectoryPath, appPath  );
-//	fileSystemScan( mUserAudioDirectoryPath, audiosPath  );
-//	fileSystemScan( mUserPicturesDirectoryPath, picturesPath  );
-//	fileSystemScan( mUserVideoDirectoryPath, moviesPath  );
-//	fileSystemScan( mUserAnimationDirectoryPath, flashPath  );
-
-//	fileSystemScan( mLibApplicationsDirectoryPath, appPath  );
-//	fileSystemScan( mLibShapesDirectoryPath, shapesPath  );
-//	fileSystemScan( mLibInteractiveDirectoryPath, interactPath  );
-//	fileSystemScan( trashDirectoryPath, trashPath );
-//	fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
-	
-//>>>>>>> e38b24544e8b8b1d5bd41dabdeaf588df7d45185
-
 }
 
 void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QString & currVirtualPath)
@@ -287,12 +263,7 @@ void UBFeaturesController::loadFavoriteList()
 		{
 			QUrl path;
 			in >> path;
-			/*QFileInfo fileInfo( path );
-			QString fileName = fileInfo.fileName();
-
-			UBFeature elem( favoritePath, thumbnailForFile( path ), fileName, path, fileTypeFromUrl(path) );
-			featuresList->append( elem );*/
-			favoriteSet->insert( path );
+            favoriteSet->insert( path );
 		}
 	}
 }

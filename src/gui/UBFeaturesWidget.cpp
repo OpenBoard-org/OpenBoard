@@ -507,32 +507,6 @@ UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name )
 	setObjectName(name);
 }
 
-/*
-void UBFeaturesListView::mousePressEvent( QMouseEvent *event )
-{
-	rubberOrigin = event->pos();
-	rubberBand->setGeometry( QRect( rubberOrigin, QSize() ) );
-	//qDebug()  << rubberOrigin.x() << rubberOrigin.y();
-	rubberBand->show();
-	QListView::mousePressEvent(event);
-}
-
-void UBFeaturesListView::mouseMoveEvent( QMouseEvent *event )
-{
-	QPoint current = event->pos();
-	rubberBand->setGeometry( QRect( rubberOrigin, current ).normalized() );
-
-	//setSelection( rubberBand->rect(), QItemSelectionModel::Select );
-	QListView::mouseMoveEvent(event);
-}
-
-void UBFeaturesListView::mouseReleaseEvent( QMouseEvent *event )
-{
-	rubberBand->hide();
-	QListView::mouseReleaseEvent(event);
-}
-
-*/
 void UBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
 {
     if ( event->mimeData()->hasUrls() || event->mimeData()->hasImage() )
@@ -580,9 +554,7 @@ UBFeaturesNavigatorWidget::UBFeaturesNavigatorWidget(QWidget *parent, const char
     QWidget(parent), mListView(0), mListSlder(0)
 
 {
-//    if ('\0' == name) {
-        name = "UBFeaturesNavigatorWidget";
-//    }
+    name = "UBFeaturesNavigatorWidget";
 
     setObjectName(name);
     SET_STYLE_SHEET()
@@ -719,7 +691,6 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
 	setObjectName(name);
 
     SET_STYLE_SHEET();
-    //setStyleSheet(UBApplication::globalStyleSheet());
 
     // Create the GUI
     mpLayout = new QVBoxLayout(this);
