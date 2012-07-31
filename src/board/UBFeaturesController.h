@@ -101,7 +101,7 @@ public:
     void setCurrentElement( const UBFeature &elem ) {currentElement = elem;}
 	const UBFeature & getTrashElement () const { return trashElement; }
 
-    UBFeature addDownloadedFile( const QUrl &sourceUrl, const QByteArray &pData );
+    void addDownloadedFile( const QUrl &sourceUrl, const QByteArray &pData );
 
 	UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
 	UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );

@@ -60,7 +60,6 @@ public:
 	static const int minThumbnailSize = 20;
 	static const int maxThumbnailSize = 100;
 	static const int defaultThumbnailSize = 40;
-//<<<<<<< HEAD
 
 public:
     int scrollbarHorisontalPadding() const { return 10;}
@@ -75,90 +74,27 @@ private slots:
     void addToFavorite( const UBFeaturesMimeData  *);
     void removeFromFavorite( const UBFeaturesMimeData * );
     void onDisplayMetadata( QMap<QString,QString> );
-//=======
-//private:
-//	void switchToListView();
-//	void switchToProperties();
-//	void switchToWebView();
-
-//	UBFeaturesController *controller;
-	
-//	UBFeaturesItemDelegate *itemDelegate;
-//	UBFeaturesPathItemDelegate *pathItemDelegate;
-	
-//	UBFeaturesModel *featuresModel;
-//	UBFeaturesProxyModel *featuresProxyModel;
-//	UBFeaturesSearchProxyModel *featuresSearchModel;
-//	UBFeaturesPathProxyModel *featuresPathModel;
-
-//	UBFeaturesListView *featuresListView;
-//	UBFeaturesListView *pathListView;
-
-//	QSlider *thumbSlider;
-//	QVBoxLayout *layout;
-//	//UBFeaturesPathViewer *pathViewer;
-//	//QGraphicsScene *pathScene;
-//	UBFeaturesActionBar *mActionBar;
-//	UBFeatureProperties *featureProperties;
-//	UBFeaturesWebView *webView;
-//	QStackedWidget *stackedWidget;
-	
-
-//	int currentStackedWidget;
-
-//    UBDownloadHttpFile* imageGatherer;
-
-//private slots:
-//
-//	void currentSelected( const QModelIndex & );
-//	//void currentPathChanged(const QString &);
-//	void currentPathChanged( const QModelIndex & );
-//	void searchStarted( const QString & );
-//	void createNewFolder();
-//	void deleteElements( const QMimeData & );
-//	void addToFavorite( const QMimeData & );
-//	void removeFromFavorite( const QMimeData & );
-//	void thumbnailSizeChanged( int );
-//	void onDisplayMetadata( QMap<QString,QString> );
-//>>>>>>> e38b24544e8b8b1d5bd41dabdeaf588df7d45185
     void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
     void addElementsToFavorite();
     void removeElementsFromFavorite();
     void deleteSelectedElements();
-//<<<<<<< HEAD
     void rescanModel();
-
 
 private:
     void switchToListView();
     void switchToProperties();
     void switchToWebView();
 
-    void updateSliderPosition();
-
 private:
     UBFeaturesController *controller;
-
-    UBFeaturesItemDelegate *itemDelegate;
-    UBFeaturesPathItemDelegate *pathItemDelegate;
-
-    UBFeaturesModel *featuresModel;
-    UBFeaturesProxyModel *featuresProxyModel;
-    UBFeaturesSearchProxyModel *featuresSearchModel;
-    UBFeaturesPathProxyModel *featuresPathModel;
-
-
     UBFeaturesNavigatorWidget *mNavigator;
     UBFeaturesListView *pathListView;
-
     QVBoxLayout *layout;
     UBFeaturesActionBar *mActionBar;
     UBFeatureProperties *featureProperties;
     UBFeaturesWebView *webView;
     QStackedWidget *stackedWidget;
-
     int currentStackedWidget;
-
     UBDownloadHttpFile* imageGatherer;
 
 };
@@ -175,11 +111,6 @@ public:
 
 private:
     QList<UBFeature> mFeatures;
-//=======
-
-//protected:
-//	bool eventFilter(QObject *target, QEvent *event);
-//>>>>>>> e38b24544e8b8b1d5bd41dabdeaf588df7d45185
 };
 
 
@@ -195,16 +126,9 @@ protected:
 	virtual void dragEnterEvent( QDragEnterEvent *event );
     virtual void dropEvent( QDropEvent *event );
     virtual void dragMoveEvent( QDragMoveEvent *event );
-    /*virtual void mousePressEvent( QMouseEvent *event );
-	virtual void mouseMoveEvent( QMouseEvent *event );
-	virtual void mouseReleaseEvent( QMouseEvent *event );*/
 
 private slots:
     void thumbnailSizeChanged(int);
-
-private:
-	//UBRubberBand *rubberBand;
-	//QPoint rubberOrigin;
 };
 
 

@@ -114,7 +114,7 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     applicationsElement = UBFeature( rootPath, QPixmap(":images/libpalette/ApplicationsCategory.svg"), "Applications" , mUserInteractiveDirectoryPath, FEATURE_CATEGORY);
     shapesElement = UBFeature( rootPath, QPixmap(":images/libpalette/ShapesCategory.svg"), "Shapes" , mLibShapesDirectoryPath, FEATURE_CATEGORY );
     favoriteElement = UBFeature( rootPath, QPixmap(":images/libpalette/FavoritesCategory.svg"), "Favorites", QUrl("favorites"), FEATURE_FAVORITE );
-    webSearchElement = UBFeature( rootPath, QPixmap(":images/libpalette/WebSearchCategory.svg"), "Web search", mLibSearchDirectoryPath, FEATURE_SEARCH);
+    webSearchElement = UBFeature( rootPath, QPixmap(":images/libpalette/WebSearchCategory.svg"), "Web search", mLibSearchDirectoryPath, FEATURE_CATEGORY);
 
     trashElement = UBFeature( rootPath, QPixmap(":images/libpalette/TrashCategory.svg"), "Trash", trashDirectoryPath, FEATURE_TRASH );
 
@@ -171,18 +171,25 @@ void UBFeaturesController::scanFS()
 		}
 	}
 
-    fileSystemScan(mUserInteractiveDirectoryPath, appPath);
-    fileSystemScan(mUserAudioDirectoryPath, audiosPath);
-    fileSystemScan(mUserPicturesDirectoryPath, picturesPath);
-    fileSystemScan(mUserVideoDirectoryPath, moviesPath);
-    fileSystemScan(mUserAnimationDirectoryPath, flashPath);
+        //Claudio:
+        // don't change the order of the scans
+        fileSystemScan( mLibAudiosDirectoryPath, audiosPath);
+        fileSystemScan( mLibVideosDirectoryPath, moviesPath);
+        fileSystemScan( mLibAnimationsDirectoryPath, flashPath);
+        fileSystemScan( mLibPicturesDirectoryPath, picturesPath  );
 
-    fileSystemScan(mLibApplicationsDirectoryPath, appPath);
-    fileSystemScan( mLibPicturesDirectoryPath, picturesPath);
-    fileSystemScan( mLibShapesDirectoryPath, shapesPath);
-    fileSystemScan( mLibInteractiveDirectoryPath, interactPath);
-    fileSystemScan( trashDirectoryPath, trashPath);
-    fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search");
+        fileSystemScan( mUserInteractiveDirectoryPath, appPath  );
+        fileSystemScan( mUserAudioDirectoryPath, audiosPath  );
+        fileSystemScan( mUserPicturesDirectoryPath, picturesPath  );
+        fileSystemScan( mUserVideoDirectoryPath, moviesPath  );
+        fileSystemScan( mUserAnimationDirectoryPath, flashPath  );
+
+        fileSystemScan( mLibApplicationsDirectoryPath, appPath  );
+        fileSystemScan( mLibShapesDirectoryPath, shapesPath  );
+        fileSystemScan( mLibInteractiveDirectoryPath, interactPath  );
+        fileSystemScan( trashDirectoryPath, trashPath );
+        fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
+
 }
 
 void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QString & currVirtualPath)
@@ -464,23 +471,29 @@ UBFeature UBFeaturesController::getParentFeatureForUrl( const QUrl &url )
     return UBFeature();
 }
 
-UBFeature UBFeaturesController::addDownloadedFile( const QUrl &sourceUrl, const QByteArray &pData )
+void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteArray &pData)
 {
     UBFeature dest = getParentFeatureForUrl( sourceUrl );
+
     if ( dest == UBFeature() )
-        return UBFeature();
+        return;
+
     QString fileName = QFileInfo( sourceUrl.toString() ).fileName();
     QString filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
 
     QFile file( filePath );
-    if( file.open(QIODevice::WriteOnly )) 
+    if ( file.open(QIODevice::WriteOnly ))
     {
         file.write(pData);
         file.close();
-        return UBFeature( dest.getFullVirtualPath(), thumbnailForFile( filePath ), 
-            fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM );
+
+        UBFeature downloadedFeature = UBFeature( dest.getFullVirtualPath(), thumbnailForFile( filePath ),
+                                                 fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM);
+        if (downloadedFeature != UBFeature()) {
+            featuresModel->addItem(downloadedFeature);
+        }
     }
-    return UBFeature();
+
 }
 
 UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeature &destination )
@@ -523,7 +536,7 @@ UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeatu
 
 void UBFeaturesController::rescanModel()
 {
-    featuresModel->removeRows(0, featuresList->count() - 1);
+    featuresModel->removeRows(0, featuresList->count());
 
     //Could implement infolder scanning for better perfomance
     scanFS();
