@@ -15,12 +15,19 @@
 # ---------------------------------------------------------------------
 
 MAKE_TAG=true
+CREATE_DIENA_DISTRIBUTION_ZIP=false
 
-if [ $# == "1" ]; then
-   if [ $1 == "notag" ]; then
+
+for var in "$@"
+do
+   if [ $var == "notag" ]; then
       MAKE_TAG=false;
    fi
-fi
+   if [ $var == "diena" ]; then
+       CREATE_DIENA_DISTRIBUTION_ZIP=true;
+   fi
+done
+
 
 notifyError(){
     notify-send -t 0 "Error occoured" "An error occours during the sankore build:\n\t$1" -i /usr/share/icons/oxygen/64x64/status/dialog-error.png
@@ -38,7 +45,6 @@ alertIfPreviousVersionInstalled(){
         fi
     fi
 }
-
 
 alertIfPreviousVersionInstalled
 
@@ -318,11 +324,23 @@ chmod 755 "$BASE_WORKING_DIR/DEBIAN/prerm"
 chmod 755 "$BASE_WORKING_DIR/DEBIAN/postint"
 
 mkdir -p "install/linux"
+DEBIAN_PACKAGE_NAME="Open-Sankore_${VERSION}_$ARCHITECTURE.deb"
 
 fakeroot  chown -R root:root $BASE_WORKING_DIR 
-dpkg -b "$BASE_WORKING_DIR" install/linux/Open-Sankore_${VERSION}_$ARCHITECTURE.deb
+dpkg -b "$BASE_WORKING_DIR" "install/linux/$DEBIAN_PACKAGE_NAME"
 notify-send "Open-Sankore" "Package built"
 
 #clean up mess
 fakeroot rm -rf $BASE_WORKING_DIR
+
+
+if [ $CREATE_DIENA_DISTRIBUTION_ZIP == true ]; then
+
+    ZIP_NAME="Open-Sankoré_`lsb_release -is`_`lsb_release -rs`_${VERSION}_${ARCHITECTURE}.zip"
+    cd install/linux
+    `which zip` -1 --junk-paths ${ZIP_NAME} ${DEBIAN_PACKAGE_NAME} ../../ReleaseNotes.pdf ../../JournalDesModifications.pdf
+    cd -
+    
+    notify-send "Open-Sankore" "Build Diena zip file for distribution"
+fi
 

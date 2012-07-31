@@ -50,6 +50,8 @@ public:
     void load(QString element);
     QVector<tIDataStorage*> save(int pageIndex);
 
+    bool isModified();
+
 public slots:
     void onAddItemClicked(QTreeWidgetItem* widget, int column, QDomElement* element = 0);
     void onActiveSceneChanged();
@@ -124,6 +126,7 @@ public:
     ~UBTeacherGuidePageZeroWidget();
 
     QVector<tUBGEElementNode*> getData();
+    bool isModified();
 
 
 public slots:
@@ -198,6 +201,8 @@ public:
     explicit UBTeacherGuideWidget(QWidget* parent = 0, const char* name="UBTeacherGuideWidget");
     ~UBTeacherGuideWidget();
 
+    bool isModified();
+
 public slots:
     void changeMode();
     void showPresentationMode();
@@ -209,6 +214,11 @@ private:
     UBTeacherGuideEditionWidget* mpEditionWidget;
     UBTeacherGuidePresentationWidget* mpPresentationWidget;
     QVector<tUBGEElementNode*>mCurrentData;
+    bool mKeyboardActionFired;
+
+private slots:
+	void onTriggeredAction(bool checked);
+	void onTriggeredKeyboardAction(bool checked);
 };
 
 #endif // UBTEACHERGUIDEWIDGET_H

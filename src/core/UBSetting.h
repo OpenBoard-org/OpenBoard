@@ -54,6 +54,7 @@ class UBSetting : public QObject
 
         void setBool(bool pValue);
 		void setString(const QString& pValue);
+        void setInt(int pValue);
 
     signals:
 

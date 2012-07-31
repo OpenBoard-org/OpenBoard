@@ -40,6 +40,8 @@
 
 #include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBDockTeacherGuideWidget.h"
+#include "gui/UBTeacherGuideWidget.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBW3CWidget.h"
@@ -418,7 +420,7 @@ void UBApplicationController::showDocument()
 
     if (UBApplication::boardController)
     {
-        if (UBApplication::boardController->activeScene()->isModified())
+        if (UBApplication::boardController->activeScene()->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()))
             UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->hide();
     }
@@ -471,23 +473,30 @@ void UBApplicationController::showTutorial()
         UBApplication::boardController->hide();
     }
 
-    // it's needed not to duplicate webbrowser search in web mode. If I've breaked smbd's code let Ivan know
-    UBApplication::webController->show(UBWebController::Tutorial);
+    if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
+    {
+        showDesktop(true);
+        UBApplication::webController->show(UBWebController::Tutorial);
 
-    mMainWindow->webToolBar->hide();
-    mMainWindow->boardToolBar->hide();
-    mMainWindow->documentToolBar->hide();
-    mMainWindow->tutorialToolBar->show();
+    }
+    else{
+    	mMainWindow->webToolBar->hide();
+    	mMainWindow->boardToolBar->hide();
+    	mMainWindow->documentToolBar->hide();
+    	mMainWindow->tutorialToolBar->show();
 
 
-    mMainMode = Tutorial;
+    	mMainMode = Tutorial;
 
-    adaptToolBar();
+    	adaptToolBar();
 
-    mUninoteController->hideWindow();
+    	mUninoteController->hideWindow();
 
-    mirroringEnabled(false);
-    emit mainModeChanged(mMainMode);
+    	UBApplication::webController->show(UBWebController::Tutorial);
+
+    	mirroringEnabled(false);
+    	emit mainModeChanged(mMainMode);
+    }
 }
 
 
@@ -537,7 +546,6 @@ void UBApplicationController::updateRequestFinished(int id, bool error)
    }
    else{
        QString responseString =  QString(mHttp->readAll());
-       qDebug() << responseString;
        if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
            mHttp->close();
            downloadJsonFinished(responseString);
@@ -586,7 +594,10 @@ void UBApplicationController::checkUpdateRequest()
 void UBApplicationController::hideDesktop()
 {
     mDisplayManager->adjustScreens(-1);
-    UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
+
+    if(UBStylusTool::Eraser != UBDrawingController::drawingController()->stylusTool()){
+    	UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
+    }
 
     if (mMainMode == Board)
     {

@@ -16,12 +16,11 @@
 #include <QDropEvent>
 
 #include "UBDockPaletteWidget.h"
-//#include "UBLibActionBar.h"
+#include "core/UBSettings.h"
 #include "board/UBFeaturesController.h"
 #include "api/UBWidgetUniboardAPI.h"
 #include "UBFeaturesActionBar.h"
 #include "UBRubberBand.h"
-
 
 #define THUMBNAIL_WIDTH 400
 #define ID_LISTVIEW 0
@@ -41,6 +40,8 @@ class UBFeatureProperties;
 class UBFeatureItemButton;
 class UBFeaturesListView;
 class UBFeaturesWebView;
+class UBFeaturesNavigatorWidget;
+class UBFeaturesMimeData;
 
 class UBFeaturesWidget : public UBDockPaletteWidget
 {
@@ -54,81 +55,99 @@ public:
         return mode == eUBDockPaletteWidget_BOARD
             || mode == eUBDockPaletteWidget_DESKTOP;
     }
-	UBFeaturesController * getFeaturesController()const { return controller; };
+    UBFeaturesController * getFeaturesController() const { return controller; }
 
 	static const int minThumbnailSize = 20;
 	static const int maxThumbnailSize = 100;
 	static const int defaultThumbnailSize = 40;
-private:
-	void switchToListView();
-	void switchToProperties();
-	void switchToWebView();
 
-	UBFeaturesController *controller;
-	
-	UBFeaturesItemDelegate *itemDelegate;
-	UBFeaturesPathItemDelegate *pathItemDelegate;
-	
-	UBFeaturesModel *featuresModel;
-	UBFeaturesProxyModel *featuresProxyModel;
-	UBFeaturesSearchProxyModel *featuresSearchModel;
-	UBFeaturesPathProxyModel *featuresPathModel;
-
-	UBFeaturesListView *featuresListView;
-	UBFeaturesListView *pathListView;
-
-	QSlider *thumbSlider;
-	QVBoxLayout *layout;
-	//UBFeaturesPathViewer *pathViewer;
-	//QGraphicsScene *pathScene;
-	UBFeaturesActionBar *mActionBar;
-	UBFeatureProperties *featureProperties;
-	UBFeaturesWebView *webView;
-	QStackedWidget *stackedWidget;
-	
-
-	int currentStackedWidget;
-
-    UBDownloadHttpFile* imageGatherer;
+public:
+    int scrollbarHorisontalPadding() const { return 10;}
+    int scrollbarVerticalIndent() const { return 0;}
 
 private slots:
     void onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
-	void currentSelected( const QModelIndex & );
-	//void currentPathChanged(const QString &);
-	void currentPathChanged( const QModelIndex & );
-	void searchStarted( const QString & );
-	void createNewFolder();
-	void deleteElements( const QMimeData & );
-	void addToFavorite( const QMimeData & );
-	void removeFromFavorite( const QMimeData & );
-	void thumbnailSizeChanged( int );
-	void onDisplayMetadata( QMap<QString,QString> );
+    void currentSelected( const QModelIndex & );
+    void searchStarted( const QString & );
+    void createNewFolder();
+    void deleteElements( const UBFeaturesMimeData * );
+    void addToFavorite( const UBFeaturesMimeData  *);
+    void removeFromFavorite( const UBFeaturesMimeData * );
+    void onDisplayMetadata( QMap<QString,QString> );
     void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
     void addElementsToFavorite();
     void removeElementsFromFavorite();
     void deleteSelectedElements();
+    void rescanModel();
 
-protected:
-	bool eventFilter(QObject *target, QEvent *event);
+private:
+    void switchToListView();
+    void switchToProperties();
+    void switchToWebView();
+
+private:
+    UBFeaturesController *controller;
+    UBFeaturesNavigatorWidget *mNavigator;
+    UBFeaturesListView *pathListView;
+    QVBoxLayout *layout;
+    UBFeaturesActionBar *mActionBar;
+    UBFeatureProperties *featureProperties;
+    UBFeaturesWebView *webView;
+    QStackedWidget *stackedWidget;
+    int currentStackedWidget;
+    UBDownloadHttpFile* imageGatherer;
+
 };
+
+
+class UBFeaturesMimeData : public QMimeData
+{
+    Q_OBJECT
+
+public:
+    virtual QStringList formats() const;
+    QList<UBFeature> features() const {return mFeatures;}
+    void setFeatures(const QList<UBFeature> &fList) {mFeatures = fList;}
+
+private:
+    QList<UBFeature> mFeatures;
+};
+
 
 class UBFeaturesListView : public QListView
 {
 	Q_OBJECT
+
 public:
-	UBFeaturesListView( QWidget* parent=0, const char* name="UBFeaturesListView" );
+    UBFeaturesListView( QWidget* parent=0, const char* name="UBFeaturesListView" );
     virtual ~UBFeaturesListView() {;}
+
 protected:
 	virtual void dragEnterEvent( QDragEnterEvent *event );
-	virtual void dropEvent( QDropEvent *event );
+    virtual void dropEvent( QDropEvent *event );
     virtual void dragMoveEvent( QDragMoveEvent *event );
-	/*virtual void mousePressEvent( QMouseEvent *event );
-	virtual void mouseMoveEvent( QMouseEvent *event );
-	virtual void mouseReleaseEvent( QMouseEvent *event );*/
-private:
-	//UBRubberBand *rubberBand;
-	//QPoint rubberOrigin;
+
+private slots:
+    void thumbnailSizeChanged(int);
 };
+
+
+// class created to have the same style for slider and QListView itself
+class UBFeaturesNavigatorWidget: public QWidget
+{
+    Q_OBJECT
+
+public:
+    UBFeaturesNavigatorWidget(QWidget *parent, const char* name = "");
+    UBFeaturesListView *listView() {return mListView;}
+    void setSliderPosition(int pValue);
+
+private:
+    UBFeaturesListView *mListView;
+    QSlider *mListSlder;
+
+};
+
 
 class UBFeaturesWebView : public QWidget
 {
@@ -177,9 +196,9 @@ private:
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonLayout;
-    UBFeatureItemButton* mpAddPageButton;
-    UBFeatureItemButton* mpAddToLibButton;
-    UBFeatureItemButton* mpSetAsBackgroundButton;
+    UBFeatureItemButton *mpAddPageButton;
+    UBFeatureItemButton *mpAddToLibButton;
+    UBFeatureItemButton *mpSetAsBackgroundButton;
     QLabel* mpObjInfoLabel;
     QTreeWidget* mpObjInfos;
     QLabel* mpThumbnail;
@@ -188,9 +207,6 @@ private:
     UBFeature *mpElement;
     QTreeWidgetItem* mpItem;
 };
-
-
-
 
 class UBFeatureItemButton : public QPushButton
 {
@@ -202,13 +218,18 @@ public:
 class UBFeaturesModel : public QAbstractListModel
 {
 	Q_OBJECT
+
+signals:
+    void dataRestructured();
+
 public:
-    UBFeaturesModel( QObject *parent = 0 ) : QAbstractListModel(parent) {;}
+    UBFeaturesModel(QList<UBFeature> *pFeaturesList, QObject *parent = 0) : QAbstractListModel(parent), featuresList(pFeaturesList) {;}
     virtual ~UBFeaturesModel(){;}
 
 	void addItem( const UBFeature &item );
 	void deleteFavoriteItem( const QString &path );
     void deleteItem( const QString &path );
+    void deleteItem(const UBFeature &feature);
 
 	QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
 	QMimeData *mimeData( const QModelIndexList &indexes ) const;
@@ -220,10 +241,11 @@ public:
 	bool removeRow(int row, const QModelIndex &parent = QModelIndex());
     //bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
     //bool insertRow(int row, const QModelIndex &parent = QModelIndex());
-	
-    Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 
-    void setFeaturesList(QList <UBFeature> *flist ) { featuresList = flist; }
+    void moveData(const UBFeature &source, const UBFeature &destination, Qt::DropAction action, bool deleteManualy = false);
+    Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
+//    void setFeaturesList(QList <UBFeature> *flist ) { featuresList = flist; }
+
 private:
 	QList <UBFeature> *featuresList;
 };
@@ -265,7 +287,7 @@ class UBFeaturesItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 public:
-    UBFeaturesItemDelegate(QWidget *parent = 0, const QListView *lw = 0) : QStyledItemDelegate(parent) { listView = lw; }
+    UBFeaturesItemDelegate(QObject *parent = 0, const QListView *lw = 0) : QStyledItemDelegate(parent) { listView = lw; }
     ~UBFeaturesItemDelegate() {}
 	//UBFeaturesItemDelegate(const QListView *lw = 0) { listView = lw; };
 	//void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
@@ -279,7 +301,7 @@ class UBFeaturesPathItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 public:
-	UBFeaturesPathItemDelegate(QWidget *parent = 0);
+    UBFeaturesPathItemDelegate(QObject *parent = 0);
 	~UBFeaturesPathItemDelegate();
 	virtual QString	displayText ( const QVariant & value, const QLocale & locale ) const;
 	void paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;

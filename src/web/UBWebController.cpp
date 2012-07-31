@@ -177,10 +177,8 @@ void UBWebController::tutorialWebInstance()
     QString tutorialPath = "/etc/Tutorial/tutorial" + language + "/index.html";
 #if defined(Q_WS_MAC)
     tutorialHtmlIndexFile = QApplication::applicationDirPath()+ "/../Resources" + tutorialPath;
-#elif defined(Q_WS_WIN)
-    tutorialHtmlIndexFile = QApplication::applicationDirPath()+ tutorialPath;
 #else
-    tutorialHtmlIndexFile = QApplication::applicationDirPath()+ tutorialPath;
+    tutorialHtmlIndexFile = QApplication::applicationDirPath() + tutorialPath;
 #endif
 
     QUrl currentUrl = QUrl::fromLocalFile(tutorialHtmlIndexFile);

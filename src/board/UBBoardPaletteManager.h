@@ -69,6 +69,8 @@ class UBBoardPaletteManager : public QObject
         void setCurrentWebToolsPalette(UBWebToolsPalette *palette) {mWebToolsCurrentPalette = palette;}
         UBWebToolsPalette* mWebToolsCurrentPalette;
 
+        UBDockTeacherGuideWidget* teacherGuideDockWidget() { return mpTeacherGuideWidget;}
+
         void processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode);
         void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
         void startDownloads();
@@ -135,10 +137,10 @@ class UBBoardPaletteManager : public QObject
         /** The page navigator widget */
         UBPageNavigationWidget* mpPageNavigWidget;
         
-#ifdef USE_WEB_WIDGET
+//#ifdef USE_WEB_WIDGET
         /** The library widget */
         UBLibWidget* mpLibWidget;
-#endif
+//#endif
 
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;

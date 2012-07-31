@@ -49,6 +49,10 @@ class UBFileSystemUtils
 
         static bool moveDir(const QString& pSourceDirPath, const QString& pTargetDirPath);
 
+        static bool copyFile(const QString &source, const QString &destination, bool overwrite = false);
+
+        static bool copy(const QString &source, const QString &Destination, bool overwrite = false);
+
         static QString cleanName(const QString& name);
 
         static QString digitFileFormat(const QString& s, int digit);
@@ -73,8 +77,6 @@ class UBFileSystemUtils
 
         static bool isAZipFile(QString &filePath);
 
-        static bool copyFile(const QString &source, const QString &Destination, bool overwrite = false);
-        
         static bool deleteFile(const QString &path);
         /**
          * Compress a source directory in a zip file.

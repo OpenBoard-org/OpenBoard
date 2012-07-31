@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <teacherGuide>
     <gradeLevels>
+        <gradeLevel label="" baseLevel="Maternelle"/>
         <gradeLevel label="Petite Section (3-4 ans)" baseLevel="Maternelle"/>
         <gradeLevel label="Moyenne Section (4-5 ans)" baseLevel="Maternelle"/>
         <gradeLevel label="Grande Section (5-6 ans)" baseLevel="Maternelle"/>
@@ -22,6 +23,7 @@
         <gradeLevel label="Education Spécialisée" baseLevel="Enseignement Professionnel" />
     </gradeLevels>
     <subjects baseLevel="Maternelle">
+        <subject label="" />
         <subject label="Percevoir, sentir, imaginer, créer" />
         <subject label="Découvrir l'écrit" />
         <subject label="S'approprier le langage" />
@@ -29,6 +31,7 @@
         <subject label="Découvrir le monde" />
     </subjects>
     <subjects baseLevel="Elémentaire">
+        <subject label="" />
         <subject label="Pratiques artistiques" />
         <subject label="Pratiques artistiques - arts visuels" />
         <subject label="Pratiques artistiques - éducation musicale" />
@@ -50,6 +53,7 @@
         <subject label="TUIC" />
     </subjects>
     <subjects baseLevel="Collège">
+        <subject label="" />
         <subject label="Pratiques artistiques" />
         <subject label="Pratiques artistiques - arts visuels" />
         <subject label="Pratiques artistiques - éducation musicale" />
@@ -80,6 +84,7 @@
         <subject label="Education aux médias" />
     </subjects>
     <subjects baseLevel="Lycée">
+        <subject label="" />
         <subject label="Enseignements artistiques" />
         <subject label="Agriculture" />
         <subject label="Arts" />
@@ -125,6 +130,7 @@
         <subject label="Philosophie" />
     </subjects>
     <subjects baseLevel="Enseignement Professionnel">
+        <subject label="" />
         <subject label="Enseignements artistiques" />
         <subject label="Agriculture" />
         <subject label="Arts" />
@@ -169,6 +175,7 @@
         <subject label="Philosophie" />
     </subjects>
     <types>
+        <type label="" />
         <type label="Activité : Evaluation/Travail à la maison" />
         <type label="Activité : Exercice" />
         <type label="Activité : Travaux Pratiques" />

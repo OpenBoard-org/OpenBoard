@@ -83,9 +83,9 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mPendingPanButtonPressed(false)
     , mPendingEraseButtonPressed(false)
     , mpPageNavigWidget(NULL)
-#ifdef USE_WEB_WIDGET
+//#ifdef USE_WEB_WIDGET
     , mpLibWidget(NULL)
-#endif
+//#endif
     , mpCachePropWidget(NULL)
     , mpDownloadWidget(NULL)
     , mpDesktopLibWidget(NULL)
@@ -133,6 +133,8 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     //------------------------------------------------//
     // Create the widgets for the dock palettes
+
+    mpPageNavigWidget = new UBPageNavigationWidget();
 
 #ifdef USE_WEB_WIDGET
     mpLibWidget = new UBLibWidget();

@@ -46,7 +46,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
 
                 virtual void setAntiScale(qreal pAntiScale);
 
-        enum OperationMode {Scaling, Resizing};
+        enum OperationMode {Scaling, Resizing, ResizingHorizontally};
         void setOperationMode(OperationMode pMode) {mOperationMode = pMode;}
         bool isResizing(){return mResizing;}
 

@@ -21,7 +21,6 @@
 #include "document/UBDocumentProxy.h"
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
-#include "frameworks/UBFileSystemUtils.h"
 #include "core/memcheck.h"
 
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
@@ -56,6 +55,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         if(mVideoWidget->sizeHint() == QSize(1,1)){
             mVideoWidget->resize(320,240);
+            mVideoWidget->setMinimumSize(140,26);
         }
         setWidget(mVideoWidget);
         haveLinkedImage = true;
@@ -67,8 +67,16 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 
         mMediaObject->setTickInterval(1000);
-        mAudioWidget = new QWidget();
-        mAudioWidget->resize(320,26);
+        mAudioWidget = new UBGraphicsMediaItem::UBAudioPresentationWidget();
+        int borderSize = 0;
+        UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(mAudioWidget);
+        if (pAudioWidget)
+        {
+            borderSize = pAudioWidget->borderSize();
+        }
+
+        mAudioWidget->resize(320,26+3*borderSize);
+        mAudioWidget->setMinimumSize(150,26+borderSize);
         setWidget(mAudioWidget);
         haveLinkedImage = false;
     }
@@ -82,7 +90,10 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     itemDelegate->init();
     setDelegate(itemDelegate);
 
-    mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+    if (mediaType_Audio == mMediaType)
+        mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
+    else
+        mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 

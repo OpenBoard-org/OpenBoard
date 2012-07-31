@@ -74,8 +74,6 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
     mTimeFormat = mTimeFormat.remove(":s");
     mTimerID = startTimer(1000);
 
-    //connect(mNavigator, SIGNAL(changeCurrentPage()), this, SLOT(changeCurrentPage()));
-    //connect(UBApplication::boardController, SIGNAL(setDocOnPageNavigator(UBDocumentProxy*)), this, SLOT(onSetDocOnPageNavigator(UBDocumentProxy*)));
 }
 
 /**

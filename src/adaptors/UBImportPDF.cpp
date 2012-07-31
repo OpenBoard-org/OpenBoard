@@ -80,7 +80,7 @@ bool UBImportPDF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFi
 
     for(int pdfPageNumber = 1; pdfPageNumber <= pdfPageCount; pdfPageNumber++)
     {
-        int pageIndex = documentPageCount + (pdfPageNumber - 1);
+        int pageIndex = documentPageCount + pdfPageNumber;
         UBApplication::showMessage(tr("Importing page %1 of %2").arg(pdfPageNumber).arg(pdfPageCount), true);
 
         UBGraphicsScene* scene = 0;

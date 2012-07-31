@@ -685,11 +685,11 @@ function addContainer(){
     var close = $("<div class='close_cont'>").appendTo(container);
     var number = $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
     var text = $("<div class='text_cont'>").appendTo(sub_container);
-    text.attr("ondragenter", "return false;")
-    .attr("ondragleave", "$(this).removeClass('gray'); return false;")
-    .attr("ondragover", "$(this).addClass('gray'); return false;")
-    .attr("ondrop", "$(this).removeClass('gray'); return onDropAudio(this,event);");
     var audio_block = $("<div class='audio_block'>").appendTo(text);
+    audio_block.attr("ondragenter", "return false;")
+    .attr("ondragleave", "$(this).removeClass('audio_gray'); return false;")
+    .attr("ondragover", "$(this).addClass('audio_gray'); return false;")
+    .attr("ondrop", "$(this).removeClass('audio_gray'); return onDropAudio(this,event);");
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
     var source = $("<source/>").attr("src", "");
@@ -851,7 +851,7 @@ function onDropAudio(obj, event) {
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
         if(tmp_type.substr(0, 5) == "audio"){       
-            var audio_block = $(obj).find(".audio_block");
+            var audio_block = $(obj);
             $(obj).find("audio").remove();
             audio_block.find(":first-child").removeClass("stop").addClass("play");
             var source = $("<source/>").attr("src", "../../" + tmp);

@@ -5,7 +5,9 @@ QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
 QWidget#UBDownloadWidget,
 QWidget#UBTeacherGuideWidget,
-QWidget#UBFeatureProperties
+QWidget#UBFeatureProperties,
+QWidget#UBFeaturesNavigatorWidget,
+QWidget#PathList
 {
 	background: #EEEEEE;
 	border-radius: 10px;
@@ -26,14 +28,13 @@ QWidget#UBLibWebView
 	border: 2px solid #999999;
 }
 
-QWidget#UBFeaturesWebView
+QListView
 {
-	background: #EEEEEE;
-	border-radius : 10px;
-	border: 2px solid #999999;
+	border: 0px;
 }
 
-QListView
+
+QWidget#UBFeaturesWebView
 {
 	background: #EEEEEE;
 	border-radius : 10px;

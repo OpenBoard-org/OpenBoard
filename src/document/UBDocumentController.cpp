@@ -1624,7 +1624,11 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
             }
 
             items << pixmapItem;
-            labels << tr("Page %1").arg(pageFromSceneIndex(i));
+            int pageIndex = pageFromSceneIndex(i);
+            if(pageIndex)
+            	labels << tr("Page %1").arg(pageIndex);
+            else
+            	labels << tr("Title page");
 
             itemsPath.append(QUrl::fromLocalFile(proxy->persistencePath() + QString("/pages/%1").arg(UBDocumentContainer::pageFromSceneIndex(i))));
         }
