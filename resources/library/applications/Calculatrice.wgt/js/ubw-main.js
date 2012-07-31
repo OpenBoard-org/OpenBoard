@@ -350,7 +350,6 @@ function init(){
 
     function compute(){
         var result;
-        //alert(calc)
         if(calc.length <= 1)
             result = eval(calc);
         else{
@@ -362,7 +361,6 @@ function init(){
             operation = (calc.indexOf("+", 0) != -1)?calc.charAt(calc.indexOf("+", 0)):((calc.indexOf("*", 0) != -1)?calc.charAt(calc.indexOf("*", 0)):((calc.indexOf("/", 0) != -1)?calc.charAt(calc.indexOf("/", 0)):((calc.indexOf("-", 0) != -1)?calc.charAt(calc.indexOf("-", 0)):"")));
             fNumber = fMinus + calc.substring(0, calc.indexOf(operation, 0));
             lNumber = calc.substring(calc.indexOf(operation, 0)+1, calc.length);
-            //alert(fNumber + " | " + operation + " | " + lNumber)
             result = calcIt(fNumber, operation, lNumber);
         }
 
@@ -391,10 +389,10 @@ function init(){
         lCount = (lNumber.indexOf(".", 0) != -1)?lNumber.substring(lNumber.indexOf(".", 0)+1, lNumber.length):"";
         length = (fCount.length >= lCount.length)?fCount.length:lCount.length;
         length = Math.pow(10, length);
-        fNumber = fNumber * length;
-        lNumber = lNumber * length;
+        fNumber = Math.round(fNumber * length);
+        lNumber = Math.round(lNumber * length);
         switch(operation){
-            case "+":                
+            case "+":
                 result = (fNumber + lNumber)/length;
                 break;
             case "-":
@@ -516,10 +514,27 @@ function init(){
                 displayTrunk = displayTrunk.substr(0, displayTrunk.length-1);
             };
 
-            calc += String(char);
-            displayTrunk += String(char);
-            historyTrunk += String(char);
-            lastchar.type = "Number";
+            if(calc == "0"){
+                if(char != "0"){
+                    if(char != "."){
+                        calc = String(char);
+                        displayTrunk = String(char);
+                        historyTrunk = String(char);
+                        lastchar.type = "Number";
+                    } else{
+                        calc += String(char);
+                        displayTrunk += String(char);
+                        historyTrunk += String(char);
+                        lastchar.type = "Number";
+                    }
+                }
+            } else {
+                char = (char == ".")?((displayTrunk.indexOf(".", 0) != -1)?"":"."):char;
+                calc += String(char);
+                displayTrunk += String(char);
+                historyTrunk += String(char);
+                lastchar.type = "Number";
+            }
         }
         // char is an operator
         else {
