@@ -158,8 +158,8 @@ function start(){
                     
                     $("<div class='close_cont'>").appendTo(container);
                     container.find(".imgs_cont").each(function(){
-                        $("<button class='del_category'>-</button>").appendTo($(this));
-                        $("<button class='add_category'>+</button>").appendTo($(this));
+                        $("<button class='del_category'></button>").appendTo($(this));
+                        $("<button class='add_category'></button>").appendTo($(this));
                         $(this).attr("ondragenter", "return false;")
                         .attr("ondragleave", "$(this).css(\"background-color\",\"#E6F6FF\"); return false;")
                         .attr("ondragover", "$(this).css(\"background-color\",\"#C3E9FF\"); return false;")
@@ -556,8 +556,8 @@ function addCategory(obj){
     $("<input type='hidden' name='count' value=''/>").appendTo(imgs_container); 
     var tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
     $("<input type='text' class='cat_desc' value='" + sankoreLang.enter + "'>").appendTo(tmp_div);  
-    $("<button class='del_category'>-</button>").appendTo(imgs_container);
-    $("<button class='add_category'>+</button>").appendTo(imgs_container);
+    $("<button class='del_category'></button>").appendTo(imgs_container);
+    $("<button class='add_category'></button>").appendTo(imgs_container);
     imgs_container.attr("ondragenter", "return false;")
     .attr("ondragleave", "$(this).css(\"background-color\",\"\"); return false;")
     .attr("ondragover", "$(this).css(\"background-color\",\"\"); return false;")
@@ -577,8 +577,8 @@ function addContainer(){
     $("<input type='hidden' name='count' value=''/>").appendTo(imgs_container); 
     var tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
     $("<input type='text' class='cat_desc' value='" + sankoreLang.enter + "'/>").appendTo(tmp_div);    
-    $("<button class='del_category'>-</button>").appendTo(imgs_container);
-    $("<button class='add_category'>+</button>").appendTo(imgs_container);
+    $("<button class='del_category'></button>").appendTo(imgs_container);
+    $("<button class='add_category'></button>").appendTo(imgs_container);
     imgs_container.attr("ondragenter", "return false;")
     .attr("ondragleave", "$(this).css(\"background-color\",\"\"); return false;")
     .attr("ondragover", "$(this).css(\"background-color\",\"\"); return false;")
