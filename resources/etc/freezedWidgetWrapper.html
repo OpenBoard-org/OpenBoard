@@ -9,9 +9,19 @@
                 width: 100%;
             }
 
-            div{
+            #freezed{
                 text-align: center;
-                border: 5px #ccc outset;
+                border: 5px solid #ccc;
+                border-radius: 80px;
+                box-shadow: inset 0 0 30px rgba(66,66,66,0.5);
+            }
+            
+            .loading{
+                color: #999;
+                font-weight: bold;
+                font-size: large;
+                margin-top: 5px;
+                margin-left: 5px;
             }
         </style>
         <script type="text/javascript">
@@ -42,6 +52,6 @@
         </script>
     </head>
     <body>
-        <div id="freezed">Widget freezed.</div>
+        <div id="freezed"><img src="img/loading.gif"/><div class="loading">Loading ...</div></div>
     </body>
 </html>
