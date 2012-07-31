@@ -94,6 +94,7 @@ body{
     border-bottom-left-radius: 10px;
     padding-left: 10px; 
     display: block;
+    word-break: break-all;
 }
 
 .close_cont{

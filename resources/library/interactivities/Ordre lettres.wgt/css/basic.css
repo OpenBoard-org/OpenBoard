@@ -172,6 +172,7 @@ body{
     overflow-x: hidden;
     float: right;
     margin-left: 20px;
+    word-break: break-all;
 }
 
 .play, .stop{
