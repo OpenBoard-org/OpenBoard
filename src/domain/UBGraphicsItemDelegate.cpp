@@ -387,14 +387,19 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
             scene->removeItem(button);
 
         scene->removeItem(mFrame);
+
+        /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */ 
+        UBGraphicsWebView *mDelegated_casted = static_cast<UBGraphicsWebView*>(mDelegated);
+        if (mDelegated_casted)
+            mDelegated_casted->setHtml(QString());
         scene->removeItem(mDelegated);
 
         if (canUndo)
         {
-            UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand((UBGraphicsScene*) scene, mDelegated, 0);
+            UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand(scene, mDelegated, 0);
             UBApplication::undoStack->push(uc);
         }
-    }
+    }   
 }
 
 
