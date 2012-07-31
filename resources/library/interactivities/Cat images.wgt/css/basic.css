@@ -150,16 +150,16 @@ body{
     height: 30px;
     float: right;
     cursor: pointer;
-    background-color: white;
+    background-color: transparent;
     border: none;
 }
 
 .del_category{
-
+    background-image: url(../img/minus.png);
 }
 
 .add_category{
-
+    background-image: url(../img/plus.png);
 }
 
 .cat_desc{
