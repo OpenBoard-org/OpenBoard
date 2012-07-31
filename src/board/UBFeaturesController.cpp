@@ -99,11 +99,16 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     mUserAnimationDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userAnimationDirectory());
 
     mLibPicturesDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationImageLibraryDirectory());
+    mLibAudiosDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationAudiosLibraryDirectory());
+    mLibVideosDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationVideosLibraryDirectory());
+    mLibAnimationsDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationAnimationsLibraryDirectory());
     mLibInteractiveDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationInteractivesDirectory());
     mLibApplicationsDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationApplicationsLibraryDirectory());
     mLibShapesDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->applicationShapeLibraryDirectory());
     mLibSearchDirectoryPath =QUrl::fromLocalFile(UBSettings::settings()->userSearchDirectory());
     trashDirectoryPath = QUrl::fromLocalFile(UBSettings::userTrashDirPath());
+
+
 
     rootElement = UBFeature(QString(), QPixmap( ":images/libpalette/home.png" ), "root", QUrl());
     audiosElement = UBFeature( rootPath, QPixmap(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath, FEATURE_CATEGORY);
