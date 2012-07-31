@@ -38,7 +38,7 @@ REM is correct. This is important because installer
 REM pick up dll from this directory
 IF NOT EXIST "%QT_DIR%\lib\QtCore4.dll" GOTO EXIT_WITH_ERROR
 
-REM rmdir /S /Q %BUILD_DIR%
+rmdir /S /Q %BUILD_DIR%
 
 set EDITION=MNEMIS_EDITION
 
