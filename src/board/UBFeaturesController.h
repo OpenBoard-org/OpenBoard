@@ -33,7 +33,8 @@ enum UBFeatureElementType
     FEATURE_ITEM,
 	FEATURE_TRASH,
 	FEATURE_FAVORITE,
-	FEATURE_SEARCH
+    FEATURE_SEARCH,
+    FEATURE_INVALID
 };
 
 class UBFeature
@@ -105,6 +106,7 @@ public:
 
 	UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
 	UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
+    void moveExternalData(const QUrl &url, const UBFeature &destination);
 
     void rescanModel();
     void siftElements(const QString &pSiftValue);
@@ -120,13 +122,15 @@ public:
     void addNewFolder(const QString &name);
     void addToFavorite( const QUrl &path );
     void removeFromFavorite(const QUrl &path, bool deleteManualy = false);
-    UBFeature importImage( const QImage &image, const UBFeature &destination );
+    void importImage(const QImage &image, const QString &fileName = QString());
+    void importImage( const QImage &image, const UBFeature &destination, const QString &fileName = QString() );
 
     void fileSystemScan(const QUrl &currPath, const QString & currVirtualPath);
+    static UBFeatureElementType fileTypeFromUrl( const QString &path );
 
 
 	static QString fileNameFromUrl( const QUrl &url );
-	static QPixmap thumbnailForFile( const QString &path );
+    static QPixmap getIcon( const QString &path, UBFeatureElementType pFType );
 	static bool isDeletable( const QUrl &url );
     static char featureTypeSplitter() {return ':';}
 
@@ -153,7 +157,7 @@ private:
 	void loadFavoriteList();
 	void saveFavoriteList();
 
-	static UBFeatureElementType fileTypeFromUrl( const QString &path );
+
 
     QList <UBFeature> *featuresList;
 
@@ -204,7 +208,7 @@ private:
 
 public:
     UBFeature trashElement;
-    UBFeature getParentFeatureForUrl( const QUrl &url );
+    UBFeature getDestinationFeatureForUrl( const QUrl &url );
 
 };
 
