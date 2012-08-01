@@ -60,7 +60,7 @@ body{
 .sub_cont{
     width: 100%;
     padding: 0;
-    margin: 20px 0 0 0;
+    margin: 20px 0 5px 0;
     min-height: 60px;
 }
 
@@ -93,6 +93,7 @@ body{
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     padding-left: 10px;  
+    word-break: break-all;
 }
 
 .close_cont{

@@ -149,12 +149,10 @@ body{
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-size: small;
     border: 3px solid #ccc;
-    -webkit-border-radius: 5px;
     border-radius: 5px;
-    -moz-box-shadow: #dadada -1px 0 4px;
-    -webkit-box-shadow: #dadada -1px 0 4px;
     box-shadow: #dadada -1px 0 4px;
     color: white;
+    word-break: break-all;
 }
 
 .qstContentDisplay{
@@ -169,6 +167,7 @@ body{
     border: 1px solid #DFDFDE;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    word-break: break-all;
 }
 
 .ansDiv{
@@ -222,12 +221,10 @@ body{
     overflow-x: hidden;
     float: left;
     border: 3px solid #ccc;
-    -webkit-border-radius: 5px;
     border-radius: 5px;
-    -moz-box-shadow: #dadada -1px 0 4px;
-    -webkit-box-shadow: #dadada -1px 0 4px;
     box-shadow: #dadada -1px 0 4px;
     color: white;
+    word-break: break-all;
 }
 
 .ansContentDisplay{
@@ -244,6 +241,7 @@ body{
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;   
     color: white;
+    word-break: break-all;
 }
 
 .ansDelete{
