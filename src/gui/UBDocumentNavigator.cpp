@@ -161,6 +161,7 @@ void UBDocumentNavigator::refreshScene()
         int rowIndex = i / mNbColumns;
 		item.Place(rowIndex, columnIndex, mThumbnailWidth, thumbnailHeight);
     }
+    scene()->setSceneRect(scene()->itemsBoundingRect());
 }
 
 /**

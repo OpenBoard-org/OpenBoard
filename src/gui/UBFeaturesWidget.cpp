@@ -3,7 +3,6 @@
 #include "UBFeaturesWidget.h"
 #include "domain/UBAbstractWidget.h"
 #include "gui/UBThumbnailWidget.h"
-#include "gui/UBLibraryWidget.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
@@ -18,7 +17,10 @@ const int FeatureListBorderOffset = 10;
 const char featureTypeSplitter = ':';
 static const QString mimeSankoreFeatureTypes = "Sankore/featureTypes";
 
-UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent), imageGatherer(NULL)
+UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
+    : UBDockPaletteWidget(parent)
+    , imageGatherer(NULL)
+    , mkFolderDlg(NULL)
 
 {
     setObjectName(name);
@@ -108,6 +110,9 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
         return;
     }
 
+    //Calling to reset the model for listView. Maybe separate function needed
+    controller->searchStarted("", mNavigator->listView());
+
     QString objName = sender()->objectName();
 
     if (objName.isEmpty()) {
@@ -159,10 +164,22 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 
 void UBFeaturesWidget::createNewFolder()
 {
-	UBNewFolderDlg dlg;
-    if(QDialog::Accepted == dlg.exec())  {
-        controller->addNewFolder(dlg.folderName());
+    if (!mkFolderDlg)
+    {
+        mkFolderDlg = new UBNewFolderDlg(this);
+        connect (mkFolderDlg, SIGNAL(accepted()), this, SLOT(addFolder()));
     }
+
+    mkFolderDlg->setWindowFlags(Qt::WindowStaysOnTopHint);
+    mkFolderDlg->resize(this->size().width()-20 ,80);
+    mkFolderDlg->move(5,this->size().height()-200);
+    mkFolderDlg->show();
+}
+
+void UBFeaturesWidget::addFolder()
+{
+    if (mkFolderDlg)
+        controller->addNewFolder(mkFolderDlg->folderName());
 }
 
 void UBFeaturesWidget::deleteElements( const UBFeaturesMimeData * mimeData )
@@ -334,6 +351,16 @@ void UBFeaturesWidget::removeElementsFromFavorite()
     controller->refreshModels();
 }
 
+void UBFeaturesWidget::resizeEvent(QResizeEvent *event)
+{
+    UBDockPaletteWidget::resizeEvent(event);
+    if (mkFolderDlg)
+    {    
+        mkFolderDlg->resize(this->size().width()-20 ,80);
+        mkFolderDlg->move(5,this->size().height()-200);
+    }
+}
+
 void UBFeaturesWidget::switchToListView()
 {
 	stackedWidget->setCurrentIndex(ID_LISTVIEW);
@@ -357,6 +384,10 @@ QStringList UBFeaturesMimeData::formats() const
     return QMimeData::formats();
 }
 
+void UBFeaturesWidget::importImage(const QImage &image, const QString &fileName)
+{
+    controller->importImage(image, fileName);
+}
 
 UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name ) 
 : QListView(parent)
@@ -862,6 +893,8 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
     Q_UNUSED(row)
 
     const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(mimeData);
+    UBFeaturesController *curController = qobject_cast<UBFeaturesController *>(QObject::parent());
+
     bool dataFromSameModel = false;
 
     if (fMimeData)
@@ -876,12 +909,12 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
 
     UBFeature parentFeature;
     if (!parent.isValid()) {
-		parentFeature = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->getCurrentElement();
+        parentFeature = curController->getCurrentElement();
     } else {
         parentFeature = parent.data( Qt::UserRole + 1).value<UBFeature>();
     }
 
-    if (mimeData->hasUrls()) {
+    if (dataFromSameModel) {
         QList<UBFeature> featList = fMimeData->features();
         for (int i = 0; i < featList.count(); i++) {
             UBFeature sourceElement;
@@ -890,10 +923,16 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
                 moveData(sourceElement, parentFeature, Qt::MoveAction);
             }
         }
-    } else if ( mimeData->hasImage() ) {
+    } else if (mimeData->hasUrls()) {
+        QList<QUrl> urlList = mimeData->urls();
+        foreach (QUrl curUrl, urlList) {
+            qDebug() << "URl catched is " << curUrl.toLocalFile();
+            curController->moveExternalData(curUrl, parentFeature);
+        }
+    } else if (mimeData->hasImage()) {
         QImage image = qvariant_cast<QImage>( mimeData->imageData() );
-        UBFeature element = dynamic_cast<UBFeaturesWidget *>(QObject::parent())->getFeaturesController()->importImage( image, parentFeature );
-        addItem( element );
+        curController->importImage( image, parentFeature );
+
     }
 
 	return true;
@@ -1019,7 +1058,7 @@ void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destina
                         curFeature.setFullPath(newPath);
                     }
                 }
-                // processing copy or move action for real FS
+                // processing copy or move action for virtual FS
                 if (action == Qt::CopyAction) {
                     copyFeature.setFullVirtualPath(newVirtualPath);
                 } else {
