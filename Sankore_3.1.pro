@@ -348,7 +348,6 @@ macx {
 }
 
 linux-g++* {
-    message(LINUX)
     CONFIG += link_prl
     LIBS += -lcrypto
     LIBS += -lX11

@@ -29,9 +29,23 @@ do
 done
 
 
+NOTIFY_CMD=`which notify-send`
+
 notifyError(){
-    notify-send -t 0 "Error occoured" "An error occours during the sankore build:\n\t$1" -i /usr/share/icons/oxygen/64x64/status/dialog-error.png
+    if [ -e "$NOTIFY_CMD" ]; then
+        $NOTIFY_CMD -t 0 -i "/usr/share/icons/oxygen/64x64/status/dialog-error.png" "$1"
+    else
+        printf "\033[31merror:\033[0m $1\n"
+    fi
     exit 1
+}
+
+notifyProgress(){
+    if [ -e "$NOTIFY_CMD" ]; then
+        $NOTIFY_CMD "$1" "$2"
+    else
+        printf "\033[32m--> Achieved task:\033[0m $1:\n\t$2\n"
+    fi
 }
 
 alertIfPreviousVersionInstalled(){
@@ -67,7 +81,7 @@ if [ ! -e "$PLUGINS_PATH" ]; then
     notifyError "plugins path not found at $PLUGINS_PATH"
 fi
 
-notify-send "Open-Sankore" "Building Open-Sankore ..."
+notifyProgress "Open-Sankore" "Building Open-Sankore ..."
 
 if [ "$ARCHITECTURE" == "x86_64" ]; then
     $QMAKE_PATH Sankore_3.1.pro -spec linux-g++-64
@@ -77,14 +91,20 @@ fi
 
 make -j 4 release-install
 
-notify-send "Git Hub" "Make a tag of the delivered version"
+if [ ! -e "build/linux/release/product/Open-Sankore" ]; then
+    notifyError "Open-Sankore build failed"
+fi
+
+notifyProgress "Git Hub" "Make a tag of the delivered version"
+
 VERSION=`cat build/linux/release/version`
+
 if [ ! -f build/linux/release/version ]; then
     notifyError "version not found"
 else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
-        echo creating a tag with the version $VERSION
+        notifyProgress creating a tag with the version $VERSION
 	if [ $MAKE_TAG == true ]; then
             git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
             git push origin --tags
@@ -97,7 +117,7 @@ chmod +x build/linux/release/product/run.sh
 
 cp -R resources/linux/qtlinux/* build/linux/release/product/
 
-notify-send "QT" "Coping plugins and library ..."
+notifyProgress "QT" "Coping plugins and library ..."
 cp -R $PLUGINS_PATH build/linux/release/product/
 
 #copying custom qt library
@@ -136,7 +156,7 @@ else
     cp "$QT_LIBRARY_SOURCE_PATH/libQtWebKit.so.4.9.0" "$QT_LIBRARY_DEST_PATH/"
 fi
 
-notify-send "QT" "Internalization ..."
+notifyProgress "QT" "Internalization ..."
 if [ ! -e $GUI_TRANSLATIONS_DIRECTORY_PATH ]; then
     notifyError "gui translations pro file not found at: $GUI_TRANSLATIONS_DIRECTORY_PATH"
 else
@@ -162,7 +182,7 @@ cd build/linux/release/product
 find . -name .svn -exec rm -rf {} \; 2> /dev/null
 
 cd -
-notify-send "Building Sankore" "Finished to build Sankore building the package"
+notifyProgress "Building Sankore" "Finished to build Sankore building the package"
 
 
 BASE_WORKING_DIR="packageBuildDir"
@@ -288,12 +308,6 @@ for l in `objdump -p $SANKORE_PACKAGE_DIRECTORY/Open-Sankore | grep NEEDED | awk
     done; 
 done; 
 
-#additional dependencies
-#tab[$count]="gtk2-engines-pixbuf"
-#((count++))
-#tab[$count]="ttf-mscorefonts-installer"
-#((count++))
-
 for ((i=0;i<${#tab[@]};i++)); do
     if [ $i -ne "0" ]; then
         echo -n ",    " >> "$CONTROL_FILE"
@@ -328,7 +342,7 @@ DEBIAN_PACKAGE_NAME="Open-Sankore_${VERSION}_$ARCHITECTURE.deb"
 
 fakeroot  chown -R root:root $BASE_WORKING_DIR 
 dpkg -b "$BASE_WORKING_DIR" "install/linux/$DEBIAN_PACKAGE_NAME"
-notify-send "Open-Sankore" "Package built"
+notifyProgress "Open-Sankore" "Package built"
 
 #clean up mess
 fakeroot rm -rf $BASE_WORKING_DIR
@@ -341,6 +355,6 @@ if [ $CREATE_DIENA_DISTRIBUTION_ZIP == true ]; then
     `which zip` -1 --junk-paths ${ZIP_NAME} ${DEBIAN_PACKAGE_NAME} ../../ReleaseNotes.pdf ../../JournalDesModifications.pdf
     cd -
     
-    notify-send "Open-Sankore" "Build Diena zip file for distribution"
+    notifyProgress "Open-Sankore" "Build Diena zip file for distribution"
 fi
 
