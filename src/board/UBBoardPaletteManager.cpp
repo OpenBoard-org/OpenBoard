@@ -884,6 +884,10 @@ void UBBoardPaletteManager::addItemToLibrary()
 
 #ifdef USE_WEB_WIDGET
         mpLibWidget->libNavigator()->libraryWidget()->libraryController()->importImageOnLibrary(image);
+#else
+        QDateTime now = QDateTime::currentDateTime();
+        QString capturedName  = tr("CapturedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss") + ".png";
+        mpFeaturesWidget->importImage(image, capturedName);
 #endif
 
     }

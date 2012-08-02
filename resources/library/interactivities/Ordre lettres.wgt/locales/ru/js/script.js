@@ -332,7 +332,7 @@ function showExample(){
     var audio_block = $("<div class='audio_block'>").appendTo(text);
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
-    var source = $("<source/>").attr("src", "../../objects/beep.wav");
+    var source = $("<source/>").attr("src", "objects/example.mp3");
     var audio = $("<audio>").appendTo(audio_block);
     audio.append(source);
     $("<input type='hidden'/>").appendTo(audio_block);
