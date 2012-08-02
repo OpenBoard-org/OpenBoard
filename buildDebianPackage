@@ -2,7 +2,7 @@
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
+# the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -23,6 +23,7 @@ initializeVariables()
 {
   MAKE_TAG=true
   CREATE_DIENA_DISTRIBUTION_ZIP=false
+  STANDARD_QT_USED=false
 
   PRODUCT_PATH="build/linux/release/product"
   QT_PATH="/usr/local/Trolltech/Qt-4.8.0"
@@ -96,13 +97,27 @@ copyQtLibrary(){
     fi
 }
 
+
+buildWithStandardQt(){
+  STANDARD_QT=`which qmake-qt4`
+  if [ $? == "0" ]; then
+    QT_VERSION=`$STANDARD_QT --version | grep -i "Using Qt version" | sed -e "s/Using Qt version \(.*\) in.*/\1/"`
+    if [ `echo $QT_VERSION | sed -e "s/\.//g"` -gt 480 ]; then
+        notifyProgress "Standard QT" "A recent enough qmake has been found. Using this one instead of custom one"
+        STANDARD_QT_USED=true
+        QMAKE_PATH=$STANDARD_QT
+        LRELEASES=`which lrelease`
+        QT_PATH="/usr/lib/`arch`-linux-gnu"
+        PLUGINS_PATH="$QT_PATH/qt4/plugins"
+    fi
+  fi
+}
+
 #**********************
 #     script
 #**********************
-
-
 initializeVariables
-
+buildWithStandardQt
 
 for var in "$@"
 do
@@ -174,18 +189,20 @@ cp -R resources/linux/qtlinux/* $PRODUCT_PATH/
 notifyProgress "QT" "Coping plugins and library ..."
 cp -R $PLUGINS_PATH $PRODUCT_PATH/
 
+if [ $STANDARD_QT_USED == false ]; then 
 #copying custom qt library
-mkdir -p $QT_LIBRARY_DEST_PATH
-copyQtLibrary libQtDBus
-copyQtLibrary libQtScript
-copyQtLibrary libQtSvg
-copyQtLibrary libQtXmlPatterns
-copyQtLibrary libQtNetwork
-copyQtLibrary libQtXml
-copyQtLibrary libQtGui
-copyQtLibrary libQtCore
-copyQtLibrary libphonon
-copyQtLibrary libQtWebKit
+  mkdir -p $QT_LIBRARY_DEST_PATH
+  copyQtLibrary libQtDBus
+  copyQtLibrary libQtScript
+  copyQtLibrary libQtSvg
+  copyQtLibrary libQtXmlPatterns
+  copyQtLibrary libQtNetwork
+  copyQtLibrary libQtXml
+  copyQtLibrary libQtGui
+  copyQtLibrary libQtCore
+  copyQtLibrary libphonon
+  copyQtLibrary libQtWebKit
+fi
 
 notifyProgress "QT" "Internalization"
 if [ ! -e $PRODUCT_PATH/i18n ]; then
