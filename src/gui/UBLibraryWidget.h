@@ -119,7 +119,6 @@ private:
     QPushButton* mpAddButton;
     QPushButton* mpCancelButton;
     QVBoxLayout* mpLayout;
-    QHBoxLayout* mpHLayout;
 };
 
 #endif // UBLIBRARYWIDGET_H

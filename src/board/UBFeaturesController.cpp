@@ -424,6 +424,11 @@ void UBFeaturesController::addNewFolder(const QString &name)
 {
     QString path = currentElement.getFullPath().toLocalFile() + "/" + name;
 
+    if ("/root" == currentElement.getFullVirtualPath())
+    {
+        return;
+    }
+
     if(!QFileInfo(path).exists()) {
         QDir().mkpath(path);
 	}

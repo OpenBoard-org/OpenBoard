@@ -21,6 +21,7 @@
 #include "api/UBWidgetUniboardAPI.h"
 #include "UBFeaturesActionBar.h"
 #include "UBRubberBand.h"
+#include "gui/UBLibraryWidget.h"
 
 #define THUMBNAIL_WIDTH 400
 #define ID_LISTVIEW 0
@@ -71,6 +72,7 @@ private slots:
     void currentSelected( const QModelIndex & );
     void searchStarted( const QString & );
     void createNewFolder();
+    void addFolder();
     void deleteElements( const UBFeaturesMimeData * );
     void addToFavorite( const UBFeaturesMimeData  *);
     void removeFromFavorite( const UBFeaturesMimeData * );
@@ -82,6 +84,7 @@ private slots:
     void rescanModel();
 
 private:
+    void resizeEvent(QResizeEvent *event);
     void switchToListView();
     void switchToProperties();
     void switchToWebView();
@@ -97,6 +100,7 @@ private:
     QStackedWidget *stackedWidget;
     int currentStackedWidget;
     UBDownloadHttpFile* imageGatherer;
+    UBNewFolderDlg *mkFolderDlg;
 
 };
 
