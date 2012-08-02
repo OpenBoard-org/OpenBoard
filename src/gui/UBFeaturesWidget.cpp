@@ -3,7 +3,6 @@
 #include "UBFeaturesWidget.h"
 #include "domain/UBAbstractWidget.h"
 #include "gui/UBThumbnailWidget.h"
-#include "gui/UBLibraryWidget.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
@@ -18,7 +17,10 @@ const int FeatureListBorderOffset = 10;
 const char featureTypeSplitter = ':';
 static const QString mimeSankoreFeatureTypes = "Sankore/featureTypes";
 
-UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name):UBDockPaletteWidget(parent), imageGatherer(NULL)
+UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
+    : UBDockPaletteWidget(parent)
+    , imageGatherer(NULL)
+    , mkFolderDlg(NULL)
 
 {
     setObjectName(name);
@@ -162,10 +164,22 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 
 void UBFeaturesWidget::createNewFolder()
 {
-	UBNewFolderDlg dlg;
-    if(QDialog::Accepted == dlg.exec())  {
-        controller->addNewFolder(dlg.folderName());
+    if (!mkFolderDlg)
+    {
+        mkFolderDlg = new UBNewFolderDlg(this);
+        connect (mkFolderDlg, SIGNAL(accepted()), this, SLOT(addFolder()));
     }
+
+    mkFolderDlg->setWindowFlags(Qt::WindowStaysOnTopHint);
+    mkFolderDlg->resize(this->size().width()-20 ,80);
+    mkFolderDlg->move(5,this->size().height()-200);
+    mkFolderDlg->show();
+}
+
+void UBFeaturesWidget::addFolder()
+{
+    if (mkFolderDlg)
+        controller->addNewFolder(mkFolderDlg->folderName());
 }
 
 void UBFeaturesWidget::deleteElements( const UBFeaturesMimeData * mimeData )
@@ -335,6 +349,16 @@ void UBFeaturesWidget::removeElementsFromFavorite()
     }
 
     controller->refreshModels();
+}
+
+void UBFeaturesWidget::resizeEvent(QResizeEvent *event)
+{
+    UBDockPaletteWidget::resizeEvent(event);
+    if (mkFolderDlg)
+    {    
+        mkFolderDlg->resize(this->size().width()-20 ,80);
+        mkFolderDlg->move(5,this->size().height()-200);
+    }
 }
 
 void UBFeaturesWidget::switchToListView()

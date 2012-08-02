@@ -547,7 +547,6 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
     , mpAddButton(NULL)
     , mpCancelButton(NULL)
     , mpLayout(NULL)
-    , mpHLayout(NULL)
 {
     setObjectName(name);
     setWindowTitle(tr("Add new folder"));
@@ -562,15 +561,14 @@ UBNewFolderDlg::UBNewFolderDlg(QWidget *parent, const char *name):QDialog(parent
 
     mpButtons = new QDialogButtonBox(Qt::Horizontal, this);
     mpLayout = new QVBoxLayout(this);
-    mpHLayout = new QHBoxLayout(0);
     setLayout(mpLayout);
-    mpLayout->addLayout(mpHLayout, 0);
-    mpHLayout->addWidget(mpLabel, 0);
-    mpHLayout->addWidget(mpLineEdit, 1);
+
+    mpLayout->addWidget(mpLabel, 1);
+    mpLayout->addWidget(mpLineEdit);
 
     mpButtons->addButton(mpAddButton,QDialogButtonBox::ActionRole);
     mpButtons->addButton(mpCancelButton,QDialogButtonBox::ActionRole);
-    mpLayout->addWidget(mpButtons);
+    mpLayout->addWidget(mpButtons, 1,Qt::AlignJustify);
 
     connect(mpAddButton, SIGNAL(clicked()), this, SLOT(accept()));
     connect(mpCancelButton, SIGNAL(clicked()), this, SLOT(reject()));
@@ -612,11 +610,7 @@ UBNewFolderDlg::~UBNewFolderDlg()
         delete mpLabel;
         mpLabel = NULL;
     }
-    if(NULL != mpHLayout)
-    {
-        delete mpHLayout;
-        mpHLayout = NULL;
-    }
+
     if(NULL != mpLayout)
     {
         delete mpLayout;
