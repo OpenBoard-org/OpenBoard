@@ -55,6 +55,7 @@ class UBGraphicsWebView: public QGraphicsWebView, public UBItem, public UBResiza
         virtual void wheelEvent(QGraphicsSceneWheelEvent *event);
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+        virtual bool event(QEvent *event);
 
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);

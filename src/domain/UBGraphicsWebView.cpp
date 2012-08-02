@@ -51,10 +51,9 @@ QVariant UBGraphicsWebView::itemChange(GraphicsItemChange change, const QVariant
     if ((change == QGraphicsItem::ItemSelectedHasChanged) &&  scene()) {
         if (isSelected())
             scene()->setActiveWindow(this);
-        else {
+        else
             if(scene()->activeWindow() == this)
                 scene()->setActiveWindow(0);
-        }
     }
 
     QVariant newValue = mDelegate->itemChange(change, value);
@@ -168,4 +167,12 @@ void UBGraphicsWebView::remove()
 {
     if (mDelegate)
         mDelegate->remove(true);
+}
+
+bool UBGraphicsWebView::event(QEvent *event)
+{
+    if (event->type() == QEvent::ShortcutOverride)
+        event->accept();
+
+    return QGraphicsWebView::event(event);
 }
