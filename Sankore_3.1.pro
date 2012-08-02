@@ -11,6 +11,16 @@ linux-g++-64 {
     CONFIG += link_prl
 }
 
+
+linux-g++-32 {
+    CONFIG += link_prl
+}
+
+
+linux-g++ {
+    CONFIG += link_prl
+}
+
 VERSION_MAJ = 2
 VERSION_MIN = 00 
 VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
@@ -352,6 +362,7 @@ macx {
 
 linux-g++ {
    LIBS += -lcrypto
+   LIBS += -lX11
    QMAKE_CFLAGS += -fopenmp
    QMAKE_CXXFLAGS += -fopenmp
    QMAKE_LFLAGS += -fopenmp
@@ -367,6 +378,7 @@ linux-g++ {
 
 linux-g++-32 {
    LIBS += -lcrypto
+   LIBS += -lX11
    QMAKE_CFLAGS += -fopenmp
    QMAKE_CXXFLAGS += -fopenmp
    QMAKE_LFLAGS += -fopenmp
