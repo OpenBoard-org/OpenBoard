@@ -7,19 +7,6 @@ CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
 
-linux-g++-64 {
-    CONFIG += link_prl
-}
-
-
-linux-g++-32 {
-    CONFIG += link_prl
-}
-
-
-linux-g++ {
-    CONFIG += link_prl
-}
 
 VERSION_MAJ = 2
 VERSION_MIN = 00 
@@ -46,7 +33,6 @@ QT += script
 QT += xmlpatterns
 
 INCLUDEPATH += src
-INCLUDEPATH += plugins/cffadaptor/src
 
 include($$THIRD_PARTY_PATH/libs.pri)
 include(src/adaptors/adaptors.pri)
@@ -70,6 +56,13 @@ include(src/customWidgets/customWidgets.pri)
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
+
+#plugins
+include(plugins/plugins.pri)
+INCLUDEPATH += plugins/cffadaptor/src
+
+
+#ThirdParty
 DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
 INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
 include($$THIRD_PARTY_PATH/quazip/quazip.pri)
@@ -103,9 +96,7 @@ BUILD_DIR = build
 
 macx:BUILD_DIR = $$BUILD_DIR/macx
 win32:BUILD_DIR = $$BUILD_DIR/win32
-linux-g++:BUILD_DIR = $$BUILD_DIR/linux
-linux-g++-32:BUILD_DIR = $$BUILD_DIR/linux
-linux-g++-64:BUILD_DIR = $$BUILD_DIR/linux
+linux-g++*:BUILD_DIR = $$BUILD_DIR/linux
 
 CONFIG(debug, debug|release):BUILD_DIR = $$BUILD_DIR/debug
 CONFIG(release, debug|release) {
@@ -119,16 +110,12 @@ MOC_DIR = $$BUILD_DIR/moc
 RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
-#LIBS += "-Lplugins/cffadaptor/$$BUILD_DIR/lib" "-lCFF_Adaptor"
-
 win32 {
    RC_FILE = resources/win/sankore.rc
    CONFIG += qaxcontainer
    exists(console):CONFIG += console
-   QMAKE_CXXFLAGS += \
-       /MP
-   QMAKE_CXXFLAGS_RELEASE += /Od \
-       /Zi
+   QMAKE_CXXFLAGS += /MP
+   QMAKE_CXXFLAGS_RELEASE += /Od /Zi
    QMAKE_LFLAGS_RELEASE += /DEBUG
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
@@ -360,39 +347,8 @@ macx {
    system(printf "%02x%02x%02x%02x" `printf $$VERSION_RC | cut -d ',' -f 1` `printf $$VERSION_RC | cut -d ',' -f 2` `printf $$VERSION_RC | cut -d ',' -f 3` `printf $$VERSION_RC | cut -d ',' -f 4` | xxd -r -p > "$$VERSION_RC_PATH")
 }
 
-linux-g++ {
-   LIBS += -lcrypto
-   LIBS += -lX11
-   QMAKE_CFLAGS += -fopenmp
-   QMAKE_CXXFLAGS += -fopenmp
-   QMAKE_LFLAGS += -fopenmp
-   UB_LIBRARY.path = $$DESTDIR
-   UB_I18N.path = $$DESTDIR/i18n
-   UB_ETC.path = $$DESTDIR
-   UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
-   system(mkdir -p $$BUILD_DIR)
-   system(echo "$$VERSION" > $$BUILD_DIR/version)
-   system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
-   system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
-}
-
-linux-g++-32 {
-   LIBS += -lcrypto
-   LIBS += -lX11
-   QMAKE_CFLAGS += -fopenmp
-   QMAKE_CXXFLAGS += -fopenmp
-   QMAKE_LFLAGS += -fopenmp
-   UB_LIBRARY.path = $$DESTDIR
-   UB_I18N.path = $$DESTDIR/i18n
-   UB_ETC.path = $$DESTDIR
-   UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
-   system(mkdir -p $$BUILD_DIR)
-   system(echo "$$VERSION" > $$BUILD_DIR/version)
-   system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
-   system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
-}
-
-linux-g++-64 { 
+linux-g++* {
+    CONFIG += link_prl
     LIBS += -lcrypto
     LIBS += -lX11
     QMAKE_CFLAGS += -fopenmp
@@ -441,13 +397,4 @@ INSTALLS = UB_ETC \
    UB_I18N \
    UB_LIBRARY \
    UB_THIRDPARTY_INTERACTIVE
-
-HEADERS += \
-    plugins/cffadaptor/src/UBGlobals.h \
-    plugins/cffadaptor/src/UBCFFConstants.h \
-    plugins/cffadaptor/src/UBCFFAdaptor.h \
-    plugins/cffadaptor/src/UBCFFAdaptor_global.h
-
-SOURCES += \
-    plugins/cffadaptor/src/UBCFFAdaptor.cpp
 

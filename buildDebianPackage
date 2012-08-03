@@ -2,7 +2,7 @@
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
+# the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -14,24 +14,54 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
-MAKE_TAG=true
-CREATE_DIENA_DISTRIBUTION_ZIP=false
 
+#**********************
+#     functions
+#**********************
 
-for var in "$@"
-do
-   if [ $var == "notag" ]; then
-      MAKE_TAG=false;
-   fi
-   if [ $var == "diena" ]; then
-       CREATE_DIENA_DISTRIBUTION_ZIP=true;
-   fi
-done
+initializeVariables()
+{
+  MAKE_TAG=true
+  CREATE_DIENA_DISTRIBUTION_ZIP=false
+  STANDARD_QT_USED=false
+
+  PRODUCT_PATH="build/linux/release/product"
+  QT_PATH="/usr/local/Trolltech/Qt-4.8.0"
+  PLUGINS_PATH="$QT_PATH/plugins"
+  GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-4.8/translations"
+  QT_LIBRARY_DEST_PATH="$PRODUCT_PATH/qtlib"
+  QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
+  ARCHITECTURE=`uname -m`
+  if [ "$ARCHITECTURE" == "x86_64" ]; then
+      ARCHITECTURE="amd64"
+  fi
+  if [ "$ARCHITECTURE" == "i686" ]; then
+      ARCHITECTURE="i386"
+  fi
+
+  NOTIFY_CMD=`which notify-send`
+  QMAKE_PATH="$QT_PATH/bin/qmake"
+  LRELEASES="$QT_PATH/bin/lrelease"
+  ZIP_PATH=`which zip`
+
+}
 
 
 notifyError(){
-    notify-send -t 0 "Error occoured" "An error occours during the sankore build:\n\t$1" -i /usr/share/icons/oxygen/64x64/status/dialog-error.png
+    if [ -e "$NOTIFY_CMD" ]; then
+        $NOTIFY_CMD -t 0 -i "/usr/share/icons/oxygen/64x64/status/dialog-error.png" "$1"
+    else
+        printf "\033[31merror:\033[0m $1\n"
+    fi
     exit 1
+}
+
+notifyProgress(){
+    if [ -e "$NOTIFY_CMD" ]; then
+        $NOTIFY_CMD "$1" "$2"
+    else
+        printf "\033[32m--> Achieved task:\033[0m $1:\n\t$2\n"
+    fi
 }
 
 alertIfPreviousVersionInstalled(){
@@ -46,30 +76,84 @@ alertIfPreviousVersionInstalled(){
     fi
 }
 
+checkDir(){
+    if [ ! -d "$1" ]; then 
+        notifyError "Directory not found : $1"
+    fi
+}
+
+checkExecutable(){
+    if [ ! -e "$1" ]; then
+        notifyError "$1 command not found"
+    fi
+}
+
+copyQtLibrary(){
+    if ls "$QT_LIBRARY_SOURCE_PATH/$1.so" &> /dev/null; then
+        cp $QT_LIBRARY_SOURCE_PATH/$1.so.? "$QT_LIBRARY_DEST_PATH/"
+        cp $QT_LIBRARY_SOURCE_PATH/$1.so.?.?.? "$QT_LIBRARY_DEST_PATH/"
+    else
+        notifyError "$1 library not found in path: $QT_LIBRARY_SOURCE_PATH"
+    fi
+}
+
+
+buildWithStandardQt(){
+  STANDARD_QT=`which qmake-qt4`
+  if [ $? == "0" ]; then
+    QT_VERSION=`$STANDARD_QT --version | grep -i "Using Qt version" | sed -e "s/Using Qt version \(.*\) in.*/\1/"`
+    if [ `echo $QT_VERSION | sed -e "s/\.//g"` -gt 480 ]; then
+        notifyProgress "Standard QT" "A recent enough qmake has been found. Using this one instead of custom one"
+        STANDARD_QT_USED=true
+        QMAKE_PATH=$STANDARD_QT
+        LRELEASES=`which lrelease`
+        QT_PATH="/usr/lib/`arch`-linux-gnu"
+        PLUGINS_PATH="$QT_PATH/qt4/plugins"
+    fi
+  fi
+}
+
+#**********************
+#     script
+#**********************
+initializeVariables
+buildWithStandardQt
+
+for var in "$@"
+do
+   if [ $var == "notag" ]; then
+      MAKE_TAG=false;
+   fi
+   if [ $var == "diena" ]; then
+       CREATE_DIENA_DISTRIBUTION_ZIP=true;
+   fi
+done
+
+
 alertIfPreviousVersionInstalled
 
+#check of directories and executables
+checkDir $QT_PATH
+checkDir $PLUGINS_PATH
+checkDir $GUI_TRANSLATIONS_DIRECTORY_PATH
 
+checkExecutable $QMAKE_PATH
+checkExecutable $LRELEASES
+checkExecutable $ZIP_PATH
+
+# cleaning the build directory
 rm -rf "build/linux/release"
 rm -rf install
 
-QT_PATH="/usr/local/Trolltech/Qt-4.8.0"
-PLUGINS_PATH="$QT_PATH/plugins"
-QMAKE_PATH="$QT_PATH/bin/qmake"
-LRELEASES="$QT_PATH/bin/lrelease"
-GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-4.8/translations"
-ARCHITECTURE=`uname -m`
+notifyProgress "QT" "Internalization"
+$LRELEASES Sankore_3.1.pro
+cd $GUI_TRANSLATIONS_DIRECTORY_PATH
+$LRELEASES translations.pro
+cd -
 
-if [ ! -e "$QMAKE_PATH" ]; then
-    notifyError "qmake command not found at $QMAKE_PATH"
-fi
+notifyProgress "Open-Sankore" "Building Open-Sankore"
 
-if [ ! -e "$PLUGINS_PATH" ]; then
-    notifyError "plugins path not found at $PLUGINS_PATH"
-fi
-
-notify-send "Open-Sankore" "Building Open-Sankore ..."
-
-if [ "$ARCHITECTURE" == "x86_64" ]; then
+if [ "$ARCHITECTURE" == "amd64" ]; then
     $QMAKE_PATH Sankore_3.1.pro -spec linux-g++-64
 else
     $QMAKE_PATH Sankore_3.1.pro -spec linux-g++
@@ -77,93 +161,65 @@ fi
 
 make -j 4 release-install
 
-notify-send "Git Hub" "Make a tag of the delivered version"
+if [ ! -e "$PRODUCT_PATH/Open-Sankore" ]; then
+    notifyError "Open-Sankore build failed"
+fi
+
+notifyProgress "Git Hub" "Make a tag of the delivered version"
+
 VERSION=`cat build/linux/release/version`
+
 if [ ! -f build/linux/release/version ]; then
     notifyError "version not found"
 else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
-        echo creating a tag with the version $VERSION
-	if [ $MAKE_TAG == true ]; then
+        if [ $MAKE_TAG == true ]; then
             git tag -a "v$VERSION" -m "Generating setup for v$VERSION"
             git push origin --tags
         fi 
     fi
 fi
 
-cp resources/linux/run.sh build/linux/release/product
-chmod +x build/linux/release/product/run.sh
+cp resources/linux/run.sh $PRODUCT_PATH
+chmod a+x $PRODUCT_PATH/run.sh
 
-cp -R resources/linux/qtlinux/* build/linux/release/product/
+cp -R resources/linux/qtlinux/* $PRODUCT_PATH/
 
-notify-send "QT" "Coping plugins and library ..."
-cp -R $PLUGINS_PATH build/linux/release/product/
+notifyProgress "QT" "Coping plugins and library ..."
+cp -R $PLUGINS_PATH $PRODUCT_PATH/
 
+if [ $STANDARD_QT_USED == false ]; then 
 #copying custom qt library
-QT_LIBRARY_DEST_PATH="build/linux/release/product/qtlib"
-mkdir $QT_LIBRARY_DEST_PATH
-QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
-
-copyQtLibrary(){
-    if [ ! -e "$QT_LIBRARY_SOURCE_PATH/$1.so.4.8.0" ]; then
-        notifyError "$1 library not found in path: $QT_LIBRARY_SOURCE_PATH"
-    fi
-    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4" "$QT_LIBRARY_DEST_PATH/"
-    cp "$QT_LIBRARY_SOURCE_PATH/$1.so.4.8.0" "$QT_LIBRARY_DEST_PATH/"
-}
-
-copyQtLibrary libQtDBus
-copyQtLibrary libQtScript
-copyQtLibrary libQtSvg
-copyQtLibrary libQtXmlPatterns
-copyQtLibrary libQtNetwork
-copyQtLibrary libQtXml
-copyQtLibrary libQtGui
-copyQtLibrary libQtCore
-
-if [ ! -e "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4.4.0" ]; then
-    notifyError "phonon library not found in path: $QT_LIBRARY_SOURCE_PATH"
-else
-    cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4" "$QT_LIBRARY_DEST_PATH/"
-    cp "$QT_LIBRARY_SOURCE_PATH/libphonon.so.4.4.0" "$QT_LIBRARY_DEST_PATH/"
+  mkdir -p $QT_LIBRARY_DEST_PATH
+  copyQtLibrary libQtDBus
+  copyQtLibrary libQtScript
+  copyQtLibrary libQtSvg
+  copyQtLibrary libQtXmlPatterns
+  copyQtLibrary libQtNetwork
+  copyQtLibrary libQtXml
+  copyQtLibrary libQtGui
+  copyQtLibrary libQtCore
+  copyQtLibrary libphonon
+  copyQtLibrary libQtWebKit
 fi
 
-if [ ! -e "$QT_LIBRARY_SOURCE_PATH/libQtWebKit.so.4.9.0" ]; then
-    notifyError "webkit library not found in path: $QT_LIBRARY_SOURCE_PATH"
-else
-    cp "$QT_LIBRARY_SOURCE_PATH/libQtWebKit.so.4" "$QT_LIBRARY_DEST_PATH/"
-    cp "$QT_LIBRARY_SOURCE_PATH/libQtWebKit.so.4.9.0" "$QT_LIBRARY_DEST_PATH/"
+notifyProgress "QT" "Internalization"
+if [ ! -e $PRODUCT_PATH/i18n ]; then
+    mkdir $PRODUCT_PATH/i18n
 fi
-
-notify-send "QT" "Internalization ..."
-if [ ! -e $GUI_TRANSLATIONS_DIRECTORY_PATH ]; then
-    notifyError "gui translations pro file not found at: $GUI_TRANSLATIONS_DIRECTORY_PATH"
-else
-    cd $GUI_TRANSLATIONS_DIRECTORY_PATH
-    $LRELEASES translations.pro
-    cd -
-    if [ ! -e build/linux/release/product/i18n ]; then
-        mkdir build/linux/release/product/i18n
-    fi
-    #copying qt gui translation    
-    cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qt_??.qm build/linux/release/product/i18n/
-fi
-
-$LRELEASES Sankore_3.1.pro
-cp resources/i18n/*.qm build/linux/release/product/i18n/
+#copying qt gui translation    
+cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qt_??.qm $PRODUCT_PATH/i18n/
 
 rm -rf install/linux
 mkdir -p install/linux
 
-cd build/linux/release/product
-
 #Removing .svn directories ...
+cd $PRODUCT_PATH
 find . -name .svn -exec rm -rf {} \; 2> /dev/null
-
 cd -
-notify-send "Building Sankore" "Finished to build Sankore building the package"
 
+notifyProgress "Building Sankore" "Finished to build Sankore building the package"
 
 BASE_WORKING_DIR="packageBuildDir"
 
@@ -222,7 +278,7 @@ EOF
 SANKORE_DIRECTORY_NAME="Open-Sankore-$VERSION"
 SANKORE_PACKAGE_DIRECTORY="$BASE_WORKING_DIR/usr/local/$SANKORE_DIRECTORY_NAME"
 #move sankore build directory to packages directory
-cp -R build/linux/release/product $SANKORE_PACKAGE_DIRECTORY 
+cp -R $PRODUCT_PATH $SANKORE_PACKAGE_DIRECTORY 
 
 
 cat > $BASE_WORKING_DIR/usr/local/$SANKORE_DIRECTORY_NAME/run.sh << EOF
@@ -249,14 +305,6 @@ EOF
 CHANGE_LOG_FILE="$BASE_WORKING_DIR/DEBIAN/changelog-sankore-$VERSION.txt"
 CONTROL_FILE="$BASE_WORKING_DIR/DEBIAN/control"
 CHANGE_LOG_TEXT="changelog.txt"
-
-if [ "$ARCHITECTURE" == "x86_64" ]; then
-    ARCHITECTURE="amd64"
-fi
-
-if [ "$ARCHITECTURE" == "i686" ]; then
-    ARCHITECTURE="i386"
-fi
 
 echo "Open-Sankore ($VERSION) $ARCHITECTURE; urgency=low" > "$CHANGE_LOG_FILE"
 echo >> "$CHANGE_LOG_FILE"
@@ -287,12 +335,6 @@ for l in `objdump -p $SANKORE_PACKAGE_DIRECTORY/Open-Sankore | grep NEEDED | awk
         fi; 
     done; 
 done; 
-
-#additional dependencies
-#tab[$count]="gtk2-engines-pixbuf"
-#((count++))
-#tab[$count]="ttf-mscorefonts-installer"
-#((count++))
 
 for ((i=0;i<${#tab[@]};i++)); do
     if [ $i -ne "0" ]; then
@@ -328,7 +370,7 @@ DEBIAN_PACKAGE_NAME="Open-Sankore_${VERSION}_$ARCHITECTURE.deb"
 
 fakeroot  chown -R root:root $BASE_WORKING_DIR 
 dpkg -b "$BASE_WORKING_DIR" "install/linux/$DEBIAN_PACKAGE_NAME"
-notify-send "Open-Sankore" "Package built"
+notifyProgress "Open-Sankore" "Package built"
 
 #clean up mess
 fakeroot rm -rf $BASE_WORKING_DIR
@@ -338,9 +380,8 @@ if [ $CREATE_DIENA_DISTRIBUTION_ZIP == true ]; then
 
     ZIP_NAME="Open-Sankoré_`lsb_release -is`_`lsb_release -rs`_${VERSION}_${ARCHITECTURE}.zip"
     cd install/linux
-    `which zip` -1 --junk-paths ${ZIP_NAME} ${DEBIAN_PACKAGE_NAME} ../../ReleaseNotes.pdf ../../JournalDesModifications.pdf
+    $ZIP_PATH -1 --junk-paths ${ZIP_NAME} ${DEBIAN_PACKAGE_NAME} ../../ReleaseNotes.pdf ../../JournalDesModifications.pdf
     cd -
-    
-    notify-send "Open-Sankore" "Build Diena zip file for distribution"
+    notifyProgress "Open-Sankore" "Build Diena zip file for distribution"
 fi
 

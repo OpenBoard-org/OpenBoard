@@ -74,17 +74,13 @@ void UBGraphicsMediaItemDelegate::buildButtons()
 {
     mPlayPauseButton = new DelegateButton(":/images/play.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     connect(mPlayPauseButton, SIGNAL(clicked(bool)), this, SLOT(togglePlayPause()));
-    connect(mPlayPauseButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
-    
 
     mStopButton = new DelegateButton(":/images/stop.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     connect(mStopButton, SIGNAL(clicked(bool)), mMedia, SLOT(stop()));
-    connect(mStopButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
 
     mMediaControl = new DelegateMediaControl(delegated(), mToolBarItem);
     mMediaControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
     UBGraphicsItem::assignZValue(mMediaControl, delegated()->zValue());
-    connect(mMediaControl, SIGNAL(used()), mToolBarShowTimer, SLOT(start()));
     
     if (delegated()->isMuted())
         mMuteButton = new DelegateButton(":/images/soundOff.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
@@ -93,13 +89,20 @@ void UBGraphicsMediaItemDelegate::buildButtons()
 
     connect(mMuteButton, SIGNAL(clicked(bool)), delegated(), SLOT(toggleMute())); 
     connect(mMuteButton, SIGNAL(clicked(bool)), this, SLOT(toggleMute())); // for changing button image
-    connect(mMuteButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
 
     mButtons << mPlayPauseButton << mStopButton << mMuteButton;
 
     mToolBarItem->setItemsOnToolBar(QList<QGraphicsItem*>() << mPlayPauseButton << mStopButton << mMediaControl << mMuteButton);
     mToolBarItem->setVisibleOnBoard(true);
     mToolBarItem->setShifting(false);
+
+    if (mToolBarShowTimer)
+    {
+        connect(mPlayPauseButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+        connect(mStopButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+        connect(mMediaControl, SIGNAL(used()), mToolBarShowTimer, SLOT(start()));
+        connect(mMuteButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+    }
 
     UBGraphicsMediaItem *audioItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
     if (audioItem)
@@ -135,7 +138,7 @@ void UBGraphicsMediaItemDelegate::positionHandles()
         else if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
         {
             int borderSize = 0;
-            UBGraphicsMediaItem::UBAudioPresentationWidget *audioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(delegated()->widget());
+            UBAudioPresentationWidget *audioWidget = dynamic_cast<UBAudioPresentationWidget*>(delegated()->widget());
             if (audioWidget)
                 borderSize = audioWidget->borderSize();
 
@@ -159,7 +162,7 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     }
     toolBarMinimumWidth += mToolBarItem->boundingRect().height();
 
-    UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(delegated()->widget());
+    UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(delegated()->widget());
     if (pAudioWidget)
     {
        pAudioWidget->setMinimumSize(toolBarMinimumWidth + (int)mMediaControl->lcdAreaSize().width() + (int)mMediaControl->rect().height(),26+pAudioWidget->borderSize());
