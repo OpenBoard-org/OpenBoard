@@ -41,7 +41,6 @@ class UBGraphicsTextItem;
 class UBGraphicsRuler;
 class UBGraphicsProtractor;
 class UBGraphicsCompass;
-class UBAbstractWidget;
 class UBDocumentProxy;
 class UBGraphicsCurtainItem;
 class UBGraphicsStroke;

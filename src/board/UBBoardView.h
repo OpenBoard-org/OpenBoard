@@ -21,7 +21,6 @@
 #include "domain/UBGraphicsDelegateFrame.h"
 
 class UBBoardController;
-class UBAppleWidget;
 class UBGraphicsScene;
 class UBGraphicsWidgetItem;
 class UBRubberBand;

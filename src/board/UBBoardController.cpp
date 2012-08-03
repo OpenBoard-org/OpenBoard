@@ -49,7 +49,6 @@
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsPDFItem.h"
-#include "domain/UBW3CWidget.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBPageSizeUndoCommand.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
@@ -1045,7 +1044,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         else
             size = mActiveScene->nominalSize() * .8;
 
-        QString widgetUrl = UBW3CWidget::createNPAPIWrapper(sUrl, mimeType, size);
+        QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(sUrl, mimeType, size);
 
         if (widgetUrl.length() > 0)
         {
@@ -1166,7 +1165,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
                         else
                             size = mActiveScene->nominalSize() * .8;
 
-                        QString widgetUrl = UBW3CWidget::createNPAPIWrapper(swfFile, "application/x-shockwave-flash", size);
+                        QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(swfFile, "application/x-shockwave-flash", size);
 
                         if (widgetUrl.length() > 0)
                         {
@@ -2160,7 +2159,7 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
             return;
 
         if (freeze) {
-            item_casted->page()->mainFrame()->setContent(UBW3CWidget::freezedWidgetPage().toAscii());
+            item_casted->page()->mainFrame()->setContent(UBGraphicsW3CWidgetItem::freezedWidgetPage().toAscii());
         } else
             item_casted->loadMainHtml();
     }

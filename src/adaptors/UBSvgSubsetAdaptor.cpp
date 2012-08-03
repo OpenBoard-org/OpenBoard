@@ -27,7 +27,6 @@
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsTextItemDelegate.h"
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsStrokesGroup.h"
 #include "domain/UBGraphicsGroupContainerItem.h"

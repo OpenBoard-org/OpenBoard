@@ -60,8 +60,6 @@
 
 #include "domain/UBGraphicsGroupContainerItem.h"
 
-#include "UBAppleWidget.h"
-#include "UBW3CWidget.h"
 #include "UBGraphicsStroke.h"
 
 #include "core/memcheck.h"
@@ -257,8 +255,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mDocument(parent)
     , mDarkBackground(false)
     , mCrossedBackground(false)
-    , mZoomFactor(1)
     , mIsDesktopMode(false)
+    , mZoomFactor(1)
     , mIsModified(true)
     , mBackgroundObject(0)
     , mPreviousWidth(0)
@@ -1397,7 +1395,7 @@ UBGraphicsMediaItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool s
 
 UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
 {
-    int widgetType = UBAbstractWidget::widgetType(pWidgetUrl);
+    int widgetType = UBGraphicsWidgetItem::widgetType(pWidgetUrl);
 
     if(widgetType == UBWidgetType::Apple)
     {

@@ -12,22 +12,19 @@ HEADERS      += src/domain/UBGraphicsScene.h \
                 src/domain/UBGraphicsPolygonItem.h \
                 src/domain/UBItem.h \
                 src/domain/UBGraphicsWidgetItem.h \
-                src/domain/UBAppleWidget.h \
                 src/domain/UBGraphicsPDFItem.h \
                 src/domain/UBGraphicsTextItem.h \
-                src/domain/UBAbstractWidget.h \
-                src/domain/UBW3CWidget.h \
                 src/domain/UBResizableGraphicsItem.h \
                 src/domain/UBGraphicsStroke.h \
-    src/domain/UBGraphicsMediaItem.h \
-    src/domain/UBAbstractUndoCommand.h\
-    src/domain/UBAngleWidget.h \
-    src/domain/UBGraphicsGroupContainerItem.h \
-    src/domain/UBGraphicsGroupContainerItemDelegate.h \
-    src/domain/UBGraphicsStrokesGroup.h
+                src/domain/UBGraphicsMediaItem.h \
+                src/domain/UBAbstractUndoCommand.h\
+                src/domain/UBAngleWidget.h \
+                src/domain/UBGraphicsGroupContainerItem.h \
+                src/domain/UBGraphicsGroupContainerItemDelegate.h \
+                src/domain/UBGraphicsStrokesGroup.h
                 
 HEADERS      += src/domain/UBGraphicsItemDelegate.h \
-				src/domain/UBGraphicsTextItemDelegate.h \
+                src/domain/UBGraphicsTextItemDelegate.h \
                 src/domain/UBGraphicsDelegateFrame.h \
                 src/domain/UBGraphicsWidgetItemDelegate.h \
                 src/domain/UBGraphicsMediaItemDelegate.h
@@ -47,22 +44,19 @@ SOURCES      += src/domain/UBGraphicsScene.cpp \
                 src/domain/UBItem.cpp \
                 src/domain/UBGraphicsVideoItem.cpp \
                 src/domain/UBGraphicsWidgetItem.cpp \
-                src/domain/UBAppleWidget.cpp \
                 src/domain/UBGraphicsPDFItem.cpp \
                 src/domain/UBGraphicsTextItem.cpp \
-                src/domain/UBAbstractWidget.cpp \
-                src/domain/UBW3CWidget.cpp \
                 src/domain/UBResizableGraphicsItem.cpp \
                 src/domain/UBGraphicsStroke.cpp \
-    src/domain/UBGraphicsMediaItem.cpp \
-    src/domain/UBAbstractUndoCommand.cpp \
-    src/domain/UBAngleWidget.cpp \
-    src/domain/ubgraphicsgroupcontaineritem.cpp \
-    src/domain/ubgraphicsgroupcontaineritemdelegate.cpp \
-    src/domain/UBGraphicsStrokesGroup.cpp
+                src/domain/UBGraphicsMediaItem.cpp \
+                src/domain/UBAbstractUndoCommand.cpp \
+                src/domain/UBAngleWidget.cpp \
+                src/domain/ubgraphicsgroupcontaineritem.cpp \
+                src/domain/ubgraphicsgroupcontaineritemdelegate.cpp \
+                src/domain/UBGraphicsStrokesGroup.cpp
                 
 SOURCES      += src/domain/UBGraphicsItemDelegate.cpp \
-			src/domain/UBGraphicsTextItemDelegate.cpp \
+                src/domain/UBGraphicsTextItemDelegate.cpp \
                 src/domain/UBGraphicsMediaItemDelegate.cpp \
                 src/domain/UBGraphicsDelegateFrame.cpp \
                 src/domain/UBGraphicsWidgetItemDelegate.cpp \

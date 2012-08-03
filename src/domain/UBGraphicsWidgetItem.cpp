@@ -24,9 +24,7 @@
 #include "UBGraphicsWidgetItemDelegate.h"
 #include "UBGraphicsDelegateFrame.h"
 
-#include "UBW3CWidget.h"
 #include "UBGraphicsScene.h"
-#include "UBAppleWidget.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "web/UBWebPage.h"
 #include "network/UBNetworkAccessManager.h"
@@ -51,14 +49,14 @@ QString UBGraphicsW3CWidgetItem::sNPAPIWrappperConfigTemplate;
 
 UBGraphicsWidgetItem::UBGraphicsWidgetItem(QGraphicsItem *parent, int widgetType)
     : UBGraphicsWebView(parent)
-    , mShouldMoveWidget(false)
-    , mUniboardAPI(0)
     , mIsResizable(false)
     , mInitialLoadDone(false)
     , mLoadIsErronous(false)
     , mIsFreezable(true)
     , mCanBeContent(0)
     , mCanBeTool(0)
+    , mShouldMoveWidget(false)
+    , mUniboardAPI(0)
     , mIsFrozen(false)
     , mIsTakingSnapshot(false)
 {

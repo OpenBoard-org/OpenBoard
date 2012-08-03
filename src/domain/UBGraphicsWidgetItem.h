@@ -17,20 +17,26 @@
 
 #include <QtGui>
 #include <QtWebKit>
+#include <QDomElement>
 
 #include "core/UB.h"
 
 #include "UBGraphicsWebView.h"
-#include "UBW3CWidget.h"
-#include "UBAppleWidget.h"
 
 class UBWidgetUniboardAPI;
 class UBGraphicsScene;
-class UBAbstractWidget;
 class UBW3CWidgetAPI;
 class UBW3CWidgetWebStorageAPI;
 class UBGraphiscItem;
 class UBGraphiscItemDelegate;
+
+struct UBWidgetType
+{
+    enum Enum
+    {
+        W3C = 0, Apple, Other
+    };
+};
 
 class UBGraphicsWidgetItem : public UBGraphicsWebView
 {
@@ -251,8 +257,6 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         }
 
         virtual UBItem* deepCopy() const;
-
-        UBW3CWidget* w3cWidget() const;
 
         virtual void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget );
         virtual void setUuid(const QUuid &pUuid);

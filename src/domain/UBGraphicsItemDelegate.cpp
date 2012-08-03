@@ -37,7 +37,6 @@
 
 #include "UBGraphicsWidgetItem.h"
 
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsGroupContainerItem.h"

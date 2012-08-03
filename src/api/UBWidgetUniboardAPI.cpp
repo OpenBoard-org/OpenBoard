@@ -30,7 +30,6 @@
 
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsWidgetItem.h"
-#include "domain/UBAbstractWidget.h"
 
 #include "adaptors/UBThumbnailAdaptor.h"
 

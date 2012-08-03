@@ -11,7 +11,6 @@
 
 
 #include "core/UBDownloadManager.h"
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -326,7 +325,7 @@ QPixmap UBFeaturesController::getIcon(const QString &path, UBFeatureElementType 
     }
     else if ( pFType == FEATURE_INTERACTIVE )
     {
-        return QPixmap( UBAbstractWidget::iconFilePath( QUrl::fromLocalFile(path) ) );
+        return QPixmap( UBGraphicsWidgetItem::iconFilePath( QUrl::fromLocalFile(path) ) );
     }
 
 
@@ -336,7 +335,7 @@ QPixmap UBFeaturesController::getIcon(const QString &path, UBFeatureElementType 
     }
     if ( UBFileSystemUtils::mimeTypeFromFileName(path).contains("application") )
     {
-        return QPixmap( UBAbstractWidget::iconFilePath( QUrl::fromLocalFile(path) ) );
+        return QPixmap( UBGraphicsWidgetItem::iconFilePath( QUrl::fromLocalFile(path) ) );
     }
 
 	QPixmap thumb;
