@@ -85,9 +85,6 @@ public:
         return Type;
     }
 
-    void hasMediaChanged(bool hasMedia);
-    void showOnDisplayChanged(bool shown);
-
     virtual QUrl mediaFileUrl() const
     {
         return mMediaFileUrl;
@@ -138,6 +135,8 @@ public slots:
 
     void toggleMute();
     void activeSceneChanged();
+    void hasMediaChanged(bool hasMedia);
+    void showOnDisplayChanged(bool shown);
 
 protected:
 
