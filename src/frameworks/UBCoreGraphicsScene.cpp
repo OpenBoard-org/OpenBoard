@@ -32,7 +32,7 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
     //we must delete removed items that are no more in any scene
     foreach (const QGraphicsItem* item, mItemsToDelete)
     {
-        if (item->scene()==NULL || item->scene() == this)
+        if (item && (item->scene() == NULL || item->scene() == this))
         {
             delete item;
         }
@@ -61,6 +61,7 @@ void UBCoreGraphicsScene::removeItem(QGraphicsItem* item, bool forceDelete)
     {
         mItemsToDelete.remove(item);
         delete item;
+        item = 0;
     }
 }
 
@@ -84,6 +85,7 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
 
         mItemsToDelete.remove(item);
         delete item;
+        item = 0;
         return true;
     }
     else
