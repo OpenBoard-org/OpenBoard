@@ -138,7 +138,7 @@ void UBGraphicsMediaItemDelegate::positionHandles()
         else if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
         {
             int borderSize = 0;
-            UBGraphicsMediaItem::UBAudioPresentationWidget *audioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(delegated()->widget());
+            UBAudioPresentationWidget *audioWidget = dynamic_cast<UBAudioPresentationWidget*>(delegated()->widget());
             if (audioWidget)
                 borderSize = audioWidget->borderSize();
 
@@ -162,7 +162,7 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     }
     toolBarMinimumWidth += mToolBarItem->boundingRect().height();
 
-    UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(delegated()->widget());
+    UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(delegated()->widget());
     if (pAudioWidget)
     {
        pAudioWidget->setMinimumSize(toolBarMinimumWidth + (int)mMediaControl->lcdAreaSize().width() + (int)mMediaControl->rect().height(),26+pAudioWidget->borderSize());
