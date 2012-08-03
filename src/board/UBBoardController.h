@@ -195,17 +195,12 @@ class UBBoardController : public UBDocumentContainer
         void hideMessage();
         void setDisabled(bool disable);
         void setColorIndex(int pColorIndex);
-        UBToolWidget* addTool(const QUrl& toolUrl, QPointF scenePos);
-        UBToolWidget* addTool(const QUrl& toolUrl);
-        void removeTool(UBToolWidget* toolWidget);
         void hide();
         void show();
         void setWidePageSize(bool checked);
         void setRegularPageSize(bool checked);
         void stylusToolChanged(int tool);
         void grabScene(const QRectF& pSceneRect);
-        void controlViewHidden();
-        void controlViewShown();
         UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos);
         UBGraphicsMediaItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos);
         UBGraphicsWidgetItem *addW3cWidget(const QUrl& pUrl, const QPointF& pos);
@@ -275,7 +270,6 @@ class UBBoardController : public UBDocumentContainer
         QColor mPenColorOnLightBackground;
         QColor mMarkerColorOnDarkBackground;
         QColor mMarkerColorOnLightBackground;
-        QList<UBToolWidget*> mTools;
         qreal mSystemScaleFactor;
         bool mCleanupDone;
         QMap<QAction*, QPair<QString, QString> > mActionTexts;

@@ -31,6 +31,7 @@
 
 #include "gui/UBMagnifer.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBToolWidget.h"
 
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsProtractor.h"
@@ -1463,6 +1464,8 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     UBApplication::boardController->controlView()->setFocus();
 }
+
+
 
 UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, const QPointF& pPos)
 {

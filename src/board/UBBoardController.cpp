@@ -1543,52 +1543,15 @@ qreal UBBoardController::currentZoom()
         return 1.0;
 }
 
-
-UBToolWidget* UBBoardController::addTool(const QUrl& toolUrl)
-{
-    return addTool(toolUrl, mControlView->mapToScene(mControlView->rect().center()));
-}
-
-
-UBToolWidget* UBBoardController::addTool(const QUrl& toolUrl, QPointF scenePos)
-{
-    UBToolWidget *toolWidget = new UBToolWidget(toolUrl, mMainWindow); // Deleted in UBBoardController::removeTool
-    QPoint pos = mControlView->mapToGlobal(mControlView->mapFromScene(scenePos));
-    pos -= QPoint(toolWidget->width() / 2, toolWidget->height() / 2);
-
-    toolWidget->move(pos);
-
-    mTools.append(toolWidget);
-
-    toolWidget->show();
-
-    return toolWidget;
-}
-
-
-void UBBoardController::removeTool(UBToolWidget* toolWidget)
-{
-    toolWidget->hide();
-
-    mTools.removeAll(toolWidget);
-
-    delete toolWidget;
-}
-
-
 void UBBoardController::hide()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
-
-    controlViewHidden();
 }
 
 
 void UBBoardController::show()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
-
-    controlViewShown();
 }
 
 
@@ -1812,25 +1775,6 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
     }
 }
-
-
-void UBBoardController::controlViewHidden()
-{
-    foreach(UBToolWidget* tool, mTools)
-    {
-        tool->hide();
-    }
-}
-
-
-void UBBoardController::controlViewShown()
-{
-    foreach(UBToolWidget* tool, mTools)
-    {
-        tool->show();
-    }
-}
-
 
 UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
 {
@@ -2098,56 +2042,39 @@ void UBBoardController::togglePodcast(bool checked)
 
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
-    /*QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
+    graphicsWidget->remove();
 
-    graphicsWidget->setSelected(false);
-
-    UBAbstractWidget *aw = graphicsWidget->widgetWebView();
-    graphicsWidget->setWidget(0);
-
-    UBToolWidget *toolWidget = new UBToolWidget(aw, mControlContainer);
-
-    graphicsWidget->scene()->removeItem(graphicsWidget); // TODO UB 4.6 probably leaking the frame
-
-    toolWidget->centerOn(mControlView->mapTo(mControlContainer, controlViewPos));
-
-    toolWidget->show();*/
+    UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget);
+    mActiveScene->addItem(toolWidget);
 }
 
 
 void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
-    /*int xIsOdd = toolWidget->width() % 2;
-    int yIsOdd = toolWidget->height() % 2;
+    QPoint mainWindowCenter = (QPointF(toolWidget->preferredWidth(), toolWidget->preferredHeight()) / 2).toPoint();
 
-    QPoint mainWindowCenter = toolWidget->mapTo(mMainWindow, QPoint(toolWidget->width(), toolWidget->height()) / 2);
+    UBGraphicsWidgetItem *graphicsWidgetItem = toolWidget->graphicsWidgetItem();
+    graphicsWidgetItem->setParent(0);
 
-    UBAbstractWidget* webWidget = toolWidget->webWidget();
-    webWidget->setParent(0);
-
-    UBGraphicsWidgetItem* graphicsWidget = 0;
-
-    UBW3CWidget* w3cWidget = qobject_cast<UBW3CWidget*>(webWidget);
-    if (w3cWidget)
+    if (qobject_cast<UBGraphicsW3CWidgetItem*>(graphicsWidgetItem))
     {
-        graphicsWidget = new UBGraphicsW3CWidgetItem(w3cWidget);
+        graphicsWidgetItem = qobject_cast<UBGraphicsW3CWidgetItem*>(graphicsWidgetItem);
     }
     else
     {
-        UBAppleWidget* appleWidget = qobject_cast<UBAppleWidget*>(webWidget);
-        if (appleWidget)
+        if (qobject_cast<UBGraphicsAppleWidgetItem*>(graphicsWidgetItem))
         {
-            graphicsWidget = new UBGraphicsAppleWidgetItem(appleWidget);
+            graphicsWidgetItem = qobject_cast<UBGraphicsAppleWidgetItem*>(graphicsWidgetItem);
         }
     }
 
     QPoint controlViewCenter = mControlView->mapFrom(mMainWindow, mainWindowCenter);
-    QPointF scenePos = mControlView->mapToScene(controlViewCenter) + QPointF(xIsOdd * 0.5, yIsOdd * 0.5);
+    QPointF scenePos = mControlView->mapToScene(controlViewCenter);
 
-    mActiveScene->addGraphicsWidget(graphicsWidget, scenePos);
+    mActiveScene->addGraphicsWidget(graphicsWidgetItem, scenePos);
 
     toolWidget->hide();
-    toolWidget->deleteLater();*/
+    toolWidget->deleteLater();
 }
 
 
