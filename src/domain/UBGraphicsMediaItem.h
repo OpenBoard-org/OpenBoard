@@ -109,6 +109,7 @@ public:
 public slots:
 
     void toggleMute();
+    void setMute(bool bMute);
     void activeSceneChanged();
     void hasMediaChanged(bool hasMedia);
     void showOnDisplayChanged(bool shown);

@@ -52,6 +52,10 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
         connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
         mToolBarShowTimer->setInterval(m_iToolBarShowingInterval);
     }
+    if (delegated()->isMuted())
+    {
+        delegated()->setMute(true);
+    }
 }
 
 bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)

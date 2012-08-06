@@ -188,6 +188,12 @@ void UBGraphicsMediaItem::clearSource()
 void UBGraphicsMediaItem::toggleMute()
 {
     mMuted = !mMuted;
+    setMute(mMuted);
+}
+
+void UBGraphicsMediaItem::setMute(bool bMute)
+{
+    mMuted = bMute;
     mAudioOutput->setMuted(mMuted);
     mMutedByUserAction = mMuted;
     sIsMutedByDefault = mMuted;
