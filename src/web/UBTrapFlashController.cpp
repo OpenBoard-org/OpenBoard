@@ -31,6 +31,8 @@
 
 #include "board/UBBoardController.h"
 
+#include "frameworks/UBPlatformUtils.h"
+
 #include "ui_trapFlash.h"
 
 #include "core/memcheck.h"
@@ -200,6 +202,9 @@ void UBTrapFlashController::createWidget()
         UBApplication::applicationController->showBoard();
         UBApplication::boardController->downloadURL(QUrl(selectedObject.source), QPoint(0, 0), QSize(selectedObject.width, selectedObject.height));
     }
+
+    QString freezedWidgetPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/freezedWidgetWrapper.html";
+	mTrapFlashUi->webView->load(QUrl::fromLocalFile(freezedWidgetPath));
 
     mTrapFlashDialog->hide();
 }
