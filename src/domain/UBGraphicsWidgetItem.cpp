@@ -38,8 +38,6 @@
 
 #include "board/UBBoardController.h"
 
-const QString freezedWidgetDefaultContentFilePath = "./etc/freezedWidgetWrapper.html";
-
 QStringList UBGraphicsWidgetItem::sInlineJavaScripts;
 bool UBGraphicsWidgetItem::sInlineJavaScriptLoaded = false;
 
@@ -1139,6 +1137,8 @@ QString UBGraphicsW3CWidgetItem::freezedWidgetPage()
     static QString defaultcontent;
 
     if (defaultcontent.isNull()) {
+        QString etcPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/";
+        QString freezedWidgetDefaultContentFilePath = etcPath + "freezedWidgetWrapper.html";
         QFile wrapperFile(freezedWidgetDefaultContentFilePath);
         if (!wrapperFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "can't open wrapper file " + freezedWidgetDefaultContentFilePath;
