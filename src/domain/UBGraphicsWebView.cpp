@@ -13,20 +13,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "UBGraphicsWebView.h"
-
 #include <QtGui>
 #include <QtWebKit>
 
+#include "UBGraphicsWebView.h"
 #include "UBGraphicsScene.h"
 #include "UBGraphicsItemDelegate.h"
-
 #include "UBGraphicsDelegateFrame.h"
 
 #include "core/memcheck.h"
 
-UBGraphicsWebView::UBGraphicsWebView(QGraphicsItem* parent) :
-    QGraphicsWebView(parent)
+UBGraphicsWebView::UBGraphicsWebView(QGraphicsItem* parent)
+    : QGraphicsWebView(parent)
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
@@ -68,30 +66,17 @@ void UBGraphicsWebView::setUuid(const QUuid &pUuid)
 
 void UBGraphicsWebView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mousePressEvent(event))
-    {
-        //NOOP
-    }
-    else
-    {
-        // QT Proxy Widget is a bit lazy, we force the selection ...
+    if (!mDelegate->mousePressEvent(event))
+        setSelected(true); /* forcing selection */
 
-        setSelected(true);
-    }
     QGraphicsWebView::mousePressEvent(event);
 }
 
 
 void UBGraphicsWebView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mouseMoveEvent(event))
-    {
-        // NOOP;
-    }
-    else
-    {
+    if (!mDelegate->mouseMoveEvent(event))
         QGraphicsWebView::mouseMoveEvent(event);
-    }
 }
 
 
@@ -103,7 +88,7 @@ void UBGraphicsWebView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsWebView::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
-    if( mDelegate->weelEvent(event) )
+    if (mDelegate->weelEvent(event))
     {
         QGraphicsWebView::wheelEvent(event);
         event->accept();
@@ -113,20 +98,18 @@ void UBGraphicsWebView::wheelEvent(QGraphicsSceneWheelEvent *event)
 void UBGraphicsWebView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event)
-//    NOOP
+    /* NOOP */
 }
 void UBGraphicsWebView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event)
-//    NOOP
+    /* NOOP */
 }
 
 void UBGraphicsWebView::setDelegate(UBGraphicsItemDelegate* pDelegate)
 {
     if (mDelegate)
-    {
         delete mDelegate;
-    }
 
     mDelegate = pDelegate;
 }
@@ -140,8 +123,7 @@ void UBGraphicsWebView::resize(qreal w, qreal h)
 
 void UBGraphicsWebView::resize(const QSizeF & pSize)
 {
-    if (pSize != size())
-    {
+    if (pSize != size()) {
         QGraphicsWebView::setMaximumSize(pSize.width(), pSize.height());
         QGraphicsWebView::resize(pSize.width(), pSize.height());
         if (mDelegate)
