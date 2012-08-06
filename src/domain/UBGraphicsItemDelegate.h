@@ -95,8 +95,6 @@ private:
     QBitArray points;
     double val;
 
-
-uint fill : 1;
 uint shadow : 1;
 uint smallPoint : 1;
 
