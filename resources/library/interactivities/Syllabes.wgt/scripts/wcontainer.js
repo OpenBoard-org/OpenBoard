@@ -5,7 +5,10 @@ var sankoreLang = {
     wgt_name: "Split a word",
     reload: "Reload",
     slate: "Wood",
-    pad: "Pad"
+    pad: "Pad",
+    none: "None",
+    help: "Help",
+    help_content: "This is an example of help content ..."
 };
 
 // if use the "view/edit" button or rely on the api instead
