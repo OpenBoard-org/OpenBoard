@@ -687,9 +687,16 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
     QPointF offset = scenePoint - viewCenter;
     QPointF scalledOffset = offset / ratio;
 
-    mControlView->scale(ratio, ratio);
+    qreal currentZoom = ratio * mControlView->viewportTransform().m11() / mSystemScaleFactor;
 
-    qreal currentZoom = mControlView->viewportTransform().m11() / mSystemScaleFactor;
+    qreal usedRatio = ratio;
+    if (currentZoom > UB_MAX_ZOOM)
+    {
+        currentZoom = UB_MAX_ZOOM;
+        usedRatio = currentZoom * mSystemScaleFactor / mControlView->viewportTransform().m11();
+    }
+
+    mControlView->scale(usedRatio, usedRatio);
 
     QPointF newCenter = scenePoint - scalledOffset;
 
