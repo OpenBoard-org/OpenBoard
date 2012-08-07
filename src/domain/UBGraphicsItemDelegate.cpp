@@ -378,28 +378,13 @@ void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
-//    QGraphicsScene* scene = mDelegated->scene();
     UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
-    if (scene)
+    if (scene && canUndo)
     {
-        foreach(DelegateButton* button, mButtons)
-            scene->removeItem(button);
-
-        scene->removeItem(mFrame);
-
-        /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */ 
-        UBGraphicsWebView *mDelegated_casted = dynamic_cast<UBGraphicsWebView*>(mDelegated);
-        if (mDelegated_casted)
-            mDelegated_casted->setHtml(QString());
-
-        scene->removeItem(mDelegated);
-
-        if (canUndo)
-        {
-            UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand(scene, mDelegated, 0);
-            UBApplication::undoStack->push(uc);
-        }
-    }   
+        UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand(scene, mDelegated, 0);
+        UBApplication::undoStack->push(uc);
+    }
+    mDelegated->hide();  
 }
 
 

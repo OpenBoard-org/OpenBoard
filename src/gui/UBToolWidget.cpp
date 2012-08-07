@@ -61,8 +61,6 @@ UBToolWidget::UBToolWidget(UBGraphicsWidgetItem *pWidget, QGraphicsItem *pParent
     , mShouldMoveWidget(false)
 {
     mGraphicsWidgetItem = pWidget;
-    mGraphicsWidgetItem->setParent(this);
-    mGraphicsWidgetItem->loadMainHtml();
 
     initialize();
 
@@ -129,6 +127,15 @@ void UBToolWidget::javaScriptWindowObjectCleared()
     }
 }
 
+void UBToolWidget::setPos(const QPointF &point)
+{
+    UBToolWidget::setPos(point.x(), point.y());
+}
+
+void UBToolWidget::setPos(qreal x, qreal y)
+{
+    QGraphicsItem::setPos((x - mContentMargin)*scale(), (y - mContentMargin)*scale());
+}
 
 void UBToolWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
@@ -185,7 +192,7 @@ void UBToolWidget::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (event->pos().x() >= 0 && event->pos().x() < sClosePixmap->width()
         && event->pos().y() >= 0 && event->pos().y() < sClosePixmap->height())
     {
-        scene()->removeItem(this);
+        hide();
         event->accept();
     }
     else if (mGraphicsWidgetItem->canBeContent() && event->pos().x() >= mContentMargin && event->pos().x() < mContentMargin + sUnpinPixmap->width()

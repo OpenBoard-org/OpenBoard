@@ -2041,10 +2041,15 @@ void UBBoardController::togglePodcast(bool checked)
 
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
-    graphicsWidget->remove();
+    QPointF controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
+    graphicsWidget->hide();
 
     UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget);
     mActiveScene->addItem(toolWidget);
+    qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
+
+    toolWidget->scale(ssf, ssf);
+    toolWidget->setPos(graphicsWidget->scenePos());
 }
 
 

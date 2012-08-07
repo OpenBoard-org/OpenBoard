@@ -37,6 +37,8 @@ class UBToolWidget : public QGraphicsWidget
 
         UBGraphicsWidgetItem* graphicsWidgetItem() const;
         virtual UBGraphicsScene* scene();
+        virtual void setPos(const QPointF &point);
+        virtual void setPos(qreal x, qreal y);
 
     protected:
         void initialize();
