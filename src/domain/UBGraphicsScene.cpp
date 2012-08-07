@@ -1717,6 +1717,7 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 {
     setModified(true);
     UBCoreGraphicsScene::removeItem(item);
+    UBApplication::boardController->freezeW3CWidget(item, true);
 
     if (!mTools.contains(item))
       --mItemCount;

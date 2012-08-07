@@ -54,13 +54,11 @@ UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QG
     if (pRemovedItem)
     {
         mRemovedItems.insert(pRemovedItem);
-        UBApplication::boardController->freezeW3CWidget(pRemovedItem, true);
     }
 
     if (pAddedItem)
     {
         mAddedItems.insert(pAddedItem);
-        UBApplication::boardController->freezeW3CWidget(pAddedItem, false);
     }
 
     mFirstRedo = true;
@@ -82,9 +80,10 @@ void UBGraphicsItemUndoCommand::undo()
     while (itAdded.hasNext())
     {
         QGraphicsItem* item = itAdded.next();
+
+        UBApplication::boardController->freezeW3CWidget(item, true);
         item->setSelected(false);
         mScene->removeItem(item);
-        UBApplication::boardController->freezeW3CWidget(item, true);
     }
 
     QSetIterator<QGraphicsItem*> itRemoved(mRemovedItems);
@@ -132,12 +131,12 @@ void UBGraphicsItemUndoCommand::redo()
             QGraphicsItem* item = itAdded.next();
             if (item)
             {
+                UBApplication::boardController->freezeW3CWidget(item, false);
+
                 if (UBItemLayerType::FixedBackground == item->data(UBGraphicsItemData::ItemLayerType))
                     mScene->setAsBackgroundObject(item);
                 else
                     mScene->addItem(item);
-
-                UBApplication::boardController->freezeW3CWidget(item, false);
             }
         }
 

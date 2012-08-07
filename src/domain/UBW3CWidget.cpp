@@ -425,8 +425,7 @@ QString UBW3CWidget::freezedWidgetPage()
     static QString defaultcontent;
 
     if (defaultcontent.isNull()) {
-        QString etcPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/";
-        QString freezedWidgetDefaultContentFilePath = etcPath + "freezedWidgetWrapper.html";
+        QString freezedWidgetDefaultContentFilePath = freezedWidgetFilePath();
         QFile wrapperFile(freezedWidgetDefaultContentFilePath);
         if (!wrapperFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "can't open wrapper file " + freezedWidgetDefaultContentFilePath;
@@ -443,6 +442,11 @@ QString UBW3CWidget::freezedWidgetPage()
     }
 
     return defaultcontent;
+}
+
+QString UBW3CWidget::freezedWidgetFilePath()
+{
+    return UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + "freezedWidgetWrapper.html";
 }
 
 void UBW3CWidget::loadNPAPIWrappersTemplates()

@@ -2233,8 +2233,8 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
             return;
 
         if (freeze) {
-            item_casted->widgetWebView()->page()->mainFrame()->setContent(UBW3CWidget::freezedWidgetPage().toAscii());
-        } else
+            item_casted->widgetWebView()->load(QUrl(item_casted->w3cWidget()->freezedWidgetFilePath()));
+        }else
             item_casted->widgetWebView()->loadMainHtml();
     }
 }
