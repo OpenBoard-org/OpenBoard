@@ -5,7 +5,10 @@ var sankoreLang = {
     wgt_name: "Разделить слово",
     reload: "Обновить",
     slate: "Узор",
-    pad: "Планшет"
+    pad: "Планшет",
+    none: "Нет",
+    help: "Помощь",
+    help_content: "Пример текста помощи ..."
 };
 
 // if use the "view/edit" button or rely on the api instead

@@ -1,11 +1,14 @@
 var sankoreLang = {
     view: "Afficher", 
     edit: "Modifier",
-    example: "so*phi*sti*qué",
+    example: "so*phis*ti*qué",
     wgt_name: "Syllabe",
     reload: "Recharger",
     slate: "ardoise",
-    pad: "tablette"
+    pad: "tablette",
+    none: "aucun",
+    help: "aide",
+    help_content: "Ceci est un exemple de contenu de l'aide ..."
 };
 
 // if use the "view/edit" button or rely on the api instead
