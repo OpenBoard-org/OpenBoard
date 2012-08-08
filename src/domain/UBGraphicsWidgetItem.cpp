@@ -120,6 +120,7 @@ QUrl UBGraphicsWidgetItem::mainHtml()
 
 void UBGraphicsWidgetItem::loadMainHtml()
 {
+    mInitialLoadDone = false;
     load(mMainHtmlUrl);
 }
 
@@ -1074,8 +1075,7 @@ QString UBGraphicsW3CWidgetItem::freezedWidgetPage()
     static QString defaultcontent;
 
     if (defaultcontent.isNull()) {
-        QString etcPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/";
-        QString freezedWidgetDefaultContentFilePath = etcPath + "freezedWidgetWrapper.html";
+        QString freezedWidgetDefaultContentFilePath = freezedWidgetFilePath();
         QFile wrapperFile(freezedWidgetDefaultContentFilePath);
         if (!wrapperFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "can't open wrapper file " + freezedWidgetDefaultContentFilePath;
@@ -1093,6 +1093,11 @@ QString UBGraphicsW3CWidgetItem::freezedWidgetPage()
     }
 
     return defaultcontent;
+}
+
+QString UBGraphicsW3CWidgetItem::freezedWidgetFilePath()
+{
+    return UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + "freezedWidgetWrapper.html";
 }
 
 bool UBGraphicsW3CWidgetItem::hasNPAPIWrapper(const QString& pMimeType)
