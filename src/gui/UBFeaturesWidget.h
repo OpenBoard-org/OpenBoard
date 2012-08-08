@@ -43,6 +43,8 @@ class UBFeaturesListView;
 class UBFeaturesWebView;
 class UBFeaturesNavigatorWidget;
 class UBFeaturesMimeData;
+class UBFeaturesCentralWidget;
+class UBFeaturesNewFolderDialog;
 
 class UBFeaturesWidget : public UBDockPaletteWidget
 {
@@ -63,6 +65,9 @@ public:
 	static const int maxThumbnailSize = 100;
 	static const int defaultThumbnailSize = 40;
 
+    static const char *objNamePathList;
+    static const char *objNameFeatureList;
+
 public:
     int scrollbarHorisontalPadding() const { return 10;}
     int scrollbarVerticalIndent() const { return 0;}
@@ -82,6 +87,7 @@ private slots:
     void removeElementsFromFavorite();
     void deleteSelectedElements();
     void rescanModel();
+    void lockIt(bool pLock);
 
 private:
     void resizeEvent(QResizeEvent *event);
@@ -91,17 +97,12 @@ private:
 
 private:
     UBFeaturesController *controller;
-    UBFeaturesNavigatorWidget *mNavigator;
     UBFeaturesListView *pathListView;
     QVBoxLayout *layout;
     UBFeaturesActionBar *mActionBar;
-    UBFeatureProperties *featureProperties;
-    UBFeaturesWebView *webView;
-    QStackedWidget *stackedWidget;
-    int currentStackedWidget;
     UBDownloadHttpFile* imageGatherer;
     UBNewFolderDlg *mkFolderDlg;
-
+    UBFeaturesCentralWidget *centralWidget;
 };
 
 
@@ -128,12 +129,13 @@ public:
     virtual ~UBFeaturesListView() {;}
 
 protected:
-	virtual void dragEnterEvent( QDragEnterEvent *event );
+    virtual void dragEnterEvent( QDragEnterEvent *event );
     virtual void dropEvent( QDropEvent *event );
     virtual void dragMoveEvent( QDragMoveEvent *event );
 
 private slots:
     void thumbnailSizeChanged(int);
+
 };
 
 
@@ -153,6 +155,93 @@ private:
 
 };
 
+class UBFeaturesCentralWidget : public QWidget
+{
+  Q_OBJECT
+
+public:
+    enum StackElement{
+        MainList = 0,
+        FeaturePropertiesList,
+        FeaturesWebView
+    };
+
+    enum AddWidget {
+        NewFolderDialog = 0,
+        ProgressBarWidget
+    };
+
+    enum AddWidgetState {
+        NonModal = 0,
+        Modal
+    };
+
+    UBFeaturesCentralWidget(QWidget *parent = 0);
+    void setSliderPosition(int pValue) {mNavigator->setSliderPosition(pValue);}
+
+    UBFeaturesListView *listView() {return mNavigator->listView();}
+    void showElement(const UBFeature &feature, StackElement pView);
+    void switchTo(StackElement pView);
+    void setPropertiesPixmap(const QPixmap &pix);
+    void setPropertiesThumbnail(const QPixmap &pix);
+    StackElement currentView() const {return static_cast<StackElement>(mStackedWidget->currentIndex());}
+    UBFeature getCurElementFromProperties();
+    void showAdditionalData(AddWidget pWidgetType, AddWidgetState pState = NonModal);
+
+    void setLockedExcludingAdditional(bool pLock);
+
+
+    QStackedWidget *mStackedWidget;
+        UBFeaturesNavigatorWidget *mNavigator;
+        UBFeatureProperties *mFeatureProperties;
+        UBFeaturesWebView *webView;
+
+    QStackedWidget *mAdditionalDataContainer;
+
+signals:
+    void lockMainWidget(bool pLock);
+    void createNewFolderSignal(QString pStr);
+
+//    progressbar widget related signals
+    void maxFilesCountEvaluated(int pValue);
+
+private slots:
+    void createNewFolderSlot(QString pStr);
+    void hideAdditionalData();
+
+    void scanStarted();
+    void scanFinished();
+    void increaseStatusBarValue();
+
+private:
+
+};
+
+class UBFeaturesNewFolderDialog : public QWidget
+{
+    Q_OBJECT
+
+public:
+    static const QString acceptText;
+    static const QString cancelText;
+    static const QString labelText;
+
+    UBFeaturesNewFolderDialog(QWidget *parent = 0);
+    void setRegexp(const QRegExp pRegExp);
+
+signals:
+    void createNewFolder(QString str);
+    void closeDialog();
+
+private slots:
+    void accept();
+    void reject();
+
+private:
+    QLineEdit *mLineEdit;
+    QRegExpValidator *mValidator;
+
+};
 
 class UBFeaturesWebView : public QWidget
 {
@@ -182,8 +271,8 @@ public:
 
     void showElement(const UBFeature &elem);
     UBFeature getCurrentElement() const;
-    void setOrigPixmap(QPixmap &pix);
-    void setThumbnail(QPixmap &pix);
+    void setOrigPixmap(const QPixmap &pix);
+    void setThumbnail(const QPixmap &pix);
 
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -231,7 +320,6 @@ public:
     UBFeaturesModel(QList<UBFeature> *pFeaturesList, QObject *parent = 0) : QAbstractListModel(parent), featuresList(pFeaturesList) {;}
     virtual ~UBFeaturesModel(){;}
 
-	void addItem( const UBFeature &item );
 	void deleteFavoriteItem( const QString &path );
     void deleteItem( const QString &path );
     void deleteItem(const UBFeature &feature);
@@ -250,6 +338,9 @@ public:
     void moveData(const UBFeature &source, const UBFeature &destination, Qt::DropAction action, bool deleteManualy = false);
     Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
 //    void setFeaturesList(QList <UBFeature> *flist ) { featuresList = flist; }
+
+public slots:
+    void addItem( const UBFeature &item );
 
 private:
 	QList <UBFeature> *featuresList;
@@ -313,5 +404,6 @@ public:
 private:
 	QPixmap *arrowPixmap;
 };
+
 
 #endif // UBFEATURESWIDGET_H

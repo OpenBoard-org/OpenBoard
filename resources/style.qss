@@ -5,11 +5,17 @@ QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,
 QWidget#UBDownloadWidget,
 QWidget#UBTeacherGuideWidget,
-QWidget#UBFeatureProperties,
 QWidget#UBFeaturesNavigatorWidget,
-QWidget#PathList
+QWidget#PathList,
+QWidget#UBFeaturesCentralWidget
 {
 	background: #EEEEEE;
+	border-radius: 10px;
+	border: 2px solid #999999;
+}
+
+QWidget#mAdditionalDataContainer
+{
 	border-radius: 10px;
 	border: 2px solid #999999;
 }
@@ -30,15 +36,12 @@ QWidget#UBLibWebView
 
 QListView
 {
-	border: 0px;
+      border: 0px;
 }
 
-
-QWidget#UBFeaturesWebView
+QWidget#UBFeatureProperties
 {
-	background: #EEEEEE;
-	border-radius : 10px;
-	border: 2px solid #999999;
+      border: 2px;
 }
 
 QWebView#SearchEngineView
