@@ -74,16 +74,12 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mVideoWidget = new Phonon::VideoWidget(); // owned and destructed by the scene ...
         Phonon::createPath(mMediaObject, mVideoWidget);
 
-        /*
-         * The VideoVidget should recover the size from the original movie, but this is not always true expecially on
-         * windows and linux os. I don't know why?
-         * In this case the wiget size is equal to QSize(1,1).
-         */
-
         if(mVideoWidget->sizeHint() == QSize(1,1)){
             mVideoWidget->resize(320,240);
-            mVideoWidget->setMinimumSize(140,26);
         }
+
+        mVideoWidget->setMinimumSize(140,26);
+
         setWidget(mVideoWidget);
         haveLinkedImage = true;
     }
