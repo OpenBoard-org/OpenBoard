@@ -291,7 +291,7 @@ void UBBoardPaletteManager::setupPalettes()
     addItemActions << UBApplication::mainWindow->actionAddItemToNewPage;
     addItemActions << UBApplication::mainWindow->actionAddItemToLibrary;
 
-    mAddItemPalette = new UBActionPalette(addItemActions, Qt::Horizontal, 0);
+    mAddItemPalette = new UBActionPalette(addItemActions, Qt::Horizontal, mContainer);
     mAddItemPalette->setButtonIconSize(QSize(128, 128));
     mAddItemPalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     mAddItemPalette->groupActions();

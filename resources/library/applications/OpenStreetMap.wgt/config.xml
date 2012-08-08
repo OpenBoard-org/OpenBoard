@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+        id="OSM" 
+        version="0.1"
+        width="800"
+        height="600"
+        ub:resizable="true"
+		    ub:roles="content">   
+		<name>OpenStreetMap</name>
+		<author	href="http://icap.univ-lyon1.fr/"
+				email="guillaume.burel@etu.univ-lyon1.fr">Guillaume Burel - Université Claude Bernard Lyon 1 (ICAP), Délégation Interministérielle à  l'Éducation Numérique en Afrique</author>
+		<description>View maps in OpenStreetMap<description>		
+		<content src="index.html"/> 
+</widget>

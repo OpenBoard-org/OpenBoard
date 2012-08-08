@@ -852,128 +852,127 @@ void MediaTimer::drawSegment(const QPoint &pos, char segmentNo, QPainter &p,
 #define LIGHT
 #define DARK
 
-    if (fill) {
-        QPolygon a(0);
-        switch (segmentNo) {
-        case 0 :
-            ppt = pt;
-            LIGHT;
-            LINETO(segLen - 1,0);
-            DARK;
-            LINETO(segLen - width - 1,width);
-            LINETO(width,width);
-            LINETO(0,0);
-            break;
-        case 1 :
-            pt += QPoint(0 , 1);
-            ppt = pt;
-            LIGHT;
-            LINETO(width,width);
-            DARK;
-            LINETO(width,segLen - width/2 - 2);
-            LINETO(0,segLen - 2);
-            LIGHT;
-            LINETO(0,0);
-            break;
-        case 2 :
-            pt += QPoint(segLen - 1 , 1);
-            ppt = pt;
-            DARK;
-            LINETO(0,segLen - 2);
-            LINETO(-width,segLen - width/2 - 2);
-            LIGHT;
-            LINETO(-width,width);
-            LINETO(0,0);
-            break;
-        case 3 :
-            pt += QPoint(0 , segLen);
-            ppt = pt;
-            LIGHT;
-            LINETO(width,-width/2);
-            LINETO(segLen - width - 1,-width/2);
-            LINETO(segLen - 1,0);
-            DARK;
-            if (width & 1) {            // adjust for integer division error
-                LINETO(segLen - width - 3,width/2 + 1);
-                LINETO(width + 2,width/2 + 1);
-            } else {
-                LINETO(segLen - width - 1,width/2);
-                LINETO(width,width/2);
-            }
-            LINETO(0,0);
-            break;
-        case 4 :
-            pt += QPoint(0 , segLen + 1);
-            ppt = pt;
-            LIGHT;
+    QPolygon a(0);
+    switch (segmentNo) {
+    case 0 :
+        ppt = pt;
+        LIGHT;
+        LINETO(segLen - 1,0);
+        DARK;
+        LINETO(segLen - width - 1,width);
+        LINETO(width,width);
+        LINETO(0,0);
+        break;
+    case 1 :
+        pt += QPoint(0 , 1);
+        ppt = pt;
+        LIGHT;
+        LINETO(width,width);
+        DARK;
+        LINETO(width,segLen - width/2 - 2);
+        LINETO(0,segLen - 2);
+        LIGHT;
+        LINETO(0,0);
+        break;
+    case 2 :
+        pt += QPoint(segLen - 1 , 1);
+        ppt = pt;
+        DARK;
+        LINETO(0,segLen - 2);
+        LINETO(-width,segLen - width/2 - 2);
+        LIGHT;
+        LINETO(-width,width);
+        LINETO(0,0);
+        break;
+    case 3 :
+        pt += QPoint(0 , segLen);
+        ppt = pt;
+        LIGHT;
+        LINETO(width,-width/2);
+        LINETO(segLen - width - 1,-width/2);
+        LINETO(segLen - 1,0);
+        DARK;
+        if (width & 1) {            // adjust for integer division error
+            LINETO(segLen - width - 3,width/2 + 1);
+            LINETO(width + 2,width/2 + 1);
+        } else {
+            LINETO(segLen - width - 1,width/2);
             LINETO(width,width/2);
-            DARK;
-            LINETO(width,segLen - width - 2);
-            LINETO(0,segLen - 2);
-            LIGHT;
-            LINETO(0,0);
-            break;
-        case 5 :
-            pt += QPoint(segLen - 1 , segLen + 1);
-            ppt = pt;
-            DARK;
-            LINETO(0,segLen - 2);
-            LINETO(-width,segLen - width - 2);
-            LIGHT;
-            LINETO(-width,width/2);
-            LINETO(0,0);
-            break;
-        case 6 :
-            pt += QPoint(0 , segLen*2);
-            ppt = pt;
-            LIGHT;
-            LINETO(width,-width);
-            LINETO(segLen - width - 1,-width);
-            LINETO(segLen - 1,0);
-            DARK;
-            LINETO(0,0);
-            break;
-        case 7 :
-            pt += QPoint(segLen/2 , segLen*2);
-            ppt = pt;
-            DARK;
-            LINETO(width,0);
-            LINETO(width,-width);
-            LIGHT;
-            LINETO(0,-width);
-            LINETO(0,0);
-            break;
-        case 8 :
-            pt += QPoint(segLen/2 - width/2 + 1 , segLen/2 + width);
-            ppt = pt;
-            DARK;
-            LINETO(width,0);
-            LINETO(width,-width);
-            LIGHT;
-            LINETO(0,-width);
-            LINETO(0,0);
-            break;
-        case 9 :
-            pt += QPoint(segLen/2 - width/2 + 1 , 3*segLen/2 + width);
-            ppt = pt;
-            DARK;
-            LINETO(width,0);
-            LINETO(width,-width);
-            LIGHT;
-            LINETO(0,-width);
-            LINETO(0,0);
-            break;
-        default :
-            break;
         }
-        // End exact copy
-        p.setPen(Qt::white);
-        p.setBrush(Qt::white);
-        p.drawPolygon(a);
-        p.setBrush(Qt::NoBrush);
-
-        pt = pos;
+        LINETO(0,0);
+        break;
+    case 4 :
+        pt += QPoint(0 , segLen + 1);
+        ppt = pt;
+        LIGHT;
+        LINETO(width,width/2);
+        DARK;
+        LINETO(width,segLen - width - 2);
+        LINETO(0,segLen - 2);
+        LIGHT;
+        LINETO(0,0);
+        break;
+    case 5 :
+        pt += QPoint(segLen - 1 , segLen + 1);
+        ppt = pt;
+        DARK;
+        LINETO(0,segLen - 2);
+        LINETO(-width,segLen - width - 2);
+        LIGHT;
+        LINETO(-width,width/2);
+        LINETO(0,0);
+        break;
+    case 6 :
+        pt += QPoint(0 , segLen*2);
+        ppt = pt;
+        LIGHT;
+        LINETO(width,-width);
+        LINETO(segLen - width - 1,-width);
+        LINETO(segLen - 1,0);
+        DARK;
+        LINETO(0,0);
+        break;
+    case 7 :
+        pt += QPoint(segLen/2 , segLen*2);
+        ppt = pt;
+        DARK;
+        LINETO(width,0);
+        LINETO(width,-width);
+        LIGHT;
+        LINETO(0,-width);
+        LINETO(0,0);
+        break;
+    case 8 :
+        pt += QPoint(segLen/2 - width/2 + 1 , segLen/2 + width);
+        ppt = pt;
+        DARK;
+        LINETO(width,0);
+        LINETO(width,-width);
+        LIGHT;
+        LINETO(0,-width);
+        LINETO(0,0);
+        break;
+    case 9 :
+        pt += QPoint(segLen/2 - width/2 + 1 , 3*segLen/2 + width);
+        ppt = pt;
+        DARK;
+        LINETO(width,0);
+        LINETO(width,-width);
+        LIGHT;
+        LINETO(0,-width);
+        LINETO(0,0);
+        break;
+    default :
+        break;
     }
+    // End exact copy
+    p.setPen(Qt::white);
+    p.setBrush(Qt::white);
+    p.drawPolygon(a);
+    p.setBrush(Qt::NoBrush);
+
+    pt = pos;
+
 #undef LINETO
 #undef LIGHT
 #undef DARK

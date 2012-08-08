@@ -151,18 +151,34 @@ void UBMainWindow::onExportDone()
     actionDocumentAdd->setEnabled(true);
 }
 
+#include "core/UBDisplayManager.h"
+
 bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text)
 {
     QMessageBox messageBox;
     messageBox.setParent(this);
-    messageBox.setWindowFlags(Qt::Dialog);
     messageBox.setWindowTitle(windowTitle);
     messageBox.setText(text);
     QPushButton* yesButton = messageBox.addButton(tr("Yes"),QMessageBox::YesRole);
     messageBox.addButton(tr("No"),QMessageBox::NoRole);
     messageBox.setIcon(QMessageBox::Question);
-    messageBox.exec();
 
+#ifdef Q_WS_X11
+    // to avoid to be handled by x11. This allows us to keep to the back all the windows manager stuff like palette, toolbar ...
+    messageBox.setWindowFlags(Qt::Dialog | Qt::X11BypassWindowManagerHint);
+
+    //To calculate the correct size
+    messageBox.show();
+    QSize messageBoxSize=messageBox.size();
+
+    //to center on the screen because it's no more handled by X11
+    QRect controlScreenRect = UBApplication::applicationController->displayManager()->controlGeometry();
+    messageBox.move((controlScreenRect.width()/2) - (messageBoxSize.width()*0.5), (controlScreenRect.height()/2) - (messageBoxSize.height()*0.5));
+#else
+    messageBox.setWindowFlags(Qt::Dialog);
+#endif
+
+    messageBox.exec();
     return messageBox.clickedButton() == yesButton;
 }
 
