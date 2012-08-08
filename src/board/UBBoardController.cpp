@@ -2041,7 +2041,6 @@ void UBBoardController::togglePodcast(bool checked)
 
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
-    QPointF controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
     graphicsWidget->hide();
 
     UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget);
@@ -2055,30 +2054,11 @@ void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* gr
 
 void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
-    QPoint mainWindowCenter = (QPointF(toolWidget->preferredWidth(), toolWidget->preferredHeight()) / 2).toPoint();
-
     UBGraphicsWidgetItem *graphicsWidgetItem = toolWidget->graphicsWidgetItem();
-    graphicsWidgetItem->setParent(0);
-
-    if (qobject_cast<UBGraphicsW3CWidgetItem*>(graphicsWidgetItem))
-    {
-        graphicsWidgetItem = qobject_cast<UBGraphicsW3CWidgetItem*>(graphicsWidgetItem);
-    }
-    else
-    {
-        if (qobject_cast<UBGraphicsAppleWidgetItem*>(graphicsWidgetItem))
-        {
-            graphicsWidgetItem = qobject_cast<UBGraphicsAppleWidgetItem*>(graphicsWidgetItem);
-        }
-    }
-
-    QPoint controlViewCenter = mControlView->mapFrom(mMainWindow, mainWindowCenter);
-    QPointF scenePos = mControlView->mapToScene(controlViewCenter);
-
-    mActiveScene->addGraphicsWidget(graphicsWidgetItem, scenePos);
 
     toolWidget->hide();
-    toolWidget->deleteLater();
+    graphicsWidgetItem->show();
+    graphicsWidgetItem->setSelected(true); 
 }
 
 
