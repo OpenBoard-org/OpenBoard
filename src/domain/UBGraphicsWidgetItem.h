@@ -43,7 +43,7 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
     Q_OBJECT
 
     public:
-        UBGraphicsWidgetItem(QGraphicsItem *parent = 0, int widgetType = 0);
+        UBGraphicsWidgetItem(const QUrl &pWidgetUrl = QUrl(), QGraphicsItem *parent = 0);
         ~UBGraphicsWidgetItem();
 
         virtual void initialize();

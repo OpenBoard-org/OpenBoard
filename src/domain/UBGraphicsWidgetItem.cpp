@@ -44,7 +44,7 @@
 bool UBGraphicsWidgetItem::sInlineJavaScriptLoaded = false;
 QStringList UBGraphicsWidgetItem::sInlineJavaScripts;
 
-UBGraphicsWidgetItem::UBGraphicsWidgetItem(QGraphicsItem *parent, int widgetType)
+UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem *parent)
     : UBGraphicsWebView(parent)
     , mInitialLoadDone(false)
     , mIsFreezable(true)
@@ -52,6 +52,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(QGraphicsItem *parent, int widgetType
     , mLoadIsErronous(false)    
     , mCanBeContent(0)
     , mCanBeTool(0)
+    , mWidgetUrl(pWidgetUrl)
     , mIsFrozen(false)
     , mIsTakingSnapshot(false)
     , mShouldMoveWidget(false)
@@ -83,7 +84,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(QGraphicsItem *parent, int widgetType
     viewPalette.setBrush(QPalette::Window, QBrush(Qt::transparent));
     setPalette(viewPalette);
 
-    UBGraphicsWidgetItemDelegate* delegate = new UBGraphicsWidgetItemDelegate(this, widgetType);
+    UBGraphicsWidgetItemDelegate* delegate = new UBGraphicsWidgetItemDelegate(this);
     delegate->init();
     setDelegate(delegate);
 }
@@ -621,7 +622,7 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 
 
 UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
-    : UBGraphicsWidgetItem(parent)
+    : UBGraphicsWidgetItem(pWidgetUrl, parent)
 {
     QString path = pWidgetUrl.toLocalFile();
 
@@ -699,7 +700,7 @@ QString UBGraphicsW3CWidgetItem::sNPAPIWrappperConfigTemplate;
 QMap<QString, QString> UBGraphicsW3CWidgetItem::sNPAPIWrapperTemplates;
 
 UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
-    : UBGraphicsWidgetItem(parent)
+    : UBGraphicsWidgetItem(pWidgetUrl, parent)
     , mW3CWidgetAPI(0)
 {
     QString path = pWidgetUrl.toLocalFile();
@@ -861,7 +862,7 @@ void UBGraphicsW3CWidgetItem::setUuid(const QUuid &pUuid)
 
 UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
 {
-    UBGraphicsW3CWidgetItem *copy = new UBGraphicsW3CWidgetItem(QGraphicsWebView::url(), parentItem());
+    UBGraphicsW3CWidgetItem *copy = new UBGraphicsW3CWidgetItem(mWidgetUrl, parentItem());
 
     copy->setPos(this->pos());
     copy->setTransform(this->transform());
