@@ -2048,7 +2048,7 @@ void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* gr
     mActiveScene->addItem(toolWidget);
     qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
 
-    toolWidget->scale(ssf, ssf);
+    toolWidget->setScale(ssf);
     toolWidget->setPos(graphicsWidget->scenePos());
 }
 

@@ -134,7 +134,7 @@ void UBToolWidget::setPos(const QPointF &point)
 
 void UBToolWidget::setPos(qreal x, qreal y)
 {
-    QGraphicsItem::setPos((x - mContentMargin)*scale(), (y - mContentMargin)*scale());
+    QGraphicsItem::setPos(x - mContentMargin * scale(), y - mContentMargin * scale());
 }
 
 void UBToolWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
