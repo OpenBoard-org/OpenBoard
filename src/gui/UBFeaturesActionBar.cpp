@@ -53,6 +53,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
 
     //mpSearchBtn = new UBActionButton(this, mpSearchAction);
     mpRescanModelBtn = new UBActionButton(this, mpRescanModelAction);
+    mpRescanModelBtn->hide();
 
     mpDeleteBtn = new UBActionButton(this, mpDeleteAction);
     mpCloseBtn = new UBActionButton(this, mpCloseAction);
@@ -124,7 +125,7 @@ void UBFeaturesActionBar::setButtons()
         mpNewFolderBtn->show();
 		mpNewFolderBtn->setEnabled(true);
 		mpDeleteBtn->setEnabled(true);
-        mpRescanModelBtn->show();
+//        mpRescanModelBtn->show();
 		break;
     case IN_ROOT:
         mpFavoriteBtn->show();
@@ -136,7 +137,7 @@ void UBFeaturesActionBar::setButtons()
         mpNewFolderBtn->show();
 		mpNewFolderBtn->setEnabled(false);
 		mpDeleteBtn->setEnabled(false);
-        mpRescanModelBtn->show();
+//        mpRescanModelBtn->show();
         break;
     case IN_PROPERTIES:
         mpFavoriteBtn->show();
@@ -147,7 +148,7 @@ void UBFeaturesActionBar::setButtons()
         mpCloseBtn->hide();
         mpRemoveFavoriteBtn->hide();
         mpNewFolderBtn->hide();
-        mpRescanModelBtn->hide();
+//        mpRescanModelBtn->hide();
         break;
     case IN_FAVORITE:
         mpFavoriteBtn->hide();
@@ -158,7 +159,7 @@ void UBFeaturesActionBar::setButtons()
         mpCloseBtn->hide();
         mpRemoveFavoriteBtn->show();
         mpNewFolderBtn->hide();
-        mpRescanModelBtn->hide();
+//        mpRescanModelBtn->hide();
         break;
 	case IN_TRASH:
 		mpFavoriteBtn->hide();
@@ -171,7 +172,7 @@ void UBFeaturesActionBar::setButtons()
         mpCloseBtn->hide();
         //mpRemoveFavoriteBtn->show();
         mpNewFolderBtn->hide();
-        mpRescanModelBtn->hide();
+//        mpRescanModelBtn->hide();
 		break;
     default:
         break;
