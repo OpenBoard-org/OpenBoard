@@ -88,6 +88,7 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
         // optimisation (eraser)
         UBGraphicsPolygonItem* deepCopy(const QPolygonF& pol) const;
+        virtual void copyItemParameters(UBItem *copy) const;
 
         QLineF originalLine() { return mOriginalLine;}
         qreal originalWidth() { return mOriginalWidth;}

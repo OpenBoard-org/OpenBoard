@@ -40,6 +40,7 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         void  setMarkerAngle (qreal angle) { mCurrentAngle = angle; }
 
         virtual UBItem* deepCopy() const;
+        virtual void copyItemParameters(UBItem *copy) const;
 
         enum { Type = UBGraphicsItemType::ProtractorItemType };
 

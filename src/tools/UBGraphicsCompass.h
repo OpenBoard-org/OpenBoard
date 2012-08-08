@@ -41,6 +41,8 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
 
         virtual UBItem* deepCopy() const;
 
+        virtual void copyItemParameters(UBItem *copy) const;
+
     signals:
 
        void hidden();

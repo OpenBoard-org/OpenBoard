@@ -42,6 +42,7 @@ class UBGraphicsCurtainItem : public QObject, public QGraphicsRectItem, public U
         }
 
         virtual UBItem* deepCopy() const;
+        virtual void copyItemParameters(UBItem *copy) const;
 
         virtual void remove();
 

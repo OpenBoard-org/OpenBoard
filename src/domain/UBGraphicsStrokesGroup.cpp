@@ -63,14 +63,23 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
    UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
 
-   copy->setPos(this->pos());
-   copy->setTransform(this->transform());
-   copy->setFlag(QGraphicsItem::ItemIsMovable, true);
-   copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
-   copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-   copy->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+    copyItemParameters(copy);
 
    return copy;
+}
+
+void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsStrokesGroup *cp = dynamic_cast<UBGraphicsStrokesGroup*>(copy);
+    {
+        cp->setPos(this->pos());
+
+        cp->setTransform(this->transform());
+        cp->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+    }
 }
 
 void UBGraphicsStrokesGroup::remove()

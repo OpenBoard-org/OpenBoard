@@ -1539,11 +1539,15 @@ void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
     setDocumentUpdated();
 }
 
-UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPointF& pPos)
+UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPointF& pPos, const QByteArray pData)
 {
     QString path = pSvgFileUrl.toLocalFile();
 
-    UBGraphicsSvgItem *svgItem = new UBGraphicsSvgItem(path);
+    UBGraphicsSvgItem *svgItem;
+    if (pData.isNull())
+        svgItem = new UBGraphicsSvgItem(path);
+    else
+        svgItem = new UBGraphicsSvgItem(pData);
 
     svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);

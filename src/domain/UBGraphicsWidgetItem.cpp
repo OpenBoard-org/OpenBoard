@@ -330,19 +330,29 @@ UBItem* UBGraphicsAppleWidgetItem::deepCopy() const
 {
     UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(mWebKitWidget->widgetUrl(), parentItem());
 
-    foreach(QString key, mPreferences.keys())
-    {
-        appleWidget->setPreference(key, mPreferences.value(key));
-    }
-
-    foreach(QString key, mDatastore.keys())
-    {
-        appleWidget->setDatastoreEntry(key, mDatastore.value(key));
-    }
-
-    appleWidget->setSourceUrl(this->sourceUrl());
+    copyItemParameters(appleWidget);
 
     return appleWidget;
+
+}
+
+void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsAppleWidgetItem *cp = dynamic_cast<UBGraphicsAppleWidgetItem*>(copy);
+    if (cp)
+    {
+        foreach(QString key, mPreferences.keys())
+        {
+            cp->setPreference(key, mPreferences.value(key));
+        }
+
+        foreach(QString key, mDatastore.keys())
+        {
+            cp->setDatastoreEntry(key, mDatastore.value(key));
+        }
+
+        cp->setSourceUrl(this->sourceUrl());
+    }
 
 }
 void UBGraphicsAppleWidgetItem::setUuid(const QUuid &pUuid)
@@ -431,27 +441,35 @@ UBW3CWidget* UBGraphicsW3CWidgetItem::w3cWidget() const
 UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
 {
     UBGraphicsW3CWidgetItem *copy = new UBGraphicsW3CWidgetItem(mWebKitWidget->widgetUrl(), parentItem());
-
-    copy->setPos(this->pos());
-    copy->setTransform(this->transform());
-    copy->setFlag(QGraphicsItem::ItemIsMovable, true);
-    copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-    copy->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
     copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
-    copy->setSourceUrl(this->sourceUrl());
-
-    copy->resize(this->size());
-
-    foreach(QString key, mPreferences.keys())
-    {
-        copy->setPreference(key, mPreferences.value(key));
-    }
-
-    foreach(QString key, mDatastore.keys())
-    {
-        copy->setDatastoreEntry(key, mDatastore.value(key));
-    }
+    copyItemParameters(copy);
 
     return copy;
+}
+
+void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsW3CWidgetItem *cp = dynamic_cast<UBGraphicsW3CWidgetItem*>(copy);
+    if (cp)
+    {
+        cp->setPos(this->pos());
+        cp->setTransform(this->transform());
+        cp->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        cp->setSourceUrl(this->sourceUrl());
+
+        cp->resize(this->size());
+
+        foreach(QString key, mPreferences.keys())
+        {
+            cp->setPreference(key, mPreferences.value(key));
+        }
+
+        foreach(QString key, mDatastore.keys())
+        {
+            cp->setDatastoreEntry(key, mDatastore.value(key));
+        }
+    }
 }

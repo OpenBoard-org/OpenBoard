@@ -130,6 +130,9 @@ class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
         }
 
         virtual UBItem* deepCopy() const;
+
+        virtual void copyItemParameters(UBItem *copy) const;
+
         virtual void setUuid(const QUuid &pUuid);
 
 };
@@ -151,6 +154,8 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         }
 
         virtual UBItem* deepCopy() const;
+
+        virtual void copyItemParameters(UBItem *copy) const;
 
         UBW3CWidget::Metadata metadatas() const;
 

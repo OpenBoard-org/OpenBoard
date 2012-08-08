@@ -39,6 +39,8 @@ public:
 
     virtual UBItem* deepCopy() const;
 
+    virtual void copyItemParameters(UBItem *copy) const;
+
     QColor maskColor();
     void setMaskColor(QColor color);
     eMaskShape maskshape();
