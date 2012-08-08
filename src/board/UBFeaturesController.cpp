@@ -176,7 +176,7 @@ UBFeaturesComputingThread::~UBFeaturesComputingThread()
     mWaitCondition.wakeOne();
     mMutex.unlock();
 
-    quit();
+    wait();
 }
 
 UBFeature::UBFeature(const QString &url, const QImage &icon, const QString &name, const QUrl &realPath, UBFeatureElementType type)
