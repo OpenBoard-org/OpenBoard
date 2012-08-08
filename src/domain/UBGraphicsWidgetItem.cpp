@@ -110,7 +110,7 @@ void UBGraphicsWidgetItem::initialize()
 
     connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
-    connect(page(), SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
+    connect(this, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
 }
 
 QUrl UBGraphicsWidgetItem::mainHtml()
@@ -566,33 +566,30 @@ void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsI
 {
     if (mIsFrozen)
         painter->drawPixmap(0, 0, mSnapshot);
-    else if(mIsTakingSnapshot || (mInitialLoadDone && !mLoadIsErronous))
+    else
         QGraphicsWebView::paint(painter, option, widget);
-    else {
-        QString message = tr("Loading ...");
+    if (!mInitialLoadDone || mLoadIsErronous) {
+        QString message;
 
-        /* this is the right way of doing but we receive two callback and the one return always that the
-         * load as failed... to check
-            if (mLoadIsErronous)
-                message = tr("Cannot load content");
-            else
-                message = tr("Loading ...");
-         */
+        if (mInitialLoadDone && mLoadIsErronous)
+            message = tr("Cannot load content");
+        else
+            message = tr("Loading ...");
 
-         painter->setFont(QFont("Arial", 12));
+        painter->setFont(QFont("Arial", 12));
 
-         QFontMetrics fm = painter->fontMetrics();
-         QRect txtBoundingRect = fm.boundingRect(message);
+        QFontMetrics fm = painter->fontMetrics();
+        QRect txtBoundingRect = fm.boundingRect(message);
 
-         txtBoundingRect.moveCenter(rect().center().toPoint());
-         txtBoundingRect.adjust(-10, -5, 10, 5);
+        txtBoundingRect.moveCenter(rect().center().toPoint());
+        txtBoundingRect.adjust(-10, -5, 10, 5);
 
-         painter->setPen(Qt::NoPen);
-         painter->setBrush(UBSettings::paletteColor);
-         painter->drawRoundedRect(txtBoundingRect, 3, 3);
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(UBSettings::paletteColor);
+        painter->drawRoundedRect(txtBoundingRect, 3, 3);
 
-         painter->setPen(Qt::white);
-         painter->drawText(rect(), Qt::AlignCenter, message);
+        painter->setPen(Qt::white);
+        painter->drawText(rect(), Qt::AlignCenter, message);
     }
 }
 
