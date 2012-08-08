@@ -18,8 +18,9 @@
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBApplication.h"
-
+#include "board/UBBoardController.h"
 #include "core/memcheck.h"
+
 
 UBScreenMirror::UBScreenMirror(QWidget* parent)
     : QWidget(parent)
@@ -97,6 +98,8 @@ void UBScreenMirror::setSourceWidget(QWidget *sourceWidget)
 
 void UBScreenMirror::start()
 {
+    qDebug() << "mirroring START";
+    UBApplication::boardController->freezeW3CWidgets(true);
     if (mTimerID == 0)
     {
         int ms = 125;
@@ -120,6 +123,8 @@ void UBScreenMirror::start()
 
 void UBScreenMirror::stop()
 {
+    qDebug() << "mirroring STOP";
+    UBApplication::boardController->freezeW3CWidgets(false);
     if (mTimerID != 0)
     {
         killTimer(mTimerID);

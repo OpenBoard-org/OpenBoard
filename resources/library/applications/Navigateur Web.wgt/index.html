@@ -201,8 +201,7 @@
                     .attr("height", globalHeight - 120);
                 });
 							
-                function checkcontent(){
-														
+                function checkcontent(){								
                     if(window.sankore){
                         window.sankore.setPreference("url", $("#textbox").val());
                         window.sankore.setPreference("browserHistory", references.toString());
@@ -215,7 +214,6 @@
 			
                 function checkLoading(){
                     if(loadingState){
-
                         clearTimeout(resizer);
                         resizerIndex = 0;
                         $("#web-content")
@@ -227,9 +225,10 @@
                     };
                     if(resizerIndex > 80){
                         resizerIndex = 0;
+                        console.log("error on loading page");
                         $("#back-button").trigger("click");
-                        //alert(sankoreLang[lang].alert);
-                        $("#textbox").val("http://www.google.com/search?q=" + $("#textbox").val().replace("http://", ""));
+                        $("#textbox").val($("#textbox").val().replace("http://", ""));
+                        $("#textbox").val("http://www.metacrawler.com/search/web?&q=" + $("#textbox").val().replace("http://", "")+"&ql=");
                         $("#search-button").trigger("click");
                     }else{
                         resizer = setTimeout(function(){checkLoading()}, 100);

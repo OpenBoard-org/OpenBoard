@@ -50,6 +50,8 @@ class UBW3CWidget : public UBAbstractWidget
 
         static QString freezedWidgetPage();
 
+        static QString freezedWidgetFilePath();
+
         static bool hasNPAPIWrapper(const QString& pMimeType);
 
         class PreferenceValue

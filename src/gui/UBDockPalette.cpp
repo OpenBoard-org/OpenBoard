@@ -30,6 +30,7 @@
  */
 UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, const char *name)
 :QWidget(parent, Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint)
+, mCurrentMode(eUBDockPaletteWidget_BOARD)
 , mOrientation(eUBDockOrientation_Left)
 , mPreferredWidth(100)
 , mPreferredHeight(100)

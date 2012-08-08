@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#define UB_MAX_ZOOM 15
+#define UB_MAX_ZOOM 9
 
 struct UBMimeType
 {

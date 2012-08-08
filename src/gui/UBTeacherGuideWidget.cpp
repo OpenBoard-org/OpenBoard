@@ -21,6 +21,7 @@
 #include <QPushButton>
 #include <QDomDocument>
 
+
 #include "UBTeacherGuideWidget.h"
 
 #include "adaptors/UBSvgSubsetAdaptor.h"
@@ -37,6 +38,7 @@
 
 #include "gui/UBStylusPalette.h"
 #include "gui/UBActionPalette.h"
+#include "gui/UBMainWindow.h"
 
 #include "web/UBWebController.h"
 
@@ -1129,16 +1131,25 @@ UBTeacherGuideWidget::~UBTeacherGuideWidget()
 void UBTeacherGuideWidget::onActiveSceneChanged()
 {
     if (UBApplication::boardController->currentPage() == 0) {
+    	if(mpPageZeroWidget->isModified())
+    		mpPageZeroWidget->switchToMode(tUBTGZeroPageMode_PRESENTATION);
+    	else
+    		mpPageZeroWidget->switchToMode(tUBTGZeroPageMode_EDITION);
+
         setCurrentWidget(mpPageZeroWidget);
-        mpPageZeroWidget->switchToMode(tUBTGZeroPageMode_EDITION);
+
     }
-    else
-        setCurrentWidget(mpEditionWidget);
+    else{
+    	if(mpEditionWidget->isModified()){
+            mCurrentData = mpEditionWidget->getData();
+            mpPresentationWidget->showData(mCurrentData);
+    		setCurrentWidget(mpPresentationWidget);
+    	}
+    	else
+    		setCurrentWidget(mpEditionWidget);
+    }
 
 }
-
-#include "core/UBApplication.h"
-#include "gui/UBMainWindow.h"
 
 void UBTeacherGuideWidget::onTriggeredAction(bool checked)
 {

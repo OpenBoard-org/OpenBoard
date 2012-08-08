@@ -73,7 +73,7 @@ UBAbstractWidget::UBAbstractWidget(const QUrl& pWidgetUrl, QWidget *parent)
 
     connect(QWebView::page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(QWebView::page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SIGNAL(geometryChangeRequested(const QRect&)));
-    connect(QWebView::page(), SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
+    connect(this, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
 
     setMouseTracking(true);
 }
@@ -121,6 +121,7 @@ UBAbstractWidget::~UBAbstractWidget()
 
 void UBAbstractWidget::loadMainHtml()
 {
+    mInitialLoadDone = false;
     QWebView::load(mMainHtmlUrl);
 }
 
@@ -400,21 +401,21 @@ void UBAbstractWidget::paintEvent(QPaintEvent * event)
         QPainter p(this);
         p.drawPixmap(0, 0, mSnapshot);
     }
-    else if(mIsTakingSnapshot || (mInitialLoadDone && !mLoadIsErronous))
+    else
     {
         QWebView::paintEvent(event);
     }
-    else
+    if (!mInitialLoadDone || mLoadIsErronous)
     {
          QPainter p(this);
          QString message = tr("Loading ...");
 
          // this is the right way of doing but we receive two callback and the one return always that the
          // load as failed... to check
-//         if (mLoadIsErronous)
-//             message = tr("Cannot load content");
-//         else
-//             message = tr("Loading ...");
+         if (mInitialLoadDone && mLoadIsErronous)
+             message = tr("Cannot load content");
+         else
+             message = tr("Loading ...");
 
          p.setFont(QFont("Arial", 12));
 

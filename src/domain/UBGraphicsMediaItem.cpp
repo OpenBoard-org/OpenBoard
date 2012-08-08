@@ -23,6 +23,33 @@
 #include "board/UBBoardController.h"
 #include "core/memcheck.h"
 
+
+UBAudioPresentationWidget::UBAudioPresentationWidget(QWidget *parent)
+    : QWidget(parent)
+    , mBorderSize(10)
+    , mTitleSize(10)
+{
+
+}
+
+void UBAudioPresentationWidget::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    painter.fillRect(rect(), QBrush(Qt::black));
+
+    if (QString() != mTitle)
+    {
+        painter.setPen(QPen(Qt::white));                 
+        QRect titleRect = rect();
+        titleRect.setX(mBorderSize);
+        titleRect.setY(2);
+        titleRect.setHeight(15);
+        painter.drawText(titleRect, mTitle);
+    }
+
+    QWidget::paintEvent(event);
+}
+
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
 UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent)
@@ -67,9 +94,9 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 
         mMediaObject->setTickInterval(1000);
-        mAudioWidget = new UBGraphicsMediaItem::UBAudioPresentationWidget();
+        mAudioWidget = new UBAudioPresentationWidget();
         int borderSize = 0;
-        UBGraphicsMediaItem::UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBGraphicsMediaItem::UBAudioPresentationWidget*>(mAudioWidget);
+        UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
         if (pAudioWidget)
         {
             borderSize = pAudioWidget->borderSize();
@@ -161,6 +188,12 @@ void UBGraphicsMediaItem::clearSource()
 void UBGraphicsMediaItem::toggleMute()
 {
     mMuted = !mMuted;
+    setMute(mMuted);
+}
+
+void UBGraphicsMediaItem::setMute(bool bMute)
+{
+    mMuted = bMute;
     mAudioOutput->setMuted(mMuted);
     mMutedByUserAction = mMuted;
     sIsMutedByDefault = mMuted;
