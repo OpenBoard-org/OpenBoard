@@ -616,8 +616,8 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
     QLabel *mLabel = new QLabel(labelText, this);
     mLineEdit = new QLineEdit(this);
 
-    mValidator = new QRegExpValidator(QRegExp("[\^\/\:\?\*\|\<\>\"]{2,}"));
-    mLineEdit->setValidator(mValidator);
+    //mValidator = new QRegExpValidator(QRegExp("[A-Za-z][1-9][0-9]{0,2}"), this);
+    //mLineEdit->setValidator(mValidator);
     labelLayout->addWidget(mLabel);
     labelLayout->addWidget(mLineEdit);
 

@@ -156,21 +156,7 @@ UBGraphicsPolygonItem* UBGraphicsPolygonItem::deepCopy(const QPolygonF& pol) con
 {
     UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(pol);
 
-    copy->mOriginalLine = QLineF();
-    copy->mOriginalWidth = -1;
-    copy->mIsNominalLine = false;
-
-    copy->setStroke(this->stroke());
-    copy->setStrokesGroup(this->strokesGroup());
-    copy->setBrush(this->brush());
-    copy->setPen(this->pen());
-    copy->mHasAlpha = this->mHasAlpha;
-
-
-    copy->setColorOnDarkBackground(this->colorOnDarkBackground());
-    copy->setColorOnLightBackground(this->colorOnLightBackground());
-
-    copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+    copyItemParameters(copy);
 
     // TODO UB 4.7 ... complete all members ?
 
@@ -178,6 +164,28 @@ UBGraphicsPolygonItem* UBGraphicsPolygonItem::deepCopy(const QPolygonF& pol) con
 
 }
 
+void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsPolygonItem *cp = dynamic_cast<UBGraphicsPolygonItem*>(copy);
+    if (cp)
+    {
+        cp->mOriginalLine = QLineF();
+        cp->mOriginalWidth = -1;
+        cp->mIsNominalLine = false;
+
+        cp->setStroke(this->stroke());
+        cp->setStrokesGroup(this->strokesGroup());
+        cp->setBrush(this->brush());
+        cp->setPen(this->pen());
+        cp->mHasAlpha = this->mHasAlpha;
+
+
+        cp->setColorOnDarkBackground(this->colorOnDarkBackground());
+        cp->setColorOnLightBackground(this->colorOnLightBackground());
+
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+    }
+}
 
 void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {

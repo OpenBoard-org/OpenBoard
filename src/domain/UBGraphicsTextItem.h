@@ -40,6 +40,9 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         }
 
         virtual UBItem* deepCopy() const;
+
+        virtual void copyItemParameters(UBItem *copy) const;
+
         virtual UBGraphicsScene* scene();
 
         virtual QRectF boundingRect() const;

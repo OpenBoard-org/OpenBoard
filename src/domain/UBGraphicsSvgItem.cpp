@@ -135,14 +135,9 @@ UBItem* UBGraphicsSvgItem::deepCopy() const
 {
     UBGraphicsSvgItem* copy = new UBGraphicsSvgItem(this->fileData());
 
-    copy->setPos(this->pos());
-    copy->setTransform(this->transform());
-    copy->setFlag(QGraphicsItem::ItemIsMovable, true);
-    copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-    copy->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
-    copy->setUuid(this->uuid()); // this is OK for now as long as SVG are imutable
-    copy->setSourceUrl(this->sourceUrl());
+    copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
+
+    copyItemParameters(copy);
 
     // TODO UB 4.7... complete all members ?
 
@@ -150,6 +145,20 @@ UBItem* UBGraphicsSvgItem::deepCopy() const
 
 }
 
+void UBGraphicsSvgItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsSvgItem *cp = dynamic_cast<UBGraphicsSvgItem*>(copy);
+    if (cp)
+    {
+        cp->setPos(this->pos());
+        cp->setTransform(this->transform());
+        cp->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        cp->setSourceUrl(this->sourceUrl());
+    }
+}
 
 void UBGraphicsSvgItem::setRenderingQuality(RenderingQuality pRenderingQuality)
 {

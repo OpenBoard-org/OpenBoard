@@ -39,6 +39,7 @@ class UBGraphicsVideoItem;
 class UBGraphicsAudioItem;
 class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
+class UBItem;
 
 
 class UBBoardController : public UBDocumentContainer
@@ -157,6 +158,7 @@ class UBBoardController : public UBDocumentContainer
 
         void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
+        void duplicateItem(UBItem *item);
         void deleteScene(int index);
 
         bool cacheIsVisible() {return mCacheWidgetIsEnabled;}
@@ -188,7 +190,7 @@ class UBBoardController : public UBDocumentContainer
         void lastScene();
         void groupButtonClicked();
         void downloadURL(const QUrl& url, const QPointF& pPos = QPointF(0.0, 0.0), const QSize& pSize = QSize(), bool isBackground = false);
-        void downloadFinished(bool pSuccess, QUrl sourceUrl, QString pHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground = false);
+        UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QString pHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground = false);
         void changeBackground(bool isDark, bool isCrossed);
         void setToolCursor(int tool);
         void showMessage(const QString& message, bool showSpinningWheel);

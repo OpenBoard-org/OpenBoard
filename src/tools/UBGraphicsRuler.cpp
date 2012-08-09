@@ -75,13 +75,22 @@ UBItem* UBGraphicsRuler::deepCopy() const
 {
     UBGraphicsRuler* copy = new UBGraphicsRuler();
 
-    copy->setPos(this->pos());
-    copy->setRect(this->rect());
-    copy->setTransform(this->transform());
+    copyItemParameters(copy);
 
     // TODO UB 4.7 ... complete all members ?
 
     return copy;
+}
+
+void UBGraphicsRuler::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsRuler *cp = dynamic_cast<UBGraphicsRuler*>(copy);
+    if (cp)
+    {
+        cp->setPos(this->pos());
+        cp->setRect(this->rect());
+        cp->setTransform(this->transform());
+    }
 }
 
 void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget)

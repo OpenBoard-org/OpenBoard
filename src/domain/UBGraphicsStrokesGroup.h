@@ -14,6 +14,7 @@ public:
     UBGraphicsStrokesGroup(QGraphicsItem* parent = 0);
     ~UBGraphicsStrokesGroup();
     virtual UBItem* deepCopy() const;
+    virtual void copyItemParameters(UBItem *copy) const;
     virtual void remove();
     virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate;}
     enum { Type = UBGraphicsItemType::StrokeItemType };

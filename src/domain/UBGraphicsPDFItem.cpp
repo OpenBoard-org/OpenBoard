@@ -89,17 +89,26 @@ UBItem* UBGraphicsPDFItem::deepCopy() const
 {
     UBGraphicsPDFItem *copy =  new UBGraphicsPDFItem(mRenderer, mPageNumber, parentItem());
 
-    copy->setPos(this->pos());
-    copy->setTransform(this->transform());
-    copy->setFlag(QGraphicsItem::ItemIsMovable, true);
-    copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-    copy->setUuid(this->uuid()); // this is OK for now as long as PDF are imutable
-    copy->setSourceUrl(this->sourceUrl());
+    copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
+
+    copyItemParameters(copy);
 
     return copy;
 }
 
+void UBGraphicsPDFItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsPDFItem *cp = dynamic_cast<UBGraphicsPDFItem*>(copy);
+    if (cp)
+    {
+        cp->setPos(this->pos());
+        cp->setTransform(this->transform());
+        cp->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setSourceUrl(this->sourceUrl());
+    }
+}
 
 void UBGraphicsPDFItem::setRenderingQuality(RenderingQuality pRenderingQuality)
 {
