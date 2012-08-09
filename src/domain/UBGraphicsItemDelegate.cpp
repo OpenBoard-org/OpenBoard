@@ -727,7 +727,11 @@ void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsI
 }
 
 MediaTimer::MediaTimer(QGraphicsItem * parent): QGraphicsRectItem(parent) 
-{}
+{
+    val        = 0;
+    smallPoint = false;
+    setNumDigits(4);
+}
 
 MediaTimer::~MediaTimer()
 {}
@@ -810,9 +814,7 @@ void MediaTimer::drawDigit(const QPoint &pos, QPainter &p, int segLen,
      }
 }
 
-char* MediaTimer::getSegments(char ch)               // gets list of segments for ch
-{
-     char segments[30][8] =
+char MediaTimer::segments [][8] = 
         { 
               { 0, 1, 2, 4, 5, 6,99, 0},             // 0    0
               { 2, 5,99, 0, 0, 0, 0, 0},             // 1    1
@@ -827,16 +829,17 @@ char* MediaTimer::getSegments(char ch)               // gets list of segments fo
               { 8, 9,99, 0, 0, 0, 0, 0},             // 10   :
               {99, 0, 0, 0, 0, 0, 0, 0}              // 11   empty
         };
- 
-     int n;
+
+const char* MediaTimer::getSegments(char ch)               // gets list of segments for ch
+{
      if (ch >= '0' && ch <= '9')
         return segments[ch - '0'];
      if (ch == ':')
-        n = 10;
+        return segments[10];
      if (ch == ' ')
-        n = 11;
+        return segments[11];
      
-     return segments[n];
+     return NULL;
 }
 
 void MediaTimer::drawSegment(const QPoint &pos, char segmentNo, QPainter &p,
@@ -986,15 +989,8 @@ void MediaTimer::addPoint(QPolygon &a, const QPoint &p)
 }
 
 void MediaTimer::paint(QPainter *p,
-        const QStyleOptionGraphicsItem *option, QWidget *widget)
+        const QStyleOptionGraphicsItem *, QWidget*)
 {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-
-    QFont f = p->font();
-    f.setPointSizeF(f.pointSizeF());
-    p->setFont(f);
-
     if (smallPoint)
         drawString(digitStr, *p, &points, false);
     else
@@ -1056,13 +1052,6 @@ void MediaTimer::internalSetString(const QString& s)
     if (smallPoint)
         points = newPoints;
     update();
-}
-
-void MediaTimer::init()
-{
-    val        = 0;
-    smallPoint = false;
-    setNumDigits(4);
 }
 
 void MediaTimer::display(const QString &s)
@@ -1132,7 +1121,6 @@ DelegateMediaControl::DelegateMediaControl(UBGraphicsMediaItem* pDelegated, QGra
     setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
     lcdTimer = new MediaTimer(this);
-    lcdTimer->init();
 
     update();
 }
