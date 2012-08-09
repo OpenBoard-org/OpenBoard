@@ -889,11 +889,8 @@ void UBGraphicsW3CWidgetItem::paint(QPainter * painter, const QStyleOptionGraphi
       rc =  scene()->renderingContext();
 
     if (rc == UBGraphicsScene::NonScreen || rc == UBGraphicsScene::PdfExport) {
-
-        if (snapshot().isNull())
-            takeSnapshot();
-           
-        painter->drawPixmap(0, 0, snapshot());
+        if (!snapshot().isNull())
+           painter->drawPixmap(0, 0, snapshot());
     }
     else
         UBGraphicsWidgetItem::paint(painter, option, widget);
