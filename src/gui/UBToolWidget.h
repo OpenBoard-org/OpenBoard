@@ -17,6 +17,7 @@
 #define UBTOOLWIDGET_H_
 
 #include <QtGui>
+#include <QtWebKit>
 
 class UBGraphicsWidgetItem;
 class QWidget;
@@ -36,9 +37,11 @@ class UBToolWidget : public QGraphicsWidget
         QPointF naturalCenter() const;
 
         UBGraphicsWidgetItem* graphicsWidgetItem() const;
+        void remove();
         virtual UBGraphicsScene* scene();
         virtual void setPos(const QPointF &point);
         virtual void setPos(qreal x, qreal y);
+        virtual QPointF pos() const;
 
     protected:
         void initialize();
@@ -59,6 +62,7 @@ class UBToolWidget : public QGraphicsWidget
         static QPixmap *sUnpinPixmap;
 
         UBGraphicsWidgetItem *mGraphicsWidgetItem;
+        QGraphicsWebView *mGraphicsWebView;
 
         QPointF mMousePressPos;
 

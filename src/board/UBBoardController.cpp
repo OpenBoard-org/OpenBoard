@@ -2151,7 +2151,7 @@ void UBBoardController::togglePodcast(bool checked)
 
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
-    graphicsWidget->hide();
+    graphicsWidget->remove();
 
     UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget);
     mActiveScene->addItem(toolWidget);
@@ -2164,10 +2164,9 @@ void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* gr
 
 void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
-    UBGraphicsWidgetItem *graphicsWidgetItem = toolWidget->graphicsWidgetItem();
-
-    toolWidget->hide();
-    graphicsWidgetItem->show();
+    UBGraphicsWidgetItem *graphicsWidgetItem = addW3cWidget(toolWidget->graphicsWidgetItem()->widgetUrl(), QPointF(0, 0));
+    graphicsWidgetItem->setPos(toolWidget->pos());
+    toolWidget->remove();
     graphicsWidgetItem->setSelected(true); 
 }
 

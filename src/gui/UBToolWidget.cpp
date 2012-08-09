@@ -41,6 +41,7 @@ QPixmap* UBToolWidget::sUnpinPixmap = 0;
 UBToolWidget::UBToolWidget(const QUrl& pUrl, QGraphicsItem *pParent)
     : QGraphicsWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
     , mGraphicsWidgetItem(0)
+    , mGraphicsWebView(0)
     , mShouldMoveWidget(false)
 {
     int widgetType = UBGraphicsWidgetItem::widgetType(pUrl);
@@ -89,27 +90,22 @@ void UBToolWidget::initialize()
     graphicsLayout->setContentsMargins(mContentMargin, mContentMargin, mContentMargin, mContentMargin);
     setPreferredSize(mGraphicsWidgetItem->preferredWidth() + mContentMargin * 2, mGraphicsWidgetItem->preferredHeight() + mContentMargin * 2);
 
-    mGraphicsWidgetItem->setAcceptDrops(false);
+    mGraphicsWebView = new QGraphicsWebView();
+    connect(mGraphicsWebView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+    mGraphicsWebView->load(mGraphicsWidgetItem->mainHtml());
+    graphicsLayout->addItem(mGraphicsWebView);
 
-    mGraphicsWidgetItem->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    mGraphicsWebView->setAcceptDrops(false);
+    mGraphicsWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    mGraphicsWebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
 
-    mGraphicsWidgetItem->setAttribute(Qt::WA_OpaquePaintEvent, false);
-
-    QPalette palette = mGraphicsWidgetItem->page()->palette();
+    QPalette palette = mGraphicsWebView->page()->palette();
     palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-    mGraphicsWidgetItem->page()->setPalette(palette);
-
-    connect(mGraphicsWidgetItem->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
-    
-    QGraphicsWebView *addedGraphicsWebView = new QGraphicsWebView();
-    addedGraphicsWebView->load(mGraphicsWidgetItem->mainHtml());
-    graphicsLayout->addItem(addedGraphicsWebView);
+    mGraphicsWebView->page()->setPalette(palette);
 
     setLayout(graphicsLayout);
 
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(javaScriptWindowObjectCleared()));
-
-    mGraphicsWidgetItem->installEventFilter(this);
 }
 
 
@@ -117,13 +113,13 @@ void UBToolWidget::javaScriptWindowObjectCleared()
 {
     UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
 
-    mGraphicsWidgetItem->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
+    mGraphicsWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
 
     UBGraphicsW3CWidgetItem *graphicsW3cWidgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(mGraphicsWidgetItem);
     if (graphicsW3cWidgetItem)
     {
         UBW3CWidgetAPI* widgetAPI = new UBW3CWidgetAPI(graphicsW3cWidgetItem);
-        mGraphicsWidgetItem->page()->mainFrame()->addToJavaScriptWindowObject("widget", widgetAPI);
+        mGraphicsWebView->page()->mainFrame()->addToJavaScriptWindowObject("widget", widgetAPI);
     }
 }
 
@@ -135,6 +131,11 @@ void UBToolWidget::setPos(const QPointF &point)
 void UBToolWidget::setPos(qreal x, qreal y)
 {
     QGraphicsItem::setPos(x - mContentMargin * scale(), y - mContentMargin * scale());
+}
+
+QPointF UBToolWidget::pos() const
+{
+    return QPointF(QGraphicsItem::pos().x() + mContentMargin * scale(), QGraphicsItem::pos().y() + mContentMargin * scale());
 }
 
 void UBToolWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -192,7 +193,7 @@ void UBToolWidget::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (event->pos().x() >= 0 && event->pos().x() < sClosePixmap->width()
         && event->pos().y() >= 0 && event->pos().y() < sClosePixmap->height())
     {
-        hide();
+        remove();
         event->accept();
     }
     else if (mGraphicsWidgetItem->canBeContent() && event->pos().x() >= mContentMargin && event->pos().x() < mContentMargin + sUnpinPixmap->width()
@@ -235,8 +236,8 @@ void UBToolWidget::centerOn(const QPointF& pos)
 
 QPointF UBToolWidget::naturalCenter() const
 {
-    if (mGraphicsWidgetItem)
-        return mGraphicsWidgetItem->geometry().center();
+    if (mGraphicsWebView)
+        return mGraphicsWebView->geometry().center();
     else
         return QPointF(0, 0);
 }
@@ -250,4 +251,10 @@ UBGraphicsWidgetItem* UBToolWidget::graphicsWidgetItem() const
 UBGraphicsScene* UBToolWidget::scene()
 {
     return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+}
+
+void UBToolWidget::remove()
+{
+    mGraphicsWebView->setHtml(QString());
+    scene()->removeItem(this);
 }
