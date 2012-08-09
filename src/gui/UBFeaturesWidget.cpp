@@ -604,8 +604,6 @@ void UBFeaturesCentralWidget::increaseStatusBarValue()
 
 UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(parent)
 {
-//    SET_STYLE_SHEET()
-
     this->setStyleSheet("background:white;");
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
@@ -616,7 +614,7 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
     QLabel *mLabel = new QLabel(labelText, this);
     mLineEdit = new QLineEdit(this);
 
-    mValidator = new QRegExpValidator(QRegExp("[\^\/\:\?\*\|\<\>\"]{2,}"), this);
+    mValidator = new QRegExpValidator(QRegExp("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{2,}"), this);
     mLineEdit->setValidator(mValidator);
     labelLayout->addWidget(mLabel);
     labelLayout->addWidget(mLineEdit);

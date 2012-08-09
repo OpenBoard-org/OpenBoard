@@ -22,8 +22,6 @@
 
 const QString UBFeaturesController::virtualRootName = "root";
 
-
-
 void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString & currVirtualPath)
 {
     Q_ASSERT(QFileInfo(currentPath.toLocalFile()).exists());
