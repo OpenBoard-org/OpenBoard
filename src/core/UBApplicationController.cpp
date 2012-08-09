@@ -33,6 +33,8 @@
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
 
+#include "domain/UBGraphicsWidgetItem.h"
+
 #include "desktop/UBDesktopPalette.h"
 #include "desktop/UBDesktopAnnotationController.h"
 
@@ -44,7 +46,6 @@
 #include "gui/UBTeacherGuideWidget.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
-#include "domain/UBW3CWidget.h"
 
 #include "podcast/UBPodcastController.h"
 
@@ -318,7 +319,7 @@ void UBApplicationController::addCapturedEmbedCode(const QString& embedCode)
         int width = 300;
         int height = 150;
 
-        QString widgetPath = UBW3CWidget::createHtmlWrapperInDir(embedCode, userWidgetDir,
+        QString widgetPath = UBGraphicsW3CWidgetItem::createHtmlWrapperInDir(embedCode, userWidgetDir,
                 QSize(width, height), UBStringUtils::toCanonicalUuid(QUuid::createUuid()));
 
         if (widgetPath.length() > 0)

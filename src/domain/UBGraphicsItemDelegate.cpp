@@ -37,7 +37,6 @@
 
 #include "UBGraphicsWidgetItem.h"
 
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
@@ -379,22 +378,13 @@ void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
-//    QGraphicsScene* scene = mDelegated->scene();
     UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
-    if (scene)
+    if (scene && canUndo)
     {
-        foreach(DelegateButton* button, mButtons)
-            scene->removeItem(button);
-
-        scene->removeItem(mFrame);
-        scene->removeItem(mDelegated);
-
-        if (canUndo)
-        {
-            UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand((UBGraphicsScene*) scene, mDelegated, 0);
-            UBApplication::undoStack->push(uc);
-        }
+        UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand(scene, mDelegated, 0);
+        UBApplication::undoStack->push(uc);
     }
+    mDelegated->hide();  
 }
 
 

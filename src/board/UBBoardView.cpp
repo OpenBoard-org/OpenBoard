@@ -123,8 +123,6 @@ UBBoardView::init ()
   setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
   setAcceptDrops (true);
 
-  setOptimizationFlag (QGraphicsView::IndirectPainting); // enable UBBoardView::drawItems filter
-
   mTabletStylusIsPressed = false;
   mMouseButtonIsPressed = false;
   mPendingStylusReleaseEvent = false;
@@ -426,7 +424,7 @@ bool UBBoardView::itemShouldReceiveMousePressEvent(QGraphicsItem *item)
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
 
     if ((currentTool == UBStylusTool::Play) && UBGraphicsGroupContainerItem::Type == movingItem->type())
-        return movingItem = NULL;
+        return movingItem == NULL;
 
     switch(item->type())
     {
@@ -536,7 +534,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
         return !item->isSelected();
 
     default: 
-        false;
+        return false;
     }
 
     return false;
@@ -1182,7 +1180,7 @@ void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
             }
             QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
             QDragMoveEvent newEvent(newPoint, event->dropAction(), event->mimeData(), event->mouseButtons(), event->keyboardModifiers());
-            QApplication::sendEvent(graphicsWidget->widgetWebView(),&newEvent);
+            QApplication::sendEvent(graphicsWidget,&newEvent);
         } else {
             mOkOnWidget = false;
             event->ignore();

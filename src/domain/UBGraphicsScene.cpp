@@ -31,6 +31,7 @@
 
 #include "gui/UBMagnifer.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBToolWidget.h"
 
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsProtractor.h"
@@ -59,8 +60,6 @@
 
 #include "domain/UBGraphicsGroupContainerItem.h"
 
-#include "UBAppleWidget.h"
-#include "UBW3CWidget.h"
 #include "UBGraphicsStroke.h"
 
 #include "core/memcheck.h"
@@ -256,8 +255,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mDocument(parent)
     , mDarkBackground(false)
     , mCrossedBackground(false)
-    , mZoomFactor(1)
     , mIsDesktopMode(false)
+    , mZoomFactor(1)
     , mIsModified(true)
     , mBackgroundObject(0)
     , mPreviousWidth(0)
@@ -1396,7 +1395,7 @@ UBGraphicsMediaItem* UBGraphicsScene::addAudio(const QUrl& pAudioFileUrl, bool s
 
 UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
 {
-    int widgetType = UBAbstractWidget::widgetType(pWidgetUrl);
+    int widgetType = UBGraphicsWidgetItem::widgetType(pWidgetUrl);
 
     if(widgetType == UBWidgetType::Apple)
     {
@@ -1422,9 +1421,9 @@ UBGraphicsAppleWidgetItem* UBGraphicsScene::addAppleWidget(const QUrl& pWidgetUr
     return appleWidget;
 }
 
-UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos, int widgetType)
+UBGraphicsW3CWidgetItem* UBGraphicsScene::addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
 {
-    UBGraphicsW3CWidgetItem *w3CWidget = new UBGraphicsW3CWidgetItem(pWidgetUrl, 0, widgetType);
+    UBGraphicsW3CWidgetItem *w3CWidget = new UBGraphicsW3CWidgetItem(pWidgetUrl, 0);
 
     addGraphicsWidget(w3CWidget, pPos);
 
@@ -1444,7 +1443,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     graphicsWidget->setPos(QPointF(pPos.x() - graphicsWidget->boundingRect().width() / 2,
         pPos.y() - graphicsWidget->boundingRect().height() / 2));
 
-    if (graphicsWidget->widgetWebView()->canBeContent())
+    if (graphicsWidget->canBeContent())
     {
 //        graphicsWidget->widgetWebView()->loadMainHtml();
 
@@ -1463,6 +1462,8 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     UBApplication::boardController->controlView()->setFocus();
 }
+
+
 
 UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, const QPointF& pPos)
 {

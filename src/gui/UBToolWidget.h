@@ -18,32 +18,35 @@
 
 #include <QtGui>
 
-class UBAbstractWidget;
+class UBGraphicsWidgetItem;
 class QWidget;
 class UBGraphicsScene;
 
-class UBToolWidget : public QWidget
+class UBToolWidget : public QGraphicsWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
-        UBToolWidget(const QUrl& pUrl, QWidget* pParent = 0);
-        UBToolWidget(UBAbstractWidget* pWidget, QWidget* pParent = 0);
+        UBToolWidget(const QUrl& pUrl, QGraphicsItem *pParent = 0);
+        UBToolWidget(UBGraphicsWidgetItem* pGraphicsWidgetItem, QGraphicsItem *pParent = 0);
         virtual ~UBToolWidget();
 
-        void centerOn(const QPoint& pos);
+        void centerOn(const QPointF& pos);
 
-        QPoint naturalCenter() const;
+        QPointF naturalCenter() const;
 
-        UBAbstractWidget* webWidget() const;
+        UBGraphicsWidgetItem* graphicsWidgetItem() const;
+        virtual UBGraphicsScene* scene();
+        virtual void setPos(const QPointF &point);
+        virtual void setPos(qreal x, qreal y);
 
     protected:
         void initialize();
-        virtual void paintEvent(QPaintEvent *);
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-        virtual void mousePressEvent ( QMouseEvent * event );
-        virtual void mouseMoveEvent ( QMouseEvent * event );
-        virtual void mouseReleaseEvent ( QMouseEvent * event );
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
         virtual bool eventFilter(QObject *obj, QEvent *event);
 
@@ -55,9 +58,9 @@ class UBToolWidget : public QWidget
         static QPixmap *sClosePixmap;
         static QPixmap *sUnpinPixmap;
 
-        UBAbstractWidget *mToolWidget;
+        UBGraphicsWidgetItem *mGraphicsWidgetItem;
 
-        QPoint mMousePressPos;
+        QPointF mMousePressPos;
 
         bool mShouldMoveWidget;
 

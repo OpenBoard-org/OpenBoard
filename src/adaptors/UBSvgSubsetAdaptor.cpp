@@ -27,7 +27,6 @@
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsTextItemDelegate.h"
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsStrokesGroup.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
@@ -2488,7 +2487,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsW3CWidgetToSvg(UBGraphicsW3C
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidgetItem* item)
 {
-    QUrl widgetRootUrl = item->widgetWebView()->widgetUrl();
+    QUrl widgetRootUrl = item->widgetUrl();
     QString uuid = UBStringUtils::toCanonicalUuid(item->uuid());
     QString widgetDirectoryPath = UBPersistenceManager::widgetDirectory;
     if (widgetRootUrl.toString().startsWith("file://"))
@@ -2517,13 +2516,13 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
 
     graphicsItemToSvg(item);
 
-    if (item->widgetWebView()->isFrozen())
+    if (item->isFrozen())
     {
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "frozen", xmlTrue);
     }
 
     QString snapshotPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid + ".png";
-    item->widgetWebView()->takeSnapshot().save(snapshotPath, "PNG");
+    item->takeSnapshot().save(snapshotPath, "PNG");
 
     mXmlWriter.writeStartElement(nsXHtml, "iframe");
 
@@ -2532,10 +2531,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
 
     QString startFileUrl;
-    if (item->widgetWebView()->mainHtmlFileName().startsWith("http://"))
-        startFileUrl = item->widgetWebView()->mainHtmlFileName();
+    if (item->mainHtmlFileName().startsWith("http://"))
+        startFileUrl = item->mainHtmlFileName();
     else
-        startFileUrl = widgetRootUrl.toString() + "/" + item->widgetWebView()->mainHtmlFileName();
+        startFileUrl = widgetRootUrl.toString() + "/" + item->mainHtmlFileName();
 
     mXmlWriter.writeAttribute("src", startFileUrl);
     mXmlWriter.writeEndElement(); //iFrame
@@ -2626,13 +2625,13 @@ UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidge
 
     QPixmap snapshot(pixPath);
     if (!snapshot.isNull())
-        widgetItem->w3cWidget()->setSnapshot(snapshot);
+        widgetItem->setSnapshot(snapshot);
 
     QStringRef frozen = mXmlReader.attributes().value(mNamespaceUri, "frozen");
 
     if (!frozen.isNull() && frozen.toString() == xmlTrue && !snapshot.isNull())
     {
-        widgetItem->w3cWidget()->freeze();
+        widgetItem->freeze();
     }
 
     graphicsItemFromSvg(widgetItem);

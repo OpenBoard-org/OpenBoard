@@ -48,7 +48,6 @@
 #include "network/UBServerXMLHttpRequest.h"
 
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsPixmapItem.h"
 
 #include "document/UBDocumentProxy.h"

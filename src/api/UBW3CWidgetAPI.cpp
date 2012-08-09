@@ -30,24 +30,13 @@
 
 #include "core/memcheck.h"
 
-UBW3CWidgetAPI::UBW3CWidgetAPI(UBGraphicsW3CWidgetItem *graphicsWidget)
-    : QObject(graphicsWidget)
+UBW3CWidgetAPI::UBW3CWidgetAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QObject *parent)
+    : QObject(parent)
     , mGraphicsW3CWidget(graphicsWidget)
-    , mW3CWidget(mGraphicsW3CWidget->w3cWidget())
 {
-    mPreferencesAPI = new UBW3CWidgetPreferenceAPI(graphicsWidget);
+    mPreferencesAPI = new UBW3CWidgetPreferenceAPI(graphicsWidget, parent);
 
 }
-
-
-UBW3CWidgetAPI::UBW3CWidgetAPI(UBW3CWidget *widget)
-    : QObject(widget)
-    , mGraphicsW3CWidget(0)
-    , mW3CWidget(widget)
-{
-    mPreferencesAPI = new UBW3CWidgetPreferenceAPI(widget);
-}
-
 
 UBW3CWidgetAPI::~UBW3CWidgetAPI()
 {
@@ -66,55 +55,55 @@ QString UBW3CWidgetAPI::uuid()
 
 int UBW3CWidgetAPI::width()
 {
-    return mW3CWidget->geometry().width();
+    return mGraphicsW3CWidget->nominalSize().width();
 }
 
 
 int UBW3CWidgetAPI::height()
 {
-    return mW3CWidget->geometry().height();
+    return mGraphicsW3CWidget->nominalSize().height();
 }
 
 
 QString UBW3CWidgetAPI::id()
 {
-    return mW3CWidget->metadatas().id;
+    return mGraphicsW3CWidget->metadatas().id;
 }
 
 
 QString UBW3CWidgetAPI::name()
 {
-    return mW3CWidget->metadatas().name;
+    return mGraphicsW3CWidget->metadatas().name;
 }
 
 
 QString UBW3CWidgetAPI::description()
 {
-    return mW3CWidget->metadatas().description;
+    return mGraphicsW3CWidget->metadatas().description;
 }
 
 
 QString UBW3CWidgetAPI::author()
 {
-    return mW3CWidget->metadatas().author;
+    return mGraphicsW3CWidget->metadatas().author;
 }
 
 
 QString UBW3CWidgetAPI::authorEmail()
 {
-    return mW3CWidget->metadatas().authorEmail;
+    return mGraphicsW3CWidget->metadatas().authorEmail;
 }
 
 
 QString UBW3CWidgetAPI::authorHref()
 {
-    return mW3CWidget->metadatas().authorHref;
+    return mGraphicsW3CWidget->metadatas().authorHref;
 }
 
 
 QString UBW3CWidgetAPI::version()
 {
-    return mW3CWidget->metadatas().version;
+    return mGraphicsW3CWidget->metadatas().version;
 }
 
 QObject* UBW3CWidgetAPI::preferences()
@@ -129,23 +118,12 @@ void UBW3CWidgetAPI::openURL(const QString& url)
 }
 
 
-UBW3CWidgetPreferenceAPI::UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget)
-    : UBW3CWebStorage(graphicsWidget)
+UBW3CWidgetPreferenceAPI::UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QObject *parent)
+    : UBW3CWebStorage(parent)
     , mGraphicsW3CWidget(graphicsWidget)
-    , mW3CWidget(graphicsWidget->w3cWidget())
 {
     // NOOP
 }
-
-UBW3CWidgetPreferenceAPI::UBW3CWidgetPreferenceAPI(UBW3CWidget *widget)
-    : UBW3CWebStorage(widget)
-    , mGraphicsW3CWidget(0)
-    , mW3CWidget(widget)
-{
-    // NOOP
-}
-
-
 
 UBW3CWidgetPreferenceAPI::~UBW3CWidgetPreferenceAPI()
 {
@@ -155,45 +133,36 @@ UBW3CWidgetPreferenceAPI::~UBW3CWidgetPreferenceAPI()
 
 QString UBW3CWidgetPreferenceAPI::key(int index)
 {
-   QMap<QString, UBW3CWidget::PreferenceValue> w3CPrefs = mW3CWidget->preferences();
+  QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3CPrefs = mGraphicsW3CWidget->preferences();
 
-   if (index < w3CPrefs.size())
-       return w3CPrefs.keys().at(index);
-   else
-       return "";
-
+  if (index < w3CPrefs.size())
+    return w3CPrefs.keys().at(index);
+  else
+    return "";
 }
-
 
 QString UBW3CWidgetPreferenceAPI::getItem(const QString& key)
 {
-   if (mGraphicsW3CWidget)
-   {
-       QMap<QString, QString> docPref = mGraphicsW3CWidget->preferences();
+  if (mGraphicsW3CWidget) {
+    QMap<QString, QString> docPref = mGraphicsW3CWidget->UBGraphicsWidgetItem::preferences();
+    if (docPref.contains(key))
+      return docPref.value(key);
+  }
 
-       if (docPref.contains(key))
-           return docPref.value(key);
-   }
+  QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
 
-   QMap<QString, UBW3CWidget::PreferenceValue> w3cPrefs = mW3CWidget->preferences();
+  if (w3cPrefs.contains(key)) {
+    UBGraphicsW3CWidgetItem::PreferenceValue pref = w3cPrefs.value(key);
+    return pref.value;
+  }
 
-   if (w3cPrefs.contains(key))
-   {
-       UBW3CWidget::PreferenceValue pref = w3cPrefs.value(key);
-
-       return pref.value;
-   }
-   else
-   {
-       return "";
-   }
-
+  else
+    return "";
 }
-
 
 int UBW3CWidgetPreferenceAPI::length()
 {
-   QMap<QString, UBW3CWidget::PreferenceValue> w3cPrefs = mW3CWidget->preferences();
+   QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
 
    return w3cPrefs.size();
 }
@@ -201,39 +170,28 @@ int UBW3CWidgetPreferenceAPI::length()
 
 void UBW3CWidgetPreferenceAPI::setItem(const QString& key, const QString& value)
 {
-   if (mGraphicsW3CWidget)
-   {
-       QMap<QString, UBW3CWidget::PreferenceValue> w3cPrefs = mW3CWidget->preferences();
+  if (mGraphicsW3CWidget) {
+    QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
 
-       if (w3cPrefs.contains(key) && !w3cPrefs.value(key).readonly)
-           mGraphicsW3CWidget->setPreference(key, value);
-   }
-   else
-   {
-       // No state for non graphics widget (aka tool widget)
-   }
+    if (w3cPrefs.contains(key) && !w3cPrefs.value(key).readonly)
+      mGraphicsW3CWidget->setPreference(key, value);
+  }
 }
+
+
 
 
 void UBW3CWidgetPreferenceAPI::removeItem(const QString& key)
 {
-   if (mGraphicsW3CWidget)
-       mGraphicsW3CWidget->removePreference(key);
-   else
-   {
-       // No state for non graphics widget (aka tool widget)
-   }
+  if (mGraphicsW3CWidget)
+    mGraphicsW3CWidget->removePreference(key);
 }
 
 
 void UBW3CWidgetPreferenceAPI::clear()
 {
-    if (mGraphicsW3CWidget)
-        mGraphicsW3CWidget->removeAllPreferences();
-    else
-    {
-       // No state for non graphics widget (aka tool widget)
-    }
+  if (mGraphicsW3CWidget)
+    mGraphicsW3CWidget->removeAllPreferences();
 }
 
 

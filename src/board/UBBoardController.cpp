@@ -49,7 +49,6 @@
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsPDFItem.h"
-#include "domain/UBW3CWidget.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBPageSizeUndoCommand.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
@@ -1151,7 +1150,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         else
             size = mActiveScene->nominalSize() * .8;
 
-        QString widgetUrl = UBW3CWidget::createNPAPIWrapper(sUrl, mimeType, size);
+        QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(sUrl, mimeType, size);
 
         if (widgetUrl.length() > 0)
         {
@@ -1274,7 +1273,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
                         else
                             size = mActiveScene->nominalSize() * .8;
 
-                        QString widgetUrl = UBW3CWidget::createNPAPIWrapper(swfFile, "application/x-shockwave-flash", size);
+                        QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(swfFile, "application/x-shockwave-flash", size);
 
                         if (widgetUrl.length() > 0)
                         {
@@ -1655,52 +1654,15 @@ qreal UBBoardController::currentZoom()
         return 1.0;
 }
 
-
-UBToolWidget* UBBoardController::addTool(const QUrl& toolUrl)
-{
-    return addTool(toolUrl, mControlView->mapToScene(mControlView->rect().center()));
-}
-
-
-UBToolWidget* UBBoardController::addTool(const QUrl& toolUrl, QPointF scenePos)
-{
-    UBToolWidget *toolWidget = new UBToolWidget(toolUrl, mMainWindow); // Deleted in UBBoardController::removeTool
-    QPoint pos = mControlView->mapToGlobal(mControlView->mapFromScene(scenePos));
-    pos -= QPoint(toolWidget->width() / 2, toolWidget->height() / 2);
-
-    toolWidget->move(pos);
-
-    mTools.append(toolWidget);
-
-    toolWidget->show();
-
-    return toolWidget;
-}
-
-
-void UBBoardController::removeTool(UBToolWidget* toolWidget)
-{
-    toolWidget->hide();
-
-    mTools.removeAll(toolWidget);
-
-    delete toolWidget;
-}
-
-
 void UBBoardController::hide()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
-
-    controlViewHidden();
 }
 
 
 void UBBoardController::show()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
-
-    controlViewShown();
 }
 
 
@@ -1925,25 +1887,6 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
     }
 }
 
-
-void UBBoardController::controlViewHidden()
-{
-    foreach(UBToolWidget* tool, mTools)
-    {
-        tool->hide();
-    }
-}
-
-
-void UBBoardController::controlViewShown()
-{
-    foreach(UBToolWidget* tool, mTools)
-    {
-        tool->show();
-    }
-}
-
-
 UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
 {
     QUuid uuid = QUuid::createUuid();
@@ -2003,7 +1946,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
         w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
         UBGraphicsWidgetItem *tmpItem = dynamic_cast<UBGraphicsWidgetItem*>(w3cWidgetItem);
         if (tmpItem)
-           tmpItem->widgetWebView()->takeSnapshot().save(snapshotPath, "PNG");
+           tmpItem->takeSnapshot().save(snapshotPath, "PNG");
 
     }
 
@@ -2208,56 +2151,24 @@ void UBBoardController::togglePodcast(bool checked)
 
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
-    QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
+    graphicsWidget->hide();
 
-    graphicsWidget->setSelected(false);
+    UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget);
+    mActiveScene->addItem(toolWidget);
+    qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
 
-    UBAbstractWidget *aw = graphicsWidget->widgetWebView();
-    graphicsWidget->setWidget(0);
-
-    UBToolWidget *toolWidget = new UBToolWidget(aw, mControlContainer);
-
-    graphicsWidget->scene()->removeItem(graphicsWidget); // TODO UB 4.6 probably leaking the frame
-
-    toolWidget->centerOn(mControlView->mapTo(mControlContainer, controlViewPos));
-
-    toolWidget->show();
+    toolWidget->setScale(ssf);
+    toolWidget->setPos(graphicsWidget->scenePos());
 }
 
 
 void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
-    int xIsOdd = toolWidget->width() % 2;
-    int yIsOdd = toolWidget->height() % 2;
-
-    QPoint mainWindowCenter = toolWidget->mapTo(mMainWindow, QPoint(toolWidget->width(), toolWidget->height()) / 2);
-
-    UBAbstractWidget* webWidget = toolWidget->webWidget();
-    webWidget->setParent(0);
-
-    UBGraphicsWidgetItem* graphicsWidget = 0;
-
-    UBW3CWidget* w3cWidget = qobject_cast<UBW3CWidget*>(webWidget);
-    if (w3cWidget)
-    {
-        graphicsWidget = new UBGraphicsW3CWidgetItem(w3cWidget);
-    }
-    else
-    {
-        UBAppleWidget* appleWidget = qobject_cast<UBAppleWidget*>(webWidget);
-        if (appleWidget)
-        {
-            graphicsWidget = new UBGraphicsAppleWidgetItem(appleWidget);
-        }
-    }
-
-    QPoint controlViewCenter = mControlView->mapFrom(mMainWindow, mainWindowCenter);
-    QPointF scenePos = mControlView->mapToScene(controlViewCenter) + QPointF(xIsOdd * 0.5, yIsOdd * 0.5);
-
-    mActiveScene->addGraphicsWidget(graphicsWidget, scenePos);
+    UBGraphicsWidgetItem *graphicsWidgetItem = toolWidget->graphicsWidgetItem();
 
     toolWidget->hide();
-    toolWidget->deleteLater();
+    graphicsWidgetItem->show();
+    graphicsWidgetItem->setSelected(true); 
 }
 
 
@@ -2343,8 +2254,8 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
             return;
 
         if (freeze) {
-            item_casted->widgetWebView()->load(QUrl(item_casted->w3cWidget()->freezedWidgetFilePath()));
-        }else
-            item_casted->widgetWebView()->loadMainHtml();
+            item_casted->load(QUrl(UBGraphicsW3CWidgetItem::freezedWidgetFilePath()));
+        } else
+            item_casted->loadMainHtml();
     }
 }
