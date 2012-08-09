@@ -45,6 +45,8 @@ private slots:
     void onActionRemoveFavorite();
     void onActionTrash();
     void onActionRescanModel();
+    void lockIt();
+    void unlockIt();
 
 protected:
     void dragEnterEvent( QDragEnterEvent *event );

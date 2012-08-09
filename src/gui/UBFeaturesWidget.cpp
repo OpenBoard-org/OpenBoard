@@ -1,5 +1,4 @@
 #include <QDomDocument>
-
 #include "UBFeaturesWidget.h"
 #include "domain/UBAbstractWidget.h"
 #include "gui/UBThumbnailWidget.h"
@@ -61,6 +60,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     layout->addWidget(mActionBar);
 
     connect(centralWidget->listView(), SIGNAL(clicked(const QModelIndex &)), this, SLOT(currentSelected(const QModelIndex &)));
+    connect(this, SIGNAL(sendFileNameList(QStringList)), centralWidget, SIGNAL(sendFileNameList(QStringList)));
     connect(mActionBar, SIGNAL(searchElement(const QString &)), this, SLOT( searchStarted(const QString &)));
     connect(mActionBar, SIGNAL(newFolderToCreate()), this, SLOT(createNewFolder()));
     connect(mActionBar, SIGNAL(deleteElements(const UBFeaturesMimeData *)), this, SLOT(deleteElements(const UBFeaturesMimeData *)));
@@ -79,6 +79,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     connect(centralWidget, SIGNAL(createNewFolderSignal(QString)), controller, SLOT(addNewFolder(QString)));
     connect(controller, SIGNAL(scanStarted()), centralWidget, SLOT(scanStarted()));
     connect(controller, SIGNAL(scanFinished()), centralWidget, SLOT(scanFinished()));
+    connect(controller, SIGNAL(scanStarted()), mActionBar, SLOT(lockIt()));
+    connect(controller, SIGNAL(scanFinished()), mActionBar, SLOT(unlockIt()));
     connect(controller, SIGNAL(maxFilesCountEvaluated(int)), centralWidget, SIGNAL(maxFilesCountEvaluated(int)));
     connect(controller, SIGNAL(featureAddedFromThread()), centralWidget, SLOT(increaseStatusBarValue()));
 }
@@ -145,6 +147,7 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 void UBFeaturesWidget::createNewFolder()
 {
     centralWidget->showAdditionalData(UBFeaturesCentralWidget::NewFolderDialog, UBFeaturesCentralWidget::Modal);
+    emit sendFileNameList(controller->getFileNamesInFolders());
 }
 
 void UBFeaturesWidget::addFolder()
@@ -492,6 +495,7 @@ UBFeaturesCentralWidget::UBFeaturesCentralWidget(QWidget *parent) : QWidget(pare
 
     connect(dlg, SIGNAL(createNewFolder(QString)), this, SLOT(createNewFolderSlot(QString)));
     connect(dlg, SIGNAL(closeDialog()), this, SLOT(hideAdditionalData()));
+    connect(this, SIGNAL(sendFileNameList(QStringList)), dlg, SLOT(setFileNameList(QStringList)));
 
     //Progress bar to show scanning progress
     QProgressBar *progressBar = new QProgressBar();
@@ -621,7 +625,7 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
 
     QHBoxLayout *buttonLayout = new QHBoxLayout(this);
 
-    QPushButton *acceptButton = new QPushButton(acceptText, this);
+    acceptButton = new QPushButton(acceptText, this);
     QPushButton *cancelButton = new QPushButton(cancelText, this);
     buttonLayout->addWidget(acceptButton);
     buttonLayout->addWidget(cancelButton);
@@ -629,13 +633,22 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
     mainLayout->addLayout(labelLayout);
     mainLayout->addLayout(buttonLayout);
 
+    acceptButton->setEnabled(false);
+
     connect(acceptButton, SIGNAL(clicked()), this, SLOT(accept()));
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(mLineEdit, SIGNAL(textEdited(QString)), this, SLOT(reactOnTextChanged(QString)));
+
+    reactOnTextChanged(QString());
 }
 
 void UBFeaturesNewFolderDialog::setRegexp(const QRegExp pRegExp)
 {
     mValidator->setRegExp(pRegExp);
+}
+bool UBFeaturesNewFolderDialog::validString(const QString &pStr)
+{
+    return mLineEdit->hasAcceptableInput() && !mFileNameList.contains(pStr, Qt::CaseSensitive);
 }
 
 void UBFeaturesNewFolderDialog::accept()
@@ -648,6 +661,20 @@ void UBFeaturesNewFolderDialog::reject()
 {
     mLineEdit->clear();
     emit closeDialog();
+}
+void UBFeaturesNewFolderDialog::setFileNameList(const QStringList &pLst)
+{
+    mFileNameList = pLst;
+}
+void UBFeaturesNewFolderDialog::reactOnTextChanged(const QString &pStr)
+{
+    if (validString(pStr)) {
+        acceptButton->setEnabled(true);
+        mLineEdit->setStyleSheet("background:white;");
+    } else {
+        acceptButton->setEnabled(false);
+        mLineEdit->setStyleSheet("background:#FFB3C8;");
+    }
 }
 
 UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(parent)
