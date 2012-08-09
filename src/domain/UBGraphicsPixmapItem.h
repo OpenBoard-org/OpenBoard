@@ -40,6 +40,8 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
         }
         virtual UBItem* deepCopy() const;
 
+        virtual void copyItemParameters(UBItem *copy) const;
+
         virtual UBGraphicsScene* scene();
 
         virtual void remove();

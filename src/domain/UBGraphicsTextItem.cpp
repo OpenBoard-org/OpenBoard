@@ -201,28 +201,36 @@ UBItem* UBGraphicsTextItem::deepCopy() const
 {
     UBGraphicsTextItem* copy = new UBGraphicsTextItem();
 
-    copy->setHtml(toHtml());
-    copy->setPos(this->pos());
-    copy->setTransform(this->transform());
-    copy->setFlag(QGraphicsItem::ItemIsMovable, true);
-    copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-    copy->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
-    copy->setData(UBGraphicsItemData::ItemEditable, data(UBGraphicsItemData::ItemEditable).toBool());
-//    copy->setDefaultTextColor(this->defaultTextColor());
-//    copy->setFont(this->font());
-//    copy->setColorOnDarkBackground(this->colorOnDarkBackground());
-//    copy->setColorOnLightBackground(this->colorOnLightBackground());
-    copy->setTextWidth(this->textWidth());
-    copy->setTextHeight(this->textHeight());
-
-    copy->setSourceUrl(this->sourceUrl());
+    copyItemParameters(copy);
 
    // TODO UB 4.7 ... complete all members ?
 
    return copy;
 }
 
+void UBGraphicsTextItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsTextItem *cp = dynamic_cast<UBGraphicsTextItem*>(copy);
+    if (cp)
+    {
+        cp->setHtml(toHtml());
+        cp->setPos(this->pos());
+        cp->setTransform(this->transform());
+        cp->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        cp->setData(UBGraphicsItemData::ItemEditable, data(UBGraphicsItemData::ItemEditable).toBool());
+        //    cp->setDefaultTextColor(this->defaultTextColor());
+        //    cp->setFont(this->font());
+        //    cp->setColorOnDarkBackground(this->colorOnDarkBackground());
+        //    cp->setColorOnLightBackground(this->colorOnLightBackground());
+        cp->setTextWidth(this->textWidth());
+        cp->setTextHeight(this->textHeight());
+
+        cp->setSourceUrl(this->sourceUrl());
+    }
+}
 
 QRectF UBGraphicsTextItem::boundingRect() const
 {

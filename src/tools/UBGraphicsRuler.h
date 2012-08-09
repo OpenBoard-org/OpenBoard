@@ -41,6 +41,7 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
         }
 
         virtual UBItem* deepCopy() const;
+        virtual void copyItemParameters(UBItem *copy) const;
 
 		virtual void StartLine(const QPointF& position, qreal width);
 		virtual void DrawLine(const QPointF& position, qreal width);

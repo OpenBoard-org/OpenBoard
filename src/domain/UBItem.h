@@ -20,6 +20,7 @@
 #include "core/UB.h"
 
 class UBGraphicsScene;
+class UBGraphicsItem;
 
 class UBItem
 {
@@ -57,6 +58,8 @@ class UBItem
         }
 
         virtual UBItem* deepCopy() const = 0;
+
+        virtual void copyItemParameters(UBItem *copy) const = 0;
 
         virtual UBGraphicsScene* scene() // TODO UB 4.x should be pure virtual ...
         {

@@ -24,6 +24,8 @@ public:
 
     virtual UBGraphicsScene* scene();
     virtual UBGraphicsGroupContainerItem *deepCopy() const;
+    virtual void copyItemParameters(UBItem *copy) const;
+
     virtual void remove();
     enum { Type = UBGraphicsItemType::groupContainerType };
 

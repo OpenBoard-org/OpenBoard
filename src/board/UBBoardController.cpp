@@ -53,6 +53,7 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBPageSizeUndoCommand.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
+#include "domain/UBItem.h"
 
 #include "tools/UBToolsManager.h"
 
@@ -529,6 +530,92 @@ void UBBoardController::duplicateScene()
     duplicateScene(mActiveSceneIndex);
 }
 
+void UBBoardController::duplicateItem(UBItem *item)
+{    
+    if (!item)
+        return;
+
+    QUrl sourceUrl;
+    QByteArray pData;
+
+    //common parameters for any item
+    QPointF itemPos;
+    QSizeF itemSize;
+
+    QGraphicsItem *commonItem = dynamic_cast<QGraphicsItem*>(item);
+    if (commonItem)
+    {
+        itemPos = commonItem->pos();
+        itemSize = commonItem->boundingRect().size();
+    }
+
+    QString contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(item->sourceUrl().toLocalFile());
+   
+    UBMimeType::Enum itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
+        
+    switch(static_cast<int>(itemMimeType))
+    {
+    case UBMimeType::AppleWidget:
+    case UBMimeType::W3CWidget:
+        {
+            UBGraphicsWidgetItem *witem = dynamic_cast<UBGraphicsWidgetItem*>(item);
+            if (witem)
+            {
+                sourceUrl = witem->getOwnFolder();
+            }
+        }break;
+
+    case UBMimeType::Video:
+    case UBMimeType::Audio:
+        {
+            UBGraphicsMediaItem *mitem = dynamic_cast<UBGraphicsMediaItem*>(item);
+            if (mitem)
+            {
+                sourceUrl = mitem->mediaFileUrl();
+            }
+        }break;
+
+    case UBMimeType::VectorImage:
+        {
+            UBGraphicsSvgItem *viitem = dynamic_cast<UBGraphicsSvgItem*>(item);
+            if (viitem)
+            {
+                pData = viitem->fileData();
+                sourceUrl = item->sourceUrl();
+            }
+        }break;
+
+    case UBMimeType::RasterImage:
+        {
+            UBGraphicsPixmapItem *pixitem = dynamic_cast<UBGraphicsPixmapItem*>(item);
+            if (pixitem)
+            {
+                 QBuffer buffer(&pData);
+                 buffer.open(QIODevice::WriteOnly);
+                 QString format = UBFileSystemUtils::extension(item->sourceUrl().toLocalFile());
+                 pixitem->pixmap().save(&buffer, format.toLatin1());
+            }
+        }break;
+    case UBMimeType::UNKNOWN:
+        {
+            QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
+            if (gitem)
+            {   
+                mActiveScene->addItem(gitem);
+                gitem->setPos(itemPos);
+            }
+            return;
+        }break;
+    }    
+    
+    UBItem *createdItem = downloadFinished(true, sourceUrl, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
+    if (createdItem)
+    {
+        createdItem->setSourceUrl(item->sourceUrl());
+        item->copyItemParameters(createdItem);
+    } 
+}
+
 void UBBoardController::deleteScene(int nIndex)
 {
     if (selectedDocument()->pageCount()>2)
@@ -854,7 +941,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
 }
 
 
-void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
+UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
     QString mimeType = pContentTypeHeader;
 
@@ -869,7 +956,7 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
     if (!pSuccess)
     {
         UBApplication::showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
-        return;
+        return NULL;
     }
 
     if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("uniboardTool://"))
@@ -897,12 +984,14 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             pixItem->setSelected(true);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
+
+        return pixItem;
     }
     else if (UBMimeType::VectorImage == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "as vecto image";
 
-        UBGraphicsSvgItem* svgItem = mActiveScene->addSvg(sourceUrl, pPos);
+        UBGraphicsSvgItem* svgItem = mActiveScene->addSvg(sourceUrl, pPos, pData);
         svgItem->setSourceUrl(sourceUrl);
 
         if (isBackground)
@@ -915,6 +1004,8 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             svgItem->setSelected(true);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
+
+        return svgItem;
     }
     else if (UBMimeType::AppleWidget == itemMimeType) //mime type invented by us :-(
     {
@@ -939,6 +1030,8 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         {
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
+
+        return appleWidgetItem;
     }
     else if (UBMimeType::W3CWidget == itemMimeType)
     {
@@ -960,6 +1053,8 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         {
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
+
+        return w3cWidgetItem;
     }
     else if (UBMimeType::Video == itemMimeType)
     {
@@ -989,6 +1084,8 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         }
 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+
+        return mediaVideoItem;
     }
     else if (UBMimeType::Audio == itemMimeType)
     {
@@ -1018,6 +1115,8 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         }
 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+
+        return audioMediaItem;
     }
 
     else if (UBMimeType::Flash == itemMimeType)
@@ -1061,6 +1160,8 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
             widgetItem->setSourceUrl(sourceUrl);
 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+
+            return widgetItem;
         }
 
         if (eduMediaFile)
@@ -1182,6 +1283,8 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
                             widgetItem->setSourceUrl(sourceUrl);
 
                             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+
+                            return widgetItem;
                         }
                     }
                 }
@@ -1193,6 +1296,8 @@ void UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString 
         UBApplication::showMessage(tr("Unknown content type %1").arg(pContentTypeHeader));
         qWarning() << "ignoring mime type" << pContentTypeHeader ;
     }
+
+    return NULL;
 }
 
 void UBBoardController::setActiveDocumentScene(int pSceneIndex)
@@ -1902,7 +2007,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
 
     }
 
-    return 0;
+    return w3cWidgetItem;
 }
 
 void UBBoardController::cut()
@@ -1957,7 +2062,11 @@ void UBBoardController::copy()
         UBItem* ubItem = dynamic_cast<UBItem*>(gi);
 
         if (ubItem && !mActiveScene->tools().contains(gi))
-            selected << ubItem->deepCopy();
+        {
+            UBItem *itemCopy = ubItem->deepCopy();
+            if (itemCopy)
+                selected << itemCopy;
+        }
     }
 
     if (selected.size() > 0)
@@ -2014,13 +2123,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         {
             foreach(UBItem* item, mimeData->items())
             {
-                QGraphicsItem* gi = dynamic_cast<QGraphicsItem*>(item->deepCopy());
-
-                if (gi)
-                {
-                    mActiveScene->addItem(gi);
-                    gi->setPos(gi->pos() + QPointF(50, 50));
-                }
+                duplicateItem(item);
             }
 
             return;

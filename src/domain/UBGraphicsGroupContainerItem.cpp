@@ -157,18 +157,29 @@ UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
 
     UBGraphicsGroupContainerItem *copy = new UBGraphicsGroupContainerItem(parentItem());
 
-    copy->setPos(this->pos());
-    copy->setTransform(this->transform());
-    copy->setFlag(QGraphicsItem::ItemIsMovable, true);
-    copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-    copy->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
     copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
+
+    copyItemParameters(copy);
 
 //    copy->resize(this->size());
 
     return copy;
 }
+
+void UBGraphicsGroupContainerItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsGroupContainerItem *cp = dynamic_cast<UBGraphicsGroupContainerItem*>(copy);
+    if (cp)
+    {
+        cp->setPos(this->pos());
+        cp->setTransform(this->transform());
+        cp->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+    }
+}
+
 void UBGraphicsGroupContainerItem::remove()
 {
     if (mDelegate)

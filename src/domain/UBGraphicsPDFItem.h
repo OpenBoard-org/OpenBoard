@@ -41,6 +41,8 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
 
         virtual UBItem* deepCopy() const;
 
+        virtual void copyItemParameters(UBItem *copy) const;
+
         virtual void setRenderingQuality(RenderingQuality pRenderingQuality);
 
         virtual UBGraphicsScene* scene();

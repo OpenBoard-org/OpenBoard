@@ -241,24 +241,32 @@ void UBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 UBItem* UBGraphicsMediaItem::deepCopy() const
 {
     QUrl url = this->mediaFileUrl();
-    UBGraphicsMediaItem *copy;
-    
-    copy = new UBGraphicsMediaItem(url, parentItem());
+    UBGraphicsMediaItem *copy = new UBGraphicsMediaItem(url, parentItem());
 
-    copy->setPos(this->pos());
-    copy->setTransform(this->transform());
-    copy->setFlag(QGraphicsItem::ItemIsMovable, true);
-    copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-    copy->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
-    copy->setUuid(this->uuid()); // this is OK as long as Videos are imutable
-    copy->setSourceUrl(this->sourceUrl());
-    copy->resize(this->size());
+    copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
 
-    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), copy, SLOT(activeSceneChanged()));
-    // TODO UB 4.7 complete all members
+    copyItemParameters(copy);
 
     return copy;
+}
+
+void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsMediaItem *cp = dynamic_cast<UBGraphicsMediaItem*>(copy);
+    if (cp)
+    {
+        cp->setPos(this->pos());
+        cp->setTransform(this->transform());
+        cp->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        cp->setSourceUrl(this->sourceUrl());
+        cp->resize(this->size());
+
+        connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), cp, SLOT(activeSceneChanged()));
+        // TODO UB 4.7 complete all members
+    }
 }
 
 void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
