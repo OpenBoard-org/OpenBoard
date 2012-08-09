@@ -410,6 +410,7 @@ void UBGraphicsItemDelegate::duplicate()
 
     UBApplication::boardController->copy();
     UBApplication::boardController->paste();
+    UBApplication::boardController->duplicateItem(dynamic_cast<UBItem*>(delegated()));
 }
 
 void UBGraphicsItemDelegate::increaseZLevelUp()
@@ -989,8 +990,15 @@ void MediaTimer::addPoint(QPolygon &a, const QPoint &p)
 }
 
 void MediaTimer::paint(QPainter *p,
-        const QStyleOptionGraphicsItem *, QWidget*)
+        const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    QFont f = p->font();
+    f.setPointSizeF(f.pointSizeF());
+    p->setFont(f);
+
     if (smallPoint)
         drawString(digitStr, *p, &points, false);
     else
@@ -1173,6 +1181,8 @@ void DelegateMediaControl::positionHandles()
     mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
     lcdTimer->setRect(mLCDTimerArea);
     lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
+    //lcdTimer->setRect(mLCDTimerArea);
+    //lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
 
     mSeecArea.setWidth(rect().width()-mLCDTimerArea.width());
 
@@ -1181,6 +1191,7 @@ void DelegateMediaControl::positionHandles()
     setRect(selfRect);
 
     lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
+    //lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
 
 }
 
@@ -1189,6 +1200,7 @@ void DelegateMediaControl::update()
     QTime t;
     t = t.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
     lcdTimer->display(t.toString("m:ss"));
+    //lcdTimer->display(t.toString("m:ss"));
 
     QGraphicsRectItem::update();
 }
@@ -1241,6 +1253,7 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
 
     minX = frameWidth;
     length = mSeecArea.width() - lcdTimer->rect().width();
+    length = mSeecArea.width() /*- lcdTimer->rect().width()*/;
 
     qreal mouseX = mousePos.x();
     if (mouseX >= (mSeecArea.width() - mSeecArea.height()/2))

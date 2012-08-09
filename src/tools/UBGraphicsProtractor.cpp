@@ -579,20 +579,27 @@ UBItem* UBGraphicsProtractor::deepCopy() const
 {
     UBGraphicsProtractor* copy = new UBGraphicsProtractor();
 
-    copy->setPos(this->pos());
-    copy->setRect(this->rect());
-    copy->setTransform(this->transform());
-
-    copy->mCurrentAngle = this->mCurrentAngle;
-    copy->mSpan = this->mSpan;
-    copy->mStartAngle = this->mStartAngle;
-    copy->mScaleFactor = this->mScaleFactor;
+    copyItemParameters(copy);
 
     // TODO UB 4.7 ... complete all members ?
 
     return copy;
 }
+void UBGraphicsProtractor::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsProtractor *cp = dynamic_cast<UBGraphicsProtractor*>(copy);
+    if (cp)
+    {
+        cp->setPos(this->pos());
+        cp->setRect(this->rect());
+        cp->setTransform(this->transform());
 
+        cp->mCurrentAngle = this->mCurrentAngle;
+        cp->mSpan = this->mSpan;
+        cp->mStartAngle = this->mStartAngle;
+        cp->mScaleFactor = this->mScaleFactor;
+    }
+}
 
 void UBGraphicsProtractor::rotateAroundCenter(qreal angle)
 {

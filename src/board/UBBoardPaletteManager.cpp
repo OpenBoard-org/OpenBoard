@@ -665,11 +665,8 @@ void UBBoardPaletteManager::addItem(const QUrl& pUrl)
     mAddItemPalette->show();
     mAddItemPalette->adjustSizeAndPosition();
 
-    QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
-
-    mAddItemPalette->move(controlGeo.x() + ((controlGeo.width() - mAddItemPalette->geometry().width()) / 2),
-          (controlGeo.y() + (controlGeo.height() - mAddItemPalette->geometry().height()) / 5));
-
+    mAddItemPalette->move((mContainer->width() - mAddItemPalette->width()) / 2,
+        (mContainer->height() - mAddItemPalette->height()) / 5);
 }
 
 void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool isInit)
@@ -831,13 +828,11 @@ void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos, 
     mPos = pos;
     mScaleFactor = scaleFactor;
 
-    QRect controlGeo = UBApplication::applicationController->displayManager()->controlGeometry();
-
     mAddItemPalette->show();
     mAddItemPalette->adjustSizeAndPosition();
 
-    mAddItemPalette->move(controlGeo.x() + ((controlGeo.width() - mAddItemPalette->geometry().width()) / 2),
-          (controlGeo.y() + (controlGeo.height() - mAddItemPalette->geometry().height()) / 5));
+    mAddItemPalette->move((mContainer->width() - mAddItemPalette->width()) / 2,
+        (mContainer->height() - mAddItemPalette->height()) / 5);
 }
 
 

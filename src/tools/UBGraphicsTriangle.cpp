@@ -94,14 +94,23 @@ UBItem* UBGraphicsTriangle::deepCopy(void) const
 {
     UBGraphicsTriangle* copy = new UBGraphicsTriangle();
 
-    copy->setPos(this->pos());
-    copy->setPolygon(this->polygon());
-    copy->setTransform(this->transform());
+    copyItemParameters(copy);
 
     // TODO UB 4.7 ... complete all members ?
 
     return copy;
 
+}
+
+void UBGraphicsTriangle::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsTriangle* cp = dynamic_cast<UBGraphicsTriangle*>(copy);
+    if (cp)
+    {   
+        cp->setPos(this->pos());
+        cp->setPolygon(this->polygon());
+        cp->setTransform(this->transform());
+    }
 }
 
 void UBGraphicsTriangle::setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsTriangleOrientation orientation)
