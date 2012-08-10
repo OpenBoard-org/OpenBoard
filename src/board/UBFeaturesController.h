@@ -157,6 +157,7 @@ public:
     void removeFromFavorite(const QUrl &path, bool deleteManualy = false);
     void importImage(const QImage &image, const QString &fileName = QString());
     void importImage( const QImage &image, const UBFeature &destination, const QString &fileName = QString() );
+    QStringList getFileNamesInFolders();
 
     void fileSystemScan(const QUrl &currPath, const QString & currVirtualPath);
     int featuresCount(const QUrl &currPath);

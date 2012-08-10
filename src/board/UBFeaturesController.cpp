@@ -21,8 +21,6 @@
 
 const QString UBFeaturesController::virtualRootName = "root";
 
-
-
 void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString & currVirtualPath)
 {
     
@@ -624,6 +622,7 @@ void UBFeaturesController::importImage(const QImage &image, const QString &fileN
     importImage(image, currentElement, fileName);
 }
 
+
 void UBFeaturesController::importImage( const QImage &image, const UBFeature &destination, const QString &fileName )
 {
     QString mFileName = fileName;
@@ -648,6 +647,27 @@ void UBFeaturesController::importImage( const QImage &image, const UBFeature &de
 
     featuresModel->addItem(resultItem);
 
+}
+
+QStringList UBFeaturesController::getFileNamesInFolders()
+{
+    QStringList strList;
+
+    Q_ASSERT(curListModel);
+
+    for (int i = 0; i < curListModel->rowCount(QModelIndex()); i++) {
+        QModelIndex ind = curListModel->index(i, 0);
+        if (!ind.isValid()) {
+            qDebug() << "incorrect model index catched";
+            continue;
+        }
+        UBFeature curFeature = curListModel->data(ind, Qt::UserRole + 1).value<UBFeature>();
+        if (curFeature.getType() == FEATURE_FOLDER) {
+            strList << QFileInfo(curFeature.getFullPath().toLocalFile()).fileName();
+        }
+    }
+
+    return strList;
 }
 
 void UBFeaturesController::addNewFolder(QString name)

@@ -71,33 +71,40 @@ class DelegateButton: public QGraphicsSvgItem
 
 };
 
+/*
+    Code of this class is copied from QT QLCDNumber class sources
+    See src\gui\widgets\qlcdnumber.cpp for original code
+*/
 class MediaTimer: public QGraphicsRectItem
 {
 public:
     MediaTimer(QGraphicsItem * parent = 0);
     ~MediaTimer();
 
-    char* getSegments(char);
-    void addPoint(QPolygon&, const QPoint&);
-    void init();
-    void internalSetString(const QString& s);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                QWidget *widget);
+
+    void display(const QString &str);
+
+private:
+
+    static const char* getSegments(char);
     void drawString(const QString& s, QPainter &, QBitArray * = 0, bool = true);
     void drawDigit(const QPoint &, QPainter &, int, char, char = ' ');
     void drawSegment(const QPoint &, char, QPainter &, int, bool = false);
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                QWidget *widget);
-    void display(const QString &str);
+    void addPoint(QPolygon&, const QPoint&);
+    void internalSetString(const QString& s);
     void setNumDigits(int nDigits);
 
-private:
+    static char segments [][8];
+
     int ndigits;
     QString digitStr;
     QBitArray points;
     double val;
 
-uint shadow : 1;
-uint smallPoint : 1;
-
+    uint shadow : 1;
+    uint smallPoint : 1;
 };
 
 class DelegateMediaControl: public QObject, public QGraphicsRectItem
