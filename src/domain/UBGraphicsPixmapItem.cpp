@@ -114,22 +114,30 @@ UBItem* UBGraphicsPixmapItem::deepCopy() const
 {
    UBGraphicsPixmapItem* copy = new UBGraphicsPixmapItem();
 
-   copy->setPixmap(this->pixmap());
-   copy->setPos(this->pos());
-   copy->setTransform(this->transform());
-   copy->setFlag(QGraphicsItem::ItemIsMovable, true);
-   copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
-   copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-   copy->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+   copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
 
-   copy->setUuid(this->uuid()); // This is OK for now, as long as pixmaps are immutable -
-   copy->setSourceUrl(this->sourceUrl());
+   copyItemParameters(copy);
 
    // TODO UB 4.7 ... complete all members ?
 
    return copy;
 }
 
+void UBGraphicsPixmapItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsPixmapItem *cp = dynamic_cast<UBGraphicsPixmapItem*>(copy);
+    if (cp)
+    {
+        cp->setPixmap(this->pixmap());
+        cp->setPos(this->pos());
+        cp->setTransform(this->transform());
+        cp->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        cp->setSourceUrl(this->sourceUrl());
+    }
+}
 
 UBGraphicsScene* UBGraphicsPixmapItem::scene()
 {

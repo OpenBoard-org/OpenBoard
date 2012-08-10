@@ -410,6 +410,7 @@ void UBGraphicsItemDelegate::duplicate()
 
     UBApplication::boardController->copy();
     UBApplication::boardController->paste();
+    UBApplication::boardController->duplicateItem(dynamic_cast<UBItem*>(delegated()));
 }
 
 void UBGraphicsItemDelegate::increaseZLevelUp()
@@ -727,7 +728,11 @@ void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsI
 }
 
 MediaTimer::MediaTimer(QGraphicsItem * parent): QGraphicsRectItem(parent) 
-{}
+{
+    val        = 0;
+    smallPoint = false;
+    setNumDigits(4);
+}
 
 MediaTimer::~MediaTimer()
 {}
@@ -810,9 +815,7 @@ void MediaTimer::drawDigit(const QPoint &pos, QPainter &p, int segLen,
      }
 }
 
-char* MediaTimer::getSegments(char ch)               // gets list of segments for ch
-{
-     char segments[30][8] =
+char MediaTimer::segments [][8] = 
         { 
               { 0, 1, 2, 4, 5, 6,99, 0},             // 0    0
               { 2, 5,99, 0, 0, 0, 0, 0},             // 1    1
@@ -827,16 +830,17 @@ char* MediaTimer::getSegments(char ch)               // gets list of segments fo
               { 8, 9,99, 0, 0, 0, 0, 0},             // 10   :
               {99, 0, 0, 0, 0, 0, 0, 0}              // 11   empty
         };
- 
-     int n;
+
+const char* MediaTimer::getSegments(char ch)               // gets list of segments for ch
+{
      if (ch >= '0' && ch <= '9')
         return segments[ch - '0'];
      if (ch == ':')
-        n = 10;
+        return segments[10];
      if (ch == ' ')
-        n = 11;
+        return segments[11];
      
-     return segments[n];
+     return NULL;
 }
 
 void MediaTimer::drawSegment(const QPoint &pos, char segmentNo, QPainter &p,
@@ -1058,13 +1062,6 @@ void MediaTimer::internalSetString(const QString& s)
     update();
 }
 
-void MediaTimer::init()
-{
-    val        = 0;
-    smallPoint = false;
-    setNumDigits(4);
-}
-
 void MediaTimer::display(const QString &s)
 {
     val = 0;
@@ -1132,7 +1129,6 @@ DelegateMediaControl::DelegateMediaControl(UBGraphicsMediaItem* pDelegated, QGra
     setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
     lcdTimer = new MediaTimer(this);
-    lcdTimer->init();
 
     update();
 }
@@ -1185,6 +1181,8 @@ void DelegateMediaControl::positionHandles()
     mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
     lcdTimer->setRect(mLCDTimerArea);
     lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
+    //lcdTimer->setRect(mLCDTimerArea);
+    //lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
 
     mSeecArea.setWidth(rect().width()-mLCDTimerArea.width());
 
@@ -1193,6 +1191,7 @@ void DelegateMediaControl::positionHandles()
     setRect(selfRect);
 
     lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
+    //lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
 
 }
 
@@ -1201,6 +1200,7 @@ void DelegateMediaControl::update()
     QTime t;
     t = t.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
     lcdTimer->display(t.toString("m:ss"));
+    //lcdTimer->display(t.toString("m:ss"));
 
     QGraphicsRectItem::update();
 }
@@ -1253,6 +1253,7 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
 
     minX = frameWidth;
     length = mSeecArea.width() - lcdTimer->rect().width();
+    length = mSeecArea.width() /*- lcdTimer->rect().width()*/;
 
     qreal mouseX = mousePos.x();
     if (mouseX >= (mSeecArea.width() - mSeecArea.height()/2))

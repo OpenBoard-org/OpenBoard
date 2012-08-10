@@ -45,6 +45,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
 
         virtual UBItem* deepCopy(void) const;
+        virtual void copyItemParameters(UBItem *copy) const;
 
         virtual void StartLine(const QPointF& scenePos, qreal width);
         virtual void DrawLine(const QPointF& position, qreal width);

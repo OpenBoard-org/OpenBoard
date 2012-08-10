@@ -133,20 +133,28 @@ UBItem* UBGraphicsCurtainItem::deepCopy() const
 {
    UBGraphicsCurtainItem* copy = new UBGraphicsCurtainItem();
 
-   copy->setRect(this->rect());
-   copy->setPos(this->pos());
-   copy->setBrush(this->brush());
-   copy->setPen(this->pen());
-   copy->setTransform(this->transform());
-   copy->setFlag(QGraphicsItem::ItemIsMovable, true);
-   copy->setFlag(QGraphicsItem::ItemIsSelectable, true);
-   copy->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+    copyItemParameters(copy);
 
    // TODO UB 4.7 ... complete all members ?
 
    return copy;
 }
 
+void UBGraphicsCurtainItem::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsCurtainItem *cp = dynamic_cast<UBGraphicsCurtainItem*>(copy);
+    if (cp)
+    {
+        cp->setRect(this->rect());
+        cp->setPos(this->pos());
+        cp->setBrush(this->brush());
+        cp->setPen(this->pen());
+        cp->setTransform(this->transform());
+        cp->setFlag(QGraphicsItem::ItemIsMovable, true);
+        cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+    }
+}
 
 QColor UBGraphicsCurtainItem::drawColor() const
 {

@@ -45,13 +45,22 @@ UBItem* UBGraphicsCache::deepCopy() const
 {
     UBGraphicsCache* copy = new UBGraphicsCache();
 
-    copy->setPos(this->pos());
-    copy->setRect(this->rect());
-    copy->setTransform(this->transform());
+    copyItemParameters(copy);
 
     // TODO UB 4.7 ... complete all members ?
 
     return copy;
+}
+
+void UBGraphicsCache::copyItemParameters(UBItem *copy) const
+{
+    UBGraphicsCache *cp = dynamic_cast<UBGraphicsCache*>(copy);
+    if (cp)
+    {
+        cp->setPos(this->pos());
+        cp->setRect(this->rect());
+        cp->setTransform(this->transform());
+    }
 }
 
 QColor UBGraphicsCache::maskColor()

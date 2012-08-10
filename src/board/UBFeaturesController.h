@@ -12,6 +12,10 @@
 #include <QUrl>
 #include <QByteArray>
 #include <QtGui>
+#include <QImage>
+#include <QThread>
+#include <QMutex>
+#include <QWaitCondition>
 
 class UBFeaturesModel;
 class UBFeaturesItemDelegate;
@@ -20,8 +24,45 @@ class UBFeaturesProxyModel;
 class UBFeaturesSearchProxyModel;
 class UBFeaturesPathProxyModel;
 class UBFeaturesListView;
+class UBFeature;
 
-//#include "UBDockPaletteWidget.h"
+
+class UBFeaturesComputingThread : public QThread
+{
+    Q_OBJECT
+public:
+    explicit UBFeaturesComputingThread(QObject *parent = 0);
+    virtual ~UBFeaturesComputingThread();
+        void compute(const QList<QPair<QUrl, QString> > &pScanningData);
+
+protected:
+    void run();
+
+signals:
+    void sendFeature(UBFeature pFeature);
+    void featureSent();
+    void scanStarted();
+    void scanFinished();
+    void maxFilesCountEvaluated(int max);
+
+public slots:
+
+private:
+    void scanFS(const QUrl & currentPath, const QString & currVirtualPath);
+    void scanAll(QList<QPair<QUrl, QString> > pScanningData);
+    int featuresCount(const QUrl &pPath);
+    int featuresCountAll(QList<QPair<QUrl, QString> > pScanningData);
+
+private:
+    QMutex mMutex;
+    QWaitCondition mWaitCondition;
+    QUrl mScanningPath;
+    QString mScanningVirtualPath;
+    QList<QPair<QUrl, QString> > mScanningData;
+    bool restart;
+    bool abort;
+};
+
 
 enum UBFeatureElementType
 {
@@ -41,12 +82,12 @@ class UBFeature
 {
 public:
     UBFeature() {;}
-	//UBFeature(const UBFeature &f);
-    UBFeature(const QString &url, const QPixmap &icon, const QString &name, const QUrl &realPath, UBFeatureElementType type = FEATURE_CATEGORY);
+//    UBFeature(const UBFeature &f);
+    UBFeature(const QString &url, const QImage &icon, const QString &name, const QUrl &realPath, UBFeatureElementType type = FEATURE_CATEGORY);
 //    UBFeature();
     virtual ~UBFeature();
     QString getName() const { return mName; }
-    QPixmap getThumbnail() const {return mThumbnail;}
+    QImage getThumbnail() const {return mThumbnail;}
     QString getVirtualPath() const { return virtualDir; }
 	//QString getPath() const { return mPath; };
     QUrl getFullPath() const { return mPath; }
@@ -64,20 +105,13 @@ public:
 	const QMap<QString,QString> & getMetadata() const { return metadata; }
 	void setMetadata( const QMap<QString,QString> &data ) { metadata = data; }
 
-    bool hasChildren() const {return mChildren.count();}
-    bool hasParents() const {return mParents.count();}
-    bool hasRelationships() const {return mChildren.count() && mParents.count();}
-
 private:
     QString virtualDir;
-    QPixmap mThumbnail;
+    QImage mThumbnail;
     QString mName;
 	QUrl mPath;
     UBFeatureElementType elementType;
     QMap<QString,QString> metadata;
-
-    QList<UBFeature*> mChildren;
-    QList<UBFeature*> mParents;
 };
 Q_DECLARE_METATYPE( UBFeature )
 
@@ -111,7 +145,7 @@ public:
     void rescanModel();
     void siftElements(const QString &pSiftValue);
     //TODO make less complicated for betteer maintainence
-    UBFeature getFeature(const QModelIndex &index, QListView *pOnView);
+    UBFeature getFeature(const QModelIndex &index, const QString &listName);
     void searchStarted(const QString &pattern, QListView *pOnView);
     void refreshModels();
 
@@ -119,18 +153,18 @@ public:
     void deleteItem(const UBFeature &pFeature);
 	bool isTrash( const QUrl &url );
     void moveToTrash(UBFeature feature, bool deleteManualy = false);
-    void addNewFolder(const QString &name);
     void addToFavorite( const QUrl &path );
     void removeFromFavorite(const QUrl &path, bool deleteManualy = false);
     void importImage(const QImage &image, const QString &fileName = QString());
     void importImage( const QImage &image, const UBFeature &destination, const QString &fileName = QString() );
+    QStringList getFileNamesInFolders();
 
     void fileSystemScan(const QUrl &currPath, const QString & currVirtualPath);
+    int featuresCount(const QUrl &currPath);
     static UBFeatureElementType fileTypeFromUrl( const QString &path );
 
-
 	static QString fileNameFromUrl( const QUrl &url );
-    static QPixmap getIcon( const QString &path, UBFeatureElementType pFType );
+    static QImage getIcon( const QString &path, UBFeatureElementType pFType );
 	static bool isDeletable( const QUrl &url );
     static char featureTypeSplitter() {return ':';}
 
@@ -138,6 +172,16 @@ public:
 
     void assignFeaturesListVeiw(UBFeaturesListView *pList);
     void assignPathListView(UBFeaturesListView *pList);
+
+signals:
+    void maxFilesCountEvaluated(int pLimit);
+    void scanStarted();
+    void scanFinished();
+    void featureAddedFromThread();
+
+private slots:
+    void addNewFolder(QString name);
+    void startThread();
 
 private:
 
@@ -149,15 +193,15 @@ private:
     UBFeaturesSearchProxyModel *featuresSearchModel;
     UBFeaturesPathProxyModel *featuresPathModel;
 
+    QAbstractItemModel *curListModel;
+    UBFeaturesComputingThread mCThread;
 
 private:
 
-    static QPixmap createThumbnail(const QString &path);
+    static QImage createThumbnail(const QString &path);
 	//void addImageToCurrentPage( const QString &path );
 	void loadFavoriteList();
 	void saveFavoriteList();
-
-
 
     QList <UBFeature> *featuresList;
 

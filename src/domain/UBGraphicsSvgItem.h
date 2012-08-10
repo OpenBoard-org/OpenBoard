@@ -52,6 +52,8 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBItem, public UBGraphi
 
         virtual UBItem* deepCopy() const;
 
+        virtual void copyItemParameters(UBItem *copy) const;
+
         virtual void setRenderingQuality(RenderingQuality pRenderingQuality);
 
         virtual UBGraphicsScene* scene();

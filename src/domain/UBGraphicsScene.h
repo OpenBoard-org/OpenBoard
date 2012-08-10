@@ -109,6 +109,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         virtual UBItem* deepCopy() const;
 
+        virtual void copyItemParameters(UBItem *copy) const {Q_UNUSED(copy);}
+
         UBGraphicsScene* sceneDeepCopy() const;
 
         void clearItemsAndAnnotations();
@@ -136,7 +138,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsMediaItem* addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsMediaItem* addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsMediaItem* addAudio(const QUrl& pAudioFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
-        UBGraphicsSvgItem* addSvg(const QUrl& pSvgFileUrl, const QPointF& pPos = QPointF(0, 0));
+        UBGraphicsSvgItem* addSvg(const QUrl& pSvgFileUrl, const QPointF& pPos = QPointF(0, 0), const QByteArray pData = QByteArray());
         UBGraphicsTextItem* addText(const QString& pString, const QPointF& pTopLeft = QPointF(0, 0));
         UBGraphicsTextItem* textForObjectName(const QString& pString, const QString &objectName = "UBTGZeroPageSessionTitle");
 
