@@ -123,8 +123,6 @@ UBBoardView::init ()
   setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
   setAcceptDrops (true);
 
-  setOptimizationFlag (QGraphicsView::IndirectPainting); // enable UBBoardView::drawItems filter
-
   mTabletStylusIsPressed = false;
   mMouseButtonIsPressed = false;
   mPendingStylusReleaseEvent = false;
@@ -1181,7 +1179,7 @@ void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
             }
             QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
             QDragMoveEvent newEvent(newPoint, event->dropAction(), event->mimeData(), event->mouseButtons(), event->keyboardModifiers());
-            QApplication::sendEvent(graphicsWidget->widgetWebView(),&newEvent);
+            QApplication::sendEvent(graphicsWidget,&newEvent);
         } else {
             mOkOnWidget = false;
             event->ignore();

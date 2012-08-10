@@ -11,7 +11,6 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBDownloadManager.h"
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -24,6 +23,7 @@ const QString UBFeaturesController::virtualRootName = "root";
 
 void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString & currVirtualPath)
 {
+    
     Q_ASSERT(QFileInfo(currentPath.toLocalFile()).exists());
 
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath.toLocalFile());
@@ -556,7 +556,7 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
         return QImage(":images/libpalette/folder.svg");
 
     } else if (pFType == FEATURE_INTERACTIVE) {
-        return QImage(UBAbstractWidget::iconFilePath(QUrl::fromLocalFile(path)));
+        return QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(path)));
     }
 
 
@@ -564,7 +564,7 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
         return QImage( UBToolsManager::manager()->iconFromToolId(path) );
 
     } if ( UBFileSystemUtils::mimeTypeFromFileName(path).contains("application"))  {
-        return QImage( UBAbstractWidget::iconFilePath( QUrl::fromLocalFile(path) ) );
+        return QImage( UBGraphicsWidgetItem::iconFilePath( QUrl::fromLocalFile(path) ) );
     }
 
     QImage thumb;

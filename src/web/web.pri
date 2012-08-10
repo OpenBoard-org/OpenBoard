@@ -13,7 +13,6 @@ HEADERS      += src/web/UBWebController.h \
                 src/web/UBWebKitUtils.h \
                 src/web/UBWebPage.h \
                 src/web/UBWebPluginWidget.h \
-                src/web/UBRoutedMouseEventWebView.h \
                 src/web/UBOEmbedParser.h\
                 src/web/browser/WBBrowserWindow.h \
                 src/web/browser/WBChaseWidget.h \
@@ -35,7 +34,6 @@ SOURCES      += src/web/UBWebController.cpp \
                 src/web/UBWebKitUtils.cpp \
                 src/web/UBWebPage.cpp \
                 src/web/UBWebPluginWidget.cpp \
-                src/web/UBRoutedMouseEventWebView.cpp \
                 src/web/UBOEmbedParser.cpp\
                 src/web/browser/WBBrowserWindow.cpp \
                 src/web/browser/WBChaseWidget.cpp \

@@ -54,11 +54,11 @@ bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
 UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent)
         : UBGraphicsProxyWidget(parent)
+        , mVideoWidget(NULL)
+        , mAudioWidget(NULL)
         , mMuted(sIsMutedByDefault)
         , mMutedByUserAction(sIsMutedByDefault)
         , mMediaFileUrl(pMediaFileUrl)
-        , mVideoWidget(NULL)
-        , mAudioWidget(NULL)
         , mLinkedImage(NULL)
         , mInitialPos(0)
 {

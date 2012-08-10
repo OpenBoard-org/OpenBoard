@@ -55,7 +55,7 @@ void UBGraphicsWidgetItemDelegate::updateMenuActionState()
     UBGraphicsItemDelegate::updateMenuActionState();
 
     if (freezeAction)
-        freezeAction->setChecked(delegated()->widgetWebView()->isFrozen());
+        freezeAction->setChecked(delegated()->isFrozen());
 }
 
 void UBGraphicsWidgetItemDelegate::decorateMenu(QMenu* menu)
@@ -71,7 +71,7 @@ void UBGraphicsWidgetItemDelegate::decorateMenu(QMenu* menu)
 
     freezeAction->setCheckable(true);
 
-    if (delegated()->widgetWebView()->canBeTool())
+    if (delegated()->canBeTool())
     {
         setAsToolAction = mMenu->addAction(tr("Transform as Tool "), this, SLOT(pin()));
         QIcon pinIcon;
@@ -86,11 +86,11 @@ void UBGraphicsWidgetItemDelegate::freeze(bool frozen)
 {
     if(frozen)
     {
-       delegated()->widgetWebView()->freeze();
+       delegated()->freeze();
     }
     else
     {
-       delegated()->widgetWebView()->unFreeze();
+       delegated()->unFreeze();
     }
 }
 
