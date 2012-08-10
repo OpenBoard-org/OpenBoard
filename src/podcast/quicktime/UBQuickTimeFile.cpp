@@ -151,7 +151,7 @@ bool UBQuickTimeFile::createCompressionSession()
     }
 
     OSStatus err = noErr;
-    ICMEncodedFrameOutputRecord encodedFrameOutputRecord = {0};
+    ICMEncodedFrameOutputRecord encodedFrameOutputRecord = {NULL, NULL, NULL};
     ICMCompressionSessionOptionsRef sessionOptions = 0;
 
     err = ICMCompressionSessionOptionsCreate(0, &sessionOptions);

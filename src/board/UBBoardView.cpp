@@ -426,7 +426,10 @@ bool UBBoardView::itemShouldReceiveMousePressEvent(QGraphicsItem *item)
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
 
     if ((currentTool == UBStylusTool::Play) && UBGraphicsGroupContainerItem::Type == movingItem->type())
-        return movingItem = NULL;
+    {
+        movingItem = NULL;
+        return false;
+    }
 
     switch(item->type())
     {
@@ -534,11 +537,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
         return true;
     case UBGraphicsTextItem::Type:
         return !item->isSelected();
-
-    default: 
-        false;
     }
-
     return false;
 }
 

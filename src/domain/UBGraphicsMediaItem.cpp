@@ -57,10 +57,10 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         , mMuted(sIsMutedByDefault)
         , mMutedByUserAction(sIsMutedByDefault)
         , mMediaFileUrl(pMediaFileUrl)
-        , mInitialPos(0)
         , mVideoWidget(NULL)
         , mAudioWidget(NULL)
         , mLinkedImage(NULL)
+        , mInitialPos(0)
 {
     update();
 
