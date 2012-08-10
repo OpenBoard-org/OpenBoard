@@ -164,6 +164,9 @@ void UBKeyboardPalette::createCtrlButtons()
 }
 
 
+void UBKeyboardPalette::checkLayout()
+{}
+
 void UBKeyboardPalette::onActivated(bool activated)
 {
     if (activated)
