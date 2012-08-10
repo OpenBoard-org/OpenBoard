@@ -193,7 +193,7 @@ class UBBoardController : public UBDocumentContainer
         UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QString pHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground = false);
         void changeBackground(bool isDark, bool isCrossed);
         void setToolCursor(int tool);
-        void showMessage(const QString& message, bool showSpinningWheel);
+        void showMessage(const QString& message, bool showSpinningWheel = false);
         void hideMessage();
         void setDisabled(bool disable);
         void setColorIndex(int pColorIndex);

@@ -71,7 +71,7 @@ class UBDocumentController : public UBDocumentContainer
         void selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument = true);
         void show();
         void hide();
-        void showMessage(const QString& message, bool showSpinningWheel);
+        void showMessage(const QString& message, bool showSpinningWheel = false);
         void hideMessage();
         void toggleDocumentToolsPalette();
         void cut();

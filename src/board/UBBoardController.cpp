@@ -954,12 +954,12 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 
     if (!pSuccess)
     {
-        UBApplication::showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
+        showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
         return NULL;
     }
 
     if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("uniboardTool://"))
-        UBApplication::showMessage(tr("Download finished"));
+        showMessage(tr("Download finished"));
 
     if (UBMimeType::RasterImage == itemMimeType)
     {
@@ -1237,7 +1237,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         }
         else
         {
-            UBApplication::showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
+            showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
         }
     }
     else if (sourceUrl.toString().contains("edumedia-sciences.com"))
@@ -1292,7 +1292,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
     }
     else
     {
-        UBApplication::showMessage(tr("Unknown content type %1").arg(pContentTypeHeader));
+        showMessage(tr("Unknown content type %1").arg(pContentTypeHeader));
         qWarning() << "ignoring mime type" << pContentTypeHeader ;
     }
 

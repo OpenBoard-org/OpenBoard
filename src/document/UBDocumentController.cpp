@@ -623,7 +623,7 @@ void UBDocumentController::deleteSelectedItem()
                             toBeDeleted << proxyTi;
                     }
 
-                    UBApplication::showMessage(tr("Emptying trash"));
+                    showMessage(tr("Emptying trash"));
 
                     for (int i = 0; i < toBeDeleted.count(); i++)
                     {
@@ -633,7 +633,7 @@ void UBDocumentController::deleteSelectedItem()
                         UBPersistenceManager::persistenceManager()->deleteDocument(proxyTi->proxy());
                     }
 
-                    UBApplication::showMessage(tr("Emptied trash"));
+                    showMessage(tr("Emptied trash"));
 
                     QApplication::restoreOverrideCursor();
                     mMainWindow->actionDelete->setEnabled(false);
@@ -683,7 +683,7 @@ void UBDocumentController::deleteSelectedItem()
                     {
                         UBDocumentProxyTreeItem* proxyTi = toBeDeleted.at(i);
 
-                        UBApplication::showMessage(QString("Deleting %1").arg(proxyTi->proxy()->metaData(UBSettings::documentName).toString()));
+                        showMessage(QString("Deleting %1").arg(proxyTi->proxy()->metaData(UBSettings::documentName).toString()));
                         // Move document to trash
                         QString oldGroupName = proxyTi->proxy()->metaData(UBSettings::documentGroupName).toString();
                         proxyTi->proxy()->setMetaData(UBSettings::documentGroupName, UBSettings::trashedDocumentGroupNamePrefix + oldGroupName);
@@ -693,7 +693,7 @@ void UBDocumentController::deleteSelectedItem()
                         mTrashTi->addChild(proxyTi);
                         proxyTi->setFlags(proxyTi->flags() ^ Qt::ItemIsEditable);
 
-                        UBApplication::showMessage(QString("%1 deleted").arg(groupTi->groupName()));
+                        showMessage(QString("%1 deleted").arg(groupTi->groupName()));
                     }
 
                     // dont remove default group
