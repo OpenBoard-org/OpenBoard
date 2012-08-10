@@ -681,8 +681,10 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
     {
         case eUBDockPaletteWidget_BOARD:
             {
-                mLeftPalette->assignParent(UBApplication::boardController->controlContainer());
-                mRightPalette->assignParent(UBApplication::boardController->controlContainer());
+                mLeftPalette->assignParent(mContainer);
+                mRightPalette->assignParent(mContainer);
+                mRightPalette->stackUnder(mStylusPalette);
+                mLeftPalette->stackUnder(mStylusPalette);
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
 
@@ -714,6 +716,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
             {
                 mLeftPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mRightPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+                mRightPalette->lower();
+                mLeftPalette->lower();
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
 
