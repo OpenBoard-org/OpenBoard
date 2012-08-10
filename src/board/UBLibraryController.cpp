@@ -24,7 +24,6 @@
 #include "core/UBApplicationController.h"
 #include "core/UBDownloadManager.h"
 
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -325,7 +324,7 @@ QImage UBLibraryController::thumbnailForFile(UBLibElement* pElement)
             return image;
     }
     if (pElement->type() == eUBLibElementType_InteractiveItem){
-        QImage image = QImage(UBAbstractWidget::iconFilePath(pElement->path()));
+        QImage image = QImage(UBGraphicsWidgetItem::iconFilePath(pElement->path()));
         return image;
     }
 
@@ -780,7 +779,7 @@ UBLibElement::UBLibElement(eUBLibElementType type, const QUrl &path, const QStri
         mThumbnail = QImage(":images/libpalette/folder.svg");
 
     if (type == eUBLibElementType_InteractiveItem)
-        mThumbnail = QImage(UBAbstractWidget::iconFilePath(path));
+        mThumbnail = QImage(UBGraphicsWidgetItem::iconFilePath(path));
 
     if (type == eUBLibElementType_Item)
         mExtension = QFileInfo(path.toLocalFile()).completeSuffix();

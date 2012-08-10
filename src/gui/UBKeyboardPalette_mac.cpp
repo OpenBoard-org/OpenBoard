@@ -74,32 +74,35 @@ void SetMacLocaleByIdentifier(const QString& id)
 	}
 }
 
-void UBKeyboardPalette::onActivated(bool activated)
+
+void UBKeyboardPalette::checkLayout()
 {
-	if (activated)
-	{
-		TISInputSourceRef selectedLocale = TISCopyCurrentKeyboardInputSource();
+    TISInputSourceRef selectedLocale = TISCopyCurrentKeyboardInputSource();
 
-		CFStringRef sr = (CFStringRef) TISGetInputSourceProperty(selectedLocale,
-															  kTISPropertyInputSourceID);  
+    CFStringRef sr = (CFStringRef) TISGetInputSourceProperty(selectedLocale,
+                                                          kTISPropertyInputSourceID);
 
-		if (sr!=NULL)
-		{
-			char tmp[1024];
-			CFStringGetCString(sr, tmp, 1024, 0);
-			activeLocale = tmp;	
-		}
-		else
-			activeLocale = "";
-	
+    if (sr!=NULL)
+    {
+        char clId[1024];
+        CFStringGetCString(sr, clId, 1024, 0);
 
-	    onLocaleChanged(locales[nCurrentLocale]);
-	}
-	else
-	{
-		if (activeLocale != "")
-			SetMacLocaleByIdentifier(activeLocale);
-	}
+        for(int i=0; i<nLocalesCount;i++)
+        {
+            if (locales[i]->id == clId)
+            {
+                if (nCurrentLocale!=i)
+                {
+                    setLocale(i);
+                }
+                break;
+            }
+        }
+    }
+}
+
+void UBKeyboardPalette::onActivated(bool)
+{
 }
 
 void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)

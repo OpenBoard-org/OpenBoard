@@ -47,8 +47,7 @@ class UBW3CWidgetAPI : public QObject
 
     public:
 
-        UBW3CWidgetAPI(UBGraphicsW3CWidgetItem *graphicsWidget);
-        UBW3CWidgetAPI(UBW3CWidget *widget);
+        UBW3CWidgetAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QObject *parent = 0);
 
         virtual ~UBW3CWidgetAPI();
 
@@ -72,7 +71,6 @@ class UBW3CWidgetAPI : public QObject
     private:
 
         UBGraphicsW3CWidgetItem* mGraphicsW3CWidget;
-        UBW3CWidget *mW3CWidget;
 
         UBW3CWidgetPreferenceAPI* mPreferencesAPI;
 
@@ -88,8 +86,8 @@ class UBW3CWebStorage : public QObject
 
     public:
         UBW3CWebStorage(QObject *parent = 0)
-        : QObject(parent){}
-        virtual ~UBW3CWebStorage(){}
+        : QObject(parent){/* NOOP */}
+        virtual ~UBW3CWebStorage(){/* NOOP */}
 
     public slots:
 
@@ -110,8 +108,7 @@ class UBW3CWidgetPreferenceAPI : public UBW3CWebStorage
     Q_OBJECT;
 
     public:
-        UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget);
-        UBW3CWidgetPreferenceAPI(UBW3CWidget *widget);
+        UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QObject *parent = 0);
 
         virtual ~UBW3CWidgetPreferenceAPI();
 
@@ -129,7 +126,6 @@ class UBW3CWidgetPreferenceAPI : public UBW3CWebStorage
     private:
 
         UBGraphicsW3CWidgetItem* mGraphicsW3CWidget;
-        UBW3CWidget* mW3CWidget;
 
 };
 

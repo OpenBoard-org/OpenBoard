@@ -17,16 +17,15 @@
 
 #include "core/UBApplication.h"
 
-#include "domain/UBAbstractWidget.h"
+#include "domain/UBGraphicsWebView.h"
 
 #include "core/memcheck.h"
 
-UBWidgetMessageAPI::UBWidgetMessageAPI(UBW3CWidget *widget)
-    : QObject(widget)
-    , mWebWidget(widget)
+UBWidgetMessageAPI::UBWidgetMessageAPI(UBGraphicsWidgetItem *graphicsWidgetItem, QObject *parent)
+    : QObject(parent)
+    , mGraphicsWidgetItem(graphicsWidgetItem)
 {
-    connect(UBWidgetAPIMessageBroker::instance(), SIGNAL(newMessage(const QString&, const QString&))
-            , this, SLOT(onNewMessage(const QString&, const QString&)), Qt::QueuedConnection);
+    connect(UBWidgetAPIMessageBroker::instance(), SIGNAL(newMessage(const QString&, const QString&)), this, SLOT(onNewMessage(const QString&, const QString&)), Qt::QueuedConnection);
 }
 
 UBWidgetMessageAPI::~UBWidgetMessageAPI()
@@ -45,9 +44,7 @@ void UBWidgetMessageAPI::onNewMessage(const QString& pTopicName, const QString& 
 {
     if (mSubscribedTopics.contains(pTopicName))
     {
-        if (mWebWidget
-                && mWebWidget->page()
-                && mWebWidget->page()->mainFrame())
+        if (mGraphicsWidgetItem && mGraphicsWidgetItem->page() && mGraphicsWidgetItem->page()->mainFrame())
         {
 
             QString js;
@@ -55,7 +52,7 @@ void UBWidgetMessageAPI::onNewMessage(const QString& pTopicName, const QString& 
             js += "{widget.messages.onmessage('";
             js += pMessage + "', '" + pTopicName + "')}";
 
-            mWebWidget->page()->
+            mGraphicsWidgetItem->page()->
                 mainFrame()->evaluateJavaScript(js);
 
         }

@@ -72,6 +72,9 @@ public:
     int scrollbarHorisontalPadding() const { return 10;}
     int scrollbarVerticalIndent() const { return 0;}
 
+signals:
+    void sendFileNameList(const QStringList lst);
+
 private slots:
     void onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
     void currentSelected( const QModelIndex & );
@@ -190,7 +193,6 @@ public:
 
     void setLockedExcludingAdditional(bool pLock);
 
-
     QStackedWidget *mStackedWidget;
         UBFeaturesNavigatorWidget *mNavigator;
         UBFeatureProperties *mFeatureProperties;
@@ -201,6 +203,7 @@ public:
 signals:
     void lockMainWidget(bool pLock);
     void createNewFolderSignal(QString pStr);
+    void sendFileNameList(const QStringList lst);
 
 //    progressbar widget related signals
     void maxFilesCountEvaluated(int pValue);
@@ -228,6 +231,7 @@ public:
 
     UBFeaturesNewFolderDialog(QWidget *parent = 0);
     void setRegexp(const QRegExp pRegExp);
+    bool validString(const QString &pStr);
 
 signals:
     void createNewFolder(QString str);
@@ -236,10 +240,15 @@ signals:
 private slots:
     void accept();
     void reject();
+    void setFileNameList(const QStringList &pLst);
+    void reactOnTextChanged(const QString &pStr);
+
 
 private:
     QLineEdit *mLineEdit;
     QRegExpValidator *mValidator;
+    QStringList mFileNameList;
+    QPushButton *acceptButton;
 
 };
 
