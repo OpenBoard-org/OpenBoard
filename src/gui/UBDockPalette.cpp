@@ -96,10 +96,6 @@ UBDockPalette::~UBDockPalette()
 		delete mpLayout;
 		mpLayout = NULL;
 	}
-	if (NULL != mTabPalette) {
-		delete mTabPalette;
-		mTabPalette = NULL;
-	}
 }
 
 /**
