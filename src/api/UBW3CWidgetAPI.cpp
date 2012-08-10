@@ -147,17 +147,16 @@ QString UBW3CWidgetPreferenceAPI::getItem(const QString& key)
     QMap<QString, QString> docPref = mGraphicsW3CWidget->UBGraphicsWidgetItem::preferences();
     if (docPref.contains(key))
       return docPref.value(key);
+  
+
+    QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
+
+    if (w3cPrefs.contains(key)) {
+      UBGraphicsW3CWidgetItem::PreferenceValue pref = w3cPrefs.value(key);
+      return pref.value;
+    }
   }
-
-  QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
-
-  if (w3cPrefs.contains(key)) {
-    UBGraphicsW3CWidgetItem::PreferenceValue pref = w3cPrefs.value(key);
-    return pref.value;
-  }
-
-  else
-    return "";
+  return QString();
 }
 
 int UBW3CWidgetPreferenceAPI::length()

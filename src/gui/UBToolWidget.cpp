@@ -111,7 +111,7 @@ void UBToolWidget::initialize()
 
 void UBToolWidget::javaScriptWindowObjectCleared()
 {
-    UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
+    UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mGraphicsWidgetItem);
 
     mGraphicsWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
 
