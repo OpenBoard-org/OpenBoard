@@ -385,7 +385,12 @@ void UBDocumentController::setupViews()
 
         mDocumentUI->thumbnailWidget->setBackgroundBrush(UBSettings::documentViewLightColor);
 
-        mMessageWindow = new UBMessageWindow(mDocumentUI->thumbnailWidget);
+        #ifdef Q_WS_MACX
+            mMessageWindow = new UBMessageWindow(NULL);
+        #else
+            mMessageWindow = new UBMessageWindow(mDocumentUI->thumbnailWidget);
+        #endif
+
         mMessageWindow->hide();
 
     }
@@ -732,7 +737,7 @@ void UBDocumentController::exportDocument()
     }
     else
     {
-       UBApplication::showMessage(tr("No document selected!"));
+       showMessage(tr("No document selected!"));
     }
 }
 
@@ -917,7 +922,7 @@ void UBDocumentController::importFile()
             if (groupName == UBSettings::defaultDocumentGroupName || fileInfo.suffix() != "ubz")
                 groupName = "";
 
-            UBApplication::showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
+            showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
 
             createdDocument = docManager->importFile(selectedFile, groupName);
 
@@ -927,7 +932,7 @@ void UBDocumentController::importFile()
             }
             else
             {
-                UBApplication::showMessage(tr("Failed to import file ... "));
+                showMessage(tr("Failed to import file ... "));
             }
         }
 
@@ -958,7 +963,7 @@ void UBDocumentController::addFolderOfImages()
 
             if (importedImageNumber == 0)
             {
-                UBApplication::showMessage(tr("Folder does not contain any image files!"));
+                showMessage(tr("Folder does not contain any image files!"));
                 UBApplication::applicationController->showDocument();
             }
             else
@@ -1003,7 +1008,7 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
         QApplication::processEvents();
         QFile selectedFile(filePath);
 
-        UBApplication::showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
+        showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
 
         success = UBDocumentManager::documentManager()->addFileToDocument(document, selectedFile);
 
@@ -1014,7 +1019,7 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
         }
         else
         {
-            UBApplication::showMessage(tr("Failed to import file ... "));
+            showMessage(tr("Failed to import file ... "));
         }
     }
 
@@ -1382,13 +1387,19 @@ bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
 
 void UBDocumentController::showMessage(const QString& message, bool showSpinningWheel)
 {
-    int margin = UBSettings::boardMargin;
-
-    QRect newSize = mDocumentUI->thumbnailWidget->geometry();
-
     if (mMessageWindow)
     {
-        mMessageWindow->move(margin, newSize.height() - mMessageWindow->height() - margin);
+        int margin = UBSettings::boardMargin;
+
+        QRect newSize = mDocumentUI->thumbnailWidget->geometry();
+
+        #ifdef Q_WS_MACX
+            QPoint point(newSize.left() + margin, newSize.bottom() - mMessageWindow->height() - margin);
+            mMessageWindow->move(mDocumentUI->thumbnailWidget->mapToGlobal(point));
+        #else
+            mMessageWindow->move(margin, newSize.height() - mMessageWindow->height() - margin);
+        #endif
+
         mMessageWindow->showMessage(message, showSpinningWheel);
     }
 }
@@ -1609,9 +1620,9 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
 
     QStringList labels;
 
-    if (proxy)
+    if (proxy) 
     {
-        setDocument(proxy);
+        setDocument(proxy); 
 
         for (int i = 0; i < selectedDocument()->pageCount(); i++)
         {
