@@ -209,6 +209,16 @@ void UBFeaturesActionBar::onActionRescanModel()
     emit rescanModel();
 }
 
+void UBFeaturesActionBar::lockIt()
+{
+    setEnabled(false);
+}
+
+void UBFeaturesActionBar::unlockIt()
+{
+    setEnabled(true);
+}
+
 void UBFeaturesActionBar::dragEnterEvent( QDragEnterEvent *event )
 {
     const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
