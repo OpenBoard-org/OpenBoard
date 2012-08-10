@@ -107,12 +107,12 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mFrame(0)
     , mFrameWidth(UBSettings::settings()->objectFrameWidth)
     , mAntiScaleRatio(1.0)
+    , mToolBarItem(NULL)
     , mCanRotate(canRotate)
     , mCanDuplicate(true)
     , mRespectRatio(respectRatio)
     , mMimeData(NULL)
     , mFlippable(false)
-    , mToolBarItem(NULL)
     , mToolBarUsed(useToolBar)
 {
     // NOOP
@@ -1075,11 +1075,11 @@ void MediaTimer::display(const QString &s)
 void MediaTimer::setNumDigits(int numDigits)
 {
     if (numDigits > 99) {
-        qWarning("QLCDNumber::setNumDigits: (%s) Max 99 digits allowed");
+        qWarning("QLCDNumber::setNumDigits: Max 99 digits allowed");
         numDigits = 99;
     }
     if (numDigits < 0) {
-        qWarning("QLCDNumber::setNumDigits: (%s) Min 0 digits allowed");
+        qWarning("QLCDNumber::setNumDigits: Min 0 digits allowed");
         numDigits = 0;
     }
     if (digitStr.isNull()) {                  // from constructor

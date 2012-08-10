@@ -127,12 +127,18 @@ protected:
 
     void init();
 
+
 private:
 
     QRect originalRect;
 
     UBKeyButton** buttons;
     UBKeyboardButton** ctrlButtons;
+
+    /*
+      For MacOS: synchronization with system locale.
+    */
+    void checkLayout();
 
     void createCtrlButtons();
 
@@ -145,10 +151,6 @@ private:
     void* storage;
     // Linux-related parameters
     int min_keycodes, max_keycodes, byte_per_code;
-
-    // Save locale before activation to restore it after (MAC)
-    QString activeLocale;
-
 };
 
 class UBKeyboardButton : public QWidget
