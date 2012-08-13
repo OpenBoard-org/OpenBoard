@@ -419,9 +419,6 @@ bool UBGraphicsItemDelegate::isLocked()
 void UBGraphicsItemDelegate::duplicate()
 {
     // TODO UB 4.x .. rewrite .. .this is absurde ... we know what we are duplicating
-
-    UBApplication::boardController->copy();
-    UBApplication::boardController->paste();
     UBApplication::boardController->duplicateItem(dynamic_cast<UBItem*>(delegated()));
 }
 
