@@ -1013,7 +1013,6 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
       if (bReleaseIsNeed)
       {
-          qDebug() << "mre";
           QGraphicsView::mouseReleaseEvent (event);
       }
   }
@@ -1033,9 +1032,8 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
               delete suspendedMousePressEvent;
               suspendedMousePressEvent = NULL;
           }
-
-          QGraphicsView::mouseReleaseEvent (event);
       }
+      QGraphicsView::mouseReleaseEvent (event);
   }
   else if (currentTool == UBStylusTool::Text)
     {
