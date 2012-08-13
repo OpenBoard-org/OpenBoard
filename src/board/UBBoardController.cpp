@@ -1486,6 +1486,7 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
 
     mPaletteManager->containerResized();
 
+    UBApplication::boardController->controlView()->scene()->moveMagnifier();
 
 }
 

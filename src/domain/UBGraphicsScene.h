@@ -326,7 +326,8 @@ public slots:
 
         void selectionChangedProcessing();
         void updateGroupButtonState();
-        void moveMagnifier(QPoint newPos);
+        void moveMagnifier();
+        void moveMagnifier(QPoint newPos, bool forceGrab = false);
         void closeMagnifier();
         void zoomInMagnifier();
         void zoomOutMagnifier();
