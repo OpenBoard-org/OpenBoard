@@ -1049,10 +1049,6 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
     QTransform rTransform;
     QPointF newVector = rTransform.map(oldVector);
 
-    QRectF sr = mCurrentScene->sceneRect();
-    QRectF sr1 = mCurrentSceneRect;
-    QRectF sr2 = mCurrentScene->normalizedSceneRect();
-
     QTransform tr = item->sceneTransform();
     item->setTransform(rTransform.scale(fullScaleX, fullScaleY), true);
     tr = item->sceneTransform();

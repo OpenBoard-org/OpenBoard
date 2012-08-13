@@ -1484,8 +1484,12 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
 
     mControlView->centerOn(0,0);
 
+    if (mDisplayView)
+        mDisplayView->centerOn(0,0);
+
     mPaletteManager->containerResized();
 
+    UBApplication::boardController->controlView()->scene()->moveMagnifier();
 
 }
 
