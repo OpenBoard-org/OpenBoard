@@ -725,9 +725,10 @@ void UBWebController::loadUrl(const QUrl& url)
     }
     else
     {
+    	bool webBrowserAlreadyInstanciated = mStackedWidget->widget(WebBrowser) != NULL;
         UBApplication::applicationController->showInternet();
 
-        if (mCurrentWebBrowser && !(*mCurrentWebBrowser)) {
+        if (!webBrowserAlreadyInstanciated) {
             (*mCurrentWebBrowser)->loadUrl(url);
         }
         else {
