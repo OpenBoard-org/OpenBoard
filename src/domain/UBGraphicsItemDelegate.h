@@ -149,6 +149,7 @@ class DelegateMediaControl: public QObject, public QGraphicsRectItem
 
     private:
         int mStartWidth;
+        int mSeecAreaBorderHeight;
 
         QRectF mSeecArea;
         QRectF mLCDTimerArea;

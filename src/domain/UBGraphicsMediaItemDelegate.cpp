@@ -135,7 +135,6 @@ void UBGraphicsMediaItemDelegate::positionHandles()
         if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
         {      
             mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());
-           // mToolBarItem->setScale(AntiScaleRatio);
 
             toolBarRect.setWidth(delegated()->boundingRect().width());
         }
@@ -190,8 +189,6 @@ void UBGraphicsMediaItemDelegate::remove(bool canUndo)
 {
     if (delegated() && delegated()->mediaObject())
         delegated()->mediaObject()->stop();
-
-    QGraphicsScene* scene = mDelegated->scene();
 
     UBGraphicsItemDelegate::remove(canUndo);
 }
