@@ -1190,8 +1190,6 @@ void DelegateMediaControl::positionHandles()
     mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
     lcdTimer->setRect(mLCDTimerArea);
     lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
-    //lcdTimer->setRect(mLCDTimerArea);
-    //lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
 
     mSeecArea.setWidth(rect().width()-mLCDTimerArea.width());
 
@@ -1200,8 +1198,6 @@ void DelegateMediaControl::positionHandles()
     setRect(selfRect);
 
     lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
-    //lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
-
 }
 
 void DelegateMediaControl::update()
@@ -1209,7 +1205,6 @@ void DelegateMediaControl::update()
     QTime t;
     t = t.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
     lcdTimer->display(t.toString("m:ss"));
-    //lcdTimer->display(t.toString("m:ss"));
 
     QGraphicsRectItem::update();
 }
@@ -1262,7 +1257,6 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
 
     minX = frameWidth;
     length = mSeecArea.width() - lcdTimer->rect().width();
-    length = mSeecArea.width() /*- lcdTimer->rect().width()*/;
 
     qreal mouseX = mousePos.x();
     if (mouseX >= (mSeecArea.width() - mSeecArea.height()/2))

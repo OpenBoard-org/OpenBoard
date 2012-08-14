@@ -284,7 +284,7 @@ class UBGraphicsItemDelegate : public QObject
         qreal mAntiScaleRatio;
 
         QList<DelegateButton*> mButtons;
-
+        QList<DelegateButton*> mToolBarButtons;
         UBGraphicsToolBarItem* mToolBarItem;
 
 protected slots:
