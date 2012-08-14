@@ -94,7 +94,7 @@ void UBGraphicsMediaItemDelegate::buildButtons()
     connect(mMuteButton, SIGNAL(clicked(bool)), delegated(), SLOT(toggleMute())); 
     connect(mMuteButton, SIGNAL(clicked(bool)), this, SLOT(toggleMute())); // for changing button image
 
-    mButtons << mPlayPauseButton << mStopButton << mMuteButton;
+    mToolBarButtons << mPlayPauseButton << mStopButton << mMuteButton;
 
     mToolBarItem->setItemsOnToolBar(QList<QGraphicsItem*>() << mPlayPauseButton << mStopButton << mMediaControl << mMuteButton);
     mToolBarItem->setVisibleOnBoard(true);
@@ -156,13 +156,10 @@ void UBGraphicsMediaItemDelegate::positionHandles()
 
     int toolBarMinimumWidth = 0;
     int mediaItemWidth = mToolBarItem->boundingRect().width();
-    foreach (DelegateButton* button, mButtons)
+    foreach (DelegateButton* button, mToolBarButtons)
     {
-        if (button->getSection() == Qt::TitleBarArea)
-        {
-            mediaItemWidth -= button->boundingRect().width() + mToolBarItem->getElementsPadding();
-            toolBarMinimumWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
-        }
+        mediaItemWidth -= button->boundingRect().width() + mToolBarItem->getElementsPadding();
+        toolBarMinimumWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
     }
     toolBarMinimumWidth += mToolBarItem->boundingRect().height();
 
@@ -195,8 +192,6 @@ void UBGraphicsMediaItemDelegate::remove(bool canUndo)
         delegated()->mediaObject()->stop();
 
     QGraphicsScene* scene = mDelegated->scene();
-
-    scene->removeItem(mMediaControl);
 
     UBGraphicsItemDelegate::remove(canUndo);
 }
