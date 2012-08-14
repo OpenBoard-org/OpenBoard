@@ -719,15 +719,16 @@ bool UBWebController::isEduMedia(const QUrl& pUrl)
 
 void UBWebController::loadUrl(const QUrl& url)
 {
+	UBApplication::applicationController->showInternet();
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
         QDesktopServices::openUrl(url);
     }
     else
     {
-        UBApplication::applicationController->showInternet();
+    	bool webBrowserAlreadyInstanciated = mStackedWidget->widget(WebBrowser) != NULL;
 
-        if (mCurrentWebBrowser && !(*mCurrentWebBrowser)) {
+        if (!webBrowserAlreadyInstanciated) {
             (*mCurrentWebBrowser)->loadUrl(url);
         }
         else {

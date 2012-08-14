@@ -64,9 +64,12 @@ void UBKeyboardPalette::createCtrlButtons()
     ctrlButtons[ctrlID++] = new UBLocaleButton(this);                  // Language Switch 
 }
 
+void UBKeyboardPalette::checkLayout()
+{}
+
 void UBKeyboardPalette::onActivated(bool)
-{
-}
+{}
+
 void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* )
 {}
 

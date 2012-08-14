@@ -18,10 +18,9 @@
 #include "core/UBSettings.h"
 
 #include "board/UBBoardController.h"
+#include "domain/UBGraphicsWidgetItem.h"
 
 #include "tools/UBToolsManager.h"
-
-#include "domain/UBAbstractWidget.h"
 
 #include "gui/UBMainWindow.h"
 
@@ -67,9 +66,9 @@ UBFavoriteToolPalette::UBFavoriteToolPalette(QWidget* parent)
 
     foreach(QString widgetPath, appPathes)
     {
-        QAction *action = new QAction(UBAbstractWidget::widgetName(QUrl::fromLocalFile(widgetPath)), this);
+        QAction *action = new QAction(UBGraphicsWidgetItem::widgetName(QUrl::fromLocalFile(widgetPath)), this);
         action->setData(QUrl::fromLocalFile(widgetPath));
-        action->setIcon(QIcon(UBAbstractWidget::iconFilePath(QUrl::fromLocalFile(widgetPath))));
+        action->setIcon(QIcon(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(widgetPath))));
         connect(action, SIGNAL(triggered()), this, SLOT(addFavorite()));
 
         toolsActions << action;

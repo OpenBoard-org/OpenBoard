@@ -96,10 +96,6 @@ UBDockPalette::~UBDockPalette()
 		delete mpLayout;
 		mpLayout = NULL;
 	}
-	if (NULL != mTabPalette) {
-		delete mTabPalette;
-		mTabPalette = NULL;
-	}
 }
 
 /**
@@ -533,6 +529,7 @@ void UBDockPalette::setVisible(bool visible)
 
 bool UBDockPalette::switchMode(eUBDockPaletteWidgetMode mode)
 {
+	mLastOpenedTabForMode.insert(mCurrentMode, mpStackWidget->currentIndex());
 	mCurrentMode = mode;
 	bool hasVisibleElements = false;
 	//-------------------------------//
@@ -556,7 +553,7 @@ bool UBDockPalette::switchMode(eUBDockPaletteWidgetMode mode)
 	//-------------------------------//
 
 	if(mRegisteredWidgets.size() > 0)
-		showTabWidget(0);
+		showTabWidget(mLastOpenedTabForMode.value(mCurrentMode));
 
 	update();
 

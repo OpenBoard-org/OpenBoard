@@ -1,6 +1,5 @@
 #include <QDomDocument>
 #include "UBFeaturesWidget.h"
-#include "domain/UBAbstractWidget.h"
 #include "gui/UBThumbnailWidget.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"

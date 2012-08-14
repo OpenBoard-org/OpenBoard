@@ -22,6 +22,8 @@
 #include <QUrl>
 #include <QWebSettings>
 #include <QApplication>
+#include <QDomElement>
+#include <QWebFrame>
 
 #include "UBTeacherGuideWidgetsTools.h"
 
@@ -30,7 +32,7 @@
 
 #include "board/UBBoardController.h"
 
-#include "domain/UBW3CWidget.h"
+#include "domain/UBGraphicsWidgetItem.h"
 
 #include "globals/UBGlobals.h"
 
@@ -360,7 +362,7 @@ void UBTGMediaWidget::removeSource()
 void UBTGMediaWidget::hideEvent(QHideEvent* event)
 {
     if(mpWebView)
-        mpWebView->page()->mainFrame()->setContent(UBW3CWidget::freezedWidgetPage().toAscii());
+        mpWebView->page()->mainFrame()->setContent(UBGraphicsW3CWidgetItem::freezedWidgetPage().toAscii());
     QWidget::hideEvent(event);
 }
 
@@ -421,7 +423,7 @@ void UBTGMediaWidget::createWorkWidget()
         mMediaType = "w3c";
         if(!(mIsPresentationMode || mIsInitializationMode)){
             QDir baseW3CDirectory(UBPersistenceManager::persistenceManager()->teacherGuideAbsoluteObjectPath(proxyDocument));
-            mMediaPath = UBW3CWidget::createNPAPIWrapperInDir(mMediaPath,baseW3CDirectory,mimeType,QSize(100,100),QUuid::createUuid());
+            mMediaPath = UBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(mMediaPath,baseW3CDirectory,mimeType,QSize(100,100),QUuid::createUuid());
         }
         mpWebView = new UBDraggableWeb(mMediaPath);
         mpWebView->setAcceptDrops(false);

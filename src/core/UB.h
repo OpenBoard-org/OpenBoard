@@ -142,7 +142,8 @@ struct UBGraphicsItemType
 		TriangleItemType,
         MagnifierItemType,
         cacheItemType,
-        groupContainerType
+        groupContainerType,
+        ToolWidgetItemType
     };
 };
 

@@ -281,12 +281,12 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
                 jsonFile.write(QString("      \"uuid\": \"%1\",\n").arg(UBStringUtils::toCanonicalUuid(widget->uuid())).toUtf8());
                 jsonFile.write(QString("      \"id\": \"%1\",\n").arg(widget->metadatas().id).toUtf8());
 
-                jsonFile.write(QString("      \"name\": \"%1\",\n").arg(widget->w3cWidget()->metadatas().name).toUtf8());
-                jsonFile.write(QString("      \"description\": \"%1\",\n").arg(widget->w3cWidget()->metadatas().description).toUtf8());
-                jsonFile.write(QString("      \"author\": \"%1\",\n").arg(widget->w3cWidget()->metadatas().author).toUtf8());
-                jsonFile.write(QString("      \"authorEmail\": \"%1\",\n").arg(widget->w3cWidget()->metadatas().authorEmail).toUtf8());
-                jsonFile.write(QString("      \"authorHref\": \"%1\",\n").arg(widget->w3cWidget()->metadatas().authorHref).toUtf8());
-                jsonFile.write(QString("      \"version\": \"%1\",\n").arg(widget->w3cWidget()->metadatas().authorHref).toUtf8());
+                jsonFile.write(QString("      \"name\": \"%1\",\n").arg(widget->metadatas().name).toUtf8());
+                jsonFile.write(QString("      \"description\": \"%1\",\n").arg(widget->metadatas().description).toUtf8());
+                jsonFile.write(QString("      \"author\": \"%1\",\n").arg(widget->metadatas().author).toUtf8());
+                jsonFile.write(QString("      \"authorEmail\": \"%1\",\n").arg(widget->metadatas().authorEmail).toUtf8());
+                jsonFile.write(QString("      \"authorHref\": \"%1\",\n").arg(widget->metadatas().authorHref).toUtf8());
+                jsonFile.write(QString("      \"version\": \"%1\",\n").arg(widget->metadatas().authorHref).toUtf8());
 
                 jsonFile.write(QString("      \"x\": %1,\n").arg(widget->sceneBoundingRect().x()).toUtf8());
                 jsonFile.write(QString("      \"y\": %1,\n").arg(widget->sceneBoundingRect().y()).toUtf8());
@@ -298,10 +298,10 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 
                 QString url = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString() + ".wgt";
                 jsonFile.write(QString("      \"src\": \"%1\",\n").arg(url).toUtf8());
-                QString startFile = widget->w3cWidget()->mainHtmlFileName();
+                QString startFile = widget->mainHtmlFileName();
                 jsonFile.write(QString("      \"startFile\": \"%1\",\n").arg(startFile).toUtf8());
 
-                QMap<QString, QString> preferences = widget->preferences();
+                QMap<QString, QString> preferences = widget->UBGraphicsWidgetItem::preferences();
 
                 jsonFile.write(QString("      \"preferences\": {\n").toUtf8());
 
@@ -360,10 +360,10 @@ void UBDocumentPublisher::upgradeDocumentForPublishing()
 void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *widgetItem, int pageNumber)
 {
 
-    QMap<QString, QString> preferences = widgetItem->preferences();
+    QMap<QString, QString> preferences = widgetItem->UBGraphicsWidgetItem::preferences();
     QMap<QString, QString> datastoreEntries = widgetItem->datastoreEntries();
 
-    QString startFileName = widgetItem->w3cWidget()->mainHtmlFileName();
+    QString startFileName = widgetItem->mainHtmlFileName();
 
     if (!startFileName.startsWith("http://"))
     {
@@ -394,18 +394,18 @@ void UBDocumentPublisher::generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *
                             lines << "  <script type=\"text/javascript\">";
 
                             lines << "    var widget = {};";
-                            lines << "    widget.id = '" + widgetItem->w3cWidget()->metadatas().id + "';";
-                            lines << "    widget.name = '" + widgetItem->w3cWidget()->metadatas().name + "';";
-                            lines << "    widget.description = '" + widgetItem->w3cWidget()->metadatas().description + "';";
-                            lines << "    widget.author = '" + widgetItem->w3cWidget()->metadatas().author + "';";
-                            lines << "    widget.authorEmail = '" + widgetItem->w3cWidget()->metadatas().authorEmail + "';";
-                            lines << "    widget.authorHref = '" + widgetItem->w3cWidget()->metadatas().authorHref + "';";
-                            lines << "    widget.version = '" + widgetItem->w3cWidget()->metadatas().version + "';";
+                            lines << "    widget.id = '" + widgetItem->metadatas().id + "';";
+                            lines << "    widget.name = '" + widgetItem->metadatas().name + "';";
+                            lines << "    widget.description = '" + widgetItem->metadatas().description + "';";
+                            lines << "    widget.author = '" + widgetItem->metadatas().author + "';";
+                            lines << "    widget.authorEmail = '" + widgetItem->metadatas().authorEmail + "';";
+                            lines << "    widget.authorHref = '" + widgetItem->metadatas().authorHref + "';";
+                            lines << "    widget.version = '" + widgetItem->metadatas().version + "';";
 
                             lines << "    widget.uuid = '" + UBStringUtils::toCanonicalUuid(widgetItem->uuid()) + "';";
 
-                            lines << "    widget.width = " + QString("%1").arg(widgetItem->w3cWidget()->width()) + ";";
-                            lines << "    widget.height = " + QString("%1").arg(widgetItem->w3cWidget()->height()) + ";";
+                            lines << "    widget.width = " + QString("%1").arg(widgetItem->nominalSize().width()) + ";";
+                            lines << "    widget.height = " + QString("%1").arg(widgetItem->nominalSize().height()) + ";";
                             lines << "    widget.openUrl = function(url) { window.open(url); }";
                             lines << "    widget.preferences = new Array()";
 

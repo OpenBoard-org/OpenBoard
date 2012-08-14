@@ -25,7 +25,7 @@ class UBWidgetMessageAPI : public QObject
     Q_OBJECT;
 
     public:
-        UBWidgetMessageAPI(UBW3CWidget *widget);
+        UBWidgetMessageAPI(UBGraphicsWidgetItem *graphicsWidgetItem, QObject *parent = 0);
         virtual ~UBWidgetMessageAPI();
 
     public slots:
@@ -49,7 +49,7 @@ class UBWidgetMessageAPI : public QObject
     private:
 
         QSet<QString> mSubscribedTopics;
-        UBW3CWidget *mWebWidget;
+        UBGraphicsWidgetItem *mGraphicsWidgetItem;
 };
 
 

@@ -139,8 +139,6 @@ private:
     QUrl mMediaFileUrl;
     QString mMediaSource;
 
-    qint64 mInitialPos;
-
     mediaType mMediaType;
 
     bool mShouldMove;
@@ -149,5 +147,7 @@ private:
 
     bool haveLinkedImage;
     QGraphicsPixmapItem *mLinkedImage;    
+
+    qint64 mInitialPos;
 };
 #endif // UBGRAPHICSMEDIAITEM_H

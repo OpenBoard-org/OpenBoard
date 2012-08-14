@@ -243,6 +243,8 @@ void UBKeyboardPalette::adjustSizeAndPosition(bool pUp)
 
 void  UBKeyboardPalette::paintEvent( QPaintEvent* event)
 {
+    checkLayout();
+
     UBActionPalette::paintEvent(event);
 
     QRect r = this->geometry();

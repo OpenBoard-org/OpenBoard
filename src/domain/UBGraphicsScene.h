@@ -35,12 +35,12 @@ class UBGraphicsAudioItem;
 class UBGraphicsWidgetItem;
 class UBGraphicsW3CWidgetItem;
 class UBGraphicsAppleWidgetItem;
+class UBToolWidget;
 class UBGraphicsPDFItem;
 class UBGraphicsTextItem;
 class UBGraphicsRuler;
 class UBGraphicsProtractor;
 class UBGraphicsCompass;
-class UBAbstractWidget;
 class UBDocumentProxy;
 class UBGraphicsCurtainItem;
 class UBGraphicsStroke;
@@ -132,8 +132,10 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         UBGraphicsWidgetItem* addWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsAppleWidgetItem* addAppleWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
-        UBGraphicsW3CWidgetItem* addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0),int widgetType = UBGraphicsItemType::W3CWidgetItemType);
+        UBGraphicsW3CWidgetItem* addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         void addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos = QPointF(0, 0));
+
+        
 
         UBGraphicsMediaItem* addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsMediaItem* addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
@@ -324,7 +326,8 @@ public slots:
 
         void selectionChangedProcessing();
         void updateGroupButtonState();
-        void moveMagnifier(QPoint newPos);
+        void moveMagnifier();
+        void moveMagnifier(QPoint newPos, bool forceGrab = false);
         void closeMagnifier();
         void zoomInMagnifier();
         void zoomOutMagnifier();

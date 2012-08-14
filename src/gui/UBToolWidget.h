@@ -17,52 +17,60 @@
 #define UBTOOLWIDGET_H_
 
 #include <QtGui>
+#include <QtWebKit>
+#include "core/UB.h"
 
-class UBAbstractWidget;
-class QWidget;
 class UBGraphicsScene;
+class UBGraphicsWidgetItem;
 
-class UBToolWidget : public QWidget
+class UBToolWidget : public QGraphicsWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
-        UBToolWidget(const QUrl& pUrl, QWidget* pParent = 0);
-        UBToolWidget(UBAbstractWidget* pWidget, QWidget* pParent = 0);
+        UBToolWidget(const QUrl& pUrl, QGraphicsItem *pParent = 0);
+        UBToolWidget(UBGraphicsWidgetItem* pGraphicsWidgetItem, QGraphicsItem *pParent = 0);
         virtual ~UBToolWidget();
 
-        void centerOn(const QPoint& pos);
+        UBGraphicsWidgetItem* graphicsWidgetItem() const;
+        QPointF naturalCenter() const;
 
-        QPoint naturalCenter() const;
+        void centerOn(const QPointF& pos);
+        void remove();
 
-        UBAbstractWidget* webWidget() const;
+        virtual UBGraphicsScene* scene();
+        virtual QPointF pos() const; 
+        virtual void setPos(const QPointF &point);
+        virtual void setPos(qreal x, qreal y);
+        virtual int type() const;
+        
+        enum 
+        { 
+            Type = UBGraphicsItemType::ToolWidgetItemType 
+        };
 
     protected:
         void initialize();
-        virtual void paintEvent(QPaintEvent *);
 
-        virtual void mousePressEvent ( QMouseEvent * event );
-        virtual void mouseMoveEvent ( QMouseEvent * event );
-        virtual void mouseReleaseEvent ( QMouseEvent * event );
-
-        virtual bool eventFilter(QObject *obj, QEvent *event);
+        virtual bool event(QEvent *event);
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);      
 
     private slots:
         void javaScriptWindowObjectCleared();
 
     protected:
+        bool mShouldMoveWidget;
+        int mContentMargin;
+        int mFrameWidth;
+        QGraphicsWebView *mGraphicsWebView;        
+        UBGraphicsWidgetItem *mGraphicsWidgetItem;
+        QPointF mMousePressPos;
 
         static QPixmap *sClosePixmap;
         static QPixmap *sUnpinPixmap;
-
-        UBAbstractWidget *mToolWidget;
-
-        QPoint mMousePressPos;
-
-        bool mShouldMoveWidget;
-
-        int mContentMargin;
-        int mFrameWidth;
 };
 
 #endif /* UBTOOLWIDGET_H_ */

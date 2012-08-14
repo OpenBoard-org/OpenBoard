@@ -1,5 +1,7 @@
 #include "UBGraphicsStrokesGroup.h"
 
+#include "domain/UBGraphicsPolygonItem.h"
+
 #include "core/memcheck.h"
 
 UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent):QGraphicsItemGroup(parent)
@@ -63,6 +65,15 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
    UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
 
+
+   QList<QGraphicsItem*> chl = childItems();
+
+    foreach(QGraphicsItem *child, chl)
+    {
+        UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
+        if (polygon)
+            copy->addToGroup(dynamic_cast<QGraphicsItem*>(polygon->deepCopy()));
+    }
     copyItemParameters(copy);
 
    return copy;

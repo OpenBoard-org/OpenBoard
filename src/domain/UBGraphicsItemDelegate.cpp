@@ -37,7 +37,6 @@
 
 #include "UBGraphicsWidgetItem.h"
 
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
@@ -107,12 +106,12 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mFrame(0)
     , mFrameWidth(UBSettings::settings()->objectFrameWidth)
     , mAntiScaleRatio(1.0)
+    , mToolBarItem(NULL)
     , mCanRotate(canRotate)
     , mCanDuplicate(true)
     , mRespectRatio(respectRatio)
     , mMimeData(NULL)
     , mFlippable(false)
-    , mToolBarItem(NULL)
     , mToolBarUsed(useToolBar)
 {
     // NOOP
@@ -379,7 +378,14 @@ void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
-//    QGraphicsScene* scene = mDelegated->scene();
+    /*UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+    if (scene && canUndo)
+    {
+        UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand(scene, mDelegated, 0);
+        UBApplication::undoStack->push(uc);
+    }
+    mDelegated->hide();  */
+
     UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
     if (scene)
     {
@@ -387,11 +393,17 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
             scene->removeItem(button);
 
         scene->removeItem(mFrame);
+
+        /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */ 
+        UBGraphicsWebView *mDelegated_casted = dynamic_cast<UBGraphicsWebView*>(mDelegated);
+        if (mDelegated_casted)
+            mDelegated_casted->setHtml(QString());
+
         scene->removeItem(mDelegated);
 
         if (canUndo)
         {
-            UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand((UBGraphicsScene*) scene, mDelegated, 0);
+            UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand(scene, mDelegated, 0);
             UBApplication::undoStack->push(uc);
         }
     }
@@ -406,10 +418,6 @@ bool UBGraphicsItemDelegate::isLocked()
 
 void UBGraphicsItemDelegate::duplicate()
 {
-    // TODO UB 4.x .. rewrite .. .this is absurde ... we know what we are duplicating
-
-    UBApplication::boardController->copy();
-    UBApplication::boardController->paste();
     UBApplication::boardController->duplicateItem(dynamic_cast<UBItem*>(delegated()));
 }
 
@@ -1075,11 +1083,11 @@ void MediaTimer::display(const QString &s)
 void MediaTimer::setNumDigits(int numDigits)
 {
     if (numDigits > 99) {
-        qWarning("QLCDNumber::setNumDigits: (%s) Max 99 digits allowed");
+        qWarning("QLCDNumber::setNumDigits: Max 99 digits allowed");
         numDigits = 99;
     }
     if (numDigits < 0) {
-        qWarning("QLCDNumber::setNumDigits: (%s) Min 0 digits allowed");
+        qWarning("QLCDNumber::setNumDigits: Min 0 digits allowed");
         numDigits = 0;
     }
     if (digitStr.isNull()) {                  // from constructor
@@ -1181,8 +1189,6 @@ void DelegateMediaControl::positionHandles()
     mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
     lcdTimer->setRect(mLCDTimerArea);
     lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
-    //lcdTimer->setRect(mLCDTimerArea);
-    //lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
 
     mSeecArea.setWidth(rect().width()-mLCDTimerArea.width());
 
@@ -1191,8 +1197,6 @@ void DelegateMediaControl::positionHandles()
     setRect(selfRect);
 
     lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
-    //lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
-
 }
 
 void DelegateMediaControl::update()
@@ -1200,7 +1204,6 @@ void DelegateMediaControl::update()
     QTime t;
     t = t.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
     lcdTimer->display(t.toString("m:ss"));
-    //lcdTimer->display(t.toString("m:ss"));
 
     QGraphicsRectItem::update();
 }
@@ -1253,7 +1256,6 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
 
     minX = frameWidth;
     length = mSeecArea.width() - lcdTimer->rect().width();
-    length = mSeecArea.width() /*- lcdTimer->rect().width()*/;
 
     qreal mouseX = mousePos.x();
     if (mouseX >= (mSeecArea.width() - mSeecArea.height()/2))

@@ -18,8 +18,7 @@
 
 #include <QtGui>
 #include <QtWebKit>
-
-#include "web/UBRoutedMouseEventWebView.h"
+ 
 #include "gui/UBLeftPalette.h"
 #include "gui/UBRightPalette.h"
 #include "gui/UBPageNavigationWidget.h"

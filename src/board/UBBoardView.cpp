@@ -71,6 +71,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 , suspendedMousePressEvent(NULL)
 , mLongPressInterval(1000)
 , mIsDragInProgress(false)
+, mMultipleSelectionIsEnabled(false)
 {
   init ();
 
@@ -86,6 +87,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int p
 , suspendedMousePressEvent(NULL)
 , mLongPressInterval(1000)
 , mIsDragInProgress(false)
+, mMultipleSelectionIsEnabled(false)
 {
   init ();
 
@@ -122,8 +124,6 @@ UBBoardView::init ()
   setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
   setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
   setAcceptDrops (true);
-
-  setOptimizationFlag (QGraphicsView::IndirectPainting); // enable UBBoardView::drawItems filter
 
   mTabletStylusIsPressed = false;
   mMouseButtonIsPressed = false;
@@ -208,6 +208,11 @@ UBBoardView::keyPressEvent (QKeyEvent *event)
             mController->addScene ();
             break;
           }
+        case Qt::Key_Control:
+        case Qt::Key_Shift:
+          {
+            mMultipleSelectionIsEnabled = true;
+          }break;
         }
 
 
@@ -266,6 +271,21 @@ UBBoardView::keyPressEvent (QKeyEvent *event)
             }
         }
     }
+}
+
+
+void UBBoardView::keyReleaseEvent(QKeyEvent *event)
+{
+   // if (!event->isAccepted ())
+    {    
+        if (Qt::Key_Shift == event->key()
+          ||Qt::Key_Control == event->key())
+        {
+            mMultipleSelectionIsEnabled = false;
+        }
+    }
+
+    QGraphicsView::keyReleaseEvent(event);
 }
 
 bool
@@ -426,7 +446,10 @@ bool UBBoardView::itemShouldReceiveMousePressEvent(QGraphicsItem *item)
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
 
     if ((currentTool == UBStylusTool::Play) && UBGraphicsGroupContainerItem::Type == movingItem->type())
-        return movingItem = NULL;
+    {
+        movingItem = NULL;
+        return false;
+    }
 
     switch(item->type())
     {
@@ -534,11 +557,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
         return true;
     case UBGraphicsTextItem::Type:
         return !item->isSelected();
-
-    default: 
-        false;
     }
-
     return false;
 }
 
@@ -579,7 +598,8 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
 
 
     if (movingItem && QGraphicsSvgItem::Type !=  movingItem->type()
-        && UBGraphicsDelegateFrame::Type !=  movingItem->type())
+        && UBGraphicsDelegateFrame::Type != movingItem->type()
+        && !mMultipleSelectionIsEnabled)
     {
         foreach(QGraphicsItem *item, scene()->selectedItems())
         {
@@ -589,6 +609,9 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
             }
         }
     }
+
+    if (mMultipleSelectionIsEnabled)
+        return;
 
     if (itemShouldReceiveMousePressEvent(movingItem))
         QGraphicsView::mousePressEvent (event);
@@ -947,6 +970,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
   if (currentTool == UBStylusTool::Selector)
   {
+      bool bReleaseIsNeed = true;
       if (mWidgetMoved)
       {
           mWidgetMoved = false;
@@ -960,13 +984,26 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
               QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
               movingItem = NULL;
               delete suspendedMousePressEvent;
-              suspendedMousePressEvent = NULL;                       
+              suspendedMousePressEvent = NULL;
           }
           else
           {
-             if (   QGraphicsSvgItem::Type !=  movingItem->type()
-                 && UBGraphicsDelegateFrame::Type !=  movingItem->type())
-                 movingItem->setSelected(true);
+             if (QGraphicsSvgItem::Type !=  movingItem->type() &&
+                UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
+                UBToolWidget::Type != movingItem->type())
+             {
+                 bReleaseIsNeed = false;
+                 if (movingItem->isSelected() && mMultipleSelectionIsEnabled)
+                    movingItem->setSelected(false);
+                 else
+                 {
+                    if (movingItem->isSelected())
+                        bReleaseIsNeed = true;
+
+                    movingItem->setSelected(true);
+                 }
+                
+             }
           }
       }
 
@@ -974,7 +1011,10 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           mUBRubberBand->hide();
       }
 
-      QGraphicsView::mouseReleaseEvent (event);
+      if (bReleaseIsNeed)
+      {
+          QGraphicsView::mouseReleaseEvent (event);
+      }
   }
   else if (currentTool == UBStylusTool::Play)
   {
@@ -992,9 +1032,8 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
               delete suspendedMousePressEvent;
               suspendedMousePressEvent = NULL;
           }
-
-          QGraphicsView::mouseReleaseEvent (event);
       }
+      QGraphicsView::mouseReleaseEvent (event);
   }
   else if (currentTool == UBStylusTool::Text)
     {
@@ -1182,7 +1221,7 @@ void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
             }
             QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
             QDragMoveEvent newEvent(newPoint, event->dropAction(), event->mimeData(), event->mouseButtons(), event->keyboardModifiers());
-            QApplication::sendEvent(graphicsWidget->widgetWebView(),&newEvent);
+            QApplication::sendEvent(graphicsWidget,&newEvent);
         } else {
             mOkOnWidget = false;
             event->ignore();

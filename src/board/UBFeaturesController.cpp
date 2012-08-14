@@ -11,7 +11,6 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBDownloadManager.h"
-#include "domain/UBAbstractWidget.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -24,6 +23,7 @@ const QString UBFeaturesController::virtualRootName = "root";
 
 void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString & currVirtualPath, const QSet<QUrl> &pFavoriteSet)
 {
+    
     Q_ASSERT(QFileInfo(currentPath.toLocalFile()).exists());
 
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath.toLocalFile());
@@ -527,7 +527,7 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
     if (pFType == FEATURE_FOLDER) {
         return QImage(":images/libpalette/folder.svg");
     } else if (pFType == FEATURE_INTERACTIVE || pFType == FEATURE_SEARCH) {
-        return QImage(UBAbstractWidget::iconFilePath(QUrl::fromLocalFile(path)));
+        return QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(path)));
     } else if (pFType == FEATURE_INTERNAL) {
         return QImage(UBToolsManager::manager()->iconFromToolId(path));
     } else if (pFType == FEATURE_AUDIO) {
