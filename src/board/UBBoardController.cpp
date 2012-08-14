@@ -544,7 +544,8 @@ void UBBoardController::duplicateItem(UBItem *item)
     QGraphicsItem *commonItem = dynamic_cast<QGraphicsItem*>(item);
     if (commonItem)
     {
-        itemPos = commonItem->pos();
+        qreal shifting = UBSettings::settings()->objectFrameWidth;
+        itemPos = commonItem->pos() + QPointF(shifting,shifting);
         itemSize = commonItem->boundingRect().size();
     }
 
@@ -612,6 +613,10 @@ void UBBoardController::duplicateItem(UBItem *item)
     {
         createdItem->setSourceUrl(item->sourceUrl());
         item->copyItemParameters(createdItem);
+
+        QGraphicsItem *createdGitem = dynamic_cast<QGraphicsItem*>(createdItem);
+        if (createdGitem)
+            createdGitem->setPos(itemPos);
     } 
 }
 
