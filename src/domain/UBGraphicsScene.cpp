@@ -541,12 +541,14 @@ bool UBGraphicsScene::inputDeviceRelease()
                 mAddedItems.remove(mArcPolygonItem);
                 removeItem(mArcPolygonItem);
                 UBCoreGraphicsScene::removeItemFromDeletion(mArcPolygonItem);
+                mArcPolygonItem->setStrokesGroup(pStrokes);
                 pStrokes->addToGroup(mArcPolygonItem);
 
                 // Add the center cross
                 foreach(QGraphicsItem* item, mAddedItems){
                     removeItem(item);
                     UBCoreGraphicsScene::removeItemFromDeletion(item);
+                    mArcPolygonItem->setStrokesGroup(pStrokes);
                     pStrokes->addToGroup(item);
                 }
 

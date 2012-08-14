@@ -591,6 +591,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         if(strokesGroup){
                             polygonItem->setTransform(strokesGroup->transform());
                             strokesGroup->addToGroup(polygonItem);
+                            polygonItem->setStrokesGroup(strokesGroup);
                         }
                     }else{
                         mScene->addItem(polygonItem);
