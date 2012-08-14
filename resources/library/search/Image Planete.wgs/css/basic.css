@@ -154,6 +154,10 @@ a {
     vertical-align: top;
 }
 
+.imgContainer img{
+    max-width: 150px;
+    max-height:150px;
+}
 
 .filterContainer{
     float: left;

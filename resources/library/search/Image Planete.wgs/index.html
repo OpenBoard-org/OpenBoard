@@ -8,7 +8,7 @@
         <script type="text/javascript">
             var category = "image";
             var thumbnails = true;
-            var minHeight = 180;
+            var minHeight = 150;
             var minWidth = 150;
             
             var currentIndex = 0;
@@ -78,12 +78,12 @@
                     // There is also a result.file property which has the escaped version
                     if (thumbnails) {
                         newImg.src = result.file;
-                        if(result.height >= result.width)
+                        /*if(result.height >= result.width)
                             newImg.height = minHeight;
                         else{
                             newImg.width = minWidth;
                             //newImg.style.margin = (120 - result.height)/2 + "px 0";
-                        }
+                        }*/
                     } else {
                         newImg.src = "./images/thumbnail_icon.png";
                     }
