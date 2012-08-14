@@ -45,6 +45,7 @@ class UBFeaturesNavigatorWidget;
 class UBFeaturesMimeData;
 class UBFeaturesCentralWidget;
 class UBFeaturesNewFolderDialog;
+class UBFeaturesProgressBar;
 
 class UBFeaturesWidget : public UBDockPaletteWidget
 {
@@ -189,7 +190,6 @@ public:
     void setPropertiesThumbnail(const QPixmap &pix);
     StackElement currentView() const {return static_cast<StackElement>(mStackedWidget->currentIndex());}
     UBFeature getCurElementFromProperties();
-    void showAdditionalData(AddWidget pWidgetType, AddWidgetState pState = NonModal);
 
     void setLockedExcludingAdditional(bool pLock);
 
@@ -207,6 +207,12 @@ signals:
 
 //    progressbar widget related signals
     void maxFilesCountEvaluated(int pValue);
+    void increaseStatusBarValue();
+    void scanCategory(const QString &);
+    void scanPath(const QString &);
+
+public slots:
+    void showAdditionalData(AddWidget pWidgetType, AddWidgetState pState = NonModal);
 
 private slots:
     void createNewFolderSlot(QString pStr);
@@ -214,7 +220,6 @@ private slots:
 
     void scanStarted();
     void scanFinished();
-    void increaseStatusBarValue();
 
 private:
 
@@ -250,6 +255,27 @@ private:
     QStringList mFileNameList;
     QPushButton *acceptButton;
 
+};
+
+class UBFeaturesProgressInfo: public QWidget {
+    Q_OBJECT
+
+public:
+    UBFeaturesProgressInfo(QWidget *parent = 0);
+
+private slots:
+    void setCommmonInfoText(const QString &str);
+    void setDetailedInfoText(const QString &str);
+    void setProgressMin(int pValue);
+    void setProgressMax(int pValue);
+    void increaseProgressValue();
+    void sendFeature(UBFeature pFeature);
+
+
+private:
+    QProgressBar *mProgressBar;
+    QLabel *mCommonInfoLabel;
+    QLabel *mDetailedInfoLabel;
 };
 
 class UBFeaturesWebView : public QWidget

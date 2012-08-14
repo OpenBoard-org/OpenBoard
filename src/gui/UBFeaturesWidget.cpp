@@ -81,7 +81,9 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     connect(controller, SIGNAL(scanStarted()), mActionBar, SLOT(lockIt()));
     connect(controller, SIGNAL(scanFinished()), mActionBar, SLOT(unlockIt()));
     connect(controller, SIGNAL(maxFilesCountEvaluated(int)), centralWidget, SIGNAL(maxFilesCountEvaluated(int)));
-    connect(controller, SIGNAL(featureAddedFromThread()), centralWidget, SLOT(increaseStatusBarValue()));
+    connect(controller, SIGNAL(featureAddedFromThread()), centralWidget, SIGNAL(increaseStatusBarValue()));
+    connect(controller, SIGNAL(scanCategory(QString)), centralWidget, SIGNAL(scanCategory(QString)));
+    connect(controller, SIGNAL(scanPath(QString)), centralWidget, SIGNAL(scanPath(QString)));
 }
 
 UBFeaturesWidget::~UBFeaturesWidget()
@@ -497,15 +499,14 @@ UBFeaturesCentralWidget::UBFeaturesCentralWidget(QWidget *parent) : QWidget(pare
     connect(this, SIGNAL(sendFileNameList(QStringList)), dlg, SLOT(setFileNameList(QStringList)));
 
     //Progress bar to show scanning progress
-    QProgressBar *progressBar = new QProgressBar();
+    UBFeaturesProgressInfo *progressBar = new UBFeaturesProgressInfo();
     mAdditionalDataContainer->addWidget(progressBar);
     mAdditionalDataContainer->setCurrentIndex(ProgressBarWidget);
-    progressBar->setMinimum(0);
-    progressBar->setValue(0);
-    progressBar->setMaximum(10000);
 
-
-    connect(this, SIGNAL(maxFilesCountEvaluated(int)), progressBar, SLOT(setMaximum(int)));
+    connect(this, SIGNAL(maxFilesCountEvaluated(int)), progressBar, SLOT(setProgressMax(int)));
+    connect(this, SIGNAL(increaseStatusBarValue()), progressBar, SLOT(increaseProgressValue()));
+    connect(this, SIGNAL(scanCategory(QString)), progressBar, SLOT(setCommmonInfoText(QString)));
+    connect(this, SIGNAL(scanPath(QString)), progressBar, SLOT(setDetailedInfoText(QString)));
 
     mLayout->addWidget(mStackedWidget, 1);
     mLayout->addWidget(mAdditionalDataContainer, 0);
@@ -546,6 +547,11 @@ UBFeature UBFeaturesCentralWidget::getCurElementFromProperties()
 
 void UBFeaturesCentralWidget::showAdditionalData(AddWidget pWidgetType, AddWidgetState pState)
 {
+    if (!mAdditionalDataContainer->widget(pWidgetType)) {
+        qDebug() << "can't find widget specified by UBFeaturesCentralWidget::showAdditionalData(AddWidget pWidgetType, AddWidgetState pState)";
+        return;
+    }
+
     mAdditionalDataContainer->setMaximumHeight(mAdditionalDataContainer->widget(pWidgetType)->sizeHint().height());
 
     mAdditionalDataContainer->setCurrentIndex(pWidgetType);
@@ -573,46 +579,21 @@ void UBFeaturesCentralWidget::hideAdditionalData()
 
 void UBFeaturesCentralWidget::scanStarted()
 {
-    if (!mAdditionalDataContainer->widget(ProgressBarWidget)) {
-        return;
-    }
-    QProgressBar *progressBar = qobject_cast<QProgressBar*>(mAdditionalDataContainer->widget(ProgressBarWidget));
-    if (progressBar && !progressBar->isVisible()) {
-        showAdditionalData((AddWidget)1);
-    }
+    showAdditionalData(ProgressBarWidget);
 }
 
 void UBFeaturesCentralWidget::scanFinished()
 {
-    if (!mAdditionalDataContainer->widget(ProgressBarWidget)) {
-        return;
-    }
-    QProgressBar *progressBar = qobject_cast<QProgressBar*>(mAdditionalDataContainer->widget(ProgressBarWidget));
-    if (progressBar && progressBar->isVisible()) {
-       hideAdditionalData();
-       qDebug() << "progressBar max value is " << progressBar->maximum();
-    }
-}
-
-void UBFeaturesCentralWidget::increaseStatusBarValue()
-{
-    if (!mAdditionalDataContainer->widget(ProgressBarWidget)) {
-        return;
-    }
-    QProgressBar *progressBar = qobject_cast<QProgressBar*>(mAdditionalDataContainer->widget(ProgressBarWidget));
-    if (progressBar) {
-        progressBar->setValue(progressBar->value() + 1);
-    }
+    hideAdditionalData();
 }
 
 UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(parent)
 {
     this->setStyleSheet("background:white;");
 
-    QVBoxLayout *mainLayout = new QVBoxLayout();
-    setLayout(mainLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-    QVBoxLayout *labelLayout = new QVBoxLayout(this);
+    QVBoxLayout *labelLayout = new QVBoxLayout();
 
     QLabel *mLabel = new QLabel(labelText, this);
     mLineEdit = new QLineEdit(this);
@@ -622,7 +603,7 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
     labelLayout->addWidget(mLabel);
     labelLayout->addWidget(mLineEdit);
 
-    QHBoxLayout *buttonLayout = new QHBoxLayout(this);
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
 
     acceptButton = new QPushButton(acceptText, this);
     QPushButton *cancelButton = new QPushButton(cancelText, this);
@@ -675,6 +656,64 @@ void UBFeaturesNewFolderDialog::reactOnTextChanged(const QString &pStr)
         mLineEdit->setStyleSheet("background:#FFB3C8;");
     }
 }
+
+UBFeaturesProgressInfo::UBFeaturesProgressInfo(QWidget *parent) :
+    QWidget(parent),
+    mProgressBar(0),
+    mCommonInfoLabel(0),
+    mDetailedInfoLabel(0)
+{
+    QVBoxLayout *mainLayer = new QVBoxLayout(this);
+
+    mProgressBar = new QProgressBar(this);
+//    setting defaults
+    mProgressBar->setMinimum(0);
+    mProgressBar->setMaximum(100000);
+    mProgressBar->setValue(0);
+
+    mProgressBar->setStyleSheet("background:white");
+
+    mCommonInfoLabel = new QLabel(this);
+    mDetailedInfoLabel = new QLabel(this);
+    mDetailedInfoLabel->setAlignment(Qt::AlignRight);
+    mCommonInfoLabel->hide();
+    mDetailedInfoLabel->hide();
+
+    mainLayer->addWidget(mCommonInfoLabel);
+    mainLayer->addWidget(mDetailedInfoLabel);
+    mainLayer->addWidget(mProgressBar);
+}
+
+void UBFeaturesProgressInfo::setCommmonInfoText(const QString &str)
+{
+    mProgressBar->setFormat(str + tr(" load") + "(%p%)");
+}
+
+void UBFeaturesProgressInfo::setDetailedInfoText(const QString &str)
+{
+    mDetailedInfoLabel->setText(str);
+}
+
+void UBFeaturesProgressInfo::setProgressMax(int pValue)
+{
+    mProgressBar->setMaximum(pValue);
+}
+
+void UBFeaturesProgressInfo::setProgressMin(int pValue)
+{
+    mProgressBar->setMinimum(pValue);
+}
+
+void UBFeaturesProgressInfo::increaseProgressValue()
+{
+    mProgressBar->setValue(mProgressBar->value() + 1);
+}
+
+void UBFeaturesProgressInfo::sendFeature(UBFeature pFeature)
+{
+    Q_UNUSED(pFeature);
+}
+
 
 UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(parent)
     , mpView(NULL)
@@ -1294,9 +1333,12 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
 	{
 		UBFeature item = index.data( Qt::UserRole + 1 ).value<UBFeature>();
         if ( item.getType() == FEATURE_INTERACTIVE
-            || item.getType() == FEATURE_ITEM
-            || item.getType() == FEATURE_INTERNAL
-            || item.getType() == FEATURE_FOLDER)
+             || item.getType() == FEATURE_ITEM
+             || item.getType() == FEATURE_AUDIO
+             || item.getType() == FEATURE_VIDEO
+             || item.getType() == FEATURE_IMAGE
+             || item.getType() == FEATURE_INTERNAL
+             || item.getType() == FEATURE_FOLDER)
 
             resultFlags |= Qt::ItemIsDragEnabled;
 
@@ -1337,12 +1379,15 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 	/*QString name = sourceModel()->data(index, Qt::DisplayRole).toString();
 	eUBLibElementType type = (eUBLibElementType)sourceModel()->data(index, Qt::UserRole + 1).toInt();*/
 
-	UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
+    UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
     bool isFile = feature.getType() == FEATURE_INTERACTIVE
-        || feature.getType() == FEATURE_INTERNAL
-        || feature.getType() == FEATURE_ITEM;
+            || feature.getType() == FEATURE_INTERNAL
+            || feature.getType() == FEATURE_ITEM
+            || feature.getType() == FEATURE_AUDIO
+            || feature.getType() == FEATURE_VIDEO
+            || feature.getType() == FEATURE_IMAGE;
 
-	return isFile && filterRegExp().exactMatch( feature.getName() );
+    return isFile && filterRegExp().exactMatch( feature.getName() );
 }
 
 bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const

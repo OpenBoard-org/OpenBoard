@@ -21,7 +21,7 @@
 
 const QString UBFeaturesController::virtualRootName = "root";
 
-void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString & currVirtualPath)
+void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString & currVirtualPath, const QSet<QUrl> &pFavoriteSet)
 {
     
     Q_ASSERT(QFileInfo(currentPath.toLocalFile()).exists());
@@ -47,27 +47,29 @@ void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString &
 
         emit sendFeature(testFeature);
         emit featureSent();
+        emit scanPath(fullFileName);
 
-//        featuresList->append(testFeature);
-
-//        if ( favoriteSet->find( QUrl::fromLocalFile( fullFileName ) ) != favoriteSet->end() ) {
-//            featuresList->append( UBFeature( favoritePath, icon, fileName, QUrl::fromLocalFile( fullFileName ), featureType ) );
-//		}
+        if ( pFavoriteSet.find(QUrl::fromLocalFile(fullFileName)) != pFavoriteSet.end()) {
+            //TODO send favoritePath from the controller or make favoritePath public and static
+            emit sendFeature(UBFeature( "/root/Favorites", icon, fileName, QUrl::fromLocalFile(fullFileName), featureType));
+        }
 
         if (featureType == FEATURE_FOLDER) {
-            scanFS(QUrl::fromLocalFile(fullFileName), currVirtualPath + "/" + fileName);
+            scanFS(QUrl::fromLocalFile(fullFileName), currVirtualPath + "/" + fileName, pFavoriteSet);
         }
     }
 }
 
-void UBFeaturesComputingThread::scanAll(QList<QPair<QUrl, QString> > pScanningData)
+void UBFeaturesComputingThread::scanAll(QList<QPair<QUrl, QString> > pScanningData, const QSet<QUrl> &pFavoriteSet)
 {
     for (int i = 0; i < pScanningData.count(); i++) {
         if (abort) {
             return;
         }
         QPair<QUrl, QString> curPair = pScanningData.at(i);
-        scanFS(curPair.first, curPair.second);
+
+        emit scanCategory(UBFeaturesController::categoryNameForVirtualPath(curPair.second));
+        scanFS(curPair.first, curPair.second, pFavoriteSet);
     }
 }
 
@@ -84,8 +86,6 @@ int UBFeaturesComputingThread::featuresCount(const QUrl &pPath)
 
         if (featureType != FEATURE_INVALID && !fullFileName.contains(".thumbnail.")) {
             noItems++;
-        } else {
-            continue;
         }
 
         if (featureType == FEATURE_FOLDER) {
@@ -114,11 +114,12 @@ QThread(parent)
     abort = false;
 }
 
-void UBFeaturesComputingThread::compute(const QList<QPair<QUrl, QString> > &pScanningData)
+void UBFeaturesComputingThread::compute(const QList<QPair<QUrl, QString> > &pScanningData, QSet<QUrl> *pFavoritesSet)
 {
     QMutexLocker curLocker(&mMutex);
 
     mScanningData = pScanningData;
+    mFavoriteSet = *pFavoritesSet;
 
     if (!isRunning()) {
         start(LowPriority);
@@ -135,6 +136,7 @@ void UBFeaturesComputingThread::run()
 
         mMutex.lock();
         QList<QPair<QUrl, QString> > searchData = mScanningData;
+        QSet<QUrl> favoriteSet = mFavoriteSet;
         mMutex.unlock();
 
         if (abort) {
@@ -152,7 +154,7 @@ void UBFeaturesComputingThread::run()
         emit maxFilesCountEvaluated(fsCnt);
 
         emit scanStarted();
-        scanAll(searchData);
+        scanAll(searchData, favoriteSet);
         emit scanFinished();
 
         mMutex.lock();
@@ -210,9 +212,12 @@ bool UBFeature::isFolder() const
 		|| elementType == FEATURE_FOLDER;
 }
 
-bool UBFeature::isDeletable()const
+bool UBFeature::isDeletable() const
 {
     return elementType == FEATURE_ITEM
+            || elementType == FEATURE_AUDIO
+            || elementType == FEATURE_VIDEO
+            || elementType == FEATURE_IMAGE
             || elementType == FEATURE_FOLDER;
 }
 
@@ -238,6 +243,7 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     shapesPath = rootPath + "/Shapes";
     trashPath = rootPath + "/Trash";
     favoritePath = rootPath + "/Favorites";
+    webSearchPath = rootPath + "/Web search";
 
     //Initializing physical directories from UBSettings
     mUserAudioDirectoryPath = QUrl::fromLocalFile(UBSettings::settings()->userAudioDirectory());
@@ -295,11 +301,10 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     connect(&mCThread, SIGNAL(scanStarted()), this, SIGNAL(scanStarted()));
     connect(&mCThread, SIGNAL(scanFinished()), this, SIGNAL(scanFinished()));
     connect(&mCThread, SIGNAL(maxFilesCountEvaluated(int)), this, SIGNAL(maxFilesCountEvaluated(int)));
-    //Very unsafe function. Considering using deleteLater() instead
-//    connect(qApp, SIGNAL(aboutToQuit()), &mCThread, SLOT(terminate()));
+    connect(&mCThread, SIGNAL(scanCategory(QString)), this, SIGNAL(scanCategory(QString)));
+    connect(&mCThread, SIGNAL(scanPath(QString)), this, SIGNAL(scanPath(QString)));
 
     QTimer::singleShot(0, this, SLOT(startThread()));
-//    startThread();
 }
 
 void UBFeaturesController::startThread()
@@ -323,7 +328,7 @@ void UBFeaturesController::startThread()
             <<  QPair<QUrl, QString>(trashDirectoryPath, trashPath)
             <<  QPair<QUrl, QString>(mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
 
-    mCThread.compute(computingData);
+    mCThread.compute(computingData, favoriteSet);
 }
 
 void UBFeaturesController::scanFS()
@@ -342,6 +347,7 @@ void UBFeaturesController::scanFS()
                     << webSearchElement
                     << trashElement;
 
+    //filling favoriteList
     loadFavoriteList();
 
     QList <UBToolsManager::UBToolDescriptor> tools = UBToolsManager::manager()->allTools();
@@ -350,54 +356,9 @@ void UBFeaturesController::scanFS()
         featuresList->append(UBFeature(appPath, tool.icon.toImage(), tool.label, QUrl(tool.id), FEATURE_INTERNAL));
         if (favoriteSet->find(QUrl(tool.id)) != favoriteSet->end()) {
             featuresList->append(UBFeature(favoritePath, tool.icon.toImage(), tool.label, QUrl(tool.id), FEATURE_INTERNAL));
-		}
-	}
-    QTime time = QTime::currentTime();
-        //Claudio:
-        // don't change the order of the scans
-//        fileSystemScan( mLibAudiosDirectoryPath, audiosPath);
-//        fileSystemScan( mLibVideosDirectoryPath, moviesPath);
-//        fileSystemScan( mLibAnimationsDirectoryPath, flashPath);
-//        fileSystemScan( mLibPicturesDirectoryPath, picturesPath  );
-
-//        fileSystemScan( mUserInteractiveDirectoryPath, appPath  );
-//        fileSystemScan( mUserAudioDirectoryPath, audiosPath  );
-//        fileSystemScan( mUserPicturesDirectoryPath, picturesPath  );
-//        fileSystemScan( mUserVideoDirectoryPath, moviesPath  );
-//        fileSystemScan( mUserAnimationDirectoryPath, flashPath  );
-
-//        fileSystemScan( mLibApplicationsDirectoryPath, appPath  );
-//        fileSystemScan( mLibShapesDirectoryPath, shapesPath  );
-//        fileSystemScan( mLibInteractiveDirectoryPath, interactPath  );
-//        fileSystemScan( trashDirectoryPath, trashPath );
-//        fileSystemScan( mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
-
-    int i =0;
-
-    i += featuresCount(mLibAudiosDirectoryPath);
-    i += featuresCount(mLibVideosDirectoryPath);
-    i += featuresCount(mLibAnimationsDirectoryPath);
-    i += featuresCount(mLibPicturesDirectoryPath);
-
-    i += featuresCount(mUserInteractiveDirectoryPath);
-    i += featuresCount(mUserAudioDirectoryPath);
-    i += featuresCount(mUserPicturesDirectoryPath);
-    i += featuresCount(mUserVideoDirectoryPath);
-    i += featuresCount(mUserAnimationDirectoryPath);
-
-    i += featuresCount(mLibApplicationsDirectoryPath);
-    i += featuresCount(mLibShapesDirectoryPath);
-    i += featuresCount(mLibInteractiveDirectoryPath);
-    i += featuresCount(trashDirectoryPath);
-    i += featuresCount(mLibSearchDirectoryPath);
-
-    int msecs = QTime(time).msecsTo(QTime::currentTime());
-    qDebug() << "Loading library" << msecs << "msecs\nNumber of elements" << i;
-
-//    emit TopIndexingLimitSet(i);
-//    emit indexingProgressValueChanged(i / 4);
+        }
+    }
 }
-
 void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QString & currVirtualPath)
 {
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath.toLocalFile());
@@ -492,7 +453,8 @@ void UBFeaturesController::addToFavorite( const QUrl &path )
 	{
 		QFileInfo fileInfo( filePath );
 		QString fileName = fileInfo.fileName();
-        UBFeature elem(favoritePath, getIcon( filePath, FEATURE_CATEGORY ), fileName, path, fileTypeFromUrl(filePath) );
+        UBFeatureElementType type = fileTypeFromUrl(fileInfo.absoluteFilePath());
+        UBFeature elem(favoritePath, getIcon(filePath, type), fileName, path, fileTypeFromUrl(filePath) );
 		favoriteSet->insert( path );
 		saveFavoriteList();
 
@@ -524,7 +486,7 @@ QString UBFeaturesController::fileNameFromUrl( const QUrl &url )
 }
 
 
-UBFeatureElementType UBFeaturesController::fileTypeFromUrl( const QString &path )
+UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
 {
     QFileInfo fileInfo(path);
 
@@ -535,7 +497,7 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl( const QString &path 
     QString fileName = fileInfo.fileName();
     QString mimeString = UBFileSystemUtils::mimeTypeFromFileName(fileName);
 
-    UBFeatureElementType fileType = fileInfo.isDir() ? FEATURE_FOLDER : FEATURE_ITEM;
+    UBFeatureElementType fileType = FEATURE_INVALID;
 
     if ( mimeString.contains("application")) {
         if (mimeString.contains("application/search")) {
@@ -545,7 +507,17 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl( const QString &path 
         }
     } else if ( path.contains("uniboardTool://")) {
 		fileType = FEATURE_INTERNAL;
-	}
+    } else if (mimeString.contains("audio")) {
+        fileType = FEATURE_AUDIO;
+    } else if (mimeString.contains("video")) {
+        fileType = FEATURE_VIDEO;
+    } else if (mimeString.contains("image")) {
+        fileType = FEATURE_IMAGE;
+    } else if (fileInfo.isDir()) {
+        fileType = FEATURE_FOLDER;
+    } else {
+        fileType = FEATURE_INVALID;
+    }
 
 	return fileType;
 }
@@ -554,64 +526,65 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
 {
     if (pFType == FEATURE_FOLDER) {
         return QImage(":images/libpalette/folder.svg");
-
-    } else if (pFType == FEATURE_INTERACTIVE) {
+    } else if (pFType == FEATURE_INTERACTIVE || pFType == FEATURE_SEARCH) {
         return QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(path)));
+    } else if (pFType == FEATURE_INTERNAL) {
+        return QImage(UBToolsManager::manager()->iconFromToolId(path));
+    } else if (pFType == FEATURE_AUDIO) {
+        return QImage(":images/libpalette/soundIcon.svg");
+    } else if (pFType == FEATURE_VIDEO) {
+        return QImage(":images/libpalette/movieIcon.svg");
+    } else if (pFType == FEATURE_IMAGE) {
+        QImage pix(path);
+        if (pix.isNull()) {
+            pix = QImage(":images/libpalette/notFound.png");
+        } else {
+            pix = pix.scaledToWidth(qMin(UBSettings::maxThumbnailWidth, pix.width()));
+        }
+        return pix;
     }
 
-
-    if ( path.contains("uniboardTool://") ) {
-        return QImage( UBToolsManager::manager()->iconFromToolId(path) );
-
-    } if ( UBFileSystemUtils::mimeTypeFromFileName(path).contains("application"))  {
-        return QImage( UBGraphicsWidgetItem::iconFilePath( QUrl::fromLocalFile(path) ) );
-    }
-
-    QImage thumb;
-    QString thumbnailPath = UBFileSystemUtils::thumbnailPath(path);
-
-    if ( QFileInfo( thumbnailPath ).exists() )
-        thumb = QImage( thumbnailPath );
-    else thumb = createThumbnail( path );
-
-    return thumb;
+    return QImage(":images/libpalette/notFound.png");
 }
 
 bool UBFeaturesController::isDeletable( const QUrl &url )
 {
-    UBFeatureElementType type = fileTypeFromUrl( fileNameFromUrl(url) );
-	return type == FEATURE_ITEM;
+    UBFeatureElementType type = fileTypeFromUrl(fileNameFromUrl(url));
+    return type == FEATURE_AUDIO
+            || type == FEATURE_VIDEO
+            || type == FEATURE_IMAGE
+            || type == FEATURE_ITEM;
+}
+
+QString UBFeaturesController::categoryNameForVirtualPath(const QString &str)
+{
+    QString result;
+    int ind = str.lastIndexOf("/");
+    if (ind != -1) {
+        result = str.right(str.count() - ind - 1);
+    }
+    return result;
 }
 
 QImage UBFeaturesController::createThumbnail(const QString &path)
 {
-    QString thumbnailPath = UBFileSystemUtils::thumbnailPath(path);
+    QString thumbnailPath = path;
     QString mimetype = UBFileSystemUtils::mimeTypeFromFileName(path);
-	QString extension = QFileInfo(path).completeSuffix();
 
-    if ( mimetype.contains("audio" ))
+    if ( mimetype.contains("audio" )) {
         thumbnailPath = ":images/libpalette/soundIcon.svg";
-    else if ( mimetype.contains("video") )
+    } else if ( mimetype.contains("video")) {
         thumbnailPath = ":images/libpalette/movieIcon.svg";
-    else 
-	{
-        if ( extension.startsWith("svg", Qt::CaseInsensitive) || extension.startsWith("svgz", Qt::CaseInsensitive) ) 
-		{
-            thumbnailPath = path;
+    } else {
+        QImage pix(path);
+        if (!pix.isNull()) {
+            pix = pix.scaledToWidth(qMin(UBSettings::maxThumbnailWidth, pix.width()), Qt::SmoothTransformation);
+            return pix;
+
+        } else {
+            thumbnailPath = ":images/libpalette/notFound.png";
         }
-        else 
-		{
-            QImage pix(path);
-            if (!pix.isNull()) 
-			{
-                pix = pix.scaledToWidth(qMin(UBSettings::maxThumbnailWidth, pix.width()), Qt::SmoothTransformation);
-                pix.save(thumbnailPath);
-                UBPlatformUtils::hideFile(thumbnailPath);
-            }
-            else{
-                thumbnailPath = ":images/libpalette/notFound.png";
-            }
-        }
+
     }
 
     return QImage(thumbnailPath);
