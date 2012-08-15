@@ -65,6 +65,7 @@ class UBBoardView : public QGraphicsView
         virtual bool event (QEvent * e);
 
         virtual void keyPressEvent(QKeyEvent *event);
+        virtual void keyReleaseEvent(QKeyEvent *event);
         virtual void tabletEvent(QTabletEvent * event);
         virtual void mouseDoubleClickEvent(QMouseEvent *event);
         virtual void mousePressEvent(QMouseEvent *event);
@@ -145,6 +146,7 @@ class UBBoardView : public QGraphicsView
         QTimer mLongPressTimer;
 
         bool mIsDragInProgress;
+        bool mMultipleSelectionIsEnabled;
 
     private slots:
 

@@ -126,6 +126,11 @@ UBTeacherGuideEditionWidget::UBTeacherGuideEditionWidget(QWidget *parent, const 
     connect(mpTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
 
+#ifdef Q_WS_MAC
+    // on mac and with the custom qt the widget on the tree are not automatically relocated when using the vertical scrollbar. To relocate them we link the valueChange signal of the vertical scrollbar witht a local signal to trig a change and a repaint of the tree widget
+    connect(mpTreeWidget->verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(onSliderMoved(int)));
+#endif
+
     mpAddAnActionItem = new UBAddItem(tr("Add an action"), eUBTGAddSubItemWidgetType_Action, mpTreeWidget);
     mpAddAMediaItem = new UBAddItem(tr("Add a media"), eUBTGAddSubItemWidgetType_Media, mpTreeWidget);
     mpAddALinkItem = new UBAddItem(tr("Add a link"), eUBTGAddSubItemWidgetType_Url, mpTreeWidget);
@@ -154,6 +159,13 @@ UBTeacherGuideEditionWidget::~UBTeacherGuideEditionWidget()
     DELETEPTR(mpLayout);
 }
 
+#ifdef Q_WS_MAC
+void UBTeacherGuideEditionWidget::onSliderMoved(int size)
+{
+    Q_UNUSED(size);
+    mpAddAMediaItem->setExpanded(true);
+}
+#endif
 void UBTeacherGuideEditionWidget::showEvent(QShowEvent* event)
 {
     setFocus();
@@ -322,7 +334,7 @@ void UBTeacherGuideEditionWidget::onAddItemClicked(QTreeWidgetItem* widget, int 
             UBTGMediaWidget* mediaWidget = new UBTGMediaWidget(widget);
             if (element)
                 mediaWidget->initializeWithDom(*element);
-            mpTreeWidget->setItemWidget(newWidgetItem, 0, mediaWidget);
+            mpTreeWidget->setItemWidget(newWidgetItem,0, mediaWidget);
             break;
         }
         case eUBTGAddSubItemWidgetType_Url: {

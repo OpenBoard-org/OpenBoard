@@ -106,7 +106,8 @@ function popupInfo(text)
 // affiche le text de l'erreur en cas de problème
 function erreur(texteErreur) 
 {
-    alert(texteErreur);
+    //alert(texteErreur);
+    sankore.showMessage(texteErreur);
 }
 
 // permet d'appeller la fonction pour recevoir les statistiques du serveur	
@@ -136,7 +137,8 @@ function recevoirStatsReponse(resultat, soapResponse)
         + "\n"
         + "Version de l'application: " + objDomTree.getElements("env:Body")[0].getElements("ser:getInfosResponse")[0].getElements("GeoStats")[0].getElements("version")[0].getText());
 
-    alert(stats);
+    //alert(stats);
+    sankore.showMessage(stats);
 }
 
 // permet d'appeller la fonction pour recevoir les informations du pays

@@ -418,10 +418,6 @@ bool UBGraphicsItemDelegate::isLocked()
 
 void UBGraphicsItemDelegate::duplicate()
 {
-    // TODO UB 4.x .. rewrite .. .this is absurde ... we know what we are duplicating
-
-    UBApplication::boardController->copy();
-    UBApplication::boardController->paste();
     UBApplication::boardController->duplicateItem(dynamic_cast<UBItem*>(delegated()));
 }
 
@@ -1134,6 +1130,7 @@ DelegateMediaControl::DelegateMediaControl(UBGraphicsMediaItem* pDelegated, QGra
     , mCurrentTimeInMs(0)
     , mTotalTimeInMs(0)
     , mStartWidth(200)
+    , mSeecAreaBorderHeight(0)
 {
     setAcceptedMouseButtons(Qt::LeftButton);
     setBrush(QBrush(Qt::white));
@@ -1157,13 +1154,14 @@ void DelegateMediaControl::paint(QPainter *painter,
     mLCDTimerArea.setHeight(rect().height());
     mLCDTimerArea.setWidth(rect().height());
 
-    mSeecArea = rect();
     mSeecArea.setWidth(rect().width()-mLCDTimerArea.width()-2);
+    mSeecArea.setHeight(rect().height()-2*mSeecAreaBorderHeight);
+    mSeecArea.setY(mSeecAreaBorderHeight);
 
     path.addRoundedRect(mSeecArea, mSeecArea.height()/2, mSeecArea.height()/2);
     painter->fillPath(path, brush());
 
-    qreal frameWidth = rect().height() / 2;
+    qreal frameWidth = mSeecArea.height() / 2;
     int position = frameWidth;
 
     if (mTotalTimeInMs > 0)
@@ -1173,7 +1171,7 @@ void DelegateMediaControl::paint(QPainter *painter,
 
     int clearance = 2;
     int radius = frameWidth-clearance;
-    QRectF r(position - radius, clearance, radius * 2, radius * 2);
+    QRectF r(position - radius, clearance+mSeecAreaBorderHeight, radius * 2, radius * 2);
 
     painter->setBrush(UBSettings::documentViewLightColor);
     painter->drawEllipse(r);
@@ -1193,18 +1191,17 @@ void DelegateMediaControl::positionHandles()
     mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
     lcdTimer->setRect(mLCDTimerArea);
     lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
-    //lcdTimer->setRect(mLCDTimerArea);
-    //lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
 
-    mSeecArea.setWidth(rect().width()-mLCDTimerArea.width());
+    mSeecAreaBorderHeight = rect().height()/20;
+    mSeecArea.setWidth(rect().width()-mLCDTimerArea.width()-2);
+    mSeecArea.setHeight(rect().height()-2*mSeecAreaBorderHeight);
+    mSeecArea.setY(mSeecAreaBorderHeight);
 
     QRectF selfRect = rect();
     selfRect.setHeight(parentItem()->boundingRect().height());
     setRect(selfRect);
 
     lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
-    //lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
-
 }
 
 void DelegateMediaControl::update()
@@ -1212,7 +1209,6 @@ void DelegateMediaControl::update()
     QTime t;
     t = t.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
     lcdTimer->display(t.toString("m:ss"));
-    //lcdTimer->display(t.toString("m:ss"));
 
     QGraphicsRectItem::update();
 }
@@ -1247,7 +1243,7 @@ void DelegateMediaControl::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void DelegateMediaControl::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    qreal frameWidth = rect().height() / 2;
+    qreal frameWidth = mSeecArea.height() / 2;
     if (boundingRect().contains(event->pos() - QPointF(frameWidth,0)) 
         && boundingRect().contains(event->pos() + QPointF(frameWidth,0)))
     {   
@@ -1265,7 +1261,6 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
 
     minX = frameWidth;
     length = mSeecArea.width() - lcdTimer->rect().width();
-    length = mSeecArea.width() /*- lcdTimer->rect().width()*/;
 
     qreal mouseX = mousePos.x();
     if (mouseX >= (mSeecArea.width() - mSeecArea.height()/2))

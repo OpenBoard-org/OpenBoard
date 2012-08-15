@@ -33,7 +33,7 @@ class UBFeaturesComputingThread : public QThread
 public:
     explicit UBFeaturesComputingThread(QObject *parent = 0);
     virtual ~UBFeaturesComputingThread();
-        void compute(const QList<QPair<QUrl, QString> > &pScanningData);
+        void compute(const QList<QPair<QUrl, QString> > &pScanningData, QSet<QUrl> *pFavoritesSet);
 
 protected:
     void run();
@@ -44,12 +44,14 @@ signals:
     void scanStarted();
     void scanFinished();
     void maxFilesCountEvaluated(int max);
+    void scanCategory(const QString &str);
+    void scanPath(const QString &str);
 
 public slots:
 
 private:
-    void scanFS(const QUrl & currentPath, const QString & currVirtualPath);
-    void scanAll(QList<QPair<QUrl, QString> > pScanningData);
+    void scanFS(const QUrl & currentPath, const QString & currVirtualPath, const QSet<QUrl> &pFavoriteSet);
+    void scanAll(QList<QPair<QUrl, QString> > pScanningData, const QSet<QUrl> &pFavoriteSet);
     int featuresCount(const QUrl &pPath);
     int featuresCountAll(QList<QPair<QUrl, QString> > pScanningData);
 
@@ -59,6 +61,7 @@ private:
     QUrl mScanningPath;
     QString mScanningVirtualPath;
     QList<QPair<QUrl, QString> > mScanningData;
+    QSet<QUrl> mFavoriteSet;
     bool restart;
     bool abort;
 };
@@ -72,6 +75,9 @@ enum UBFeatureElementType
     FEATURE_INTERACTIVE,
 	FEATURE_INTERNAL,
     FEATURE_ITEM,
+    FEATURE_AUDIO,
+    FEATURE_VIDEO,
+    FEATURE_IMAGE,
 	FEATURE_TRASH,
 	FEATURE_FAVORITE,
     FEATURE_SEARCH,
@@ -107,6 +113,7 @@ public:
 
 private:
     QString virtualDir;
+    QString virtualPath;
     QImage mThumbnail;
     QString mName;
 	QUrl mPath;
@@ -167,6 +174,7 @@ public:
     static QImage getIcon( const QString &path, UBFeatureElementType pFType );
 	static bool isDeletable( const QUrl &url );
     static char featureTypeSplitter() {return ':';}
+    static QString categoryNameForVirtualPath(const QString &str);
 
     static const QString virtualRootName;
 
@@ -178,6 +186,8 @@ signals:
     void scanStarted();
     void scanFinished();
     void featureAddedFromThread();
+    void scanCategory(const QString &);
+    void scanPath(const QString &);
 
 private slots:
     void addNewFolder(QString name);
@@ -233,6 +243,7 @@ private:
 	QString interactPath;
 	QString trashPath;
 	QString favoritePath;
+    QString webSearchPath;
 
 	int mLastItemOffsetIndex;
 	UBFeature currentElement;

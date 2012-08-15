@@ -149,6 +149,7 @@ class DelegateMediaControl: public QObject, public QGraphicsRectItem
 
     private:
         int mStartWidth;
+        int mSeecAreaBorderHeight;
 
         QRectF mSeecArea;
         QRectF mLCDTimerArea;
@@ -284,7 +285,7 @@ class UBGraphicsItemDelegate : public QObject
         qreal mAntiScaleRatio;
 
         QList<DelegateButton*> mButtons;
-
+        QList<DelegateButton*> mToolBarButtons;
         UBGraphicsToolBarItem* mToolBarItem;
 
 protected slots:

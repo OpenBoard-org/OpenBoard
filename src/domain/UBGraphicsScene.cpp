@@ -541,12 +541,14 @@ bool UBGraphicsScene::inputDeviceRelease()
                 mAddedItems.remove(mArcPolygonItem);
                 removeItem(mArcPolygonItem);
                 UBCoreGraphicsScene::removeItemFromDeletion(mArcPolygonItem);
+                mArcPolygonItem->setStrokesGroup(pStrokes);
                 pStrokes->addToGroup(mArcPolygonItem);
 
                 // Add the center cross
                 foreach(QGraphicsItem* item, mAddedItems){
                     removeItem(item);
                     UBCoreGraphicsScene::removeItemFromDeletion(item);
+                    mArcPolygonItem->setStrokesGroup(pStrokes);
                     pStrokes->addToGroup(item);
                 }
 
@@ -1979,7 +1981,16 @@ void UBGraphicsScene::addMagnifier(UBMagnifierParams params)
     setModified(true);
 }
 
-void UBGraphicsScene::moveMagnifier(QPoint newPos)
+void UBGraphicsScene::moveMagnifier()
+{
+   if (magniferControlViewWidget)
+   {
+       QPoint magnifierPos = QPoint(magniferControlViewWidget->pos().x() + magniferControlViewWidget->size().width() / 2, magniferControlViewWidget->pos().y() + magniferControlViewWidget->size().height() / 2 );
+       moveMagnifier(magnifierPos, true);
+   }
+}
+
+void UBGraphicsScene::moveMagnifier(QPoint newPos, bool forceGrab)
 {
     QWidget *cContainer = (QWidget*)(UBApplication::boardController->controlContainer());
     QGraphicsView *cView = (QGraphicsView*)UBApplication::boardController->controlView();
@@ -1987,6 +1998,8 @@ void UBGraphicsScene::moveMagnifier(QPoint newPos)
 
     QPoint dvZeroPoint = dView->mapToGlobal(QPoint(0,0));
 
+    QRect qcr = cView->geometry();
+    QRect qdr = dView->geometry();
     int cvW = cView->width();
     int dvW = dView->width();
     qreal wCoeff = (qreal)dvW / (qreal)cvW;
@@ -1999,8 +2012,8 @@ void UBGraphicsScene::moveMagnifier(QPoint newPos)
     QPoint cvPoint = cView->mapFromGlobal(globalPoint);
     QPoint dvPoint( cvPoint.x() * wCoeff + dvZeroPoint.x(), cvPoint.y() * hCoeff + dvZeroPoint.y());
 
-    magniferControlViewWidget->grabNMove(globalPoint, globalPoint, false, false);
-    magniferDisplayViewWidget->grabNMove(globalPoint, dvPoint, false, true);
+    magniferControlViewWidget->grabNMove(globalPoint, globalPoint, forceGrab, false);
+    magniferDisplayViewWidget->grabNMove(globalPoint, dvPoint, forceGrab, true);
 
     setModified(true);
 }

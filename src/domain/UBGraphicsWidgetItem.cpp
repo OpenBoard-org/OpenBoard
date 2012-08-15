@@ -106,11 +106,17 @@ void UBGraphicsWidgetItem::initialize()
 
     QPalette palette = page()->palette();
     palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-    page()->setPalette(palette);    
+    page()->setPalette(palette);
+    page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
     connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
     connect(this, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
+    connect(page(), SIGNAL(linkClicked(const QUrl&)), this, SLOT(onLinkClicked(const QUrl&)));
+}
+
+void UBGraphicsWidgetItem::onLinkClicked(const QUrl& url){
+	UBApplication::webController->loadUrl(url);
 }
 
 QUrl UBGraphicsWidgetItem::mainHtml()

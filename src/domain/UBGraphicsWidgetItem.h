@@ -152,6 +152,9 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
         virtual void javaScriptWindowObjectCleared();
         void mainFrameLoadFinished(bool ok);
 
+    private slots:
+    	void onLinkClicked(const QUrl& url);
+
     private:
         bool mIsFrozen;
         bool mIsTakingSnapshot;

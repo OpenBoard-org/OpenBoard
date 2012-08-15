@@ -18,10 +18,10 @@
 
 #include <QtGui>
 #include <QtWebKit>
+#include "core/UB.h"
 
-class UBGraphicsWidgetItem;
-class QWidget;
 class UBGraphicsScene;
+class UBGraphicsWidgetItem;
 
 class UBToolWidget : public QGraphicsWidget
 {
@@ -32,44 +32,45 @@ class UBToolWidget : public QGraphicsWidget
         UBToolWidget(UBGraphicsWidgetItem* pGraphicsWidgetItem, QGraphicsItem *pParent = 0);
         virtual ~UBToolWidget();
 
-        void centerOn(const QPointF& pos);
-
+        UBGraphicsWidgetItem* graphicsWidgetItem() const;
         QPointF naturalCenter() const;
 
-        UBGraphicsWidgetItem* graphicsWidgetItem() const;
+        void centerOn(const QPointF& pos);
         void remove();
+
         virtual UBGraphicsScene* scene();
+        virtual QPointF pos() const; 
         virtual void setPos(const QPointF &point);
         virtual void setPos(qreal x, qreal y);
-        virtual QPointF pos() const;
+        virtual int type() const;
+        
+        enum 
+        { 
+            Type = UBGraphicsItemType::ToolWidgetItemType 
+        };
 
     protected:
         void initialize();
-        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+        virtual bool event(QEvent *event);
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-
-        virtual bool eventFilter(QObject *obj, QEvent *event);
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);      
 
     private slots:
         void javaScriptWindowObjectCleared();
 
     protected:
+        bool mShouldMoveWidget;
+        int mContentMargin;
+        int mFrameWidth;
+        QGraphicsWebView *mGraphicsWebView;        
+        UBGraphicsWidgetItem *mGraphicsWidgetItem;
+        QPointF mMousePressPos;
 
         static QPixmap *sClosePixmap;
         static QPixmap *sUnpinPixmap;
-
-        UBGraphicsWidgetItem *mGraphicsWidgetItem;
-        QGraphicsWebView *mGraphicsWebView;
-
-        QPointF mMousePressPos;
-
-        bool mShouldMoveWidget;
-
-        int mContentMargin;
-        int mFrameWidth;
 };
 
 #endif /* UBTOOLWIDGET_H_ */

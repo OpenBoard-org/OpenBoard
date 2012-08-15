@@ -33,8 +33,8 @@ UBRubberBand::UBRubberBand(Shape s, QWidget * p)
     : QRubberBand(s, p)
     , mResizingMode(None)
     , mMouseIsPressed(false)
-    , mLastPressedPoint(QPoint())
     , mResizingBorderHeight(20)
+    , mLastPressedPoint(QPoint())
 {
     customStyle = NULL;
 

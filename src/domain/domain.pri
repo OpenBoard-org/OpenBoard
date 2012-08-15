@@ -18,7 +18,6 @@ HEADERS      += src/domain/UBGraphicsScene.h \
                 src/domain/UBGraphicsStroke.h \
                 src/domain/UBGraphicsMediaItem.h \
                 src/domain/UBAbstractUndoCommand.h\
-                src/domain/UBAngleWidget.h \
                 src/domain/UBGraphicsGroupContainerItem.h \
                 src/domain/UBGraphicsGroupContainerItemDelegate.h \
                 src/domain/UBGraphicsStrokesGroup.h
@@ -50,7 +49,6 @@ SOURCES      += src/domain/UBGraphicsScene.cpp \
                 src/domain/UBGraphicsStroke.cpp \
                 src/domain/UBGraphicsMediaItem.cpp \
                 src/domain/UBAbstractUndoCommand.cpp \
-                src/domain/UBAngleWidget.cpp \
                 src/domain/ubgraphicsgroupcontaineritem.cpp \
                 src/domain/ubgraphicsgroupcontaineritemdelegate.cpp \
                 src/domain/UBGraphicsStrokesGroup.cpp

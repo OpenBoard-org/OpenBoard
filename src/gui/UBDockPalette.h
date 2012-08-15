@@ -176,6 +176,8 @@ protected:
     QVector<UBDockPaletteWidget*> mRegisteredWidgets;
     /** The current tab widget */
     QString mCrntTabWidget;
+    /** Last opened tab index depending on mode */
+    QMap<eUBDockPaletteWidgetMode,int> mLastOpenedTabForMode;
 
 private slots:
     void onToolbarPosUpdated();
