@@ -6,6 +6,63 @@ html, body {
 	color: #666666;
 }
 
+::-webkit-scrollbar {
+    width: 14px;
+}
+
+
+::-webkit-scrollbar-thumb {
+    /*border-radius: 10px; */
+    background-color:lightgray;
+    border: 2px solid gray;
+}
+
+::-webkit-scrollbar-button:vertical:start{
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color:lightgray;
+    background-image: url(images/trgUp.png);
+    background-size: 8px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid gray;
+}
+
+::-webkit-scrollbar-button:vertical:end{
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color:lightgray;
+    background-image: url(images/trgDown.png);
+    background-size: 8px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid gray;
+}
+
+::-webkit-scrollbar-button:horizontal:start{
+    width: 14px;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color:lightgray;
+    background-image: url(images/trgLeft.png);
+    background-size: 8px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid gray;
+}
+
+::-webkit-scrollbar-button:horizontal:end{
+    width: 14px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color:lightgray;
+    background-image: url(images/trgRight.png);
+    background-size: 8px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid gray;
+}
+
 #ubwidget {
 	position: absolute;
 	top: 0;
