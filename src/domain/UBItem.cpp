@@ -34,3 +34,13 @@ void UBGraphicsItem::assignZValue(QGraphicsItem *item, qreal value)
     item->setZValue(value);
     item->setData(UBGraphicsItemData::ItemOwnZValue, value);
 }
+
+bool UBGraphicsItem::isFlippable(QGraphicsItem *item)
+{
+    return item->data(UBGraphicsItemData::ItemFlippable).toBool();
+}
+
+bool UBGraphicsItem::isRotatable(QGraphicsItem *item)
+{
+    return item->data(UBGraphicsItemData::ItemRotatable).toBool();
+}

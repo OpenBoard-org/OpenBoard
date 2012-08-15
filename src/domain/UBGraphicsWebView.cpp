@@ -28,7 +28,7 @@ UBGraphicsWebView::UBGraphicsWebView(QGraphicsItem* parent)
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-    mDelegate = new UBGraphicsItemDelegate(this, 0, true, false, false);
+    mDelegate = new UBGraphicsItemDelegate(this, 0, true);
     mDelegate->init();
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);

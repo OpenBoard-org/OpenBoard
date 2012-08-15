@@ -105,6 +105,9 @@ protected:
 public:
 
     static void assignZValue(QGraphicsItem*, qreal value);
+    static bool isRotatable(QGraphicsItem *item);
+    static bool isFlippable(QGraphicsItem *item);
+
     virtual UBGraphicsItemDelegate *Delegate() const  = 0;
 
     virtual void remove() = 0;

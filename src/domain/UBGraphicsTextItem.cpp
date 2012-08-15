@@ -38,6 +38,8 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
     mDelegate->init();
 
     mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+    mDelegate->setFlippable(false);
+    mDelegate->setRotatable(true);
 
     mTypeTextHereLabel = tr("<Type Text Here>");
 

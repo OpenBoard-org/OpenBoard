@@ -131,7 +131,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
     connect(mDelegate, SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
     connect(mMediaObject, SIGNAL(hasVideoChanged(bool)), this, SLOT(hasMediaChanged(bool)));
-
 }
 
 

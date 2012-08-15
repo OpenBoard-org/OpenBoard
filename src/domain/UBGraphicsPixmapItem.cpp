@@ -28,10 +28,10 @@
 UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
 {
-    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true, false);
+    mDelegate = new UBGraphicsItemDelegate(this, 0, true);
     mDelegate->init();
-
     mDelegate->setFlippable(true);
+    mDelegate->setRotatable(true);
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
     setTransformationMode(Qt::SmoothTransformation);

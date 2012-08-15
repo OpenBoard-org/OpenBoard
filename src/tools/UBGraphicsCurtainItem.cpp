@@ -39,6 +39,7 @@ UBGraphicsCurtainItem::UBGraphicsCurtainItem(QGraphicsItem* parent)
 {
     mDelegate = new UBGraphicsCurtainItemDelegate(this, 0);
     mDelegate->init();
+
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
 
