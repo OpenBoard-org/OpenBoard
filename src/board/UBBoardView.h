@@ -94,6 +94,7 @@ class UBBoardView : public QGraphicsView
     private:
 
         void init();
+        void connectToStylusPalette();
 
         inline bool shouldDisplayItem(QGraphicsItem *item)
         {
@@ -151,6 +152,7 @@ class UBBoardView : public QGraphicsView
     private slots:
 
         void settingChanged(QVariant newValue);
+        void onTriggeredAction(bool checked);
 
 	public slots:
 
