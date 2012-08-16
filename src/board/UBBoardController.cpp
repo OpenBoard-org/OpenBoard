@@ -880,11 +880,13 @@ void UBBoardController::groupButtonClicked()
     }
 
     if (groupAction->text() == UBSettings::settings()->actionGroupText) { //The only way to get information from item, considering using smth else
-        UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
+    	groupAction->setIcon(QIcon(":images/toolbar/ungroup.png"));
+    	UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
         groupItem->setSelected(true);
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
     } else if (groupAction->text() == UBSettings::settings()->actionUngroupText) {
+    	groupAction->setIcon(QIcon(":images/toolbar/group.png"));
         //Considering one selected item and it's a group
         if (selItems.count() > 1) {
             qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
