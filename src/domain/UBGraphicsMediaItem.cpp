@@ -42,7 +42,7 @@ void UBAudioPresentationWidget::paintEvent(QPaintEvent *event)
     mask_img.fill(0xff);
     QPainter mask_painter(&mask_img);
     mask_painter.setBrush(QBrush( QColor(0, 0, 0)));
-    mask_painter.drawRoundedRect(1,1, width()-3, height()-3, height()/5, height()/5);
+    mask_painter.drawRoundedRect(1,1, width()-2, height()-2, height()/5, height()/5);
 
     setMask(QBitmap::fromImage(mask_img));
 
