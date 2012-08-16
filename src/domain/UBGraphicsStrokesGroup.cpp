@@ -9,6 +9,8 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent):QGraphicsI
     mDelegate = new UBGraphicsItemDelegate(this, 0, true, true, false);
     mDelegate->init();
     mDelegate->setFlippable(true);
+    mDelegate->setRotatable(true);
+
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
     setUuid(QUuid::createUuid());

@@ -308,9 +308,10 @@ UBGraphicsScene::~UBGraphicsScene()
 void UBGraphicsScene::selectionChangedProcessing()
 {
     if (selectedItems().count()){
-        qDebug() << "Selected item bounding rect: " << selectedItems().first()->boundingRect();
-        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
-                                                + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
+        //        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
+//                                                + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
+        qDebug() << "flippable" << selectedItems().first()->data(UBGraphicsItemData::ItemFlippable).toBool() << endl
+                 << "rotatable" << selectedItems().first()->data(UBGraphicsItemData::ItemRotatable).toBool();
     }
 }
 
@@ -1998,8 +1999,6 @@ void UBGraphicsScene::moveMagnifier(QPoint newPos, bool forceGrab)
 
     QPoint dvZeroPoint = dView->mapToGlobal(QPoint(0,0));
 
-    QRect qcr = cView->geometry();
-    QRect qdr = dView->geometry();
     int cvW = cView->width();
     int dvW = dView->width();
     qreal wCoeff = (qreal)dvW / (qreal)cvW;

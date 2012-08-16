@@ -880,7 +880,7 @@ void UBBoardController::groupButtonClicked()
     }
 
     if (groupAction->text() == UBSettings::settings()->actionGroupText) { //The only way to get information from item, considering using smth else
-        UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
+    	UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
         groupItem->setSelected(true);
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 

@@ -5,7 +5,7 @@
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation>Klik om terug te keren naar de applicatie</translation>
+        <translation>Klik om terug te keren naar de toepassing</translation>
     </message>
 </context>
 <context>
@@ -101,7 +101,7 @@
     </message>
     <message>
         <source>Undo</source>
-        <translation>annuleren</translation>
+        <translation>ongedaan maken</translation>
     </message>
     <message>
         <source>Ctrl+Z</source>
@@ -365,7 +365,7 @@
     </message>
     <message>
         <source>Duplicate Selected Content</source>
-        <translation>De geselecteerde tekst dupliceren</translation>
+        <translation>De geselecteerde inhoud dupliceren</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -801,27 +801,27 @@
     </message>
     <message>
         <source>Group Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Groep onderdelen</translation>
     </message>
     <message>
         <source>Group items</source>
-        <translation type="unfinished"></translation>
+        <translation>groep onderdelen</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation>Speel</translation>
     </message>
     <message>
         <source>Interact with items</source>
-        <translation type="unfinished"></translation>
+        <translation>Aan de slag met onderdelen</translation>
     </message>
     <message>
         <source>Erase Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Achtergrond wissen</translation>
     </message>
     <message>
         <source>Remove the backgound</source>
-        <translation type="unfinished"></translation>
+        <translation>Achtyergrond verwijderen</translation>
     </message>
 </context>
 <context>
@@ -951,7 +951,7 @@
     </message>
     <message>
         <source>CapturedImage</source>
-        <translation type="unfinished"></translation>
+        <translation>Gegrepen afbeelding</translation>
     </message>
 </context>
 <context>
@@ -1135,7 +1135,7 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Titel pagina</translation>
     </message>
 </context>
 <context>
@@ -1181,7 +1181,7 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Titel pagina</translation>
     </message>
 </context>
 <context>
@@ -1228,7 +1228,7 @@
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation>
-            <numerusform>%1 gekopieerd</numerusform>
+            <numerusform>%1 pagina gekopieerd</numerusform>
             <numerusform>%1 pagina&apos;s gekopieerd</numerusform>
         </translation>
     </message>
@@ -1248,23 +1248,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporteer naar IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporteer als IWB bestand</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Document wordt geëxporteerd...</translation>
+        <translation>Document wordt geëxporteerd...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Export gelukt.</translation>
+        <translation>Export gelukt.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Export mislukt.</translation>
     </message>
 </context>
 <context>
@@ -1367,61 +1367,61 @@
     <name>UBFeatureProperties</name>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished">Aan pagina toevoegen</translation>
+        <translation>Aan pagina toevoegen</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">Als achtergrond gebruiken</translation>
+        <translation>Als achtergrond gebruiken</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished">Aan bibliotheek toevoegen</translation>
+        <translation>Aan bibliotheek toevoegen</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished">Object informatie</translation>
+        <translation>Object informatie</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished">Aan favorieten toevoegen</translation>
+        <translation>Aan favorieten toevoegen</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished">Delen</translation>
+        <translation>Delen</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Zoeken</translation>
+        <translation>Zoeken</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Verwijderen</translation>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished">Terug naar map</translation>
+        <translation>Terug naar map</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished">Uit favorieten verwijderen</translation>
+        <translation>Uit favorieten verwijderen</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished">Nieuwe map maken</translation>
+        <translation>Nieuwe map maken</translation>
     </message>
     <message>
         <source>Rescan file system</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestand systeem opnieuw scannen</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesController</name>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished">Geïmporteerd beeld</translation>
+        <translation>Geïmporteerd beeld</translation>
     </message>
 </context>
 <context>
@@ -1765,23 +1765,23 @@ Do you want to ignore these errors for this host?</source>
     <name>UBPlatformUtils</name>
     <message>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>Engels</translation>
     </message>
     <message>
         <source>Russian</source>
-        <translation type="unfinished"></translation>
+        <translation>Russisch</translation>
     </message>
     <message>
         <source>German</source>
-        <translation type="unfinished"></translation>
+        <translation>Duits</translation>
     </message>
     <message>
         <source>French</source>
-        <translation type="unfinished"></translation>
+        <translation>Frans</translation>
     </message>
     <message>
         <source>Swiss French</source>
-        <translation type="unfinished"></translation>
+        <translation>Zwitsers Frans</translation>
     </message>
 </context>
 <context>
@@ -1911,33 +1911,33 @@ Do you want to ignore these errors for this host?</source>
     <name>UBTGActionWidget</name>
     <message>
         <source>Teacher</source>
-        <translation type="unfinished"></translation>
+        <translation>Leerkracht</translation>
     </message>
     <message>
         <source>Student</source>
-        <translation type="unfinished"></translation>
+        <translation>Student</translation>
     </message>
     <message>
         <source>Type task here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ opdracht hier ...</translation>
     </message>
 </context>
 <context>
     <name>UBTGMediaWidget</name>
     <message>
         <source>drop media here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Plaats media hier ...</translation>
     </message>
     <message>
         <source>Type title here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ titel hier ...</translation>
     </message>
 </context>
 <context>
     <name>UBTGUrlWidget</name>
     <message>
         <source>Insert link title here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg titel van de link hier toe ...</translation>
     </message>
 </context>
 <context>
@@ -1951,131 +1951,131 @@ Do you want to ignore these errors for this host?</source>
     <name>UBTeacherGuideEditionWidget</name>
     <message>
         <source>Type title here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ de titel hier ...</translation>
     </message>
     <message>
         <source>Type comment here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ de commentaar hier ...</translation>
     </message>
     <message>
         <source>Add an action</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg de werkvorm toe</translation>
     </message>
     <message>
         <source>Add a media</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg de media toe</translation>
     </message>
     <message>
         <source>Add a link</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg een link toe</translation>
     </message>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina: %0</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePageZeroWidget</name>
     <message>
         <source>Type session title here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ de lesfase hier ...</translation>
     </message>
     <message>
         <source>Author(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur</translation>
     </message>
     <message>
         <source>Type authors here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ de auteurs hier ...</translation>
     </message>
     <message>
         <source>Objective(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Doelstelling(en)</translation>
     </message>
     <message>
         <source>Type objectives here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ de doelstellingen hier ...</translation>
     </message>
     <message>
         <source>Resource indexing</source>
-        <translation type="unfinished"></translation>
+        <translation>Oplijsting bronmateriaal</translation>
     </message>
     <message>
         <source>Keywords:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleutelwoorden:</translation>
     </message>
     <message>
         <source>Type keywords here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ hier de sleutelwoorden ...</translation>
     </message>
     <message>
         <source>Level:</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau:</translation>
     </message>
     <message>
         <source>Subjects:</source>
-        <translation type="unfinished"></translation>
+        <translation>Onderwerpen:</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
+        <translation>Type:</translation>
     </message>
     <message>
         <source>Licence</source>
-        <translation type="unfinished"></translation>
+        <translation>Licentie</translation>
     </message>
     <message>
         <source>Attribution CC BY</source>
-        <translation type="unfinished"></translation>
+        <translation>Naamsvermelding CC BY</translation>
     </message>
     <message>
         <source>Attribution-NoDerivs CC BY-ND</source>
-        <translation type="unfinished"></translation>
+        <translation>Naamsvermelding-GeenAfgeleideWerken CC BY-ND</translation>
     </message>
     <message>
         <source>Attribution-ShareAlike CC BY-SA</source>
-        <translation type="unfinished"></translation>
+        <translation>Naamsvermelding-GelijkDelen CC BY-SA</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial CC BY-NC</source>
-        <translation type="unfinished"></translation>
+        <translation>Naamsvermelding-NietCommercieel CC BY-NC</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-NoDerivs CC BY-NC-ND</source>
-        <translation type="unfinished"></translation>
+        <translation>Naamsvermelding-NietCommercieel-GeenAfgeleideWerken CC BY-NC-ND</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-ShareAlike CC BY-NC-SA</source>
-        <translation type="unfinished"></translation>
+        <translation>Naamsvermelding-NietCommercieel-GelijkDelen CC BY-NC-SA</translation>
     </message>
     <message>
         <source>Public domain</source>
-        <translation type="unfinished"></translation>
+        <translation>Publiek domein</translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright</translation>
     </message>
     <message>
         <source>Created the:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Aangemaakt op:</translation>
     </message>
     <message>
         <source>Updated the:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Bijgewerkt op:</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Titel pagina</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePresentationWidget</name>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina: %0</translation>
     </message>
 </context>
 <context>
@@ -3280,7 +3280,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
+        <translation>Credits</translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;

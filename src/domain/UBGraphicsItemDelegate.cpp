@@ -158,6 +158,10 @@ void UBGraphicsItemDelegate::init()
             button->setFlag(QGraphicsItem::ItemIsSelectable, true);
         }
     }
+
+    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
+    setFlippable(false);
+    setRotatable(false);
 }
 
 
@@ -410,7 +414,7 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
 }
 
 
-bool UBGraphicsItemDelegate::isLocked()
+bool UBGraphicsItemDelegate::isLocked() const
 {
     return mDelegated->data(UBGraphicsItemData::ItemLocked).toBool();
 }
@@ -598,6 +602,22 @@ void UBGraphicsItemDelegate::showMenu()
 void UBGraphicsItemDelegate::setFlippable(bool flippable)
 {
     mFlippable = flippable;
+
+    Q_ASSERT (mDelegated);
+    if (mDelegated) {
+        mDelegated->setData(UBGraphicsItemData::ItemFlippable, QVariant(flippable));
+    }
+}
+
+void UBGraphicsItemDelegate::setRotatable(bool pCanRotate)
+{
+    mCanRotate = pCanRotate;
+
+    Q_ASSERT(mDelegated);
+
+    if (mDelegated) {
+        mDelegated->setData(UBGraphicsItemData::ItemRotatable, QVariant(pCanRotate));
+    }
 }
 
 bool UBGraphicsItemDelegate::isFlippable()

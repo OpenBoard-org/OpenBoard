@@ -399,8 +399,8 @@ void UBSettings::init()
 
     libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
 
-    actionGroupText = "Group items";
-    actionUngroupText = "Ungroup items";
+    actionGroupText = tr("Group");
+    actionUngroupText = tr("Ungroup");
 }
 
 

@@ -56,6 +56,10 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
     {
         delegated()->setMute(true);
     }
+
+    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
+    setFlippable(false);
+    setRotatable(false);
 }
 
 bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
