@@ -178,6 +178,18 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
     return UBGraphicsProxyWidget::itemChange(change, value);
 }
 
+
+void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
+{
+    UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
+    if (pAudioWidget)
+    {
+        pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toString()));
+    }
+
+    UBItem::setSourceUrl(pSourceUrl);
+}
+
 void UBGraphicsMediaItem::clearSource()
 {
     QString path = mediaFileUrl().toLocalFile();

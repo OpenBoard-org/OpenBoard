@@ -18,8 +18,10 @@
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
 
-#include "gui/UBMainWindow.h"
+#include "domain/UBGraphicsScene.h"
+#include "board/UBBoardController.h"
 
+#include "gui/UBMainWindow.h"
 #include "core/memcheck.h"
 
 UBDrawingController* UBDrawingController::sDrawingController = 0;
@@ -87,6 +89,7 @@ void UBDrawingController::setStylusTool(int tool)
 {
     if (tool != mStylusTool)
     {
+    	UBApplication::boardController->activeScene()->deselectAllItems();
         if (mStylusTool == UBStylusTool::Pen || mStylusTool == UBStylusTool::Marker
                 || mStylusTool == UBStylusTool::Line)
         {

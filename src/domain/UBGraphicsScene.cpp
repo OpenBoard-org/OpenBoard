@@ -2351,6 +2351,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 
                 default:
                     {
+                        item->setSelected(false);
                         UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
                         if (0 != ubgi)
                             ubgi->remove();

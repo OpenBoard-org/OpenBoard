@@ -880,7 +880,7 @@ void UBBoardController::groupButtonClicked()
     }
 
     if (groupAction->text() == UBSettings::settings()->actionGroupText) { //The only way to get information from item, considering using smth else
-        UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
+    	UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
         groupItem->setSelected(true);
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
@@ -1102,7 +1102,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
             QUuid uuid = QUuid::createUuid();
 
             QUrl url = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-                ->addVideoFileToDocument(selectedDocument(), sourceUrl, pData, uuid));
+                ->addAudioFileToDocument(selectedDocument(), sourceUrl, pData, uuid));
 
             audioMediaItem = mActiveScene->addMedia(url, false, pPos);
 

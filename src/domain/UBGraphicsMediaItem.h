@@ -97,16 +97,7 @@ public:
 
     virtual void copyItemParameters(UBItem *copy) const;
 
-    virtual void setSourceUrl(const QUrl &pSourceUrl)
-    {
-        UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
-        if (pAudioWidget)
-        {
-            pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toLocalFile()));
-        }
-
-        UBItem::setSourceUrl(pSourceUrl);
-    }
+    virtual void setSourceUrl(const QUrl &pSourceUrl);
 
 public slots:
 

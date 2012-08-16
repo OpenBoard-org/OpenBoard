@@ -106,8 +106,7 @@ UBBoardView::~UBBoardView () {
         delete suspendedMousePressEvent;
 }
 
-void
-UBBoardView::init ()
+void UBBoardView::init ()
 {
   connect (UBSettings::settings ()->boardPenPressureSensitive, SIGNAL (changed (QVariant)),
            this, SLOT (settingChanged (QVariant)));
@@ -144,8 +143,6 @@ UBBoardView::init ()
 
   movingItem = NULL;
   mWidgetMoved = false;
-
-  connectToStylusPalette();
 }
 
 UBGraphicsScene*
@@ -1440,29 +1437,4 @@ UBBoardView::setToolCursor (int tool)
       //failsafe
       controlViewport->setCursor (UBResources::resources ()->penCursor);
     }
-}
-
-void UBBoardView::connectToStylusPalette()
-{
-	connect(UBApplication::mainWindow->actionPen, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionEraser, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionMarker, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionPlay, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionZoomIn, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionZoomOut, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-    connect(UBApplication::mainWindow->actionCapture, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionHand, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionLine, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionText, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-	connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered(bool)), this, SLOT(onTriggeredAction(bool)));
-}
-
-void UBBoardView::onTriggeredAction(bool checked)
-{
-	Q_UNUSED(checked);
-	QList<QGraphicsItem*> it = scene()->selectedItems();
-	foreach(QGraphicsItem* i, it){
-		i->setSelected(false);
-	}
 }
