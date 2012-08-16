@@ -269,6 +269,8 @@ void UBBoardPaletteManager::setupPalettes()
 
     mZoomPalette = new UBZoomPalette(mContainer);
 
+    mStylusPalette->stackUnder(mZoomPalette);
+
     QList<QAction*> backgroundsActions;
 
     backgroundsActions << UBApplication::mainWindow->actionPlainLightBackground;

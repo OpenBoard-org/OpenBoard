@@ -109,5 +109,6 @@ void UBZoomPalette::refreshPalette()
     else
     {
         show();
+        raise();
     }
 }
