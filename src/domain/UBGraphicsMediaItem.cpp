@@ -36,15 +36,13 @@ void UBAudioPresentationWidget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.fillRect(rect(), QBrush(Qt::white));
-    painter.drawRoundedRect(1,1, width()-2, height()-2, height()/5, height()/5);
+    
+    QPen borderPen;
+    borderPen.setWidth(2);
+    borderPen.setColor(QColor(Qt::black));
 
-    QImage mask_img(size(), QImage::Format_Mono);
-    mask_img.fill(0xff);
-    QPainter mask_painter(&mask_img);
-    mask_painter.setBrush(QBrush( QColor(0, 0, 0)));
-    mask_painter.drawRoundedRect(1,1, width()-2, height()-2, height()/5, height()/5);
-
-    setMask(QBitmap::fromImage(mask_img));
+    painter.setPen(borderPen);
+    painter.drawRect(0,0, width(), height());
 
     if (QString() != mTitle)
     {
