@@ -42,7 +42,7 @@ void UBAudioPresentationWidget::paintEvent(QPaintEvent *event)
     mask_img.fill(0xff);
     QPainter mask_painter(&mask_img);
     mask_painter.setBrush(QBrush( QColor(0, 0, 0)));
-    mask_painter.drawRoundedRect(1,1, width()-3, height()-3, height()/5, height()/5);
+    mask_painter.drawRoundedRect(1,1, width()-2, height()-2, height()/5, height()/5);
 
     setMask(QBitmap::fromImage(mask_img));
 
@@ -131,7 +131,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
     connect(mDelegate, SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
     connect(mMediaObject, SIGNAL(hasVideoChanged(bool)), this, SLOT(hasMediaChanged(bool)));
-
 }
 
 
@@ -177,6 +176,18 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
     }
 
     return UBGraphicsProxyWidget::itemChange(change, value);
+}
+
+
+void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
+{
+    UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
+    if (pAudioWidget)
+    {
+        pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toString()));
+    }
+
+    UBItem::setSourceUrl(pSourceUrl);
 }
 
 void UBGraphicsMediaItem::clearSource()

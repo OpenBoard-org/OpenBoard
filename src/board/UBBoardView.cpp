@@ -106,8 +106,7 @@ UBBoardView::~UBBoardView () {
         delete suspendedMousePressEvent;
 }
 
-void
-UBBoardView::init ()
+void UBBoardView::init ()
 {
   connect (UBSettings::settings ()->boardPenPressureSensitive, SIGNAL (changed (QVariant)),
            this, SLOT (settingChanged (QVariant)));
@@ -1439,4 +1438,3 @@ UBBoardView::setToolCursor (int tool)
       controlViewport->setCursor (UBResources::resources ()->penCursor);
     }
 }
-

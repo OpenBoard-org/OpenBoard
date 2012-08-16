@@ -396,6 +396,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 if (!mScene)
                 {
                     mScene = new UBGraphicsScene(mProxy);
+                    mScene->setURStackEnable(false);
                 }
 
                 // introduced in UB 4.2
@@ -1013,6 +1014,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             delete annotationGroup;
     }
 
+    mScene->setURStackEnable(true);
     return mScene;
 }
 

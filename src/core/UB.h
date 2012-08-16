@@ -117,6 +117,9 @@ struct UBGraphicsItemData
         , ItemOwnZValue
         , itemLayerType //use instead of deprecated ItemLayerType
         , ItemUuid //storing uuid in QGraphicsItem for fast finding operations
+        //Duplicating delegate's functions to make possible working with pure QGraphicsItem
+        , ItemFlippable // (bool)
+        , ItemRotatable // (bool)
     };
 };
 

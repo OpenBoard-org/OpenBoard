@@ -224,8 +224,8 @@ class UBGraphicsItemDelegate : public QObject
 
         UBGraphicsDelegateFrame* frame() { return mFrame; }
 
-        bool canRotate() { return mCanRotate; }
-        bool isLocked();
+        bool canRotate() const { return mCanRotate; }
+        bool isLocked() const;
         bool canDuplicate() { return mCanDuplicate; }
 
         QMimeData* mimeData(){ return mMimeData; }
@@ -233,6 +233,7 @@ class UBGraphicsItemDelegate : public QObject
         void setDragPixmap(const QPixmap &pix) {mDragPixmap = pix;}
 
         void setFlippable(bool flippable);
+        void setRotatable(bool pCanRotate);
         bool isFlippable();
 
         void setButtonsVisible(bool visible);

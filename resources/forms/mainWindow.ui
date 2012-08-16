@@ -1632,6 +1632,9 @@
    </property>
   </action>
   <action name="actionGroupItems">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -1641,7 +1644,7 @@
      <normalon>:/images/toolbar/ungroup.png</normalon>:/images/toolbar/group.png</iconset>
    </property>
    <property name="text">
-    <string>Group Items</string>
+    <string>Group</string>
    </property>
    <property name="toolTip">
     <string>Group items</string>

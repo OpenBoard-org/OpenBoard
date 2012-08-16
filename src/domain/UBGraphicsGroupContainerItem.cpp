@@ -29,6 +29,7 @@ UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
+
 }
 
 void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
@@ -40,6 +41,19 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
     if (item == this) {
         qWarning("UBGraphicsGroupContainerItem::addToGroup: cannot add a group to itself");
         return;
+    }
+
+    //Check if group is allready rotatable or flippable
+    if (childItems().count()) {
+        if (UBGraphicsItem::isFlippable(this) && !UBGraphicsItem::isFlippable(item)) {
+            mDelegate->setFlippable(false);
+        }
+        if (UBGraphicsItem::isRotatable(this) && !UBGraphicsItem::isRotatable(item)) {
+            mDelegate->setRotatable(false);
+        }
+    } else {
+        mDelegate->setFlippable(UBGraphicsItem::isFlippable(item));
+        mDelegate->setRotatable(UBGraphicsItem::isRotatable(item));
     }
 
     // COMBINE
@@ -80,7 +94,7 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
     // ### Expensive, we could maybe use dirtySceneTransform bit for optimization
 
     item->setTransform(newItemTransform);
-//    item->d_func()->setIsMemberOfGroup(true);
+    //    item->d_func()->setIsMemberOfGroup(true);
     prepareGeometryChange();
     itemsBoundingRect |= itemTransform.mapRect(item->boundingRect() | item->childrenBoundingRect());
     update();
@@ -269,6 +283,27 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
     }
 
     QGraphicsItem *newParent = parentItem();
+
+    if (childItems().count()) {
+        if (!UBGraphicsItem::isFlippable(item) || !UBGraphicsItem::isRotatable(item)) {
+            bool flippableNow = true;
+            bool rotatableNow = true;
+
+            foreach (QGraphicsItem *item, childItems()) {
+                if (!UBGraphicsItem::isFlippable(item)) {
+                    flippableNow = false;
+                }
+                if (!UBGraphicsItem::isRotatable(item)) {
+                    rotatableNow = false;
+                }
+                if (!rotatableNow && !flippableNow) {
+                    break;
+                }
+            }
+            mDelegate->setFlippable(flippableNow);
+            mDelegate->setRotatable(rotatableNow);
+        }
+    }
 
     // COMBINE
     bool ok;

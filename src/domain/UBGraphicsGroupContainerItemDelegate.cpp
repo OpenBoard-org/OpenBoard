@@ -16,7 +16,9 @@ UBGraphicsGroupContainerItemDelegate::UBGraphicsGroupContainerItemDelegate(QGrap
     UBGraphicsItemDelegate(pDelegated, parent, true, false, false), mDestroyGroupButton(0)
 
 {
-
+    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
+    setFlippable(false);
+    setRotatable(false);
 }
 
 UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItemDelegate::delegated()

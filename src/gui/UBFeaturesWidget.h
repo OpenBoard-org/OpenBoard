@@ -248,7 +248,6 @@ private slots:
     void setFileNameList(const QStringList &pLst);
     void reactOnTextChanged(const QString &pStr);
 
-
 private:
     QLineEdit *mLineEdit;
     QRegExpValidator *mValidator;
@@ -289,6 +288,7 @@ public:
 
 private slots:
     void onLoadFinished(bool ok);
+    void javaScriptWindowObjectCleared();
 
 private:
     QWebView* mpView;
