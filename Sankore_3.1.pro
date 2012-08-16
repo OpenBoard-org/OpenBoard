@@ -327,6 +327,25 @@ macx {
        TRANSLATION_ca.path = "$$RESOURCES_DIR/ca.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_ca
    }
+
+   exists(resources/i18n/sankore_el.qm) {
+       TRANSLATION_el.files = resources/i18n/sankore_el.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_el.path = "$$RESOURCES_DIR/el.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_el
+   }
+   exists(resources/i18n/sankore_tr.qm) {
+       TRANSLATION_tr.files = resources/i18n/sankore_tr.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_tr.path = "$$RESOURCES_DIR/tr.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_tr
+   }
+   exists(resources/i18n/sankore_cz.qm) {
+       TRANSLATION_cz.files = resources/i18n/sankore_cz.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_cz.path = "$$RESOURCES_DIR/cz.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_cz
+   }
    
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
@@ -391,7 +410,10 @@ TRANSLATIONS = resources/i18n/sankore_en.ts \
    resources/i18n/sankore_pt.ts \
    resources/i18n/sankore_sk.ts \
    resources/i18n/sankore_bg.ts \
-   resources/i18n/sankore_ca.ts
+   resources/i18n/sankore_ca.ts \
+   resources/i18n/sankore_el.ts \
+   resources/i18n/sankore_tr.ts \
+   resources/i18n/sankore_cz.ts
 
 INSTALLS = UB_ETC \
    UB_I18N \
