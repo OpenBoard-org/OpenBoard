@@ -107,7 +107,7 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
     QString objName = sender()->objectName();
 
     if (objName.isEmpty()) {
-        qWarning() << "incorrrect sender";
+        qWarning() << "incorrect sender";
     } else if (objName == objNamePathList) {
         //Calling to reset the model for listView. Maybe separate function needed
         controller->searchStarted("", centralWidget->listView());
@@ -478,12 +478,12 @@ UBFeaturesCentralWidget::UBFeaturesCentralWidget(QWidget *parent) : QWidget(pare
     //Used to show search bar on the search widget
     webView = new UBFeaturesWebView(this);
 
-        //filling stackwidget
-        mStackedWidget->addWidget(mNavigator);
-        mStackedWidget->addWidget(mFeatureProperties);
-        mStackedWidget->addWidget(webView);
-        mStackedWidget->setCurrentIndex(MainList);
-        mStackedWidget->setContentsMargins(0, 0, 0, 0);
+    //filling stackwidget
+    mStackedWidget->addWidget(mNavigator);
+    mStackedWidget->addWidget(mFeatureProperties);
+    mStackedWidget->addWidget(webView);
+    mStackedWidget->setCurrentIndex(MainList);
+    mStackedWidget->setContentsMargins(0, 0, 0, 0);
 
 
     mAdditionalDataContainer = new QStackedWidget(this);
@@ -542,7 +542,7 @@ void UBFeaturesCentralWidget::setPropertiesThumbnail(const QPixmap &pix)
 
 UBFeature UBFeaturesCentralWidget::getCurElementFromProperties()
 {
-    return mFeatureProperties->getCurrentElement();
+	return mFeatureProperties->getCurrentElement();
 }
 
 void UBFeaturesCentralWidget::showAdditionalData(AddWidget pWidgetType, AddWidgetState pState)
@@ -732,7 +732,7 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpView->setObjectName("SearchEngineView");
     mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
     mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-
+    connect(mpView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     mpWebSettings = QWebSettings::globalSettings();
     mpWebSettings->setAttribute(QWebSettings::JavaEnabled, true);
     mpWebSettings->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -765,6 +765,11 @@ UBFeaturesWebView::~UBFeaturesWebView()
         delete mpLayout;
         mpLayout = NULL;
     }
+}
+
+void UBFeaturesWebView::javaScriptWindowObjectCleared()
+{
+    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
 }
 
 void UBFeaturesWebView::showElement(const UBFeature &elem)
