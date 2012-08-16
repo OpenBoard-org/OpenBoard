@@ -35,6 +35,7 @@ class QGraphicsItem;
 class QTextBlockFormat;
 class QTextCharFormat;
 class QTextCursor;
+class UBGraphicsStrokesGroup;
 
 
 class UBCFFSubsetAdaptor
@@ -66,6 +67,8 @@ private:
         QPointF mViewBoxCenter;
         QSize mSize;
         QPointF mShiftVector;
+        bool mSvgGSectionIsOpened;
+        UBGraphicsGroupContainerItem *mGSectionContainer;
 
     private:
         QDomDocument mDOMdoc;
@@ -73,6 +76,7 @@ private:
         QHash<QString, UBGraphicsItem*> persistedItems;
         QDir mTmpFlashDir;
 
+        void addItemToGSection(QGraphicsItem *item);
         bool hashElements();
         void addExtentionsToHash(QDomElement *parent, QDomElement *topGroup);
 

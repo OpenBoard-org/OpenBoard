@@ -32,6 +32,7 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsTextItemDelegate.h"
 #include "domain/UBGraphicsWidgetItem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 
@@ -128,8 +129,9 @@ bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentP
 
     return result;
 }
-UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(UBDocumentProxy *proxy, QFile *content):
-    mProxy(proxy)
+UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(UBDocumentProxy *proxy, QFile *content)
+    : mProxy(proxy)
+    , mGSectionContainer(NULL)
 {
     int errorLine, errorColumn;
     QString errorStr;
@@ -168,12 +170,24 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parse()
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseGSection(const QDomElement &element)
 {
+    mGSectionContainer = new UBGraphicsGroupContainerItem();
+
     QDomElement currentSvgElement = element.firstChildElement();
     while (!currentSvgElement.isNull()) {
         if (!parseSvgElement(currentSvgElement))
             return false;
 
         currentSvgElement = currentSvgElement.nextSiblingElement();
+    }
+
+    if (mGSectionContainer->childItems().count())
+    { 
+        mCurrentScene->addGroup(mGSectionContainer);
+    }
+    else 
+    {
+        delete mGSectionContainer;
+        mGSectionContainer = NULL;
     }
 
     return true;
@@ -247,6 +261,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
     repositionSvgItem(svgItem, width, height, x1, y1, transform);
     hashSceneItem(element, svgItem);
 
+    if (mGSectionContainer)
+    {
+        addItemToGSection(svgItem);
+    }
+
     delete generator;
 
     return true;
@@ -292,6 +311,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgEllipse(const QDomElement &e
 
     repositionSvgItem(svgItem, rx * 2, ry * 2, cx - 2*rx, cy+ry, transform);
     hashSceneItem(element, svgItem);
+
+    if (mGSectionContainer)
+    {
+        addItemToGSection(svgItem);
+    }
 
     delete generator;
 
@@ -375,6 +399,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 - strokeWidth/2 + transform.m31(), y1 + strokeWidth/2 + transform.m32(), transform);
     hashSceneItem(element, svgItem);
 
+    if (mGSectionContainer)
+    {
+        addItemToGSection(svgItem);
+    }
+
     delete generator;
 
     return true;
@@ -453,6 +482,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     }
     repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 + transform.m31() - strokeWidth/2, y1 + transform.m32() + strokeWidth/2, transform);
     hashSceneItem(element, svgItem);
+
+    if (mGSectionContainer)
+    {
+        addItemToGSection(svgItem);
+    }
 
     delete generator;
 
@@ -593,6 +627,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
     repositionSvgItem(svgItem, width, height, x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, svgItem);
 
+    if (mGSectionContainer)
+    {
+        addItemToGSection(svgItem);
+    }
+
     delete generator;
     return true;
 }
@@ -712,6 +751,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     repositionSvgItem(svgItem, width, height, x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, svgItem);
 
+    if (mGSectionContainer)
+    {
+        addItemToGSection(svgItem);
+    }
+
     return true;
 }
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &element)
@@ -748,6 +792,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
    }
    repositionSvgItem(pixItem, width, height, x + transform.m31(), y + transform.m32(), transform);
    hashSceneItem(element, pixItem);
+
+   if (mGSectionContainer)
+   {
+       addItemToGSection(pixItem);
+   }
 
    return true;
 }
@@ -791,6 +840,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
     repositionSvgItem(flashItem, width, height, x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, flashItem);
 
+    if (mGSectionContainer)
+    {
+        addItemToGSection(flashItem);
+    }
+
     return true;
 }
 
@@ -828,6 +882,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
     }
     repositionSvgItem(audioItem, audioItem->boundingRect().width(), audioItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, audioItem);
+
+    if (mGSectionContainer)
+    {
+        addItemToGSection(audioItem);
+    }
 
     return true;
 }
@@ -867,6 +926,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
     repositionSvgItem(videoItem, videoItem->boundingRect().width(), videoItem->boundingRect().height(), x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, videoItem);
 
+    if (mGSectionContainer)
+    {
+        addItemToGSection(videoItem);
+    }
+
     return true;
 }
 
@@ -875,6 +939,11 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgSectionAttr(const QDomElemen
     getViewBoxDimenstions(svgSection.attribute(aViewbox));
     mSize = QSize(svgSection.attribute(aWidth).toInt(),
                   svgSection.attribute(aHeight).toInt());
+}
+
+void UBCFFSubsetAdaptor::UBCFFSubsetReader::addItemToGSection(QGraphicsItem *item)
+{
+    mGSectionContainer->addToGroup(item);
 }
 
 void UBCFFSubsetAdaptor::UBCFFSubsetReader::hashSceneItem(const QDomElement &element, UBGraphicsItem *item)
