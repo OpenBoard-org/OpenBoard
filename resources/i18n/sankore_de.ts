@@ -801,27 +801,27 @@
     </message>
     <message>
         <source>Group Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Objekte gruppieren</translation>
     </message>
     <message>
         <source>Group items</source>
-        <translation type="unfinished"></translation>
+        <translation>Objekte gruppieren</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation>Abspielen</translation>
     </message>
     <message>
         <source>Interact with items</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit Objekten interagieren</translation>
     </message>
     <message>
         <source>Erase Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrund löschen</translation>
     </message>
     <message>
         <source>Remove the backgound</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrund entfernen</translation>
     </message>
 </context>
 <context>
@@ -951,7 +951,7 @@
     </message>
     <message>
         <source>CapturedImage</source>
-        <translation type="unfinished"></translation>
+        <translation>erfasstes Bild</translation>
     </message>
 </context>
 <context>
@@ -1135,7 +1135,7 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Titelseite</translation>
     </message>
 </context>
 <context>
@@ -1181,7 +1181,7 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Titelseite</translation>
     </message>
 </context>
 <context>
@@ -1248,23 +1248,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportieren nach IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportieren als IWB-Datei</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Dokument wird exportiert...</translation>
+        <translation>Dokument wird exportiert...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Export erfolgreich.</translation>
+        <translation>Export erfolgreich.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">Export fehlgeschlagen.</translation>
+        <translation>Export fehlgeschlagen.</translation>
     </message>
 </context>
 <context>
@@ -1367,61 +1367,61 @@
     <name>UBFeatureProperties</name>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished">Zur Seite hinzufügen</translation>
+        <translation>Zur Seite hinzufügen</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">Als Hintergrund festlegen</translation>
+        <translation>Als Hintergrund festlegen</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished">Zur Bibliothek hinzufügen</translation>
+        <translation>Zur Bibliothek hinzufügen</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished">Objektinformationen</translation>
+        <translation>Objektinformationen</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished">Zu Favoriten hinzufügen</translation>
+        <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished">Teilen</translation>
+        <translation>Teilen</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Suchen</translation>
+        <translation>Suchen</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Löschen</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished">Zurück zum Ordner</translation>
+        <translation>Zurück zum Ordner</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished">Aus Favoritenliste entfernen</translation>
+        <translation>Aus Favoritenliste entfernen</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished">Neuen Ordner erstellen</translation>
+        <translation>Neuen Ordner erstellen</translation>
     </message>
     <message>
         <source>Rescan file system</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateisystem neu einlesen</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesController</name>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished">Importiertes Bild</translation>
+        <translation>Importiertes Bild</translation>
     </message>
 </context>
 <context>
@@ -1771,23 +1771,23 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     <name>UBPlatformUtils</name>
     <message>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>englisch</translation>
     </message>
     <message>
         <source>Russian</source>
-        <translation type="unfinished"></translation>
+        <translation>russisch</translation>
     </message>
     <message>
         <source>German</source>
-        <translation type="unfinished"></translation>
+        <translation>deutsch</translation>
     </message>
     <message>
         <source>French</source>
-        <translation type="unfinished"></translation>
+        <translation>französisch</translation>
     </message>
     <message>
         <source>Swiss French</source>
-        <translation type="unfinished"></translation>
+        <translation>französisch (Schweiz)</translation>
     </message>
 </context>
 <context>
@@ -1917,33 +1917,33 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     <name>UBTGActionWidget</name>
     <message>
         <source>Teacher</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehrer</translation>
     </message>
     <message>
         <source>Student</source>
-        <translation type="unfinished"></translation>
+        <translation>Student</translation>
     </message>
     <message>
         <source>Type task here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Aufgabe eingeben...</translation>
     </message>
 </context>
 <context>
     <name>UBTGMediaWidget</name>
     <message>
         <source>drop media here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Mediendatei ablegen...</translation>
     </message>
     <message>
         <source>Type title here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Titel eingeben...</translation>
     </message>
 </context>
 <context>
     <name>UBTGUrlWidget</name>
     <message>
         <source>Insert link title here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Linktitel eingeben...</translation>
     </message>
 </context>
 <context>
@@ -1957,131 +1957,139 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     <name>UBTeacherGuideEditionWidget</name>
     <message>
         <source>Type title here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Titel eingeben...</translation>
     </message>
     <message>
         <source>Type comment here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Kommentar eingeben...</translation>
     </message>
     <message>
         <source>Add an action</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktion hinzufügen</translation>
     </message>
     <message>
         <source>Add a media</source>
-        <translation type="unfinished"></translation>
+        <translation>Medium hinzufügen</translation>
     </message>
     <message>
         <source>Add a link</source>
-        <translation type="unfinished"></translation>
+        <translation>Link hinzufügen</translation>
     </message>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished"></translation>
+        <translation>Seite: %0</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePageZeroWidget</name>
     <message>
         <source>Type session title here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Sessionstitel eingeben...</translation>
     </message>
     <message>
         <source>Author(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor(en)</translation>
     </message>
     <message>
         <source>Type authors here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Autoren eingeben...</translation>
     </message>
     <message>
         <source>Objective(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ziel(e)</translation>
     </message>
     <message>
         <source>Type objectives here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Ziele eingeben...</translation>
     </message>
     <message>
         <source>Resource indexing</source>
-        <translation type="unfinished"></translation>
+        <translation>Indexierung der Ressourcen</translation>
     </message>
     <message>
         <source>Keywords:</source>
-        <translation type="unfinished"></translation>
+        <translation>Stichwörter:</translation>
     </message>
     <message>
         <source>Type keywords here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier Stichwörter eingeben...</translation>
     </message>
     <message>
         <source>Level:</source>
-        <translation type="unfinished"></translation>
+        <translation>Schwierigkeitsgrad:</translation>
     </message>
     <message>
         <source>Subjects:</source>
-        <translation type="unfinished"></translation>
+        <translation>Themen:</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ:</translation>
     </message>
     <message>
         <source>Licence</source>
-        <translation type="unfinished"></translation>
+        <translation>Lizenz</translation>
     </message>
     <message>
         <source>Attribution CC BY</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Attribution-NoDerivs CC BY-ND</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Attribution-ShareAlike CC BY-SA</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Attribution-NonCommercial CC BY-NC</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-NoDerivs CC BY-NC-ND</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-ShareAlike CC BY-NC-SA</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Public domain</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Created the:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Erstellt am:</translation>
     </message>
     <message>
         <source>Updated the:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisiert am: </translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Titelseite</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePresentationWidget</name>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished"></translation>
+        <translation>Seite: %0</translation>
     </message>
 </context>
 <context>
@@ -3261,7 +3269,8 @@ DAMAGES.
 
                      END OF TERMS AND CONDITIONS
 </source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3272,7 +3281,8 @@ p, li { white-space: pre-wrap; }
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3283,11 +3293,13 @@ p, li { white-space: pre-wrap; }
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3299,7 +3311,8 @@ p, li { white-space: pre-wrap; }
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Open-Sankoré version 1.4 , Copyright (C) 2010-2012 Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;&lt;br /&gt;Open-Sankoré est un logiciel libre : vous pouvez le redistribuer et/ou le modifier en respectant les termes de la Lesser GNU general Public Licence (GNU LGPL) telle que publiée par la Free Software Foundation en version 2 ou une version plus récente.&lt;br /&gt;Vous pouvez consulter et charger le code source du logiciel sur &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré est distribué dans l&apos;espoir qu&apos;il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de COMMERCIALISATION ou D&apos;ADAPTATION A UN OBJET PARTICULIER.&lt;br /&gt;Veuillez consulter la licence Lesser GNU General Public Licence située dans l&apos;onglet Licences ou consulter le site &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;http://www.gnu.org/licenses/&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;.&lt;br /&gt;&lt;br /&gt;Open-Sankoré is free software: you can redistribute it and/or modify it under the terms of the Lesser GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version. You can find the source code of this software at &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Lesser GNU General Public License below for more details.&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Contact : &lt;br /&gt;Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;br /&gt;20 Avenue Ségur Paris 75007&lt;br /&gt;Téléphone : 01 43 17 68 08&lt;br /&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3344,7 +3357,8 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Autorisation pour un usage non commercial&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>do not translate!</translatorcomment>
+        <translation></translation>
     </message>
 </context>
 <context>
