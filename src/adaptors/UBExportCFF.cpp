@@ -52,6 +52,7 @@ void UBExportCFF::persist(UBDocumentProxy* pDocument)
                 if (mIsVerbose)
                     UBApplication::showMessage(tr("Export failed."));
 
+        showErrorsList(toIWBExporter.getConversionMessages());
 
         QApplication::restoreOverrideCursor();
 
