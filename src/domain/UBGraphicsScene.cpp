@@ -1270,7 +1270,7 @@ void UBGraphicsScene::clearAnnotations()
     while (itItems.hasNext())
     {
         QGraphicsItem* item = itItems.next();
-        UBGraphicsPolygonItem* pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+        UBGraphicsStrokesGroup* pi = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
         if (pi)
         {
             removeItem(item);
@@ -2351,6 +2351,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 
                 default:
                     {
+                        item->setSelected(false);
                         UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
                         if (0 != ubgi)
                             ubgi->remove();

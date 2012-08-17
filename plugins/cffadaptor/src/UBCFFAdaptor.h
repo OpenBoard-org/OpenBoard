@@ -20,6 +20,7 @@ public:
 
     bool convertUBZToIWB(const QString &from, const QString &to);
     bool deleteDir(const QString& pDirPath) const;
+    QList<QString> getConversionMessages();
 
 private:
     QString uncompressZip(const QString &zipFile);
@@ -33,6 +34,7 @@ private:
 
 private:
     QStringList tmpDirs;
+    QList<QString> mConversionMessages;
 
 private:
 
@@ -46,8 +48,12 @@ private:
         bool isValid() const;
         QString lastErrStr() const {return errorStr;}
         bool parse();
+        QList<QString> getMessages() {return mExportErrorList;}
 
     private:
+
+        void addLastExportError(QString error) {mExportErrorList.append(error);}
+
         void fillNamespaces();
 
         bool parseMetadata();
@@ -119,6 +125,7 @@ private:
         QString contentIWBFileName() const;
 
     private:
+        QList<QString> mExportErrorList;
         QMap<QString, QString> iwbSVGItemsAttributes;
         QDomDocument *mDataModel; //model for reading indata
         QXmlStreamWriter *mIWBContentWriter; //stream to write outdata
