@@ -269,6 +269,8 @@ void UBBoardPaletteManager::setupPalettes()
 
     mZoomPalette = new UBZoomPalette(mContainer);
 
+    mStylusPalette->stackUnder(mZoomPalette);
+
     QList<QAction*> backgroundsActions;
 
     backgroundsActions << UBApplication::mainWindow->actionPlainLightBackground;
@@ -677,6 +679,10 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
     {
         case eUBDockPaletteWidget_BOARD:
             {
+                // On Application start up the mAddItemPalette isn't initialized yet
+                if(mAddItemPalette){
+                    mAddItemPalette->setParent(UBApplication::boardController->controlContainer());
+                }
                 mLeftPalette->assignParent(mContainer);
                 mRightPalette->assignParent(mContainer);
                 mRightPalette->stackUnder(mStylusPalette);
@@ -710,6 +716,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
         case eUBDockPaletteWidget_DESKTOP:
             {
+                mAddItemPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mLeftPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mRightPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mRightPalette->lower();
@@ -745,7 +752,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     mRightPalette->setAdditionalVOffset(30);
 #endif
 
-                if( !isInit )
+                if(!isInit)
                     UBApplication::applicationController->uninotesController()->TransparentWidgetResized();
 
                 if (mWebToolsCurrentPalette)
@@ -755,6 +762,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
         case eUBDockPaletteWidget_WEB:
             {
+                mAddItemPalette->setParent(UBApplication::mainWindow);
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
 //                    tmp variable?

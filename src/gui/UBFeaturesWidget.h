@@ -288,6 +288,7 @@ public:
 
 private slots:
     void onLoadFinished(bool ok);
+    void javaScriptWindowObjectCleared();
 
 private:
     QWebView* mpView;

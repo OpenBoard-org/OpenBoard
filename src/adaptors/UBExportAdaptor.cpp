@@ -24,6 +24,7 @@
 #include "core/UBApplication.h"
 
 #include "gui/UBMainWindow.h"
+#include "gui/UBMessagesDialog.h"
 
 #include "core/memcheck.h"
 
@@ -102,4 +103,14 @@ QString UBExportAdaptor::askForDirName(UBDocumentProxy* pDocument, const QString
     QApplication::processEvents();
 
     return dirname;
+}
+
+void UBExportAdaptor::showErrorsList(QList<QString> errorsList)
+{
+    if (errorsList.count())
+    {
+        UBMessagesDialog *dialog = new UBMessagesDialog(tr("Warnings during export was appeared"), UBApplication::mainWindow);
+        dialog->setMessages(errorsList);
+        dialog->show();
+    }
 }

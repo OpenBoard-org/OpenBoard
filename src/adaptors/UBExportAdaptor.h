@@ -46,6 +46,8 @@ class UBExportAdaptor : public QObject
         QString askForFileName(UBDocumentProxy* pDocument, const QString& pDialogTitle);
         QString askForDirName(UBDocumentProxy* pDocument, const QString& pDialogTitle);
 
+        void showErrorsList(QList<QString> errorsList);
+
         bool mIsVerbose;
 
 };
