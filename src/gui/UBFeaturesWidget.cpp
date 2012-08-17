@@ -1337,6 +1337,7 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
              || item.getType() == FEATURE_AUDIO
              || item.getType() == FEATURE_VIDEO
              || item.getType() == FEATURE_IMAGE
+             || item.getType() == FEATURE_FLASH
              || item.getType() == FEATURE_INTERNAL
              || item.getType() == FEATURE_FOLDER)
 
@@ -1387,7 +1388,9 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
             || feature.getType() == FEATURE_VIDEO
             || feature.getType() == FEATURE_IMAGE;
 
-    return isFile && filterRegExp().exactMatch( feature.getName() );
+    return isFile
+            && feature.getFullVirtualPath().contains(mFilterPrefix)
+            && filterRegExp().exactMatch( feature.getName() );
 }
 
 bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const

@@ -53,6 +53,8 @@
 #include "domain/UBPageSizeUndoCommand.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBItem.h"
+#include "board/UBFeaturesController.h"
+#include "gui/UBFeaturesWidget.h"
 
 #include "tools/UBToolsManager.h"
 
@@ -897,7 +899,7 @@ void UBBoardController::groupButtonClicked()
     }
 }
 
-void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const QSize& pSize, bool isBackground)
+void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const QSize& pSize, bool isBackground, bool internalData)
 {
     qDebug() << "something has been dropped on the board! Url is: " << url.toString();
     QString sUrl = url.toString();
@@ -922,7 +924,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
         if (shouldLoadFileData)
             file.open(QIODevice::ReadOnly);
 
-        downloadFinished(true, url, contentType, file.readAll(), pPos, pSize, isBackground);
+        downloadFinished(true, url, contentType, file.readAll(), pPos, pSize, isBackground, internalData);
 
         if (shouldLoadFileData)
             file.close();
@@ -945,7 +947,9 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
 }
 
 
-UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
+UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader,
+                                            QByteArray pData, QPointF pPos, QSize pSize,
+                                            bool isBackground, bool internalData)
 {
     QString mimeType = pContentTypeHeader;
 
@@ -1155,7 +1159,10 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         else
             size = mActiveScene->nominalSize() * .8;
 
+        Q_UNUSED(internalData)
+
         QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(sUrl, mimeType, size);
+        emit npapiWidgetCreated(widgetUrl);
 
         if (widgetUrl.length() > 0)
         {
@@ -1339,7 +1346,6 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         mActiveSceneIndex = index;
         setDocument(pDocumentProxy, forceReload);
         
-
         updateSystemScaleFactor();
 
         mControlView->setScene(mActiveScene);
@@ -1668,12 +1674,10 @@ void UBBoardController::hide()
     UBApplication::mainWindow->actionLibrary->setChecked(false);
 }
 
-
 void UBBoardController::show()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
 }
-
 
 void UBBoardController::persistCurrentScene()
 {
@@ -1688,7 +1692,6 @@ void UBBoardController::persistCurrentScene()
         updatePage(mActiveSceneIndex);
     }
 }
-
 
 void UBBoardController::updateSystemScaleFactor()
 {
@@ -2100,9 +2103,16 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
         int index = 0;
 
+        const UBFeaturesMimeData *internalMimeData = qobject_cast<const UBFeaturesMimeData*>(pMimeData);
+        bool internalData = false;
+        if (internalMimeData) {
+            internalData = true;
+        }
+
         foreach(const QUrl url, urls){
             QPointF pos(pPos + QPointF(index * 15, index * 15));
-            downloadURL(url, pos);
+
+            downloadURL(url, pos, QSize(), false,  internalData);
             index++;
         }
 

@@ -394,10 +394,13 @@ class UBFeaturesSearchProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 public:
-    UBFeaturesSearchProxyModel(QObject *parent = 0) : QSortFilterProxyModel(parent) {;}
+    UBFeaturesSearchProxyModel(QObject *parent = 0) : QSortFilterProxyModel(parent), mFilterPrefix() {;}
     virtual ~UBFeaturesSearchProxyModel() {}
+    void setFilterPrefix(const QString &newPrefix) {mFilterPrefix = newPrefix;}
 protected:
 	virtual bool filterAcceptsRow ( int sourceRow, const QModelIndex & sourceParent ) const;
+private:
+    QString mFilterPrefix;
 };
 
 class UBFeaturesPathProxyModel : public QSortFilterProxyModel

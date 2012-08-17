@@ -78,6 +78,7 @@ enum UBFeatureElementType
     FEATURE_AUDIO,
     FEATURE_VIDEO,
     FEATURE_IMAGE,
+    FEATURE_FLASH,
 	FEATURE_TRASH,
 	FEATURE_FAVORITE,
     FEATURE_SEARCH,
@@ -192,6 +193,7 @@ signals:
 private slots:
     void addNewFolder(QString name);
     void startThread();
+    void createNpApiFeature(const QString &str);
 
 private:
 

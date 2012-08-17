@@ -154,7 +154,9 @@ void UBFeaturesComputingThread::run()
         emit maxFilesCountEvaluated(fsCnt);
 
         emit scanStarted();
+        curTime = QTime::currentTime();
         scanAll(searchData, favoriteSet);
+        qDebug() << "Time on finishing" << curTime.msecsTo(QTime::currentTime());
         emit scanFinished();
 
         mMutex.lock();
@@ -303,6 +305,7 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     connect(&mCThread, SIGNAL(maxFilesCountEvaluated(int)), this, SIGNAL(maxFilesCountEvaluated(int)));
     connect(&mCThread, SIGNAL(scanCategory(QString)), this, SIGNAL(scanCategory(QString)));
     connect(&mCThread, SIGNAL(scanPath(QString)), this, SIGNAL(scanPath(QString)));
+    connect(UBApplication::boardController, SIGNAL(npapiWidgetCreated(QString)), this, SLOT(createNpApiFeature(QString)));
 
     QTimer::singleShot(0, this, SLOT(startThread()));
 }
@@ -326,9 +329,18 @@ void UBFeaturesController::startThread()
             <<  QPair<QUrl, QString>(mLibShapesDirectoryPath, shapesPath)
             <<  QPair<QUrl, QString>(mLibInteractiveDirectoryPath, interactPath)
             <<  QPair<QUrl, QString>(trashDirectoryPath, trashPath)
-            <<  QPair<QUrl, QString>(mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
+            <<  QPair<QUrl, QString>(mLibSearchDirectoryPath, rootPath + "/" + "Web search");
 
     mCThread.compute(computingData, favoriteSet);
+}
+
+void UBFeaturesController::createNpApiFeature(const QString &str)
+{
+    Q_ASSERT(QFileInfo(str).exists() && QFileInfo(str).isDir());
+
+    QString widgetName = QFileInfo(str).fileName();
+
+    featuresModel->addItem(UBFeature(QString(appPath+"/Web"), QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(str))), widgetName, QUrl::fromLocalFile(str), FEATURE_INTERACTIVE));
 }
 
 void UBFeaturesController::scanFS()
@@ -502,6 +514,8 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
     if ( mimeString.contains("application")) {
         if (mimeString.contains("application/search")) {
             fileType = FEATURE_SEARCH;
+        } else if (mimeString.contains("application/x-shockwave-flash")) {
+            fileType = FEATURE_FLASH;
         } else {
             fileType = FEATURE_INTERACTIVE;
         }
@@ -530,6 +544,8 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
         return QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(path)));
     } else if (pFType == FEATURE_INTERNAL) {
         return QImage(UBToolsManager::manager()->iconFromToolId(path));
+    } else if (pFType == FEATURE_FLASH) {
+        return QImage(":images/libpalette/FlashIcon.svg");
     } else if (pFType == FEATURE_AUDIO) {
         return QImage(":images/libpalette/soundIcon.svg");
     } else if (pFType == FEATURE_VIDEO) {
@@ -802,6 +818,7 @@ void UBFeaturesController::searchStarted(const QString &pattern, QListView *pOnV
         curListModel = featuresProxyModel;
     } else if ( pattern.size() > 1 ) {
 
+        //        featuresSearchModel->setFilterPrefix(currentElement.getFullVirtualPath());
         featuresSearchModel->setFilterWildcard( "*" + pattern + "*" );
         pOnView->setModel(featuresSearchModel );
         featuresSearchModel->invalidate();
