@@ -801,27 +801,27 @@
     </message>
     <message>
         <source>Group Items</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Grouper</translation>
     </message>
     <message>
         <source>Group items</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Grouper</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jouer</translation>
     </message>
     <message>
         <source>Interact with items</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Interagir avec des objets</translation>
     </message>
     <message>
         <source>Erase Background</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Effacer le fond</translation>
     </message>
     <message>
         <source>Remove the backgound</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Supprimer le fond</translation>
     </message>
 </context>
 <context>
@@ -951,7 +951,7 @@
     </message>
     <message>
         <source>CapturedImage</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Image capturée</translation>
     </message>
 </context>
 <context>
@@ -1135,7 +1135,7 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Page de titre</translation>
     </message>
 </context>
 <context>
@@ -1181,7 +1181,7 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Page 0</translation>
     </message>
 </context>
 <context>
@@ -1248,11 +1248,11 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exporter au format CFF (*.iwb)</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exporter au format CFF (*.iwb)</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1260,7 +1260,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Export réussi.</translation>
     </message>
     <message>
         <source>Export failed.</source>
@@ -1271,7 +1271,7 @@
     <name>UBExportDocument</name>
     <message>
         <source>Export as UBZ File</source>
-        <translation>Exporter au format UBZ</translation>
+        <translation type="unfinished">Exporter au format UBZ (*.ubz)</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1298,7 +1298,7 @@
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>Exporter au format PDF</translation>
+        <translation type="unfinished">Exporter au format PDF (*.pdf)</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1317,7 +1317,7 @@
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>Exporter au format PDF</translation>
+        <translation type="unfinished">Exporter au format PDF (*.pdf)</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1333,7 +1333,7 @@
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation>Exporter au format PDF</translation>
+        <translation type="unfinished">Exporter au format PDF (*.pdf)</translation>
     </message>
 </context>
 <context>
@@ -1394,7 +1394,7 @@
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rechercher</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1414,7 +1414,7 @@
     </message>
     <message>
         <source>Rescan file system</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rescanner le système de fichiers</translation>
     </message>
 </context>
 <context>
@@ -1917,33 +1917,33 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBTGActionWidget</name>
     <message>
         <source>Teacher</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Professeur</translation>
     </message>
     <message>
         <source>Student</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elève</translation>
     </message>
     <message>
         <source>Type task here ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir une action ici ...</translation>
     </message>
 </context>
 <context>
     <name>UBTGMediaWidget</name>
     <message>
         <source>drop media here ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Glisser une ressource ici ...</translation>
     </message>
     <message>
         <source>Type title here...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir le titre ici ...</translation>
     </message>
 </context>
 <context>
     <name>UBTGUrlWidget</name>
     <message>
         <source>Insert link title here...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir le titre du lien ici ...</translation>
     </message>
 </context>
 <context>
@@ -1957,131 +1957,131 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBTeacherGuideEditionWidget</name>
     <message>
         <source>Type title here ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir le titre de l&apos;activité ici ...</translation>
     </message>
     <message>
         <source>Type comment here ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir le commentaire ici ...</translation>
     </message>
     <message>
         <source>Add an action</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ajouter une action</translation>
     </message>
     <message>
         <source>Add a media</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ajouter un média</translation>
     </message>
     <message>
         <source>Add a link</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ajouter un lien</translation>
     </message>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Page: %0</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePageZeroWidget</name>
     <message>
         <source>Type session title here ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir le titre de la séance ...</translation>
     </message>
     <message>
         <source>Author(s)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Auteur(s) :</translation>
     </message>
     <message>
         <source>Type authors here ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir les auteurs ici ...</translation>
     </message>
     <message>
         <source>Objective(s)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Objectif(s) :</translation>
     </message>
     <message>
         <source>Type objectives here...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir les objectifs ici ...</translation>
     </message>
     <message>
         <source>Resource indexing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Indexation de la ressource</translation>
     </message>
     <message>
         <source>Keywords:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mot(s) clé(s) :</translation>
     </message>
     <message>
         <source>Type keywords here ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir le(s) mot(s) clé(s) ici ...</translation>
     </message>
     <message>
         <source>Level:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Niveau scolaire :</translation>
     </message>
     <message>
         <source>Subjects:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Discipline :</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Type :</translation>
     </message>
     <message>
         <source>Licence</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Licence</translation>
     </message>
     <message>
         <source>Attribution CC BY</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Licence Planète Sankoré (CC Paternité 3.0)</translation>
     </message>
     <message>
         <source>Attribution-NoDerivs CC BY-ND</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CC Paternité, Pas de modification</translation>
     </message>
     <message>
         <source>Attribution-ShareAlike CC BY-SA</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CC Paternité, Partage à l&apos;identique</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial CC BY-NC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CC Paternité, Pas d&apos;utilisation Commerciale</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-NoDerivs CC BY-NC-ND</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CC Paternité, Pas d&apos;utilisation Commerciale, Pas de modification</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-ShareAlike CC BY-NC-SA</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CC Paternité, Pas d&apos;utilisation Commerciale, Partage à l&apos;identique</translation>
     </message>
     <message>
         <source>Public domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Domaine public</translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Droit d&apos;auteur</translation>
     </message>
     <message>
         <source>Created the:
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Créé le :</translation>
     </message>
     <message>
         <source>Updated the:
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Modifié le :</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Page de titre</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePresentationWidget</name>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Page: %0</translation>
     </message>
 </context>
 <context>
