@@ -628,6 +628,7 @@ void UBBoardController::deleteScene(int nIndex)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
+        showMessage(tr("Delete page %1 from document").arg(nIndex), true);
 
         QList<int> scIndexes;
         scIndexes << nIndex;
@@ -638,6 +639,7 @@ void UBBoardController::deleteScene(int nIndex)
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
         setActiveDocumentScene(nIndex);
+        showMessage(tr("Page %1 deleted").arg(nIndex));
         QApplication::restoreOverrideCursor();
     }
 }
