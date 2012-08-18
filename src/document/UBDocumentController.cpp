@@ -1006,11 +1006,12 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
     if (filePath.length() > 0)
     {
         QApplication::processEvents();
-        QFile selectedFile(filePath);
 
         showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
 
-        success = UBDocumentManager::documentManager()->addFileToDocument(document, selectedFile);
+        QStringList fileNames;
+        fileNames << filePath;
+        success = UBDocumentManager::documentManager()->addFilesToDocument(document, fileNames);
 
         if (success)
         {
@@ -1438,7 +1439,7 @@ void UBDocumentController::addImages()
             UBSettings::settings()->lastImportFolderPath->set(QVariant(firstImage.absoluteDir().absolutePath()));
 
             int importedImageNumber
-                  = UBDocumentManager::documentManager()->addImageAsPageToDocument(images, document);
+                = UBDocumentManager::documentManager()->addFilesToDocument(document, images);
 
             if (importedImageNumber == 0)
             {

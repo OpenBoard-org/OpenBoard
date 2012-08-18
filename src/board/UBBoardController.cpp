@@ -1074,8 +1074,20 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         {
             QUuid uuid = QUuid::createUuid();
 
-            QUrl url = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-                ->addVideoFileToDocument(selectedDocument(), sourceUrl, pData, uuid));
+            QString destFile;
+            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+                "", 
+                UBPersistenceManager::videoDirectory,
+                uuid,
+                destFile,
+                &pData);
+            if (!b)
+            {
+                showMessage(tr("Add file operation failed: file copying error"));
+                return NULL;
+            }
+
+            QUrl url = QUrl::fromLocalFile(destFile);
 
             mediaVideoItem = mActiveScene->addMedia(url, false, pPos);
 
@@ -1105,8 +1117,20 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         {
             QUuid uuid = QUuid::createUuid();
 
-            QUrl url = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-                ->addAudioFileToDocument(selectedDocument(), sourceUrl, pData, uuid));
+            QString destFile;
+            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+                "", 
+                UBPersistenceManager::audioDirectory,
+                uuid,
+                destFile,
+                &pData);
+            if (!b)
+            {
+                showMessage(tr("Add file operation failed: file copying error"));
+                return NULL;
+            }
+
+            QUrl url = QUrl::fromLocalFile(destFile);
 
             audioMediaItem = mActiveScene->addMedia(url, false, pPos);
 
@@ -1186,15 +1210,18 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         qDebug() << "sourceurl : " + sourceUrl.toString();
         int result = 0;
         if(!sourceUrl.isEmpty()){
-            QFile sourceFile(sourceUrl.toLocalFile());
-            result = UBDocumentManager::documentManager()->addFileToDocument(selectedDocument(), sourceFile);
+            QStringList fileNames;
+            fileNames << sourceUrl.toLocalFile();
+            result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
         }
         else if(pData.size()){
             QTemporaryFile pdfFile("XXXXXX.pdf");
             if (pdfFile.open())
             {
                 pdfFile.write(pData);
-                result = UBDocumentManager::documentManager()->addFileToDocument(selectedDocument(), pdfFile);
+                QStringList fileNames;
+                fileNames << pdfFile.fileName();
+                result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
                 pdfFile.close();
             }
         }
@@ -1904,7 +1931,18 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addVideoFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
+    QString destFile;
+    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+                pSourceUrl.toLocalFile(), 
+                UBPersistenceManager::videoDirectory,
+                uuid,
+                destFile);
+    if (!b)
+    {
+        showMessage(tr("Add file operation failed: file copying error"));
+        return NULL;
+    }
+    concreteUrl = QUrl::fromLocalFile(destFile);
 
     UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -1923,7 +1961,18 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addAudioFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
+    QString destFile;
+    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+                pSourceUrl.toLocalFile(), 
+                UBPersistenceManager::audioDirectory,
+                uuid,
+                destFile);
+    if (!b)
+    {
+        showMessage(tr("Add file operation failed: file copying error"));
+        return NULL;
+    }
+    concreteUrl = QUrl::fromLocalFile(destFile);
 
     UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -1942,9 +1991,11 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
     UBGraphicsWidgetItem* w3cWidgetItem = 0;
 
     QUuid uuid = QUuid::createUuid();
-    QUrl newUrl = pUrl;
 
-    newUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addGraphicsWidgteToDocument(selectedDocument(), pUrl.toLocalFile(), uuid));
+    QString destPath;
+    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgteToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
+        return NULL;
+    QUrl newUrl = QUrl::fromLocalFile(destPath);
 
     w3cWidgetItem = mActiveScene->addW3CWidget(newUrl, pos);
 

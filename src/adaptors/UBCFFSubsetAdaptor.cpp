@@ -869,8 +869,18 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
 
     QUuid uuid = QUuid::createUuid();
 
-    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-        ->addAudioFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
+    QString destFile;
+    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(
+            mCurrentScene->document(), 
+            concreteUrl.toLocalFile(), 
+            UBPersistenceManager::audioDirectory,
+            uuid,
+            destFile);
+    if (!b)
+    {
+        return false;
+    }
+    concreteUrl = QUrl::fromLocalFile(destFile);
     
     UBGraphicsMediaItem *audioItem = mCurrentScene->addAudio(concreteUrl, false);
     QTransform transform;
@@ -912,8 +922,19 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
 
     QUuid uuid = QUuid::createUuid();
 
-    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-        ->addVideoFileToDocument(mCurrentScene->document(), concreteUrl.toLocalFile(), uuid));
+
+    QString destFile;
+    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(
+            mCurrentScene->document(), 
+            concreteUrl.toLocalFile(), 
+            UBPersistenceManager::videoDirectory,
+            uuid,
+            destFile);
+    if (!b)
+    {
+        return false;
+    }
+    concreteUrl = QUrl::fromLocalFile(destFile);
 
     UBGraphicsMediaItem *videoItem = mCurrentScene->addVideo(concreteUrl, false);
     QTransform transform;

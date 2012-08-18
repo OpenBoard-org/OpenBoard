@@ -27,7 +27,7 @@
 #include "core/memcheck.h"
 
 UBImportPDF::UBImportPDF(QObject *parent)
-    : UBImportAdaptor(parent)
+    : UBPageBasedImportAdaptor(parent)
 {
     QDesktopWidget* desktop = UBApplication::desktop();
 	this->dpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
@@ -52,6 +52,47 @@ QString UBImportPDF::importFileFilter()
 }
 
 
+QList<UBGraphicsItem*> UBImportPDF::import(const QUuid& uuid, const QString& filePath)
+{
+    QList<UBGraphicsItem*> result;
+
+    PDFRenderer *pdfRenderer = PDFRenderer::rendererForUuid(uuid, filePath, true); // renderer is automatically deleted when not used anymore
+
+    if (!pdfRenderer->isValid())
+    {
+        UBApplication::showMessage(tr("PDF import failed."));
+        return result;
+    }
+	pdfRenderer->setDPI(this->dpi);
+
+    int pdfPageCount = pdfRenderer->pageCount();
+
+    for(int pdfPageNumber = 1; pdfPageNumber <= pdfPageCount; pdfPageNumber++)
+    {
+        UBApplication::showMessage(tr("Importing page %1 of %2").arg(pdfPageNumber).arg(pdfPageCount), true);
+
+        result << new UBGraphicsPDFItem(pdfRenderer, pdfPageNumber); // deleted by the scene
+    }
+    return result;
+}
+
+void UBImportPDF::placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item)
+{
+    UBGraphicsPDFItem *pdfItem = (UBGraphicsPDFItem*)item;
+
+    pdfItem->setPos(-pdfItem->boundingRect().width() / 2, -pdfItem->boundingRect().height() / 2);
+
+    scene->setAsBackgroundObject(pdfItem, false, false);
+
+    scene->setNominalSize(pdfItem->boundingRect().width(), pdfItem->boundingRect().height());
+}
+
+const QString& UBImportPDF::folderToCopy()
+{
+    return UBPersistenceManager::objectDirectory;
+}
+
+/*
 bool UBImportPDF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
 {
     QString documentName = QFileInfo(pFile.fileName()).completeBaseName();
@@ -112,3 +153,4 @@ bool UBImportPDF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFi
 
     return true;
 }
+*/

@@ -36,12 +36,10 @@ class UBDocumentManager : public QObject
 
         UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup);
 
-        bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile);
+        int addFilesToDocument(UBDocumentProxy* pDocument, QStringList fileNames);
 
         UBDocumentProxy* importDir(const QDir& pDir, const QString& pGroup);
         int addImageDirToDocument(const QDir& pDir, UBDocumentProxy* pDocument);
-
-        int addImageAsPageToDocument(const QStringList& images, UBDocumentProxy* document);
 
         QList<UBExportAdaptor*> supportedExportAdaptors();
         void emitDocumentUpdated(UBDocumentProxy* pDocument);

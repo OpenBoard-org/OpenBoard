@@ -21,7 +21,7 @@
 
 class UBDocumentProxy;
 
-class UBImportPDF : public UBImportAdaptor
+class UBImportPDF : public UBPageBasedImportAdaptor
 {
     Q_OBJECT;
 
@@ -32,7 +32,9 @@ class UBImportPDF : public UBImportAdaptor
         virtual QStringList supportedExtentions();
         virtual QString importFileFilter();
 
-        virtual bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile);
+        virtual QList<UBGraphicsItem*> import(const QUuid& uuid, const QString& filePath);
+        virtual void placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item);
+        virtual const QString& folderToCopy();
 
 	private:
 		int dpi;
