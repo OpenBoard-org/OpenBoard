@@ -1032,12 +1032,13 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
 
 void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, int target)
 {
-    UBDocumentContainer::movePageToIndex(source, target);
-
-    proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-    UBMetadataDcSubsetAdaptor::persist(proxy);
+    if (UBDocumentContainer::movePageToIndex(source, target))
+    {
+        proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        UBMetadataDcSubsetAdaptor::persist(proxy);
     
-    mDocumentUI->thumbnailWidget->hightlightItem(target);
+        mDocumentUI->thumbnailWidget->hightlightItem(target);
+    }
 }
 
 
