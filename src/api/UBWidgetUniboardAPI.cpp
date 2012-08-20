@@ -476,7 +476,7 @@ void UBWidgetUniboardAPI::enableDropOnWidget(bool enable)
     }
 }
 
-void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
+void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
 {
     const QMimeData *pMimeData = event->mimeData();
 
@@ -485,11 +485,12 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
     bool downloaded = false;
 
     QGraphicsView *tmpView = mGraphicsWidget->scene()->views().at(0);
-    QPoint dropPoint(mGraphicsWidget->mapFromScene(tmpView->mapToScene(event->pos())).toPoint());
-    Qt::DropActions dropActions = event->dropAction();
-    Qt::MouseButtons dropMouseButtons = event->mouseButtons();
-    Qt::KeyboardModifiers dropModifiers = event->keyboardModifiers();
-    QMimeData dropMimeData;
+    QPoint dropPoint(mGraphicsWidget->mapFromScene(tmpView->mapToScene(event->pos().toPoint())).toPoint());
+    Qt::DropActions dropActions = event->possibleActions();
+    Qt::MouseButtons dropMouseButtons = event->buttons();
+    Qt::KeyboardModifiers dropModifiers = event->modifiers();
+    QMimeData *dropMimeData = new QMimeData;
+    qDebug() << event->possibleActions();
 
 
     if (pMimeData->hasHtml()) { //Dropping element from web browser
@@ -510,7 +511,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
             desc.name = QFileInfo(url).fileName();
             desc.totalSize = 0; // The total size will be retrieved during the download
 
-            desc.dropPoint = event->pos(); //Passing pure event point. No modifications
+            desc.dropPoint = event->pos().toPoint(); //Passing pure event point. No modifications
             desc.dropActions = dropActions;
             desc.dropMouseButtons = dropMouseButtons;
             desc.dropModifiers = dropModifiers;
@@ -542,12 +543,9 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QDropEvent *event)
     }
     qDebug() << destFileName;
     QString mimeText = createMimeText(downloaded, contentType, destFileName);
-    dropMimeData.setData(tMimeText, mimeText.toAscii());
+    dropMimeData->setData(tMimeText, mimeText.toAscii());
 
-    QDropEvent readyEvent(dropPoint, dropActions, &dropMimeData, dropMouseButtons, dropModifiers);
-    //sending event to destination either it had been downloaded or not
-    QApplication::sendEvent(mGraphicsWidget,&readyEvent);
-    readyEvent.acceptProposedAction();
+    event->setMimeData(dropMimeData);
 }
 
 void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData)

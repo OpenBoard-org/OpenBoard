@@ -16,7 +16,7 @@
 #define UBWIDGETAPI_H
 
 #include <QtCore>
-#include <QDropEvent>
+#include <QGraphicsSceneDragDropEvent>
 
 #include "UBW3CWidgetAPI.h"
 #include "core/UBDownloadManager.h"
@@ -246,7 +246,7 @@ class UBWidgetUniboardAPI : public QObject
          * When an object is dropped on a widget, this one send us the informations to download it locally.
          * this method download the object on the widget directory and return the path of the downloaded object
          */
-        void ProcessDropEvent(QDropEvent *);
+        void ProcessDropEvent(QGraphicsSceneDragDropEvent *);
         bool isDropableData(const QMimeData *pMimeData) const;
 
 private slots:
