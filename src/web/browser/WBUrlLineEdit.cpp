@@ -58,6 +58,8 @@
 #include "WBSearchLineEdit.h"
 #include "WBWebView.h"
 
+#include "globals/UBGlobals.h"
+
 #include <QtGui>
 
 #include "core/memcheck.h"
@@ -68,7 +70,8 @@ WBExLineEdit::WBExLineEdit(QWidget *parent)
     , mLineEdit(new QLineEdit(this))
     , mClearButton(0)
 {
-    setFocusPolicy(mLineEdit->focusPolicy());
+	SET_STYLE_SHEET();
+	setFocusPolicy(mLineEdit->focusPolicy());
     setAttribute(Qt::WA_InputMethodEnabled);
     setSizePolicy(mLineEdit->sizePolicy());
     setBackgroundRole(mLineEdit->backgroundRole());
