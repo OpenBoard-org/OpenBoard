@@ -365,6 +365,7 @@ void UBApplicationController::showBoard()
     emit mainModeChanged(Board);
 
     UBApplication::boardController->freezeW3CWidgets(false);
+    UBApplication::boardController->activeScene()->updateGroupButtonState();
 }
 
 
