@@ -322,6 +322,12 @@ void UBGraphicsTextItemDelegate::positionHandles()
 
 void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)
 {
+    if (scaleSize == changeMode)
+    {
+        if (1 == factor)
+            return;
+    }
+    else
     if (0 == factor)
         return;
 
