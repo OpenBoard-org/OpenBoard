@@ -82,12 +82,8 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mPendingPanButtonPressed(false)
     , mPendingEraseButtonPressed(false)
     , mpPageNavigWidget(NULL)
-//#ifdef USE_WEB_WIDGET
-    , mpLibWidget(NULL)
-//#endif
     , mpCachePropWidget(NULL)
     , mpDownloadWidget(NULL)
-    , mpDesktopLibWidget(NULL)
     , mpTeacherGuideWidget(NULL)
     , mDownloadInProgress(false)
 {
@@ -100,17 +96,10 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
 {
     delete mAddItemPalette;
 
-
     if(NULL != mStylusPalette)
     {
         delete mStylusPalette;
         mStylusPalette = NULL;
-    }
-
-    if(NULL != mpDesktopLibWidget)
-    {
-        delete mpDesktopLibWidget;
-        mpDesktopLibWidget = NULL;
     }
 }
 
@@ -134,10 +123,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // Create the widgets for the dock palettes
 
     mpPageNavigWidget = new UBPageNavigationWidget();
-
-#ifdef USE_WEB_WIDGET
-    mpLibWidget = new UBLibWidget();
-#endif
 
     mpCachePropWidget = new UBCachePropertiesWidget();
 

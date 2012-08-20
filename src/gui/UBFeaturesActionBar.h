@@ -4,10 +4,26 @@
 #include <QWidget>
 #include <QToolButton>
 #include <QDropEvent>
-#include "UBLibActionBar.h"
 #include "board/UBFeaturesController.h"
 
+#define BUTTON_SIZE 24
+#define ACTIONBAR_HEIGHT 42
+
 class UBFeaturesMimeData;
+
+typedef enum
+{
+    eButtonSet_Default,
+    eButtonSet_Properties,
+    eButtonSet_Favorite
+} eButtonSet;
+
+class UBActionButton : public QToolButton
+{
+public:
+    UBActionButton(QWidget* parent=0, QAction* action=0, const char* name="UBActionButton");
+    ~UBActionButton();
+};
 
 enum UBFeaturesActionBarState
 {

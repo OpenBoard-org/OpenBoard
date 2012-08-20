@@ -22,7 +22,6 @@
 #include "gui/UBLeftPalette.h"
 #include "gui/UBRightPalette.h"
 #include "gui/UBPageNavigationWidget.h"
-#include "gui/UBLibWidget.h"
 #include "gui/UBCachePropertiesWidget.h"
 #include "gui/UBDockDownloadWidget.h"
 #include "core/UBApplicationController.h"
@@ -136,11 +135,6 @@ class UBBoardPaletteManager : public QObject
         /** The page navigator widget */
         UBPageNavigationWidget* mpPageNavigWidget;
         
-//#ifdef USE_WEB_WIDGET
-        /** The library widget */
-        UBLibWidget* mpLibWidget;
-//#endif
-
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
 
@@ -148,11 +142,6 @@ class UBBoardPaletteManager : public QObject
 
         /** The download widget */
         UBDockDownloadWidget* mpDownloadWidget;
-        // HACK: here we duplicate the lib widget for the desktop mode
-        //       we MUST refactor the architecture in order to use only one
-        //       lib widget!
-        UBLibWidget* mpDesktopLibWidget;
-
         UBDockTeacherGuideWidget* mpTeacherGuideWidget;
 
         bool mDownloadInProgress;

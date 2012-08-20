@@ -271,3 +271,28 @@ void UBFeaturesActionBar::dropEvent(QDropEvent *event)
 UBFeaturesActionBar::~UBFeaturesActionBar()
 {
 }
+
+/**
+ * \brief Construtor
+ * @param parent as the parent widget
+ * @param action as the related action
+ * @param name as the related object name
+ */
+UBActionButton::UBActionButton(QWidget *parent, QAction* action, const char *name):QToolButton(parent)
+{
+    setObjectName(name);
+    addAction(action);
+    setDefaultAction(action);
+    setIconSize(QSize(BUTTON_SIZE, BUTTON_SIZE));
+    setToolButtonStyle(Qt::ToolButtonIconOnly);
+    setStyleSheet(QString("QToolButton {color: white; font-weight: bold; font-family: Arial; background-color: transparent; border: none}"));
+    setFocusPolicy(Qt::NoFocus);
+}
+
+/**
+ * \brief Destructor
+ */
+UBActionButton::~UBActionButton()
+{
+
+}
