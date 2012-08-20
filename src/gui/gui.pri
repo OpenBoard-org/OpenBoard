@@ -35,10 +35,8 @@ HEADERS      += src/gui/UBThumbnailView.h \
                 src/gui/UBLeftPalette.h \
                 src/gui/UBRightPalette.h \
                 src/gui/UBPageNavigationWidget.h \
-                src/gui/UBLibWidget.h \
                 src/gui/UBMagnifer.h \
                 src/gui/UBCachePropertiesWidget.h \
-                src/gui/UBLibWebView.h \
                 src/gui/UBDownloadWidget.h \
                 src/gui/UBDockDownloadWidget.h \
 		src/gui/UBFeaturesWidget.h \

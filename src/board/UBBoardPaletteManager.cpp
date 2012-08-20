@@ -704,6 +704,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mAddItemPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mLeftPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mRightPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+                mStylusPalette->raise();
                 // Maybe threre is a reason to keep that functions but with them right palette in desktop mode is not interactable
                 //                mRightPalette->lower();
                 //                mLeftPalette->lower();
@@ -724,7 +725,12 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                         mKeyboardPalette->show();
                     }
                     else
+// In linux keyboard in desktop mode have to allways be with null parent
+#ifdef Q_WS_X11
+                        mKeyboardPalette->setParent(0);
+#else
                         mKeyboardPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+#endif //Q_WS_X11
 #ifdef Q_WS_MAC
                         mKeyboardPalette->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
 #endif

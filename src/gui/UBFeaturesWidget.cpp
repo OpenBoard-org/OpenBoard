@@ -1395,6 +1395,7 @@ QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLoc
     Q_UNUSED(locale)
 
     QString text = value.toString();
+    text = text.replace(".wgt", "");
 	if (listView)
 	{
 		const QFontMetrics fm = listView->fontMetrics();
@@ -1423,7 +1424,7 @@ void UBFeaturesPathItemDelegate::paint( QPainter *painter, const QStyleOptionVie
 	QRect rect = option.rect;
 	if ( !feature.getFullPath().isEmpty() )
 	{
-		painter->drawPixmap( rect.left() - 10, rect.center().y() - 5, *arrowPixmap );
+        painter->drawPixmap( rect.left() - 10, rect.center().y() - 5, *arrowPixmap );
 	}
     painter->drawImage( rect.left() + 5, rect.center().y() - 5, feature.getThumbnail().scaledToHeight( 30, Qt::SmoothTransformation ) );
 }
