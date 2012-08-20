@@ -150,11 +150,3 @@ void UBGraphicsWebView::remove()
     if (mDelegate)
         mDelegate->remove(true);
 }
-
-/*bool UBGraphicsWebView::event(QEvent *event)
-{
-    if (event->type() == QEvent::ShortcutOverride)
-        event->accept();
-
-    return QGraphicsWebView::event(event);
-}*/
