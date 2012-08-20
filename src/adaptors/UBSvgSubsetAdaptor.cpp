@@ -2769,6 +2769,12 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     }
                 }
 
+                QTextCursor curCursor = textItem->textCursor();
+                QTextCharFormat format;
+
+                format.setFont(font);
+                curCursor.mergeCharFormat(format);
+                textItem->setTextCursor(curCursor);
                 textItem->setFont(font);
 
                 QStringRef fill = mXmlReader.attributes().value("color");

@@ -76,7 +76,7 @@ void UBToolWidget::initialize()
     if(!sUnpinPixmap)
         sUnpinPixmap = new QPixmap(":/images/unpin.svg");
     
-    QGraphicsLinearLayout *graphicsLayout = new QGraphicsLinearLayout(Qt::Vertical);
+    QGraphicsLinearLayout *graphicsLayout = new QGraphicsLinearLayout(Qt::Vertical, this);
 
     mFrameWidth = UBSettings::settings()->objectFrameWidth;
     mContentMargin = sClosePixmap->width() / 2 + mFrameWidth;

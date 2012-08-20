@@ -322,6 +322,12 @@ void UBGraphicsTextItemDelegate::positionHandles()
 
 void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)
 {
+    if (scaleSize == changeMode)
+    {
+        if (1 == factor)
+            return;
+    }
+    else
     if (0 == factor)
         return;
 
@@ -402,4 +408,21 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
 void UBGraphicsTextItemDelegate::scaleTextSize(qreal multiplyer)
 {
     ChangeTextSize(multiplyer, scaleSize);
+}
+
+QVariant UBGraphicsTextItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+    if (change == QGraphicsItem::ItemSelectedChange)
+    {
+        if (delegated()->isSelected())
+        {
+            QTextCursor c = delegated()->textCursor();
+            if (c.hasSelection())
+            {
+                c.clearSelection();
+                delegated()->setTextCursor(c);
+            }
+        }
+    }
+    return UBGraphicsItemDelegate::itemChange(change, value);
 }

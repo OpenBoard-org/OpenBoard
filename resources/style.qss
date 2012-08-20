@@ -70,11 +70,10 @@ QLabel#UBTGMediaDropMeLabel
 	padding: 2px;
 }
 
+QTextEdit,
+QLineEdit,
 QComboBox#DockPaletteWidgetComboBox QAbstractItemView
 {
-	background-color: white;
-	color: black;
- 
 	selection-background-color: lightgreen;
 	selection-color: black;
 }

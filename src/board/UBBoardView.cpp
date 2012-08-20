@@ -989,7 +989,8 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           {
              if (QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
-                UBToolWidget::Type != movingItem->type())
+                UBToolWidget::Type != movingItem->type() &&
+                QGraphicsWidget::Type != movingItem->type())
              {
                  bReleaseIsNeed = false;
                  if (movingItem->isSelected() && mMultipleSelectionIsEnabled)
