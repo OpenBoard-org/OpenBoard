@@ -25,6 +25,9 @@ public:
 
     bool switchMode(eUBDockPaletteWidgetMode mode);
 
+public slots:
+    void onDocumentSet(UBDocumentProxy* documentProxy);
+
 protected:
     void updateMaxWidth();
     void resizeEvent(QResizeEvent *event);

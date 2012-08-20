@@ -21,14 +21,14 @@
 #include "core/UBPersistenceManager.h"
 #include "core/UBDocumentManager.h"
 
-#include "domain/UBGraphicsPDFItem.h"
+#include "domain/UBGraphicsPixmapItem.h"
 
 #include "pdf/PDFRenderer.h"
 
 #include "core/memcheck.h"
 
 UBImportImage::UBImportImage(QObject *parent)
-    : UBImportAdaptor(parent)
+    : UBPageBasedImportAdaptor(parent)
 {
     // NOOP
 }
@@ -74,18 +74,33 @@ QString UBImportImage::importFileFilter()
     return filter;
 }
 
-
-bool UBImportImage::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
+QList<UBGraphicsItem*> UBImportImage::import(const QUuid& uuid, const QString& filePath)
 {
-    int res = UBDocumentManager::documentManager()->addImageAsPageToDocument(QStringList(QFileInfo(pFile).absoluteFilePath()), pDocument);
-    if (res == 0)
-    {
-        UBApplication::showMessage(tr("Image import failed."));
-        return false;
-    }
-    else
-    {
-        UBApplication::showMessage(tr("Image import successful."));
-        return true;
-    }
+    QList<UBGraphicsItem*> result;
+
+    QPixmap pix(filePath);
+    if (pix.isNull())
+        return result;
+
+    UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
+    pixmapItem->setPixmap(pix);
+    result << pixmapItem;
+    return result;
+}
+
+void UBImportImage::placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item)
+{
+    UBGraphicsPixmapItem* pixmapItem = (UBGraphicsPixmapItem*)item;
+    
+     UBGraphicsPixmapItem* sceneItem = scene->addPixmap(pixmapItem->pixmap(), NULL, QPointF(0, 0));
+     scene->setAsBackgroundObject(sceneItem, true);
+
+     // Only stored pixmap, should be deleted now
+     delete pixmapItem;
+}
+
+const QString& UBImportImage::folderToCopy()
+{
+    static QString f("");
+    return f;
 }

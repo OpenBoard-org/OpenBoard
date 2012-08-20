@@ -1149,7 +1149,6 @@ void UBTeacherGuideWidget::onActiveSceneChanged()
     		mpPageZeroWidget->switchToMode(tUBTGZeroPageMode_EDITION);
 
         setCurrentWidget(mpPageZeroWidget);
-
     }
     else{
     	if(mpEditionWidget->isModified()){

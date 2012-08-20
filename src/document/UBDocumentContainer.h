@@ -37,7 +37,7 @@ class UBDocumentContainer : public QObject
         static int sceneIndexFromPage(int sceneIndex); 
 
         void duplicatePages(QList<int>& pageIndexes);
-        void movePageToIndex(int source, int target);
+        bool movePageToIndex(int source, int target);
         void deletePages(QList<int>& pageIndexes);
         void addPage(int index);
         void updatePage(int index);

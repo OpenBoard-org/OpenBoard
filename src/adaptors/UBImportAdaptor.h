@@ -18,6 +18,8 @@
 
 #include <QtGui>
 
+class UBGraphicsItem;
+class UBGraphicsScene;
 class UBDocumentProxy;
 
 class UBImportAdaptor : public QObject
@@ -25,15 +27,39 @@ class UBImportAdaptor : public QObject
     Q_OBJECT;
 
     protected:
-        UBImportAdaptor(QObject *parent = 0);
+        UBImportAdaptor(bool _documentBased, QObject *parent = 0);
         virtual ~UBImportAdaptor();
 
     public:
 
         virtual QStringList supportedExtentions() = 0;
         virtual QString importFileFilter() = 0;
-        virtual UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup);
-        virtual bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile) = 0;
+
+        bool isDocumentBased(){return documentBased;}
+    private:
+        bool documentBased;
+        
 };
+
+class UBPageBasedImportAdaptor : public UBImportAdaptor
+{
+protected:
+        UBPageBasedImportAdaptor(QObject *parent = 0);
+
+public:
+        virtual QList<UBGraphicsItem*> import(const QUuid& uuid, const QString& filePath) = 0;
+        virtual void placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item) = 0;
+        virtual const QString& folderToCopy() = 0;
+};
+
+class UBDocumentBasedImportAdaptor : public UBImportAdaptor
+{
+protected:
+        UBDocumentBasedImportAdaptor(QObject *parent = 0);
+public:
+    virtual UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup) = 0;
+    virtual bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile) = 0;
+};
+
 
 #endif /* UBIMPORTADAPTOR_H_ */

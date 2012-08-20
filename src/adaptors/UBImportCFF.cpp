@@ -14,6 +14,7 @@
  */
 
 #include <QDir>
+#include <QList>
 
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
@@ -38,7 +39,7 @@ THIRD_PARTY_WARNINGS_ENABLE
 #include "core/memcheck.h"
 
 UBImportCFF::UBImportCFF(QObject *parent)
-    : UBImportAdaptor(parent)
+    : UBDocumentBasedImportAdaptor(parent)
 {
     // NOOP
 }
@@ -76,7 +77,6 @@ QString UBImportCFF::importFileFilter()
 
     return filter;
 }
-
 
 bool UBImportCFF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
 {
@@ -220,6 +220,7 @@ QString UBImportCFF::expandFileToDir(const QFile& pZipFile, const QString& pDir)
     return documentRootFolder;
 }
 
+
 UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGroup)
 {
     Q_UNUSED(pGroup); // group is defined in the imported file
@@ -277,4 +278,3 @@ UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGro
         return newDocument;
     }
 }
-

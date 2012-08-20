@@ -22,8 +22,9 @@
 
 #include "core/memcheck.h"
 
-UBImportAdaptor::UBImportAdaptor(QObject *parent)
-    :QObject(parent)
+UBImportAdaptor::UBImportAdaptor(bool _documentBased, QObject *parent)
+    :QObject(parent),
+    documentBased(_documentBased)
 {
     // NOOP
 }
@@ -33,6 +34,20 @@ UBImportAdaptor::~UBImportAdaptor()
     // NOOP
 }
 
+UBPageBasedImportAdaptor::UBPageBasedImportAdaptor(QObject *parent)
+    :UBImportAdaptor(false, parent)
+{
+    // NOOP
+}
+
+UBDocumentBasedImportAdaptor::UBDocumentBasedImportAdaptor(QObject *parent)
+    :UBImportAdaptor(true, parent)
+{
+    // NOOP
+}
+
+
+/*
 UBDocumentProxy* UBImportAdaptor::importFile(const QFile& pFile, const QString& pGroup)
 {
     QString documentName = QFileInfo(pFile.fileName()).completeBaseName();
@@ -53,3 +68,4 @@ UBDocumentProxy* UBImportAdaptor::importFile(const QFile& pFile, const QString& 
 
     return newDocument;
 }
+*/

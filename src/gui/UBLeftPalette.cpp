@@ -51,6 +51,14 @@ UBLeftPalette::~UBLeftPalette()
 
 }
 
+
+void UBLeftPalette::onDocumentSet(UBDocumentProxy* documentProxy)
+{
+	//This is necessary to force the teacher guide to be showed in priority each time a document is set
+	if(documentProxy && UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+		mLastOpenedTabForMode.insert(eUBDockPaletteWidget_BOARD, 1);
+}
+
 /**
  * \brief Update the maximum width
  */

@@ -33,7 +33,7 @@ THIRD_PARTY_WARNINGS_ENABLE
 #include "core/memcheck.h"
 
 UBImportDocument::UBImportDocument(QObject *parent)
-    :UBImportAdaptor(parent)
+    :UBDocumentBasedImportAdaptor(parent)
 {
     // NOOP
 }
@@ -173,7 +173,6 @@ QString UBImportDocument::expandFileToDir(const QFile& pZipFile, const QString& 
     return documentRootFolder;
 }
 
-
 UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString& pGroup)
 {
     Q_UNUSED(pGroup); // group is defined in the imported file
@@ -197,7 +196,6 @@ UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString&
 	}
 }
 
-
 bool UBImportDocument::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
 {
     QFileInfo fi(pFile);
@@ -215,3 +213,5 @@ bool UBImportDocument::addFileToDocument(UBDocumentProxy* pDocument, const QFile
 
     return true;
 }
+
+

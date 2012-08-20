@@ -259,6 +259,8 @@ class UBGraphicsItemDelegate : public QObject
         void increaseZlevelTop();
         void increaseZlevelBottom();
 
+        void onZoomChanged();
+
     protected:
         virtual void buildButtons();
         virtual void decorateMenu(QMenu *menu);

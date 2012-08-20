@@ -107,7 +107,11 @@ buildWithStandardQt(){
         STANDARD_QT_USED=true
         QMAKE_PATH=$STANDARD_QT
         LRELEASES=`which lrelease`
-        QT_PATH="/usr/lib/`arch`-linux-gnu"
+        if [ "`arch`" == "i686" ]; then
+            QT_PATH="/usr/lib/i386-linux-gnu"
+        else
+            QT_PATH="/usr/lib/`arch`-linux-gnu"
+        fi
         PLUGINS_PATH="$QT_PATH/qt4/plugins"
     fi
   fi
@@ -188,6 +192,9 @@ cp -R resources/linux/qtlinux/* $PRODUCT_PATH/
 
 notifyProgress "QT" "Coping plugins and library ..."
 cp -R $PLUGINS_PATH $PRODUCT_PATH/
+
+# copying customization
+cp -R resources/customizations $PRODUCT_PATH/
 
 if [ $STANDARD_QT_USED == false ]; then 
 #copying custom qt library
