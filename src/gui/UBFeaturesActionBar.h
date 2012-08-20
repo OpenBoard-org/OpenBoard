@@ -42,6 +42,7 @@ public:
     ~UBFeaturesActionBar();
 	
 	void setCurrentState( UBFeaturesActionBarState state );
+    void cleanText(){ mSearchBar->clear(); }
 
 signals:
 	void searchElement(const QString &text);

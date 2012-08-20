@@ -60,6 +60,7 @@ body{
 
 .shadowDiv{
     width: 100%;
+    height: 100%;
     display: none;
     opacity: 0.7;
     background-color: black;
@@ -67,7 +68,10 @@ body{
     -webkit-border-radius: 3px;
     border-radius: 3px;
     border-radius: 3px;
-    z-index: 100;
+    z-index: 400;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .popupBack{
@@ -126,8 +130,6 @@ body{
 }
 
 .readyTask{
-    margin: 2px;
-    padding: 2px;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -167,9 +169,11 @@ body{
     height: 65%;
     cursor: e-resize;
     position: absolute;
-    background: none;
+    background-image: url(../images/trgRight.png);
+    background-position: center;
+    background-repeat: no-repeat;
     right: -10px;
-    top: 20%;
+    top: 18%;
 }
 
 .bottomResize{
@@ -177,9 +181,11 @@ body{
     height: 10px;
     cursor: n-resize;
     position: absolute;
-    background: none;
+    background-image: url(../images/trgDown.png);
+    background-position: center;
+    background-repeat: no-repeat;
     bottom: -10px;
-    left: 20%;
+    left: 18%;
 }
 
 /*new design*/

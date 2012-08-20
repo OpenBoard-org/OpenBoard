@@ -142,6 +142,7 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
         centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
         mActionBar->setCurrentState( IN_PROPERTIES );
     }
+    mActionBar->cleanText();
 }
 
 void UBFeaturesWidget::createNewFolder()
