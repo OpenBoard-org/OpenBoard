@@ -403,3 +403,20 @@ void UBGraphicsTextItemDelegate::scaleTextSize(qreal multiplyer)
 {
     ChangeTextSize(multiplyer, scaleSize);
 }
+
+QVariant UBGraphicsTextItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+    if (change == QGraphicsItem::ItemSelectedChange)
+    {
+        if (delegated()->isSelected())
+        {
+            QTextCursor c = delegated()->textCursor();
+            if (c.hasSelection())
+            {
+                c.clearSelection();
+                delegated()->setTextCursor(c);
+            }
+        }
+    }
+    return UBGraphicsItemDelegate::itemChange(change, value);
+}
