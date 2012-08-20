@@ -117,9 +117,6 @@ void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<const QPixmap*>& lis
 
 void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified)
 {
-
-    qDebug() << "Persist scene on path " << proxy->persistencePath() << ", index " << pageIndex;
-
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
     QFile thumbFile(fileName);
