@@ -178,6 +178,10 @@ public:
     ~UBTGUrlWidget();
     tUBGEElementNode* saveData();
     void initializeWithDom(QDomElement element);
+
+public slots:
+    void onUrlEditionFinished();
+
 private:
     QVBoxLayout* mpLayout;
     QLineEdit* mpTitle;
