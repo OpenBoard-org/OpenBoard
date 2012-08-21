@@ -39,6 +39,7 @@
 #include "tools/UBGraphicsTriangle.h"
 #include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsCache.h"
+#include "tools/UBGraphicsAristo.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -2068,6 +2069,22 @@ void UBGraphicsScene::addCompass(QPointF center)
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     compass->setVisible(true);
+    setModified(true);
+}
+
+void UBGraphicsScene::addAristo(QPointF center)
+{
+    UBGraphicsAristo* aristo = new UBGraphicsAristo();
+    mTools << aristo;
+
+    aristo->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
+    addItem(aristo);
+
+    QPointF itemSceneCenter = aristo->sceneBoundingRect().center();
+    aristo->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
+
+    aristo->setVisible(true);
     setModified(true);
 }
 

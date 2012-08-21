@@ -220,6 +220,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void addCompass(QPointF center);
         void addTriangle(QPointF center);
         void addMagnifier(UBMagnifierParams params);
+        void addAristo(QPointF center);
 
         void addMask(const QPointF &center = QPointF());
         void addCache();

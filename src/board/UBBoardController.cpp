@@ -1276,6 +1276,11 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
             mActiveScene->addMask(pPos);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
+        else if (sourceUrl.toString() == UBToolsManager::manager()->aristo.id)
+        {
+            mActiveScene->addAristo(pPos);
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        }
         else
         {
             showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
