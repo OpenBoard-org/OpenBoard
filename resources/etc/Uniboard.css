@@ -2,8 +2,26 @@
 {
    color: #3F3F3F;
 }
-QMainWindow
 
+QTextEdit, 
+QLineEdit, 
+QComboBox#DockPaletteWidgetComboBox QAbstractItemView 
+{ 
+    selection-background-color: lightgreen; 
+    selection-color: black; 
+} 
+QProgressBar:horizontal {
+    border: 1px solid gray;
+    border-radius: 3px;
+    background: white;
+    padding: 1px;
+}
+QProgressBar::chunk:horizontal {
+    /*background: qlineargradient(x1: 0, y1: 0.5, x2: 1, y2: 0.5, stop: 0 green, stop: 1 lightgreen);*/
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
+}
+
+QMainWindow
 {
    background-color: #F1F1F1;  
 }

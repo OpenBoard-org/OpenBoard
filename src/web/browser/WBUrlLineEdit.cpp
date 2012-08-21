@@ -70,7 +70,6 @@ WBExLineEdit::WBExLineEdit(QWidget *parent)
     , mLineEdit(new QLineEdit(this))
     , mClearButton(0)
 {
-	SET_STYLE_SHEET();
 	setFocusPolicy(mLineEdit->focusPolicy());
     setAttribute(Qt::WA_InputMethodEnabled);
     setSizePolicy(mLineEdit->sizePolicy());
@@ -92,10 +91,8 @@ WBExLineEdit::WBExLineEdit(QWidget *parent)
 
     // clearButton
     mClearButton = new WBClearButton(this);
-    connect(mClearButton, SIGNAL(clicked()),
-            mLineEdit, SLOT(clear()));
-    connect(mLineEdit, SIGNAL(textChanged(const QString&)),
-            mClearButton, SLOT(textChanged(const QString&)));
+    connect(mClearButton, SIGNAL(clicked()), mLineEdit, SLOT(clear()));
+    connect(mLineEdit, SIGNAL(textChanged(const QString&)), mClearButton, SLOT(textChanged(const QString&)));
 
     mClearButton->hide();
 }
@@ -104,7 +101,6 @@ void WBExLineEdit::setLeftWidget(QWidget *widget)
 {
     delete mLeftWidget;
     mLeftWidget = widget;
-    //m_leftWidget->show();
 
     updateGeometries();
 }
