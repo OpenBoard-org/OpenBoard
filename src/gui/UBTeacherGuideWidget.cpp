@@ -411,7 +411,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     setObjectName(name);
 
     mpLayout = new QVBoxLayout(this);
-
+    setLayout(mpLayout);
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
     mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
@@ -465,6 +465,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpTreeWidget->header()->close();
     mpTreeWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mpTreeWidget->setStyleSheet("selection-background-color:transparent; padding-bottom:5px; padding-top:5px; ");
+    mpTreeWidget->setIconSize(QSize(24,24));
     connect(mpTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
 }
