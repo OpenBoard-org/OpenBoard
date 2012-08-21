@@ -14,7 +14,6 @@
         <file>images/soundOn.svg</file>
         <file>images/soundOff.svg</file>
         <file>images/shape.png</file>
-        <file>images/pencil.svg</file>
         <file>images/font.svg</file>
         <file>images/color.svg</file>
         <file>images/eyeOpened.svg</file>
@@ -358,11 +357,12 @@
         <file>images/licenses/ccbyncsa.png</file>
         <file>images/licenses/ccbynd.png</file>
         <file>images/licenses/ccbysa.png</file>
-        <file>images/teacherGuide/audio.png</file>
-        <file>images/teacherGuide/image.png</file>
-        <file>images/teacherGuide/link.png</file>
-        <file>images/teacherGuide/movie.png</file>
-        <file>images/teacherGuide/w3c.png</file>
+        <file>images/teacherGuide/audio_24x24.svg</file>
+        <file>images/teacherGuide/image_24x24.svg</file>
+        <file>images/teacherGuide/link_24x24.svg</file>
+        <file>images/teacherGuide/movie_24x24.svg</file>
+        <file>images/teacherGuide/w3c_24x24.svg</file>
+        <file>images/teacherGuide/pencil.svg</file>
         <file>images/duplicateDisabled.svg</file>
     </qresource>
 </RCC>

@@ -421,7 +421,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpButtonTitleLayout = new QHBoxLayout(0);
 
     mpModePushButton = new QPushButton(this);
-    mpModePushButton->setIcon(QIcon(":images/pencil.svg"));
+    mpModePushButton->setIcon(QIcon(":images/teacherGuide/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
     mpModePushButton->installEventFilter(this);
 
@@ -553,7 +553,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
         else if (element->name == "media") {
             createMediaButtonItem();
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem( mpMediaSwitchItem);
-            newWidgetItem->setIcon(0, QIcon( ":images/teacherGuide/" + element->attributes.value("mediaType") + ".png"));
+            newWidgetItem->setIcon(0, QIcon( ":images/teacherGuide/" + element->attributes.value("mediaType") + "_24x24.svg"));
             newWidgetItem->setText(0, element->attributes.value("title"));
             newWidgetItem->setData(0, tUBTGTreeWidgetItemRole_HasAnAction, tUBTGActionAssociateOnClickItem_MEDIA);
             newWidgetItem->setData(0, Qt::FontRole, QVariant(QFont(QApplication::font().family(), 11)));
@@ -576,7 +576,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
         else if (element->name == "link") {
             createMediaButtonItem();
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem( mpMediaSwitchItem);
-            newWidgetItem->setIcon(0, QIcon(":images/teacherGuide/link.png"));
+            newWidgetItem->setIcon(0, QIcon(":images/teacherGuide/link_24x24.svg"));
             newWidgetItem->setText(0, element->attributes.value("title"));
             newWidgetItem->setData(0, tUBTGTreeWidgetItemRole_HasAnAction, tUBTGActionAssociateOnClickItem_URL);
             newWidgetItem->setData(0, tUBTGTreeWidgetItemRole_HasAnUrl, QVariant(element->attributes.value("url")));
@@ -589,8 +589,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
 
 void UBTeacherGuidePresentationWidget::onAddItemClicked(QTreeWidgetItem* widget, int column)
 {
-    int associateAction = widget->data(column,
-                                       tUBTGTreeWidgetItemRole_HasAnAction).toInt();
+    int associateAction = widget->data(column, tUBTGTreeWidgetItemRole_HasAnAction).toInt();
     if (column == 0 && associateAction != tUBTGActionAssociateOnClickItem_NONE) {
         switch (associateAction) {
         case tUBTGActionAssociateOnClickItem_EXPAND:
@@ -664,7 +663,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpButtonTitleLayout = new QHBoxLayout(0);
 
     mpModePushButton = new QPushButton(this);
-    mpModePushButton->setIcon(QIcon(":images/pencil.svg"));
+    mpModePushButton->setIcon(QIcon(":images/teacherGuide/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
     mpModePushButton->installEventFilter(this);
     mpButtonTitleLayout->addWidget(mpModePushButton);
