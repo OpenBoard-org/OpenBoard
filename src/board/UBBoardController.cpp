@@ -453,7 +453,7 @@ void UBBoardController::addScene()
     persistCurrentScene();
 
     UBDocumentContainer::addPage(mActiveSceneIndex + 1);
-    
+
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
     setActiveDocumentScene(mActiveSceneIndex + 1);
@@ -2282,10 +2282,9 @@ void UBBoardController::addItem()
 void UBBoardController::importPage()
 {
     int pageCount = selectedDocument()->pageCount();
-
     if (UBApplication::documentController->addFileToDocument(selectedDocument()))
     {
-        setActiveDocumentScene(pageCount);
+        setActiveDocumentScene(selectedDocument(), pageCount, true);
     }
 }
 

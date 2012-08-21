@@ -76,6 +76,7 @@ QString UBImportImage::importFileFilter()
 
 QList<UBGraphicsItem*> UBImportImage::import(const QUuid& uuid, const QString& filePath)
 {
+    Q_UNUSED(uuid);
     QList<UBGraphicsItem*> result;
 
     QPixmap pix(filePath);

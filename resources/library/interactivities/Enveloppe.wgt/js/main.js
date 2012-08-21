@@ -37,6 +37,7 @@ function reloadApp(app) {
 			}else {
 				objects.each(function(i, o){
 					$(this).removeClass("inBox");
+					$(this).addClass("hasBeenInBox");
 					$(this).animate({
 						left: null,
 						top: null

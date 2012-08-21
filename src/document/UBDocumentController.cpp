@@ -992,8 +992,7 @@ void UBDocumentController::addFileToDocument()
 bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
 {
     QString defaultPath = UBSettings::settings()->lastImportFilePath->get().toString();
-    QString filePath = QFileDialog::getOpenFileName(mParentWidget, tr("Open Supported File")
-            , defaultPath, UBDocumentManager::documentManager()->importFileFilter());
+    QString filePath = QFileDialog::getOpenFileName(mParentWidget, tr("Open Supported File"), defaultPath, UBDocumentManager::documentManager()->importFileFilter());
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     QApplication::processEvents();
@@ -1005,7 +1004,8 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
 
     if (filePath.length() > 0)
     {
-        QApplication::processEvents();
+        QApplication::processEvents(); // NOTE: We performed this just a few lines before. Is it really necessary to do it again here??
+        QFile selectedFile(filePath);
 
         showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
 

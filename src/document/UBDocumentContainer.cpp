@@ -114,6 +114,7 @@ void UBDocumentContainer::reloadThumbnails()
     if (mCurrentDocument)
     {
         UBThumbnailAdaptor::load(mCurrentDocument, mDocumentThumbs);
+        qDebug() << "Reloading Thumbnails. new mDocumentThumbs size: " << mDocumentThumbs.size();
         emit documentThumbnailsUpdated(this);
     }
 }
@@ -130,4 +131,10 @@ int UBDocumentContainer::sceneIndexFromPage(int page)
     if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
         return page;
     return page-1;
+}
+
+void UBDocumentContainer::addEmptyThumbPage()
+{
+	const QPixmap* pThumb = new QPixmap();
+	mDocumentThumbs.append(pThumb);
 }

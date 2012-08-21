@@ -520,6 +520,8 @@ void UBTGMediaWidget::mousePressEvent(QMouseEvent *event)
     }
 }
 
+
+
 /***************************************************************************
  *                      class    UBTGUrlWidget                             *
  ***************************************************************************/
@@ -531,10 +533,12 @@ UBTGUrlWidget::UBTGUrlWidget(QWidget* parent, const char* name ):QWidget(parent)
     setObjectName(name);
     SET_STYLE_SHEET();
     mpLayout = new QVBoxLayout(this);
+    setLayout(mpLayout);
     mpTitle = new QLineEdit(this);
     mpTitle->setObjectName("UBTGLineEdit");
     mpTitle->setPlaceholderText(tr("Insert link title here..."));
     mpUrl = new QLineEdit(this);
+    connect(mpUrl,SIGNAL(editingFinished()),this,SLOT(onUrlEditionFinished()));
     mpUrl->setObjectName("UBTGLineEdit");
     mpUrl->setPlaceholderText("http://");
     mpLayout->addWidget(mpTitle);
@@ -546,6 +550,15 @@ UBTGUrlWidget::~UBTGUrlWidget()
     DELETEPTR(mpTitle);
     DELETEPTR(mpUrl);
     DELETEPTR(mpLayout);
+}
+
+void UBTGUrlWidget::onUrlEditionFinished()
+{
+	QString url = mpUrl->text();
+	if(url.length() && !url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("ftp://") && !url.startsWith("sftp://") && !url.startsWith("http://")){
+		mpUrl->setText("http://" + mpUrl->text());
+		setFocus();
+	}
 }
 
 void UBTGUrlWidget::initializeWithDom(QDomElement element)

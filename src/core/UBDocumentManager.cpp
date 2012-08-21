@@ -33,6 +33,8 @@
 #include "domain/UBGraphicsPixmapItem.h"
 
 #include "document/UBDocumentProxy.h"
+#include "document/UBDocumentController.h"
+#include "board/UBBoardController.h"
 
 #include "UBApplication.h"
 #include "UBSettings.h"
@@ -234,6 +236,9 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
                         UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
                         importAdaptor->placeImportedItemToScene(scene, page);
                         UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
+
+                        // TODO: Add an empty pixmap for the thumbnail here
+                        UBApplication::boardController->addEmptyThumbPage();
                     }
 
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
@@ -296,7 +301,6 @@ QList<UBExportAdaptor*> UBDocumentManager::supportedExportAdaptors()
 {
     return mExportAdaptors;
 }
-
 
 void UBDocumentManager::emitDocumentUpdated(UBDocumentProxy* pDocument)
 {
