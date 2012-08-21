@@ -1,0 +1,116 @@
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.pagination li {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 3px;
+	border: 1px solid #FFF;
+	margin-left: 10px;
+}
+
+.pagination li.current {
+	background-color: #FFF;
+}
+
+.pagination li.succeed {
+	background-color: #92D21F;
+}
+
+.pagination li.failed {
+	background-color: red;
+}
+
+.pagination li a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	text-indent: -9999px;
+}
+
+.operations {
+	position: relative;
+	font-size: 28px;
+	color: #FFF;
+	font-family: "helvetica neue";
+	margin: 20px;
+	height: 100px;
+	overflow: hidden;
+}
+
+.operations li {
+	position: absolute;
+	width: 100%;
+	height: 34px;
+	padding: 13px 0;
+	margin: 40px 0 0 40px;
+	top: 60px;
+	opacity: 0;
+
+	-webkit-transition: all 0.25s ease-in;
+}
+
+.operations li.current {
+	top: 0;
+	opacity: 1;
+}
+
+.operations li.closed {
+	top: -60px;
+	opacity: 0;
+}
+
+.finish .operations {
+	height: auto;
+}
+
+.finish .operations li {
+	position: static;
+	float: left;
+	width: auto;
+	opacity: 1;
+}
+
+.operations li.succeed {
+	color: #92D21F;
+}
+
+.operations li.failed {
+	color: red;
+}
+
+.operations li > div {
+
+}
+
+.operations button {
+	vertical-align: middle;
+	margin: 0;
+	padding: 0;
+	width: 32px;
+	height: 26px;
+	border: none;
+	text-indent: -9999px;
+	background: url("images/submit.png") top center no-repeat;
+	cursor: pointer;
+}
+
+.operations button:disabled {
+	opacity: 0.5;
+}
+
+.operations .operator,
+.operations .equal,
+.operations .input {
+	margin: 0 10px;
+}
+
+.operations .input {
+	display: inline-block;
+	min-width: 30px;
+}
