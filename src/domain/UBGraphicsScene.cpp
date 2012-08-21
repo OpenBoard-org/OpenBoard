@@ -317,6 +317,11 @@ void UBGraphicsScene::selectionChangedProcessing()
 
 void UBGraphicsScene::updateGroupButtonState()
 {
+
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
+    if (UBStylusTool::Selector != currentTool)
+        return;
+
     QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
     QList<QGraphicsItem*> selItems = selectedItems();
     int selCount = selItems.count();

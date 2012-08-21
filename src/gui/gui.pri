@@ -29,20 +29,13 @@ HEADERS += src/gui/UBThumbnailView.h \
     src/gui/UBDocumentNavigator.h \
     src/gui/UBDockPalette.h \
     src/gui/UBPropertyPalette.h \
-    src/gui/UBLibNavigatorWidget.h \
-    src/gui/UBLibItemProperties.h \
-    src/gui/UBLibActionBar.h \
-    src/gui/UBLibraryWidget.h \
-    src/gui/UBLibPathViewer.h \
     src/gui/UBUpdateDlg.h \
     src/gui/UBDockPaletteWidget.h \
     src/gui/UBLeftPalette.h \
     src/gui/UBRightPalette.h \
     src/gui/UBPageNavigationWidget.h \
-    src/gui/UBLibWidget.h \
     src/gui/UBMagnifer.h \
     src/gui/UBCachePropertiesWidget.h \
-    src/gui/UBLibWebView.h \
     src/gui/UBDownloadWidget.h \
     src/gui/UBDockDownloadWidget.h \
     src/gui/UBFeaturesWidget.h \
@@ -82,20 +75,13 @@ SOURCES += src/gui/UBThumbnailView.cpp \
     src/gui/UBDocumentNavigator.cpp \
     src/gui/UBDockPalette.cpp \
     src/gui/UBPropertyPalette.cpp \
-    src/gui/UBLibNavigatorWidget.cpp \
-    src/gui/UBLibItemProperties.cpp \
-    src/gui/UBLibActionBar.cpp \
-    src/gui/UBLibraryWidget.cpp \
-    src/gui/UBLibPathViewer.cpp \
     src/gui/UBUpdateDlg.cpp \
     src/gui/UBDockPaletteWidget.cpp \
     src/gui/UBLeftPalette.cpp \
     src/gui/UBRightPalette.cpp \
     src/gui/UBPageNavigationWidget.cpp \
-    src/gui/UBLibWidget.cpp \
     src/gui/UBMagnifer.cpp \
     src/gui/UBCachePropertiesWidget.cpp \
-    src/gui/UBLibWebView.cpp \
     src/gui/UBDownloadWidget.cpp \
     src/gui/UBDockDownloadWidget.cpp \
     src/gui/UBFeaturesWidget.cpp \

@@ -82,12 +82,8 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mPendingPanButtonPressed(false)
     , mPendingEraseButtonPressed(false)
     , mpPageNavigWidget(NULL)
-//#ifdef USE_WEB_WIDGET
-    , mpLibWidget(NULL)
-//#endif
     , mpCachePropWidget(NULL)
     , mpDownloadWidget(NULL)
-    , mpDesktopLibWidget(NULL)
     , mpTeacherGuideWidget(NULL)
     , mDownloadInProgress(false)
 {
@@ -100,17 +96,10 @@ UBBoardPaletteManager::~UBBoardPaletteManager()
 {
     delete mAddItemPalette;
 
-
     if(NULL != mStylusPalette)
     {
         delete mStylusPalette;
         mStylusPalette = NULL;
-    }
-
-    if(NULL != mpDesktopLibWidget)
-    {
-        delete mpDesktopLibWidget;
-        mpDesktopLibWidget = NULL;
     }
 }
 
@@ -134,10 +123,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // Create the widgets for the dock palettes
 
     mpPageNavigWidget = new UBPageNavigationWidget();
-
-#ifdef USE_WEB_WIDGET
-    mpLibWidget = new UBLibWidget();
-#endif
 
     mpCachePropWidget = new UBCachePropertiesWidget();
 
@@ -724,8 +709,10 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mAddItemPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mLeftPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mRightPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
-                mRightPalette->lower();
-                mLeftPalette->lower();
+                mStylusPalette->raise();
+                // Maybe threre is a reason to keep that functions but with them right palette in desktop mode is not interactable
+                //                mRightPalette->lower();
+                //                mLeftPalette->lower();
                 if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
                 {
 
@@ -743,7 +730,12 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                         mKeyboardPalette->show();
                     }
                     else
+// In linux keyboard in desktop mode have to allways be with null parent
+#ifdef Q_WS_X11
+                        mKeyboardPalette->setParent(0);
+#else
                         mKeyboardPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+#endif //Q_WS_X11
 #ifdef Q_WS_MAC
                         mKeyboardPalette->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
 #endif

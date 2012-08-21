@@ -34,4 +34,4 @@ private:
     int mMessagesFontSize;
 };
 
-#endif UB_MESSAGES_DIALOG_H_
+#endif /* UB_MESSAGES_DIALOG_H_ */

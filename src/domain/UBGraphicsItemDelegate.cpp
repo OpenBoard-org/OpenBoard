@@ -115,6 +115,7 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mToolBarUsed(useToolBar)
 {
     // NOOP
+    connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
 }
 
 void UBGraphicsItemDelegate::init()
@@ -535,6 +536,12 @@ void UBGraphicsItemDelegate::commitUndoStep()
     }
 }
 
+void UBGraphicsItemDelegate::onZoomChanged()
+{
+    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+
+    positionHandles();
+}
 
 void UBGraphicsItemDelegate::buildButtons()
 {

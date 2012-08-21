@@ -33,7 +33,7 @@
 	width: 65px;
 	height: 80px;
 	float: left;
-	background: url("images/trombonne.png") center no-repeat;
+	background: url("images/trombonne.png") left top no-repeat;
 }
 
 #objects > div .tools {
@@ -46,4 +46,8 @@
 
 #objects > div.inBox {
 	visibility: hidden;
+}
+
+#objects > div.hasBeenInBox {
+	background-position: 0 -80px;
 }

@@ -357,33 +357,6 @@ int UBApplication::exec(const QString& pFileToImport)
     else
         applicationController->showBoard();
 
-
-//    if (UBSettings::settings()->appIsInSoftwareUpdateProcess->get().toBool())
-//    {
-//        UBSettings::settings()->appIsInSoftwareUpdateProcess->set(false);
-
-//        // clean potential updater in temp directory
-//        UBFileSystemUtils::cleanupGhostTempFolders();
-
-//        QUuid docUuid( UBSettings::settings()->appLastSessionDocumentUUID->get().toString());
-
-//        if (!docUuid.isNull())
-//        {
-//            UBDocumentProxy* proxy = UBPersistenceManager::persistenceManager()->documentByUuid(docUuid);
-
-//            if (proxy)
-//            {
-//                bool ok;
-//                int lastSceneIndex = UBSettings::settings()->appLastSessionPageIndex->get().toInt(&ok);
-
-//                if (!ok)
-//                    lastSceneIndex = 0;
-
-//                boardController->setActiveDocumentScene(proxy, lastSceneIndex);
-//            }
-//        }
-//    }
-
     return QApplication::exec();
 }
 

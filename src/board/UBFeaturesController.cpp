@@ -160,7 +160,7 @@ void UBFeaturesComputingThread::run()
         emit scanFinished();
 
         mMutex.lock();
-        if (!restart) {
+        if (!abort) {
             mWaitCondition.wait(&mMutex);
         }
         restart = false;

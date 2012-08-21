@@ -1,4 +1,6 @@
 #include <QDomDocument>
+#include <QWebView>
+
 #include "UBFeaturesWidget.h"
 #include "gui/UBThumbnailWidget.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -6,7 +8,6 @@
 #include "core/UBDownloadManager.h"
 #include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
-#include "globals/UBGlobals.h"
 
 const char *UBFeaturesWidget::objNamePathList = "PathList";
 const char *UBFeaturesWidget::objNameFeatureList = "FeatureList";
@@ -23,8 +24,6 @@ static const QString mimeSankoreFeatureTypes = "Sankore/featureTypes";
 UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     : UBDockPaletteWidget(parent)
     , imageGatherer(NULL)
-    , mkFolderDlg(NULL)
-
 {
     setObjectName(name);
     mName = "FeaturesWidget";
@@ -143,18 +142,13 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
         centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
         mActionBar->setCurrentState( IN_PROPERTIES );
     }
+    mActionBar->cleanText();
 }
 
 void UBFeaturesWidget::createNewFolder()
 {
     centralWidget->showAdditionalData(UBFeaturesCentralWidget::NewFolderDialog, UBFeaturesCentralWidget::Modal);
     emit sendFileNameList(controller->getFileNamesInFolders());
-}
-
-void UBFeaturesWidget::addFolder()
-{
-    if (mkFolderDlg)
-        controller->addNewFolder(mkFolderDlg->folderName());
 }
 
 void UBFeaturesWidget::deleteElements( const UBFeaturesMimeData * mimeData )
@@ -333,16 +327,6 @@ void UBFeaturesWidget::removeElementsFromFavorite()
     }
 
     controller->refreshModels();
-}
-
-void UBFeaturesWidget::resizeEvent(QResizeEvent *event)
-{
-    UBDockPaletteWidget::resizeEvent(event);
-    if (mkFolderDlg)
-    {    
-        mkFolderDlg->resize(this->size().width()-20 ,80);
-        mkFolderDlg->move(5,this->size().height()-200);
-    }
 }
 
 void UBFeaturesWidget::switchToListView()
@@ -1411,6 +1395,7 @@ QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLoc
     Q_UNUSED(locale)
 
     QString text = value.toString();
+    text = text.replace(".wgt", "");
 	if (listView)
 	{
 		const QFontMetrics fm = listView->fontMetrics();
@@ -1439,7 +1424,7 @@ void UBFeaturesPathItemDelegate::paint( QPainter *painter, const QStyleOptionVie
 	QRect rect = option.rect;
 	if ( !feature.getFullPath().isEmpty() )
 	{
-		painter->drawPixmap( rect.left() - 10, rect.center().y() - 5, *arrowPixmap );
+        painter->drawPixmap( rect.left() - 10, rect.center().y() - 5, *arrowPixmap );
 	}
     painter->drawImage( rect.left() + 5, rect.center().y() - 5, feature.getThumbnail().scaledToHeight( 30, Qt::SmoothTransformation ) );
 }

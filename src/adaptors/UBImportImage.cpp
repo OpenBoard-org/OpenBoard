@@ -74,26 +74,9 @@ QString UBImportImage::importFileFilter()
     return filter;
 }
 
-/*
-bool UBImportImage::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
-{
-    int res = UBDocumentManager::documentManager()->addImageAsPageToDocument(QStringList(QFileInfo(pFile).absoluteFilePath()), pDocument);
-    if (res == 0)
-    {
-        UBApplication::showMessage(tr("Image import failed."));
-        return false;
-    }
-    else
-    {
-        UBApplication::showMessage(tr("Image import successful."));
-        return true;
-    }
-}
-*/
-
-
 QList<UBGraphicsItem*> UBImportImage::import(const QUuid& uuid, const QString& filePath)
 {
+    Q_UNUSED(uuid);
     QList<UBGraphicsItem*> result;
 
     QPixmap pix(filePath);
