@@ -654,29 +654,25 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
 
 void UBCFFAdaptor::UBToCFFConverter::writeQDomElementToXML(const QDomNode &node)
 {
-    if (!node.isNull())
-    if (node.isText())
-    {     
-        mIWBContentWriter->writeCharacters(node.nodeValue());
-    }   
-    else
-    {
-        mIWBContentWriter->writeStartElement(node.namespaceURI(), node.toElement().tagName());
+    if (!node.isNull()) {
+        if (node.isText())
+            mIWBContentWriter->writeCharacters(node.nodeValue());
+        else {
+            mIWBContentWriter->writeStartElement(node.namespaceURI(), node.toElement().tagName());
 
-        for (int i = 0; i < node.toElement().attributes().count(); i++)
-        {
-            QDomAttr attr =  node.toElement().attributes().item(i).toAttr();
-            mIWBContentWriter->writeAttribute(attr.name(), attr.value());
-        }
-        QDomNode child = node.firstChild();
-        while(!child.isNull())
-        {
-            writeQDomElementToXML(child);
-            child = child.nextSibling();
-        }
+            for (int i = 0; i < node.toElement().attributes().count(); i++) {
+                QDomAttr attr =  node.toElement().attributes().item(i).toAttr();
+                mIWBContentWriter->writeAttribute(attr.name(), attr.value());
+            }
+            QDomNode child = node.firstChild();
+            while(!child.isNull()) {
+                writeQDomElementToXML(child);
+                child = child.nextSibling();
+            }
 
-        mIWBContentWriter->writeEndElement();
-    }       
+            mIWBContentWriter->writeEndElement();
+        }
+    }
 }
 
 bool UBCFFAdaptor::UBToCFFConverter::writeExtendedIwbSection()
