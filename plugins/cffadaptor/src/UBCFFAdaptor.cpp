@@ -47,7 +47,12 @@ bool UBCFFAdaptor::convertUBZToIWB(const QString &from, const QString &to)
         qDebug() << "The convertrer class is invalid, stopping conversion. Error message" << tmpConvertrer.lastErrStr();
         return false;
     }
-    if (!tmpConvertrer.parse()) {
+
+    bool bParceRes = tmpConvertrer.parse();
+
+    mConversionMessages << tmpConvertrer.getMessages();
+
+    if (!bParceRes) {
         return false;
     }
 
@@ -299,6 +304,12 @@ bool UBCFFAdaptor::deleteDir(const QString& pDirPath) const
 
     return dir.rmdir(pDirPath);
 }
+
+QList<QString> UBCFFAdaptor::getConversionMessages() 
+{
+    return mConversionMessages;
+}
+
 bool UBCFFAdaptor::freeDir(const QString &dir)
 {
     bool result = true;
@@ -643,29 +654,25 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
 
 void UBCFFAdaptor::UBToCFFConverter::writeQDomElementToXML(const QDomNode &node)
 {
-    if (!node.isNull())
-    if (node.isText())
-    {     
-        mIWBContentWriter->writeCharacters(node.nodeValue());
-    }   
-    else
-    {
-        mIWBContentWriter->writeStartElement(node.namespaceURI(), node.toElement().tagName());
+    if (!node.isNull()) {
+        if (node.isText())
+            mIWBContentWriter->writeCharacters(node.nodeValue());
+        else {
+            mIWBContentWriter->writeStartElement(node.namespaceURI(), node.toElement().tagName());
 
-        for (int i = 0; i < node.toElement().attributes().count(); i++)
-        {
-            QDomAttr attr =  node.toElement().attributes().item(i).toAttr();
-            mIWBContentWriter->writeAttribute(attr.name(), attr.value());
-        }
-        QDomNode child = node.firstChild();
-        while(!child.isNull())
-        {
-            writeQDomElementToXML(child);
-            child = child.nextSibling();
-        }
+            for (int i = 0; i < node.toElement().attributes().count(); i++) {
+                QDomAttr attr =  node.toElement().attributes().item(i).toAttr();
+                mIWBContentWriter->writeAttribute(attr.name(), attr.value());
+            }
+            QDomNode child = node.firstChild();
+            while(!child.isNull()) {
+                writeQDomElementToXML(child);
+                child = child.nextSibling();
+            }
 
-        mIWBContentWriter->writeEndElement();
-    }       
+            mIWBContentWriter->writeEndElement();
+        }
+    }
 }
 
 bool UBCFFAdaptor::UBToCFFConverter::writeExtendedIwbSection()
@@ -1110,6 +1117,9 @@ bool UBCFFAdaptor::UBToCFFConverter::setContentFromUBZ(const QDomElement &ubzEle
         }
     }else
     {
+        addLastExportError(QObject::tr("Element ID = ") + QString("%1 \r\n").arg(ubzElement.attribute(aUBZUuid)) 
+                         + QString("Source file  = ") + QString("%1 \r\n").arg(ubzElement.attribute(aUBZSource))
+                         + QObject::tr("Content is not supported in destination format."));
         bRet = false;
     }
    

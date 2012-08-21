@@ -210,13 +210,18 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
     mMousePressPos = event->pos();
 
     UBSceneThumbnailPixmap* sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(itemAt(mMousePressPos));
-    if(sceneItem){
-    	int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneItem->sceneIndex());
-    	if(pageIndex == 0){
-            event->ignore();
-            return;
-    	}
+    if(sceneItem==NULL)
+    {
+        event->ignore();
+        return;
     }
+    //if(sceneItem){
+    //	int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneItem->sceneIndex());
+    //	if(pageIndex == 0){
+    //        event->ignore();
+    //        return;
+    //	}
+    //}
 
     mMousePressScenePos = mapToScene(mMousePressPos);
     QGraphicsItem* underlyingItem = itemAt(mMousePressPos);

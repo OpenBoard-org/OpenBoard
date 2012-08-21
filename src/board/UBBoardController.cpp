@@ -53,6 +53,8 @@
 #include "domain/UBPageSizeUndoCommand.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBItem.h"
+#include "board/UBFeaturesController.h"
+#include "gui/UBFeaturesWidget.h"
 
 #include "tools/UBToolsManager.h"
 
@@ -451,7 +453,7 @@ void UBBoardController::addScene()
     persistCurrentScene();
 
     UBDocumentContainer::addPage(mActiveSceneIndex + 1);
-    
+
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
     setActiveDocumentScene(mActiveSceneIndex + 1);
@@ -626,6 +628,7 @@ void UBBoardController::deleteScene(int nIndex)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
+        showMessage(tr("Delete page %1 from document").arg(nIndex), true);
 
         QList<int> scIndexes;
         scIndexes << nIndex;
@@ -636,6 +639,7 @@ void UBBoardController::deleteScene(int nIndex)
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
         setActiveDocumentScene(nIndex);
+        showMessage(tr("Page %1 deleted").arg(nIndex));
         QApplication::restoreOverrideCursor();
     }
 }
@@ -897,7 +901,7 @@ void UBBoardController::groupButtonClicked()
     }
 }
 
-void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const QSize& pSize, bool isBackground)
+void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const QSize& pSize, bool isBackground, bool internalData)
 {
     qDebug() << "something has been dropped on the board! Url is: " << url.toString();
     QString sUrl = url.toString();
@@ -922,7 +926,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
         if (shouldLoadFileData)
             file.open(QIODevice::ReadOnly);
 
-        downloadFinished(true, url, contentType, file.readAll(), pPos, pSize, isBackground);
+        downloadFinished(true, url, contentType, file.readAll(), pPos, pSize, isBackground, internalData);
 
         if (shouldLoadFileData)
             file.close();
@@ -945,7 +949,9 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
 }
 
 
-UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
+UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader,
+                                            QByteArray pData, QPointF pPos, QSize pSize,
+                                            bool isBackground, bool internalData)
 {
     QString mimeType = pContentTypeHeader;
 
@@ -1070,8 +1076,20 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         {
             QUuid uuid = QUuid::createUuid();
 
-            QUrl url = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-                ->addVideoFileToDocument(selectedDocument(), sourceUrl, pData, uuid));
+            QString destFile;
+            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+                "", 
+                UBPersistenceManager::videoDirectory,
+                uuid,
+                destFile,
+                &pData);
+            if (!b)
+            {
+                showMessage(tr("Add file operation failed: file copying error"));
+                return NULL;
+            }
+
+            QUrl url = QUrl::fromLocalFile(destFile);
 
             mediaVideoItem = mActiveScene->addMedia(url, false, pPos);
 
@@ -1101,8 +1119,20 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         {
             QUuid uuid = QUuid::createUuid();
 
-            QUrl url = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()
-                ->addAudioFileToDocument(selectedDocument(), sourceUrl, pData, uuid));
+            QString destFile;
+            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+                "", 
+                UBPersistenceManager::audioDirectory,
+                uuid,
+                destFile,
+                &pData);
+            if (!b)
+            {
+                showMessage(tr("Add file operation failed: file copying error"));
+                return NULL;
+            }
+
+            QUrl url = QUrl::fromLocalFile(destFile);
 
             audioMediaItem = mActiveScene->addMedia(url, false, pPos);
 
@@ -1155,7 +1185,10 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         else
             size = mActiveScene->nominalSize() * .8;
 
+        Q_UNUSED(internalData)
+
         QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(sUrl, mimeType, size);
+        emit npapiWidgetCreated(widgetUrl);
 
         if (widgetUrl.length() > 0)
         {
@@ -1179,15 +1212,18 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         qDebug() << "sourceurl : " + sourceUrl.toString();
         int result = 0;
         if(!sourceUrl.isEmpty()){
-            QFile sourceFile(sourceUrl.toLocalFile());
-            result = UBDocumentManager::documentManager()->addFileToDocument(selectedDocument(), sourceFile);
+            QStringList fileNames;
+            fileNames << sourceUrl.toLocalFile();
+            result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
         }
         else if(pData.size()){
             QTemporaryFile pdfFile("XXXXXX.pdf");
             if (pdfFile.open())
             {
                 pdfFile.write(pData);
-                result = UBDocumentManager::documentManager()->addFileToDocument(selectedDocument(), pdfFile);
+                QStringList fileNames;
+                fileNames << pdfFile.fileName();
+                result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
                 pdfFile.close();
             }
         }
@@ -1339,7 +1375,6 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         mActiveSceneIndex = index;
         setDocument(pDocumentProxy, forceReload);
         
-
         updateSystemScaleFactor();
 
         mControlView->setScene(mActiveScene);
@@ -1668,12 +1703,10 @@ void UBBoardController::hide()
     UBApplication::mainWindow->actionLibrary->setChecked(false);
 }
 
-
 void UBBoardController::show()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
 }
-
 
 void UBBoardController::persistCurrentScene()
 {
@@ -1688,7 +1721,6 @@ void UBBoardController::persistCurrentScene()
         updatePage(mActiveSceneIndex);
     }
 }
-
 
 void UBBoardController::updateSystemScaleFactor()
 {
@@ -1901,7 +1933,18 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addVideoFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
+    QString destFile;
+    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+                pSourceUrl.toLocalFile(), 
+                UBPersistenceManager::videoDirectory,
+                uuid,
+                destFile);
+    if (!b)
+    {
+        showMessage(tr("Add file operation failed: file copying error"));
+        return NULL;
+    }
+    concreteUrl = QUrl::fromLocalFile(destFile);
 
     UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -1920,7 +1963,18 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-    concreteUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addAudioFileToDocument(selectedDocument(), pSourceUrl.toLocalFile(), uuid));
+    QString destFile;
+    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+                pSourceUrl.toLocalFile(), 
+                UBPersistenceManager::audioDirectory,
+                uuid,
+                destFile);
+    if (!b)
+    {
+        showMessage(tr("Add file operation failed: file copying error"));
+        return NULL;
+    }
+    concreteUrl = QUrl::fromLocalFile(destFile);
 
     UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -1939,9 +1993,11 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
     UBGraphicsWidgetItem* w3cWidgetItem = 0;
 
     QUuid uuid = QUuid::createUuid();
-    QUrl newUrl = pUrl;
 
-    newUrl = QUrl::fromLocalFile(UBPersistenceManager::persistenceManager()->addGraphicsWidgteToDocument(selectedDocument(), pUrl.toLocalFile(), uuid));
+    QString destPath;
+    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgteToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
+        return NULL;
+    QUrl newUrl = QUrl::fromLocalFile(destPath);
 
     w3cWidgetItem = mActiveScene->addW3CWidget(newUrl, pos);
 
@@ -2100,9 +2156,16 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
         int index = 0;
 
+        const UBFeaturesMimeData *internalMimeData = qobject_cast<const UBFeaturesMimeData*>(pMimeData);
+        bool internalData = false;
+        if (internalMimeData) {
+            internalData = true;
+        }
+
         foreach(const QUrl url, urls){
             QPointF pos(pPos + QPointF(index * 15, index * 15));
-            downloadURL(url, pos);
+
+            downloadURL(url, pos, QSize(), false,  internalData);
             index++;
         }
 
@@ -2219,10 +2282,9 @@ void UBBoardController::addItem()
 void UBBoardController::importPage()
 {
     int pageCount = selectedDocument()->pageCount();
-
     if (UBApplication::documentController->addFileToDocument(selectedDocument()))
     {
-        setActiveDocumentScene(pageCount);
+        setActiveDocumentScene(selectedDocument(), pageCount, true);
     }
 }
 

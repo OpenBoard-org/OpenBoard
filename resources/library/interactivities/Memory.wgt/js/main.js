@@ -3,13 +3,16 @@ var defaults = ["1/1", "2-1", "3*(3+2)", "5*3", "4+12", "0+16"];
 var Card = (function() {
     var self = Object.create({}, {
         val: {
-            value: -1
+            value: -1,
+            writable: true
         },
 		id: {
-			value: -1
+			value: -1,
+            writable: true
 		},
         index: {
-            value: -1
+            value: -1,
+            writable: true
         },
         isMatch: {
             value: function(card) {
@@ -26,10 +29,13 @@ var Card = (function() {
 var Game = (function() {
     var self = Object.create({}, {
         cards: {
-            value: null
+            value: null,
+            enumarable: true,
+            writable: true
         },
         matches: {
-            value: 0
+            value: 0,
+            writable: true
         },
         init: {
             value: function(count) {
@@ -63,7 +69,8 @@ var Game = (function() {
             }
         },
         selected: {
-            value: null
+            value: null,
+            writable: true
         }
     });
     return self;
@@ -97,7 +104,7 @@ function reloadApp(app) {
 	scene.empty();
 	scene.append(table);
 
-	var game = Object.create(Game);			
+	var game = Object.create(Game);
 	game.init(cardsCount);
 
 	var rows = new Array(game.cards.length/2);

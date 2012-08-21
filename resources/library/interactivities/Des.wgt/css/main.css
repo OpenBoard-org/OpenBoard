@@ -12,6 +12,7 @@
 }
 
 #launch button {
+	width: 120px;
 	margin: 0;
 	padding-top: 90px;	
 	background: url("images/arrow-up.png") center top no-repeat;

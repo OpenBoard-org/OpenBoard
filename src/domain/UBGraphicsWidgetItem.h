@@ -76,7 +76,7 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
         virtual void remove();
         void removeScript();
 
-        void processDropEvent(QDropEvent *event);
+        void processDropEvent(QGraphicsSceneDragDropEvent *event);
         bool isDropableData(const QMimeData *data) const;
 
         virtual QUrl getOwnFolder() const;
@@ -136,12 +136,13 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
         QMap<QString, QString> mDatastore;
         QMap<QString, QString> mPreferences;
 
+        virtual bool event(QEvent *event);
+        virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-        virtual bool eventFilter(QObject *obj, QEvent *event);
         virtual void sendJSEnterEvent();
         virtual void sendJSLeaveEvent();
         virtual void injectInlineJavaScript();

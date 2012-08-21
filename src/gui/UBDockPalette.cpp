@@ -17,11 +17,15 @@
 #include <QPainterPath>
 
 #include "UBDockPalette.h"
-#include "core/UBSettings.h"
+
 #include "frameworks/UBPlatformUtils.h"
+
+#include "core/UBSettings.h"
 #include "core/UBApplication.h"
 #include "core/UBPreferencesController.h"
 #include "core/UBDownloadManager.h"
+
+#include "board/UBBoardController.h"
 
 #include "core/memcheck.h"
 
@@ -79,6 +83,8 @@ UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, co
 	onToolbarPosUpdated();
 	connect(UBSettings::settings()->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(onToolbarPosUpdated()));
 	connect(UBDownloadManager::downloadManager(), SIGNAL(allDownloadsFinished()), this, SLOT(onAllDownloadsFinished()));
+
+	connect(UBApplication::boardController,SIGNAL(documentSet(UBDocumentProxy*)),this,SLOT(onDocumentSet(UBDocumentProxy*)));
 }
 
 /**
@@ -96,6 +102,11 @@ UBDockPalette::~UBDockPalette()
 		delete mpLayout;
 		mpLayout = NULL;
 	}
+}
+
+void UBDockPalette::onDocumentSet(UBDocumentProxy* documentProxy)
+{
+	Q_UNUSED(documentProxy);
 }
 
 /**

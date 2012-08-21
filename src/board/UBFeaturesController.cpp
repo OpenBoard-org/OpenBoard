@@ -154,11 +154,13 @@ void UBFeaturesComputingThread::run()
         emit maxFilesCountEvaluated(fsCnt);
 
         emit scanStarted();
+        curTime = QTime::currentTime();
         scanAll(searchData, favoriteSet);
+        qDebug() << "Time on finishing" << curTime.msecsTo(QTime::currentTime());
         emit scanFinished();
 
         mMutex.lock();
-        if (!restart) {
+        if (!abort) {
             mWaitCondition.wait(&mMutex);
         }
         restart = false;
@@ -263,17 +265,17 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     trashDirectoryPath = QUrl::fromLocalFile(UBSettings::userTrashDirPath());
 
     rootElement = UBFeature(QString(), QImage( ":images/libpalette/home.png" ), "root", QUrl());
-    audiosElement = UBFeature( rootPath, QImage(":images/libpalette/AudiosCategory.svg"), "Audios" , mUserAudioDirectoryPath, FEATURE_CATEGORY);
-    moviesElement = UBFeature( rootPath, QImage(":images/libpalette/MoviesCategory.svg"), "Movies" , mUserVideoDirectoryPath, FEATURE_CATEGORY);
-    picturesElement = UBFeature( rootPath, QImage(":images/libpalette/PicturesCategory.svg"), "Pictures" , mUserPicturesDirectoryPath, FEATURE_CATEGORY);
-    flashElement = UBFeature( rootPath, QImage(":images/libpalette/FlashCategory.svg"), "Animations" , mUserAnimationDirectoryPath, FEATURE_CATEGORY);
-    interactElement = UBFeature( rootPath, QImage(":images/libpalette/InteractivesCategory.svg"), "Interactivities" ,  mLibInteractiveDirectoryPath, FEATURE_CATEGORY);
-    applicationsElement = UBFeature( rootPath, QImage(":images/libpalette/ApplicationsCategory.svg"), "Applications" , mUserInteractiveDirectoryPath, FEATURE_CATEGORY);
-    shapesElement = UBFeature( rootPath, QImage(":images/libpalette/ShapesCategory.svg"), "Shapes" , mLibShapesDirectoryPath, FEATURE_CATEGORY );
-    favoriteElement = UBFeature( rootPath, QImage(":images/libpalette/FavoritesCategory.svg"), "Favorites", QUrl("favorites"), FEATURE_FAVORITE );
-    webSearchElement = UBFeature( rootPath, QImage(":images/libpalette/WebSearchCategory.svg"), "Web search", mLibSearchDirectoryPath, FEATURE_CATEGORY);
+    audiosElement = UBFeature( rootPath, QImage(":images/libpalette/AudiosCategory.svg"), tr("Audios") , mUserAudioDirectoryPath, FEATURE_CATEGORY);
+    moviesElement = UBFeature( rootPath, QImage(":images/libpalette/MoviesCategory.svg"), tr("Movies") , mUserVideoDirectoryPath, FEATURE_CATEGORY);
+    picturesElement = UBFeature( rootPath, QImage(":images/libpalette/PicturesCategory.svg"), tr("Pictures") , mUserPicturesDirectoryPath, FEATURE_CATEGORY);
+    flashElement = UBFeature( rootPath, QImage(":images/libpalette/FlashCategory.svg"), tr("Animations") , mUserAnimationDirectoryPath, FEATURE_CATEGORY);
+    interactElement = UBFeature( rootPath, QImage(":images/libpalette/InteractivesCategory.svg"), tr("Interactivities") ,  mLibInteractiveDirectoryPath, FEATURE_CATEGORY);
+    applicationsElement = UBFeature( rootPath, QImage(":images/libpalette/ApplicationsCategory.svg"), tr("Applications") , mUserInteractiveDirectoryPath, FEATURE_CATEGORY);
+    shapesElement = UBFeature( rootPath, QImage(":images/libpalette/ShapesCategory.svg"), tr("Shapes") , mLibShapesDirectoryPath, FEATURE_CATEGORY );
+    favoriteElement = UBFeature( rootPath, QImage(":images/libpalette/FavoritesCategory.svg"), tr("Favorites"), QUrl("favorites"), FEATURE_FAVORITE );
+    webSearchElement = UBFeature( rootPath, QImage(":images/libpalette/WebSearchCategory.svg"), tr("Web search"), mLibSearchDirectoryPath, FEATURE_CATEGORY);
 
-    trashElement = UBFeature( rootPath, QImage(":images/libpalette/TrashCategory.svg"), "Trash", trashDirectoryPath, FEATURE_TRASH );
+    trashElement = UBFeature( rootPath, QImage(":images/libpalette/TrashCategory.svg"), tr("Trash"), trashDirectoryPath, FEATURE_TRASH );
 
     featuresList = new QList <UBFeature>();
 
@@ -303,6 +305,7 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     connect(&mCThread, SIGNAL(maxFilesCountEvaluated(int)), this, SIGNAL(maxFilesCountEvaluated(int)));
     connect(&mCThread, SIGNAL(scanCategory(QString)), this, SIGNAL(scanCategory(QString)));
     connect(&mCThread, SIGNAL(scanPath(QString)), this, SIGNAL(scanPath(QString)));
+    connect(UBApplication::boardController, SIGNAL(npapiWidgetCreated(QString)), this, SLOT(createNpApiFeature(QString)));
 
     QTimer::singleShot(0, this, SLOT(startThread()));
 }
@@ -326,9 +329,18 @@ void UBFeaturesController::startThread()
             <<  QPair<QUrl, QString>(mLibShapesDirectoryPath, shapesPath)
             <<  QPair<QUrl, QString>(mLibInteractiveDirectoryPath, interactPath)
             <<  QPair<QUrl, QString>(trashDirectoryPath, trashPath)
-            <<  QPair<QUrl, QString>(mLibSearchDirectoryPath, rootPath + "/" + "Web search" );
+            <<  QPair<QUrl, QString>(mLibSearchDirectoryPath, rootPath + "/" + "Web search");
 
     mCThread.compute(computingData, favoriteSet);
+}
+
+void UBFeaturesController::createNpApiFeature(const QString &str)
+{
+    Q_ASSERT(QFileInfo(str).exists() && QFileInfo(str).isDir());
+
+    QString widgetName = QFileInfo(str).fileName();
+
+    featuresModel->addItem(UBFeature(QString(appPath+"/Web"), QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(str))), widgetName, QUrl::fromLocalFile(str), FEATURE_INTERACTIVE));
 }
 
 void UBFeaturesController::scanFS()
@@ -502,6 +514,8 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
     if ( mimeString.contains("application")) {
         if (mimeString.contains("application/search")) {
             fileType = FEATURE_SEARCH;
+        } else if (mimeString.contains("application/x-shockwave-flash")) {
+            fileType = FEATURE_FLASH;
         } else {
             fileType = FEATURE_INTERACTIVE;
         }
@@ -530,6 +544,8 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
         return QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(path)));
     } else if (pFType == FEATURE_INTERNAL) {
         return QImage(UBToolsManager::manager()->iconFromToolId(path));
+    } else if (pFType == FEATURE_FLASH) {
+        return QImage(":images/libpalette/FlashIcon.svg");
     } else if (pFType == FEATURE_AUDIO) {
         return QImage(":images/libpalette/soundIcon.svg");
     } else if (pFType == FEATURE_VIDEO) {
@@ -802,6 +818,7 @@ void UBFeaturesController::searchStarted(const QString &pattern, QListView *pOnV
         curListModel = featuresProxyModel;
     } else if ( pattern.size() > 1 ) {
 
+        //        featuresSearchModel->setFilterPrefix(currentElement.getFullVirtualPath());
         featuresSearchModel->setFilterWildcard( "*" + pattern + "*" );
         pOnView->setModel(featuresSearchModel );
         featuresSearchModel->invalidate();
@@ -858,8 +875,8 @@ void UBFeaturesController::moveExternalData(const QUrl &url, const UBFeature &de
 
     UBFeature dest = destination;
 
-    if ( destination != trashElement &&
-        !destination.getFullVirtualPath().startsWith( possibleDest.getFullVirtualPath(), Qt::CaseInsensitive ) )
+    if ( destination != trashElement && destination != UBFeature()
+       /*&& !destination.getFullVirtualPath().startsWith( possibleDest.getFullVirtualPath(), Qt::CaseInsensitive )*/ )
     {
         dest = possibleDest;
     }

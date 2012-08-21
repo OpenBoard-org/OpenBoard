@@ -74,6 +74,7 @@ const QString aRef = "ref"; // as reference for applying additional attributes
 const QString aSVGHref = "xlink:href"; // reference to file
 const QString aIWBHref = "ref"; // reference to element ID
 const QString aUBZHref = "href";
+const QString aUBZSource = "source";
 const QString aSrc = "src";
 const QString aSVGRequiredExtension = "requiredExtensions";
 

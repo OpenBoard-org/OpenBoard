@@ -23,9 +23,9 @@ var sankoreLang = {
     cancel: "Отмена",
     wgt_name: "Черный/желтый",
     reload: "Обновить",
-    slate: "Узор",
-    pad: "Планшет",
-    none: "Нет",
+    slate: "узор",
+    pad: "планшет",
+    none: "нет",
     help: "Помощь",
     help_content: "Пример текста помощи ..."
 };
@@ -182,10 +182,16 @@ function init(){
     });
     
     $("#wgt_add").click(function(){
-        shadowDiv.show("fast", function(){
-            shadowOver = true;
-            popupBack.show("slow");            
-        });
+        if($("#wgt_help").hasClass("open")){
+            $("#help").slideUp("100", function(){
+                $("#wgt_help").removeClass("open");
+                $("#data").show();
+            });
+        }
+        shadowDiv.show()
+        shadowOver = true;
+        popupBack.show("slow");            
+
         $(document).disableTextSelect();
     });
     
@@ -203,7 +209,7 @@ function init(){
     var rightDiv = $("<div id='rightDiv' class='rightDiv'>").appendTo("#data");
     
     //divs for adding a new item
-    var shadowDiv = $("<div id='shadowDiv' class='shadowDiv'>").appendTo("#data");
+    var shadowDiv = $("<div id='shadowDiv' class='shadowDiv'>").appendTo("html");
     var popupBack = $("<div id='popupBack' class='popupBack'>").appendTo("#data");
     
     //input fields and buttons for a popup window
@@ -228,37 +234,39 @@ function init(){
     });
     
     cancelButton.click(function(){
-        $(document).enableTextSelect();
         popupBack.hide("slow", function(){
             $("#resultText, #expresionText").val("")
             .css("background-color", "#ffc");
-            shadowDiv.hide("fast");
+            shadowDiv.hide();
             shadowOver = false; 
+            $(document).enableTextSelect();
         });        
+        
     });
     
     okButton.click(function(){
-        $(document).enableTextSelect();
         if(checkEmptyFields(expresionText) && checkEmptyFields(resultText)){
             popupBack.hide("slow", function(){
-                shadowDiv.hide("fast");
+                shadowDiv.hide();
                 shadowOver = false;
                 addTask(expresionText.val(), resultText.val());
                 exportToSankore();
                 $("#resultText, #expresionText").val("")
                 .css("background-color", "#ffc");
+                $(document).enableTextSelect();
             })
         }
+        
     });
     
     /* -------------- THE END OF WORK WITH POPUP BUTTONS AND FIELDS ---------------*/    
     
     // a work with dragging possibility    
-    $("input:text, .style_select").mouseover(function(){
+    $("input:text").mouseover(function(){
         $(document).enableTextSelect(); 
     });
                         
-    $("input:text, .style_select").mouseout(function(){
+    $("input:text").mouseout(function(){
         $(document).disableTextSelect(); 
     });
                     
@@ -270,6 +278,8 @@ function init(){
             resizeObj.width = $(this).width();
             resizeObj.height = $(this).height();
         }
+        if($("#wgt_display").hasClass("selected"))
+            $(document).disableTextSelect();
     });
     
     $(".rightResize").live("mousedown",function(event){
@@ -296,13 +306,25 @@ function init(){
     });
     
     $("body").mousemove(function(event){
-        if(dragElement && !shadowOver){
-            if(resizeObj.x)
-                dragElement.width(event.pageX - dragElement.position().left);
-            else if(resizeObj.y)                
-                dragElement.height(event.pageY - dragElement.position().top);
-            else
-                dragElement.css("top",event.pageY - coords.top).css("left", event.pageX - coords.left);
+        if(dragElement && !shadowOver){ 
+            var top = event.pageY - coords.top;
+            var left = event.pageX - coords.left;
+            var bottom = top + dragElement.height();
+            var right = left + dragElement.width();            
+            if(resizeObj.x){
+                if(right < ($(window).width() - 54))
+                    dragElement.width(event.pageX - dragElement.position().left);
+            }
+            else if(resizeObj.y){   
+                if(bottom < ($(window).height() - 54))
+                    dragElement.height(event.pageY - dragElement.position().top);
+            }
+            else {
+                if((top > 54) && (bottom < ($(window).height() - 54)))
+                    dragElement.css("top",event.pageY - coords.top);
+                if((left >= 54) && (right < ($(window).width() - 54))) 
+                    dragElement.css("left", event.pageX - coords.left);
+            }
         }
     });
     
@@ -393,8 +415,8 @@ function checkEmptyFields(field){
 //adding a new task to the page
 function addTask(expression, result){
     var lastItem = $(".editContainer:last"),
-        lastItemPos = lastItem.length ? lastItem.position().top : 45,
-        lastItemHeight = lastItem.length ? lastItem.height() : 0;
+    lastItemPos = lastItem.length ? lastItem.position().top : 45,
+    lastItemHeight = lastItem.length ? lastItem.height() : 0;
     var editContent = $("<div class='editContainer'>").width(240).height(70).css("top", lastItemPos + lastItemHeight + 15 + "px").appendTo("#data");
     var closeItem = $("<div class='closeItem'>").appendTo(editContent);
     var rightResize = $("<div class='rightResize'>").appendTo(editContent);
@@ -463,4 +485,6 @@ function changeStyle(val){
             $("body, html").addClass("without_radius");
             break;
     }
+    if($("#wgt_edit").hasClass("selected"))
+        $(document).enableTextSelect(); 
 }

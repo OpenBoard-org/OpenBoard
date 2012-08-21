@@ -1194,6 +1194,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
             if(strokesGroupItem && strokesGroupItem->isVisible()){
             	mXmlWriter.writeStartElement("g");
+                mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(strokesGroupItem->uuid()));
             	QMatrix matrix = item->sceneMatrix();
 				if (!matrix.isIdentity()){
 					mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
@@ -2769,6 +2770,12 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     }
                 }
 
+                QTextCursor curCursor = textItem->textCursor();
+                QTextCharFormat format;
+
+                format.setFont(font);
+                curCursor.mergeCharFormat(format);
+                textItem->setTextCursor(curCursor);
                 textItem->setFont(font);
 
                 QStringRef fill = mXmlReader.attributes().value("color");

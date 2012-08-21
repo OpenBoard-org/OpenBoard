@@ -97,7 +97,6 @@ UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
 
 void UBGraphicsWidgetItem::initialize()
 {
-    installEventFilter(this);
     UBGraphicsWebView::setMinimumSize(nominalSize());
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); // Necessary to set if we want z value to be assigned correctly
 
@@ -277,9 +276,9 @@ void UBGraphicsWidgetItem::removeScript()
         page()->mainFrame()->evaluateJavaScript("if(widget && widget.onremove) { widget.onremove();}");
 }
 
-void UBGraphicsWidgetItem::processDropEvent(QDropEvent *event)
+void UBGraphicsWidgetItem::processDropEvent(QGraphicsSceneDragDropEvent *event)
 {
-    return mUniboardAPI->ProcessDropEvent(event);
+    mUniboardAPI->ProcessDropEvent(event);
 }
 bool UBGraphicsWidgetItem::isDropableData(const QMimeData *data) const
 {
@@ -486,6 +485,31 @@ void UBGraphicsWidgetItem::unFreeze()
     mIsFrozen = false;
 }
 
+bool UBGraphicsWidgetItem::event(QEvent *event)
+{
+    if (mShouldMoveWidget && event->type() == QEvent::MouseMove) {
+        QMouseEvent *mouseMoveEvent = static_cast<QMouseEvent*>(event);
+        if (mouseMoveEvent->buttons() & Qt::LeftButton) {
+            QPointF scenePos = mapToScene(mouseMoveEvent->pos());
+            QPointF newPos = pos() + scenePos - mLastMousePos;
+            setPos(newPos);
+            mLastMousePos = scenePos;
+            event->accept();
+            return true;
+        }
+    }    
+    else if (event->type() == QEvent::ShortcutOverride)
+        event->accept();
+
+    return UBGraphicsWebView::event(event);
+}
+
+void UBGraphicsWidgetItem::dropEvent(QGraphicsSceneDragDropEvent *event)
+{
+    processDropEvent(event);
+    QGraphicsWebView::dropEvent(event);
+}
+
 void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     UBGraphicsWebView::mousePressEvent(event);
@@ -520,30 +544,6 @@ void UBGraphicsWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 void UBGraphicsWidgetItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
     UBGraphicsWebView::hoverMoveEvent(event);
-}
-
-bool UBGraphicsWidgetItem::eventFilter(QObject *obj, QEvent *event)
-{
-    if (mShouldMoveWidget && obj == this && event->type() == QEvent::MouseMove) {
-        QMouseEvent *mouseMoveEvent = static_cast<QMouseEvent*>(event);
-
-        if (mouseMoveEvent->buttons() & Qt::LeftButton) {
-            QPointF scenePos = mapToScene(mouseMoveEvent->pos());
-
-            QPointF newPos = pos() + scenePos - mLastMousePos;
-
-            setPos(newPos);
-
-            mLastMousePos = scenePos;
-
-            event->accept();
-
-            return true;
-        }
-    }
-
-    /* standard event processing */
-    return QObject::eventFilter(obj, event);
 }
 
 void UBGraphicsWidgetItem::sendJSEnterEvent()

@@ -40,6 +40,8 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         virtual ~UBGraphicsTextItemDelegate();
         bool isEditable();
         void scaleTextSize(qreal multiplyer);
+        virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value);
+
 
     public slots:
         void contentsChanged();

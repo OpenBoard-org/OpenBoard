@@ -58,6 +58,8 @@
 #include "WBSearchLineEdit.h"
 #include "WBWebView.h"
 
+#include "globals/UBGlobals.h"
+
 #include <QtGui>
 
 #include "core/memcheck.h"
@@ -68,7 +70,7 @@ WBExLineEdit::WBExLineEdit(QWidget *parent)
     , mLineEdit(new QLineEdit(this))
     , mClearButton(0)
 {
-    setFocusPolicy(mLineEdit->focusPolicy());
+	setFocusPolicy(mLineEdit->focusPolicy());
     setAttribute(Qt::WA_InputMethodEnabled);
     setSizePolicy(mLineEdit->sizePolicy());
     setBackgroundRole(mLineEdit->backgroundRole());
@@ -89,10 +91,8 @@ WBExLineEdit::WBExLineEdit(QWidget *parent)
 
     // clearButton
     mClearButton = new WBClearButton(this);
-    connect(mClearButton, SIGNAL(clicked()),
-            mLineEdit, SLOT(clear()));
-    connect(mLineEdit, SIGNAL(textChanged(const QString&)),
-            mClearButton, SLOT(textChanged(const QString&)));
+    connect(mClearButton, SIGNAL(clicked()), mLineEdit, SLOT(clear()));
+    connect(mLineEdit, SIGNAL(textChanged(const QString&)), mClearButton, SLOT(textChanged(const QString&)));
 
     mClearButton->hide();
 }
@@ -101,7 +101,6 @@ void WBExLineEdit::setLeftWidget(QWidget *widget)
 {
     delete mLeftWidget;
     mLeftWidget = widget;
-    //m_leftWidget->show();
 
     updateGeometries();
 }

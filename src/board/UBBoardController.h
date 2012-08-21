@@ -189,8 +189,10 @@ class UBBoardController : public UBDocumentContainer
         void firstScene();
         void lastScene();
         void groupButtonClicked();
-        void downloadURL(const QUrl& url, const QPointF& pPos = QPointF(0.0, 0.0), const QSize& pSize = QSize(), bool isBackground = false);
-        UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QString pHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground = false);
+        void downloadURL(const QUrl& url, const QPointF& pPos = QPointF(0.0, 0.0), const QSize& pSize = QSize(), bool isBackground = false, bool internalData = false);
+        UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QString pHeader,
+                                 QByteArray pData, QPointF pPos, QSize pSize,
+                                 bool isBackground = false, bool internalData = false);
         void changeBackground(bool isDark, bool isCrossed);
         void setToolCursor(int tool);
         void showMessage(const QString& message, bool showSpinningWheel = false);
@@ -236,6 +238,7 @@ class UBBoardController : public UBDocumentContainer
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
         void pageSelectionChanged(int index);
+        void npapiWidgetCreated(const QString &Url);
 
     protected:
         void setupViews();

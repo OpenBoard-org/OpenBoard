@@ -21,7 +21,9 @@
 #include "api/UBWidgetUniboardAPI.h"
 #include "UBFeaturesActionBar.h"
 #include "UBRubberBand.h"
-#include "gui/UBLibraryWidget.h"
+#include <QtWebKit>
+#include <QWebView>
+#include <QWebSettings>
 
 #define THUMBNAIL_WIDTH 400
 #define ID_LISTVIEW 0
@@ -81,7 +83,6 @@ private slots:
     void currentSelected( const QModelIndex & );
     void searchStarted( const QString & );
     void createNewFolder();
-    void addFolder();
     void deleteElements( const UBFeaturesMimeData * );
     void addToFavorite( const UBFeaturesMimeData  *);
     void removeFromFavorite( const UBFeaturesMimeData * );
@@ -94,7 +95,6 @@ private slots:
     void lockIt(bool pLock);
 
 private:
-    void resizeEvent(QResizeEvent *event);
     void switchToListView();
     void switchToProperties();
     void switchToWebView();
@@ -105,7 +105,6 @@ private:
     QVBoxLayout *layout;
     UBFeaturesActionBar *mActionBar;
     UBDownloadHttpFile* imageGatherer;
-    UBNewFolderDlg *mkFolderDlg;
     UBFeaturesCentralWidget *centralWidget;
 };
 
@@ -220,9 +219,6 @@ private slots:
 
     void scanStarted();
     void scanFinished();
-
-private:
-
 };
 
 class UBFeaturesNewFolderDialog : public QWidget
@@ -395,10 +391,13 @@ class UBFeaturesSearchProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 public:
-    UBFeaturesSearchProxyModel(QObject *parent = 0) : QSortFilterProxyModel(parent) {;}
+    UBFeaturesSearchProxyModel(QObject *parent = 0) : QSortFilterProxyModel(parent), mFilterPrefix() {;}
     virtual ~UBFeaturesSearchProxyModel() {}
+    void setFilterPrefix(const QString &newPrefix) {mFilterPrefix = newPrefix;}
 protected:
 	virtual bool filterAcceptsRow ( int sourceRow, const QModelIndex & sourceParent ) const;
+private:
+    QString mFilterPrefix;
 };
 
 class UBFeaturesPathProxyModel : public QSortFilterProxyModel

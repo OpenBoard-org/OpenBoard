@@ -52,12 +52,18 @@ void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
     emit documentThumbnailsUpdated(this);
 }
 
-void UBDocumentContainer::movePageToIndex(int source, int target)
+bool UBDocumentContainer::movePageToIndex(int source, int target)
 {
+    if (source==0)
+    {
+        // Title page - cant be moved
+        return false;
+    }
     UBPersistenceManager::persistenceManager()->moveSceneToIndex(mCurrentDocument, source, target);
     deleteThumbPage(source);
     insertThumbPage(target);
     emit documentThumbnailsUpdated(this);
+    return true;
 }
 
 void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
@@ -108,6 +114,7 @@ void UBDocumentContainer::reloadThumbnails()
     if (mCurrentDocument)
     {
         UBThumbnailAdaptor::load(mCurrentDocument, mDocumentThumbs);
+        qDebug() << "Reloading Thumbnails. new mDocumentThumbs size: " << mDocumentThumbs.size();
         emit documentThumbnailsUpdated(this);
     }
 }
@@ -124,4 +131,10 @@ int UBDocumentContainer::sceneIndexFromPage(int page)
     if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
         return page;
     return page-1;
+}
+
+void UBDocumentContainer::addEmptyThumbPage()
+{
+	const QPixmap* pThumb = new QPixmap();
+	mDocumentThumbs.append(pThumb);
 }

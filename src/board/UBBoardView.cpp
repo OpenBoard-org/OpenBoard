@@ -989,7 +989,8 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           {
              if (QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
-                UBToolWidget::Type != movingItem->type())
+                UBToolWidget::Type != movingItem->type() &&
+                QGraphicsWidget::Type != movingItem->type())
              {
                  bReleaseIsNeed = false;
                  if (movingItem->isSelected() && mMultipleSelectionIsEnabled)
@@ -1202,56 +1203,22 @@ UBBoardView::drawItems (QPainter *painter, int numItems,
 }
 
 
-void UBBoardView::dragMoveEvent (QDragMoveEvent *event)
+void UBBoardView::dragMoveEvent(QDragMoveEvent *event)
 {
-    QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
-    UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
-
-    if (graphicsWidget) {
-        if (graphicsWidget->acceptDrops()) {
-            if (!mOkOnWidget) {
-                if (!graphicsWidget->isDropableData(event->mimeData())) {
-                    mOkOnWidget = false;
-                    event->ignore();
-                    return;
-                } else {
-                    mOkOnWidget = true;
-                }
-            }
-            QPoint newPoint(graphicsWidget->mapFromScene(mapToScene(event->pos())).toPoint());
-            QDragMoveEvent newEvent(newPoint, event->dropAction(), event->mimeData(), event->mouseButtons(), event->keyboardModifiers());
-            QApplication::sendEvent(graphicsWidget,&newEvent);
-        } else {
-            mOkOnWidget = false;
-            event->ignore();
-        }
-    }  else {
-        event->acceptProposedAction();
-        mOkOnWidget = false;
-    }
+  QGraphicsView::dragMoveEvent(event);
+  event->acceptProposedAction();
 }
 
 void UBBoardView::dropEvent (QDropEvent *event)
 {
-    mOkOnWidget = false;
-    QGraphicsItem* graphicsItemAtPos = itemAt(event->pos().x(),event->pos().y());
-    UBGraphicsWidgetItem* graphicsWidget = dynamic_cast<UBGraphicsWidgetItem*>(graphicsItemAtPos);
-
-    if (graphicsWidget && graphicsWidget->acceptDrops()) {
-
-        graphicsWidget->processDropEvent(event);
-        event->acceptProposedAction();
-
-    } else if (!event->source()
-               || dynamic_cast<UBThumbnailWidget *>(event->source())
-               || dynamic_cast<QWebView*>(event->source())
-               || dynamic_cast<UBTGMediaWidget*>(event->source())
-               || dynamic_cast<QListView *>(event->source())
-               || dynamic_cast<UBTGDraggableTreeItem*>(event->source())) {
-
+  if (!itemAt(event->pos().x(),event->pos().y())) {
+    if (!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBTGMediaWidget*>(event->source()) || dynamic_cast<QListView *>(event->source()) || dynamic_cast<UBTGDraggableTreeItem*>(event->source())) {
         mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
         event->acceptProposedAction();
     }
+  }
+  else
+    QGraphicsView::dropEvent(event);
 }
 
 void

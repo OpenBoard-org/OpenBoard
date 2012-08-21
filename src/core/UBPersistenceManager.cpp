@@ -878,170 +878,82 @@ QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* 
     return destPath;
 }
 
-
-QString UBPersistenceManager::addVideoFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, QUuid objectUuid)
+bool UBPersistenceManager::addFileToDocument(UBDocumentProxy* pDocumentProxy, 
+                                                     QString path, 
+                                                     const QString& subdir,
+                                                     QUuid objectUuid,
+                                                     QString& destinationPath,
+                                                     QByteArray* data)
 {
     QFileInfo fi(path);
 
-    if (!fi.exists() || !pDocumentProxy || objectUuid.isNull())
-        return "";
-
-    QString fileName = UBPersistenceManager::videoDirectory + "/" + objectUuid.toString() + "." + fi.suffix();
-
-    QString destPath = pDocumentProxy->persistencePath() + "/" + fileName;
-
-    if (!QFile::exists(destPath))
-    {
-        QDir dir;
-        dir.mkdir(pDocumentProxy->persistencePath() + "/" + UBPersistenceManager::videoDirectory);
-
-        QFile source(path);
-
-        source.copy(destPath);
-
-    }
-
-    return destPath;
-
-}
-
-
-QString UBPersistenceManager::addVideoFileToDocument(UBDocumentProxy* pDocumentProxy, QUrl sourceUrl, QByteArray pPayload, QUuid objectUuid)
-{
     if (!pDocumentProxy || objectUuid.isNull())
-        return "";
+        return false;
+    if (data == NULL && !fi.exists())
+        return false;
 
-    QString urlPath = sourceUrl.path();
-    int lastDot = urlPath.lastIndexOf(".");
-    QString suffix = urlPath.right(urlPath.length() - lastDot - 1);
+    QString fileName = subdir + "/" + objectUuid.toString() + "." + fi.suffix();
 
-    QString fileName = UBPersistenceManager::videoDirectory + "/" + objectUuid.toString() + "." + suffix;
-    QString destPath = pDocumentProxy->persistencePath() + "/" + fileName;
+    destinationPath = pDocumentProxy->persistencePath() + "/" + fileName;
 
-    if (!QFile::exists(destPath))
+    if (!QFile::exists(destinationPath))
     {
         QDir dir;
-        dir.mkdir(pDocumentProxy->persistencePath() + "/" + UBPersistenceManager::videoDirectory);
+        dir.mkdir(pDocumentProxy->persistencePath() + "/" + subdir);
+        if (!QFile::exists(pDocumentProxy->persistencePath() + "/" + subdir))
+            return false;
 
-        QFile newFile(destPath);
-
-        if (newFile.open(QIODevice::WriteOnly))
+        if (data == NULL)
         {
-            newFile.write(pPayload);
-            newFile.flush();
-            newFile.close();
+            QFile source(path);
+            return source.copy(destinationPath);
+        }
+        else
+        {
+            QFile newFile(destinationPath);
+
+            if (newFile.open(QIODevice::WriteOnly))
+            {
+                qint64 n = newFile.write(*data);
+                newFile.flush();
+                newFile.close();
+                return n == data->size();
+            }
+            else
+            {
+                return false;
+            }
         }
     }
-
-    return destPath;
-
+    else
+    {
+        return false;    
+    }
 }
 
-
-
-QString UBPersistenceManager::addAudioFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, QUuid objectUuid)
+bool UBPersistenceManager::addGraphicsWidgteToDocument(UBDocumentProxy *pDocumentProxy, 
+                                                       QString path, 
+                                                       QUuid objectUuid,
+                                                       QString& destinationPath)
 {
     QFileInfo fi(path);
 
     if (!fi.exists() || !pDocumentProxy || objectUuid.isNull())
-        return "";
-
-    QString fileName = UBPersistenceManager::audioDirectory + "/" + objectUuid.toString() + "." + fi.suffix();
-
-    QString destPath = pDocumentProxy->persistencePath() + "/" + fileName;
-
-    if (!QFile::exists(destPath))
-    {
-        QDir dir;
-        dir.mkdir(pDocumentProxy->persistencePath() + "/" + UBPersistenceManager::audioDirectory);
-
-        QFile source(path);
-
-        source.copy(destPath);
-
-    }
-
-    return destPath;
-
-}
-
-
-QString UBPersistenceManager::addAudioFileToDocument(UBDocumentProxy* pDocumentProxy, QUrl sourceUrl, QByteArray pPayload, QUuid objectUuid)
-{
-    if (!pDocumentProxy || objectUuid.isNull())
-        return "";
-
-    QString urlPath = sourceUrl.path();
-    int lastDot = urlPath.lastIndexOf(".");
-    QString suffix = urlPath.right(urlPath.length() - lastDot - 1);
-
-    QString fileName = UBPersistenceManager::audioDirectory + "/" + objectUuid.toString() + "." + suffix;
-    QString destPath = pDocumentProxy->persistencePath() + "/" + fileName;
-
-    if (!QFile::exists(destPath))
-    {
-        QDir dir;
-        dir.mkdir(pDocumentProxy->persistencePath() + "/" + UBPersistenceManager::audioDirectory);
-
-        QFile newFile(destPath);
-
-        if (newFile.open(QIODevice::WriteOnly))
-        {
-            newFile.write(pPayload);
-            newFile.flush();
-            newFile.close();
-        }
-    }
-
-    //return fileName;
-    return destPath;
-
-}
-
-
-QString UBPersistenceManager::addPdfFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, QUuid objectUuid)
-{
-    QFileInfo fi(path);
-
-    if (!fi.exists() || !pDocumentProxy || objectUuid.isNull())
-        return "";
-
-    QString fileName = UBPersistenceManager::objectDirectory + "/" + objectUuid.toString() + "." + fi.suffix();
-    QString destPath = pDocumentProxy->persistencePath() + "/" + fileName;
-
-    if (!QFile::exists(destPath))
-    {
-        QDir dir;
-        dir.mkpath(pDocumentProxy->persistencePath() + "/" + UBPersistenceManager::objectDirectory);
-
-        QFile source(path);
-        source.copy(destPath);
-    }
-
-    return fileName;
-}
-QString UBPersistenceManager::addGraphicsWidgteToDocument(UBDocumentProxy *pDocumentProxy, QString path, QUuid objectUuid)
-{
-    QFileInfo fi(path);
-
-    if (!fi.exists() || !pDocumentProxy || objectUuid.isNull())
-        return "";
+        return false;
 
     QString widgetRootDir = path;
     QString extension = QFileInfo(widgetRootDir).suffix();
 
-    QString widgetTargetDir = pDocumentProxy->persistencePath() + "/" + widgetDirectory +  "/" + objectUuid.toString() + "." + extension;
+    destinationPath = pDocumentProxy->persistencePath() + "/" + widgetDirectory +  "/" + objectUuid.toString() + "." + extension;
 
-    if (!QFile::exists(widgetTargetDir)) {
+    if (!QFile::exists(destinationPath)) {
         QDir dir;
-        dir.mkpath(widgetTargetDir);
-        UBFileSystemUtils::copyDir(widgetRootDir, widgetTargetDir);
+        if (!dir.mkpath(destinationPath))
+            return false;
+        return UBFileSystemUtils::copyDir(widgetRootDir, destinationPath);
     }
-
-    if (!QFile::exists(widgetTargetDir))
-        widgetTargetDir = QString();
-
-    return widgetTargetDir;
+    else
+        return false;
 }
 
 

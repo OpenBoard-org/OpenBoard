@@ -100,12 +100,8 @@ class UBPersistenceManager : public QObject
         virtual bool isEmpty(UBDocumentProxy* pDocumentProxy);
         virtual void purgeEmptyDocuments();
 
-        virtual QString addVideoFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, QUuid objectUuid);
-        virtual QString addVideoFileToDocument(UBDocumentProxy* pDocumentProxy, QUrl sourceUrl, QByteArray pPayload, QUuid objectUuid);
-        virtual QString addAudioFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, QUuid objectUuid);
-        virtual QString addAudioFileToDocument(UBDocumentProxy* pDocumentProxy, QUrl sourceUrl, QByteArray pPayload, QUuid objectUuid);
-        virtual QString addPdfFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, QUuid objectUuid);
-        virtual QString addGraphicsWidgteToDocument(UBDocumentProxy *mDocumentProxy, QString path, QUuid objectUuid);
+        bool addGraphicsWidgteToDocument(UBDocumentProxy *mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
+        bool addFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
 
         bool mayHaveVideo(UBDocumentProxy* pDocumentProxy);
         bool mayHaveAudio(UBDocumentProxy* pDocumentProxy);
