@@ -47,6 +47,7 @@
 #include "board/UBBoardView.h"
 
 #include "UBGraphicsItemUndoCommand.h"
+#include "UBGraphicsItemGroupUndoCommand.h"
 #include "UBGraphicsTextItemUndoCommand.h"
 #include "UBGraphicsProxyWidget.h"
 #include "UBGraphicsPixmapItem.h"
@@ -1521,7 +1522,7 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     groupItem->setFocus();
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, groupItem);
+        UBGraphicsItemGroupUndoCommand* uc = new UBGraphicsItemGroupUndoCommand(this, groupItem);
         UBApplication::undoStack->push(uc);
     }
 

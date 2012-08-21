@@ -32,7 +32,7 @@ class UBGraphicsItemTransformUndoCommand : public UBAbstractUndoCommand
                                                 const QSizeF& prevSize = QSizeF());
         virtual ~UBGraphicsItemTransformUndoCommand();
 
-        virtual UndoType getType() { return undotype_GRAPHICITEMTRANSFORM; };
+        virtual UndoType getType() { return undotype_GRAPHICITEMTRANSFORM; }
 
     protected:
         virtual void undo();

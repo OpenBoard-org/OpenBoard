@@ -32,7 +32,8 @@ class UBAbstractUndoCommand : public QUndoCommand
             undotype_GRAPHICITEMTRANSFORM  = 2,
             undotype_GRAPHICITEM           = 3,
             undotype_GRAPHICTEXTITEM       = 4,
-            undotype_PAGESIZE              = 5
+            undotype_PAGESIZE              = 5,
+            undotype_GRAPHICSGROUPITEM     = 6
         };
 
         virtual UndoType getType() { return undotype_UNKNOWN; }
