@@ -48,6 +48,10 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         enum OperationMode {Scaling, Resizing, ResizingHorizontally};
         void setOperationMode(OperationMode pMode) {mOperationMode = pMode;}
         bool isResizing(){return mResizing;}
+        void moveLinkedItems(QLineF movingVector, bool bLinked = false);
+        void prepareFramesToMove(QList<UBGraphicsDelegateFrame *> framesToMove);
+        void prepareLinkedFrameToMove();
+        QList<UBGraphicsDelegateFrame *> getLinkedFrames();
 
     private:
         QRectF bottomRightResizeGripRect() const;
@@ -120,5 +124,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         bool mResizing;
         bool mMirroredXAtStart;
         bool mMirroredYAtStart;
+
+        QList<UBGraphicsDelegateFrame *> mLinkedFrames;
 };
 #endif /* UBGRAPHICSDELEGATEFRAME_H_ */
