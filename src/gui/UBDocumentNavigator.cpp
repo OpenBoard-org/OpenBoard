@@ -84,8 +84,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
     for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
     {
-    	qDebug() << "source->selectedDocument()->pageCount: " << source->selectedDocument()->pageCount() << ", source->pageCount: " << source->pageCount() << ",  source->pageAt(" << i << ")";
-        const QPixmap* pix = source->pageAt(i);
+    	const QPixmap* pix = source->pageAt(i);
         UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(*pix, source->selectedDocument(), i);
         int pageIndex = UBDocumentContainer::pageFromSceneIndex(i);
         QString label = pageIndex == 0 ? tr("Title page") :  tr("Page %0").arg(pageIndex);
