@@ -477,29 +477,20 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     QTransform tr = buildTransform();
 
-    //TODO UB 4.x: Could find a better solution ?
     if (resizingRight() || resizingBottom() || resizingBottomRight())
     {
         QPointF ref;
-        if(!mMirrorX && !mMirrorY){
-            ref = delegated()->boundingRect().topLeft();
-        }else if(mMirrorX && !mMirrorY){
-            ref = delegated()->boundingRect().topLeft();
-        }else if(!mMirrorX && mMirrorY){
-            ref = delegated()->boundingRect().topLeft();
-        }else if(mMirrorX && mMirrorY){
-            ref = delegated()->boundingRect().topRight();
-        }
 
-        // Map the item topleft point to the current mouse move transform
-        QPointF topLeft = tr.map(ref);
+        // we just detects coordinates of corner before and after scaling and then moves object at diff between them.
+        if (resizingBottomRight() && mMirrorX)
+            mTranslateX += mInitialTransform.map(delegated()->boundingRect().bottomRight()).x() - tr.map(delegated()->boundingRect().bottomRight()).x();
+        else
+            mTranslateX += mInitialTransform.map(delegated()->boundingRect().topLeft()).x() - tr.map(delegated()->boundingRect().topLeft()).x();
 
-        // Map the item topleft point to the mouse press transform
-        QPointF fixedPoint = mInitialTransform.map(ref);
-
-        // Update the translation coordinates
-        mTranslateX += fixedPoint.x() - topLeft.x();
-        mTranslateY += fixedPoint.y() - topLeft.y();
+        if (resizingBottomRight() && mMirrorY)
+            mTranslateY += mInitialTransform.map(delegated()->boundingRect().bottomRight()).y() - tr.map(delegated()->boundingRect().bottomRight()).y();
+        else
+            mTranslateY += mInitialTransform.map(delegated()->boundingRect().topLeft()).y() - tr.map(delegated()->boundingRect().topLeft()).y();         
 
         // Update the transform
         tr = buildTransform();
