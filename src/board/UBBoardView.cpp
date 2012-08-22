@@ -600,7 +600,7 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     mLastPressedMousePos = mapToScene(event->pos());
 
 
-    if (movingItem && QGraphicsSvgItem::Type !=  movingItem->type()
+    if (movingItem && !hasSelectedParents(movingItem) && QGraphicsSvgItem::Type !=  movingItem->type()
         && UBGraphicsDelegateFrame::Type != movingItem->type()
         && !mMultipleSelectionIsEnabled)
     {
@@ -1413,4 +1413,14 @@ UBBoardView::setToolCursor (int tool)
       //failsafe
       controlViewport->setCursor (UBResources::resources ()->penCursor);
     }
+}
+
+
+bool UBBoardView::hasSelectedParents(QGraphicsItem * item)
+{
+    if (item->isSelected())
+        return true;
+    if (item->parentItem()==NULL)
+        return false;
+    return hasSelectedParents(item->parentItem());
 }

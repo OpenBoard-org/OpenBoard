@@ -149,6 +149,8 @@ class UBBoardView : public QGraphicsView
         bool mMultipleSelectionIsEnabled;
         bool isControl;
 
+        static bool hasSelectedParents(QGraphicsItem * item);
+
     private slots:
 
         void settingChanged(QVariant newValue);

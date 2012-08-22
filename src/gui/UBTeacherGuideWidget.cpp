@@ -879,17 +879,21 @@ void UBTeacherGuidePageZeroWidget::fillComboBoxes()
     parametersFile.close();
 
     QStringList licences;
-    licences << tr("Attribution CC BY") << tr("Attribution-NoDerivs CC BY-ND")
+    licences << tr("Attribution CC BY")
+    		 << tr("Attribution-NoDerivs CC BY-ND")
              << tr("Attribution-ShareAlike CC BY-SA")
              << tr("Attribution-NonCommercial CC BY-NC")
              << tr("Attribution-NonCommercial-NoDerivs CC BY-NC-ND")
              << tr("Attribution-NonCommercial-ShareAlike CC BY-NC-SA")
-             << tr("Public domain") << tr("Copyright");
+             << tr("Public domain")
+             << tr("Copyright");
     mpLicenceBox->addItems(licences);
     QStringList licenceIconList;
     licenceIconList << ":images/licenses/ccby.png"
-                    << ":images/licenses/ccbynd.png" << ":images/licenses/ccbysa.png"
-                    << ":images/licenses/ccbync.png" << ":images/licenses/ccbyncnd.png"
+                    << ":images/licenses/ccbynd.png"
+                    << ":images/licenses/ccbysa.png"
+                    << ":images/licenses/ccbync.png"
+                    << ":images/licenses/ccbyncnd.png"
                     << ":images/licenses/ccbyncsa.png";
     for (int i = 0; i < licenceIconList.count(); i += 1)
         mpLicenceBox->setItemData(i, licenceIconList.at(i));
@@ -945,7 +949,7 @@ void UBTeacherGuidePageZeroWidget::loadData()
     currentIndex = mpSchoolTypeBox->findText(documentProxy->metaData(UBSettings::sessionType).toString());
     mpSchoolTypeBox->setCurrentIndex((currentIndex != -1) ? currentIndex : 0);
 
-    currentIndex = mpLicenceBox->findText(documentProxy->metaData(UBSettings::sessionLicence).toString());
+    currentIndex = documentProxy->metaData(UBSettings::sessionLicence).toInt();
     mpLicenceBox->setCurrentIndex((currentIndex != -1) ? currentIndex : 0);
 }
 
@@ -962,7 +966,7 @@ void UBTeacherGuidePageZeroWidget::persistData()
         documentProxy->setMetaData(UBSettings::sessionGradeLevel, mpSchoolLevelBox->currentText());
         documentProxy->setMetaData(UBSettings::sessionSubjects, mpSchoolSubjectsBox->currentText());
         documentProxy->setMetaData(UBSettings::sessionType, mpSchoolTypeBox->currentText());
-        documentProxy->setMetaData(UBSettings::sessionLicence, mpLicenceBox->currentText());
+        documentProxy->setMetaData(UBSettings::sessionLicence, mpLicenceBox->currentIndex());
     }
 }
 
@@ -1087,7 +1091,7 @@ QVector<tUBGEElementNode*> UBTeacherGuidePageZeroWidget::getData()
 
     elementNode = new tUBGEElementNode();
     elementNode->name = "licence";
-    elementNode->attributes.insert("value", mpLicenceBox->currentText());
+    elementNode->attributes.insert("value", QString("%1").arg(mpLicenceBox->currentIndex()));
     result << elementNode;
     return result;
 }
