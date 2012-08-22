@@ -32,6 +32,16 @@ UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent
 
 }
 
+UBGraphicsGroupContainerItem::~UBGraphicsGroupContainerItem()
+{
+    foreach (QGraphicsItem *item, childItems())
+    {   
+        removeFromGroup(item);
+        if (item && item->scene())
+            item->scene()->removeItem(item);
+    }
+}
+
 void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
 {
     if (!item) {

@@ -10,6 +10,7 @@ class UBGraphicsGroupContainerItem : public QGraphicsItem, public UBItem, public
 
 public:
     UBGraphicsGroupContainerItem (QGraphicsItem *parent = 0);
+    virtual ~UBGraphicsGroupContainerItem();
 
     void addToGroup(QGraphicsItem *item);
     void removeFromGroup(QGraphicsItem *item);
