@@ -532,11 +532,11 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
     if (movingItem->data(UBGraphicsItemData::ItemLocked).toBool())
         return false;
 
-    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();  
-   
-    if (movingItem->parentItem() && !movingItem->isSelected() && movingItem->parentItem()->isSelected())
+    if (movingItem->parentItem() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type() && !movingItem->isSelected() && movingItem->parentItem()->isSelected())
         return false;
 
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();  
+   
     switch(item->type())
     {
     case UBGraphicsGroupContainerItem::Type:
@@ -557,6 +557,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
     case UBGraphicsTextItem::Type:
         return !item->isSelected();
     }
+
     return false;
 }
 
@@ -566,24 +567,33 @@ QGraphicsItem* UBBoardView::determineItemToMove(QGraphicsItem *item)
     if(item)
     {
         UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();  
+
+        //W3C widgets should take mouse move events from play tool.
         if ((UBStylusTool::Play == currentTool) && (UBGraphicsW3CWidgetItem::Type == item->type()))
                 return item;
 
+        // if item is in group
         if(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type())
         {
+            // play tool should move groups by any element
             if (UBStylusTool::Play == currentTool && item->parentItem()->isSelected())
                 return item->parentItem();
-            
+
+            // groups should should be moved instead of strokes groups
+            if (UBGraphicsStrokesGroup::Type == item->type())
+                return item->parentItem();
+
+            // selected groups should be moved by moving any element
             if (item->parentItem()->isSelected())
                 return item;
-                
-               
+                  
             if (item->isSelected())
                 return NULL;
 
             return item->parentItem();
         }
 
+        // items like polygons placed in two groups nested, so we need to recursive call.
         if(item->parentItem() && UBGraphicsStrokesGroup::Type == item->parentItem()->type())    
             return determineItemToMove(item->parentItem());    
     }
@@ -595,14 +605,21 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
 {
     mLastPressedMousePos = mapToScene(event->pos());
 
+    // Determining item who will take mouse press event 
+    //all other items will be deselected and if all item will be deselected, then
+    // wrong item can catch mouse press. because selected items placed on the top
+    QGraphicsItem *pressedItem = determineItemToMove(movingItem);
 
-    if (movingItem && !hasSelectedParents(movingItem) && QGraphicsSvgItem::Type !=  movingItem->type()
+    if (movingItem 
+        && !(movingItem->parentItem() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type())
+        && QGraphicsSvgItem::Type !=  movingItem->type()
         && UBGraphicsDelegateFrame::Type != movingItem->type()
+        && UBGraphicsStrokesGroup::Type != movingItem->type()
         && !mMultipleSelectionIsEnabled)
     {
         foreach(QGraphicsItem *item, scene()->selectedItems())
         {
-            if (item != movingItem)
+            if (item != pressedItem)
             {
                 item->setSelected(false);
             }
@@ -634,9 +651,10 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
 
 void UBBoardView::handleItemMouseMove(QMouseEvent *event)
 {
-    if (movingItem)
-        movingItem = determineItemToMove(movingItem);
+    // determine item to move (maybee we need to move group of item or his parent.
+    movingItem = determineItemToMove(movingItem);
 
+    // items should be moved not every mouse move.
     if (movingItem && itemShouldBeMoved(movingItem) && (mMouseButtonIsPressed || mTabletStylusIsPressed))       
     {
         QPointF scenePos = mapToScene(event->pos());
@@ -662,6 +680,8 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
         mWidgetMoved = ((posAfterMove-posBeforeMove).manhattanLength() != 0);
 
         // a cludge for terminate moving of w3c widgets.
+        // in some cases w3c widgets catches mouse move and doesn't sends that events to web page, 
+        // at simple - in google map widget - mouse move events doesn't comes to web page from rectangle of wearch bar on bottom right corner of widget.
         if (mWidgetMoved && UBGraphicsW3CWidgetItem::Type == movingItem->type())
             movingItem->setPos(posBeforeMove);
 
@@ -990,7 +1010,8 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
              if (QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                 UBToolWidget::Type != movingItem->type() &&
-                QGraphicsWidget::Type != movingItem->type())
+                QGraphicsWidget::Type != movingItem->type() &&
+                !(movingItem->parentItem() && UBGraphicsW3CWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
              {
                  bReleaseIsNeed = false;
                  if (movingItem->isSelected() && mMultipleSelectionIsEnabled)
