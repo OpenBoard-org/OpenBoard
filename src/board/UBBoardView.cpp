@@ -62,7 +62,7 @@
 
 #include "core/memcheck.h"
 
-UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
+UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool pIsControl)
 : QGraphicsView (pParent)
 , mController (pController)
 , mIsCreatingTextZone (false)
@@ -72,6 +72,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
 , mLongPressInterval(1000)
 , mIsDragInProgress(false)
 , mMultipleSelectionIsEnabled(false)
+, isControl(pIsControl)
 {
   init ();
 
@@ -81,13 +82,14 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent)
   mLongPressTimer.setSingleShot(true);
 }
 
-UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent)
+UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent, bool pIscontrol)
 : QGraphicsView (pParent)
 , mController (pController)
 , suspendedMousePressEvent(NULL)
 , mLongPressInterval(1000)
 , mIsDragInProgress(false)
 , mMultipleSelectionIsEnabled(false)
+, isControl(pIscontrol)
 {
   init ();
 
@@ -123,6 +125,8 @@ void UBBoardView::init ()
   setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
   setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
   setAcceptDrops (true);
+
+  setOptimizationFlag (QGraphicsView::IndirectPainting); // enable UBBoardView::drawItems filter
 
   mTabletStylusIsPressed = false;
   mMouseButtonIsPressed = false;
@@ -729,6 +733,11 @@ void UBBoardView::longPressEvent()
 
 void UBBoardView::mousePressEvent (QMouseEvent *event)
 {
+    if (!isControl) {
+        event->ignore();
+        return;
+    }
+
     mIsDragInProgress = false;
 
     if (isAbsurdPoint (event->pos ()))

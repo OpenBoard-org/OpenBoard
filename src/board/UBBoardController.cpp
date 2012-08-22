@@ -158,7 +158,7 @@ void UBBoardController::setupViews()
     mControlLayout = new QHBoxLayout(mControlContainer);
     mControlLayout->setContentsMargins(0, 0, 0, 0);
 
-    mControlView = new UBBoardView(this, mControlContainer);
+    mControlView = new UBBoardView(this, mControlContainer, true);
     mControlView->setInteractive(true);
     mControlView->setMouseTracking(true);
 
