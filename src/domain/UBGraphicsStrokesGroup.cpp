@@ -115,3 +115,23 @@ QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVa
     QVariant newValue = mDelegate->itemChange(change, value);
     return QGraphicsItemGroup::itemChange(change, newValue);
 }
+
+
+QPainterPath UBGraphicsStrokesGroup::shape () const
+{
+    QPainterPath path;
+
+    if (isSelected())
+    {
+        path.addRect(boundingRect());
+    }
+    else
+    {
+        foreach(QGraphicsItem* item, childItems())
+        {
+            path.addPath(item->shape());
+        } 
+    }
+
+    return path;
+}

@@ -25,6 +25,9 @@ public:
     virtual void setUuid(const QUuid &pUuid);
 
 protected:
+
+    virtual QPainterPath shape () const;
+
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);

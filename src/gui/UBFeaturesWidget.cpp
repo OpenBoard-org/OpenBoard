@@ -379,6 +379,12 @@ void UBFeaturesListView::dragMoveEvent( QDragMoveEvent *event )
             event->ignore();
             return;
         }
+        foreach (UBFeature curFeature, fMimeData->features()) {
+            if (curFeature == onFeature) {
+                event->ignore();
+                return;
+            }
+        }
      }
 
     if ( event->mimeData()->hasUrls() || event->mimeData()->hasImage() ) {

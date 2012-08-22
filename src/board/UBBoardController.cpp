@@ -624,7 +624,7 @@ void UBBoardController::duplicateItem(UBItem *item)
 
 void UBBoardController::deleteScene(int nIndex)
 {
-    if (selectedDocument()->pageCount()>2)
+    if (selectedDocument()->pageCount()>=2)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
@@ -1466,12 +1466,13 @@ void UBBoardController::ClearUndoStack()
     while (itUniq.hasNext())
     {
         QGraphicsItem* item = itUniq.next();
+        UBGraphicsScene *scene = NULL;
         if (item->scene()) {
-            UBGraphicsScene *scene = dynamic_cast<UBGraphicsScene*>(item->scene());
-            if(!scene)
-            {
-                mActiveScene->deleteItem(item);
-            }
+            scene = dynamic_cast<UBGraphicsScene*>(item->scene());
+        }
+        if(!scene)
+        {
+            mActiveScene->deleteItem(item);
         }
     }
 
