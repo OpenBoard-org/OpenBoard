@@ -112,11 +112,6 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
 
 QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedChange)
-    {
-        int a = 13;
-    }
-
     QVariant newValue = mDelegate->itemChange(change, value);
     return QGraphicsItemGroup::itemChange(change, newValue);
 }
