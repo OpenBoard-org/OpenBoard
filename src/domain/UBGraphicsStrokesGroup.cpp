@@ -112,6 +112,31 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
 
 QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    if (change == QGraphicsItem::ItemSelectedChange)
+    {
+        int a = 13;
+    }
+
     QVariant newValue = mDelegate->itemChange(change, value);
     return QGraphicsItemGroup::itemChange(change, newValue);
+}
+
+
+QPainterPath UBGraphicsStrokesGroup::shape () const
+{
+    QPainterPath path;
+
+    if (isSelected())
+    {
+        path.addRect(boundingRect());
+    }
+    else
+    {
+        foreach(QGraphicsItem* item, childItems())
+        {
+            path.addPath(item->shape());
+        } 
+    }
+
+    return path;
 }
