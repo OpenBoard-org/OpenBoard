@@ -148,6 +148,8 @@ class UBBoardView : public QGraphicsView
         bool mIsDragInProgress;
         bool mMultipleSelectionIsEnabled;
 
+        static bool hasSelectedParents(QGraphicsItem * item);
+
     private slots:
 
         void settingChanged(QVariant newValue);
