@@ -618,7 +618,6 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
         && !(movingItem->parentItem() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type())
         && QGraphicsSvgItem::Type !=  movingItem->type()
         && UBGraphicsDelegateFrame::Type != movingItem->type()
-        && UBGraphicsStrokesGroup::Type != movingItem->type()
         && !mMultipleSelectionIsEnabled)
     {
         foreach(QGraphicsItem *item, scene()->selectedItems())
