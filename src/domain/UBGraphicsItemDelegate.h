@@ -297,6 +297,7 @@ protected slots:
 private:
         void updateFrame();
         void updateButtons(bool showUpdated = false);
+        inline void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
 
         QPointF mOffset;
         QTransform mPreviousTransform;
