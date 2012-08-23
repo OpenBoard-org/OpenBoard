@@ -474,15 +474,21 @@ void UBGraphicsItemDelegate::lock(bool locked)
 
 void UBGraphicsItemDelegate::showHide(bool show)
 {
-    if (show)
-    {
+    if (show) {
         mDelegated->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Object));
-    }
-    else
-    {
+        if (mDelegated->childItems().count()) {
+            foreach (QGraphicsItem *item, mDelegated->childItems()) {
+                item->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Object));
+            }
+        }
+    } else {
         mDelegated->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+        if (mDelegated->childItems().count()) {
+            foreach (QGraphicsItem *item, mDelegated->childItems()) {
+                item->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+            }
+        }
     }
-
     mDelegated->update();
 
     emit showOnDisplayChanged(show);
