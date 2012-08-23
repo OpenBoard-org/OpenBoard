@@ -33,6 +33,7 @@ struct UBMimeType
         Flash,
         PDF,
         UniboardTool,
+        Group,
         UNKNOWN
     };
 };

@@ -551,9 +551,13 @@ void UBBoardController::duplicateItem(UBItem *item)
         itemSize = commonItem->boundingRect().size();
     }
 
+    UBMimeType::Enum itemMimeType;
     QString contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(item->sourceUrl().toLocalFile());
-   
-    UBMimeType::Enum itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
+    if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem)){
+    	itemMimeType = UBMimeType::Group;
+    }else{
+    	itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
+    }
         
     switch(static_cast<int>(itemMimeType))
     {
@@ -598,6 +602,29 @@ void UBBoardController::duplicateItem(UBItem *item)
                  pixitem->pixmap().save(&buffer, format.toLatin1());
             }
         }break;
+
+    case UBMimeType::Group:
+    {
+    	UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+    	if(groupItem){
+    		QList<QGraphicsItem*> children = groupItem->childItems();
+    		foreach(QGraphicsItem* pIt, children){
+    			UBItem* pItem = dynamic_cast<UBItem*>(pIt);
+    			if(NULL != pItem){
+    				duplicateItem(pItem);	// The duplication already copies the item parameters
+    				QGraphicsItem* pDuplicatedItem = dynamic_cast<QGraphicsItem*>((mActiveScene->children().last()));
+    				if(NULL != pDuplicatedItem){
+    					pDuplicatedItem->setSelected(true);
+    				}
+    			}
+    		}
+    		groupItem->setSelected(false);
+    		UBApplication::mainWindow->actionGroupItems->trigger();
+    	}
+    	return;
+    	break;
+    }
+
     case UBMimeType::UNKNOWN:
         {
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
