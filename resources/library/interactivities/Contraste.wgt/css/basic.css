@@ -144,9 +144,13 @@ body{
     font-family: Verdana,Arial,Helvetica,sans-serif;
     font-weight: bold;
     font-size:24px;
+    word-wrap: break-word;
 }
 
 .editContainer{
+    min-width: 200px;
+    max-width: 240px;
+    height: auto;
     position: absolute;
     border: 5px solid #c7c7c7;
     -webkit-border-radius: 5px;
