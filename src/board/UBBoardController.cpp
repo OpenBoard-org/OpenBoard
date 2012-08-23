@@ -1357,8 +1357,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
                 }
             }
         }
-    }else if("group" == sourceUrl.toString()){
-    	qDebug() << "accepting url " << sourceUrl.toString() << "as group content";
     }
     else
     {

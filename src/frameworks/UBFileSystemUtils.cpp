@@ -588,9 +588,6 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     {
         type = UBMimeType::UniboardTool;
     }
-    else if (typeString.startsWith("group")){
-    	type = UBMimeType::Group;
-    }
 
     return type;
 }
