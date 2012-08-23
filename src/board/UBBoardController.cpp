@@ -93,7 +93,6 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mCleanupDone(false)
     , mCacheWidgetIsEnabled(false)
 {
-	// Test
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
     int penColorIndex = UBSettings::settings()->penColorIndex();
