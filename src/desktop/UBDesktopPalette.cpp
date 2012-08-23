@@ -57,9 +57,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent)
     mShowHideAction->setCheckable(true);
 
     connect(mShowHideAction, SIGNAL(triggered(bool)), this, SLOT(showHideClick(bool)));
-#ifndef Q_WS_X11
     actions << mShowHideAction;
-#endif
 
     setActions(actions);
     setButtonIconSize(QSize(42, 42));
