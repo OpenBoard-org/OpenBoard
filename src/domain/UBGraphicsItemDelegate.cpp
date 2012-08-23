@@ -471,24 +471,18 @@ void UBGraphicsItemDelegate::lock(bool locked)
     mFrame->positionHandles();
 }
 
+void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
+{
+    pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
+    foreach (QGraphicsItem *insideItem, pItem->childItems()) {
+        showHideRecurs(pShow, insideItem);
+    }
+}
 
 void UBGraphicsItemDelegate::showHide(bool show)
 {
-    if (show) {
-        mDelegated->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Object));
-        if (mDelegated->childItems().count()) {
-            foreach (QGraphicsItem *item, mDelegated->childItems()) {
-                item->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Object));
-            }
-        }
-    } else {
-        mDelegated->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-        if (mDelegated->childItems().count()) {
-            foreach (QGraphicsItem *item, mDelegated->childItems()) {
-                item->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-            }
-        }
-    }
+    QVariant showFlag = QVariant(show ? UBItemLayerType::Object : UBItemLayerType::Control);
+    showHideRecurs(showFlag, mDelegated);
     mDelegated->update();
 
     emit showOnDisplayChanged(show);
