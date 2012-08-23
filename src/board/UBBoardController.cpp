@@ -913,7 +913,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
     else if (sUrl.startsWith("file://") || sUrl.startsWith("/"))
     {
         QString fileName = url.toLocalFile();
-
+        QUrl formedUrl = sUrl.startsWith("file://") ? sUrl : QUrl::fromLocalFile(sUrl);
         QString contentType = UBFileSystemUtils::mimeTypeFromFileName(fileName);
 
         bool shouldLoadFileData =
@@ -926,7 +926,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
         if (shouldLoadFileData)
             file.open(QIODevice::ReadOnly);
 
-        downloadFinished(true, url, contentType, file.readAll(), pPos, pSize, isBackground, internalData);
+        downloadFinished(true, formedUrl, contentType, file.readAll(), pPos, pSize, isBackground, internalData);
 
         if (shouldLoadFileData)
             file.close();
@@ -954,6 +954,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
                                             bool isBackground, bool internalData)
 {
     QString mimeType = pContentTypeHeader;
+
+    qDebug() << sourceUrl.toString();
 
     // In some cases "image/jpeg;charset=" is retourned by the drag-n-drop. That is
     // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
@@ -1948,7 +1950,7 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
 
     QString destFile;
     bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
-                pSourceUrl.toLocalFile(), 
+                pSourceUrl.toLocalFile(),
                 UBPersistenceManager::videoDirectory,
                 uuid,
                 destFile);
