@@ -24,6 +24,7 @@
 #include "board/UBBoardController.h"
 
 #include "core/memcheck.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
         const QSet<QGraphicsItem*>& pAddedItems)
@@ -80,6 +81,14 @@ void UBGraphicsItemUndoCommand::undo()
     while (itAdded.hasNext())
     {
         QGraphicsItem* item = itAdded.next();
+
+        //if removing group
+        if (item->type() == UBGraphicsGroupContainerItem::Type) {
+            UBGraphicsGroupContainerItem *curGroup = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item);
+            if (curGroup) {
+                curGroup->destroy();
+            }
+        }
 
         UBApplication::boardController->freezeW3CWidget(item, true);
         item->setSelected(false);

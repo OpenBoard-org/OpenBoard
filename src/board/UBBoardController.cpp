@@ -158,7 +158,7 @@ void UBBoardController::setupViews()
     mControlLayout = new QHBoxLayout(mControlContainer);
     mControlLayout->setContentsMargins(0, 0, 0, 0);
 
-    mControlView = new UBBoardView(this, mControlContainer);
+    mControlView = new UBBoardView(this, mControlContainer, true);
     mControlView->setInteractive(true);
     mControlView->setMouseTracking(true);
 
@@ -651,7 +651,7 @@ void UBBoardController::duplicateItem(UBItem *item)
 
 void UBBoardController::deleteScene(int nIndex)
 {
-    if (selectedDocument()->pageCount()>2)
+    if (selectedDocument()->pageCount()>=2)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
@@ -1495,12 +1495,13 @@ void UBBoardController::ClearUndoStack()
     while (itUniq.hasNext())
     {
         QGraphicsItem* item = itUniq.next();
+        UBGraphicsScene *scene = NULL;
         if (item->scene()) {
-            UBGraphicsScene *scene = dynamic_cast<UBGraphicsScene*>(item->scene());
-            if(!scene)
-            {
-                mActiveScene->deleteItem(item);
-            }
+            scene = dynamic_cast<UBGraphicsScene*>(item->scene());
+        }
+        if(!scene)
+        {
+            mActiveScene->deleteItem(item);
         }
     }
 
