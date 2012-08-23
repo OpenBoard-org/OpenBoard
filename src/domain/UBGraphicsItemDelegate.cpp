@@ -195,10 +195,10 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
     if ((change == QGraphicsItem::ItemSelectedHasChanged
          || change == QGraphicsItem::ItemPositionHasChanged
          || change == QGraphicsItem::ItemTransformHasChanged)
-        && mDelegated->scene())
-        {
+            && mDelegated->scene()
+            && UBApplication::boardController)
+    {
         mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-
         positionHandles();
     }
 
