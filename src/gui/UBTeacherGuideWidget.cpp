@@ -468,6 +468,10 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpTreeWidget->setIconSize(QSize(24,24));
     connect(mpTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
+#ifdef Q_WS_MAC
+    // on mac and with the custom qt the widget on the tree are not automatically relocated when using the vertical scrollbar. To relocate them we link the valueChange signal of the vertical scrollbar witht a local signal to trig a change and a repaint of the tree widget
+    connect(mpTreeWidget->verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(onSliderMoved(int)));
+#endif
 }
 
 UBTeacherGuidePresentationWidget::~UBTeacherGuidePresentationWidget()
@@ -483,6 +487,14 @@ UBTeacherGuidePresentationWidget::~UBTeacherGuidePresentationWidget()
     DELETEPTR(mpTreeWidget);
     DELETEPTR(mpLayout);
 }
+
+#ifdef Q_WS_MAC
+void UBTeacherGuidePresentationWidget::onSliderMoved(int size)
+{
+    Q_UNUSED(size);
+    mpMediaSwitchItem->setExpanded(true);
+}
+#endif
 
 bool UBTeacherGuidePresentationWidget::eventFilter(QObject* object, QEvent* event)
 {

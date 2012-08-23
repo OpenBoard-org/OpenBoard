@@ -114,6 +114,12 @@ private:
     QTreeWidgetItem* mpRootWidgetItem;
     QTreeWidgetItem* mpMediaSwitchItem;
 
+
+#ifdef Q_WS_MACX
+private slots:
+    void onSliderMoved(int size);
+#endif
+
 };
 
 /***************************************************************************

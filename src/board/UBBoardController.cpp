@@ -955,8 +955,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 {
     QString mimeType = pContentTypeHeader;
 
-    qDebug() << sourceUrl.toString();
-
     // In some cases "image/jpeg;charset=" is retourned by the drag-n-drop. That is
     // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
     if(mimeType.isEmpty())
@@ -985,15 +983,13 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 
         QPixmap pix;
         if(pData.length() == 0){
-            pix.load(sourceUrl.toString());
+            pix.load(sourceUrl.toLocalFile());
         }
         else{
             QImage img;
             img.loadFromData(pData);
             pix = QPixmap::fromImage(img);
         }
-
-
 
         UBGraphicsPixmapItem* pixItem = mActiveScene->addPixmap(pix, NULL, pPos, 1.);
         pixItem->setSourceUrl(sourceUrl);
