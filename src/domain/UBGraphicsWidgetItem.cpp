@@ -114,7 +114,8 @@ void UBGraphicsWidgetItem::initialize()
     connect(page(), SIGNAL(linkClicked(const QUrl&)), this, SLOT(onLinkClicked(const QUrl&)));
 }
 
-void UBGraphicsWidgetItem::onLinkClicked(const QUrl& url){
+void UBGraphicsWidgetItem::onLinkClicked(const QUrl& url)
+{
 	UBApplication::webController->loadUrl(url);
 }
 
@@ -845,6 +846,9 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     mMainHtmlUrl.setPath(pWidgetUrl.path() + "/" + mMainHtmlFileName);
     /* is it a valid local file ? */
     QFile f(mMainHtmlUrl.toLocalFile());
+
+    qDebug() << mMainHtmlFileName;
+    qDebug() << mMainHtmlUrl.toLocalFile();
 
     if(!f.exists())
         mMainHtmlUrl = QUrl(mMainHtmlFileName);
