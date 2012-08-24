@@ -768,15 +768,21 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         itemPainterPath.addPolygon(pi->sceneTransform().map(pi->polygon()));
         if (eraserPath.contains(itemPainterPath))
         {
-            // Compele remove item
-            intersectedItems << pi;
-            intersectedPolygons << QPolygonF();
+            #pragma omp critical
+            {
+                // Compele remove item
+                intersectedItems << pi;
+                intersectedPolygons << QPolygonF();
+            }
         }
         else if (eraserPath.intersects(itemPainterPath))
         {   
             QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
-            intersectedItems << pi;
-            intersectedPolygons << newPath.simplified().toFillPolygon(pi->sceneTransform().inverted());
+            #pragma omp critical
+            {
+               intersectedItems << pi;
+               intersectedPolygons << newPath.simplified().toFillPolygon(pi->sceneTransform().inverted());
+            }
         }
     }
 
