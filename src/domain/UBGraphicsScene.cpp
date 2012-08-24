@@ -743,6 +743,63 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
 void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 {
     const QLineF line(mPreviousPoint, pEndPoint);
+    mPreviousPoint = pEndPoint;
+
+    const QPolygonF eraserPolygon = UBGeometryUtils::lineToPolygon(line, pWidth);
+    const QRectF eraserBoundingRect = eraserPolygon.boundingRect();
+
+    QPainterPath eraserPath;
+    eraserPath.addPolygon(eraserPolygon);
+
+    // Get all the items that are intersecting with the eraser path
+    QList<QGraphicsItem*> collidItems = items(eraserBoundingRect, Qt::IntersectsItemBoundingRect);
+
+    QList<UBGraphicsPolygonItem*> intersectedItems;
+    QList<QPolygonF> intersectedPolygons;
+
+    #pragma omp parallel for
+    for(int i=0; i<collidItems.size(); i++)
+    {
+        UBGraphicsPolygonItem *pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems[i]);
+        if(pi == NULL)
+            continue;
+
+        QPainterPath itemPainterPath;
+        itemPainterPath.addPolygon(pi->sceneTransform().map(pi->polygon()));
+        if (eraserPath.contains(itemPainterPath))
+        {
+            // Compele remove item
+            intersectedItems << pi;
+            intersectedPolygons << QPolygonF();
+        }
+        else if (eraserPath.intersects(itemPainterPath))
+        {   
+            QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
+            intersectedItems << pi;
+            intersectedPolygons << newPath.simplified().toFillPolygon(pi->sceneTransform().inverted());
+        }
+    }
+
+    for(int i=0; i<intersectedItems.size(); i++)
+    {
+        if (intersectedPolygons[i].empty())
+        {
+            removeItem(intersectedItems[i]);
+        }
+        else
+        {
+            intersectedItems[i]->setPolygon(intersectedPolygons[i]);
+        }
+    }
+
+    if (!intersectedItems.empty())
+        setModified(true);
+}
+
+/*
+void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
+{
+    const QLineF line(mPreviousPoint, pEndPoint);
 
     const QPolygonF eraserPolygon = UBGeometryUtils::lineToPolygon(line, pWidth);
     const QRectF eraserBoundingRect = eraserPolygon.boundingRect();
@@ -810,7 +867,6 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                         collidingPath.addPolygon(collidingPolygon);
 
                         // Then we substract the eraser path to the polygon and we simplify it
-                        /**/
                         QTransform polyTransform = collidingPolygonItem->sceneTransform().inverted();
                         QPointF mTrPrevPoint = polyTransform.map(mPreviousPoint);
                         QPointF mTrEndPoint = polyTransform.map(pEndPoint);
@@ -821,18 +877,18 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                         QPainterPath trEraser;
                         trEraser.addPolygon(trEraserPolygon);
                         QPainterPath croppedPath = collidingPath.subtracted(trEraser);
-                        /**/
 
                         // Original
                         //QPainterPath croppedPath = collidingPath.subtracted(eraserPath);
                         QPainterPath croppedPathSimplified = croppedPath.simplified();
 
-                        /*if (croppedPath == collidingPath)
-                        {
-                            // NOOP
-                            toBeRemovedItems << collidingPolygonItem;
-                        }
-                        else */if (croppedPathSimplified.isEmpty())
+                        //if (croppedPath == collidingPath)
+                        //{
+                        //    // NOOP
+                        //    toBeRemovedItems << collidingPolygonItem;
+                        //}
+                        //else
+                        if (croppedPathSimplified.isEmpty())
                         {
     #pragma omp critical
                             // Put the entire polygon into the remove list if the eraser removes all its visible content
@@ -948,6 +1004,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
     mPreviousPoint = pEndPoint;
 }
+*/
 
 void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
 {
