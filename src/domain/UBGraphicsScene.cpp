@@ -844,14 +844,18 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                             // UBGraphicsPolygonItems and added to the scene
                             foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
                             {
-                                UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
+                                UBGraphicsPolygonItem* croppedPolygonItem;
     #pragma omp critical
-                                if(NULL != pGroup){
-                                    croppedPolygonItem->setStrokesGroup(pGroup);
-                                    //pGroup->addToGroup(croppedPolygonItem);
+                                {
+                                    croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
+    
+                                    if(NULL != pGroup){
+                                        croppedPolygonItem->setStrokesGroup(pGroup);
+                                        //pGroup->addToGroup(croppedPolygonItem);
+                                    }
+                                    // Add this new polygon to the 'added' list
+                                    toBeAddedItems << croppedPolygonItem;
                                 }
-                                // Add this new polygon to the 'added' list
-                                toBeAddedItems << croppedPolygonItem;
                             }
     #pragma omp critical
                             // Remove the original polygonitem because it has been replaced by many smaller polygons
