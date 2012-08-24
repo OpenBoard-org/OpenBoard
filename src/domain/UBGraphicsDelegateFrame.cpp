@@ -228,6 +228,9 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mCurrentTool = toolFromPos(event->pos());
     setCursorFromAngle(QString(""));
     event->accept();
+
+    prepareFramesToMove(getLinkedFrames());
+
 }
 
 void UBGraphicsDelegateFrame::setCursorFromAngle(QString angle)
@@ -469,33 +472,25 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         mTranslateX = move.dx();
         mTranslateY = move.dy();
+        moveLinkedItems(move);
     }
 
     QTransform tr = buildTransform();
 
-    //TODO UB 4.x: Could find a better solution ?
     if (resizingRight() || resizingBottom() || resizingBottomRight())
     {
         QPointF ref;
-        if(!mMirrorX && !mMirrorY){
-            ref = delegated()->boundingRect().topLeft();
-        }else if(mMirrorX && !mMirrorY){
-            ref = delegated()->boundingRect().topLeft();
-        }else if(!mMirrorX && mMirrorY){
-            ref = delegated()->boundingRect().topLeft();
-        }else if(mMirrorX && mMirrorY){
-            ref = delegated()->boundingRect().topRight();
-        }
 
-        // Map the item topleft point to the current mouse move transform
-        QPointF topLeft = tr.map(ref);
+        // we just detects coordinates of corner before and after scaling and then moves object at diff between them.
+        if (resizingBottomRight() && mMirrorX)
+            mTranslateX += mInitialTransform.map(delegated()->boundingRect().bottomRight()).x() - tr.map(delegated()->boundingRect().bottomRight()).x();
+        else
+            mTranslateX += mInitialTransform.map(delegated()->boundingRect().topLeft()).x() - tr.map(delegated()->boundingRect().topLeft()).x();
 
-        // Map the item topleft point to the mouse press transform
-        QPointF fixedPoint = mInitialTransform.map(ref);
-
-        // Update the translation coordinates
-        mTranslateX += fixedPoint.x() - topLeft.x();
-        mTranslateY += fixedPoint.y() - topLeft.y();
+        if (resizingBottomRight() && mMirrorY)
+            mTranslateY += mInitialTransform.map(delegated()->boundingRect().bottomRight()).y() - tr.map(delegated()->boundingRect().bottomRight()).y();
+        else
+            mTranslateY += mInitialTransform.map(delegated()->boundingRect().topLeft()).y() - tr.map(delegated()->boundingRect().topLeft()).y();         
 
         // Update the transform
         tr = buildTransform();
@@ -534,6 +529,71 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     event->accept();
 }
 
+QList<UBGraphicsDelegateFrame *> UBGraphicsDelegateFrame::getLinkedFrames()
+{
+    QList<UBGraphicsDelegateFrame*> linkedFrames;
+    QList<QGraphicsItem*> sItems = mDelegate->delegated()->scene()->selectedItems();
+    if (sItems.count())
+    {
+        sItems.removeAll(delegated());
+
+        foreach(QGraphicsItem *item, sItems)
+        {
+            UBGraphicsItem *gitem = dynamic_cast<UBGraphicsItem*>(item);
+            if (gitem)
+                linkedFrames << gitem->Delegate()->frame();
+        }
+    }
+    return linkedFrames;
+}
+
+void UBGraphicsDelegateFrame::prepareFramesToMove(QList<UBGraphicsDelegateFrame *> framesToMove)
+{
+    mLinkedFrames = framesToMove;
+    foreach (UBGraphicsDelegateFrame *frame, mLinkedFrames)
+    {
+        frame->prepareLinkedFrameToMove();
+    }  
+}
+
+void UBGraphicsDelegateFrame::prepareLinkedFrameToMove()
+{ 
+    mDelegate->startUndoStep();
+
+    mStartingPoint = QPointF(0,0);
+
+    initializeTransform();
+
+    mScaleX = 1;
+    mScaleY = 1;
+    mTranslateX = 0;
+    mTranslateY = 0;
+    mAngleOffset = 0;
+
+    mInitialTransform = buildTransform();
+
+    mCurrentTool = Move;
+}
+
+void UBGraphicsDelegateFrame::moveLinkedItems(QLineF movingVector, bool bLinked)
+{
+    if (bLinked)
+    {  
+        mCurrentTool = Move;
+
+        mTranslateX = movingVector.dx();
+        mTranslateY = movingVector.dy();
+        
+        delegated()->setTransform(buildTransform(), false);
+    }
+    else
+    {
+        foreach(UBGraphicsDelegateFrame* frame, mLinkedFrames)
+        {
+           frame->moveLinkedItems(movingVector, true);
+        }
+    }
+}
 
 QTransform UBGraphicsDelegateFrame::buildTransform()
 {

@@ -19,6 +19,7 @@ UBGraphicsGroupContainerItemDelegate::UBGraphicsGroupContainerItemDelegate(QGrap
     //Wrapper function. Use it to set correct data() to QGraphicsItem as well
     setFlippable(false);
     setRotatable(false);
+    setCanDuplicate(true);
 }
 
 UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItemDelegate::delegated()

@@ -47,6 +47,7 @@
 #include "board/UBBoardView.h"
 
 #include "UBGraphicsItemUndoCommand.h"
+#include "UBGraphicsItemGroupUndoCommand.h"
 #include "UBGraphicsTextItemUndoCommand.h"
 #include "UBGraphicsProxyWidget.h"
 #include "UBGraphicsPixmapItem.h"
@@ -843,14 +844,18 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                             // UBGraphicsPolygonItems and added to the scene
                             foreach(const QPolygonF &pol, croppedPathSimplified.toFillPolygons())
                             {
-                                UBGraphicsPolygonItem* croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
+                                UBGraphicsPolygonItem* croppedPolygonItem;
     #pragma omp critical
-                                if(NULL != pGroup){
-                                    croppedPolygonItem->setStrokesGroup(pGroup);
-                                    //pGroup->addToGroup(croppedPolygonItem);
+                                {
+                                    croppedPolygonItem = collidingPolygonItem->deepCopy(pol);
+    
+                                    if(NULL != pGroup){
+                                        croppedPolygonItem->setStrokesGroup(pGroup);
+                                        //pGroup->addToGroup(croppedPolygonItem);
+                                    }
+                                    // Add this new polygon to the 'added' list
+                                    toBeAddedItems << croppedPolygonItem;
                                 }
-                                // Add this new polygon to the 'added' list
-                                toBeAddedItems << croppedPolygonItem;
                             }
     #pragma omp critical
                             // Remove the original polygonitem because it has been replaced by many smaller polygons
@@ -1521,7 +1526,7 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     groupItem->setFocus();
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, groupItem);
+        UBGraphicsItemGroupUndoCommand* uc = new UBGraphicsItemGroupUndoCommand(this, groupItem);
         UBApplication::undoStack->push(uc);
     }
 

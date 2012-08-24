@@ -31,8 +31,8 @@ class UBBoardView : public QGraphicsView
 
     public:
 
-        UBBoardView(UBBoardController* pController, QWidget* pParent = 0);
-        UBBoardView(UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent = 0);
+        UBBoardView(UBBoardController* pController, QWidget* pParent = 0, bool pIsControl = false);
+        UBBoardView(UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent = 0, bool pIscontrol = false);
         virtual ~UBBoardView();
 
         UBGraphicsScene* scene();
@@ -147,6 +147,9 @@ class UBBoardView : public QGraphicsView
 
         bool mIsDragInProgress;
         bool mMultipleSelectionIsEnabled;
+        bool isControl;
+
+        static bool hasSelectedParents(QGraphicsItem * item);
 
     private slots:
 

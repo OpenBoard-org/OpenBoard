@@ -195,10 +195,10 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
     if ((change == QGraphicsItem::ItemSelectedHasChanged
          || change == QGraphicsItem::ItemPositionHasChanged
          || change == QGraphicsItem::ItemTransformHasChanged)
-        && mDelegated->scene())
-        {
+            && mDelegated->scene()
+            && UBApplication::boardController)
+    {
         mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-
         positionHandles();
     }
 
@@ -471,18 +471,18 @@ void UBGraphicsItemDelegate::lock(bool locked)
     mFrame->positionHandles();
 }
 
+void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
+{
+    pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
+    foreach (QGraphicsItem *insideItem, pItem->childItems()) {
+        showHideRecurs(pShow, insideItem);
+    }
+}
 
 void UBGraphicsItemDelegate::showHide(bool show)
 {
-    if (show)
-    {
-        mDelegated->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Object));
-    }
-    else
-    {
-        mDelegated->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    }
-
+    QVariant showFlag = QVariant(show ? UBItemLayerType::Object : UBItemLayerType::Control);
+    showHideRecurs(showFlag, mDelegated);
     mDelegated->update();
 
     emit showOnDisplayChanged(show);

@@ -109,7 +109,7 @@ function init(){
                 mode = false;
                 $(".leftDiv, .rightDiv").animate({
                     "opacity":"1"
-                },"slow",function(){
+                },"fast",function(){
                     if(opacityChanged){
                         if($(".editContainer").size() != 0){
                             $(".editContainer").each(function(index, domElem){
@@ -142,14 +142,17 @@ function init(){
                 $(document).enableTextSelect(); 
                 $(".leftDiv, .rightDiv").animate({
                     "opacity":"0.4"
-                },"slow",function(){
+                },"fast",function(){
                     if(!opacityChanged){
                         if($(".readyTask").size() != 0){
+                            var tmp_arr = [];
+                            $(".readyTask").each(function(){
+                                tmp_arr.push($(this));
+                            })
+                            orderItems(tmp_arr);
                             $(".readyTask").each(function(index, domElem){     
                                 var editContent = $("<div class='editContainer'>").width($(domElem).width() + 10).height($(domElem) + 10).appendTo("#data");
                                 var closeItem = $("<div class='closeItem'>").appendTo(editContent);
-                                var rightResize = $("<div class='rightResize'>").appendTo(editContent);
-                                var bottomResize = $("<div class='bottomResize'>").appendTo(editContent);
                                 editContent.css("top", $(domElem).position().top).css("left", $(domElem).position().left);
                                 $(domElem).css("position","static")
                                 .width("100%")
@@ -181,7 +184,7 @@ function init(){
     });
 
     $("#wgt_reload").click(function(){
-        window.location.reload();
+        reloadItems();
     });
     
     $("#wgt_add").click(function(){
@@ -271,42 +274,33 @@ function init(){
     });
                     
     $(".readyTask, .editContainer").live("mousedown",function(event){
-        if(!shadowOver){
-            dragElement = $(this);
-            coords.left = event.pageX - $(this).position().left;
-            coords.top = event.pageY - $(this).position().top;
-            resizeObj.width = $(this).width();
-            resizeObj.height = $(this).height();
-        }
-        if($("#wgt_display").hasClass("selected"))
+        if($("#wgt_display").hasClass("selected")){
+            if(!shadowOver){
+                dragElement = $(this);
+                coords.left = event.pageX - $(this).position().left;
+                coords.top = event.pageY - $(this).position().top;
+                resizeObj.width = $(this).width();
+                resizeObj.height = $(this).height();
+            }
             $(document).disableTextSelect();
-    });
-    
-    $(".rightResize").live("mousedown",function(event){
-        if(!shadowOver){
-            resizeObj.x = true;
-        }
-    });
-    
-    $(".bottomResize").live("mousedown",function(event){
-        if(!shadowOver){
-            resizeObj.y = true;
         }
     });
     
     $("body").mouseup(function(event){
-        if(!shadowOver){
-            if (dragElement) {
-                exportToSankore();
+        if($("#wgt_display").hasClass("selected")){
+            if(!shadowOver){
+                if (dragElement) {
+                    exportToSankore();
+                }
+                dragElement = null;
+                resizeObj.x = false;
+                resizeObj.y = false;
             }
-            dragElement = null;
-            resizeObj.x = false;
-            resizeObj.y = false;
         }
     });
     
     $("body").mousemove(function(event){
-        if(dragElement && !shadowOver){ 
+        if(dragElement && !shadowOver && $("#wgt_display").hasClass("selected")){ 
             var top = event.pageY - coords.top;
             var left = event.pageX - coords.left;
             var bottom = top + dragElement.height();
@@ -335,6 +329,36 @@ function init(){
         }
     });
     
+    $(".taskContainer").live("keyup", function(){
+        if($(".editContainer").size() > 1){            
+            var prev = $(".editContainer:first"),
+            prevBottom = prev.position().top + prev.height(),
+            prevLeft = prev.position().left;
+            recursionCall(prevBottom, prevLeft, prev.next());
+        }
+    })
+    
+    function recursionCall(prevBottom, prevLeft, curr){
+        var curTop = curr.position().top,
+        curHeight = curr.height(),
+        curLeft = curr.position().left;
+        if(prevLeft == curLeft){
+            if((prevBottom + 15 + curHeight) < ($(window).height() - 54))
+                curr.css("top", prevBottom + 15 + "px");                        
+            else
+                curr.css("top", "60px").css("left", prevLeft + 255 + "px");            
+        } else {
+            if((prevBottom + 15 + curHeight) < ($(window).height() - 54))
+                curr.css("top", prevBottom + 15 + "px").css("left", prevLeft + "px");           
+            else
+                curr.css("top", "60px");            
+        }
+        prevBottom = curr.position().top + curr.height(),
+        prevLeft = curr.position().left;
+        if(curr.next().length)
+            recursionCall(prevBottom, prevLeft, curr.next());
+    }     
+    
     //$("#leftDiv,#rightDiv,#shadowDiv").css("height", $(window).height());
     popupBack.css("top", ($(window).height() - 138)*50/$(window).height() + "%");
     popupBack.css("left", ($(window).width() - 360)*50/$(window).width() + "%");
@@ -347,7 +371,7 @@ function init(){
     
     if (window.widget) {
         window.widget.onleave = function(){
-            //exportToSankore();
+            exportToSankore();
             sankore.setPreference("by_style", $(".style_select").find("option:selected").val());
         }
     }
@@ -413,18 +437,70 @@ function checkEmptyFields(field){
     }
 }
 
+//reload
+function reloadItems(){
+    if($("#wgt_edit").hasClass("selected"))
+        $("#wgt_display").trigger("click");
+    else{
+        var tmp_array = [];
+        $(".readyTask").each(function(){
+            tmp_array.push($(this));
+        });
+        tmp_array = shuffle(tmp_array);
+        orderItems(tmp_array);
+    }    
+        
+}
+
+//order items
+function orderItems(items){
+    var bottom = 45,
+    lastItemLeft = 54; 
+    for (var i in items){
+        if((bottom + items[i].height()) < ($(window).height() - 54)){
+            items[i].css("top", bottom + 15 + "px").css("left", lastItemLeft + "px").appendTo("#data");
+            bottom += items[i].height() + 15;
+        } else {
+            bottom = 60;
+            lastItemLeft += 255;
+            items[i].css("top", bottom + "px").css("left", lastItemLeft + "px").appendTo("#data");
+            bottom += items[i].height();
+        }
+    }        
+}
+
+//shuffles an array
+function shuffle( arr )
+{
+    var pos, tmp;	
+    for( var i = 0; i < arr.length; i++ )
+    {
+        pos = Math.round( Math.random() * ( arr.length - 1 ) );
+        tmp = arr[pos];
+        arr[pos] = arr[i];
+        arr[i] = tmp;
+    }
+    return arr;
+}
+
 //adding a new task to the page
 function addTask(expression, result){
     var lastItem = $(".editContainer:last"),
     lastItemPos = lastItem.length ? lastItem.position().top : 45,
-    lastItemHeight = lastItem.length ? lastItem.height() : 0;
-    var editContent = $("<div class='editContainer'>").width(240).height(70).css("top", lastItemPos + lastItemHeight + 15 + "px").appendTo("#data");
-    var closeItem = $("<div class='closeItem'>").appendTo(editContent);
-    var rightResize = $("<div class='rightResize'>").appendTo(editContent);
-    var bottomResize = $("<div class='bottomResize'>").appendTo(editContent);
+    lastItemHeight = lastItem.length ? lastItem.height() : 0,
+    lastItemLeft = lastItem.length ? lastItem.position().left : 54;
+    var bottom = lastItemPos + lastItemHeight + 85;
+    var editContent = $("<div class='editContainer'>");
+    $("<div class='closeItem'>").appendTo(editContent);
     var main = $("<div class='readyTask'>");
-    var exprContainer = $("<div class='taskContainer' style='color: yellow;' contenteditable='true'>" + expression + "</div>").appendTo(main);
-    var resContainer = $("<div class='taskContainer' style='color: black;' contenteditable='true'>"+ result + "</div>").appendTo(main);
+    $("<div class='taskContainer' style='color: yellow;' contenteditable='true'>" + expression + "</div>").appendTo(main);
+    $("<div class='taskContainer' style='color: black;' contenteditable='true'>"+ result + "</div>").appendTo(main);
+    if(bottom < ($(window).height() - 54)){
+        editContent.css("top", lastItemPos + lastItemHeight + 15 + "px").css("left", lastItemLeft + "px").appendTo("#data");
+    } else {
+        lastItemPos = 45;
+        editContent.css("top", lastItemPos + 15 + "px").css("left", lastItemLeft + 255 + "px").appendTo("#data");
+    }    
     main.appendTo(editContent);
 }
 

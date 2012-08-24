@@ -54,6 +54,8 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBItem.h"
 #include "board/UBFeaturesController.h"
+#include "domain/UBGraphicsStrokesGroup.h"
+
 #include "gui/UBFeaturesWidget.h"
 
 #include "tools/UBToolsManager.h"
@@ -158,7 +160,7 @@ void UBBoardController::setupViews()
     mControlLayout = new QHBoxLayout(mControlContainer);
     mControlLayout->setContentsMargins(0, 0, 0, 0);
 
-    mControlView = new UBBoardView(this, mControlContainer);
+    mControlView = new UBBoardView(this, mControlContainer, true);
     mControlView->setInteractive(true);
     mControlView->setMouseTracking(true);
 
@@ -536,6 +538,8 @@ void UBBoardController::duplicateItem(UBItem *item)
     if (!item)
         return;
 
+    mLastCreatedItem = NULL;
+
     QUrl sourceUrl;
     QByteArray pData;
 
@@ -551,9 +555,13 @@ void UBBoardController::duplicateItem(UBItem *item)
         itemSize = commonItem->boundingRect().size();
     }
 
+    UBMimeType::Enum itemMimeType;
     QString contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(item->sourceUrl().toLocalFile());
-   
-    UBMimeType::Enum itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
+    if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem)){
+    	itemMimeType = UBMimeType::Group;
+    }else{
+    	itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
+    }
         
     switch(static_cast<int>(itemMimeType))
     {
@@ -598,13 +606,37 @@ void UBBoardController::duplicateItem(UBItem *item)
                  pixitem->pixmap().save(&buffer, format.toLatin1());
             }
         }break;
+
+    case UBMimeType::Group:
+    {
+    	UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+    	if(groupItem){
+    		QList<QGraphicsItem*> children = groupItem->childItems();
+    		foreach(QGraphicsItem* pIt, children){
+    			UBItem* pItem = dynamic_cast<UBItem*>(pIt);
+    			if(NULL != pItem){
+    				duplicateItem(pItem);	// The duplication already copies the item parameters
+    				if(NULL != mLastCreatedItem){
+    					mLastCreatedItem->setSelected(true);
+    				}
+    			}
+    		}
+    		groupItem->setSelected(false);
+    		UBApplication::mainWindow->actionGroupItems->trigger();
+    	}
+    	return;
+    	break;
+    }
+
     case UBMimeType::UNKNOWN:
         {
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
             if (gitem)
             {   
+            	qDebug() << "Adding a stroke: " << gitem;
                 mActiveScene->addItem(gitem);
                 gitem->setPos(itemPos);
+                mLastCreatedItem = gitem;
             }
             return;
         }break;
@@ -619,12 +651,13 @@ void UBBoardController::duplicateItem(UBItem *item)
         QGraphicsItem *createdGitem = dynamic_cast<QGraphicsItem*>(createdItem);
         if (createdGitem)
             createdGitem->setPos(itemPos);
-    } 
+        mLastCreatedItem = dynamic_cast<QGraphicsItem*>(createdItem);
+    }
 }
 
 void UBBoardController::deleteScene(int nIndex)
 {
-    if (selectedDocument()->pageCount()>2)
+    if (selectedDocument()->pageCount()>=2)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
@@ -1466,12 +1499,13 @@ void UBBoardController::ClearUndoStack()
     while (itUniq.hasNext())
     {
         QGraphicsItem* item = itUniq.next();
+        UBGraphicsScene *scene = NULL;
         if (item->scene()) {
-            UBGraphicsScene *scene = dynamic_cast<UBGraphicsScene*>(item->scene());
-            if(!scene)
-            {
-                mActiveScene->deleteItem(item);
-            }
+            scene = dynamic_cast<UBGraphicsScene*>(item->scene());
+        }
+        if(!scene)
+        {
+            mActiveScene->deleteItem(item);
         }
     }
 
