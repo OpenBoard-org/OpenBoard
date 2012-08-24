@@ -20,6 +20,7 @@
 #include "core/UB.h"
 #include "UBItem.h"
 #include "UBGraphicsStrokesGroup.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 class UBItem;
 class UBGraphicsScene;
