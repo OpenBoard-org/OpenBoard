@@ -364,5 +364,6 @@
         <file>images/teacherGuide/w3c_24x24.svg</file>
         <file>images/teacherGuide/pencil.svg</file>
         <file>images/duplicateDisabled.svg</file>
+        <file>images/teacherGuide/flash_24x24.svg</file>
     </qresource>
 </RCC>

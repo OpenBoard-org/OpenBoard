@@ -137,7 +137,7 @@ class UBTGMediaWidget : public QStackedWidget , public iUBTGSaveData
     Q_OBJECT
 public:
     UBTGMediaWidget(QTreeWidgetItem* widget = 0, QWidget* parent = 0, const char* name = "UBTGMediaWidget");
-    UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget = 0, QWidget* parent = 0, const char* name = "UBTGMediaWidget");
+    UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget = 0, QWidget* parent = 0, bool forceFlashMediaType = false, const char *name = "UBTGMediaWidget");
     ~UBTGMediaWidget();
     tUBGEElementNode* saveData();
     void initializeWithDom(QDomElement element);
@@ -152,7 +152,7 @@ protected:
 
 private:
     void parseMimeData(const QMimeData* pMimeData);
-    void createWorkWidget();
+    void createWorkWidget(bool forceFlashMediaType = false);
     void updateSize();
 
     QTreeWidgetItem* mpTreeWidgetItem;

@@ -565,7 +565,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
         }
         else if (element->name == "media") {
             createMediaButtonItem();
-            QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem( mpMediaSwitchItem);
+            QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpMediaSwitchItem);
             newWidgetItem->setIcon(0, QIcon( ":images/teacherGuide/" + element->attributes.value("mediaType") + "_24x24.svg"));
             newWidgetItem->setText(0, element->attributes.value("title"));
             newWidgetItem->setData(0, tUBTGTreeWidgetItemRole_HasAnAction, tUBTGActionAssociateOnClickItem_MEDIA);
@@ -582,7 +582,8 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
 
             QTreeWidgetItem* mediaItem = new QTreeWidgetItem(newWidgetItem);
             mediaItem->setData(0, tUBTGTreeWidgetItemRole_HasAnAction, tUBTGActionAssociateOnClickItem_NONE);
-            UBTGMediaWidget* mediaWidget = new UBTGMediaWidget(element->attributes.value("relativePath"), newWidgetItem);
+            qDebug() << element->attributes.value("mediaType");
+            UBTGMediaWidget* mediaWidget = new UBTGMediaWidget(element->attributes.value("relativePath"), newWidgetItem,0,element->attributes.value("mediaType").contains("flash"));
             newWidgetItem->setExpanded(false);
             mpTreeWidget->setItemWidget(mediaItem, 0, mediaWidget);
         }
