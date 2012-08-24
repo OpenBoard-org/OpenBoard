@@ -83,6 +83,7 @@ class UBPersistenceManager : public QObject
 
         QString teacherGuideAbsoluteObjectPath(UBDocumentProxy* pDocumentProxy);
         QString addObjectToTeacherGuideDirectory(UBDocumentProxy* proxy, QString pPath);
+        QString addWidgetToTeacherGuideDirectory(UBDocumentProxy* pDocumentProxy, QString pPath);
 
         virtual void addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
 
