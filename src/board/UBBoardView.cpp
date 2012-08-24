@@ -415,11 +415,7 @@ bool UBBoardView::itemIsLocked(QGraphicsItem *item)
     if (!item)
         return false;
 
-    if (item->data(UBGraphicsItemData::ItemLocked).toBool())
-        return true;
-
-    return itemIsLocked(item->parentItem());
-
+    return item->data(UBGraphicsItemData::ItemLocked).toBool();
 }
 
 bool UBBoardView::itemHaveParentWithType(QGraphicsItem *item, int type)
@@ -434,32 +430,76 @@ bool UBBoardView::itemHaveParentWithType(QGraphicsItem *item, int type)
 
 }
 
+void UBBoardView::handleItemsSelection(QGraphicsItem *item)
+{
+// we need to select new pressed itemOnBoard and deselect all other items.
+// the trouble is in: 
+//                  some items can has parents (groupped items or strokes, or strokes in groups).
+//                  some items is already selected and we don't need to reselect them
+//
+// item selection managed by QGraphicsView::mousePressEvent(). It should be called later.
+
+    if (item)
+    {
+        //  item has group as first parent - it is any item or UBGraphicsStrokesGroup.
+        if(item->parentItem() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type())
+            return;
+            
+        // delegate buttons shouldn't selected
+        if (DelegateButton::Type == movingItem->type())
+            return;
+        
+        // click on svg items (images on Frame) shouldn't change selection.
+        if (QGraphicsSvgItem::Type == movingItem->type())
+            return;
+
+        // Delegate frame shouldn't selected
+        if (UBGraphicsDelegateFrame::Type == movingItem->type())
+            return;
+    
+        
+        // if we need to uwe multiple selection - we shouldn't deselect other items.
+        if (!mMultipleSelectionIsEnabled)
+        {
+            // if Item can be selected at mouse press - then we need to deselect all other items.
+            foreach(QGraphicsItem *iter_item, scene()->selectedItems())
+            {
+                if (iter_item != item)
+                {
+                    iter_item->setSelected(false);
+                }
+            }
+        }
+    }
+}
+
 bool UBBoardView::itemShouldReceiveMousePressEvent(QGraphicsItem *item)
 {
-    if (!item) 
+/*
+Some items should receive mouse press events averytime, 
+some items should receive that events when they are selected, 
+some items shouldn't receive mouse press events at mouse press, but should receive them at mouse release (suspended mouse press event)
+
+Here we determines cases when items should to get mouse press event at pressing on mouse.
+*/
+
+    if (!item)
         return true;
 
+    // for now background objects is not interactable, but it can be deprecated for some items in the future.
     if (item == scene()->backgroundObject())
         return false;
 
-    if (itemIsLocked(item))
-        return false;
-
-
+    // some behavior depends on current tool.
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
-
-    if ((currentTool == UBStylusTool::Play) && UBGraphicsGroupContainerItem::Type == movingItem->type())
-    {
-        movingItem = NULL;
-        return false;
-    }
 
     switch(item->type())
     {
-
+    case DelegateButton::Type:
     case UBGraphicsMediaItem::Type:
         return false;
 
+    case UBGraphicsSvgItem::Type:
     case UBGraphicsPixmapItem::Type:
     case UBGraphicsTextItem::Type:
         if ((currentTool == UBStylusTool::Selector) && item->isSelected())
@@ -470,10 +510,18 @@ bool UBBoardView::itemShouldReceiveMousePressEvent(QGraphicsItem *item)
             return false;
         break;
 
+    // Groups shouldn't reacts on any presses and moves for Play tool.
     case UBGraphicsGroupContainerItem::Type:
-        return (currentTool == UBStylusTool::Selector);
+        if(currentTool == UBStylusTool::Play)
+        {
+            movingItem = NULL;
+            return false;
+        }
+        else
+            return true;
+        break;
 
-    case UBGraphicsW3CWidgetItem::Type:
+    case UBGraphicsWidgetItem::Type:
         if (currentTool == UBStylusTool::Selector && item->parentItem() && item->parentItem()->isSelected()) 
             return true;
         if (currentTool == UBStylusTool::Selector && item->isSelected()) 
@@ -497,28 +545,27 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
     if (item == scene()->backgroundObject())
         return false;
 
-    if (itemIsLocked(item))
-        return false;
-
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
    
     switch(item->type())
     {
     case UBGraphicsPixmapItem::Type:
     case UBGraphicsTextItem::Type:
-    case UBGraphicsW3CWidgetItem::Type:
+    case UBGraphicsWidgetItem::Type:
         if (currentTool == UBStylusTool::Selector && !item->isSelected() && item->parentItem())
             return true;
         if (currentTool == UBStylusTool::Selector && item->isSelected())
             return true;
         break;
     
+    case DelegateButton::Type:
     case UBGraphicsMediaItem::Type:
         return true;
 
     default:
         return false;
     }
+
     return false;
 }
 
@@ -552,6 +599,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
         if(currentTool == UBStylusTool::Play)
             return false;
 
+    case UBGraphicsSvgItem::Type:
     case UBGraphicsPixmapItem::Type:
         if (item->isSelected())
             return false;
@@ -563,6 +611,29 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
     }
 
     return false;
+}
+
+
+QGraphicsItem* UBBoardView::determineItemToPress(QGraphicsItem *item)
+{
+    if(item)
+    {
+        UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();  
+
+        // groups should should be moved instead of strokes groups
+        if (item->parentItem() && UBGraphicsStrokesGroup::Type == item->type())
+            return item->parentItem();
+        
+        // if item is on group and froup is not selected - group should take press.
+        if (UBStylusTool::Selector == currentTool && item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type() && !item->parentItem()->isSelected()) 
+            return item->parentItem();
+
+        // items like polygons placed in two groups nested, so we need to recursive call.
+        if(item->parentItem() && UBGraphicsStrokesGroup::Type == item->parentItem()->type())
+            return determineItemToPress(item->parentItem());
+    }
+
+    return item;
 }
 
 // determine item to interacts: item self or it's container.
@@ -599,7 +670,7 @@ QGraphicsItem* UBBoardView::determineItemToMove(QGraphicsItem *item)
 
         // items like polygons placed in two groups nested, so we need to recursive call.
         if(item->parentItem() && UBGraphicsStrokesGroup::Type == item->parentItem()->type())    
-            return determineItemToMove(item->parentItem());    
+            return determineItemToMove(item->parentItem());
     }
 
     return item;
@@ -612,28 +683,17 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     // Determining item who will take mouse press event 
     //all other items will be deselected and if all item will be deselected, then
     // wrong item can catch mouse press. because selected items placed on the top
-    QGraphicsItem *pressedItem = determineItemToMove(movingItem);
+    QGraphicsItem *pressedItem = determineItemToPress(movingItem);
 
-    if (movingItem 
-        && !(movingItem->parentItem() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type())
-        && QGraphicsSvgItem::Type !=  movingItem->type()
-        && UBGraphicsDelegateFrame::Type != movingItem->type()
-        && !mMultipleSelectionIsEnabled)
-    {
-        foreach(QGraphicsItem *item, scene()->selectedItems())
-        {
-            if (item != pressedItem)
-            {
-                item->setSelected(false);
-            }
-        }
-    }
+    handleItemsSelection(movingItem);
 
     if (mMultipleSelectionIsEnabled)
         return;
 
     if (itemShouldReceiveMousePressEvent(movingItem))
+    {
         QGraphicsView::mousePressEvent (event);
+    }
     else
     {
         if (movingItem)
@@ -991,7 +1051,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
   setToolCursor (currentTool);
-  // first propagate device release to the scene
+  // first/ propagate device release to the scene
   if (scene ())
     scene ()->inputDeviceRelease ();
 
@@ -1012,13 +1072,14 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
               movingItem = NULL;
               delete suspendedMousePressEvent;
               suspendedMousePressEvent = NULL;
+              bReleaseIsNeed = true;
           }
           else
           {
              if (QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                 UBToolWidget::Type != movingItem->type() &&
-                QGraphicsWidget::Type != movingItem->type() &&
+                QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
                 !(movingItem->parentItem() && UBGraphicsW3CWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
              {
                  bReleaseIsNeed = false;
@@ -1054,7 +1115,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
       }
       else
       {
-          if (suspendedMousePressEvent && movingItem && !movingItem->data(UBGraphicsItemData::ItemLocked).toBool())       
+          if (suspendedMousePressEvent)     
           {
               QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
               movingItem = NULL;

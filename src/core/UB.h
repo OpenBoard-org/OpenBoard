@@ -133,11 +133,10 @@ struct UBGraphicsItemType
         PolygonItemType = QGraphicsItem::UserType + 1, 
 		PixmapItemType,
         SvgItemType, 
+        DelegateButtonType,
 		MediaItemType, 
-		AppleWidgetItemType, 
 		PDFItemType, 
-		TextItemType, 
-		W3CWidgetItemType, 
+		TextItemType,
 		CurtainItemType,
         RulerItemType, 
 		CompassItemType, 
@@ -147,7 +146,8 @@ struct UBGraphicsItemType
         MagnifierItemType,
         cacheItemType,
         groupContainerType,
-        ToolWidgetItemType
+        ToolWidgetItemType,
+        GraphicsWidgetItemType
     };
 };
 

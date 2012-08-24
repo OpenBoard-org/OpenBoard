@@ -75,7 +75,6 @@ void DelegateButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // make sure delegate is selected, to avoid control being hidden
     mPressedTime = QTime::currentTime();
-//    mDelegated->setSelected(true);
 
     event->setAccepted(!mIsTransparentToMouseEvent);
  }
@@ -256,12 +255,7 @@ bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         mDragPixmap = QPixmap();
         return true;
     }
-    if(isLocked()) {
-        event->accept();
-        return true;
-    } else {
-        return false;
-    }
+    return false;
 }
 
 bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
@@ -748,16 +742,7 @@ void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     QPainterPath path;
     path.addRoundedRect(rect(), 10, 10);  
 
-    if (parentItem() && parentItem()->data(UBGraphicsItemData::ItemLocked).toBool())
-    {
-        QColor baseColor = UBSettings::paletteColor;
-        baseColor.setAlphaF(baseColor.alphaF() / 3);
-        setBrush(QBrush(baseColor));
-    }
-    else
-    {
-        setBrush(QBrush(UBSettings::paletteColor));
-    }
+    setBrush(QBrush(UBSettings::paletteColor));
 
     painter->fillPath(path, brush());
 }

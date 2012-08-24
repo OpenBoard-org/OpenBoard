@@ -670,11 +670,6 @@ UBGraphicsAppleWidgetItem::~UBGraphicsAppleWidgetItem()
     /* NOOP */
 }
 
-int UBGraphicsAppleWidgetItem::type() const
-{
-    return Type;
-}
-
 void UBGraphicsAppleWidgetItem::setUuid(const QUuid &pUuid)
 {
     UBItem::setUuid(pUuid);
@@ -869,11 +864,6 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
 UBGraphicsW3CWidgetItem::~UBGraphicsW3CWidgetItem()
 {
     /* NOOP */
-}
-
-int UBGraphicsW3CWidgetItem::type() const
-{
-    return Type;
 }
 
 void UBGraphicsW3CWidgetItem::setUuid(const QUuid &pUuid)

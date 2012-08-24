@@ -2334,20 +2334,12 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
             {
                 switch (item->type())
                 {
-                case UBGraphicsW3CWidgetItem::Type:
+                case UBGraphicsWidgetItem::Type:
                     {
                         UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
                         if (0 != wc3_widget)
                         if (!wc3_widget->hasFocus())
                             wc3_widget->remove();
-                        break;
-                    }
-                case UBGraphicsAppleWidgetItem::Type:
-                    {
-                        UBGraphicsAppleWidgetItem *Apple_widget = dynamic_cast<UBGraphicsAppleWidgetItem*>(item);
-                        if (0 !=Apple_widget)
-                        if (!Apple_widget->hasFocus())
-                            Apple_widget->remove();
                         break;
                     }
                 case UBGraphicsTextItem::Type:
