@@ -54,6 +54,8 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBItem.h"
 #include "board/UBFeaturesController.h"
+#include "domain/UBGraphicsStrokesGroup.h"
+
 #include "gui/UBFeaturesWidget.h"
 
 #include "tools/UBToolsManager.h"
@@ -536,6 +538,8 @@ void UBBoardController::duplicateItem(UBItem *item)
     if (!item)
         return;
 
+    mLastCreatedItem = NULL;
+
     QUrl sourceUrl;
     QByteArray pData;
 
@@ -612,9 +616,8 @@ void UBBoardController::duplicateItem(UBItem *item)
     			UBItem* pItem = dynamic_cast<UBItem*>(pIt);
     			if(NULL != pItem){
     				duplicateItem(pItem);	// The duplication already copies the item parameters
-    				QGraphicsItem* pDuplicatedItem = dynamic_cast<QGraphicsItem*>((mActiveScene->children().last()));
-    				if(NULL != pDuplicatedItem){
-    					pDuplicatedItem->setSelected(true);
+    				if(NULL != mLastCreatedItem){
+    					mLastCreatedItem->setSelected(true);
     				}
     			}
     		}
@@ -630,8 +633,10 @@ void UBBoardController::duplicateItem(UBItem *item)
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
             if (gitem)
             {   
+            	qDebug() << "Adding a stroke: " << gitem;
                 mActiveScene->addItem(gitem);
                 gitem->setPos(itemPos);
+                mLastCreatedItem = gitem;
             }
             return;
         }break;
@@ -646,7 +651,8 @@ void UBBoardController::duplicateItem(UBItem *item)
         QGraphicsItem *createdGitem = dynamic_cast<QGraphicsItem*>(createdItem);
         if (createdGitem)
             createdGitem->setPos(itemPos);
-    } 
+        mLastCreatedItem = dynamic_cast<QGraphicsItem*>(createdItem);
+    }
 }
 
 void UBBoardController::deleteScene(int nIndex)
