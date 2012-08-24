@@ -14,6 +14,15 @@ QWidget#UBFeaturesCentralWidget
 	border: 2px solid #999999;
 }
 
+QTextEdit,
+QLineEdit,
+QComboBox#DockPaletteWidgetComboBox QAbstractItemView
+{
+    selection-background-color: lightgreen;
+    selection-color: black;
+}
+
+
 QWidget#mAdditionalDataContainer
 {
 	border-radius: 10px;
