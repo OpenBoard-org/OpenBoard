@@ -457,7 +457,6 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpLayout->addWidget(mpTreeWidget);
 
     mpRootWidgetItem = mpTreeWidget->invisibleRootItem();
-    mpTreeWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mpTreeWidget->setDragEnabled(true);
     mpTreeWidget->setRootIsDecorated(false);
     mpTreeWidget->setIndentation(0);
