@@ -1237,7 +1237,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         {
             UBGraphicsWidgetItem *widgetItem = mActiveScene->addW3CWidget(QUrl::fromLocalFile(widgetUrl), pPos);
             widgetItem->setUuid(QUuid::createUuid());
-            widgetItem->setSourceUrl(sourceUrl);
+            widgetItem->setSourceUrl(QUrl::fromLocalFile(widgetUrl));
 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
