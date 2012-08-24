@@ -154,7 +154,12 @@ UBItem* UBGraphicsPolygonItem::deepCopy() const
 
 UBGraphicsPolygonItem* UBGraphicsPolygonItem::deepCopy(const QPolygonF& pol) const
 {
-    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(pol);
+    QPolygonF p(pol);
+    if (parentItem()!=NULL)
+    {
+        p = mapToItem(parentItem(), p);
+    }
+    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(p, parentItem());
 
     copyItemParameters(copy);
 
