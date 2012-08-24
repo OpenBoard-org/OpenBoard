@@ -800,10 +800,6 @@
         <translation>导入以前的Sankore或Uniboard文件</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -821,6 +817,10 @@
     </message>
     <message>
         <source>Remove the backgound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -865,21 +865,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>回收站</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>/主页</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>载入中……</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,6 +932,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>所有支持的（%1）</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1164,12 +1167,20 @@
         <translation>文件%1已保存</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>导入%2的页面%1</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>图片数据错误，跳过文件%1</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">导入成功</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1240,6 +1251,13 @@
     <message>
         <source>Cancel</source>
         <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1421,6 +1439,53 @@
         <source>ImportedImage</source>
         <translation type="unfinished">已导入图片</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">音频</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">视频</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">图片</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">动画</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">互动</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">应用程序</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">形状</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">回收站</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1453,6 +1518,24 @@
     <message>
         <source>Editable</source>
         <translation>可编辑</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">网页</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">载入中……</translation>
     </message>
 </context>
 <context>
@@ -1514,14 +1597,6 @@
         <source>Image Format (</source>
         <translation>图片格式</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>图片导入失败.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>图片导入成功</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1536,10 +1611,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>正在导入%2的页面%1</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>PDF导入成功</translation>
     </message>
 </context>
 <context>
@@ -1568,120 +1639,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>添加至收藏夹</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>分享</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>搜索</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>删除</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>返回上级文件夹</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>从收藏夹中移除</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>新建文件夹</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>添加至页面</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>设置为背景</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>添加至图书馆</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>素材信息</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>添加一个图片至图书馆</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>音频</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>视频</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>图片</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>形状</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>应用程序</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>收藏</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>为图像%1创建缩略图</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>添加项目%1至页面失败</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>互动</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>已导入图片</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>动画</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>网页搜索</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1694,6 +1651,13 @@
     <message>
         <source>Ok</source>
         <translation>确定</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">关闭</translation>
     </message>
 </context>
 <context>
@@ -1729,25 +1693,6 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>No</source>
         <translation>否</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>添加新文件夹</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>新文件夹名</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>添加</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -1909,6 +1854,14 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>我的视频</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2186,13 +2139,6 @@ Please reboot the application to access the updated documents.</source>
     <message>
         <source>Remind me later</source>
         <translation>稍后再提醒我</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>网页</translation>
     </message>
 </context>
 <context>

@@ -804,10 +804,6 @@
         <translation>Importuj stare dokumenty Sankore lub Uniboard</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -825,6 +821,10 @@
     </message>
     <message>
         <source>Remove the backgound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -869,21 +869,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>Kosz</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>/Strona główna</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>Wczytywanie...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -945,6 +936,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Wszystkie obsługiwane (%1)</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1170,12 +1173,20 @@
         <translation>Plik %1 zapisany</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>Importowanie strony %1 z %2</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>Błędne dane obrazu. Pomijanie pliku %1</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">Importowanie zakończone powodzeniem.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1249,6 +1260,13 @@
     <message>
         <source>Cancel</source>
         <translation>Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1430,6 +1448,53 @@
         <source>ImportedImage</source>
         <translation type="unfinished">ImportowanyObraz</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">Nagrania</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">Filmy</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">Obrazy</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">Animacje</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">Interakcje</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">Aplikacje</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">Kształty</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Kosz</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1462,6 +1527,24 @@
     <message>
         <source>Editable</source>
         <translation>Edytowalne</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">Sieć Web</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">Wczytywanie...</translation>
     </message>
 </context>
 <context>
@@ -1523,14 +1606,6 @@
         <source>Image Format (</source>
         <translation>Format obrazu (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>Importowanie obrazu zakończone niepowodzeniem.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>Importowanie obrazu zakończone powodzeniem.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1545,10 +1620,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>Importowanie strony %1 z %2</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>Importowanie PDF zakończone powodzeniem.</translation>
     </message>
 </context>
 <context>
@@ -1577,120 +1648,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>Dodaj do ulubionych</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>Udostępniaj</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Szukaj</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Usuń</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>Powrót do folderu</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>Usuń z ulubionych</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>Utwórz nowy folder</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>Dodaj do strony</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>Ustaw jako tło</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>Dodaj do biblioteki</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>Informacje o obiekcie</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>Dodano 1 obraz do biblioteki</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>Nagrania</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>Filmy</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>Obrazy</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>Kształty</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>Aplikacje</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>Ulubione</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>Tworzenie miniatury obrazu dla %1.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>Dodawanie do strony zakończone niepowodzeniem dla elementu %1.</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>Interakcje</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>ImportowanyObraz</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>Animacje</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>Wyszukiwanie w sieci</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1703,6 +1660,13 @@
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zamknij</translation>
     </message>
 </context>
 <context>
@@ -1738,25 +1702,6 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     <message>
         <source>No</source>
         <translation>Nie</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>Dodaj nowy folder</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>Nazwa nowego folderu:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>Dodaj</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
     </message>
 </context>
 <context>
@@ -1918,6 +1863,14 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     <message>
         <source>My Movies</source>
         <translation>Moje filmy</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2195,13 +2148,6 @@ Aby uzyskać dostęp do zaktualizowanych dokumentów, należy ponownie uruchomi�
     <message>
         <source>Remind me later</source>
         <translation>Przypomnij mi później</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>Sieć Web</translation>
     </message>
 </context>
 <context>

@@ -800,10 +800,6 @@
         <translation>Importeer oude Sankoré of Uniboarddocumenten</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation>Groep onderdelen</translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation>groep onderdelen</translation>
     </message>
@@ -822,6 +818,10 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Achtyergrond verwijderen</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -865,21 +865,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>Prullenbak</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>/Homepage</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>Wordt geladen...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,6 +932,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Alle ondersteunden (%1)</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1165,12 +1168,20 @@
         <translation>Bestand %1 opgeslagen</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>Pagina %1 op %2 wordt geïmporteerd</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>Fout in beeldgegevens, bestand %1 wordt overgeslagen</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">Import gelukt.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1242,6 +1253,13 @@
     <message>
         <source>Cancel</source>
         <translation>Annuleren</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1423,6 +1441,53 @@
         <source>ImportedImage</source>
         <translation>Geïmporteerd beeld</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">Audio&apos;s</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">Films</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">Foto&apos;s</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">Animaties</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">Interactiviteiten</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">Toepassingen</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">Vormen</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Prullenbak</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1455,6 +1520,24 @@
     <message>
         <source>Editable</source>
         <translation>Bewerkbaar</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">Wordt geladen...</translation>
     </message>
 </context>
 <context>
@@ -1516,14 +1599,6 @@
         <source>Image Format (</source>
         <translation>Beeldformaat (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>Beeld import mislukt.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>Beeld import gelukt.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1538,10 +1613,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>Importering van pagina %1 van %2 gelukt</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>PDF import gelukt.</translation>
     </message>
 </context>
 <context>
@@ -1570,120 +1641,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>Aan favorieten toevoegen</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>Delen</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Zoeken</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Verwijderen</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>Terug naar map</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>Uit favorieten verwijderen</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>Nieuwe map maken</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>Aan pagina toevoegen</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>Als achtergrond gebruiken</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>Aan bibliotheek toevoegen</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>Object informatie</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>1 beeld aan bibliotheek toegevoegd</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>Audio&apos;s</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>Films</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>Foto&apos;s</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>Vormen</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>Toepassingen</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>Favoriet</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>Miniatuur maken voor %1.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>Item %1 is niet aan pagina toegevoegd.</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>Interactiviteiten</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>Geïmporteerd beeld</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>Animaties</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>Web zoekopdracht</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1696,6 +1653,13 @@
     <message>
         <source>Ok</source>
         <translation>OK</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Sluiten</translation>
     </message>
 </context>
 <context>
@@ -1725,25 +1689,6 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>No</source>
         <translation>Nee</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>Nieuwe map toevoegen</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>Nieuwe mapnaam:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>Toevoegen</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annuleren</translation>
     </message>
 </context>
 <context>
@@ -1905,6 +1850,14 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>Mijn films</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2181,13 +2134,6 @@ Please reboot the application to access the updated documents.</source>
     <message>
         <source>Remind me later</source>
         <translation></translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>Internet</translation>
     </message>
 </context>
 <context>

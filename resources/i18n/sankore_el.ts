@@ -800,10 +800,6 @@
         <translation>Εισαγωγή παλαιών εγγράφων Sankore ή Uniboard</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation>Ομαδοποίηση αντικειμένων</translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation>Ομαδοποίηση αντικειμένων</translation>
     </message>
@@ -822,6 +818,10 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Αφαίρεση παρασκηνίου</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -865,21 +865,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>Κάδος ανακύκλωσης</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>/Αρχική</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>Φόρτωση...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,6 +932,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Όλα προστατευόμενα (%1)</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1165,12 +1168,20 @@
         <translation>Το αρχείο %1 αποθηκεύτηκε</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>Εισαγωγή σελίδας %1 από %2</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>Εσφαλμένα δεδομένα εικόνας. Παράλειψη αρχείου %1.</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">Επιτυχημένη εισαγωγή</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1242,6 +1253,13 @@
     <message>
         <source>Cancel</source>
         <translation>Άκυρο</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1423,6 +1441,53 @@
         <source>ImportedImage</source>
         <translation>Εισηγμένη εικόνα</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">Ήχοι</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">Ταινίες</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">Εικόνες</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">Κινούμενες αποτυπώσεις</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">Διαδραστικά εφαρμογίδια</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">Εφαρμογές</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">Σχήματα</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Κάδος ανακύκλωσης</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1455,6 +1520,24 @@
     <message>
         <source>Editable</source>
         <translation>Επεξεργάσιμο</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">Φόρτωση...</translation>
     </message>
 </context>
 <context>
@@ -1516,14 +1599,6 @@
         <source>Image Format (</source>
         <translation>Μορφή εικόνας (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>Η εισαγωγή της εικόνας απέτυχε</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>Η εισαγωγή της εικόνας πέτυχε</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1538,10 +1613,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>Εισαγωγή σελίδας %1 από %2</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>Επιτυχημένη εισαγωγή PDF</translation>
     </message>
 </context>
 <context>
@@ -1570,120 +1641,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>Προσθήκη στα αγαπημένα</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>Διαμοιρασμός</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Αναζήτηση</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Διαγραφή</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>Επιστροφή στον φάκελο</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>Αφαίρεση από τα αγαπημένα</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>Δημουργία νέου φακέλου</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>Προσθήκη σε σελίδα</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>Ορισμός ως παρασκήνιο</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>Προσθήκη στη βιβλιοθήκη</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>Πληροφορίες αντικειμένου</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>Μία εικόνα προστέθηκε στη βιβλιοθήκη</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>Ήχοι</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>Ταινίες</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>Εικόνες</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>Σχήματα</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>Εφαρμογές</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>Αγαπημένο</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>Δημιουργία μικρογραφίας για το %1</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>Η εισαγωγή του αντικειμένου %1 στη σελίδα απέτυχε</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>Διαδραστικά εφαρμογίδια</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>Εισηγμένη εικόνα</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>Κινούμενες αποτυπώσεις</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>Αναζήτηση Διαδικτύου</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1696,6 +1653,13 @@
     <message>
         <source>Ok</source>
         <translation>Εντάξει</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1731,25 +1695,6 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>No</source>
         <translation>Όχι</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>Προσθήκη νέου φακέλου</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>Όνομα νέου φακέλου:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>Προσθήκη</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Άκυρο</translation>
     </message>
 </context>
 <context>
@@ -1911,6 +1856,14 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>Οι ταινίες μου</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2188,13 +2141,6 @@ Please reboot the application to access the updated documents.</source>
     <message>
         <source>Remind me later</source>
         <translation>Υπενθύμιση αργότερα</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>Διαδίκτυο</translation>
     </message>
 </context>
 <context>

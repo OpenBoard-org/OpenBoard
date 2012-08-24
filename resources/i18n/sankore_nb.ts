@@ -802,10 +802,6 @@
         <translation>Importer gamle Sankore eller Uniboard-dokumenter</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -823,6 +819,10 @@
     </message>
     <message>
         <source>Remove the backgound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -867,21 +867,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>Søppel</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>/Hjem</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>Laster ...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -943,6 +934,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Alle støttede (%1)</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1168,12 +1171,20 @@
         <translation>Fil %1 lagret</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>Importerer side %1 av %2</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>Feil bildedata, ignorerer fil %1</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">Importering gjennomført.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1245,6 +1256,13 @@
     <message>
         <source>Cancel</source>
         <translation>Avbryt</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1426,6 +1444,53 @@
         <source>ImportedImage</source>
         <translation type="unfinished">Importert bilde</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">Lydfiler</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">Filmer</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">Bilder</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">Animasjoner</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">Interaktivitet</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">Applikasjoner</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">Former</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Søppel</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1458,6 +1523,24 @@
     <message>
         <source>Editable</source>
         <translation>Redigerbar</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">Web</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">Laster ...</translation>
     </message>
 </context>
 <context>
@@ -1519,14 +1602,6 @@
         <source>Image Format (</source>
         <translation>Bildeformat (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>Importering av bilde mislyktes.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>Importering av bilde gjennomført.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1541,10 +1616,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>Importerer side %1 av %2</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>Importering av bilde gjennomført.</translation>
     </message>
 </context>
 <context>
@@ -1574,120 +1645,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>Legg til favoritter</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>Del</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Søk</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Slett</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>Tilbake til mappe</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>Fjern fra favoritter</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>Opprett ny mappe</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>Legg til side</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>Bruk som bakgrunn</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>Legg til bibliotek</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>Objektopplysninger</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>1 bilde lagt til i biblioteket</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>Lydfiler</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>Filmer</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>Bilder</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>Former</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>Applikasjoner</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>Favoritt</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>Oppretter miniatyrbilde for %1.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>Enhet %1 kunne ikke legges til bilde.</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>Interaktivitet</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>Importert bilde</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>Animasjoner</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>Nettsøk</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1700,6 +1657,13 @@
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Avslutt</translation>
     </message>
 </context>
 <context>
@@ -1729,25 +1693,6 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>No</source>
         <translation>Nei</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>Legg til ny mappe</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>Ny mappes navn:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>Legg</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Kanseller</translation>
     </message>
 </context>
 <context>
@@ -1909,6 +1854,14 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>Mine filmer</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2185,13 +2138,6 @@ Please reboot the application to access the updated documents.</source>
     <message>
         <source>Remind me later</source>
         <translation>Minn meg på det senere</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
     </message>
 </context>
 <context>
