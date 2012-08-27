@@ -582,6 +582,12 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
             boardController->controlView()->forcedTabletRelease();
     }
 
+
+    if (event->type() == QEvent::ApplicationActivate)
+    {
+        boardController->controlView()->setMultiselection(false);
+    }
+
 #ifdef Q_WS_MAC
     if (bIsMinimized && event->type() == QEvent::ApplicationActivate){
         if (mainWindow->isHidden()) mainWindow->show();

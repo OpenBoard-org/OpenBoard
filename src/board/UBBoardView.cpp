@@ -214,7 +214,7 @@ UBBoardView::keyPressEvent (QKeyEvent *event)
         case Qt::Key_Control:
         case Qt::Key_Shift:
           {
-            mMultipleSelectionIsEnabled = true;
+            setMultiselection(true);
           }break;
         }
 
@@ -274,6 +274,10 @@ UBBoardView::keyPressEvent (QKeyEvent *event)
             }
         }
     }
+
+    // if ctrl of shift was pressed combined with other keys - we need to disable multiple selection.
+    if (event->isAccepted())
+        setMultiselection(false);
 }
 
 
@@ -284,7 +288,7 @@ void UBBoardView::keyReleaseEvent(QKeyEvent *event)
         if (Qt::Key_Shift == event->key()
           ||Qt::Key_Control == event->key())
         {
-            mMultipleSelectionIsEnabled = false;
+            setMultiselection(false);
         }
     }
 
@@ -459,7 +463,7 @@ void UBBoardView::handleItemsSelection(QGraphicsItem *item)
     
         
         // if we need to uwe multiple selection - we shouldn't deselect other items.
-        if (!mMultipleSelectionIsEnabled)
+        if (!isMultipleSelectionEnabled())
         {
             // here we need to determine what item is pressed. We should work
             // only with UB items.
@@ -694,7 +698,7 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
 
     handleItemsSelection(movingItem);
 
-    if (mMultipleSelectionIsEnabled)
+    if (isMultipleSelectionEnabled())
         return;
 
     if (itemShouldReceiveMousePressEvent(movingItem))
@@ -790,6 +794,11 @@ void UBBoardView::moveRubberedItems(QPointF movingVector)
     }
 
     scene()->invalidate(invalidateRect);
+}
+
+void UBBoardView::setMultiselection(bool enable)
+{
+    mMultipleSelectionIsEnabled = enable;
 }
 
 void UBBoardView::longPressEvent()
@@ -1090,7 +1099,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 !(movingItem->parentItem() && UBGraphicsW3CWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
              {
                  bReleaseIsNeed = false;
-                 if (movingItem->isSelected() && mMultipleSelectionIsEnabled)
+                 if (movingItem->isSelected() && isMultipleSelectionEnabled())
                     movingItem->setSelected(false);
                  else
                  {
