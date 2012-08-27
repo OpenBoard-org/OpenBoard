@@ -147,7 +147,8 @@ struct UBGraphicsItemType
         cacheItemType,
         groupContainerType,
         ToolWidgetItemType,
-        GraphicsWidgetItemType
+        GraphicsWidgetItemType,
+        UserTypesCount // this line must be the last line in this enum because it is types counter.
     };
 };
 
