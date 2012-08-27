@@ -524,14 +524,13 @@ Here we determines cases when items should to get mouse press event at pressing 
         break;
 
     // Groups shouldn't reacts on any presses and moves for Play tool.
+    case UBGraphicsStrokesGroup::Type:
     case UBGraphicsGroupContainerItem::Type:
         if(currentTool == UBStylusTool::Play)
         {
             movingItem = NULL;
-            return false;
         }
-        else
-            return true;
+        return false;
         break;
 
     case QGraphicsWebView::Type:
@@ -574,10 +573,8 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
         return true;
     }
 
-    if (!dynamic_cast<UBGraphicsItem*>(item))
-        return true;
-    else
-        return false;
+    return false;
+
 }
 
 bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
@@ -635,8 +632,11 @@ QGraphicsItem* UBBoardView::determineItemToPress(QGraphicsItem *item)
         if (item->parentItem() && UBGraphicsStrokesGroup::Type == item->type())
             return item->parentItem();
         
-        // if item is on group and froup is not selected - group should take press.
-        if (UBStylusTool::Selector == currentTool && item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type() && !item->parentItem()->isSelected()) 
+        // if item is on group and group is not selected - group should take press.
+        if (UBStylusTool::Selector == currentTool 
+            && item->parentItem() 
+            && UBGraphicsGroupContainerItem::Type == item->parentItem()->type() 
+            && !item->parentItem()->isSelected()) 
             return item->parentItem();
 
         // items like polygons placed in two groups nested, so we need to recursive call.
@@ -694,8 +694,7 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     // Determining item who will take mouse press event 
     //all other items will be deselected and if all item will be deselected, then
     // wrong item can catch mouse press. because selected items placed on the top
-    QGraphicsItem *pressedItem = determineItemToPress(movingItem);
-
+    movingItem = determineItemToPress(movingItem);
     handleItemsSelection(movingItem);
 
     if (isMultipleSelectionEnabled())
@@ -1096,11 +1095,14 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                 UBToolWidget::Type != movingItem->type() &&
                 QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
-                !(movingItem->parentItem() && UBGraphicsW3CWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
+                !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
              {
                  bReleaseIsNeed = false;
                  if (movingItem->isSelected() && isMultipleSelectionEnabled())
                     movingItem->setSelected(false);
+                 else
+                 if (movingItem->parentItem() && movingItem->parentItem()->isSelected() && isMultipleSelectionEnabled())
+                    movingItem->parentItem()->setSelected(false);
                  else
                  {
                     if (movingItem->isSelected())
