@@ -1319,14 +1319,20 @@ void UBBoardView::dragMoveEvent(QDragMoveEvent *event)
 
 void UBBoardView::dropEvent (QDropEvent *event)
 {
-  if (!itemAt(event->pos().x(),event->pos().y())) {
-    if (!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBTGMediaWidget*>(event->source()) || dynamic_cast<QListView *>(event->source()) || dynamic_cast<UBTGDraggableTreeItem*>(event->source())) {
-        mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
-        event->acceptProposedAction();
+    QGraphicsItem *onItem = itemAt(event->pos().x(),event->pos().y());
+    if (onItem && onItem->type() == UBGraphicsWidgetItem::Type) {
+        QGraphicsView::dropEvent(event);
+    } else {
+        if (!event->source()
+                || qobject_cast<UBThumbnailWidget *>(event->source())
+                || qobject_cast<QWebView*>(event->source())
+                || qobject_cast<UBTGMediaWidget*>(event->source())
+                || qobject_cast<QListView *>(event->source())
+                || qobject_cast<UBTGDraggableTreeItem*>(event->source())) {
+            mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
+            event->acceptProposedAction();
+        }
     }
-  }
-  else
-    QGraphicsView::dropEvent(event);
 }
 
 void

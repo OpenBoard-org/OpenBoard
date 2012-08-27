@@ -87,6 +87,7 @@ public:
 
     qreal changeZLevelTo(QGraphicsItem *item, moveDestination dest);
     itemLayerType::Enum typeForData(QGraphicsItem *item) const;
+    void setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType);
 
 private:
     ScopeMap scopeMap;
