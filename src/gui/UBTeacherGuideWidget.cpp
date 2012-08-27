@@ -457,7 +457,6 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpLayout->addWidget(mpTreeWidget);
 
     mpRootWidgetItem = mpTreeWidget->invisibleRootItem();
-    mpTreeWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mpTreeWidget->setDragEnabled(true);
     mpTreeWidget->setRootIsDecorated(false);
     mpTreeWidget->setIndentation(0);
@@ -468,6 +467,10 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpTreeWidget->setIconSize(QSize(24,24));
     connect(mpTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
+#ifdef Q_WS_MAC
+    // on mac and with the custom qt the widget on the tree are not automatically relocated when using the vertical scrollbar. To relocate them we link the valueChange signal of the vertical scrollbar witht a local signal to trig a change and a repaint of the tree widget
+    connect(mpTreeWidget->verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(onSliderMoved(int)));
+#endif
 }
 
 UBTeacherGuidePresentationWidget::~UBTeacherGuidePresentationWidget()
@@ -483,6 +486,14 @@ UBTeacherGuidePresentationWidget::~UBTeacherGuidePresentationWidget()
     DELETEPTR(mpTreeWidget);
     DELETEPTR(mpLayout);
 }
+
+#ifdef Q_WS_MAC
+void UBTeacherGuidePresentationWidget::onSliderMoved(int size)
+{
+    Q_UNUSED(size);
+    mpMediaSwitchItem->setExpanded(true);
+}
+#endif
 
 bool UBTeacherGuidePresentationWidget::eventFilter(QObject* object, QEvent* event)
 {
@@ -553,7 +564,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
         }
         else if (element->name == "media") {
             createMediaButtonItem();
-            QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem( mpMediaSwitchItem);
+            QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpMediaSwitchItem);
             newWidgetItem->setIcon(0, QIcon( ":images/teacherGuide/" + element->attributes.value("mediaType") + "_24x24.svg"));
             newWidgetItem->setText(0, element->attributes.value("title"));
             newWidgetItem->setData(0, tUBTGTreeWidgetItemRole_HasAnAction, tUBTGActionAssociateOnClickItem_MEDIA);
@@ -570,7 +581,8 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
 
             QTreeWidgetItem* mediaItem = new QTreeWidgetItem(newWidgetItem);
             mediaItem->setData(0, tUBTGTreeWidgetItemRole_HasAnAction, tUBTGActionAssociateOnClickItem_NONE);
-            UBTGMediaWidget* mediaWidget = new UBTGMediaWidget(element->attributes.value("relativePath"), newWidgetItem);
+            qDebug() << element->attributes.value("mediaType");
+            UBTGMediaWidget* mediaWidget = new UBTGMediaWidget(element->attributes.value("relativePath"), newWidgetItem,0,element->attributes.value("mediaType").contains("flash"));
             newWidgetItem->setExpanded(false);
             mpTreeWidget->setItemWidget(mediaItem, 0, mediaWidget);
         }

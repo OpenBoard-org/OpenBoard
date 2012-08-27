@@ -800,10 +800,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -821,6 +817,10 @@
     </message>
     <message>
         <source>Remove the backgound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -865,21 +865,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>휴지통</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>/홈</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>불러오는 중 ...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,6 +932,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>모든 지원 형식 (%1)</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1164,12 +1167,20 @@
         <translation>%1 파일 저장됨</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>%1/%2 페이지 가져오는 중</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>잘못된 이미지 데이터, %1 파일 건너뜀</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">가져오기 완료.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1240,6 +1251,13 @@
     <message>
         <source>Cancel</source>
         <translation type="unfinished">취소</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1421,6 +1439,53 @@
         <source>ImportedImage</source>
         <translation type="unfinished">가져온 이미지</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">오디오</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">동영상</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">사진</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">애니메이션</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">대화형 작업</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">응용 프로그램</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">도형</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">휴지통</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1453,6 +1518,24 @@
     <message>
         <source>Editable</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">웹</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">불러오는 중 ...</translation>
     </message>
 </context>
 <context>
@@ -1514,14 +1597,6 @@
         <source>Image Format (</source>
         <translation>이미지 형식 (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>이미지 가져오기 실패.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>이미지 가져오기 완료.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1536,10 +1611,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>%1/%2 페이지 가져오는 중</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>PDF 가져오기 완료.</translation>
     </message>
 </context>
 <context>
@@ -1568,120 +1639,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>즐겨찾기에 추가</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>공유</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>검색</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>삭제</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>폴더로 돌아가기</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>즐겨찾기에서 제거</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>새 폴더 만들기</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>페이지에 추가</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>배경으로 지정</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>라이브러리에 추가</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>객체 정보</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>라이브러리에 이미지 1개 추가됨</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>오디오</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>동영상</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>사진</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>도형</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>응용 프로그램</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>즐겨찾기</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>%1의 이미지 썸네일 생성 중.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>%1 항목의 페이지 추가 실패.</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>대화형 작업</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>가져온 이미지</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>애니메이션</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1694,6 +1651,13 @@
     <message>
         <source>Ok</source>
         <translation>확인</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">닫기</translation>
     </message>
 </context>
 <context>
@@ -1729,25 +1693,6 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>No</source>
         <translation>아니요</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>새 폴더 추가</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>새 폴더 이름:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>추가</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>취소</translation>
     </message>
 </context>
 <context>
@@ -1909,6 +1854,14 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>내 동영상</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2186,13 +2139,6 @@ Please reboot the application to access the updated documents.</source>
     <message>
         <source>Remind me later</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>웹</translation>
     </message>
 </context>
 <context>

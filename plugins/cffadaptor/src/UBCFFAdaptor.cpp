@@ -919,7 +919,7 @@ bool UBCFFAdaptor::UBToCFFConverter::ibwAddLine(int x1, int y1, int x2, int y2, 
     QDomElement svgBackgroundCrossPart = doc.createElementNS(svgIWBNS,svgIWBNSPrefix + ":line");
     QDomElement iwbBackgroundCrossPart = doc.createElementNS(iwbNS,iwbNsPrefix + ":" + tElement);
 
-    QString sUUID = QUuid::createUuid().toString().remove("{").remove("}");
+    QString sUUID = QUuid::createUuid().toString();
 
     svgBackgroundCrossPart.setTagName(tIWBLine);
 
@@ -1061,7 +1061,7 @@ bool UBCFFAdaptor::UBToCFFConverter::setContentFromUBZ(const QDomElement &ubzEle
     QString sSrcFileName = sourcePath + "/" + srcPath ;
     QString fileExtention = getExtentionFromFileName(sSrcFileName);
     QString sDstContentFolder = getDstContentFolderName(ubzElement.tagName());
-    QString sDstFileName(QString(QUuid::createUuid().toString()+"."+convertExtention(fileExtention)).remove("{").remove("}"));
+    QString sDstFileName(QString(QUuid::createUuid().toString()+"."+convertExtention(fileExtention)));
 
 
     if (itIsSupportedFormat(fileExtention)) // format is supported and we can copy src. files without changing.
@@ -1268,7 +1268,7 @@ bool UBCFFAdaptor::UBToCFFConverter::setCFFAttribute(const QString &attributeNam
             QString id = tl.at(tl.count()-1);
             // if element already have an ID, we use it. Else we create new id for element.
             if (QString() == id)
-                id = QUuid::createUuid().toString().remove("{").remove("}");
+                id = QUuid::createUuid().toString();
 
             svgElement.setAttribute(aID, id);  
             iwbElement.setAttribute(aRef, id);
@@ -1382,11 +1382,9 @@ bool UBCFFAdaptor::UBToCFFConverter::createBackground(const QDomElement &element
     if (0 <= mViewbox.topLeft().y())
         bckRect.topLeft().setY(0);
 
-//    QString backgroundImagePath = createBackgroundImage(element, QSize(bckRect.width(), bckRect.height()));
-//    if (QString() != backgroundImagePath)
     if (QRect() != bckRect)
     {     
-        QString sElementID = QUuid::createUuid().toString().remove("{").remove("}");
+        QString sElementID = QUuid::createUuid().toString();
 
         bool darkBackground = (avTrue == element.attribute(aDarkBackground));    
         svgBackgroundElementPart.setAttribute(aFill, darkBackground ? "black" : "white");
@@ -1635,7 +1633,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZAudio(const QDomElement &element, Q
         //we must create image-containers for audio files
         int audioImageDimention = qMin(svgElementPart.attribute(aWidth).toInt(), svgElementPart.attribute(aHeight).toInt());
         QString srcAudioImageFile(sAudioElementImage);
-        QString elementId = QString(QUuid::createUuid().toString()).remove("{").remove("}");
+        QString elementId = QString(QUuid::createUuid().toString());
         QString sDstAudioImageFileName = elementId+"."+fePng;
         QString dstAudioImageFilePath = destinationPath+"/"+cfImages+"/"+sDstAudioImageFileName;
         QString dstAudioImageRelativePath = cfImages+"/"+sDstAudioImageFileName;
@@ -1793,7 +1791,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZPolygon(const QDomElement &element,
 
         if (0 < iwbElementPart.attributes().count())
         {   
-            QString id = QUuid::createUuid().toString().remove("{").remove("}");
+            QString id = QUuid::createUuid().toString();
             svgElementPart.setAttribute(aID, id);
             iwbElementPart.setAttribute(aRef, id);     
 
@@ -1826,7 +1824,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZPolyline(const QDomElement &element
 
         if (0 < iwbElementPart.attributes().count())
         {
-            QString id = QUuid::createUuid().toString().remove("{").remove("}");
+            QString id = QUuid::createUuid().toString();
             svgElementPart.setAttribute(aID, id);
             iwbElementPart.setAttribute(aRef, id);
 
@@ -1858,7 +1856,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZLine(const QDomElement &element, QM
 
         if (0 < iwbElementPart.attributes().count())
         {
-            QString id = QUuid::createUuid().toString().remove("{").remove("}");
+            QString id = QUuid::createUuid().toString();
             svgElementPart.setAttribute(aID, id);
             iwbElementPart.setAttribute(aRef, id);
 

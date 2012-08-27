@@ -800,10 +800,6 @@
         <translation>Importa documents antics de l&apos;Uniboard o del Sankoré</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation>Agrupa elements</translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation>Agrupa elements</translation>
     </message>
@@ -822,6 +818,10 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Elimina el fons</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -865,21 +865,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>Paperera</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation type="unfinished">/Inici</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>S&apos;està carregant...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,6 +932,18 @@
     <message>
         <source>Unknown content type %1</source>
         <translation>Tipus desconegut de contingut %1</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1166,12 +1169,20 @@
         <translation>S&apos;ha desat el fitxer %1</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>S&apos;està important la pàgina %1 de %2</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>La imatge conté dades errònies, s&apos;ometrà el fitxer %1</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">La importació ha estat correcta.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1244,6 +1255,13 @@
     <message>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1425,6 +1443,53 @@
         <source>ImportedImage</source>
         <translation type="unfinished">ImportedImage</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">Àudios</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">Pel·lícules</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">Imatges</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">Animacions</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">Interactivitats</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">Aplicacions</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">Formes</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Paperera</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1457,6 +1522,24 @@
     <message>
         <source>Editable</source>
         <translation>Editable</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">Web</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">S&apos;està carregant...</translation>
     </message>
 </context>
 <context>
@@ -1518,14 +1601,6 @@
         <source>Image Format (</source>
         <translation>Format d&apos;imatge (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>Ha fallat la importació de la imatge.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>La importació de la imatge ha estat correcta.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1540,10 +1615,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>S&apos;està important la pàgina %1 de %2</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>La importació del PDF ha estat correcta.</translation>
     </message>
 </context>
 <context>
@@ -1572,120 +1643,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>Afegeix als llocs d&apos;interès</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>Comparteix</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Cerca</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Esborra</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>Torna a la carpeta</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>Elimina dels llocs d&apos;interès</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>Crea una carpeta nova</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>Afegeix a la pàgina</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>Estableix com a fons</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>Afegeix a la biblioteca</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>Informacions de l&apos;objecte</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>S&apos;ha afegit una imatge a la biblioteca</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>Àudios</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>Pel·lícules</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>Imatges</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>Formes</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>Aplicacions</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>Preferits</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>S&apos;està creant la miniatura de la imatge per a %1.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>Ha fallat l&apos;acció d&apos;afegir l&apos;element %1 a la pàgina.</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>Interactivitats</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>ImportedImage</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>Animacions</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>Cerca a la Web</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1698,6 +1655,13 @@
     <message>
         <source>Ok</source>
         <translation>D&apos;acord</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Tanca</translation>
     </message>
 </context>
 <context>
@@ -1733,25 +1697,6 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
     <message>
         <source>No</source>
         <translation>No</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>Afegeix una carpeta nova</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>Nom de la carpeta nova:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>Afegeix</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Canceŀla</translation>
     </message>
 </context>
 <context>
@@ -1913,6 +1858,14 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
     <message>
         <source>My Movies</source>
         <translation>Les meves pel·lícules</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2185,13 +2138,6 @@ Reinicieu l&apos;aplicació per accedir als documents actualitzats.</translation
     <message>
         <source>Remind me later</source>
         <translation>Recorda-m&apos;ho després</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
     </message>
 </context>
 <context>

@@ -304,7 +304,7 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
     setMinimumHeight(250);
 }
 
-UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWidget* parent,const char* name): QStackedWidget(parent)
+UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWidget* parent,bool forceFlashMediaType,const char* name): QStackedWidget(parent)
   , mpTreeWidgetItem(widget)
   , mpDropMeWidget(NULL)
   , mpWorkWidget(NULL)
@@ -320,7 +320,7 @@ UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWi
     setObjectName(name);
     mMediaPath = UBApplication::boardController->selectedDocument()->persistencePath()+ "/" + mediaPath;
     setAcceptDrops(false);
-    createWorkWidget();
+    createWorkWidget(forceFlashMediaType);
     setFixedHeight(200);
 }
 
@@ -343,8 +343,7 @@ void UBTGMediaWidget::initializeWithDom(QDomElement element)
     mIsInitializationMode = true;
     setAcceptDrops(false);
     mMediaPath = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + element.attribute("relativePath");
-    qDebug() << mMediaPath;
-    createWorkWidget();
+    createWorkWidget(element.attribute("mediaType").contains("flash"));
     setFixedHeight(200);
     mpTitle->setInitialText(element.attribute("title"));
     mIsInitializationMode = false;
@@ -369,8 +368,12 @@ void UBTGMediaWidget::hideEvent(QHideEvent* event)
 void UBTGMediaWidget::showEvent(QShowEvent* event)
 {
     QWidget::showEvent(event);
-    if(mpWebView)
-        mpWebView->load(QUrl(mMediaPath + "/index.htm"));
+    if(mpWebView){
+        QString indexPath = mMediaPath+"/index.htm";
+        if(!QFile::exists(indexPath))
+            indexPath += "l";
+        mpWebView->load(QUrl::fromLocalFile(indexPath));
+    }
 }
 
 tUBGEElementNode* UBTGMediaWidget::saveData()
@@ -392,7 +395,7 @@ void UBTGMediaWidget::dragEnterEvent(QDragEnterEvent *event)
     event->accept();
 }
 
-void UBTGMediaWidget::createWorkWidget()
+void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
 {
     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mMediaPath);
     bool setMedia = true;
@@ -419,11 +422,10 @@ void UBTGMediaWidget::createWorkWidget()
         mpMediaLabelWidget->setPixmap(pixmap);
         mpMediaLabelWidget->setScaledContents(true);
     }
-    else if(mimeType.contains("application")){
+    else if(mimeType.contains("widget") && !forceFlashMediaType){
         mMediaType = "w3c";
         if(!(mIsPresentationMode || mIsInitializationMode)){
-            QDir baseW3CDirectory(UBPersistenceManager::persistenceManager()->teacherGuideAbsoluteObjectPath(proxyDocument));
-            mMediaPath = UBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(mMediaPath,baseW3CDirectory,mimeType,QSize(100,100),QUuid::createUuid());
+            mMediaPath = UBPersistenceManager::persistenceManager()->addWidgetToTeacherGuideDirectory(proxyDocument, mMediaPath);
         }
         mpWebView = new UBDraggableWeb(mMediaPath);
         mpWebView->setAcceptDrops(false);
@@ -434,8 +436,31 @@ void UBTGMediaWidget::createWorkWidget()
         mpWebView->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
         mpWebView->settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
         mpWebView->settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
-
-        mpWebView->load(QUrl(mMediaPath+"/index.htm"));
+        QString indexPath = mMediaPath+"/index.htm";
+        if(!QFile::exists(indexPath))
+            indexPath += "l";
+        mpWebView->load(QUrl::fromLocalFile(indexPath));
+    }
+    else if(mimeType.contains("x-shockwave-flash") || forceFlashMediaType){
+        mMediaType = "flash";
+        if(!(mIsPresentationMode || mIsInitializationMode)){
+            QDir baseW3CDirectory(UBPersistenceManager::persistenceManager()->teacherGuideAbsoluteObjectPath(proxyDocument));
+            mMediaPath = UBGraphicsW3CWidgetItem::createNPAPIWrapperInDir(mMediaPath,baseW3CDirectory,mimeType,QSize(100,100),QUuid::createUuid());
+        }
+        qDebug() << mMediaPath;
+        mpWebView = new UBDraggableWeb(mMediaPath);
+        mpWebView->setAcceptDrops(false);
+        mpWebView->settings()->setAttribute(QWebSettings::JavaEnabled, true);
+        mpWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+        mpWebView->settings()->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
+        mpWebView->settings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
+        mpWebView->settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
+        mpWebView->settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
+        mpWebView->settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+        QString indexPath = mMediaPath+"/index.htm";
+        if(!QFile::exists(indexPath))
+            indexPath += "l";
+        mpWebView->load(QUrl::fromLocalFile(indexPath));
     }
     else{
         qDebug() << "createWorkWidget mime type not handled" << mimeType;

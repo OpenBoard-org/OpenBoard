@@ -800,10 +800,6 @@
         <translation>Eski Sankore yada Uniboard Dökümanı İçeri Aktar</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation>Parçaları Grupla</translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation>Grup Parçaları</translation>
     </message>
@@ -822,6 +818,10 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Arkaplanı Kaldır</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -865,21 +865,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>Çöpe At</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>Ana Sayfa</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>Yükleniyor ...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,6 +932,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Tümü Desteklenir (%1)</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1164,12 +1167,20 @@
         <translation>%1 adlı dosya kaydedildi</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>%2 Sayfadan %1 İçeri aktarıldı</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>Hatalı resim verisi. %1 adlı dosya geçildi</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">İçe aktarım tamamlandı.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1241,6 +1252,13 @@
     <message>
         <source>Cancel</source>
         <translation>İptal</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1422,6 +1440,53 @@
         <source>ImportedImage</source>
         <translation>İçerAktarılanResim</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">Sesler</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">Videolar</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">Resimler</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">Animasyonlar</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">İnteraktiviteler</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">Uygulamalar</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">Şekiller</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1454,6 +1519,24 @@
     <message>
         <source>Editable</source>
         <translation>Düzenlenebilir</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">Web</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">Yükleniyor ...</translation>
     </message>
 </context>
 <context>
@@ -1515,14 +1598,6 @@
         <source>Image Format (</source>
         <translation>Resim Biçimi (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>Resim aktarımı başarısız oldu.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>Resim aktarımı tamamlandı.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1537,10 +1612,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>İçe aktarılan sayfa: %1 / %2</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>PDF dosyasının içe aktarımı tamamlandı.</translation>
     </message>
 </context>
 <context>
@@ -1569,120 +1640,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>Sık kullanılanlara ekle</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>Paylaş</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Ara</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Sil</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>Klasöre geri dön</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>Sık kullanılanlardan kaldır</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>Yeni klasör oluştur</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>Sayfaya ekle</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>Arkaplan olarak belirle</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>Kütüphaneye ekle</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>Nesne bilgisi</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>1 Resim Kütüphaneye Eklendi</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>Sesler</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>Videolar</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>Resimler</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>Şekiller</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>Uygulamalar</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>Sık Kullanılanlar</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>%1 İçin ufak resim oluşturuluyor.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>%1 nesnesinin sayfaya eklenmesi başarısız oldu.</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>İnteraktiviteler</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>İçeAktarılanResim</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>Animasyonlar</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>Web&apos;de Ara</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1695,6 +1652,13 @@
     <message>
         <source>Ok</source>
         <translation>Tamam</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Kapat</translation>
     </message>
 </context>
 <context>
@@ -1729,25 +1693,6 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     <message>
         <source>No</source>
         <translation>Hayır</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>Yeni klasör ekle</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>Yeni Klasör Adı:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>Ekle</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>İptal</translation>
     </message>
 </context>
 <context>
@@ -1909,6 +1854,14 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     <message>
         <source>My Movies</source>
         <translation>Filimlerim</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2186,13 +2139,6 @@ Güncellenen dökümanlara erişmek için uygulamayı yeniden başlatın.</trans
     <message>
         <source>Remind me later</source>
         <translation>Sonra hatırlat</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
     </message>
 </context>
 <context>

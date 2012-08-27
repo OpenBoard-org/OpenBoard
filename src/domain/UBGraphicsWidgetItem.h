@@ -46,6 +46,10 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
         UBGraphicsWidgetItem(const QUrl &pWidgetUrl = QUrl(), QGraphicsItem *parent = 0);
         ~UBGraphicsWidgetItem();
 
+        enum { Type = UBGraphicsItemType::GraphicsWidgetItemType };
+
+        virtual int type() const { return Type; }
+
         virtual void initialize();
 
         QUrl mainHtml();
@@ -179,15 +183,8 @@ class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
         ~UBGraphicsAppleWidgetItem();        
 
         virtual void copyItemParameters(UBItem *copy) const;
-        virtual int type() const;
         virtual void setUuid(const QUuid &pUuid);
         virtual UBItem* deepCopy() const;        
-
-        enum 
-        { 
-            Type = UBGraphicsItemType::AppleWidgetItemType 
-        };
-
 };
 
 class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
@@ -227,15 +224,9 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
                 QString version;
         };
 
-        enum 
-        { 
-            Type = UBGraphicsItemType::W3CWidgetItemType
-        };
-
         UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
         ~UBGraphicsW3CWidgetItem();        
 
-        virtual int type() const;
         virtual void setUuid(const QUuid &pUuid);
         virtual UBItem* deepCopy() const;
         virtual void copyItemParameters(UBItem *copy) const;
