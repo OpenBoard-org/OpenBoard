@@ -104,7 +104,7 @@ class UBWebController : public QObject
         void lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl>* pList);
         void checkForOEmbed(QString* pHtml);
 
-        QStackedWidget mStackedWidget[TotalNumberOfWebInstances];
+        QStackedWidget *mStackedWidget;
 
         UBMainWindow *mMainWindow;
 

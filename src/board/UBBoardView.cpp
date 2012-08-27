@@ -446,27 +446,32 @@ void UBBoardView::handleItemsSelection(QGraphicsItem *item)
             return;
             
         // delegate buttons shouldn't selected
-        if (DelegateButton::Type == movingItem->type())
+        if (DelegateButton::Type == item->type())
             return;
         
         // click on svg items (images on Frame) shouldn't change selection.
-        if (QGraphicsSvgItem::Type == movingItem->type())
+        if (QGraphicsSvgItem::Type == item->type())
             return;
 
         // Delegate frame shouldn't selected
-        if (UBGraphicsDelegateFrame::Type == movingItem->type())
+        if (UBGraphicsDelegateFrame::Type == item->type())
             return;
     
         
         // if we need to uwe multiple selection - we shouldn't deselect other items.
         if (!mMultipleSelectionIsEnabled)
         {
-            // if Item can be selected at mouse press - then we need to deselect all other items.
-            foreach(QGraphicsItem *iter_item, scene()->selectedItems())
+            // here we need to determine what item is pressed. We should work
+            // only with UB items.
+            if ((UBGraphicsItemType::UserTypesCount > item->type()) && (item->type() > QGraphicsItem::UserType))
             {
-                if (iter_item != item)
+                // if Item can be selected at mouse press - then we need to deselect all other items.
+                foreach(QGraphicsItem *iter_item, scene()->selectedItems())
                 {
-                    iter_item->setSelected(false);
+                    if (iter_item != item)
+                    {
+                        iter_item->setSelected(false);
+                    }
                 }
             }
         }
@@ -495,6 +500,10 @@ Here we determines cases when items should to get mouse press event at pressing 
 
     switch(item->type())
     {
+    case UBGraphicsDelegateFrame::Type:
+    case QGraphicsSvgItem::Type:
+        return true;
+
     case DelegateButton::Type:
     case UBGraphicsMediaItem::Type:
         return false;
@@ -521,6 +530,7 @@ Here we determines cases when items should to get mouse press event at pressing 
             return true;
         break;
 
+    case QGraphicsWebView::Type:
     case UBGraphicsWidgetItem::Type:
         if (currentTool == UBStylusTool::Selector && item->parentItem() && item->parentItem()->isSelected()) 
             return true;
@@ -529,9 +539,6 @@ Here we determines cases when items should to get mouse press event at pressing 
         if (currentTool == UBStylusTool::Play)
             return true;
         break;
-
-    default: 
-        return true;
     }
 
     return false;
@@ -561,12 +568,12 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
     case DelegateButton::Type:
     case UBGraphicsMediaItem::Type:
         return true;
-
-    default:
-        return false;
     }
 
-    return false;
+    if (!dynamic_cast<UBGraphicsItem*>(item))
+        return true;
+    else
+        return false;
 }
 
 bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
@@ -1066,7 +1073,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
       else 
       if (movingItem)
       {         
-          if (suspendedMousePressEvent && !movingItem->data(UBGraphicsItemData::ItemLocked).toBool())       
+          if (suspendedMousePressEvent)
           {
               QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
               movingItem = NULL;
