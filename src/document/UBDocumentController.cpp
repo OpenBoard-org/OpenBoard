@@ -551,8 +551,11 @@ void UBDocumentController::deleteSelectedItem()
         {
             if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Document"), tr("Are you sure you want to remove the document '%1'?").arg(proxyTi->proxy()->metaData(UBSettings::documentName).toString())))
             {
-                if (proxyTi->parent() == mTrashTi)
+                if (proxyTi->parent() != mTrashTi)
                 {
+                    // We have to move document into Trash
+                    // Select another document for processing
+                    // This is for Board, where this document can be selected
                     int index = proxyTi->parent()->indexOfChild(proxyTi);
                     index --;
 
@@ -560,7 +563,7 @@ void UBDocumentController::deleteSelectedItem()
                     {
                         if (proxyTi->proxy() == mBoardController->selectedDocument())
                         {
-                            selectDocument(((UBDocumentProxyTreeItem*)proxyTi->parent()->child(index))->proxy());
+                            selectDocument(((UBDocumentProxyTreeItem*)proxyTi->parent()->child(index))->proxy(), true);
                         }
                         else
                             proxyTi->parent()->child(index)->setSelected(true);
@@ -569,7 +572,7 @@ void UBDocumentController::deleteSelectedItem()
                     {
                         if (proxyTi->proxy() == mBoardController->selectedDocument())
                         {
-                            selectDocument(((UBDocumentProxyTreeItem*)proxyTi->parent()->child(1))->proxy());
+                            selectDocument(((UBDocumentProxyTreeItem*)proxyTi->parent()->child(1))->proxy(), true);
                         }
                         else
                             proxyTi->parent()->child(1)->setSelected(true);
@@ -578,30 +581,36 @@ void UBDocumentController::deleteSelectedItem()
                     {
                         if (proxyTi->proxy() == mBoardController->selectedDocument())
                         {
+                            bool documentFound = false;
                             for (int i = 0; i < mDocumentUI->documentTreeWidget->topLevelItemCount(); i++)
                             {
                                 QTreeWidgetItem* item = mDocumentUI->documentTreeWidget->topLevelItem(i);
                                 UBDocumentGroupTreeItem* groupItem = dynamic_cast<UBDocumentGroupTreeItem*>(item);
-                                if (groupItem != selectedDocumentGroupTreeItem() && groupItem->childCount() > 0)
+                                if (!groupItem->isTrashFolder())
                                 {
-                                    selectDocument(((UBDocumentProxyTreeItem*)groupItem->child(0))->proxy());
-                                    break;
+                                    for(int j=0; j<groupItem->childCount(); j++)
+                                    {
+                                        if (((UBDocumentProxyTreeItem*)groupItem->child(j))->proxy() != mBoardController->selectedDocument())
+                                        {
+                                            selectDocument(((UBDocumentProxyTreeItem*)groupItem->child(0))->proxy(), true);
+                                            documentFound = true;
+                                            break;
+                                        }
+                                    }
                                 }
+                                if (documentFound)
+                                    break;
+                            }
+                            if (!documentFound)
+                            {
+                                UBDocumentProxy *document = UBPersistenceManager::persistenceManager()->createDocument(groupTi->groupName());
+                                selectDocument(document, true);
                             }
                         }
                         else
                             proxyTi->parent()->setSelected(true);
                     }
 
-                    proxyTi->parent()->removeChild(proxyTi);
-
-                    UBPersistenceManager::persistenceManager()->deleteDocument(proxyTi->proxy());
-
-                    reloadThumbnails();
-                }
-                else
-                {
-                    // Move document to trash
                     QString oldGroupName = proxyTi->proxy()->metaData(UBSettings::documentGroupName).toString();
                     proxyTi->proxy()->setMetaData(UBSettings::documentGroupName, UBSettings::trashedDocumentGroupNamePrefix + oldGroupName);
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(proxyTi->proxy());
@@ -609,6 +618,14 @@ void UBDocumentController::deleteSelectedItem()
                     proxyTi->parent()->removeChild(proxyTi);
                     mTrashTi->addChild(proxyTi);
                     proxyTi->setFlags(proxyTi->flags() ^ Qt::ItemIsEditable);
+                }
+                else
+                {
+                    // We have to physical delete document
+                    // No action with selection required - document from Trash cant be selected in Board
+
+                    proxyTi->parent()->removeChild(proxyTi);
+                    UBPersistenceManager::persistenceManager()->deleteDocument(proxyTi->proxy());
                 }
             }
         }
@@ -661,20 +678,6 @@ void UBDocumentController::deleteSelectedItem()
                         }
                     }
 
-                    if (changeCurrentDocument)
-                    {
-                        for (int i = 0; i < mDocumentUI->documentTreeWidget->topLevelItemCount(); i++)
-                        {
-                            QTreeWidgetItem* item = mDocumentUI->documentTreeWidget->topLevelItem(i);
-                            UBDocumentGroupTreeItem* groupItem = dynamic_cast<UBDocumentGroupTreeItem*>(item);
-                            if (groupItem != groupTi && groupItem->childCount() > 0)
-                            {
-                                selectDocument(((UBDocumentProxyTreeItem*)groupItem->child(0))->proxy());
-                                break;
-                            }
-                        }
-                    }
-
                     QList<UBDocumentProxyTreeItem*> toBeDeleted;
 
                     for (int i = 0; i < groupTi->childCount(); i++)
@@ -711,6 +714,36 @@ void UBDocumentController::deleteSelectedItem()
                             mDocumentUI->documentTreeWidget->takeTopLevelItem(index);
                         }
                     }
+
+                    if (changeCurrentDocument)
+                    {
+                        bool documentFound = false;
+                        for (int i = 0; i < mDocumentUI->documentTreeWidget->topLevelItemCount(); i++)
+                        {
+                            QTreeWidgetItem* item = mDocumentUI->documentTreeWidget->topLevelItem(i);
+                            UBDocumentGroupTreeItem* groupItem = dynamic_cast<UBDocumentGroupTreeItem*>(item);
+                            if (!groupItem->isTrashFolder() && groupItem != groupTi)
+                            {
+                                for(int j=0; j<groupItem->childCount(); j++)
+                                {
+                                    if (((UBDocumentProxyTreeItem*)groupItem->child(j))->proxy() != mBoardController->selectedDocument())
+                                    {
+                                        selectDocument(((UBDocumentProxyTreeItem*)groupItem->child(0))->proxy(), true);
+                                        documentFound = true;
+                                        break;
+                                    }
+                                 }
+                            }
+                            if (documentFound)
+                                break;
+                        }
+                        if (!documentFound)
+                        {
+                                UBDocumentProxy *document = UBPersistenceManager::persistenceManager()->createDocument( UBSettings::defaultDocumentGroupName );
+                                selectDocument(document, true);
+                        }
+                    }
+
 
                     reloadThumbnails();
 
