@@ -111,6 +111,7 @@ class UBDesktopAnnotationController : public QObject
         void onDesktopPaletteMinimize();
         void onTransparentWidgetResized();
         void refreshMask();
+        void onToolClicked();
 
     private:
         void setAssociatedPalettePosition(UBActionPalette* palette, const QString& actionName);

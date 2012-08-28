@@ -102,9 +102,13 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     }
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
+    connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
+    connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(windowCapture()));
+    connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
+    connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
 
@@ -382,6 +386,7 @@ void UBDesktopAnnotationController::hideWindow()
 
 void UBDesktopAnnotationController::goToUniboard()
 {
+	onToolClicked();
     hideWindow();
 
     UBPlatformUtils::setDesktopMode(false);
@@ -397,6 +402,7 @@ void UBDesktopAnnotationController::goToUniboard()
 
 void UBDesktopAnnotationController::customCapture()
 {
+	onToolClicked();
     mIsFullyTransparent = true;
     updateBackground();
 
@@ -424,6 +430,7 @@ void UBDesktopAnnotationController::customCapture()
 
 void UBDesktopAnnotationController::windowCapture()
 {
+	onToolClicked();
     mIsFullyTransparent = true;
     updateBackground();
 
@@ -453,6 +460,7 @@ void UBDesktopAnnotationController::windowCapture()
 
 void UBDesktopAnnotationController::screenCapture()
 {
+	onToolClicked();
     mIsFullyTransparent = true;
     updateBackground();
 
@@ -539,7 +547,6 @@ void UBDesktopAnnotationController::penActionPressed()
  */
 void UBDesktopAnnotationController::penActionReleased()
 {
-    qDebug() << "penActionReleased()";
     mHoldTimerPen.stop();
     if(mPendingPenButtonPressed)
     {
@@ -594,7 +601,6 @@ void UBDesktopAnnotationController::eraserActionPressed()
  */
 void UBDesktopAnnotationController::eraserActionReleased()
 {
-    qDebug() << "eraserActionReleased()";
     mHoldTimerEraser.stop();
     if(mPendingEraserButtonPressed)
     {
@@ -651,7 +657,6 @@ void UBDesktopAnnotationController::markerActionPressed()
  */
 void UBDesktopAnnotationController::markerActionReleased()
 {
-    qDebug() << "markerActionReleased()";
     mHoldTimerMarker.stop();
     if(mPendingMarkerButtonPressed)
     {
@@ -929,4 +934,10 @@ void UBDesktopAnnotationController::refreshMask()
     {
         updateMask(true);
     }
+}
+
+void UBDesktopAnnotationController::onToolClicked(){
+	mDesktopEraserPalette->hide();
+	mDesktopMarkerPalette->hide();
+	mDesktopPenPalette->hide();
 }
