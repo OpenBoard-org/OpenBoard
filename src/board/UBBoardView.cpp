@@ -533,7 +533,12 @@ Here we determines cases when items should to get mouse press event at pressing 
         return false;
         break;
 
+    case UBToolWidget::Type:
+        return true;
+
     case QGraphicsWebView::Type:
+        return true;
+
     case UBGraphicsWidgetItem::Type:
         if (currentTool == UBStylusTool::Selector && item->parentItem() && item->parentItem()->isSelected()) 
             return true;
@@ -541,10 +546,14 @@ Here we determines cases when items should to get mouse press event at pressing 
             return true;
         if (currentTool == UBStylusTool::Play)
             return true;
+        return false;
         break;
     }
 
-    return false;
+    if ((UBGraphicsItemType::UserTypesCount > item->type()) && (item->type() > QGraphicsItem::UserType))
+        return true;
+    else
+        return false;
 }
 
 bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
@@ -556,9 +565,11 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
         return false;
 
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
-   
+
     switch(item->type())
     {
+    case QGraphicsWebView::Type:
+        return false;
     case UBGraphicsPixmapItem::Type:
     case UBGraphicsTextItem::Type:
     case UBGraphicsWidgetItem::Type:
@@ -1094,6 +1105,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
              if (QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                 UBToolWidget::Type != movingItem->type() &&
+                UBGraphicsCache::Type != movingItem->type() &&
                 QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
                 !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
              {
