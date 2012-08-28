@@ -33,6 +33,7 @@ class UBDesktopPalette : public UBActionPalette
         void customClick();
         void windowClick();
         void screenClick();
+        void pointerClick();
 
 #ifdef Q_WS_X11
         void refreshMask();

@@ -109,6 +109,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(onToolClicked()));
+    connect(mDesktopPalette, SIGNAL(pointerClick()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
 
