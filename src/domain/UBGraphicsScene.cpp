@@ -249,6 +249,11 @@ itemLayerType::Enum UBZLayerController::typeForData(QGraphicsItem *item) const
     return result;
 }
 
+void UBZLayerController::setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType)
+{
+   pItem->setData(UBGraphicsItemData::itemLayerType, QVariant(pNewType));
+}
+
 UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
@@ -1637,8 +1642,6 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
         item->setAcceptedMouseButtons(Qt::NoButton);
         item->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::FixedBackground);
 
-        UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(itemLayerType::BackgroundItem));
-
         if (pAdaptTransformation)
         {
             item = scaleToFitDocumentSize(item, true, 0, pExpand);
@@ -1646,6 +1649,9 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
 
         if (item->scene() != this)
             addItem(item);
+
+        mZLayerController->setLayerType(item, itemLayerType::BackgroundItem);
+        UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
 
         mBackgroundObject = item;
 

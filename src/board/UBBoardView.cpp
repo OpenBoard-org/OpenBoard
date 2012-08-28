@@ -214,7 +214,7 @@ UBBoardView::keyPressEvent (QKeyEvent *event)
         case Qt::Key_Control:
         case Qt::Key_Shift:
           {
-            mMultipleSelectionIsEnabled = true;
+            setMultiselection(true);
           }break;
         }
 
@@ -274,6 +274,10 @@ UBBoardView::keyPressEvent (QKeyEvent *event)
             }
         }
     }
+
+    // if ctrl of shift was pressed combined with other keys - we need to disable multiple selection.
+    if (event->isAccepted())
+        setMultiselection(false);
 }
 
 
@@ -284,7 +288,7 @@ void UBBoardView::keyReleaseEvent(QKeyEvent *event)
         if (Qt::Key_Shift == event->key()
           ||Qt::Key_Control == event->key())
         {
-            mMultipleSelectionIsEnabled = false;
+            setMultiselection(false);
         }
     }
 
@@ -459,7 +463,7 @@ void UBBoardView::handleItemsSelection(QGraphicsItem *item)
     
         
         // if we need to uwe multiple selection - we shouldn't deselect other items.
-        if (!mMultipleSelectionIsEnabled)
+        if (!isMultipleSelectionEnabled())
         {
             // here we need to determine what item is pressed. We should work
             // only with UB items.
@@ -520,14 +524,13 @@ Here we determines cases when items should to get mouse press event at pressing 
         break;
 
     // Groups shouldn't reacts on any presses and moves for Play tool.
+    case UBGraphicsStrokesGroup::Type:
     case UBGraphicsGroupContainerItem::Type:
         if(currentTool == UBStylusTool::Play)
         {
             movingItem = NULL;
-            return false;
         }
-        else
-            return true;
+        return false;
         break;
 
     case QGraphicsWebView::Type:
@@ -570,10 +573,8 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
         return true;
     }
 
-    if (!dynamic_cast<UBGraphicsItem*>(item))
-        return true;
-    else
-        return false;
+    return false;
+
 }
 
 bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
@@ -631,8 +632,11 @@ QGraphicsItem* UBBoardView::determineItemToPress(QGraphicsItem *item)
         if (item->parentItem() && UBGraphicsStrokesGroup::Type == item->type())
             return item->parentItem();
         
-        // if item is on group and froup is not selected - group should take press.
-        if (UBStylusTool::Selector == currentTool && item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type() && !item->parentItem()->isSelected()) 
+        // if item is on group and group is not selected - group should take press.
+        if (UBStylusTool::Selector == currentTool 
+            && item->parentItem() 
+            && UBGraphicsGroupContainerItem::Type == item->parentItem()->type() 
+            && !item->parentItem()->isSelected()) 
             return item->parentItem();
 
         // items like polygons placed in two groups nested, so we need to recursive call.
@@ -690,11 +694,10 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     // Determining item who will take mouse press event 
     //all other items will be deselected and if all item will be deselected, then
     // wrong item can catch mouse press. because selected items placed on the top
-    QGraphicsItem *pressedItem = determineItemToPress(movingItem);
-
+    movingItem = determineItemToPress(movingItem);
     handleItemsSelection(movingItem);
 
-    if (mMultipleSelectionIsEnabled)
+    if (isMultipleSelectionEnabled())
         return;
 
     if (itemShouldReceiveMousePressEvent(movingItem))
@@ -790,6 +793,11 @@ void UBBoardView::moveRubberedItems(QPointF movingVector)
     }
 
     scene()->invalidate(invalidateRect);
+}
+
+void UBBoardView::setMultiselection(bool enable)
+{
+    mMultipleSelectionIsEnabled = enable;
 }
 
 void UBBoardView::longPressEvent()
@@ -1087,11 +1095,14 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                 UBToolWidget::Type != movingItem->type() &&
                 QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
-                !(movingItem->parentItem() && UBGraphicsW3CWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
+                !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
              {
                  bReleaseIsNeed = false;
-                 if (movingItem->isSelected() && mMultipleSelectionIsEnabled)
+                 if (movingItem->isSelected() && isMultipleSelectionEnabled())
                     movingItem->setSelected(false);
+                 else
+                 if (movingItem->parentItem() && movingItem->parentItem()->isSelected() && isMultipleSelectionEnabled())
+                    movingItem->parentItem()->setSelected(false);
                  else
                  {
                     if (movingItem->isSelected())
@@ -1308,14 +1319,20 @@ void UBBoardView::dragMoveEvent(QDragMoveEvent *event)
 
 void UBBoardView::dropEvent (QDropEvent *event)
 {
-  if (!itemAt(event->pos().x(),event->pos().y())) {
-    if (!event->source() || dynamic_cast<UBThumbnailWidget *>(event->source()) || dynamic_cast<QWebView*>(event->source()) || dynamic_cast<UBTGMediaWidget*>(event->source()) || dynamic_cast<QListView *>(event->source()) || dynamic_cast<UBTGDraggableTreeItem*>(event->source())) {
-        mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
-        event->acceptProposedAction();
+    QGraphicsItem *onItem = itemAt(event->pos().x(),event->pos().y());
+    if (onItem && onItem->type() == UBGraphicsWidgetItem::Type) {
+        QGraphicsView::dropEvent(event);
+    } else {
+        if (!event->source()
+                || qobject_cast<UBThumbnailWidget *>(event->source())
+                || qobject_cast<QWebView*>(event->source())
+                || qobject_cast<UBTGMediaWidget*>(event->source())
+                || qobject_cast<QListView *>(event->source())
+                || qobject_cast<UBTGDraggableTreeItem*>(event->source())) {
+            mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
+            event->acceptProposedAction();
+        }
     }
-  }
-  else
-    QGraphicsView::dropEvent(event);
 }
 
 void

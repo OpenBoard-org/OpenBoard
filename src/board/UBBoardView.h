@@ -44,6 +44,9 @@ class UBBoardView : public QGraphicsView
         void rubberItems();
         void moveRubberedItems(QPointF movingVector);
 
+        void setMultiselection(bool enable);
+        bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
+
     signals:
 
         void resized(QResizeEvent* event);
