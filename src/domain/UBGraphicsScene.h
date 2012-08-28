@@ -179,16 +179,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         bool isEmpty() const;
 
-        bool isModified() const
-        {
-            return mIsModified;
-        }
-
-        void setModified(bool pModified)
-        {
-            mIsModified = pModified;
-        }
-
         void setDocument(UBDocumentProxy* pDocument);
 
         UBDocumentProxy* document() const
@@ -379,8 +369,6 @@ public slots:
         bool mCrossedBackground;
         bool mIsDesktopMode;
         qreal mZoomFactor;
-
-        bool mIsModified;
 
         QGraphicsItem* mBackgroundObject;
 

@@ -263,7 +263,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mCrossedBackground(false)
     , mIsDesktopMode(false)
     , mZoomFactor(1)
-    , mIsModified(true)
     , mBackgroundObject(0)
     , mPreviousWidth(0)
     , mInputDeviceIsPressed(false)
@@ -1564,7 +1563,6 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
 
 void UBGraphicsScene::addItem(QGraphicsItem* item)
 {
-    setModified(true);
     UBCoreGraphicsScene::addItem(item);
 
     UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
@@ -1577,8 +1575,6 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
 
 void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 {
-    setModified(true);
-
     foreach(QGraphicsItem* item, items) {
         UBCoreGraphicsScene::addItem(item);
         UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
@@ -1591,7 +1587,6 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
 {
-    setModified(true);
     UBCoreGraphicsScene::removeItem(item);
     UBApplication::boardController->freezeW3CWidget(item, true);
 
@@ -1603,8 +1598,6 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
 {
-    setModified(true);
-
     foreach(QGraphicsItem* item, items)
         UBCoreGraphicsScene::removeItem(item);
 
@@ -1762,7 +1755,6 @@ void UBGraphicsScene::addRuler(QPointF center)
     addItem(ruler);
 
     ruler->setVisible(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::addProtractor(QPointF center)
@@ -1780,7 +1772,6 @@ void UBGraphicsScene::addProtractor(QPointF center)
     protractor->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
 
     protractor->setVisible(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::addTriangle(QPointF center)
@@ -1798,7 +1789,6 @@ void UBGraphicsScene::addTriangle(QPointF center)
     triangle->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
 
     triangle->setVisible(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::addMagnifier(UBMagnifierParams params)
@@ -1857,6 +1847,7 @@ void UBGraphicsScene::moveMagnifier()
    {
        QPoint magnifierPos = QPoint(magniferControlViewWidget->pos().x() + magniferControlViewWidget->size().width() / 2, magniferControlViewWidget->pos().y() + magniferControlViewWidget->size().height() / 2 );
        moveMagnifier(magnifierPos, true);
+       setModified(true);
    }
 }
 
@@ -1889,6 +1880,7 @@ void UBGraphicsScene::moveMagnifier(QPoint newPos, bool forceGrab)
 void UBGraphicsScene::closeMagnifier()
 {
     DisposeMagnifierQWidgets();
+    setModified(true);
 }
 
 void UBGraphicsScene::zoomInMagnifier()
@@ -1906,6 +1898,7 @@ void UBGraphicsScene::zoomOutMagnifier()
     {
         magniferControlViewWidget->setZoom(magniferControlViewWidget->params.zoom - 0.5);
         magniferDisplayViewWidget->setZoom(magniferDisplayViewWidget->params.zoom - 0.5);
+        setModified(true);
     }
 }
 
@@ -1917,6 +1910,7 @@ void UBGraphicsScene::resizedMagnifier(qreal newPercent)
         magniferControlViewWidget->grabPoint();
         magniferDisplayViewWidget->setSize(newPercent);
         magniferDisplayViewWidget->grabPoint();
+        setModified(true);
     }
 }
 
@@ -1932,7 +1926,6 @@ void UBGraphicsScene::addCompass(QPointF center)
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     compass->setVisible(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::addCache()
@@ -1962,7 +1955,6 @@ void UBGraphicsScene::addMask(const QPointF &center)
     curtain->setRect(rect);
     curtain->setVisible(true);
     curtain->setSelected(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQuality)
