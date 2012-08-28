@@ -39,9 +39,6 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent)
     actions << UBApplication::mainWindow->actionSelector;
     actions << UBApplication::mainWindow->actionPointer;
 
-    connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered()), this, SIGNAL(pointerClick()));
-    connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered()), this, SIGNAL(arrowClicked()));
-
     if (UBPlatformUtils::hasVirtualKeyboard())
         actions << UBApplication::mainWindow->actionVirtualKeyboard;
 
