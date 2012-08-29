@@ -55,6 +55,8 @@
 
 #include "document/UBDocumentProxy.h"
 
+#include "tools/UBGraphicsRuler.h"
+#include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsCache.h"
 #include "tools/UBGraphicsTriangle.h"
@@ -433,6 +435,15 @@ bool UBBoardView::itemHaveParentWithType(QGraphicsItem *item, int type)
     return itemHaveParentWithType(item->parentItem(), type);
 
 }
+bool UBBoardView::isUBItem(QGraphicsItem *item)
+{
+    if ((UBGraphicsItemType::UserTypesCount > item->type()) && (item->type() > QGraphicsItem::UserType))
+        return true;
+    else
+    {
+        return false;
+    }
+}
 
 void UBBoardView::handleItemsSelection(QGraphicsItem *item)
 {
@@ -504,6 +515,13 @@ Here we determines cases when items should to get mouse press event at pressing 
 
     switch(item->type())
     {
+    case UBGraphicsProtractor::Type:
+    case UBGraphicsRuler::Type:
+    case UBGraphicsTriangle::Type:
+    case UBGraphicsCompass::Type:
+    case UBGraphicsCache::Type:
+        return true;
+
     case UBGraphicsDelegateFrame::Type:
     case QGraphicsSvgItem::Type:
         return true;
@@ -550,10 +568,7 @@ Here we determines cases when items should to get mouse press event at pressing 
         break;
     }
 
-    if ((UBGraphicsItemType::UserTypesCount > item->type()) && (item->type() > QGraphicsItem::UserType))
-        return true;
-    else
-        return false;
+    return !isUBItem(item); // standard behavior of QGraphicsScene for not UB items. UB items should be managed upper.
 }
 
 bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
@@ -609,6 +624,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
    
     switch(item->type())
     {
+    case UBGraphicsCurtainItem::Type:
     case UBGraphicsGroupContainerItem::Type:
         return true;
 
@@ -1102,7 +1118,8 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           }
           else
           {
-             if (QGraphicsSvgItem::Type !=  movingItem->type() &&
+             if (isUBItem(movingItem) &&
+                QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                 UBToolWidget::Type != movingItem->type() &&
                 UBGraphicsCache::Type != movingItem->type() &&
