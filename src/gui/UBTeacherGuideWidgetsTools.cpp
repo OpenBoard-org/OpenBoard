@@ -174,6 +174,7 @@ void UBTGAdaptableText::showEvent(QShowEvent* e)
     if(!mIsUpdatingSize && mHasPlaceHolder && toPlainText().isEmpty())
         setPlainText(mPlaceHolderText);
     else
+    	// If the teacherguide is collapsed, don't updated the size. Or set the size as the expanded size
         onTextChanged();
 }
 
@@ -188,9 +189,12 @@ QString UBTGAdaptableText::text()
 
 void UBTGAdaptableText::onTextChanged()
 {
+	qDebug() << ">> onTextChanged CALLED!";
     qreal documentSize = document()->size().height();
-    if(height() == documentSize + mBottomMargin)
-        return;
+    qDebug() << ">>  documentSize: " << documentSize << ", height: " << height();
+    if(height() == documentSize + mBottomMargin){
+    	return;
+    }
     mIsUpdatingSize = true;
 
 
@@ -208,6 +212,7 @@ void UBTGAdaptableText::onTextChanged()
         setFocus();
     }
     mIsUpdatingSize = false;
+
 }
 void UBTGAdaptableText::setInitialText(const QString& text)
 {
