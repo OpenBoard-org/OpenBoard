@@ -57,6 +57,7 @@ class UBBoardView : public QGraphicsView
     protected:
 
         bool itemIsLocked(QGraphicsItem *item);
+        bool isUBItem(QGraphicsItem *item); // we should to determine items who is not UB and use general scene behavior for them.
         void handleItemsSelection(QGraphicsItem *item);
         bool itemShouldReceiveMousePressEvent(QGraphicsItem *item);
         bool itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item);
