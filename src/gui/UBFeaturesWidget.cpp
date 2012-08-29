@@ -676,7 +676,7 @@ UBFeaturesProgressInfo::UBFeaturesProgressInfo(QWidget *parent) :
 
 void UBFeaturesProgressInfo::setCommmonInfoText(const QString &str)
 {
-    mProgressBar->setFormat(str + tr(" load") + "(%p%)");
+    mProgressBar->setFormat(tr("Loading ") + str + " (%p%)");
 }
 
 void UBFeaturesProgressInfo::setDetailedInfoText(const QString &str)
