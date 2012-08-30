@@ -154,6 +154,7 @@ class UBBoardView : public QGraphicsView
         bool mIsDragInProgress;
         bool mMultipleSelectionIsEnabled;
         bool isControl;
+        bool mRubberBandInPlayMode;
 
         static bool hasSelectedParents(QGraphicsItem * item);
 

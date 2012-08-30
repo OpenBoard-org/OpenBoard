@@ -189,9 +189,9 @@ QString UBTGAdaptableText::text()
 
 void UBTGAdaptableText::onTextChanged()
 {
-	qDebug() << ">> onTextChanged CALLED!";
+	//qDebug() << ">> onTextChanged CALLED!";
     qreal documentSize = document()->size().height();
-    qDebug() << ">>  documentSize: " << documentSize << ", height: " << height();
+    //qDebug() << ">>  documentSize: " << documentSize << ", height: " << height();
     if(height() == documentSize + mBottomMargin){
     	return;
     }

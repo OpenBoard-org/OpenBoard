@@ -36,7 +36,6 @@ const QString UBFeaturesController::webSearchPath = rootPath + "/Web search";
 
 void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString & currVirtualPath, const QSet<QUrl> &pFavoriteSet)
 {
-    
     Q_ASSERT(QFileInfo(currentPath.toLocalFile()).exists());
 
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath.toLocalFile());
@@ -73,16 +72,16 @@ void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString &
     }
 }
 
-void UBFeaturesComputingThread::scanAll(QList<QPair<QUrl, QString> > pScanningData, const QSet<QUrl> &pFavoriteSet)
+void UBFeaturesComputingThread::scanAll(QList<QPair<QUrl, UBFeature> > pScanningData, const QSet<QUrl> &pFavoriteSet)
 {
     for (int i = 0; i < pScanningData.count(); i++) {
         if (abort) {
             return;
         }
-        QPair<QUrl, QString> curPair = pScanningData.at(i);
+        QPair<QUrl, UBFeature> curPair = pScanningData.at(i);
 
-        emit scanCategory(UBFeaturesController::categoryNameForVirtualPath(curPair.second));
-        scanFS(curPair.first, curPair.second, pFavoriteSet);
+        emit scanCategory(curPair.second.getDisplayName());
+        scanFS(curPair.first, curPair.second.getFullVirtualPath(), pFavoriteSet);
     }
 }
 
@@ -109,11 +108,11 @@ int UBFeaturesComputingThread::featuresCount(const QUrl &pPath)
     return noItems;
 }
 
-int UBFeaturesComputingThread::featuresCountAll(QList<QPair<QUrl, QString> > pScanningData)
+int UBFeaturesComputingThread::featuresCountAll(QList<QPair<QUrl, UBFeature> > pScanningData)
 {
     int noItems = 0;
     for (int i = 0; i < pScanningData.count(); i++) {
-        QPair<QUrl, QString> curPair = pScanningData.at(i);
+        QPair<QUrl, UBFeature> curPair = pScanningData.at(i);
         noItems += featuresCount(curPair.first);
     }
 
@@ -127,7 +126,7 @@ QThread(parent)
     abort = false;
 }
 
-void UBFeaturesComputingThread::compute(const QList<QPair<QUrl, QString> > &pScanningData, QSet<QUrl> *pFavoritesSet)
+void UBFeaturesComputingThread::compute(const QList<QPair<QUrl, UBFeature> > &pScanningData, QSet<QUrl> *pFavoritesSet)
 {
     QMutexLocker curLocker(&mMutex);
 
@@ -148,7 +147,7 @@ void UBFeaturesComputingThread::run()
         qDebug() << "Custom thread started execution";
 
         mMutex.lock();
-        QList<QPair<QUrl, QString> > searchData = mScanningData;
+        QList<QPair<QUrl, UBFeature> > searchData = mScanningData;
         QSet<QUrl> favoriteSet = mFavoriteSet;
         mMutex.unlock();
 
@@ -339,24 +338,24 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
 
 void UBFeaturesController::startThread()
 {
-    QList<QPair<QUrl, QString> > computingData;
+    QList<QPair<QUrl, UBFeature> > computingData;
 
-    computingData << QPair<QUrl, QString>(mLibAudiosDirectoryPath, audiosPath)
-            <<  QPair<QUrl, QString>(mLibVideosDirectoryPath, moviesPath)
-            <<  QPair<QUrl, QString>(mLibAnimationsDirectoryPath, flashPath)
-            <<  QPair<QUrl, QString>(mLibPicturesDirectoryPath, picturesPath)
+    computingData << QPair<QUrl, UBFeature>(mLibAudiosDirectoryPath, audiosElement)
+            <<  QPair<QUrl, UBFeature>(mLibVideosDirectoryPath, moviesElement)
+            <<  QPair<QUrl, UBFeature>(mLibAnimationsDirectoryPath, flashElement)
+            <<  QPair<QUrl, UBFeature>(mLibPicturesDirectoryPath, picturesElement)
 
-            <<  QPair<QUrl, QString>(mUserInteractiveDirectoryPath, appPath)
-            <<  QPair<QUrl, QString>(mUserAudioDirectoryPath, audiosPath)
-            <<  QPair<QUrl, QString>(mUserPicturesDirectoryPath, picturesPath)
-            <<  QPair<QUrl, QString>(mUserVideoDirectoryPath, moviesPath)
-            <<  QPair<QUrl, QString>(mUserAnimationDirectoryPath, flashPath)
+            <<  QPair<QUrl, UBFeature>(mUserInteractiveDirectoryPath, applicationsElement)
+            <<  QPair<QUrl, UBFeature>(mUserAudioDirectoryPath, audiosElement)
+            <<  QPair<QUrl, UBFeature>(mUserPicturesDirectoryPath, picturesElement)
+            <<  QPair<QUrl, UBFeature>(mUserVideoDirectoryPath, moviesElement)
+            <<  QPair<QUrl, UBFeature>(mUserAnimationDirectoryPath, flashElement)
 
-            <<  QPair<QUrl, QString>(mLibApplicationsDirectoryPath, appPath)
-            <<  QPair<QUrl, QString>(mLibShapesDirectoryPath, shapesPath)
-            <<  QPair<QUrl, QString>(mLibInteractiveDirectoryPath, interactPath)
-            <<  QPair<QUrl, QString>(trashDirectoryPath, trashPath)
-            <<  QPair<QUrl, QString>(mLibSearchDirectoryPath, rootPath + "/" + "Web search");
+            <<  QPair<QUrl, UBFeature>(mLibApplicationsDirectoryPath, applicationsElement)
+            <<  QPair<QUrl, UBFeature>(mLibShapesDirectoryPath, shapesElement)
+            <<  QPair<QUrl, UBFeature>(mLibInteractiveDirectoryPath, interactElement)
+            <<  QPair<QUrl, UBFeature>(trashDirectoryPath, trashElement)
+            <<  QPair<QUrl, UBFeature>(mLibSearchDirectoryPath, webSearchElement);
 
     mCThread.compute(computingData, favoriteSet);
 }

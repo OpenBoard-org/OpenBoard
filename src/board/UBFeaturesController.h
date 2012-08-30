@@ -33,7 +33,7 @@ class UBFeaturesComputingThread : public QThread
 public:
     explicit UBFeaturesComputingThread(QObject *parent = 0);
     virtual ~UBFeaturesComputingThread();
-        void compute(const QList<QPair<QUrl, QString> > &pScanningData, QSet<QUrl> *pFavoritesSet);
+        void compute(const QList<QPair<QUrl, UBFeature> > &pScanningData, QSet<QUrl> *pFavoritesSet);
 
 protected:
     void run();
@@ -51,16 +51,16 @@ public slots:
 
 private:
     void scanFS(const QUrl & currentPath, const QString & currVirtualPath, const QSet<QUrl> &pFavoriteSet);
-    void scanAll(QList<QPair<QUrl, QString> > pScanningData, const QSet<QUrl> &pFavoriteSet);
+    void scanAll(QList<QPair<QUrl, UBFeature> > pScanningData, const QSet<QUrl> &pFavoriteSet);
     int featuresCount(const QUrl &pPath);
-    int featuresCountAll(QList<QPair<QUrl, QString> > pScanningData);
+    int featuresCountAll(QList<QPair<QUrl, UBFeature> > pScanningData);
 
 private:
     QMutex mMutex;
     QWaitCondition mWaitCondition;
     QUrl mScanningPath;
     QString mScanningVirtualPath;
-    QList<QPair<QUrl, QString> > mScanningData;
+    QList<QPair<QUrl, UBFeature> > mScanningData;
     QSet<QUrl> mFavoriteSet;
     bool restart;
     bool abort;
