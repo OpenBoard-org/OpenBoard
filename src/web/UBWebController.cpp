@@ -733,6 +733,7 @@ bool UBWebController::isEduMedia(const QUrl& pUrl)
 
 void UBWebController::loadUrl(const QUrl& url)
 {
+	bool webBrowserAlreadyInstanciated = dynamic_cast<WBBrowserWindow*>(mStackedWidget->widget(WebBrowser)) != NULL;
 	UBApplication::applicationController->showInternet();
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
@@ -740,8 +741,6 @@ void UBWebController::loadUrl(const QUrl& url)
     }
     else
     {
-    	bool webBrowserAlreadyInstanciated = mStackedWidget->widget(WebBrowser) != NULL;
-
         if (!webBrowserAlreadyInstanciated) {
             (*mCurrentWebBrowser)->loadUrl(url);
         }
