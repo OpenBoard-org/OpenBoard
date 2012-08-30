@@ -259,7 +259,7 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
         }break;
     }
 
-    UBFeature feature( QString(), QImage(previewImageUrl), QString(), metadata["Url"], FEATURE_ITEM );
+    UBFeature feature( "/root", QImage(previewImageUrl), QString(), metadata["Url"], FEATURE_ITEM );
     feature.setMetadata( metadata );
 
     centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
@@ -1080,7 +1080,7 @@ QVariant UBFeaturesModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     if (role == Qt::DisplayRole) {
-		return featuresList->at(index.row()).getName();
+        return featuresList->at(index.row()).getDisplayName();
     }
 
     else if (role == Qt::DecorationRole) {
@@ -1311,7 +1311,7 @@ void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destina
         }
     }
 
-    UBFeature newElement( destVirtualPath, sourceIcon, name, QUrl::fromLocalFile(destFullPath), sourceType );
+    UBFeature newElement( destVirtualPath + "/" + name, sourceIcon, name, QUrl::fromLocalFile(destFullPath), sourceType );
     addItem(newElement);
 
     if (deleteManualy) {

@@ -233,7 +233,7 @@ void UBApplication::setupTranslator(QString forcedLanguage)
 	    mApplicationTranslator = new QTranslator(this);
 	    mQtGuiTranslator = new QTranslator(this);
 
-	    mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("sankore_"),language));
+        mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("sankore_"),language));
 	    installTranslator(mApplicationTranslator);
 
 

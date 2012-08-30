@@ -1,7 +1,6 @@
 
 body{
-    margin-top:10px;
-    margin-left:10px;
+	margin: 0;
     font-family:Arial, Sans-serif;
     font-size:15px;
     color:#444;
@@ -104,7 +103,6 @@ body{
 }
 
 #embeded-content{
-    border:1px solid rgb(230,230,230);
     position:relative;
     z-index:3;
     float:left;
