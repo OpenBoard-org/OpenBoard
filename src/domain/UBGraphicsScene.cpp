@@ -1363,6 +1363,7 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
 UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *> items)
 {
     UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
+    addItem(groupItem);
 
     foreach (QGraphicsItem *item, items) {
         if (item->type() == UBGraphicsGroupContainerItem::Type) {
@@ -1379,7 +1380,6 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
         }
     }
 
-    addItem(groupItem);
     groupItem->setVisible(true);
     groupItem->setFocus();
 

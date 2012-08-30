@@ -30,12 +30,23 @@ UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
 UBCoreGraphicsScene::~UBCoreGraphicsScene()
 {
     //we must delete removed items that are no more in any scene
-    foreach (const QGraphicsItem* item, mItemsToDelete)
+    //at groups deleting some items can be added to mItemsToDelete, so we need to use iterators.
+    if (mItemsToDelete.count())
     {
-        if (item->scene() == NULL || item->scene() == this)
+        QSet<QGraphicsItem *>::iterator it = mItemsToDelete.begin();
+        QGraphicsItem* item = *it;
+        do 
         {
-            delete item;
-        }
+            item = *it;
+            if (item && (item->scene() == NULL || item->scene() == this))
+            {
+                mItemsToDelete.remove(*it);
+                delete item;
+            }
+
+            it = mItemsToDelete.begin();
+
+        }while(mItemsToDelete.count());
     }
 }
 
@@ -46,9 +57,7 @@ void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
             removeItemFromDeletion(curItem);
         }
     }
-
-    mItemsToDelete << item;
-
+ 
     if (item->scene() != this)
         QGraphicsScene::addItem(item);
 }
@@ -59,9 +68,7 @@ void UBCoreGraphicsScene::removeItem(QGraphicsItem* item, bool forceDelete)
     QGraphicsScene::removeItem(item);
     if (forceDelete)
     {
-        mItemsToDelete.remove(item);
-        delete item;
-        item = 0;
+        deleteItem(item);
     }
 }
 

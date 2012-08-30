@@ -28,18 +28,12 @@ UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent
     setUuid(QUuid::createUuid());
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
-
-
 }
 
 UBGraphicsGroupContainerItem::~UBGraphicsGroupContainerItem()
 {
-    foreach (QGraphicsItem *item, childItems())
-    {   
-        removeFromGroup(item);
-        if (item && item->scene())
-            item->scene()->removeItem(item);
-    }
+    if (mDelegate)
+        delete mDelegate;
 }
 
 void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
@@ -83,6 +77,8 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
 
     QTransform newItemTransform(itemTransform);
     item->setPos(mapFromItem(item, 0, 0));
+
+    item->scene()->removeItem(item);
     item->setParentItem(this);
 
     // removing position from translation component of the new transform
@@ -113,10 +109,12 @@ void UBGraphicsGroupContainerItem::removeFromGroup(QGraphicsItem *item)
 {
     if (!item) {
         qDebug() << "can't specify the item because of the null pointer";
+        return;
     }
 
-    UBGraphicsScene *groupScene = scene();
-    if (groupScene) {
+    UBCoreGraphicsScene *groupScene = corescene();
+    if (groupScene)
+    {    
         groupScene->addItemToDeletion(item);
     }
 
@@ -170,9 +168,9 @@ void UBGraphicsGroupContainerItem::paint(QPainter *painter, const QStyleOptionGr
 //    }
 }
 
-UBGraphicsScene *UBGraphicsGroupContainerItem::scene()
+UBCoreGraphicsScene *UBGraphicsGroupContainerItem::corescene()
 {
-    UBGraphicsScene *castScene = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    UBCoreGraphicsScene *castScene = dynamic_cast<UBCoreGraphicsScene*>(QGraphicsItem::scene());
 
     return castScene;
 }
@@ -218,15 +216,14 @@ void UBGraphicsGroupContainerItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsGroupContainerItem::destroy() {
 
-    UBGraphicsScene *groupScene = scene();
+    UBCoreGraphicsScene *groupScene = corescene();
 
+
+    if (groupScene) {
+    //    groupScene->addItemToDeletion(this);
+    }
 
     foreach (QGraphicsItem *item, childItems()) {
-
-        if (groupScene) {
-            groupScene->addItemToDeletion(item);
-        }
-
         pRemoveFromGroup(item);
         item->setFlag(QGraphicsItem::ItemIsSelectable, true);
         item->setFlag(QGraphicsItem::ItemIsFocusable, true);

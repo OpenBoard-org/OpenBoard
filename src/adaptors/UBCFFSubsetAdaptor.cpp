@@ -1189,8 +1189,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
         UBGraphicsScene *tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
         tmpScene->setModified(true);
         UBThumbnailAdaptor::persistScene(mProxy, tmpScene, i);
-        delete tmpScene;
-
         mCurrentScene->setModified(false);
     }
 

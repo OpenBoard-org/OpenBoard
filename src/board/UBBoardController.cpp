@@ -1515,7 +1515,8 @@ void UBBoardController::ClearUndoStack()
         }
         if(!scene)
         {
-            mActiveScene->deleteItem(item);
+           if (!mActiveScene->deleteItem(item))
+               delete item;
         }
     }
 
