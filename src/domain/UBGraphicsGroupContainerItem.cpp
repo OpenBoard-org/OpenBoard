@@ -219,10 +219,6 @@ void UBGraphicsGroupContainerItem::destroy() {
     UBCoreGraphicsScene *groupScene = corescene();
 
 
-    if (groupScene) {
-    //    groupScene->addItemToDeletion(this);
-    }
-
     foreach (QGraphicsItem *item, childItems()) {
         pRemoveFromGroup(item);
         item->setFlag(QGraphicsItem::ItemIsSelectable, true);

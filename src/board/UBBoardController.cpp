@@ -1495,7 +1495,7 @@ void UBBoardController::ClearUndoStack()
         while (itRemoved.hasNext())
         {
             QGraphicsItem* item = itRemoved.next();
-            if( !uniqueItems.contains(item) && (item->parentItem() && UBGraphicsGroupContainerItem::Type != item->parentItem()->type()))
+            if( !uniqueItems.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
                 uniqueItems.insert(item);
         }
     }

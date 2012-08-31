@@ -305,7 +305,10 @@ UBGraphicsScene::~UBGraphicsScene()
 {
     if (mCurrentStroke)
         if (mCurrentStroke->polygons().empty())
+        {
             delete mCurrentStroke;
+            mCurrentStroke = NULL;
+        }
 
     if (mZLayerController)
         delete mZLayerController;
@@ -433,6 +436,11 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
         }
     }
 
+    if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+        delete mCurrentStroke;    
+        mCurrentStroke = NULL;
+    }
+
     return accepted;
 }
 
@@ -474,6 +482,10 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                     UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
                     mAddedItems.remove(mpLastPolygon);
                     mCurrentStroke->remove(mpLastPolygon);
+                    if (mCurrentStroke->polygons().empty()){
+                        delete mCurrentStroke;
+                        mCurrentStroke = NULL;
+                    }
                     removeItem(mpLastPolygon);
                     mPreviousPolygonItems.removeAll(mpLastPolygon);
                 }
@@ -2285,6 +2297,11 @@ void UBGraphicsScene::setToolCursor(int tool)
     {
         deselectAllItems();
     }
+
+    if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+        delete mCurrentStroke;
+    }
+    mCurrentStroke = NULL;
 }
 
 void UBGraphicsScene::initStroke(){
