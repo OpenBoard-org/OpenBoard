@@ -174,9 +174,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseGSection(const QDomElement &ele
 
     QDomElement currentSvgElement = element.firstChildElement();
     while (!currentSvgElement.isNull()) {
-        if (!parseSvgElement(currentSvgElement))
-            return false;
-
+        parseSvgElement(currentSvgElement);
         currentSvgElement = currentSvgElement.nextSiblingElement();
     }
 
@@ -187,8 +185,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseGSection(const QDomElement &ele
     else 
     {
         delete mGSectionContainer;
-        mGSectionContainer = NULL;
     }
+    mGSectionContainer = NULL;
 
     return true;
 }
