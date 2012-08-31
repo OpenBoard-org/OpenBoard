@@ -305,7 +305,10 @@ UBGraphicsScene::~UBGraphicsScene()
 {
     if (mCurrentStroke)
         if (mCurrentStroke->polygons().empty())
+        {
             delete mCurrentStroke;
+            mCurrentStroke = NULL;
+        }
 
     if (mZLayerController)
         delete mZLayerController;
@@ -433,6 +436,11 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
         }
     }
 
+    if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+        delete mCurrentStroke;    
+        mCurrentStroke = NULL;
+    }
+
     return accepted;
 }
 
@@ -474,6 +482,10 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                     UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
                     mAddedItems.remove(mpLastPolygon);
                     mCurrentStroke->remove(mpLastPolygon);
+                    if (mCurrentStroke->polygons().empty()){
+                        delete mCurrentStroke;
+                        mCurrentStroke = NULL;
+                    }
                     removeItem(mpLastPolygon);
                     mPreviousPolygonItems.removeAll(mpLastPolygon);
                 }
@@ -1363,6 +1375,7 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
 UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *> items)
 {
     UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
+    addItem(groupItem);
 
     foreach (QGraphicsItem *item, items) {
         if (item->type() == UBGraphicsGroupContainerItem::Type) {
@@ -1373,13 +1386,14 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
             }
             foreach (QGraphicsItem *chItem, childItems) {
                 groupItem->addToGroup(chItem);
+                mFastAccessItems.removeAll(item);
             }
         } else {
             groupItem->addToGroup(item);
+            mFastAccessItems.removeAll(item);
         }
     }
 
-    addItem(groupItem);
     groupItem->setVisible(true);
     groupItem->setFocus();
 
@@ -1396,6 +1410,15 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
 void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
 {
     addItem(groupItem);
+    for (int i = 0; i < groupItem->childItems().count(); i++)
+    {
+        QGraphicsItem *it = qgraphicsitem_cast<QGraphicsItem *>(groupItem->childItems().at(i));
+        if (it)
+        {
+             mFastAccessItems.removeAll(it);
+        }
+    }
+
     groupItem->setVisible(true);
     groupItem->setFocus();
 
@@ -2274,6 +2297,11 @@ void UBGraphicsScene::setToolCursor(int tool)
     {
         deselectAllItems();
     }
+
+    if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+        delete mCurrentStroke;
+    }
+    mCurrentStroke = NULL;
 }
 
 void UBGraphicsScene::initStroke(){

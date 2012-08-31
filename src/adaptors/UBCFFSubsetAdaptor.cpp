@@ -174,9 +174,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseGSection(const QDomElement &ele
 
     QDomElement currentSvgElement = element.firstChildElement();
     while (!currentSvgElement.isNull()) {
-        if (!parseSvgElement(currentSvgElement))
-            return false;
-
+        parseSvgElement(currentSvgElement);
         currentSvgElement = currentSvgElement.nextSiblingElement();
     }
 
@@ -187,8 +185,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseGSection(const QDomElement &ele
     else 
     {
         delete mGSectionContainer;
-        mGSectionContainer = NULL;
     }
+    mGSectionContainer = NULL;
 
     return true;
 }
@@ -1189,8 +1187,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
         UBGraphicsScene *tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
         tmpScene->setModified(true);
         UBThumbnailAdaptor::persistScene(mProxy, tmpScene, i);
-        delete tmpScene;
-
         mCurrentScene->setModified(false);
     }
 

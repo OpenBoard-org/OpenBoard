@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 
 #include "domain/UBItem.h"
+#include "frameworks/UBCoreGraphicsScene.h"
 
 class UBGraphicsGroupContainerItem : public QGraphicsItem, public UBItem, public UBGraphicsItem
 {
@@ -23,7 +24,7 @@ public:
 
     virtual UBGraphicsItemDelegate* Delegate() const { return mDelegate;}
 
-    virtual UBGraphicsScene* scene();
+    virtual UBCoreGraphicsScene *corescene();
     virtual UBGraphicsGroupContainerItem *deepCopy() const;
     virtual void copyItemParameters(UBItem *copy) const;
 
