@@ -216,9 +216,6 @@ void UBGraphicsGroupContainerItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsGroupContainerItem::destroy() {
 
-    UBCoreGraphicsScene *groupScene = corescene();
-
-
     foreach (QGraphicsItem *item, childItems()) {
         pRemoveFromGroup(item);
         item->setFlag(QGraphicsItem::ItemIsSelectable, true);
