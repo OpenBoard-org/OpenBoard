@@ -1374,9 +1374,11 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
             }
             foreach (QGraphicsItem *chItem, childItems) {
                 groupItem->addToGroup(chItem);
+                mFastAccessItems.removeAll(item);
             }
         } else {
             groupItem->addToGroup(item);
+            mFastAccessItems.removeAll(item);
         }
     }
 
@@ -1396,6 +1398,15 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
 void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
 {
     addItem(groupItem);
+    for (int i = 0; i < groupItem->childItems().count(); i++)
+    {
+        QGraphicsItem *it = qgraphicsitem_cast<QGraphicsItem *>(groupItem->childItems().at(i));
+        if (it)
+        {
+             mFastAccessItems.removeAll(it);
+        }
+    }
+
     groupItem->setVisible(true);
     groupItem->setFocus();
 

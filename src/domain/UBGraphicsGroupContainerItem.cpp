@@ -324,6 +324,12 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
     item->setParentItem(newParent);
     item->setPos(oldPos);
 
+    UBGraphicsScene *Scene = dynamic_cast<UBGraphicsScene *>(item->scene());
+    if (Scene)
+    {    
+        Scene->addItem(item);
+    }
+
     // removing position from translation component of the new transform
     if (!item->pos().isNull())
         itemTransform *= QTransform::fromTranslate(-item->x(), -item->y());

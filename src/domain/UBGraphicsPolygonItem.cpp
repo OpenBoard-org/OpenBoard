@@ -67,8 +67,8 @@ void UBGraphicsPolygonItem::clearStroke()
 	if (mStroke!=NULL)
 	{
         mStroke->remove(this);
-        if (mStroke->polygons().empty())
-            delete mStroke;
+        //if (mStroke->polygons().empty())
+           // delete mStroke;
         mStroke = NULL;
 	}
 }
