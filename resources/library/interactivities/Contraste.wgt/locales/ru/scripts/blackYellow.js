@@ -326,6 +326,15 @@ function init(){
     $(".closeItem").live("click", function(){
         if(!shadowOver){
             $(this).parent().remove();
+            if($(".editContainer").size() > 0){            
+                var prev = $(".editContainer:first");
+                if((prev.position().left == 54) && (prev.position().top != 60))
+                    prev.css("top", "60px");  
+                var prevBottom = prev.position().top + prev.height(),
+                prevLeft = prev.position().left;
+                if(prev.next().length)
+                    recursionCall(prevBottom, prevLeft, prev.next());
+            }
         }
     });
     
@@ -339,8 +348,7 @@ function init(){
     })
     
     function recursionCall(prevBottom, prevLeft, curr){
-        var curTop = curr.position().top,
-        curHeight = curr.height(),
+        var curHeight = curr.height(),
         curLeft = curr.position().left;
         if(prevLeft == curLeft){
             if((prevBottom + 15 + curHeight) < ($(window).height() - 54))
@@ -351,7 +359,7 @@ function init(){
             if((prevBottom + 15 + curHeight) < ($(window).height() - 54))
                 curr.css("top", prevBottom + 15 + "px").css("left", prevLeft + "px");           
             else
-                curr.css("top", "60px");            
+                curr.css("top", "60px").css("left", prevLeft + 255 + "px");
         }
         prevBottom = curr.position().top + curr.height(),
         prevLeft = curr.position().left;
@@ -364,7 +372,20 @@ function init(){
     popupBack.css("left", ($(window).width() - 360)*50/$(window).width() + "%");
     
     $(window).resize(function(){
-        //$("#leftDiv,#rightDiv,#shadowDiv").css("height", $(window).height());
+        if($("#wgt_edit").hasClass("selected")){
+            if($(".editContainer").size() > 1){            
+                var prev = $(".editContainer:first"),
+                prevBottom = prev.position().top + prev.height(),
+                prevLeft = prev.position().left;
+                recursionCall(prevBottom, prevLeft, prev.next());
+            }
+        } else {
+            var tmp_array = [];
+            $(".readyTask").each(function(){
+                tmp_array.push($(this));
+            });
+            orderItems(tmp_array);
+        }
         popupBack.css("top", ($(window).height() - 138)*50/$(window).height() + "%");
         popupBack.css("left", ($(window).width() - 360)*50/$(window).width() + "%");
     });
