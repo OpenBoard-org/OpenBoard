@@ -31,6 +31,7 @@ var parametersTemplate =
 			'<div class="inline">'+
 				'<label>{{fr.njin.i18n.train.parameters.label.range}}'+
 					'<select name="range" role="parameter">'+
+						'<option value="0.1">< 0.1</option>'+
 						'<option value="1">< 1</option>'+
 						'<option value="10">< 10</option>'+
 						'<option value="100">< 100</option>'+						
