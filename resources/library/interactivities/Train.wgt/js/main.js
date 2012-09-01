@@ -8,9 +8,18 @@ function revert($e) {
 		elmt.className = elmt.className.replace(/(d(\d+))/, "");
 }
 
+function getN(range) {
+	if(range > 1)
+		return Math.floor(Math.random()*range);
+	else if(range == 1)
+		return Math.round(Math.random()*10)/10; 
+	else if(range == 0.1)
+		return Math.round(Math.random()*0.1*100)/100; 
+}
+
 function reloadApp(app) {
 	var operator = app.parameters.value("operator");
-	var range = parseInt(app.parameters.value("range"));
+	var range = parseFloat(app.parameters.value("range"));
 	var count = parseInt(app.parameters.value("count"));
 	
 	$scene = $("#scene");
@@ -25,16 +34,12 @@ function reloadApp(app) {
 	var meeted = [];
 
 	for (var i = 0; i < count; i++) {
-		var n = Math.floor(Math.random()*range);
-	
-		while($.inArray(n, meeted) != -1) {
-			if(range > 1)
-				n = Math.floor(Math.random()*range);
-			else
-				n = Math.round(Math.random()*range*100)/100;
-		}
-			
+
+		var n = getN(range);
 		
+		while($.inArray(n, meeted) != -1)
+			n = getN(range);
+
 		meeted.push(n);
 	
 		$label = $("<div id='l"+i+"' class='label'>"+n+"</div>");
