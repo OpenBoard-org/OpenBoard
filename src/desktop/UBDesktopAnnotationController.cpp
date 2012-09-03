@@ -86,7 +86,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
     mTransparentDrawingScene->setDrawingMode(true);
 
-    mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView);
+    mDesktopPalette = new UBDesktopPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
@@ -119,13 +119,13 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int)), this, SLOT(stylusToolChanged(int)));
 
     // Add the desktop associated palettes
-    mDesktopPenPalette = new UBDesktopPenPalette(mTransparentDrawingView);
+    mDesktopPenPalette = new UBDesktopPenPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
     connect(mDesktopPalette, SIGNAL(maximized()), mDesktopPenPalette, SLOT(onParentMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), mDesktopPenPalette, SLOT(onParentMinimized()));
 
-    mDesktopMarkerPalette = new UBDesktopMarkerPalette(mTransparentDrawingView);
-    mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView);
+    mDesktopMarkerPalette = new UBDesktopMarkerPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
+    mDesktopEraserPalette = new UBDesktopEraserPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
     mDesktopPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopPenPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
@@ -154,6 +154,12 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
 #endif
     onDesktopPaletteMaximized();
+
+    // FIX #633: Ensure that these palettes stay on top of the other elements
+    mDesktopEraserPalette->raise();
+    mDesktopMarkerPalette->raise();
+    mDesktopPenPalette->raise();
+    mDesktopPalette->raise();
 }
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
@@ -243,11 +249,7 @@ void UBDesktopAnnotationController::setAssociatedPalettePosition(UBActionPalette
         if(act->objectName() == actionName)
         {
             int iAction = actions.indexOf(act);
-            yPen = iAction * mDesktopPalette->buttonSize().height();
-
-            // Add the borders
-            yPen += (iAction) * (mDesktopPalette->border() + 4); // 4 has been set after some experiment. We must determine why this value is good
-
+            yPen = iAction * (mDesktopPalette->buttonSize().height() + 2 * mDesktopPalette->border() +6); // This is the mysterious value (6)
             break;
         }
     }

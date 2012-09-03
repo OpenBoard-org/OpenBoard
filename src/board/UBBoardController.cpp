@@ -553,15 +553,15 @@ void UBBoardController::duplicateItem(UBItem *item)
         qreal shifting = UBSettings::settings()->objectFrameWidth;
         itemPos = commonItem->pos() + QPointF(shifting,shifting);
         itemSize = commonItem->boundingRect().size();
+        commonItem->setSelected(false);
     }
 
     UBMimeType::Enum itemMimeType;
     QString contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(item->sourceUrl().toLocalFile());
-    if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem)){
-    	itemMimeType = UBMimeType::Group;
-    }else{
-    	itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
-    }
+    if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem))
+        itemMimeType = UBMimeType::Group;
+    else 
+        itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
         
     switch(static_cast<int>(itemMimeType))
     {
@@ -633,10 +633,10 @@ void UBBoardController::duplicateItem(UBItem *item)
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
             if (gitem)
             {   
-            	qDebug() << "Adding a stroke: " << gitem;
                 mActiveScene->addItem(gitem);
                 gitem->setPos(itemPos);
                 mLastCreatedItem = gitem;
+                gitem->setSelected(true);
             }
             return;
         }break;
@@ -1482,11 +1482,12 @@ void UBBoardController::ClearUndoStack()
         UBGraphicsItemUndoCommand *cmd = (UBGraphicsItemUndoCommand*)UBApplication::undoStack->command(i);
 
         // go through all added and removed objects, for create list of unique objects
+        // grouped items will be deleted by groups, so we don't need do delete that items.
         QSetIterator<QGraphicsItem*> itAdded(cmd->GetAddedList());
         while (itAdded.hasNext())
         {
             QGraphicsItem* item = itAdded.next();
-            if( !uniqueItems.contains(item) )
+            if( !uniqueItems.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
                 uniqueItems.insert(item);
         }
 
@@ -1494,7 +1495,7 @@ void UBBoardController::ClearUndoStack()
         while (itRemoved.hasNext())
         {
             QGraphicsItem* item = itRemoved.next();
-            if( !uniqueItems.contains(item) )
+            if( !uniqueItems.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
                 uniqueItems.insert(item);
         }
     }
@@ -1515,7 +1516,8 @@ void UBBoardController::ClearUndoStack()
         }
         if(!scene)
         {
-            mActiveScene->deleteItem(item);
+           if (!mActiveScene->deleteItem(item))
+               delete item;
         }
     }
 

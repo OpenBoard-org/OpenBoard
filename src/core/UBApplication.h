@@ -119,10 +119,10 @@ class UBApplication : public QtSingleApplication
 
     private:
         void updateProtoActionsState();
-        void setupTranslator(QString forcedLanguage);
+        void setupTranslators(QStringList args);
         QList<QMenu*> mProtoMenus;
         bool mIsVerbose;
-
+        QString checkLanguageAvailabilityForSankore(QString& language);
     protected:
 
 #if defined(Q_WS_MACX) && !defined(QT_MAC_USE_COCOA)

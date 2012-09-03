@@ -113,7 +113,6 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mFlippable(false)
     , mToolBarUsed(useToolBar)
 {
-    // NOOP
     connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
 }
 
@@ -167,7 +166,7 @@ void UBGraphicsItemDelegate::init()
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
-    qDeleteAll(mButtons);
+    disconnect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
     // do not release mMimeData.
     // the mMimeData is owned by QDrag since the setMimeData call as specified in the documentation
 }

@@ -263,7 +263,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mCrossedBackground(false)
     , mIsDesktopMode(false)
     , mZoomFactor(1)
-    , mIsModified(true)
     , mBackgroundObject(0)
     , mPreviousWidth(0)
     , mInputDeviceIsPressed(false)
@@ -305,7 +304,10 @@ UBGraphicsScene::~UBGraphicsScene()
 {
     if (mCurrentStroke)
         if (mCurrentStroke->polygons().empty())
+        {
             delete mCurrentStroke;
+            mCurrentStroke = NULL;
+        }
 
     if (mZLayerController)
         delete mZLayerController;
@@ -433,6 +435,11 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
         }
     }
 
+    if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+        delete mCurrentStroke;    
+        mCurrentStroke = NULL;
+    }
+
     return accepted;
 }
 
@@ -474,6 +481,10 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                     UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
                     mAddedItems.remove(mpLastPolygon);
                     mCurrentStroke->remove(mpLastPolygon);
+                    if (mCurrentStroke->polygons().empty()){
+                        delete mCurrentStroke;
+                        mCurrentStroke = NULL;
+                    }
                     removeItem(mpLastPolygon);
                     mPreviousPolygonItems.removeAll(mpLastPolygon);
                 }
@@ -1060,12 +1071,9 @@ void UBGraphicsScene::clearItemsAndAnnotations()
     QSet<QGraphicsItem*> emptyList;
     QSet<QGraphicsItem*> removedItems;
 
-    QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
-
-    while (itItems.hasNext())
+    QList<QGraphicsItem*> sceneItems = items();
+    foreach(QGraphicsItem* item, sceneItems)
     {
-        QGraphicsItem* item = itItems.next();
-
         if(!mTools.contains(item) && !isBackgroundObject(item))
         {
             removeItem(item);
@@ -1091,21 +1099,17 @@ void UBGraphicsScene::clearItems()
     QSet<QGraphicsItem*> emptyList;
     QSet<QGraphicsItem*> removedItems;
 
-    QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
-
-    while (itItems.hasNext())
+    QList<QGraphicsItem*> sceneItems = items();
+    foreach(QGraphicsItem* item, sceneItems)
     {
-        QGraphicsItem* item = itItems.next();
+        bool isGroup = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item) != NULL;
+        bool isPolygon = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item) != NULL;
+        bool isStrokesGroup = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item) != NULL;
 
-        if (!item->parentItem())
+        if(!isGroup && !isPolygon && !isStrokesGroup && !mTools.contains(item) && !isBackgroundObject(item))
         {
-            UBGraphicsPolygonItem* pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-
-            if(!pi && !mTools.contains(item) && !isBackgroundObject(item))
-            {
-                removeItem(item);
-                removedItems << item;
-            }
+            removeItem(item);
+            removedItems << item;
         }
     }
 
@@ -1126,11 +1130,9 @@ void UBGraphicsScene::clearAnnotations()
     QSet<QGraphicsItem*> emptyList;
     QSet<QGraphicsItem*> removedItems;
 
-    QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
-
-    while (itItems.hasNext())
+    QList<QGraphicsItem*> sceneItems = items();
+    foreach(QGraphicsItem* item, sceneItems)
     {
-        QGraphicsItem* item = itItems.next();
         UBGraphicsStrokesGroup* pi = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
         if (pi)
         {
@@ -1141,7 +1143,6 @@ void UBGraphicsScene::clearAnnotations()
 
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     update(sceneRect());
-
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
@@ -1356,6 +1357,7 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
 UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *> items)
 {
     UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
+    addItem(groupItem);
 
     foreach (QGraphicsItem *item, items) {
         if (item->type() == UBGraphicsGroupContainerItem::Type) {
@@ -1366,13 +1368,14 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
             }
             foreach (QGraphicsItem *chItem, childItems) {
                 groupItem->addToGroup(chItem);
+                mFastAccessItems.removeAll(chItem);
             }
         } else {
             groupItem->addToGroup(item);
+            mFastAccessItems.removeAll(item);
         }
     }
 
-    addItem(groupItem);
     groupItem->setVisible(true);
     groupItem->setFocus();
 
@@ -1389,6 +1392,15 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
 void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
 {
     addItem(groupItem);
+    for (int i = 0; i < groupItem->childItems().count(); i++)
+    {
+        QGraphicsItem *it = qgraphicsitem_cast<QGraphicsItem *>(groupItem->childItems().at(i));
+        if (it)
+        {
+             mFastAccessItems.removeAll(it);
+        }
+    }
+
     groupItem->setVisible(true);
     groupItem->setFocus();
 
@@ -1557,7 +1569,6 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
 
 void UBGraphicsScene::addItem(QGraphicsItem* item)
 {
-    setModified(true);
     UBCoreGraphicsScene::addItem(item);
 
     UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
@@ -1570,8 +1581,6 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
 
 void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 {
-    setModified(true);
-
     foreach(QGraphicsItem* item, items) {
         UBCoreGraphicsScene::addItem(item);
         UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
@@ -1584,7 +1593,7 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
 {
-    setModified(true);
+    item->setSelected(false);
     UBCoreGraphicsScene::removeItem(item);
     UBApplication::boardController->freezeW3CWidget(item, true);
 
@@ -1596,8 +1605,6 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
 {
-    setModified(true);
-
     foreach(QGraphicsItem* item, items)
         UBCoreGraphicsScene::removeItem(item);
 
@@ -1755,7 +1762,6 @@ void UBGraphicsScene::addRuler(QPointF center)
     addItem(ruler);
 
     ruler->setVisible(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::addProtractor(QPointF center)
@@ -1773,7 +1779,6 @@ void UBGraphicsScene::addProtractor(QPointF center)
     protractor->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
 
     protractor->setVisible(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::addTriangle(QPointF center)
@@ -1791,7 +1796,6 @@ void UBGraphicsScene::addTriangle(QPointF center)
     triangle->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
 
     triangle->setVisible(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::addMagnifier(UBMagnifierParams params)
@@ -1850,6 +1854,7 @@ void UBGraphicsScene::moveMagnifier()
    {
        QPoint magnifierPos = QPoint(magniferControlViewWidget->pos().x() + magniferControlViewWidget->size().width() / 2, magniferControlViewWidget->pos().y() + magniferControlViewWidget->size().height() / 2 );
        moveMagnifier(magnifierPos, true);
+       setModified(true);
    }
 }
 
@@ -1882,6 +1887,7 @@ void UBGraphicsScene::moveMagnifier(QPoint newPos, bool forceGrab)
 void UBGraphicsScene::closeMagnifier()
 {
     DisposeMagnifierQWidgets();
+    setModified(true);
 }
 
 void UBGraphicsScene::zoomInMagnifier()
@@ -1899,6 +1905,7 @@ void UBGraphicsScene::zoomOutMagnifier()
     {
         magniferControlViewWidget->setZoom(magniferControlViewWidget->params.zoom - 0.5);
         magniferDisplayViewWidget->setZoom(magniferDisplayViewWidget->params.zoom - 0.5);
+        setModified(true);
     }
 }
 
@@ -1910,6 +1917,7 @@ void UBGraphicsScene::resizedMagnifier(qreal newPercent)
         magniferControlViewWidget->grabPoint();
         magniferDisplayViewWidget->setSize(newPercent);
         magniferDisplayViewWidget->grabPoint();
+        setModified(true);
     }
 }
 
@@ -1925,7 +1933,6 @@ void UBGraphicsScene::addCompass(QPointF center)
     compass->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     compass->setVisible(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::addCache()
@@ -1955,7 +1962,6 @@ void UBGraphicsScene::addMask(const QPointF &center)
     curtain->setRect(rect);
     curtain->setVisible(true);
     curtain->setSelected(true);
-    setModified(true);
 }
 
 void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQuality)
@@ -2205,7 +2211,6 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 
                 default:
                     {
-                        item->setSelected(false);
                         UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
                         if (0 != ubgi)
                             ubgi->remove();
@@ -2267,6 +2272,11 @@ void UBGraphicsScene::setToolCursor(int tool)
     {
         deselectAllItems();
     }
+
+    if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+        delete mCurrentStroke;
+    }
+    mCurrentStroke = NULL;
 }
 
 void UBGraphicsScene::initStroke(){

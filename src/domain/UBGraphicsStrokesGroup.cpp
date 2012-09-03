@@ -113,29 +113,30 @@ void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
-   UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
+    UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
 
-
-   QList<QGraphicsItem*> chl = childItems();
+    QList<QGraphicsItem*> chl = childItems();
 
     foreach(QGraphicsItem *child, chl)
     {
         UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
         if (polygon)
+        {
             copy->addToGroup(dynamic_cast<QGraphicsItem*>(polygon->deepCopy()));
+            polygon->setStrokesGroup(copy);
+        }
     }
     copyItemParameters(copy);
 
-   return copy;
+    return copy;
 }
 
 void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
 {
     UBGraphicsStrokesGroup *cp = dynamic_cast<UBGraphicsStrokesGroup*>(copy);
     {
-        cp->setPos(this->pos());
+        cp->setTransform(transform());
 
-        cp->setTransform(this->transform());
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
