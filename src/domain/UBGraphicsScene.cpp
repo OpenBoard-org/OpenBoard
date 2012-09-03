@@ -1103,16 +1103,14 @@ void UBGraphicsScene::clearItems()
     {
         QGraphicsItem* item = itItems.next();
 
-        if (!item->parentItem())
-        {
-            bool isPolygon = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item) != NULL;
-            bool isStrokesGroup = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item) != NULL;
+        bool isGroup = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item) != NULL;
+        bool isPolygon = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item) != NULL;
+        bool isStrokesGroup = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item) != NULL;
 
-            if(!isPolygon && !isStrokesGroup && !mTools.contains(item) && !isBackgroundObject(item))
-            {
-                removeItem(item);
-                removedItems << item;
-            }
+        if(!isGroup && !isPolygon && !isStrokesGroup && !mTools.contains(item) && !isBackgroundObject(item))
+        {
+            removeItem(item);
+            removedItems << item;
         }
     }
 
