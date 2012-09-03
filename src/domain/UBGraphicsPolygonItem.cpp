@@ -142,14 +142,14 @@ QColor UBGraphicsPolygonItem::color() const
 
 
 UBItem* UBGraphicsPolygonItem::deepCopy() const
-{
-    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(polygon(), parentItem());
+{  
+    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(polygon(), 0);
 
+    UBGraphicsStroke *stroke = new UBGraphicsStroke();
+    
     copyItemParameters(copy);
 
-    copy->mOriginalLine = this->mOriginalLine;
-    copy->mOriginalWidth = this->mOriginalWidth;
-    copy->mIsNominalLine = this->mIsNominalLine;
+    copy->setStroke(stroke);
 
     return copy;
 }
@@ -160,16 +160,14 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
     UBGraphicsPolygonItem *cp = dynamic_cast<UBGraphicsPolygonItem*>(copy);
     if (cp)
     {
-        cp->mOriginalLine = QLineF();
-        cp->mOriginalWidth = -1;
-        cp->mIsNominalLine = false;
+        cp->mOriginalLine = this->mOriginalLine;
+        cp->mOriginalWidth = this->mOriginalWidth;
+        cp->mIsNominalLine = this->mIsNominalLine;
 
-        cp->setStroke(this->stroke());
-        cp->setStrokesGroup(this->strokesGroup());
+        cp->setTransform(transform());
         cp->setBrush(this->brush());
         cp->setPen(this->pen());
         cp->mHasAlpha = this->mHasAlpha;
-
 
         cp->setColorOnDarkBackground(this->colorOnDarkBackground());
         cp->setColorOnLightBackground(this->colorOnLightBackground());

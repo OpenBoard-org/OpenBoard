@@ -1615,6 +1615,7 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
 {
     setModified(true);
+    item->setSelected(false);
     UBCoreGraphicsScene::removeItem(item);
     UBApplication::boardController->freezeW3CWidget(item, true);
 
@@ -2235,7 +2236,6 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 
                 default:
                     {
-                        item->setSelected(false);
                         UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
                         if (0 != ubgi)
                             ubgi->remove();
