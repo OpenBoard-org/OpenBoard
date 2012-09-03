@@ -23,6 +23,7 @@
 
 UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
     : QGraphicsScene ( parent  )
+    , mIsModified(true)
 {
     //NOOP
 }
@@ -60,6 +61,8 @@ void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
  
     if (item->scene() != this)
         QGraphicsScene::addItem(item);
+
+    setModified(true);
 }
 
 
@@ -70,6 +73,7 @@ void UBCoreGraphicsScene::removeItem(QGraphicsItem* item, bool forceDelete)
     {
         deleteItem(item);
     }
+    setModified(true);
 }
 
 bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
