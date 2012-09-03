@@ -111,6 +111,9 @@ class UBDocumentController : public UBDocumentContainer
         bool mToolsPalettePositionned;
         UBDocumentGroupTreeItem* mTrashTi;
 
+        void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi);
+        void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
+
     private slots:
         void documentZoomSliderValueChanged (int value);
         void loadDocumentProxies();
