@@ -1600,6 +1600,8 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
 {
+    UBGraphicsGroupContainerItem* group =  qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item->parentItem());
+
     item->setSelected(false);
     UBCoreGraphicsScene::removeItem(item);
     UBApplication::boardController->freezeW3CWidget(item, true);
@@ -1608,6 +1610,15 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
       --mItemCount;
 
     mFastAccessItems.removeAll(item);
+
+    if (group)
+    {
+        if (group->childItems().empty())
+        {
+            group->Delegate()->remove();
+            UBCoreGraphicsScene::removeItemFromDeletion(group);
+        }
+    }
 }
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
