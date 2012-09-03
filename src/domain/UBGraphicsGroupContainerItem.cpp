@@ -79,6 +79,8 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
     item->setPos(mapFromItem(item, 0, 0));
 
     item->scene()->removeItem(item);
+    if (corescene())
+        corescene()->removeItemFromDeletion(item);
     item->setParentItem(this);
 
     // removing position from translation component of the new transform
@@ -223,6 +225,18 @@ void UBGraphicsGroupContainerItem::destroy() {
     }
 
     remove();
+}
+
+void UBGraphicsGroupContainerItem::clearSource()
+{
+    foreach(QGraphicsItem *child, childItems())
+    {
+        UBGraphicsItem *item = dynamic_cast<UBGraphicsItem *>(child);
+        if (item)
+        {
+            item->clearSource();
+        }
+    }
 }
 
 void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *event)

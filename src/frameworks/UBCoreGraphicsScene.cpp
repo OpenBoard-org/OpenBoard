@@ -52,6 +52,8 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
 
 void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
 {
+    addItemToDeletion(item);
+
     if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count()) {
         foreach (QGraphicsItem *curItem, item->childItems()) {
             removeItemFromDeletion(curItem);
@@ -76,17 +78,7 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
 {
     if(mItemsToDelete.contains(item))
     {
-        UBGraphicsItem* item_casted = 0;
-        switch (item->type())
-        {
-        case UBGraphicsMediaItem::Type:
-                item_casted = dynamic_cast<UBGraphicsMediaItem*>(item);
-                break;
-        case UBGraphicsW3CWidgetItem::Type:
-                item_casted = dynamic_cast<UBGraphicsWidgetItem*>(item);
-                break;
-        }
-
+        UBGraphicsItem *item_casted = dynamic_cast<UBGraphicsItem *>(item);
         if (0 != item_casted)
             item_casted->clearSource();
 

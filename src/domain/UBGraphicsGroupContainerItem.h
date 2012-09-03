@@ -39,6 +39,8 @@ public:
     virtual void setUuid(const QUuid &pUuid);
     void destroy();
 
+    virtual void clearSource();
+
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
