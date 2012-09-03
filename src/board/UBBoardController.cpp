@@ -636,6 +636,7 @@ void UBBoardController::duplicateItem(UBItem *item)
                 mActiveScene->addItem(gitem);
                 gitem->setPos(itemPos);
                 mLastCreatedItem = gitem;
+                gitem->setSelected(true);
             }
             return;
         }break;
