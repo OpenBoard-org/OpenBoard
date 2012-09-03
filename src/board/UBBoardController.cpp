@@ -1543,27 +1543,11 @@ void UBBoardController::changeBackground(bool isDark, bool isCrossed)
 
         mActiveScene->setBackground(isDark, isCrossed);
 
-        foreach (QGraphicsItem *item, mActiveScene->items()) {
-            if (item->type() == UBGraphicsStrokesGroup::Type) {
-                UBGraphicsStrokesGroup *curGroup = static_cast<UBGraphicsStrokesGroup*>(item);
-                QColor compareColor =  curGroup->color(currentIsDark ? UBGraphicsStrokesGroup::colorOnDarkBackground
-                                                                     : UBGraphicsStrokesGroup::colorOnLightBackground);
-
-                if (curGroup->color() == compareColor) {
-                    QColor newColor = curGroup->color(!currentIsDark ? UBGraphicsStrokesGroup::colorOnDarkBackground
-                                                                     : UBGraphicsStrokesGroup::colorOnLightBackground);
-                    curGroup->setColor(newColor);
-                }
-
-            }
-        }
-
         updateBackgroundState();
 
         emit backgroundChanged();
     }
 }
-
 
 void UBBoardController::boardViewResized(QResizeEvent* event)
 {

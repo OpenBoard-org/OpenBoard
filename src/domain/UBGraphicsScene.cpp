@@ -891,25 +891,18 @@ void UBGraphicsScene::recolorAllItems()
         view->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
     }
 
-    for(int i = 0; i < mFastAccessItems.size(); i++)
-    {
-        UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (mFastAccessItems.at(i));
+    bool currentIslight = isLightBackground();
+    foreach (QGraphicsItem *item, items()) {
+        if (item->type() == UBGraphicsStrokesGroup::Type) {
+            UBGraphicsStrokesGroup *curGroup = static_cast<UBGraphicsStrokesGroup*>(item);
+            QColor compareColor =  curGroup->color(currentIslight ? UBGraphicsStrokesGroup::colorOnDarkBackground
+                                                                  : UBGraphicsStrokesGroup::colorOnLightBackground);
 
-        if (polygonItem)
-        {
-            QColor color;
-
-            if (mDarkBackground)
-            {
-                color = polygonItem->colorOnDarkBackground();
+            if (curGroup->color() == compareColor) {
+                QColor newColor = curGroup->color(!currentIslight ? UBGraphicsStrokesGroup::colorOnDarkBackground
+                                                                  : UBGraphicsStrokesGroup::colorOnLightBackground);
+                curGroup->setColor(newColor);
             }
-            else
-            {
-                color = polygonItem->colorOnLightBackground();
-            }
-
-            polygonItem->setColor(color);
-            continue;
         }
     }
 
