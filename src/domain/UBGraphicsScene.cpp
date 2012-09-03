@@ -1099,6 +1099,11 @@ void UBGraphicsScene::clearItemsAndAnnotations()
     setDocumentUpdated();
 }
 
+bool isService(QGraphicsItem *item) {
+    return (item->type() == UBGraphicsDelegateFrame::Type)
+            || (item->parentItem() && item->parentItem()->Type == UBGraphicsDelegateFrame::Type);
+}
+
 void UBGraphicsScene::clearItems()
 {
     deselectAllItems();
@@ -1113,9 +1118,13 @@ void UBGraphicsScene::clearItems()
         bool isPolygon = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item) != NULL;
         bool isStrokesGroup = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item) != NULL;
 
-        if(!isGroup && !isPolygon && !isStrokesGroup && !mTools.contains(item) && !isBackgroundObject(item))
-        {
+        bool inGroup = (item->parentItem()
+                        && (item->parentItem()->type() == UBGraphicsGroupContainerItem::Type));
+
+        if(!isGroup && !isPolygon && !isStrokesGroup && !mTools.contains(item) && !isBackgroundObject(item)) {
             removeItem(item);
+        }
+        if (!inGroup || !isService(item)) {
             removedItems << item;
         }
     }
@@ -1611,14 +1620,14 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 
     mFastAccessItems.removeAll(item);
 
-    if (group)
-    {
-        if (group->childItems().empty())
-        {
-            group->Delegate()->remove();
-            UBCoreGraphicsScene::removeItemFromDeletion(group);
-        }
-    }
+//    if (group)
+//    {
+//        if (group->childItems().empty())
+//        {
+//            group->Delegate()->remove();
+//            UBCoreGraphicsScene::removeItemFromDeletion(group);
+//        }
+//    }
 }
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)

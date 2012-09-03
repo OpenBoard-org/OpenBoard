@@ -73,6 +73,7 @@ void UBCoreGraphicsScene::removeItem(QGraphicsItem* item, bool forceDelete)
     QGraphicsScene::removeItem(item);
     if (forceDelete)
     {
+        qDebug() << "force delete is " << forceDelete;
         deleteItem(item);
     }
     setModified(true);
