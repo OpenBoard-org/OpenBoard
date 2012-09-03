@@ -23,7 +23,7 @@ class QVBoxLayout;
 class QPushButton;
 class UBDocumentProxy;
 class UBGraphicsTextItem;
-
+class QScrollArea;
 
 #include "UBTeacherGuideWidgetsTools.h"
 
@@ -155,8 +155,13 @@ private:
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonTitleLayout;
+    QVBoxLayout* mpContainerWidgetLayout;
     QPushButton* mpModePushButton;
     QLabel* mpPageNumberLabel;
+
+    QScrollArea* mpScrollArea;
+    QWidget* mpContainerWidget;
+
     UBTGAdaptableText* mpSessionTitle;
     QFrame* mpSeparatorSessionTitle;
 
