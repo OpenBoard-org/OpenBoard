@@ -1105,9 +1105,10 @@ void UBGraphicsScene::clearItems()
 
         if (!item->parentItem())
         {
-            UBGraphicsPolygonItem* pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+            bool isPolygon = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item) != NULL;
+            bool isStrokesGroup = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item) != NULL;
 
-            if(!pi && !mTools.contains(item) && !isBackgroundObject(item))
+            if(!isPolygon && !isStrokesGroup && !mTools.contains(item) && !isBackgroundObject(item))
             {
                 removeItem(item);
                 removedItems << item;
