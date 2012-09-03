@@ -1386,7 +1386,7 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
             }
             foreach (QGraphicsItem *chItem, childItems) {
                 groupItem->addToGroup(chItem);
-                mFastAccessItems.removeAll(item);
+                mFastAccessItems.removeAll(chItem);
             }
         } else {
             groupItem->addToGroup(item);
