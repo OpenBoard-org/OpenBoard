@@ -75,6 +75,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
 , mIsDragInProgress(false)
 , mMultipleSelectionIsEnabled(false)
 , isControl(pIsControl)
+, mRubberBandInPlayMode(false) //enables rubberband with play tool
 {
   init ();
 
@@ -1020,38 +1021,41 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
           return;
       }
 
-      if (!movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) && mUBRubberBand && mUBRubberBand->isVisible()) {
+      if (currentTool != UBStylusTool::Play || mRubberBandInPlayMode) {
 
-          QRect bandRect(mMouseDownPos, event->pos());
+          if (!movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) && mUBRubberBand && mUBRubberBand->isVisible()) {
 
-          bandRect = bandRect.normalized();
+              QRect bandRect(mMouseDownPos, event->pos());
 
-          mUBRubberBand->setGeometry(bandRect);
+              bandRect = bandRect.normalized();
 
-          QList<QGraphicsItem *> rubberItems = items(bandRect);
-          foreach (QGraphicsItem *item, mJustSelectedItems) {
-              if (!rubberItems.contains(item)) {
-                  item->setSelected(false);
-                  mJustSelectedItems.remove(item);
-              }
-          }
+              mUBRubberBand->setGeometry(bandRect);
 
-          if (currentTool == UBStylusTool::Selector)
-          foreach (QGraphicsItem *item, items(bandRect)) {
-
-              if (item->type() == UBGraphicsW3CWidgetItem::Type
-                      || item->type() == UBGraphicsPixmapItem::Type
-                      || item->type() == UBGraphicsMediaItem::Type
-                      || item->type() == UBGraphicsSvgItem::Type
-                      || item->type() == UBGraphicsTextItem::Type
-                      || item->type() == UBGraphicsStrokesGroup::Type
-                      || item->type() == UBGraphicsGroupContainerItem::Type) {
-
-                  if (!mJustSelectedItems.contains(item)) {
-                      item->setSelected(true);
-                      mJustSelectedItems.insert(item);
+              QList<QGraphicsItem *> rubberItems = items(bandRect);
+              foreach (QGraphicsItem *item, mJustSelectedItems) {
+                  if (!rubberItems.contains(item)) {
+                      item->setSelected(false);
+                      mJustSelectedItems.remove(item);
                   }
               }
+
+              if (currentTool == UBStylusTool::Selector)
+                  foreach (QGraphicsItem *item, items(bandRect)) {
+
+                      if (item->type() == UBGraphicsW3CWidgetItem::Type
+                              || item->type() == UBGraphicsPixmapItem::Type
+                              || item->type() == UBGraphicsMediaItem::Type
+                              || item->type() == UBGraphicsSvgItem::Type
+                              || item->type() == UBGraphicsTextItem::Type
+                              || item->type() == UBGraphicsStrokesGroup::Type
+                              || item->type() == UBGraphicsGroupContainerItem::Type) {
+
+                          if (!mJustSelectedItems.contains(item)) {
+                              item->setSelected(true);
+                              mJustSelectedItems.insert(item);
+                          }
+                      }
+                  }
           }
       }
 

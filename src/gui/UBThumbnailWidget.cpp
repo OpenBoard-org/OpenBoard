@@ -12,11 +12,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <QObject>
 #include <QString>
 #include <QCursor>
 
 #include "UBThumbnailWidget.h"
 #include "UBRubberBand.h"
+#include "UBMainWindow.h"
 
 #include "board/UBBoardController.h"
 
@@ -858,7 +860,9 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
 
 void UBSceneThumbnailNavigPixmap::deletePage()
 {
-	UBApplication::boardController->deleteScene(sceneIndex());
+	if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"), QObject::tr("Are you sure you want to remove 1 page from the selected document '%0'?").arg(UBApplication::documentController->selectedDocument()->metaData(UBSettings::documentName).toString()))){
+		UBApplication::boardController->deleteScene(sceneIndex());
+	}
 }
 
 void UBSceneThumbnailNavigPixmap::duplicatePage()
