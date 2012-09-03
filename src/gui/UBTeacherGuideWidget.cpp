@@ -895,9 +895,9 @@ void UBTeacherGuidePageZeroWidget::fillComboBoxes()
     parametersFile.close();
 
     QStringList licences;
-    licences << tr("Attribution CC BY")
+    licences << tr("Attribution-ShareAlike CC BY-SA")
+             << tr("Attribution CC BY")
     		 << tr("Attribution-NoDerivs CC BY-ND")
-             << tr("Attribution-ShareAlike CC BY-SA")
              << tr("Attribution-NonCommercial CC BY-NC")
              << tr("Attribution-NonCommercial-NoDerivs CC BY-NC-ND")
              << tr("Attribution-NonCommercial-ShareAlike CC BY-NC-SA")
@@ -905,9 +905,9 @@ void UBTeacherGuidePageZeroWidget::fillComboBoxes()
              << tr("Copyright");
     mpLicenceBox->addItems(licences);
     QStringList licenceIconList;
-    licenceIconList << ":images/licenses/ccby.png"
+    licenceIconList << ":images/licenses/ccbysa.png"
+                    << ":images/licenses/ccby.png"
                     << ":images/licenses/ccbynd.png"
-                    << ":images/licenses/ccbysa.png"
                     << ":images/licenses/ccbync.png"
                     << ":images/licenses/ccbyncnd.png"
                     << ":images/licenses/ccbyncsa.png";
