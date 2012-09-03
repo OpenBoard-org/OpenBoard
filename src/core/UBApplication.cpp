@@ -256,7 +256,7 @@ void UBApplication::setupTranslators(QStringList args)
                 qtGuiTranslationPath = "";
         }
 
-        if(qtGuiTranslationPath.isEmpty()){
+        if(!qtGuiTranslationPath.isEmpty()){
             qDebug() << "qtGuiTranslationPath " << qtGuiTranslationPath;
             mQtGuiTranslator->load(qtGuiTranslationPath);
             installTranslator(mQtGuiTranslator);
