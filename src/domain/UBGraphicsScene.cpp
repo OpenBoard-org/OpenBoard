@@ -1078,12 +1078,9 @@ void UBGraphicsScene::clearItemsAndAnnotations()
     QSet<QGraphicsItem*> emptyList;
     QSet<QGraphicsItem*> removedItems;
 
-    QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
-
-    while (itItems.hasNext())
+    QList<QGraphicsItem*> sceneItems = items();
+    foreach(QGraphicsItem* item, sceneItems)
     {
-        QGraphicsItem* item = itItems.next();
-
         if(!mTools.contains(item) && !isBackgroundObject(item))
         {
             removeItem(item);
@@ -1109,12 +1106,9 @@ void UBGraphicsScene::clearItems()
     QSet<QGraphicsItem*> emptyList;
     QSet<QGraphicsItem*> removedItems;
 
-    QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
-
-    while (itItems.hasNext())
+    QList<QGraphicsItem*> sceneItems = items();
+    foreach(QGraphicsItem* item, sceneItems)
     {
-        QGraphicsItem* item = itItems.next();
-
         bool isGroup = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item) != NULL;
         bool isPolygon = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item) != NULL;
         bool isStrokesGroup = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item) != NULL;
@@ -1143,11 +1137,9 @@ void UBGraphicsScene::clearAnnotations()
     QSet<QGraphicsItem*> emptyList;
     QSet<QGraphicsItem*> removedItems;
 
-    QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
-
-    while (itItems.hasNext())
+    QList<QGraphicsItem*> sceneItems = items();
+    foreach(QGraphicsItem* item, sceneItems)
     {
-        QGraphicsItem* item = itItems.next();
         UBGraphicsStrokesGroup* pi = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
         if (pi)
         {
@@ -1158,7 +1150,6 @@ void UBGraphicsScene::clearAnnotations()
 
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     update(sceneRect());
-
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
