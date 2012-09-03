@@ -270,28 +270,6 @@ void WBBrowserWindow::setupToolBarForTutorial()
         if (tb && tb->menu())
             tb->setMenu(NULL);
     }
-//    mTabWidget->addWebAction(mUniboardMainWindow->actionWebReload, QWebPage::Reload);
-//    mTabWidget->addWebAction(mUniboardMainWindow->actionStopLoading, QWebPage::Stop);
-
-//    mWebToolBar->insertWidget(mUniboardMainWindow->actionWebBigger, mTabWidget->lineEditStack());
-
-//    mSearchToolBar = new WBToolbarSearch(mWebToolBar);
-
-//    mSearchAction = mWebToolBar->insertWidget(mUniboardMainWindow->actionWebBigger, mSearchToolBar);
-
-//    connect(mSearchToolBar, SIGNAL(search(const QUrl&)), SLOT(loadUrl(const QUrl&)));
-
-//    mChaseWidget = new WBChaseWidget(this);
-//    mWebToolBar->insertWidget(mUniboardMainWindow->actionWebBigger, mChaseWidget);
-
-//    mWebToolBar->insertSeparator(mUniboardMainWindow->actionWebBigger);
-
-//    connect(mUniboardMainWindow->actionHome, SIGNAL(triggered()), this , SLOT(slotHome()));
-
-//    connect(mUniboardMainWindow->actionBookmarks, SIGNAL(triggered()), this , SLOT(bookmarks()));
-//    connect(mUniboardMainWindow->actionAddBookmark, SIGNAL(triggered()), this , SLOT(addBookmark()));
-//    connect(mUniboardMainWindow->actionWebBigger, SIGNAL(triggered()), this , SLOT(slotViewZoomIn()));
-//    connect(mUniboardMainWindow->actionWebSmaller, SIGNAL(triggered()), this , SLOT(slotViewZoomOut()));
 
     mWebToolBar->show();
 }

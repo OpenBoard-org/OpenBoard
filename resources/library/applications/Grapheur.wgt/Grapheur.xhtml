@@ -218,7 +218,6 @@
                             return true;
                         });
                         $("label[for*='checkAire']").text(sankoreLang[lang].draw);
-                        $("label[for*='checkMaJ']").text(sankoreLang[lang].auto_update);
                         $("#menuOptions td").eq(0).html(sankoreLang[lang].widget);
                         $("#menuOptions h3").eq(0).text(sankoreLang[lang].widget_options);
                         $("#menuOptions2D h3").eq(0).text(sankoreLang[lang].options + " 2D");
@@ -1033,13 +1032,10 @@
                 <span class="gras">Control options:</span><br/>
                 <input type="button" class="boutonSauvegarde" onclick="saveOptions()" value="Save"/><input type="button" class="boutonSauvegarde" onclick="loadOptions()" value="Load"/> <input class="boutonSauvegarde2" type="button" onclick="delOptions()" value="Delete"/><input class="boutonSauvegarde2" type="button" onclick="alertOptions()" value="Display"/><br/>
                 <span class="texteSecondaire">Save a widget options in cookies or load an options from cookies or delete a registered options.</span>
-                <br/><br/>
-                <label for="checkMaJ">Automatically update when a widget opening.</label> <input type="checkbox" id="checkMaJ" onclick="checkboxMaJ()"/>
                 <br/>
                 <div id="cacheCookies"><br/><br/><h1>Cookies are disabled. You cannot save an options...</h1></div>
                 <div id="cacheMaJ">You are using the last version of this widget.</div>
                 <input type="button" onclick='reset()' value="Reload widget" style="position:absolute; bottom:20px; width:140px; height:32px;"/>
-                <input type="button" onclick='miseAjour()' value="Updated" style="position:absolute; bottom:20px; left:160px; width:140px; height:32px;"/>
             </div>
             <div class="barreBasMenu"><input type="button" onclick="cacherMenu(); actualiserGraph()" value="Check"/></div>
         </div>

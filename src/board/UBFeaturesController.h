@@ -33,7 +33,7 @@ class UBFeaturesComputingThread : public QThread
 public:
     explicit UBFeaturesComputingThread(QObject *parent = 0);
     virtual ~UBFeaturesComputingThread();
-        void compute(const QList<QPair<QUrl, QString> > &pScanningData, QSet<QUrl> *pFavoritesSet);
+        void compute(const QList<QPair<QUrl, UBFeature> > &pScanningData, QSet<QUrl> *pFavoritesSet);
 
 protected:
     void run();
@@ -51,16 +51,16 @@ public slots:
 
 private:
     void scanFS(const QUrl & currentPath, const QString & currVirtualPath, const QSet<QUrl> &pFavoriteSet);
-    void scanAll(QList<QPair<QUrl, QString> > pScanningData, const QSet<QUrl> &pFavoriteSet);
+    void scanAll(QList<QPair<QUrl, UBFeature> > pScanningData, const QSet<QUrl> &pFavoriteSet);
     int featuresCount(const QUrl &pPath);
-    int featuresCountAll(QList<QPair<QUrl, QString> > pScanningData);
+    int featuresCountAll(QList<QPair<QUrl, UBFeature> > pScanningData);
 
 private:
     QMutex mMutex;
     QWaitCondition mWaitCondition;
     QUrl mScanningPath;
     QString mScanningVirtualPath;
-    QList<QPair<QUrl, QString> > mScanningData;
+    QList<QPair<QUrl, UBFeature> > mScanningData;
     QSet<QUrl> mFavoriteSet;
     bool restart;
     bool abort;
@@ -94,6 +94,7 @@ public:
 //    UBFeature();
     virtual ~UBFeature();
     QString getName() const { return mName; }
+    QString getDisplayName() const {return mDisplayName;}
     QImage getThumbnail() const {return mThumbnail;}
     QString getVirtualPath() const { return virtualDir; }
 	//QString getPath() const { return mPath; };
@@ -112,11 +113,17 @@ public:
 	const QMap<QString,QString> & getMetadata() const { return metadata; }
 	void setMetadata( const QMap<QString,QString> &data ) { metadata = data; }
 
+
+private:
+    QString getNameFromVirtualPath(const QString &pVirtPath);
+    QString getVirtualDirFromVirtualPath(const QString &pVirtPath);
+
 private:
     QString virtualDir;
     QString virtualPath;
     QImage mThumbnail;
     QString mName;
+    QString mDisplayName;
 	QUrl mPath;
     UBFeatureElementType elementType;
     QMap<QString,QString> metadata;
@@ -182,6 +189,19 @@ public:
     void assignFeaturesListVeiw(UBFeaturesListView *pList);
     void assignPathListView(UBFeaturesListView *pList);
 
+public:
+    static const QString rootPath;
+    static const QString audiosPath;
+    static const QString moviesPath;
+    static const QString picturesPath;
+    static const QString appPath;
+    static const QString flashPath;
+    static const QString shapesPath;
+    static const QString interactPath;
+    static const QString trashPath;
+    static const QString favoritePath;
+    static const QString webSearchPath;
+
 signals:
     void maxFilesCountEvaluated(int pLimit);
     void scanStarted();
@@ -235,17 +255,7 @@ private:
 	QUrl trashDirectoryPath;
 	QUrl mLibSearchDirectoryPath;
 
-	QString rootPath;
-	QString audiosPath;
-	QString moviesPath;
-	QString picturesPath;
-	QString appPath;
-	QString flashPath;
-	QString shapesPath;
-	QString interactPath;
-	QString trashPath;
-	QString favoritePath;
-    QString webSearchPath;
+
 
 	int mLastItemOffsetIndex;
 	UBFeature currentElement;

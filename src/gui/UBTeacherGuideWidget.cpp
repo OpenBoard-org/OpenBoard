@@ -685,6 +685,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpSessionTitle = new UBTGAdaptableText(0, this, "UBTGSessionTitle");
     mpSessionTitle->setPlaceHolderText(tr("Type session title here ..."));
     mpButtonTitleLayout->addWidget(mpSessionTitle);
+    connect(this, SIGNAL(resized()), mpSessionTitle, SLOT(onTextChanged()));
 
     mpLayout->addLayout(mpButtonTitleLayout);
 
@@ -703,6 +704,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpAuthors->setObjectName("UBTGZeroPageInputText");
     mpAuthors->setPlaceHolderText(tr("Type authors here ..."));
     mpLayout->addWidget(mpAuthors);
+    connect(this, SIGNAL(resized()), mpAuthors, SLOT(onTextChanged()));
 
     mpCreationLabel = new QLabel(this);
     mpCreationLabel->setObjectName("UBTGZeroPageDateLabel");
@@ -727,6 +729,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpObjectives->setObjectName("UBTGZeroPageInputText");
     mpObjectives->setPlaceHolderText(tr("Type objectives here..."));
     mpLayout->addWidget(mpObjectives);
+    connect(this, SIGNAL(resized()), mpObjectives, SLOT(onTextChanged()));
 
     mpSeparatorObjectives = new QFrame(this);
     mpSeparatorObjectives->setFixedHeight(UBTG_SEPARATOR_FIXED_HEIGHT);
@@ -747,6 +750,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpKeywords = new UBTGAdaptableText(0, this);
     mpKeywords->setPlaceHolderText(tr("Type keywords here ..."));
     mpLayout->addWidget(mpKeywords);
+    connect(this, SIGNAL(resized()), mpKeywords, SLOT(onTextChanged()));
 
     mpSchoolLevelItemLabel = new QLabel(this);
     mpSchoolLevelItemLabel->setObjectName("UBTGZeroPageItemLabel");
@@ -1122,6 +1126,12 @@ bool UBTeacherGuidePageZeroWidget::isModified()
     return result;
 }
 
+void UBTeacherGuidePageZeroWidget::resizeEvent(QResizeEvent* ev){
+	emit resized();
+
+	QWidget::resizeEvent(ev);
+}
+
 /***************************************************************************
  *                    class    UBTeacherGuideWidget                        *
  ***************************************************************************/
@@ -1238,3 +1248,4 @@ bool UBTeacherGuideWidget::isModified()
     else
         return mpEditionWidget->isModified();
 }
+
