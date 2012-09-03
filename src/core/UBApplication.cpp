@@ -139,15 +139,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
 
     UBSettings *settings = UBSettings::settings();
 
-    QString forcedLanguage("");
-    if(args.contains("-lang"))
-    	forcedLanguage=args.at(args.indexOf("-lang") + 1);
-    else{
-    	QString setLanguage = settings->appPreferredLanguage->get().toString();
-    	if(!setLanguage.isEmpty())
-    		forcedLanguage = setLanguage;
-    }
-    setupTranslator(forcedLanguage);
+    setupTranslators(args);
 
     connect(settings->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(toolBarPositionChanged(QVariant)));
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));
@@ -207,45 +199,71 @@ UBApplication::~UBApplication()
     staticMemoryCleaner = 0;
 }
 
-void UBApplication::setupTranslator(QString forcedLanguage)
+QString UBApplication::checkLanguageAvailabilityForSankore(QString &language)
 {
-	QStringList availablesTranslations = UBPlatformUtils::availableTranslations();
-	QString language("");
-	if(!forcedLanguage.isEmpty()){
-		if(availablesTranslations.contains(forcedLanguage,Qt::CaseInsensitive))
-			language = forcedLanguage;
-		else
-			qDebug() << "forced language " << forcedLanguage << " not available";
-	}
-	else{
-		QString systemLanguage = UBPlatformUtils::systemLanguage();
-		if(availablesTranslations.contains(systemLanguage,Qt::CaseInsensitive))
-			language = systemLanguage;
-		else
-			qDebug() << "translation for system language " << systemLanguage << " not found";
-	}
+    QStringList availableTranslations = UBPlatformUtils::availableTranslations();
+    if(availableTranslations.contains(language,Qt::CaseInsensitive))
+        return language;
+    else{
+        if(language.length() > 2){
+            QString shortLanguageCode = language.left(2);
+            if(availableTranslations.contains(shortLanguageCode,Qt::CaseInsensitive))
+                return shortLanguageCode;
+        }
+    }
+    return QString("");
+}
 
-	if(language.isEmpty()){
-		language = "en_US";
-		//fallback if no translation are available
-	}
-	else{
-	    mApplicationTranslator = new QTranslator(this);
-	    mQtGuiTranslator = new QTranslator(this);
+void UBApplication::setupTranslators(QStringList args)
+{
+    QString forcedLanguage;
+    if(args.contains("-lang"))
+        forcedLanguage=args.at(args.indexOf("-lang") + 1);
+    else{
+        QString setLanguage = UBSettings::settings()->appPreferredLanguage->get().toString();
+        if(!setLanguage.isEmpty())
+            forcedLanguage = setLanguage;
+    }
+    
+    QStringList availablesTranslations = UBPlatformUtils::availableTranslations();
+    QString language("");
+
+    if(!forcedLanguage.isEmpty())
+        language = checkLanguageAvailabilityForSankore(forcedLanguage);
+
+    if(language.isEmpty()){
+        QString systemLanguage = UBPlatformUtils::systemLanguage();
+        language = checkLanguageAvailabilityForSankore(systemLanguage);
+    }
+
+    if(language.isEmpty()){
+        language = "en_US";
+        //fallback if no translation are available
+    }
+    else{
+        mApplicationTranslator = new QTranslator(this);
+        mQtGuiTranslator = new QTranslator(this);
 
         mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("sankore_"),language));
-	    installTranslator(mApplicationTranslator);
+        installTranslator(mApplicationTranslator);
+
+        QString qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language);
 
 
-	    mQtGuiTranslator->load(UBPlatformUtils::translationPath(QString("qt_"),language));
-	    if(!mQtGuiTranslator->isEmpty()){
-	    	// checked because this translation could be not available
-	    	installTranslator(mQtGuiTranslator);
-	    }
-		else
-			qDebug() << "Qt gui translation in " << language << " are not available";
-	}
+        if(!QFile(qtGuiTranslationPath).exists()){
+            qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language.left(2));
+            if(!QFile(qtGuiTranslationPath).exists())
+                qtGuiTranslationPath = "";
+        }
 
+        if(!qtGuiTranslationPath.isEmpty()){
+            qDebug() << "qtGuiTranslationPath " << qtGuiTranslationPath;
+            mQtGuiTranslator->load(qtGuiTranslationPath);
+            installTranslator(mQtGuiTranslator);
+        }
+        else
+            qDebug() << "Qt gui translation in " << language << " is not available";
+    }
 
     QLocale::setDefault(QLocale(language));
     qDebug() << "Running application in:" << language;
