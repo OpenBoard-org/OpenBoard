@@ -440,6 +440,9 @@ void UBPlatformUtils::initializeKeyboardLayouts()
     int count = CFArrayGetCount(kbds);
     QList<UBKeyboardLocale*> result;
 
+	qDebug() << "initializeKeyboardLayouts";
+	qDebug() << "Found system locales: " << count;
+
     for(int i=0; i<count; i++)
     {
         TISInputSourceRef keyLayoutRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, i);
@@ -529,6 +532,8 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 
         const QString resName = ":/images/flags/" + name + ".png";
         QIcon *iconLang = new QIcon(resName);
+
+		qDebug() << "Locale: " << ID << ", name: " << name;
 
         result.append(new UBKeyboardLocale(fullName, name, ID, iconLang, keybt));
     }

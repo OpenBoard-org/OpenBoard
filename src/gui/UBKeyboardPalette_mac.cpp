@@ -60,6 +60,7 @@ void UBKeyboardPalette::createCtrlButtons()
 void SetMacLocaleByIdentifier(const QString& id)
 {
 	const char * strName = id.toAscii().data();
+
 	CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingMacRoman );
 
 	CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceID };          
