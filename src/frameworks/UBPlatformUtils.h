@@ -19,6 +19,11 @@
 #include <QtCore>
 #include <QIcon>
 
+#ifdef Q_WS_MACX
+    #import <Carbon/Carbon.h>
+#endif
+
+
 class QMainWindow;
 
 #define SYMBOL_KEYS_COUNT 47
@@ -125,28 +130,31 @@ struct KEYBT
 	class UBKeyboardLocale
 	{
 	public:
-		UBKeyboardLocale(const QString& _fullName,
-			const QString& _name,
-			const QString& _id,
-			QIcon* _icon,
-			KEYBT** _symbols)
-			:fullName(_fullName),name(_name), id(_id), icon(_icon),
-                        constSymbols(NULL), varSymbols(_symbols)
-		{}
-		UBKeyboardLocale(const QString& _fullName,
-			const QString& _name,
-			const QString& _id,
-			QIcon* _icon,
-            KEYBT _symbols[])
-			:fullName(_fullName),name(_name),  id(_id), icon(_icon),
+        #ifdef Q_WS_MACX
+		    UBKeyboardLocale(const QString& _fullName,
+			    const QString& _name,
+                TISInputSourceRef _tisInputSourceRef,
+			    QIcon* _icon,
+			    KEYBT** _symbols)
+			    :fullName(_fullName),name(_name), tisInputSourceRef(_tisInputSourceRef), 
+                    icon(_icon),constSymbols(NULL), varSymbols(_symbols)
+		    {}
+
+            TISInputSourceRef tisInputSourceRef;
+        #else
+		    UBKeyboardLocale(const QString& _fullName,
+			    const QString& _name,
+			    QIcon* _icon,
+                KEYBT _symbols[])
+			    :fullName(_fullName),name(_name), icon(_icon),
                         constSymbols(_symbols), varSymbols(NULL)
-		{}
+		    {}
+        #endif
 
 		~UBKeyboardLocale();
 
 		const QString fullName;
 		const QString name;
-		const QString id;
 		QIcon* icon;
         KEYBT* operator[] (int index) const
 		{

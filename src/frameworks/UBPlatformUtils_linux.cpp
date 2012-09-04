@@ -399,11 +399,11 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 {
     nKeyboardLayouts = 5;
     keyboardLayouts = new UBKeyboardLocale*[nKeyboardLayouts];
-    keyboardLayouts[0] = new UBKeyboardLocale(tr("English"), "en", "", new QIcon(":/images/flags/en.png"), ENGLISH_LOCALE);
-    keyboardLayouts[1] = new UBKeyboardLocale(tr("Russian"), "ru", "", new QIcon(":/images/flags/ru.png"),RUSSIAN_LOCALE);
-    keyboardLayouts[2] = new UBKeyboardLocale(tr("German"), "de", "", new QIcon(":/images/flags/de.png"), GERMAN_LOCALE);
-    keyboardLayouts[3] = new UBKeyboardLocale(tr("French"), "fr", "", new QIcon(":/images/flags/fr.png"), FRENCH_LOCALE);
-    keyboardLayouts[4] = new UBKeyboardLocale(tr("Swiss French"), "fr-CH", "", new QIcon(":/images/flags/fr.png"), SWISS_FRENCH_LOCALE);
+    keyboardLayouts[0] = new UBKeyboardLocale(tr("English"), "en", new QIcon(":/images/flags/en.png"), ENGLISH_LOCALE);
+    keyboardLayouts[1] = new UBKeyboardLocale(tr("Russian"), "ru", new QIcon(":/images/flags/ru.png"),RUSSIAN_LOCALE);
+    keyboardLayouts[2] = new UBKeyboardLocale(tr("German"), "de", new QIcon(":/images/flags/de.png"), GERMAN_LOCALE);
+    keyboardLayouts[3] = new UBKeyboardLocale(tr("French"), "fr", new QIcon(":/images/flags/fr.png"), FRENCH_LOCALE);
+    keyboardLayouts[4] = new UBKeyboardLocale(tr("Swiss French"), "fr-CH", new QIcon(":/images/flags/fr.png"), SWISS_FRENCH_LOCALE);
 }
 
 void UBPlatformUtils::destroyKeyboardLayouts()
