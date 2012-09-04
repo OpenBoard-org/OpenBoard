@@ -35,6 +35,8 @@ typedef enum
     tUBTGZeroPageMode_PRESENTATION
 }tUBTGZeroPageMode;
 
+#define LOWER_RESIZE_WIDTH 50
+
 /***************************************************************************
  *               class    UBTeacherGuideEditionWidget                      *
  ***************************************************************************/

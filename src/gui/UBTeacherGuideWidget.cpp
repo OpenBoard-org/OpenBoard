@@ -676,17 +676,15 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpPageNumberLabel->setText(tr("Title page"));
     mpLayout->addWidget(mpPageNumberLabel);
 
-
     mpScrollArea = new QScrollArea();
     mpContainerWidget = new QWidget();
     mpContainerWidgetLayout = new QVBoxLayout();
 
-
     mpLayout->addWidget(mpScrollArea);
     mpScrollArea->setWidget(mpContainerWidget);
     mpScrollArea->setWidgetResizable(true);
+    mpScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mpContainerWidget->setLayout(mpContainerWidgetLayout);
-
 
     mpButtonTitleLayout = new QHBoxLayout(0);
 
@@ -774,6 +772,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpContainerWidgetLayout->addWidget(mpSchoolLevelItemLabel);
     mpSchoolLevelBox = new QComboBox(this);
     mpSchoolLevelBox->setMinimumHeight(22);
+    mpSchoolLevelBox->setMinimumWidth(LOWER_RESIZE_WIDTH);
     mpSchoolLevelBox->setObjectName("DockPaletteWidgetComboBox");
     connect(mpSchoolLevelBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(onSchoolLevelChanged(QString)));
     mpContainerWidgetLayout->addWidget(mpSchoolLevelBox);
@@ -787,6 +786,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpContainerWidgetLayout->addWidget(mpSchoolSubjectsItemLabel);
     mpSchoolSubjectsBox = new QComboBox(this);
     mpSchoolSubjectsBox->setMinimumHeight(22);
+    mpSchoolSubjectsBox->setMinimumWidth(LOWER_RESIZE_WIDTH);
     mpSchoolSubjectsBox->setObjectName("DockPaletteWidgetComboBox");
     mpContainerWidgetLayout->addWidget(mpSchoolSubjectsBox);
     mpSchoolSubjectsValueLabel = new QLabel(this);
@@ -799,6 +799,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpContainerWidgetLayout->addWidget(mpSchoolTypeItemLabel);
     mpSchoolTypeBox = new QComboBox(this);
     mpSchoolTypeBox->setMinimumHeight(22);
+    mpSchoolTypeBox->setMinimumWidth(LOWER_RESIZE_WIDTH);
     mpSchoolTypeBox->setObjectName("DockPaletteWidgetComboBox");
     mpContainerWidgetLayout->addWidget(mpSchoolTypeBox);
     mpSchoolTypeValueLabel = new QLabel(this);
@@ -816,12 +817,15 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpContainerWidgetLayout->addWidget(mpLicenceLabel);
     mpLicenceBox = new QComboBox(this);
     mpLicenceBox->setMinimumHeight(22);
+    mpLicenceBox->setMinimumWidth(LOWER_RESIZE_WIDTH);
     mpLicenceBox->setObjectName("DockPaletteWidgetComboBox");
     mpContainerWidgetLayout->addWidget(mpLicenceBox);
     mpLicenceLayout = new QHBoxLayout(0);
     mpLicenceIcon = new QLabel(this);
+    mpLicenceIcon->setMinimumWidth(LOWER_RESIZE_WIDTH/2);
     mpLicenceLayout->addWidget(mpLicenceIcon);
     mpLicenceValueLabel = new QLabel(this);
+    mpLicenceValueLabel->setMinimumWidth(LOWER_RESIZE_WIDTH/2);
     mpLicenceLayout->addWidget(mpLicenceValueLabel);
     mpContainerWidgetLayout->addLayout(mpLicenceLayout);
     mpContainerWidgetLayout->addStretch(1);
@@ -941,7 +945,8 @@ void UBTeacherGuidePageZeroWidget::onSchoolLevelChanged(QString schoolLevel)
         mpSchoolSubjectsItemLabel->setEnabled(true);
         mpSchoolSubjectsBox->setEnabled(true);
         mpSchoolSubjectsBox->addItems(subjects);
-    } else {
+    }
+    else {
         mpSchoolSubjectsItemLabel->setDisabled(true);
         mpSchoolSubjectsBox->setDisabled(true);
     }
@@ -1144,10 +1149,12 @@ bool UBTeacherGuidePageZeroWidget::isModified()
     return result;
 }
 
-void UBTeacherGuidePageZeroWidget::resizeEvent(QResizeEvent* ev){
+void UBTeacherGuidePageZeroWidget::resizeEvent(QResizeEvent* ev)
+{
 	emit resized();
-
-	QWidget::resizeEvent(ev);
+/*    mpScrollArea->resize(width(), height());
+    mpContainerWidget->resize(width(), height());
+*/	QWidget::resizeEvent(ev);
 }
 
 /***************************************************************************
