@@ -250,7 +250,7 @@ void UBWidgetUniboardAPI::eraseLineTo(const qreal x, const qreal y, const qreal 
 void UBWidgetUniboardAPI::clear()
 {
     if (mScene)
-            mScene->clearItemsAndAnnotations();
+            mScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
 }
 
 

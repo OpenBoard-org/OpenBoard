@@ -274,7 +274,7 @@ void UBDesktopAnnotationController::eraseDesktopAnnotations()
 {
     if (mTransparentDrawingScene)
     {
-        mTransparentDrawingScene->clearAnnotations();
+        mTransparentDrawingScene->clearContent(UBGraphicsScene::clearAnnotations);
     }
 }
 

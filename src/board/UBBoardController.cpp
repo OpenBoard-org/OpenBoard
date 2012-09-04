@@ -683,7 +683,7 @@ void UBBoardController::clearScene()
     if (mActiveScene)
     {
         freezeW3CWidgets(true);
-        mActiveScene->clearItemsAndAnnotations();
+        mActiveScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
         updateActionStates();
     }
 }
@@ -694,7 +694,7 @@ void UBBoardController::clearSceneItems()
     if (mActiveScene)
     {
         freezeW3CWidgets(true);
-        mActiveScene->clearItems();
+        mActiveScene->clearContent(UBGraphicsScene::clearItems);
         updateActionStates();
     }
 }
@@ -704,7 +704,7 @@ void UBBoardController::clearSceneAnnotation()
 {
     if (mActiveScene)
     {
-        mActiveScene->clearAnnotations();
+        mActiveScene->clearContent(UBGraphicsScene::clearAnnotations);
         updateActionStates();
     }
 }
@@ -713,7 +713,7 @@ void UBBoardController::clearSceneBackground()
 {
     if (mActiveScene)
     {
-        mActiveScene->clearBackground();
+        mActiveScene->clearContent(UBGraphicsScene::clearBackground);
         updateActionStates();
     }
 }
