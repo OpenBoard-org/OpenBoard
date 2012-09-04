@@ -244,6 +244,7 @@ class UBGraphicsItemDelegate : public QObject
         UBGraphicsToolBarItem* getToolBarItem() const { return mToolBarItem; }
 
         qreal antiScaleRatio() const { return mAntiScaleRatio; }
+        virtual void update() {positionHandles();}
 
     signals:
         void showOnDisplayChanged(bool shown);

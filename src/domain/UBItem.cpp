@@ -17,6 +17,15 @@
 
 #include "core/memcheck.h"
 
+#include "domain/UBGraphicsPixmapItem.h"
+#include "domain/UBGraphicsTextItem.h"
+#include "domain/UBGraphicsSvgItem.h"
+#include "domain/UBGraphicsMediaItem.h"
+#include "domain/UBGraphicsStrokesGroup.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
+#include "domain/UBGraphicsWidgetItem.h"
+#include "tools/UBGraphicsCurtainItem.h"
+
 UBItem::UBItem()
     : mUuid(QUuid())
     , mRenderingQuality(UBItem::RenderingQualityNormal)
@@ -43,4 +52,38 @@ bool UBGraphicsItem::isFlippable(QGraphicsItem *item)
 bool UBGraphicsItem::isRotatable(QGraphicsItem *item)
 {
     return item->data(UBGraphicsItemData::ItemRotatable).toBool();
+}
+
+UBGraphicsItemDelegate *UBGraphicsItem::Delegate(QGraphicsItem *pItem)
+{
+    UBGraphicsItemDelegate *result = 0;
+
+    switch (static_cast<int>(pItem->type())) {
+    case UBGraphicsPixmapItem::Type :
+        result = (static_cast<UBGraphicsPixmapItem*>(pItem))->Delegate();
+        break;
+    case UBGraphicsTextItem::Type :
+        result = (static_cast<UBGraphicsTextItem*>(pItem))->Delegate();
+        break;
+    case UBGraphicsSvgItem::Type :
+        result = (static_cast<UBGraphicsSvgItem*>(pItem))->Delegate();
+        break;
+    case UBGraphicsMediaItem::Type:
+        result = (static_cast<UBGraphicsMediaItem*>(pItem))->Delegate();
+        break;
+    case UBGraphicsStrokesGroup::Type :
+        result = (static_cast<UBGraphicsStrokesGroup*>(pItem))->Delegate();
+        break;
+    case UBGraphicsGroupContainerItem::Type :
+        result = (static_cast<UBGraphicsGroupContainerItem*>(pItem))->Delegate();
+        break;
+    case UBGraphicsWidgetItem::Type :
+        result = (static_cast<UBGraphicsWidgetItem*>(pItem))->Delegate();
+        break;
+    case UBGraphicsCurtainItem::Type :
+        result = (static_cast<UBGraphicsCurtainItem*>(pItem))->Delegate();
+        break;
+    }
+
+    return result;
 }
