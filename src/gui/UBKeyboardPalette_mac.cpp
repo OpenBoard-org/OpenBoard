@@ -57,23 +57,6 @@ void UBKeyboardPalette::createCtrlButtons()
         ctrlButtons[8] = new UBLocaleButton(this);
 }
 
-void SetMacLocaleByIdentifier(const QString& id)
-{
-	const char * strName = id.toAscii().data();
-
-	CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingMacRoman );
-
-	CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceID };          
-	CFStringRef values[] = { kTISCategoryKeyboardInputSource, iName };          
-	CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 2, NULL, NULL);  
-	CFArrayRef kbds = TISCreateInputSourceList(dict, true);          
-	if (CFArrayGetCount(kbds)!=0)
-	{
-		TISInputSourceRef klRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, 0);  
-		if (klRef!=NULL)
-			TISSelectInputSource(klRef);
-	}
-}
 
 
 void UBKeyboardPalette::checkLayout()
@@ -108,6 +91,6 @@ void UBKeyboardPalette::onActivated(bool)
 
 void UBKeyboardPalette::onLocaleChanged(UBKeyboardLocale* locale)
 {
-	SetMacLocaleByIdentifier(locale->id);
+    UBPlatformUtils::SetMacLocaleByIdentifier(locale->id);
 }
 

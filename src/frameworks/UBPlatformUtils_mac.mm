@@ -570,3 +570,28 @@ QString UBPlatformUtils::urlFromClipboard()
 */
     return qsRet;
 }
+
+
+void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
+{
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+    const char * strName = id.toAscii().data();
+
+    CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingMacRoman );
+
+    CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceID };
+    CFStringRef values[] = { kTISCategoryKeyboardInputSource, iName };
+    CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 2, NULL, NULL);
+    CFArrayRef kbds = TISCreateInputSourceList(dict, true);
+    if (kbds!=NULL)
+    {
+        if (CFArrayGetCount(kbds)!=0)
+        {
+            TISInputSourceRef klRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, 0);
+            if (klRef!=NULL)
+                TISSelectInputSource(klRef);
+        }
+    }
+    [pool drain];
+}
