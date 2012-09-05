@@ -263,6 +263,11 @@ void UBGraphicsTextItemDelegate::setEditable(bool editable)
         mDelegated->setData(UBGraphicsItemData::ItemEditable, QVariant(false));
     }
 }
+void UBGraphicsTextItemDelegate::remove(bool canUndo)
+{
+    UBGraphicsItemDelegate::remove(canUndo);
+}
+
 bool UBGraphicsTextItemDelegate::isEditable()
 {
     return mDelegated->data(UBGraphicsItemData::ItemEditable).toBool();

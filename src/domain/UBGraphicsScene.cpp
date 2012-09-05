@@ -1064,106 +1064,72 @@ UBItem* UBGraphicsScene::deepCopy() const
     return sceneDeepCopy();
 }
 
-void UBGraphicsScene::clearItemsAndAnnotations()
+void UBGraphicsScene::clearContent(clearCase pCase)
 {
-    deselectAllItems();
-
-    QSet<QGraphicsItem*> emptyList;
     QSet<QGraphicsItem*> removedItems;
 
-    QList<QGraphicsItem*> sceneItems = items();
-    foreach(QGraphicsItem* item, sceneItems)
-    {
-        if(!mTools.contains(item) && !isBackgroundObject(item))
-        {
-            removeItem(item);
-            removedItems << item;
-        }
-    }
-
-    // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
-    update(sceneRect());
-
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
-        UBApplication::undoStack->push(uc);
-    }
-
-    setDocumentUpdated();
-}
-
-void UBGraphicsScene::clearItems()
-{
-    deselectAllItems();
-
-    QSet<QGraphicsItem*> emptyList;
-    QSet<QGraphicsItem*> removedItems;
-
-    QList<QGraphicsItem*> sceneItems = items();
-    foreach(QGraphicsItem* item, sceneItems)
-    {
-        bool isGroup = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item) != NULL;
-        bool isPolygon = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item) != NULL;
-        bool isStrokesGroup = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item) != NULL;
-
-        if(!isGroup && !isPolygon && !isStrokesGroup && !mTools.contains(item) && !isBackgroundObject(item))
-        {
-            removeItem(item);
-            removedItems << item;
-        }
-    }
-
-    // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
-    update(sceneRect());
-
-
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
-        UBApplication::undoStack->push(uc);
-    }
-
-    setDocumentUpdated();
-}
-
-void UBGraphicsScene::clearAnnotations()
-{
-    QSet<QGraphicsItem*> emptyList;
-    QSet<QGraphicsItem*> removedItems;
-
-    QList<QGraphicsItem*> sceneItems = items();
-    foreach(QGraphicsItem* item, sceneItems)
-    {
-        UBGraphicsStrokesGroup* pi = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
-        if (pi)
-        {
-            removeItem(item);
-            removedItems << item;
-        }
-    }
-
-    // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
-    update(sceneRect());
-
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, emptyList);
-        UBApplication::undoStack->push(uc);
-    }
-
-    setDocumentUpdated();
-}
-
-void UBGraphicsScene::clearBackground()
-{
-    if(mBackgroundObject){
+    switch (pCase) {
+    case clearBackground :
         removeItem(mBackgroundObject);
+        removedItems << mBackgroundObject;
+        break;
 
-        if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, mBackgroundObject, NULL);
-            UBApplication::undoStack->push(uc);
+    case clearItemsAndAnnotations :
+    case clearItems :
+    case clearAnnotations :
+        foreach(QGraphicsItem* item, items()) {
+
+            bool isGroup = item->type() == UBGraphicsGroupContainerItem::Type;
+            bool isStrokesGroup = item->type() == UBGraphicsStrokesGroup::Type;
+
+            UBGraphicsGroupContainerItem *itemGroup = item->parentItem()
+                                                      ? qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item->parentItem())
+                                                      : 0;
+            UBGraphicsItemDelegate *curDelegate = UBGraphicsItem::Delegate(item);
+            if (!curDelegate) {
+                continue;
+            }
+
+            bool shouldDelete = false;
+            switch (static_cast<int>(pCase)) {
+            case clearAnnotations :
+                shouldDelete = isStrokesGroup;
+                break;
+            case clearItems :
+                shouldDelete = !isGroup && !isBackgroundObject(item) && !isStrokesGroup;
+                break;
+            case clearItemsAndAnnotations:
+                shouldDelete = !isGroup && !isBackgroundObject(item);
+                break;
+            }
+
+            if(shouldDelete) {
+                if (itemGroup) {
+                    itemGroup->removeFromGroup(item);
+                    if (itemGroup->childItems().count() == 1) {
+                        itemGroup->destroy();
+                    }
+                    itemGroup->Delegate()->update();
+                }
+
+                curDelegate->remove(false);
+                removedItems << item;
+            }
         }
+        break;
+    }
+
+    // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
+    update(sceneRect());
+
+    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, QSet<QGraphicsItem*>());
+        UBApplication::undoStack->push(uc);
+    }
+
+    if (pCase == clearBackground) {
         mBackgroundObject = 0;
     }
-    update(sceneRect());
 
     setDocumentUpdated();
 }
@@ -1357,8 +1323,8 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, con
 UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *> items)
 {
     UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();
-    addItem(groupItem);
 
+    addItem(groupItem);
     foreach (QGraphicsItem *item, items) {
         if (item->type() == UBGraphicsGroupContainerItem::Type) {
             QList<QGraphicsItem*> childItems = item->childItems();

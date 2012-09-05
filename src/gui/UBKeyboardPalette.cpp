@@ -60,7 +60,10 @@ UBKeyboardPalette::UBKeyboardPalette(QWidget *parent)
     createCtrlButtons();
 
     nCurrentLocale = UBSettings::settings()->KeyboardLocale->get().toInt();
-    setInput(locales[nCurrentLocale]);
+	if (nCurrentLocale < 0 || nCurrentLocale >= nLocalesCount)
+		nCurrentLocale = 0;
+	if (locales!=NULL)
+	    setInput(locales[nCurrentLocale]);
 
     setContentsMargins( 22, 22, 22, 22 );
 

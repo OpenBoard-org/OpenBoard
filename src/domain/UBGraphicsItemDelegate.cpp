@@ -387,12 +387,25 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
     UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
     if (scene)
     {
-        foreach(DelegateButton* button, mButtons)
-            scene->removeItem(button);
+//        bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
+//        showHide(shownOnDisplay);
+//        updateFrame();
+//        updateButtons();
 
+        if (mFrame && !mFrame->scene() && mDelegated->scene())
+        {
+            mDelegated->scene()->addItem(mFrame);
+        }
+        mFrame->setAntiScale(mAntiScaleRatio);
+        mFrame->positionHandles();
+        updateButtons(true);
+
+        foreach(DelegateButton* button, mButtons) {
+            scene->removeItem(button);
+        }
         scene->removeItem(mFrame);
 
-        /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */ 
+        /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */
         UBGraphicsWebView *mDelegated_casted = dynamic_cast<UBGraphicsWebView*>(mDelegated);
         if (mDelegated_casted)
             mDelegated_casted->setHtml(QString());
