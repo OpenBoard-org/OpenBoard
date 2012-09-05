@@ -78,7 +78,10 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
     QTransform newItemTransform(itemTransform);
     item->setPos(mapFromItem(item, 0, 0));
 
-    item->scene()->removeItem(item);
+    if (item->scene()) {
+        item->scene()->removeItem(item);
+    }
+
     if (corescene())
         corescene()->removeItemFromDeletion(item);
     item->setParentItem(this);

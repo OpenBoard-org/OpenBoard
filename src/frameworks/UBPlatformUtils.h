@@ -171,6 +171,7 @@ class UBPlatformUtils
         static int nKeyboardLayouts;
         static UBKeyboardLocale** keyboardLayouts;
 
+
 public:
         static void init();
         static void destroy();
@@ -192,6 +193,10 @@ public:
         static UBKeyboardLocale** getKeyboardLayouts(int& nCount);
         static QString urlFromClipboard();
         static QStringList availableTranslations();
+
+#ifdef Q_WS_MAC
+        static void SetMacLocaleByIdentifier(const QString& id);
+#endif
 };
 
 

@@ -108,6 +108,7 @@ public:
     static bool isRotatable(QGraphicsItem *item);
     static bool isFlippable(QGraphicsItem *item);
 
+    static UBGraphicsItemDelegate *Delegate(QGraphicsItem *pItem);
     virtual UBGraphicsItemDelegate *Delegate() const  = 0;
 
     virtual void remove() = 0;
