@@ -1152,9 +1152,7 @@ bool UBTeacherGuidePageZeroWidget::isModified()
 void UBTeacherGuidePageZeroWidget::resizeEvent(QResizeEvent* ev)
 {
 	emit resized();
-/*    mpScrollArea->resize(width(), height());
-    mpContainerWidget->resize(width(), height());
-*/	QWidget::resizeEvent(ev);
+	QWidget::resizeEvent(ev);
 }
 
 /***************************************************************************
