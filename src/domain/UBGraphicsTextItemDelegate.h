@@ -46,6 +46,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
     public slots:
         void contentsChanged();
         virtual void setEditable(bool);
+        virtual void remove(bool canUndo);
 
     protected:
         virtual void buildButtons();

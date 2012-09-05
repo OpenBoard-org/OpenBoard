@@ -33,8 +33,21 @@ class UBCoreGraphicsScene : public QGraphicsScene
         void removeItemFromDeletion(QGraphicsItem* item);
         void addItemToDeletion(QGraphicsItem *item);
 
+        bool isModified() const
+        {
+            return mIsModified;
+        }
+
+        void setModified(bool pModified)
+        {
+            mIsModified = pModified;
+        }
+
+
     private:
         QSet<QGraphicsItem*> mItemsToDelete;
+
+        bool mIsModified;
 };
 
 #endif /* UBCOREGRAPHICSSCENE_H_ */
