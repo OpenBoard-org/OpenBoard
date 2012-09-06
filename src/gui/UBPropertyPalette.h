@@ -20,6 +20,8 @@
 
 #include "UBActionPalette.h"
 
+#define MAX_HEIGHT		20
+
 class UBPropertyPalette : public UBActionPalette
 {
     Q_OBJECT

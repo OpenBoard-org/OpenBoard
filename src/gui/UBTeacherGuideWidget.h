@@ -136,10 +136,15 @@ public:
     QVector<tUBGEElementNode*> getData();
     bool isModified();
 
+signals:
+	void resized();
 
 public slots:
     void onActiveSceneChanged();
     void switchToMode(tUBTGZeroPageMode mode = tUBTGZeroPageMode_EDITION);
+
+protected:
+    void resizeEvent(QResizeEvent* ev);
 
 private:
     void fillComboBoxes();

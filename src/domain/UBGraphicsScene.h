@@ -101,6 +101,13 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
     public:
 
+    enum clearCase {
+        clearItemsAndAnnotations = 0
+        , clearAnnotations
+        , clearItems
+        , clearBackground
+    };
+
     //        tmp stub for divide addings scene objects from undo mechanism implementation
     void setURStackEnable(bool set = true) {enableUndoRedoStack = set;}
     bool isURStackIsEnabled(){ return enableUndoRedoStack;}
@@ -114,10 +121,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         UBGraphicsScene* sceneDeepCopy() const;
 
-        void clearItemsAndAnnotations();
-        void clearItems();
-        void clearAnnotations();
-        void clearBackground();
+        void clearContent(clearCase pCase = clearItemsAndAnnotations);
 
         bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
         bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);
@@ -178,16 +182,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle);
 
         bool isEmpty() const;
-
-        bool isModified() const
-        {
-            return mIsModified;
-        }
-
-        void setModified(bool pModified)
-        {
-            mIsModified = pModified;
-        }
 
         void setDocument(UBDocumentProxy* pDocument);
 
@@ -380,8 +374,6 @@ public slots:
         bool mCrossedBackground;
         bool mIsDesktopMode;
         qreal mZoomFactor;
-
-        bool mIsModified;
 
         QGraphicsItem* mBackgroundObject;
 

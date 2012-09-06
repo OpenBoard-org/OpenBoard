@@ -32,6 +32,54 @@ void UBGraphicsStrokesGroup::setUuid(const QUuid &pUuid)
     UBItem::setUuid(pUuid);
     setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
+void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
+{
+    //TODO Implement common mechanism of managing groups, drop UBGraphicsStroke if it's obsolete
+    //Using casting for the moment
+    foreach (QGraphicsItem *item, childItems()) {
+        if (item->type() == UBGraphicsPolygonItem::Type) {
+            UBGraphicsPolygonItem *curPolygon = static_cast<UBGraphicsPolygonItem *>(item);
+
+            switch (pColorType) {
+            case currentColor :
+                curPolygon->setColor(color);
+                break;
+            case colorOnLightBackground :
+                 curPolygon->setColorOnLightBackground(color);
+                break;
+            case colorOnDarkBackground :
+                 curPolygon->setColorOnDarkBackground(color);
+                break;
+            }
+        }
+    }
+}
+
+QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
+{
+    QColor result;
+
+    foreach (QGraphicsItem *item, childItems()) {
+        if (item->type() == UBGraphicsPolygonItem::Type) {
+            UBGraphicsPolygonItem *curPolygon = static_cast<UBGraphicsPolygonItem *>(item);
+
+            switch (pColorType) {
+            case currentColor :
+                result = curPolygon->color();
+                break;
+            case colorOnLightBackground :
+                result = curPolygon->colorOnLightBackground();
+                break;
+            case colorOnDarkBackground :
+                result = curPolygon->colorOnDarkBackground();
+                break;
+            }
+
+        }
+    }
+
+    return result;
+}
 
 void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -65,29 +113,30 @@ void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
-   UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
+    UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
 
-
-   QList<QGraphicsItem*> chl = childItems();
+    QList<QGraphicsItem*> chl = childItems();
 
     foreach(QGraphicsItem *child, chl)
     {
         UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
         if (polygon)
+        {
             copy->addToGroup(dynamic_cast<QGraphicsItem*>(polygon->deepCopy()));
+            polygon->setStrokesGroup(copy);
+        }
     }
     copyItemParameters(copy);
 
-   return copy;
+    return copy;
 }
 
 void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
 {
     UBGraphicsStrokesGroup *cp = dynamic_cast<UBGraphicsStrokesGroup*>(copy);
     {
-        cp->setPos(this->pos());
+        cp->setTransform(transform());
 
-        cp->setTransform(this->transform());
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));

@@ -858,7 +858,7 @@ bool UBCFFAdaptor::UBToCFFConverter::itIsSupportedFormat(const QString &format) 
 
     QStringList tsl = format.split(".", QString::SkipEmptyParts);
     if (0 < tsl.count())
-        bRet = cffSupportedFileFormats.contains(tsl.at(tsl.count()-1));       
+        bRet = cffSupportedFileFormats.contains(tsl.at(tsl.count()-1).toLower());       
     else
         bRet = false;
 

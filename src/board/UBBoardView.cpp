@@ -55,6 +55,8 @@
 
 #include "document/UBDocumentProxy.h"
 
+#include "tools/UBGraphicsRuler.h"
+#include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsCache.h"
 #include "tools/UBGraphicsTriangle.h"
@@ -74,6 +76,7 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
 , mIsDragInProgress(false)
 , mMultipleSelectionIsEnabled(false)
 , isControl(pIsControl)
+, mRubberBandInPlayMode(false) //enables rubberband with play tool
 {
   init ();
 
@@ -434,6 +437,15 @@ bool UBBoardView::itemHaveParentWithType(QGraphicsItem *item, int type)
     return itemHaveParentWithType(item->parentItem(), type);
 
 }
+bool UBBoardView::isUBItem(QGraphicsItem *item)
+{
+    if ((UBGraphicsItemType::UserTypesCount > item->type()) && (item->type() > QGraphicsItem::UserType))
+        return true;
+    else
+    {
+        return false;
+    }
+}
 
 void UBBoardView::handleItemsSelection(QGraphicsItem *item)
 {
@@ -505,11 +517,20 @@ Here we determines cases when items should to get mouse press event at pressing 
 
     switch(item->type())
     {
+    case UBGraphicsProtractor::Type:
+    case UBGraphicsRuler::Type:
+    case UBGraphicsTriangle::Type:
+    case UBGraphicsCompass::Type:
+    case UBGraphicsCache::Type:
+        return true;
+
     case UBGraphicsDelegateFrame::Type:
     case QGraphicsSvgItem::Type:
         return true;
 
     case DelegateButton::Type:
+        return true;
+
     case UBGraphicsMediaItem::Type:
         return false;
 
@@ -534,7 +555,12 @@ Here we determines cases when items should to get mouse press event at pressing 
         return false;
         break;
 
+    case UBToolWidget::Type:
+        return true;
+
     case QGraphicsWebView::Type:
+        return true;
+
     case UBGraphicsWidgetItem::Type:
         if (currentTool == UBStylusTool::Selector && item->parentItem() && item->parentItem()->isSelected()) 
             return true;
@@ -542,10 +568,11 @@ Here we determines cases when items should to get mouse press event at pressing 
             return true;
         if (currentTool == UBStylusTool::Play)
             return true;
+        return false;
         break;
     }
 
-    return false;
+    return !isUBItem(item); // standard behavior of QGraphicsScene for not UB items. UB items should be managed upper.
 }
 
 bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
@@ -557,9 +584,11 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
         return false;
 
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
-   
+
     switch(item->type())
     {
+    case QGraphicsWebView::Type:
+        return false;
     case UBGraphicsPixmapItem::Type:
     case UBGraphicsTextItem::Type:
     case UBGraphicsWidgetItem::Type:
@@ -599,6 +628,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
    
     switch(item->type())
     {
+    case UBGraphicsCurtainItem::Type:
     case UBGraphicsGroupContainerItem::Type:
         return true;
 
@@ -994,38 +1024,41 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
           return;
       }
 
-      if (!movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) && mUBRubberBand && mUBRubberBand->isVisible()) {
+      if (currentTool != UBStylusTool::Play || mRubberBandInPlayMode) {
 
-          QRect bandRect(mMouseDownPos, event->pos());
+          if (!movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) && mUBRubberBand && mUBRubberBand->isVisible()) {
 
-          bandRect = bandRect.normalized();
+              QRect bandRect(mMouseDownPos, event->pos());
 
-          mUBRubberBand->setGeometry(bandRect);
+              bandRect = bandRect.normalized();
 
-          QList<QGraphicsItem *> rubberItems = items(bandRect);
-          foreach (QGraphicsItem *item, mJustSelectedItems) {
-              if (!rubberItems.contains(item)) {
-                  item->setSelected(false);
-                  mJustSelectedItems.remove(item);
-              }
-          }
+              mUBRubberBand->setGeometry(bandRect);
 
-          if (currentTool == UBStylusTool::Selector)
-          foreach (QGraphicsItem *item, items(bandRect)) {
-
-              if (item->type() == UBGraphicsW3CWidgetItem::Type
-                      || item->type() == UBGraphicsPixmapItem::Type
-                      || item->type() == UBGraphicsMediaItem::Type
-                      || item->type() == UBGraphicsSvgItem::Type
-                      || item->type() == UBGraphicsTextItem::Type
-                      || item->type() == UBGraphicsStrokesGroup::Type
-                      || item->type() == UBGraphicsGroupContainerItem::Type) {
-
-                  if (!mJustSelectedItems.contains(item)) {
-                      item->setSelected(true);
-                      mJustSelectedItems.insert(item);
+              QList<QGraphicsItem *> rubberItems = items(bandRect);
+              foreach (QGraphicsItem *item, mJustSelectedItems) {
+                  if (!rubberItems.contains(item)) {
+                      item->setSelected(false);
+                      mJustSelectedItems.remove(item);
                   }
               }
+
+              if (currentTool == UBStylusTool::Selector)
+                  foreach (QGraphicsItem *item, items(bandRect)) {
+
+                      if (item->type() == UBGraphicsW3CWidgetItem::Type
+                              || item->type() == UBGraphicsPixmapItem::Type
+                              || item->type() == UBGraphicsMediaItem::Type
+                              || item->type() == UBGraphicsSvgItem::Type
+                              || item->type() == UBGraphicsTextItem::Type
+                              || item->type() == UBGraphicsStrokesGroup::Type
+                              || item->type() == UBGraphicsGroupContainerItem::Type) {
+
+                          if (!mJustSelectedItems.contains(item)) {
+                              item->setSelected(true);
+                              mJustSelectedItems.insert(item);
+                          }
+                      }
+                  }
           }
       }
 
@@ -1092,9 +1125,12 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           }
           else
           {
-             if (QGraphicsSvgItem::Type !=  movingItem->type() &&
+             if (isUBItem(movingItem) &&
+                DelegateButton::Type != movingItem->type() &&
+                QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                 UBToolWidget::Type != movingItem->type() &&
+                UBGraphicsCache::Type != movingItem->type() &&
                 QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
                 !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
              {
