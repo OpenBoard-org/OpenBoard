@@ -120,6 +120,7 @@ UBTGAdaptableText::UBTGAdaptableText(QTreeWidgetItem* widget, QWidget* parent, c
   , mMinimumHeight(0)
   , mHasPlaceHolder(false)
   , mIsUpdatingSize(false)
+  , mMaximumLength(0)
 {
     setObjectName(name);
     connect(this,SIGNAL(textChanged()),this,SLOT(onTextChanged()));
@@ -129,6 +130,11 @@ UBTGAdaptableText::UBTGAdaptableText(QTreeWidgetItem* widget, QWidget* parent, c
     mMinimumHeight = document()->size().height() + mBottomMargin;
     setMinimumHeight(mMinimumHeight);
 
+}
+
+void UBTGAdaptableText::setMaximumLength(int length)
+{
+    mMaximumLength = length;
 }
 
 void UBTGAdaptableText::setPlaceHolderText(QString text)
@@ -165,6 +171,12 @@ void UBTGAdaptableText::keyReleaseEvent(QKeyEvent* e)
     if(toPlainText().isEmpty()){
         setTextColor(QColor(Qt::lightGray));
         setPlainText(mPlaceHolderText);
+    }
+    if(mMaximumLength && toPlainText().length()>mMaximumLength){
+        setPlainText(toPlainText().left(mMaximumLength));
+        QTextCursor tc(document());
+        tc.setPosition(mMaximumLength);
+        setTextCursor(tc);
     }
 }
 
@@ -212,8 +224,10 @@ void UBTGAdaptableText::onTextChanged()
         setFocus();
     }
     mIsUpdatingSize = false;
+    
 
 }
+
 void UBTGAdaptableText::setInitialText(const QString& text)
 {
     setText(text);

@@ -697,6 +697,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
 
     mpSessionTitle = new UBTGAdaptableText(0, this, "UBTGSessionTitle");
     mpSessionTitle->setPlaceHolderText(tr("Type session title here ..."));
+    mpSessionTitle->setMaximumLength(1000);
     mpButtonTitleLayout->addWidget(mpSessionTitle);
     connect(this, SIGNAL(resized()), mpSessionTitle, SLOT(onTextChanged()));
 
