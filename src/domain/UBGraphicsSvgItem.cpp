@@ -53,10 +53,11 @@ void UBGraphicsSvgItem::init()
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true, false);
-    mDelegate->init();
-    mDelegate->setFlippable(true);
-    mDelegate->setRotatable(true);
+    setDelegate(new UBGraphicsItemDelegate(this, 0, true, true, false));
+    Delegate()->init();
+    Delegate()->setFlippable(true);
+    Delegate()->setRotatable(true);
+
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
@@ -71,8 +72,6 @@ void UBGraphicsSvgItem::init()
 
 UBGraphicsSvgItem::~UBGraphicsSvgItem()
 {
-    if (mDelegate)
-        delete mDelegate;
 }
 
 
@@ -84,14 +83,14 @@ QByteArray UBGraphicsSvgItem::fileData() const
 
 QVariant UBGraphicsSvgItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    QVariant newValue = mDelegate->itemChange(change, value);
+    QVariant newValue = Delegate()->itemChange(change, value);
     return QGraphicsSvgItem::itemChange(change, newValue);
 }
 
 
 void UBGraphicsSvgItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mousePressEvent(event))
+    if (Delegate()->mousePressEvent(event))
     {
         //NOOP
     }
@@ -104,7 +103,7 @@ void UBGraphicsSvgItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsSvgItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mouseMoveEvent(event))
+    if (Delegate()->mouseMoveEvent(event))
     {
         // NOOP;
     }
@@ -117,7 +116,7 @@ void UBGraphicsSvgItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsSvgItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    mDelegate->mouseReleaseEvent(event);
+    Delegate()->mouseReleaseEvent(event);
     QGraphicsSvgItem::mouseReleaseEvent(event);
 }
 
@@ -181,12 +180,6 @@ UBGraphicsScene* UBGraphicsSvgItem::scene()
     return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
 }
 
-
-void UBGraphicsSvgItem::remove()
-{
-    if (mDelegate)
-        mDelegate->remove(true);
-}
 
 
 UBGraphicsPixmapItem* UBGraphicsSvgItem::toPixmapItem() const

@@ -57,8 +57,6 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         virtual void resize(const QSizeF & size);
         virtual QSizeF size() const;
 
-        virtual UBGraphicsItemDelegate* Delegate() const { return mDelegate;}
-
         QUrl mainHtml();
         void loadMainHtml();
         QUrl widgetUrl();
@@ -82,7 +80,6 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         void removeDatastoreEntry(const QString& key);
         void removeAllDatastoreEntries();
 
-        virtual void remove();
         void removeScript();
 
         void processDropEvent(QGraphicsSceneDragDropEvent *event);

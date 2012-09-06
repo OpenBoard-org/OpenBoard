@@ -27,7 +27,6 @@ class UBGraphicsItemDelegate;
 class UBGraphicsProxyWidget: public QGraphicsProxyWidget, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
 {
     public:
-        UBGraphicsProxyWidget(QGraphicsItem* parent = 0);
         virtual ~UBGraphicsProxyWidget();
 
         virtual void resize(qreal w, qreal h);
@@ -35,18 +34,13 @@ class UBGraphicsProxyWidget: public QGraphicsProxyWidget, public UBItem, public 
 
         virtual QSizeF size() const;
 
-        void setDelegate(UBGraphicsItemDelegate* pDelegate);
-
         virtual UBGraphicsScene* scene();
-
-        virtual void remove();
-
-        virtual UBGraphicsItemDelegate* Delegate() const { return mDelegate;}
 
         virtual void clearSource(){;}
         virtual void setUuid(const QUuid &pUuid);
 
     protected:
+        UBGraphicsProxyWidget(QGraphicsItem* parent = 0);
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

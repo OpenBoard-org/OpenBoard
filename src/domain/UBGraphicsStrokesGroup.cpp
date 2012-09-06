@@ -4,12 +4,14 @@
 
 #include "core/memcheck.h"
 
-UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent):QGraphicsItemGroup(parent)
+UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
+    :UBGraphicsItem(), QGraphicsItemGroup(parent)
 {
-    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true, false);
-    mDelegate->init();
-    mDelegate->setFlippable(true);
-    mDelegate->setRotatable(true);
+    setDelegate(new UBGraphicsItemDelegate(this, 0, true, true, false));
+    Delegate()->init();
+    Delegate()->setFlippable(true);
+    Delegate()->setRotatable(true);
+
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
@@ -22,9 +24,6 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent):QGraphicsI
 
 UBGraphicsStrokesGroup::~UBGraphicsStrokesGroup()
 {
-    if(mDelegate){
-        delete mDelegate;
-    }
 }
 
 void UBGraphicsStrokesGroup::setUuid(const QUuid &pUuid)
@@ -83,7 +82,7 @@ QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
 
 void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mousePressEvent(event))
+    if (Delegate()->mousePressEvent(event))
     {
         //NOOP
     }
@@ -95,7 +94,7 @@ void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mouseMoveEvent(event))
+    if (Delegate()->mouseMoveEvent(event))
     {
         // NOOP;
     }
@@ -107,7 +106,7 @@ void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    mDelegate->mouseReleaseEvent(event);
+    Delegate()->mouseReleaseEvent(event);
     QGraphicsItemGroup::mouseReleaseEvent(event);
 }
 
@@ -144,12 +143,6 @@ void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
     }
 }
 
-void UBGraphicsStrokesGroup::remove()
-{
-    if (mDelegate)
-        mDelegate->remove(true);
-}
-
 void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     // Never draw the rubber band, we draw our custom selection with the DelegateFrame
@@ -161,7 +154,7 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
 
 QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    QVariant newValue = mDelegate->itemChange(change, value);
+    QVariant newValue = Delegate()->itemChange(change, value);
     return QGraphicsItemGroup::itemChange(change, newValue);
 }
 

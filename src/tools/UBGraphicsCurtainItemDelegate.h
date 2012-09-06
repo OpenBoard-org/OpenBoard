@@ -40,12 +40,11 @@ class UBGraphicsCurtainItemDelegate : public UBGraphicsItemDelegate
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value);
         virtual void positionHandles();
 
+        virtual void init();
+
    public slots:
 
         virtual void remove(bool checked, bool canUndo = true);
-
-   protected:
-        virtual void init();
 
 };
 

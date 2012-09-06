@@ -44,14 +44,11 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
 
         virtual UBGraphicsScene* scene();
 
-        virtual void remove();
-
         Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
         void setOpacity(qreal op);
         qreal opacity() const;
 
-        virtual UBGraphicsItemDelegate* Delegate() const {return mDelegate;}
         virtual void clearSource(){;}
 
         virtual void setUuid(const QUuid &pUuid);

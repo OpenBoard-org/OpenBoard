@@ -84,8 +84,8 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     viewPalette.setBrush(QPalette::Window, QBrush(Qt::transparent));
     setPalette(viewPalette);
 
-    mDelegate = new UBGraphicsWidgetItemDelegate(this);
-    mDelegate->init();
+    setDelegate(new UBGraphicsWidgetItemDelegate(this));
+    Delegate()->init();
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     QGraphicsWebView::setAcceptHoverEvents(true);
@@ -102,8 +102,8 @@ void UBGraphicsWidgetItem::initialize()
     setMinimumSize(nominalSize());
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); // Necessary to set if we want z value to be assigned correctly
 
-    if (mDelegate && mDelegate->frame() && resizable())
-        mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+    if (Delegate() && Delegate()->frame() && resizable())
+        Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
 
     QPalette palette = page()->palette();
     palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
@@ -260,12 +260,6 @@ void UBGraphicsWidgetItem::removeDatastoreEntry(const QString& key)
 void UBGraphicsWidgetItem::removeAllDatastoreEntries()
 {
     mDatastore.clear();
-}
-
-void UBGraphicsWidgetItem::remove()
-{
-    if (mDelegate)
-        mDelegate->remove();
 }
 
 void UBGraphicsWidgetItem::removeScript()
@@ -512,7 +506,7 @@ void UBGraphicsWidgetItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (!mDelegate->mousePressEvent(event))
+    if (!Delegate()->mousePressEvent(event))
         setSelected(true); /* forcing selection */
 
     QGraphicsWebView::mousePressEvent(event);
@@ -529,19 +523,19 @@ void UBGraphicsWidgetItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     mShouldMoveWidget = false;
 
-    mDelegate->mouseReleaseEvent(event);
+    Delegate()->mouseReleaseEvent(event);
     QGraphicsWebView::mouseReleaseEvent(event);
 }
 
 void UBGraphicsWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     sendJSEnterEvent();
-    mDelegate->hoverEnterEvent(event);
+    Delegate()->hoverEnterEvent(event);
 }
 void UBGraphicsWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     sendJSLeaveEvent();
-    mDelegate->hoverLeaveEvent(event);
+    Delegate()->hoverLeaveEvent(event);
 }
 
 void UBGraphicsWidgetItem::sendJSEnterEvent()
@@ -630,7 +624,7 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 
 void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
-    if (mDelegate->weelEvent(event))
+    if (Delegate()->weelEvent(event))
     {
         QGraphicsWebView::wheelEvent(event);
         event->accept();
@@ -647,7 +641,7 @@ QVariant UBGraphicsWidgetItem::itemChange(GraphicsItemChange change, const QVari
                 scene()->setActiveWindow(0);
     }
 
-    QVariant newValue = mDelegate->itemChange(change, value);
+    QVariant newValue = Delegate()->itemChange(change, value);
     return QGraphicsWebView::itemChange(change, newValue);
 }
 
@@ -662,8 +656,8 @@ void UBGraphicsWidgetItem::resize(const QSizeF & pSize)
     if (pSize != size()) {
         QGraphicsWebView::setMaximumSize(pSize.width(), pSize.height());
         QGraphicsWebView::resize(pSize.width(), pSize.height());
-        if (mDelegate)
-            mDelegate->positionHandles();
+        if (Delegate())
+            Delegate()->positionHandles();
         if (scene())
             scene()->setModified(true);
     }
