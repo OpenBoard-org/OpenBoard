@@ -132,7 +132,7 @@ void UBGraphicsAristo::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 {
     QPolygonF polygon;
 
-    painter->setBrush(Qt::NoBrush);
+    painter->setBrush(fillBrush());
     painter->setPen(drawColor());
 
     polygon << A << B << C;
@@ -390,6 +390,17 @@ void UBGraphicsAristo::paintProtractorGraduations(QPainter* painter)
     painter->restore();
 }
 
+QBrush UBGraphicsAristo::fillBrush() const
+{
+    QColor fillColor = edgeFillColor();// scene()->isDarkBackground() ? sDarkBackgroundFillColor : sFillColor;
+    QColor fillColorCenter = middleFillColor();//scene()->isDarkBackground() ? sDarkBackgroundFillColorCenter : sFillColorCenter;
+    QColor transparentWhite = Qt::white;
+    transparentWhite.setAlpha(scene()->isDarkBackground() ? sDrawTransparency : sFillTransparency);
+    QRadialGradient radialGradient(rect().center(), radius(), rect().center());
+    radialGradient.setColorAt(0, fillColorCenter);
+    radialGradient.setColorAt(1, fillColor);
+    return radialGradient;
+}
 
 void UBGraphicsAristo::rotateAroundCenter(qreal angle)
 {

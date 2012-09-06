@@ -147,7 +147,7 @@ class UBGraphicsAristo : public UBAbstractDrawRuler, public QGraphicsPolygonItem
         {
             return sqrt(((B.x() - A.x())*(B.x() - A.x()))+((B.y() - A.y())*(B.y() - A.y()))) * 9 / 16 - 20;
         }
-
+        QBrush fillBrush() const;
 
         UBGraphicsAristoOrientation mOrientation;
 
