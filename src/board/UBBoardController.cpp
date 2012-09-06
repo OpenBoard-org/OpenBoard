@@ -533,7 +533,7 @@ void UBBoardController::duplicateScene()
     duplicateScene(mActiveSceneIndex);
 }
 
-void UBBoardController::duplicateItem(UBItem *item)
+void UBBoardController::duplicateItem(UBItem *item, QTransform trf)
 {    
     if (!item)
         return;
@@ -553,6 +553,7 @@ void UBBoardController::duplicateItem(UBItem *item)
         qreal shifting = UBSettings::settings()->objectFrameWidth;
         itemPos = commonItem->pos() + QPointF(shifting,shifting);
         itemSize = commonItem->boundingRect().size();
+        commonItem->setSelected(false);
     }
 
     UBMimeType::Enum itemMimeType;
@@ -611,18 +612,28 @@ void UBBoardController::duplicateItem(UBItem *item)
     {
     	UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
     	if(groupItem){
+    		QTransform groupTransform = groupItem->transform();
+    		groupItem->resetTransform();
+
     		QList<QGraphicsItem*> children = groupItem->childItems();
     		foreach(QGraphicsItem* pIt, children){
     			UBItem* pItem = dynamic_cast<UBItem*>(pIt);
     			if(NULL != pItem){
-    				duplicateItem(pItem);	// The duplication already copies the item parameters
-    				if(NULL != mLastCreatedItem){
-    					mLastCreatedItem->setSelected(true);
-    				}
+    				duplicateItem(pItem, groupItem->transform());	// The duplication already copies the item parameters
     			}
     		}
+    		groupItem->setTransform(groupTransform);
     		groupItem->setSelected(false);
     		UBApplication::mainWindow->actionGroupItems->trigger();
+    		QList<QGraphicsItem*> selItems =  mActiveScene->selectedItems();
+    		if(!selItems.empty()){
+    			// I don't like this solution but for now this is the only way I found.
+    			// Normally, at this state, only the duplicated group should be selected
+    			UBGraphicsGroupContainerItem* duplicatedGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.at(0));
+    			if(NULL != duplicatedGroup){
+    				duplicatedGroup->setTransform(groupTransform);
+    			}
+    		}
     	}
     	return;
     	break;
@@ -633,10 +644,11 @@ void UBBoardController::duplicateItem(UBItem *item)
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
             if (gitem)
             {   
-            	qDebug() << "Adding a stroke: " << gitem;
                 mActiveScene->addItem(gitem);
                 gitem->setPos(itemPos);
                 mLastCreatedItem = gitem;
+
+                gitem->setSelected(true);
             }
             return;
         }break;
@@ -652,6 +664,7 @@ void UBBoardController::duplicateItem(UBItem *item)
         if (createdGitem)
             createdGitem->setPos(itemPos);
         mLastCreatedItem = dynamic_cast<QGraphicsItem*>(createdItem);
+        mLastCreatedItem->setSelected(true);
     }
 }
 
@@ -2175,7 +2188,10 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         {
             foreach(UBItem* item, mimeData->items())
             {
-                duplicateItem(item);
+            	QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);
+            	if(NULL != pItem){
+            		duplicateItem(item, pItem->transform());
+            	}
             }
 
             return;
