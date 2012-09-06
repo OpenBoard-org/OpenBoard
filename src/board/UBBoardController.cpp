@@ -533,7 +533,7 @@ void UBBoardController::duplicateScene()
     duplicateScene(mActiveSceneIndex);
 }
 
-void UBBoardController::duplicateItem(UBItem *item, QTransform trf)
+void UBBoardController::duplicateItem(UBItem *item)
 {    
     if (!item)
         return;
@@ -619,7 +619,7 @@ void UBBoardController::duplicateItem(UBItem *item, QTransform trf)
     		foreach(QGraphicsItem* pIt, children){
     			UBItem* pItem = dynamic_cast<UBItem*>(pIt);
     			if(NULL != pItem){
-    				duplicateItem(pItem, groupItem->transform());	// The duplication already copies the item parameters
+    				duplicateItem(pItem);
     			}
     		}
     		groupItem->setTransform(groupTransform);
@@ -2190,7 +2190,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
             {
             	QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);
             	if(NULL != pItem){
-            		duplicateItem(item, pItem->transform());
+            		duplicateItem(item);
             	}
             }
 

@@ -158,7 +158,7 @@ class UBBoardController : public UBDocumentContainer
 
         void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
-        void duplicateItem(UBItem *item, QTransform trf);
+        void duplicateItem(UBItem *item);
         void deleteScene(int index);
 
         bool cacheIsVisible() {return mCacheWidgetIsEnabled;}

@@ -417,7 +417,7 @@ bool UBGraphicsItemDelegate::isLocked() const
 
 void UBGraphicsItemDelegate::duplicate()
 {
-    UBApplication::boardController->duplicateItem(dynamic_cast<UBItem*>(delegated()), delegated()->transform());
+    UBApplication::boardController->duplicateItem(dynamic_cast<UBItem*>(delegated()));
 }
 
 void UBGraphicsItemDelegate::increaseZLevelUp()
