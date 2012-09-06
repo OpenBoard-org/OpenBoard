@@ -20,6 +20,7 @@
 #include "core/UB.h"
 #include "UBItem.h"
 #include "UBGraphicsStrokesGroup.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 
 class UBItem;
 class UBGraphicsScene;
@@ -86,8 +87,6 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
         virtual UBItem* deepCopy() const;
 
-        // optimisation (eraser)
-        UBGraphicsPolygonItem* deepCopy(const QPolygonF& pol) const;
         virtual void copyItemParameters(UBItem *copy) const;
 
         QLineF originalLine() { return mOriginalLine;}

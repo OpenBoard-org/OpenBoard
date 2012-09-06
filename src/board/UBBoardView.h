@@ -31,8 +31,8 @@ class UBBoardView : public QGraphicsView
 
     public:
 
-        UBBoardView(UBBoardController* pController, QWidget* pParent = 0);
-        UBBoardView(UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent = 0);
+        UBBoardView(UBBoardController* pController, QWidget* pParent = 0, bool pIsControl = false);
+        UBBoardView(UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent = 0, bool pIscontrol = false);
         virtual ~UBBoardView();
 
         UBGraphicsScene* scene();
@@ -44,6 +44,9 @@ class UBBoardView : public QGraphicsView
         void rubberItems();
         void moveRubberedItems(QPointF movingVector);
 
+        void setMultiselection(bool enable);
+        bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
+
     signals:
 
         void resized(QResizeEvent* event);
@@ -54,10 +57,12 @@ class UBBoardView : public QGraphicsView
     protected:
 
         bool itemIsLocked(QGraphicsItem *item);
+        void handleItemsSelection(QGraphicsItem *item);
         bool itemShouldReceiveMousePressEvent(QGraphicsItem *item);
         bool itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item);
         bool itemHaveParentWithType(QGraphicsItem *item, int type);
         bool itemShouldBeMoved(QGraphicsItem *item);
+        QGraphicsItem* determineItemToPress(QGraphicsItem *item);
         QGraphicsItem* determineItemToMove(QGraphicsItem *item);
         void handleItemMousePress(QMouseEvent *event);
         void handleItemMouseMove(QMouseEvent *event);
@@ -147,6 +152,9 @@ class UBBoardView : public QGraphicsView
 
         bool mIsDragInProgress;
         bool mMultipleSelectionIsEnabled;
+        bool isControl;
+
+        static bool hasSelectedParents(QGraphicsItem * item);
 
     private slots:
 

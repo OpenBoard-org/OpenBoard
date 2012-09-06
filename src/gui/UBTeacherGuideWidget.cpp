@@ -411,7 +411,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     setObjectName(name);
 
     mpLayout = new QVBoxLayout(this);
-
+    setLayout(mpLayout);
     mpPageNumberLabel = new QLabel(this);
     mpPageNumberLabel->setAlignment(Qt::AlignRight);
     mpPageNumberLabel->setObjectName("UBTGPageNumberLabel");
@@ -421,7 +421,7 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpButtonTitleLayout = new QHBoxLayout(0);
 
     mpModePushButton = new QPushButton(this);
-    mpModePushButton->setIcon(QIcon(":images/pencil.svg"));
+    mpModePushButton->setIcon(QIcon(":images/teacherGuide/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
     mpModePushButton->installEventFilter(this);
 
@@ -457,7 +457,6 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpLayout->addWidget(mpTreeWidget);
 
     mpRootWidgetItem = mpTreeWidget->invisibleRootItem();
-    mpTreeWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mpTreeWidget->setDragEnabled(true);
     mpTreeWidget->setRootIsDecorated(false);
     mpTreeWidget->setIndentation(0);
@@ -465,8 +464,13 @@ UBTeacherGuidePresentationWidget::UBTeacherGuidePresentationWidget(QWidget *pare
     mpTreeWidget->header()->close();
     mpTreeWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mpTreeWidget->setStyleSheet("selection-background-color:transparent; padding-bottom:5px; padding-top:5px; ");
+    mpTreeWidget->setIconSize(QSize(24,24));
     connect(mpTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(onAddItemClicked(QTreeWidgetItem*,int)));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
+#ifdef Q_WS_MAC
+    // on mac and with the custom qt the widget on the tree are not automatically relocated when using the vertical scrollbar. To relocate them we link the valueChange signal of the vertical scrollbar witht a local signal to trig a change and a repaint of the tree widget
+    connect(mpTreeWidget->verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(onSliderMoved(int)));
+#endif
 }
 
 UBTeacherGuidePresentationWidget::~UBTeacherGuidePresentationWidget()
@@ -482,6 +486,14 @@ UBTeacherGuidePresentationWidget::~UBTeacherGuidePresentationWidget()
     DELETEPTR(mpTreeWidget);
     DELETEPTR(mpLayout);
 }
+
+#ifdef Q_WS_MAC
+void UBTeacherGuidePresentationWidget::onSliderMoved(int size)
+{
+    Q_UNUSED(size);
+    mpMediaSwitchItem->setExpanded(true);
+}
+#endif
 
 bool UBTeacherGuidePresentationWidget::eventFilter(QObject* object, QEvent* event)
 {
@@ -552,8 +564,8 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
         }
         else if (element->name == "media") {
             createMediaButtonItem();
-            QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem( mpMediaSwitchItem);
-            newWidgetItem->setIcon(0, QIcon( ":images/teacherGuide/" + element->attributes.value("mediaType") + ".png"));
+            QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpMediaSwitchItem);
+            newWidgetItem->setIcon(0, QIcon( ":images/teacherGuide/" + element->attributes.value("mediaType") + "_24x24.svg"));
             newWidgetItem->setText(0, element->attributes.value("title"));
             newWidgetItem->setData(0, tUBTGTreeWidgetItemRole_HasAnAction, tUBTGActionAssociateOnClickItem_MEDIA);
             newWidgetItem->setData(0, Qt::FontRole, QVariant(QFont(QApplication::font().family(), 11)));
@@ -569,14 +581,15 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
 
             QTreeWidgetItem* mediaItem = new QTreeWidgetItem(newWidgetItem);
             mediaItem->setData(0, tUBTGTreeWidgetItemRole_HasAnAction, tUBTGActionAssociateOnClickItem_NONE);
-            UBTGMediaWidget* mediaWidget = new UBTGMediaWidget(element->attributes.value("relativePath"), newWidgetItem);
+            qDebug() << element->attributes.value("mediaType");
+            UBTGMediaWidget* mediaWidget = new UBTGMediaWidget(element->attributes.value("relativePath"), newWidgetItem,0,element->attributes.value("mediaType").contains("flash"));
             newWidgetItem->setExpanded(false);
             mpTreeWidget->setItemWidget(mediaItem, 0, mediaWidget);
         }
         else if (element->name == "link") {
             createMediaButtonItem();
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem( mpMediaSwitchItem);
-            newWidgetItem->setIcon(0, QIcon(":images/teacherGuide/link.png"));
+            newWidgetItem->setIcon(0, QIcon(":images/teacherGuide/link_24x24.svg"));
             newWidgetItem->setText(0, element->attributes.value("title"));
             newWidgetItem->setData(0, tUBTGTreeWidgetItemRole_HasAnAction, tUBTGActionAssociateOnClickItem_URL);
             newWidgetItem->setData(0, tUBTGTreeWidgetItemRole_HasAnUrl, QVariant(element->attributes.value("url")));
@@ -589,8 +602,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
 
 void UBTeacherGuidePresentationWidget::onAddItemClicked(QTreeWidgetItem* widget, int column)
 {
-    int associateAction = widget->data(column,
-                                       tUBTGTreeWidgetItemRole_HasAnAction).toInt();
+    int associateAction = widget->data(column, tUBTGTreeWidgetItemRole_HasAnAction).toInt();
     if (column == 0 && associateAction != tUBTGActionAssociateOnClickItem_NONE) {
         switch (associateAction) {
         case tUBTGActionAssociateOnClickItem_EXPAND:
@@ -664,7 +676,7 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpButtonTitleLayout = new QHBoxLayout(0);
 
     mpModePushButton = new QPushButton(this);
-    mpModePushButton->setIcon(QIcon(":images/pencil.svg"));
+    mpModePushButton->setIcon(QIcon(":images/teacherGuide/pencil.svg"));
     mpModePushButton->setMaximumWidth(32);
     mpModePushButton->installEventFilter(this);
     mpButtonTitleLayout->addWidget(mpModePushButton);
@@ -879,17 +891,21 @@ void UBTeacherGuidePageZeroWidget::fillComboBoxes()
     parametersFile.close();
 
     QStringList licences;
-    licences << tr("Attribution CC BY") << tr("Attribution-NoDerivs CC BY-ND")
+    licences << tr("Attribution CC BY")
+    		 << tr("Attribution-NoDerivs CC BY-ND")
              << tr("Attribution-ShareAlike CC BY-SA")
              << tr("Attribution-NonCommercial CC BY-NC")
              << tr("Attribution-NonCommercial-NoDerivs CC BY-NC-ND")
              << tr("Attribution-NonCommercial-ShareAlike CC BY-NC-SA")
-             << tr("Public domain") << tr("Copyright");
+             << tr("Public domain")
+             << tr("Copyright");
     mpLicenceBox->addItems(licences);
     QStringList licenceIconList;
     licenceIconList << ":images/licenses/ccby.png"
-                    << ":images/licenses/ccbynd.png" << ":images/licenses/ccbysa.png"
-                    << ":images/licenses/ccbync.png" << ":images/licenses/ccbyncnd.png"
+                    << ":images/licenses/ccbynd.png"
+                    << ":images/licenses/ccbysa.png"
+                    << ":images/licenses/ccbync.png"
+                    << ":images/licenses/ccbyncnd.png"
                     << ":images/licenses/ccbyncsa.png";
     for (int i = 0; i < licenceIconList.count(); i += 1)
         mpLicenceBox->setItemData(i, licenceIconList.at(i));
@@ -945,7 +961,7 @@ void UBTeacherGuidePageZeroWidget::loadData()
     currentIndex = mpSchoolTypeBox->findText(documentProxy->metaData(UBSettings::sessionType).toString());
     mpSchoolTypeBox->setCurrentIndex((currentIndex != -1) ? currentIndex : 0);
 
-    currentIndex = mpLicenceBox->findText(documentProxy->metaData(UBSettings::sessionLicence).toString());
+    currentIndex = documentProxy->metaData(UBSettings::sessionLicence).toInt();
     mpLicenceBox->setCurrentIndex((currentIndex != -1) ? currentIndex : 0);
 }
 
@@ -962,7 +978,7 @@ void UBTeacherGuidePageZeroWidget::persistData()
         documentProxy->setMetaData(UBSettings::sessionGradeLevel, mpSchoolLevelBox->currentText());
         documentProxy->setMetaData(UBSettings::sessionSubjects, mpSchoolSubjectsBox->currentText());
         documentProxy->setMetaData(UBSettings::sessionType, mpSchoolTypeBox->currentText());
-        documentProxy->setMetaData(UBSettings::sessionLicence, mpLicenceBox->currentText());
+        documentProxy->setMetaData(UBSettings::sessionLicence, mpLicenceBox->currentIndex());
     }
 }
 
@@ -1087,7 +1103,7 @@ QVector<tUBGEElementNode*> UBTeacherGuidePageZeroWidget::getData()
 
     elementNode = new tUBGEElementNode();
     elementNode->name = "licence";
-    elementNode->attributes.insert("value", mpLicenceBox->currentText());
+    elementNode->attributes.insert("value", QString("%1").arg(mpLicenceBox->currentIndex()));
     result << elementNode;
     return result;
 }

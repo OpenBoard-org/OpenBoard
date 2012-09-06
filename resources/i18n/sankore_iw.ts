@@ -800,10 +800,6 @@
         <translation>ייבא מסמכים ישנים של Sankoré או של Uniboard</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -821,6 +817,10 @@
     </message>
     <message>
         <source>Remove the backgound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -865,21 +865,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>/דף הבית</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>סל אשפה</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>טוען...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,6 +932,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>הכל )%1(</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1165,12 +1168,20 @@
         <translation>קובץ %1 נשמר</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>מייבא עמוד %1 מתוך %2</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>נותני תמונה שגויים, מדלג על הקובץ %1</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">הייבוא בוצע בהצלחה.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1242,6 +1253,13 @@
     <message>
         <source>Cancel</source>
         <translation>בטל</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1423,6 +1441,53 @@
         <source>ImportedImage</source>
         <translation type="unfinished">תמונה מיובאת</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">קבצי שמע</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">סרטים</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">תמונות</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">אנימציות</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">אינטראקטיביות</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">יישומים</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">צורות</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1455,6 +1520,24 @@
     <message>
         <source>Editable</source>
         <translation>ניתן לעריכה</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">אינטרנט</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">טוען...</translation>
     </message>
 </context>
 <context>
@@ -1516,14 +1599,6 @@
         <source>Image Format (</source>
         <translation>פורמט התמונה )</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>ייבוא התמונה נכשל.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>ייבוא התמונה בוצע בהצלחה.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1538,10 +1613,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>מייבא עמוד %1 מתוך %2</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>ייבוא ה- PDF בוצע בהצלחה.</translation>
     </message>
 </context>
 <context>
@@ -1571,120 +1642,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>הוסף למועדפים</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>שתף</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>חפש</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>מחק</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>חזרה לקובץ</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>הסר מהמועדפים</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>צור תיקייה חדשה</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>הוסף לדף</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>קבע כרקע</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>הוסף לספרייה</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>מידע על האובייקט</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>ImportedImage</source>
-        <translation>תמונה מיובאת</translation>
-    </message>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>תמונה 1 הוספה לספריה</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>קבצי שמע</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>סרטים</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>תמונות</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>צורות</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>יישומים</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>מועדף</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>אינטראקטיביות</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>אנימציות</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>יוצר תמונה ממוזערת עבור %1.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>ההוספה לדף נכשלה עבור פריט %1.</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>חיפוש באינטרנט</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1697,6 +1654,13 @@
     <message>
         <source>Ok</source>
         <translation>אישור</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">סגור</translation>
     </message>
 </context>
 <context>
@@ -1726,25 +1690,6 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>No</source>
         <translation>לא</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>הוסף תיקיה חדשה</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>שם תיקייה חדשה:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>הוסף</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>בטל</translation>
     </message>
 </context>
 <context>
@@ -1906,6 +1851,14 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>הסרטים שלי</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2183,13 +2136,6 @@ Please reboot the application to access the updated documents.</source>
     <message>
         <source>Remind me later</source>
         <translation> לי שוב מאוחר יות</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>אינטרנט</translation>
     </message>
 </context>
 <context>

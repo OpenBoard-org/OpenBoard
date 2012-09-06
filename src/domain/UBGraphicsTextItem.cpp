@@ -23,6 +23,7 @@
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
+#include "board/UBDrawingController.h"
 #include "core/UBSettings.h"
 
 #include "core/memcheck.h"
@@ -85,7 +86,15 @@ QVariant UBGraphicsTextItem::itemChange(GraphicsItemChange change, const QVarian
 
 void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    
+    // scene()->itemAt(pos) returns 0 if pos is not over text, but over text item, but mouse press comes. 
+    // It is a cludge... 
+    if (UBStylusTool::Play == UBDrawingController::drawingController()->stylusTool())
+    {
+        event->accept();
+        clearFocus();
+        return;
+    }
+
     if (mDelegate)
     {
         mDelegate->mousePressEvent(event);
@@ -164,6 +173,15 @@ void UBGraphicsTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    // scene()->itemAt(pos) returns 0 if pos is not over text, but over text item, but mouse press comes. 
+    // It is a cludge... 
+    if (UBStylusTool::Play == UBDrawingController::drawingController()->stylusTool())
+    {
+        event->accept();
+        clearFocus();
+        return;
+    }
+
     if (mMultiClickState == 1)
     {
         if (mDelegate)

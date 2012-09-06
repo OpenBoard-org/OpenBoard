@@ -41,6 +41,7 @@ class UBDocumentContainer : public QObject
         void deletePages(QList<int>& pageIndexes);
         void addPage(int index);
         void updatePage(int index);
+        void addEmptyThumbPage();
 
     private:
         void deleteThumbPage(int index);

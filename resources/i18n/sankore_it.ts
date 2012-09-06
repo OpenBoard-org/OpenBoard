@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -765,27 +767,27 @@
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Open-Sankoré</source>
         <translation>Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Quit Open-Sankoré</source>
         <translation>Chiudi Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Open-Sankoré Editor</source>
         <translation>Editore Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
         <translation>Mostra l&apos;editore dei Widgets Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Open-Sankoré</source>
         <translation>Nascondi Open-Sankoré</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Hide Open-Sankoré Application</source>
         <translation>Nascondi l&apos;applicazione Open-Sankoré</translation>
     </message>
@@ -796,10 +798,6 @@
     <message>
         <source>Import old Sankore or Uniboard documents</source>
         <translation>Importa i vecchi documenti Sankoré o Uniboard</translation>
-    </message>
-    <message>
-        <source>Group Items</source>
-        <translation>Raggruppa</translation>
     </message>
     <message>
         <source>Group items</source>
@@ -820,6 +818,10 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Rimuove lo sfondo</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -863,21 +865,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>Cestino</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>/Home</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>Caricamento in corso...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -939,6 +932,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Tutto supportato (%1)</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1124,10 +1129,12 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Il documento &apos;%1&apos; è stato generato con una versione più recente di Sankore (%2). Aprendolo, si potrebbero perdere alcune informazioni. Vuoi continuare?</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>
 Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezionato?        
+        </numerusform>
         </translation>
     </message>
     <message>
@@ -1162,12 +1169,20 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
         <translation>File %1 salvato</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>Sto importando pagina %1 di %2</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>Dati dell&apos;immagine errati, salto il file %1</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">Importazione completata con successo.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1222,10 +1237,12 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
         <source>Copying page %1/%2</source>
         <translation>Sto copiando pagina %1/%2</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>%1 pagine copiate
+        <translation type="unfinished">
+            <numerusform>%1 pagine copiate
         
+        </numerusform>
         </translation>
     </message>
 </context>
@@ -1238,6 +1255,13 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1419,6 +1443,53 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
         <source>ImportedImage</source>
         <translation>Immagine importata</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">Audio</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">Film</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">Immagini</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">Animazioni</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">Interattività</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">Applicazioni</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">Forme</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Cestino</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1451,6 +1522,24 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <message>
         <source>Editable</source>
         <translation>Modificabile</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">Web</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">Caricamento in corso...</translation>
     </message>
 </context>
 <context>
@@ -1512,14 +1601,6 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
         <source>Image Format (</source>
         <translation>Formato immagine (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>Importazione immagine fallita.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>Immagine importata con successo.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1534,10 +1615,6 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <message>
         <source>Importing page %1 of %2</source>
         <translation>Importazione della pagina %1 di %2 in corso</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>Importazione del PDF completata con successo.</translation>
     </message>
 </context>
 <context>
@@ -1566,120 +1643,6 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>Aggiungi ai preferiti</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>Condividi</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Cerca</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Cancella</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>Torna alla cartella</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>Rimuovi dai preferiti</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>Crea nuova cartella</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>Aggiungi alla pagina</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>Imposta come sfondo</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>Aggiungi alla Biblioteca</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>Informazioni sull&apos;oggetto</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>Aggiungi un&apos;immagine alla Biblioteca</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>Audio</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>Film</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>Immagini</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>Forme</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>Applicazioni</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>Preferiti</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>Generazione della miniatura di anteprima per %1 in corso.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>L&apos;aggiunta alla pagina per l&apos;elemento %1 è fallita.</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>Interattività</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>Immagine importata</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>Animazioni</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>Ricerca Web</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1692,6 +1655,13 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Chiudi</translation>
     </message>
 </context>
 <context>
@@ -1727,25 +1697,6 @@ Vuoi ignorare gli errori per questo host?</translation>
     <message>
         <source>No</source>
         <translation>No</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>Aggiungi nuova cartella</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>Nome nuova cartella:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>Aggiungi</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annulla</translation>
     </message>
 </context>
 <context>
@@ -1907,6 +1858,14 @@ Vuoi ignorare gli errori per questo host?</translation>
     <message>
         <source>My Movies</source>
         <translation>I miei film</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2187,13 +2146,6 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <message>
         <source>Remind me later</source>
         <translation>Ricordamelo in seguito</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
     </message>
 </context>
 <context>
@@ -2661,7 +2613,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Preferenze</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>version : …</source>
         <translation>versione: ...</translation>
     </message>
@@ -2769,7 +2721,7 @@ p, li { white-space: pre-wrap; }
         <source>Network</source>
         <translation>Rete</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Open-Sankoré</source>
         <translation>Open-Sankoré</translation>
     </message>
@@ -2809,7 +2761,7 @@ p, li { white-space: pre-wrap; }
         <source>Pass:</source>
         <translation>Password:</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>Planète Sankoré ID</source>
         <translation>ID Planete Sankoré</translation>
     </message>
@@ -3295,7 +3247,7 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Crediti</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3315,7 +3267,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Open-Sankoré version 1.4 , Copyright (C) 2010-2012 Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;&lt;br /&gt;Open-Sankoré est un logiciel libre : vous pouvez le redistribuer et/ou le modifier en respectant les termes de la Lesser GNU general Public Licence (GNU LGPL) telle que publiée par la Free Software Foundation en version 2 ou une version plus récente.&lt;br /&gt;Vous pouvez consulter et charger le code source du logiciel sur &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré est distribué dans l&apos;espoir qu&apos;il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de COMMERCIALISATION ou D&apos;ADAPTATION A UN OBJET PARTICULIER.&lt;br /&gt;Veuillez consulter la licence Lesser GNU General Public Licence située dans l&apos;onglet Licences ou consulter le site &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;http://www.gnu.org/licenses/&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;.&lt;br /&gt;&lt;br /&gt;Open-Sankoré is free software: you can redistribute it and/or modify it under the terms of the Lesser GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version. You can find the source code of this software at &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Lesser GNU General Public License below for more details.&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Contact : &lt;br /&gt;Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;br /&gt;20 Avenue Ségur Paris 75007&lt;br /&gt;Téléphone : 01 43 17 68 08&lt;br /&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }

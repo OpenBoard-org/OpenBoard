@@ -143,7 +143,10 @@ QColor UBGraphicsPolygonItem::color() const
 
 UBItem* UBGraphicsPolygonItem::deepCopy() const
 {
-    UBGraphicsPolygonItem* copy = deepCopy(this->polygon());
+    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(polygon(), parentItem());
+
+    copyItemParameters(copy);
+
     copy->mOriginalLine = this->mOriginalLine;
     copy->mOriginalWidth = this->mOriginalWidth;
     copy->mIsNominalLine = this->mIsNominalLine;
@@ -151,18 +154,6 @@ UBItem* UBGraphicsPolygonItem::deepCopy() const
     return copy;
 }
 
-
-UBGraphicsPolygonItem* UBGraphicsPolygonItem::deepCopy(const QPolygonF& pol) const
-{
-    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(pol);
-
-    copyItemParameters(copy);
-
-    // TODO UB 4.7 ... complete all members ?
-
-    return copy;
-
-}
 
 void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
 {

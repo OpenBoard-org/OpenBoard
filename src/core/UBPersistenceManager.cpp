@@ -878,6 +878,34 @@ QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* 
     return destPath;
 }
 
+QString UBPersistenceManager::addWidgetToTeacherGuideDirectory(UBDocumentProxy* pDocumentProxy, QString pPath)
+{
+    QString path = UBFileSystemUtils::removeLocalFilePrefix(pPath);
+    QFileInfo fi(path);
+    Q_ASSERT(fi.isDir());
+
+    int lastIndex = path.lastIndexOf(".");
+    QString extension("");
+    if(lastIndex != -1)
+        extension = path.right(path.length() - lastIndex);
+
+    QString uuid = QUuid::createUuid();
+
+    if (!fi.exists() || !pDocumentProxy)
+        return "";
+
+    QString directoryName = UBPersistenceManager::teacherGuideDirectory + "/" + uuid + extension;
+    QString destPath = pDocumentProxy->persistencePath() + "/" + directoryName;
+
+    if (!QDir(destPath).exists()){
+        QDir dir;
+        dir.mkdir(pDocumentProxy->persistencePath() + "/" + UBPersistenceManager::teacherGuideDirectory);
+        UBFileSystemUtils::copyDir(path,destPath);
+    }
+
+    return destPath;
+}
+
 bool UBPersistenceManager::addFileToDocument(UBDocumentProxy* pDocumentProxy, 
                                                      QString path, 
                                                      const QString& subdir,

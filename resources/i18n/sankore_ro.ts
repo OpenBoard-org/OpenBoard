@@ -800,10 +800,6 @@
         <translation>Importare documente vechi Sankore sau Uniboard</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -821,6 +817,10 @@
     </message>
     <message>
         <source>Remove the backgound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -865,21 +865,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>Coş de gunoi</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translation>/Acasă</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>Încărcare ...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,6 +932,18 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Tot ce se suportă (%1)</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1165,12 +1168,20 @@
         <translation>Fişier %1 salvat</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>Importare pagina %1 din %2</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>Dată imagine eronată, salt peste fişier %1</translation>
+        <source>Import successful.</source>
+        <translation type="unfinished">Importare reuşită.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1242,6 +1253,13 @@
     <message>
         <source>Cancel</source>
         <translation>Anulare</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1423,6 +1441,53 @@
         <source>ImportedImage</source>
         <translation type="unfinished">ImportedImage</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">Înregistrări audio</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">Filme</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">Imagini</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">Animaţii</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">Interactivităţi</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">Aplicaţii</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">Forme</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Coş de gunoi</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1455,6 +1520,24 @@
     <message>
         <source>Editable</source>
         <translation>Editabil</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">Web</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">Încărcare ...</translation>
     </message>
 </context>
 <context>
@@ -1516,14 +1599,6 @@
         <source>Image Format (</source>
         <translation>Format imagine (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>Importare imagine nereuşită.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>Importare imagine reuşită.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
@@ -1538,10 +1613,6 @@
     <message>
         <source>Importing page %1 of %2</source>
         <translation>Importare pagina %1 din %2</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>Importare PDF reuşită.</translation>
     </message>
 </context>
 <context>
@@ -1570,120 +1641,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Add to favorites</source>
-        <translation>Adăugare la favorite</translation>
-    </message>
-    <message>
-        <source>Share</source>
-        <translation>Distribuire</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Căutare</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Ştergere</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>Înapoi la folder</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>Eliminare din favorite</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>Creare folder nou</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Add to page</source>
-        <translation>Adăugare la pagină</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>Setare ca fundal</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>Adăugare la bibliotecă</translation>
-    </message>
-    <message>
-        <source>Object informations</source>
-        <translation>Informaţii despre obiect</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>S-a adăugat 1 imagine la bibliotecă</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>Înregistrări audio</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>Filme</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>Imagini</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>Forme</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>Aplicaţii</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>Favorit</translation>
-    </message>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>Creare miniatură imagine pentru %1.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>Adăugare la pagină nereuşită pentru articol %1.</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>Interactivităţi</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>ImportedImage</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>Animaţii</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>Căutare web</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>Yes</source>
@@ -1696,6 +1653,13 @@
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Închidere</translation>
     </message>
 </context>
 <context>
@@ -1731,25 +1695,6 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     <message>
         <source>No</source>
         <translation>Nu</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add new folder</source>
-        <translation>Adăugare fişier nou</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>Nume fişier nou:</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation>Adăugare</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anulare</translation>
     </message>
 </context>
 <context>
@@ -1911,6 +1856,14 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     <message>
         <source>My Movies</source>
         <translation>Filmele mele</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2188,13 +2141,6 @@ Vă rugăm să reporniţi aplicaţia pentru a accesa documentele actualizate.</t
     <message>
         <source>Remind me later</source>
         <translation>Reaminteşte-mi mai târziu</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
     </message>
 </context>
 <context>

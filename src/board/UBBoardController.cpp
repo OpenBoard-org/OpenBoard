@@ -54,6 +54,8 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBItem.h"
 #include "board/UBFeaturesController.h"
+#include "domain/UBGraphicsStrokesGroup.h"
+
 #include "gui/UBFeaturesWidget.h"
 
 #include "tools/UBToolsManager.h"
@@ -158,7 +160,7 @@ void UBBoardController::setupViews()
     mControlLayout = new QHBoxLayout(mControlContainer);
     mControlLayout->setContentsMargins(0, 0, 0, 0);
 
-    mControlView = new UBBoardView(this, mControlContainer);
+    mControlView = new UBBoardView(this, mControlContainer, true);
     mControlView->setInteractive(true);
     mControlView->setMouseTracking(true);
 
@@ -453,7 +455,7 @@ void UBBoardController::addScene()
     persistCurrentScene();
 
     UBDocumentContainer::addPage(mActiveSceneIndex + 1);
-    
+
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
     setActiveDocumentScene(mActiveSceneIndex + 1);
@@ -536,6 +538,8 @@ void UBBoardController::duplicateItem(UBItem *item)
     if (!item)
         return;
 
+    mLastCreatedItem = NULL;
+
     QUrl sourceUrl;
     QByteArray pData;
 
@@ -551,9 +555,13 @@ void UBBoardController::duplicateItem(UBItem *item)
         itemSize = commonItem->boundingRect().size();
     }
 
+    UBMimeType::Enum itemMimeType;
     QString contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(item->sourceUrl().toLocalFile());
-   
-    UBMimeType::Enum itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
+    if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem)){
+    	itemMimeType = UBMimeType::Group;
+    }else{
+    	itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
+    }
         
     switch(static_cast<int>(itemMimeType))
     {
@@ -598,13 +606,37 @@ void UBBoardController::duplicateItem(UBItem *item)
                  pixitem->pixmap().save(&buffer, format.toLatin1());
             }
         }break;
+
+    case UBMimeType::Group:
+    {
+    	UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+    	if(groupItem){
+    		QList<QGraphicsItem*> children = groupItem->childItems();
+    		foreach(QGraphicsItem* pIt, children){
+    			UBItem* pItem = dynamic_cast<UBItem*>(pIt);
+    			if(NULL != pItem){
+    				duplicateItem(pItem);	// The duplication already copies the item parameters
+    				if(NULL != mLastCreatedItem){
+    					mLastCreatedItem->setSelected(true);
+    				}
+    			}
+    		}
+    		groupItem->setSelected(false);
+    		UBApplication::mainWindow->actionGroupItems->trigger();
+    	}
+    	return;
+    	break;
+    }
+
     case UBMimeType::UNKNOWN:
         {
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
             if (gitem)
             {   
+            	qDebug() << "Adding a stroke: " << gitem;
                 mActiveScene->addItem(gitem);
                 gitem->setPos(itemPos);
+                mLastCreatedItem = gitem;
             }
             return;
         }break;
@@ -619,12 +651,13 @@ void UBBoardController::duplicateItem(UBItem *item)
         QGraphicsItem *createdGitem = dynamic_cast<QGraphicsItem*>(createdItem);
         if (createdGitem)
             createdGitem->setPos(itemPos);
-    } 
+        mLastCreatedItem = dynamic_cast<QGraphicsItem*>(createdItem);
+    }
 }
 
 void UBBoardController::deleteScene(int nIndex)
 {
-    if (selectedDocument()->pageCount()>2)
+    if (selectedDocument()->pageCount()>=2)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
@@ -913,7 +946,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
     else if (sUrl.startsWith("file://") || sUrl.startsWith("/"))
     {
         QString fileName = url.toLocalFile();
-
+        QUrl formedUrl = sUrl.startsWith("file://") ? sUrl : QUrl::fromLocalFile(sUrl);
         QString contentType = UBFileSystemUtils::mimeTypeFromFileName(fileName);
 
         bool shouldLoadFileData =
@@ -926,7 +959,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
         if (shouldLoadFileData)
             file.open(QIODevice::ReadOnly);
 
-        downloadFinished(true, url, contentType, file.readAll(), pPos, pSize, isBackground, internalData);
+        downloadFinished(true, formedUrl, contentType, file.readAll(), pPos, pSize, isBackground, internalData);
 
         if (shouldLoadFileData)
             file.close();
@@ -957,6 +990,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 
     // In some cases "image/jpeg;charset=" is retourned by the drag-n-drop. That is
     // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
+    if(mimeType.isEmpty())
+      mimeType = UBFileSystemUtils::mimeTypeFromFileName(sourceUrl.toString());
+    
     int position=mimeType.indexOf(";");
     if(position != -1)
         mimeType=mimeType.left(position);
@@ -977,9 +1013,16 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 
         qDebug() << "accepting mime type" << mimeType << "as raster image";
 
-        QImage img;
-        img.loadFromData(pData);
-        QPixmap pix = QPixmap::fromImage(img);
+
+        QPixmap pix;
+        if(pData.length() == 0){
+            pix.load(sourceUrl.toLocalFile());
+        }
+        else{
+            QImage img;
+            img.loadFromData(pData);
+            pix = QPixmap::fromImage(img);
+        }
 
         UBGraphicsPixmapItem* pixItem = mActiveScene->addPixmap(pix, NULL, pPos, 1.);
         pixItem->setSourceUrl(sourceUrl);
@@ -1193,8 +1236,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         if (widgetUrl.length() > 0)
         {
             UBGraphicsWidgetItem *widgetItem = mActiveScene->addW3CWidget(QUrl::fromLocalFile(widgetUrl), pPos);
-
-            widgetItem->setSourceUrl(sourceUrl);
+            widgetItem->setUuid(QUuid::createUuid());
+            widgetItem->setSourceUrl(QUrl::fromLocalFile(widgetUrl));
 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
@@ -1471,12 +1514,13 @@ void UBBoardController::ClearUndoStack()
     while (itUniq.hasNext())
     {
         QGraphicsItem* item = itUniq.next();
+        UBGraphicsScene *scene = NULL;
         if (item->scene()) {
-            UBGraphicsScene *scene = dynamic_cast<UBGraphicsScene*>(item->scene());
-            if(!scene)
-            {
-                mActiveScene->deleteItem(item);
-            }
+            scene = dynamic_cast<UBGraphicsScene*>(item->scene());
+        }
+        if(!scene)
+        {
+            mActiveScene->deleteItem(item);
         }
     }
 
@@ -1940,7 +1984,7 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
 
     QString destFile;
     bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
-                pSourceUrl.toLocalFile(), 
+                pSourceUrl.toLocalFile(),
                 UBPersistenceManager::videoDirectory,
                 uuid,
                 destFile);
@@ -2287,10 +2331,9 @@ void UBBoardController::addItem()
 void UBBoardController::importPage()
 {
     int pageCount = selectedDocument()->pageCount();
-
     if (UBApplication::documentController->addFileToDocument(selectedDocument()))
     {
-        setActiveDocumentScene(pageCount);
+        setActiveDocumentScene(selectedDocument(), pageCount, true);
     }
 }
 

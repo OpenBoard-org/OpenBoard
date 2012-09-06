@@ -802,10 +802,6 @@
         <translation>Vymazať anotáciu</translation>
     </message>
     <message>
-        <source>Group Items</source>
-        <translation>Zoskupiť položky</translation>
-    </message>
-    <message>
         <source>Group items</source>
         <translation>Zoskupiť položky</translation>
     </message>
@@ -824,6 +820,10 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Odstrániť pozadie</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -867,22 +867,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>/Home</source>
-        <comment>Category list label on navigation tool bar</comment>
-        <translatorcomment>/Domov</translatorcomment>
-        <translation>/Home</translation>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trash</source>
-        <comment>Pictures category element</comment>
-        <translation>Kôš</translation>
-    </message>
-</context>
-<context>
-    <name>UBAbstractWidget</name>
-    <message>
-        <source>Loading ...</source>
-        <translation>Nahráva sa...</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -944,6 +934,18 @@
     <message>
         <source>Download finished</source>
         <translation>Sťahovanie bolo dokončené</translation>
+    </message>
+    <message>
+        <source>Delete page %1 from document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1153,10 +1155,6 @@
         <translation>objekty</translation>
     </message>
     <message>
-        <source>Erronous image data, skipping file %1</source>
-        <translation>Chybné údaje o obrázku, preskakuje sa súbor %1</translation>
-    </message>
-    <message>
         <source>images</source>
         <translation>obrázky</translation>
     </message>
@@ -1173,8 +1171,20 @@
         <translation>Súbor %1 bol uložený</translation>
     </message>
     <message>
-        <source>Importing page %1 of %2</source>
-        <translation>Nahráva sa stránka %1 z(o) %2</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import successful.</source>
+        <translation type="unfinished">Nahrávanie bolo úspešne dokončené.</translation>
+    </message>
+    <message>
+        <source>Importing file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1247,6 +1257,13 @@
     <message>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1428,6 +1445,53 @@
         <source>ImportedImage</source>
         <translation>NahranýObrázok</translation>
     </message>
+    <message>
+        <source>Audios</source>
+        <translation type="unfinished">Zvuky</translation>
+    </message>
+    <message>
+        <source>Movies</source>
+        <translation type="unfinished">Filmy</translation>
+    </message>
+    <message>
+        <source>Pictures</source>
+        <translation type="unfinished">Obrázky</translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished">Animácie</translation>
+    </message>
+    <message>
+        <source>Interactivities</source>
+        <translation type="unfinished">Interaktívne objekty</translation>
+    </message>
+    <message>
+        <source>Applications</source>
+        <translation type="unfinished">Aplikácie</translation>
+    </message>
+    <message>
+        <source>Shapes</source>
+        <translation type="unfinished">Geometrické útvary</translation>
+    </message>
+    <message>
+        <source>Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Kôš</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesProgressInfo</name>
+    <message>
+        <source> load</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1460,6 +1524,24 @@
     <message>
         <source>Editable</source>
         <translation>Dá sa upraviť</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsW3CWidgetItem</name>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">Web</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsWidgetItem</name>
+    <message>
+        <source>Cannot load content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished">Nahráva sa...</translation>
     </message>
 </context>
 <context>
@@ -1521,24 +1603,12 @@
         <source>Image Format (</source>
         <translation>Súbor obrázka (</translation>
     </message>
-    <message>
-        <source>Image import failed.</source>
-        <translation>Nepodarilo sa nahrať obrázok.</translation>
-    </message>
-    <message>
-        <source>Image import successful.</source>
-        <translation>Obrázok bol úspešne nahraný.</translation>
-    </message>
 </context>
 <context>
     <name>UBImportPDF</name>
     <message>
         <source>PDF import failed.</source>
         <translation>Nahrávanie do PDF zlyhalo.</translation>
-    </message>
-    <message>
-        <source>PDF import successful.</source>
-        <translation>Nahrávanie do PDF bolo úspešne dokončené.</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
@@ -1575,120 +1645,6 @@
     </message>
 </context>
 <context>
-    <name>UBLibActionBar</name>
-    <message>
-        <source>Share</source>
-        <translation>Podeliť sa</translation>
-    </message>
-    <message>
-        <source>Back to folder</source>
-        <translation>Späť na priečinok</translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation>Odstrániť z obľúbených položiek</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Vymazať</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Hľadať</translation>
-    </message>
-    <message>
-        <source>Add to favorites</source>
-        <translation>Pridať do obľúbených položiek</translation>
-    </message>
-    <message>
-        <source>Create new folder</source>
-        <translation>Vytvoriť nový priečinok</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibItemProperties</name>
-    <message>
-        <source>Object informations</source>
-        <translation>Informácie o objekte</translation>
-    </message>
-    <message>
-        <source>Add to library</source>
-        <translation>Pridať do knižnice</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation>Nastaviť ako pozadie</translation>
-    </message>
-    <message>
-        <source>Add to page</source>
-        <translation>Pridať na stránku</translation>
-    </message>
-</context>
-<context>
-    <name>UBLibraryController</name>
-    <message>
-        <source>Creating image thumbnail for %1.</source>
-        <translation>Vytvára sa miniatúra obrázka z(o) %1.</translation>
-    </message>
-    <message>
-        <source>Adding to page failed for item %1.</source>
-        <translation>Na stránku sa nepodarilo pridať položku %1.</translation>
-    </message>
-    <message>
-        <source>Added 1 Image to Library</source>
-        <translation>Do knižnice bol pridaný 1 obrázok</translation>
-    </message>
-    <message>
-        <source>ImportedImage</source>
-        <translation>NahranýObrázok</translation>
-    </message>
-    <message>
-        <source>Audios</source>
-        <comment>Audio category element</comment>
-        <translation>Zvuky</translation>
-    </message>
-    <message>
-        <source>Movies</source>
-        <comment>Movies category element</comment>
-        <translation>Filmy</translation>
-    </message>
-    <message>
-        <source>Pictures</source>
-        <comment>Pictures category element</comment>
-        <translation>Obrázky</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <comment>Shapes category element</comment>
-        <translation>Geometrické útvary</translation>
-    </message>
-    <message>
-        <source>Applications</source>
-        <comment>Applications category element</comment>
-        <translation>Aplikácie</translation>
-    </message>
-    <message>
-        <source>Favorite</source>
-        <comment>Favorite category element</comment>
-        <translation>Obľúbené položky</translation>
-    </message>
-    <message>
-        <source>Interactivities</source>
-        <comment>Interactives category element</comment>
-        <translation>Interaktívne objekty</translation>
-    </message>
-    <message>
-        <source>Web Search</source>
-        <comment>Web search category element</comment>
-        <translation>Internetové vyhľadávanie</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <comment>Animations category element</comment>
-        <translation>Animácie</translation>
-    </message>
-</context>
-<context>
     <name>UBMainWindow</name>
     <message>
         <source>No</source>
@@ -1701,6 +1657,13 @@
     <message>
         <source>Yes</source>
         <translation>Áno</translation>
+    </message>
+</context>
+<context>
+    <name>UBMessagesDialog</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zatvoriť</translation>
     </message>
 </context>
 <context>
@@ -1736,25 +1699,6 @@ Do you want to ignore these errors for this host?</source>
 %2
 
 Chcete ignorovať tieto chyby na tomto serveri?</translation>
-    </message>
-</context>
-<context>
-    <name>UBNewFolderDlg</name>
-    <message>
-        <source>Add</source>
-        <translation>Pridať</translation>
-    </message>
-    <message>
-        <source>New Folder name:</source>
-        <translation>Názov nového priečinka:</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Zrušiť</translation>
-    </message>
-    <message>
-        <source>Add new folder</source>
-        <translation>Pridať nový priečinok</translation>
     </message>
 </context>
 <context>
@@ -1916,6 +1860,14 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     <message>
         <source>Untitled Documents</source>
         <translation>Dokumenty bez názvu</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2193,13 +2145,6 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     <message>
         <source>Remind me later</source>
         <translation>Pripomenúť mi neskôr</translation>
-    </message>
-</context>
-<context>
-    <name>UBW3CWidget</name>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
     </message>
 </context>
 <context>

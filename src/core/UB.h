@@ -33,6 +33,7 @@ struct UBMimeType
         Flash,
         PDF,
         UniboardTool,
+        Group,
         UNKNOWN
     };
 };
@@ -132,11 +133,10 @@ struct UBGraphicsItemType
         PolygonItemType = QGraphicsItem::UserType + 1, 
 		PixmapItemType,
         SvgItemType, 
+        DelegateButtonType,
 		MediaItemType, 
-		AppleWidgetItemType, 
 		PDFItemType, 
-		TextItemType, 
-		W3CWidgetItemType, 
+		TextItemType,
 		CurtainItemType,
         RulerItemType, 
 		CompassItemType, 
@@ -147,7 +147,9 @@ struct UBGraphicsItemType
         cacheItemType,
         AristoItemType,
         groupContainerType,
-        ToolWidgetItemType
+        ToolWidgetItemType,
+        GraphicsWidgetItemType,
+        UserTypesCount // this line must be the last line in this enum because it is types counter.
     };
 };
 

@@ -114,7 +114,8 @@ void UBGraphicsWidgetItem::initialize()
     connect(page(), SIGNAL(linkClicked(const QUrl&)), this, SLOT(onLinkClicked(const QUrl&)));
 }
 
-void UBGraphicsWidgetItem::onLinkClicked(const QUrl& url){
+void UBGraphicsWidgetItem::onLinkClicked(const QUrl& url)
+{
 	UBApplication::webController->loadUrl(url);
 }
 
@@ -669,11 +670,6 @@ UBGraphicsAppleWidgetItem::~UBGraphicsAppleWidgetItem()
     /* NOOP */
 }
 
-int UBGraphicsAppleWidgetItem::type() const
-{
-    return Type;
-}
-
 void UBGraphicsAppleWidgetItem::setUuid(const QUuid &pUuid)
 {
     UBItem::setUuid(pUuid);
@@ -846,6 +842,9 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     /* is it a valid local file ? */
     QFile f(mMainHtmlUrl.toLocalFile());
 
+    qDebug() << mMainHtmlFileName;
+    qDebug() << mMainHtmlUrl.toLocalFile();
+
     if(!f.exists())
         mMainHtmlUrl = QUrl(mMainHtmlFileName);
 
@@ -865,11 +864,6 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
 UBGraphicsW3CWidgetItem::~UBGraphicsW3CWidgetItem()
 {
     /* NOOP */
-}
-
-int UBGraphicsW3CWidgetItem::type() const
-{
-    return Type;
 }
 
 void UBGraphicsW3CWidgetItem::setUuid(const QUuid &pUuid)

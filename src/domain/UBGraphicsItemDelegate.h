@@ -40,6 +40,9 @@ class DelegateButton: public QGraphicsSvgItem
 
         virtual ~DelegateButton();
 
+        enum { Type = UBGraphicsItemType::DelegateButtonType };
+        virtual int type() const { return Type; }
+
         void setTransparentToMouseEvent(bool tr)
         {
             mIsTransparentToMouseEvent = tr;
@@ -297,6 +300,7 @@ protected slots:
 private:
         void updateFrame();
         void updateButtons(bool showUpdated = false);
+        inline void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
 
         QPointF mOffset;
         QTransform mPreviousTransform;

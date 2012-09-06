@@ -64,6 +64,11 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 {
     connect(mMainWindow->actionWebTools, SIGNAL(toggled(bool)), this, SLOT(toggleWebToolsPalette(bool)));
 
+    mStackedWidget = new QStackedWidget();
+    mStackedWidget->addWidget(new QWidget(mStackedWidget));
+    mStackedWidget->addWidget(new QWidget(mStackedWidget));
+    mStackedWidget->addWidget(new QWidget(mStackedWidget));
+
     mMainWindow->addWebWidget(mStackedWidget);
 
     for (int i = 0; i < TotalNumberOfWebInstances; i += 1){
@@ -76,13 +81,15 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 
     // TODO : Comment the next line to continue the Youtube button bugfix
     initialiazemOEmbedProviders();
-
 }
 
 
 UBWebController::~UBWebController()
 {
     // NOOP
+    if (mStackedWidget) {
+        delete mStackedWidget;
+    }
 }
 
 void UBWebController::initialiazemOEmbedProviders()
@@ -119,6 +126,7 @@ void UBWebController::webBrowserInstance()
         mCurrentWebBrowser = &mWebBrowserList[WebBrowser];
         mToolsCurrentPalette = &mToolsPaletteList[WebBrowser];
         mToolsPalettePositionned = mToolsPalettePositionnedList[WebBrowser];
+
         if (!(*mCurrentWebBrowser))
         {
             (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow);
@@ -134,6 +142,10 @@ void UBWebController::webBrowserInstance()
             mMainWindow->actionBookmarks->setVisible(showAddBookmarkButtons);
             mMainWindow->actionAddBookmark->setVisible(showAddBookmarkButtons);
 
+            mStackedWidget->setCurrentIndex(WebBrowser);
+            if (mStackedWidget->currentWidget()) {
+                mStackedWidget->removeWidget(mStackedWidget->currentWidget());
+            }
             mStackedWidget->insertWidget(WebBrowser, (*mCurrentWebBrowser));
 
             showTabAtTop(UBSettings::settings()->appToolBarPositionedAtTop->get().toBool());
@@ -150,9 +162,8 @@ void UBWebController::webBrowserInstance()
             (*mCurrentWebBrowser)->tabWidget()->lineEdits()->show();
         }
 
-        UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
-
         mStackedWidget->setCurrentIndex(WebBrowser);
+        UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
         mMainWindow->switchToWebWidget();
 
         setupPalettes();
@@ -165,7 +176,6 @@ void UBWebController::webBrowserInstance()
 
     if (mDownloadViewIsVisible)
         WBBrowserWindow::downloadManager()->show();
-
 }
 
 void UBWebController::tutorialWebInstance()
@@ -191,13 +201,17 @@ void UBWebController::tutorialWebInstance()
     {
         mCurrentWebBrowser = &mWebBrowserList[Tutorial];
         mToolsPalettePositionned = &mToolsPalettePositionnedList[Tutorial];
+
         if (!(*mCurrentWebBrowser))
         {
             (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow, true);
             connect((*mCurrentWebBrowser), SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
 
+            mStackedWidget->setCurrentIndex(Tutorial);
+            if (mStackedWidget->currentWidget()) {
+                mStackedWidget->removeWidget(mStackedWidget->currentWidget());
+            }
             mStackedWidget->insertWidget(Tutorial, (*mCurrentWebBrowser));
-
             adaptToolBar();
 
             mTrapFlashController = new UBTrapFlashController((*mCurrentWebBrowser));
@@ -212,12 +226,9 @@ void UBWebController::tutorialWebInstance()
         else
         	(*mCurrentWebBrowser)->loadUrl(currentUrl);
 
-        UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
-
-
         mStackedWidget->setCurrentIndex(Tutorial);
+        UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
         mMainWindow->switchToWebWidget();
-
         screenLayoutChanged();
 
         bool mirroring = UBSettings::settings()->webShowPageImmediatelyOnMirroredScreen->get().toBool();
@@ -246,6 +257,7 @@ void UBWebController::paraschoolWebInstance()
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool()){
         QDesktopServices::openUrl(currentUrl);
     }
+
     else {
         mCurrentWebBrowser = &mWebBrowserList[Paraschool];
         mToolsCurrentPalette = &mToolsPaletteList[Paraschool];
@@ -254,6 +266,10 @@ void UBWebController::paraschoolWebInstance()
             (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow, true);
             connect((*mCurrentWebBrowser), SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
 
+            mStackedWidget->setCurrentIndex(Paraschool);
+            if (mStackedWidget->currentWidget()) {
+                mStackedWidget->removeWidget(mStackedWidget->currentWidget());
+            }
             mStackedWidget->insertWidget(Paraschool, (*mCurrentWebBrowser));
 
             adaptToolBar();
@@ -267,11 +283,9 @@ void UBWebController::paraschoolWebInstance()
 
         }
 
-        UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
-
         mStackedWidget->setCurrentIndex(Paraschool);
+        UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
         mMainWindow->switchToWebWidget();
-
         screenLayoutChanged();
 
         bool mirroring = UBSettings::settings()->webShowPageImmediatelyOnMirroredScreen->get().toBool();

@@ -75,7 +75,6 @@ void DelegateButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // make sure delegate is selected, to avoid control being hidden
     mPressedTime = QTime::currentTime();
-//    mDelegated->setSelected(true);
 
     event->setAccepted(!mIsTransparentToMouseEvent);
  }
@@ -195,10 +194,10 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
     if ((change == QGraphicsItem::ItemSelectedHasChanged
          || change == QGraphicsItem::ItemPositionHasChanged
          || change == QGraphicsItem::ItemTransformHasChanged)
-        && mDelegated->scene())
-        {
+            && mDelegated->scene()
+            && UBApplication::boardController)
+    {
         mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-
         positionHandles();
     }
 
@@ -256,12 +255,7 @@ bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         mDragPixmap = QPixmap();
         return true;
     }
-    if(isLocked()) {
-        event->accept();
-        return true;
-    } else {
-        return false;
-    }
+    return false;
 }
 
 bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
@@ -471,18 +465,18 @@ void UBGraphicsItemDelegate::lock(bool locked)
     mFrame->positionHandles();
 }
 
+void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
+{
+    pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
+    foreach (QGraphicsItem *insideItem, pItem->childItems()) {
+        showHideRecurs(pShow, insideItem);
+    }
+}
 
 void UBGraphicsItemDelegate::showHide(bool show)
 {
-    if (show)
-    {
-        mDelegated->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Object));
-    }
-    else
-    {
-        mDelegated->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    }
-
+    QVariant showFlag = QVariant(show ? UBItemLayerType::Object : UBItemLayerType::Control);
+    showHideRecurs(showFlag, mDelegated);
     mDelegated->update();
 
     emit showOnDisplayChanged(show);
@@ -748,16 +742,7 @@ void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     QPainterPath path;
     path.addRoundedRect(rect(), 10, 10);  
 
-    if (parentItem() && parentItem()->data(UBGraphicsItemData::ItemLocked).toBool())
-    {
-        QColor baseColor = UBSettings::paletteColor;
-        baseColor.setAlphaF(baseColor.alphaF() / 3);
-        setBrush(QBrush(baseColor));
-    }
-    else
-    {
-        setBrush(QBrush(UBSettings::paletteColor));
-    }
+    setBrush(QBrush(UBSettings::paletteColor));
 
     painter->fillPath(path, brush());
 }

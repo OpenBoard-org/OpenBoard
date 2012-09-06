@@ -1,3 +1,4 @@
+echo off
 REM --------------------------------------------------------------------
 REM This program is free software: you can redistribute it and/or modify
 REM it under the terms of the GNU General Public License as published by
@@ -39,10 +40,9 @@ REM pick up dll from this directory
 IF NOT EXIST "%QT_DIR%\lib\QtCore4.dll" GOTO EXIT_WITH_ERROR
 
 rmdir /S /Q %BUILD_DIR%
+rmdir /S /Q install
 
-set EDITION=MNEMIS_EDITION
-
-"%QT_BIN%\qmake.exe" Sankore_3.1.pro "DEFINES+=%EDITION%"
+"%QT_BIN%\qmake.exe" Sankore_3.1.pro
 
 %LRELEASE% Sankore_3.1.pro
 %LRELEASE% %BASE_QT_TRANSLATIONS_DIRECTORY%\translations.pro
@@ -61,14 +61,13 @@ REM echo %VERSION%
 REM echo %LAST_TAG_VERSION%
 
 nmake release-install
+IF NOT EXIST build\win32\release\product\Open-Sankore.exe GOTO EXIT_WITH_ERROR
 
 set CUSTOMIZATIONS=build\win32\release\product\customizations
 mkdir %CUSTOMIZATIONS%
 xcopy /s resources\customizations %CUSTOMIZATIONS%
 
 set I18n=build\win32\release\product\i18n
-mkdir %I18n%
-xcopy /s resources\i18n\*.qm %I18n%
 xcopy /s %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm %I18n%\
 
 del build\win32\release\product\i18n\qt_help*
