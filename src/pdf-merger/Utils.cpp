@@ -14,6 +14,7 @@
  */
 
 #include <QtGlobal>
+#include <QString>
 #include "Config.h"
 #include "Utils.h"
 #include "Exception.h"
@@ -65,18 +66,12 @@ double Utils::stringToDouble(const std::string & s )
 
 std::string Utils::uIntToStr(unsigned int integer)
 {
-   char str[10];
-   snprintf(str, sizeof(str), "%u", integer);
-   return std::string(str);
-
+    return std::string(QString::number(integer).toAscii());
 }
 
 std::string Utils::doubleToStr(double doubleValue)
 {
-   char str[16];
-   snprintf(str, sizeof(str), "%f", doubleValue);
-   return std::string(str);
-
+    return std::string(QString::number(doubleValue).toAscii());
 }
 
 int Utils::_stringToInt(const std::string & str) //throw ConvertException

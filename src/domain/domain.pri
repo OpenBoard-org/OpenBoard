@@ -45,8 +45,8 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsStroke.cpp \
     src/domain/UBGraphicsMediaItem.cpp \
     src/domain/UBAbstractUndoCommand.cpp \
-    src/domain/ubgraphicsgroupcontaineritem.cpp \
-    src/domain/ubgraphicsgroupcontaineritemdelegate.cpp \
+    src/domain/UBGraphicsGroupContainerItem.cpp \
+    src/domain/UBGraphicsGroupContainerItemDelegate.cpp \
     src/domain/UBGraphicsStrokesGroup.cpp \
     src/domain/UBGraphicsItemGroupUndoCommand.cpp \
     src/domain/UBGraphicsItemDelegate.cpp \
