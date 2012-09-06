@@ -28,21 +28,20 @@ UBGraphicsPDFItem::UBGraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGra
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object); //deprecated
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::BackgroundItem)); //Necessary to set if we want z value to be assigned correctly
-    mDelegate = new UBGraphicsItemDelegate(this,0, true, false, false);
-    mDelegate->init();
+
+    setDelegate(new UBGraphicsItemDelegate(this,0, true, false, false));
+    Delegate()->init();
 }
 
 
 UBGraphicsPDFItem::~UBGraphicsPDFItem()
 {
-    if (mDelegate)
-        delete mDelegate;
 }
 
 
 QVariant UBGraphicsPDFItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    QVariant newValue = mDelegate->itemChange(change, value);
+    QVariant newValue = Delegate()->itemChange(change, value);
     return GraphicsPDFItem::itemChange(change, newValue);
 }
 
@@ -54,7 +53,7 @@ void UBGraphicsPDFItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsPDFItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mousePressEvent(event))
+    if (Delegate()->mousePressEvent(event))
     {
         // NOOP
     }
@@ -67,7 +66,7 @@ void UBGraphicsPDFItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsPDFItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mouseMoveEvent(event))
+    if (Delegate()->mouseMoveEvent(event))
     {
         // NOOP
     }
@@ -80,7 +79,7 @@ void UBGraphicsPDFItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsPDFItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    mDelegate->mouseReleaseEvent(event);
+    Delegate()->mouseReleaseEvent(event);
     GraphicsPDFItem::mouseReleaseEvent(event);
 }
 
@@ -131,13 +130,6 @@ UBGraphicsScene* UBGraphicsPDFItem::scene()
 }
 
 
-void UBGraphicsPDFItem::remove()
-{
-    if (mDelegate)
-        mDelegate->remove(true);
-}
-
-
 UBGraphicsPixmapItem* UBGraphicsPDFItem::toPixmapItem() const
 {   
     QPixmap pixmap(mRenderer->pageSizeF(mPageNumber).toSize());
@@ -155,3 +147,5 @@ UBGraphicsPixmapItem* UBGraphicsPDFItem::toPixmapItem() const
 
     return pixmapItem;
 }
+
+

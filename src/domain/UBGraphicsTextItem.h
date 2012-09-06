@@ -58,8 +58,6 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         virtual QSizeF size() const;
 
-        virtual void remove();
-
         static QColor lastUsedTextColor;
 
         QColor colorOnDarkBackground() const
@@ -81,7 +79,6 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         {
             mColorOnLightBackground = pColorOnLightBackground;
         }
-        virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
         virtual void clearSource(){;}
         virtual void setUuid(const QUuid &pUuid);

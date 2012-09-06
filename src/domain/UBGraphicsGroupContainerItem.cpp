@@ -16,8 +16,8 @@ UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-    mDelegate = new UBGraphicsGroupContainerItemDelegate(this, 0);
-    mDelegate->init();
+   	setDelegate(new UBGraphicsGroupContainerItemDelegate(this, 0));
+    Delegate()->init();
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -32,8 +32,6 @@ UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent
 
 UBGraphicsGroupContainerItem::~UBGraphicsGroupContainerItem()
 {
-    if (mDelegate)
-        delete mDelegate;
 }
 
 void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
@@ -50,14 +48,14 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
     //Check if group is allready rotatable or flippable
     if (childItems().count()) {
         if (UBGraphicsItem::isFlippable(this) && !UBGraphicsItem::isFlippable(item)) {
-            mDelegate->setFlippable(false);
+            Delegate()->setFlippable(false);
         }
         if (UBGraphicsItem::isRotatable(this) && !UBGraphicsItem::isRotatable(item)) {
-            mDelegate->setRotatable(false);
+            Delegate()->setRotatable(false);
         }
     } else {
-        mDelegate->setFlippable(UBGraphicsItem::isFlippable(item));
-        mDelegate->setRotatable(UBGraphicsItem::isRotatable(item));
+        Delegate()->setFlippable(UBGraphicsItem::isFlippable(item));
+        Delegate()->setRotatable(UBGraphicsItem::isRotatable(item));
     }
 
     // COMBINE
@@ -207,12 +205,6 @@ void UBGraphicsGroupContainerItem::copyItemParameters(UBItem *copy) const
     }
 }
 
-void UBGraphicsGroupContainerItem::remove()
-{
-    if (mDelegate)
-        mDelegate->remove();
-}
-
 void UBGraphicsGroupContainerItem::setUuid(const QUuid &pUuid)
 {
     UBItem::setUuid(pUuid);
@@ -244,7 +236,7 @@ void UBGraphicsGroupContainerItem::clearSource()
 
 void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mousePressEvent(event)) {
+    if (Delegate()->mousePressEvent(event)) {
         //NOOP
     } else {
 
@@ -257,7 +249,7 @@ void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *eve
 
 void UBGraphicsGroupContainerItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mouseMoveEvent(event)) {
+    if (Delegate()->mouseMoveEvent(event)) {
         // NOOP;
     } else {
         QGraphicsItem::mouseMoveEvent(event);
@@ -273,7 +265,7 @@ void UBGraphicsGroupContainerItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *e
 
 QVariant UBGraphicsGroupContainerItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    QVariant newValue = mDelegate->itemChange(change, value);
+    QVariant newValue = Delegate()->itemChange(change, value);
 
     foreach(QGraphicsItem *child, children())
     {
@@ -317,8 +309,8 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
                     break;
                 }
             }
-            mDelegate->setFlippable(flippableNow);
-            mDelegate->setRotatable(rotatableNow);
+            Delegate()->setFlippable(flippableNow);
+            Delegate()->setRotatable(rotatableNow);
         }
     }
 
