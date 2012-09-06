@@ -522,6 +522,7 @@ Here we determines cases when items should to get mouse press event at pressing 
     case UBGraphicsTriangle::Type:
     case UBGraphicsCompass::Type:
     case UBGraphicsCache::Type:
+    case UBGraphicsAristo::Type:
         return true;
 
     case UBGraphicsDelegateFrame::Type:
