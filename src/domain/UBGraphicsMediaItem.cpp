@@ -351,3 +351,4 @@ void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     event->accept();
 
 }
+

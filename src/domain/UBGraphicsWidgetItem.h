@@ -19,9 +19,10 @@
 #include <QtWebKit>
 #include <QDomElement>
 
-#include "UBGraphicsWebView.h"
-
 #include "core/UB.h"
+
+#include "UBItem.h"
+#include "UBResizableGraphicsItem.h"
 
 class UBWidgetUniboardAPI;
 class UBGraphicsScene;
@@ -38,7 +39,7 @@ struct UBWidgetType
     };
 };
 
-class UBGraphicsWidgetItem : public UBGraphicsWebView
+class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
 {
     Q_OBJECT
 
@@ -51,6 +52,12 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
         virtual int type() const { return Type; }
 
         virtual void initialize();
+
+        virtual void resize(qreal w, qreal h);
+        virtual void resize(const QSizeF & size);
+        virtual QSizeF size() const;
+
+        virtual UBGraphicsItemDelegate* Delegate() const { return mDelegate;}
 
         QUrl mainHtml();
         void loadMainHtml();
@@ -74,8 +81,6 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
         QMap<QString, QString> datastoreEntries() const;
         void removeDatastoreEntry(const QString& key);
         void removeAllDatastoreEntries();
-
-        virtual UBGraphicsItemDelegate* Delegate() const;
 
         virtual void remove();
         void removeScript();
@@ -140,16 +145,18 @@ class UBGraphicsWidgetItem : public UBGraphicsWebView
         QMap<QString, QString> mDatastore;
         QMap<QString, QString> mPreferences;
 
+
         virtual bool event(QEvent *event);
         virtual void dropEvent(QGraphicsSceneDragDropEvent *event);
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-        virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
         virtual void sendJSEnterEvent();
         virtual void sendJSLeaveEvent();
         virtual void injectInlineJavaScript();
+        virtual void wheelEvent(QGraphicsSceneWheelEvent *event);
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     protected slots:
@@ -230,7 +237,6 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void setUuid(const QUuid &pUuid);
         virtual UBItem* deepCopy() const;
         virtual void copyItemParameters(UBItem *copy) const;
-        virtual void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget );     
         QMap<QString, PreferenceValue> preferences();
         Metadata metadatas() const;  
 

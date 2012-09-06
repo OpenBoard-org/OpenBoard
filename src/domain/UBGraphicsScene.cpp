@@ -2041,8 +2041,8 @@ void UBGraphicsScene::drawItems (QPainter * painter, int numItems,
         {
             if (!mTools.contains(rootItem(items[i])))
             {
-                UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]);
-                if(!pdfItem || mRenderingContext == NonScreen)
+                bool isPdfItem =  qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]) != NULL;
+                if(!isPdfItem || mRenderingContext == NonScreen)
                 {
                     itemsFiltered[count] = items[i];
                     optionsFiltered[count] = options[i];

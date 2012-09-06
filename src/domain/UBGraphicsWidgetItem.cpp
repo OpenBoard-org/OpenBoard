@@ -45,7 +45,7 @@ bool UBGraphicsWidgetItem::sInlineJavaScriptLoaded = false;
 QStringList UBGraphicsWidgetItem::sInlineJavaScripts;
 
 UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem *parent)
-    : UBGraphicsWebView(parent)
+    : QGraphicsWebView(parent)
     , mInitialLoadDone(false)
     , mIsFreezable(true)
     , mIsResizable(false)    
@@ -58,7 +58,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mShouldMoveWidget(false)
     , mUniboardAPI(0)    
 {
-    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
+    setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
     QGraphicsWebView::setPage(new UBWebPage(this));
     QGraphicsWebView::settings()->setAttribute(QWebSettings::JavaEnabled, true);
@@ -84,9 +84,11 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     viewPalette.setBrush(QPalette::Window, QBrush(Qt::transparent));
     setPalette(viewPalette);
 
-    UBGraphicsWidgetItemDelegate* delegate = new UBGraphicsWidgetItemDelegate(this);
-    delegate->init();
-    setDelegate(delegate);
+    mDelegate = new UBGraphicsWidgetItemDelegate(this);
+    mDelegate->init();
+
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+    QGraphicsWebView::setAcceptHoverEvents(true);
 }
 
 
@@ -97,7 +99,7 @@ UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
 
 void UBGraphicsWidgetItem::initialize()
 {
-    UBGraphicsWebView::setMinimumSize(nominalSize());
+    setMinimumSize(nominalSize());
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); // Necessary to set if we want z value to be assigned correctly
 
     if (mDelegate && mDelegate->frame() && resizable())
@@ -260,11 +262,6 @@ void UBGraphicsWidgetItem::removeAllDatastoreEntries()
     mDatastore.clear();
 }
 
-UBGraphicsItemDelegate* UBGraphicsWidgetItem::Delegate() const 
-{
-    return mDelegate;
-}
-
 void UBGraphicsWidgetItem::remove()
 {
     if (mDelegate)
@@ -359,6 +356,8 @@ QPixmap UBGraphicsWidgetItem::takeSnapshot()
     paint(&painter, &options);
 
     mIsTakingSnapshot = false;
+
+    mSnapshot = pixmap;
 
     return pixmap;
 }
@@ -502,7 +501,7 @@ bool UBGraphicsWidgetItem::event(QEvent *event)
     else if (event->type() == QEvent::ShortcutOverride)
         event->accept();
 
-    return UBGraphicsWebView::event(event);
+    return QGraphicsWebView::event(event);
 }
 
 void UBGraphicsWidgetItem::dropEvent(QGraphicsSceneDragDropEvent *event)
@@ -513,7 +512,10 @@ void UBGraphicsWidgetItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    UBGraphicsWebView::mousePressEvent(event);
+    if (!mDelegate->mousePressEvent(event))
+        setSelected(true); /* forcing selection */
+
+    QGraphicsWebView::mousePressEvent(event);
 
     // did webkit consume the mouse press ?
     mShouldMoveWidget = !event->isAccepted() && (event->buttons() & Qt::LeftButton);
@@ -527,24 +529,19 @@ void UBGraphicsWidgetItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     mShouldMoveWidget = false;
 
-    UBGraphicsWebView::mouseReleaseEvent(event);
+    mDelegate->mouseReleaseEvent(event);
+    QGraphicsWebView::mouseReleaseEvent(event);
 }
 
 void UBGraphicsWidgetItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     sendJSEnterEvent();
     mDelegate->hoverEnterEvent(event);
-    UBGraphicsWebView::hoverEnterEvent(event);
 }
 void UBGraphicsWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     sendJSLeaveEvent();
     mDelegate->hoverLeaveEvent(event);
-    UBGraphicsWebView::hoverLeaveEvent(event);
-}
-void UBGraphicsWidgetItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
-{
-    UBGraphicsWebView::hoverMoveEvent(event);
 }
 
 void UBGraphicsWidgetItem::sendJSEnterEvent()
@@ -572,33 +569,40 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
 
 void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    if (mIsFrozen)
-        painter->drawPixmap(0, 0, mSnapshot);
-    else
-        UBGraphicsWebView::paint(painter, option, widget);
-    if (!mInitialLoadDone || mLoadIsErronous) {
-        QString message;
-
-        if (mInitialLoadDone && mLoadIsErronous)
-            message = tr("Cannot load content");
-        else
-            message = tr("Loading ...");
-
-        painter->setFont(QFont("Arial", 12));
-
-        QFontMetrics fm = painter->fontMetrics();
-        QRect txtBoundingRect = fm.boundingRect(message);
-
-        txtBoundingRect.moveCenter(rect().center().toPoint());
-        txtBoundingRect.adjust(-10, -5, 10, 5);
-
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(UBSettings::paletteColor);
-        painter->drawRoundedRect(txtBoundingRect, 3, 3);
-
-        painter->setPen(Qt::white);
-        painter->drawText(rect(), Qt::AlignCenter, message);
+    if (scene()->renderingContext() != UBGraphicsScene::Screen)
+    {
+        painter->drawPixmap(0, 0, snapshot());
     }
+    else
+    {
+        if (!mInitialLoadDone || mLoadIsErronous) 
+        {
+            QString message;
+
+            if (mInitialLoadDone && mLoadIsErronous)
+                message = tr("Cannot load content");
+            else
+                message = tr("Loading ...");
+
+            painter->setFont(QFont("Arial", 12));
+
+            QFontMetrics fm = painter->fontMetrics();
+            QRect txtBoundingRect = fm.boundingRect(message);
+
+            txtBoundingRect.moveCenter(rect().center().toPoint());
+            txtBoundingRect.adjust(-10, -5, 10, 5);
+
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(UBSettings::paletteColor);
+            painter->drawRoundedRect(txtBoundingRect, 3, 3);
+
+            painter->setPen(Qt::white);
+            painter->drawText(rect(), Qt::AlignCenter, message);
+        }
+        else
+            QGraphicsWebView::paint(painter, option, widget);
+    }
+
 }
 
 void UBGraphicsWidgetItem::geometryChangeRequested(const QRect& geom)
@@ -622,6 +626,52 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
     mInitialLoadDone = true;
     mLoadIsErronous = !ok;
     update(boundingRect());
+}
+
+void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+    if (mDelegate->weelEvent(event))
+    {
+        QGraphicsWebView::wheelEvent(event);
+        event->accept();
+    }
+}
+
+QVariant UBGraphicsWidgetItem::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if ((change == QGraphicsItem::ItemSelectedHasChanged) &&  scene()) {
+        if (isSelected())
+            scene()->setActiveWindow(this);
+        else
+            if(scene()->activeWindow() == this)
+                scene()->setActiveWindow(0);
+    }
+
+    QVariant newValue = mDelegate->itemChange(change, value);
+    return QGraphicsWebView::itemChange(change, newValue);
+}
+
+void UBGraphicsWidgetItem::resize(qreal w, qreal h)
+{
+    UBGraphicsWidgetItem::resize(QSizeF(w, h));
+}
+
+
+void UBGraphicsWidgetItem::resize(const QSizeF & pSize)
+{
+    if (pSize != size()) {
+        QGraphicsWebView::setMaximumSize(pSize.width(), pSize.height());
+        QGraphicsWebView::resize(pSize.width(), pSize.height());
+        if (mDelegate)
+            mDelegate->positionHandles();
+        if (scene())
+            scene()->setModified(true);
+    }
+}
+
+QSizeF UBGraphicsWidgetItem::size() const
+{
+    return QGraphicsWebView::size();
 }
 
 
@@ -879,21 +929,6 @@ UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
     copyItemParameters(copy);
 
     return copy;
-}
-
-void UBGraphicsW3CWidgetItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
-{
-    UBGraphicsScene::RenderingContext rc = UBGraphicsScene::Screen;
-
-    if (scene())
-      rc =  scene()->renderingContext();
-
-    if (rc == UBGraphicsScene::NonScreen || rc == UBGraphicsScene::PdfExport) {
-        if (!snapshot().isNull())
-           painter->drawPixmap(0, 0, snapshot());
-    }
-    else
-        UBGraphicsWidgetItem::paint(painter, option, widget);
 }
 
 QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> UBGraphicsW3CWidgetItem::preferences()
