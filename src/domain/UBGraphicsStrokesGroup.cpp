@@ -32,6 +32,54 @@ void UBGraphicsStrokesGroup::setUuid(const QUuid &pUuid)
     UBItem::setUuid(pUuid);
     setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
+void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
+{
+    //TODO Implement common mechanism of managing groups, drop UBGraphicsStroke if it's obsolete
+    //Using casting for the moment
+    foreach (QGraphicsItem *item, childItems()) {
+        if (item->type() == UBGraphicsPolygonItem::Type) {
+            UBGraphicsPolygonItem *curPolygon = static_cast<UBGraphicsPolygonItem *>(item);
+
+            switch (pColorType) {
+            case currentColor :
+                curPolygon->setColor(color);
+                break;
+            case colorOnLightBackground :
+                 curPolygon->setColorOnLightBackground(color);
+                break;
+            case colorOnDarkBackground :
+                 curPolygon->setColorOnDarkBackground(color);
+                break;
+            }
+        }
+    }
+}
+
+QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
+{
+    QColor result;
+
+    foreach (QGraphicsItem *item, childItems()) {
+        if (item->type() == UBGraphicsPolygonItem::Type) {
+            UBGraphicsPolygonItem *curPolygon = static_cast<UBGraphicsPolygonItem *>(item);
+
+            switch (pColorType) {
+            case currentColor :
+                result = curPolygon->color();
+                break;
+            case colorOnLightBackground :
+                result = curPolygon->colorOnLightBackground();
+                break;
+            case colorOnDarkBackground :
+                result = curPolygon->colorOnDarkBackground();
+                break;
+            }
+
+        }
+    }
+
+    return result;
+}
 
 void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -93,9 +141,8 @@ void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
 	QGraphicsItem *cp = dynamic_cast<QGraphicsItem*>(copy);
     if(NULL != cp)
     {
-        cp->setPos(this->pos());
+        cp->setTransform(transform());
 
-        cp->setTransform(this->transform());
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));

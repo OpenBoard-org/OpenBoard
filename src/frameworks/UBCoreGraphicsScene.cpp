@@ -23,6 +23,7 @@
 
 UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
     : QGraphicsScene ( parent  )
+    , mIsModified(true)
 {
     //NOOP
 }
@@ -30,27 +31,40 @@ UBCoreGraphicsScene::UBCoreGraphicsScene(QObject * parent)
 UBCoreGraphicsScene::~UBCoreGraphicsScene()
 {
     //we must delete removed items that are no more in any scene
-    foreach (const QGraphicsItem* item, mItemsToDelete)
+    //at groups deleting some items can be added to mItemsToDelete, so we need to use iterators.
+    if (mItemsToDelete.count())
     {
-        if (item->scene() == NULL || item->scene() == this)
+        QSet<QGraphicsItem *>::iterator it = mItemsToDelete.begin();
+        QGraphicsItem* item = *it;
+        do 
         {
-            delete item;
-        }
+            item = *it;
+            if (item && (item->scene() == NULL || item->scene() == this))
+            {
+                mItemsToDelete.remove(*it);
+                delete item;
+            }
+
+            it = mItemsToDelete.begin();
+
+        }while(mItemsToDelete.count());
     }
 }
 
 void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
 {
+    addItemToDeletion(item);
+
     if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count()) {
         foreach (QGraphicsItem *curItem, item->childItems()) {
             removeItemFromDeletion(curItem);
         }
     }
-
-    mItemsToDelete << item;
-
+ 
     if (item->scene() != this)
         QGraphicsScene::addItem(item);
+
+    setModified(true);
 }
 
 
@@ -59,27 +73,17 @@ void UBCoreGraphicsScene::removeItem(QGraphicsItem* item, bool forceDelete)
     QGraphicsScene::removeItem(item);
     if (forceDelete)
     {
-        mItemsToDelete.remove(item);
-        delete item;
-        item = 0;
+        qDebug() << "force delete is " << forceDelete;
+        deleteItem(item);
     }
+    setModified(true);
 }
 
 bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
 {
     if(mItemsToDelete.contains(item))
     {
-        UBGraphicsItem* item_casted = 0;
-        switch (item->type())
-        {
-        case UBGraphicsMediaItem::Type:
-                item_casted = dynamic_cast<UBGraphicsMediaItem*>(item);
-                break;
-        case UBGraphicsW3CWidgetItem::Type:
-                item_casted = dynamic_cast<UBGraphicsWidgetItem*>(item);
-                break;
-        }
-
+        UBGraphicsItem *item_casted = dynamic_cast<UBGraphicsItem *>(item);
         if (0 != item_casted)
             item_casted->clearSource();
 

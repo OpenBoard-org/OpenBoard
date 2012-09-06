@@ -528,6 +528,8 @@ Here we determines cases when items should to get mouse press event at pressing 
         return true;
 
     case DelegateButton::Type:
+        return true;
+
     case UBGraphicsMediaItem::Type:
         return false;
 
@@ -1123,6 +1125,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           else
           {
              if (isUBItem(movingItem) &&
+                DelegateButton::Type != movingItem->type() &&
                 QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                 UBToolWidget::Type != movingItem->type() &&
