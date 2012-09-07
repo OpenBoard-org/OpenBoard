@@ -97,6 +97,7 @@ public:
     void setPlaceHolderText(QString text);
     QString text();
     void setInitialText(const QString& text);
+    void setMaximumLength(int length);
 
 public slots:
     void onTextChanged();
@@ -113,6 +114,7 @@ private:
     bool mHasPlaceHolder;
     QString mPlaceHolderText;
     bool mIsUpdatingSize;
+    int mMaximumLength;
 };
 
 

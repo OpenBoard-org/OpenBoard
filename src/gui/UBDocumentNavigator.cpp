@@ -69,6 +69,9 @@ UBDocumentNavigator::~UBDocumentNavigator()
     }
 }
 
+#include "gui/UBDockTeacherGuideWidget.h"
+#include "gui/UBTeacherGuideWidget.h"
+
 /**
  * \brief Generate the thumbnails
  */
@@ -84,10 +87,31 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
     for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
     {
+
     	const QPixmap* pix = source->pageAt(i);
-        UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(*pix, source->selectedDocument(), i);
+    	QPixmap result(pix->width(),pix->height());
         int pageIndex = UBDocumentContainer::pageFromSceneIndex(i);
-        QString label = pageIndex == 0 ? tr("Title page") :  tr("Page %0").arg(pageIndex);
+
+        QPainter composePainter;
+        composePainter.begin(&result);
+        composePainter.drawPixmap(QPoint(0,0),*pix);
+
+        if(pageIndex == UBApplication::boardController->currentPage() &&
+        		((pageIndex == 0 && UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()) ||
+        		(pageIndex && UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()))
+           ) {
+        	if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()){
+        		QPixmap toque(":images/toque.png");
+        		composePainter.setOpacity(0.6);
+        		composePainter.drawPixmap(QPoint(pix->width() - toque.width(),0),toque);
+        	}
+        }
+
+        composePainter.end();
+
+        UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(result, source->selectedDocument(), i);
+
+        QString label = pageIndex == 0 ? tr("Title page") : tr("Page %0").arg(pageIndex);
         UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(label);
 
 		UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
@@ -104,7 +128,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
 void UBDocumentNavigator::onScrollToSelectedPage(int index)
 {
-    qDebug() << "Selection in widet: " << index;
+    qDebug() << "Selection in widget: " << index;
     int c  = 0;
     foreach(UBImgTextThumbnailElement el, mThumbsWithLabels)
     {
@@ -118,7 +142,6 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
         }
         c++;
     }
-//    centerOn(mThumbsWithLabels[index].getThumbnail());
 }
 
 /**
@@ -131,8 +154,7 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
     //UBGraphicsScene* pScene = UBApplication::boardController->activeScene();
 
     const QPixmap* pix = UBApplication::boardController->pageAt(iPage);
-    UBSceneThumbnailNavigPixmap* newItem = new UBSceneThumbnailNavigPixmap(*pix, 
-        UBApplication::boardController->selectedDocument(), iPage);
+    UBSceneThumbnailNavigPixmap* newItem = new UBSceneThumbnailNavigPixmap(*pix, UBApplication::boardController->selectedDocument(), iPage);
 
     // Get the old thumbnail
     UBSceneThumbnailNavigPixmap* oldItem = mThumbsWithLabels.at(iPage).getThumbnail();
