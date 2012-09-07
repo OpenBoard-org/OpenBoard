@@ -23,8 +23,8 @@ var objectTemplate =
 				'<div class="tools">'+
 					'<button role="remove">{{fr.njin.i18n.balance.parameters.label.remove}}</button>'+
 				'</div>'+
-				'<div class="amount"><input type="text" name="weight">g</div><div class="bg"></div>'+
+				'<div class="amount"><input type="text" name="weight"></div><div class="bg"></div>'+
 			'</div>';
 			
 var weightTemplate = 
-			'<div id="{{object}}" class="weight w{{weight}}" data-weight="{{weight}}"><div class="amount">{{weight}}g</div><div class="bg"></div></div>';						
+			'<div id="{{object}}" class="weight right w{{weight}}" data-weight="{{weight}}"><div class="amount">{{weight}}</div><div class="bg"></div></div>';						

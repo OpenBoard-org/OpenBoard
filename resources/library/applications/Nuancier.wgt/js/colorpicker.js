@@ -5,12 +5,16 @@
  * 
  * Dual licensed under the MIT and GPL licenses
  * 
- */
+ */                
 (function ($) {
     var ColorPicker = function () {
         var
         ids = {},
         penFlag = true,
+        tmpColor = {
+            a:"",
+            b:""
+        },
         inAction,
         charMin = 65,
         visible,
@@ -108,7 +112,10 @@
             }				
             setSelector(col, cal.get(0));
             setHue(col, cal.get(0));
-            setNewColor(col, cal.get(0));
+            //setNewColor(col, cal.get(0));
+            $(cal.get(0)).data('colorpicker').newColor.css('backgroundColor', '#' + HSBToHex(col));
+            tmpColor.a = cal.get(0);
+            tmpColor.b = col;
             cal.data('colorpicker').onChange.apply(cal, [col, HSBToHex(col), HSBToRGB(col)]);
         },
         blur = function (ev) {
@@ -174,14 +181,25 @@
             $(document).unbind('mousemove', moveHue);
             return false;
         },
-        downSelector = function (ev) {
+        downSelector = function (ev) {            
             var current = {
                 cal: $(this).parent(),
                 pos: $(this).offset()
             };
-            current.preview = current.cal.data('colorpicker').livePreview;
+            current.preview = current.cal.data('colorpicker').livePreview;            
             $(document).bind('mouseup', current, upSelector);
             $(document).bind('mousemove', current, moveSelector);
+            change.apply(
+                current.cal.data('colorpicker')
+                .fields
+                .eq(6)
+                .val(parseInt(100*(150 - Math.max(0,Math.min(150,(ev.pageY - current.pos.top))))/150, 10))
+                .end()
+                .eq(5)
+                .val(parseInt(100*(Math.max(0,Math.min(150,(ev.pageX - current.pos.left))))/150, 10))
+                .get(0),
+                [current.preview]
+                );
         },
         moveSelector = function (ev) {
             change.apply(
@@ -202,6 +220,18 @@
             fillHexFields(ev.data.cal.data('colorpicker').color, ev.data.cal.get(0));
             $(document).unbind('mouseup', upSelector);
             $(document).unbind('mousemove', moveSelector);
+            if(penFlag){
+                $("div.tools_change").removeClass("tools_compass");
+                window.sankore.setTool('pen');
+                window.sankore.setPenColor('#' + HSBToHex(tmpColor.b));
+                sankore.returnStatus("PEN installed", penFlag);
+            } else {
+                $("div.tools_change").addClass("tools_compass");
+                window.sankore.setTool('compass');
+                window.sankore.setPenColor('#' + HSBToHex(tmpColor.b));
+                sankore.returnStatus("Compass installed", penFlag);
+            }
+            //$(tmpColor.a).data('colorpicker').newColor.css('backgroundColor', '#' + HSBToHex(tmpColor.b));
             return false;
         },
         enterSubmit = function (ev) {
@@ -249,7 +279,7 @@
             cal.css({
                 left: left + 'px', 
                 top: top + 'px'
-                });
+            });
             if (cal.data('colorpicker').onShow.apply(this, [cal.get(0)]) != false) {
                 cal.show();
             }
@@ -325,7 +355,7 @@
                 r: hex >> 16, 
                 g: (hex & 0x00FF00) >> 8, 
                 b: (hex & 0x0000FF)
-                };
+            };
         },
         HexToHSB = function (hex) {
             return RGBToHSB(HexToRGB(hex));
@@ -379,43 +409,43 @@
                     rgb.r=t1;
                     rgb.b=t2;
                     rgb.g=t2+t3
-                    }
+                }
                 else if(h<120) {
                     rgb.g=t1;
                     rgb.b=t2;
                     rgb.r=t1-t3
-                    }
+                }
                 else if(h<180) {
                     rgb.g=t1;
                     rgb.r=t2;
                     rgb.b=t2+t3
-                    }
+                }
                 else if(h<240) {
                     rgb.b=t1;
                     rgb.r=t2;
                     rgb.g=t1-t3
-                    }
+                }
                 else if(h<300) {
                     rgb.b=t1;
                     rgb.g=t2;
                     rgb.r=t2+t3
-                    }
+                }
                 else if(h<360) {
                     rgb.r=t1;
                     rgb.g=t2;
                     rgb.b=t1-t3
-                    }
+                }
                 else {
                     rgb.r=0;
                     rgb.g=0;
                     rgb.b=0
-                    }
+                }
             }
             return {
                 r:Math.round(rgb.r), 
                 g:Math.round(rgb.g), 
                 b:Math.round(rgb.b)
-                };
+            };
         },
         RGBToHex = function (rgb) {
             var hex = [
@@ -433,6 +463,9 @@
         HSBToHex = function (hsb) {
             return RGBToHex(HSBToRGB(hsb));
         },
+        //        changeCursor = function (flag) {
+        //            alert(flag)
+        //        },
         restoreOriginal = function () {
             var cal = $(this).parent();
             var col = cal.data('colorpicker').origColor;
@@ -446,6 +479,15 @@
         };
         return {
             init: function (opt) {
+                if(window.sankore)
+                    sankore.setTool("arrow");              
+                //                $(document).mouseout(function(event){
+                //                    if(event.target.tagName == "DIV" && event.target.className == "colorpicker")
+                //                        changeCursor(true)
+                //                })
+                //                $("body").mouseleave(function(){
+                //                    changeCursor(true)
+                //                })
                 opt = $.extend({}, defaults, opt||{});
                 if (typeof opt.color == 'string') {
                     opt.color = HexToHSB(opt.color);
@@ -465,9 +507,13 @@
                         var cal = $(tpl).attr('id', id);
                         if (options.flat) {
                             cal.appendTo(this).show();
-                        } else {
+                        }
+                        else {
                             cal.appendTo(document.body);
                         }
+                        //                        cal.bind("mouseover", function(){
+                        //                            window.sankore.setTool('arrow');
+                        //                        })
                         options.fields = cal
                         .find('input')
                         .bind('keyup', keyDown)

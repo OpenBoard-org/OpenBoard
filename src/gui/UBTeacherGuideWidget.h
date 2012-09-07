@@ -23,7 +23,7 @@ class QVBoxLayout;
 class QPushButton;
 class UBDocumentProxy;
 class UBGraphicsTextItem;
-
+class QScrollArea;
 
 #include "UBTeacherGuideWidgetsTools.h"
 
@@ -34,6 +34,8 @@ typedef enum
     tUBTGZeroPageMode_EDITION,
     tUBTGZeroPageMode_PRESENTATION
 }tUBTGZeroPageMode;
+
+#define LOWER_RESIZE_WIDTH 50
 
 /***************************************************************************
  *               class    UBTeacherGuideEditionWidget                      *
@@ -155,8 +157,13 @@ private:
 
     QVBoxLayout* mpLayout;
     QHBoxLayout* mpButtonTitleLayout;
+    QVBoxLayout* mpContainerWidgetLayout;
     QPushButton* mpModePushButton;
     QLabel* mpPageNumberLabel;
+
+    QScrollArea* mpScrollArea;
+    QWidget* mpContainerWidget;
+
     UBTGAdaptableText* mpSessionTitle;
     QFrame* mpSeparatorSessionTitle;
 

@@ -28,10 +28,10 @@
 UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
 {
-    mDelegate = new UBGraphicsItemDelegate(this, 0, true);
-    mDelegate->init();
-    mDelegate->setFlippable(true);
-    mDelegate->setRotatable(true);
+    setDelegate(new UBGraphicsItemDelegate(this, 0, true));
+    Delegate()->init();
+    Delegate()->setFlippable(true);
+    Delegate()->setRotatable(true);
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
     setTransformationMode(Qt::SmoothTransformation);
@@ -44,13 +44,11 @@ UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
 
 UBGraphicsPixmapItem::~UBGraphicsPixmapItem()
 {
-    if (mDelegate)
-        delete mDelegate;
 }
 
 QVariant UBGraphicsPixmapItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    QVariant newValue = mDelegate->itemChange(change, value);
+    QVariant newValue = Delegate()->itemChange(change, value);
     return QGraphicsPixmapItem::itemChange(change, newValue);
 }
 
@@ -64,14 +62,14 @@ void UBGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QMimeData* pMime = new QMimeData();
     pMime->setImageData(pixmap().toImage());
-    mDelegate->setMimeData(pMime);
+    Delegate()->setMimeData(pMime);
     qreal k = (qreal)pixmap().width() / 100.0;
 
     QSize newSize((int)(pixmap().width() / k), (int)(pixmap().height() / k));
 
-    mDelegate->setDragPixmap(pixmap().scaled(newSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    Delegate()->setDragPixmap(pixmap().scaled(newSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
-    if (mDelegate->mousePressEvent(event))
+    if (Delegate()->mousePressEvent(event))
     {
         //NOOP
     }
@@ -83,7 +81,7 @@ void UBGraphicsPixmapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsPixmapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mouseMoveEvent(event))
+    if (Delegate()->mouseMoveEvent(event))
     {
         // NOOP;
     }
@@ -95,7 +93,7 @@ void UBGraphicsPixmapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsPixmapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    mDelegate->mouseReleaseEvent(event);
+    Delegate()->mouseReleaseEvent(event);
     QGraphicsPixmapItem::mouseReleaseEvent(event);
 }
 
@@ -142,13 +140,6 @@ void UBGraphicsPixmapItem::copyItemParameters(UBItem *copy) const
 UBGraphicsScene* UBGraphicsPixmapItem::scene()
 {
     return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
-}
-
-
-void UBGraphicsPixmapItem::remove()
-{
-    if (mDelegate)
-        mDelegate->remove(true);
 }
 
 

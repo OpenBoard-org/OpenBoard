@@ -37,8 +37,9 @@ const QColor UBGraphicsCurtainItem::sDarkBackgroundOpaqueControlColor = QColor(6
 UBGraphicsCurtainItem::UBGraphicsCurtainItem(QGraphicsItem* parent)
     : QGraphicsRectItem(parent)
 {
-    mDelegate = new UBGraphicsCurtainItemDelegate(this, 0);
-    mDelegate->init();
+    UBGraphicsCurtainItemDelegate* delegate = new UBGraphicsCurtainItemDelegate(this, 0);
+    delegate->init();
+    setDelegate(delegate);
 
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -56,7 +57,6 @@ UBGraphicsCurtainItem::UBGraphicsCurtainItem(QGraphicsItem* parent)
 
 UBGraphicsCurtainItem::~UBGraphicsCurtainItem()
 {
-    delete mDelegate;
 }
 
 QVariant UBGraphicsCurtainItem::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -64,9 +64,9 @@ QVariant UBGraphicsCurtainItem::itemChange(GraphicsItemChange change, const QVar
 
     QVariant newValue = value;
 
-    if (mDelegate)
+    if (Delegate())
     {
-        newValue = mDelegate->itemChange(change, value);
+        newValue = Delegate()->itemChange(change, value);
     }
 
     return QGraphicsRectItem::itemChange(change, newValue);
@@ -80,7 +80,7 @@ void UBGraphicsCurtainItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsCurtainItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mousePressEvent(event))
+    if (Delegate()->mousePressEvent(event))
     {
         //NOOP
     }
@@ -92,7 +92,7 @@ void UBGraphicsCurtainItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsCurtainItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mouseMoveEvent(event))
+    if (Delegate()->mouseMoveEvent(event))
     {
         // NOOP;
     }
@@ -104,7 +104,7 @@ void UBGraphicsCurtainItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsCurtainItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    mDelegate->mouseReleaseEvent(event);
+    Delegate()->mouseReleaseEvent(event);
     QGraphicsRectItem::mouseReleaseEvent(event);
 }
 
@@ -168,13 +168,6 @@ QColor UBGraphicsCurtainItem::opaqueControlColor() const
 {
     UBGraphicsScene* pScene = static_cast<UBGraphicsScene*>(QGraphicsRectItem::scene());
     return pScene->isDarkBackground() ? sDarkBackgroundOpaqueControlColor : sOpaqueControlColor;
-}
-
-
-void UBGraphicsCurtainItem::remove()
-{
-    if (mDelegate)
-        mDelegate->remove(true);
 }
 
 

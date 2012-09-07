@@ -148,7 +148,8 @@ function isGameEnd(i, j) {
 }
 
 function isCellsWin(cells) {
-	if((player == cells.eq(0).data("player") == cells.eq(1).data("player") == cells.eq(2).data("player")))
+	var n = ((3*player) - (parseInt(cells.eq(0).data("player")) + parseInt(cells.eq(1).data("player")) + parseInt(cells.eq(2).data("player"))));
+	if( n == 0 )
 		return cells;
 	return null;
 }

@@ -1,14 +1,47 @@
+var weighValues = [500,200,100,50,20,10];
+
 function onTemplateLoadedCallback(app) {
-	$("#weights").append($(Mustache.render(weightTemplate, {weight: 500})));
-	$("#weights").append($(Mustache.render(weightTemplate, {weight: 200})));
-	$("#weights").append($(Mustache.render(weightTemplate, {weight: 100})));
-	$("#weights").append($(Mustache.render(weightTemplate, {weight: 50})));
-	$("#weights").append($(Mustache.render(weightTemplate, {weight: 20})));
-	$("#weights").append($(Mustache.render(weightTemplate, {weight: 10})));
+	$.each(weighValues, function(){
+		$("#weights").append($(Mustache.render(weightTemplate, {weight: this})));
+	});
 	
 	$("#weights > .weight").draggable({helper: "clone"});	
+
+	$("#leftScale").droppable({
+		accept: ".object",
+		drop: function(event, ui) {
+			if($(ui.draggable).hasClass("inScale"))
+				return;
+
+			var object = $(ui.draggable).clone();
+			object.data("weight", $(ui.draggable).data("weight"));
+
+			object.addClass("inScale");
+			$("#leftScale").append(object);
+			
+			placeObject($("#leftScale"), object);
+
+			refreshScales();
+
+			object.draggable({
+				stop: function(event, ui) {
+					if($(ui.helper).hasClass("onOut")) {
+						$(ui.helper).remove();
+						refreshScales();
+					}
+				}
+			});
+		},
+		out: function(event, ui) {
+			$(ui.draggable).addClass("onOut");
+		},
+		over: function(event, ui) {
+			$(ui.draggable).removeClass("onOut");
+		}
+	});
+
 	$("#rightScale").droppable({
-		accept: ".weight",
+		accept: ".weight.right",
 		drop: function(event, ui) {
 			if($(ui.draggable).hasClass("inScale"))
 				return;
@@ -72,6 +105,10 @@ function objectForGUID(app, guid) {
 	window.object = guid;
 	var objectUi = $(Mustache.render(objectTemplate, window));
 	var weight = getWeightFor(app.parameters, guid);
+	
+	if(!app.onEdit && (weight == undefined || $.trim(weight) == ""))
+		weight = weighValues[Math.floor(Math.random()*weighValues.length)];
+	
 	if(weight !== undefined) {
 		objectUi.data("weight", weight);
 		objectUi.find("input[name=weight]").val(weight);
@@ -137,8 +174,8 @@ function placeObject($container, $object) {
 
 	var count = $container.children().size() - 1;
 
-	var left = width * (count % 4) + 25;
-	var bottom = height * (Math.floor(count / 4)) + 40;
+	var left = width * (count % 4) + 5;
+	var bottom = height * (Math.floor(count / 4)) + 12;
 	
 	log("Place at ["+left+" , "+bottom+"]");
 	$object.css("left", left+"px").css("bottom", bottom+"px");
@@ -215,39 +252,6 @@ function reloadApp(app) {
 	}
 	
 	refreshScales();
-		
-	$("#leftScale").droppable({
-		accept: ".object",
-		drop: function(event, ui) {
-			if($(ui.draggable).hasClass("inScale"))
-				return;
-
-			var object = $(ui.draggable).clone();
-			object.data("weight", $(ui.draggable).data("weight"));
-
-			object.addClass("inScale");
-			$("#leftScale").append(object);
-			
-			placeObject($("#leftScale"), object);
-
-			refreshScales();
-
-			object.draggable({
-				stop: function(event, ui) {
-					if($(ui.helper).hasClass("onOut")) {
-						$(ui.helper).remove();
-						refreshScales();
-					}
-				}
-			});
-		},
-		out: function(event, ui) {
-			$(ui.draggable).addClass("onOut");
-		},
-		over: function(event, ui) {
-			$(ui.draggable).removeClass("onOut");
-		}
-	});
 	
 	if(app.onEdit) {
 		

@@ -1107,6 +1107,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
             if(shouldDelete) {
                 if (itemGroup) {
                     itemGroup->removeFromGroup(item);
+
                     groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(item));
                     if (itemGroup->childItems().count() == 1) {
                         groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(itemGroup->childItems().first()));
@@ -1129,6 +1130,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     update(sceneRect());
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, QSet<QGraphicsItem*>(), groupsMap);
         UBApplication::undoStack->push(uc);
     }
@@ -1448,6 +1450,7 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
         textItem->setObjectName(objectName);
         QSizeF size = textItem->size();
         textItem->setPos(QPointF(-size.width()/2.0,-size.height()/2.0));
+        textItem->setData(UBGraphicsItemData::ItemEditable,QVariant(false));
     }
 
     textItem->setPlainText(pString);
@@ -2048,8 +2051,8 @@ void UBGraphicsScene::drawItems (QPainter * painter, int numItems,
         {
             if (!mTools.contains(rootItem(items[i])))
             {
-                UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]);
-                if(!pdfItem || mRenderingContext == NonScreen)
+                bool isPdfItem =  qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]) != NULL;
+                if(!isPdfItem || mRenderingContext == NonScreen)
                 {
                     itemsFiltered[count] = items[i];
                     optionsFiltered[count] = options[i];

@@ -1,7 +1,7 @@
 var sankoreLang = {
     display: "Afficher", 
     edit: "Modifier", 
-    short_desc: "Ecoutez le son et replacer les lettres dans l'ordre.", 
+    short_desc: "Ecoutez le son et replacez les lettres dans l'ordre.", 
     add: "Nouveau bloc",
     enter: "Saisir la consigne ici ...",
     example: "exemple",

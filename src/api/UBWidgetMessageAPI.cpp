@@ -17,8 +17,6 @@
 
 #include "core/UBApplication.h"
 
-#include "domain/UBGraphicsWebView.h"
-
 #include "core/memcheck.h"
 
 UBWidgetMessageAPI::UBWidgetMessageAPI(UBGraphicsWidgetItem *graphicsWidgetItem, QObject *parent)
