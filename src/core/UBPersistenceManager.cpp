@@ -913,7 +913,7 @@ bool UBPersistenceManager::addFileToDocument(UBDocumentProxy* pDocumentProxy,
                                                      QString& destinationPath,
                                                      QByteArray* data)
 {
-    QAssert(path.length());
+    Q_ASSERT(path.length());
     QFileInfo fi(path);
 
     if (!pDocumentProxy || objectUuid.isNull())
