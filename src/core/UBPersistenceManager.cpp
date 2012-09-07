@@ -913,12 +913,15 @@ bool UBPersistenceManager::addFileToDocument(UBDocumentProxy* pDocumentProxy,
                                                      QString& destinationPath,
                                                      QByteArray* data)
 {
+    QAssert(path.length());
     QFileInfo fi(path);
 
     if (!pDocumentProxy || objectUuid.isNull())
         return false;
     if (data == NULL && !fi.exists())
         return false;
+
+    qDebug() << fi.suffix();
 
     QString fileName = subdir + "/" + objectUuid.toString() + "." + fi.suffix();
 

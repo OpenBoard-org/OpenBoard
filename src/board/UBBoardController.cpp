@@ -1132,7 +1132,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
-                "", 
+                sourceUrl.toString(),
                 UBPersistenceManager::videoDirectory,
                 uuid,
                 destFile,
@@ -1175,7 +1175,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
-                "", 
+                sourceUrl.toString(),
                 UBPersistenceManager::audioDirectory,
                 uuid,
                 destFile,
