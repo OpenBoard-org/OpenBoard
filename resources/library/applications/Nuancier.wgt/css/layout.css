@@ -34,6 +34,8 @@ html, body {
 	font-size: 12px;
 	line-height: 18px;
 	color: #52697E;
+        width: 100%;
+        height: 100%;
 }
 body {
 	text-align: center;

@@ -29,8 +29,9 @@ UBGraphicsProxyWidget::UBGraphicsProxyWidget(QGraphicsItem* parent)
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-    mDelegate = new UBGraphicsItemDelegate(this,0, true, false, false);
-    mDelegate->init();
+    //UBGraphicsItemDelegate* delegate = new UBGraphicsItemDelegate(this,0, true, false, false);
+    //delegate->init();
+    //setDelegate(delegate);
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
@@ -40,8 +41,6 @@ UBGraphicsProxyWidget::UBGraphicsProxyWidget(QGraphicsItem* parent)
 
 UBGraphicsProxyWidget::~UBGraphicsProxyWidget()
 {
-    if (mDelegate)
-        delete mDelegate;
 }
 
 
@@ -67,7 +66,7 @@ QVariant UBGraphicsProxyWidget::itemChange(GraphicsItemChange change, const QVar
         }
     }
 
-    QVariant newValue = mDelegate->itemChange(change, value);
+    QVariant newValue = Delegate()->itemChange(change, value);
     return QGraphicsProxyWidget::itemChange(change, newValue);
 }
 
@@ -79,7 +78,7 @@ void UBGraphicsProxyWidget::setUuid(const QUuid &pUuid)
 
 void UBGraphicsProxyWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mousePressEvent(event))
+    if (Delegate()->mousePressEvent(event))
     {
         //NOOP
     }
@@ -95,7 +94,7 @@ void UBGraphicsProxyWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsProxyWidget::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mouseMoveEvent(event))
+    if (Delegate()->mouseMoveEvent(event))
     {
         // NOOP;
     }
@@ -108,13 +107,13 @@ void UBGraphicsProxyWidget::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsProxyWidget::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    mDelegate->mouseReleaseEvent(event);
+    Delegate()->mouseReleaseEvent(event);
     QGraphicsProxyWidget::mouseReleaseEvent(event);
 }
 
 void UBGraphicsProxyWidget::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
-    if( mDelegate->weelEvent(event) )
+    if( Delegate()->weelEvent(event) )
     {
         QGraphicsProxyWidget::wheelEvent(event);
         event->accept();
@@ -131,17 +130,6 @@ void UBGraphicsProxyWidget::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     Q_UNUSED(event)
 //    NOOP
 }
-
-void UBGraphicsProxyWidget::setDelegate(UBGraphicsItemDelegate* pDelegate)
-{
-    if (mDelegate)
-    {
-        delete mDelegate;
-    }
-
-    mDelegate = pDelegate;
-}
-
 
 void UBGraphicsProxyWidget::resize(qreal w, qreal h)
 {
@@ -177,8 +165,8 @@ void UBGraphicsProxyWidget::resize(const QSizeF & pSize)
         QGraphicsProxyWidget::resize(size.width(), size.height());
         if (widget())
             widget()->resize(size.width(), size.height());
-        if (mDelegate)
-            mDelegate->positionHandles();
+        if (Delegate())
+            Delegate()->positionHandles();
         if (scene())
             scene()->setModified(true);
     }
@@ -197,8 +185,3 @@ UBGraphicsScene* UBGraphicsProxyWidget::scene()
 }
 
 
-void UBGraphicsProxyWidget::remove()
-{
-    if (mDelegate)
-        mDelegate->remove(true);
-}

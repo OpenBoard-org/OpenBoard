@@ -90,30 +90,30 @@ class UBItem
 class UBGraphicsItem
 {
 protected:
-
-    UBGraphicsItem() : mDelegate(0)
+    UBGraphicsItem() : mDelegate(NULL)
     {
         // NOOP
     }
-    UBGraphicsItemDelegate* mDelegate;
-
-    virtual ~UBGraphicsItem()
-    {
-        // NOOP
-    }
+    virtual ~UBGraphicsItem();
+    void setDelegate(UBGraphicsItemDelegate* mDelegate);
 
 public:
+
+    inline UBGraphicsItemDelegate *Delegate() const { return mDelegate; }
 
     static void assignZValue(QGraphicsItem*, qreal value);
     static bool isRotatable(QGraphicsItem *item);
     static bool isFlippable(QGraphicsItem *item);
 
     static UBGraphicsItemDelegate *Delegate(QGraphicsItem *pItem);
-    virtual UBGraphicsItemDelegate *Delegate() const  = 0;
+    
 
-    virtual void remove() = 0;
+    void remove();
 
-    virtual void clearSource(){;}
+    virtual void clearSource(){}
+
+private:
+    UBGraphicsItemDelegate* mDelegate;
 };
 
 #endif // UBITEM_H

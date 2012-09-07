@@ -38,6 +38,18 @@ UBItem::~UBItem()
     // NOOP
 }
 
+UBGraphicsItem::~UBGraphicsItem()
+{
+    if (mDelegate!=NULL)
+        delete mDelegate;
+}
+
+void UBGraphicsItem::setDelegate(UBGraphicsItemDelegate* delegate)
+{
+    Q_ASSERT(mDelegate==NULL);
+    mDelegate = delegate;
+}
+
 void UBGraphicsItem::assignZValue(QGraphicsItem *item, qreal value)
 {
     item->setZValue(value);
@@ -53,6 +65,13 @@ bool UBGraphicsItem::isRotatable(QGraphicsItem *item)
 {
     return item->data(UBGraphicsItemData::ItemRotatable).toBool();
 }
+
+void UBGraphicsItem::remove()
+{
+    if (Delegate())
+        Delegate()->remove(this);
+}
+
 
 UBGraphicsItemDelegate *UBGraphicsItem::Delegate(QGraphicsItem *pItem)
 {

@@ -6,7 +6,6 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBDocumentUndoCommand.h \
     src/domain/UBPageSizeUndoCommand.h \
     src/domain/UBGraphicsProxyWidget.h \
-    src/domain/UBGraphicsWebView.h \
     src/domain/UBGraphicsSvgItem.h \
     src/domain/UBGraphicsPolygonItem.h \
     src/domain/UBItem.h \
@@ -35,7 +34,6 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBDocumentUndoCommand.cpp \
     src/domain/UBPageSizeUndoCommand.cpp \
     src/domain/UBGraphicsProxyWidget.cpp \
-    src/domain/UBGraphicsWebView.cpp \
     src/domain/UBGraphicsSvgItem.cpp \
     src/domain/UBGraphicsPolygonItem.cpp \
     src/domain/UBItem.cpp \
@@ -47,8 +45,8 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsStroke.cpp \
     src/domain/UBGraphicsMediaItem.cpp \
     src/domain/UBAbstractUndoCommand.cpp \
-    src/domain/ubgraphicsgroupcontaineritem.cpp \
-    src/domain/ubgraphicsgroupcontaineritemdelegate.cpp \
+    src/domain/UBGraphicsGroupContainerItem.cpp \
+    src/domain/UBGraphicsGroupContainerItemDelegate.cpp \
     src/domain/UBGraphicsStrokesGroup.cpp \
     src/domain/UBGraphicsItemGroupUndoCommand.cpp \
     src/domain/UBGraphicsItemDelegate.cpp \
