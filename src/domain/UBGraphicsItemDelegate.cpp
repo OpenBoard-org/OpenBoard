@@ -166,7 +166,8 @@ void UBGraphicsItemDelegate::init()
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
-    disconnect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
+    if (UBApplication::boardController)
+        disconnect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
     // do not release mMimeData.
     // the mMimeData is owned by QDrag since the setMimeData call as specified in the documentation
 }
