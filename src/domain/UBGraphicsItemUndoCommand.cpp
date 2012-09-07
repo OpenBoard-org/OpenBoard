@@ -27,10 +27,11 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 
 UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
-        const QSet<QGraphicsItem*>& pAddedItems)
+                                                     const QSet<QGraphicsItem*>& pAddedItems, const QMultiMap<UBGraphicsGroupContainerItem*, QUuid> &groupsMap)
     : mScene(pScene)
-        , mRemovedItems(pRemovedItems - pAddedItems)
-        , mAddedItems(pAddedItems - pRemovedItems)
+    , mRemovedItems(pRemovedItems - pAddedItems)
+    , mAddedItems(pAddedItems - pRemovedItems)
+    , mExcludedFromGroup(groupsMap)
 {
     mFirstRedo = true;
 
@@ -110,6 +111,36 @@ void UBGraphicsItemUndoCommand::undo()
         }
     }
 
+    QMapIterator<UBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
+    UBGraphicsGroupContainerItem *nextGroup = 0;
+    UBGraphicsGroupContainerItem *previousGroupItem;
+    bool groupChanged = false;
+
+    while (curMapElement.hasNext()) {
+        curMapElement.next();
+
+        groupChanged = previousGroupItem != curMapElement.key();
+        //trying to find the group on the scene;
+        if (!nextGroup || groupChanged) {
+            UBGraphicsGroupContainerItem *groupCandidate = curMapElement.key();
+            if (groupCandidate) {
+                nextGroup = groupCandidate;
+                if(!mScene->items().contains(nextGroup)) {
+                    mScene->addItem(nextGroup);
+                }
+                nextGroup->setVisible(true);
+            }
+        }
+
+        QGraphicsItem *groupedItem = mScene->itemForUuid(curMapElement.value());
+        if (groupedItem) {
+            nextGroup->addToGroup(groupedItem);
+        }
+
+        previousGroupItem = curMapElement.key();
+        UBGraphicsItem::Delegate(nextGroup)->update();
+    }
+
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     mScene->update(mScene->sceneRect());
 
@@ -123,6 +154,35 @@ void UBGraphicsItemUndoCommand::redo()
     {
         if (!mScene){
             return;
+        }
+
+        QMapIterator<UBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
+        UBGraphicsGroupContainerItem *nextGroup = 0;
+        UBGraphicsGroupContainerItem *previousGroupItem;
+        bool groupChanged = false;
+
+        while (curMapElement.hasNext()) {
+            curMapElement.next();
+
+            groupChanged = previousGroupItem != curMapElement.key();
+            //trying to find the group on the scene;
+            if (!nextGroup || groupChanged) {
+                UBGraphicsGroupContainerItem *groupCandidate = curMapElement.key();
+                if (groupCandidate) {
+                    nextGroup = groupCandidate;
+                }
+            }
+            QGraphicsItem *groupedItem = mScene->itemForUuid(curMapElement.value());
+            if (groupedItem) {
+                if (nextGroup->childItems().count() == 1) {
+                    nextGroup->destroy(false);
+                    break;
+                }
+                nextGroup->removeFromGroup(groupedItem);
+            }
+
+            previousGroupItem = curMapElement.key();
+            UBGraphicsItem::Delegate(nextGroup)->update();
         }
 
         QSetIterator<QGraphicsItem*> itRemoved(mRemovedItems);

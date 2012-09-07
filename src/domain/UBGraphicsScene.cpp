@@ -1067,6 +1067,7 @@ UBItem* UBGraphicsScene::deepCopy() const
 void UBGraphicsScene::clearContent(clearCase pCase)
 {
     QSet<QGraphicsItem*> removedItems;
+    QMultiMap<UBGraphicsGroupContainerItem*, QUuid> groupsMap;
 
     switch (pCase) {
     case clearBackground :
@@ -1106,8 +1107,13 @@ void UBGraphicsScene::clearContent(clearCase pCase)
             if(shouldDelete) {
                 if (itemGroup) {
                     itemGroup->removeFromGroup(item);
+                    groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(item));
                     if (itemGroup->childItems().count() == 1) {
-                        itemGroup->destroy();
+                        groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(itemGroup->childItems().first()));
+                        QGraphicsItem *lastItem = itemGroup->childItems().first();
+                        bool isSelected = itemGroup->isSelected();
+                        itemGroup->destroy(false);
+                        lastItem->setSelected(isSelected);
                     }
                     itemGroup->Delegate()->update();
                 }
@@ -1123,7 +1129,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     update(sceneRect());
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, QSet<QGraphicsItem*>());
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, QSet<QGraphicsItem*>(), groupsMap);
         UBApplication::undoStack->push(uc);
     }
 
@@ -1571,8 +1577,9 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
 {
-    foreach(QGraphicsItem* item, items)
+    foreach(QGraphicsItem* item, items) {
         UBCoreGraphicsScene::removeItem(item);
+    }
 
     mItemCount -= items.size();
 
@@ -1665,7 +1672,7 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
     return normalizedRect;
 }
 
-QGraphicsItem *UBGraphicsScene::itemByUuid(QUuid uuid)
+QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
 {
     QGraphicsItem *result = 0;
 

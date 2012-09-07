@@ -54,6 +54,12 @@ bool UBGraphicsItem::isRotatable(QGraphicsItem *item)
     return item->data(UBGraphicsItemData::ItemRotatable).toBool();
 }
 
+QUuid UBGraphicsItem::getOwnUuid(QGraphicsItem *item)
+{
+    QString idCandidate = item->data(UBGraphicsItemData::ItemUuid).toString();
+    return idCandidate == QUuid().toString() ? QUuid() : QUuid(idCandidate);
+}
+
 UBGraphicsItemDelegate *UBGraphicsItem::Delegate(QGraphicsItem *pItem)
 {
     UBGraphicsItemDelegate *result = 0;

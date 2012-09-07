@@ -18,6 +18,7 @@
 
 #include <QtGui>
 #include "UBAbstractUndoCommand.h"
+#include "UBGraphicsGroupContainerItem.h"
 
 
 class UBGraphicsScene;
@@ -27,7 +28,7 @@ class UBGraphicsItemUndoCommand : public UBAbstractUndoCommand
 {
     public:
         UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
-                const QSet<QGraphicsItem*>& pAddedItems);
+                                  const QSet<QGraphicsItem*>& pAddedItems, const QMultiMap<UBGraphicsGroupContainerItem*, QUuid> &groupsMap = QMultiMap<UBGraphicsGroupContainerItem*, QUuid>());
 
         UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QGraphicsItem* pRemovedItem,
                         QGraphicsItem* pAddedItem);
@@ -47,6 +48,7 @@ class UBGraphicsItemUndoCommand : public UBAbstractUndoCommand
         UBGraphicsScene* mScene;
         QSet<QGraphicsItem*> mRemovedItems;
         QSet<QGraphicsItem*> mAddedItems;
+        QMultiMap<UBGraphicsGroupContainerItem*, QUuid> mExcludedFromGroup;
 
         bool mFirstRedo;
 };

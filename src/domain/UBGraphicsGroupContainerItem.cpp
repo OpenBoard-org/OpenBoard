@@ -125,6 +125,8 @@ void UBGraphicsGroupContainerItem::removeFromGroup(QGraphicsItem *item)
 
     pRemoveFromGroup(item);
 
+    item->setFlags(ItemIsSelectable | ItemIsFocusable);
+
 }
 
 void UBGraphicsGroupContainerItem::deselectCurrentItem()
@@ -219,7 +221,7 @@ void UBGraphicsGroupContainerItem::setUuid(const QUuid &pUuid)
     setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
 
-void UBGraphicsGroupContainerItem::destroy() {
+void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
 
     foreach (QGraphicsItem *item, childItems()) {
         pRemoveFromGroup(item);
@@ -227,7 +229,7 @@ void UBGraphicsGroupContainerItem::destroy() {
         item->setFlag(QGraphicsItem::ItemIsFocusable, true);
     }
 
-    remove();
+    mDelegate->remove(canUndo);
 }
 
 void UBGraphicsGroupContainerItem::clearSource()
