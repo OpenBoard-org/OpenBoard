@@ -1442,6 +1442,7 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
         textItem->setObjectName(objectName);
         QSizeF size = textItem->size();
         textItem->setPos(QPointF(-size.width()/2.0,-size.height()/2.0));
+        textItem->setData(UBGraphicsItemData::ItemEditable,QVariant(false));
     }
 
     textItem->setPlainText(pString);
