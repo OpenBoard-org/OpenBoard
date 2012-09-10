@@ -144,7 +144,7 @@ void UBFeaturesComputingThread::compute(const QList<QPair<QUrl, UBFeature> > &pS
 void UBFeaturesComputingThread::run()
 {
     forever {
-        qDebug() << "Custom thread started execution";
+//        qDebug() << "Custom thread started execution";
 
         mMutex.lock();
         QList<QPair<QUrl, UBFeature> > searchData = mScanningData;
@@ -158,17 +158,17 @@ void UBFeaturesComputingThread::run()
             break;
         }
 
-        QTime curTime = QTime::currentTime();
+//        QTime curTime = QTime::currentTime();
         int fsCnt = featuresCountAll(searchData);
-        int msecsto = curTime.msecsTo(QTime::currentTime());
-        qDebug() << "time on evaluation" << msecsto;
+//        int msecsto = curTime.msecsTo(QTime::currentTime());
+//        qDebug() << "time on evaluation" << msecsto;
 
         emit maxFilesCountEvaluated(fsCnt);
 
         emit scanStarted();
-        curTime = QTime::currentTime();
+//        curTime = QTime::currentTime();
         scanAll(searchData, favoriteSet);
-        qDebug() << "Time on finishing" << curTime.msecsTo(QTime::currentTime());
+//        qDebug() << "Time on finishing" << curTime.msecsTo(QTime::currentTime());
         emit scanFinished();
 
         mMutex.lock();
@@ -183,7 +183,7 @@ void UBFeaturesComputingThread::run()
 
 UBFeaturesComputingThread::~UBFeaturesComputingThread()
 {
-    qDebug() <<  "thread destructor catched";
+//    qDebug() <<  "thread destructor catched";
 
     mMutex.lock();
     abort = true;

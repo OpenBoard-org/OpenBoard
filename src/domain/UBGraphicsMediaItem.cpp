@@ -72,6 +72,10 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     update();
 
     mMediaObject = new Phonon::MediaObject(this);
+
+    setDelegate(new UBGraphicsMediaItemDelegate(this, mMediaObject));
+    Delegate()->init();
+
     if (pMediaFileUrl.toLocalFile().contains("videos")) 
     {
         mMediaType = mediaType_Video;
@@ -116,18 +120,14 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     mSource = Phonon::MediaSource(pMediaFileUrl);
     mMediaObject->setCurrentSource(mSource);
 
-    UBGraphicsMediaItemDelegate* itemDelegate = new UBGraphicsMediaItemDelegate(this, mMediaObject);
-    itemDelegate->init();
-    setDelegate(itemDelegate);
-
     if (mediaType_Audio == mMediaType)
-        mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
+        Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
     else
-        mDelegate->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+        Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
-    connect(mDelegate, SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
+    connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
     connect(mMediaObject, SIGNAL(hasVideoChanged(bool)), this, SLOT(hasMediaChanged(bool)));
 }
 
@@ -220,7 +220,7 @@ void UBGraphicsMediaItem::hasMediaChanged(bool hasMedia)
     {
     Q_UNUSED(hasMedia);
     mMediaObject->seek(mInitialPos);
-        UBGraphicsMediaItemDelegate *med = dynamic_cast<UBGraphicsMediaItemDelegate *>(mDelegate);
+        UBGraphicsMediaItemDelegate *med = dynamic_cast<UBGraphicsMediaItemDelegate *>(Delegate());
         if (med)
             med->updateTicker(initialPos());
     }
@@ -289,9 +289,9 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
 
 void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate)
+    if (Delegate())
     {
-        mDelegate->mousePressEvent(event);
+        Delegate()->mousePressEvent(event);
         if (parentItem() && UBGraphicsGroupContainerItem::Type == parentItem()->type())
         {
             UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(parentItem());
@@ -304,7 +304,7 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 }   
                 group->setCurrentItem(this);
                 this->setSelected(true);
-                mDelegate->positionHandles();
+                Delegate()->positionHandles();
             }       
 
         }
@@ -351,3 +351,4 @@ void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     event->accept();
 
 }
+

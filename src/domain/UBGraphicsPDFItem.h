@@ -47,10 +47,7 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
 
         virtual UBGraphicsScene* scene();
 
-        virtual void remove();
-
         virtual UBGraphicsPixmapItem* toPixmapItem() const;
-        virtual UBGraphicsItemDelegate *Delegate() const {return mDelegate;}
 
         virtual void clearSource(){;}
         virtual void setUuid(const QUuid &pUuid);
@@ -63,7 +60,6 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-//        UBGraphicsItemDelegate* mDelegate;
 };
 
 #endif /* UBGRAPHICSPDFITEM_H_ */

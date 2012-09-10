@@ -365,5 +365,6 @@
         <file>images/teacherGuide/pencil.svg</file>
         <file>images/duplicateDisabled.svg</file>
         <file>images/teacherGuide/flash_24x24.svg</file>
+        <file>images/toque.png</file>
     </qresource>
 </RCC>

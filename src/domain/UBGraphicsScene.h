@@ -174,7 +174,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         QRectF normalizedSceneRect(qreal ratio = -1.0);
 
-        QGraphicsItem *itemByUuid(QUuid uuid);
+        QGraphicsItem *itemForUuid(QUuid uuid);
 
         void moveTo(const QPointF& pPoint);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pWidth, bool bLineStyle);
