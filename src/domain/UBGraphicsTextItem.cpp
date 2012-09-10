@@ -30,9 +30,9 @@
 
 QColor UBGraphicsTextItem::lastUsedTextColor;
 
-UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
-    : UBGraphicsItem()
-    , QGraphicsTextItem(parent)
+UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent) :
+    QGraphicsTextItem(parent)
+    , UBGraphicsItem()
     , mMultiClickState(0)
     , mLastMousePressTime(QTime::currentTime())
 {

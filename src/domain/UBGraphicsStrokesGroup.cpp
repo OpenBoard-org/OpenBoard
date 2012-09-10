@@ -5,7 +5,7 @@
 #include "core/memcheck.h"
 
 UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
-    :UBGraphicsItem(), QGraphicsItemGroup(parent)
+    :QGraphicsItemGroup(parent), UBGraphicsItem()
 {
     setDelegate(new UBGraphicsItemDelegate(this, 0, true, true, false));
     Delegate()->init();

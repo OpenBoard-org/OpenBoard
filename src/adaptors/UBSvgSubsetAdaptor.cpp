@@ -1084,7 +1084,7 @@ QGraphicsItem *UBSvgSubsetAdaptor::UBSvgSubsetReader::readElementFromGroup()
 {
     QGraphicsItem *result = 0;
 
-    result = mScene->itemByUuid(QUuid(mXmlReader.attributes().value(aId).toString()));
+    result = mScene->itemForUuid(QUuid(mXmlReader.attributes().value(aId).toString()));
 
     mXmlReader.skipCurrentElement();
     mXmlReader.readNext();

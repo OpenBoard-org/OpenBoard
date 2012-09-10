@@ -66,12 +66,17 @@ bool UBGraphicsItem::isRotatable(QGraphicsItem *item)
     return item->data(UBGraphicsItemData::ItemRotatable).toBool();
 }
 
-void UBGraphicsItem::remove()
+QUuid UBGraphicsItem::getOwnUuid(QGraphicsItem *item)
 {
-    if (Delegate())
-        Delegate()->remove(this);
+    QString idCandidate = item->data(UBGraphicsItemData::ItemUuid).toString();
+    return idCandidate == QUuid().toString() ? QUuid() : QUuid(idCandidate);
 }
 
+void UBGraphicsItem::remove(bool canUndo)
+{
+    if (Delegate())
+        Delegate()->remove(canUndo);
+}
 
 UBGraphicsItemDelegate *UBGraphicsItem::Delegate(QGraphicsItem *pItem)
 {

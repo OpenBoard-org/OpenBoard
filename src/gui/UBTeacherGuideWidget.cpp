@@ -163,7 +163,8 @@ UBTeacherGuideEditionWidget::~UBTeacherGuideEditionWidget()
 void UBTeacherGuideEditionWidget::onSliderMoved(int size)
 {
     Q_UNUSED(size);
-    mpAddAMediaItem->setExpanded(true);
+    if(mpAddAMediaItem)
+        mpAddAMediaItem->setExpanded(true);
 }
 #endif
 void UBTeacherGuideEditionWidget::showEvent(QShowEvent* event)
@@ -491,7 +492,8 @@ UBTeacherGuidePresentationWidget::~UBTeacherGuidePresentationWidget()
 void UBTeacherGuidePresentationWidget::onSliderMoved(int size)
 {
     Q_UNUSED(size);
-    mpMediaSwitchItem->setExpanded(true);
+    if(mpMediaSwitchItem)
+        mpMediaSwitchItem->setExpanded(true);
 }
 #endif
 

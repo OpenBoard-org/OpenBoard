@@ -34,7 +34,7 @@ public:
     }
 
     virtual void setUuid(const QUuid &pUuid);
-    void destroy();
+    void destroy(bool canUndo = true);
 
     virtual void clearSource();
 

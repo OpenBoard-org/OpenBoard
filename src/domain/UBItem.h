@@ -104,11 +104,11 @@ public:
     static void assignZValue(QGraphicsItem*, qreal value);
     static bool isRotatable(QGraphicsItem *item);
     static bool isFlippable(QGraphicsItem *item);
+    static QUuid getOwnUuid(QGraphicsItem *item);
 
     static UBGraphicsItemDelegate *Delegate(QGraphicsItem *pItem);
-    
 
-    void remove();
+    void remove(bool canUndo = true);
 
     virtual void clearSource(){}
 
