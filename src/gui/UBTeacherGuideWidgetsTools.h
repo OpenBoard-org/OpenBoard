@@ -100,6 +100,7 @@ public:
     QString text();
     void setInitialText(const QString& text);
     void setMaximumLength(int length);
+    void managePlaceholder(bool focus);
 
 public slots:
     void onTextChanged();
@@ -111,8 +112,6 @@ protected:
     void focusOutEvent(QFocusEvent* e);
 
 private:
-    void managePlaceholder();
-
     int mBottomMargin;
     QTreeWidgetItem* mpTreeWidgetItem;
     int mMinimumHeight;

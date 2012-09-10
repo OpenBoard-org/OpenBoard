@@ -163,7 +163,7 @@ void UBTGAdaptableText::keyReleaseEvent(QKeyEvent* e)
 void UBTGAdaptableText::showEvent(QShowEvent* e)
 {
     Q_UNUSED(e);
-    if(!mIsUpdatingSize && mHasPlaceHolder && toPlainText().isEmpty()){
+    if(!mIsUpdatingSize && mHasPlaceHolder && toPlainText().isEmpty() && !isReadOnly()){
     	setTextColor(QColor(Qt::lightGray));
     	setPlainText(mPlaceHolderText);
     }
@@ -204,8 +204,6 @@ void UBTGAdaptableText::onTextChanged()
         setFocus();
     }
     mIsUpdatingSize = false;
-    
-
 }
 
 void UBTGAdaptableText::setInitialText(const QString& text)
@@ -232,22 +230,26 @@ void UBTGAdaptableText::focusInEvent(QFocusEvent* e){
 	if(isReadOnly()){
 		e->ignore();
 	}
-	managePlaceholder();
+	managePlaceholder(true);
 	QTextEdit::focusInEvent(e);
 }
 
 void UBTGAdaptableText::focusOutEvent(QFocusEvent* e){
-	if(toPlainText().isEmpty()){
-		setTextColor(QColor(Qt::lightGray));
-		setPlainText(mPlaceHolderText);
-	}
+	managePlaceholder(false);
 	QTextEdit::focusOutEvent(e);
 }
 
-void UBTGAdaptableText::managePlaceholder(){
-	if(toPlainText() == mPlaceHolderText){
-		setTextColor(QColor(Qt::black));
-		setPlainText("");
+void UBTGAdaptableText::managePlaceholder(bool focus){
+	if(focus){
+		if(toPlainText() == mPlaceHolderText){
+			setTextColor(QColor(Qt::black));
+			setPlainText("");
+		}
+	}else{
+		if(toPlainText().isEmpty()){
+			setTextColor(QColor(Qt::lightGray));
+			setPlainText(mPlaceHolderText);
+		}
 	}
 }
 
