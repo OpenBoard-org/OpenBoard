@@ -325,11 +325,53 @@ QPointF UBGraphicsDelegateFrame::getFixedPointFromPos()
                     fixedPoint = delegated()->sceneBoundingRect().bottomRight();
             }
         }
-        else if (resizingBottomRight())
-        {
-        }
     }
     return fixedPoint;
+}
+
+
+QSizeF UBGraphicsDelegateFrame::getResizeVector(qreal moveX, qreal moveY)
+{
+    qreal dPosX = 0;
+    qreal dPosY = 0;
+
+    if (resizingTop())    
+    {
+        if (mMirrorX && mMirrorY)
+            dPosY = moveY;
+        else
+            dPosY = -moveY;
+    }
+    else if (resizingLeft())  
+    {
+        if (mMirrorX && mMirrorY)
+            dPosX = moveX;
+        else
+            dPosX = -moveX;
+    }
+
+    else if (resizingRight())
+        dPosX = (mMirrorX) ?  -moveX : moveX;
+    else if (resizingBottom())               
+        dPosY = mMirrorY ? -moveY : moveY;
+
+    return QSizeF(dPosX, dPosY);
+}
+
+void UBGraphicsDelegateFrame::resizeDelegate(qreal moveX, qreal moveY)
+{
+    QPointF fixedPoint = getFixedPointFromPos();
+    UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(delegated());
+    if (resizableItem)
+    {
+        QSizeF originalSize = delegated()->boundingRect().size(); 
+        resizableItem->resize(originalSize + getResizeVector(moveX, moveY));
+
+        if (resizingTop() || resizingLeft() || ((mMirrorX || mMirrorY) && resizingBottomRight()))
+        {
+            delegated()->setPos(delegated()->pos()-getFixedPointFromPos()+fixedPoint);
+        }
+    }
 }
 
 void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -523,54 +565,27 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else if (mOperationMode == Resizing)
     {
-        QSizeF originalSize = delegated()->boundingRect().size(); 
-
-        mScaleX = 1;
-        mScaleY = 1;
-
         if (!moving() && !rotating())
         {
-            qreal dPosX = 0;
-            qreal dPosY = 0;
-
-            QPointF fixedPoint = getFixedPointFromPos();
-
-            if (resizingTop())    
+            if (resizingBottomRight())
             {
                 if (mMirrorX && mMirrorY)
-                    dPosY = moveY;
+                    mCurrentTool = ResizeTop;
                 else
-                    dPosY = -moveY;
-            }
-            else if (resizingLeft())  
-            {
+                    mCurrentTool = ResizeBottom;
+
+                resizeDelegate(moveX, moveY); 
+
                 if (mMirrorX && mMirrorY)
-                    dPosX = moveX;
+                    mCurrentTool = ResizeLeft;
                 else
-                    dPosX = -moveX;
-            }
-            else if (resizingBottomRight())
-            {
-                dPosX = moveX;
-                dPosY = moveY;
-            }
-            else if (resizingRight())
-                dPosX = (mMirrorX) ?  -moveX : moveX;
-            else if (resizingBottom())               
-                dPosY = mMirrorY ? -moveY : moveY;
+                    mCurrentTool = ResizeRight;
 
-            UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(delegated());
-            if (resizableItem)
-            {
-                resizableItem->resize(originalSize.width() + dPosX, originalSize.height() + dPosY);
-                if (resizingTop() || resizingLeft() || ((mMirrorX || mMirrorY) && resizingBottomRight()))
-                {
-                    QPointF newFixedPoint = getFixedPointFromPos();;
-
-                    delegated()->setPos(delegated()->pos()-newFixedPoint+fixedPoint);
-                }
-
+                resizeDelegate(moveX, moveY); 
+                mCurrentTool = ResizeBottomRight;
             }
+            else
+                resizeDelegate(moveX, moveY); 
         }
     }
 
