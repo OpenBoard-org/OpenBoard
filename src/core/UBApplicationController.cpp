@@ -59,8 +59,11 @@
 
 #include "core/memcheck.h"
 
-UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBoardView *pDisplayView,
-        UBMainWindow* pMainWindow, QObject* parent)
+UBApplicationController::UBApplicationController(UBBoardView *pControlView, 
+                                                 UBBoardView *pDisplayView,
+                                                 UBMainWindow* pMainWindow, 
+                                                 QObject* parent,
+                                                 UBRightPalette* rightPalette)
     : QObject(parent)
     , mMainWindow(pMainWindow)
     , mControlView(pControlView)
@@ -75,7 +78,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
 {
     mDisplayManager = new UBDisplayManager(this);
 
-    mUninoteController = new UBDesktopAnnotationController(this);
+    mUninoteController = new UBDesktopAnnotationController(this, rightPalette);
 
     connect(mDisplayManager, SIGNAL(screenLayoutChanged()), this, SLOT(screenLayoutChanged()));
     connect(mDisplayManager, SIGNAL(screenLayoutChanged()), mUninoteController, SLOT(screenLayoutChanged()));

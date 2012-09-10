@@ -47,7 +47,7 @@
 
 #include "core/memcheck.h"
 
-UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
+UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UBRightPalette* rightPalette)
         : QObject(parent)
         , mTransparentDrawingView(0)
         , mTransparentDrawingScene(0)
@@ -86,7 +86,9 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
     mTransparentDrawingScene->setDrawingMode(true);
 
-    mDesktopPalette = new UBDesktopPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
+    mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView, rightPalette); 
+    // This was not fix, parent reverted
+    // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
     if (UBPlatformUtils::hasVirtualKeyboard())
     {

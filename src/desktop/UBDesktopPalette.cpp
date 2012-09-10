@@ -21,10 +21,11 @@
 
 #include "core/memcheck.h"
 
-UBDesktopPalette::UBDesktopPalette(QWidget *parent)
+UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalette)
     : UBActionPalette(Qt::TopLeftCorner, parent)
-        , mShowHideAction(0)
-        , mDisplaySelectAction(0)
+    , rightPalette(_rightPalette)
+    , mShowHideAction(0)
+    , mDisplaySelectAction(0)
 {
     QList<QAction*> actions;
 
@@ -72,6 +73,8 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent)
     connect(this, SIGNAL(maximizeStart()), this, SLOT(maximizeMe()));
     connect(this, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(minimizeMe(eMinimizedLocation)));
     setMinimizePermission(true);
+
+    connect(rightPalette, SIGNAL(resized()), this, SLOT(parentResized()));
 }
 
 
@@ -216,4 +219,15 @@ QPoint UBDesktopPalette::buttonPos(QAction *action)
     }
 
     return p;
+}
+
+
+int UBDesktopPalette::getParentWidth(QWidget *parent)
+{
+    return parent->width() - rightPalette->width();
+}
+
+void UBDesktopPalette::parentResized()
+{
+    moveInsideParent(pos());
 }

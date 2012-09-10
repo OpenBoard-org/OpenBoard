@@ -129,6 +129,11 @@ void UBFloatingPalette::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
+int UBFloatingPalette::getParentWidth(QWidget *parent)
+{
+    return parent->width();
+}
+
 void UBFloatingPalette::moveInsideParent(const QPoint &position)
 {
     QWidget *parent = parentWidget();
@@ -136,7 +141,7 @@ void UBFloatingPalette::moveInsideParent(const QPoint &position)
     if (parent)
     {
         int margin = UBSettings::boardMargin - border();
-        qreal newX = qMax(margin, qMin(parent->width() - width() - margin, position.x()));
+        qreal newX = qMax(margin, qMin(getParentWidth(parent) - width() - margin, position.x()));
         qreal newY = qMax(margin, qMin(parent->height() - height() - margin, position.y()));
 
         if (!mCustomPosition && !mIsMoving)
@@ -147,7 +152,7 @@ void UBFloatingPalette::moveInsideParent(const QPoint &position)
             }
             else
             {
-                newX = qMax(margin, parent->width() - width() - margin);
+                newX = qMax(margin, getParentWidth(parent) - width() - margin);
             }
         }
         move(newX, newY);
