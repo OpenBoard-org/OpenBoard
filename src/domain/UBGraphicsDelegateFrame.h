@@ -37,6 +37,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QPainterPath shape() const;
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        QPointF getFixedPointFromPos();
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
