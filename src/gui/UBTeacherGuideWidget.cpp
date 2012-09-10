@@ -1023,7 +1023,7 @@ void UBTeacherGuidePageZeroWidget::switchToMode(tUBTGZeroPageMode mode)
         QString inputStyleSheet("QTextEdit { background: white; border-radius: 10px; border: 2px;}");
         mpModePushButton->hide();
         mpSessionTitle->setReadOnly(false);
-        mpSessionTitle->managePlaceholder(false);
+        mpSessionTitle->managePlaceholder(true);
         mpSessionTitle->setStyleSheet(inputStyleSheet);
         QFont titleFont(QApplication::font().family(), 11, -1);
         mpSessionTitle->document()->setDefaultFont(titleFont);

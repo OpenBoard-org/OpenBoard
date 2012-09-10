@@ -24,6 +24,9 @@
 #include <QApplication>
 #include <QDomElement>
 #include <QWebFrame>
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QTextCursor>
 
 #include "UBTeacherGuideWidgetsTools.h"
 
@@ -190,10 +193,11 @@ void UBTGAdaptableText::onTextChanged()
     mIsUpdatingSize = true;
 
 
-    if(documentSize < mMinimumHeight)
-        setFixedHeight(mMinimumHeight);
-    else
-        setFixedHeight(documentSize+mBottomMargin);
+    if(documentSize < mMinimumHeight){
+    	setFixedHeight(mMinimumHeight);
+    }else{
+    	setFixedHeight(documentSize+mBottomMargin);
+    }
 
     updateGeometry();
     //to trig a resize on the tree widget item
@@ -245,11 +249,22 @@ void UBTGAdaptableText::managePlaceholder(bool focus){
 			setTextColor(QColor(Qt::black));
 			setPlainText("");
 		}
+		setCursorToTheEnd();
 	}else{
 		if(toPlainText().isEmpty()){
 			setTextColor(QColor(Qt::lightGray));
 			setPlainText(mPlaceHolderText);
 		}
+	}
+}
+
+void UBTGAdaptableText::setCursorToTheEnd(){
+	QTextDocument* doc = document();
+	if(NULL != doc){
+		QTextBlock block = doc->lastBlock();
+		QTextCursor cursor(doc);
+		cursor.setPosition(block.position() + block.length() - 1);
+		setTextCursor(cursor);
 	}
 }
 

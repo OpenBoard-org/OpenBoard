@@ -112,6 +112,7 @@ protected:
     void focusOutEvent(QFocusEvent* e);
 
 private:
+    void setCursorToTheEnd();
     int mBottomMargin;
     QTreeWidgetItem* mpTreeWidgetItem;
     int mMinimumHeight;
