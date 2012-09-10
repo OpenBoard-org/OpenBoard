@@ -1067,7 +1067,7 @@ UBItem* UBGraphicsScene::deepCopy() const
 void UBGraphicsScene::clearContent(clearCase pCase)
 {
     QSet<QGraphicsItem*> removedItems;
-    QMultiMap<UBGraphicsGroupContainerItem*, QUuid> groupsMap;
+    UBGraphicsItemUndoCommand::GroupDataTable groupsMap;
 
     switch (pCase) {
     case clearBackground :

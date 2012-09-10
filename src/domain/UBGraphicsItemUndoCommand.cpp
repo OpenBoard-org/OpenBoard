@@ -27,7 +27,7 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 
 UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
-                                                     const QSet<QGraphicsItem*>& pAddedItems, const QMultiMap<UBGraphicsGroupContainerItem*, QUuid> &groupsMap)
+                                                     const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap)
     : mScene(pScene)
     , mRemovedItems(pRemovedItems - pAddedItems)
     , mAddedItems(pAddedItems - pRemovedItems)

@@ -27,8 +27,10 @@ class UBGraphicsScene;
 class UBGraphicsItemUndoCommand : public UBAbstractUndoCommand
 {
     public:
+        typedef QMultiMap<UBGraphicsGroupContainerItem*, QUuid> GroupDataTable;
+
         UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
-                                  const QSet<QGraphicsItem*>& pAddedItems, const QMultiMap<UBGraphicsGroupContainerItem*, QUuid> &groupsMap = QMultiMap<UBGraphicsGroupContainerItem*, QUuid>());
+                                  const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap = GroupDataTable());
 
         UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QGraphicsItem* pRemovedItem,
                         QGraphicsItem* pAddedItem);
@@ -48,7 +50,7 @@ class UBGraphicsItemUndoCommand : public UBAbstractUndoCommand
         UBGraphicsScene* mScene;
         QSet<QGraphicsItem*> mRemovedItems;
         QSet<QGraphicsItem*> mAddedItems;
-        QMultiMap<UBGraphicsGroupContainerItem*, QUuid> mExcludedFromGroup;
+        GroupDataTable mExcludedFromGroup;
 
         bool mFirstRedo;
 };
