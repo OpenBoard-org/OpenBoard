@@ -121,13 +121,13 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int)), this, SLOT(stylusToolChanged(int)));
 
     // Add the desktop associated palettes
-    mDesktopPenPalette = new UBDesktopPenPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
+    mDesktopPenPalette = new UBDesktopPenPalette(mTransparentDrawingView); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
     connect(mDesktopPalette, SIGNAL(maximized()), mDesktopPenPalette, SLOT(onParentMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), mDesktopPenPalette, SLOT(onParentMinimized()));
 
-    mDesktopMarkerPalette = new UBDesktopMarkerPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
-    mDesktopEraserPalette = new UBDesktopEraserPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
+    mDesktopMarkerPalette = new UBDesktopMarkerPalette(mTransparentDrawingView); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
+    mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
     mDesktopPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopPenPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
@@ -158,10 +158,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     onDesktopPaletteMaximized();
 
     // FIX #633: Ensure that these palettes stay on top of the other elements
-    mDesktopEraserPalette->raise();
-    mDesktopMarkerPalette->raise();
-    mDesktopPenPalette->raise();
-    mDesktopPalette->raise();
+    //mDesktopEraserPalette->raise();
+    //mDesktopMarkerPalette->raise();
+    //mDesktopPenPalette->raise();
+    //mDesktopPalette->raise();
 }
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
