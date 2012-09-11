@@ -37,6 +37,9 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QPainterPath shape() const;
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        QPointF getFixedPointFromPos();
+        QSizeF getResizeVector(qreal moveX, qreal moveY);
+        void resizeDelegate(qreal moveX, qreal moveY);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
