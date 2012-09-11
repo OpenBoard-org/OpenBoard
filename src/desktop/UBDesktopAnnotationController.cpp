@@ -158,10 +158,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     onDesktopPaletteMaximized();
 
     // FIX #633: Ensure that these palettes stay on top of the other elements
-    mDesktopEraserPalette->raise();
-    mDesktopMarkerPalette->raise();
-    mDesktopPenPalette->raise();
-    mDesktopPalette->raise();
+    //mDesktopEraserPalette->raise();
+    //mDesktopMarkerPalette->raise();
+    //mDesktopPenPalette->raise();
+    //mDesktopPalette->raise();
 }
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
