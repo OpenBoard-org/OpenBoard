@@ -477,6 +477,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
             if (currentTool == UBStylusTool::Line || dc->mActiveRuler)
             {
+                if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
                 if(NULL != mpLastPolygon && NULL != mCurrentStroke && mAddedItems.size() > 0){
                     UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
                     mAddedItems.remove(mpLastPolygon);
