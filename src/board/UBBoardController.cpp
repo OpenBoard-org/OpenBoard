@@ -950,6 +950,10 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
     qDebug() << "something has been dropped on the board! Url is: " << url.toString();
     QString sUrl = url.toString();
 
+    QGraphicsItem *oldBackgroundObject = NULL;
+    if (isBackground) 
+        oldBackgroundObject = mActiveScene->backgroundObject();
+
     if(sUrl.startsWith("uniboardTool://"))
     {
         downloadFinished(true, url, "application/vnd.mnemis-uniboard-tool", QByteArray(), pPos, pSize, isBackground);
@@ -990,6 +994,16 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
 
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
     }
+
+    if (isBackground && oldBackgroundObject != mActiveScene->backgroundObject())
+    {
+        if (mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, oldBackgroundObject, mActiveScene->backgroundObject());
+            UBApplication::undoStack->push(uc);
+        }
+    }
+
+
 }
 
 
