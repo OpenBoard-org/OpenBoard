@@ -127,9 +127,9 @@ int main(int argc, char *argv[])
 
     app.initialize(false);
 
-    QObject::connect(&app, SIGNAL(messageReceived(const QString&)), &app,
-                     SLOT(handleOpenMessage(const QString&)));
+    QObject::connect(&app, SIGNAL(messageReceived(const QString&)), &app, SLOT(handleOpenMessage(const QString&)));
 
+    qDebug() << fileToOpen;
     int result = app.exec(fileToOpen);
 
     app.cleanup();

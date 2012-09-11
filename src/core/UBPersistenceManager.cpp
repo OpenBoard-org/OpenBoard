@@ -587,6 +587,10 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
         return mSceneCache.value(proxy, sceneIndex);
     else {
         UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
+        if(!scene && UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
+            createDocumentSceneAt(proxy,0);
+            scene = UBSvgSubsetAdaptor::loadScene(proxy, 0);
+        }
 
         if (scene)
             mSceneCache.insert(proxy, sceneIndex, scene);
