@@ -53,7 +53,7 @@ protected:
         void showEvent(QShowEvent *event);
         void hideEvent(QHideEvent *event);
 
-        int getParentWidth(QWidget *parent);
+        virtual int getParentRightOffset();
 
     private:
         QAction *mShowHideAction;

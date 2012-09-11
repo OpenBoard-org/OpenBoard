@@ -112,6 +112,9 @@ void UBDesktopPalette::updateShowHideState(bool pShowEnabled)
         mShowHideAction->setToolTip(tr("Show Board on Secondary Screen"));
     else
         mShowHideAction->setToolTip(tr("Show Desktop on Secondary Screen"));
+
+    if (pShowEnabled)
+        raise();
 }
 
 
@@ -222,12 +225,18 @@ QPoint UBDesktopPalette::buttonPos(QAction *action)
 }
 
 
-int UBDesktopPalette::getParentWidth(QWidget *parent)
+int UBDesktopPalette::getParentRightOffset()
 {
-    return parent->width() - rightPalette->width();
+    return rightPalette->width();
 }
 
 void UBDesktopPalette::parentResized()
 {
-    moveInsideParent(pos());
+    QPoint p = pos();
+    if (minimizedLocation() == eMinimizedLocation_Right)
+    {
+        p.setX(parentWidget()->width() - getParentRightOffset() -width());
+    }
+
+    moveInsideParent(p);
 }
