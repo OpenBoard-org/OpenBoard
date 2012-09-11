@@ -742,6 +742,9 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
     // Here we add the item to the scene
     addItem(polygonItem);
 
+    if (!mCurrentStroke)
+        mCurrentStroke = new UBGraphicsStroke();
+
     if (mCurrentStroke)
     {
         polygonItem->setStroke(mCurrentStroke);
