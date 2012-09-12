@@ -238,7 +238,7 @@ QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVer
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int pageIndex)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
-
+    qDebug() << fileName;
     QFile file(fileName);
 
     if (file.exists())
@@ -1084,7 +1084,7 @@ QGraphicsItem *UBSvgSubsetAdaptor::UBSvgSubsetReader::readElementFromGroup()
 {
     QGraphicsItem *result = 0;
 
-    result = mScene->itemByUuid(QUuid(mXmlReader.attributes().value(aId).toString()));
+    result = mScene->itemForUuid(QUuid(mXmlReader.attributes().value(aId).toString()));
 
     mXmlReader.skipCurrentElement();
     mXmlReader.readNext();

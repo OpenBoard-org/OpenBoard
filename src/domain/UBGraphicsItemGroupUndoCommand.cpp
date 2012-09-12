@@ -22,7 +22,7 @@ UBGraphicsItemGroupUndoCommand::~UBGraphicsItemGroupUndoCommand()
 
 void UBGraphicsItemGroupUndoCommand::undo()
 {
-    mGroup->destroy();
+    mGroup->destroy(false);
     foreach(QGraphicsItem *item, mItems) {
         item->setSelected(true);
     }
@@ -41,7 +41,7 @@ void UBGraphicsItemGroupUndoCommand::redo()
             QList<QGraphicsItem*> childItems = item->childItems();
             UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
             if (currentGroup) {
-                currentGroup->destroy();
+                currentGroup->destroy(false);
             }
             foreach (QGraphicsItem *chItem, childItems) {
                 mGroup->addToGroup(chItem);

@@ -224,8 +224,7 @@ void UBApplication::setupTranslators(QStringList args)
         if(!setLanguage.isEmpty())
             forcedLanguage = setLanguage;
     }
-    
-    QStringList availablesTranslations = UBPlatformUtils::availableTranslations();
+
     QString language("");
 
     if(!forcedLanguage.isEmpty())
@@ -362,14 +361,13 @@ int UBApplication::exec(const QString& pFileToImport)
     boardController->setupLayout();
 
     if (pFileToImport.length() > 0)
-    {
         UBApplication::applicationController->importFile(pFileToImport);
-    }
 
 #if defined(Q_WS_MAC)
     static AEEventHandlerUPP ub_proc_ae_handlerUPP = AEEventHandlerUPP(ub_appleEventProcessor);
     AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
 #endif
+
     if (UBSettings::settings()->appStartMode->get() == "Desktop")
         applicationController->showDesktop();
     else

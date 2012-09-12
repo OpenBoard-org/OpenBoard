@@ -47,9 +47,6 @@ Type: files ; Name: "{app}\*.dll"
 Source: "..\Sankore-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
 Source: "build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-;Sankore plugins
-;Source: "plugins\cffadaptor\build\win32\release\lib\CFF_Adaptor.dll"; DestDir: "{app}"; Flags: ignoreversion
-
 ;OpenSSL
 Source: "..\Sankore-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "..\Sankore-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
@@ -84,6 +81,15 @@ Source: "..\Qt-4.8\plugins\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats
 Source: "..\Qt-4.8\plugins\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "..\Qt-4.8\plugins\phonon_backend\phonon_ds94.dll"; DestDir: "{app}\phonon_backend"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
+;qt multimedia plugins
+Source: "c:\OpenSankore\plugins\mediaservice\dsengine.dll"; DestDir: "c:\OpenSankore\mediaservice"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\mediaservice\dsengined.dll"; DestDir: "c:\OpenSankore\mediaservice"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\mediaservice\qtmedia_audioengine.dll"; DestDir: "c:\OpenSankore\mediaservice"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir: "c:\OpenSankore\mediaservice"; Flags: ignoreversion
+
+Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3u.dll"; DestDir: "c:\OpenSankore\playlistformats"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3ud.dll"; DestDir: "c:\OpenSankore\playlistformats"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\Open-Sankoré"; Filename: "{app}\Open-Sankore.exe"

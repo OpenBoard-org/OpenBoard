@@ -478,6 +478,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
             if (currentTool == UBStylusTool::Line || dc->mActiveRuler)
             {
+                if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
                 if(NULL != mpLastPolygon && NULL != mCurrentStroke && mAddedItems.size() > 0){
                     UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
                     mAddedItems.remove(mpLastPolygon);
@@ -628,6 +629,11 @@ bool UBGraphicsScene::inputDeviceRelease()
 
     setDocumentUpdated();
 
+    if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+        delete mCurrentStroke;
+    }
+    mCurrentStroke = NULL;
+
     return accepted;
 }
 
@@ -742,6 +748,9 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
 
     // Here we add the item to the scene
     addItem(polygonItem);
+
+    if (!mCurrentStroke)
+        mCurrentStroke = new UBGraphicsStroke();
 
     if (mCurrentStroke)
     {
@@ -1068,6 +1077,7 @@ UBItem* UBGraphicsScene::deepCopy() const
 void UBGraphicsScene::clearContent(clearCase pCase)
 {
     QSet<QGraphicsItem*> removedItems;
+    UBGraphicsItemUndoCommand::GroupDataTable groupsMap;
 
     switch (pCase) {
     case clearBackground :
@@ -1107,8 +1117,14 @@ void UBGraphicsScene::clearContent(clearCase pCase)
             if(shouldDelete) {
                 if (itemGroup) {
                     itemGroup->removeFromGroup(item);
+
+                    groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(item));
                     if (itemGroup->childItems().count() == 1) {
-                        itemGroup->destroy();
+                        groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(itemGroup->childItems().first()));
+                        QGraphicsItem *lastItem = itemGroup->childItems().first();
+                        bool isSelected = itemGroup->isSelected();
+                        itemGroup->destroy(false);
+                        lastItem->setSelected(isSelected);
                     }
                     itemGroup->Delegate()->update();
                 }
@@ -1124,7 +1140,8 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     update(sceneRect());
 
     if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, QSet<QGraphicsItem*>());
+
+        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, QSet<QGraphicsItem*>(), groupsMap);
         UBApplication::undoStack->push(uc);
     }
 
@@ -1443,6 +1460,7 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
         textItem->setObjectName(objectName);
         QSizeF size = textItem->size();
         textItem->setPos(QPointF(-size.width()/2.0,-size.height()/2.0));
+        textItem->setData(UBGraphicsItemData::ItemEditable,QVariant(false));
     }
 
     textItem->setPlainText(pString);
@@ -1572,8 +1590,9 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
 {
-    foreach(QGraphicsItem* item, items)
+    foreach(QGraphicsItem* item, items) {
         UBCoreGraphicsScene::removeItem(item);
+    }
 
     mItemCount -= items.size();
 
@@ -1666,7 +1685,7 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
     return normalizedRect;
 }
 
-QGraphicsItem *UBGraphicsScene::itemByUuid(QUuid uuid)
+QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
 {
     QGraphicsItem *result = 0;
 
@@ -2058,8 +2077,8 @@ void UBGraphicsScene::drawItems (QPainter * painter, int numItems,
         {
             if (!mTools.contains(rootItem(items[i])))
             {
-                UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]);
-                if(!pdfItem || mRenderingContext == NonScreen)
+                bool isPdfItem =  qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]) != NULL;
+                if(!isPdfItem || mRenderingContext == NonScreen)
                 {
                     itemsFiltered[count] = items[i];
                     optionsFiltered[count] = options[i];

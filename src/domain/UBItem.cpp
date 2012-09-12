@@ -38,6 +38,18 @@ UBItem::~UBItem()
     // NOOP
 }
 
+UBGraphicsItem::~UBGraphicsItem()
+{
+    if (mDelegate!=NULL)
+        delete mDelegate;
+}
+
+void UBGraphicsItem::setDelegate(UBGraphicsItemDelegate* delegate)
+{
+    Q_ASSERT(mDelegate==NULL);
+    mDelegate = delegate;
+}
+
 void UBGraphicsItem::assignZValue(QGraphicsItem *item, qreal value)
 {
     item->setZValue(value);
@@ -52,6 +64,18 @@ bool UBGraphicsItem::isFlippable(QGraphicsItem *item)
 bool UBGraphicsItem::isRotatable(QGraphicsItem *item)
 {
     return item->data(UBGraphicsItemData::ItemRotatable).toBool();
+}
+
+QUuid UBGraphicsItem::getOwnUuid(QGraphicsItem *item)
+{
+    QString idCandidate = item->data(UBGraphicsItemData::ItemUuid).toString();
+    return idCandidate == QUuid().toString() ? QUuid() : QUuid(idCandidate);
+}
+
+void UBGraphicsItem::remove(bool canUndo)
+{
+    if (Delegate())
+        Delegate()->remove(canUndo);
 }
 
 UBGraphicsItemDelegate *UBGraphicsItem::Delegate(QGraphicsItem *pItem)

@@ -96,7 +96,6 @@ void UBThumbnailAdaptor::updateDocumentToHandleZeroPage(UBDocumentProxy* proxy)
     if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
     	QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", 0);
     	QFile file(fileName);
-    	qDebug() << fileName;
     	if(!file.exists()){
     		UBPersistenceManager::persistenceManager()->persistDocumentScene(proxy,new UBGraphicsScene(proxy),0);
     	}

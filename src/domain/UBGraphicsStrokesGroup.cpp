@@ -4,12 +4,14 @@
 
 #include "core/memcheck.h"
 
-UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent):QGraphicsItemGroup(parent)
+UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
+    :QGraphicsItemGroup(parent), UBGraphicsItem()
 {
-    mDelegate = new UBGraphicsItemDelegate(this, 0, true, true, false);
-    mDelegate->init();
-    mDelegate->setFlippable(true);
-    mDelegate->setRotatable(true);
+    setDelegate(new UBGraphicsItemDelegate(this, 0, true, true, false));
+    Delegate()->init();
+    Delegate()->setFlippable(true);
+    Delegate()->setRotatable(true);
+
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
@@ -22,9 +24,6 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent):QGraphicsI
 
 UBGraphicsStrokesGroup::~UBGraphicsStrokesGroup()
 {
-    if(mDelegate){
-        delete mDelegate;
-    }
 }
 
 void UBGraphicsStrokesGroup::setUuid(const QUuid &pUuid)
@@ -83,7 +82,7 @@ QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
 
 void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mousePressEvent(event))
+    if (Delegate()->mousePressEvent(event))
     {
         //NOOP
     }
@@ -95,7 +94,7 @@ void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mDelegate->mouseMoveEvent(event))
+    if (Delegate()->mouseMoveEvent(event))
     {
         // NOOP;
     }
@@ -107,33 +106,39 @@ void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    mDelegate->mouseReleaseEvent(event);
+    Delegate()->mouseReleaseEvent(event);
     QGraphicsItemGroup::mouseReleaseEvent(event);
 }
 
 UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
-    UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
+	UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
 
-    QList<QGraphicsItem*> chl = childItems();
+	QTransform groupTransform = transform();
+	const_cast<UBGraphicsStrokesGroup*>(this)->resetTransform();
 
-    foreach(QGraphicsItem *child, chl)
-    {
-        UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
-        if (polygon)
-        {
-            copy->addToGroup(dynamic_cast<QGraphicsItem*>(polygon->deepCopy()));
-            polygon->setStrokesGroup(copy);
-        }
-    }
-    copyItemParameters(copy);
+	QList<QGraphicsItem*> chl = childItems();
 
-    return copy;
+	foreach(QGraphicsItem *child, chl)
+	{
+		UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
+
+		if (polygon){
+			QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(polygon->deepCopy());
+			copy->addToGroup(pItem);
+		}
+
+	}
+	const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
+	copyItemParameters(copy);
+
+	return copy;
 }
 
 void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
 {
-    UBGraphicsStrokesGroup *cp = dynamic_cast<UBGraphicsStrokesGroup*>(copy);
+	QGraphicsItem *cp = dynamic_cast<QGraphicsItem*>(copy);
+    if(NULL != cp)
     {
         cp->setTransform(transform());
 
@@ -142,12 +147,6 @@ void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
     }
-}
-
-void UBGraphicsStrokesGroup::remove()
-{
-    if (mDelegate)
-        mDelegate->remove(true);
 }
 
 void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -161,7 +160,7 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
 
 QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    QVariant newValue = mDelegate->itemChange(change, value);
+    QVariant newValue = Delegate()->itemChange(change, value);
     return QGraphicsItemGroup::itemChange(change, newValue);
 }
 

@@ -26,6 +26,8 @@
 #include <QMimeData>
 #include <QStackedWidget>
 #include <QWebView>
+#include <QFocusEvent>
+#include <QMouseEvent>
 
 #include "customWidgets/UBMediaWidget.h"
 
@@ -97,22 +99,27 @@ public:
     void setPlaceHolderText(QString text);
     QString text();
     void setInitialText(const QString& text);
+    void setMaximumLength(int length);
+    void managePlaceholder(bool focus);
 
 public slots:
     void onTextChanged();
 
 protected:
-    void keyPressEvent(QKeyEvent* e);
     void keyReleaseEvent(QKeyEvent* e);
     void showEvent(QShowEvent* e);
+    void focusInEvent(QFocusEvent* e);
+    void focusOutEvent(QFocusEvent* e);
 
 private:
+    void setCursorToTheEnd();
     int mBottomMargin;
     QTreeWidgetItem* mpTreeWidgetItem;
     int mMinimumHeight;
     bool mHasPlaceHolder;
     QString mPlaceHolderText;
     bool mIsUpdatingSize;
+    int mMaximumLength;
 };
 
 

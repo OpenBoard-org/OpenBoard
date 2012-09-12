@@ -24,6 +24,9 @@
 #include <QApplication>
 #include <QDomElement>
 #include <QWebFrame>
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QTextCursor>
 
 #include "UBTeacherGuideWidgetsTools.h"
 
@@ -120,6 +123,7 @@ UBTGAdaptableText::UBTGAdaptableText(QTreeWidgetItem* widget, QWidget* parent, c
   , mMinimumHeight(0)
   , mHasPlaceHolder(false)
   , mIsUpdatingSize(false)
+  , mMaximumLength(0)
 {
     setObjectName(name);
     connect(this,SIGNAL(textChanged()),this,SLOT(onTextChanged()));
@@ -129,6 +133,11 @@ UBTGAdaptableText::UBTGAdaptableText(QTreeWidgetItem* widget, QWidget* parent, c
     mMinimumHeight = document()->size().height() + mBottomMargin;
     setMinimumHeight(mMinimumHeight);
 
+}
+
+void UBTGAdaptableText::setMaximumLength(int length)
+{
+    mMaximumLength = length;
 }
 
 void UBTGAdaptableText::setPlaceHolderText(QString text)
@@ -142,37 +151,25 @@ void UBTGAdaptableText::setPlaceHolderText(QString text)
     setPlainText(mPlaceHolderText);
 }
 
-void UBTGAdaptableText::keyPressEvent(QKeyEvent* e)
-{
-    if(isReadOnly()){
-        // this is important if you set a placeholder. In this case even if the text field is readonly the
-        // keypressed event came here. So if you don't ignore it you'll have a flick on the text zone
-        e->ignore();
-        return;
-    }
-
-    if(toPlainText() == mPlaceHolderText){
-        setPlainText("");
-    }
-    setTextColor(QColor(Qt::black));
-    QTextEdit::keyPressEvent(e);
-}
-
 void UBTGAdaptableText::keyReleaseEvent(QKeyEvent* e)
 {
     QTextEdit::keyReleaseEvent(e);
 
-    if(toPlainText().isEmpty()){
-        setTextColor(QColor(Qt::lightGray));
-        setPlainText(mPlaceHolderText);
+    if(mMaximumLength && toPlainText().length()>mMaximumLength){
+        setPlainText(toPlainText().left(mMaximumLength));
+        QTextCursor tc(document());
+        tc.setPosition(mMaximumLength);
+        setTextCursor(tc);
     }
 }
 
 void UBTGAdaptableText::showEvent(QShowEvent* e)
 {
     Q_UNUSED(e);
-    if(!mIsUpdatingSize && mHasPlaceHolder && toPlainText().isEmpty())
-        setPlainText(mPlaceHolderText);
+    if(!mIsUpdatingSize && mHasPlaceHolder && toPlainText().isEmpty() && !isReadOnly()){
+    	setTextColor(QColor(Qt::lightGray));
+    	setPlainText(mPlaceHolderText);
+    }
     else
     	// If the teacherguide is collapsed, don't updated the size. Or set the size as the expanded size
         onTextChanged();
@@ -189,19 +186,18 @@ QString UBTGAdaptableText::text()
 
 void UBTGAdaptableText::onTextChanged()
 {
-	//qDebug() << ">> onTextChanged CALLED!";
     qreal documentSize = document()->size().height();
-    //qDebug() << ">>  documentSize: " << documentSize << ", height: " << height();
     if(height() == documentSize + mBottomMargin){
     	return;
     }
     mIsUpdatingSize = true;
 
 
-    if(documentSize < mMinimumHeight)
-        setFixedHeight(mMinimumHeight);
-    else
-        setFixedHeight(documentSize+mBottomMargin);
+    if(documentSize < mMinimumHeight){
+    	setFixedHeight(mMinimumHeight);
+    }else{
+    	setFixedHeight(documentSize+mBottomMargin);
+    }
 
     updateGeometry();
     //to trig a resize on the tree widget item
@@ -212,8 +208,8 @@ void UBTGAdaptableText::onTextChanged()
         setFocus();
     }
     mIsUpdatingSize = false;
-
 }
+
 void UBTGAdaptableText::setInitialText(const QString& text)
 {
     setText(text);
@@ -234,6 +230,43 @@ void UBTGAdaptableText::bottomMargin(int newValue)
     onTextChanged();
 }
 
+void UBTGAdaptableText::focusInEvent(QFocusEvent* e){
+	if(isReadOnly()){
+		e->ignore();
+	}
+	managePlaceholder(true);
+	QTextEdit::focusInEvent(e);
+}
+
+void UBTGAdaptableText::focusOutEvent(QFocusEvent* e){
+	managePlaceholder(false);
+	QTextEdit::focusOutEvent(e);
+}
+
+void UBTGAdaptableText::managePlaceholder(bool focus){
+	if(focus){
+		if(toPlainText() == mPlaceHolderText){
+			setTextColor(QColor(Qt::black));
+			setPlainText("");
+		}
+		setCursorToTheEnd();
+	}else{
+		if(toPlainText().isEmpty()){
+			setTextColor(QColor(Qt::lightGray));
+			setPlainText(mPlaceHolderText);
+		}
+	}
+}
+
+void UBTGAdaptableText::setCursorToTheEnd(){
+	QTextDocument* doc = document();
+	if(NULL != doc){
+		QTextBlock block = doc->lastBlock();
+		QTextCursor cursor(doc);
+		cursor.setPosition(block.position() + block.length() - 1);
+		setTextCursor(cursor);
+	}
+}
 
 /***************************************************************************
  *                      class   UBTGDraggableWeb                           *

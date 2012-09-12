@@ -611,18 +611,28 @@ void UBBoardController::duplicateItem(UBItem *item)
     {
     	UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
     	if(groupItem){
+    		QTransform groupTransform = groupItem->transform();
+    		groupItem->resetTransform();
+
     		QList<QGraphicsItem*> children = groupItem->childItems();
     		foreach(QGraphicsItem* pIt, children){
     			UBItem* pItem = dynamic_cast<UBItem*>(pIt);
     			if(NULL != pItem){
-    				duplicateItem(pItem);	// The duplication already copies the item parameters
-    				if(NULL != mLastCreatedItem){
-    					mLastCreatedItem->setSelected(true);
-    				}
+    				duplicateItem(pItem);
     			}
     		}
+    		groupItem->setTransform(groupTransform);
     		groupItem->setSelected(false);
     		UBApplication::mainWindow->actionGroupItems->trigger();
+    		QList<QGraphicsItem*> selItems =  mActiveScene->selectedItems();
+    		if(!selItems.empty()){
+    			// I don't like this solution but for now this is the only way I found.
+    			// Normally, at this state, only the duplicated group should be selected
+    			UBGraphicsGroupContainerItem* duplicatedGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.at(0));
+    			if(NULL != duplicatedGroup){
+    				duplicatedGroup->setTransform(groupTransform);
+    			}
+    		}
     	}
     	return;
     	break;
@@ -652,6 +662,7 @@ void UBBoardController::duplicateItem(UBItem *item)
         if (createdGitem)
             createdGitem->setPos(itemPos);
         mLastCreatedItem = dynamic_cast<QGraphicsItem*>(createdItem);
+        mLastCreatedItem->setSelected(true);
     }
 }
 
@@ -939,6 +950,10 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
     qDebug() << "something has been dropped on the board! Url is: " << url.toString();
     QString sUrl = url.toString();
 
+    QGraphicsItem *oldBackgroundObject = NULL;
+    if (isBackground) 
+        oldBackgroundObject = mActiveScene->backgroundObject();
+
     if(sUrl.startsWith("uniboardTool://"))
     {
         downloadFinished(true, url, "application/vnd.mnemis-uniboard-tool", QByteArray(), pPos, pSize, isBackground);
@@ -979,6 +994,16 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
 
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
     }
+
+    if (isBackground && oldBackgroundObject != mActiveScene->backgroundObject())
+    {
+        if (mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, oldBackgroundObject, mActiveScene->backgroundObject());
+            UBApplication::undoStack->push(uc);
+        }
+    }
+
+
 }
 
 
@@ -1121,7 +1146,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
-                "", 
+                sourceUrl.toString(),
                 UBPersistenceManager::videoDirectory,
                 uuid,
                 destFile,
@@ -1164,7 +1189,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
-                "", 
+                sourceUrl.toString(),
                 UBPersistenceManager::audioDirectory,
                 uuid,
                 destFile,
@@ -2181,7 +2206,10 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         {
             foreach(UBItem* item, mimeData->items())
             {
-                duplicateItem(item);
+            	QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);
+            	if(NULL != pItem){
+            		duplicateItem(item);
+            	}
             }
 
             return;

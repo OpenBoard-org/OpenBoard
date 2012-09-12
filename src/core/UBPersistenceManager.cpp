@@ -587,6 +587,10 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
         return mSceneCache.value(proxy, sceneIndex);
     else {
         UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
+        if(!scene && UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
+            createDocumentSceneAt(proxy,0);
+            scene = UBSvgSubsetAdaptor::loadScene(proxy, 0);
+        }
 
         if (scene)
             mSceneCache.insert(proxy, sceneIndex, scene);
@@ -913,12 +917,15 @@ bool UBPersistenceManager::addFileToDocument(UBDocumentProxy* pDocumentProxy,
                                                      QString& destinationPath,
                                                      QByteArray* data)
 {
+    Q_ASSERT(path.length());
     QFileInfo fi(path);
 
     if (!pDocumentProxy || objectUuid.isNull())
         return false;
     if (data == NULL && !fi.exists())
         return false;
+
+    qDebug() << fi.suffix();
 
     QString fileName = subdir + "/" + objectUuid.toString() + "." + fi.suffix();
 

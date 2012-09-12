@@ -166,7 +166,8 @@ void UBGraphicsItemDelegate::init()
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
-    disconnect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
+    if (UBApplication::boardController)
+        disconnect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
     // do not release mMimeData.
     // the mMimeData is owned by QDrag since the setMimeData call as specified in the documentation
 }
@@ -406,7 +407,7 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
         scene->removeItem(mFrame);
 
         /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */
-        UBGraphicsWebView *mDelegated_casted = dynamic_cast<UBGraphicsWebView*>(mDelegated);
+        UBGraphicsWidgetItem *mDelegated_casted = dynamic_cast<UBGraphicsWidgetItem*>(mDelegated);
         if (mDelegated_casted)
             mDelegated_casted->setHtml(QString());
 

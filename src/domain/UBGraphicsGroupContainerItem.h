@@ -22,13 +22,10 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    virtual UBGraphicsItemDelegate* Delegate() const { return mDelegate;}
-
     virtual UBCoreGraphicsScene *corescene();
     virtual UBGraphicsGroupContainerItem *deepCopy() const;
     virtual void copyItemParameters(UBItem *copy) const;
 
-    virtual void remove();
     enum { Type = UBGraphicsItemType::groupContainerType };
 
     virtual int type() const
@@ -37,7 +34,7 @@ public:
     }
 
     virtual void setUuid(const QUuid &pUuid);
-    void destroy();
+    void destroy(bool canUndo = true);
 
     virtual void clearSource();
 
