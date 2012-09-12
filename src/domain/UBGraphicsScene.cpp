@@ -628,6 +628,11 @@ bool UBGraphicsScene::inputDeviceRelease()
 
     setDocumentUpdated();
 
+    if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+        delete mCurrentStroke;
+    }
+    mCurrentStroke = NULL;
+
     return accepted;
 }
 

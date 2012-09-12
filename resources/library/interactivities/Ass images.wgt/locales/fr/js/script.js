@@ -9,7 +9,7 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
+    help: "Aide",
     help_content: "Ceci est un exemple de contenu de l'aide ..."
 };
 
