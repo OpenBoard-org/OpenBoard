@@ -63,6 +63,10 @@ class UBFloatingPalette : public QWidget
         bool mCustomPosition;
         bool mIsMoving;
 
+        virtual int getParentRightOffset();
+
+        eMinimizedLocation minimizedLocation(){return mMinimizedLocation;}
+
     private:
         void removeAllAssociatedPalette();
         void minimizePalette(const QPoint& pos);

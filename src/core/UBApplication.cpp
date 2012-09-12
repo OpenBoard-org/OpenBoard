@@ -315,7 +315,11 @@ int UBApplication::exec(const QString& pFileToImport)
 
     UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
-    applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
+    applicationController = new UBApplicationController(boardController->controlView(), 
+                                                        boardController->displayView(), 
+                                                        mainWindow, 
+                                                        staticMemoryCleaner,
+                                                        boardController->paletteManager()->rightPalette());
 
 
     connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),

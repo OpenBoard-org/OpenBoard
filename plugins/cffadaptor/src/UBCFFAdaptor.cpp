@@ -1085,7 +1085,9 @@ bool UBCFFAdaptor::UBToCFFConverter::setContentFromUBZ(const QDomElement &ubzEle
         if (bRet)
         {
             svgElement.setAttribute(aSVGHref, sDstContentFolder+"/"+sDstFileName);
-            svgElement.setAttribute(aSVGRequiredExtension, svgRequiredExtensionPrefix+convertExtention(fileExtention));
+            // NOT by standard! Enable it later!
+            // validator http://validator.imsglobal.org/iwb/index.jsp?validate=package
+            //svgElement.setAttribute(aSVGRequiredExtension, svgRequiredExtensionPrefix+convertExtention(fileExtention));
         }
     }
     else
@@ -1112,7 +1114,9 @@ bool UBCFFAdaptor::UBToCFFConverter::setContentFromUBZ(const QDomElement &ubzEle
             if (bRet)
             {
                 svgElement.setAttribute(aSVGHref, sDstContentFolder+"/"+sDstFileName);
-                svgElement.setAttribute(aSVGRequiredExtension, svgRequiredExtensionPrefix+fePng);
+                // NOT by standard! Enable it later!
+                // validator http://validator.imsglobal.org/iwb/index.jsp?validate=package
+                //svgElement.setAttribute(aSVGRequiredExtension, svgRequiredExtensionPrefix+fePng);
             }
         }
     }else

@@ -38,16 +38,14 @@
 #include "UBCustomCaptureWindow.h"
 #include "UBWindowCapture.h"
 #include "UBDesktopPalette.h"
-#include "UBDesktopPenPalette.h"
-#include "UBDesktopMarkerPalette.h"
-#include "UBDesktopEraserPalette.h"
+#include "UBDesktopPropertyPalette.h"
 
 #include "gui/UBKeyboardPalette.h"
 #include "gui/UBResources.h"
 
 #include "core/memcheck.h"
 
-UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
+UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UBRightPalette* rightPalette)
         : QObject(parent)
         , mTransparentDrawingView(0)
         , mTransparentDrawingScene(0)
@@ -55,6 +53,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
         , mDesktopPenPalette(NULL)
         , mDesktopMarkerPalette(NULL)
         , mDesktopEraserPalette(NULL)
+        , mRightPalette(rightPalette)
         , mWindowPositionInitialized(0)
         , mIsFullyTransparent(false)
         , mDesktopToolsPalettePositioned(false)
@@ -86,7 +85,9 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
     mTransparentDrawingScene->setDrawingMode(true);
 
-    mDesktopPalette = new UBDesktopPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
+    mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView, rightPalette); 
+    // This was not fix, parent reverted
+    // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
@@ -119,13 +120,13 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int)), this, SLOT(stylusToolChanged(int)));
 
     // Add the desktop associated palettes
-    mDesktopPenPalette = new UBDesktopPenPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
+    mDesktopPenPalette = new UBDesktopPenPalette(mTransparentDrawingView, rightPalette); 
 
     connect(mDesktopPalette, SIGNAL(maximized()), mDesktopPenPalette, SLOT(onParentMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), mDesktopPenPalette, SLOT(onParentMinimized()));
 
-    mDesktopMarkerPalette = new UBDesktopMarkerPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
-    mDesktopEraserPalette = new UBDesktopEraserPalette(NULL); // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
+    mDesktopMarkerPalette = new UBDesktopMarkerPalette(mTransparentDrawingView, rightPalette);
+    mDesktopEraserPalette = new UBDesktopEraserPalette(mTransparentDrawingView, rightPalette);
 
     mDesktopPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
     mDesktopPenPalette->setBackgroundBrush(UBSettings::settings()->opaquePaletteColor);
@@ -156,39 +157,15 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent)
     onDesktopPaletteMaximized();
 
     // FIX #633: Ensure that these palettes stay on top of the other elements
-    mDesktopEraserPalette->raise();
-    mDesktopMarkerPalette->raise();
-    mDesktopPenPalette->raise();
-    mDesktopPalette->raise();
+    //mDesktopEraserPalette->raise();
+    //mDesktopMarkerPalette->raise();
+    //mDesktopPenPalette->raise();
 }
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
 {
     delete mTransparentDrawingScene;
     delete mTransparentDrawingView;
-
-	/*
-    if(NULL != mDesktopPenPalette)
-    {
-        delete mDesktopPalette;
-        mDesktopPenPalette = NULL;
-    }
-    if(NULL != mDesktopMarkerPalette)
-    {
-        delete mDesktopMarkerPalette;
-        mDesktopMarkerPalette = NULL;
-    }
-    if(NULL != mDesktopEraserPalette)
-    {
-        delete mDesktopEraserPalette;
-        mDesktopEraserPalette = NULL;
-    }
-    if(NULL != mRightPalette)
-    {
-        delete mRightPalette;
-        mRightPalette = NULL;
-    }
-	*/
 }
 
 
@@ -255,7 +232,7 @@ void UBDesktopAnnotationController::setAssociatedPalettePosition(UBActionPalette
     }
 
     // First determine if the palette must be shown on the left or on the right
-    if(desktopPalettePos.x() <= (mTransparentDrawingView->width() - (palette->width() + mDesktopPalette->width() + 20))) // we take a small margin of 20 pixels
+    if(desktopPalettePos.x() <= (mTransparentDrawingView->width() - (palette->width() + mDesktopPalette->width() + mRightPalette->width() + 20))) // we take a small margin of 20 pixels
     {
         // Display it on the right
         desktopPalettePos += QPoint(mDesktopPalette->width(), yPen);

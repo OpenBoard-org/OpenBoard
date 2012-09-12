@@ -25,7 +25,6 @@ UBPropertyPalette::UBPropertyPalette(QWidget *parent, const char *name):UBAction
 {
     setObjectName(name);
     mbGrip = false;
-    setMaximumHeight(MAX_HEIGHT);
 }
 
 /**
@@ -36,7 +35,6 @@ UBPropertyPalette::UBPropertyPalette(QWidget *parent, const char *name):UBAction
 UBPropertyPalette::UBPropertyPalette(Qt::Orientation orientation, QWidget *parent):UBActionPalette(orientation, parent)
 {
     mbGrip = false;
-    setMaximumHeight(MAX_HEIGHT);
 }
 
 /**

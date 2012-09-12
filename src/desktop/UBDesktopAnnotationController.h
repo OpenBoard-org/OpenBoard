@@ -29,8 +29,8 @@ class UBDesktopPenPalette;
 class UBDesktopMarkerPalette;
 class UBDesktopEraserPalette;
 class UBActionPalette;
-//class UBKeyboardPalette;
 class UBMainWindow;
+class UBRightPalette;
 
 #define PROPERTY_PALETTE_TIMER      1000
 
@@ -47,7 +47,7 @@ class UBDesktopAnnotationController : public QObject
     Q_OBJECT;
 
     public:
-        UBDesktopAnnotationController(QObject *parent = 0);
+        UBDesktopAnnotationController(QObject *parent, UBRightPalette* rightPalette);
         virtual ~UBDesktopAnnotationController();
         void showWindow();
         void hideWindow();
