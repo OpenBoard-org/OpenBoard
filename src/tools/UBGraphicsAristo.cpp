@@ -692,7 +692,7 @@ void UBGraphicsAristo::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 }
 
 /*
- * toolfrompos() returns the item type corresponding to the given position.
+ * toolfromPos() returns the item type corresponding to the given position.
  * This method is used to reduce the amount of code in each event function and improve class' maintainability.
  * pos: event's position ; a rotation is done to counter elements rotation, like the marker button.
  */ 
