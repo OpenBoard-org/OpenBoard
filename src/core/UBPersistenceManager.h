@@ -62,7 +62,7 @@ class UBPersistenceManager : public QObject
         virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy,
                 UBGraphicsScene* pScene, const int pSceneIndex);
 
-        virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index);
+        virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack = true);
 
         virtual void insertDocumentSceneAt(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* scene, int index);
 

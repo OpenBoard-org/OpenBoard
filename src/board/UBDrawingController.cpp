@@ -47,7 +47,6 @@ UBDrawingController::UBDrawingController(QObject * parent)
     , mActiveRuler(NULL)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
-    , mDrawingMode(DRAWING_MODE)
 	, mIsDesktopMode(false)
 {
     connect(UBSettings::settings(), SIGNAL(colorContextChanged()), this, SIGNAL(colorPaletteChanged()));
@@ -110,16 +109,10 @@ void UBDrawingController::setStylusTool(int tool)
         mStylusTool = (UBStylusTool::Enum)tool;
 
 
-        if(eDrawingMode_Vector == DRAWING_MODE && !mIsDesktopMode){
-            mDrawingMode = eDrawingMode_Vector;
-        }
-
         if (mStylusTool == UBStylusTool::Pen)
             UBApplication::mainWindow->actionPen->setChecked(true);
-        else if (mStylusTool == UBStylusTool::Eraser){
+        else if (mStylusTool == UBStylusTool::Eraser)
             UBApplication::mainWindow->actionEraser->setChecked(true);
-            mDrawingMode = eDrawingMode_Artistic;
-        }
         else if (mStylusTool == UBStylusTool::Marker)
             UBApplication::mainWindow->actionMarker->setChecked(true);
         else if (mStylusTool == UBStylusTool::Selector)
@@ -407,12 +400,3 @@ void UBDrawingController::captureToolSelected(bool checked)
         setStylusTool(UBStylusTool::Capture);
 }
 
-void UBDrawingController::setDrawingMode(eDrawingMode mode)
-{
-    mDrawingMode = mode;
-}
-
-eDrawingMode UBDrawingController::drawingMode()
-{
-    return mDrawingMode;
-}

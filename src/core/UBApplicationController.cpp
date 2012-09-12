@@ -464,7 +464,6 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
     }
 
     UBDrawingController::drawingController()->setInDestopMode(true);
-    UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Artistic);
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 }
 
@@ -598,12 +597,6 @@ void UBApplicationController::checkUpdateRequest()
 
 void UBApplicationController::hideDesktop()
 {
-   
-
-    if(UBStylusTool::Eraser != UBDrawingController::drawingController()->stylusTool()){
-    	UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
-    }
-
     if (mMainMode == Board)
     {
         showBoard();

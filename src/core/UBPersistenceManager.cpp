@@ -493,7 +493,7 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
 }
 
 
-UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* proxy, int index)
+UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* proxy, int index, bool useUndoRedoStack)
 {
     int count = sceneCount(proxy);
 
@@ -502,7 +502,7 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
 
     mSceneCache.shiftUpScenes(proxy, index, count -1);
 
-    UBGraphicsScene *newScene = mSceneCache.createScene(proxy, index);
+    UBGraphicsScene *newScene = mSceneCache.createScene(proxy, index, useUndoRedoStack);
 
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
             UBSettings::settings()->UBSettings::isCrossedBackground());
