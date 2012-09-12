@@ -81,7 +81,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     QString backgroundStyle = "QWidget {background-color: rgba(127, 127, 127, 0)}";
     mTransparentDrawingView->setStyleSheet(backgroundStyle);
 
-    mTransparentDrawingScene = new UBGraphicsScene(0);
+    mTransparentDrawingScene = new UBGraphicsScene(0, false);
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
     mTransparentDrawingScene->setDrawingMode(true);
 
@@ -371,10 +371,6 @@ void UBDesktopAnnotationController::goToUniboard()
 
     UBPlatformUtils::setDesktopMode(false);
     UBDrawingController::drawingController()->setInDestopMode(false);
-
-    if(UBStylusTool::Eraser != UBDrawingController::drawingController()->stylusTool()){
-    	UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
-    }
 
     emit restoreUniboard();
 }

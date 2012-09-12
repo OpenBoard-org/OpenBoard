@@ -1146,8 +1146,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createNewScene()
 {
-    mCurrentScene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, mProxy->pageCount());
-    mCurrentScene->setURStackEnable(false);
+    mCurrentScene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, mProxy->pageCount(), false);
     mCurrentScene->setSceneRect(mViewBox);
     if ((mCurrentScene->sceneRect().topLeft().x() >= 0) || (mCurrentScene->sceneRect().topLeft().y() >= 0)) {
         mShiftVector = -mViewBox.center();

@@ -22,13 +22,6 @@
 
 class UBAbstractDrawRuler;
 
-typedef enum{
-    eDrawingMode_Artistic,
-    eDrawingMode_Vector
-}eDrawingMode;
-
-#define DRAWING_MODE    eDrawingMode_Vector
-
 class UBDrawingController : public QObject
 {
     Q_OBJECT;
@@ -56,8 +49,6 @@ class UBDrawingController : public QObject
         void setPenColor(bool onDarkBackground, const QColor& color, int pIndex);
         void setMarkerColor(bool onDarkBackground, const QColor& color, int pIndex);
         void setMarkerAlpha(qreal alpha);
-        void setDrawingMode(eDrawingMode mode);
-        eDrawingMode drawingMode();
 
         UBAbstractDrawRuler* mActiveRuler;
 
@@ -86,7 +77,6 @@ class UBDrawingController : public QObject
     private:
         UBStylusTool::Enum mStylusTool;
         UBStylusTool::Enum mLatestDrawingTool;
-        eDrawingMode mDrawingMode;
         bool mIsDesktopMode;
 
         static UBDrawingController* sDrawingController;

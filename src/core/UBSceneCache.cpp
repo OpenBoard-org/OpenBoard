@@ -38,9 +38,9 @@ UBSceneCache::~UBSceneCache()
 }
 
 
-UBGraphicsScene* UBSceneCache::createScene(UBDocumentProxy* proxy, int pageIndex)
+UBGraphicsScene* UBSceneCache::createScene(UBDocumentProxy* proxy, int pageIndex, bool useUndoRedoStack)
 {
-    UBGraphicsScene* newScene = new UBGraphicsScene(proxy);
+    UBGraphicsScene* newScene = new UBGraphicsScene(proxy, useUndoRedoStack);
     insert(proxy, pageIndex, newScene);
 
     return newScene;
