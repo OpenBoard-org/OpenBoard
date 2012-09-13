@@ -23,9 +23,9 @@
 
 UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalette)
     : UBActionPalette(Qt::TopLeftCorner, parent)
-    , rightPalette(_rightPalette)
     , mShowHideAction(0)
     , mDisplaySelectAction(0)
+    , rightPalette(_rightPalette)
 {
     QList<QAction*> actions;
 
