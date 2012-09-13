@@ -1653,7 +1653,8 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZAudio(const QDomElement &element, Q
         // CFF cannot show SVG images, so we need to convert it to png.
         if (bRes && createPngFromSvg(srcAudioImageFile, dstAudioImageFilePath, getTransformFromUBZ(element), QSize(audioImageDimention, audioImageDimention)))
         {
-            QDomElement svgSwitchSection = doc.createElementNS(svgIWBNS,svgIWBNSPrefix + ":" + tIWBSwitch);
+            // switch section disabled because of imcompatibility with validator http://validator.imsglobal.org/iwb/index.jsp?validate=package
+            // QDomElement svgSwitchSection = doc.createElementNS(svgIWBNS,svgIWBNSPrefix + ":" + tIWBSwitch);
 
             // first we place content
             QDomElement svgASection = doc.createElementNS(svgIWBNS,svgIWBNSPrefix + ":" + tIWBA);
@@ -1665,8 +1666,8 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZAudio(const QDomElement &element, Q
             svgElementPart.setAttribute(aWidth, audioImageDimention);
 
             svgASection.appendChild(svgElementPart);
-
-            svgSwitchSection.appendChild(svgASection);
+            // switch section disabled because of imcompatibility with validator http://validator.imsglobal.org/iwb/index.jsp?validate=package
+            // svgSwitchSection.appendChild(svgASection);
 
             // if viewer cannot open that content - it must use that:
             QDomElement svgText = doc.createElementNS(svgIWBNS,svgIWBNSPrefix + ":" + tIWBTextArea);
@@ -1679,9 +1680,11 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZAudio(const QDomElement &element, Q
             QDomText text = doc.createTextNode("Cannot Open Content");  
             svgText.appendChild(text);
 
-            svgSwitchSection.appendChild(svgText);
+            // switch section disabled because of imcompatibility with validator http://validator.imsglobal.org/iwb/index.jsp?validate=package          
+            // svgSwitchSection.appendChild(svgText);
 
-            addSVGElementToResultModel(svgSwitchSection, dstSvgList, getElementLayer(element));
+            // switch section disabled because of imcompatibility with validator http://validator.imsglobal.org/iwb/index.jsp?validate=package
+            addSVGElementToResultModel(svgASection/*svgSwitchSection*/, dstSvgList, getElementLayer(element));
 
             if (0 < iwbElementPart.attributes().count())
                 addIWBElementToResultModel(iwbElementPart);
