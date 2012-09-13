@@ -775,9 +775,9 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
     QList<QGraphicsItem*> collidItems = items(eraserBoundingRect, Qt::IntersectsItemBoundingRect);
 
     QList<UBGraphicsPolygonItem*> intersectedItems;
-    QList<QList<QPolygonF>> intersectedPolygons;
 
-    //qDebug() << "Start, eraser is " << eraserPath;
+    typedef QList<QPolygonF> POLYGONSLIST;
+    QList<POLYGONSLIST> intersectedPolygons;
 
     #pragma omp parallel for
     for(int i=0; i<collidItems.size(); i++)
@@ -793,7 +793,6 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         {
             #pragma omp critical
             {
-                //qDebug() << itemPainterPath << " - delete!";
                 // Compele remove item
                 intersectedItems << pi;
                 intersectedPolygons << QList<QPolygonF>();
@@ -805,7 +804,6 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
             #pragma omp critical
             {
-               //qDebug() << itemPainterPath << " - modify to - " << newPath;
                intersectedItems << pi;
                intersectedPolygons << newPath.simplified().toFillPolygons(pi->sceneTransform().inverted());
             }
