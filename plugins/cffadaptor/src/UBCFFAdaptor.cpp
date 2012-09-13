@@ -1794,6 +1794,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZPolygon(const QDomElement &element,
 
     if (setCommonAttributesFromUBZ(element, iwbElementPart, svgElementPart))
     {
+        svgElementPart.setAttribute(aStroke, svgElementPart.attribute(aFill));
         addSVGElementToResultModel(svgElementPart, dstSvgList, getElementLayer(element));
 
         if (0 < iwbElementPart.attributes().count())
@@ -1827,6 +1828,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZPolyline(const QDomElement &element
 
     if (setCommonAttributesFromUBZ(element, iwbElementPart, svgElementPart))
     {
+        svgElementPart.setAttribute(aStroke, svgElementPart.attribute(aFill));
         addSVGElementToResultModel(svgElementPart, dstSvgList, getElementLayer(element));
 
         if (0 < iwbElementPart.attributes().count())
@@ -1859,6 +1861,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZLine(const QDomElement &element, QM
 
     if (setCommonAttributesFromUBZ(element, iwbElementPart, svgElementPart))
     {
+        svgElementPart.setAttribute(aStroke, svgElementPart.attribute(aFill));
         addSVGElementToResultModel(svgElementPart, dstSvgList, getElementLayer(element));
 
         if (0 < iwbElementPart.attributes().count())

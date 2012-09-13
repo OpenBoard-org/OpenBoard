@@ -547,7 +547,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::readTextCharAttr(const QDomElement &
 {
     QString fontSz = element.attribute(aFontSize);
     if (!fontSz.isNull()) {
-        qreal fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->physicalDpiY();
+        qreal fontSize = fontSz.remove("pt").toDouble();
         format.setFontPointSize(fontSize);
     }
     QString fontColorText = element.attribute(aFill);
@@ -712,12 +712,14 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     blockFormat.setAlignment(Qt::AlignLeft);
 
     QTextCharFormat textFormat;
-    textFormat.setFontPointSize(12 * 72 / QApplication::desktop()->physicalDpiY());
+     // default values
+    textFormat.setFontPointSize(12);
     textFormat.setForeground(qApp->palette().foreground().color());
     textFormat.setFontFamily("Arial");
     textFormat.setFontItalic(false);
     textFormat.setFontWeight(QFont::Normal);
 
+    // readed values
     readTextBlockAttr(element, blockFormat);
     readTextCharAttr(element, textFormat);
 
@@ -1140,7 +1142,13 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
     QTransform tr = item->sceneTransform();
     item->setTransform(rTransform.scale(fullScaleX, fullScaleY), true);
     tr = item->sceneTransform();
-    QPoint pos ((int)((x + mShiftVector.x() + (newVector - oldVector).x()) * mVBTransFactor), (int)((y +mShiftVector.y() + (newVector - oldVector).y()) * mVBTransFactor));
+    QPoint pos;
+    if (UBGraphicsTextItem::Type == item->type())
+        pos = QPoint((int)((x + mShiftVector.x() + (newVector - oldVector).x())), (int)((y +mShiftVector.y() + (newVector - oldVector).y()) * mVBTransFactor));
+    else
+        pos = QPoint((int)((x + mShiftVector.x() + (newVector - oldVector).x()) * mVBTransFactor), (int)((y +mShiftVector.y() + (newVector - oldVector).y()) * mVBTransFactor));
+        
+
     item->setPos(pos);
 }
 
