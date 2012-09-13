@@ -94,6 +94,7 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mSystemScaleFactor(1.0)
     , mCleanupDone(false)
     , mCacheWidgetIsEnabled(false)
+    , mDeletingSceneIndex(-1)
 {
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
@@ -670,6 +671,7 @@ void UBBoardController::deleteScene(int nIndex)
 {
     if (selectedDocument()->pageCount()>=2)
     {
+        mDeletingSceneIndex = nIndex;
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
         showMessage(tr("Delete page %1 from document").arg(nIndex), true);
@@ -679,12 +681,12 @@ void UBBoardController::deleteScene(int nIndex)
         deletePages(scIndexes);
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
-
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
         setActiveDocumentScene(nIndex);
         showMessage(tr("Page %1 deleted").arg(nIndex));
         QApplication::restoreOverrideCursor();
+        mDeletingSceneIndex = -1;
     }
 }
 
@@ -1781,7 +1783,7 @@ void UBBoardController::show()
 void UBBoardController::persistCurrentScene()
 {
     if(UBPersistenceManager::persistenceManager()
-            && selectedDocument() && mActiveScene
+            && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
             && (mActiveSceneIndex >= 0)
             && (mActiveScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified())))
     {
