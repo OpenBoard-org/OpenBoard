@@ -775,7 +775,9 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
     QList<QGraphicsItem*> collidItems = items(eraserBoundingRect, Qt::IntersectsItemBoundingRect);
 
     QList<UBGraphicsPolygonItem*> intersectedItems;
-    QList<QPolygonF> intersectedPolygons;
+    QList<QList<QPolygonF>> intersectedPolygons;
+
+    //qDebug() << "Start, eraser is " << eraserPath;
 
     #pragma omp parallel for
     for(int i=0; i<collidItems.size(); i++)
@@ -786,22 +788,26 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
         QPainterPath itemPainterPath;
         itemPainterPath.addPolygon(pi->sceneTransform().map(pi->polygon()));
+
         if (eraserPath.contains(itemPainterPath))
         {
             #pragma omp critical
             {
+                //qDebug() << itemPainterPath << " - delete!";
                 // Compele remove item
                 intersectedItems << pi;
-                intersectedPolygons << QPolygonF();
+                intersectedPolygons << QList<QPolygonF>();
             }
         }
         else if (eraserPath.intersects(itemPainterPath))
         {   
+
             QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
             #pragma omp critical
             {
+               //qDebug() << itemPainterPath << " - modify to - " << newPath;
                intersectedItems << pi;
-               intersectedPolygons << newPath.simplified().toFillPolygon(pi->sceneTransform().inverted());
+               intersectedPolygons << newPath.simplified().toFillPolygons(pi->sceneTransform().inverted());
             }
         }
     }
@@ -814,7 +820,23 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         }
         else
         {
-            intersectedItems[i]->setPolygon(intersectedPolygons[i]);
+            UBGraphicsPolygonItem *pi = intersectedItems[i];
+            
+            for(int j = 0; j < intersectedPolygons[i].size(); j++)
+            {
+                QPolygonF p = intersectedPolygons[i][j];
+                if (j==0)
+                    pi->setPolygon(intersectedPolygons[i][j]);
+                else
+                {
+                    UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem(intersectedPolygons[i][j], pi->parentItem());
+                    pi->copyItemParameters(polygonItem);
+
+                    polygonItem->setStroke(pi->stroke());
+                    polygonItem->setStrokesGroup(pi->strokesGroup());
+                    pi->strokesGroup()->addToGroup(polygonItem);
+                }
+            }
         }
     }
 
