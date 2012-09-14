@@ -99,6 +99,8 @@ protected:
 
 public:
 
+    virtual int type() const = 0;
+
     inline UBGraphicsItemDelegate *Delegate() const { return mDelegate; }
 
     static void assignZValue(QGraphicsItem*, qreal value);
