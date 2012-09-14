@@ -75,6 +75,15 @@ void UBToolWidget::initialize()
 
     if(!sUnpinPixmap)
         sUnpinPixmap = new QPixmap(":/images/unpin.svg");
+
+    UBGraphicsScene *wscene = dynamic_cast<UBGraphicsScene *>(mGraphicsWidgetItem->scene());
+    if (wscene)
+    {
+        wscene->removeItemFromDeletion(mGraphicsWidgetItem);
+        wscene->removeItem(mGraphicsWidgetItem);
+    }
+
+    mGraphicsWidgetItem->setParent(this);
     
     QGraphicsLinearLayout *graphicsLayout = new QGraphicsLinearLayout(Qt::Vertical, this);
 
@@ -83,7 +92,7 @@ void UBToolWidget::initialize()
     graphicsLayout->setContentsMargins(mContentMargin, mContentMargin, mContentMargin, mContentMargin);
     setPreferredSize(mGraphicsWidgetItem->preferredWidth() + mContentMargin * 2, mGraphicsWidgetItem->preferredHeight() + mContentMargin * 2);
 
-    mGraphicsWebView = new QGraphicsWebView();
+    mGraphicsWebView = new QGraphicsWebView(this);
     connect(mGraphicsWebView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     mGraphicsWebView->load(mGraphicsWidgetItem->mainHtml());
     graphicsLayout->addItem(mGraphicsWebView);
