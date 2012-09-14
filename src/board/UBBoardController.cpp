@@ -534,10 +534,12 @@ void UBBoardController::duplicateScene()
     duplicateScene(mActiveSceneIndex);
 }
 
-void UBBoardController::duplicateItem(UBItem *item)
+UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 {    
     if (!item)
-        return;
+        return NULL;
+
+    UBGraphicsItem *retItem = NULL;
 
     mLastCreatedItem = NULL;
 
@@ -611,6 +613,7 @@ void UBBoardController::duplicateItem(UBItem *item)
     case UBMimeType::Group:
     {
     	UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+        UBGraphicsGroupContainerItem* duplicatedGroup = NULL;
     	if(groupItem){
     		QTransform groupTransform = groupItem->transform();
     		groupItem->resetTransform();
@@ -629,13 +632,13 @@ void UBBoardController::duplicateItem(UBItem *item)
     		if(!selItems.empty()){
     			// I don't like this solution but for now this is the only way I found.
     			// Normally, at this state, only the duplicated group should be selected
-    			UBGraphicsGroupContainerItem* duplicatedGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.at(0));
+    			duplicatedGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.at(0));
     			if(NULL != duplicatedGroup){
     				duplicatedGroup->setTransform(groupTransform);
     			}
     		}
     	}
-    	return;
+    	retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
     	break;
     }
 
@@ -649,10 +652,13 @@ void UBBoardController::duplicateItem(UBItem *item)
                 mLastCreatedItem = gitem;
                 gitem->setSelected(true);
             }
-            return;
+            retItem = dynamic_cast<UBGraphicsItem *>(gitem);
         }break;
     }    
     
+    if (retItem)
+        return retItem;
+
     UBItem *createdItem = downloadFinished(true, sourceUrl, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
     if (createdItem)
     {
@@ -664,7 +670,10 @@ void UBBoardController::duplicateItem(UBItem *item)
             createdGitem->setPos(itemPos);
         mLastCreatedItem = dynamic_cast<QGraphicsItem*>(createdItem);
         mLastCreatedItem->setSelected(true);
+
+        retItem = dynamic_cast<UBGraphicsItem *>(createdItem);
     }
+    return retItem;
 }
 
 void UBBoardController::deleteScene(int nIndex)
@@ -2082,7 +2091,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
         QString snapshotPath = selectedDocument()->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
         w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
         UBGraphicsWidgetItem *tmpItem = dynamic_cast<UBGraphicsWidgetItem*>(w3cWidgetItem);
-        if (tmpItem)
+        if (tmpItem && tmpItem->scene())
            tmpItem->takeSnapshot().save(snapshotPath, "PNG");
 
     }
@@ -2295,17 +2304,24 @@ void UBBoardController::togglePodcast(bool checked)
         UBPodcastController::instance()->toggleRecordingPalette(checked);
 }
 
-
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
     graphicsWidget->remove();
 
-    UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget);
+    mActiveScene->setURStackEnable(false);
+    UBGraphicsItem *toolW3C = duplicateItem(dynamic_cast<UBItem *>(graphicsWidget));
+    UBGraphicsWidgetItem *copyedGraphicsWidget = NULL;
+
+    if (UBGraphicsWidgetItem::Type == toolW3C->type())
+        copyedGraphicsWidget = static_cast<UBGraphicsWidgetItem *>(toolW3C);
+
+    UBToolWidget *toolWidget = new UBToolWidget(copyedGraphicsWidget);
     mActiveScene->addItem(toolWidget);
     qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
 
     toolWidget->setScale(ssf);
     toolWidget->setPos(graphicsWidget->scenePos());
+    mActiveScene->setURStackEnable(true);
 }
 
 

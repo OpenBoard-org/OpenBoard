@@ -40,6 +40,7 @@ class UBGraphicsAudioItem;
 class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
 class UBItem;
+class UBGraphicsItem;
 
 
 class UBBoardController : public UBDocumentContainer
@@ -158,7 +159,7 @@ class UBBoardController : public UBDocumentContainer
 
         void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
-        void duplicateItem(UBItem *item);
+        UBGraphicsItem *duplicateItem(UBItem *item);
         void deleteScene(int index);
 
         bool cacheIsVisible() {return mCacheWidgetIsEnabled;}

@@ -596,7 +596,7 @@ QCursor    UBGraphicsTriangle::flipCursor() const
 void UBGraphicsTriangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     lastRect = rect().toRect();
-    lastPos = transform().inverted().map(event->screenPos());
+    lastPos = sceneTransform().inverted().map(event->screenPos());
 
     if (resize1Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
     {
@@ -636,7 +636,7 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
-        QPoint currPos = transform().inverted().map(event->screenPos());
+        QPoint currPos = sceneTransform().inverted().map(event->screenPos());
 
         if (mResizing1)
         {
@@ -804,6 +804,7 @@ void UBGraphicsTriangle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void UBGraphicsTriangle::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+    mResizing1 = mResizing2 = mRotating = false;
     mShowButtons = false;
     setCursor(Qt::ArrowCursor);
     mCloseSvgItem->setVisible(false);
