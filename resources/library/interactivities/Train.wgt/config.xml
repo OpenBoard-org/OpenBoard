@@ -3,9 +3,9 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.njin.fr/sankore/apps/Le train" 
         version="1.0"
-        width="600"
-        height="400" 
-        ub:resizable="true">     
+        width="940"
+        height="340" 
+        ub:resizable="false">     
    
 		<name>Le train</name>
 		<author href="http://www.njin.fr" email="contact@njin.fr">njin</author>
