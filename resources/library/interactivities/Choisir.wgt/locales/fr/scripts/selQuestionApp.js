@@ -21,7 +21,7 @@ var sankoreLang = {
     answer:"Ceci est une réponse possible",
     q:"Q",
     add_new_question:" Ajouter une nouvelle question ...",
-    options:"Les options",
+    options:"Options",
     close:"Fermer",
     delete_question:"Supprimer la question",
     delete_answer:"Supprimer la proposition",
@@ -40,8 +40,28 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help: "Aide",
+    help_content: "<p><h2>Choisir</h2></p>"+
+"<p><h3>Question à choix multiples (QCM).</h3></p>"+
+
+"<p>Une question est posée avec plusieurs choix de réponses possibles. Le but est de choisir la bonne réponse.</p>"+
+
+"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+"<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
+
+"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Ajouter une nouvelle question …”, puis.</p>"+
+"<ul><li>insérez la question en cliquant sur le champ de texte “Saisir la question ici ...”,</li>"+
+"<li>cliquez sur ”Options” pour choisir l’affichage des propositions (une seule bonne réponse, plusieurs bonnes réponses, liste déroulante). Cliquez sur “Fermer”,</li>"+
+"<li>cliquez sur ”Ajouter une proposition” et saisissez la proposition dans le champ de texte,</li>"+
+"<li>définissez la ou les propositions correctes en cliquant sur la case à cocher à gauche des bonnes réponses.</li>"+
+"<li>Pour supprimer une proposition, cliquez sur la croix située à droite de celle-ci.</li></ul>"+
+
+"<p>Pour supprimer un exercice, cliquez sur la croix à droite du numéro de ”Options”.</p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
 };
 
 var questionArray;

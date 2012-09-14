@@ -16,8 +16,29 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help: "Aide",
+    help_content: "<p><h2>Catégoriser des textes</h2></p>"+
+"<p><h3>Classer des étiquettes de mots en fonction de la dénomination de la catégorie.</h3></p>"+
+
+"<p>L’activité s’effectue par un glisser-déposer de l’étiquette de mots dans la catégorie correspondante. Tant que toutes les étiquettes de mots ne sont pas classées, la zone reste rouge. Une fois que toutes les étiquettes de mots sont classées dans la bonne catégorie, la zone se colore en vert.</p>"+
+
+"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+"<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
+
+"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, une zone bleue apparaît, c’est une catégorie, puis.</p>"+
+"<ul><li>insérez le nom de la catégorie (par exemple “fruits”, “légumes”, “mammifères”...) en cliquant dans le champ de texte “Saisir le nom de la catégorie ici …”,</li>"+
+"<li>cliquez sur le gros “+” situé à gauche de la catégorie ce qui vous permet de rajouter des étiquettes de mots,</li>"+
+"<li>entrez des mots dans ces étiquettes,</li>"+
+"<li>ajoutez ensuite une catégorie (ou plusieurs) en cliquant sur le signe “+” situé à droite de la catégorie, complétez par son nom et ajoutez des étiquettes de mots.</li></ul>"+
+"<p>Pour supprimer une étiquette de mots, cliquez sur la croix située dans le coin supérieur droit de celle-ci.</p>"+
+"<p>Pour supprimer une catégorie, cliquez sur le signe “-” situé à droite de celle-ci.</p>"+
+
+"<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
 };
 
 //main function

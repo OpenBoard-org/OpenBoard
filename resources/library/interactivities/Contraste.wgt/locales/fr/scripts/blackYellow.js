@@ -26,8 +26,26 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help: "Aide",
+    help_content: "<p><h2>Contraste</h2></p>"+
+"<p><h3>Jeu de couleurs.</h3></p>"+
+
+
+"<p>Cette activité permet de masquer et d’afficher du texte en jouant sur la couleur de fond (jaune ou noir). Le but est de pouvoir faire apparaître des données en passant d’une couleur à l’autre.</p>"+
+
+"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+"<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
+
+"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “+ Ajouter” en haut, puis</p>"+
+"<ul><li>saisissez la donnée par exemple “3x15”,</li>"+
+"<li>saisissez le résultat, par exemple “15” et cliquez sur “OK”.</li></ul>"+
+"<p>Pour modifier les données ou les résultats, cliquez directement sur l’exercice.</p>"+
+"<p>Pour supprimer un exercice, cliquez sur la croix en haut à droite de l’exercice.</p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
 };
 
 function init(){
