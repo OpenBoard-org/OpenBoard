@@ -281,6 +281,7 @@ class UBBoardController : public UBDocumentContainer
         QMap<QAction*, QPair<QString, QString> > mActionTexts;
         bool mCacheWidgetIsEnabled;
         QGraphicsItem* mLastCreatedItem;
+        int mDeletingSceneIndex;
 
     private slots:
         void stylusToolDoubleClicked(int tool);

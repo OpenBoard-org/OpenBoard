@@ -273,7 +273,8 @@ bool UBFileSystemUtils::copyDir(const QString& pSourceDirPath, const QString& pT
     QDir dirSource(pSourceDirPath);
     QDir dirTarget(pTargetDirPath);
 
-    dirTarget.mkpath(pTargetDirPath);
+    if (!dirTarget.mkpath(pTargetDirPath))
+        return false;
 
     bool successSoFar = true;
 

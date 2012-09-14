@@ -66,15 +66,15 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     QString dummyWidgets = tr("widgets");
 
     UBExportCFF* cffExporter = new UBExportCFF(this);
-    mExportAdaptors.append(cffExporter);
     UBExportFullPDF* exportFullPdf = new UBExportFullPDF(this);
-    mExportAdaptors.append(exportFullPdf);
     UBExportDocument* exportDocument = new UBExportDocument(this);
+    UBWebPublisher* webPublished = new UBWebPublisher(this);
     mExportAdaptors.append(exportDocument);
+    mExportAdaptors.append(webPublished);
+    mExportAdaptors.append(exportFullPdf);
+    mExportAdaptors.append(cffExporter);
 //     UBExportWeb* exportWeb = new UBExportWeb(this);
 //     mExportAdaptors.append(exportWeb);
-    UBWebPublisher* webPublished = new UBWebPublisher(this);
-    mExportAdaptors.append(webPublished);
 
     UBImportDocument* documentImport = new UBImportDocument(this);
     mImportAdaptors.append(documentImport);
@@ -194,7 +194,7 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
     int nImportedDocuments = 0;
     foreach(const QString& fileName, fileNames)
     {
-        UBApplication::showMessage(tr("Importing file").arg(fileName));
+        UBApplication::showMessage(tr("Importing file %1").arg(fileName));
 
         QFile file(fileName);
         QFileInfo fileInfo(file);

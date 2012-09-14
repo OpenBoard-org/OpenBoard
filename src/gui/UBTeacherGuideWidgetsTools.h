@@ -166,6 +166,7 @@ private:
     QLabel* mpDropMeWidget;
     QWidget* mpWorkWidget;
     QVBoxLayout* mpLayout;
+    QHBoxLayout* mpMediaLayout;
     UBTGAdaptableText* mpTitle;
     QLabel* mpMediaLabelWidget;
     UBMediaWidget* mpMediaWidget;
@@ -174,6 +175,7 @@ private:
     bool mIsPresentationMode;
     QString mMediaType;
     bool mIsInitializationMode;
+    int mMediaWidgetHeight;
 };
 
 

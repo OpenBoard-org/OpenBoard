@@ -79,13 +79,14 @@ class UBPersistenceManager : public QObject
         virtual QStringList allVideos(const QDir& dir);
         virtual QStringList allWidgets(const QDir& dir);
 
-        virtual QString generateUniqueDocumentPath();
+        QString generateUniqueDocumentPath();
+        QString generateUniqueDocumentPath(const QString& baseFolder);
 
         QString teacherGuideAbsoluteObjectPath(UBDocumentProxy* pDocumentProxy);
         QString addObjectToTeacherGuideDirectory(UBDocumentProxy* proxy, QString pPath);
         QString addWidgetToTeacherGuideDirectory(UBDocumentProxy* pDocumentProxy, QString pPath);
 
-        virtual void addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
+        bool addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
 
         virtual void upgradeDocumentIfNeeded(UBDocumentProxy* pDocumentProxy);
 
@@ -128,7 +129,7 @@ class UBPersistenceManager : public QObject
 
         int sceneCount(const UBDocumentProxy* pDocumentProxy);
 
-        int sceneCountInDir(const QString& pPath);
+        static QStringList getSceneFileNames(const QString& folder);
 
         QList<QPointer<UBDocumentProxy> > allDocumentProxies();
 

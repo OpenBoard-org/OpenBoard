@@ -1095,8 +1095,10 @@ void UBGraphicsScene::clearContent(clearCase pCase)
 
     switch (pCase) {
     case clearBackground :
-        removeItem(mBackgroundObject);
-        removedItems << mBackgroundObject;
+        if(mBackgroundObject){
+            removeItem(mBackgroundObject);
+            removedItems << mBackgroundObject;
+        }
         break;
 
     case clearItemsAndAnnotations :

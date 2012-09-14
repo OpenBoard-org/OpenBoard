@@ -86,7 +86,6 @@ UBTGActionWidget::UBTGActionWidget(QTreeWidgetItem* widget, QWidget* parent, con
     mpTask = new UBTGAdaptableText(widget,this);
     mpTask->setPlaceHolderText(tr("Type task here ..."));
     mpTask->setAcceptRichText(true);
-    mpTask->setTextColor(QColor().green());
     mpTask->setObjectName("ActionWidgetTaskTextEdit");
     mpLayout->addWidget(mpOwner);
     mpLayout->addWidget(mpTask);
@@ -147,7 +146,6 @@ void UBTGAdaptableText::setPlaceHolderText(QString text)
     // the space addition is to make this string unique and check against it to know
     // if we are talking about a typed string or the placeholder string
     mPlaceHolderText = text + "     ";
-    setTextColor(QColor(Qt::lightGray));
     setPlainText(mPlaceHolderText);
 }
 
@@ -230,9 +228,12 @@ void UBTGAdaptableText::bottomMargin(int newValue)
     onTextChanged();
 }
 
-void UBTGAdaptableText::focusInEvent(QFocusEvent* e){
+void UBTGAdaptableText::focusInEvent(QFocusEvent* e)
+{
+	qDebug() << "pippa";
 	if(isReadOnly()){
 		e->ignore();
+		qDebug() << "ignored";
 	}
 	managePlaceholder(true);
 	QTextEdit::focusInEvent(e);
@@ -246,11 +247,13 @@ void UBTGAdaptableText::focusOutEvent(QFocusEvent* e){
 void UBTGAdaptableText::managePlaceholder(bool focus){
 	if(focus){
 		if(toPlainText() == mPlaceHolderText){
+			qDebug() << "Place holder found";
 			setTextColor(QColor(Qt::black));
 			setPlainText("");
 		}
 		setCursorToTheEnd();
-	}else{
+	}
+	else{
 		if(toPlainText().isEmpty()){
 			setTextColor(QColor(Qt::lightGray));
 			setPlainText(mPlaceHolderText);
@@ -323,6 +326,7 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
   , mpDropMeWidget(NULL)
   , mpWorkWidget(NULL)
   , mpLayout(NULL)
+  , mpMediaLayout(NULL)
   , mpTitle(NULL)
   , mpMediaLabelWidget(NULL)
   , mpMediaWidget(NULL)
@@ -330,6 +334,7 @@ UBTGMediaWidget::UBTGMediaWidget(QTreeWidgetItem* widget, QWidget* parent,const 
   , mMediaPath(QString(""))
   , mIsPresentationMode(false)
   , mIsInitializationMode(false)
+  , mMediaWidgetHeight(150)
 {
     setObjectName(name);
     mpDropMeWidget = new QLabel();
@@ -347,6 +352,7 @@ UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWi
   , mpDropMeWidget(NULL)
   , mpWorkWidget(NULL)
   , mpLayout(NULL)
+  , mpMediaLayout(NULL)
   , mpTitle(NULL)
   , mpMediaLabelWidget(NULL)
   , mpMediaWidget(NULL)
@@ -354,6 +360,7 @@ UBTGMediaWidget::UBTGMediaWidget(QString mediaPath, QTreeWidgetItem* widget, QWi
   , mIsPresentationMode(true)
   , mMediaType("")
   , mIsInitializationMode(false)
+  , mMediaWidgetHeight(150)
 {
     setObjectName(name);
     mMediaPath = UBApplication::boardController->selectedDocument()->persistencePath()+ "/" + mediaPath;
@@ -368,6 +375,7 @@ UBTGMediaWidget::~UBTGMediaWidget()
     DELETEPTR(mpMediaLabelWidget);
     DELETEPTR(mpMediaWidget);
     DELETEPTR(mpWebView);
+    DELETEPTR(mpMediaLayout);
     DELETEPTR(mpLayout);
 
     removeWidget(mpDropMeWidget);
@@ -456,9 +464,8 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
 
         mpMediaLabelWidget = new QLabel();
         QPixmap pixmap = QPixmap(mMediaPath);
-        pixmap = pixmap.scaledToWidth(mpTreeWidgetItem->treeWidget()->size().width());
+        pixmap = pixmap.scaledToHeight(mMediaWidgetHeight);
         mpMediaLabelWidget->setPixmap(pixmap);
-        mpMediaLabelWidget->setScaledContents(true);
     }
     else if(mimeType.contains("widget") && !forceFlashMediaType){
         mMediaType = "w3c";
@@ -508,31 +515,43 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
     if(setMedia){
         setAcceptDrops(false);
         mpWorkWidget = new QWidget(this);
-        mpLayout = new QVBoxLayout(mpWorkWidget);
         if(!mIsPresentationMode){
+            mpLayout = new QVBoxLayout(mpWorkWidget);
             mpTitle = new UBTGAdaptableText(mpTreeWidgetItem,mpWorkWidget);
             mpTitle->setPlaceHolderText(tr("Type title here..."));
             mpLayout->addWidget(mpTitle);
+            mpMediaLayout = new QHBoxLayout;
+            mpLayout->addLayout(mpMediaLayout);
+            mpWorkWidget->setLayout(mpLayout);
         }
+        else{
+            mpMediaLayout = new QHBoxLayout(mpWorkWidget);
+            mpWorkWidget->setLayout(mpMediaLayout);
+        }
+        
+        mpMediaLayout->addStretch(1);
+        
         if(mpMediaLabelWidget){
-            mpMediaLabelWidget->setMaximumHeight(width());
+            mpMediaLabelWidget->setFixedHeight(mMediaWidgetHeight);
             mpMediaLabelWidget->setParent(mpWorkWidget);
-            mpLayout->addWidget(mpMediaLabelWidget);
+            mpMediaLayout->addWidget(mpMediaLabelWidget);
         }
         else if (mpMediaWidget){
-            mpMediaWidget->setMaximumHeight(width());
+            mpMediaWidget->setFixedHeight(mMediaWidgetHeight);
             mpMediaWidget->setParent(mpWorkWidget);
-            mpLayout->addWidget(mpMediaWidget);
+            mpMediaLayout->addWidget(mpMediaWidget);
         }
         else if (mpWebView){
-            mpWebView->setMaximumHeight(width());
+            mpWebView->setFixedHeight(mMediaWidgetHeight);
             mpWebView->setParent(mpWorkWidget);
-            mpLayout->addWidget(mpWebView);
+            mpMediaLayout->addWidget(mpWebView);
             mpWebView->show();
         }
-        mpWorkWidget->setLayout(mpLayout);
+        mpMediaLayout->addStretch(1);
         addWidget(mpWorkWidget);
         setCurrentWidget(mpWorkWidget);
+        mpWorkWidget->show();
+
     }
 }
 
@@ -565,8 +584,7 @@ void UBTGMediaWidget::mousePressEvent(QMouseEvent *event)
 {
     if (!mIsPresentationMode)
         event->ignore();
-     else{
-
+    else{
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData();
         QList<QUrl> urlList;
