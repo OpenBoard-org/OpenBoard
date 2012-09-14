@@ -194,7 +194,7 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
     int nImportedDocuments = 0;
     foreach(const QString& fileName, fileNames)
     {
-        UBApplication::showMessage(tr("Importing file").arg(fileName));
+        UBApplication::showMessage(tr("Importing file %1").arg(fileName));
 
         QFile file(fileName);
         QFileInfo fileInfo(file);

@@ -37,7 +37,7 @@ class UBImportDocument : public UBDocumentBasedImportAdaptor
         virtual bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile);
 
     private:
-        QString expandFileToDir(const QFile& pZipFile, const QString& pDir);
+        bool extractFileToDir(const QFile& pZipFile, const QString& pDir, QString& documentRoot);
 };
 
 #endif /* UBIMPORTDOCUMENT_H_ */
