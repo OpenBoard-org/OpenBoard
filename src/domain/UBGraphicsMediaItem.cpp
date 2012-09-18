@@ -73,9 +73,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
     mMediaObject = new Phonon::MediaObject(this);
 
-    setDelegate(new UBGraphicsMediaItemDelegate(this, mMediaObject));
-    Delegate()->init();
-
     if (pMediaFileUrl.toLocalFile().contains("videos")) 
     {
         mMediaType = mediaType_Video;
@@ -91,7 +88,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         mVideoWidget->setMinimumSize(140,26);
 
-        setWidget(mVideoWidget);
         haveLinkedImage = true;
     }
     else    
@@ -111,7 +107,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         mAudioWidget->resize(320,26+3*borderSize);
         mAudioWidget->setMinimumSize(150,26+borderSize);
-        setWidget(mAudioWidget);
+
         haveLinkedImage = false;
     }
 
@@ -119,6 +115,19 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     
     mSource = Phonon::MediaSource(pMediaFileUrl);
     mMediaObject->setCurrentSource(mSource);
+
+    // we should create delegate after media objects because delegate uses his properties at creation.
+    setDelegate(new UBGraphicsMediaItemDelegate(this, mMediaObject));
+    
+    // delegate should be created earler because we setWidget calls resize event for graphics proxy widgt.
+    // resize uses delegate.
+    if (mediaType_Video == mMediaType)
+        setWidget(mVideoWidget);
+    else
+        setWidget(mAudioWidget);
+
+    // media widget should be created and placed on proxy widget here.
+    Delegate()->init();
 
     if (mediaType_Audio == mMediaType)
         Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);

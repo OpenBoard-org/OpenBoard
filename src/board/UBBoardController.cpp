@@ -1041,6 +1041,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         return NULL;
     }
 
+
+    mActiveScene->deselectAllItems();
+    
     if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("uniboardTool://"))
         showMessage(tr("Download finished"));
 
@@ -1070,8 +1073,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         else
         {
             mActiveScene->scaleToFitDocumentSize(pixItem, true, UBSettings::objectInControlViewMargin);
-            pixItem->setSelected(true);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+            pixItem->setSelected(true);
         }
 
         return pixItem;
@@ -1090,8 +1093,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         else
         {
             mActiveScene->scaleToFitDocumentSize(svgItem, true, UBSettings::objectInControlViewMargin);
-            svgItem->setSelected(true);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+            svgItem->setSelected(true);
         }
 
         return svgItem;
