@@ -28,14 +28,28 @@ function checkResponse()
 var sankoreLang = {
     view: "Afficher", 
     edit: "Modifier",
-    example: "Cette phrase\nest un\nexample",
+    example: "Cette phrase\nest un\nexemple",
     wgt_name: "Ordonner des phrases",
     reload: "Recharger",
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help: "Aide",
+    help_content: "<p><h2>Ordonner des phrases</h2></p>"+
+"<p><h3>Ordonner des segments de phrases pour reconstituer le texte.</h3></p>"+
+
+"<p>Des étiquettes avec des phrases sont dans le désordre. Le but est de les remettre en ordre pour avoir un texte compréhensible et correct. Lorsque le texte est en ordre, l’interactivité se colore en vert. L’activité s’effectue par un glisser-déposer des étiquettes pour remettre le texte en ordre.</p>"+
+
+"<p>Le bouton “Recharger” réinitialise l’exercice.</p>"+
+
+"<p>Le bouton “Modifier” vous permet : </p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+"<li>de déterminer le texte à reconstituer et le nombre de séparations dans l’énoncé.</li></ul>"+
+
+"<p>Pour insérer du texte dans la zone, cliquez sur la zone et saisissez le texte souhaité.</p>"+
+"<p>Pour ajouter des séparations dans l’énoncé, retournez à la ligne. Votre texte sera séparé lors d'un retour à la ligne.</p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
 };
 
 

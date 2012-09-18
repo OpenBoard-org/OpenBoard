@@ -5,13 +5,33 @@ var sankoreLang = {
     add: "Nouveau bloc",
     enter: "Saisir la consigne ici ...",
     example: "exemple",
-    wgt_name: "Ordonner les lettres",
+    wgt_name: "Ordonner des lettres",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad",
     none: "Aucun",
     help: "Aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help_content: "<p><h2>Ordre des lettres</h2></p>"+
+"<p><h3>Ordonner des lettres pour reconstituer un mot.</h3></p>"+
+
+"<p>L’intégration d’un fichier son (facultatif) permet d’écouter le mot à reconstituer. Lorsque les lettres sont dans le bon ordre, l’interactivité se colore en vert.</p>"+
+
+"<p>L’activité s’effectue par un glisser-déposer des étiquettes pour remettre les lettres en ordre.<b> NB : vous pouvez également utiliser cette activité avec des chiffres.</b></p>"+
+
+"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+"<li>de déterminer le mot à reconstituer.</li></ul>"+
+ 
+"<p>Pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, puis</p>"+
+"<ul><li>insérez une consigne en cliquant sur le champ de texte “Saisir la consigne ici ...”,</li>"+
+"<li>insérez un son dans la zone à gauche de la consigne par glisser-déposer d’un son à partir de votre bibliothèque (facultatif),</li>"+
+"<li>écrivez le mot souhaité à la place de “exemple”.</li></ul>"+
+
+"<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
 };
 
 //main function
