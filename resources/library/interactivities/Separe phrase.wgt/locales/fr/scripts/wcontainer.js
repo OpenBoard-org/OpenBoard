@@ -11,7 +11,7 @@ var sankoreLang = {
     help_content: "<p><h2>Séparer une phrase</h2></p>"+
 "<p><h3>Séparer les mots d’une phrase.</h3></p>"+
 
-"<p>Une phrase est écrite sans que les mots ne soient séparés. Le but de cette activité est d’insérer les espaces aux bons endroits.</p>"+
+"<p>Une phrase est écrite sans que les mots ne soient séparés. Le but de cette activité est d’insérer les espaces aux bons endroits. Une fois que les séparations sont placées correctement, la phrase se colore en vert.</p>"+
 
 "<p>Pour ajouter des séparations entre les mots, déplacez le curseur et cliquez entre deux lettres, une séparation s’ajoute alors.</p>"+
 
@@ -28,6 +28,7 @@ var sankoreLang = {
 
 
 "<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
+
 };
 
 // if use the "view/edit" button or rely on the api instead

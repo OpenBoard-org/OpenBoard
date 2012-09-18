@@ -7,8 +7,27 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help: "Aide",
+    help_content: "<p><h3>Séparer les phrases d’un texte.</h3></p>"+
+
+"<p>Un texte est écrit sans que les points entre les phrases n’apparaissent. Le but de cette activité est d’insérer les points aux bons endroits. Une fois que les points sont placés correctement, la phrase se colore en vert.</p>"+
+
+"<p>Pour ajouter les points entre les phrases, déplacez le curseur et cliquez entre deux mots, un point s’ajoute alors.</p>"+
+
+
+"<p>Le bouton “Recharger” réinitialise l’exercice.</p>"+
+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun), </li>"+
+"<li>de déterminer le texte sur lequel travailler.</li></ul>"+
+
+"<p>Ecrivez simplement dans la zone de texte les différentes phrases séparées par des points.<b> NB : Les points d’interrogation, les deux points “:”, les points-virgules “;” et les points d’exclamation ne sont pas pris en compte.</b></p>"+
+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
+
 };
 
 // if use the "view/edit" button or rely on the api instead
