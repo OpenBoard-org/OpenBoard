@@ -749,9 +749,6 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
 
 void UBBoardView::handleItemMouseMove(QMouseEvent *event)
 {
-    if (!movingItem)
-        return;
-
     // determine item to move (maybee we need to move group of item or his parent.
     movingItem = determineItemToMove(movingItem);
 
