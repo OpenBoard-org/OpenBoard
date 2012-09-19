@@ -56,7 +56,7 @@ void UBYouTubePublisher::uploadVideo(const QString& videoFilePath)
     UBYouTubePublishingDialog pub(videoFilePath, UBApplication::mainWindow);
 
     pub.title->setText(QFileInfo(mVideoFilePath).completeBaseName());
-    pub.keywords->setText("Uniboard");
+    pub.keywords->setText(tr("Open-Sankore"));
 
     QString defaultEMail = UBSettings::settings()->youTubeUserEMail->get().toString();
     pub.email->setText(defaultEMail);
@@ -103,7 +103,7 @@ void UBYouTubePublisher::postClientLoginRequest(const QString& userName, const Q
     QString payload = QString("Email=%1&Passwd=%2&service=youtube&source=%3")
         .arg(userName)
         .arg(password)
-        .arg("Uniboard");
+        .arg(tr("OpenSankore"));
 
     mAuthRequest->post(url, payload.toUtf8());
 
@@ -270,7 +270,7 @@ QString UBYouTubePublisher::youtubeMetadata()
         workingDescription = workingDescription.left(4900) + "...";
     }
 
-    workingDescription += "\n\nhttp://www.getuniboard.com";
+    workingDescription += "\n\nhttp://www.open-sankore.org";
 
     if(workingDescription.length() == 0)
     {
