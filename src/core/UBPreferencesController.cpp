@@ -174,20 +174,12 @@ void UBPreferencesController::init()
 
     // display tab
     for(int i=0; i<mPreferencesUI->keyboardPaletteKeyButtonSize->count(); i++)
-        if (mPreferencesUI->keyboardPaletteKeyButtonSize->itemText(i) ==
-                settings->boardKeyboardPaletteKeyBtnSize->get().toString())
-        {
+        if (mPreferencesUI->keyboardPaletteKeyButtonSize->itemText(i) == settings->boardKeyboardPaletteKeyBtnSize->get().toString()) {
             mPreferencesUI->keyboardPaletteKeyButtonSize->setCurrentIndex(i);
             break;
         }
 
-    for(int i=0; i<mPreferencesUI->startModeComboBox->count(); i++)
-        if (mPreferencesUI->startModeComboBox->itemText(i) ==
-                settings->appStartMode->get().toString())
-        {
-            mPreferencesUI->startModeComboBox->setCurrentIndex(i);
-            break;
-        }
+    mPreferencesUI->startModeComboBox->setCurrentIndex(settings->appStartMode->get().toInt());
 
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
     mPreferencesUI->displayBrowserPageCheckBox->setChecked(settings->webShowPageImmediatelyOnMirroredScreen->get().toBool());
