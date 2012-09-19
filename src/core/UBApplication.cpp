@@ -372,7 +372,7 @@ int UBApplication::exec(const QString& pFileToImport)
     AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
 #endif
 
-    if (UBSettings::settings()->appStartMode->get() == "Desktop")
+    if (UBSettings::settings()->appStartMode->get().toInt())
         applicationController->showDesktop();
     else
         applicationController->showBoard();
