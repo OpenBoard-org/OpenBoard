@@ -821,7 +821,7 @@
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Groupe</translation>
     </message>
 </context>
 <context>
@@ -866,11 +866,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ID de l&apos;élément = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Le contenu n&apos;est pas supporté dans le format destinataire.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -878,7 +878,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Voulez-vous vraiment effacer 1 page de ce document &apos;%0&apos;?</translation>
     </message>
 </context>
 <context>
@@ -947,11 +947,11 @@
     </message>
     <message>
         <source>Page %1 deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Page %1 effacée</translation>
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Echec d&apos;ajout de document : erreur de copie</translation>
     </message>
 </context>
 <context>
@@ -1146,7 +1146,7 @@
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Le dossier ne contient pas d&apos;image</translation>
     </message>
 </context>
 <context>
@@ -1177,7 +1177,7 @@
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ajout de la page %1 de %2</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1185,11 +1185,11 @@
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Importation du document %1 terminée.</translation>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Importation du document %1 en cours</translation>
     </message>
 </context>
 <context>
@@ -1246,7 +1246,7 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="unfinished">
             <numerusform>%1 page copiée</numerusform>
             <numerusform>%1 pages copiées</numerusform>
         </translation>
@@ -1267,7 +1267,7 @@
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Avertissements lors de l&apos;exportation</translation>
     </message>
 </context>
 <context>
@@ -1479,11 +1479,11 @@
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Favoris</translation>
     </message>
     <message>
         <source>Web search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Recherche Web</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1494,7 +1494,7 @@
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chargement en cours </translation>
     </message>
 </context>
 <context>
@@ -1552,7 +1552,7 @@
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Cannot load content</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Impossible de charger le contenu</translation>
     </message>
     <message>
         <source>Loading ...</source>
@@ -1878,11 +1878,11 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Grouper</translation>
     </message>
     <message>
         <source>Ungroup</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dégrouper</translation>
     </message>
 </context>
 <context>

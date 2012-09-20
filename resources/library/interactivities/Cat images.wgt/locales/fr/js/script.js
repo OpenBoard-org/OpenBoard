@@ -10,7 +10,7 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
+    help: "Aide",
     help_content: "<p><h2>Catégoriser des images</h2></p>"+
 "<p><h3>Classer des images en fonction de la dénomination de la catégorie.</h3></p>"+
 
