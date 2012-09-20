@@ -222,6 +222,13 @@ QPoint UBToolWidget::naturalCenter() const
         return QPoint(0, 0);
 }
 
+void UBToolWidget::remove()
+{
+    mToolWidget = NULL;
+    hide();
+    deleteLater();
+}
+
 void UBToolWidget::centerOn(const QPoint& pos)
 {
     QWidget::move(pos - QPoint(width() / 2, height() / 2));

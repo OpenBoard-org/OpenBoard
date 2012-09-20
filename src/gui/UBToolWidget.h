@@ -32,6 +32,7 @@ class UBToolWidget : public QWidget
         UBToolWidget(UBGraphicsWidgetItem* pWidget, QWidget* pParent = 0);
         virtual ~UBToolWidget();
 
+        void remove();
         void centerOn(const QPoint& pos);
 
         QPoint naturalCenter() const;

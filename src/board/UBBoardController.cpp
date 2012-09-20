@@ -2318,13 +2318,9 @@ void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* gr
 {
     mActiveScene->setURStackEnable(false);
     graphicsWidget->remove(false);
-    UBGraphicsItem *toolW3C = duplicateItem(dynamic_cast<UBItem *>(graphicsWidget));
-    UBGraphicsWidgetItem *copyedGraphicsWidget = NULL;
-
-    if (UBGraphicsWidgetItem::Type == toolW3C->type())
-        copyedGraphicsWidget = static_cast<UBGraphicsWidgetItem *>(toolW3C);
-
-    UBToolWidget *toolWidget = new UBToolWidget(copyedGraphicsWidget, mControlView);
+    mActiveScene->addItemToDeletion(graphicsWidget);
+    
+    UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget, mControlView);
     mActiveScene->setURStackEnable(true);
 
     QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
@@ -2335,11 +2331,15 @@ void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* gr
 
 void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
-    UBGraphicsWidgetItem *graphicsWidgetItem = addW3cWidget(toolWidget->toolWidget()->widgetUrl(), QPointF(0, 0));
-    graphicsWidgetItem->setPos(toolWidget->pos());
-    toolWidget->hide();
-    delete toolWidget;
-    graphicsWidgetItem->setSelected(true); 
+    UBGraphicsWidgetItem *widgetToScene = toolWidget->toolWidget();
+
+    QPoint mainWindowCenter = toolWidget->mapTo(mMainWindow, QPoint(toolWidget->width(), toolWidget->height()) / 2);
+    QPoint controlViewCenter = mControlView->mapFrom(mMainWindow, mainWindowCenter);
+    QPointF scenePos = mControlView->mapToScene(controlViewCenter);
+
+    mActiveScene->addGraphicsWidget(widgetToScene, scenePos);
+
+    toolWidget->remove();
 }
 
 
