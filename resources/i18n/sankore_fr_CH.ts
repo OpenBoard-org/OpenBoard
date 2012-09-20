@@ -801,7 +801,7 @@
     </message>
     <message>
         <source>Group items</source>
-        <translation type="unfinished">Grouper</translation>
+        <translation>Grouper</translation>
     </message>
     <message>
         <source>Play</source>
@@ -821,7 +821,7 @@
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Groupe</translation>
+        <translation>Grouper</translation>
     </message>
 </context>
 <context>
@@ -955,11 +955,11 @@
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Groupe</translation>
+        <translation>Grouper</translation>
     </message>
     <message>
         <source>Ungroup</source>
-        <translation type="unfinished">Dégrouper</translation>
+        <translation>Dégrouper</translation>
     </message>
 </context>
 <context>
