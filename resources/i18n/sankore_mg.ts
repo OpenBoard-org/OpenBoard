@@ -953,6 +953,14 @@
         <source>Add file operation failed: file copying error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1147,6 +1155,10 @@
     <message>
         <source>Folder does not contain any image files</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Untitled Documents</source>
+        <translation type="unfinished">Rakitra tsy misy lahateny</translation>
     </message>
 </context>
 <context>
@@ -1865,24 +1877,8 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
 <context>
     <name>UBSettings</name>
     <message>
-        <source>Untitled Documents</source>
-        <translation>Rakitra tsy misy lahateny</translation>
-    </message>
-    <message>
-        <source>Trash</source>
-        <translation>Daba</translation>
-    </message>
-    <message>
         <source>My Movies</source>
         <translation>Ny sarimietsiko</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ungroup</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2196,6 +2192,14 @@ Avereno alefa ny rindr&apos;asa ahafahana mampiasa ny rakitra novoazana azafady.
     <message>
         <source>Upload to YouTube in progress %1 %</source>
         <translation>Fandefasana ho an&apos;ny YouTube am-pandehanana %1 %</translation>
+    </message>
+    <message>
+        <source>Open-Sankore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenSankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

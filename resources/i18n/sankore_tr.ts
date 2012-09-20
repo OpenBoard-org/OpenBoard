@@ -953,6 +953,14 @@
         <source>Add file operation failed: file copying error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1146,6 +1154,10 @@
     <message>
         <source>Folder does not contain any image files</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Untitled Documents</source>
+        <translation type="unfinished">Başlıksız Dökümanlar</translation>
     </message>
 </context>
 <context>
@@ -1863,24 +1875,8 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
 <context>
     <name>UBSettings</name>
     <message>
-        <source>Untitled Documents</source>
-        <translation>Başlıksız Dökümanlar</translation>
-    </message>
-    <message>
-        <source>Trash</source>
-        <translation>Çöp</translation>
-    </message>
-    <message>
         <source>My Movies</source>
         <translation>Filimlerim</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ungroup</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2194,6 +2190,14 @@ Güncellenen dökümanlara erişmek için uygulamayı yeniden başlatın.</trans
     <message>
         <source>Upload to YouTube in progress %1 %</source>
         <translation>YouTube&apos;a video gönderim işlemi: %1 %</translation>
+    </message>
+    <message>
+        <source>Open-Sankore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenSankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

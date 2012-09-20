@@ -953,6 +953,14 @@
         <source>Add file operation failed: file copying error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1148,6 +1156,10 @@
     <message>
         <source>Folder does not contain any image files</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Untitled Documents</source>
+        <translation type="unfinished">Documents sense títol</translation>
     </message>
 </context>
 <context>
@@ -1867,24 +1879,8 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
 <context>
     <name>UBSettings</name>
     <message>
-        <source>Untitled Documents</source>
-        <translation>Documents sense títol</translation>
-    </message>
-    <message>
-        <source>Trash</source>
-        <translation>Paperera</translation>
-    </message>
-    <message>
         <source>My Movies</source>
         <translation>Les meves pel·lícules</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ungroup</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2193,6 +2189,14 @@ Reinicieu l&apos;aplicació per accedir als documents actualitzats.</translation
     <message>
         <source>Upload to YouTube in progress %1 %</source>
         <translation>La càrrega al YouTube és en progrés %1 %</translation>
+    </message>
+    <message>
+        <source>Open-Sankore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenSankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

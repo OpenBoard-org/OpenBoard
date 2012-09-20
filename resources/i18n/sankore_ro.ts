@@ -953,6 +953,14 @@
         <source>Add file operation failed: file copying error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1147,6 +1155,10 @@
     <message>
         <source>Folder does not contain any image files</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Untitled Documents</source>
+        <translation type="unfinished">Documente fără titlu</translation>
     </message>
 </context>
 <context>
@@ -1865,24 +1877,8 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
 <context>
     <name>UBSettings</name>
     <message>
-        <source>Untitled Documents</source>
-        <translation>Documente fără titlu</translation>
-    </message>
-    <message>
-        <source>Trash</source>
-        <translation>Coş de gunoi</translation>
-    </message>
-    <message>
         <source>My Movies</source>
         <translation>Filmele mele</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ungroup</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2196,6 +2192,14 @@ Vă rugăm să reporniţi aplicaţia pentru a accesa documentele actualizate.</t
     <message>
         <source>Upload to YouTube in progress %1 %</source>
         <translation>Încărcare pe YouTube în curs %1 %</translation>
+    </message>
+    <message>
+        <source>Open-Sankore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenSankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -95,6 +95,8 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mCleanupDone(false)
     , mCacheWidgetIsEnabled(false)
     , mDeletingSceneIndex(-1)
+    , mActionGroupText(tr("Group"))
+    , mActionUngroupText(tr("Ungroup"))
 {
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
@@ -938,14 +940,16 @@ void UBBoardController::groupButtonClicked()
         return;
     }
 
-    if (groupAction->text() == UBSettings::settings()->actionGroupText) { //The only way to get information from item, considering using smth else
+    if (groupAction->text() == mActionGroupText) { //The only way to get information from item, considering using smth else
     	UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
         groupItem->setSelected(true);
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
-    } else if (groupAction->text() == UBSettings::settings()->actionUngroupText) {
+    }
+    else if (groupAction->text() == mActionUngroupText) {
         //Considering one selected item and it's a group
-        if (selItems.count() > 1) {
+        if (selItems.count() > 1)
+        {
             qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
             return;
         }

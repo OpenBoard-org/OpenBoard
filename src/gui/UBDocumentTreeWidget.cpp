@@ -234,7 +234,7 @@ void UBDocumentTreeWidget::dropEvent(QDropEvent *event)
             }
             else
             {
-                if (groupItem->groupName() == UBSettings::defaultDocumentGroupName)
+                if (groupItem->groupName() == UBApplication::app()->documentController->defaultDocumentGroupName())
                     groupName = "";
                 else
                     groupName = groupItem->groupName();
@@ -442,12 +442,12 @@ QString UBDocumentGroupTreeItem::groupName() const
 
 bool UBDocumentGroupTreeItem::isTrashFolder() const
 {
-    return (0 == (flags() & Qt::ItemIsEditable)) && (groupName() == UBSettings::documentTrashGroupName);
+    return (0 == (flags() & Qt::ItemIsEditable)) &&  UBApplication::app()->documentController && (groupName() == UBApplication::app()->documentController->documentTrashGroupName());
 }
 
 bool UBDocumentGroupTreeItem::isDefaultFolder() const
 {
-    return (0 == (flags() & Qt::ItemIsEditable)) && (groupName() == UBSettings::defaultDocumentGroupName);
+    return (0 == (flags() & Qt::ItemIsEditable)) && UBApplication::app()->documentController && (groupName() == UBApplication::app()->documentController->defaultDocumentGroupName());
 }
 
 

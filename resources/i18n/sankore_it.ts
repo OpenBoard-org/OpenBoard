@@ -953,6 +953,14 @@
         <source>Add file operation failed: file copying error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1148,6 +1156,10 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <message>
         <source>Folder does not contain any image files</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Untitled Documents</source>
+        <translation type="unfinished">Documenti senza titolo</translation>
     </message>
 </context>
 <context>
@@ -1867,24 +1879,8 @@ Vuoi ignorare gli errori per questo host?</translation>
 <context>
     <name>UBSettings</name>
     <message>
-        <source>Untitled Documents</source>
-        <translation>Documenti senza titolo</translation>
-    </message>
-    <message>
-        <source>Trash</source>
-        <translation>Cestino</translation>
-    </message>
-    <message>
         <source>My Movies</source>
         <translation>I miei film</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ungroup</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2201,6 +2197,14 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <message>
         <source>Upload to YouTube in progress %1 %</source>
         <translation>Upload su YouTube in corso %1 %</translation>
+    </message>
+    <message>
+        <source>Open-Sankore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenSankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
