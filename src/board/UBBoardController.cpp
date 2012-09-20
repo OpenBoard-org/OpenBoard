@@ -2333,6 +2333,8 @@ void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
     UBGraphicsWidgetItem *widgetToScene = toolWidget->toolWidget();
 
+    widgetToScene->resetTransform();
+
     QPoint mainWindowCenter = toolWidget->mapTo(mMainWindow, QPoint(toolWidget->width(), toolWidget->height()) / 2);
     QPoint controlViewCenter = mControlView->mapFrom(mMainWindow, mainWindowCenter);
     QPointF scenePos = mControlView->mapToScene(controlViewCenter);
