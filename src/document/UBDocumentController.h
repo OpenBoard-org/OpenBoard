@@ -55,6 +55,8 @@ class UBDocumentController : public UBDocumentContainer
         bool pageCanBeMovedDown(int page);
         bool pageCanBeDuplicated(int page);
         bool pageCanBeDeleted(int page);
+        QString documentTrashGroupName(){ return mDocumentTrashGroupName;}
+        QString defaultDocumentGroupName(){ return mDefaultDocumentGroupName;}
 
     signals:
         void exportDone();
@@ -113,6 +115,8 @@ class UBDocumentController : public UBDocumentContainer
 
         void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi);
         void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
+        QString mDocumentTrashGroupName;
+        QString mDefaultDocumentGroupName;
 
     private slots:
         void documentZoomSliderValueChanged (int value);

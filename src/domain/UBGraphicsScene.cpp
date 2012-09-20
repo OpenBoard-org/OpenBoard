@@ -336,19 +336,19 @@ void UBGraphicsScene::updateGroupButtonState()
 
     if (selCount < 1) {
         groupAction->setEnabled(false);
-        groupAction->setText(UBSettings::settings()->actionGroupText);
+        groupAction->setText(UBApplication::app()->boardController->actionGroupText());
 
     } else if (selCount == 1) {
         if (selItems.first()->type() == UBGraphicsGroupContainerItem::Type) {
             groupAction->setEnabled(true);
-            groupAction->setText(UBSettings::settings()->actionUngroupText);
+            groupAction->setText(UBApplication::app()->boardController->actionUngroupText());
         } else {
             groupAction->setEnabled(false);
         }
 
     } else if (selCount > 1) {
         groupAction->setEnabled(true);
-        groupAction->setText(UBSettings::settings()->actionGroupText);
+        groupAction->setText(UBApplication::app()->boardController->actionGroupText());
     }
 }
 

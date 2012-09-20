@@ -801,7 +801,7 @@
     </message>
     <message>
         <source>Group items</source>
-        <translation type="unfinished">Grouper</translation>
+        <translation>Grouper</translation>
     </message>
     <message>
         <source>Play</source>
@@ -821,7 +821,7 @@
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Groupe</translation>
+        <translation>Grouper</translation>
     </message>
 </context>
 <context>
@@ -952,6 +952,14 @@
     <message>
         <source>Add file operation failed: file copying error</source>
         <translation type="unfinished">Echec d&apos;ajout de document : erreur de copie</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation>Grouper</translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation>Dégrouper</translation>
     </message>
 </context>
 <context>
@@ -1147,6 +1155,10 @@
     <message>
         <source>Folder does not contain any image files</source>
         <translation type="unfinished">Le dossier ne contient pas d&apos;image</translation>
+    </message>
+    <message>
+        <source>Untitled Documents</source>
+        <translation type="unfinished">Documents sans titre</translation>
     </message>
 </context>
 <context>
@@ -1865,24 +1877,8 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
 <context>
     <name>UBSettings</name>
     <message>
-        <source>Untitled Documents</source>
-        <translation>Documents sans titre</translation>
-    </message>
-    <message>
-        <source>Trash</source>
-        <translation>Corbeille</translation>
-    </message>
-    <message>
         <source>My Movies</source>
         <translation>Mes films</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished">Grouper</translation>
-    </message>
-    <message>
-        <source>Ungroup</source>
-        <translation type="unfinished">Dégrouper</translation>
     </message>
 </context>
 <context>
@@ -2196,6 +2192,14 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     <message>
         <source>Upload to YouTube in progress %1 %</source>
         <translation>Transfert vers YouTube en cours %1 %</translation>
+    </message>
+    <message>
+        <source>Open-Sankore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenSankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

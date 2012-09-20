@@ -69,6 +69,8 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
    , mToolsPalette(0)
    , mToolsPalettePositionned(false)
    , mTrashTi(0)
+   , mDocumentTrashGroupName(tr("Trash"))
+   , mDefaultDocumentGroupName(tr("Untitled Documents"))
 {
     setupViews();
     setupToolbar();
@@ -667,7 +669,7 @@ void UBDocumentController::moveFolderToTrash(UBDocumentGroupTreeItem* groupTi)
         }
         if (!documentFound)
         {
-            UBDocumentProxy *document = UBPersistenceManager::persistenceManager()->createDocument( UBSettings::defaultDocumentGroupName );
+            UBDocumentProxy *document = UBPersistenceManager::persistenceManager()->createDocument( mDefaultDocumentGroupName );
             selectDocument(document, true);
         }
     }
@@ -799,7 +801,7 @@ void UBDocumentController::loadDocumentProxies()
     UBDocumentGroupTreeItem* emptyGroupNameTi = 0;
 
     mTrashTi = new UBDocumentGroupTreeItem(0, false); // deleted by the tree widget
-    mTrashTi->setGroupName(UBSettings::documentTrashGroupName);
+    mTrashTi->setGroupName(mDocumentTrashGroupName);
     mTrashTi->setIcon(0, QIcon(":/images/trash.png"));
 
     foreach (QPointer<UBDocumentProxy> proxy, proxies)
@@ -813,7 +815,7 @@ void UBDocumentController::loadDocumentProxies()
 
             if (docGroup.isEmpty()) // #see https://trac.assembla.com/uniboard/ticket/426
             {
-                docGroup = UBSettings::defaultDocumentGroupName;
+                docGroup = mDefaultDocumentGroupName;
                 isEmptyGroupName = true;
             }
             else if (docGroup.startsWith(UBSettings::trashedDocumentGroupNamePrefix))
@@ -955,7 +957,7 @@ void UBDocumentController::importFile()
 
             QString groupName = group->groupName();
 
-            if (groupName == UBSettings::defaultDocumentGroupName || fileInfo.suffix() != "ubz")
+            if (groupName == mDefaultDocumentGroupName || fileInfo.suffix() != "ubz")
                 groupName = "";
 
             showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
@@ -1266,7 +1268,7 @@ void UBDocumentController::closing()
             if (groupItem)
             {
                 QString groupName = groupItem->groupName();
-                if (!emptyGroups.contains(groupName) && groupName != UBSettings::documentTrashGroupName)
+                if (!emptyGroups.contains(groupName) && groupName != mDocumentTrashGroupName)
                     emptyGroups << groupName;
             }
         }
@@ -1323,7 +1325,7 @@ void UBDocumentController::addDocumentInTree(UBDocumentProxy* pDocument)
     QString documentGroup = pDocument->groupName();
     if (documentGroup.isEmpty())
     {
-        documentGroup = UBSettings::defaultDocumentGroupName;
+        documentGroup = mDefaultDocumentGroupName;
     }
     UBDocumentGroupTreeItem* group = 0;
     if (documentGroup.startsWith(UBSettings::trashedDocumentGroupNamePrefix))

@@ -953,6 +953,14 @@
         <source>Add file operation failed: file copying error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1147,6 +1155,10 @@
     <message>
         <source>Folder does not contain any image files</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Untitled Documents</source>
+        <translation type="unfinished">Документы без названия</translation>
     </message>
 </context>
 <context>
@@ -1865,24 +1877,8 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBSettings</name>
     <message>
-        <source>Untitled Documents</source>
-        <translation>Документы без названия</translation>
-    </message>
-    <message>
-        <source>Trash</source>
-        <translation>Корзина</translation>
-    </message>
-    <message>
         <source>My Movies</source>
         <translation>Мои видеофайлы</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ungroup</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2196,6 +2192,14 @@ Please reboot the application to access the updated documents.</source>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
         <translation>Выполняется загрузка на YouTube %1 %</translation>
+    </message>
+    <message>
+        <source>Open-Sankore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenSankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -953,6 +953,14 @@
         <source>Add file operation failed: file copying error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1147,6 +1155,10 @@
     <message>
         <source>Folder does not contain any image files</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Untitled Documents</source>
+        <translation type="unfinished">Ikke navngivne dokumenter</translation>
     </message>
 </context>
 <context>
@@ -1865,24 +1877,8 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBSettings</name>
     <message>
-        <source>Untitled Documents</source>
-        <translation>Ikke navngivne dokumenter</translation>
-    </message>
-    <message>
-        <source>Trash</source>
-        <translation>Papirkurv</translation>
-    </message>
-    <message>
         <source>My Movies</source>
         <translation>Mine Film</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ungroup</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2196,6 +2192,14 @@ Genstart venligst applikationen for at få adgang til de opdaterede dokumenter.<
     <message>
         <source>Upload to YouTube in progress %1 %</source>
         <translation>Upload til YouTube i gang %1 %</translation>
+    </message>
+    <message>
+        <source>Open-Sankore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenSankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

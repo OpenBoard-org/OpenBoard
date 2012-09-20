@@ -164,6 +164,9 @@ class UBBoardController : public UBDocumentContainer
 
         bool cacheIsVisible() {return mCacheWidgetIsEnabled;}
 
+        QString actionGroupText(){ return mActionGroupText;}
+        QString actionUngroupText(){ return mActionUngroupText;}
+
     public slots:
         void showDocumentsDialog();
         void showKeyboard(bool show);
@@ -282,6 +285,8 @@ class UBBoardController : public UBDocumentContainer
         bool mCacheWidgetIsEnabled;
         QGraphicsItem* mLastCreatedItem;
         int mDeletingSceneIndex;
+        QString mActionGroupText;
+        QString mActionUngroupText;
 
     private slots:
         void stylusToolDoubleClicked(int tool);
