@@ -553,8 +553,8 @@ Here we determines cases when items should to get mouse press event at pressing 
         return false;
         break;
 
-    case UBToolWidget::Type:
-        return true;
+    //case UBToolWidget::Type:
+      //  return true;
 
     case QGraphicsWebView::Type:
         return true;
@@ -1123,7 +1123,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 DelegateButton::Type != movingItem->type() &&
                 QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
-                UBToolWidget::Type != movingItem->type() &&
+//                UBToolWidget::Type != movingItem->type() &&
                 UBGraphicsCache::Type != movingItem->type() &&
                 QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
                 !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))

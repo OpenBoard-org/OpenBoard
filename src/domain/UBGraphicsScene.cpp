@@ -1310,7 +1310,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     if (graphicsWidget->canBeContent())
     {
-//        graphicsWidget->widgetWebView()->loadMainHtml();
+        graphicsWidget->loadMainHtml();
 
         graphicsWidget->setSelected(true);
         if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented

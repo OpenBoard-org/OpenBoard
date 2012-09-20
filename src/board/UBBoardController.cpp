@@ -1786,6 +1786,13 @@ qreal UBBoardController::currentZoom()
         return 1.0;
 }
 
+void UBBoardController::removeTool(UBToolWidget* toolWidget)
+{
+    toolWidget->hide();
+
+    delete toolWidget;
+}
+
 void UBBoardController::hide()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
@@ -2313,31 +2320,32 @@ void UBBoardController::togglePodcast(bool checked)
 
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
-    graphicsWidget->remove();
-
     mActiveScene->setURStackEnable(false);
-    UBGraphicsItem *toolW3C = duplicateItem(dynamic_cast<UBItem *>(graphicsWidget));
-    UBGraphicsWidgetItem *copyedGraphicsWidget = NULL;
-
-    if (UBGraphicsWidgetItem::Type == toolW3C->type())
-        copyedGraphicsWidget = static_cast<UBGraphicsWidgetItem *>(toolW3C);
-
-    UBToolWidget *toolWidget = new UBToolWidget(copyedGraphicsWidget);
-    mActiveScene->addItem(toolWidget);
-    qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
-
-    toolWidget->setScale(ssf);
-    toolWidget->setPos(graphicsWidget->scenePos());
+    graphicsWidget->remove(false);
+    mActiveScene->addItemToDeletion(graphicsWidget);
+    
+    UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget, mControlView);
     mActiveScene->setURStackEnable(true);
+
+    QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
+    toolWidget->centerOn(mControlView->mapTo(mControlContainer, controlViewPos));
+    toolWidget->show();
 }
 
 
 void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
-    UBGraphicsWidgetItem *graphicsWidgetItem = addW3cWidget(toolWidget->graphicsWidgetItem()->widgetUrl(), QPointF(0, 0));
-    graphicsWidgetItem->setPos(toolWidget->pos());
+    UBGraphicsWidgetItem *widgetToScene = toolWidget->toolWidget();
+
+    widgetToScene->resetTransform();
+
+    QPoint mainWindowCenter = toolWidget->mapTo(mMainWindow, QPoint(toolWidget->width(), toolWidget->height()) / 2);
+    QPoint controlViewCenter = mControlView->mapFrom(mMainWindow, mainWindowCenter);
+    QPointF scenePos = mControlView->mapToScene(controlViewCenter);
+
+    mActiveScene->addGraphicsWidget(widgetToScene, scenePos);
+
     toolWidget->remove();
-    graphicsWidgetItem->setSelected(true); 
 }
 
 
