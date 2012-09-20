@@ -579,8 +579,6 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             else
                 mCurrentTool = ResizeBottom;
 
-            mOriginalSize -= incH;
-
             incV = resizeDelegate(moveX, moveY); 
             mOriginalSize += incV;
             
