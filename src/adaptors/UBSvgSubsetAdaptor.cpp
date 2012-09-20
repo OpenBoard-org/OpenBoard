@@ -380,7 +380,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     UBGraphicsStroke* annotationGroup = 0;
     UBGraphicsStrokesGroup* strokesGroup = 0;
-    UBDrawingController* dc = UBDrawingController::drawingController();
 
     while (!mXmlReader.atEnd())
     {
@@ -395,8 +394,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             {
                 if (!mScene)
                 {
-                    mScene = new UBGraphicsScene(mProxy);
-                    mScene->setURStackEnable(false);
+                    mScene = new UBGraphicsScene(mProxy, false);
                 }
 
                 // introduced in UB 4.2
@@ -514,10 +512,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 else
                     annotationGroup = new UBGraphicsStroke();
 
-               if(eDrawingMode_Vector == dc->drawingMode()){
-                    strokesGroup = new UBGraphicsStrokesGroup();
-                    graphicsItemFromSvg(strokesGroup);
-                }
+
+                strokesGroup = new UBGraphicsStrokesGroup();
+                graphicsItemFromSvg(strokesGroup);
 
                 QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
 
@@ -561,14 +558,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         polygonItem->setStroke(annotationGroup);
                     }
 
-                    if(eDrawingMode_Vector == dc->drawingMode()){
-                        if(strokesGroup){
+
+                    if(strokesGroup){
                             polygonItem->setTransform(strokesGroup->transform());
                             strokesGroup->addToGroup(polygonItem);
                             polygonItem->setStrokesGroup(strokesGroup);
-                        }
-                    }else{
-                        mScene->addItem(polygonItem);
                     }
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
@@ -588,14 +582,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         polygonItem->setStroke(annotationGroup);
                     }
 
-                    if(eDrawingMode_Vector == dc->drawingMode()){
-                        if(strokesGroup){
-                            polygonItem->setTransform(strokesGroup->transform());
-                            strokesGroup->addToGroup(polygonItem);
-                            polygonItem->setStrokesGroup(strokesGroup);
-                        }
-                    }else{
-                        mScene->addItem(polygonItem);
+
+                    if(strokesGroup){
+                        polygonItem->setTransform(strokesGroup->transform());
+                        strokesGroup->addToGroup(polygonItem);
+                        polygonItem->setStrokesGroup(strokesGroup);
                     }
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
@@ -1014,7 +1005,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             delete annotationGroup;
     }
 
-    mScene->setURStackEnable(true);
+    mScene->enableUndoRedoStack();
     return mScene;
 }
 

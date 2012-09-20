@@ -93,7 +93,7 @@ static QString aFontweight      = "font-weight";
 static QString aTextalign       = "text-align";
 static QString aPoints          = "points";
 static QString svgNS            = "http://www.w3.org/2000/svg";
-static QString iwbNS            = "http://www.becta.org.uk/iwb";
+static QString iwbNS            = "http://www.imsglobal.org/xsd/iwb_v1p0";
 static QString aId              = "id";
 static QString aRef             = "ref";
 static QString aHref            = "href";
@@ -547,7 +547,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::readTextCharAttr(const QDomElement &
 {
     QString fontSz = element.attribute(aFontSize);
     if (!fontSz.isNull()) {
-        qreal fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->physicalDpiY();
+        qreal fontSize = fontSz.remove("pt").toDouble();
         format.setFontPointSize(fontSize);
     }
     QString fontColorText = element.attribute(aFill);
@@ -712,12 +712,14 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     blockFormat.setAlignment(Qt::AlignLeft);
 
     QTextCharFormat textFormat;
-    textFormat.setFontPointSize(12 * 72 / QApplication::desktop()->physicalDpiY());
+     // default values
+    textFormat.setFontPointSize(12);
     textFormat.setForeground(qApp->palette().foreground().color());
     textFormat.setFontFamily("Arial");
     textFormat.setFontItalic(false);
     textFormat.setFontWeight(QFont::Normal);
 
+    // readed values
     readTextBlockAttr(element, blockFormat);
     readTextCharAttr(element, textFormat);
 
@@ -1140,14 +1142,19 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::repositionSvgItem(QGraphicsItem *ite
     QTransform tr = item->sceneTransform();
     item->setTransform(rTransform.scale(fullScaleX, fullScaleY), true);
     tr = item->sceneTransform();
-    QPoint pos ((int)((x + mShiftVector.x() + (newVector - oldVector).x()) * mVBTransFactor), (int)((y +mShiftVector.y() + (newVector - oldVector).y()) * mVBTransFactor));
+    QPoint pos;
+    if (UBGraphicsTextItem::Type == item->type())
+        pos = QPoint((int)((x + mShiftVector.x() + (newVector - oldVector).x())), (int)((y +mShiftVector.y() + (newVector - oldVector).y()) * mVBTransFactor));
+    else
+        pos = QPoint((int)((x + mShiftVector.x() + (newVector - oldVector).x()) * mVBTransFactor), (int)((y +mShiftVector.y() + (newVector - oldVector).y()) * mVBTransFactor));
+        
+
     item->setPos(pos);
 }
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::createNewScene()
 {
-    mCurrentScene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, mProxy->pageCount());
-    mCurrentScene->setURStackEnable(false);
+    mCurrentScene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mProxy, mProxy->pageCount(), false);
     mCurrentScene->setSceneRect(mViewBox);
     if ((mCurrentScene->sceneRect().topLeft().x() >= 0) || (mCurrentScene->sceneRect().topLeft().y() >= 0)) {
         mShiftVector = -mViewBox.center();

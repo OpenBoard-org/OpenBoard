@@ -106,7 +106,7 @@ const QString ubNS = "http://uniboard.mnemis.com/document";
 const QString svgUBZNS = "http://www.imsglobal.org/xsd/iwb_v1p0";
 const QString svgIWBNS = "http://www.w3.org/2000/svg";
 const QString xlinkNS = "http://www.w3.org/1999/xlink";
-const QString iwbNS = "http://www.becta.org.uk/iwb";
+const QString iwbNS = "http://www.imsglobal.org/xsd/iwb_v1p0";
 const QString xsiNS = "http://www.w3.org/2001/XMLSchema-instance";
 const QString xsiShemaLocation = "\
 http://www.imsglobal.org/xsd/iwb_v1p0 \

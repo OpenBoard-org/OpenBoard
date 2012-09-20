@@ -40,6 +40,7 @@ class UBGraphicsAudioItem;
 class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
 class UBItem;
+class UBGraphicsItem;
 
 
 class UBBoardController : public UBDocumentContainer
@@ -158,10 +159,13 @@ class UBBoardController : public UBDocumentContainer
 
         void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
-        void duplicateItem(UBItem *item);
+        UBGraphicsItem *duplicateItem(UBItem *item);
         void deleteScene(int index);
 
         bool cacheIsVisible() {return mCacheWidgetIsEnabled;}
+
+        QString actionGroupText(){ return mActionGroupText;}
+        QString actionUngroupText(){ return mActionUngroupText;}
 
     public slots:
         void showDocumentsDialog();
@@ -199,6 +203,7 @@ class UBBoardController : public UBDocumentContainer
         void hideMessage();
         void setDisabled(bool disable);
         void setColorIndex(int pColorIndex);
+        void removeTool(UBToolWidget* toolWidget);
         void hide();
         void show();
         void setWidePageSize(bool checked);
@@ -280,6 +285,9 @@ class UBBoardController : public UBDocumentContainer
         QMap<QAction*, QPair<QString, QString> > mActionTexts;
         bool mCacheWidgetIsEnabled;
         QGraphicsItem* mLastCreatedItem;
+        int mDeletingSceneIndex;
+        QString mActionGroupText;
+        QString mActionUngroupText;
 
     private slots:
         void stylusToolDoubleClicked(int tool);

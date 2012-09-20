@@ -109,10 +109,11 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
     };
 
     //        tmp stub for divide addings scene objects from undo mechanism implementation
-    void setURStackEnable(bool set = true) {enableUndoRedoStack = set;}
-    bool isURStackIsEnabled(){ return enableUndoRedoStack;}
+        void enableUndoRedoStack(){mUndoRedoStackEnabled = true;}
+        void setURStackEnable(bool enable){mUndoRedoStackEnabled = enable;}
+        bool isURStackIsEnabled(){return mUndoRedoStackEnabled;}
 
-    UBGraphicsScene(UBDocumentProxy *parent);
+        UBGraphicsScene(UBDocumentProxy *parent, bool enableUndoRedoStack = true);
         virtual ~UBGraphicsScene();
 
         virtual UBItem* deepCopy() const;
@@ -406,7 +407,7 @@ public slots:
 
         bool mHasCache;
         //        tmp stub for divide addings scene objects from undo mechanism implementation
-        bool enableUndoRedoStack;
+        bool mUndoRedoStackEnabled;
 
         UBMagnifier *magniferControlViewWidget;
         UBMagnifier *magniferDisplayViewWidget;

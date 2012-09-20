@@ -3,9 +3,9 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.njin.fr/sankore/apps/Cadran opératoire" 
         version="1.0"
-        width="630"
-        height="540" 
-        ub:resizable="true">     
+        width="800"
+        height="580" 
+        ub:resizable="false">     
    
 		<name>Cadran opératoire</name>
 		<author href="http://www.njin.fr" email="contact@njin.fr">njin</author>

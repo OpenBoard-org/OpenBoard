@@ -255,7 +255,7 @@ void UBZLayerController::setLayerType(QGraphicsItem *pItem, itemLayerType::Enum 
    pItem->setData(UBGraphicsItemData::itemLayerType, QVariant(pNewType));
 }
 
-UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
+UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoStack)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
     , mPointer(0)
@@ -272,7 +272,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent)
     , mCurrentStroke(0)
     , mShouldUseOMP(true)
     , mItemCount(0)
-    , enableUndoRedoStack(true)
+    , mUndoRedoStackEnabled(enableUndoRedoStack)
     , magniferControlViewWidget(0)
     , magniferDisplayViewWidget(0)
     , mZLayerController(new UBZLayerController(this))
@@ -337,19 +337,19 @@ void UBGraphicsScene::updateGroupButtonState()
 
     if (selCount < 1) {
         groupAction->setEnabled(false);
-        groupAction->setText(UBSettings::settings()->actionGroupText);
+        groupAction->setText(UBApplication::app()->boardController->actionGroupText());
 
     } else if (selCount == 1) {
         if (selItems.first()->type() == UBGraphicsGroupContainerItem::Type) {
             groupAction->setEnabled(true);
-            groupAction->setText(UBSettings::settings()->actionUngroupText);
+            groupAction->setText(UBApplication::app()->boardController->actionUngroupText());
         } else {
             groupAction->setEnabled(false);
         }
 
     } else if (selCount > 1) {
         groupAction->setEnabled(true);
-        groupAction->setText(UBSettings::settings()->actionGroupText);
+        groupAction->setText(UBApplication::app()->boardController->actionGroupText());
     }
 }
 
@@ -559,7 +559,7 @@ bool UBGraphicsScene::inputDeviceRelease()
     if (dc->isDrawingTool() || mDrawWithCompass)
     {
         if(mArcPolygonItem){
-            if(eDrawingMode_Vector == dc->drawingMode()){
+
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Add the arc
@@ -581,10 +581,9 @@ bool UBGraphicsScene::inputDeviceRelease()
                 mAddedItems << pStrokes;
                 addItem(pStrokes);
                 mDrawWithCompass = false;
-            }
+
         }else if (mCurrentStroke)
         {
-            if(eDrawingMode_Vector == UBDrawingController::drawingController()->drawingMode()){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
@@ -601,7 +600,6 @@ bool UBGraphicsScene::inputDeviceRelease()
                 mAddedItems.clear();
                 mAddedItems << pStrokes;
                 addItem(pStrokes);
-            }
 
             if (mCurrentStroke->polygons().empty()){
                 delete mCurrentStroke;
@@ -613,7 +611,7 @@ bool UBGraphicsScene::inputDeviceRelease()
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
     {
 
-        if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
             UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(this, mRemovedItems, mAddedItems); //deleted by the undoStack
 
             if(UBApplication::undoStack)
@@ -752,10 +750,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
     if (!mCurrentStroke)
         mCurrentStroke = new UBGraphicsStroke();
 
-    if (mCurrentStroke)
-    {
-        polygonItem->setStroke(mCurrentStroke);
-    }
+    polygonItem->setStroke(mCurrentStroke);
 
     mPreviousPolygonItems.append(polygonItem);
 
@@ -781,7 +776,9 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
     QList<QGraphicsItem*> collidItems = items(eraserBoundingRect, Qt::IntersectsItemBoundingRect);
 
     QList<UBGraphicsPolygonItem*> intersectedItems;
-    QList<QPolygonF> intersectedPolygons;
+
+    typedef QList<QPolygonF> POLYGONSLIST;
+    QList<POLYGONSLIST> intersectedPolygons;
 
     #pragma omp parallel for
     for(int i=0; i<collidItems.size(); i++)
@@ -792,22 +789,24 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
         QPainterPath itemPainterPath;
         itemPainterPath.addPolygon(pi->sceneTransform().map(pi->polygon()));
+
         if (eraserPath.contains(itemPainterPath))
         {
             #pragma omp critical
             {
                 // Compele remove item
                 intersectedItems << pi;
-                intersectedPolygons << QPolygonF();
+                intersectedPolygons << QList<QPolygonF>();
             }
         }
         else if (eraserPath.intersects(itemPainterPath))
         {   
+
             QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
             #pragma omp critical
             {
                intersectedItems << pi;
-               intersectedPolygons << newPath.simplified().toFillPolygon(pi->sceneTransform().inverted());
+               intersectedPolygons << newPath.simplified().toFillPolygons(pi->sceneTransform().inverted());
             }
         }
     }
@@ -820,7 +819,23 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         }
         else
         {
-            intersectedItems[i]->setPolygon(intersectedPolygons[i]);
+            UBGraphicsPolygonItem *pi = intersectedItems[i];
+            
+            for(int j = 0; j < intersectedPolygons[i].size(); j++)
+            {
+                QPolygonF p = intersectedPolygons[i][j];
+                if (j==0)
+                    pi->setPolygon(intersectedPolygons[i][j]);
+                else
+                {
+                    UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem(intersectedPolygons[i][j], pi->parentItem());
+                    pi->copyItemParameters(polygonItem);
+
+                    polygonItem->setStroke(pi->stroke());
+                    polygonItem->setStrokesGroup(pi->strokesGroup());
+                    pi->strokesGroup()->addToGroup(polygonItem);
+                }
+            }
         }
     }
 
@@ -1003,7 +1018,7 @@ void UBGraphicsScene::leaveEvent(QEvent * event)
 
 UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 {
-    UBGraphicsScene* copy = new UBGraphicsScene(this->document());
+    UBGraphicsScene* copy = new UBGraphicsScene(this->document(), this->mUndoRedoStackEnabled);
 
     copy->setBackground(this->isDarkBackground(), this->isCrossedBackground());
     copy->setSceneRect(this->sceneRect());
@@ -1081,8 +1096,10 @@ void UBGraphicsScene::clearContent(clearCase pCase)
 
     switch (pCase) {
     case clearBackground :
-        removeItem(mBackgroundObject);
-        removedItems << mBackgroundObject;
+        if(mBackgroundObject){
+            removeItem(mBackgroundObject);
+            removedItems << mBackgroundObject;
+        }
         break;
 
     case clearItemsAndAnnotations :
@@ -1139,7 +1156,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     update(sceneRect());
 
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
 
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, QSet<QGraphicsItem*>(), groupsMap);
         UBApplication::undoStack->push(uc);
@@ -1166,7 +1183,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
 
     addItem(pixmapItem);
 
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, replaceFor, pixmapItem);
         UBApplication::undoStack->push(uc);
     }
@@ -1193,7 +1210,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
 
 void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
 {
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsTextItemUndoCommand* uc = new UBGraphicsTextItemUndoCommand(textItem);
         UBApplication::undoStack->push(uc);
     }
@@ -1214,7 +1231,7 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
 
     mediaItem->show();
 
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, mediaItem);
         UBApplication::undoStack->push(uc);
     }
@@ -1294,10 +1311,10 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     if (graphicsWidget->canBeContent())
     {
-//        graphicsWidget->widgetWebView()->loadMainHtml();
+        graphicsWidget->loadMainHtml();
 
         graphicsWidget->setSelected(true);
-        if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+        if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
             UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, graphicsWidget);
             UBApplication::undoStack->push(uc);
         }
@@ -1363,7 +1380,7 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     groupItem->setVisible(true);
     groupItem->setFocus();
 
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemGroupUndoCommand* uc = new UBGraphicsItemGroupUndoCommand(this, groupItem);
         UBApplication::undoStack->push(uc);
     }
@@ -1392,7 +1409,7 @@ void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
         groupItem->setUuid(QUuid::createUuid());
     }
 
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, groupItem);
         UBApplication::undoStack->push(uc);
     }
@@ -1422,7 +1439,7 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     addItem(svgItem);
 
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, svgItem);
         UBApplication::undoStack->push(uc);
     }
@@ -1512,7 +1529,7 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 
     textItem->show();
 
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
         UBApplication::undoStack->push(uc);
     }
@@ -1536,7 +1553,7 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
     addItem(textItem);
     textItem->show();
 
-    if (enableUndoRedoStack) { //should be deleted after scene own undo stack implemented
+    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
         UBApplication::undoStack->push(uc);
     }

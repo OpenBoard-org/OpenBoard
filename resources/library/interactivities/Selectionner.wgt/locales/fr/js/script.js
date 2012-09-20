@@ -14,8 +14,26 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help: "Aide",
+    help_content: "<p><h2>Sélectionner</h2></p>"+
+"<p><h3>Trouver les éléments correspondants à la consigne.</h3></p>"+
+
+"<p>Une consigne est écrite précisant le ou les éléments à chercher parmi tous les éléments proposés. Le but est de trouver les éléments correspondants à la consigne. L’activité s’effectue en cochant les cases sous les éléments correspondants. Une fois que tous les éléments corrects sont cochés, la zone se colore en vert.</p>"+
+
+"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+"<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité. </li></ul>"+
+
+"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, puis</p>"+
+"<ul><li>insérez une consigne en cliquant sur le champ de texte “Saisir votre consigne ici ...”, </li>"+
+"<li>ajoutez des zones de texte en cliquant sur le gros “+T” vert en dessous puis entrez le texte voulu.</li></ul>"+
+"<p>Pour supprimer une zone de texte, cliquez sur la croix située dans le coin supérieur de celle-ci.</p>"+ 
+
+"<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
 };
 
 //main function

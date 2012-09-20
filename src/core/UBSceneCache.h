@@ -64,7 +64,7 @@ class UBSceneCache : public QHash<UBSceneCacheID, UBGraphicsScene*>
         UBSceneCache();
         virtual ~UBSceneCache();
 
-        UBGraphicsScene* createScene(UBDocumentProxy* proxy, int pageIndex);
+        UBGraphicsScene* createScene(UBDocumentProxy* proxy, int pageIndex, bool useUndoRedoStack);
 
         void insert (UBDocumentProxy* proxy, int pageIndex, UBGraphicsScene* scene );
 

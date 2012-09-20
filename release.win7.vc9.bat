@@ -63,6 +63,9 @@ REM echo %LAST_TAG_VERSION%
 nmake release-install
 IF NOT EXIST build\win32\release\product\Open-Sankore.exe GOTO EXIT_WITH_ERROR
 
+xcopy C:\OpenSankore\lib\*.dll build\win32\release\product\
+xcopy %QT_DIR%\lib\QtOpenGL4.dll build\win32\release\product\
+
 set CUSTOMIZATIONS=build\win32\release\product\customizations
 mkdir %CUSTOMIZATIONS%
 xcopy /s resources\customizations %CUSTOMIZATIONS%
@@ -81,7 +84,6 @@ set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
 call "%INNO_EXE%" "Sankore 3.1.iss" /F"%INSTALLER_NAME%"
 
 set INSTALL_DIRECTORY=install\win32\
-
 xcopy *.pdf %INSTALL_DIRECTORY%
 cd %INSTALL_DIRECTORY%
 call %SEVEN_ZIP_EXE% a Open-Sankor‚_Windows_%VERSION%.zip *.exe *.pdf

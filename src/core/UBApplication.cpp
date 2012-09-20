@@ -315,7 +315,11 @@ int UBApplication::exec(const QString& pFileToImport)
 
     UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
-    applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
+    applicationController = new UBApplicationController(boardController->controlView(), 
+                                                        boardController->displayView(), 
+                                                        mainWindow, 
+                                                        staticMemoryCleaner,
+                                                        boardController->paletteManager()->rightPalette());
 
 
     connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),
@@ -368,7 +372,7 @@ int UBApplication::exec(const QString& pFileToImport)
     AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
 #endif
 
-    if (UBSettings::settings()->appStartMode->get() == "Desktop")
+    if (UBSettings::settings()->appStartMode->get().toInt())
         applicationController->showDesktop();
     else
         applicationController->showBoard();

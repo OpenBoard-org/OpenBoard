@@ -21,10 +21,11 @@
 
 #include "core/memcheck.h"
 
-UBDesktopPalette::UBDesktopPalette(QWidget *parent)
+UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalette)
     : UBActionPalette(Qt::TopLeftCorner, parent)
-        , mShowHideAction(0)
-        , mDisplaySelectAction(0)
+    , mShowHideAction(NULL)
+    , mDisplaySelectAction(NULL)
+    , rightPalette(_rightPalette)
 {
     QList<QAction*> actions;
 
@@ -72,6 +73,8 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent)
     connect(this, SIGNAL(maximizeStart()), this, SLOT(maximizeMe()));
     connect(this, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(minimizeMe(eMinimizedLocation)));
     setMinimizePermission(true);
+
+    connect(rightPalette, SIGNAL(resized()), this, SLOT(parentResized()));
 }
 
 
@@ -109,6 +112,9 @@ void UBDesktopPalette::updateShowHideState(bool pShowEnabled)
         mShowHideAction->setToolTip(tr("Show Board on Secondary Screen"));
     else
         mShowHideAction->setToolTip(tr("Show Desktop on Secondary Screen"));
+
+    if (pShowEnabled)
+        raise();
 }
 
 
@@ -216,4 +222,21 @@ QPoint UBDesktopPalette::buttonPos(QAction *action)
     }
 
     return p;
+}
+
+
+int UBDesktopPalette::getParentRightOffset()
+{
+    return rightPalette->width();
+}
+
+void UBDesktopPalette::parentResized()
+{
+    QPoint p = pos();
+    if (minimizedLocation() == eMinimizedLocation_Right)
+    {
+        p.setX(parentWidget()->width() - getParentRightOffset() -width());
+    }
+
+    moveInsideParent(p);
 }

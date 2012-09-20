@@ -94,6 +94,9 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mSystemScaleFactor(1.0)
     , mCleanupDone(false)
     , mCacheWidgetIsEnabled(false)
+    , mDeletingSceneIndex(-1)
+    , mActionGroupText(tr("Group"))
+    , mActionUngroupText(tr("Ungroup"))
 {
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
@@ -533,10 +536,12 @@ void UBBoardController::duplicateScene()
     duplicateScene(mActiveSceneIndex);
 }
 
-void UBBoardController::duplicateItem(UBItem *item)
+UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 {    
     if (!item)
-        return;
+        return NULL;
+
+    UBGraphicsItem *retItem = NULL;
 
     mLastCreatedItem = NULL;
 
@@ -610,6 +615,7 @@ void UBBoardController::duplicateItem(UBItem *item)
     case UBMimeType::Group:
     {
     	UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+        UBGraphicsGroupContainerItem* duplicatedGroup = NULL;
     	if(groupItem){
     		QTransform groupTransform = groupItem->transform();
     		groupItem->resetTransform();
@@ -628,13 +634,13 @@ void UBBoardController::duplicateItem(UBItem *item)
     		if(!selItems.empty()){
     			// I don't like this solution but for now this is the only way I found.
     			// Normally, at this state, only the duplicated group should be selected
-    			UBGraphicsGroupContainerItem* duplicatedGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.at(0));
+    			duplicatedGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.at(0));
     			if(NULL != duplicatedGroup){
     				duplicatedGroup->setTransform(groupTransform);
     			}
     		}
     	}
-    	return;
+    	retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
     	break;
     }
 
@@ -648,10 +654,13 @@ void UBBoardController::duplicateItem(UBItem *item)
                 mLastCreatedItem = gitem;
                 gitem->setSelected(true);
             }
-            return;
+            retItem = dynamic_cast<UBGraphicsItem *>(gitem);
         }break;
     }    
     
+    if (retItem)
+        return retItem;
+
     UBItem *createdItem = downloadFinished(true, sourceUrl, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
     if (createdItem)
     {
@@ -663,13 +672,17 @@ void UBBoardController::duplicateItem(UBItem *item)
             createdGitem->setPos(itemPos);
         mLastCreatedItem = dynamic_cast<QGraphicsItem*>(createdItem);
         mLastCreatedItem->setSelected(true);
+
+        retItem = dynamic_cast<UBGraphicsItem *>(createdItem);
     }
+    return retItem;
 }
 
 void UBBoardController::deleteScene(int nIndex)
 {
     if (selectedDocument()->pageCount()>=2)
     {
+        mDeletingSceneIndex = nIndex;
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
         showMessage(tr("Delete page %1 from document").arg(nIndex), true);
@@ -679,12 +692,12 @@ void UBBoardController::deleteScene(int nIndex)
         deletePages(scIndexes);
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
-
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
         setActiveDocumentScene(nIndex);
         showMessage(tr("Page %1 deleted").arg(nIndex));
         QApplication::restoreOverrideCursor();
+        mDeletingSceneIndex = -1;
     }
 }
 
@@ -927,14 +940,16 @@ void UBBoardController::groupButtonClicked()
         return;
     }
 
-    if (groupAction->text() == UBSettings::settings()->actionGroupText) { //The only way to get information from item, considering using smth else
+    if (groupAction->text() == mActionGroupText) { //The only way to get information from item, considering using smth else
     	UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
         groupItem->setSelected(true);
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
-    } else if (groupAction->text() == UBSettings::settings()->actionUngroupText) {
+    }
+    else if (groupAction->text() == mActionUngroupText) {
         //Considering one selected item and it's a group
-        if (selItems.count() > 1) {
+        if (selItems.count() > 1)
+        {
             qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
             return;
         }
@@ -1030,6 +1045,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         return NULL;
     }
 
+
+    mActiveScene->deselectAllItems();
+    
     if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("uniboardTool://"))
         showMessage(tr("Download finished"));
 
@@ -1059,8 +1077,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         else
         {
             mActiveScene->scaleToFitDocumentSize(pixItem, true, UBSettings::objectInControlViewMargin);
-            pixItem->setSelected(true);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+            pixItem->setSelected(true);
         }
 
         return pixItem;
@@ -1079,8 +1097,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         else
         {
             mActiveScene->scaleToFitDocumentSize(svgItem, true, UBSettings::objectInControlViewMargin);
-            svgItem->setSelected(true);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+            svgItem->setSelected(true);
         }
 
         return svgItem;
@@ -1773,6 +1791,13 @@ qreal UBBoardController::currentZoom()
         return 1.0;
 }
 
+void UBBoardController::removeTool(UBToolWidget* toolWidget)
+{
+    toolWidget->hide();
+
+    delete toolWidget;
+}
+
 void UBBoardController::hide()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
@@ -1786,7 +1811,7 @@ void UBBoardController::show()
 void UBBoardController::persistCurrentScene()
 {
     if(UBPersistenceManager::persistenceManager()
-            && selectedDocument() && mActiveScene
+            && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
             && (mActiveSceneIndex >= 0)
             && (mActiveScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified())))
     {
@@ -2085,7 +2110,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
         QString snapshotPath = selectedDocument()->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
         w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
         UBGraphicsWidgetItem *tmpItem = dynamic_cast<UBGraphicsWidgetItem*>(w3cWidgetItem);
-        if (tmpItem)
+        if (tmpItem && tmpItem->scene())
            tmpItem->takeSnapshot().save(snapshotPath, "PNG");
 
     }
@@ -2298,26 +2323,34 @@ void UBBoardController::togglePodcast(bool checked)
         UBPodcastController::instance()->toggleRecordingPalette(checked);
 }
 
-
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
-    graphicsWidget->remove();
+    mActiveScene->setURStackEnable(false);
+    graphicsWidget->remove(false);
+    mActiveScene->addItemToDeletion(graphicsWidget);
+    
+    UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget, mControlView);
+    mActiveScene->setURStackEnable(true);
 
-    UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget);
-    mActiveScene->addItem(toolWidget);
-    qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
-
-    toolWidget->setScale(ssf);
-    toolWidget->setPos(graphicsWidget->scenePos());
+    QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
+    toolWidget->centerOn(mControlView->mapTo(mControlContainer, controlViewPos));
+    toolWidget->show();
 }
 
 
 void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
-    UBGraphicsWidgetItem *graphicsWidgetItem = addW3cWidget(toolWidget->graphicsWidgetItem()->widgetUrl(), QPointF(0, 0));
-    graphicsWidgetItem->setPos(toolWidget->pos());
+    UBGraphicsWidgetItem *widgetToScene = toolWidget->toolWidget();
+
+    widgetToScene->resetTransform();
+
+    QPoint mainWindowCenter = toolWidget->mapTo(mMainWindow, QPoint(toolWidget->width(), toolWidget->height()) / 2);
+    QPoint controlViewCenter = mControlView->mapFrom(mMainWindow, mainWindowCenter);
+    QPointF scenePos = mControlView->mapToScene(controlViewCenter);
+
+    mActiveScene->addGraphicsWidget(widgetToScene, scenePos);
+
     toolWidget->remove();
-    graphicsWidgetItem->setSelected(true); 
 }
 
 

@@ -31,6 +31,7 @@ class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
 class QHttp;
+class UBRightPalette;
 
 
 class UBApplicationController : public QObject
@@ -39,7 +40,7 @@ class UBApplicationController : public QObject
 
     public:
 
-        UBApplicationController(UBBoardView *pControlView, UBBoardView *pDisplayView, UBMainWindow *pMainWindow, QObject* parent = 0);
+        UBApplicationController(UBBoardView *pControlView, UBBoardView *pDisplayView, UBMainWindow *pMainWindow, QObject* parent, UBRightPalette* rightPalette);
         virtual ~UBApplicationController();
 
         int initialHScroll() { return mInitialHScroll; }

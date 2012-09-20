@@ -81,23 +81,26 @@ function init(){
     
     //import saved data
     if(window.sankore){
-        if(sankore.preference("qstArrayData","") && sankore.preference("qstArrayData","") != "[]"){
-            questionArray = jQuery.parseJSON(sankore.preference("qstArrayData",""));
-            for(var i in questionArray){
-                addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
-                for(var j in questionArray[i].answers)
-                    addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text, true, questionArray[i].rightAns, questionArray[i].type);
-            }
-            displayData(true);
-        } 
-        else{ 
-            displayData(false);
-            begin = false;
+        if(sankore.preference("qstArrayData","") && sankore.preference("qstArrayData","") != "[]")
+            questionArray = jQuery.parseJSON(sankore.preference("qstArrayData",""));         
+        else
+            questionArray = jQuery.parseJSON('[{"text":"' + sankoreLang.example_question + '","type":"1","id":538,"rightAns":"2","answers":[{"id":953,"text":"' + sankoreLang.answer + ' 1.","value":1,"state":"","was":false},{"id":526,"text":"' + sankoreLang.answer + ' 2.","value":2,"state":"","was":false},{"id":473,"text":"' + sankoreLang.answer + ' 3.","value":3,"state":"","was":false}]}]');
+        
+        for(i in questionArray){
+            addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
+            for(j in questionArray[i].answers)
+                addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text, true, questionArray[i].rightAns, questionArray[i].type);
         }
+        displayData();
     }
     else{ 
-        displayData(false);
-        begin = false;
+        questionArray = jQuery.parseJSON('[{"text":"' + sankoreLang.example_question + '","type":"1","id":538,"rightAns":"2","answers":[{"id":953,"text":"' + sankoreLang.answer + ' 1.","value":1,"state":"","was":false},{"id":526,"text":"' + sankoreLang.answer + ' 2.","value":2,"state":"","was":false},{"id":473,"text":"' + sankoreLang.answer + ' 3.","value":3,"state":"","was":false}]}]');
+        for(i in questionArray){
+            addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
+            for(j in questionArray[i].answers)
+                addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text, true, questionArray[i].rightAns, questionArray[i].type);
+        }
+        displayData();
     }
     
     //saving widget data into sankore object for a correct import
@@ -432,10 +435,10 @@ function init(){
     //toggle button click trigger
     //toggleButton.trigger("click");
     //show data in display mode
-    function displayData(flag){
+    function displayData(){
         $("#addQstDiv").hide();
         $(".qstDiv").hide();
-        addToPage(questionArray, flag);
+        addToPage(questionArray);
     }
     
     //set widget in edit mode
@@ -453,8 +456,7 @@ function init(){
     }
     
     // show questions and answers in display mode
-    function addToPage(array, flag){
-        if(flag){
+    function addToPage(array){
             var counter = 1;
             for(var i in array){
 
@@ -520,25 +522,6 @@ function init(){
                 counter++;
             }
             begin = false;
-        } else {
-            counter = 1;
-            qstDiv = $("<div class='qstDivDisplay'>");        
-            spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
-            qstNumber = $("<span class='qstNumber'>" + sankoreLang.question + " " + counter + "</span>").appendTo(spanOptConn);        
-            qstContent = $("<div class='qstContentDisplay'>" + sankoreLang.example_question + "</div>").appendTo(qstDiv);        
-            ansDiv = $("<div class='ansDiv'>").appendTo(qstDiv);
-            
-            ansCount = 1;
-            for(j = 0; j < 3; j++){  
-                newAnswer = $("<div class='newAnswer'>");
-                ansInput = $("<input type='radio' name='1' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
-                ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                ansContent = $("<div class='ansContentDisplay'>" + sankoreLang.answer + " " + ansCount + ".</div>").appendTo(newAnswer);
-                newAnswer.appendTo(ansDiv);                        
-                ansCount++;
-            }
-            qstDiv.appendTo("#data");
-        }
     }
 }
 

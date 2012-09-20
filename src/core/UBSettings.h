@@ -206,17 +206,9 @@ class UBSettings : public QObject
 
         static QString appPingMessage;
 
-        static QString defaultDocumentGroupName;
-        static QString documentTrashGroupName;
-
-        //static int libIconSize;
-
         UBSetting* productWebUrl;
 
         QString softwareHomeUrl;
-
-        QString actionGroupText;
-        QString actionUngroupText;
 
         UBSetting* appToolBarPositionedAtTop;
         UBSetting* appToolBarDisplayText;
