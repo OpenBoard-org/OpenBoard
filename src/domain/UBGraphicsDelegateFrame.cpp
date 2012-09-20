@@ -588,7 +588,13 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 mCurrentTool = ResizeLeft;
             else
                 mCurrentTool = ResizeRight;
-         
+
+            move = QLineF(event->lastScenePos(), event->scenePos());
+            moveX = move.length() * cos((move.angle() - mAngle) * PI / 180);
+            moveY = -move.length() * sin((move.angle() - mAngle) * PI / 180);
+
+            mFixedPoint = getFixedPointFromPos();
+
             incH = resizeDelegate(moveX, moveY); 
 
             mOriginalSize -= incV;
