@@ -1216,6 +1216,11 @@ void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
 }
 UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos)
 {
+    qDebug() << pMediaFileUrl.toLocalFile();
+    if (!QFile::exists(pMediaFileUrl.toLocalFile()))
+    if (!QFile::exists(pMediaFileUrl.toString()))
+        return NULL;
+
     UBGraphicsMediaItem* mediaItem = new UBGraphicsMediaItem(pMediaFileUrl);
     if(mediaItem){
         connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), mediaItem, SLOT(activeSceneChanged()));

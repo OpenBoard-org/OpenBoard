@@ -17,6 +17,7 @@
 #include "gui/UBMainWindow.h"
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 #include "core/memcheck.h"
 
@@ -209,7 +210,7 @@ void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl
                 desc.contentTypeHeader = pContentTypeHeader;
                 emit downloadFinished(pSuccess, desc, pData);
 
-            } else if(desc.modal) {
+            } else if(desc.dest == sDownloadFileDesc::board) {
                 // The downloaded file is modal so we must put it on the board
                 emit addDownloadedFileToBoard(pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
             }
@@ -302,15 +303,24 @@ void UBDownloadManager::updateFileCurrentSize(int id, qint64 received, qint64 to
  */
 void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
 {
-    UBDownloadHttpFile* http = new UBDownloadHttpFile(desc.id, this);
-    connect(http, SIGNAL(downloadProgress(int, qint64,qint64)), this, SLOT(onDownloadProgress(int,qint64,qint64)));
-    connect(http, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
-
-    //the desc.url is encoded. So we have to decode it before.
-    QUrl url;
-    url.setEncodedUrl(desc.url.toUtf8());
-    // We send here the request and store its reply in order to be able to cancel it if needed
-    mReplies[desc.id] = http->get(url, desc.pos, desc.size, desc.isBackground);
+    if (desc.srcUrl.startsWith("file://") || desc.srcUrl.startsWith("/"))
+    {
+        UBAsyncLocalFileDownloader * cpHelper = new UBAsyncLocalFileDownloader(desc, this);
+        connect(cpHelper, SIGNAL(signal_asyncCopyFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+        cpHelper->copyFile(QUrl(desc.srcUrl).toLocalFile(), QUrl(desc.dstUrl).toLocalFile(), true);
+    }
+    else
+    {    
+        UBDownloadHttpFile* http = new UBDownloadHttpFile(desc.id, this);
+        connect(http, SIGNAL(downloadProgress(int, qint64,qint64)), this, SLOT(onDownloadProgress(int,qint64,qint64)));
+        connect(http, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+    
+        //the desc.srcUrl is encoded. So we have to decode it before.
+        QUrl url;
+        url.setEncodedUrl(desc.srcUrl.toUtf8());
+        // We send here the request and store its reply in order to be able to cancel it if needed
+        mReplies[desc.id] = http->get(url, desc.pos, desc.size, desc.isBackground);
+    } 
 }
 
 /**

@@ -506,7 +506,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
             sDownloadFileDesc desc;
             desc.dest = sDownloadFileDesc::graphicsWidget;
             desc.modal = true;
-            desc.url = url;
+            desc.srcUrl = url;
             desc.currentSize = 0;
             desc.name = QFileInfo(url).fileName();
             desc.totalSize = 0; // The total size will be retrieved during the download

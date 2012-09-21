@@ -17,14 +17,57 @@
 #define UBFILESYSTEMUTILS_H_
 
 #include <QtCore>
+#include <QThread>
 
 #include "core/UB.h"
+
+#include "core/UBDownloadManager.h"
+
+class UBCopyThread : public QThread
+{
+    Q_OBJECT
+public:
+    explicit UBCopyThread(QObject *parent = 0);
+
+    void copyFile(const QString &source, const QString &destination, bool overwrite);
+    void run();
+
+signals:
+    void finished(QString resUrl);
+
+private:
+    QString mFrom;
+    QString mTo;
+};
+
+class UBAsyncLocalFileDownloader : public QObject
+{
+    Q_OBJECT
+
+public:
+    UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent = 0);
+
+    void copyFile(QString &source, QString &destination, bool bOverwrite);
+
+public slots:
+    void slot_asyncCopyFinished(QString resUrl);
+
+signals:
+    void signal_asyncCopyFinished(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
+
+private:
+    QString mFrom;
+    QString mTo;
+    sDownloadFileDesc mDesc;
+};
 
 class QuaZipFile;
 class UBProcessingProgressListener;
 
-class UBFileSystemUtils
+class UBFileSystemUtils : public QObject
 {
+    Q_OBJECT
+
     public:
 
         UBFileSystemUtils();

@@ -52,7 +52,8 @@ struct sDownloadFileDesc
     int id;
     int totalSize;
     int currentSize;
-    QString url;
+    QString srcUrl;
+    QString dstUrl;
     QString contentTypeHeader;
     bool modal;
     QPointF pos;        // For board drop only

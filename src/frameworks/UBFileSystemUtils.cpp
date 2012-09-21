@@ -22,6 +22,8 @@
 #include "board/UBBoardController.h"
 #include "document/UBDocumentContainer.h"
 
+#include "core/UBPersistenceManager.h"
+
 #include "globals/UBGlobals.h"
 
 THIRD_PARTY_WARNINGS_DISABLE
@@ -856,3 +858,91 @@ QString UBFileSystemUtils::readTextFile(QString path)
     return "";
 }
 
+
+UBCopyThread::UBCopyThread(QObject *parent)
+    : QThread(parent)
+{   
+}
+
+void UBCopyThread::copyFile(const QString &source, const QString &destination, bool overwrite)
+{
+    if (!QFile::exists(source)) {
+        qDebug() << "file" << source << "does not present in fs";
+        return;
+    }
+
+    QString normalizedDestination = destination;
+    if (QFile::exists(normalizedDestination)) {
+        if  (QFileInfo(normalizedDestination).isFile() && overwrite) {
+            QFile::remove(normalizedDestination);
+        }
+    } else {
+        normalizedDestination = normalizedDestination.replace(QString("\\"), QString("/"));
+        int pos = normalizedDestination.lastIndexOf("/");
+        if (pos != -1) {
+            QString newpath = normalizedDestination.left(pos);
+            if (!QDir().mkpath(newpath)) {
+                qDebug() << "can't create a new path at " << newpath;
+            }
+        }
+    }
+
+    mFrom = source;
+    mTo = normalizedDestination;
+
+    start();
+}
+
+void UBCopyThread::run()
+{
+
+    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mFrom);
+
+    int position=mimeType.indexOf(";");
+    if(position != -1)
+        mimeType=mimeType.left(position);
+
+    UBMimeType::Enum itemMimeType = UBFileSystemUtils::mimeTypeFromString(mimeType);
+
+
+    QString destDirectory;
+    if (UBMimeType::Video == itemMimeType)
+        destDirectory = UBPersistenceManager::videoDirectory;
+    else 
+    if (UBMimeType::Audio == itemMimeType)
+        destDirectory = UBPersistenceManager::audioDirectory;
+
+    QString uuid = QUuid::createUuid();
+    UBPersistenceManager::persistenceManager()->addFileToDocument(UBApplication::boardController->selectedDocument(), 
+        mFrom,
+        destDirectory,
+        uuid,
+        mTo,
+        NULL);
+
+    emit finished(mTo);
+}
+
+
+UBAsyncLocalFileDownloader::UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent)
+    : QObject(parent)
+    , mDesc(desc)
+{
+
+}
+
+void UBAsyncLocalFileDownloader::copyFile(QString &source, QString &destination, bool bOverwrite)
+{
+    mFrom = source;
+    mTo = destination;
+
+    UBCopyThread *cpThread = new UBCopyThread(this); // possible memory leak. Delete helper at signal_asyncCopyFinished() handler
+    connect(cpThread, SIGNAL(finished(QString)), this, SLOT(slot_asyncCopyFinished(QString)));
+    cpThread->copyFile(source, destination, bOverwrite);
+}
+
+void UBAsyncLocalFileDownloader::slot_asyncCopyFinished(QString resUrl)
+{
+    emit signal_asyncCopyFinished(mDesc.id, !resUrl.isEmpty(), QUrl(resUrl), "", NULL, mDesc.pos, mDesc.size, mDesc.isBackground);
+
+}
