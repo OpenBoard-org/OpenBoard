@@ -40,8 +40,8 @@ UBGraphicsAristo::UBGraphicsAristo()
     , mResizing(false)
     , mRotating(false)
     , mOrientation(Undefined)
-    , mAngle(0)
-    , mCurrentAngle(0)
+    , mRotatedAngle(0)
+    , mMarkerAngle(0)
     , mStartAngle(0)
     , mSpan(180)
     , mHFlipSvgItem(0)
@@ -190,8 +190,11 @@ void UBGraphicsAristo::copyItemParameters(UBItem *copy) const
     {   
         /* TODO: copy all members */
         cp->setPos(this->pos());
-        cp->setPath(this->path());
         cp->setTransform(this->transform());
+        cp->setBoundingRect(boundingRect());
+        cp->setOrientation(mOrientation);
+        cp->mRotatedAngle = mRotatedAngle;
+        cp->mMarkerAngle = mMarkerAngle;
     }
 }
 
@@ -401,23 +404,23 @@ void UBGraphicsAristo::paintMarker(QPainter *painter)
     /* adjusting marker button */
     mMarkerSvgItem->resetTransform();
     mMarkerSvgItem->translate(-markerButtonRect().left(), -markerButtonRect().top());
-    mMarkerSvgItem->rotate(mCurrentAngle);
+    mMarkerSvgItem->rotate(mMarkerAngle);
     mMarkerSvgItem->translate(markerButtonRect().left(), markerButtonRect().top());
 
     
-    qreal co = cos((mCurrentAngle) * PI/180);
-    qreal si = sin((mCurrentAngle) * PI/180);
+    qreal co = cos((mMarkerAngle) * PI/180);
+    qreal si = sin((mMarkerAngle) * PI/180);
 
     /* Setting point composing the line (from point C) which intersects the line we want to draw. */
     QPointF referencePoint;
     if (mOrientation == Bottom) {
-        if ((int)mCurrentAngle % 360 < 90)
+        if ((int)mMarkerAngle % 360 < 90)
             referencePoint = B;
         else
             referencePoint = A;
     }
     else if (mOrientation == Top) {
-        if ((int)mCurrentAngle % 360 < 270 && (int)mCurrentAngle % 360 > 0)
+        if ((int)mMarkerAngle % 360 < 270 && (int)mMarkerAngle % 360 > 0)
             referencePoint = A;
         else
             referencePoint = B;
@@ -430,7 +433,7 @@ void UBGraphicsAristo::paintMarker(QPainter *painter)
         painter->drawLine(QLineF(intersectionPoint, rotationCenter()));
 
     /* drawing angle value */
-    qreal rightAngle = mOrientation == Bottom ? mCurrentAngle : 360 - mCurrentAngle;
+    qreal rightAngle = mOrientation == Bottom ? mMarkerAngle : 360 - mMarkerAngle;
 
 
     QString angleText = QString("%1°").arg(rightAngle, 0, 'f', 1);
@@ -450,18 +453,18 @@ void UBGraphicsAristo::paintMarker(QPainter *painter)
 
 void UBGraphicsAristo::rotateAroundCenter(qreal angle)
 {
-    qreal oldAngle = mAngle;
-    mAngle = angle;
+    qreal oldAngle = mRotatedAngle;
+    mRotatedAngle = angle;
     QTransform transform;
     rotateAroundCenter(transform, rotationCenter());
     setTransform(transform, true);
-    mAngle = oldAngle + angle; // We have to store absolute value for FLIP case
+    mRotatedAngle = oldAngle + angle; // We have to store absolute value for FLIP case
 }
 
 void UBGraphicsAristo::rotateAroundCenter(QTransform& transform, QPointF center)
 {
     transform.translate(center.x(), center.y());
-    transform.rotate(mAngle);
+    transform.rotate(mRotatedAngle);
     transform.translate(- center.x(), - center.y());
 }
 
@@ -582,20 +585,20 @@ void UBGraphicsAristo::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         else if(mMarking) {
             qreal angle = currentLine.angleTo(lastLine);
 
-            mCurrentAngle += angle;
-            mCurrentAngle -= (int)(mCurrentAngle/360)*360;
+            mMarkerAngle += angle;
+            mMarkerAngle -= (int)(mMarkerAngle/360)*360;
 
             if (mOrientation == Bottom) {
-                if (mCurrentAngle >= 270)
-                    mCurrentAngle = 0;
-                else if (mCurrentAngle > 180)
-                    mCurrentAngle = 180;
+                if (mMarkerAngle >= 270)
+                    mMarkerAngle = 0;
+                else if (mMarkerAngle > 180)
+                    mMarkerAngle = 180;
             }
             else if (mOrientation == Top) {
-                if (mCurrentAngle < 90)
-                    mCurrentAngle = 360;
-                else if (mCurrentAngle < 180)
-                    mCurrentAngle = 180;
+                if (mMarkerAngle < 90)
+                    mMarkerAngle = 360;
+                else if (mMarkerAngle < 180)
+                    mMarkerAngle = 180;
             }
             update();
         }
@@ -622,7 +625,7 @@ void UBGraphicsAristo::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             break;
         case HorizontalFlip:
             /* substracting difference to zero [2pi] twice, to obtain the desired angle */
-            mCurrentAngle -= 2 * (mCurrentAngle - (int)(mCurrentAngle/360)*360) - 360;
+            mMarkerAngle -= 2 * (mMarkerAngle - (int)(mMarkerAngle/360)*360) - 360;
             /* setting new orientation */
             switch(mOrientation) {
             case Bottom:
@@ -749,7 +752,7 @@ UBGraphicsAristo::Tool UBGraphicsAristo::toolFromPos(QPointF pos)
 {
     pos = pos - rotationCenter();
 
-    qreal rotationAngle = mOrientation == Bottom ? - mCurrentAngle : Top ? 360 * (int)(mCurrentAngle / 360 + 1) - mCurrentAngle : 0;
+    qreal rotationAngle = mOrientation == Bottom ? - mMarkerAngle : Top ? 360 * (int)(mMarkerAngle / 360 + 1) - mMarkerAngle : 0;
 
     QTransform t;
     t.rotate(rotationAngle);

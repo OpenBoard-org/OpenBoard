@@ -132,8 +132,8 @@ private:
 
     Orientation mOrientation;
 
-    qreal mAngle;
-    qreal mCurrentAngle;
+    qreal mRotatedAngle;
+    qreal mMarkerAngle;
     qreal mStartAngle;
 
     qreal mSpan;
