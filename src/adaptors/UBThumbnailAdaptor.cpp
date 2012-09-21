@@ -158,7 +158,7 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
         pScene->render(&painter, imageRect, sceneRect, Qt::KeepAspectRatio);
 
         if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()){
-            QPixmap toque(":images/toque.png");
+            QPixmap toque(":images/toque.svg");
             painter.setOpacity(0.6);
             painter.drawPixmap(QPoint(width - toque.width(),0),toque);
         }
