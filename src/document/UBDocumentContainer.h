@@ -58,8 +58,8 @@ class UBDocumentContainer : public QObject
 
     signals:
         void documentSet(UBDocumentProxy* document);
-        void documentPageAdded(int index);
-        void documentPageDeleted(int index);
+//        void documentPageAdded(int index);
+//        void documentPageDeleted(int index);
         void documentPageUpdated(int index);
         void documentThumbnailsUpdated(UBDocumentContainer* source);
 };

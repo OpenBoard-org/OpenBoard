@@ -23,7 +23,12 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 
+
+#include "gui/UBDockTeacherGuideWidget.h"
+#include "gui/UBTeacherGuideWidget.h"
+
 #include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -120,7 +125,7 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
 
     QFile thumbFile(fileName);
 
-    if (pScene->isModified() || overrideModified || !thumbFile.exists())
+    if (pScene->isModified() || overrideModified || !thumbFile.exists() || UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified())
     {
         qreal nominalWidth = pScene->nominalSize().width();
         qreal nominalHeight = pScene->nominalSize().height();
@@ -151,6 +156,12 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
         pScene->setRenderingQuality(UBItem::RenderingQualityHigh);
 
         pScene->render(&painter, imageRect, sceneRect, Qt::KeepAspectRatio);
+
+        if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()){
+            QPixmap toque(":images/toque.png");
+            painter.setOpacity(0.6);
+            painter.drawPixmap(QPoint(width - toque.width(),0),toque);
+        }
 
         pScene->setRenderingContext(UBGraphicsScene::Screen);
         pScene->setRenderingQuality(UBItem::RenderingQualityNormal);

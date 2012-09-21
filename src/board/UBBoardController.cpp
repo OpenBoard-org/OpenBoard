@@ -95,6 +95,7 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mCleanupDone(false)
     , mCacheWidgetIsEnabled(false)
     , mDeletingSceneIndex(-1)
+    , mMovingSceneIndex(-1)
     , mActionGroupText(tr("Group"))
     , mActionUngroupText(tr("Ungroup"))
 {
@@ -1450,9 +1451,6 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     {
         freezeW3CWidgets(true);
 
-        if(sceneChange)
-            emit activeSceneWillChange();
-
         persistCurrentScene();
 
         ClearUndoStack();
@@ -1500,14 +1498,17 @@ void UBBoardController::moveSceneToIndex(int source, int target)
 {
     if (selectedDocument())
     {
+
         persistCurrentScene();
 
         UBDocumentContainer::movePageToIndex(source, target);
 
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBMetadataDcSubsetAdaptor::persist(selectedDocument());
-
+        mMovingSceneIndex = source;
         setActiveDocumentScene(target);
+        mMovingSceneIndex = -1;
+
     }
 }
 
@@ -1807,11 +1808,9 @@ void UBBoardController::persistCurrentScene()
 {
     if(UBPersistenceManager::persistenceManager()
             && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
-            && (mActiveSceneIndex >= 0)
+            && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified())))
     {
-        emit activeSceneWillBePersisted();
-
         UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex);
         updatePage(mActiveSceneIndex);
     }

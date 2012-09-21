@@ -229,8 +229,6 @@ class UBBoardController : public UBDocumentContainer
 
     signals:
         void newPageAdded();
-        void activeSceneWillBePersisted();
-        void activeSceneWillChange();
         void activeSceneChanged();
         void zoomChanged(qreal pZoomFactor);
         void systemScaleFactorChanged(qreal pSystemScaleFactor);
@@ -286,6 +284,7 @@ class UBBoardController : public UBDocumentContainer
         bool mCacheWidgetIsEnabled;
         QGraphicsItem* mLastCreatedItem;
         int mDeletingSceneIndex;
+        int mMovingSceneIndex;
         QString mActionGroupText;
         QString mActionUngroupText;
 

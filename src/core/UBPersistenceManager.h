@@ -117,13 +117,10 @@ class UBPersistenceManager : public QObject
 
         void documentCreated(UBDocumentProxy* pDocumentProxy);
         void documentMetadataChanged(UBDocumentProxy* pDocumentProxy);
-        void documentCommitted(UBDocumentProxy* pDocumentProxy);
         void documentWillBeDeleted(UBDocumentProxy* pDocumentProxy);
 
         void documentSceneCreated(UBDocumentProxy* pDocumentProxy, int pIndex);
-        void documentSceneMoved(UBDocumentProxy* pDocumentProxy, int pIndex);
         void documentSceneWillBeDeleted(UBDocumentProxy* pDocumentProxy, int pIndex);
-        void documentSceneDeleted(UBDocumentProxy* pDocumentProxy, int pDeletedIndex);
 
     private:
 

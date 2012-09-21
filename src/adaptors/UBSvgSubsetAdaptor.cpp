@@ -941,18 +941,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 readGroupRoot();
             }
-//            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
-//                sTeacherGuideNode.clear();
-//                sTeacherGuideNode += "<teacherGuide version=\"" + mXmlReader.attributes().value("version").toString() + "\">";
-//                sTeacherGuideNode += "\n";
-//            }
-//            else if (mXmlReader.name() == "media" || mXmlReader.name() == "link" || mXmlReader.name() == "title" || mXmlReader.name() == "comment" || mXmlReader.name() == "action")
-//            {
-//                sTeacherGuideNode += "<" + mXmlReader.name().toString() + " ";
-//                foreach(QXmlStreamAttribute attribute, mXmlReader.attributes())
-//                    sTeacherGuideNode += attribute.name().toString() + "=\"" + attribute.value().toString() + "\" ";
-//                sTeacherGuideNode += " />\n";
-//            }
             else
             {
                 // NOOP
@@ -976,17 +964,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
             }
-//            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
-//                sTeacherGuideNode += "</teacherGuide>";
-//                qDebug() << sTeacherGuideNode;
-//                QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
-//                IDataStorage* storageClass = elements.value("teacherGuide");
-//                if(storageClass){
-//                     storageClass->load(sTeacherGuideNode);
-//                }
-//            }
-
-
         }
     }
 
@@ -1147,16 +1124,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         QDomElement groupRoot = groupDomDocument.createElement(tGroups);
         groupDomDocument.appendChild(groupRoot);
 
-
-        static int i = 0;
-        qDebug() << "persist call no is " << ++i;
-
         QBuffer buffer;
         buffer.open(QBuffer::WriteOnly);
         mXmlWriter.setDevice(&buffer);
-
-        //Unused variable
-        //QTime timer = QTime::currentTime();
 
         mXmlWriter.setAutoFormatting(true);
 
