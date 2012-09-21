@@ -16,150 +16,138 @@
 #ifndef UBGRAPHICSARISTO_H_
 #define UBGRAPHICSARISTO_H_
 
-#include <QtGui>
-#include <QtSvg>
-#include <QGraphicsPolygonItem>
-
 #include "core/UB.h"
 #include "domain/UBItem.h"
 #include "tools/UBAbstractDrawRuler.h"
 
+#include <QBrush>
+#include <QCursor>
+#include <QGraphicsPathItem>
+#include <QGraphicsSceneHoverEvent>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSvgItem>
+#include <QPainter>
+#include <QPainterPath>
+#include <QPointF>
+#include <QRectF>
+#include <QStyleOptionGraphicsItem>
+#include <QTransform>
+#include <QWidget>
 
-class UBGraphicsScene;
-class UBItem;
-
-class UBGraphicsAristo : public UBAbstractDrawRuler, public QGraphicsPolygonItem, public UBItem
+class UBGraphicsAristo : public UBAbstractDrawRuler, public QGraphicsPathItem, public UBItem
 {
-    Q_OBJECT
+Q_OBJECT
 
-    public:
-        UBGraphicsAristo();
-        virtual ~UBGraphicsAristo();
+public:
+    UBGraphicsAristo();
+    virtual ~UBGraphicsAristo();
 
-        enum { Type = UBGraphicsItemType::AristoItemType };
-        enum Tool {None, Move, Resize, Rotate, Close, MoveMarker, HorizontalFlip};
+    enum {
+        Type = UBGraphicsItemType::AristoItemType 
+    };
 
-        virtual int type() const
-        {
-            return Type;
-        }
+    enum Tool {
+        None,
+        Move,
+        Resize,
+        Rotate,
+        Close,
+        MoveMarker,
+        HorizontalFlip
+    };
 
-        virtual UBItem* deepCopy(void) const;
-        virtual void copyItemParameters(UBItem *copy) const;
+    enum Orientation
+    {
+        Bottom = 0,
+        Top,
+        Undefined
+    };
+    
+    void setOrientation(Orientation orientation);
+    void setBoundingRect(QRectF boundingRect);        
 
-        virtual void StartLine(const QPointF& scenePos, qreal width);
-        virtual void DrawLine(const QPointF& position, qreal width);
-        virtual void EndLine();
+    virtual UBItem* deepCopy() const;
+    virtual void copyItemParameters(UBItem *copy) const;
 
-        enum UBGraphicsAristoOrientation
-        {
-                Bottom = 0,
-                Top
-        };
+    virtual void StartLine(const QPointF& scenePos, qreal width);
+    virtual void DrawLine(const QPointF& position, qreal width);
+    virtual void EndLine();
 
-        static UBGraphicsAristoOrientation orientationFromStr(QStringRef& str)
-        {
-            if (str == "Bottom") return Bottom;
-            if (str == "Top") return Top;
-            return sDefaultOrientation;
-        }
-        static QString orientationToStr(UBGraphicsAristoOrientation orientation)
-        {
-            QString result;
-            if (orientation == 0) result = "Bottom";
-            else if (orientation == 1) result = "Top";
+    virtual int type() const
+    {
+        return Type;
+    }
+    UBGraphicsScene* scene() const;
 
-            return result;
-        }
+protected:
+    virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
 
-        void setRect(const QRectF &rect, UBGraphicsAristoOrientation orientation)
-        {
-            setRect(rect.x(), rect.y(), rect.width(), rect.height(), orientation);
-        }
+    virtual void rotateAroundCenter(qreal angle);
+    virtual void resize(qreal factor);
 
-        void setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsAristoOrientation orientation);
+    virtual QPointF rotationCenter() const;
 
-        void setOrientation(UBGraphicsAristoOrientation orientation);
+    virtual QRectF closeButtonRect() const;
+    QRectF hFlipRect() const;
+    QRectF markerButtonRect() const;
+    QRectF resizeButtonRect () const;        
+    QRectF rotateRect() const;
 
-        UBGraphicsAristoOrientation getOrientation() const {return mOrientation;}
+    QCursor flipCursor() const;        
+    QCursor markerCursor() const;
+    QCursor resizeCursor() const;
 
-        QRectF rect() const {return boundingRect();}
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
-        UBGraphicsScene* scene() const;
+private:
+    Tool toolFromPos(QPointF pos);
 
-    protected:
+    QTransform calculateRotationTransform();
+    void rotateAroundCenter(QTransform& transform, QPointF center);
 
-        virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
-        virtual QPainterPath shape() const;
+    void calculatePoints();
+    QPainterPath determinePath();
+    void setItemsPos();
+    void makeGeometryChange();
 
-        virtual void rotateAroundCenter(qreal angle);
-        virtual void resize(qreal factor);
+    QBrush fillBrush() const;
+    void paintGraduations(QPainter *painter);
+    void paintMarker(QPainter *painter);
+    void paintProtractorGraduations(QPainter* painter);
+    void paintRulerGraduations(QPainter *painter);
 
-        virtual QPointF    rotationCenter() const;
+    inline qreal radius () const
+    {
+        return sqrt(((B.x() - A.x())*(B.x() - A.x()))+((B.y() - A.y())*(B.y() - A.y()))) * 9 / 16 - 20;
+    }        
 
-        virtual QRectF    closeButtonRect() const;
-        QRectF  resizeButtonRect () const;
-        QRectF    hFlipRect() const;
-        QRectF    rotateRect() const;
-        QRectF markerButtonRect() const;
+    bool mMarking;
+    bool mResizing;
+    bool mRotating;
 
-        QCursor    flipCursor() const;
-        QCursor    resizeCursor() const;
-        QCursor markerCursor() const;
+    Orientation mOrientation;
 
-        virtual void    mousePressEvent(QGraphicsSceneMouseEvent *event);
-        virtual void    mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        virtual void    mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-        virtual void    hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-        virtual void    hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-        virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+    qreal mAngle;
+    qreal mCurrentAngle;
+    qreal mStartAngle;
 
-    private:
-        UBGraphicsAristo::Tool toolFromPos(QPointF pos);
-        QTransform calculateRotationTransform();
-        qreal angle;
-        
-        void rotateAroundCenter(QTransform& transform, QPointF center);
+    qreal mSpan;
 
-        bool mResizing;
-        bool mRotating;
-        bool mMarking;
-        QRect lastRect;
-        qreal mSpan;
+    QGraphicsSvgItem* mHFlipSvgItem;
+    QGraphicsSvgItem* mMarkerSvgItem;
+    QGraphicsSvgItem* mResizeSvgItem;
+    QGraphicsSvgItem* mRotateSvgItem;      
 
-        // Coordinates are transformed....
-        QPoint lastPos;
-        QGraphicsSvgItem* mHFlipSvgItem;
-        QGraphicsSvgItem* mRotateSvgItem;
-        QGraphicsSvgItem* mResizeSvgItem;
-        QGraphicsSvgItem* mMarkerSvgItem;
-        qreal   mStartAngle;
-        qreal mCurrentAngle;
-
-        static const QRect sDefaultRect;
-        static const UBGraphicsAristoOrientation sDefaultOrientation;
-
-        void paintGraduations(QPainter *painter);
-        void paintRulerGraduations(QPainter *painter);
-        void paintProtractorGraduations(QPainter* painter);
-        void paintMarker(QPainter *painter);
-        inline qreal radius () const
-        {
-            return sqrt(((B.x() - A.x())*(B.x() - A.x()))+((B.y() - A.y())*(B.y() - A.y()))) * 9 / 16 - 20;
-        }
-        QBrush fillBrush() const;
-
-        UBGraphicsAristoOrientation mOrientation;
-
-        void calculatePoints(const QRectF& rect);
-
-        QPointF A, B, C;
-
-        static const int d = 70; // width of triangle border
-        static const int sArrowLength = 30;
-        static const int sMinWidth = 380;
-        static const int sMinHeight = 200;
-        static const int sArcAngleMargin = 5;
+    QPointF A, B, C;
+    
+    static const int sArcAngleMargin = 5;
+    static const Orientation sDefaultOrientation;        
+    static const QRectF sDefaultRect;
 };
 
 #endif /* UBGRAPHICSARISTO_H_ */

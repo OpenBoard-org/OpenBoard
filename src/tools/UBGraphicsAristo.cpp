@@ -13,37 +13,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGraphicsPolygonItem>
-#include <QPolygonF>
-
-#include "tools/UBGraphicsAristo.h"
-#include "core/UBApplication.h"
+#include "UBGraphicsAristo.h"
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
+#include "core/UBApplication.h"
 #include "domain/UBGraphicsScene.h"
+
+#include <QColor>
+#include <QFont>
+#include <QFontMetricsF>
+#include <QGraphicsItem>
+#include <QLineF>
+#include <QPolygonF>
+#include <QRadialGradient>
+#include <QString>
 
 #include "core/memcheck.h"
 
-const QRect UBGraphicsAristo::sDefaultRect =  QRect(0, 0, 800, 400);
-const UBGraphicsAristo::UBGraphicsAristoOrientation UBGraphicsAristo::sDefaultOrientation = UBGraphicsAristo::Bottom;
+const QRectF UBGraphicsAristo::sDefaultRect =  QRectF(0, 0, 800, 500);
+const UBGraphicsAristo::Orientation UBGraphicsAristo::sDefaultOrientation = UBGraphicsAristo::Bottom;
 
 UBGraphicsAristo::UBGraphicsAristo()
     : UBAbstractDrawRuler()
-    , QGraphicsPolygonItem()
-    , angle(0)
+    , QGraphicsPathItem()
+    , mMarking(false)
     , mResizing(false)
     , mRotating(false)
-    , mMarking(false)
-    , mSpan(180)
-    , mStartAngle(0)
+    , mOrientation(Undefined)
+    , mAngle(0)
     , mCurrentAngle(0)
-
-
+    , mStartAngle(0)
+    , mSpan(180)
+    , mHFlipSvgItem(0)
+    , mMarkerSvgItem(0)
+    , mResizeSvgItem(0)
+    , mRotateSvgItem(0)
 {
-    setRect(sDefaultRect, sDefaultOrientation);
-
-    create(*this);
-
     mHFlipSvgItem = new QGraphicsSvgItem(":/images/vflipTool.svg", this);
     mHFlipSvgItem->setVisible(false);
     mHFlipSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
@@ -59,11 +64,117 @@ UBGraphicsAristo::UBGraphicsAristo()
     mMarkerSvgItem = new QGraphicsSvgItem(":/images/angleMarker.svg", this);
     mMarkerSvgItem->setVisible(false);
     mMarkerSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+    mMarkerSvgItem->setVisible(true);
+
+    create(*this);
+    setBoundingRect(sDefaultRect);
+    setOrientation(sDefaultOrientation);
 }
 
 UBGraphicsAristo::~UBGraphicsAristo()
 {
+    /* NOOP */
 }
+
+/*
+ * setOrientation() modify the tool orientation.
+ * makeGeometryChange() is called so points are recomputed, control items are positionnated and shape is determined according to this modification.
+ */
+void UBGraphicsAristo::setOrientation(Orientation orientation)
+{
+    mOrientation = orientation;
+    makeGeometryChange();
+}
+
+/* calculatePoints() is used to calculate polygon's apexes coordinates.
+ * This function handles orientation changes too.
+ */
+void UBGraphicsAristo::calculatePoints()
+{
+    switch (mOrientation) {
+    case Bottom:
+        C.setX(boundingRect().center().x());
+        C.setY(boundingRect().bottom());
+
+        A.setX(boundingRect().left());
+        A.setY(boundingRect().bottom() - boundingRect().width() / 2);
+
+        B.setX(boundingRect().right());
+        B.setY(boundingRect().bottom() - boundingRect().width() / 2);
+        break;
+    case Top:
+        C.setX(boundingRect().center().x());
+        C.setY(boundingRect().top());
+
+        A.setX(boundingRect().left());
+        A.setY(boundingRect().top() + boundingRect().width() / 2);
+
+        B.setX(boundingRect().right());
+        B.setY(boundingRect().top() + boundingRect().width() / 2);
+        break;
+    default:
+        break;
+    }
+}
+
+/*
+ * setItemsPos() places control items according to A, B and C positions.
+ * Call this function after A, B or C position modification, mostly after calling calculatePoints().
+ * These positions has to be set when calling setPath() to allow hover events on items which are not into the main polygon.
+ */
+void UBGraphicsAristo::setItemsPos()
+{
+    mCloseSvgItem->setPos(closeButtonRect().topLeft() + rotationCenter());
+    mHFlipSvgItem->setPos(hFlipRect().topLeft() + rotationCenter());
+    mRotateSvgItem->setPos(rotateRect().topLeft() + rotationCenter());
+    mResizeSvgItem->setPos(resizeButtonRect().topLeft() + rotationCenter()); 
+    mMarkerSvgItem->setPos(markerButtonRect().topLeft() + rotationCenter());
+}
+
+/*
+ * determinePath() modify the shape according to apexes coordinates and control item positions.
+ * This is useful when orientation is modified.
+ * Returns the painter path corresponding to object parameters.
+ */
+QPainterPath UBGraphicsAristo::determinePath()
+{
+    QPainterPath path;
+
+    QPolygonF polygon;
+    polygon << A << B << C;
+    path.addPolygon(polygon);
+
+    path.addPath(mResizeSvgItem->shape().translated(mResizeSvgItem->pos()));
+    path.addPath(mMarkerSvgItem->shape().translated(mMarkerSvgItem->pos()));
+
+    return path;
+}
+
+/*
+ * setBoundingRect() is a helper to set the given rectangle as the new shape to limit apexes coordinates.
+ * This is useful when instanciating or resizing the object.
+ * makeGeometryChange() is called so points are recomputed, control items are positionnated and shape is determined according to this modification. 
+ * Setting bounds' width less than 300 is not allowed.
+ */
+void UBGraphicsAristo::setBoundingRect(QRectF boundingRect)
+{
+    if (boundingRect.width() < 300)
+        return;
+
+    QPainterPath path;
+    path.addRect(boundingRect);
+    setPath(path);
+    if (mOrientation != Undefined)
+        makeGeometryChange();
+}
+
+void UBGraphicsAristo::makeGeometryChange()
+{
+    calculatePoints();
+    setItemsPos();
+    setPath(determinePath());
+}
+
 
 UBItem* UBGraphicsAristo::deepCopy(void) const
 {
@@ -79,54 +190,11 @@ void UBGraphicsAristo::copyItemParameters(UBItem *copy) const
     {   
         /* TODO: copy all members */
         cp->setPos(this->pos());
-        cp->setPolygon(this->polygon());
+        cp->setPath(this->path());
         cp->setTransform(this->transform());
     }
 }
 
-void UBGraphicsAristo::setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsAristoOrientation orientation)
-{
-    QPolygonF polygon;
-    polygon << QPointF(x, y) << QPoint(x, y + h) << QPoint(x+w, y + h);
-    setPolygon(polygon);
-
-    setOrientation(orientation);
-}
-
-void UBGraphicsAristo::setOrientation(UBGraphicsAristoOrientation orientation)
-{
-    mOrientation = orientation;
-    calculatePoints(rect());
-
-    QPolygonF polygon;
-    polygon << A << B << C;
-    setPolygon(polygon);
-}
-
-UBGraphicsScene* UBGraphicsAristo::scene() const
-{
-    return static_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene());
-}
-
-/* calculatePoints() is used to calculate polygon's apexes coordinates.
- * This function handles orientation changes too.
- */
-void UBGraphicsAristo::calculatePoints(const QRectF& r)
-{
-    switch(mOrientation)
-    {
-    case Bottom:
-        A.setX(r.left()); A.setY(r.top());
-        B.setX(r.right()); B.setY(r.top());
-        C.setX(r.center().x()); C.setY(A.y() + r.width() / 2);
-        break;
-    case Top:
-        A.setX(r.left()); A.setY(r.bottom());
-        B.setX(r.right()); B.setY(r.bottom());
-        C.setX(r.center().x()); C.setY(A.y() - r.width() / 2);
-        break;
-    }
-}
 
 void UBGraphicsAristo::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
@@ -140,82 +208,19 @@ void UBGraphicsAristo::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     polygon.clear();
 
     paintGraduations(painter);
-
-    mCloseSvgItem->setPos(closeButtonRect().topLeft() + rotationCenter());
-    mHFlipSvgItem->setPos(hFlipRect().topLeft() + rotationCenter());
-    mRotateSvgItem->setPos(rotateRect().topLeft() + rotationCenter());
-    mResizeSvgItem->setPos(resizeButtonRect().topLeft() + rotationCenter());
-
-
-    paintMarker(painter);
-    mMarkerSvgItem->setVisible(true);
+    paintMarker(painter);    
 }
 
-QPainterPath UBGraphicsAristo::shape() const
+QBrush UBGraphicsAristo::fillBrush() const
 {
-    QPainterPath tShape;
-    QPolygonF tPolygon;
-
-    tPolygon << A << B << C;
-    tShape.addPolygon(tPolygon);
-    tPolygon.clear();
-
-    return tShape;
-}
-
-/* paintMarker() adjust marker button according to the current angle, draw the line allowing user to set precisely the angle, and draw the current angle's value. */
-void UBGraphicsAristo::paintMarker(QPainter *painter)
-{
-    /* adjusting marker button */
-    mMarkerSvgItem->setPos(markerButtonRect().topLeft() + rotationCenter());
-    mMarkerSvgItem->resetTransform();
-    mMarkerSvgItem->translate(-markerButtonRect().left(), -markerButtonRect().top());
-    mMarkerSvgItem->rotate(mCurrentAngle);
-    mMarkerSvgItem->translate(markerButtonRect().left(), markerButtonRect().top());
-
-    
-    qreal co = cos((mCurrentAngle) * PI/180);
-    qreal si = sin((mCurrentAngle) * PI/180);
-
-    /* Setting point composing the line (from point C) which intersects the line we want to draw. */
-    QPointF referencePoint;
-    if (mOrientation == Bottom) {
-        if ((int)mCurrentAngle % 360 < 90)
-            referencePoint = B;
-        else
-            referencePoint = A;
-    }
-    else if (mOrientation == Top) {
-        if ((int)mCurrentAngle % 360 < 270 && (int)mCurrentAngle % 360 > 0)
-            referencePoint = A;
-        else
-            referencePoint = B;
-    }
-    
-    /* getting intersection point to draw the wanted line */
-    QLineF intersectedLine(rotationCenter(), QPointF(rotationCenter().x()+co, rotationCenter().y()+si)); 
-    QPointF intersectionPoint;
-    if (intersectedLine.intersect(QLineF(referencePoint, C), &intersectionPoint))
-        painter->drawLine(QLineF(intersectionPoint, rotationCenter()));
-
-    /* drawing angle value */
-    qreal rightAngle = mOrientation == Bottom ? mCurrentAngle : 360 - mCurrentAngle;
-
-
-    QString angleText = QString("%1°").arg(rightAngle, 0, 'f', 1);
-
-    QFont font1 = painter->font();
-#ifdef Q_WS_MAC
-    font1.setPointSizeF(font1.pointSizeF() - 3);
-#endif
-    QFontMetricsF fm1(font1);
-
-    if (mOrientation == Bottom)
-        painter->drawText(rotationCenter().x() - fm1.width(angleText)/2 - radius()/8, rotationCenter().y() + radius()/8 - fm1.height()/2, fm1.width(angleText), fm1.height(), Qt::AlignCenter, angleText);
-    else
-        painter->drawText(rotationCenter().x() - fm1.width(angleText)/2 - radius()/8, rotationCenter().y() - radius()/8 - fm1.height()/2, fm1.width(angleText), fm1.height(), Qt::AlignCenter, angleText);
-
-
+    QColor fillColor = edgeFillColor();// scene()->isDarkBackground() ? sDarkBackgroundFillColor : sFillColor;
+    QColor fillColorCenter = middleFillColor();//scene()->isDarkBackground() ? sDarkBackgroundFillColorCenter : sFillColorCenter;
+    QColor transparentWhite = Qt::white;
+    transparentWhite.setAlpha(scene()->isDarkBackground() ? sDrawTransparency : sFillTransparency);
+    QRadialGradient radialGradient(boundingRect().center(), radius(), boundingRect().center());
+    radialGradient.setColorAt(0, fillColorCenter);
+    radialGradient.setColorAt(1, fillColor);
+    return radialGradient;
 }
 
 /* paintGraduations() paints graduations on the ruler side (length graduations) and the two other sides (angle graduation) */
@@ -228,18 +233,18 @@ void UBGraphicsAristo::paintGraduations(QPainter *painter)
 void UBGraphicsAristo::paintRulerGraduations(QPainter *painter)
 {
     /* defining useful constants */
-    const int     centimeterGraduationHeight = 15;
+    const int centimeterGraduationHeight = 15;
     const int halfCentimeterGraduationHeight = 10;
-    const int     millimeterGraduationHeight = 5;
-    const int       millimetersPerCentimeter = 10;
-    const int   millimetersPerHalfCentimeter = 5;
+    const int millimeterGraduationHeight = 5;
+    const int millimetersPerCentimeter = 10;
+    const int millimetersPerHalfCentimeter = 5;
 
     painter->save();
     painter->setFont(font());
     QFontMetricsF fontMetrics(painter->font());
 
     /* Browsing milliters in half width of ruler side */
-    for (int millimeters = 0; millimeters < (rect().width() / 2 - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
+    for (int millimeters = 0; millimeters < (boundingRect().width() / 2 - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
     {
         /* defining graduationHeight ; values are different to draw bigger lines if millimiter considered is a centimeter or a half centimeter */
         int graduationHeight = (0 == millimeters % millimetersPerCentimeter) ?
@@ -262,13 +267,13 @@ void UBGraphicsAristo::paintRulerGraduations(QPainter *painter)
             QString text = QString("%1").arg((int)(millimeters / millimetersPerCentimeter));
             
             /* staying inside polygon */
-            if (rotationCenter().x() + sPixelsPerMillimeter * millimeters + fontMetrics.width(text) / 2 < rect().right())
+            if (rotationCenter().x() + sPixelsPerMillimeter * millimeters + fontMetrics.width(text) / 2 < boundingRect().right())
             {
                 qreal textWidth = fontMetrics.width(text);
                 qreal textHeight = fontMetrics.tightBoundingRect(text).height() + 5;
                 
                 /* text y-coordinate is different according to tool's orientation */
-                qreal textY = mOrientation == Bottom ? rect().top() + 5 + centimeterGraduationHeight : rect().bottom() - 5 - centimeterGraduationHeight + graduationHeight;
+                qreal textY = mOrientation == Bottom ? A.y() + 5 + centimeterGraduationHeight : A.y() - 5 - centimeterGraduationHeight + graduationHeight;
                 
                 /* if text's rect is not out of polygon's bounds, drawing value below or above graduation */
                 QPointF intersectionPoint;
@@ -390,32 +395,73 @@ void UBGraphicsAristo::paintProtractorGraduations(QPainter* painter)
     painter->restore();
 }
 
-QBrush UBGraphicsAristo::fillBrush() const
+/* paintMarker() adjust marker button according to the current angle, draw the line allowing user to set precisely the angle, and draw the current angle's value. */
+void UBGraphicsAristo::paintMarker(QPainter *painter)
 {
-    QColor fillColor = edgeFillColor();// scene()->isDarkBackground() ? sDarkBackgroundFillColor : sFillColor;
-    QColor fillColorCenter = middleFillColor();//scene()->isDarkBackground() ? sDarkBackgroundFillColorCenter : sFillColorCenter;
-    QColor transparentWhite = Qt::white;
-    transparentWhite.setAlpha(scene()->isDarkBackground() ? sDrawTransparency : sFillTransparency);
-    QRadialGradient radialGradient(rect().center(), radius(), rect().center());
-    radialGradient.setColorAt(0, fillColorCenter);
-    radialGradient.setColorAt(1, fillColor);
-    return radialGradient;
+    /* adjusting marker button */
+    mMarkerSvgItem->resetTransform();
+    mMarkerSvgItem->translate(-markerButtonRect().left(), -markerButtonRect().top());
+    mMarkerSvgItem->rotate(mCurrentAngle);
+    mMarkerSvgItem->translate(markerButtonRect().left(), markerButtonRect().top());
+
+    
+    qreal co = cos((mCurrentAngle) * PI/180);
+    qreal si = sin((mCurrentAngle) * PI/180);
+
+    /* Setting point composing the line (from point C) which intersects the line we want to draw. */
+    QPointF referencePoint;
+    if (mOrientation == Bottom) {
+        if ((int)mCurrentAngle % 360 < 90)
+            referencePoint = B;
+        else
+            referencePoint = A;
+    }
+    else if (mOrientation == Top) {
+        if ((int)mCurrentAngle % 360 < 270 && (int)mCurrentAngle % 360 > 0)
+            referencePoint = A;
+        else
+            referencePoint = B;
+    }
+    
+    /* getting intersection point to draw the wanted line */
+    QLineF intersectedLine(rotationCenter(), QPointF(rotationCenter().x()+co, rotationCenter().y()+si)); 
+    QPointF intersectionPoint;
+    if (intersectedLine.intersect(QLineF(referencePoint, C), &intersectionPoint))
+        painter->drawLine(QLineF(intersectionPoint, rotationCenter()));
+
+    /* drawing angle value */
+    qreal rightAngle = mOrientation == Bottom ? mCurrentAngle : 360 - mCurrentAngle;
+
+
+    QString angleText = QString("%1°").arg(rightAngle, 0, 'f', 1);
+
+    QFont font1 = painter->font();
+#ifdef Q_WS_MAC
+    font1.setPointSizeF(font1.pointSizeF() - 3);
+#endif
+    QFontMetricsF fm1(font1);
+
+    if (mOrientation == Bottom)
+        painter->drawText(rotationCenter().x() - fm1.width(angleText)/2 - radius()/8, rotationCenter().y() + radius()/8 - fm1.height()/2, fm1.width(angleText), fm1.height(), Qt::AlignCenter, angleText);
+    else
+        painter->drawText(rotationCenter().x() - fm1.width(angleText)/2 - radius()/8, rotationCenter().y() - radius()/8 - fm1.height()/2, fm1.width(angleText), fm1.height(), Qt::AlignCenter, angleText);
 }
+
 
 void UBGraphicsAristo::rotateAroundCenter(qreal angle)
 {
-    qreal oldAngle = this->angle;
-    this->angle = angle;
+    qreal oldAngle = mAngle;
+    mAngle = angle;
     QTransform transform;
     rotateAroundCenter(transform, rotationCenter());
     setTransform(transform, true);
-    this->angle = oldAngle + angle; // We have to store absolute value for FLIP case
+    mAngle = oldAngle + angle; // We have to store absolute value for FLIP case
 }
 
 void UBGraphicsAristo::rotateAroundCenter(QTransform& transform, QPointF center)
 {
     transform.translate(center.x(), center.y());
-    transform.rotate(angle);
+    transform.rotate(mAngle);
     transform.translate(- center.x(), - center.y());
 }
 
@@ -441,11 +487,6 @@ QRectF UBGraphicsAristo::closeButtonRect() const
     return QRectF(- mCloseSvgItem->boundingRect().width() / 2, y, mCloseSvgItem->boundingRect().width(), mCloseSvgItem->boundingRect().height());
 }
 
-QRectF  UBGraphicsAristo::resizeButtonRect() const
-{
-    return QRectF((B - rotationCenter()).x() - 100 - mResizeSvgItem->boundingRect().width()/2, - mResizeSvgItem->boundingRect().height()/2, mResizeSvgItem->boundingRect().width(), mResizeSvgItem->boundingRect().height());   
-}
-
 QRectF UBGraphicsAristo::hFlipRect() const
 {
     qreal y = radius() / 4;
@@ -453,6 +494,16 @@ QRectF UBGraphicsAristo::hFlipRect() const
         y = -y;
 
      return QRectF(- mHFlipSvgItem->boundingRect().width() / 2, y, mHFlipSvgItem->boundingRect().width(), mHFlipSvgItem->boundingRect().height());
+}
+
+QRectF UBGraphicsAristo::markerButtonRect() const
+{
+    return QRectF (radius()/2 - mMarkerSvgItem->boundingRect().width(), - mMarkerSvgItem->boundingRect().height()/2, mMarkerSvgItem->boundingRect().width(), mMarkerSvgItem->boundingRect().height());
+}
+
+QRectF  UBGraphicsAristo::resizeButtonRect() const
+{
+    return QRectF((B - rotationCenter()).x() - 100 - mResizeSvgItem->boundingRect().width()/2, - mResizeSvgItem->boundingRect().height()/2, mResizeSvgItem->boundingRect().width(), mResizeSvgItem->boundingRect().height());   
 }
 
 QRectF UBGraphicsAristo::rotateRect() const
@@ -464,12 +515,12 @@ QRectF UBGraphicsAristo::rotateRect() const
 
 }
 
-QRectF UBGraphicsAristo::markerButtonRect() const
+QCursor UBGraphicsAristo::flipCursor() const
 {
-    return QRectF (radius()/2 - mMarkerSvgItem->boundingRect().width(), - mMarkerSvgItem->boundingRect().height()/2, mMarkerSvgItem->boundingRect().width(), mMarkerSvgItem->boundingRect().height());
+    return Qt::ArrowCursor;
 }
 
-QCursor UBGraphicsAristo::flipCursor() const
+QCursor UBGraphicsAristo::markerCursor() const
 {
     return Qt::ArrowCursor;
 }
@@ -479,10 +530,6 @@ QCursor UBGraphicsAristo::resizeCursor() const
     return Qt::ArrowCursor;
 }
 
-QCursor UBGraphicsAristo::markerCursor() const
-{
-    return Qt::ArrowCursor;
-}
 
 void UBGraphicsAristo::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -530,7 +577,7 @@ void UBGraphicsAristo::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         }
         else if (mResizing) {
             QPointF delta = event->pos() - event->lastPos();
-            setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height() + delta.x() / 2)), mOrientation);
+            setBoundingRect(QRectF(boundingRect().topLeft(), QSizeF(boundingRect().width() + delta.x(), boundingRect().height() + delta.x())));
         }
         else if(mMarking) {
             qreal angle = currentLine.angleTo(lastLine);
@@ -583,6 +630,8 @@ void UBGraphicsAristo::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 break;
             case Top:
                 setOrientation(Bottom);
+                break;
+            default:
                 break;
             }
         default:
@@ -700,7 +749,7 @@ UBGraphicsAristo::Tool UBGraphicsAristo::toolFromPos(QPointF pos)
 {
     pos = pos - rotationCenter();
 
-    qreal rotationAngle = mOrientation == Bottom ? - mCurrentAngle : 360 * (int)(mCurrentAngle / 360 + 1) - mCurrentAngle;
+    qreal rotationAngle = mOrientation == Bottom ? - mCurrentAngle : Top ? 360 * (int)(mCurrentAngle / 360 + 1) - mCurrentAngle : 0;
 
     QTransform t;
     t.rotate(rotationAngle);
@@ -722,6 +771,7 @@ UBGraphicsAristo::Tool UBGraphicsAristo::toolFromPos(QPointF pos)
         return None;
 }
 
+
 void UBGraphicsAristo::StartLine(const QPointF &scenePos, qreal width)
 {
     QPointF itemPos = mapFromScene(scenePos);
@@ -730,10 +780,10 @@ void UBGraphicsAristo::StartLine(const QPointF &scenePos, qreal width)
 
     y = rotationCenter().y();
 
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-            itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+    if (itemPos.x() < boundingRect().x() + sLeftEdgeMargin)
+            itemPos.setX(boundingRect().x() + sLeftEdgeMargin);
+    if (itemPos.x() > boundingRect().x() + boundingRect().width() - sLeftEdgeMargin)
+            itemPos.setX(boundingRect().x() + boundingRect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
@@ -750,10 +800,10 @@ void UBGraphicsAristo::DrawLine(const QPointF &scenePos, qreal width)
 
     y = rotationCenter().y();
 
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-            itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+    if (itemPos.x() < boundingRect().x() + sLeftEdgeMargin)
+            itemPos.setX(boundingRect().x() + sLeftEdgeMargin);
+    if (itemPos.x() > boundingRect().x() + boundingRect().width() - sLeftEdgeMargin)
+            itemPos.setX(boundingRect().x() + boundingRect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
@@ -765,4 +815,11 @@ void UBGraphicsAristo::DrawLine(const QPointF &scenePos, qreal width)
 
 void UBGraphicsAristo::EndLine()
 {
+    /* NOOP */
+}
+
+
+UBGraphicsScene* UBGraphicsAristo::scene() const
+{
+    return static_cast<UBGraphicsScene*>(QGraphicsPathItem::scene());
 }
