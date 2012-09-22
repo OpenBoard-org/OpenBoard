@@ -18,14 +18,17 @@
 
 #include "core/UB.h"
 #include "domain/UBItem.h"
+#include "domain/UBGraphicsScene.h"
 #include "tools/UBAbstractDrawRuler.h"
 
+#include <QtGlobal>
 #include <QBrush>
 #include <QCursor>
 #include <QGraphicsPathItem>
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSvgItem>
+#include <QObject>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPointF>
