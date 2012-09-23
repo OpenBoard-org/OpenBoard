@@ -58,6 +58,7 @@ DelegateButton::DelegateButton(const QString & fileName, QGraphicsItem* pDelegat
 {
     setAcceptedMouseButtons(Qt::LeftButton);
     setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+    setCacheMode(QGraphicsItem::NoCache); /* because of SANKORE-1017: this allows pixmap to be refreshed when grabbing window, thus teacher screen is synchronized with main screen. */
 }
 
 DelegateButton::~DelegateButton()
