@@ -563,8 +563,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             mTranslateX += fixedPoint.x() - bottomRight.x();
             mTranslateY += fixedPoint.y() - bottomRight.y();
         }
-        else if (moving() || rotating())
-            delegated()->setTransform(tr);
+        delegated()->setTransform(buildTransform());
     }
     else // resizing/resizing horizontally
     {                  
