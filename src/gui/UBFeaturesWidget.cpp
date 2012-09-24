@@ -1048,8 +1048,8 @@ void UBFeatureProperties::onAddToLib()
         desc.modal = false;
         desc.name = QFileInfo( mpElement->getFullPath().toString()).fileName();
         qDebug() << desc.name;
-        desc.url = mpElement->getFullPath().toString();
-        qDebug() << desc.url;
+        desc.srcUrl = mpElement->getFullPath().toString();
+        qDebug() << desc.srcUrl;
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
     }
 }

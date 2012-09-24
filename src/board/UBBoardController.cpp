@@ -131,7 +131,7 @@ void UBBoardController::init()
             , this, SLOT(lastWindowClosed()));
 
     connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
-    connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QString,QByteArray,QPointF,QSize,bool)));
+    connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)));
 
     UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createDocument();
 
@@ -562,7 +562,12 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     }
 
     UBMimeType::Enum itemMimeType;
-    QString contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(item->sourceUrl().toLocalFile());
+
+    QString srcFile = item->sourceUrl().toLocalFile();
+    if (srcFile.isEmpty())
+        srcFile = item->sourceUrl().toString();
+
+    QString contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(srcFile);
     if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem))
         itemMimeType = UBMimeType::Group;
     else 
@@ -587,8 +592,9 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
             if (mitem)
             {
                 sourceUrl = mitem->mediaFileUrl();
+                downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);    
             }
-        }break;
+        }return NULL; // async operation
 
     case UBMimeType::VectorImage:
         {
@@ -661,7 +667,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     if (retItem)
         return retItem;
 
-    UBItem *createdItem = downloadFinished(true, sourceUrl, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
+    UBItem *createdItem = downloadFinished(true, sourceUrl, sourceUrl, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
     if (createdItem)
     {
         createdItem->setSourceUrl(item->sourceUrl());
@@ -675,6 +681,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 
         retItem = dynamic_cast<UBGraphicsItem *>(createdItem);
     }
+
     return retItem;
 }
 
@@ -960,7 +967,7 @@ void UBBoardController::groupButtonClicked()
     }
 }
 
-void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const QSize& pSize, bool isBackground, bool internalData)
+void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, const QPointF& pPos, const QSize& pSize, bool isBackground, bool internalData)
 {
     qDebug() << "something has been dropped on the board! Url is: " << url.toString();
     QString sUrl = url.toString();
@@ -971,7 +978,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
 
     if(sUrl.startsWith("uniboardTool://"))
     {
-        downloadFinished(true, url, "application/vnd.mnemis-uniboard-tool", QByteArray(), pPos, pSize, isBackground);
+        downloadFinished(true, url, QUrl(), "application/vnd.mnemis-uniboard-tool", QByteArray(), pPos, pSize, isBackground);
     }
     else if (sUrl.startsWith("file://") || sUrl.startsWith("/"))
     {
@@ -984,22 +991,37 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
                 || contentType.startsWith("application/widget")
                 || contentType.startsWith("application/vnd.apple-widget");
 
-        QFile file(fileName);
-
         if (shouldLoadFileData)
+        {
+            QFile file(fileName);
             file.open(QIODevice::ReadOnly);
-
-        downloadFinished(true, formedUrl, contentType, file.readAll(), pPos, pSize, isBackground, internalData);
-
-        if (shouldLoadFileData)
+            downloadFinished(true, formedUrl, QUrl(), contentType, file.readAll(), pPos, pSize, isBackground, internalData);
             file.close();
+        }
+        else
+        {
+            // media items should be copyed in separate thread
+
+            sDownloadFileDesc desc;
+            desc.modal = false;
+            desc.srcUrl = sUrl;
+            desc.originalSrcUrl = contentSourceUrl;
+            desc.currentSize = 0;
+            desc.name = QFileInfo(url.toString()).fileName();
+            desc.totalSize = 0; // The total size will be retrieved during the download
+            desc.pos = pPos;
+            desc.size = pSize;
+            desc.isBackground = isBackground;
+
+            UBDownloadManager::downloadManager()->addFileToDownload(desc);
+        }
     }
     else
     {
         // When we fall there, it means that we are dropping something from the web to the board
         sDownloadFileDesc desc;
         desc.modal = true;
-        desc.url = url.toString();
+        desc.srcUrl = url.toString();
         desc.currentSize = 0;
         desc.name = QFileInfo(url.toString()).fileName();
         desc.totalSize = 0; // The total size will be retrieved during the download
@@ -1022,7 +1044,7 @@ void UBBoardController::downloadURL(const QUrl& url, const QPointF& pPos, const 
 }
 
 
-UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader,
+UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader,
                                             QByteArray pData, QPointF pPos, QSize pSize,
                                             bool isBackground, bool internalData)
 {
@@ -1157,11 +1179,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
         qDebug() << "accepting mime type" << mimeType << "as video";
 
         UBGraphicsMediaItem *mediaVideoItem = 0;
-
+        QUuid uuid = QUuid::createUuid();
         if (pData.length() > 0)
         {
-            QUuid uuid = QUuid::createUuid();
-
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
                 sourceUrl.toString(),
@@ -1178,16 +1198,19 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
             QUrl url = QUrl::fromLocalFile(destFile);
 
             mediaVideoItem = mActiveScene->addMedia(url, false, pPos);
-
-            mediaVideoItem->setSourceUrl(sourceUrl);
-            mediaVideoItem->setUuid(uuid);
         }
         else
         {
-            mediaVideoItem = addVideo(sourceUrl, false, pPos);
+            qDebug() << sourceUrl.toString();
+            mediaVideoItem = addVideo(sourceUrl, false, pPos, true);
         }
 
         if(mediaVideoItem){
+            if (contentUrl.isEmpty())
+                mediaVideoItem->setSourceUrl(sourceUrl);
+            else 
+                mediaVideoItem->setSourceUrl(contentUrl);
+            mediaVideoItem->setUuid(uuid);
             connect(this, SIGNAL(activeSceneChanged()), mediaVideoItem, SLOT(activeSceneChanged()));
         }
 
@@ -1201,10 +1224,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
 
         UBGraphicsMediaItem *audioMediaItem = 0;
 
+        QUuid uuid = QUuid::createUuid();
         if (pData.length() > 0)
         {
-            QUuid uuid = QUuid::createUuid();
-
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
                 sourceUrl.toString(),
@@ -1221,16 +1243,18 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QStri
             QUrl url = QUrl::fromLocalFile(destFile);
 
             audioMediaItem = mActiveScene->addMedia(url, false, pPos);
-
-            audioMediaItem->setSourceUrl(sourceUrl);
-            audioMediaItem->setUuid(uuid);
         }
         else
         {
-            audioMediaItem = addAudio(sourceUrl, false, pPos);
+            audioMediaItem = addAudio(sourceUrl, false, pPos, true);
         }
 
         if(audioMediaItem){
+            if (contentUrl.isEmpty())
+                audioMediaItem->setSourceUrl(sourceUrl);
+            else 
+                audioMediaItem->setSourceUrl(contentUrl);
+            audioMediaItem->setUuid(uuid);
             connect(this, SIGNAL(activeSceneChanged()), audioMediaItem, SLOT(activeSceneChanged()));
         }
 
@@ -2028,23 +2052,28 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
     }
 }
 
-UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
+UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos, bool bUseSource)
 {
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-    QString destFile;
-    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
-                pSourceUrl.toLocalFile(),
-                UBPersistenceManager::videoDirectory,
-                uuid,
-                destFile);
-    if (!b)
+    // media file is not in document folder yet
+    if (!bUseSource)
     {
-        showMessage(tr("Add file operation failed: file copying error"));
-        return NULL;
-    }
-    concreteUrl = QUrl::fromLocalFile(destFile);
+        QString destFile;
+        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+                    pSourceUrl.toLocalFile(),
+                    UBPersistenceManager::videoDirectory,
+                    uuid,
+                    destFile);
+        if (!b)
+        {
+            showMessage(tr("Add file operation failed: file copying error"));
+            return NULL;
+        }
+        concreteUrl = QUrl::fromLocalFile(destFile);
+    }// else we just use source Url.
+
 
     UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -2058,23 +2087,27 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
 
 }
 
-UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
+UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos, bool bUseSource)
 {
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
 
-    QString destFile;
-    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
-                pSourceUrl.toLocalFile(), 
-                UBPersistenceManager::audioDirectory,
-                uuid,
-                destFile);
-    if (!b)
+    // media file is not in document folder yet
+    if (!bUseSource)
     {
-        showMessage(tr("Add file operation failed: file copying error"));
-        return NULL;
-    }
-    concreteUrl = QUrl::fromLocalFile(destFile);
+        QString destFile;
+        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+            pSourceUrl.toLocalFile(),
+            UBPersistenceManager::audioDirectory,
+            uuid,
+            destFile);
+        if (!b)
+        {
+            showMessage(tr("Add file operation failed: file copying error"));
+            return NULL;
+        }
+        concreteUrl = QUrl::fromLocalFile(destFile);
+    }// else we just use source Url.
 
     UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -2248,7 +2281,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
         if("" != url)
         {
-            downloadURL(url, pPos);
+            downloadURL(url, QString(), pPos);
             return;
         }
     }
@@ -2268,7 +2301,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         foreach(const QUrl url, urls){
             QPointF pos(pPos + QPointF(index * 15, index * 15));
 
-            downloadURL(url, pos, QSize(), false,  internalData);
+            downloadURL(url, QString(), pos, QSize(), false,  internalData);
             index++;
         }
 
@@ -2294,7 +2327,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
             // Sometimes, it is possible to have an URL as text. we check here if it is the case
             QString qsTmp = pMimeData->text().remove(QRegExp("[\\0]"));
             if(qsTmp.startsWith("http")){
-                downloadURL(QUrl(qsTmp), pPos);
+                downloadURL(QUrl(qsTmp), QString(), pPos);
             }
             else{
                 mActiveScene->addTextHtml(pMimeData->html(), pPos);
