@@ -864,31 +864,14 @@ UBCopyThread::UBCopyThread(QObject *parent)
 {   
 }
 
-void UBCopyThread::copyFile(const QString &source, const QString &destination, bool overwrite)
+void UBCopyThread::download(const sDownloadFileDesc &desc)
 {
-    if (!QFile::exists(source)) {
-        qDebug() << "file" << source << "does not present in fs";
+    if (!QFile::exists(QUrl(desc.srcUrl).toLocalFile())) {
+        qDebug() << "file" << desc.srcUrl << "does not present in fs";
         return;
     }
 
-    QString normalizedDestination = destination;
-    if (QFile::exists(normalizedDestination)) {
-        if  (QFileInfo(normalizedDestination).isFile() && overwrite) {
-            QFile::remove(normalizedDestination);
-        }
-    } else {
-        normalizedDestination = normalizedDestination.replace(QString("\\"), QString("/"));
-        int pos = normalizedDestination.lastIndexOf("/");
-        if (pos != -1) {
-            QString newpath = normalizedDestination.left(pos);
-            if (!QDir().mkpath(newpath)) {
-                qDebug() << "can't create a new path at " << newpath;
-            }
-        }
-    }
-
-    mFrom = source;
-    mTo = normalizedDestination;
+    mDesc = desc;
 
     start();
 }
@@ -896,7 +879,7 @@ void UBCopyThread::copyFile(const QString &source, const QString &destination, b
 void UBCopyThread::run()
 {
 
-    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mFrom);
+    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mDesc.srcUrl);
 
     int position=mimeType.indexOf(";");
     if(position != -1)
@@ -914,13 +897,16 @@ void UBCopyThread::run()
 
     QString uuid = QUuid::createUuid();
     UBPersistenceManager::persistenceManager()->addFileToDocument(UBApplication::boardController->selectedDocument(), 
-        mFrom,
+        QUrl(mDesc.srcUrl).toLocalFile(),
         destDirectory,
         uuid,
         mTo,
         NULL);
 
-    emit finished(mTo);
+    if (mDesc.originalSrcUrl.isEmpty())
+        mDesc.originalSrcUrl = mDesc.srcUrl;
+
+    emit finished(mTo, mDesc.originalSrcUrl);
 }
 
 
@@ -931,18 +917,14 @@ UBAsyncLocalFileDownloader::UBAsyncLocalFileDownloader(sDownloadFileDesc desc, Q
 
 }
 
-void UBAsyncLocalFileDownloader::copyFile(QString &source, QString &destination, bool bOverwrite)
+void UBAsyncLocalFileDownloader::download()
 {
-    mFrom = source;
-    mTo = destination;
-
     UBCopyThread *cpThread = new UBCopyThread(this); // possible memory leak. Delete helper at signal_asyncCopyFinished() handler
-    connect(cpThread, SIGNAL(finished(QString)), this, SLOT(slot_asyncCopyFinished(QString)));
-    cpThread->copyFile(source, destination, bOverwrite);
+    connect(cpThread, SIGNAL(finished(QString, QString)), this, SLOT(slot_asyncCopyFinished(QString, QString)));
+    cpThread->download(mDesc);
 }
 
-void UBAsyncLocalFileDownloader::slot_asyncCopyFinished(QString resUrl)
+void UBAsyncLocalFileDownloader::slot_asyncCopyFinished(QString srcUrl, QString contentUrl)
 {
-    emit signal_asyncCopyFinished(mDesc.id, !resUrl.isEmpty(), QUrl(resUrl), "", NULL, mDesc.pos, mDesc.size, mDesc.isBackground);
-
+    emit signal_asyncCopyFinished(mDesc.id, !srcUrl.isEmpty(), QUrl::fromLocalFile(srcUrl), QUrl::fromLocalFile(contentUrl), "", NULL, mDesc.pos, mDesc.size, mDesc.isBackground);
 }

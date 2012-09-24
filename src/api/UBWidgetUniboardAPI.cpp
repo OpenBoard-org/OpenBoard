@@ -201,7 +201,7 @@ void UBWidgetUniboardAPI::addObject(QString pUrl, int width, int height, int x, 
     if (UBApplication::boardController->activeScene() != mScene)
         return;
 
-    UBApplication::boardController->downloadURL(QUrl(pUrl), QPointF(x, y), QSize(width, height), background);
+    UBApplication::boardController->downloadURL(QUrl(pUrl), QString(), QPointF(x, y), QSize(width, height), background);
 
 }
 

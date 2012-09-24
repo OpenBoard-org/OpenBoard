@@ -193,8 +193,8 @@ class UBBoardController : public UBDocumentContainer
         void firstScene();
         void lastScene();
         void groupButtonClicked();
-        void downloadURL(const QUrl& url, const QPointF& pPos = QPointF(0.0, 0.0), const QSize& pSize = QSize(), bool isBackground = false, bool internalData = false);
-        UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QString pHeader,
+        void downloadURL(const QUrl& url, QString contentSourceUrl = QString(), const QPointF& pPos = QPointF(0.0, 0.0), const QSize& pSize = QSize(), bool isBackground = false, bool internalData = false);
+        UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pHeader,
                                  QByteArray pData, QPointF pPos, QSize pSize,
                                  bool isBackground = false, bool internalData = false);
         void changeBackground(bool isDark, bool isCrossed);

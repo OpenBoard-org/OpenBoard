@@ -29,13 +29,14 @@ class UBCopyThread : public QThread
 public:
     explicit UBCopyThread(QObject *parent = 0);
 
-    void copyFile(const QString &source, const QString &destination, bool overwrite);
+    void download(const sDownloadFileDesc &desc);
     void run();
 
 signals:
-    void finished(QString resUrl);
+    void finished(QString srcUrl, QString resUrl);
 
 private:
+    sDownloadFileDesc mDesc;
     QString mFrom;
     QString mTo;
 };
@@ -47,13 +48,13 @@ class UBAsyncLocalFileDownloader : public QObject
 public:
     UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent = 0);
 
-    void copyFile(QString &source, QString &destination, bool bOverwrite);
+    void download();
 
 public slots:
-    void slot_asyncCopyFinished(QString resUrl);
+    void slot_asyncCopyFinished(QString srcUrl, QString resUrl);
 
 signals:
-    void signal_asyncCopyFinished(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
+    void signal_asyncCopyFinished(int id, bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
 
 private:
     QString mFrom;

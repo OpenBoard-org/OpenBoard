@@ -195,7 +195,7 @@ void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
     UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
     if (pAudioWidget)
     {
-        pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toString()));
+        pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toLocalFile()));
     }
 
     UBItem::setSourceUrl(pSourceUrl);

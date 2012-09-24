@@ -194,7 +194,8 @@ void UBDownloadManager::onDownloadProgress(int id, qint64 received, qint64 total
  * \brief Called when the download of the given file is finished
  * @param desc as the current downloaded file description
  */
-void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
+
+void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
 //    Temporary data for dnd do not delete it please
     Q_UNUSED(pPos)
@@ -212,7 +213,7 @@ void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl
 
             } else if(desc.dest == sDownloadFileDesc::board) {
                 // The downloaded file is modal so we must put it on the board
-                emit addDownloadedFileToBoard(pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
+                emit addDownloadedFileToBoard(pSuccess, sourceUrl, contentUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
             }
             else
             {
@@ -306,8 +307,8 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
     if (desc.srcUrl.startsWith("file://") || desc.srcUrl.startsWith("/"))
     {
         UBAsyncLocalFileDownloader * cpHelper = new UBAsyncLocalFileDownloader(desc, this);
-        connect(cpHelper, SIGNAL(signal_asyncCopyFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
-        cpHelper->copyFile(QUrl(desc.srcUrl).toLocalFile(), QUrl(desc.dstUrl).toLocalFile(), true);
+        connect(cpHelper, SIGNAL(signal_asyncCopyFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QUrl,QString, QByteArray, QPointF, QSize, bool)));
+        cpHelper->download();
     }
     else
     {    

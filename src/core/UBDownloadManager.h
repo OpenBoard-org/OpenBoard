@@ -53,7 +53,7 @@ struct sDownloadFileDesc
     int totalSize;
     int currentSize;
     QString srcUrl;
-    QString dstUrl;
+    QString originalSrcUrl;
     QString contentTypeHeader;
     bool modal;
     QPointF pos;        // For board drop only
@@ -109,7 +109,7 @@ signals:
     void downloadFinished(bool pSuccess, int id, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData);
     void downloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData);
     void downloadModalFinished();
-    void addDownloadedFileToBoard(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
+    void addDownloadedFileToBoard(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
     void addDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData);
     void cancelAllDownloads();
     void allDownloadsFinished();
@@ -117,7 +117,7 @@ signals:
 private slots:
     void onUpdateDownloadLists();
     void onDownloadProgress(int id, qint64 received, qint64 total);
-    void onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
+    void onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
     void onDownloadError(int id);
 
 private:
