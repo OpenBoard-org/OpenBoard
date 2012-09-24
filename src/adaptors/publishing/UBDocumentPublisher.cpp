@@ -77,14 +77,18 @@ void UBDocumentPublisher::publish()
             //check that the username and password are stored on preferences
     UBSettings* settings = UBSettings::settings();
 
-    if(settings->communityUsername().isEmpty() || settings->communityPassword().isEmpty()){
-        UBApplication::showMessage(tr("Credentials has to not been filled out yet."));
-        qDebug() << "trying to connect to community without the required credentials";
-        return;
-    }
-
     mUsername = settings->communityUsername();
     mPassword = settings->communityPassword();
+
+    if (mUsername.isEmpty() || mPassword.isEmpty()){
+        UBLoginDlg dlg;
+        if (dlg.exec() == QDialog::Accepted) {
+            mUsername = dlg.username();
+            mPassword = dlg.password();
+        }
+        else
+            return;
+    }
 
     UBPublicationDlg dlg;
     if(QDialog::Accepted == dlg.exec())
@@ -649,6 +653,73 @@ void UBDocumentPublisher::sendUbw(QString username, QString password)
 QString UBDocumentPublisher::getBase64Of(QString stringToEncode)
 {
     return stringToEncode.toAscii().toBase64();
+}
+
+UBLoginDlg::UBLoginDlg(QWidget *parent, const char *name)
+    : QDialog(parent)
+    , mUsernameLabel(tr("Username:"), this)
+    , mUsernameLineEdit(this)
+    , mPasswordLabel(tr("Password:"), this)
+    , mPasswordLineEdit(this)
+    , mRememberLabel(tr("Remember credentials"), this)
+    , mButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this)
+{
+    setObjectName(name);
+    setFixedSize(400, 150);
+    setWindowTitle(tr("Login"));
+
+    setLayout(&mLayout);
+    mLayout.addLayout(&mUsernameLayout);
+    mLayout.addLayout(&mPasswordLayout);
+    mLayout.addLayout(&mRememberLayout);
+
+    mUsernameLayout.addWidget(&mUsernameLabel, 0);
+    mUsernameLayout.addWidget(&mUsernameLineEdit, 1);
+
+    mPasswordLayout.addWidget(&mPasswordLabel, 0);
+    mPasswordLineEdit.setEchoMode(QLineEdit::Password);
+    mPasswordLayout.addWidget(&mPasswordLineEdit, 1);
+
+    mRememberLayout.addWidget(&mRememberCheckBox, 0);
+    mRememberLayout.addWidget(&mRememberLabel, 1);
+
+    mLayout.addWidget(&mButtons);
+
+    connect(&mButtons, SIGNAL(accepted()), this, SLOT(onButtonsAccepted()));
+    connect(&mButtons, SIGNAL(rejected()), this, SLOT(reject()));
+
+}
+
+UBLoginDlg::~UBLoginDlg()
+{
+    /* NOOP */
+}
+
+QString UBLoginDlg::username()
+{
+    return mUsernameLineEdit.text();
+}
+
+QString UBLoginDlg::password()
+{
+    return mPasswordLineEdit.text();
+}
+
+bool UBLoginDlg::hasToRemember()
+{
+    return mRememberCheckBox.checkState() == Qt::Checked;
+}
+
+void UBLoginDlg::onButtonsAccepted()
+{
+    if (username().isEmpty() || password().isEmpty())
+        return;
+    if (hasToRemember()) {
+        UBSettings* settings = UBSettings::settings();
+        settings->setCommunityUsername(username());
+        settings->setCommunityPassword(password());
+    }
+    accept();
 }
 
 // ---------------------------------------------------------
