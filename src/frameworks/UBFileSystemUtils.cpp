@@ -859,24 +859,26 @@ QString UBFileSystemUtils::readTextFile(QString path)
 }
 
 
-UBCopyThread::UBCopyThread(QObject *parent)
+
+UBAsyncLocalFileDownloader::UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent)
     : QThread(parent)
-{   
+    , mDesc(desc)
+{
+
 }
 
-void UBCopyThread::download(const sDownloadFileDesc &desc)
+
+void UBAsyncLocalFileDownloader::download()
 {
-    if (!QFile::exists(QUrl(desc.srcUrl).toLocalFile())) {
-        qDebug() << "file" << desc.srcUrl << "does not present in fs";
+    if (!QFile::exists(QUrl(mDesc.srcUrl).toLocalFile())) {
+        qDebug() << "file" << mDesc.srcUrl << "does not present in fs";
         return;
     }
-
-    mDesc = desc;
 
     start();
 }
 
-void UBCopyThread::run()
+void UBAsyncLocalFileDownloader::run()
 {
 
     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mDesc.srcUrl);
@@ -906,25 +908,5 @@ void UBCopyThread::run()
     if (mDesc.originalSrcUrl.isEmpty())
         mDesc.originalSrcUrl = mDesc.srcUrl;
 
-    emit finished(mTo, mDesc.originalSrcUrl);
-}
-
-
-UBAsyncLocalFileDownloader::UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent)
-    : QObject(parent)
-    , mDesc(desc)
-{
-
-}
-
-void UBAsyncLocalFileDownloader::download()
-{
-    UBCopyThread *cpThread = new UBCopyThread(this); // possible memory leak. Delete helper at signal_asyncCopyFinished() handler
-    connect(cpThread, SIGNAL(finished(QString, QString)), this, SLOT(slot_asyncCopyFinished(QString, QString)));
-    cpThread->download(mDesc);
-}
-
-void UBAsyncLocalFileDownloader::slot_asyncCopyFinished(QString srcUrl, QString contentUrl)
-{
-    emit signal_asyncCopyFinished(mDesc.id, !srcUrl.isEmpty(), QUrl::fromLocalFile(srcUrl), QUrl::fromLocalFile(contentUrl), "", NULL, mDesc.pos, mDesc.size, mDesc.isBackground);
+    emit signal_asyncCopyFinished(mDesc.id, !mTo.isEmpty(), QUrl::fromLocalFile(mTo), QUrl::fromLocalFile(mDesc.originalSrcUrl), "", NULL, mDesc.pos, mDesc.size, mDesc.isBackground);
 }

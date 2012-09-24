@@ -23,44 +23,26 @@
 
 #include "core/UBDownloadManager.h"
 
-class UBCopyThread : public QThread
+class UBAsyncLocalFileDownloader : public QThread
 {
     Q_OBJECT
 public:
-    explicit UBCopyThread(QObject *parent = 0);
+    UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent = 0);
 
-    void download(const sDownloadFileDesc &desc);
+    void download();    
     void run();
 
 signals:
     void finished(QString srcUrl, QString resUrl);
-
-private:
-    sDownloadFileDesc mDesc;
-    QString mFrom;
-    QString mTo;
-};
-
-class UBAsyncLocalFileDownloader : public QObject
-{
-    Q_OBJECT
-
-public:
-    UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent = 0);
-
-    void download();
-
-public slots:
-    void slot_asyncCopyFinished(QString srcUrl, QString resUrl);
-
-signals:
     void signal_asyncCopyFinished(int id, bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
 
+
 private:
+    sDownloadFileDesc mDesc;
     QString mFrom;
     QString mTo;
-    sDownloadFileDesc mDesc;
 };
+
 
 class QuaZipFile;
 class UBProcessingProgressListener;

@@ -594,7 +594,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
                 sourceUrl = mitem->mediaFileUrl();
                 downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);    
             }
-        }break;
+        }return NULL; // async operation
 
     case UBMimeType::VectorImage:
         {
