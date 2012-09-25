@@ -76,7 +76,7 @@ public:
 
 signals:
     void downloadProgress(int id, qint64 current,qint64 total);
-    void downloadFinished(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
+    void downloadFinished(int id, bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
     void downloadError(int id);
 
 private slots:

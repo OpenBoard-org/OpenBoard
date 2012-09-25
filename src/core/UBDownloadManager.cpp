@@ -367,7 +367,7 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
     {    
         UBDownloadHttpFile* http = new UBDownloadHttpFile(desc.id, this);
         connect(http, SIGNAL(downloadProgress(int, qint64,qint64)), this, SLOT(onDownloadProgress(int,qint64,qint64)));
-        connect(http, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+        connect(http, SIGNAL(downloadFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)));
     
         //the desc.srcUrl is encoded. So we have to decode it before.
         QUrl url;
@@ -558,7 +558,7 @@ void UBDownloadHttpFile::onDownloadFinished(bool pSuccess, QUrl sourceUrl, QStri
     if(pSuccess)
     {
         // Notify the end of the download
-        emit downloadFinished(mId, pSuccess, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
+        emit downloadFinished(mId, pSuccess, sourceUrl, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
     }
     else
     {
