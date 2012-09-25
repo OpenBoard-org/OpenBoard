@@ -995,6 +995,7 @@ void UBBoardPaletteManager::startDownloads()
         mDownloadInProgress = true;
         mpDownloadWidget->setVisibleState(true);
         mRightPalette->addTab(mpDownloadWidget);
+        mpDownloadWidget;
     }
 }
 

@@ -26,18 +26,21 @@
 UBAsyncLocalFileDownloader::UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent)
 : QThread(parent)
 , mDesc(desc)
+, m_bAborting(false)
 {
 
 }
 
-void UBAsyncLocalFileDownloader::download()
+UBAsyncLocalFileDownloader *UBAsyncLocalFileDownloader::download()
 {
     if (!QFile::exists(QUrl(mDesc.srcUrl).toLocalFile())) {
         qDebug() << "file" << mDesc.srcUrl << "does not present in fs";
-        return;
+        return this;
     }
 
     start();
+
+    return this;
 }
 
 void UBAsyncLocalFileDownloader::run()
@@ -59,6 +62,9 @@ void UBAsyncLocalFileDownloader::run()
         if (UBMimeType::Audio == itemMimeType)
             destDirectory = UBPersistenceManager::audioDirectory;
 
+    if (mDesc.originalSrcUrl.isEmpty())
+        mDesc.originalSrcUrl = mDesc.srcUrl;
+
     QString uuid = QUuid::createUuid();
     UBPersistenceManager::persistenceManager()->addFileToDocument(UBApplication::boardController->selectedDocument(), 
         QUrl(mDesc.srcUrl).toLocalFile(),
@@ -67,12 +73,19 @@ void UBAsyncLocalFileDownloader::run()
         mTo,
         NULL);
 
-    if (mDesc.originalSrcUrl.isEmpty())
-        mDesc.originalSrcUrl = mDesc.srcUrl;
-
-    emit signal_asyncCopyFinished(mDesc.id, !mTo.isEmpty(), QUrl::fromLocalFile(mTo), QUrl::fromLocalFile(mDesc.originalSrcUrl), "", NULL, mDesc.pos, mDesc.size, mDesc.isBackground);
+    if (m_bAborting)
+    {
+        if (QFile::exists(mTo))
+            QFile::remove(mTo);
+    }
+    else
+        emit signal_asyncCopyFinished(mDesc.id, !mTo.isEmpty(), QUrl::fromLocalFile(mTo), QUrl::fromLocalFile(mDesc.originalSrcUrl), "", NULL, mDesc.pos, mDesc.size, mDesc.isBackground);
 }
 
+void UBAsyncLocalFileDownloader::abort()
+{
+    m_bAborting = true;
+}
 
 /** The unique instance of the download manager */
 static UBDownloadManager* pInstance = NULL;
@@ -154,7 +167,7 @@ void UBDownloadManager::init()
 {
     mCrntDL.clear();
     mPendingDL.clear();
-    mReplies.clear();
+    mDownloads.clear();
     mLastID = 1;
     mDLAvailability.clear();
     for(int i=0; i<SIMULTANEOUS_DOWNLOAD; i++)
@@ -314,7 +327,7 @@ void UBDownloadManager::updateFileCurrentSize(int id, qint64 received, qint64 to
                 mCrntDL.remove(i);
 
                 // Here we don't forget to remove the reply related to the finished download
-                mReplies.remove(id);
+                mDownloads.remove(id);
 
                 // Free the download slot used by the finished file
                 for(int j=0; j<mDLAvailability.size();j++)
@@ -361,7 +374,11 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
     {
         UBAsyncLocalFileDownloader * cpHelper = new UBAsyncLocalFileDownloader(desc, this);
         connect(cpHelper, SIGNAL(signal_asyncCopyFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QUrl,QString, QByteArray, QPointF, QSize, bool)));
-        cpHelper->download();
+        QObject *res = dynamic_cast<QObject *>(cpHelper->download());
+        if (!res)
+            delete res;
+        else
+            mDownloads[desc.id] = res;
     }
     else
     {    
@@ -373,7 +390,7 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
         QUrl url;
         url.setEncodedUrl(desc.srcUrl.toUtf8());
         // We send here the request and store its reply in order to be able to cancel it if needed
-        mReplies[desc.id] = http->get(url, desc.pos, desc.size, desc.isBackground);
+        mDownloads[desc.id] = dynamic_cast<QObject *>(http->get(url, desc.pos, desc.size, desc.isBackground));
     } 
 }
 
@@ -420,10 +437,18 @@ void UBDownloadManager::checkIfModalRemains()
 void UBDownloadManager::cancelDownloads()
 {
     // Stop the current downloads
-    QMap<int, QNetworkReply*>::iterator it = mReplies.begin();
-    for(; it!=mReplies.end();it++)
+    QMap<int, QObject*>::iterator it = mDownloads.begin();
+    for(; it!=mDownloads.end();it++)
     {
-        dynamic_cast<QNetworkReply*>(it.value())->abort();
+        QNetworkReply *netReply = dynamic_cast<QNetworkReply*>(it.value());
+        if (netReply)
+            netReply->abort();
+        else
+        {        
+            UBAsyncLocalFileDownloader *localDownload = dynamic_cast<UBAsyncLocalFileDownloader *>(it.value());
+            if (localDownload)
+                localDownload->abort();
+        }
     }
 
     // Clear all the lists
@@ -436,7 +461,8 @@ void UBDownloadManager::cancelDownloads()
 
 void UBDownloadManager::onDownloadError(int id)
 {
-    QNetworkReply* pReply = mReplies.value(id);
+    QNetworkReply *pReply = dynamic_cast<QNetworkReply *>(mDownloads.value(id));
+    
     if(NULL != pReply)
     {
         // Check which error occured:
@@ -466,9 +492,25 @@ void UBDownloadManager::finishDownloads(bool cancel)
 
 void UBDownloadManager::cancelDownload(int id)
 {
+    if (!mDownloads.size())
+        return;
+   
     // Stop the download
-    mReplies[id]->abort();
-    mReplies.remove(id);
+
+    QNetworkReply *pNetworkDownload = dynamic_cast<QNetworkReply *>(mDownloads[id]);
+    if (pNetworkDownload)
+        pNetworkDownload->abort();
+    else
+    {
+        UBAsyncLocalFileDownloader *pLocalDownload = dynamic_cast<UBAsyncLocalFileDownloader *>(mDownloads[id]);
+        if (pLocalDownload)
+        {
+            if (pLocalDownload->isRunning())
+                pLocalDownload->abort();                          
+        }
+    }
+
+    mDownloads.remove(id);
 
     // Remove the canceled download from the download lists
     bool bFound = false;

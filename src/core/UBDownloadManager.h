@@ -93,8 +93,9 @@ class UBAsyncLocalFileDownloader : public QThread
 public:
     UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent = 0);
 
-    void download();    
+    UBAsyncLocalFileDownloader *download();    
     void run();
+    void abort();
 
 signals:
     void finished(QString srcUrl, QString resUrl);
@@ -103,6 +104,7 @@ signals:
 
 private:
     sDownloadFileDesc mDesc;
+    bool m_bAborting;
     QString mFrom;
     QString mTo;
 };
@@ -159,7 +161,7 @@ private:
     /** The current download availability (-1 = free, otherwise the file ID is recorded)*/
     QVector<int> mDLAvailability;
     /** A map containing the replies of the GET operations */
-    QMap<int, QNetworkReply*> mReplies;
+    QMap<int, QObject*> mDownloads;
 };
 
 #endif // UBDOWNLOADMANAGER_H
