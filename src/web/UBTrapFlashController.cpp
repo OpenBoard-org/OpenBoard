@@ -200,7 +200,7 @@ void UBTrapFlashController::createWidget()
         // flash widget
         UBWebKitUtils::HtmlObject selectedObject = mAvailableFlashes.at(selectedIndex - 1);
         UBApplication::applicationController->showBoard();
-        UBApplication::boardController->downloadURL(QUrl(selectedObject.source), QPoint(0, 0), QSize(selectedObject.width, selectedObject.height));
+        UBApplication::boardController->downloadURL(QUrl(selectedObject.source), QString(), QPoint(0, 0), QSize(selectedObject.width, selectedObject.height));
     }
 
     QString freezedWidgetPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/freezedWidgetWrapper.html";

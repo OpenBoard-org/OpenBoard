@@ -73,7 +73,11 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
     mMediaObject = new Phonon::MediaObject(this);
 
-    if (pMediaFileUrl.toLocalFile().contains("videos")) 
+    QString mediaPath = pMediaFileUrl.toString();
+    if ("" == mediaPath)
+        mediaPath = pMediaFileUrl.toLocalFile();
+
+    if (mediaPath.toLower().contains("videos")) 
     {
         mMediaType = mediaType_Video;
 
@@ -91,7 +95,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         haveLinkedImage = true;
     }
     else    
-    if (pMediaFileUrl.toLocalFile().contains("audios"))
+    if (mediaPath.toLower().contains("audios"))
     {
         mMediaType = mediaType_Audio;
         mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
@@ -191,7 +195,7 @@ void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
     UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
     if (pAudioWidget)
     {
-        pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toString()));
+        pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toLocalFile()));
     }
 
     UBItem::setSourceUrl(pSourceUrl);
