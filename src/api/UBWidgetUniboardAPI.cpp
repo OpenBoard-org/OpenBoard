@@ -201,7 +201,7 @@ void UBWidgetUniboardAPI::addObject(QString pUrl, int width, int height, int x, 
     if (UBApplication::boardController->activeScene() != mScene)
         return;
 
-    UBApplication::boardController->downloadURL(QUrl(pUrl), QPointF(x, y), QSize(width, height), background);
+    UBApplication::boardController->downloadURL(QUrl(pUrl), QString(), QPointF(x, y), QSize(width, height), background);
 
 }
 
@@ -506,7 +506,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
             sDownloadFileDesc desc;
             desc.dest = sDownloadFileDesc::graphicsWidget;
             desc.modal = true;
-            desc.url = url;
+            desc.srcUrl = url;
             desc.currentSize = 0;
             desc.name = QFileInfo(url).fileName();
             desc.totalSize = 0; // The total size will be retrieved during the download
