@@ -2341,7 +2341,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
                 QString qsUrl = UBPlatformUtils::urlFromClipboard();
                 if("" != qsUrl){
                     // We finally got the url of the dropped ressource! Let's import it!
-                    downloadURL(qsUrl, pPos);
+                    downloadURL(qsUrl, qsUrl, pPos);
                     return;
                 }
 #endif
