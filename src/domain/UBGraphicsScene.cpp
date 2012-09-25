@@ -1603,6 +1603,9 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
       --mItemCount;
 
     mFastAccessItems.removeAll(item);
+    /* delete the item if it is cache to allow its reinstanciation, because Cache implements design pattern Singleton. */
+    if (dynamic_cast<UBGraphicsCache*>(item))
+        UBCoreGraphicsScene::deleteItem(item);
 }
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
@@ -1956,17 +1959,17 @@ void UBGraphicsScene::addAristo(QPointF center)
 
 void UBGraphicsScene::addCache()
 {
-    UBGraphicsCache* cache = new UBGraphicsCache();
-    mTools << cache;
+    UBGraphicsCache* cache = UBGraphicsCache::instance(this);
+    if (!items().contains(cache)) {
+        addItem(cache);
 
-    addItem(cache);
+        cache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
-    cache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
-
-    cache->setVisible(true);
-    cache->setSelected(true);
-    UBApplication::boardController->notifyCache(true);
-    UBApplication::boardController->notifyPageChanged();
+        cache->setVisible(true);
+        cache->setSelected(true);
+        UBApplication::boardController->notifyCache(true);
+        UBApplication::boardController->notifyPageChanged();
+    }
 }
 
 void UBGraphicsScene::addMask(const QPointF &center)

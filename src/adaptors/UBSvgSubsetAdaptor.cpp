@@ -3120,7 +3120,7 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 
 UBGraphicsCache* UBSvgSubsetAdaptor::UBSvgSubsetReader::cacheFromSvg()
 {
-    UBGraphicsCache* pCache = new UBGraphicsCache();
+    UBGraphicsCache* pCache = UBGraphicsCache::instance(mScene);
     pCache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     graphicsItemFromSvg(pCache);
