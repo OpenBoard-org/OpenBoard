@@ -1366,6 +1366,11 @@ void UBBoardView::dropEvent (QDropEvent *event)
             event->acceptProposedAction();
         }
     }
+    //prevent features in UBFeaturesWidget deletion from the model when event is processing inside
+    //Qt base classes
+    if (event->dropAction() == Qt::MoveAction) {
+        event->setDropAction(Qt::CopyAction);
+    }
 }
 
 void
