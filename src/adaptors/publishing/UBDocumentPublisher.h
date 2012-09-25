@@ -33,35 +33,6 @@ class UBServerXMLHttpRequest;
 class UBGraphicsW3CWidgetItem;
 class QWebView;
 
-class UBLoginDlg : public QDialog
-{
-Q_OBJECT
-public:
-    UBLoginDlg(QWidget* parent = 0, const char* name = "LoginDlg");
-    ~UBLoginDlg();
-
-    QString username();
-    QString password();
-
-private slots:
-    void onButtonsAccepted();
-
-private:
-    bool hasToRemember();
-
-    QVBoxLayout mLayout;
-    QHBoxLayout mUsernameLayout;
-    QHBoxLayout mPasswordLayout;
-    QHBoxLayout mRememberLayout;
-    QLabel mUsernameLabel;
-    QLineEdit mUsernameLineEdit;
-    QLabel mPasswordLabel;
-    QLineEdit mPasswordLineEdit;
-    QCheckBox mRememberCheckBox;
-    QLabel mRememberLabel;
-    QDialogButtonBox mButtons;
-};
-
 class UBProxyLoginDlg : public QDialog
 {
     Q_OBJECT
