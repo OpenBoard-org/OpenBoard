@@ -87,6 +87,26 @@ private:
     int mId;
 };
 
+class UBAsyncLocalFileDownloader : public QThread
+{
+    Q_OBJECT
+public:
+    UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent = 0);
+
+    void download();    
+    void run();
+
+signals:
+    void finished(QString srcUrl, QString resUrl);
+    void signal_asyncCopyFinished(int id, bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
+
+
+private:
+    sDownloadFileDesc mDesc;
+    QString mFrom;
+    QString mTo;
+};
+
 class UBDownloadManager : public QObject
 {
     Q_OBJECT

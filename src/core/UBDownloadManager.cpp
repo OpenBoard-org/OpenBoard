@@ -14,12 +14,65 @@
  */
 #include "UBDownloadManager.h"
 #include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
 #include "gui/UBMainWindow.h"
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "core/memcheck.h"
+
+
+UBAsyncLocalFileDownloader::UBAsyncLocalFileDownloader(sDownloadFileDesc desc, QObject *parent)
+: QThread(parent)
+, mDesc(desc)
+{
+
+}
+
+void UBAsyncLocalFileDownloader::download()
+{
+    if (!QFile::exists(QUrl(mDesc.srcUrl).toLocalFile())) {
+        qDebug() << "file" << mDesc.srcUrl << "does not present in fs";
+        return;
+    }
+
+    start();
+}
+
+void UBAsyncLocalFileDownloader::run()
+{
+
+    QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mDesc.srcUrl);
+
+    int position=mimeType.indexOf(";");
+    if(position != -1)
+        mimeType=mimeType.left(position);
+
+    UBMimeType::Enum itemMimeType = UBFileSystemUtils::mimeTypeFromString(mimeType);
+
+
+    QString destDirectory;
+    if (UBMimeType::Video == itemMimeType)
+        destDirectory = UBPersistenceManager::videoDirectory;
+    else 
+        if (UBMimeType::Audio == itemMimeType)
+            destDirectory = UBPersistenceManager::audioDirectory;
+
+    QString uuid = QUuid::createUuid();
+    UBPersistenceManager::persistenceManager()->addFileToDocument(UBApplication::boardController->selectedDocument(), 
+        QUrl(mDesc.srcUrl).toLocalFile(),
+        destDirectory,
+        uuid,
+        mTo,
+        NULL);
+
+    if (mDesc.originalSrcUrl.isEmpty())
+        mDesc.originalSrcUrl = mDesc.srcUrl;
+
+    emit signal_asyncCopyFinished(mDesc.id, !mTo.isEmpty(), QUrl::fromLocalFile(mTo), QUrl::fromLocalFile(mDesc.originalSrcUrl), "", NULL, mDesc.pos, mDesc.size, mDesc.isBackground);
+}
+
 
 /** The unique instance of the download manager */
 static UBDownloadManager* pInstance = NULL;
