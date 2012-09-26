@@ -350,13 +350,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         }
     }
 
-    //bounding rect lef top corner coordinates
-    qreal x1 = polygon.boundingRect().topLeft().x();
-    qreal y1 = polygon.boundingRect().topLeft().y();
-    //bounding rect dimensions
-    qreal width = polygon.boundingRect().width();
-    qreal height = polygon.boundingRect().height();
-
     QString strokeColorText = element.attribute(aStroke);
     QString fillColorText = element.attribute(aFill);
     QString strokeWidthText = element.attribute(aStrokewidth);
@@ -373,37 +366,22 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     brush.setColor(fillColor);
     brush.setStyle(Qt::SolidPattern);
 
-    QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
-    QPainter painter;
+    UBGraphicsPolygonItem *graphicsPolygon = new UBGraphicsPolygonItem(polygon);
+    graphicsPolygon->setBrush(brush);
 
-    painter.begin(generator); //drawing to svg tmp file
-
-    painter.translate(pen.widthF() / 2 - x1, pen.widthF() / 2 - y1);
-    painter.setBrush(brush);
-    painter.setPen(pen);
-    painter.drawPolygon(polygon);
-
-    painter.end();
-
-    //add resulting svg file to scene
-    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
-    svgItem->resetTransform();
+    graphicsPolygon->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform, svgItem);
+        transform = transformFromString(textTransform, graphicsPolygon);
     }
-    repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 - strokeWidth/2 + transform.m31(), y1 + strokeWidth/2 + transform.m32(), transform);
-    hashSceneItem(element, svgItem);
+    mCurrentScene->addItem(graphicsPolygon);    
 
     if (mGSectionContainer)
     {
-        addItemToGSection(svgItem);
+        addItemToGSection(graphicsPolygon);
     }
-
-    delete generator;
-
     return true;
 }
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &element)
@@ -438,9 +416,6 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
         }
     }
 
-    //bounding rect lef top corner coordinates
-    qreal x1 = polygon.boundingRect().topLeft().x();
-    qreal y1 = polygon.boundingRect().topLeft().y();
     //bounding rect dimensions
     qreal width = polygon.boundingRect().width();
     qreal height = polygon.boundingRect().height();
@@ -458,35 +433,25 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     pen.setColor(strokeColor);
     pen.setWidth(strokeWidth);
 
-    QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
-    QPainter painter;
-
-    painter.begin(generator); //drawing to svg tmp file
-
-    painter.translate(pen.widthF()/2 - x1, pen.widthF()/2- y1);
-    painter.setPen(pen);
-    painter.drawPolyline(polygon);
-
-    painter.end();
-
-    //add resulting svg file to scene
-    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+    QBrush brush;
+    brush.setColor(strokeColor);
+    brush.setStyle(Qt::SolidPattern);
+    UBGraphicsPolygonItem *graphicsPolygon = new UBGraphicsPolygonItem(polygon);
+    graphicsPolygon->setBrush(brush);
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
-    svgItem->resetTransform();
+    graphicsPolygon->resetTransform();
     if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform, svgItem);
+        transform = transformFromString(textTransform, graphicsPolygon);
     }
-    repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 + transform.m31() - strokeWidth/2, y1 + transform.m32() + strokeWidth/2, transform);
-    hashSceneItem(element, svgItem);
-
+    mCurrentScene->addItem(graphicsPolygon);
+  
     if (mGSectionContainer)
     {
-        addItemToGSection(svgItem);
+        addItemToGSection(graphicsPolygon);
     }
 
-    delete generator;
 
     return true;
 }
@@ -1052,7 +1017,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvg(const QDomElement &svgSecti
     return true;
 }
 
-bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGroup(QDomElement &parent)
+UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGroup(QDomElement &parent)
 {
     //TODO. Create groups from elements parsed by parseIwbElement() function
     if (parent.namespaceURI() != iwbNS) {
@@ -1060,7 +1025,54 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGroup(QDomElement &parent)
         return false;
     }
 
-    return true;
+    UBGraphicsGroupContainerItem *group = new UBGraphicsGroupContainerItem();
+    QList<UBGraphicsPolygonItem *> strokesContainer;    
+    QList<QGraphicsItem *> groupContainer;    
+    QDomElement currentStrokeElement = parent.firstChildElement();    
+    while (!currentStrokeElement.isNull())
+    {
+        if (tGroup == currentStrokeElement.tagName())
+            group->addToGroup(parseIwbGroup(currentStrokeElement));
+        else
+        {
+            QString uuid = currentStrokeElement.attribute(aRef);
+            if (!uuid.isEmpty())
+            {
+                if (uuid.contains("stroke")) // create stroke group
+                    strokesContainer.append(qgraphicsitem_cast<UBGraphicsPolygonItem *>(mCurrentScene->itemForUuid(uuid)));
+                else // single elements in group
+                    groupContainer.append(mCurrentScene->itemForUuid(uuid));
+            }
+        }
+        currentStrokeElement = currentStrokeElement.nextSiblingElement();
+    }
+    UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
+    UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
+    foreach(UBGraphicsPolygonItem* poly, strokesContainer)
+    {
+        if (poly)
+        {
+            mCurrentScene->removeItem(poly);
+            mCurrentScene->removeItemFromDeletion(poly);
+            poly->setStrokesGroup(pStrokesGroup);
+            poly->setStroke(currentStroke);
+            pStrokesGroup->addToGroup(poly);
+        }
+    }
+    if (currentStroke->polygons().empty())
+        delete currentStroke;
+    if (pStrokesGroup->childItems().count())
+        mCurrentScene->addItem(pStrokesGroup);
+    else
+        delete pStrokesGroup;
+    foreach(QGraphicsItem* item, groupContainer)
+        group->addToGroup(item);
+    if (pStrokesGroup)
+        group->addToGroup(pStrokesGroup);
+    if (group->childItems().count())
+        mCurrentScene->addItem(group);
+
+    return group;
 }
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::strToBool(QString str)

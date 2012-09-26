@@ -102,7 +102,7 @@ private:
         inline bool parseSvgFlash(const QDomElement &element);
         inline bool parseSvgAudio(const QDomElement &element);
         inline bool parseSvgVideo(const QDomElement &element);
-        inline bool parseIwbGroup(QDomElement &parent);
+        inline UBGraphicsGroupContainerItem *parseIwbGroup(QDomElement &parent);
         inline bool parseIwbElement(QDomElement &element);
         inline void parseTSpan(const QDomElement &parent, QPainter &painter
                                , qreal &curX, qreal &curY, qreal &width, qreal &height, qreal &linespacing, QRectF &lastDrawnTextBoundingRect
