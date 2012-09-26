@@ -120,7 +120,7 @@ function start(){
                             drop: function(event, ui) {
                                 if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                                     var tmp_ui = $(ui.draggable).parent();
-                                    checkOnDrop($(this), $(ui.draggable));
+                                    $(this).append($(ui.draggable));
                                     checkCorrectness(tmp_ui);
                                 }
                             }
@@ -339,7 +339,7 @@ function importData(data){
                         drop: function(event, ui) {
                             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                                 var tmp_ui = $(ui.draggable).parent();
-                                checkOnDrop($(this), $(ui.draggable));
+                                $(this).append($(ui.draggable));
                                 checkCorrectness(tmp_ui);
                             }
                         }
@@ -410,12 +410,11 @@ function importData(data){
                         drop: function(event, ui) {
                             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                                 var tmp_ui = $(ui.draggable).parent();
-                                checkOnDrop($(this), $(ui.draggable));
+                                $(this).append($(ui.draggable));
                                 checkCorrectness(tmp_ui);
                             }
                         }
-                    });        
-                    checkCorrectness(imgs_container);
+                    });                    
                 }
             
                 all_imgs = $("<div class='all_imgs'>").appendTo(container); 
@@ -452,7 +451,8 @@ function importData(data){
                             }
                         }
                     }
-                });            
+                });   
+                checkCorrectness(all_imgs);
             }
         }
     }
@@ -516,7 +516,7 @@ function showExample(){
         drop: function(event, ui) {
             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                 var tmp_ui = $(ui.draggable).parent();
-                checkOnDrop($(this), $(ui.draggable));
+                $(this).append($(ui.draggable));
                 checkCorrectness(tmp_ui);
             }
         }
@@ -527,7 +527,7 @@ function showExample(){
         drop: function(event, ui) {
             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                 var tmp_ui = $(ui.draggable).parent();
-                checkOnDrop($(this), $(ui.draggable));
+                $(this).append($(ui.draggable));
                 checkCorrectness(tmp_ui);
             }
         }
@@ -685,8 +685,7 @@ function changeStyle(val){
 }
 
 //a func for checking when smth will drop
-function checkOnDrop(dest, source){
-    dest.append(source); 
+function checkOnDrop(dest){
     var tmp_count = dest.find("input[name='count']").val();
     var tmp_mask = dest.find("input[name='mask']").val();
     if(dest.find(".img_block").size() == tmp_count){
@@ -696,46 +695,34 @@ function checkOnDrop(dest, source){
                 tmp_right = false;
         });          
         if(tmp_right)
-            dest.removeClass("def_cont")
-            .removeClass("red_cont")
-            .addClass("green_cont");
+            dest.removeClass("def_cont").removeClass("red_cont").addClass("green_cont");
         else
-            dest.removeClass("def_cont")
-            .removeClass("green_cont")
-            .addClass("red_cont");
+            dest.removeClass("def_cont").removeClass("green_cont").addClass("red_cont");
     } else 
-        dest.removeClass("def_cont")
-        .removeClass("green_cont")
-        .addClass("red_cont");
+        dest.removeClass("def_cont").removeClass("green_cont").addClass("red_cont");
 }
 
 //checking source on correctness
 function checkCorrectness(source){
     if(!source.hasClass("all_imgs")){
-        var tmp_count = source.find("input[name='count']").val();
-        var tmp_mask = source.find("input[name='mask']").val();
-        if(source.find(".img_block").size() == tmp_count){
-            var tmp_right = true;                    
-            source.find(".img_block").each(function(){
-                if($(this).find("input").val() != tmp_mask)
-                    tmp_right = false;
-            });
-                    
-            if(tmp_right)
-                source.removeClass("def_cont")
-                .removeClass("red_cont")
-                .addClass("green_cont");
-            else
-                source.removeClass("def_cont")
-                .removeClass("green_cont")
-                .addClass("red_cont");
-        } else if(source.find(".img_block").size() == 0)
-            source.addClass("def_cont")
-            .removeClass("green_cont")
-            .removeClass("red_cont");
-        else 
-            source.removeClass("def_cont")
-            .removeClass("green_cont")
-            .addClass("red_cont");
+        if(source.parent().find(".all_imgs").find(".img_block").size() == 0){
+            source.parent().find(".imgs_cont").each(function(){
+                checkOnDrop($(this))
+            })
+        } else {
+            source.parent().find(".imgs_cont").each(function(){
+                $(this).addClass("def_cont").removeClass("green_cont").removeClass("red_cont");
+            })
+        }
+    } else {
+        if(source.find(".img_block").size() > 0){
+            source.parent().find(".imgs_cont").each(function(){
+                $(this).addClass("def_cont").removeClass("green_cont").removeClass("red_cont");
+            })
+        } else {
+            source.parent().find(".imgs_cont").each(function(){
+                checkOnDrop($(this))
+            })
+        }
     }
 }

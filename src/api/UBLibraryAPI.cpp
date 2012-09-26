@@ -40,7 +40,7 @@ UBLibraryAPI::~UBLibraryAPI()
 void UBLibraryAPI::addObject(QString pUrl, int width, int height, int x, int y, bool background)
 {
     if (UBApplication::boardController)
-        UBApplication::boardController->downloadURL(QUrl(pUrl), QPointF(x, y), QSize(width, height), background);
+        UBApplication::boardController->downloadURL(QUrl(pUrl), QString(), QPointF(x, y), QSize(width, height), background);
 
 }
 

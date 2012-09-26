@@ -24,11 +24,21 @@
 
 #include "core/memcheck.h"
 
-UBGraphicsCache::UBGraphicsCache():QGraphicsRectItem()
+QMap<UBGraphicsScene*, UBGraphicsCache*> UBGraphicsCache::sInstances;
+
+UBGraphicsCache* UBGraphicsCache::instance(UBGraphicsScene *scene)
+{
+    if (!sInstances.contains(scene))
+        sInstances.insert(scene, new UBGraphicsCache(scene));
+    return sInstances[scene];
+}
+
+UBGraphicsCache::UBGraphicsCache(UBGraphicsScene *scene) : QGraphicsRectItem()
   , mMaskColor(Qt::black)
   , mMaskShape(eMaskShape_Circle)
   , mShapeWidth(100)
   , mDrawMask(false)
+  , mScene(scene)
 {
     // Get the board size and pass it to the shape
     QRect boardRect = UBApplication::boardController->displayView()->rect();
@@ -39,11 +49,12 @@ UBGraphicsCache::UBGraphicsCache():QGraphicsRectItem()
 
 UBGraphicsCache::~UBGraphicsCache()
 {
+    sInstances.remove(mScene);
 }
 
 UBItem* UBGraphicsCache::deepCopy() const
 {
-    UBGraphicsCache* copy = new UBGraphicsCache();
+    UBGraphicsCache* copy = new UBGraphicsCache(mScene);
 
     copyItemParameters(copy);
 
