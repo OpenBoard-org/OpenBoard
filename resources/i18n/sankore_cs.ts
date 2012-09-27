@@ -1017,12 +1017,12 @@
         <translation>Zachytit část obrazovky</translation>
     </message>
     <message>
-        <source>Show Uniboard</source>
-        <translation>Zobrazit Uniboard</translation>
-    </message>
-    <message>
         <source>Show Board on Secondary Screen</source>
         <translation>Zobrazit tabuli na druhé obrazovce</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
