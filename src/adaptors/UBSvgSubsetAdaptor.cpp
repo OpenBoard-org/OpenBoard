@@ -48,6 +48,7 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
@@ -79,6 +80,7 @@ const QString UBSvgSubsetAdaptor::sFormerUniboardDocumentNamespaceUri = "http://
 
 const QString tElement = "element";
 const QString tGroup = "group";
+const QString tStrokeGroup = "strokeGroup";
 const QString tGroups = "groups";
 const QString aId = "id";
 
@@ -1152,25 +1154,42 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             QGraphicsItem *item = items.takeFirst();
 
             // Is the item a strokes group?
+
             UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
+
             if(strokesGroupItem && strokesGroupItem->isVisible()){
-            	mXmlWriter.writeStartElement("g");
-                mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(strokesGroupItem->uuid()));
+                QDomElement newGroupElement;
+                if (!strokesGroupItem->parentItem() && strokesGroupItem->childItems().count()) {
+                    newGroupElement = groupDomDocument.createElement(tGroup);
+                    newGroupElement.setAttribute(aId, strokesGroupItem->uuid().toString());
+                    groupRoot.appendChild(newGroupElement);
+                }
+
+                //disabling g section parsing as a group of elements. Use groups refs instead
+//                mXmlWriter.writeStartElement("g");
+//                mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(strokesGroupItem->uuid()));
             	QMatrix matrix = item->sceneMatrix();
 				if (!matrix.isIdentity()){
 					mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
 				}
 
-				// Add the polygons
-				foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
-					UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-					if(NULL != poly){
-						polygonItemToSvgPolygon(poly, true);
-						items.removeOne(poly);
-					}
-				}
+                // Add the polygons
+                foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
 
-            	mXmlWriter.writeEndElement(); //g
+                    UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+                    if(NULL != poly){
+                        polygonItemToSvgPolygon(poly, true);
+                        if (!newGroupElement.isNull()) {
+                            QDomElement curPolygonElement = groupDomDocument.createElement(tElement);
+                            curPolygonElement.setAttribute(aId, strokesGroupItem->uuid().toString()
+                                                              + poly->uuid().toString());
+                            newGroupElement.appendChild(curPolygonElement);
+                        }
+                        items.removeOne(poly);
+                    }
+                }
+
+//                mXmlWriter.writeEndElement(); //g
             }
 
             // Is the item a polygon?
@@ -1401,12 +1420,12 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             QDomElement curElement = groupRoot.firstChildElement();
             while (!curElement.isNull()) {
                 if (curElement.hasAttribute(aId)) {
-                    mXmlWriter.writeStartElement(tGroup);
+                    mXmlWriter.writeStartElement(curElement.tagName());
                     mXmlWriter.writeAttribute(aId, curElement.attribute(aId));
                     QDomElement curSubElement = curElement.firstChildElement();
                     while (!curSubElement.isNull()) {
                         if (curSubElement.hasAttribute(aId)) {
-                            mXmlWriter.writeStartElement(tElement);
+                            mXmlWriter.writeStartElement(curSubElement.tagName());
                             mXmlWriter.writeAttribute(aId, curSubElement.attribute(aId));
                             mXmlWriter.writeEndElement();
                             curSubElement = curSubElement.nextSiblingElement();
@@ -1454,10 +1473,39 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
             if (!tmpUuid.isNull()) {
                 if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count()) {
                     persistGroupToDom(item, curParent, groupDomDocument);
+                } else if (item->type() == UBGraphicsStrokesGroup::Type) {
+                    foreach (QGraphicsItem *polygonItem, item->childItems()) {
+                        QDomElement curPolygonElement = groupDomDocument->createElement(tElement);
+                        curPolygonElement.setAttribute(aId, tmpUuid.toString()
+                                                          + UBGraphicsItem::getOwnUuid(polygonItem).toString());
+                        curGroupElement.appendChild(curPolygonElement);
+                    }
                 } else {
-                    QDomElement curSubElement = groupDomDocument->createElement(tGroup);
+                    QDomElement curSubElement = groupDomDocument->createElement(tElement);
+
                     curSubElement.setAttribute(aId, tmpUuid);
                     curGroupElement.appendChild(curSubElement);
+                }
+            }
+        }
+    }
+}
+
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistStrokeToDom(QGraphicsItem *strokeItem, QDomElement *curParent, QDomDocument *curDomDocument)
+{
+    QUuid uuid = UBGraphicsScene::getPersonalUuid(strokeItem);
+    if (!uuid.isNull()) {
+        QDomElement curStrokesGroupElement = curDomDocument->createElement(tStrokeGroup);
+        curStrokesGroupElement.setAttribute(aId, uuid);
+        curParent->appendChild(curStrokesGroupElement);
+
+        foreach (QGraphicsItem *item, strokeItem->childItems()) {
+            QUuid tmpUuid = UBGraphicsScene::getPersonalUuid(item);
+            if (!tmpUuid.isNull()) {
+                if (item->type() == UBGraphicsPolygonItem::Type && item->childItems().count()) {
+                    QDomElement curSubElement = curDomDocument->createElement(tElement);
+                    curSubElement.setAttribute(aId, tmpUuid);
+                    curStrokesGroupElement.appendChild(curSubElement);
                 }
             }
         }
@@ -1614,6 +1662,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
             mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                       , "fill-on-light-background", polygonItem->colorOnLightBackground().name());
         }
+
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(polygonItem->uuid()));
 
         mXmlWriter.writeEndElement();
     }

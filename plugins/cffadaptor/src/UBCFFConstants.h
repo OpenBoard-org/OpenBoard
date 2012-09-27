@@ -28,6 +28,7 @@ const QString tIWBPageSet = "pageset";
 const QString tId = "id";
 const QString tElement = "element";
 const QString tUBZGroup = "group";
+const QString tUBZGroups = "groups";
 const QString tUBZG = "g";
 const QString tUBZPolygon = "polygon";
 const QString tUBZPolyline = "polyline";
