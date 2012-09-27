@@ -308,7 +308,6 @@ UBBoardView::event (QEvent * e)
       if (gestureEvent)
         {
           QSwipeGesture* swipe = dynamic_cast<QSwipeGesture*> (gestureEvent->gesture (Qt::SwipeGesture));
-
           if (swipe)
             {
               if (swipe->horizontalDirection () == QSwipeGesture::Left)
@@ -363,9 +362,7 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     QPointF scenePos = viewportTransform ().inverted ().map (tabletPos);
 
     qreal pressure = 1.0;
-    if (((currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Line)
-         && mPenPressureSensitive)
-            || (currentTool == UBStylusTool::Marker && mMarkerPressureSensitive))
+    if (((currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Line) && mPenPressureSensitive) || (currentTool == UBStylusTool::Marker && mMarkerPressureSensitive))
         pressure = event->pressure ();
 
 

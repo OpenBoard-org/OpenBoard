@@ -1504,6 +1504,21 @@
     </message>
 </context>
 <context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Отмени</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
@@ -2093,6 +2108,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Cache</source>
         <translation>Кеш</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

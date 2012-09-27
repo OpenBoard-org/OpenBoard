@@ -171,8 +171,11 @@ UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString&
 		return NULL;
 	}
 
-	
-	UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder, pGroup);
+    bool addTitlePage = false;
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() && !QFile(documentRootFolder+"/page000.svg").exists())
+        addTitlePage=true;
+
+    UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder, pGroup, "", false, addTitlePage);
 	UBApplication::showMessage(tr("Import successful."));
 	return newDocument;
 }

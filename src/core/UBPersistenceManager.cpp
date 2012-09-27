@@ -265,7 +265,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     return doc;
 }
 
-UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName, const QString& pName, bool withEmptyPage)
+UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName, const QString& pName, bool withEmptyPage, bool addTitlePage)
 {
     checkIfDocumentRepositoryExists();
 
@@ -280,7 +280,8 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
     {
         doc->setMetaData(UBSettings::documentName, pName);
     }
-    if (withEmptyPage) createDocumentSceneAt(doc, 0);
+    if(withEmptyPage) createDocumentSceneAt(doc, 0);
+    if(addTitlePage) persistDocumentScene(doc, mSceneCache.createScene(doc, 0, false), 0);
 
     QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
 
