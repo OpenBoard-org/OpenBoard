@@ -15,7 +15,7 @@
 
 var sankoreLang = {
     edit: "Изменить",
-    display:"Показать",
+    display:"Закрыть",
     question:"Вопрос",
     example_question:"Это пример вопроса",
     answer:"Это пример ответа",
@@ -41,7 +41,8 @@ var sankoreLang = {
     pad: "Планшет",
     none: "Нет",
     help: "Помощь",
-    help_content: "Пример текста помощи ..."
+    help_content: "Пример текста помощи ...",
+    theme: "Тема"
 };
 
 var questionArray;
@@ -65,10 +66,11 @@ function init(){
     $("#wgt_reload").text(sankoreLang.reload);
     $("#wgt_help").text(sankoreLang.help);
     $("#help").html(sankoreLang.help_content);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    $(".style_select option[value='3']").text(sankoreLang.none);
-    
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='3']").text(sankoreLang.none);
+    var tmpl = $("div.inline label").html();
+    $("div.inline label").html(sankoreLang.theme + tmpl)
     
     //popup message
     var popupText = $("<div id='popupWordInfo' class='popupWordInfo'></div>").appendTo("#data");
@@ -107,14 +109,14 @@ function init(){
     if (window.widget) {
         window.widget.onleave = function(){
             sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
-            sankore.setPreference("choisir_style", $(".style_select").find("option:selected").val());
+            sankore.setPreference("choisir_style", $("#style_select").find("option:selected").val());
         }
     }
     
     if(window.sankore)
         if(sankore.preference("choisir_style","")){
             changeStyle(sankore.preference("choisir_style",""));
-            $(".style_select").val(sankore.preference("choisir_style",""));
+            $("#style_select").val(sankore.preference("choisir_style",""));
         } else
             changeStyle("3")
 
@@ -123,21 +125,21 @@ function init(){
             if(!$(this).hasClass("selected")){                
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");                
+                $("#parameters").css("display","none");                
                 $(this).css("display", "none");
                 $("#wgt_edit").css("display", "block");
                 displayData(true);
                 mode = true;
                 if(window.sankore){
                     sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
-                    sankore.setPreference("choisir_style", $(".style_select").find("option:selected").val());
+                    sankore.setPreference("choisir_style", $("#style_select").find("option:selected").val());
                 }
             }
         } else {            
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");                
+                $("#parameters").css("display","block");                
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
                 editData();
@@ -149,11 +151,13 @@ function init(){
     $("#wgt_help").click(function(){
         var tmp = $(this);
         if($(this).hasClass("open")){
+            $(this).removeClass("help_pad").removeClass("help_wood")
             $("#help").slideUp("100", function(){
                 tmp.removeClass("open");
                 $("#data").show();
             });
-        } else {            
+        } else {
+            ($("#style_select").val() == 1)?$(this).removeClass("help_pad").addClass("help_wood"):$(this).removeClass("help_wood").addClass("help_pad");
             $("#data").hide();
             $("#help").slideDown("100", function(){
                 tmp.addClass("open");
@@ -172,10 +176,10 @@ function init(){
         }
     });
     
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
     
-    $(".style_select").change(function (event){
+    $("#style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
     
@@ -457,71 +461,71 @@ function init(){
     
     // show questions and answers in display mode
     function addToPage(array){
-        var counter = 1;
-        for(var i in array){
+            var counter = 1;
+            for(var i in array){
 
-            var qstDiv = $("<div class='qstDivDisplay' id='" + array[i].id + "qstDivDisplay'>");        
-            var spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
-            var qstNumber = $("<span class='qstNumber'>" + sankoreLang.question + " " + counter + "</span>").appendTo(spanOptConn);        
-            var qstContent = $("<div class='qstContentDisplay'>" + array[i].text + "</div>").appendTo(qstDiv);        
-            var ansDiv = $("<div class='ansDiv' id='" + array[i].id + "ansDiv'>").appendTo(qstDiv);
+                var qstDiv = $("<div class='qstDivDisplay' id='" + array[i].id + "qstDivDisplay'>");        
+                var spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
+                var qstNumber = $("<span class='qstNumber'>" + sankoreLang.question + " " + counter + "</span>").appendTo(spanOptConn);        
+                var qstContent = $("<div class='qstContentDisplay'>" + array[i].text + "</div>").appendTo(qstDiv);        
+                var ansDiv = $("<div class='ansDiv' id='" + array[i].id + "ansDiv'>").appendTo(qstDiv);
 
-            var ansCount = 1;
-            var type = array[i].type;
-            var selInput = $("<select>");
-            if(type == 3){
-                var newAnswer = $("<div class='newAnswer'>"); 
-                newAnswer.appendTo(ansDiv);
-                var selectSpan = $("<span id='answerText'>").appendTo(newAnswer);
-                selInput.appendTo(selectSpan);
-                $("<option value='0'>" + sankoreLang.select_text + "</option>").appendTo(selInput);
+                var ansCount = 1;
+                var type = array[i].type;
+                var selInput = $("<select>");
+                if(type == 3){
+                    var newAnswer = $("<div class='newAnswer'>"); 
+                    newAnswer.appendTo(ansDiv);
+                    var selectSpan = $("<span id='answerText'>").appendTo(newAnswer);
+                    selInput.appendTo(selectSpan);
+                    $("<option value='0'>" + sankoreLang.select_text + "</option>").appendTo(selInput);
+                }
+                for(var j in array[i].answers){  
+                    switch(type){
+                        case "1":
+                            var local_state = "";
+                            var local_color = "";
+                            if(begin){
+                                local_state = array[i].answers[j].state;
+                                local_color = (array[i].answers[j].value == array[i].rightAns)?((array[i].answers[j].was)?"style='background-color: #6c0;'":""):((array[i].answers[j].was)?"style='background-color: red;'":"");
+                            }
+                            newAnswer = $("<div class='newAnswer'>");
+                            var ansInput = $("<input type='radio' name='" + counter + "' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
+                            var ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
+                            var ansContent = $("<div class='ansContentDisplay' " + local_color + "><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
+                            newAnswer.appendTo(ansDiv);
+                            break;
+                        case "2":
+                            local_state = "";
+                            local_color = "";
+                            if(begin){
+                                local_state = (array[i].answers[j].state)?"checked":"";
+                                local_color = (array[i].rightAns.replace(/,/g,"").indexOf(array[i].answers[j].value + " ", 0) != -1)?((array[i].answers[j].was)?"style='background-color: #6c0;'":""):((array[i].answers[j].was)?"style='background-color: red;'":"");
+                            }
+                            newAnswer = $("<div class='newAnswer'>");
+                            ansInput = $("<input type='checkbox' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
+                            ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
+                            ansContent = $("<div class='ansContentDisplay' " + local_color + "><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
+                            newAnswer.appendTo(ansDiv);
+                            break;
+                        case "3":
+                            local_state = "";
+                            local_color = "";
+                            if(begin){
+                                local_state = (array[i].answers[j].state)?"selected":"";
+                                local_color = (array[i].answers[j].value == array[i].rightAns)?((array[i].answers[j].was)?"#6c0":""):((array[i].answers[j].was)?"red":"");
+                            }
+                            ansInput = $("<option value='" + array[i].answers[j].value + "' " + local_state + ">" + array[i].answers[j].text + "</option>").appendTo(selInput);
+                            if(local_state && local_color)
+                                selInput.css("background-color",local_color);
+                            break;
+                    }               
+                    ansCount++;
+                }
+                qstDiv.appendTo("#data");
+                counter++;
             }
-            for(var j in array[i].answers){  
-                switch(type){
-                    case "1":
-                        var local_state = "";
-                        var local_color = "";
-                        if(begin){
-                            local_state = array[i].answers[j].state;
-                            local_color = (array[i].answers[j].value == array[i].rightAns)?((array[i].answers[j].was)?"style='background-color: #6c0;'":""):((array[i].answers[j].was)?"style='background-color: red;'":"");
-                        }
-                        newAnswer = $("<div class='newAnswer'>");
-                        var ansInput = $("<input type='radio' name='" + counter + "' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
-                        var ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                        var ansContent = $("<div class='ansContentDisplay' " + local_color + "><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
-                        newAnswer.appendTo(ansDiv);
-                        break;
-                    case "2":
-                        local_state = "";
-                        local_color = "";
-                        if(begin){
-                            local_state = (array[i].answers[j].state)?"checked":"";
-                            local_color = (array[i].rightAns.replace(/,/g,"").indexOf(array[i].answers[j].value + " ", 0) != -1)?((array[i].answers[j].was)?"style='background-color: #6c0;'":""):((array[i].answers[j].was)?"style='background-color: red;'":"");
-                        }
-                        newAnswer = $("<div class='newAnswer'>");
-                        ansInput = $("<input type='checkbox' value='" + array[i].answers[j].value + "' " + local_state + " style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
-                        ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                        ansContent = $("<div class='ansContentDisplay' " + local_color + "><span id='answerText'>" + array[i].answers[j].text + "</span></div>").appendTo(newAnswer);
-                        newAnswer.appendTo(ansDiv);
-                        break;
-                    case "3":
-                        local_state = "";
-                        local_color = "";
-                        if(begin){
-                            local_state = (array[i].answers[j].state)?"selected":"";
-                            local_color = (array[i].answers[j].value == array[i].rightAns)?((array[i].answers[j].was)?"#6c0":""):((array[i].answers[j].was)?"red":"");
-                        }
-                        ansInput = $("<option value='" + array[i].answers[j].value + "' " + local_state + ">" + array[i].answers[j].text + "</option>").appendTo(selInput);
-                        if(local_state && local_color)
-                            selInput.css("background-color",local_color);
-                        break;
-                }               
-                ansCount++;
-            }
-            qstDiv.appendTo("#data");
-            counter++;
-        }
-        begin = false;
+            begin = false;
     }
 }
 
@@ -726,10 +730,10 @@ function changeStyle(val){
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
             $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").addClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").addClass("radius_ft");
             break;
         case "2":
             $(".b_top_left").addClass("btl_pad").removeClass("without_back");
@@ -743,10 +747,10 @@ function changeStyle(val){
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").removeClass("radius_ft");
             break;
         case "3":
             $(".b_top_left").addClass("without_back").removeClass("btl_pad");
@@ -760,10 +764,10 @@ function changeStyle(val){
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("none_select").val(val);
-            $("body, html").addClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
 }
