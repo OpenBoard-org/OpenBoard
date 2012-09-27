@@ -563,10 +563,8 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
 
 void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    if(!scene() || !scene()->renderingContext())
-        return;
 
-    if (scene()->renderingContext() != UBGraphicsScene::Screen)
+    if (scene() && scene()->renderingContext() != UBGraphicsScene::Screen)
     {
         painter->drawPixmap(0, 0, snapshot());
     }

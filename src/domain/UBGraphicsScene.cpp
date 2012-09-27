@@ -582,8 +582,8 @@ bool UBGraphicsScene::inputDeviceRelease()
                 addItem(pStrokes);
                 mDrawWithCompass = false;
 
-        }else if (mCurrentStroke)
-        {
+        }
+        else if (mCurrentStroke){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
