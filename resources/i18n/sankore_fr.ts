@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stop</translation>
+        <translation>Arrêter</translation>
     </message>
     <message>
         <source>Open</source>
@@ -73,11 +73,11 @@
     </message>
     <message>
         <source>Stylus</source>
-        <translation>Stylet</translation>
+        <translation>Stylets</translation>
     </message>
     <message>
         <source>Backgrounds</source>
-        <translation>Fond</translation>
+        <translation>Fonds</translation>
     </message>
     <message>
         <source>Undo</source>
@@ -373,15 +373,15 @@
     </message>
     <message>
         <source>Tutorial</source>
-        <translation>Tutoriel</translation>
+        <translation>Tutoriels</translation>
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation>Bureau</translation>
+        <translation>Afficher le bureau</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
-        <translation>Ctrl+Shift+H</translation>
+        <translation>Ctrl+Maj+H</translation>
     </message>
     <message>
         <source>Rename Content</source>
@@ -393,11 +393,11 @@
     </message>
     <message>
         <source>Use Document Wide Size (16/9)</source>
-        <translation>Utiliser un format de document 16/9</translation>
+        <translation>Utiliser un format large (16/9)</translation>
     </message>
     <message>
         <source>Use Document Regular Size (4/3)</source>
-        <translation>Utiliser un format de document 4/3</translation>
+        <translation>Utiliser un format normal (4/3)</translation>
     </message>
     <message>
         <source>Use Custom Document Size</source>
@@ -461,11 +461,11 @@
     </message>
     <message>
         <source>Highlight </source>
-        <translation>Surligner</translation>
+        <translation>Surligner </translation>
     </message>
     <message>
         <source>Ctrl+M</source>
-        <translation></translation>
+        <translation>Ctrl+M</translation>
     </message>
     <message>
         <source>Select And Modify Objects</source>
@@ -481,11 +481,11 @@
     </message>
     <message>
         <source>Laser Pointer</source>
-        <translation>Pointer avec le laser</translation>
+        <translation>Utiliser le &quot;pointeur laser&quot;</translation>
     </message>
     <message>
         <source>Virtual Laser Pointer</source>
-        <translation>Pointer avec le laser</translation>
+        <translation>Utiliser le &quot;pointeur laser&quot;</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
@@ -497,7 +497,7 @@
     </message>
     <message>
         <source>Ctrl+J</source>
-        <translation></translation>
+        <translation>Ctrl+J</translation>
     </message>
     <message>
         <source>Write Text</source>
@@ -553,11 +553,11 @@
     </message>
     <message>
         <source>Open the tutorial</source>
-        <translation>Ouvrir le tutoriel</translation>
+        <translation>Ouvrir les tutoriels</translation>
     </message>
     <message>
         <source>Check Update</source>
-        <translation>Contrôler les mises à jour</translation>
+        <translation>Contrôler la mise à jour</translation>
     </message>
     <message>
         <source>Ctrl+H</source>
@@ -645,11 +645,11 @@
     </message>
     <message>
         <source>Wide Size (16/9)</source>
-        <translation>Format 16/9</translation>
+        <translation>Format large (16/9)</translation>
     </message>
     <message>
         <source>Regular Size (4/3)</source>
-        <translation>Format 4/3</translation>
+        <translation>Format normal (4/3)</translation>
     </message>
     <message>
         <source>Custom Size</source>
@@ -781,7 +781,7 @@
     </message>
     <message utf8="true">
         <source>Show Open-Sankoré Widgets Editor</source>
-        <translation>Ouvrir l&apos;éditeur Sankoré</translation>
+        <translation>Ouvrir l&apos;éditeur d&apos;appliquettes Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Hide Open-Sankoré</source>
@@ -801,23 +801,24 @@
     </message>
     <message>
         <source>Group items</source>
-        <translation>Grouper</translation>
+        <translation>Grouper les objets</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Jouer</translation>
+        <translatorcomment>j&apos;hésite avec Lancer (dépend du contexte d&apos;usage)</translatorcomment>
+        <translation>Jouer</translation>
     </message>
     <message>
         <source>Interact with items</source>
-        <translation type="unfinished">Interagir avec des objets</translation>
+        <translation>Interagir avec des objets</translation>
     </message>
     <message>
         <source>Erase Background</source>
-        <translation type="unfinished">Effacer le fond</translation>
+        <translation>Effacer le fond</translation>
     </message>
     <message>
         <source>Remove the backgound</source>
-        <translation type="unfinished">Supprimer le fond</translation>
+        <translation>Supprimer le fond</translation>
     </message>
     <message>
         <source>Group</source>
@@ -859,26 +860,26 @@
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation>Enregistrer le nom d&apos;utilisateur et le mot de passe pour une utilisation future</translation>
+        <translation>Enregistrer le nom d&apos;utilisateur et le mot de passe pour la prochaine.utilisation</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="unfinished">ID de l&apos;élément = </translation>
+        <translation>ID de l&apos;élément = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="unfinished">Le contenu n&apos;est pas supporté dans le format destinataire.</translation>
+        <translation>Contenu non supporté dans le format souhaité.</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished">Supprimer la page</translation>
+        <translation>Supprimer la page</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="unfinished">Voulez-vous vraiment effacer 1 page de ce document &apos;%0&apos;?</translation>
+        <translation>Voulez-vous vraiment effacer 1 page de ce document &apos;%0&apos;?</translation>
     </message>
 </context>
 <context>
@@ -900,7 +901,7 @@
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation>Nouvelle mise à jour disponible, voulez-vous aller à la page Web ?</translation>
+        <translation>Nouvelle mise à jour disponible : voulez-vous accéder à la page de téléchargement ?</translation>
     </message>
     <message>
         <source>No update available</source>
@@ -943,15 +944,15 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer la page %1 du document</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
-        <translation type="unfinished">Page %1 effacée</translation>
+        <translation>Page %1 supprimée</translation>
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished">Echec d&apos;ajout de document : erreur de copie</translation>
+        <translation>Echec d&apos;ajout de document : erreur de copie</translation>
     </message>
     <message>
         <source>Group</source>
@@ -970,7 +971,7 @@
     </message>
     <message>
         <source>CapturedImage</source>
-        <translation type="unfinished">Image capturée</translation>
+        <translation>Image capturée</translation>
     </message>
 </context>
 <context>
@@ -1000,6 +1001,7 @@
     <name>UBDesktopPalette</name>
     <message>
         <source>Show Uniboard</source>
+        <translatorcomment>Attention : dans la version en anglais le terme Uniboard devrait être remplacé par open-Sankoré !</translatorcomment>
         <translation>Afficher Open-Sankoré</translation>
     </message>
     <message>
@@ -1139,7 +1141,7 @@
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation>Le document &apos;%1&apos; a été créé avec une version plus récente de Sankoré (%2). En l&apos;ouvrant, vous risquez de perdre certains éléments. Désirez-vous continuer ?</translation>
+        <translation>Le document &apos;%1&apos; a été créé avec une version plus récente d&apos;Open-Sankoré (%2). En l&apos;ouvrant, vous risquez de perdre certains éléments. Désirez-vous continuer ?</translation>
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
@@ -1150,15 +1152,15 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished">Page de titre</translation>
+        <translation>Page de titre</translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation type="unfinished">Le dossier ne contient pas d&apos;image</translation>
+        <translation>Le dossier ne contient pas d&apos;image</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished">Documents sans titre</translation>
+        <translation>Documents sans titre</translation>
     </message>
 </context>
 <context>
@@ -1185,23 +1187,24 @@
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation>Fichier %1 sauvé</translation>
+        <translation>Fichier %1 enregistré</translation>
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation type="unfinished">Ajout de la page %1 de %2</translation>
+        <translation>Ajout de la page %1 sur %2</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">Importation terminée.</translation>
+        <translation>Importation réussie.</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation type="unfinished">Importation du document %1 terminée.</translation>
+        <translation>Importation du document %1 réussie.</translation>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation type="unfinished">Importation du document %1 en cours</translation>
+        <translatorcomment>j&apos;ai raccourci la phrase pour eviter les soucis de place !</translatorcomment>
+        <translation>Importation de %1 en cours</translation>
     </message>
 </context>
 <context>
@@ -1212,18 +1215,18 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished">Page 0</translation>
+        <translation>Page de titre</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentPublisher</name>
     <message>
         <source>Export failed.</source>
-        <translation>Echec de l&apos;exportation.</translation>
+        <translation>Echec de l&apos;export.</translation>
     </message>
     <message>
         <source>Export canceled ...</source>
-        <translation>Exportation annulée ...</translation>
+        <translation>Export annulée ...</translation>
     </message>
     <message>
         <source>Converting page %1/%2 ...</source>
@@ -1231,11 +1234,11 @@
     </message>
     <message>
         <source>Credentials has to not been filled out yet.</source>
-        <translation>Les informations n&apos;ont pas encore été fournies.</translation>
+        <translation>Les nom d&apos;utilisateur et mot de passe n&apos;ont pas été encore renseignés.</translation>
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation>Fichier Open-Sankoré en cours de transfert vers Planète Sankoré.</translation>
+        <translation>Fichier Open-Sankoré en cours de transfert vers Planète-Sankoré.</translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
@@ -1243,7 +1246,7 @@
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
-        <translation>Echec du transfert du document sur le Web.</translation>
+        <translation>Echec du transfert du document vers Planète-Sankoré.</translation>
     </message>
 </context>
 <context>
@@ -1258,7 +1261,7 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 page copiée</numerusform>
             <numerusform>%1 pages copiées</numerusform>
         </translation>
@@ -1279,37 +1282,37 @@
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation type="unfinished">Avertissements lors de l&apos;exportation</translation>
+        <translation>Avertissements lors de l&apos;exportation</translation>
     </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="unfinished">Exporter au format CFF (*.iwb)</translation>
+        <translation>Exporter au format CFF (*.iwb)</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="unfinished">Exporter au format CFF (*.iwb)</translation>
+        <translation>Exporter au format CFF (*.iwb)</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Exportation du document...</translation>
+        <translation>Exportation du document...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Export réussi.</translation>
+        <translation>Export réussi.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">Echec de l&apos;exportation.</translation>
+        <translation>Echec de l&apos;export.</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocument</name>
     <message>
         <source>Export as UBZ File</source>
-        <translation type="unfinished">Exporter au format UBZ (*.ubz)</translation>
+        <translation>Exporter au format UBZ (*.ubz)</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1336,7 +1339,7 @@
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished">Exporter au format PDF (*.pdf)</translation>
+        <translation>Exporter au format PDF (*.pdf)</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1348,14 +1351,14 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportation terminée.</translation>
+        <translation>Export terminé.</translation>
     </message>
 </context>
 <context>
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished">Exporter au format PDF (*.pdf)</translation>
+        <translation>Exporter au format PDF (*.pdf)</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1363,7 +1366,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportation terminée.</translation>
+        <translation>Export terminé.</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1371,7 +1374,7 @@
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation type="unfinished">Exporter au format PDF (*.pdf)</translation>
+        <translation>Exporter au format PDF (*.pdf)</translation>
     </message>
 </context>
 <context>
@@ -1390,11 +1393,11 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportation réussie.</translation>
+        <translation>Export réussi.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Echec de l&apos;exportation.</translation>
+        <translation>Echec de l&apos;export.</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
@@ -1405,119 +1408,137 @@
     <name>UBFeatureProperties</name>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished">Ajout à la page</translation>
+        <translatorcomment>j&apos;ai choisi de rendre le bouton plus compact (mais info moins complète)</translatorcomment>
+        <translation>Ajout page</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">Ajout en fond</translation>
+        <translatorcomment>j&apos;ai choisi de rendre le bouton plus compact (mais info moins complète)</translatorcomment>
+        <translation>Ajout en fond</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished">Ajout à la bibliothèque</translation>
+        <translatorcomment>j&apos;ai choisi de rendre le bouton plus compact (mais info moins complète)</translatorcomment>
+        <translation>Ajout bibliothèque</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished">Informations</translation>
+        <translation>Informations</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished">Ajouter aux favoris</translation>
+        <translation>Ajouter aux favoris</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished">Partager</translation>
+        <translation>Partager</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation>Rechercher</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Supprimer</translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished">Retour au répertoire</translation>
+        <translation>Retour au répertoire</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished">Supprimer des favoris</translation>
+        <translation>Supprimer des favoris</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished">Créer un nouveau dossier</translation>
+        <translation>Créer nouveau dossier</translation>
     </message>
     <message>
         <source>Rescan file system</source>
-        <translation type="unfinished">Rescanner le système de fichiers</translation>
+        <translation>Parcourir le système de fichiers</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesController</name>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished">Image importée</translation>
+        <translation>Image importée</translation>
     </message>
     <message>
         <source>Audios</source>
-        <translation type="unfinished">Sons</translation>
+        <translation>Sons</translation>
     </message>
     <message>
         <source>Movies</source>
-        <translation type="unfinished">Vidéos</translation>
+        <translation>Vidéos</translation>
     </message>
     <message>
         <source>Pictures</source>
-        <translation type="unfinished">Images</translation>
+        <translation>Images</translation>
     </message>
     <message>
         <source>Animations</source>
-        <translation type="unfinished">Animations</translation>
+        <translation>Animations</translation>
     </message>
     <message>
         <source>Interactivities</source>
-        <translation type="unfinished">Interactivités</translation>
+        <translation>Interactivités</translation>
     </message>
     <message>
         <source>Applications</source>
-        <translation type="unfinished">Applications</translation>
+        <translation>Applications</translation>
     </message>
     <message>
         <source>Shapes</source>
-        <translation type="unfinished">Formes</translation>
+        <translation>Formes</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished">Favoris</translation>
+        <translation>Favoris</translation>
     </message>
     <message>
         <source>Web search</source>
-        <translation type="unfinished">Recherche Web</translation>
+        <translation>Recherche Web</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Corbeille</translation>
+        <translation>Corbeille</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation>Accepter</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation>Saisir le nom du nouveau dossier</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation type="unfinished">Chargement en cours </translation>
+        <translation>Chargement en cours </translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished">Verrouillé</translation>
+        <translation>Verrouillé</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished">Visible sur l&apos;écran de projection</translation>
+        <translation>Visible sur l&apos;écran étendu</translation>
     </message>
 </context>
 <context>
@@ -1528,7 +1549,7 @@
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation>Visible sur l&apos;écran de projection</translation>
+        <translation>Visible sur l&apos;écran étendu</translation>
     </message>
     <message>
         <source>Go to Content Source</source>
@@ -1539,7 +1560,7 @@
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation>&lt;Ecrire votre texte ici&gt;</translation>
+        <translation>&lt;Saisir votre texte ici&gt;</translation>
     </message>
 </context>
 <context>
@@ -1557,18 +1578,18 @@
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Cannot load content</source>
-        <translation type="unfinished">Impossible de charger le contenu</translation>
+        <translation>Impossible de charger le contenu</translation>
     </message>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished">Chargement en cours ...</translation>
+        <translation>Chargement en cours ...</translation>
     </message>
 </context>
 <context>
@@ -1594,15 +1615,15 @@
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Echec de l&apos;importation du fichier %1.</translation>
+        <translation>Echec de l&apos;import du fichier %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Importation terminée.</translation>
+        <translation>Import terminée.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Echec de l&apos;importation.</translation>
+        <translation>Echec de l&apos;import.</translation>
     </message>
 </context>
 <context>
@@ -1613,11 +1634,11 @@
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Importation terminée.</translation>
+        <translation>Import terminé.</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Échec de l&apos;importation du fichier %1.</translation>
+        <translation>Échec de l&apos;import du fichier %1.</translation>
     </message>
     <message>
         <source>Open-Sankore (*.ubz)</source>
@@ -1635,11 +1656,11 @@
     <name>UBImportPDF</name>
     <message>
         <source>Portable Document Format (*.pdf)</source>
-        <translation>Format de document portable (*.pdf)</translation>
+        <translation>Format PDF (*.pdf)</translation>
     </message>
     <message>
         <source>PDF import failed.</source>
-        <translation>Échec de l&apos;importation du fichier PDF.</translation>
+        <translation>Échec de l&apos;import du fichier PDF.</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
@@ -1690,14 +1711,14 @@
     <name>UBMessagesDialog</name>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;Saisir le nom de l&apos;utilisateur et le mot de passe pour &quot;%1&quot; à %2&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Renseigner le nom de l&apos;utilisateur et le mot de passe pour &quot;%1&quot; à %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
@@ -1711,7 +1732,7 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
-        <translation>Erreur SSL:
+        <translation>Erreur SSL (Secure Socket Layer) sur un serveur sécurisé:
 
 %1
 
@@ -1736,7 +1757,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation>Accès perdu au répertoire des documents</translation>
+        <translation>Accès perdu vers le répertoire des documents</translation>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
@@ -1774,7 +1795,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation>Aucun encodeur pour le podcast disponible...</translation>
+        <translation>Aucun encodeur disponible.pour le podcast...</translation>
     </message>
     <message>
         <source>Part %1</source>
@@ -1826,7 +1847,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>Sankore Cast</source>
-        <translation>Open-Sankoré Cast</translation>
+        <translation>Podcast Open-Sankoré</translation>
     </message>
 </context>
 <context>
@@ -1844,7 +1865,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Identification Proxy</translation>
+        <translation>Identification sur le Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
@@ -1859,7 +1880,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publier un fichier Open-Sankoré sur Planète Sankoré</translation>
+        <translation>Publier un fichier Open-Sankoré sur Planète-Sankoré</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -1885,33 +1906,33 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBTGActionWidget</name>
     <message>
         <source>Teacher</source>
-        <translation type="unfinished">Professeur</translation>
+        <translation>Enseignant</translation>
     </message>
     <message>
         <source>Student</source>
-        <translation type="unfinished">Elève</translation>
+        <translation>Elève/Etudiant</translation>
     </message>
     <message>
         <source>Type task here ...</source>
-        <translation type="unfinished">Saisir une action ici ...</translation>
+        <translation>Proposer une action ici ...</translation>
     </message>
 </context>
 <context>
     <name>UBTGMediaWidget</name>
     <message>
         <source>drop media here ...</source>
-        <translation type="unfinished">Glisser une ressource ici ...</translation>
+        <translation>Glisser un média ici ...</translation>
     </message>
     <message>
         <source>Type title here...</source>
-        <translation type="unfinished">Saisir le titre ici ...</translation>
+        <translation>Renseigner le titre ici ...</translation>
     </message>
 </context>
 <context>
     <name>UBTGUrlWidget</name>
     <message>
         <source>Insert link title here...</source>
-        <translation type="unfinished">Saisir le titre du lien ici ...</translation>
+        <translation>Renseigner le titre du lien ici ...</translation>
     </message>
 </context>
 <context>
@@ -1925,131 +1946,132 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBTeacherGuideEditionWidget</name>
     <message>
         <source>Type title here ...</source>
-        <translation type="unfinished">Saisir le titre de l&apos;activité ici ...</translation>
+        <translation>Renseigner le titre de l&apos;activité...</translation>
     </message>
     <message>
         <source>Type comment here ...</source>
-        <translation type="unfinished">Saisir le commentaire ici ...</translation>
+        <translation>Renseigner le commentaire ici ...</translation>
     </message>
     <message>
         <source>Add an action</source>
-        <translation type="unfinished">Ajouter une action</translation>
+        <translation>Ajouter une action</translation>
     </message>
     <message>
         <source>Add a media</source>
-        <translation type="unfinished">Ajouter un média</translation>
+        <translation>Ajouter un média</translation>
     </message>
     <message>
         <source>Add a link</source>
-        <translation type="unfinished">Ajouter un lien</translation>
+        <translation>Ajouter un lien.web</translation>
     </message>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished">Page: %0</translation>
+        <translation>Page: %0</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePageZeroWidget</name>
     <message>
         <source>Type session title here ...</source>
-        <translation type="unfinished">Saisir le titre de la séance ...</translation>
+        <translation>Renseigner le titre de la séance ...</translation>
     </message>
     <message>
         <source>Author(s)</source>
-        <translation type="unfinished">Auteur(s) :</translation>
+        <translation>Auteur(s) :</translation>
     </message>
     <message>
         <source>Type authors here ...</source>
-        <translation type="unfinished">Saisir les auteurs ici ...</translation>
+        <translation>Ajouter les auteurs ici ...</translation>
     </message>
     <message>
         <source>Objective(s)</source>
-        <translation type="unfinished">Objectif(s) :</translation>
+        <translation>Objectif(s) de la séance :</translation>
     </message>
     <message>
         <source>Type objectives here...</source>
-        <translation type="unfinished">Saisir les objectifs ici ...</translation>
+        <translation>Ajouter les objectifs ici ...</translation>
     </message>
     <message>
         <source>Resource indexing</source>
-        <translation type="unfinished">Indexation de la ressource</translation>
+        <translation>Métadonnées de la ressource</translation>
     </message>
     <message>
         <source>Keywords:</source>
-        <translation type="unfinished">Mot(s) clé(s) :</translation>
+        <translation>Mot(s) clé(s) :</translation>
     </message>
     <message>
         <source>Type keywords here ...</source>
-        <translation type="unfinished">Saisir le(s) mot(s) clé(s) ici ...</translation>
+        <translation>Ajouter le(s) mot(s) clé(s) ici ...</translation>
     </message>
     <message>
         <source>Level:</source>
-        <translation type="unfinished">Niveau scolaire :</translation>
+        <translation>Niveau(x) scolaire(s) :</translation>
     </message>
     <message>
         <source>Subjects:</source>
-        <translation type="unfinished">Discipline :</translation>
+        <translation>Discipline(s) :</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation type="unfinished">Type :</translation>
+        <translation>Type(s) :</translation>
     </message>
     <message>
         <source>Licence</source>
-        <translation type="unfinished">Licence</translation>
+        <translation>Licence</translation>
     </message>
     <message>
         <source>Attribution CC BY</source>
-        <translation type="unfinished">Licence Planète Sankoré (CC Paternité 3.0)</translation>
+        <translation>Licence recommandée (CC Paternité 3.0)</translation>
     </message>
     <message>
         <source>Attribution-NoDerivs CC BY-ND</source>
-        <translation type="unfinished">CC Paternité, Pas de modification</translation>
+        <translation>CC Paternité, Pas de modification</translation>
     </message>
     <message>
         <source>Attribution-ShareAlike CC BY-SA</source>
-        <translation type="unfinished">CC Paternité, Partage à l&apos;identique</translation>
+        <translation>CC Paternité, Partage à l&apos;identique</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial CC BY-NC</source>
-        <translation type="unfinished">CC Paternité, Pas d&apos;utilisation Commerciale</translation>
+        <translation>CC Paternité, Pas d&apos;utilisation commerciale</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-NoDerivs CC BY-NC-ND</source>
-        <translation type="unfinished">CC Paternité, Pas d&apos;utilisation Commerciale, Pas de modification</translation>
+        <translation>CC Paternité, Pas d&apos;utilisation commerciale, Pas de modification</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-ShareAlike CC BY-NC-SA</source>
-        <translation type="unfinished">CC Paternité, Pas d&apos;utilisation Commerciale, Partage à l&apos;identique</translation>
+        <translation>CC Paternité, Pas d&apos;utilisation commerciale, Partage à l&apos;identique</translation>
     </message>
     <message>
         <source>Public domain</source>
-        <translation type="unfinished">Domaine public</translation>
+        <translation>Domaine public</translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished">Droit d&apos;auteur</translation>
+        <translatorcomment>attention le copyright n&apos;est pas une protection ou une licence puisque ca existe même pour les licences libres les plus ouvertes. C&apos;est simplement la mention détenteur des droits de reproduction (celui qui fixe la licence) . Le terme est donc impropre même en anglais.</translatorcomment>
+        <translation>Protection par le droit d&apos;auteur</translation>
     </message>
     <message>
         <source>Created the:
 </source>
-        <translation type="unfinished">Créé le :</translation>
+        <translation>Créé le :</translation>
     </message>
     <message>
         <source>Updated the:
 </source>
-        <translation type="unfinished">Modifié le :</translation>
+        <translation>Modifié le :</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished">Page de titre</translation>
+        <translation>Page de titre</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePresentationWidget</name>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished">Page: %0</translation>
+        <translation>Page: %0</translation>
     </message>
 </context>
 <context>
@@ -2093,6 +2115,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>Cache</source>
         <translation>Spot</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
@@ -2113,7 +2139,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation>fichiers nécessitent une mise à jour.</translation>
+        <translation>fichiers nécessitant une mise à jour.</translation>
     </message>
     <message>
         <source>Backup path: </source>
@@ -2169,7 +2195,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation>Publier un fichier Open-Sankoré sur Planète Sankoré</translation>
+        <translation>Publier un fichier Open-Sankoré sur Planète-Sankoré</translation>
     </message>
 </context>
 <context>
@@ -2195,11 +2221,11 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Open-Sankore</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
     <message>
         <source>OpenSankore</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré</translation>
     </message>
 </context>
 <context>
@@ -2276,11 +2302,11 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     <name>UniboardSankoreTransition</name>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation>Importer les anciens documents Uniboard/Sankoré</translation>
+        <translation>Importer des documents depuis le format Uniboard ou Sankoré</translation>
     </message>
     <message>
         <source>There are no documents that should be imported</source>
-        <translation>Aucun document trouvé à importer</translation>
+        <translation>Aucun document au format Uniboard n&apos;a été trouvé</translation>
     </message>
 </context>
 <context>
@@ -2322,7 +2348,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 restant(s)</translation>
+        <translation>- %4 %5 restante(s)</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
@@ -2331,7 +2357,8 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation>?</translation>
+        <translatorcomment>si je me fie aux commentaires des développeurs...</translatorcomment>
+        <translation>Taille de fichier inconnue</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
@@ -2381,7 +2408,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>%1 items</source>
-        <translation>%1 éléments</translation>
+        <translation>%1 élément(s)</translation>
     </message>
 </context>
 <context>
@@ -2399,19 +2426,19 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation>Dupliquer l&apos;onglet</translation>
+        <translation>Dupliquer onglet</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation>&amp;Fermer l&apos;onglet</translation>
+        <translation>&amp;Fermer onglet</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation>Fermer les &amp;autres onglets</translation>
+        <translation>Fermer &amp;autres onglets</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation>Recharger l&apos;onglet</translation>
+        <translation>Recharger &amp;onglet</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
@@ -2437,7 +2464,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>No Recent Searches</source>
-        <translation>Aucun historique des recherches</translation>
+        <translation>Aucune recherche récente</translation>
     </message>
     <message>
         <source>Recent Searches</source>
@@ -2486,7 +2513,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Title</source>
-        <translation>Titre</translation>
+        <translation>Titre du podcast</translation>
     </message>
     <message>
         <source>Description</source>
@@ -2506,7 +2533,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation>Utilisateur YouTube</translation>
+        <translation>Nom d&apos;utilisateur YouTube</translation>
     </message>
     <message>
         <source>YouTube Password</source>
@@ -2753,7 +2780,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation>Inverser les écrans</translation>
+        <translation>Inverser la disposition des écrans</translation>
     </message>
     <message>
         <source>Mode</source>
@@ -2773,7 +2800,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation>Utilisateur Proxy :</translation>
+        <translation>Nom d&apos;utilisateur :</translation>
     </message>
     <message>
         <source>Pass:</source>
@@ -2781,11 +2808,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation>Identifiant Planète Sankoré</translation>
+        <translation>Identifiant Planète-Sankoré</translation>
     </message>
     <message>
         <source>User:</source>
-        <translation>Utilisateur :</translation>
+        <translation>Nom d&apos;utilisateur :</translation>
     </message>
     <message>
         <source>Pass: </source>
@@ -3230,11 +3257,12 @@ DAMAGES.
 
                      END OF TERMS AND CONDITIONS
 </source>
+        <translatorcomment>non traduisible en l&apos;état (sauf disponibilité d&apos;une version non officielle introuvable sur le web)</translatorcomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
+        <translation>Crédits</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3245,7 +3273,14 @@ p, li { white-space: pre-wrap; }
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Les licences proposées ci-dessous sont rédigées en langue anglaise afin de respecter le cadre légal et officiel des traductions aprouvées par les auteurs de ces textes. licences.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3256,6 +3291,7 @@ p, li { white-space: pre-wrap; }
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translatorcomment>ATTENTION : Je ne vois pas à quelle partie ce texte fait référence : si ce sont les crédits des tierces parties alors il en manque et elle ne sont pas à jour par rapport aux librairies utilisées effectivement dans le code source (voir les mentions légales sur Github dans les tierces parties). Ce problème a déja été mentionné dans des messages précédents.</translatorcomment>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -3268,7 +3304,16 @@ p, li { white-space: pre-wrap; }
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Open-Sankoré version 1.4 , Copyright (C) 2010-2012 Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;&lt;br /&gt;Open-Sankoré est un logiciel libre : vous pouvez le redistribuer et/ou le modifier en respectant les termes de la Lesser GNU general Public Licence (GNU LGPL) telle que publiée par la Free Software Foundation en version 2 ou une version plus récente.&lt;br /&gt;Vous pouvez consulter et charger le code source du logiciel sur &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré est distribué dans l&apos;espoir qu&apos;il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de COMMERCIALISATION ou D&apos;ADAPTATION A UN OBJET PARTICULIER.&lt;br /&gt;Veuillez consulter la licence Lesser GNU General Public Licence située dans l&apos;onglet Licences ou consulter le site &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;http://www.gnu.org/licenses/&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;.&lt;br /&gt;&lt;br /&gt;Open-Sankoré is free software: you can redistribute it and/or modify it under the terms of the Lesser GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version. You can find the source code of this software at &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Lesser GNU General Public License below for more details.&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Contact : &lt;br /&gt;Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;br /&gt;20 Avenue Ségur Paris 75007&lt;br /&gt;Téléphone : 01 43 17 68 08&lt;br /&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>ATTENTION AU NUMERO DE VERSION MENTIONNÉ DANS LA VERSION ANGLAISE ! (RESTE EN 1.4)</translatorcomment>
+        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Open-Sankoré version 2.0 , Copyright (C) 2010-2012 Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;&lt;br /&gt;Open-Sankoré est un logiciel libre : vous pouvez le redistribuer et/ou le modifier en respectant les termes de la Lesser GNU general Public Licence (GNU LGPL) telle que publiée par la Free Software Foundation en version 2 ou une version plus récente.&lt;br /&gt;Vous pouvez consulter et charger le code source du logiciel sur &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré est distribué dans l&apos;espoir qu&apos;il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de COMMERCIALISATION ou D&apos;ADAPTATION A UN OBJET PARTICULIER.&lt;br /&gt;Veuillez consulter la licence Lesser GNU General Public Licence située dans l&apos;onglet Licences ou consulter le site &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;http://www.gnu.org/licenses/&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;.&lt;br /&gt;&lt;br /&gt;Open-Sankoré is free software: you can redistribute it and/or modify it under the terms of the Lesser GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version. You can find the source code of this software at &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Lesser GNU General Public License below for more details.&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Contact : &lt;br /&gt;Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;br /&gt;20 Avenue Ségur Paris 75007&lt;br /&gt;Téléphone : 01 43 17 68 08&lt;br /&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3320,7 +3365,56 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Autorisation pour un usage non commercial&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>attention ce texte est en français par défaut ce qui signifie qu&apos;il devrait être traduit en anglais pour les utilisateurs non francophones !</translatorcomment>
+        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Crédits police scolaire Open-Sankoré : &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;La police Andika Basic dispose d&apos;une licence Open Font License &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Sil international&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;amp;id=andika&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Licence OFL (traduction française non officielle) http://fontforge.sourceforge.net/OFL-Unofficial-fr.html&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Les polices Ecolier suivantes sont l&apos;oeuvre de Jean-Marie Douteau et disposent d&apos;une licence OFL : &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Ecolier Court &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Ecolier Ligne Court&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Jean-Marie Douteau (douteau.ecolier@sfr.fr)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://douteau.ecolier.perso.sfr.fr/page_ecolier.htm&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Les polices Ecolier suivantes sont l&apos;oeuvre de Jean-Marie Douteau et disposent d&apos;une licence Creative Commons BY NC ND :&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Ecolier lignes pointillés&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Écolier pointillés&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Écolier CP&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Écolier CP pointillés&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Jean-Marie Douteau (douteau.ecolier@sfr.fr)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://douteau.ecolier.perso.sfr.fr/page_ecolier.htm&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Les polices Cursive sont l&apos;oeuvre d&apos;Antoine Fetet (antoine.fetet@laposte.net) à partir d&apos;une police proposée par Jean-Claude Gineau&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://lps13.free.fr/contenu/construire/Cursive_standard.zip et http://fr.fontriver.com/font/gino_school_script/&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;L&apos;auteur en autorise l&apos;utilisation dans le cadre du logiciel open-Sankoré pour un usage non commercial&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Les polices Script (Ecole et CaseEcole) sont l&apos;oeuvre d&apos;Henri Rogelet&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices/SCRIPTCO.zip&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices/SCRIPTCA.zip&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Autorisation pour un usage non commercial&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;La police phonétique, Alphonet est l&apos;oeuvre d&apos;Henri Rogelet&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices/ALPHONET.zip&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Autorisation pour un usage non commercial&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

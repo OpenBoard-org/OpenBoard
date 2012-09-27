@@ -68,7 +68,7 @@
 			 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			 */
 			 
-			/* API identifier */
+			/* Geonames API identifier */
 			var geonamesUser = "yimgo";
 
 			/* map variable will be used to manipulate the map. This will be initialized like an OpenLayers.Map object. */
@@ -149,6 +149,17 @@
 	  	  		});
 			}
 
+			function importData(data)
+			{
+				map.setCenter(new OpenLayers.LonLat(data["center"]["lon"], data["center"]["lat"]), data["zoom"]);
+			}
+
+			function exportData()
+			{
+				if (window.sankore)
+        			sankore.setPreference("osm", JSON.stringify({center: map.getCenter(), zoom: map.getZoom()})); 
+			}
+
 			window.onload = function() {
 				map = new OpenLayers.Map({
 					div: "map"
@@ -198,7 +209,21 @@
 					map.setBaseLayer(newLayer);
 
 					return false;
-				}); 
+				});
+
+				/* importing state from Sankoré preferences */
+				if (window.sankore) {
+			        if (sankore.preference("osm","")) {
+			            importData(JSON.parse(sankore.preference("osm","")));
+			        }
+   				}
+
+   				/* exporting state when receiving a leave event */
+   				if (window.widget) {
+			        window.widget.onleave = function() {
+			            exportData();
+			        }
+			    }
 			};
 			-->
 		</script>

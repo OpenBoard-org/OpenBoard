@@ -61,6 +61,7 @@
 #include "tools/UBGraphicsCache.h"
 #include "tools/UBGraphicsTriangle.h"
 #include "tools/UBGraphicsProtractor.h"
+#include "tools/UBGraphicsAristo.h"
 
 #include "core/memcheck.h"
 
@@ -307,7 +308,6 @@ UBBoardView::event (QEvent * e)
       if (gestureEvent)
         {
           QSwipeGesture* swipe = dynamic_cast<QSwipeGesture*> (gestureEvent->gesture (Qt::SwipeGesture));
-
           if (swipe)
             {
               if (swipe->horizontalDirection () == QSwipeGesture::Left)
@@ -362,9 +362,7 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     QPointF scenePos = viewportTransform ().inverted ().map (tabletPos);
 
     qreal pressure = 1.0;
-    if (((currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Line)
-         && mPenPressureSensitive)
-            || (currentTool == UBStylusTool::Marker && mMarkerPressureSensitive))
+    if (((currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Line) && mPenPressureSensitive) || (currentTool == UBStylusTool::Marker && mMarkerPressureSensitive))
         pressure = event->pressure ();
 
 
@@ -521,6 +519,7 @@ Here we determines cases when items should to get mouse press event at pressing 
     case UBGraphicsTriangle::Type:
     case UBGraphicsCompass::Type:
     case UBGraphicsCache::Type:
+    case UBGraphicsAristo::Type:
         return true;
 
     case UBGraphicsDelegateFrame::Type:
@@ -553,8 +552,8 @@ Here we determines cases when items should to get mouse press event at pressing 
         return false;
         break;
 
-    case UBToolWidget::Type:
-        return true;
+    //case UBToolWidget::Type:
+      //  return true;
 
     case QGraphicsWebView::Type:
         return true;
@@ -1123,7 +1122,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 DelegateButton::Type != movingItem->type() &&
                 QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
-                UBToolWidget::Type != movingItem->type() &&
+//                UBToolWidget::Type != movingItem->type() &&
                 UBGraphicsCache::Type != movingItem->type() &&
                 QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
                 !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
@@ -1363,6 +1362,11 @@ void UBBoardView::dropEvent (QDropEvent *event)
             mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
             event->acceptProposedAction();
         }
+    }
+    //prevent features in UBFeaturesWidget deletion from the model when event is processing inside
+    //Qt base classes
+    if (event->dropAction() == Qt::MoveAction) {
+        event->setDropAction(Qt::CopyAction);
     }
 }
 

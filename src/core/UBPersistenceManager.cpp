@@ -265,7 +265,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     return doc;
 }
 
-UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName, const QString& pName, bool withEmptyPage)
+UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName, const QString& pName, bool withEmptyPage, bool addTitlePage)
 {
     checkIfDocumentRepositoryExists();
 
@@ -280,7 +280,8 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
     {
         doc->setMetaData(UBSettings::documentName, pName);
     }
-    if (withEmptyPage) createDocumentSceneAt(doc, 0);
+    if(withEmptyPage) createDocumentSceneAt(doc, 0);
+    if(addTitlePage) persistDocumentScene(doc, mSceneCache.createScene(doc, 0, false), 0);
 
     QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
 
@@ -463,11 +464,6 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
         }
     }
-
-    foreach(int index, compactedIndexes)
-    {
-         emit documentSceneDeleted(proxy, index);
-    }
 }
 
 
@@ -576,8 +572,6 @@ void UBPersistenceManager::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
     thumb.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", target));
 
     mSceneCache.moveScene(proxy, source, target);
-
-    emit documentSceneMoved(proxy, target);
 }
 
 
@@ -612,7 +606,7 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
     UBBoardPaletteManager* paletteManager = UBApplication::boardController->paletteManager();
     bool teacherGuideModified = false;
-    if(paletteManager->teacherGuideDockWidget())
+    if(UBApplication::app()->boardController->currentPage() == pSceneIndex &&  paletteManager->teacherGuideDockWidget())
     	teacherGuideModified = paletteManager->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
 
     if (pDocumentProxy->isModified() || teacherGuideModified)
@@ -628,8 +622,6 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     }
 
     mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
-
-    emit documentCommitted(pDocumentProxy);
 }
 
 

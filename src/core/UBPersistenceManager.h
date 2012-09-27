@@ -47,7 +47,7 @@ class UBPersistenceManager : public QObject
         static void destroy();
 
         virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = true);
-        virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = false);
+        virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = false, bool addTitlePage = false);
 
         virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy);
 
@@ -117,13 +117,10 @@ class UBPersistenceManager : public QObject
 
         void documentCreated(UBDocumentProxy* pDocumentProxy);
         void documentMetadataChanged(UBDocumentProxy* pDocumentProxy);
-        void documentCommitted(UBDocumentProxy* pDocumentProxy);
         void documentWillBeDeleted(UBDocumentProxy* pDocumentProxy);
 
         void documentSceneCreated(UBDocumentProxy* pDocumentProxy, int pIndex);
-        void documentSceneMoved(UBDocumentProxy* pDocumentProxy, int pIndex);
         void documentSceneWillBeDeleted(UBDocumentProxy* pDocumentProxy, int pIndex);
-        void documentSceneDeleted(UBDocumentProxy* pDocumentProxy, int pDeletedIndex);
 
     private:
 

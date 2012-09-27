@@ -39,6 +39,7 @@
 #include "tools/UBGraphicsTriangle.h"
 #include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsCache.h"
+#include "tools/UBGraphicsAristo.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -581,8 +582,8 @@ bool UBGraphicsScene::inputDeviceRelease()
                 addItem(pStrokes);
                 mDrawWithCompass = false;
 
-        }else if (mCurrentStroke)
-        {
+        }
+        else if (mCurrentStroke){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
@@ -628,8 +629,8 @@ bool UBGraphicsScene::inputDeviceRelease()
 
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
         delete mCurrentStroke;
+        mCurrentStroke = NULL;
     }
-    mCurrentStroke = NULL;
 
     return accepted;
 }
@@ -1216,6 +1217,11 @@ void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
 }
 UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos)
 {
+    qDebug() << pMediaFileUrl.toLocalFile();
+    if (!QFile::exists(pMediaFileUrl.toLocalFile()))
+    if (!QFile::exists(pMediaFileUrl.toString()))
+        return NULL;
+
     UBGraphicsMediaItem* mediaItem = new UBGraphicsMediaItem(pMediaFileUrl);
     if(mediaItem){
         connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), mediaItem, SLOT(activeSceneChanged()));
@@ -1310,7 +1316,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     if (graphicsWidget->canBeContent())
     {
-//        graphicsWidget->widgetWebView()->loadMainHtml();
+        graphicsWidget->loadMainHtml();
 
         graphicsWidget->setSelected(true);
         if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
@@ -1602,6 +1608,9 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
       --mItemCount;
 
     mFastAccessItems.removeAll(item);
+    /* delete the item if it is cache to allow its reinstanciation, because Cache implements design pattern Singleton. */
+    if (dynamic_cast<UBGraphicsCache*>(item))
+        UBCoreGraphicsScene::deleteItem(item);
 }
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
@@ -1937,19 +1946,35 @@ void UBGraphicsScene::addCompass(QPointF center)
     compass->setVisible(true);
 }
 
+void UBGraphicsScene::addAristo(QPointF center)
+{
+    UBGraphicsAristo* aristo = new UBGraphicsAristo();
+    mTools << aristo;
+
+    aristo->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
+    addItem(aristo);
+
+    QPointF itemSceneCenter = aristo->sceneBoundingRect().center();
+    aristo->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
+
+    aristo->setVisible(true);
+    setModified(true);
+}
+
 void UBGraphicsScene::addCache()
 {
-    UBGraphicsCache* cache = new UBGraphicsCache();
-    mTools << cache;
+    UBGraphicsCache* cache = UBGraphicsCache::instance(this);
+    if (!items().contains(cache)) {
+        addItem(cache);
 
-    addItem(cache);
+        cache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
-    cache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
-
-    cache->setVisible(true);
-    cache->setSelected(true);
-    UBApplication::boardController->notifyCache(true);
-    UBApplication::boardController->notifyPageChanged();
+        cache->setVisible(true);
+        cache->setSelected(true);
+        UBApplication::boardController->notifyCache(true);
+        UBApplication::boardController->notifyPageChanged();
+    }
 }
 
 void UBGraphicsScene::addMask(const QPointF &center)
@@ -2277,10 +2302,12 @@ void UBGraphicsScene::setToolCursor(int tool)
 
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
         delete mCurrentStroke;
+        mCurrentStroke = NULL;
     }
-    mCurrentStroke = NULL;
+
 }
 
-void UBGraphicsScene::initStroke(){
+void UBGraphicsScene::initStroke()
+{
 	mCurrentStroke = new UBGraphicsStroke();
 }

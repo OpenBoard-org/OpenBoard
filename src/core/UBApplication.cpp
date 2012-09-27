@@ -130,6 +130,8 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
         || args.contains("log");
 
 
+    setupTranslators(args);
+
     UBResources::resources();
 
     if (!undoStack)
@@ -138,8 +140,6 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
     UBPlatformUtils::init();
 
     UBSettings *settings = UBSettings::settings();
-
-    setupTranslators(args);
 
     connect(settings->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(toolBarPositionChanged(QVariant)));
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));

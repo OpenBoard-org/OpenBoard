@@ -711,7 +711,7 @@ void UBFeaturesController::addItemToPage(const UBFeature &item)
 
 void UBFeaturesController::addItemAsBackground(const UBFeature &item)
 {
-    UBApplication::boardController->downloadURL( item.getFullPath(), QPointF(), QSize(), true );
+    UBApplication::boardController->downloadURL( item.getFullPath(), QString(), QPointF(), QSize(), true );
 }
 
 UBFeature UBFeaturesController::getDestinationFeatureForUrl( const QUrl &url )

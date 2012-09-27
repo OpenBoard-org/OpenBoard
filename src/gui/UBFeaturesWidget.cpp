@@ -12,10 +12,6 @@
 const char *UBFeaturesWidget::objNamePathList = "PathList";
 const char *UBFeaturesWidget::objNameFeatureList = "FeatureList";
 
-const QString UBFeaturesNewFolderDialog::acceptText = tr("Accept");
-const QString UBFeaturesNewFolderDialog::cancelText = tr("Cancel");
-const QString UBFeaturesNewFolderDialog::labelText =  tr("Enter a new folder name");
-
 const QMargins FeatureListMargins(0, 0, 0, 30);
 const int FeatureListBorderOffset = 10;
 const char featureTypeSplitter = ':';
@@ -198,7 +194,6 @@ void UBFeaturesWidget::lockIt(bool pLock)
     mActionBar->setEnabled(!pLock);
     pathListView->setEnabled(!pLock);
     centralWidget->setLockedExcludingAdditional(pLock);
-//    pathListView->setLocked(true);
 }
 
 void UBFeaturesWidget::addToFavorite( const UBFeaturesMimeData * mimeData )
@@ -578,6 +573,9 @@ void UBFeaturesCentralWidget::scanFinished()
 }
 
 UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(parent)
+  , acceptText(tr("Accept"))
+  , cancelText(tr("Cancel"))
+  , labelText(tr("Enter a new folder name"))
 {
     this->setStyleSheet("background:white;");
 
@@ -1048,8 +1046,8 @@ void UBFeatureProperties::onAddToLib()
         desc.modal = false;
         desc.name = QFileInfo( mpElement->getFullPath().toString()).fileName();
         qDebug() << desc.name;
-        desc.url = mpElement->getFullPath().toString();
-        qDebug() << desc.url;
+        desc.srcUrl = mpElement->getFullPath().toString();
+        qDebug() << desc.srcUrl;
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
     }
 }

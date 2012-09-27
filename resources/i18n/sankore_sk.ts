@@ -1507,6 +1507,21 @@
     </message>
 </context>
 <context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušiť</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
@@ -2096,6 +2111,10 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     <message>
         <source>Magnifier</source>
         <translation>Lupa</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

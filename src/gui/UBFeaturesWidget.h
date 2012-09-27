@@ -193,9 +193,9 @@ public:
     void setLockedExcludingAdditional(bool pLock);
 
     QStackedWidget *mStackedWidget;
-        UBFeaturesNavigatorWidget *mNavigator;
-        UBFeatureProperties *mFeatureProperties;
-        UBFeaturesWebView *webView;
+    UBFeaturesNavigatorWidget *mNavigator;
+    UBFeatureProperties *mFeatureProperties;
+    UBFeaturesWebView *webView;
 
     QStackedWidget *mAdditionalDataContainer;
 
@@ -226,10 +226,6 @@ class UBFeaturesNewFolderDialog : public QWidget
     Q_OBJECT
 
 public:
-    static const QString acceptText;
-    static const QString cancelText;
-    static const QString labelText;
-
     UBFeaturesNewFolderDialog(QWidget *parent = 0);
     void setRegexp(const QRegExp pRegExp);
     bool validString(const QString &pStr);
@@ -249,7 +245,9 @@ private:
     QRegExpValidator *mValidator;
     QStringList mFileNameList;
     QPushButton *acceptButton;
-
+    const QString acceptText;
+    const QString cancelText;
+    const QString labelText;
 };
 
 class UBFeaturesProgressInfo: public QWidget {
