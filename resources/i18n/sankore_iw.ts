@@ -1499,7 +1499,7 @@
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">סל</translation>
     </message>
 </context>
 <context>
@@ -2087,6 +2087,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Cache</source>
         <translation>מטמון</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

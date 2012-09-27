@@ -2091,6 +2091,10 @@ Do you want to ignore these errors for this host?</source>
         <source>Cache</source>
         <translation>캐시</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>

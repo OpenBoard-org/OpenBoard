@@ -2101,6 +2101,10 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
         <source>Cache</source>
         <translation>Zwischenspeicher</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>

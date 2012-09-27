@@ -2098,6 +2098,10 @@ risorsa multimediale ...</translation>
         <source>Cache</source>
         <translation>Cache</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>

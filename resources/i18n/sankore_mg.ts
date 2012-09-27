@@ -2093,6 +2093,10 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
         <source>Cache</source>
         <translation>Tahiry</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>

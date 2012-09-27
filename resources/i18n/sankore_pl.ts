@@ -2100,6 +2100,10 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
         <source>Cache</source>
         <translation>Pamięć podręczna</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>

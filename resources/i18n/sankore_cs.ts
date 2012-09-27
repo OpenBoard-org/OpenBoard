@@ -2097,6 +2097,10 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
         <source>Magnifier</source>
         <translation>Lupa</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>

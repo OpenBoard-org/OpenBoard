@@ -2090,6 +2090,10 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
         <source>Cache</source>
         <translation>Memòria cau</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>

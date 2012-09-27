@@ -2091,6 +2091,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <source>Cache</source>
         <translation>Gizli Yer</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>

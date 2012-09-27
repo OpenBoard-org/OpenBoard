@@ -2100,6 +2100,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>Cache</source>
         <translation>Spot</translation>
     </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
