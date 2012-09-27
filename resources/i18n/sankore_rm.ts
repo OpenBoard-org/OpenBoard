@@ -999,10 +999,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1020,6 +1016,10 @@
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

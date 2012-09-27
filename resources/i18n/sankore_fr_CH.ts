@@ -1000,11 +1000,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translatorcomment>Attention : dans la version en anglais le terme Uniboard devrait être remplacé par open-Sankoré !</translatorcomment>
-        <translation>Afficher Open-Sankoré</translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation>Capturer une partie de l&apos;écran</translation>
     </message>
@@ -1023,6 +1018,10 @@
     <message>
         <source>Show Desktop on Secondary Screen</source>
         <translation>Afficher le bureau sur l&apos;écran secondaire</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation>Afficher Open-Sankoré</translation>
     </message>
 </context>
 <context>

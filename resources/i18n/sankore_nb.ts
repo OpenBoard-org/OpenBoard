@@ -1001,10 +1001,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translation>Vis Uniboard</translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation>Ta bilde av en del av skjermen</translation>
     </message>
@@ -1023,6 +1019,10 @@
     <message>
         <source>Show Desktop on Secondary Screen</source>
         <translation>Vis skrivebord på annen skjerm</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
