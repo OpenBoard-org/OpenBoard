@@ -582,8 +582,8 @@ bool UBGraphicsScene::inputDeviceRelease()
                 addItem(pStrokes);
                 mDrawWithCompass = false;
 
-        }else if (mCurrentStroke)
-        {
+        }
+        else if (mCurrentStroke){
                 UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
                 // Remove the strokes that were just drawn here and replace them by a stroke item
@@ -629,8 +629,8 @@ bool UBGraphicsScene::inputDeviceRelease()
 
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
         delete mCurrentStroke;
+        mCurrentStroke = NULL;
     }
-    mCurrentStroke = NULL;
 
     return accepted;
 }
@@ -2302,10 +2302,12 @@ void UBGraphicsScene::setToolCursor(int tool)
 
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
         delete mCurrentStroke;
+        mCurrentStroke = NULL;
     }
-    mCurrentStroke = NULL;
+
 }
 
-void UBGraphicsScene::initStroke(){
+void UBGraphicsScene::initStroke()
+{
 	mCurrentStroke = new UBGraphicsStroke();
 }

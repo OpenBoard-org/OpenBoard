@@ -1502,6 +1502,21 @@
     </message>
 </context>
 <context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
@@ -2090,6 +2105,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     <message>
         <source>Cache</source>
         <translation>Gizli Yer</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

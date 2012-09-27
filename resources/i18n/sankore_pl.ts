@@ -1510,6 +1510,21 @@
     </message>
 </context>
 <context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
@@ -2099,6 +2114,10 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     <message>
         <source>Cache</source>
         <translation>Pamięć podręczna</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -1503,6 +1503,21 @@
     </message>
 </context>
 <context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Ajanony</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
@@ -2092,6 +2107,10 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
     <message>
         <source>Cache</source>
         <translation>Tahiry</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
