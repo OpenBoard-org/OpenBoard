@@ -12,6 +12,7 @@
 #include <QHideEvent>
 
 #include "gui/UBActionPalette.h"
+#include "gui/UBRightPalette.h"
 
 /**
  * The uninotes window. This window is controlled by UBUninotesWindowController.
@@ -21,7 +22,7 @@ class UBDesktopPalette : public UBActionPalette
     Q_OBJECT;
 
     public:
-        UBDesktopPalette(QWidget *parent = 0);
+        UBDesktopPalette(QWidget *parent, UBRightPalette* rightPalette);
         virtual ~UBDesktopPalette();
 
         void disappearForCapture();
@@ -41,16 +42,18 @@ class UBDesktopPalette : public UBActionPalette
     public slots:
 
         void showHideClick(bool checked);
-
         void updateShowHideState(bool pShowEnabled);
         void setShowHideButtonVisible(bool visible);
         void setDisplaySelectButtonVisible(bool show);
-	void minimizeMe(eMinimizedLocation location);
+	    void minimizeMe(eMinimizedLocation location);
         void maximizeMe();
+        void parentResized();
 
 protected:
         void showEvent(QShowEvent *event);
         void hideEvent(QHideEvent *event);
+
+        virtual int getParentRightOffset();
 
     private:
         QAction *mShowHideAction;
@@ -59,6 +62,9 @@ protected:
         QAction *mActionUniboard;
         QAction *mActionCustomSelect;
         QAction* mActionTest;
+
+
+        UBRightPalette* rightPalette;
 
     signals:
         void stylusToolChanged(int tool);

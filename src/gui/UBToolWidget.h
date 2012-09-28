@@ -17,60 +17,52 @@
 #define UBTOOLWIDGET_H_
 
 #include <QtGui>
-#include <QtWebKit>
-#include "core/UB.h"
 
-class UBGraphicsScene;
 class UBGraphicsWidgetItem;
+class QWidget;
+class UBGraphicsScene;
+class QWebView;
 
-class UBToolWidget : public QGraphicsWidget
+class UBToolWidget : public QWidget
 {
-    Q_OBJECT
+    Q_OBJECT;
 
     public:
-        UBToolWidget(const QUrl& pUrl, QGraphicsItem *pParent = 0);
-        UBToolWidget(UBGraphicsWidgetItem* pGraphicsWidgetItem, QGraphicsItem *pParent = 0);
+        UBToolWidget(const QUrl& pUrl, QWidget* pParent = 0);
+        UBToolWidget(UBGraphicsWidgetItem* pWidget, QWidget* pParent = 0);
         virtual ~UBToolWidget();
 
-        UBGraphicsWidgetItem* graphicsWidgetItem() const;
-        QPointF naturalCenter() const;
-
-        void centerOn(const QPointF& pos);
         void remove();
+        void centerOn(const QPoint& pos);
 
-        virtual UBGraphicsScene* scene();
-        virtual QPointF pos() const; 
-        virtual void setPos(const QPointF &point);
-        virtual void setPos(qreal x, qreal y);
-        virtual int type() const;
-        
-        enum 
-        { 
-            Type = UBGraphicsItemType::ToolWidgetItemType 
-        };
+        QPoint naturalCenter() const;
+
+        UBGraphicsWidgetItem *toolWidget() const;
 
     protected:
         void initialize();
+        virtual void paintEvent(QPaintEvent *event);
 
-        virtual bool event(QEvent *event);
-        virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);      
+        virtual void mousePressEvent(QMouseEvent *event);
+        virtual void mouseMoveEvent(QMouseEvent *event);
+        virtual void mouseReleaseEvent(QMouseEvent *event);
+
+        virtual bool eventFilter(QObject *obj, QEvent *event);
 
     private slots:
         void javaScriptWindowObjectCleared();
 
     protected:
-        bool mShouldMoveWidget;
-        int mContentMargin;
-        int mFrameWidth;
-        QGraphicsWebView *mGraphicsWebView;        
-        UBGraphicsWidgetItem *mGraphicsWidgetItem;
-        QPointF mMousePressPos;
+        QWebView *mWebView;
+        UBGraphicsWidgetItem *mToolWidget;
 
         static QPixmap *sClosePixmap;
         static QPixmap *sUnpinPixmap;
+
+        QPoint mMousePressPos;
+        bool mShouldMoveWidget;
+        int mContentMargin;
+        int mFrameWidth;
 };
 
 #endif /* UBTOOLWIDGET_H_ */

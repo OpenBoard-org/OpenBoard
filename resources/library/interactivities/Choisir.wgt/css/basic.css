@@ -16,7 +16,7 @@ html, body{
     height: 100%;
     margin: 0;
     padding: 0;    
-    border-radius: 50px;
+    border-radius: 35px;
     overflow: hidden;
 }
 
@@ -471,57 +471,40 @@ body{
     margin: 10px 10px 0 10px;
     padding: 0;
     float: left;
-    font-family: "Lobster13Regular";
+    font-family: Arial,Helvetica,sans-serif;
     font-size: 24px;
-    color: #8c5730;
+    color: #7F613F;
+    text-shadow: #FFDCA9 0 1px 0;
 }
 
 #wgt_reload, #wgt_edit, #wgt_display, #wgt_help{
     cursor: pointer;
-    height: 44px;
     margin: 10px 10px 0 0;
     float: right;
-    font-family: "Lobster13Regular";
-    font-size: 24px;   
-    color: #8c5730;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 24px;    
+    line-height: 32px;
 }
 
 #wgt_display{
-    padding-left: 40px;
-    background-image: url(../images/slate-edit.png);
-    background-repeat: no-repeat;
-    background-position: top 0;
+    padding-left: 35px;
+    background: url(../images/toolbar-edit.png) left -32px no-repeat;
+    color: white;
     display: none;
 }
 
 #wgt_edit{    
-    padding-left: 40px;
-    background-image: url(../images/slate-edit.png);
-    background-repeat: no-repeat;
-    background-position: top 0;
+    padding-left: 35px;
+    background: url(../images/slate-toolbar-edit.png) left top no-repeat;
+    color: #7F613F;
+    text-shadow: #FFDCA9 0 1px 0;
 }
 
 #wgt_reload{
-    padding-left: 40px;
-    background-image: url(../images/slate-toolbar-reload.png);
-    background-repeat: no-repeat;
-    background-position: top 0;
-}
-
-.style_select{    
-    width: 120px;
-    font-family: "Lobster13Regular";
-    font-size: 24px;
-    float: right;
-    margin: 10px 20px 0 0;
-    border-radius: 10px;
-    background-image: url(../images/ar_down.png);
-    background-color: #d4aa79;
-    color: #8c5730;
-    background-position: 105px 11px;
-    background-repeat: no-repeat;
-    -webkit-appearance: menulist-text;
-    display: none;
+    padding-left: 35px;
+    background: url(../images/slate-toolbar-reload.png) left top no-repeat;
+    color: #7F613F;
+    text-shadow: #FFDCA9 0 1px 0;
 }
 
 .btl_pad{
@@ -556,24 +539,6 @@ body{
     background-image: url(../images/pad-bottom-right.png) !important;
 }
 
-.pad_color{
-    color: white !important;
-}
-
-.pad_reload{
-    background-image: url(../images/slate-toolbar-reload-white.png) !important;
-}
-
-.pad_edit{
-    background-image: url(../images/slate-display.png) !important;
-}
-
-.pad_select{
-    background-color: black !important;
-    color: white !important;
-    background-image: url(../images/ar_down_white.png) !important;
-}
-
 .without_radius{
     border-radius: 0 !important;
 }
@@ -582,25 +547,42 @@ body{
     background: none !important;
 }
 
-.none_select{
-    background-color: #333 !important;
-    color: white !important;
-    background-image: url(../images/ar_down_white.png) !important;
+.pad_color{
+    color: #FC9 !important;
+    text-shadow: none !important;
+}
+
+.pad_reload{
+    background: url(../images/toolbar-reload.png) left top no-repeat !important;
+}
+
+.pad_edit{
+    background: url(../images/toolbar-edit.png) left top no-repeat !important;    
 }
 
 .pad_help{
-    background-image: url(../images/slate-help-white.png) !important;
+    background: url(../images/toolbar-help.png) left top no-repeat !important;
+}
+
+.help_wood{
+    background: url(../images/slate-toolbar-help.png) left -32px no-repeat !important;
+    color: white !important;
+    text-shadow: #7F613F 0 -1px 0 !important;
+}
+
+.help_pad{
+    background: url(../images/toolbar-help.png) left -32px no-repeat !important;
+    color: white !important;
 }
 
 #wgt_help{
-    padding-left: 32px;
-    background-image: url(../images/slate-help.png);
-    background-repeat: no-repeat;
-    background-position: top 0;
+    padding-left: 35px;
+    background: url(../images/slate-toolbar-help.png) left top no-repeat;
+    color: #7F613F;
+    text-shadow: #FFDCA9 0 1px 0;
 }
 
 #help{
-    width: 100%;
     height: 100%;    
     overflow: auto;
     display: none;
@@ -609,5 +591,36 @@ body{
 }
 
 .open{
-    
+
+}
+
+#parameters{    
+    display: none;
+    padding: 10px 20px;
+    background: url("../images/parameters-bg.png");
+    border-radius: 4px 4px 0 0;
+}
+
+.inline{
+    display: inline-block;
+    font-family: "helvetica neue";
+    font-size: 14px;
+    color: #666;
+}
+
+#parameters label {
+    font-style: italic;
+}
+
+#style_select{   
+    margin-left: 10px;
+}
+
+.display_wood{
+    background: url(../images/slate-toolbar-edit.png) left -32px no-repeat !important;
+    text-shadow: #7F613F 0 -1px 0;
+}
+
+.radius_ft{
+    border-radius: 45px !important;
 }

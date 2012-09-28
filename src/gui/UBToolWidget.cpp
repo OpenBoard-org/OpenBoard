@@ -32,32 +32,32 @@ QPixmap* UBToolWidget::sClosePixmap = 0;
 QPixmap* UBToolWidget::sUnpinPixmap = 0;
 
 
-UBToolWidget::UBToolWidget(const QUrl& pUrl, QGraphicsItem *pParent)
-    : QGraphicsWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
+UBToolWidget::UBToolWidget(const QUrl& pUrl, QWidget *pParent)
+    : QWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
     , mShouldMoveWidget(false)
     , mContentMargin(0)
     , mFrameWidth(0)
-    , mGraphicsWebView(0)
-    , mGraphicsWidgetItem(0)    
+    , mWebView(0)
+    , mToolWidget(0)    
 {
     int widgetType = UBGraphicsWidgetItem::widgetType(pUrl);
     if (widgetType == UBWidgetType::Apple)
-        mGraphicsWidgetItem = new UBGraphicsAppleWidgetItem(pUrl, this);
+        mToolWidget = new UBGraphicsAppleWidgetItem(pUrl);
     else if (widgetType == UBWidgetType::W3C)
-        mGraphicsWidgetItem = new UBGraphicsW3CWidgetItem(pUrl, this);
+        mToolWidget = new UBGraphicsW3CWidgetItem(pUrl);
     else
         qDebug() << "UBToolWidget::UBToolWidget: Unknown widget Type";
 
     initialize();
 }
 
-UBToolWidget::UBToolWidget(UBGraphicsWidgetItem *pWidget, QGraphicsItem *pParent)
-    : QGraphicsWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
+UBToolWidget::UBToolWidget(UBGraphicsWidgetItem *pWidget, QWidget *pParent)
+    : QWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
     , mShouldMoveWidget(false)
     , mContentMargin(0)
     , mFrameWidth(0)
-    , mGraphicsWebView(0)
-    , mGraphicsWidgetItem(pWidget)
+    , mWebView(0)
+    , mToolWidget(pWidget)
 {
     initialize();
     javaScriptWindowObjectCleared();
@@ -75,42 +75,67 @@ void UBToolWidget::initialize()
 
     if(!sUnpinPixmap)
         sUnpinPixmap = new QPixmap(":/images/unpin.svg");
-    
-    QGraphicsLinearLayout *graphicsLayout = new QGraphicsLinearLayout(Qt::Vertical, this);
 
+    UBGraphicsScene *wscene = dynamic_cast<UBGraphicsScene *>(mToolWidget->scene());
+    if (wscene)
+    {
+        wscene->removeItemFromDeletion(mToolWidget);
+        wscene->removeItem(mToolWidget);
+    }
+
+
+    mWebView = new QWebView(this);
+
+    QPalette palette = mWebView->page()->palette();
+    palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
+    mWebView->page()->setPalette(palette);
+
+
+    mWebView->installEventFilter(this);
+    
     mFrameWidth = UBSettings::settings()->objectFrameWidth;
     mContentMargin = sClosePixmap->width() / 2 + mFrameWidth;
-    graphicsLayout->setContentsMargins(mContentMargin, mContentMargin, mContentMargin, mContentMargin);
-    setPreferredSize(mGraphicsWidgetItem->preferredWidth() + mContentMargin * 2, mGraphicsWidgetItem->preferredHeight() + mContentMargin * 2);
+    setLayout(new QVBoxLayout());
+    layout()->setContentsMargins(mContentMargin, mContentMargin, mContentMargin, mContentMargin);
+    layout()->addWidget(mWebView);
 
-    mGraphicsWebView = new QGraphicsWebView();
-    connect(mGraphicsWebView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
-    mGraphicsWebView->load(mGraphicsWidgetItem->mainHtml());
-    graphicsLayout->addItem(mGraphicsWebView);
+    setFixedSize(mToolWidget->boundingRect().width() + mContentMargin * 2, mToolWidget->boundingRect().height() + mContentMargin * 2);
 
-    mGraphicsWebView->setAcceptDrops(false);
-    mGraphicsWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    mGraphicsWebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
+    connect(mWebView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+    mWebView->load(mToolWidget->mainHtml());
 
-    QPalette palette = mGraphicsWebView->page()->palette();
-    palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-    mGraphicsWebView->page()->setPalette(palette);
 
-    setLayout(graphicsLayout);
+    mWebView->setAcceptDrops(false);
+    mWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    mWebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
+
 
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(javaScriptWindowObjectCleared()));
 }
 
-bool UBToolWidget::event(QEvent *event)
+
+bool UBToolWidget::eventFilter(QObject *obj, QEvent *event)
 {
-    if (event->type() == QEvent::ShortcutOverride)
-        event->accept();
-    return QGraphicsWidget::event(event);
+    if (mShouldMoveWidget && obj == mWebView && event->type() == QEvent::MouseMove)
+    {
+        QMouseEvent *mouseMoveEvent = static_cast<QMouseEvent*>(event);
+
+        if (mouseMoveEvent->buttons() & Qt::LeftButton)
+        {
+            move(pos() - mMousePressPos + mWebView->mapTo(this, mouseMoveEvent->pos()));
+
+            event->accept();
+            return true;
+        }
+    }
+
+    // standard event processing
+    return QObject::eventFilter(obj, event);
 }
 
-void UBToolWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void UBToolWidget::mousePressEvent(QMouseEvent *event)
 {
-    QGraphicsWidget::mousePressEvent(event);
+    QWidget::mousePressEvent(event);
 
     /* did webkit consume the mouse press ? */
     mShouldMoveWidget = !event->isAccepted() && (event->buttons() & Qt::LeftButton);
@@ -119,108 +144,92 @@ void UBToolWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
     update();
 }
 
-void UBToolWidget::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void UBToolWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if(mShouldMoveWidget && (event->buttons() & Qt::LeftButton)) {
-        setPos(pos() - mMousePressPos + event->pos());
+        move(pos() - mMousePressPos + event->pos());
         event->accept();
     }
-    QGraphicsWidget::mouseMoveEvent(event);
+    QWidget::mouseMoveEvent(event);
 }
 
-void UBToolWidget::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void UBToolWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     mShouldMoveWidget = false;
 
     if (event->pos().x() >= 0 && event->pos().x() < sClosePixmap->width() && event->pos().y() >= 0 && event->pos().y() < sClosePixmap->height()) {
-        remove();
+        UBApplication::boardController->removeTool(this);
         event->accept();
     }
-    else if (mGraphicsWidgetItem->canBeContent() && event->pos().x() >= mContentMargin && event->pos().x() < mContentMargin + sUnpinPixmap->width() && event->pos().y() >= 0 && event->pos().y() < sUnpinPixmap->height()) {
+    else if (mToolWidget->canBeContent() && event->pos().x() >= mContentMargin && event->pos().x() < mContentMargin + sUnpinPixmap->width() && event->pos().y() >= 0 && event->pos().y() < sUnpinPixmap->height()) {
         UBApplication::boardController->moveToolWidgetToScene(this);
         event->accept();
     }
     else
-        QGraphicsWidget::mouseReleaseEvent(event); /* don't propgate to parent, the widget is deleted in UBApplication */
+        QWidget::mouseReleaseEvent(event); /* don't propgate to parent, the widget is deleted in UBApplication */
 
 }
 
-void UBToolWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void UBToolWidget::paintEvent(QPaintEvent *event)
 {
-    QGraphicsWidget::paint(painter, option, widget);
+    QWidget::paintEvent(event);
 
-    /* painting lightweight toolbar */
-    if (isActiveWindow()) {
-        painter->setRenderHint(QPainter::Antialiasing);
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(QColor(127, 127, 127, 127));
+    //if (isActiveWindow())
+    {
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(QColor(127, 127, 127, 127));
 
-        painter->drawRoundedRect(QRectF(sClosePixmap->width() / 2, sClosePixmap->height() / 2, preferredWidth() - sClosePixmap->width(), mFrameWidth), mFrameWidth / 2, mFrameWidth / 2);
-        painter->drawPixmap(0, 0, *sClosePixmap);
-        if (mGraphicsWidgetItem->canBeContent())
-            painter->drawPixmap(mContentMargin, 0, *sUnpinPixmap);
+        painter.drawRoundedRect(QRectF(sClosePixmap->width() / 2
+                                     , sClosePixmap->height() / 2
+                                     , width() - sClosePixmap->width()
+                                     , mFrameWidth)
+                                     , mFrameWidth / 2
+                                     , mFrameWidth / 2);
+
+        painter.drawPixmap(0, 0, *sClosePixmap);
+
+        if (mToolWidget->canBeContent())
+            painter.drawPixmap(mContentMargin, 0, *sUnpinPixmap);
     }
 }
 
 void UBToolWidget::javaScriptWindowObjectCleared()
 {
-    UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mGraphicsWidgetItem);
+    UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mToolWidget);
 
-    mGraphicsWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
+    mWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
 
-    UBGraphicsW3CWidgetItem *graphicsW3cWidgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(mGraphicsWidgetItem);
+    UBGraphicsW3CWidgetItem *graphicsW3cWidgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(mToolWidget);
     if (graphicsW3cWidgetItem)
     {
         UBW3CWidgetAPI* widgetAPI = new UBW3CWidgetAPI(graphicsW3cWidgetItem);
-        mGraphicsWebView->page()->mainFrame()->addToJavaScriptWindowObject("widget", widgetAPI);
+        mWebView->page()->mainFrame()->addToJavaScriptWindowObject("widget", widgetAPI);
     }
 }
 
-UBGraphicsWidgetItem* UBToolWidget::graphicsWidgetItem() const
+UBGraphicsWidgetItem* UBToolWidget::toolWidget() const
 {
-    return mGraphicsWidgetItem;
+    return mToolWidget;
 }
 
-QPointF UBToolWidget::naturalCenter() const
+QPoint UBToolWidget::naturalCenter() const
 {
-    if (mGraphicsWebView)
-        return mGraphicsWebView->geometry().center();
+    if (mWebView)
+        return mWebView->geometry().center();
     else
-        return QPointF(0, 0);
-}
-
-void UBToolWidget::centerOn(const QPointF& pos)
-{
-    QGraphicsWidget::setPos(pos - QPointF(preferredWidth() / 2, preferredHeight() / 2));
+        return QPoint(0, 0);
 }
 
 void UBToolWidget::remove()
 {
-    mGraphicsWebView->setHtml(QString());
-    scene()->removeItem(this);
+    mToolWidget = NULL;
+    hide();
+    deleteLater();
 }
 
-UBGraphicsScene* UBToolWidget::scene()
+void UBToolWidget::centerOn(const QPoint& pos)
 {
-    return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
-}
-
-QPointF UBToolWidget::pos() const
-{
-    return QPointF(QGraphicsItem::pos().x() + mContentMargin * scale(), QGraphicsItem::pos().y() + mContentMargin * scale());
-}
-
-void UBToolWidget::setPos(const QPointF &point)
-{
-    UBToolWidget::setPos(point.x(), point.y());
-}
-
-void UBToolWidget::setPos(qreal x, qreal y)
-{
-    QGraphicsItem::setPos(x - mContentMargin * scale(), y - mContentMargin * scale());
-}
-
-int UBToolWidget::type() const
-{
-    return Type;
+    QWidget::move(pos - QPoint(width() / 2, height() / 2));
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://www.njin.fr/sankore/apps/Cadran opératoire" 
+        version="1.0"
+        width="800"
+        height="580" 
+        ub:resizable="false">     
+   
+		<name>Cadran opératoire</name>
+		<author href="http://www.njin.fr" email="contact@njin.fr">njin</author>
+		<description></description>
+		
+		<content src="index.html"/>
+</widget>

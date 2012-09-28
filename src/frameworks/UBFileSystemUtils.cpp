@@ -19,7 +19,6 @@
 
 #include "core/UBApplication.h"
 
-#include "board/UBBoardController.h"
 #include "document/UBDocumentContainer.h"
 
 #include "globals/UBGlobals.h"
@@ -273,7 +272,8 @@ bool UBFileSystemUtils::copyDir(const QString& pSourceDirPath, const QString& pT
     QDir dirSource(pSourceDirPath);
     QDir dirTarget(pTargetDirPath);
 
-    dirTarget.mkpath(pTargetDirPath);
+    if (!dirTarget.mkpath(pTargetDirPath))
+        return false;
 
     bool successSoFar = true;
 
@@ -854,4 +854,3 @@ QString UBFileSystemUtils::readTextFile(QString path)
 
     return "";
 }
-

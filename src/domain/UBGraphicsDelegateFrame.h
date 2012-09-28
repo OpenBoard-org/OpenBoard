@@ -39,7 +39,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         QPointF getFixedPointFromPos();
         QSizeF getResizeVector(qreal moveX, qreal moveY);
-        void resizeDelegate(qreal moveX, qreal moveY);
+        QSizeF resizeDelegate(qreal moveX, qreal moveY);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
@@ -105,6 +105,8 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
 
         QPointF mStartingPoint;
         QTransform mInitialTransform;
+        QSizeF mOriginalSize;
+        QPointF mFixedPoint;
 
         QGraphicsSvgItem* mBottomRightResizeGripSvgItem;
         QGraphicsSvgItem* mBottomResizeGripSvgItem;

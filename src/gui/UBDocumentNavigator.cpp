@@ -89,27 +89,9 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
     {
 
     	const QPixmap* pix = source->pageAt(i);
-    	QPixmap result(pix->width(),pix->height());
         int pageIndex = UBDocumentContainer::pageFromSceneIndex(i);
 
-        QPainter composePainter;
-        composePainter.begin(&result);
-        composePainter.drawPixmap(QPoint(0,0),*pix);
-
-        if(pageIndex == UBApplication::boardController->currentPage() &&
-        		((pageIndex == 0 && UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()) ||
-        		(pageIndex && UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()))
-           ) {
-        	if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()){
-        		QPixmap toque(":images/toque.png");
-        		composePainter.setOpacity(0.6);
-        		composePainter.drawPixmap(QPoint(pix->width() - toque.width(),0),toque);
-        	}
-        }
-
-        composePainter.end();
-
-        UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(result, source->selectedDocument(), i);
+        UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(*pix, source->selectedDocument(), i);
 
         QString label = pageIndex == 0 ? tr("Title page") : tr("Page %0").arg(pageIndex);
         UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(label);
@@ -128,7 +110,6 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
 void UBDocumentNavigator::onScrollToSelectedPage(int index)
 {
-    qDebug() << "Selection in widget: " << index;
     int c  = 0;
     foreach(UBImgTextThumbnailElement el, mThumbsWithLabels)
     {
@@ -286,7 +267,6 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
                 break;
             }
         }
-        qDebug() << "Selected Scene: " << index;
         UBApplication::boardController->setActiveDocumentScene(index);
 	}
 	QGraphicsView::mousePressEvent(event);

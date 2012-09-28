@@ -15,7 +15,7 @@
 
 var sankoreLang = {
     edit: "Modifier",
-    display:"Afficher",
+    display:"Fermer",
     question:"La question",
     example_question:"Ceci est un exemple de question",
     answer:"Ceci est une réponse possible",
@@ -40,8 +40,29 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help: "Aide",
+    help_content: "<p><h2>Choisir</h2></p>"+
+"<p><h3>Question à choix multiples (QCM).</h3></p>"+
+
+"<p>Une question est posée avec plusieurs choix de réponses possibles. Le but est de choisir la bonne réponse.</p>"+
+
+"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+"<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
+
+"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Ajouter une nouvelle question …”, puis.</p>"+
+"<ul><li>insérez la question en cliquant sur le champ de texte “Saisir la question ici ...”,</li>"+
+"<li>cliquez sur ”Options” pour choisir l’affichage des propositions (une seule bonne réponse, plusieurs bonnes réponses, liste déroulante). Cliquez sur “Fermer”,</li>"+
+"<li>cliquez sur ”Ajouter une proposition” et saisissez la proposition dans le champ de texte,</li>"+
+"<li>définissez la ou les propositions correctes en cliquant sur la case à cocher à gauche des bonnes réponses.</li>"+
+"<li>Pour supprimer une proposition, cliquez sur la croix située à droite de celle-ci.</li></ul>"+
+
+"<p>Pour supprimer un exercice, cliquez sur la croix à droite du numéro de ”Options”.</p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>",
+theme: "Thème"
 };
 
 var questionArray;
@@ -65,10 +86,11 @@ function init(){
     $("#wgt_reload").text(sankoreLang.reload);
     $("#wgt_help").text(sankoreLang.help);
     $("#help").html(sankoreLang.help_content);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    $(".style_select option[value='3']").text(sankoreLang.none);
-    
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='3']").text(sankoreLang.none);
+    var tmpl = $("div.inline label").html();
+    $("div.inline label").html(sankoreLang.theme + tmpl)
     
     //popup message
     var popupText = $("<div id='popupWordInfo' class='popupWordInfo'></div>").appendTo("#data");
@@ -81,37 +103,40 @@ function init(){
     
     //import saved data
     if(window.sankore){
-        if(sankore.preference("qstArrayData","") && sankore.preference("qstArrayData","") != "[]"){
-            questionArray = jQuery.parseJSON(sankore.preference("qstArrayData",""));
-            for(var i in questionArray){
-                addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
-                for(var j in questionArray[i].answers)
-                    addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text, true, questionArray[i].rightAns, questionArray[i].type);
-            }
-            displayData(true);
-        } 
-        else{ 
-            displayData(false);
-            begin = false;
+        if(sankore.preference("qstArrayData","") && sankore.preference("qstArrayData","") != "[]")
+            questionArray = jQuery.parseJSON(sankore.preference("qstArrayData",""));         
+        else
+            questionArray = jQuery.parseJSON('[{"text":"' + sankoreLang.example_question + '","type":"1","id":538,"rightAns":"2","answers":[{"id":953,"text":"' + sankoreLang.answer + ' 1.","value":1,"state":"","was":false},{"id":526,"text":"' + sankoreLang.answer + ' 2.","value":2,"state":"","was":false},{"id":473,"text":"' + sankoreLang.answer + ' 3.","value":3,"state":"","was":false}]}]');
+        
+        for(i in questionArray){
+            addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
+            for(j in questionArray[i].answers)
+                addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text, true, questionArray[i].rightAns, questionArray[i].type);
         }
+        displayData();
     }
     else{ 
-        displayData(false);
-        begin = false;
+        questionArray = jQuery.parseJSON('[{"text":"' + sankoreLang.example_question + '","type":"1","id":538,"rightAns":"2","answers":[{"id":953,"text":"' + sankoreLang.answer + ' 1.","value":1,"state":"","was":false},{"id":526,"text":"' + sankoreLang.answer + ' 2.","value":2,"state":"","was":false},{"id":473,"text":"' + sankoreLang.answer + ' 3.","value":3,"state":"","was":false}]}]');
+        for(i in questionArray){
+            addQstBlock(questionArray[i].id, questionArray[i].text, questionArray[i].type,"style='display: none;'");
+            for(j in questionArray[i].answers)
+                addAnsBlock(questionArray[i].answers[j].id, questionArray[i].id, questionArray[i].answers[j].text, true, questionArray[i].rightAns, questionArray[i].type);
+        }
+        displayData();
     }
     
     //saving widget data into sankore object for a correct import
     if (window.widget) {
         window.widget.onleave = function(){
             sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
-            sankore.setPreference("choisir_style", $(".style_select").find("option:selected").val());
+            sankore.setPreference("choisir_style", $("#style_select").find("option:selected").val());
         }
     }
     
     if(window.sankore)
         if(sankore.preference("choisir_style","")){
             changeStyle(sankore.preference("choisir_style",""));
-            $(".style_select").val(sankore.preference("choisir_style",""));
+            $("#style_select").val(sankore.preference("choisir_style",""));
         } else
             changeStyle("3")
 
@@ -120,21 +145,21 @@ function init(){
             if(!$(this).hasClass("selected")){                
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");                
+                $("#parameters").css("display","none");                
                 $(this).css("display", "none");
                 $("#wgt_edit").css("display", "block");
                 displayData(true);
                 mode = true;
                 if(window.sankore){
                     sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
-                    sankore.setPreference("choisir_style", $(".style_select").find("option:selected").val());
+                    sankore.setPreference("choisir_style", $("#style_select").find("option:selected").val());
                 }
             }
         } else {            
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");                
+                $("#parameters").css("display","block");                
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
                 editData();
@@ -142,15 +167,17 @@ function init(){
             }
         }
     });
-    
+
     $("#wgt_help").click(function(){
         var tmp = $(this);
         if($(this).hasClass("open")){
+            $(this).removeClass("help_pad").removeClass("help_wood")
             $("#help").slideUp("100", function(){
                 tmp.removeClass("open");
                 $("#data").show();
             });
-        } else {            
+        } else {
+            ($("#style_select").val() == 1)?$(this).removeClass("help_pad").addClass("help_wood"):$(this).removeClass("help_wood").addClass("help_pad");
             $("#data").hide();
             $("#help").slideDown("100", function(){
                 tmp.addClass("open");
@@ -169,10 +196,10 @@ function init(){
         }
     });
     
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
     
-    $(".style_select").change(function (event){
+    $("#style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
     
@@ -432,10 +459,10 @@ function init(){
     //toggle button click trigger
     //toggleButton.trigger("click");
     //show data in display mode
-    function displayData(flag){
+    function displayData(){
         $("#addQstDiv").hide();
         $(".qstDiv").hide();
-        addToPage(questionArray, flag);
+        addToPage(questionArray);
     }
     
     //set widget in edit mode
@@ -453,8 +480,7 @@ function init(){
     }
     
     // show questions and answers in display mode
-    function addToPage(array, flag){
-        if(flag){
+    function addToPage(array){
             var counter = 1;
             for(var i in array){
 
@@ -520,25 +546,6 @@ function init(){
                 counter++;
             }
             begin = false;
-        } else {
-            counter = 1;
-            qstDiv = $("<div class='qstDivDisplay'>");        
-            spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
-            qstNumber = $("<span class='qstNumber'>" + sankoreLang.question + " " + counter + "</span>").appendTo(spanOptConn);        
-            qstContent = $("<div class='qstContentDisplay'>" + sankoreLang.example_question + "</div>").appendTo(qstDiv);        
-            ansDiv = $("<div class='ansDiv'>").appendTo(qstDiv);
-            
-            ansCount = 1;
-            for(j = 0; j < 3; j++){  
-                newAnswer = $("<div class='newAnswer'>");
-                ansInput = $("<input type='radio' name='1' style='float: left; margin-right: 10px;'/>").appendTo(newAnswer);
-                ansSpan = $("<span class='ansSpanDisplay'>" + ansCount + ".</span>").appendTo(newAnswer);                        
-                ansContent = $("<div class='ansContentDisplay'>" + sankoreLang.answer + " " + ansCount + ".</div>").appendTo(newAnswer);
-                newAnswer.appendTo(ansDiv);                        
-                ansCount++;
-            }
-            qstDiv.appendTo("#data");
-        }
     }
 }
 
@@ -743,10 +750,10 @@ function changeStyle(val){
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
             $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").addClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").addClass("radius_ft");
             break;
         case "2":
             $(".b_top_left").addClass("btl_pad").removeClass("without_back");
@@ -760,10 +767,10 @@ function changeStyle(val){
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").removeClass("radius_ft");
             break;
         case "3":
             $(".b_top_left").addClass("without_back").removeClass("btl_pad");
@@ -777,10 +784,10 @@ function changeStyle(val){
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("none_select").val(val);
-            $("body, html").addClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
 }

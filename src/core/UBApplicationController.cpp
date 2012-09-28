@@ -59,8 +59,11 @@
 
 #include "core/memcheck.h"
 
-UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBoardView *pDisplayView,
-        UBMainWindow* pMainWindow, QObject* parent)
+UBApplicationController::UBApplicationController(UBBoardView *pControlView, 
+                                                 UBBoardView *pDisplayView,
+                                                 UBMainWindow* pMainWindow, 
+                                                 QObject* parent,
+                                                 UBRightPalette* rightPalette)
     : QObject(parent)
     , mMainWindow(pMainWindow)
     , mControlView(pControlView)
@@ -75,7 +78,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView, UBBo
 {
     mDisplayManager = new UBDisplayManager(this);
 
-    mUninoteController = new UBDesktopAnnotationController(this);
+    mUninoteController = new UBDesktopAnnotationController(this, rightPalette);
 
     connect(mDisplayManager, SIGNAL(screenLayoutChanged()), this, SLOT(screenLayoutChanged()));
     connect(mDisplayManager, SIGNAL(screenLayoutChanged()), mUninoteController, SLOT(screenLayoutChanged()));
@@ -461,7 +464,6 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
     }
 
     UBDrawingController::drawingController()->setInDestopMode(true);
-    UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Artistic);
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 }
 
@@ -595,12 +597,6 @@ void UBApplicationController::checkUpdateRequest()
 
 void UBApplicationController::hideDesktop()
 {
-    mDisplayManager->adjustScreens(-1);
-
-    if(UBStylusTool::Eraser != UBDrawingController::drawingController()->stylusTool()){
-    	UBDrawingController::drawingController()->setDrawingMode(eDrawingMode_Vector);
-    }
-
     if (mMainMode == Board)
     {
         showBoard();
@@ -623,6 +619,9 @@ void UBApplicationController::hideDesktop()
     }
 
     mIsShowingDesktop = false;
+
+    mDisplayManager->adjustScreens(-1);
+
     emit desktopMode(false);
 }
 

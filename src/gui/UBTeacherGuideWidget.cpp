@@ -554,7 +554,7 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
             QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem( mpRootWidgetItem);
             newWidgetItem->setText(0, element->attributes.value("task"));
             newWidgetItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-            QString colorString = element->attributes.value("owner").toInt() == 0 ? "red" : "green";
+            QString colorString = element->attributes.value("owner").toInt() == 0 ? "blue" : "green";
             UBTGAdaptableText* textWidget = new UBTGAdaptableText(newWidgetItem, 0);
             textWidget->bottomMargin(14);
             textWidget->setStyleSheet( "QWidget {background: #EEEEEE; border:none; color:" + colorString + ";}");

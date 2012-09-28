@@ -1,17 +1,37 @@
 var sankoreLang = {
     display: "Afficher", 
     edit: "Modifier", 
-    short_desc: "Ecoutez le son et replacez les lettres dans l'ordre.", 
+    short_desc: "Ecoutez le son et replacer les lettres dans l'ordre.", 
     add: "Nouveau bloc",
     enter: "Saisir la consigne ici ...",
     example: "exemple",
-    wgt_name: "Ordonner les lettres",
+    wgt_name: "Ordonner des lettres",
     reload: "Recharger",
     slate: "Bois",
     pad: "Pad",
     none: "Aucun",
     help: "Aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help_content: "<p><h2>Ordre des lettres</h2></p>"+
+"<p><h3>Ordonner des lettres pour reconstituer un mot.</h3></p>"+
+
+"<p>L’intégration d’un fichier son (facultatif) permet d’écouter le mot à reconstituer. Lorsque les lettres sont dans le bon ordre, l’interactivité se colore en vert.</p>"+
+
+"<p>L’activité s’effectue par un glisser-déposer des étiquettes pour remettre les lettres en ordre.<b> NB : vous pouvez également utiliser cette activité avec des chiffres.</b></p>"+
+
+"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+"<li>de déterminer le mot à reconstituer.</li></ul>"+
+ 
+"<p>Pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, puis</p>"+
+"<ul><li>insérez une consigne en cliquant sur le champ de texte “Saisir la consigne ici ...”,</li>"+
+"<li>insérez un son dans la zone à gauche de la consigne par glisser-déposer d’un son à partir de votre bibliothèque (facultatif),</li>"+
+"<li>écrivez le mot souhaité à la place de “exemple”.</li></ul>"+
+
+"<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
 };
 
 //main function
@@ -67,8 +87,8 @@ function start(){
     
     $("#wgt_reload").click(function(){
         if($("#wgt_display").hasClass("selected")){
-            $("#wgt_edit").trigger("click");
-            $("#wgt_display").trigger("click");
+            setTimeout('$("#wgt_display").trigger("click")', 10)
+            $("#wgt_edit").trigger("click");            
         } else {
             $("#wgt_display").trigger("click");
         }
@@ -94,7 +114,7 @@ function start(){
                 $(".cont").each(function(){
                     var container = $(this);
                     var tmp_array = [];
-                    var imgs_container = container.find(".imgs_cont");
+                    var ans_container = container.find(".audio_answer");
                     
                     container.find(".text_cont .audio_desc").removeAttr("contenteditable");
                     container.find(".audio_block").removeAttr("ondragenter")
@@ -102,19 +122,18 @@ function start(){
                     .removeAttr("ondragover")
                     .removeAttr("ondrop")
                     container.find(".close_cont").remove();
-                    var answer = imgs_container.find(".audio_answer").text();
-                    imgs_container.find(".audio_answer").remove();
-                    imgs_container.find("input").val(answer);
+                    var answer = ans_container.text();
+                    ans_container.prev().val(answer)
+                    ans_container.remove();
+                    var ul_cont = $("<ul id='sortable' class='imgs_answers_gray'>").insertAfter(container.find(".sub_cont"));
                     for(var j in answer){
-                        var tmp_letter = $("<div class='img_block' style='text-align: center;'>" + answer[j] + "</div>");
+                        var tmp_letter = $("<li class='ui-state-default'>" + answer[j] + "</li>");
                         tmp_array.push(tmp_letter);
                     }                        
                     tmp_array = shuffle(tmp_array);
                     for(var i = 0; i<tmp_array.length;i++)
-                        tmp_array[i].appendTo(imgs_container);
-                    imgs_container.sortable( {
-                        update: checkResult
-                    } );
+                        tmp_array[i].appendTo(ul_cont);
+                    ul_cont.sortable({revert: true, placeholder: "highlight", update: checkResult});
                 });
                 $(this).css("display", "none");
                 $("#wgt_edit").css("display", "block");
@@ -126,11 +145,10 @@ function start(){
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
                 $(".style_select").css("display","block");
-                
                 $(".cont").each(function(){
                     var container = $(this);
                     $("<div class='close_cont'>").appendTo(container);
-                    container.find(".imgs_cont").removeClass("imgs_answers_red")
+                    container.find("#sortable").removeClass("imgs_answers_red")
                     .removeClass("imgs_answers_green")
                     .addClass("imgs_answers_gray")
                     .sortable("destroy");
@@ -138,11 +156,10 @@ function start(){
                     container.find(".audio_block").attr("ondragenter", "return false;")
                     .attr("ondragleave", "$(this).removeClass('audio_gray'); return false;")
                     .attr("ondragover", "$(this).addClass('audio_gray'); return false;")
-                    .attr("ondrop", "$(this).removeClass('audio_gray'); return onDropAudio(this,event);");
-                    container.find(".img_block").remove();
-                    $("<div class='audio_answer' contenteditable>" + container.find(".imgs_cont input").val() + "</div>").appendTo(container.find(".imgs_cont"));
+                    .attr("ondrop", "$(this).removeClass('audio_gray'); return onDropAudio(this,event);");                    
+                    $("<div class='audio_answer' contenteditable>" + container.find("ul").next().val() + "</div>").appendTo(container);
+                    container.find("ul").remove();
                 });                
-                
                 $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
@@ -256,8 +273,8 @@ function exportData(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
             cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
-            cont_obj.answer = $(this).find(".imgs_cont input").val(); 
-            cont_obj.cur_answer = getAnswer($(this).find(".imgs_cont"));
+            cont_obj.answer = $(this).find("ul").next().val(); 
+            cont_obj.cur_answer = getAnswer($(this).find("ul"));
             array_to_export.push(cont_obj);
         });
     }
@@ -276,7 +293,7 @@ function importData(data){
         var tmp_array = [];
         var container = $("<div class='cont'>").appendTo("#data");
         var sub_container = $("<div class='sub_cont'>").appendTo(container);
-        var imgs_container = $("<div class='imgs_cont imgs_answers_gray'>").appendTo(container);    
+        var imgs_container = $("<ul id='sortable' class='imgs_answers_gray'>").appendTo(container);   
         
         $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
         var text = $("<div class='text_cont'>").appendTo(sub_container);
@@ -288,15 +305,15 @@ function importData(data){
         audio.append(source);
         $("<input type='hidden'/>").appendTo(audio_block);
         $("<div class='audio_desc'>" + data[i].text + "</div>").appendTo(text);
-        $("<input type='hidden' value='" + data[i].answer + "'/>").appendTo(imgs_container);
+        $("<input type='hidden' value='" + data[i].answer + "'/>").appendTo(container);
         if(data[i].cur_answer)
             for(var j in data[i].cur_answer){
-                var tmp_letter = $("<div class='img_block' style='text-align: center;'>" + data[i].cur_answer[j] + "</div>");
+                var tmp_letter = $("<li class='ui-state-default'>" + data[i].cur_answer[j] + "</li>");
                 tmp_array.push(tmp_letter);
             } 
         else
             for(j in data[i].answer){
-                tmp_letter = $("<div class='img_block' style='text-align: center;'>" + data[i].answer[j] + "</div>");
+                tmp_letter = $("<li class='ui-state-default'>" + data[i].answer[j] + "</li>");                
                 tmp_array.push(tmp_letter);
             }
         
@@ -309,7 +326,7 @@ function importData(data){
         for(j = 0; j<tmp_array.length;j++)
             tmp_array[j].appendTo(imgs_container);
         
-        imgs_container.sortable().bind('sortupdate', function(event, ui) {
+        imgs_container.sortable({revert: true, placeholder: "highlight"}).bind('sortupdate', function(event, ui) {
             checkResult(event);
         }); 
         if(data[i].cur_answer)
@@ -320,58 +337,43 @@ function importData(data){
 //example
 function showExample(){
     
-    var tmp_array = [];
-    
+    var tmp_array = [];    
     var container = $("<div class='cont'>").appendTo("#data");
     var sub_container = $("<div class='sub_cont'>").appendTo(container);
-    var imgs_container = $("<div class='imgs_cont imgs_answers_gray'>").appendTo(container);
+    var imgs_container = $("<ul id='sortable' class='imgs_answers_gray'>").appendTo(container);
 
     var number = $("<div class='number_cont'>1</div>").appendTo(sub_container);
     var text = $("<div class='text_cont'>").appendTo(sub_container);
     var audio_block = $("<div class='audio_block'>").appendTo(text);
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
-    var source = $("<source/>").attr("src", "objects/exemple.mp3");
+    var source = $("<source/>").attr("src", "objects/beep.mp3");
     var audio = $("<audio>").appendTo(audio_block);
     audio.append(source);
     $("<input type='hidden'/>").appendTo(audio_block);
     var audio_desc = $("<div class='audio_desc'>" + sankoreLang.short_desc + "</div>").appendTo(text);
     
-    $("<input type='hidden' value='" + sankoreLang.example + "'/>").appendTo(imgs_container);
+    $("<input type='hidden' value='" + sankoreLang.example + "'/>").appendTo(container);
     
     for(var j in sankoreLang.example){
-        var tmp_letter = $("<div class='img_block' style='text-align: center;'>" + sankoreLang.example[j] + "</div>");
+        var tmp_letter = $("<li class='ui-state-default'>" + sankoreLang.example[j] + "</li>");
         tmp_array.push(tmp_letter);
     } 
     
     tmp_array = shuffle(tmp_array);
     for(var i = 0; i<tmp_array.length;i++)
         tmp_array[i].appendTo(imgs_container);
-    imgs_container.sortable().bind('sortupdate', function(event, ui) {
+    imgs_container.sortable({revert: true, placeholder: "highlight"}).bind('sortupdate', function(event, ui) {
         checkResult(event);
     });
 }
-
-//check result
-//function checkResult(event)
-//{
-//    var str = "";
-//    var right_str = $(event.target).find("input").val();
-//    $(event.target).find(".img_block").each(function(){
-//        str += $(this).find("input").val() + "*";
-//    });
-//    if(str == right_str)
-//        $(event.target).css("background-color","#9f9");
-//}
 
 //add new container
 function addContainer(){
     var container = $("<div class='cont'>");
     var sub_container = $("<div class='sub_cont'>").appendTo(container);
-    var imgs_container = $("<div class='imgs_cont imgs_answers_gray'>").appendTo(container);
-    
-    var close = $("<div class='close_cont'>").appendTo(container);
-    var number = $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
+   
+    $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
     var text = $("<div class='text_cont'>").appendTo(sub_container);
     text.attr("ondragenter", "return false;")
     .attr("ondragleave", "$(this).removeClass('gray'); return false;")
@@ -384,10 +386,11 @@ function addContainer(){
     var audio = $("<audio>").appendTo(audio_block);
     audio.append(source);
     $("<input type='hidden'/>").appendTo(audio_block);
-    var audio_desc = $("<div class='audio_desc' contenteditable>" + sankoreLang.enter + "</div>").appendTo(text);
+    $("<div class='audio_desc' contenteditable>" + sankoreLang.enter + "</div>").appendTo(text);
     
-    $("<input type='hidden' value=''/>").appendTo(imgs_container);
-    $("<div class='audio_answer' contenteditable>" + sankoreLang.example + "</div>").appendTo(imgs_container);
+    var tmp_input = $("<input type='hidden' value=''/>").insertAfter(sub_container);
+    var close = $("<div class='close_cont'>").insertAfter(tmp_input);
+    $("<div class='audio_answer' contenteditable>" + sankoreLang.example + "</div>").insertAfter(close);
     container.insertBefore($(".add_block"));
 }
 
@@ -417,8 +420,8 @@ function shuffle( arr )
 function checkResult(event)
 {
     var str = "";
-    var right_str = $(event.target).find("input").val();
-    $(event.target).find(".img_block").each(function(){
+    var right_str = $(event.target).next().val();
+    $(event.target).find("li.ui-state-default").each(function(){
         str += $(this).text();
     });
     if(str == right_str)
@@ -534,7 +537,7 @@ function onDropAudio(obj, event) {
 //get text
 function getAnswer(obj){
     var answer = "";
-    obj.find(".img_block").each(function(){
+    obj.find("li.ui-state-default").each(function(){
         answer += $(this).text();
     });
     return answer;

@@ -7,8 +7,23 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help: "Aide",
+    help_content: "<p><h2>Syllabe</h2></p>"+
+"<p><h3>Séparer les syllabes d’un mot.</h3></p>"+
+
+"<p>Un mot est écrit et le but est de découper le mot en syllabes. Une fois que le découpage est correct, le mot se colore en vert.</p>"+
+"<p>Pour ajouter une séparation entre deux syllabes, déplacez le curseur et cliquez entre deux lettres, une séparation s’ajoute. </p>"+
+
+"<p>Le bouton “Recharger” réinitialise l’exercice.</p>"+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut tablette), </li>"+
+"<li>de déterminer le mot sur lequel travailler.</li></ul>"+
+
+"<p>Ecrivez simplement dans la zone de texte le mot en insérant entre les syllabes une étoile *.</p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
+
 };
 
 // if use the "view/edit" button or rely on the api instead

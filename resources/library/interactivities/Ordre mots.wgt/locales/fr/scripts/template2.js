@@ -35,8 +35,22 @@ var sankoreLang = {
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
-    help: "aide",
-    help_content: "Ceci est un exemple de contenu de l'aide ..."
+    help: "Aide",
+    help_content: "<p><h2>Ordonner des mots</h2></p>"+
+"<p><h3>Ordonner des mots pour reconstituer une phrase.</h3></p>"+
+
+"<p>Des étiquettes avec des mots sont dans le désordre. Le but est de les remettre en ordre pour avoir un énoncé compréhensible et correct. Lorsque l’énoncé est en ordre, l’interactivité se colore en vert. L’activité s’effectue par un glisser-déposer des étiquettes pour remettre les mots en ordre.</p>"+
+
+"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+
+"<p>Le bouton “Modifier” vous permet :</p>"+
+"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+"<li>de déterminer la phrase à reconstituer et les séparations dans l’énoncé.</li></ul>"+
+
+"<p>Pour insérer du texte dans la zone, cliquez sur la zone et saisissez la phrase souhaitée. </p>"+
+"<p>Pour ajouter des espaces dans la phrase, insérer une étoile * entre chaque mot. Votre texte sera séparé autant de fois qu’il y a d’étoiles.<b> NB : une (*) correspond à un espace. Ne pas en mettre ni au début ni à la fin de votre phrase.</b></p>"+
+
+"<p>Le bouton “Afficher” vous permet d’utiliser l’activité. </p>"
 };
 
 var word = "";

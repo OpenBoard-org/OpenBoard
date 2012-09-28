@@ -130,6 +130,8 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
         || args.contains("log");
 
 
+    setupTranslators(args);
+
     UBResources::resources();
 
     if (!undoStack)
@@ -138,8 +140,6 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
     UBPlatformUtils::init();
 
     UBSettings *settings = UBSettings::settings();
-
-    setupTranslators(args);
 
     connect(settings->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(toolBarPositionChanged(QVariant)));
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));
@@ -224,8 +224,7 @@ void UBApplication::setupTranslators(QStringList args)
         if(!setLanguage.isEmpty())
             forcedLanguage = setLanguage;
     }
-    
-    QStringList availablesTranslations = UBPlatformUtils::availableTranslations();
+
     QString language("");
 
     if(!forcedLanguage.isEmpty())
@@ -316,7 +315,11 @@ int UBApplication::exec(const QString& pFileToImport)
 
     UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
-    applicationController = new UBApplicationController(boardController->controlView(), boardController->displayView(), mainWindow, staticMemoryCleaner);
+    applicationController = new UBApplicationController(boardController->controlView(), 
+                                                        boardController->displayView(), 
+                                                        mainWindow, 
+                                                        staticMemoryCleaner,
+                                                        boardController->paletteManager()->rightPalette());
 
 
     connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),
@@ -362,15 +365,14 @@ int UBApplication::exec(const QString& pFileToImport)
     boardController->setupLayout();
 
     if (pFileToImport.length() > 0)
-    {
         UBApplication::applicationController->importFile(pFileToImport);
-    }
 
 #if defined(Q_WS_MAC)
     static AEEventHandlerUPP ub_proc_ae_handlerUPP = AEEventHandlerUPP(ub_appleEventProcessor);
     AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
 #endif
-    if (UBSettings::settings()->appStartMode->get() == "Desktop")
+
+    if (UBSettings::settings()->appStartMode->get().toInt())
         applicationController->showDesktop();
     else
         applicationController->showBoard();

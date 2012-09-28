@@ -238,7 +238,7 @@ QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVer
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int pageIndex)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
-
+    qDebug() << fileName;
     QFile file(fileName);
 
     if (file.exists())
@@ -380,7 +380,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     UBGraphicsStroke* annotationGroup = 0;
     UBGraphicsStrokesGroup* strokesGroup = 0;
-    UBDrawingController* dc = UBDrawingController::drawingController();
 
     while (!mXmlReader.atEnd())
     {
@@ -395,8 +394,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             {
                 if (!mScene)
                 {
-                    mScene = new UBGraphicsScene(mProxy);
-                    mScene->setURStackEnable(false);
+                    mScene = new UBGraphicsScene(mProxy, false);
                 }
 
                 // introduced in UB 4.2
@@ -514,10 +512,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 else
                     annotationGroup = new UBGraphicsStroke();
 
-               if(eDrawingMode_Vector == dc->drawingMode()){
-                    strokesGroup = new UBGraphicsStrokesGroup();
-                    graphicsItemFromSvg(strokesGroup);
-                }
+
+                strokesGroup = new UBGraphicsStrokesGroup();
+                graphicsItemFromSvg(strokesGroup);
 
                 QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
 
@@ -561,14 +558,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         polygonItem->setStroke(annotationGroup);
                     }
 
-                    if(eDrawingMode_Vector == dc->drawingMode()){
-                        if(strokesGroup){
+
+                    if(strokesGroup){
                             polygonItem->setTransform(strokesGroup->transform());
                             strokesGroup->addToGroup(polygonItem);
                             polygonItem->setStrokesGroup(strokesGroup);
-                        }
-                    }else{
-                        mScene->addItem(polygonItem);
                     }
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
@@ -588,14 +582,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         polygonItem->setStroke(annotationGroup);
                     }
 
-                    if(eDrawingMode_Vector == dc->drawingMode()){
-                        if(strokesGroup){
-                            polygonItem->setTransform(strokesGroup->transform());
-                            strokesGroup->addToGroup(polygonItem);
-                            polygonItem->setStrokesGroup(strokesGroup);
-                        }
-                    }else{
-                        mScene->addItem(polygonItem);
+
+                    if(strokesGroup){
+                        polygonItem->setTransform(strokesGroup->transform());
+                        strokesGroup->addToGroup(polygonItem);
+                        polygonItem->setStrokesGroup(strokesGroup);
                     }
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
@@ -950,18 +941,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 readGroupRoot();
             }
-//            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
-//                sTeacherGuideNode.clear();
-//                sTeacherGuideNode += "<teacherGuide version=\"" + mXmlReader.attributes().value("version").toString() + "\">";
-//                sTeacherGuideNode += "\n";
-//            }
-//            else if (mXmlReader.name() == "media" || mXmlReader.name() == "link" || mXmlReader.name() == "title" || mXmlReader.name() == "comment" || mXmlReader.name() == "action")
-//            {
-//                sTeacherGuideNode += "<" + mXmlReader.name().toString() + " ";
-//                foreach(QXmlStreamAttribute attribute, mXmlReader.attributes())
-//                    sTeacherGuideNode += attribute.name().toString() + "=\"" + attribute.value().toString() + "\" ";
-//                sTeacherGuideNode += " />\n";
-//            }
             else
             {
                 // NOOP
@@ -985,17 +964,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
             }
-//            else if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
-//                sTeacherGuideNode += "</teacherGuide>";
-//                qDebug() << sTeacherGuideNode;
-//                QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
-//                IDataStorage* storageClass = elements.value("teacherGuide");
-//                if(storageClass){
-//                     storageClass->load(sTeacherGuideNode);
-//                }
-//            }
-
-
         }
     }
 
@@ -1014,7 +982,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             delete annotationGroup;
     }
 
-    mScene->setURStackEnable(true);
+    mScene->enableUndoRedoStack();
     return mScene;
 }
 
@@ -1156,16 +1124,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         QDomElement groupRoot = groupDomDocument.createElement(tGroups);
         groupDomDocument.appendChild(groupRoot);
 
-
-        static int i = 0;
-        qDebug() << "persist call no is " << ++i;
-
         QBuffer buffer;
         buffer.open(QBuffer::WriteOnly);
         mXmlWriter.setDevice(&buffer);
-
-        //Unused variable
-        //QTime timer = QTime::currentTime();
 
         mXmlWriter.setAutoFormatting(true);
 
@@ -3129,7 +3090,7 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
 
 UBGraphicsCache* UBSvgSubsetAdaptor::UBSvgSubsetReader::cacheFromSvg()
 {
-    UBGraphicsCache* pCache = new UBGraphicsCache();
+    UBGraphicsCache* pCache = UBGraphicsCache::instance(mScene);
     pCache->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
     graphicsItemFromSvg(pCache);

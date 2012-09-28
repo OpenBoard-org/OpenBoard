@@ -94,7 +94,6 @@ void UBDocumentContainer::updatePage(int index)
 void UBDocumentContainer::deleteThumbPage(int index)
 {
     mDocumentThumbs.removeAt(index);
-    emit documentPageDeleted(index);
 }
 
 void UBDocumentContainer::updateThumbPage(int index)
@@ -106,7 +105,6 @@ void UBDocumentContainer::updateThumbPage(int index)
 void UBDocumentContainer::insertThumbPage(int index)
 {
     mDocumentThumbs.insert(index, UBThumbnailAdaptor::get(mCurrentDocument, index));
-    emit documentPageAdded(index);
 }
 
 void UBDocumentContainer::reloadThumbnails()

@@ -56,7 +56,7 @@ QString UBImportDocument::importFileFilter()
 }
 
 
-QString UBImportDocument::expandFileToDir(const QFile& pZipFile, const QString& pDir)
+bool UBImportDocument::extractFileToDir(const QFile& pZipFile, const QString& pDir, QString& documentRoot)
 {
 
     QDir rootDir(pDir);
@@ -65,63 +65,45 @@ QString UBImportDocument::expandFileToDir(const QFile& pZipFile, const QString& 
     if(!zip.open(QuaZip::mdUnzip))
     {
         qWarning() << "Import failed. Cause zip.open(): " << zip.getZipError();
-        return "";
+        return false;
     }
 
     zip.setFileNameCodec("UTF-8");
     QuaZipFileInfo info;
     QuaZipFile file(&zip);
 
-    // TODO UB 4.x  implement a mechanism that can replace an existing
-    // document based on the UID of the document.
-    bool createNewDocument = true;
-    QString documentRootFolder;
-
-    // first we search the metadata.rdf to check the document properties
-    for(bool more = zip.goToFirstFile(); more; more = zip.goToNextFile())
-    {
-        if(!zip.getCurrentFileInfo(&info))
-        {
-            qWarning() << "Import failed. Cause: getCurrentFileInfo(): " << zip.getZipError();
-            return "";
-        }
-
-        QFileInfo currentFileInfo(pDir + "/" + file.getActualFileName());
-    }
-
-    if (createNewDocument)
-        documentRootFolder = UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath();
-
-
     QFile out;
     char c;
+    documentRoot = UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath(pDir);
     for(bool more=zip.goToFirstFile(); more; more=zip.goToNextFile())
     {
         if(!zip.getCurrentFileInfo(&info))
         {
             //TOD UB 4.3 O display error to user or use crash reporter
             qWarning() << "Import failed. Cause: getCurrentFileInfo(): " << zip.getZipError();
-            return "";
+            return false;
         }
 
         if(!file.open(QIODevice::ReadOnly))
         {
             qWarning() << "Import failed. Cause: file.open(): " << zip.getZipError();
-            return "";
+            return false;
         }
 
         if(file.getZipError()!= UNZ_OK)
         {
             qWarning() << "Import failed. Cause: file.getFileName(): " << zip.getZipError();
-            return "";
+            return false;
         }
 
-        QString newFileName = documentRootFolder + "/" + file.getActualFileName();
+        QString newFileName = documentRoot + "/" + file.getActualFileName();
         QFileInfo newFileInfo(newFileName);
-        rootDir.mkpath(newFileInfo.absolutePath());
+        if (!rootDir.mkpath(newFileInfo.absolutePath()))
+            return false;
 
         out.setFileName(newFileName);
-        out.open(QIODevice::WriteOnly);
+        if (!out.open(QIODevice::WriteOnly))
+            return false;
 
         // Slow like hell (on GNU/Linux at least), but it is not my fault.
         // Not ZIP/UNZIP package's fault either.
@@ -131,7 +113,7 @@ QString UBImportDocument::expandFileToDir(const QFile& pZipFile, const QString& 
         {
             qWarning() << "Import failed. Cause: Unable to write file";
             out.close();
-            return "";
+            return false;
         }
 
         while(file.getChar(&c))
@@ -142,13 +124,13 @@ QString UBImportDocument::expandFileToDir(const QFile& pZipFile, const QString& 
         if(file.getZipError()!=UNZ_OK)
         {
             qWarning() << "Import failed. Cause: " << zip.getZipError();
-            return "";
+            return false;
         }
 
         if(!file.atEnd())
         {
             qWarning() << "Import failed. Cause: read all but not EOF";
-            return "";
+            return false;
         }
 
         file.close();
@@ -156,7 +138,7 @@ QString UBImportDocument::expandFileToDir(const QFile& pZipFile, const QString& 
         if(file.getZipError()!=UNZ_OK)
         {
             qWarning() << "Import failed. Cause: file.close(): " <<  file.getZipError();
-            return "";
+            return false;
         }
 
     }
@@ -166,11 +148,10 @@ QString UBImportDocument::expandFileToDir(const QFile& pZipFile, const QString& 
     if(zip.getZipError()!=UNZ_OK)
     {
       qWarning() << "Import failed. Cause: zip.close(): " << zip.getZipError();
-      return "";
+      return false;
     }
 
-
-    return documentRootFolder;
+    return true;
 }
 
 UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString& pGroup)
@@ -183,17 +164,20 @@ UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString&
     // first unzip the file to the correct place
     QString path = UBSettings::userDocumentDirectory();
 
-    QString documentRootFolder = expandFileToDir(pFile, path);
-
-	if(!documentRootFolder.length()){
+    QString documentRootFolder;
+    
+	if(!extractFileToDir(pFile, path, documentRootFolder)){
 		UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
-		return 0;
+		return NULL;
 	}
-	else{
-		UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder, pGroup);
-		UBApplication::showMessage(tr("Import successful."));
-		return newDocument;
-	}
+
+    bool addTitlePage = false;
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() && !QFile(documentRootFolder+"/page000.svg").exists())
+        addTitlePage=true;
+
+    UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder, pGroup, "", false, addTitlePage);
+	UBApplication::showMessage(tr("Import successful."));
+	return newDocument;
 }
 
 bool UBImportDocument::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
@@ -203,9 +187,18 @@ bool UBImportDocument::addFileToDocument(UBDocumentProxy* pDocument, const QFile
 
     QString path = UBFileSystemUtils::createTempDir();
 
-    QString documentRootFolder = expandFileToDir(pFile, path);
-
-    UBPersistenceManager::persistenceManager()->addDirectoryContentToDocument(documentRootFolder, pDocument);
+    QString documentRootFolder;
+    if (!extractFileToDir(pFile, path, documentRootFolder))
+    {
+        UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
+        return false;
+    }
+        
+    if (!UBPersistenceManager::persistenceManager()->addDirectoryContentToDocument(documentRootFolder, pDocument))
+    {
+        UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
+        return false;
+    }
 
     UBFileSystemUtils::deleteDir(path);
 

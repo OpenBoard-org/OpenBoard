@@ -104,9 +104,6 @@ int UBSettings::objectInControlViewMargin = 100;
 
 QString UBSettings::appPingMessage = "__uniboard_ping";
 
-QString UBSettings::defaultDocumentGroupName;
-QString UBSettings::documentTrashGroupName;
-
 UBSettings* UBSettings::settings()
 {
     if (!sSingleton)
@@ -334,9 +331,6 @@ void UBSettings::init()
     lastWidgetPath = new UBSetting(this, "Library", "LastWidgetPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
     lastVideoPath = new UBSetting(this, "Library", "LastVideoPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation)));
 
-    defaultDocumentGroupName = tr("Untitled Documents");
-    documentTrashGroupName = tr("Trash");
-
     appOnlineUserName = new UBSetting(this, "App", "OnlineUserName", "");
 
     boardShowToolsPalette = new UBSetting(this, "Board", "ShowToolsPalette", "false");
@@ -398,9 +392,6 @@ void UBSettings::init()
     teacherGuideLessonPagesActivated = new UBSetting(this,"DockPalette","TeacherGuideActivateLessonPages",true);
 
     libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
-
-    actionGroupText = tr("Group");
-    actionUngroupText = tr("Ungroup");
 }
 
 

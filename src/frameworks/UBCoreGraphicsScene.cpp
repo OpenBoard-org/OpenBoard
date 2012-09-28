@@ -32,23 +32,17 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
 {
     //we must delete removed items that are no more in any scene
     //at groups deleting some items can be added to mItemsToDelete, so we need to use iterators.
-    if (mItemsToDelete.count())
+    foreach(QGraphicsItem* item, mItemsToDelete)
     {
-        QSet<QGraphicsItem *>::iterator it = mItemsToDelete.begin();
-        QGraphicsItem* item = *it;
-        do 
+        if (item)
         {
-            item = *it;
-            if (item && (item->scene() == NULL || item->scene() == this))
+            if (item->scene() == NULL || item->scene() == this)
             {
-                mItemsToDelete.remove(*it);
                 delete item;
             }
-
-            it = mItemsToDelete.begin();
-
-        }while(mItemsToDelete.count());
+        }
     }
+    mItemsToDelete.clear();
 }
 
 void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
@@ -84,12 +78,11 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
     if(mItemsToDelete.contains(item))
     {
         UBGraphicsItem *item_casted = dynamic_cast<UBGraphicsItem *>(item);
-        if (0 != item_casted)
+        if (item_casted != NULL)
             item_casted->clearSource();
 
         mItemsToDelete.remove(item);
         delete item;
-        item = 0;
         return true;
     }
     else

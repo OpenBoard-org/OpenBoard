@@ -64,12 +64,6 @@ body{
     min-height: 60px;
 }
 
-.imgs_cont{
-    width: 100%;
-    min-height: 62px;
-    margin: 0;
-}
-
 .imgs_answers_gray{
 
 }
@@ -115,19 +109,41 @@ body{
     left: 5px;
 }
 
-.img_block{
-    width: 50px;
+#sortable{
+/*    width: 100%;
+    min-height: 62px;
+    margin: 0;*/
+    list-style-type: none;
+    margin: 10px 0 10px 20px;
+    padding: 0;
+}
+
+#sortable li{
+/*    width: 50px;
     height: 50px;
     margin: 5px 10px;
     cursor: pointer;
+    float: left;
     display: inline-block;
     position: relative;
     background-color: white;
     border: 1px solid #ccc;
-    -moz-box-shadow: #ccc -1px 0 4px;
     -webkit-box-shadow: #ccc -1px 0 4px;
     box-shadow: #ccc -1px 0 4px;
+    font-size: 230%;*/
+    margin: 5px 10px;
+    display: inline-table;
+    width: 50px;
+    height: 50px;
+    background-color: white;
     font-size: 230%;
+    -webkit-box-shadow: #ccc -1px 0 4px;
+    box-shadow: #ccc -1px 0 4px;
+    text-align: center;
+}
+
+.highlight { 
+    background-color: #999 !important;
 }
 
 .add_block{
