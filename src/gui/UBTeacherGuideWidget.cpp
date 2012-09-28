@@ -551,9 +551,9 @@ void UBTeacherGuidePresentationWidget::showData( QVector<tUBGEElementNode*> data
         else if (element->name == "comment")
             mpComment->showText(element->attributes.value("value"));
         else if (element->name == "action") {
-            QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem( mpRootWidgetItem);
+            QTreeWidgetItem* newWidgetItem = new QTreeWidgetItem(mpRootWidgetItem);
             newWidgetItem->setText(0, element->attributes.value("task"));
-            newWidgetItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+            newWidgetItem->setFlags(Qt::ItemIsEnabled /*| Qt::ItemIsSelectable*/);
             QString colorString = element->attributes.value("owner").toInt() == 0 ? "blue" : "green";
             UBTGAdaptableText* textWidget = new UBTGAdaptableText(newWidgetItem, 0);
             textWidget->bottomMargin(14);
