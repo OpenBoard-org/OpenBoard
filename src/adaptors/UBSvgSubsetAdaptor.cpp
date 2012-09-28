@@ -1005,7 +1005,10 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
     mXmlReader.readNext();
     while (!mXmlReader.atEnd()) 
     {
-        if (mXmlReader.isStartElement())
+        if (mXmlReader.isEndElement()) {
+            mXmlReader.readNext();
+            break;
+        } else if (mXmlReader.isStartElement())
         {
             if (mXmlReader.name() == tGroup) 
             {
@@ -1030,7 +1033,7 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
                 }
                 else // item
                 {
-                    group->addToGroup(curItem);
+                    groupContainer.append(curItem);
                 }
             }else {
                 mXmlReader.skipCurrentElement();
@@ -1040,8 +1043,7 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
         }
     }
 
-
-    foreach (QString key, strokesGroupsContainer.keys())
+    foreach (QString key, strokesGroupsContainer.keys().toSet())
     {
         UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
         UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
@@ -1058,13 +1060,17 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
         }
         if (currentStroke->polygons().empty())
             delete currentStroke;
+
         if (pStrokesGroup->childItems().count())
             mScene->addItem(pStrokesGroup);
         else
             delete pStrokesGroup;
 
         if (pStrokesGroup)
-            group->addToGroup(pStrokesGroup);
+        {
+            QGraphicsItem *strokeGroup = qgraphicsitem_cast<QGraphicsItem *>(pStrokesGroup);
+            groupContainer.append(strokeGroup);
+        }
     }
 
     foreach(QGraphicsItem* item, groupContainer)
@@ -1074,12 +1080,11 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
     {
         mScene->addItem(group);
 
-        if (!groupContainer.count())
+        if (1 == group->childItems().count())
         {
             group->destroy(false);
         }
     }
-
     return group;
 }
 
