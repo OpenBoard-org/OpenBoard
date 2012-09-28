@@ -216,14 +216,17 @@ QString UBApplication::checkLanguageAvailabilityForSankore(QString &language)
 
 void UBApplication::setupTranslators(QStringList args)
 {
-    QString forcedLanguage;
+    QString forcedLanguage("");
     if(args.contains("-lang"))
         forcedLanguage=args.at(args.indexOf("-lang") + 1);
-    else{
-        QString setLanguage = UBSettings::settings()->appPreferredLanguage->get().toString();
-        if(!setLanguage.isEmpty())
-            forcedLanguage = setLanguage;
-    }
+// TODO claudio: this has been commented because some of the translation seem to be loaded at this time
+//               especially tools name. This is a workaround and we have to be able to load settings without
+//               impacting the translations
+//    else{
+//        QString setLanguage = UBSettings::settings()->appPreferredLanguage->get().toString();
+//        if(!setLanguage.isEmpty())
+//            forcedLanguage = setLanguage;
+//    }
 
     QString language("");
 
@@ -242,7 +245,6 @@ void UBApplication::setupTranslators(QStringList args)
     else{
         mApplicationTranslator = new QTranslator(this);
         mQtGuiTranslator = new QTranslator(this);
-
         mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("sankore_"),language));
         installTranslator(mApplicationTranslator);
 
@@ -256,7 +258,6 @@ void UBApplication::setupTranslators(QStringList args)
         }
 
         if(!qtGuiTranslationPath.isEmpty()){
-            qDebug() << "qtGuiTranslationPath " << qtGuiTranslationPath;
             mQtGuiTranslator->load(qtGuiTranslationPath);
             installTranslator(mQtGuiTranslator);
         }
