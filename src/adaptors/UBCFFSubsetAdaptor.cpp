@@ -379,9 +379,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     QUuid itemGroupUuid(element.attribute(aId).left(QUuid().toString().length()-1));
     if (!itemUuid.isNull() && (itemGroupUuid!=itemUuid)) // reimported from UBZ
     {
-        UBGraphicsPolygonItem *graphicsPolygon = new UBGraphicsPolygonItem(polygon);
+        UBGraphicsPolygonItem *graphicsPolygon = mCurrentScene->polygonToPolygonItem(polygon);
 
         graphicsPolygon->setBrush(brush);
+        //graphicsPolygon->setPen(pen);
 
         QTransform transform;
         QString textTransform = element.attribute(aTransform);
@@ -1131,7 +1132,7 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
             {
                 if (uuid.size() > QUuid().toString().length()) // create stroke group
                 {              
-                    currentStrokeIdentifier = uuid.left(QUuid().toString().length()-1);
+                    currentStrokeIdentifier = uuid.left(QUuid().toString().length());
                     UBGraphicsPolygonItem *strokeByUuid = qgraphicsitem_cast<UBGraphicsPolygonItem *>(mCurrentScene->itemForUuid(QUuid(uuid.right(QUuid().toString().length()))));
 
                     if (strokeByUuid)

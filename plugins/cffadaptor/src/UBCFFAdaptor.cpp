@@ -1273,6 +1273,13 @@ bool UBCFFAdaptor::UBToCFFConverter::setCFFAttribute(const QString &attributeNam
         {
             setGeometryFromUBZ(ubzElement, svgElement);
         }
+        else
+            if (attributeName.contains(aUBZUuid))
+            {
+
+                QString id = "{" +ubzElement.attribute(aUBZParent)+"}" + "{"+ubzElement.attribute(aUBZUuid)+"}";
+                svgElement.setAttribute(aID, id);
+            }
         else 
             if (attributeName.contains(aUBZHref)||attributeName.contains(aSrc))
             {
@@ -1822,7 +1829,10 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZPolygon(const QDomElement &element,
 
         if (0 < iwbElementPart.attributes().count())
         {   
-            QString id = QUuid::createUuid().toString();
+            QString id = svgElementPart.attribute(aUBZUuid);
+            if (id.isEmpty())
+                id = QUuid::createUuid().toString();
+
             svgElementPart.setAttribute(aID, id);
             iwbElementPart.setAttribute(aRef, id);     
 

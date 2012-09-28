@@ -68,6 +68,7 @@ const QString aBackground = "background";
 const QString aCrossedBackground = "crossed-background";
 const QString aUBZType = "type";
 const QString aUBZUuid = "uuid";
+const QString aUBZParent = "parent";
 const QString aFill = "fill"; // IWB attribute contans color to fill
 
 const QString aID = "id";   // ID of any svg element can be placed in to iwb section
@@ -335,8 +336,10 @@ stroke-lineshape-end \
 const QString ubzElementAttributesToConvert(" \
 xlink:href, \
 src, \
-transform \
-");
+transform, \
+uuid \
+"
+);
 
 // additional attributes. Have references in SVG section.
 const QString svgElementAttributes(" \
