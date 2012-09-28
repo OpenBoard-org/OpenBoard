@@ -74,6 +74,7 @@ private:
         QDomDocument mDOMdoc;
         QDomNode mCurrentDOMElement;
         QHash<QString, UBGraphicsItem*> persistedItems;
+        QMap<QString, QString> mRefToUuidMap;
         QDir mTmpFlashDir;
 
         void addItemToGSection(QGraphicsItem *item);

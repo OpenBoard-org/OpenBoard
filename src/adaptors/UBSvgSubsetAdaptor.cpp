@@ -1015,7 +1015,7 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
                 qDebug() << "came across the group id is" << mXmlReader.attributes().value(aId);
                 UBGraphicsGroupContainerItem *curGroup = readGroup();
                 if (curGroup) 
-                    group->addToGroup(curGroup);
+                    groupContainer.append(curGroup);
             } 
             else if (mXmlReader.name() == tElement)
             {

@@ -1277,7 +1277,13 @@ bool UBCFFAdaptor::UBToCFFConverter::setCFFAttribute(const QString &attributeNam
             if (attributeName.contains(aUBZUuid))
             {
 
-                QString id = "{" +ubzElement.attribute(aUBZParent)+"}" + "{"+ubzElement.attribute(aUBZUuid)+"}";
+                QString parentId = ubzElement.attribute(aUBZParent);
+                QString id;
+                if (!parentId.isEmpty())
+                    id = "{" + parentId + "}" + "{" + ubzElement.attribute(aUBZUuid)+"}";
+                else
+                    id = "{" + ubzElement.attribute(aUBZUuid)+"}";
+
                 svgElement.setAttribute(aID, id);
             }
         else 
