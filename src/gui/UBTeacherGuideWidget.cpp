@@ -679,7 +679,9 @@ UBTeacherGuidePageZeroWidget::UBTeacherGuidePageZeroWidget(QWidget* parent, cons
     mpLayout->addWidget(mpPageNumberLabel);
 
     mpScrollArea = new QScrollArea();
+    mpScrollArea->setFocusPolicy(Qt::NoFocus);
     mpContainerWidget = new QWidget();
+    mpContainerWidget->setFocusPolicy(Qt::NoFocus);
     mpContainerWidgetLayout = new QVBoxLayout();
 
     mpLayout->addWidget(mpScrollArea);
