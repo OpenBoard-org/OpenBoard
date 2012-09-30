@@ -62,13 +62,15 @@ UBGraphicsAristo::UBGraphicsAristo()
     mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
     mMarkerSvgItem = new QGraphicsSvgItem(":/images/angleMarker.svg", this);
-    mMarkerSvgItem->setVisible(false);
     mMarkerSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
     mMarkerSvgItem->setVisible(true);
 
     create(*this);
-    setBoundingRect(sDefaultRect);
-    setOrientation(sDefaultOrientation);
+
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+
+    setOrientation(Top);
 }
 
 UBGraphicsAristo::~UBGraphicsAristo()
@@ -78,43 +80,55 @@ UBGraphicsAristo::~UBGraphicsAristo()
 
 /*
  * setOrientation() modify the tool orientation.
- * makeGeometryChange() is called so points are recomputed, control items are positionnated and shape is determined according to this modification.
+ * Apexes coordinates are alors recomputed.
  */
 void UBGraphicsAristo::setOrientation(Orientation orientation)
 {
+    /* substracting difference to zero [2pi] twice, to obtain the desired angle */
+    mMarkerAngle -= 2 * (mMarkerAngle - (int)(mMarkerAngle/360)*360) - 360;
+
+    bool wasUndefined = mOrientation == Undefined;
     mOrientation = orientation;
-    makeGeometryChange();
+    
+    if (wasUndefined)
+        calculatePoints(sDefaultRect);
+    else
+        calculatePoints(boundingRect());
 }
 
 /* calculatePoints() is used to calculate polygon's apexes coordinates.
  * This function handles orientation changes too.
+ * Items are repositionated and path is redeterminates.
  */
-void UBGraphicsAristo::calculatePoints()
+void UBGraphicsAristo::calculatePoints(QRectF bounds)
 {
     switch (mOrientation) {
     case Bottom:
-        C.setX(boundingRect().center().x());
-        C.setY(boundingRect().bottom());
+        C.setX(bounds.center().x());
+        C.setY(bounds.bottom());
 
-        A.setX(boundingRect().left());
-        A.setY(boundingRect().bottom() - boundingRect().width() / 2);
+        A.setX(bounds.left());
+        A.setY(bounds.bottom() - bounds.width() / 2);
 
-        B.setX(boundingRect().right());
-        B.setY(boundingRect().bottom() - boundingRect().width() / 2);
+        B.setX(bounds.right());
+        B.setY(bounds.bottom() - bounds.width() / 2);
         break;
     case Top:
-        C.setX(boundingRect().center().x());
-        C.setY(boundingRect().top());
+        C.setX(bounds.center().x());
+        C.setY(bounds.top());
 
-        A.setX(boundingRect().left());
-        A.setY(boundingRect().top() + boundingRect().width() / 2);
+        A.setX(bounds.left());
+        A.setY(bounds.top() + bounds.width() / 2);
 
-        B.setX(boundingRect().right());
-        B.setY(boundingRect().top() + boundingRect().width() / 2);
+        B.setX(bounds.right());
+        B.setY(bounds.top() + bounds.width() / 2);
         break;
     default:
         break;
     }
+
+    setItemsPos();
+    setPath(determinePath());
 }
 
 /*
@@ -142,39 +156,49 @@ QPainterPath UBGraphicsAristo::determinePath()
 
     QPolygonF polygon;
     polygon << A << B << C;
-    path.addPolygon(polygon);
 
-    path.addPath(mResizeSvgItem->shape().translated(mResizeSvgItem->pos()));
-    path.addPath(mMarkerSvgItem->shape().translated(mMarkerSvgItem->pos()));
+    qreal rotationAngle = mOrientation == Bottom ? mMarkerAngle : mMarkerAngle - 360 * (int)(mMarkerAngle / 360);
+    QTransform t;
+    t.rotate(rotationAngle);
+    bool markerIsInPolygon = true;
+    if ((mOrientation == Bottom && mMarkerAngle < 90) || (mOrientation == Top && mMarkerAngle < 270))
+        markerIsInPolygon = polygon.containsPoint(t.map(markerButtonRect().topLeft()) + rotationCenter(), Qt::OddEvenFill);
+    else
+        markerIsInPolygon = polygon.containsPoint(t.map(markerButtonRect().bottomLeft()) + rotationCenter(), Qt::OddEvenFill);
+
+    path.moveTo(A);
+
+    QRectF mappedRect = t.mapRect(markerButtonRect());
+    path.lineTo(QPointF(mappedRect.translated(rotationCenter()).left(), A.y()));
+    if (!markerIsInPolygon) {
+        if (mOrientation == Top) {
+            path.lineTo(QPointF(mappedRect.translated(rotationCenter()).left(), mappedRect.translated(rotationCenter()).bottom()));
+            path.lineTo(QPointF(mappedRect.translated(rotationCenter()).right(), mappedRect.translated(rotationCenter()).bottom()));
+        }
+        else if (mOrientation == Bottom) {
+            path.lineTo(QPointF(mappedRect.translated(rotationCenter()).left(), mappedRect.translated(rotationCenter()).top()));
+            path.lineTo(QPointF(mappedRect.translated(rotationCenter()).right(), mappedRect.translated(rotationCenter()).top()));
+        }
+    }
+    path.lineTo(QPointF(mappedRect.translated(rotationCenter()).right(), A.y()));
+
+    path.lineTo(QPointF(resizeButtonRect().translated(rotationCenter()).left(), A.y()));
+    if (mOrientation == Top) {
+        path.lineTo(QPointF(resizeButtonRect().translated(rotationCenter()).left(), resizeButtonRect().translated(rotationCenter()).bottom()));
+        path.lineTo(QPointF(resizeButtonRect().translated(rotationCenter()).right(), resizeButtonRect().translated(rotationCenter()).bottom()));
+    }
+    else if (mOrientation == Bottom) {
+        path.lineTo(QPointF(resizeButtonRect().translated(rotationCenter()).left(), resizeButtonRect().translated(rotationCenter()).top()));
+        path.lineTo(QPointF(resizeButtonRect().translated(rotationCenter()).right(), resizeButtonRect().translated(rotationCenter()).top()));
+    }
+    path.lineTo(QPointF(resizeButtonRect().translated(rotationCenter()).right(), A.y()));
+
+    path.lineTo(B);
+    path.lineTo(C);
+    path.lineTo(A);
 
     return path;
 }
-
-/*
- * setBoundingRect() is a helper to set the given rectangle as the new shape to limit apexes coordinates.
- * This is useful when instanciating or resizing the object.
- * makeGeometryChange() is called so points are recomputed, control items are positionnated and shape is determined according to this modification. 
- * Setting bounds' width less than 300 is not allowed.
- */
-void UBGraphicsAristo::setBoundingRect(QRectF boundingRect)
-{
-    if (boundingRect.width() < 300)
-        return;
-
-    QPainterPath path;
-    path.addRect(boundingRect);
-    setPath(path);
-    if (mOrientation != Undefined)
-        makeGeometryChange();
-}
-
-void UBGraphicsAristo::makeGeometryChange()
-{
-    calculatePoints();
-    setItemsPos();
-    setPath(determinePath());
-}
-
 
 UBItem* UBGraphicsAristo::deepCopy(void) const
 {
@@ -191,7 +215,6 @@ void UBGraphicsAristo::copyItemParameters(UBItem *copy) const
         /* TODO: copy all members */
         cp->setPos(this->pos());
         cp->setTransform(this->transform());
-        cp->setBoundingRect(boundingRect());
         cp->setOrientation(mOrientation);
         cp->mRotatedAngle = mRotatedAngle;
         cp->mMarkerAngle = mMarkerAngle;
@@ -501,7 +524,8 @@ QRectF UBGraphicsAristo::hFlipRect() const
 
 QRectF UBGraphicsAristo::markerButtonRect() const
 {
-    return QRectF (radius()/2 - mMarkerSvgItem->boundingRect().width(), - mMarkerSvgItem->boundingRect().height()/2, mMarkerSvgItem->boundingRect().width(), mMarkerSvgItem->boundingRect().height());
+    qreal y = - mMarkerSvgItem->boundingRect().height()/2;
+    return QRectF (radius()/2 - mMarkerSvgItem->boundingRect().width(), y, mMarkerSvgItem->boundingRect().width(), mMarkerSvgItem->boundingRect().height());
 }
 
 QRectF  UBGraphicsAristo::resizeButtonRect() const
@@ -580,7 +604,7 @@ void UBGraphicsAristo::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         }
         else if (mResizing) {
             QPointF delta = event->pos() - event->lastPos();
-            setBoundingRect(QRectF(boundingRect().topLeft(), QSizeF(boundingRect().width() + delta.x(), boundingRect().height() + delta.x())));
+            calculatePoints(QRectF(boundingRect().topLeft(), QSizeF(boundingRect().width() + delta.x(), boundingRect().height() + delta.x())));
         }
         else if(mMarking) {
             qreal angle = currentLine.angleTo(lastLine);
@@ -611,6 +635,8 @@ void UBGraphicsAristo::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if (mResizing || mRotating || mMarking)
     {
+        if (mMarking)
+            setPath(determinePath());
         mResizing = false;
         mRotating = false;
         mMarking = false;
@@ -623,9 +649,7 @@ void UBGraphicsAristo::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             hide();
             emit hidden();
             break;
-        case HorizontalFlip:
-            /* substracting difference to zero [2pi] twice, to obtain the desired angle */
-            mMarkerAngle -= 2 * (mMarkerAngle - (int)(mMarkerAngle/360)*360) - 360;
+        case HorizontalFlip:            
             /* setting new orientation */
             switch(mOrientation) {
             case Bottom:
