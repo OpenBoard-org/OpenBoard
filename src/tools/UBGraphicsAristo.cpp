@@ -31,7 +31,7 @@
 #include "core/memcheck.h"
 
 const QRectF UBGraphicsAristo::sDefaultRect =  QRectF(0, 0, 800, 500);
-const UBGraphicsAristo::Orientation UBGraphicsAristo::sDefaultOrientation = UBGraphicsAristo::Bottom;
+const UBGraphicsAristo::Orientation UBGraphicsAristo::sDefaultOrientation = UBGraphicsAristo::Top;
 
 UBGraphicsAristo::UBGraphicsAristo()
     : UBAbstractDrawRuler()
@@ -70,7 +70,7 @@ UBGraphicsAristo::UBGraphicsAristo()
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
     setFlag(QGraphicsItem::ItemIsSelectable, false);
 
-    setOrientation(Top);
+    setOrientation(sDefaultOrientation);
 }
 
 UBGraphicsAristo::~UBGraphicsAristo()
