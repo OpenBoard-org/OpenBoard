@@ -249,6 +249,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
     painter.end();
 
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+   
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    svgItem->setUuid(QUuid(uuid));
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -299,6 +304,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgEllipse(const QDomElement &e
     painter.end();
 
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    svgItem->setUuid(QUuid(uuid));
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -379,7 +389,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     QUuid itemGroupUuid(element.attribute(aId).left(QUuid().toString().length()-1));
     if (!itemUuid.isNull() && (itemGroupUuid!=itemUuid)) // reimported from UBZ
     {
-        UBGraphicsPolygonItem *graphicsPolygon = new UBGraphicsPolygonItem(polygon);
+        UBGraphicsPolygonItem *graphicsPolygon = mCurrentScene->polygonToPolygonItem(polygon);
 
         graphicsPolygon->setBrush(brush);
 
@@ -393,6 +403,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         mCurrentScene->addItem(graphicsPolygon);
 
         graphicsPolygon->setUuid(itemUuid);
+        mRefToUuidMap.insert(element.attribute(aId), itemUuid);
 
     }
     else // single CFF
@@ -413,6 +424,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
         QTransform transform;
         QString textTransform = element.attribute(aTransform);
+        
+        QUuid uuid = QUuid::createUuid().toString();
+        mRefToUuidMap.insert(element.attribute(aId), uuid);
+        svgItem->setUuid(uuid);
 
         svgItem->resetTransform();
         if (!textTransform.isNull()) {
@@ -506,6 +521,9 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
         }
         mCurrentScene->addItem(graphicsPolygon);
 
+        graphicsPolygon->setUuid(itemUuid);
+        mRefToUuidMap.insert(element.attribute(aId), itemUuid);
+
     }
     else // simple CFF
     {
@@ -523,6 +541,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
 
         //add resulting svg file to scene
         UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+        
+        QString uuid = QUuid::createUuid().toString();
+        mRefToUuidMap.insert(element.attribute(aId), uuid);
+        svgItem->setUuid(QUuid(uuid));
+
         QTransform transform;
         QString textTransform = element.attribute(aTransform);
 
@@ -675,6 +698,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
     //add resulting svg file to scene
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
 
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    svgItem->setUuid(QUuid(uuid));
+
     svgItem->resetTransform();
     repositionSvgItem(svgItem, width, height, x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, svgItem);
@@ -788,6 +815,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     UBGraphicsTextItem *svgItem = mCurrentScene->addTextHtml(doc.toHtml());
     svgItem->resize(width, height);
 
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    svgItem->setUuid(QUuid(uuid));
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -837,6 +868,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
     }
 
    UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix, NULL);
+
+   QString uuid = QUuid::createUuid().toString();
+   mRefToUuidMap.insert(element.attribute(aId), uuid);
+   pixItem->setUuid(QUuid(uuid));
+
    QTransform transform;
    QString textTransform = element.attribute(aTransform);
 
@@ -884,6 +920,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
     UBGraphicsWidgetItem *flashItem = mCurrentScene->addW3CWidget(QUrl::fromLocalFile(flashUrl));
     flashItem->setSourceUrl(urlPath);
 
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    flashItem->setUuid(QUuid(uuid));
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -921,14 +961,15 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
         concreteUrl = QUrl::fromLocalFile(audioPath);
     }
 
-    QUuid uuid = QUuid::createUuid();
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
 
     QString destFile;
     bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(
             mCurrentScene->document(), 
             concreteUrl.toLocalFile(), 
             UBPersistenceManager::audioDirectory,
-            uuid,
+            QUuid(uuid),
             destFile);
     if (!b)
     {
@@ -937,6 +978,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
     concreteUrl = QUrl::fromLocalFile(destFile);
     
     UBGraphicsMediaItem *audioItem = mCurrentScene->addAudio(concreteUrl, false);
+
     QTransform transform;
     QString textTransform = parentOfAudio.attribute(aTransform);
 
@@ -974,15 +1016,15 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
         concreteUrl = QUrl::fromLocalFile(videoPath);
     }
 
-    QUuid uuid = QUuid::createUuid();
-
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
 
     QString destFile;
     bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(
             mCurrentScene->document(), 
             concreteUrl.toLocalFile(), 
             UBPersistenceManager::videoDirectory,
-            uuid,
+            QUuid(uuid),
             destFile);
     if (!b)
     {
@@ -991,6 +1033,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
     concreteUrl = QUrl::fromLocalFile(destFile);
 
     UBGraphicsMediaItem *videoItem = mCurrentScene->addVideo(concreteUrl, false);
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -1126,13 +1169,15 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
             group->addToGroup(parseIwbGroup(currentStrokeElement));
         else
         {
-            QString uuid = currentStrokeElement.attribute(aRef);
+            
+            QString ref = currentStrokeElement.attribute(aRef);
+            QString uuid = mRefToUuidMap[ref];
             if (!uuid.isEmpty())
             {
-                if (uuid.size() > QUuid().toString().length()) // create stroke group
+                if (ref.size() > QUuid().toString().length()) // create stroke group
                 {              
-                    currentStrokeIdentifier = uuid.left(QUuid().toString().length()-1);
-                    UBGraphicsPolygonItem *strokeByUuid = qgraphicsitem_cast<UBGraphicsPolygonItem *>(mCurrentScene->itemForUuid(QUuid(uuid.right(QUuid().toString().length()))));
+                    currentStrokeIdentifier = ref.left(QUuid().toString().length()-1);
+                    UBGraphicsPolygonItem *strokeByUuid = qgraphicsitem_cast<UBGraphicsPolygonItem *>(mCurrentScene->itemForUuid(QUuid(ref.right(QUuid().toString().length()))));
 
                     if (strokeByUuid)
                         strokesGroupsContainer.insert(currentStrokeIdentifier, strokeByUuid);
@@ -1146,7 +1191,7 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
 
 
 
-    foreach (QString key, strokesGroupsContainer.keys())
+    foreach (QString key, strokesGroupsContainer.keys().toSet())
     {
         UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
         UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
@@ -1163,13 +1208,17 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
         }
         if (currentStroke->polygons().empty())
             delete currentStroke;
+
         if (pStrokesGroup->childItems().count())
             mCurrentScene->addItem(pStrokesGroup);
         else
             delete pStrokesGroup;
 
         if (pStrokesGroup)
-            group->addToGroup(pStrokesGroup);
+        {
+            QGraphicsItem *strokeGroup = qgraphicsitem_cast<QGraphicsItem *>(pStrokesGroup);
+            groupContainer.append(strokeGroup);
+        }
     }
 
     foreach(QGraphicsItem* item, groupContainer)
@@ -1179,7 +1228,7 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
     {
         mCurrentScene->addItem(group);
 
-        if (!groupContainer.count())
+        if (1 == group->childItems().count())
         {
             group->destroy(false);
         }

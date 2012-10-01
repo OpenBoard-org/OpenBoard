@@ -999,10 +999,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translation>유니보드 보이기</translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation>화면 일부 캡처</translation>
     </message>
@@ -1021,6 +1017,10 @@
     <message>
         <source>Show Desktop on Secondary Screen</source>
         <translation>보조 화면에 바탕 화면 보이기</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

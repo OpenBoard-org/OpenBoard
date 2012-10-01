@@ -1017,12 +1017,12 @@
         <translation>Označiť časť obrazovky</translation>
     </message>
     <message>
-        <source>Show Uniboard</source>
-        <translation>Zobraziť Uniboard</translation>
-    </message>
-    <message>
         <source>Show Board on Secondary Screen</source>
         <translation>Zobraziť tabuľu na druhej obrazovke</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

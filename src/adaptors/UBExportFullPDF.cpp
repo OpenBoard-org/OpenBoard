@@ -169,6 +169,7 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
             MergeDescription mergeInfo;
 
             int existingPageCount = pDocumentProxy->pageCount();
+
             for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++)
             {
                 UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
@@ -180,18 +181,42 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                 {
                     QString pdfName = UBPersistenceManager::objectDirectory + "/" + pdfItem->fileUuid().toString() + ".pdf";
                     QString backgroundPath = pDocumentProxy->persistencePath() + "/" + pdfName;
+                    QRectF annotationsRect = scene->itemsBoundingRect();
 
-                    qDebug() << "scene->itemsBoundingRect()" << scene->itemsBoundingRect();
-                    qDebug() << "pdfItem->boundingRect()" << pdfItem->boundingRect();
-                    qDebug() << "pdfItem->sceneBoundingRect()" << pdfItem->sceneBoundingRect();
+                    // Original datas
+                    double xAnnotation = qRound(annotationsRect.x());
+                    double yAnnotation = qRound(annotationsRect.y());
+                    double xPdf = qRound(pdfItem->sceneBoundingRect().x());
+                    double yPdf = qRound(pdfItem->sceneBoundingRect().y());
+                    double hPdf = qRound(pdfItem->sceneBoundingRect().height());
+
+                    // Exportation-transformed datas
+                    double hScaleFactor = pageSize.width()/scene->itemsBoundingRect().width();
+                    double vScaleFactor = pageSize.height()/scene->itemsBoundingRect().height();
+                    double scaleFactor = qMin(hScaleFactor, vScaleFactor);
+
+                    double xAnnotationsOffset = 0;
+                    double yAnnotationsOffset = 0;
+                    double hPdfTransformed = qRound(hPdf * scaleFactor);
+
+                    // Here, we force the PDF page to be on the topleft corner of the page
+                    double xPdfOffset = 0;
+                    double yPdfOffset = (hPdf - hPdfTransformed) * mScaleFactor;
+
+                    // Now we align the items
+                    xPdfOffset += (xPdf - xAnnotation) * scaleFactor * mScaleFactor;
+                    yPdfOffset -= (yPdf - yAnnotation) * scaleFactor * mScaleFactor;
+
+                    TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor, 0);
+                    TransformationDescription annotationTransform(xAnnotationsOffset, yAnnotationsOffset, 1, 0);
 
                     MergePageDescription pageDescription(pageSize.width() * mScaleFactor,
                                                          pageSize.height() * mScaleFactor,
                                                          pdfItem->pageNumber(),
                                                          QFile::encodeName(backgroundPath).constData(),
-                                                         TransformationDescription(),
+                                                         pdfTransform,
                                                          pageIndex + 1,
-                                                         TransformationDescription(),
+                                                         annotationTransform,
                                                          false, false);
 
                     mergeInfo.push_back(pageDescription);
