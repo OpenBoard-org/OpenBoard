@@ -1044,6 +1044,7 @@ void UBFeatureProperties::onAddToLib()
         sDownloadFileDesc desc;
         desc.isBackground = false;
         desc.modal = false;
+        desc.dest = sDownloadFileDesc::library;
         desc.name = QFileInfo( mpElement->getFullPath().toString()).fileName();
         qDebug() << desc.name;
         desc.srcUrl = mpElement->getFullPath().toString();
