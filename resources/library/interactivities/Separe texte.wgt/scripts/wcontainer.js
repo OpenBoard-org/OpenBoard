@@ -1,5 +1,5 @@
 var sankoreLang = {
-    view: "Display", 
+    view: "Close", 
     edit: "Edit",
     example: "hello, this is the first sentence. hi, this is the second sentence. hello again, this is the third sentence. good morning, this is the fourth sentence. hi, sorry, i\'m late, i\'m the fifth sentence.",
     wgt_name: "Split a text",
@@ -8,7 +8,8 @@ var sankoreLang = {
     pad: "Pad",
     none: "None",
     help: "Help",
-    help_content: "This is an example of help content ..."
+    help_content: "This is an example of help content ...",
+    theme: "Theme"
 };
 
 // if use the "view/edit" button or rely on the api instead
