@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Afficher", 
+    display: "Fermer", 
     edit: "Modifier", 
     short_desc: "Sélectionner les animaux dans la liste suivante :", 
     add: "Nouveau bloc",
@@ -16,24 +16,25 @@ var sankoreLang = {
     none: "aucun",
     help: "Aide",
     help_content: "<p><h2>Sélectionner</h2></p>"+
-"<p><h3>Trouver les éléments correspondants à la consigne.</h3></p>"+
+    "<p><h3>Trouver les éléments correspondants à la consigne.</h3></p>"+
 
-"<p>Une consigne est écrite précisant le ou les éléments à chercher parmi tous les éléments proposés. Le but est de trouver les éléments correspondants à la consigne. L’activité s’effectue en cochant les cases sous les éléments correspondants. Une fois que tous les éléments corrects sont cochés, la zone se colore en vert.</p>"+
+    "<p>Une consigne est écrite précisant le ou les éléments à chercher parmi tous les éléments proposés. Le but est de trouver les éléments correspondants à la consigne. L’activité s’effectue en cochant les cases sous les éléments correspondants. Une fois que tous les éléments corrects sont cochés, la zone se colore en vert.</p>"+
 
-"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+    "<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
 
-"<p>Le bouton “Modifier” vous permet :</p>"+
-"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
-"<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité. </li></ul>"+
+    "<p>Le bouton “Modifier” vous permet :</p>"+
+    "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+    "<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité. </li></ul>"+
 
-"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, puis</p>"+
-"<ul><li>insérez une consigne en cliquant sur le champ de texte “Saisir votre consigne ici ...”, </li>"+
-"<li>ajoutez des zones de texte en cliquant sur le gros “+T” vert en dessous puis entrez le texte voulu.</li></ul>"+
-"<p>Pour supprimer une zone de texte, cliquez sur la croix située dans le coin supérieur de celle-ci.</p>"+ 
+    "<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, puis</p>"+
+    "<ul><li>insérez une consigne en cliquant sur le champ de texte “Saisir votre consigne ici ...”, </li>"+
+    "<li>ajoutez des zones de texte en cliquant sur le gros “+T” vert en dessous puis entrez le texte voulu.</li></ul>"+
+    "<p>Pour supprimer une zone de texte, cliquez sur la croix située dans le coin supérieur de celle-ci.</p>"+ 
 
-"<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
+    "<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
 
-"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
+    "<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>",
+    theme:"Thème"
 };
 
 //main function
@@ -45,9 +46,11 @@ function start(){
     $("#wgt_reload").text(sankoreLang.reload);
     $("#wgt_help").text(sankoreLang.help);
     $("#help").html(sankoreLang.help_content);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    $(".style_select option[value='3']").text(sankoreLang.none);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='3']").text(sankoreLang.none);
+    var tmpl = $("div.inline label").html();
+    $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
         if(sankore.preference("selectionner","")){
@@ -57,7 +60,7 @@ function start(){
             showExample();
         if(sankore.preference("sel_style","")){
             changeStyle(sankore.preference("sel_style",""));
-            $(".style_select").val(sankore.preference("sel_style",""));
+            $("#style_select").val(sankore.preference("sel_style",""));
         } else
             changeStyle("3")
     } 
@@ -68,18 +71,20 @@ function start(){
     if (window.widget) {
         window.widget.onleave = function(){
             exportData();
-            sankore.setPreference("sel_style", $(".style_select").find("option:selected").val());
+            sankore.setPreference("sel_style", $("#style_select").find("option:selected").val());
         }
     }
     
     $("#wgt_help").click(function(){
         var tmp = $(this);
         if($(this).hasClass("open")){
+            $(this).removeClass("help_pad").removeClass("help_wood")
             $("#help").slideUp("100", function(){
                 tmp.removeClass("open");
                 $("#data").show();
             });
-        } else {            
+        } else {
+            ($("#style_select").val() == 1)?$(this).removeClass("help_pad").addClass("help_wood"):$(this).removeClass("help_wood").addClass("help_pad");
             $("#data").hide();
             $("#help").slideDown("100", function(){
                 tmp.addClass("open");
@@ -101,7 +106,7 @@ function start(){
             $("#wgt_display").trigger("click");
     });
     
-    $(".style_select").change(function (event){
+    $("#style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
     
@@ -112,7 +117,7 @@ function start(){
                     sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");
+                $("#parameters").css("display","none");
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -140,7 +145,7 @@ function start(){
                     sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");
+                $("#parameters").css("display","block");
                 
                 $(".cont").each(function(){
                     var container = $(this);
@@ -196,31 +201,31 @@ function start(){
             if($(this).is(":checked"))
                 $(this).parent().find("input:hidden").val(1);
             else
-            $(this).parent().find("input:hidden").val(0);
-            }
-            });
+                $(this).parent().find("input:hidden").val(0);
+        }
+    });
     
-        //play/pause event
-        $(".play, .stop").live("click", function(){
-            var tmp_audio = $(this);
-            var audio = tmp_audio.parent().find("audio").get(0);
-            if($(this).hasClass("play")){            
+    //play/pause event
+    $(".play, .stop").live("click", function(){
+        var tmp_audio = $(this);
+        var audio = tmp_audio.parent().find("audio").get(0);
+        if($(this).hasClass("play")){            
             if(tmp_audio.parent().find("source").attr("src")){
-            tmp_audio.removeClass("play").addClass("stop");
-            var id = setInterval(function(){
-                if(audio.currentTime == audio.duration){
-                clearInterval(id);
-                tmp_audio.removeClass("stop").addClass("play");
-                }
+                tmp_audio.removeClass("play").addClass("stop");
+                var id = setInterval(function(){
+                    if(audio.currentTime == audio.duration){
+                        clearInterval(id);
+                        tmp_audio.removeClass("stop").addClass("play");
+                    }
                 }, 10);
-            tmp_audio.parent().find("input").val(id);
-            audio.play();
+                tmp_audio.parent().find("input").val(id);
+                audio.play();
             }
-            } else {
-        $(this).removeClass("stop").addClass("play");
-        clearInterval( tmp_audio.parent().find("input").val())
-        audio.pause();
-    }
+        } else {
+            $(this).removeClass("stop").addClass("play");
+            clearInterval( tmp_audio.parent().find("input").val())
+            audio.pause();
+        }
     });
     
     $(".replay").live("click", function(){
@@ -463,10 +468,10 @@ function changeStyle(val){
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
             $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").addClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").addClass("radius_ft");
             break;
         case "2":
             $(".b_top_left").addClass("btl_pad").removeClass("without_back");
@@ -480,10 +485,10 @@ function changeStyle(val){
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").removeClass("radius_ft");
             break;
         case "3":
             $(".b_top_left").addClass("without_back").removeClass("btl_pad");
@@ -497,10 +502,10 @@ function changeStyle(val){
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("none_select").val(val);
-            $("body, html").addClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
 }

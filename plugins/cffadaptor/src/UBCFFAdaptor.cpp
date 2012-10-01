@@ -550,8 +550,8 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parsePage(const QString &pageFileNam
                 pageFile.close();
                 return QDomElement();
             }
-        } else if (tagname == tUBZGroup) {
-            group = parseGroupPageSection(nextTopElement);
+        } else if (tagname == tUBZGroups) {
+            group = parseGroupsPageSection(nextTopElement);
             if (group.isNull()) {
                 qDebug() << "Page doesn't contains any groups.";
                 pageFile.close();
@@ -634,6 +634,7 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
         else if (tagName == tUBZLine)          parseUBZLine(nextElement, svgElements);
         else if (tagName == tUBZPolygon)       parseUBZPolygon(nextElement, svgElements);
         else if (tagName == tUBZPolyline)      parseUBZPolyline(nextElement, svgElements);
+        else if (tagName == tUBZGroups)        parseGroupsPageSection(nextElement);
 
         nextElement = nextElement.nextSiblingElement();
     }
@@ -694,12 +695,34 @@ bool UBCFFAdaptor::UBToCFFConverter::writeExtendedIwbSection()
 // extended element options
 // editable, background, locked are supported for now
 
-QDomElement UBCFFAdaptor::UBToCFFConverter::parseGroupPageSection(const QDomElement &element)
+QDomElement UBCFFAdaptor::UBToCFFConverter::parseGroupsPageSection(const QDomElement &groupRoot)
 {
 //    First sankore side implementation needed. TODO in Sankore 1.5
-    Q_UNUSED(element)
+    if (!groupRoot.hasChildNodes()) {
+        qDebug() << "Group root is empty";
+        return QDomElement();
+    }
+
+    QDomElement groupElement = groupRoot.firstChildElement();
+
+    while (!groupElement.isNull()) {
+        QDomElement extendedElement = mDataModel->createElementNS(iwbNS, groupElement.tagName());
+        QDomElement groupChildElement = groupElement.firstChildElement();
+        while (!groupChildElement.isNull()) {
+            QDomElement extSubElement = mDataModel->createElementNS(iwbNS, groupChildElement.tagName());
+            extSubElement.setAttribute(aRef, groupChildElement.attribute(aID, QUuid().toString()));
+            extendedElement.appendChild(extSubElement);
+
+            groupChildElement = groupChildElement.nextSiblingElement();
+        }
+
+        mExtendedElements.append(extendedElement);
+
+        groupElement = groupElement.nextSiblingElement();
+    }
+
     qDebug() << "parsing ubz group section";
-    return QDomElement();
+    return groupRoot;
 }
 
 QString UBCFFAdaptor::UBToCFFConverter::getDstContentFolderName(const QString &elementType)
@@ -1250,6 +1273,19 @@ bool UBCFFAdaptor::UBToCFFConverter::setCFFAttribute(const QString &attributeNam
         {
             setGeometryFromUBZ(ubzElement, svgElement);
         }
+        else
+            if (attributeName.contains(aUBZUuid))
+            {
+
+                QString parentId = ubzElement.attribute(aUBZParent);
+                QString id;
+                if (!parentId.isEmpty())
+                    id = "{" + parentId + "}" + "{" + ubzElement.attribute(aUBZUuid)+"}";
+                else
+                    id = "{" + ubzElement.attribute(aUBZUuid)+"}";
+
+                svgElement.setAttribute(aID, id);
+            }
         else 
             if (attributeName.contains(aUBZHref)||attributeName.contains(aSrc))
             {
@@ -1799,7 +1835,10 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZPolygon(const QDomElement &element,
 
         if (0 < iwbElementPart.attributes().count())
         {   
-            QString id = QUuid::createUuid().toString();
+            QString id = svgElementPart.attribute(aUBZUuid);
+            if (id.isEmpty())
+                id = QUuid::createUuid().toString();
+
             svgElementPart.setAttribute(aID, id);
             iwbElementPart.setAttribute(aRef, id);     
 

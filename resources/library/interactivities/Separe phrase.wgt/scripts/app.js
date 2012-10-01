@@ -31,7 +31,7 @@ $(document).ready(function()
     
     if (window.widget) {
         window.widget.onleave = function(){
-            sankore.setPreference("spl_phrase_style", $(".style_select").find("option:selected").val());
+            sankore.setPreference("spl_phrase_style", $("#style_select").find("option:selected").val());
             if(w.editMode){
                 sankore.setPreference("ordSplPhrases", w.elements.container.find( "textarea" ).val());
                 sankore.setPreference("ordSplPhrasesState", "0");
@@ -47,7 +47,6 @@ $(document).ready(function()
     
     if(window.sankore && sankore.preference("spl_phrase_style","")){
         changeStyle(sankore.preference("spl_phrase_style",""));
-        $(".style_select").val(sankore.preference("spl_phrase_style",""));
     } else
         changeStyle("3")
     
@@ -55,13 +54,23 @@ $(document).ready(function()
     $("#wgt_edit").text(sankoreLang.edit);
     $("#wgt_help").text(sankoreLang.help);
     $("#help").html(sankoreLang.help_content);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='3']").text(sankoreLang.none);    
+    
+    var tmpl = $("div.inline label").html();
+    $("div.inline label").html(sankoreLang.theme + tmpl)
+    
+    $("#style_select").change(function (event){
+        changeStyle($(this).find("option:selected").val());
+    })
     
     $("#wgt_display, #wgt_edit").click(function(event){
         if(this.id == "wgt_display"){
             if(!$(this).hasClass("selected")){                
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");                
+                $("#parameters").css("display","none");                
                 $(this).css("display", "none");
                 $("#wgt_edit").css("display", "block");
                 w.modeView();
@@ -70,7 +79,7 @@ $(document).ready(function()
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");                
+                $("#parameters").css("display","block");                
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
                 w.modeEdit();
@@ -83,11 +92,13 @@ $(document).ready(function()
     $("#wgt_help").click(function(){
         var tmp = $(this);
         if($(this).hasClass("open")){
+            $(this).removeClass("help_pad").removeClass("help_wood")
             $("#help").slideUp("100", function(){
                 tmp.removeClass("open");
                 $("#ub-widget").show();
             });
-        } else {            
+        } else {     
+            ($("#style_select").val() == 1)?$(this).removeClass("help_pad").addClass("help_wood"):$(this).removeClass("help_wood").addClass("help_pad");
             $("#ub-widget").hide();
             $("#help").slideDown("100", function(){
                 tmp.addClass("open");
@@ -103,14 +114,6 @@ $(document).ready(function()
             $("#wgt_display").trigger("click");
         }
     });
-    
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    $(".style_select option[value='3']").text(sankoreLang.none);
-    
-    $(".style_select").change(function (event){
-        changeStyle($(this).find("option:selected").val());
-    })
     
     w.maxWidth = 600;
 	
@@ -263,7 +266,7 @@ $(document).ready(function()
     
     //changing the style
     function changeStyle(val){
-    switch(val){
+        switch(val){
         case "1":
             $(".b_top_left").removeClass("btl_pad").removeClass("without_back");
             $(".b_top_center").removeClass("btc_pad").removeClass("without_back");
@@ -276,10 +279,10 @@ $(document).ready(function()
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
             $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").addClass("display_wood");
+            $("#style_select option:first").attr('selected',true);
+            $("body, html").removeClass("without_radius").addClass("radius_ft");
             break;
         case "2":
             $(".b_top_left").addClass("btl_pad").removeClass("without_back");
@@ -293,10 +296,10 @@ $(document).ready(function()
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select option:first").next().attr('selected',true);
+            $("body, html").removeClass("without_radius").removeClass("radius_ft");
             break;
         case "3":
             $(".b_top_left").addClass("without_back").removeClass("btl_pad");
@@ -310,12 +313,12 @@ $(document).ready(function()
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("none_select").val(val);
-            $("body, html").addClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select option:last").attr('selected',true);
+            $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
-}
+    }
 	
 });
