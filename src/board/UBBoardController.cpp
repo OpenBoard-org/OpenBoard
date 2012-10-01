@@ -983,8 +983,8 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
     }
     else if (sUrl.startsWith("file://") || sUrl.startsWith("/"))
     {
-        QString fileName = url.toLocalFile();
-        QUrl formedUrl = sUrl.startsWith("file://") ? sUrl : QUrl::fromLocalFile(sUrl);
+        QUrl formedUrl = sUrl.startsWith("file://") ? url : QUrl::fromLocalFile(sUrl);
+        QString fileName = formedUrl.toLocalFile();
         QString contentType = UBFileSystemUtils::mimeTypeFromFileName(fileName);
 
         bool shouldLoadFileData =
