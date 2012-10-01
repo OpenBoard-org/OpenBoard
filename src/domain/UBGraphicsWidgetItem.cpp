@@ -621,6 +621,7 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
     mInitialLoadDone = true;
     mLoadIsErronous = !ok;
     update(boundingRect());
+    takeSnapshot();
 }
 
 void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)
