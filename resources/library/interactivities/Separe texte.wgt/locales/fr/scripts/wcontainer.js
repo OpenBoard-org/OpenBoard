@@ -1,5 +1,5 @@
 var sankoreLang = {
-    view: "Afficher", 
+    view: "Fermer", 
     edit: "Modifier",
     example: "bonjour, ceci est la première phrase. salut, c'est la deuxième phrase. bonjour à nouveau, c'est la troisième phrase. bonjour, c'est la quatrième phrase. salut, désolé, je suis en retard, je suis la cinquième phrase.",
     wgt_name: "Séparer un texte",
@@ -10,23 +10,24 @@ var sankoreLang = {
     help: "Aide",
     help_content: "<p><h3>Séparer les phrases d’un texte.</h3></p>"+
 
-"<p>Un texte est écrit sans que les points entre les phrases n’apparaissent. Le but de cette activité est d’insérer les points aux bons endroits. Une fois que les points sont placés correctement, la phrase se colore en vert.</p>"+
+    "<p>Un texte est écrit sans que les points entre les phrases n’apparaissent. Le but de cette activité est d’insérer les points aux bons endroits. Une fois que les points sont placés correctement, la phrase se colore en vert.</p>"+
 
-"<p>Pour ajouter les points entre les phrases, déplacez le curseur et cliquez entre deux mots, un point s’ajoute alors.</p>"+
-
-
-"<p>Le bouton “Recharger” réinitialise l’exercice.</p>"+
+    "<p>Pour ajouter les points entre les phrases, déplacez le curseur et cliquez entre deux mots, un point s’ajoute alors.</p>"+
 
 
-"<p>Le bouton “Modifier” vous permet :</p>"+
-
-"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun), </li>"+
-"<li>de déterminer le texte sur lequel travailler.</li></ul>"+
-
-"<p>Ecrivez simplement dans la zone de texte les différentes phrases séparées par des points.<b> NB : Les points d’interrogation, les deux points “:”, les points-virgules “;” et les points d’exclamation ne sont pas pris en compte.</b></p>"+
+    "<p>Le bouton “Recharger” réinitialise l’exercice.</p>"+
 
 
-"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
+    "<p>Le bouton “Modifier” vous permet :</p>"+
+
+    "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun), </li>"+
+    "<li>de déterminer le texte sur lequel travailler.</li></ul>"+
+
+    "<p>Ecrivez simplement dans la zone de texte les différentes phrases séparées par des points.<b> NB : Les points d’interrogation, les deux points “:”, les points-virgules “;” et les points d’exclamation ne sont pas pris en compte.</b></p>"+
+
+
+    "<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>",
+    theme: "Thème"
 
 };
 
@@ -57,7 +58,7 @@ function wcontainer( containerID )
 	create
 	============
 	- creates html base, inits this.elements, assings events
-	*/
+     */
     this.create = function( containerID )
     {
         var html = 
@@ -93,7 +94,7 @@ function wcontainer( containerID )
 	setViewContent
 	===============
 	- assigns custom html to the viewmode container
-	*/
+     */
     this.setViewContent = function( html )
     {
         this.elements.container.find( "#mp_content .viewmode" ).html( html );
@@ -104,7 +105,7 @@ function wcontainer( containerID )
 	setEditContent
 	===============
 	- assigns custom html to the editmode container
-	*/
+     */
     this.setEditContent = function( html )
     {
         this.elements.container.find( "#mp_content .editmode" ).html( html );
@@ -117,8 +118,8 @@ function wcontainer( containerID )
 	modeEdit and modeView
 	=========================
 	- switch the widget betweed modes
-	* for customization extend onEditMode and onViewMode
-	*/
+     * for customization extend onEditMode and onViewMode
+     */
     this.modeEdit = function()
     {
         this.onEditMode();
@@ -126,7 +127,7 @@ function wcontainer( containerID )
         this.elements.edit.removeClass( "hide" );
         this.elements.view.addClass( "hide" );
 		
-        //this.adjustSize();
+    //this.adjustSize();
     };
     this.modeView = function()
     {
@@ -135,7 +136,7 @@ function wcontainer( containerID )
         this.elements.edit.addClass( "hide" );
         this.elements.view.removeClass( "hide" );
 		
-        //this.adjustSize();
+    //this.adjustSize();
     };
 	
 	
@@ -145,7 +146,7 @@ function wcontainer( containerID )
 	setData and getData
 	======================
 	- store some data inside
-	*/
+     */
     this.setData = function( name, value ){
         data[name] = value;
     };
@@ -163,7 +164,7 @@ function wcontainer( containerID )
 	onEditMode and onViewMode
 	==========================
 	- these are called when the mode is being changed
-	*/
+     */
     this.onEditMode = function(){
     //
     };
@@ -176,8 +177,8 @@ function wcontainer( containerID )
 	viewSize and editSize
 	======================
 	- calculate container size for the adjustSize method
-	* they are likely to be redefined for each particular widget
-	*/
+     * they are likely to be redefined for each particular widget
+     */
     this.viewSize = function(){
         return {
             w: this.elements.containerView.outerWidth(),
@@ -196,8 +197,8 @@ function wcontainer( containerID )
 	checkAnswer
 	=====================
 	- check if the exercise in the view mode was done right
-	* redefine it for each particular widget
-	*/
+     * redefine it for each particular widget
+     */
     this.checkAnswer = function()
     {
     //
