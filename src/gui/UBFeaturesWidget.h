@@ -79,7 +79,7 @@ signals:
     void sendFileNameList(const QStringList lst);
 
 private slots:
-    void onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
+    void onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QUrl originalUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
     void currentSelected( const QModelIndex & );
     void searchStarted( const QString & );
     void createNewFolder();

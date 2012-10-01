@@ -235,7 +235,7 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
             if (!imageGatherer)
                 imageGatherer = new UBDownloadHttpFile(0, this);
 
-            connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+            connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)));
 
             // We send here the request and store its reply in order to be able to cancel it if needed
             imageGatherer->get(QUrl(metadata["Url"]), QPoint(0,0), QSize(), false);
@@ -262,10 +262,11 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 }
 
 
-void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
+void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QUrl originalUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
     Q_UNUSED(id);
     Q_UNUSED(pSuccess);
+    Q_UNUSED(originalUrl);
     Q_UNUSED(isBackground);
     Q_UNUSED(pSize);
     Q_UNUSED(pPos);
