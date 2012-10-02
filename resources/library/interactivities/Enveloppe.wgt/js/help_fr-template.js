@@ -8,7 +8,7 @@
 <p>Le bouton “Modifier” vous permet : </p>
 <ul>
 <li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut tablette), </li>
-<li>de déterminer le nombre de trombone(s) souhaités.</li> 
+<li>de déterminer le nombre de trombone(s) souhaité(s).</li> 
 </ul>
 
 <p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>
