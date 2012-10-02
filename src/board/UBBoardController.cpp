@@ -537,7 +537,7 @@ void UBBoardController::duplicateScene()
     duplicateScene(mActiveSceneIndex);
 }
 
-UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
+UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
 {    
     if (!item)
         return NULL;
@@ -568,7 +568,10 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     if (srcFile.isEmpty())
         srcFile = item->sourceUrl().toString();
 
-    QString contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(srcFile);
+    QString contentTypeHeader;
+    if (!srcFile.isEmpty())
+        contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(srcFile);
+
     if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem))
         itemMimeType = UBMimeType::Group;
     else 
@@ -593,9 +596,13 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
             if (mitem)
             {
                 sourceUrl = mitem->mediaFileUrl();
-                downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);    
+                if (bAsync)
+                {
+                    downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);    
+                    return NULL; // async operation
+                }
             }
-        }return NULL; // async operation
+        }break;
 
     case UBMimeType::VectorImage:
         {
@@ -621,35 +628,32 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 
     case UBMimeType::Group:
     {
-    	UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+        UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
         UBGraphicsGroupContainerItem* duplicatedGroup = NULL;
-    	if(groupItem){
-    		QTransform groupTransform = groupItem->transform();
-    		groupItem->resetTransform();
+        
+        QList<QGraphicsItem*> duplicatedItems;
+        QList<QGraphicsItem*> children = groupItem->childItems();
+        foreach(QGraphicsItem* pIt, children){
+            UBItem* pItem = dynamic_cast<UBItem*>(pIt);
+            if(pItem){ // we diong sync duplication of all childs.
+                QGraphicsItem * itemToGroup = dynamic_cast<QGraphicsItem *>(duplicateItem(pItem, false));
+                if (itemToGroup)
+                    duplicatedItems.append(itemToGroup);
+            }
+        }
+        duplicatedGroup = mActiveScene->createGroup(duplicatedItems);
+        duplicatedGroup->setTransform(groupItem->transform());
+        groupItem->setSelected(false);
 
-    		QList<QGraphicsItem*> children = groupItem->childItems();
-    		foreach(QGraphicsItem* pIt, children){
-    			UBItem* pItem = dynamic_cast<UBItem*>(pIt);
-    			if(NULL != pItem){
-    				duplicateItem(pItem);
-    			}
-    		}
-    		groupItem->setTransform(groupTransform);
-    		groupItem->setSelected(false);
-    		UBApplication::mainWindow->actionGroupItems->trigger();
-    		QList<QGraphicsItem*> selItems =  mActiveScene->selectedItems();
-    		if(!selItems.empty()){
-    			// I don't like this solution but for now this is the only way I found.
-    			// Normally, at this state, only the duplicated group should be selected
-    			duplicatedGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.at(0));
-    			if(NULL != duplicatedGroup){
-    				duplicatedGroup->setTransform(groupTransform);
-    			}
-    		}
-    	}
-    	retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
-    	break;
-    }
+        retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
+
+        QGraphicsItem * itemToAdd = dynamic_cast<QGraphicsItem *>(retItem);
+        if (itemToAdd)
+        {
+            mActiveScene->addItem(itemToAdd);
+            itemToAdd->setSelected(true);
+        }
+    }break;
 
     case UBMimeType::UNKNOWN:
         {
@@ -668,7 +672,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     if (retItem)
         return retItem;
 
-    UBItem *createdItem = downloadFinished(true, sourceUrl, sourceUrl, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
+    UBItem *createdItem = downloadFinished(true, sourceUrl, srcFile, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
     if (createdItem)
     {
         createdItem->setSourceUrl(item->sourceUrl());
