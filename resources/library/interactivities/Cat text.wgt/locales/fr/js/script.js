@@ -28,7 +28,7 @@ var sankoreLang = {
 "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
 "<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
 
-"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, une zone bleue apparaît, c’est une catégorie, puis.</p>"+
+"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, une zone bleue apparaît, c’est une catégorie, puis :</p>"+
 "<ul><li>insérez le nom de la catégorie (par exemple “fruits”, “légumes”, “mammifères”...) en cliquant dans le champ de texte “Saisir le nom de la catégorie ici …”,</li>"+
 "<li>cliquez sur le gros “+” situé à gauche de la catégorie ce qui vous permet de rajouter des étiquettes de mots,</li>"+
 "<li>entrez des mots dans ces étiquettes,</li>"+

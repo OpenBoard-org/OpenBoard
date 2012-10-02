@@ -23,7 +23,7 @@ var sankoreLang = {
 
 "<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, puis</p>"+
 "<ul><li>insérez une consigne en cliquant sur le champ de texte “Saisir la consigne ici ...”, </li>"+
-"<li>ajoutez des zones image en cliquant sur le gros signe + en dessous, </li>"+
+"<li>ajoutez des zones image(s) en cliquant sur le gros signe + en dessous, </li>"+
 "<li>insérez des images dans ces zones par glisser-déposer des images à partir de votre bibliothèque, </li>"+
 "<li>définissez l’image correcte de l’interactivité en cliquant sur le bouton valider “v” situé en bas à droite de l’image concernée.</li></ul>"+
 "<p>Pour supprimer une zone image, cliquez sur la croix située dans le coin supérieur droit de l’image.</p>"+
