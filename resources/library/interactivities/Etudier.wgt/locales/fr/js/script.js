@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Fermer", 
+    display: "Afficher", 
     edit: "Modifier", 
     text_content: "Ceci est un exemple. Au lieu de ce texte, vous pouvez mettre votre propre texte ou glisser-déposer une image, un son ou une vidéo.", 
     new_txt: "Nouveau bloc de texte",
@@ -18,12 +18,14 @@ var sankoreLang = {
     "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
     "<li>de modifier les pages du livret.</li></ul>"+
 
-    "<p>Sur chaque page, vous pouvez :</p>"+ 
-    "<ul><li>insérer des zones de texte avec le bouton “+T” situé en haut à gauche de l’interactivité. (pour modifier ces zones de texte, cliquez à l’intérieur et écrivez du texte),</li>"+
-    "<li>insérer des images, sons et vidéos par glisser-déposer de fichiers depuis la bibliothèque jusqu’à l’intérieur de la page du livret,</li>"+
-    "<li>déplacer les textes, images, sons et vidéos à l’intérieur de la page en cliquant et en déplaçant la flèche multidirectionnelle qui se situe dans le coin supérieur gauche de chaque élément,</li>"+
-    "<li>agrandir la taille d’un élément avec la double flèche en bas à droite de celui-ci,</li>"+
-    "<li>supprimer un élément avec la case en haut à droite de celui-ci.</li></ul>"+
+
+"<p>Sur chaque page, vous pouvez :</p>"+ 
+"<ul><li>insérer des zones de texte avec le bouton “+T” situé en haut à gauche de l’interactivité (pour modifier ces zones de texte, cliquez à l’intérieur et écrivez du texte),</li>"+
+"<li>insérer des images, sons et vidéos par glisser-déposer de fichiers depuis la bibliothèque jusqu’à l’intérieur de la page du livret,</li>"+
+"<li>déplacer les textes, images, sons et vidéos à l’intérieur de la page en cliquant et en déplaçant la flèche multidirectionnelle qui se situe dans le coin supérieur gauche de chaque élément,</li>"+
+"<li>agrandir la taille d’un élément avec la double flèche en bas à droite de celui-ci,</li>"+
+"<li>supprimer un élément avec la case en haut à droite de celui-ci.</li></ul>"+
+
 
     "<p>Pour ajouter une page, cliquez sur la flèche verte accompagnée d’un “+” se trouvant en bas à gauche et à droite.</p>"+
     "<p>Pour supprimer une page, cliquez sur la croix rouge située en haut à droite de la page.</p>"+
