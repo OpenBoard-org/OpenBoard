@@ -568,7 +568,10 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
     if (srcFile.isEmpty())
         srcFile = item->sourceUrl().toString();
 
-    QString contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(srcFile);
+    QString contentTypeHeader;
+    if (!srcFile.isEmpty())
+        contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(srcFile);
+
     if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem))
         itemMimeType = UBMimeType::Group;
     else 
@@ -626,20 +629,30 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
     case UBMimeType::Group:
     {
         UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-        UBGraphicsGroupContainerItem* duplicatedGroup = new UBGraphicsGroupContainerItem();
+        UBGraphicsGroupContainerItem* duplicatedGroup = NULL;
         
+        QList<QGraphicsItem*> duplicatedItems;
         QList<QGraphicsItem*> children = groupItem->childItems();
         foreach(QGraphicsItem* pIt, children){
             UBItem* pItem = dynamic_cast<UBItem*>(pIt);
-            if(pItem) // we diong sync duplication of all childs.
-                duplicatedGroup->addToGroup(dynamic_cast<QGraphicsItem *>(duplicateItem(pItem, false)));
+            if(pItem){ // we diong sync duplication of all childs.
+                QGraphicsItem * itemToGroup = dynamic_cast<QGraphicsItem *>(duplicateItem(pItem, false));
+                if (itemToGroup)
+                    duplicatedItems.append(itemToGroup);
+            }
         }
-
+        duplicatedGroup = mActiveScene->createGroup(duplicatedItems);
         duplicatedGroup->setTransform(groupItem->transform());
         groupItem->setSelected(false);
 
         retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
 
+        QGraphicsItem * itemToAdd = dynamic_cast<QGraphicsItem *>(retItem);
+        if (itemToAdd)
+        {
+            mActiveScene->addItem(itemToAdd);
+            itemToAdd->setSelected(true);
+        }
     }break;
 
     case UBMimeType::UNKNOWN:
@@ -657,15 +670,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
     }    
     
     if (retItem)
-    {
-        QGraphicsItem * itemToAdd = dynamic_cast<QGraphicsItem *>(retItem);
-        if (itemToAdd)
-        {
-            mActiveScene->addItem(itemToAdd);
-            itemToAdd->setSelected(true);
-        }
         return retItem;
-    }
 
     UBItem *createdItem = downloadFinished(true, sourceUrl, srcFile, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
     if (createdItem)
