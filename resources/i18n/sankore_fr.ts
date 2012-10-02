@@ -377,7 +377,7 @@
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation>Afficher le bureau</translation>
+        <translation>Bureau</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
