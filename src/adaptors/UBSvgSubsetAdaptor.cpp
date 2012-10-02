@@ -1229,10 +1229,10 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 //disabling g section parsing as a group of elements. Use groups refs instead
 //                mXmlWriter.writeStartElement("g");
 //                mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(strokesGroupItem->uuid()));
-            	QMatrix matrix = item->sceneMatrix();
-				if (!matrix.isIdentity()){
-					mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
-				}
+//            	QMatrix matrix = item->sceneMatrix();
+//				if (!matrix.isIdentity()){
+//					mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
+//				}
 
                 // Add the polygons
                 foreach(QGraphicsItem* item, strokesGroupItem->childItems()){

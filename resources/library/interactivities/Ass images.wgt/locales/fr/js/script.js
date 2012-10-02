@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Fermer", 
+    display: "Afficher", 
     edit: "Modifier", 
     short_desc: "Sélectionner le numéro «trois».", 
     add: "Nouveau bloc",
