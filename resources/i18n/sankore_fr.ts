@@ -1961,7 +1961,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>Add a link</source>
-        <translation>Ajouter un lien.web</translation>
+        <translation>Ajouter un lien web</translation>
     </message>
     <message>
         <source>Page: %0</source>
