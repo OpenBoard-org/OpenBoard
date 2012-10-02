@@ -14,7 +14,7 @@
  */
 
 var sankoreLang = {
-    display: "Показать", 
+    display: "Закрыть", 
     edit: "Изменить", 
     add: "Добавить", 
     enter_data: "Введите вопрос:", 
@@ -27,7 +27,8 @@ var sankoreLang = {
     pad: "планшет",
     none: "нет",
     help: "Помощь",
-    help_content: "Пример текста помощи ..."
+    help_content: "Пример текста помощи ...",
+    theme: "Тема"
 };
 
 function init(){
@@ -43,6 +44,8 @@ function init(){
     var flagForSelect = false;
     var dragElement = null; //the element that must be dragging
     var lang = ""; //locale language
+    var resizeFlag = true;
+    
     var coords = {
         left:0,
         top:0
@@ -64,9 +67,11 @@ function init(){
     $("#wgt_reload").text(sankoreLang.reload);
     $("#wgt_help").text(sankoreLang.help);
     $("#help").html(sankoreLang.help_content);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    $(".style_select option[value='3']").text(sankoreLang.none);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='3']").text(sankoreLang.none);
+    var tmpl = $("div.inline label").html();
+    $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
         if(sankore.preference("blackYellowData","")){
@@ -91,7 +96,7 @@ function init(){
     if(window.sankore){
         if(sankore.preference("by_style","")){
             changeStyle(sankore.preference("by_style",""));
-            $(".style_select").val(sankore.preference("by_style",""));
+            $("#style_select").val(sankore.preference("by_style",""));
         } else
             changeStyle("3")
     } else
@@ -102,9 +107,15 @@ function init(){
             if(!$(this).hasClass("selected")){                
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");                
+                $("#parameters").css("display","none");   
+                var tmpwh = $(window).height();
+                var tmpww = $(window).width();
+                resizeFlag = true;
+                window.resizeTo(tmpww, tmpwh - 44)
+                $("#data").css("padding-bottom","");
+                $("#leftDiv").css("border-top-left-radius","7px");
+                $("#rightDiv").css("border-top-right-radius","7px");
                 $(this).css("display", "none");
-                $("#wgt_add").css("display", "none");
                 $("#wgt_edit").css("display", "block");
                 mode = false;
                 $(".leftDiv, .rightDiv").animate({
@@ -117,7 +128,7 @@ function init(){
                                 tmpReadyTask.width($(domElem).width())
                                 .height($(domElem).height())
                                 .css("position","absolute")
-                                .css("top",$(domElem).position().top)
+                                .css("top",$(domElem).position().top - 40)
                                 .css("left",$(domElem).position().left)
                                 .find(".taskContainer").removeAttr("contenteditable");                                
                                 
@@ -128,15 +139,22 @@ function init(){
                         opacityChanged = false;
                     }
                 });
+                
                 $(document).disableTextSelect(); 
             }
         } else {            
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");                
+                $("#parameters").css("display","block");   
+                tmpwh = $(window).height();
+                tmpww = $(window).width();
+                resizeFlag = true;
+                window.resizeTo(tmpww, tmpwh + 44)
+                $("#data").css("padding-bottom","42px");
+                $("#leftDiv").css("border-top-left-radius","0px");
+                $("#rightDiv").css("border-top-right-radius","0px");
                 $(this).css("display", "none");
-                $("#wgt_add").css("display", "block");
                 $("#wgt_display").css("display", "block");
                 mode = true; 
                 $(document).enableTextSelect(); 
@@ -171,12 +189,15 @@ function init(){
     $("#wgt_help").click(function(){
         var tmp = $(this);
         if($(this).hasClass("open")){
+            $(this).removeClass("help_pad").removeClass("help_wood")
             $("#help").slideUp("100", function(){
                 tmp.removeClass("open");
                 $("#data").show();
+                ($("#wgt_edit").hasClass("selected"))?$("#parameters").show():'';
             });
         } else {            
-            $("#data").hide();
+            ($("#style_select").val() == 1)?$(this).removeClass("help_pad").addClass("help_wood"):$(this).removeClass("help_wood").addClass("help_pad");
+            $("#data, #parameters").hide();
             $("#help").slideDown("100", function(){
                 tmp.addClass("open");
             });
@@ -200,10 +221,10 @@ function init(){
         $(document).disableTextSelect();
     });
     
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
     
-    $(".style_select").change(function (event){
+    $("#style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
     
@@ -354,12 +375,12 @@ function init(){
             if((prevBottom + 15 + curHeight) < ($(window).height() - 54))
                 curr.css("top", prevBottom + 15 + "px");                        
             else
-                curr.css("top", "60px").css("left", prevLeft + 255 + "px");            
+                curr.css("top", "100px").css("left", prevLeft + 255 + "px");            
         } else {
             if((prevBottom + 15 + curHeight) < ($(window).height() - 54))
                 curr.css("top", prevBottom + 15 + "px").css("left", prevLeft + "px");           
             else
-                curr.css("top", "60px").css("left", prevLeft + 255 + "px");
+                curr.css("top", "100px").css("left", prevLeft + 255 + "px");
         }
         prevBottom = curr.position().top + curr.height(),
         prevLeft = curr.position().left;
@@ -372,28 +393,31 @@ function init(){
     popupBack.css("left", ($(window).width() - 360)*50/$(window).width() + "%");
     
     $(window).resize(function(){
-        if($("#wgt_edit").hasClass("selected")){
-            if($(".editContainer").size() > 1){            
-                var prev = $(".editContainer:first"),
-                prevBottom = prev.position().top + prev.height(),
-                prevLeft = prev.position().left;
-                recursionCall(prevBottom, prevLeft, prev.next());
+        if(!resizeFlag){
+            if($("#wgt_edit").hasClass("selected")){
+                if($(".editContainer").size() > 1){            
+                    var prev = $(".editContainer:first"),
+                    prevBottom = prev.position().top + prev.height(),
+                    prevLeft = prev.position().left;
+                    recursionCall(prevBottom, prevLeft, prev.next());
+                }
+            } else {
+                var tmp_array = [];
+                $(".readyTask").each(function(){
+                    tmp_array.push($(this));
+                });
+                orderItems(tmp_array);
             }
-        } else {
-            var tmp_array = [];
-            $(".readyTask").each(function(){
-                tmp_array.push($(this));
-            });
-            orderItems(tmp_array);
-        }
-        popupBack.css("top", ($(window).height() - 138)*50/$(window).height() + "%");
-        popupBack.css("left", ($(window).width() - 360)*50/$(window).width() + "%");
+            popupBack.css("top", ($(window).height() - 138)*50/$(window).height() + "%");
+            popupBack.css("left", ($(window).width() - 360)*50/$(window).width() + "%");
+        } else 
+            resizeFlag = false;
     });
     
     if (window.widget) {
         window.widget.onleave = function(){
             exportToSankore();
-            sankore.setPreference("by_style", $(".style_select").find("option:selected").val());
+            sankore.setPreference("by_style", $("#style_select").find("option:selected").val());
         }
     }
     
@@ -416,7 +440,7 @@ function init(){
                     objToExport.data2 = $(domElem).find(".readyTask").find(":last-child").text();
                     objToExport.width = $(domElem).width();
                     objToExport.height = $(domElem).height();
-                    objToExport.top = $(domElem).position().top;
+                    objToExport.top = $(domElem).position().top - 40;
                     objToExport.left = $(domElem).position().left;
                     arrayToExport.push(objToExport);
                 });
@@ -475,14 +499,14 @@ function reloadItems(){
 
 //order items
 function orderItems(items){
-    var bottom = 45,
+    var bottom = ($("#wgt_edit").hasClass("selected"))?85:45,
     lastItemLeft = 54; 
     for (var i in items){
         if((bottom + items[i].height()) < ($(window).height() - 54)){
             items[i].css("top", bottom + 15 + "px").css("left", lastItemLeft + "px").appendTo("#data");
             bottom += items[i].height() + 15;
         } else {
-            bottom = 60;
+            bottom = 100;
             lastItemLeft += 255;
             items[i].css("top", bottom + "px").css("left", lastItemLeft + "px").appendTo("#data");
             bottom += items[i].height();
@@ -507,7 +531,7 @@ function shuffle( arr )
 //adding a new task to the page
 function addTask(expression, result){
     var lastItem = $(".editContainer:last"),
-    lastItemPos = lastItem.length ? lastItem.position().top : 45,
+    lastItemPos = lastItem.length ? lastItem.position().top : 85,
     lastItemHeight = lastItem.length ? lastItem.height() : 0,
     lastItemLeft = lastItem.length ? lastItem.position().left : 54;
     var bottom = lastItemPos + lastItemHeight + 85;
@@ -519,7 +543,7 @@ function addTask(expression, result){
     if(bottom < ($(window).height() - 54)){
         editContent.css("top", lastItemPos + lastItemHeight + 15 + "px").css("left", lastItemLeft + "px").appendTo("#data");
     } else {
-        lastItemPos = 45;
+        lastItemPos = 85;
         editContent.css("top", lastItemPos + 15 + "px").css("left", lastItemLeft + 255 + "px").appendTo("#data");
     }    
     main.appendTo(editContent);
@@ -538,13 +562,12 @@ function changeStyle(val){
             $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
-            $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_add").removeClass("pad_color").removeClass("pad_add");
+            $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").addClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").addClass("radius_ft");
             break;
         case "2":
             $(".b_top_left").addClass("btl_pad").removeClass("without_back");
@@ -556,13 +579,12 @@ function changeStyle(val){
             $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
             $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
-            $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_add").addClass("pad_color").addClass("pad_add");
+            $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").removeClass("radius_ft");
             break;
         case "3":
             $(".b_top_left").addClass("without_back").removeClass("btl_pad");
@@ -573,14 +595,13 @@ function changeStyle(val){
             $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
             $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
             $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
+            $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_help").addClass("pad_color").addClass("pad_help");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_add").addClass("pad_color").addClass("pad_add");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("none_select").val(val);
-            $("body, html").addClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
     if($("#wgt_edit").hasClass("selected"))
