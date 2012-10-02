@@ -1000,10 +1000,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translation>اظهار Uniboard</translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation>التقاط جزء من الشاشة</translation>
     </message>
@@ -1022,6 +1018,10 @@
     <message>
         <source>Show Desktop on Secondary Screen</source>
         <translation>اظهار سطح المكتب على الشاشة الثانوية</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1509,6 +1509,21 @@
     <message>
         <source>Trash</source>
         <translation type="unfinished">سلة المهملات</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">إلغاء </translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2095,6 +2110,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Cache</source>
         <translation>تخزين مؤقت</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

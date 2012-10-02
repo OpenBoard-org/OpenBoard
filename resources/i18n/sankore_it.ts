@@ -999,10 +999,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translation>Mostra Uniboard</translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation>Cattura parte della schermata</translation>
     </message>
@@ -1021,6 +1017,10 @@
     <message>
         <source>Show Desktop on Secondary Screen</source>
         <translation>Mostra il desktop sullo schermo secondario</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1502,6 +1502,21 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <message>
         <source>Trash</source>
         <translation type="unfinished">Cestino</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annulla</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2097,6 +2112,10 @@ risorsa multimediale ...</translation>
     <message>
         <source>Cache</source>
         <translation>Cache</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

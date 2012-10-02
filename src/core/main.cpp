@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
 
     QObject::connect(&app, SIGNAL(messageReceived(const QString&)), &app, SLOT(handleOpenMessage(const QString&)));
 
-    qDebug() << fileToOpen;
+    qDebug() << "file name argument" << fileToOpen;
     int result = app.exec(fileToOpen);
 
     app.cleanup();

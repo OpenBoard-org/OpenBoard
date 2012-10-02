@@ -1003,10 +1003,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translation>Pokaż Uniboard</translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation>Przechwyć część ekranu</translation>
     </message>
@@ -1025,6 +1021,10 @@
     <message>
         <source>Show Desktop on Secondary Screen</source>
         <translation>Pokaż pulpit na ekranie podrzędnym</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1507,6 +1507,21 @@
     <message>
         <source>Trash</source>
         <translation type="unfinished">Kosz</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2099,6 +2114,10 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     <message>
         <source>Cache</source>
         <translation>Pamięć podręczna</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

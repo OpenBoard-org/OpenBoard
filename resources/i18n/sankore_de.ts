@@ -999,10 +999,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translation>Uniboard anzeigen</translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation>Teil des Bildschirms erfassen</translation>
     </message>
@@ -1021,6 +1017,10 @@
     <message>
         <source>Show Desktop on Secondary Screen</source>
         <translation>Desktop auf zweitem Bildschirm anzeigen</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1500,6 +1500,21 @@
     <message>
         <source>Trash</source>
         <translation type="unfinished">Papierkorb</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2100,6 +2115,10 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     <message>
         <source>Cache</source>
         <translation>Zwischenspeicher</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

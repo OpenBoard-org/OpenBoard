@@ -999,10 +999,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translation>유니보드 보이기</translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation>화면 일부 캡처</translation>
     </message>
@@ -1021,6 +1017,10 @@
     <message>
         <source>Show Desktop on Secondary Screen</source>
         <translation>보조 화면에 바탕 화면 보이기</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1498,6 +1498,21 @@
     <message>
         <source>Trash</source>
         <translation type="unfinished">휴지통</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">취소</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2090,6 +2105,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Cache</source>
         <translation>캐시</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

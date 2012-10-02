@@ -74,11 +74,9 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     mBottomResizeGrip = new QGraphicsRectItem(this);
     mBottomResizeGrip->setPen(Qt::NoPen);
     mLeftResizeGrip = new QGraphicsRectItem(this);
-    mLeftResizeGrip->setToolTip("left");
     mLeftResizeGrip->setPen(Qt::NoPen);
     mRightResizeGrip = new QGraphicsRectItem(this);
     mRightResizeGrip->setPen(Qt::NoPen);
-    mRightResizeGrip->setToolTip("Right");
     mTopResizeGrip = new QGraphicsRectItem(this);
     mTopResizeGrip->setPen(Qt::NoPen);
 
@@ -563,8 +561,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             mTranslateX += fixedPoint.x() - bottomRight.x();
             mTranslateY += fixedPoint.y() - bottomRight.y();
         }
-        else if (moving() || rotating())
-            delegated()->setTransform(tr);
+        delegated()->setTransform(buildTransform());
     }
     else // resizing/resizing horizontally
     {                  

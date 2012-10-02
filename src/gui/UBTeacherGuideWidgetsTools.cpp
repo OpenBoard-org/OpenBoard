@@ -164,7 +164,7 @@ void UBTGAdaptableText::keyReleaseEvent(QKeyEvent* e)
 void UBTGAdaptableText::showEvent(QShowEvent* e)
 {
     Q_UNUSED(e);
-    if(!mIsUpdatingSize && mHasPlaceHolder && toPlainText().isEmpty() && !isReadOnly()){
+    if(!mIsUpdatingSize && !hasFocus() && mHasPlaceHolder && toPlainText().isEmpty() && !isReadOnly()){
     	setTextColor(QColor(Qt::lightGray));
     	setPlainText(mPlaceHolderText);
     }
@@ -193,7 +193,8 @@ void UBTGAdaptableText::onTextChanged()
 
     if(documentSize < mMinimumHeight){
     	setFixedHeight(mMinimumHeight);
-    }else{
+    }
+    else{
     	setFixedHeight(documentSize+mBottomMargin);
     }
 
@@ -230,24 +231,23 @@ void UBTGAdaptableText::bottomMargin(int newValue)
 
 void UBTGAdaptableText::focusInEvent(QFocusEvent* e)
 {
-	qDebug() << "pippa";
 	if(isReadOnly()){
 		e->ignore();
-		qDebug() << "ignored";
 	}
 	managePlaceholder(true);
 	QTextEdit::focusInEvent(e);
 }
 
-void UBTGAdaptableText::focusOutEvent(QFocusEvent* e){
+void UBTGAdaptableText::focusOutEvent(QFocusEvent* e)
+{
 	managePlaceholder(false);
 	QTextEdit::focusOutEvent(e);
 }
 
-void UBTGAdaptableText::managePlaceholder(bool focus){
+void UBTGAdaptableText::managePlaceholder(bool focus)
+{
 	if(focus){
 		if(toPlainText() == mPlaceHolderText){
-			qDebug() << "Place holder found";
 			setTextColor(QColor(Qt::black));
 			setPlainText("");
 		}
@@ -261,7 +261,8 @@ void UBTGAdaptableText::managePlaceholder(bool focus){
 	}
 }
 
-void UBTGAdaptableText::setCursorToTheEnd(){
+void UBTGAdaptableText::setCursorToTheEnd()
+{
 	QTextDocument* doc = document();
 	if(NULL != doc){
 		QTextBlock block = doc->lastBlock();

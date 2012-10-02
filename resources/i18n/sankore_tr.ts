@@ -999,10 +999,6 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
-        <source>Show Uniboard</source>
-        <translation>Uniboard&apos;u Göster</translation>
-    </message>
-    <message>
         <source>Capture Part of the Screen</source>
         <translation>Ekranın Bir Bölümünü Yakala</translation>
     </message>
@@ -1021,6 +1017,10 @@
     <message>
         <source>Show Desktop on Secondary Screen</source>
         <translation>Masaüstünü İkincil Ekranda Göster</translation>
+    </message>
+    <message>
+        <source>Show Open-Sankore</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1499,6 +1499,21 @@
     <message>
         <source>Trash</source>
         <translation type="unfinished">Çöp</translation>
+    </message>
+</context>
+<context>
+    <name>UBFeaturesNewFolderDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal</translation>
+    </message>
+    <message>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2090,6 +2105,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     <message>
         <source>Cache</source>
         <translation>Gizli Yer</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

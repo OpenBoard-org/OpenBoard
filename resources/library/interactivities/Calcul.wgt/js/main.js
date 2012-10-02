@@ -27,7 +27,7 @@ function reloadApp(app) {
 	$pagination = $("<ul class='pagination'></ul>");
 	$operationContainer.append($pagination);
 	for (var i = 0; i < operations; i++)
-		$("<li><a href='#'>"+(i+1)+"</a></li>").appendTo($pagination);
+		$("<li><span>"+(i+1)+"</span></li>").appendTo($pagination);
 
 	$operations = $("<ul class='operations'></ul>");
 	$operationContainer.append($operations);

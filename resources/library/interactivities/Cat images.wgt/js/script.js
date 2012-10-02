@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Display", 
+    display: "Close", 
     edit: "Edit", 
     first_desc: "Odd numbers", 
     second_desc: "Even numbers", 
@@ -11,7 +11,8 @@ var sankoreLang = {
     pad: "Pad",
     none: "None",
     help: "Help",
-    help_content: "This is an example of help content ..."
+    help_content: "This is an example of help content ...",
+    theme: "Theme"
 };
 
 //main function
@@ -23,9 +24,11 @@ function start(){
     $("#wgt_reload").text(sankoreLang.reload);
     $("#wgt_help").text(sankoreLang.help);
     $("#help").html(sankoreLang.help_content);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    $(".style_select option[value='3']").text(sankoreLang.none);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='3']").text(sankoreLang.none);
+    var tmpl = $("div.inline label").html();
+    $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
         if(sankore.preference("categoriser_images","")){
@@ -47,11 +50,13 @@ function start(){
     $("#wgt_help").click(function(){
         var tmp = $(this);
         if($(this).hasClass("open")){
+            $(this).removeClass("help_pad").removeClass("help_wood")
             $("#help").slideUp("100", function(){
                 tmp.removeClass("open");
                 $("#data").show();
             });
-        } else {            
+        } else {
+            ($("#style_select").val() == 1)?$(this).removeClass("help_pad").addClass("help_wood"):$(this).removeClass("help_wood").addClass("help_pad");
             $("#data").hide();
             $("#help").slideDown("100", function(){
                 tmp.addClass("open");
@@ -72,7 +77,7 @@ function start(){
         exportData();
     });
     
-    $(".style_select").change(function (event){
+    $("#style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
     
@@ -81,7 +86,7 @@ function start(){
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");
+                $("#parameters").css("display","none");
                 if(window.sankore)
                     sankore.enableDropOnWidget(false);
                 $(".add_block").remove();
@@ -112,7 +117,7 @@ function start(){
                             drop: function(event, ui) {
                                 if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                                     var tmp_ui = $(ui.draggable).parent();
-                                    checkOnDrop($(this), $(ui.draggable));
+                                    $(this).append($(ui.draggable));
                                     checkCorrectness(tmp_ui);
                                 }
                             }
@@ -152,7 +157,7 @@ function start(){
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");
+                $("#parameters").css("display","block");
                 if(window.sankore)
                     sankore.enableDropOnWidget(true);
                 $(".cont").each(function(){
@@ -234,7 +239,7 @@ function exportData(){
     if($("#wgt_edit").hasClass("selected")){
         $(".cont").each(function(){
             var cont_obj = new Object();
-            cont_obj.style = $(".style_select").find("option:selected").val();
+            cont_obj.style = $("#style_select").find("option:selected").val();
             cont_obj.mode = "edit";
             cont_obj.conts = [];
             $(this).find(".imgs_cont").each(function(){
@@ -258,7 +263,7 @@ function exportData(){
     } else {
         $(".cont").each(function(){
             var cont_obj = new Object();
-            cont_obj.style = $(".style_select").find("option:selected").val();
+            cont_obj.style = $("#style_select").find("option:selected").val();
             cont_obj.mode = "display";
             cont_obj.conts = [];
             $(this).find(".imgs_cont").each(function(){
@@ -292,7 +297,7 @@ function exportData(){
     
     if($(".cont").size() == 0){
         var cont_obj = new Object();
-        cont_obj.style = $(".style_select").find("option:selected").val();
+        cont_obj.style = $("#style_select").find("option:selected").val();
         cont_obj.tmp = "clear";
         array_to_export.push(cont_obj);
     }
@@ -307,11 +312,11 @@ function importData(data){
     for(var i in data){
         if(data[i].tmp){
             changeStyle(data[i].style);
-            $(".style_select").val(data[i].style);
+            $("#style_select").val(data[i].style);
         } else {
             if(i == 0){
                 changeStyle(data[i].style);
-                $(".style_select").val(data[i].style);
+                $("#style_select").val(data[i].style);
             }
             if(data[i].mode == "edit"){          
                 var tmp_array = [];
@@ -341,7 +346,7 @@ function importData(data){
                         drop: function(event, ui) {
                             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                                 var tmp_ui = $(ui.draggable).parent();
-                                checkOnDrop($(this), $(ui.draggable));
+                                $(this).append($(ui.draggable));
                                 checkCorrectness(tmp_ui);
                             }
                         }
@@ -413,12 +418,11 @@ function importData(data){
                         drop: function(event, ui) {
                             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                                 var tmp_ui = $(ui.draggable).parent();
-                                checkOnDrop($(this), $(ui.draggable));
+                                $(this).append($(ui.draggable));
                                 checkCorrectness(tmp_ui);
                             }
                         }
-                    });        
-                    checkCorrectness(imgs_container);
+                    });          
                 }
             
                 all_imgs = $("<div class='all_imgs'>").appendTo(container); 
@@ -458,6 +462,7 @@ function importData(data){
                     }
                 });            
                 container.appendTo("#data");
+                checkCorrectness(all_imgs);
             }
         }
     }
@@ -520,7 +525,7 @@ function showExample(){
         drop: function(event, ui) {
             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                 var tmp_ui = $(ui.draggable).parent();
-                checkOnDrop($(this), $(ui.draggable));
+                $(this).append($(ui.draggable));
                 checkCorrectness(tmp_ui);
             }
         }
@@ -531,7 +536,7 @@ function showExample(){
         drop: function(event, ui) {
             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                 var tmp_ui = $(ui.draggable).parent();
-                checkOnDrop($(this), $(ui.draggable));
+                $(this).append($(ui.draggable));
                 checkCorrectness(tmp_ui);
             }
         }
@@ -561,9 +566,9 @@ function addCategory(obj){
     $("<button class='del_category'></button>").appendTo(imgs_container);
     $("<button class='add_category'></button>").appendTo(imgs_container);
     imgs_container.attr("ondragenter", "return false;")
-    .attr("ondragleave", "$(this).css(\"background-color\",\"\"); return false;")
-    .attr("ondragover", "$(this).css(\"background-color\",\"\"); return false;")
-    .attr("ondrop", "$(this).css(\"background-color\",\"\"); return onDropTarget(this,event);");
+    .attr("ondragleave", "$(this).css(\"background-color\",\"#e6f6ff\"); return false;")
+    .attr("ondragover", "$(this).css(\"background-color\",\"#c3e9ff\"); return false;")
+    .attr("ondrop", "$(this).css(\"background-color\",\"#e6f6ff\"); return onDropTarget(this,event);");
 }
 
 //add new container
@@ -625,10 +630,10 @@ function changeStyle(val){
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
             $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").addClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").addClass("radius_ft");
             break;
         case "2":
             $(".b_top_left").addClass("btl_pad").removeClass("without_back");
@@ -642,10 +647,10 @@ function changeStyle(val){
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").removeClass("radius_ft");
             break;
         case "3":
             $(".b_top_left").addClass("without_back").removeClass("btl_pad");
@@ -659,10 +664,10 @@ function changeStyle(val){
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("none_select").val(val);
-            $("body, html").addClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
 }
@@ -686,8 +691,7 @@ function returnId(){
 }
 
 //a func for checking when smth will drop
-function checkOnDrop(dest, source){
-    dest.append(source); 
+function checkOnDrop(dest){
     var tmp_count = dest.find("input[name='count']").val();
     var tmp_mask = dest.find("input[name='mask']").val();
     if(dest.find(".img_block").size() == tmp_count){
@@ -697,47 +701,35 @@ function checkOnDrop(dest, source){
                 tmp_right = false;
         });          
         if(tmp_right)
-            dest.removeClass("def_cont")
-            .removeClass("red_cont")
-            .addClass("green_cont");
+            dest.removeClass("def_cont").removeClass("red_cont").addClass("green_cont");
         else
-            dest.removeClass("def_cont")
-            .removeClass("green_cont")
-            .addClass("red_cont");
+            dest.removeClass("def_cont").removeClass("green_cont").addClass("red_cont");
     } else 
-        dest.removeClass("def_cont")
-        .removeClass("green_cont")
-        .addClass("red_cont");
+        dest.removeClass("def_cont").removeClass("green_cont").addClass("red_cont");
 }
 
 //checking source on correctness
 function checkCorrectness(source){
     if(!source.hasClass("all_imgs")){
-        var tmp_count = source.find("input[name='count']").val();
-        var tmp_mask = source.find("input[name='mask']").val();
-        if(source.find(".img_block").size() == tmp_count){
-            var tmp_right = true;                    
-            source.find(".img_block").each(function(){
-                if($(this).find("input").val() != tmp_mask)
-                    tmp_right = false;
-            });
-                    
-            if(tmp_right)
-                source.removeClass("def_cont")
-                .removeClass("red_cont")
-                .addClass("green_cont");
-            else
-                source.removeClass("def_cont")
-                .removeClass("green_cont")
-                .addClass("red_cont");
-        } else if(source.find(".img_block").size() == 0)
-            source.addClass("def_cont")
-            .removeClass("green_cont")
-            .removeClass("red_cont");
-        else 
-            source.removeClass("def_cont")
-            .removeClass("green_cont")
-            .addClass("red_cont");
+        if(source.parent().find(".all_imgs").find(".img_block").size() == 0){
+            source.parent().find(".imgs_cont").each(function(){
+                checkOnDrop($(this))
+            })
+        } else {
+            source.parent().find(".imgs_cont").each(function(){
+                $(this).addClass("def_cont").removeClass("green_cont").removeClass("red_cont");
+            })
+        }
+    } else {
+        if(source.find(".img_block").size() > 0){
+            source.parent().find(".imgs_cont").each(function(){
+                $(this).addClass("def_cont").removeClass("green_cont").removeClass("red_cont");
+            })
+        } else {
+            source.parent().find(".imgs_cont").each(function(){
+                checkOnDrop($(this))
+            })
+        }
     }
 }
 

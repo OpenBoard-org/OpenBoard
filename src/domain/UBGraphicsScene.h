@@ -216,6 +216,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void addCompass(QPointF center);
         void addTriangle(QPointF center);
         void addMagnifier(UBMagnifierParams params);
+        void addAristo(QPointF center);
 
         void addMask(const QPointF &center = QPointF());
         void addCache();
@@ -301,6 +302,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         static QUuid getPersonalUuid(QGraphicsItem *item);
 
+        UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
+
 public slots:
 		void initStroke();
         void hideEraser();
@@ -337,7 +340,6 @@ public slots:
 
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);
         UBGraphicsPolygonItem* arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth);
-        UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
 
         void initPolygonItem(UBGraphicsPolygonItem*);
 

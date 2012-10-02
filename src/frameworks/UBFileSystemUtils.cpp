@@ -19,7 +19,6 @@
 
 #include "core/UBApplication.h"
 
-#include "board/UBBoardController.h"
 #include "document/UBDocumentContainer.h"
 
 #include "globals/UBGlobals.h"
@@ -360,7 +359,7 @@ QString UBFileSystemUtils::thumbnailPath(const QString& path)
 
 QString UBFileSystemUtils::extension(const QString& fileName)
 {
-    QString extension;
+    QString extension("");
 
     int lastDotIndex = fileName.lastIndexOf(".");
 
@@ -398,6 +397,7 @@ QString UBFileSystemUtils::lastPathComponent(const QString& path)
 
 QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
 {
+    Q_ASSERT(fileName.length());
     QString ext = extension(fileName);
 
     if (ext == "xls" || ext == "xlsx") return "application/msexcel";
@@ -855,4 +855,3 @@ QString UBFileSystemUtils::readTextFile(QString path)
 
     return "";
 }
-

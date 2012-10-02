@@ -30,7 +30,7 @@ typedef enum
 class UBGraphicsCache : public QGraphicsRectItem, public UBItem
 {
 public:
-    UBGraphicsCache();
+    static UBGraphicsCache* instance(UBGraphicsScene *scene);
     ~UBGraphicsCache();
 
     enum { Type = UBGraphicsItemType::cacheItemType };
@@ -55,8 +55,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
-    void init();
-    QRectF updateRect(QPointF currentPoint);
+    static QMap<UBGraphicsScene*, UBGraphicsCache*> sInstances;
 
     QColor mMaskColor;
     eMaskShape mMaskShape;
@@ -65,6 +64,13 @@ private:
     QPointF mShapePos;
     int mOldShapeWidth;
     QPointF mOldShapePos;
+    UBGraphicsScene* mScene;
+    
+
+    UBGraphicsCache(UBGraphicsScene *scene);
+    
+    void init();
+    QRectF updateRect(QPointF currentPoint);
 };
 
 #endif // UBGRAPHICSCACHE_H

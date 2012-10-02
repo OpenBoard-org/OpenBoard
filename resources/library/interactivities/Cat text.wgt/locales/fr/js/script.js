@@ -18,15 +18,15 @@ var sankoreLang = {
     none: "aucun",
     help: "Aide",
     help_content: "<p><h2>Catégoriser des textes</h2></p>"+
-"<p><h3>Classer des étiquettes de mots en fonction de la dénomination de la catégorie.</h3></p>"+
+    "<p><h3>Classer des étiquettes de mots en fonction de la dénomination de la catégorie.</h3></p>"+
 
-"<p>L’activité s’effectue par un glisser-déposer de l’étiquette de mots dans la catégorie correspondante. Tant que toutes les étiquettes de mots ne sont pas classées, la zone reste rouge. Une fois que toutes les étiquettes de mots sont classées dans la bonne catégorie, la zone se colore en vert.</p>"+
+    "<p>L’activité s’effectue par un glisser-déposer de l’étiquette de mots dans la catégorie correspondante. Tant que toutes les étiquettes de mots ne sont pas classées, la zone reste rouge. Une fois que toutes les étiquettes de mots sont classées dans la bonne catégorie, la zone se colore en vert.</p>"+
 
-"<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
+    "<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
 
-"<p>Le bouton “Modifier” vous permet :</p>"+
-"<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
-"<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
+    "<p>Le bouton “Modifier” vous permet :</p>"+
+    "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
+    "<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
 
 "<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, une zone bleue apparaît, c’est une catégorie, puis :</p>"+
 "<ul><li>insérez le nom de la catégorie (par exemple “fruits”, “légumes”, “mammifères”...) en cliquant dans le champ de texte “Saisir le nom de la catégorie ici …”,</li>"+
@@ -36,9 +36,11 @@ var sankoreLang = {
 "<p>Pour supprimer une étiquette de mots, cliquez sur la croix située dans le coin supérieur droit de celle-ci.</p>"+
 "<p>Pour supprimer une catégorie, cliquez sur le signe “-” situé à droite de celle-ci.</p>"+
 
-"<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
 
-"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>"
+    "<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
+
+    "<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>",
+    theme: "Thème"
 };
 
 //main function
@@ -50,9 +52,11 @@ function start(){
     $("#wgt_reload").text(sankoreLang.reload);
     $("#wgt_help").text(sankoreLang.help);
     $("#help").html(sankoreLang.help_content);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    $(".style_select option[value='3']").text(sankoreLang.none);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='3']").text(sankoreLang.none);
+    var tmpl = $("div.inline label").html();
+    $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
         if(sankore.preference("categoriser_text","")){
@@ -74,11 +78,13 @@ function start(){
     $("#wgt_help").click(function(){
         var tmp = $(this);
         if($(this).hasClass("open")){
+            $(this).removeClass("help_pad").removeClass("help_wood")
             $("#help").slideUp("100", function(){
                 tmp.removeClass("open");
                 $("#data").show();
             });
-        } else {            
+        } else {
+            ($("#style_select").val() == 1)?$(this).removeClass("help_pad").addClass("help_wood"):$(this).removeClass("help_wood").addClass("help_pad");
             $("#data").hide();
             $("#help").slideDown("100", function(){
                 tmp.addClass("open");
@@ -99,7 +105,7 @@ function start(){
         exportData();
     });
     
-    $(".style_select").change(function (event){
+    $("#style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
     
@@ -108,7 +114,7 @@ function start(){
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");
+                $("#parameters").css("display","none");
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -141,7 +147,7 @@ function start(){
                             drop: function(event, ui) {
                                 if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                                     var tmp_ui = $(ui.draggable).parent();
-                                    checkOnDrop($(this), $(ui.draggable));
+                                    $(this).append($(ui.draggable));
                                     checkCorrectness(tmp_ui);
                                 }
                             }
@@ -181,7 +187,7 @@ function start(){
             if(!$(this).hasClass("selected")){
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");
+                $("#parameters").css("display","block");
                 $(".cont").each(function(){
                     var container = $(this);
                     
@@ -265,7 +271,7 @@ function exportData(){
             cont_obj.conts = [];
             $(this).find(".imgs_cont").each(function(){
                 var img_cont = new Object();
-                cont_obj.style = $(".style_select").find("option:selected").val();
+                cont_obj.style = $("#style_select").find("option:selected").val();
                 img_cont.mask = $(this).find("input[name='mask']").val();
                 img_cont.count = $(this).find(".img_block").size();
                 img_cont.text = $(this).find(".cat_desc").val();
@@ -287,7 +293,7 @@ function exportData(){
             cont_obj.conts = [];
             $(this).find(".imgs_cont").each(function(){
                 var img_cont = new Object();
-                cont_obj.style = $(".style_select").find("option:selected").val();
+                cont_obj.style = $("#style_select").find("option:selected").val();
                 img_cont.mask = $(this).find("input[name='mask']").val();
                 img_cont.count = $(this).find("input[name='count']").val();
                 img_cont.text = $(this).find(".cat_desc").val();
@@ -313,7 +319,7 @@ function exportData(){
     
     if($(".cont").size() == 0){
         var cont_obj = new Object();
-        cont_obj.style = $(".style_select").find("option:selected").val();
+        cont_obj.style = $("#style_select").find("option:selected").val();
         cont_obj.tmp = "clear";
         array_to_export.push(cont_obj);
     }
@@ -328,12 +334,12 @@ function importData(data){
     for(var i in data){
         if(data[i].tmp){
             changeStyle(data[i].style);
-            $(".style_select").val(data[i].style);
+            $("#style_select").val(data[i].style);
         }
         else {
             if(i == 0){
                 changeStyle(data[i].style);
-                $(".style_select").val(data[i].style);
+                $("#style_select").val(data[i].style);
             }
             if(data[i].mode == "edit"){          
                 var tmp_array = [];
@@ -360,7 +366,7 @@ function importData(data){
                         drop: function(event, ui) {
                             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                                 var tmp_ui = $(ui.draggable).parent();
-                                checkOnDrop($(this), $(ui.draggable));
+                                $(this).append($(ui.draggable));
                                 checkCorrectness(tmp_ui);
                             }
                         }
@@ -431,7 +437,7 @@ function importData(data){
                         drop: function(event, ui) {
                             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                                 var tmp_ui = $(ui.draggable).parent();
-                                checkOnDrop($(this), $(ui.draggable));
+                                $(this).append($(ui.draggable));
                                 checkCorrectness(tmp_ui);
                             }
                         }
@@ -473,7 +479,8 @@ function importData(data){
                             }
                         }
                     }
-                });            
+                });       
+                checkCorrectness(all_imgs);
             }
         }
     }
@@ -537,7 +544,7 @@ function showExample(){
         drop: function(event, ui) {
             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                 var tmp_ui = $(ui.draggable).parent();
-                checkOnDrop($(this), $(ui.draggable));
+                $(this).append($(ui.draggable));
                 checkCorrectness(tmp_ui);
             }
         }
@@ -548,7 +555,7 @@ function showExample(){
         drop: function(event, ui) {
             if($(ui.draggable).parent().parent().html() == $(this).parent().html()){
                 var tmp_ui = $(ui.draggable).parent();
-                checkOnDrop($(this), $(ui.draggable));
+                $(this).append($(ui.draggable));
                 checkCorrectness(tmp_ui);
             }
         }
@@ -663,10 +670,10 @@ function changeStyle(val){
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
             $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").addClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").addClass("radius_ft");
             break;
         case "2":
             $(".b_top_left").addClass("btl_pad").removeClass("without_back");
@@ -680,10 +687,10 @@ function changeStyle(val){
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").removeClass("radius_ft");
             break;
         case "3":
             $(".b_top_left").addClass("without_back").removeClass("btl_pad");
@@ -697,17 +704,16 @@ function changeStyle(val){
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("none_select").val(val);
-            $("body, html").addClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
 }
 
 //a func for checking when smth will drop
-function checkOnDrop(dest, source){
-    dest.append(source); 
+function checkOnDrop(dest){
     var tmp_count = dest.find("input[name='count']").val();
     var tmp_mask = dest.find("input[name='mask']").val();
     if(dest.find(".img_block").size() == tmp_count){
@@ -717,46 +723,34 @@ function checkOnDrop(dest, source){
                 tmp_right = false;
         });          
         if(tmp_right)
-            dest.removeClass("def_cont")
-            .removeClass("red_cont")
-            .addClass("green_cont");
+            dest.removeClass("def_cont").removeClass("red_cont").addClass("green_cont");
         else
-            dest.removeClass("def_cont")
-            .removeClass("green_cont")
-            .addClass("red_cont");
+            dest.removeClass("def_cont").removeClass("green_cont").addClass("red_cont");
     } else 
-        dest.removeClass("def_cont")
-        .removeClass("green_cont")
-        .addClass("red_cont");
+        dest.removeClass("def_cont").removeClass("green_cont").addClass("red_cont");
 }
 
 //checking source on correctness
 function checkCorrectness(source){
     if(!source.hasClass("all_imgs")){
-        var tmp_count = source.find("input[name='count']").val();
-        var tmp_mask = source.find("input[name='mask']").val();
-        if(source.find(".img_block").size() == tmp_count){
-            var tmp_right = true;                    
-            source.find(".img_block").each(function(){
-                if($(this).find("input").val() != tmp_mask)
-                    tmp_right = false;
-            });
-                    
-            if(tmp_right)
-                source.removeClass("def_cont")
-                .removeClass("red_cont")
-                .addClass("green_cont");
-            else
-                source.removeClass("def_cont")
-                .removeClass("green_cont")
-                .addClass("red_cont");
-        } else if(source.find(".img_block").size() == 0)
-            source.addClass("def_cont")
-            .removeClass("green_cont")
-            .removeClass("red_cont");
-        else 
-            source.removeClass("def_cont")
-            .removeClass("green_cont")
-            .addClass("red_cont");
+        if(source.parent().find(".all_imgs").find(".img_block").size() == 0){
+            source.parent().find(".imgs_cont").each(function(){
+                checkOnDrop($(this))
+            })
+        } else {
+            source.parent().find(".imgs_cont").each(function(){
+                $(this).addClass("def_cont").removeClass("green_cont").removeClass("red_cont");
+            })
+        }
+    } else {
+        if(source.find(".img_block").size() > 0){
+            source.parent().find(".imgs_cont").each(function(){
+                $(this).addClass("def_cont").removeClass("green_cont").removeClass("red_cont");
+            })
+        } else {
+            source.parent().find(".imgs_cont").each(function(){
+                checkOnDrop($(this))
+            })
+        }
     }
 }

@@ -281,7 +281,7 @@ void WBWebTrapWebView::trapElementAtPos(const QPoint& pos)
             emit objectCaptured(QUrl(page()->currentFrame()->url().toString() + "/" + source), type,
                     htr.boundingRect().width(), htr.boundingRect().height());
 
-            UBApplication::boardController->downloadURL(QUrl(source), QPointF(0.0, 0.0));
+            UBApplication::boardController->downloadURL(QUrl(source));
             UBApplication::applicationController->showBoard();
         }
     }

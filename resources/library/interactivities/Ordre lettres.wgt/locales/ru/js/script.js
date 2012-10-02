@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Показать", 
+    display: "Закрыть", 
     edit: "Изменить", 
     short_desc: "Прослушайте звук и составьте корректное слово.", 
     add: "Новый блок",
@@ -11,9 +11,9 @@ var sankoreLang = {
     pad: "Планшет",
     none: "Нет",
     help: "Помощь",
-    help_content: "Пример текста помощи ..."
+    help_content: "Пример текста помощи ...",
+    theme: "Тема"
 };
-
 
 //main function
 function start(){
@@ -24,9 +24,11 @@ function start(){
     $("#wgt_reload").text(sankoreLang.reload);
     $("#wgt_help").text(sankoreLang.help);
     $("#help").html(sankoreLang.help_content);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    $(".style_select option[value='3']").text(sankoreLang.none);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='3']").text(sankoreLang.none);
+    var tmpl = $("div.inline label").html();
+    $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
         if(sankore.preference("associer_sound","")){
@@ -37,7 +39,7 @@ function start(){
             showExample();
         if(sankore.preference("ord_let_style","")){
             changeStyle(sankore.preference("ord_let_style",""));
-            $(".style_select").val(sankore.preference("ord_let_style",""));
+            $("#style_select").val(sankore.preference("ord_let_style",""));
         } else
             changeStyle("3")
     } 
@@ -47,18 +49,20 @@ function start(){
     if (window.widget) {
         window.widget.onleave = function(){
             exportData();
-            sankore.setPreference("ord_let_style", $(".style_select").find("option:selected").val());
+            sankore.setPreference("ord_let_style", $("#style_select").find("option:selected").val());
         }
     }
     
     $("#wgt_help").click(function(){
         var tmp = $(this);
         if($(this).hasClass("open")){
+            $(this).removeClass("help_pad").removeClass("help_wood")
             $("#help").slideUp("100", function(){
                 tmp.removeClass("open");
                 $("#data").show();
             });
-        } else {            
+        } else {
+            ($("#style_select").val() == 1)?$(this).removeClass("help_pad").addClass("help_wood"):$(this).removeClass("help_wood").addClass("help_pad");
             $("#data").hide();
             $("#help").slideDown("100", function(){
                 tmp.addClass("open");
@@ -79,7 +83,7 @@ function start(){
         exportData();
     });
     
-    $(".style_select").change(function (event){
+    $("#style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
     
@@ -90,7 +94,7 @@ function start(){
                     sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");
+                $("#parameters").css("display","none");
                 $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
@@ -114,7 +118,11 @@ function start(){
                     tmp_array = shuffle(tmp_array);
                     for(var i = 0; i<tmp_array.length;i++)
                         tmp_array[i].appendTo(ul_cont);
-                    ul_cont.sortable({revert: true, placeholder: "highlight", update: checkResult});
+                    ul_cont.sortable({
+                        revert: true, 
+                        placeholder: "highlight", 
+                        update: checkResult
+                    });
                 });
                 $(this).css("display", "none");
                 $("#wgt_edit").css("display", "block");
@@ -125,7 +133,7 @@ function start(){
                     sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");
+                $("#parameters").css("display","block");
                 $(".cont").each(function(){
                     var container = $(this);
                     $("<div class='close_cont'>").appendTo(container);
@@ -281,7 +289,7 @@ function importData(data){
         var audio_block = $("<div class='audio_block'>").appendTo(text);
         $("<div class='play'>").appendTo(audio_block);
         $("<div class='replay'>").appendTo(audio_block);
-        var source = $("<source/>").attr("src", "../../" + data[i].audio);
+        var source = $("<source/>").attr("src", data[i].audio);
         var audio = $("<audio>").appendTo(audio_block);
         audio.append(source);
         $("<input type='hidden'/>").appendTo(audio_block);
@@ -307,7 +315,10 @@ function importData(data){
         for(j = 0; j<tmp_array.length;j++)
             tmp_array[j].appendTo(imgs_container);
         
-        imgs_container.sortable({revert: true, placeholder: "highlight"}).bind('sortupdate', function(event, ui) {
+        imgs_container.sortable({
+            revert: true, 
+            placeholder: "highlight"
+        }).bind('sortupdate', function(event, ui) {
             checkResult(event);
         }); 
         if(data[i].cur_answer)
@@ -328,7 +339,7 @@ function showExample(){
     var audio_block = $("<div class='audio_block'>").appendTo(text);
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
-    var source = $("<source/>").attr("src", "objects/beep.mp3");
+    var source = $("<source/>").attr("src", "objects/exemple.mp3");
     var audio = $("<audio>").appendTo(audio_block);
     audio.append(source);
     $("<input type='hidden'/>").appendTo(audio_block);
@@ -344,7 +355,10 @@ function showExample(){
     tmp_array = shuffle(tmp_array);
     for(var i = 0; i<tmp_array.length;i++)
         tmp_array[i].appendTo(imgs_container);
-    imgs_container.sortable({revert: true, placeholder: "highlight"}).bind('sortupdate', function(event, ui) {
+    imgs_container.sortable({
+        revert: true, 
+        placeholder: "highlight"
+    }).bind('sortupdate', function(event, ui) {
         checkResult(event);
     });
 }
@@ -441,10 +455,10 @@ function changeStyle(val){
             $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
             $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").addClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").addClass("radius_ft");
             break;
         case "2":
             $(".b_top_left").addClass("btl_pad").removeClass("without_back");
@@ -458,10 +472,10 @@ function changeStyle(val){
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").removeClass("radius_ft");
             break;
         case "3":
             $(".b_top_left").addClass("without_back").removeClass("btl_pad");
@@ -475,10 +489,10 @@ function changeStyle(val){
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("none_select").val(val);
-            $("body, html").addClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
 }

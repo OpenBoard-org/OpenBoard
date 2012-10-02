@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Display", 
+    display: "Close", 
     edit: "Edit", 
     text_content: "This is an example. Instead of this text you can put your own content.", 
     new_txt: "New text block",
@@ -9,7 +9,8 @@ var sankoreLang = {
     pad: "Pad",
     none: "None",
     help: "Help",
-    help_content: "This is an example of help content ..."
+    help_content: "This is an example of help content ...",
+    theme: "Theme"
 };
 
 //some flags
@@ -31,9 +32,11 @@ function start(){
     $("#wgt_name").text(sankoreLang.wgt_name);
     $("#wgt_help").text(sankoreLang.help);
     $("#help").html(sankoreLang.help_content);
-    $(".style_select option[value='1']").text(sankoreLang.slate);
-    $(".style_select option[value='2']").text(sankoreLang.pad);
-    $(".style_select option[value='3']").text(sankoreLang.none);
+    $("#style_select option[value='1']").text(sankoreLang.slate);
+    $("#style_select option[value='2']").text(sankoreLang.pad);
+    $("#style_select option[value='3']").text(sankoreLang.none);
+    var tmpl = $("div.inline label").html();
+    $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
         if(sankore.preference("etudier","")){
@@ -44,7 +47,7 @@ function start(){
             showExample();
         if(sankore.preference("etudier_style","")){
             changeStyle(sankore.preference("etudier_style",""));
-            $(".style_select").val(sankore.preference("etudier_style",""));
+            $("#style_select").val(sankore.preference("etudier_style",""));
         } else
             changeStyle("3")
     } 
@@ -56,7 +59,7 @@ function start(){
         window.widget.onleave = function(){
             if(!$("#wgt_help").hasClass("open")){
                 exportData();
-                sankore.setPreference("etudier_style", $(".style_select").find("option:selected").val());
+                sankore.setPreference("etudier_style", $("#style_select").find("option:selected").val());
                 sankore.setPreference("etudier_cur_page", $("#slider").getPage());
                 sankore.setPreference("etudier_left_nav", $("#prevBtn a").css("display"));
                 sankore.setPreference("etudier_right_nav", $("#nextBtn a").css("display"));
@@ -64,19 +67,21 @@ function start(){
         }
     }
     
-    $(".style_select").change(function (event){
+    $("#style_select").change(function (event){
         changeStyle($(this).find("option:selected").val());
     })
     
     $("#wgt_help").click(function(){
         var tmp = $(this);
         if($(this).hasClass("open")){
+            $(this).removeClass("help_pad").removeClass("help_wood")
             $("#help").hide();
             tmp.removeClass("open");
             $("#slider").show();
         } else {
+            ($("#style_select").val() == 1)?$(this).removeClass("help_pad").addClass("help_wood"):$(this).removeClass("help_wood").addClass("help_pad");
             exportData();
-            sankore.setPreference("etudier_style", $(".style_select").find("option:selected").val());
+            sankore.setPreference("etudier_style", $("#style_select").find("option:selected").val());
             sankore.setPreference("etudier_cur_page", $("#slider").getPage());
             sankore.setPreference("etudier_left_nav", $("#prevBtn a").css("display"));
             sankore.setPreference("etudier_right_nav", $("#nextBtn a").css("display"));            
@@ -93,8 +98,10 @@ function start(){
                     sankore.enableDropOnWidget(false);
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
-                $(".style_select").css("display","none");
-                
+                $("#parameters").css("display","none");
+                var tmpwh = $(window).height();
+                var tmpww = $(window).width();
+                window.resizeTo(tmpww, tmpwh - 44)
                 $("#slider li>div").each(function(){
                     var container = $(this);
                     container.removeAttr("ondragenter")
@@ -143,8 +150,10 @@ function start(){
                     sankore.enableDropOnWidget(true);
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
-                $(".style_select").css("display","block");
-                
+                $("#parameters").css("display","block");
+                tmpwh = $(window).height();
+                tmpww = $(window).width();
+                window.resizeTo(tmpww, tmpwh + 44)
                 $("#slider li>div").each(function(){
                     var container = $(this);
                     container.attr("ondragenter", "return false;")
@@ -556,10 +565,10 @@ function changeStyle(val){
             $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
             $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
             $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_display").removeClass("pad_color").removeClass("pad_edit");
             $("#wgt_name").removeClass("pad_color");
-            $(".style_select").removeClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").addClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").addClass("radius_ft");
             break;
         case "2":
             $(".b_top_left").addClass("btl_pad").removeClass("without_back");
@@ -572,10 +581,10 @@ function changeStyle(val){
             $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("pad_select").removeClass("none_select").val(val);
-            $("body, html").removeClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").removeClass("without_radius").removeClass("radius_ft");
             break;
         case "3":
             $(".b_top_left").addClass("without_back").removeClass("btl_pad");
@@ -588,10 +597,10 @@ function changeStyle(val){
             $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
             $("#wgt_help").addClass("pad_color").addClass("pad_help");
             $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_display").addClass("pad_color").addClass("pad_edit");
             $("#wgt_name").addClass("pad_color");
-            $(".style_select").addClass("none_select").val(val);
-            $("body, html").addClass("without_radius");
+            $("#wgt_display").removeClass("display_wood");
+            $("#style_select").val(val);
+            $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
 }

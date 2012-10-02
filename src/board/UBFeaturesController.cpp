@@ -711,7 +711,7 @@ void UBFeaturesController::addItemToPage(const UBFeature &item)
 
 void UBFeaturesController::addItemAsBackground(const UBFeature &item)
 {
-    UBApplication::boardController->downloadURL( item.getFullPath(), QPointF(), QSize(), true );
+    UBApplication::boardController->downloadURL( item.getFullPath(), QString(), QPointF(), QSize(), true );
 }
 
 UBFeature UBFeaturesController::getDestinationFeatureForUrl( const QUrl &url )
@@ -750,7 +750,7 @@ void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteA
         file.write(pData);
         file.close();
 
-        UBFeature downloadedFeature = UBFeature(dest.getFullVirtualPath() + "/" + fileName, getIcon( filePath ),
+        UBFeature downloadedFeature = UBFeature(dest.getFullVirtualPath() + "/" + fileName, getIcon( filePath, fileTypeFromUrl(filePath)),
                                                  fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM);
         if (downloadedFeature != UBFeature()) {
             featuresModel->addItem(downloadedFeature);

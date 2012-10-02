@@ -12,10 +12,6 @@
 const char *UBFeaturesWidget::objNamePathList = "PathList";
 const char *UBFeaturesWidget::objNameFeatureList = "FeatureList";
 
-const QString UBFeaturesNewFolderDialog::acceptText = tr("Accept");
-const QString UBFeaturesNewFolderDialog::cancelText = tr("Cancel");
-const QString UBFeaturesNewFolderDialog::labelText =  tr("Enter a new folder name");
-
 const QMargins FeatureListMargins(0, 0, 0, 30);
 const int FeatureListBorderOffset = 10;
 const char featureTypeSplitter = ':';
@@ -198,7 +194,6 @@ void UBFeaturesWidget::lockIt(bool pLock)
     mActionBar->setEnabled(!pLock);
     pathListView->setEnabled(!pLock);
     centralWidget->setLockedExcludingAdditional(pLock);
-//    pathListView->setLocked(true);
 }
 
 void UBFeaturesWidget::addToFavorite( const UBFeaturesMimeData * mimeData )
@@ -240,7 +235,7 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
             if (!imageGatherer)
                 imageGatherer = new UBDownloadHttpFile(0, this);
 
-            connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+            connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)));
 
             // We send here the request and store its reply in order to be able to cancel it if needed
             imageGatherer->get(QUrl(metadata["Url"]), QPoint(0,0), QSize(), false);
@@ -267,10 +262,11 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 }
 
 
-void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
+void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QUrl originalUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
     Q_UNUSED(id);
     Q_UNUSED(pSuccess);
+    Q_UNUSED(originalUrl);
     Q_UNUSED(isBackground);
     Q_UNUSED(pSize);
     Q_UNUSED(pPos);
@@ -578,6 +574,9 @@ void UBFeaturesCentralWidget::scanFinished()
 }
 
 UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(parent)
+  , acceptText(tr("Accept"))
+  , cancelText(tr("Cancel"))
+  , labelText(tr("Enter a new folder name"))
 {
     this->setStyleSheet("background:white;");
 
@@ -1046,10 +1045,11 @@ void UBFeatureProperties::onAddToLib()
         sDownloadFileDesc desc;
         desc.isBackground = false;
         desc.modal = false;
+        desc.dest = sDownloadFileDesc::library;
         desc.name = QFileInfo( mpElement->getFullPath().toString()).fileName();
         qDebug() << desc.name;
-        desc.url = mpElement->getFullPath().toString();
-        qDebug() << desc.url;
+        desc.srcUrl = mpElement->getFullPath().toString();
+        qDebug() << desc.srcUrl;
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
     }
 }

@@ -17,14 +17,17 @@
 #define UBFILESYSTEMUTILS_H_
 
 #include <QtCore>
+#include <QThread>
 
 #include "core/UB.h"
 
 class QuaZipFile;
 class UBProcessingProgressListener;
 
-class UBFileSystemUtils
+class UBFileSystemUtils : public QObject
 {
+    Q_OBJECT
+
     public:
 
         UBFileSystemUtils();
