@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Close", 
+    display: "Display", 
     edit: "Edit", 
     first_desc: "Odd numbers", 
     second_desc: "Even numbers", 
@@ -7,9 +7,9 @@ var sankoreLang = {
     add: "Add new block",
     wgt_name: "Categorize images",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

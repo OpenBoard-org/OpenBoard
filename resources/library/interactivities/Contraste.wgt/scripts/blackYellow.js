@@ -23,7 +23,7 @@ var sankoreLang = {
     cancel: "Cancel",
     wgt_name: "Contrast",
     reload: "Reload",
-    slate: "wood",
+    slate: "slate",
     pad: "pad",
     none: "none",
     help: "Help",

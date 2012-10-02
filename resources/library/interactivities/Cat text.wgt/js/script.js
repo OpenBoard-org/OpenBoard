@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Close", 
+    display: "Display", 
     edit: "Edit", 
     first_desc: "Fruits", 
     second_desc: "Vegetables",
@@ -13,9 +13,9 @@ var sankoreLang = {
     text: "Some text",
     wgt_name: "Categorize text",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"
