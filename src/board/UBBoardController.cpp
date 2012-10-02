@@ -537,7 +537,7 @@ void UBBoardController::duplicateScene()
     duplicateScene(mActiveSceneIndex);
 }
 
-UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
+UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
 {    
     if (!item)
         return NULL;
@@ -593,9 +593,13 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
             if (mitem)
             {
                 sourceUrl = mitem->mediaFileUrl();
-                downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);    
+                if (bAsync)
+                {
+                    downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);    
+                    return NULL; // async operation
+                }
             }
-        }return NULL; // async operation
+        }break;
 
     case UBMimeType::VectorImage:
         {
@@ -621,35 +625,22 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 
     case UBMimeType::Group:
     {
-    	UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-        UBGraphicsGroupContainerItem* duplicatedGroup = NULL;
-    	if(groupItem){
-    		QTransform groupTransform = groupItem->transform();
-    		groupItem->resetTransform();
+        UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+        UBGraphicsGroupContainerItem* duplicatedGroup = new UBGraphicsGroupContainerItem();
+        
+        QList<QGraphicsItem*> children = groupItem->childItems();
+        foreach(QGraphicsItem* pIt, children){
+            UBItem* pItem = dynamic_cast<UBItem*>(pIt);
+            if(pItem) // we diong sync duplication of all childs.
+                duplicatedGroup->addToGroup(dynamic_cast<QGraphicsItem *>(duplicateItem(pItem, false)));
+        }
 
-    		QList<QGraphicsItem*> children = groupItem->childItems();
-    		foreach(QGraphicsItem* pIt, children){
-    			UBItem* pItem = dynamic_cast<UBItem*>(pIt);
-    			if(NULL != pItem){
-    				duplicateItem(pItem);
-    			}
-    		}
-    		groupItem->setTransform(groupTransform);
-    		groupItem->setSelected(false);
-    		UBApplication::mainWindow->actionGroupItems->trigger();
-    		QList<QGraphicsItem*> selItems =  mActiveScene->selectedItems();
-    		if(!selItems.empty()){
-    			// I don't like this solution but for now this is the only way I found.
-    			// Normally, at this state, only the duplicated group should be selected
-    			duplicatedGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.at(0));
-    			if(NULL != duplicatedGroup){
-    				duplicatedGroup->setTransform(groupTransform);
-    			}
-    		}
-    	}
-    	retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
-    	break;
-    }
+        duplicatedGroup->setTransform(groupItem->transform());
+        groupItem->setSelected(false);
+
+        retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
+
+    }break;
 
     case UBMimeType::UNKNOWN:
         {
@@ -666,9 +657,17 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     }    
     
     if (retItem)
+    {
+        QGraphicsItem * itemToAdd = dynamic_cast<QGraphicsItem *>(retItem);
+        if (itemToAdd)
+        {
+            mActiveScene->addItem(itemToAdd);
+            itemToAdd->setSelected(true);
+        }
         return retItem;
+    }
 
-    UBItem *createdItem = downloadFinished(true, sourceUrl, sourceUrl, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
+    UBItem *createdItem = downloadFinished(true, sourceUrl, srcFile, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
     if (createdItem)
     {
         createdItem->setSourceUrl(item->sourceUrl());
