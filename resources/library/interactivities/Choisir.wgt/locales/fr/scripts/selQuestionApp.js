@@ -15,7 +15,7 @@
 
 var sankoreLang = {
     edit: "Modifier",
-    display:"Fermer",
+    display:"Afficher",
     question:"La question",
     example_question:"Ceci est un exemple de question",
     answer:"Ceci est une réponse possible",

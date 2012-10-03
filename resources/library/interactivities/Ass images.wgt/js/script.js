@@ -6,7 +6,7 @@ var sankoreLang = {
     enter: "Enter your instruction here ...",
     wgt_name: "Associate images",
     reload: "Reload",
-    slate: "wood",
+    slate: "slate",
     pad: "pad",
     none: "none",
     help: "Help",
