@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Fermer", 
+    display: "Afficher", 
     edit: "Modifier",
     first_desc: "Les nombres impairs", 
     second_desc: "Les nombres pairs", 
