@@ -1713,6 +1713,7 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
 QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
 {
     QGraphicsItem *result = 0;
+    QString ui = uuid.toString();
 
     //simple search before implementing container for fast access
     foreach (QGraphicsItem *item, items()) {

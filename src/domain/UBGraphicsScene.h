@@ -302,6 +302,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         static QUuid getPersonalUuid(QGraphicsItem *item);
 
+        UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
+
 public slots:
 		void initStroke();
         void hideEraser();
@@ -338,7 +340,6 @@ public slots:
 
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);
         UBGraphicsPolygonItem* arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth);
-        UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
 
         void initPolygonItem(UBGraphicsPolygonItem*);
 

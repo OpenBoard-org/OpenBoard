@@ -163,6 +163,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
 
     private slots:
     	void onLinkClicked(const QUrl& url);
+        void initialLayoutCompleted();
 
     private:
         bool mIsFrozen;

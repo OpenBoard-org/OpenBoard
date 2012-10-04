@@ -1,14 +1,14 @@
 var sankoreLang = {
-    display: "Fermer", 
+    display: "Afficher", 
     edit: "Modifier", 
     short_desc: "Combien de signaux entendez-vous?", 
     add: "Nouveau bloc",
     enter: "Saisir votre description ici ...",
     wgt_name: "Associer aux sons",
     reload: "Recharger",
-    slate: "Bois",
-    pad: "Pad",
-    none: "Aucun",
+    slate: "ardoise",
+    pad: "tablette",
+    none: "aucun",
     help: "Aide",
     help_content: "<p><h2>Associer aux sons</h2></p>"+
     "<p><h3>Faire correspondre une image à un son.</h3></p>"+
@@ -21,14 +21,17 @@ var sankoreLang = {
     "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
     "<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
 
-    "<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, puis </p>"+
-    "<ul><li>insérez une consigne en cliquant sur le champ de texte “Saisir votre description ici ...”,"+
-    "<li>insérez un son dans la zone à gauche de la consigne par glisser-déposer d’un son à partir de votre bibliothèque,</li>"+
-    "<li>ajoutez des zones image en cliquant sur le gros signe + en dessous,</li>"+
-    "<li>insérez des images par glisser-déposer des images à partir de votre bibliothèque,</li>"+
-    "<li>définissez l’image correcte de l’interactivité en cliquant sur le bouton valider “v” situé en bas à droite de l’image concernée.</li></ul>"+
-    "<p>Pour supprimer une zone image, cliquez sur la croix située dans le coin supérieur droit de l’image.</p>"+ 
-    "<p>Pour remplacer un son, glissez-déposez simplement un nouveau son.</p>"+
+
+"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, puis </p>"+
+"<ul><li>insérez une consigne en cliquant sur le champ de texte “Saisir votre description ici ...”,"+
+"<li>insérez un son dans la zone à gauche de la consigne par glisser-déposer d’un son à partir de votre bibliothèque,</li>"+
+"<li>ajoutez des zones image(s) en cliquant sur le gros signe + en dessous,</li>"+
+"<li>insérez des images par glisser-déposer des images à partir de votre bibliothèque,</li>"+
+"<li>définissez l’image correcte de l’interactivité en cliquant sur le bouton valider “v” situé en bas à droite de l’image concernée.</li></ul>"+
+"<p>Pour supprimer une zone image, cliquez sur la croix située dans le coin supérieur droit de l’image.</p>"+ 
+"<p>Pour remplacer un son, glissez-déposez simplement un nouveau son.</p>"+
+
+
 
     "<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
 

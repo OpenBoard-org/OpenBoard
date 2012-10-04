@@ -260,6 +260,7 @@ bool UBFeature::isDeletable() const
             || elementType == FEATURE_AUDIO
             || elementType == FEATURE_VIDEO
             || elementType == FEATURE_IMAGE
+            || elementType == FEATURE_FLASH
             || elementType == FEATURE_FOLDER;
 }
 
@@ -750,7 +751,7 @@ void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteA
         file.write(pData);
         file.close();
 
-        UBFeature downloadedFeature = UBFeature(dest.getFullVirtualPath() + "/" + fileName, getIcon( filePath ),
+        UBFeature downloadedFeature = UBFeature(dest.getFullVirtualPath() + "/" + fileName, getIcon( filePath, fileTypeFromUrl(filePath)),
                                                  fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM);
         if (downloadedFeature != UBFeature()) {
             featuresModel->addItem(downloadedFeature);

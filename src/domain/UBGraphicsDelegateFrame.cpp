@@ -49,6 +49,8 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mTotalTranslateX(0)
     , mTotalTranslateY(0)
     , mOperationMode(Scaling)
+    , mFlippedX(false)
+    , mFlippedY(false)
     , mMirrorX(false)
     , mMirrorY(false)
 {
@@ -74,11 +76,9 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     mBottomResizeGrip = new QGraphicsRectItem(this);
     mBottomResizeGrip->setPen(Qt::NoPen);
     mLeftResizeGrip = new QGraphicsRectItem(this);
-    mLeftResizeGrip->setToolTip("left");
     mLeftResizeGrip->setPen(Qt::NoPen);
     mRightResizeGrip = new QGraphicsRectItem(this);
     mRightResizeGrip->setPen(Qt::NoPen);
-    mRightResizeGrip->setToolTip("Right");
     mTopResizeGrip = new QGraphicsRectItem(this);
     mTopResizeGrip->setPen(Qt::NoPen);
 
@@ -381,6 +381,12 @@ QSizeF UBGraphicsDelegateFrame::resizeDelegate(qreal moveX, qreal moveY)
     return incVector;
 }
 
+
+void UBGraphicsDelegateFrame::scaleByPos(qreal scaleX, qreal scaleY)
+{
+
+}
+
 void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (None == mCurrentTool)
@@ -453,6 +459,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                                     scaleX = -2*mFrameWidth/width;
                             }else{
                                 scaleX = -1;
+                                mFlippedX = !mFlippedX;
                             }
                         }
                         mScaleX = scaleX;
@@ -482,6 +489,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                                     scaleY = -2*mFrameWidth/width;
                             }else{
                                 scaleY = -1;
+                                mFlippedY = !mFlippedY;
                             }
                         }
                         mScaleY = scaleY;
@@ -545,15 +553,38 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             QPointF ref;
 
             // we just detects coordinates of corner before and after scaling and then moves object at diff between them.
-            if (resizingBottomRight() && mMirrorX)
+            if (resizingBottomRight() && (mMirrorX || mMirrorY))
             {
-                mTranslateX += mInitialTransform.map(delegated()->boundingRect().bottomRight()).x() - tr.map(delegated()->boundingRect().bottomRight()).x();
-                mTranslateY += mInitialTransform.map(delegated()->boundingRect().bottomRight()).y() - tr.map(delegated()->boundingRect().bottomRight()).y();
+                if (mFlippedX && !mMirrorX && mFlippedY)// && !mMirrorY)
+                {
+                    mTranslateX += mInitialTransform.map(delegated()->boundingRect().bottomLeft()).x() - tr.map(delegated()->boundingRect().bottomLeft()).x();
+                    mTranslateY += mInitialTransform.map(delegated()->boundingRect().bottomLeft()).y() - tr.map(delegated()->boundingRect().bottomLeft()).y();
+                }
+                else if ((mFlippedX || mMirrorX) && (mFlippedY || mMirrorY))
+                {
+                    mTranslateX += mInitialTransform.map(delegated()->boundingRect().bottomRight()).x() - tr.map(delegated()->boundingRect().bottomRight()).x();
+                    mTranslateY += mInitialTransform.map(delegated()->boundingRect().bottomRight()).y() - tr.map(delegated()->boundingRect().bottomRight()).y();
+                }
+                else if (mFlippedX || mMirrorX)
+                {
+                    mTranslateX += mInitialTransform.map(delegated()->boundingRect().topRight()).x() - tr.map(delegated()->boundingRect().topRight()).x();
+                    mTranslateY += mInitialTransform.map(delegated()->boundingRect().topRight()).y() - tr.map(delegated()->boundingRect().topRight()).y();
+                }
+                else if (mFlippedY || mMirrorY)
+                {
+                    mTranslateX += mInitialTransform.map(delegated()->boundingRect().bottomLeft()).x() - tr.map(delegated()->boundingRect().bottomLeft()).x();
+                    mTranslateY += mInitialTransform.map(delegated()->boundingRect().bottomLeft()).y() - tr.map(delegated()->boundingRect().bottomLeft()).y();
+                }
+                else
+                {
+                    mTranslateX += mInitialTransform.map(delegated()->boundingRect().bottomRight()).x() - tr.map(delegated()->boundingRect().bottomRight()).x();
+                    mTranslateY += mInitialTransform.map(delegated()->boundingRect().bottomRight()).y() - tr.map(delegated()->boundingRect().bottomRight()).y();
+                }
             }
             else
             {
-                mTranslateX += mInitialTransform.map(delegated()->boundingRect().topLeft()).x() - tr.map(delegated()->boundingRect().topLeft()).x();
-                mTranslateY += mInitialTransform.map(delegated()->boundingRect().topLeft()).y() - tr.map(delegated()->boundingRect().topLeft()).y();         
+                    mTranslateX += mInitialTransform.map(delegated()->boundingRect().topLeft()).x() - tr.map(delegated()->boundingRect().topLeft()).x();
+                    mTranslateY += mInitialTransform.map(delegated()->boundingRect().topLeft()).y() - tr.map(delegated()->boundingRect().topLeft()).y();
             }
         }
         else if (resizingTop() || resizingLeft())
