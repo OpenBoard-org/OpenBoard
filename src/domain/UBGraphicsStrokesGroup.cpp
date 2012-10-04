@@ -124,8 +124,13 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
 		UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
 
 		if (polygon){
-			QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(polygon->deepCopy());
-			copy->addToGroup(pItem);
+            UBGraphicsPolygonItem *polygonCopy = dynamic_cast<UBGraphicsPolygonItem*>(polygon->deepCopy());
+            if (polygonCopy)
+            {
+                QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(polygonCopy);
+                copy->addToGroup(pItem);
+                polygonCopy->setStrokesGroup(copy);
+            }
 		}
 
 	}
