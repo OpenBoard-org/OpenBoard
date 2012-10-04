@@ -169,10 +169,9 @@ void UBFeaturesWidget::deleteElements( const UBFeaturesMimeData * mimeData )
 void UBFeaturesWidget::deleteSelectedElements()
 {
     QModelIndexList selected = centralWidget->listView()->selectionModel()->selectedIndexes();
-
-    foreach ( QModelIndex sel, selected )
+    do 
     {
-        UBFeature feature = sel.data(Qt::UserRole + 1).value<UBFeature>();
+        UBFeature feature = controller->getFeature(selected.at(0), objNameFeatureList);
         if (feature.isDeletable()) {
             if (feature.inTrash()) {
                 controller->deleteItem(feature);
@@ -180,8 +179,12 @@ void UBFeaturesWidget::deleteSelectedElements()
                 controller->moveToTrash(feature, true);
             }
         }
-    }
-   controller->refreshModels();
+        selected = centralWidget->listView()->selectionModel()->selectedIndexes();
+        if (!selected.isEmpty())
+            centralWidget->listView()->selectionModel()->select(selected.at(0), QItemSelectionModel::Deselect);
+    }while (!selected.isEmpty());
+
+    controller->refreshModels();
 }
 
 void UBFeaturesWidget::rescanModel()
