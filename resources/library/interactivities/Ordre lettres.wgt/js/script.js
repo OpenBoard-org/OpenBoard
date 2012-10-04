@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Close", 
+    display: "Display", 
     edit: "Edit", 
     short_desc: "Listen to the sound and make the correct word.", 
     add: "Add new block",
@@ -7,9 +7,9 @@ var sankoreLang = {
     example: "example",
     wgt_name: "Order the letters",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

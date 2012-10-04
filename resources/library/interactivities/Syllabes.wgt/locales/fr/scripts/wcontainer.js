@@ -1,5 +1,5 @@
 var sankoreLang = {
-    view: "Fermer", 
+    view: "Afficher", 
     edit: "Modifier",
     example: "so*phis*ti*qué",
     wgt_name: "Syllabe",
