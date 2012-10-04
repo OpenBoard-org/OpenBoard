@@ -18,6 +18,15 @@ function createElements( phrase )
     return s;
 }
 
+function createChain( phrase )
+{
+    var arr = phrase.split(" ");
+    var result = "";
+    for( var i = 0; i < arr.length; i++ )    	
+        result += '<div class="letterCont">' + createElements(arr[i]) + '</div>';    
+    return result;
+}
+
 
 $(document).ready(function()
 {    
@@ -135,9 +144,8 @@ $(document).ready(function()
 		
         // store the text
         w.setData( "phrase", phrase );
-		
         // remove all dots (they are to be set during the exercise)
-        phrase = phrase.replace( / /g, '' );
+        //phrase = phrase.replace( / /g, '' );
 		
         // create the html
         if(window.sankore && sankore.preference("ordSplPhrasesState", "") == "1" && flag){
@@ -147,7 +155,7 @@ $(document).ready(function()
             flag = false;
         } 
         else
-            w.setViewContent( createElements( phrase ) );
+            w.setViewContent( createChain( phrase ) );
 		
 		
         // the behaviour
@@ -241,7 +249,7 @@ $(document).ready(function()
             if( this.className.indexOf( "fixed" ) != -1 ){
                 phrase += ' ';
             }
-            else if( this.className.indexOf( "dash" ) != -1 ){
+            else if( (this.className.indexOf( "dash" ) != -1) || (this.className.indexOf( "letterCont" ) != -1) ){
                 return;
             }
             else{
@@ -249,7 +257,6 @@ $(document).ready(function()
                 phrase += ch;
             }
         });
-        //alert(phrase + " | " + this.getData( "phrase" ))	
         if( phrase == this.getData( "phrase" ) ){
             this.elements.containerView.addClass( "answerRight" );
         }
@@ -267,58 +274,58 @@ $(document).ready(function()
     //changing the style
     function changeStyle(val){
         switch(val){
-        case "1":
-            $(".b_top_left").removeClass("btl_pad").removeClass("without_back");
-            $(".b_top_center").removeClass("btc_pad").removeClass("without_back");
-            $(".b_top_right").removeClass("btr_pad").removeClass("without_back");
-            $(".b_center_left").removeClass("bcl_pad").removeClass("without_back");
-            $(".b_center_right").removeClass("bcr_pad").removeClass("without_back");
-            $(".b_bottom_right").removeClass("bbr_pad").removeClass("without_back");
-            $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
-            $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
-            $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
-            $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
-            $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
-            $("#wgt_name").removeClass("pad_color");
-            $("#wgt_display").addClass("display_wood");
-            $("#style_select option:first").attr('selected',true);
-            $("body, html").removeClass("without_radius").addClass("radius_ft");
-            break;
-        case "2":
-            $(".b_top_left").addClass("btl_pad").removeClass("without_back");
-            $(".b_top_center").addClass("btc_pad").removeClass("without_back");
-            $(".b_top_right").addClass("btr_pad").removeClass("without_back");
-            $(".b_center_left").addClass("bcl_pad").removeClass("without_back");
-            $(".b_center_right").addClass("bcr_pad").removeClass("without_back");
-            $(".b_bottom_right").addClass("bbr_pad").removeClass("without_back");
-            $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
-            $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
-            $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
-            $("#wgt_help").addClass("pad_color").addClass("pad_help");
-            $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_name").addClass("pad_color");
-            $("#wgt_display").removeClass("display_wood");
-            $("#style_select option:first").next().attr('selected',true);
-            $("body, html").removeClass("without_radius").removeClass("radius_ft");
-            break;
-        case "3":
-            $(".b_top_left").addClass("without_back").removeClass("btl_pad");
-            $(".b_top_center").addClass("without_back").removeClass("btc_pad");
-            $(".b_top_right").addClass("without_back").removeClass("btr_pad");
-            $(".b_center_left").addClass("without_back").removeClass("bcl_pad");
-            $(".b_center_right").addClass("without_back").removeClass("bcr_pad");
-            $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
-            $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
-            $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
-            $("#wgt_help").addClass("pad_color").addClass("pad_help");
-            $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
-            $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
-            $("#wgt_name").addClass("pad_color");
-            $("#wgt_display").removeClass("display_wood");
-            $("#style_select option:last").attr('selected',true);
-            $("body, html").addClass("without_radius").removeClass("radius_ft");
-            break;
-    }
+            case "1":
+                $(".b_top_left").removeClass("btl_pad").removeClass("without_back");
+                $(".b_top_center").removeClass("btc_pad").removeClass("without_back");
+                $(".b_top_right").removeClass("btr_pad").removeClass("without_back");
+                $(".b_center_left").removeClass("bcl_pad").removeClass("without_back");
+                $(".b_center_right").removeClass("bcr_pad").removeClass("without_back");
+                $(".b_bottom_right").removeClass("bbr_pad").removeClass("without_back");
+                $(".b_bottom_left").removeClass("bbl_pad").removeClass("without_back");
+                $(".b_bottom_center").removeClass("bbc_pad").removeClass("without_back");
+                $("#wgt_reload").removeClass("pad_color").removeClass("pad_reload");
+                $("#wgt_help").removeClass("pad_color").removeClass("pad_help");
+                $("#wgt_edit").removeClass("pad_color").removeClass("pad_edit");
+                $("#wgt_name").removeClass("pad_color");
+                $("#wgt_display").addClass("display_wood");
+                $("#style_select option:first").attr('selected',true);
+                $("body, html").removeClass("without_radius").addClass("radius_ft");
+                break;
+            case "2":
+                $(".b_top_left").addClass("btl_pad").removeClass("without_back");
+                $(".b_top_center").addClass("btc_pad").removeClass("without_back");
+                $(".b_top_right").addClass("btr_pad").removeClass("without_back");
+                $(".b_center_left").addClass("bcl_pad").removeClass("without_back");
+                $(".b_center_right").addClass("bcr_pad").removeClass("without_back");
+                $(".b_bottom_right").addClass("bbr_pad").removeClass("without_back");
+                $(".b_bottom_left").addClass("bbl_pad").removeClass("without_back");
+                $(".b_bottom_center").addClass("bbc_pad").removeClass("without_back");
+                $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+                $("#wgt_help").addClass("pad_color").addClass("pad_help");
+                $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+                $("#wgt_name").addClass("pad_color");
+                $("#wgt_display").removeClass("display_wood");
+                $("#style_select option:first").next().attr('selected',true);
+                $("body, html").removeClass("without_radius").removeClass("radius_ft");
+                break;
+            case "3":
+                $(".b_top_left").addClass("without_back").removeClass("btl_pad");
+                $(".b_top_center").addClass("without_back").removeClass("btc_pad");
+                $(".b_top_right").addClass("without_back").removeClass("btr_pad");
+                $(".b_center_left").addClass("without_back").removeClass("bcl_pad");
+                $(".b_center_right").addClass("without_back").removeClass("bcr_pad");
+                $(".b_bottom_right").addClass("without_back").removeClass("bbr_pad");
+                $(".b_bottom_left").addClass("without_back").removeClass("bbl_pad");
+                $(".b_bottom_center").addClass("without_back").removeClass("bbc_pad");
+                $("#wgt_help").addClass("pad_color").addClass("pad_help");
+                $("#wgt_reload").addClass("pad_color").addClass("pad_reload");
+                $("#wgt_edit").addClass("pad_color").addClass("pad_edit");
+                $("#wgt_name").addClass("pad_color");
+                $("#wgt_display").removeClass("display_wood");
+                $("#style_select option:last").attr('selected',true);
+                $("body, html").addClass("without_radius").removeClass("radius_ft");
+                break;
+        }
     }
 	
 });
