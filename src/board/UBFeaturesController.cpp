@@ -641,19 +641,31 @@ void UBFeaturesController::importImage(const QImage &image, const QString &fileN
 void UBFeaturesController::importImage( const QImage &image, const UBFeature &destination, const QString &fileName )
 {
     QString mFileName = fileName;
+    QString filePath;
+    UBFeature dest = destination;
     if (mFileName.isNull()) {
         QDateTime now = QDateTime::currentDateTime();
-        mFileName  = tr("ImportedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss") + ".png";
-    }
+        static int imageCounter = 0;
+        mFileName  = tr("ImportedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss");
+        
+        filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
 
-    UBFeature dest = destination;
+        if (QFile::exists(filePath+".png"))
+            mFileName += QString("-[%1]").arg(++imageCounter);
+        else
+            imageCounter = 0;
+        
+        mFileName += ".png";
+    }
+    
+
 
     if ( !destination.getFullVirtualPath().startsWith( picturesElement.getFullVirtualPath(), Qt::CaseInsensitive ) )
     {
 	    dest = picturesElement;
     }
 
-    QString filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
+    filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
     image.save(filePath);
 
     QImage thumb = createThumbnail( filePath );
