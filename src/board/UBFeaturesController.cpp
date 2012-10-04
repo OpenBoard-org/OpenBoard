@@ -260,6 +260,7 @@ bool UBFeature::isDeletable() const
             || elementType == FEATURE_AUDIO
             || elementType == FEATURE_VIDEO
             || elementType == FEATURE_IMAGE
+            || elementType == FEATURE_FLASH
             || elementType == FEATURE_FOLDER;
 }
 
