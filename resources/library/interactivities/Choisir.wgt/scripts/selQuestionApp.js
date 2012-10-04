@@ -15,7 +15,7 @@
 
 var sankoreLang = {
     edit: "Edit",
-    display:"Close",
+    display:"Display",
     question:"Question",
     example_question:"This is an example of the question",
     answer:"This is one possible answer",
@@ -37,9 +37,9 @@ var sankoreLang = {
     a:"A",
     wgt_name: "Choose the right answer",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

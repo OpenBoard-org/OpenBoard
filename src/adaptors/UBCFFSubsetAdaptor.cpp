@@ -16,6 +16,7 @@
 #include <QSvgGenerator>
 #include <QSvgRenderer>
 #include <QPixmap>
+#include <QMap>
 
 #include "core/UBPersistenceManager.h"
 
@@ -248,6 +249,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgRect(const QDomElement &elem
     painter.end();
 
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+   
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    svgItem->setUuid(QUuid(uuid));
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -298,6 +304,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgEllipse(const QDomElement &e
     painter.end();
 
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    svgItem->setUuid(QUuid(uuid));
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -373,37 +384,65 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     brush.setColor(fillColor);
     brush.setStyle(Qt::SolidPattern);
 
-    QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
-    QPainter painter;
-
-    painter.begin(generator); //drawing to svg tmp file
-
-    painter.translate(pen.widthF() / 2 - x1, pen.widthF() / 2 - y1);
-    painter.setBrush(brush);
-    painter.setPen(pen);
-    painter.drawPolygon(polygon);
-
-    painter.end();
-
-    //add resulting svg file to scene
-    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
-    QTransform transform;
-    QString textTransform = element.attribute(aTransform);
-
-    svgItem->resetTransform();
-    if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform, svgItem);
-    }
-    repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 - strokeWidth/2 + transform.m31(), y1 + strokeWidth/2 + transform.m32(), transform);
-    hashSceneItem(element, svgItem);
-
-    if (mGSectionContainer)
+ 
+    QUuid itemUuid(element.attribute(aId).right(QUuid().toString().length()));
+    QUuid itemGroupUuid(element.attribute(aId).left(QUuid().toString().length()-1));
+    if (!itemUuid.isNull() && (itemGroupUuid!=itemUuid)) // reimported from UBZ
     {
-        addItemToGSection(svgItem);
+        UBGraphicsPolygonItem *graphicsPolygon = mCurrentScene->polygonToPolygonItem(polygon);
+
+        graphicsPolygon->setBrush(brush);
+
+        QTransform transform;
+        QString textTransform = element.attribute(aTransform);
+
+        graphicsPolygon->resetTransform();
+        if (!textTransform.isNull()) {
+            transform = transformFromString(textTransform, graphicsPolygon);
+        }
+        mCurrentScene->addItem(graphicsPolygon);
+
+        graphicsPolygon->setUuid(itemUuid);
+        mRefToUuidMap.insert(element.attribute(aId), itemUuid);
+
     }
+    else // single CFF
+    {
+        QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
+        QPainter painter;
 
-    delete generator;
+        painter.begin(generator); //drawing to svg tmp file
 
+        painter.translate(pen.widthF() / 2 - x1, pen.widthF() / 2 - y1);
+        painter.setBrush(brush);
+        painter.setPen(pen);
+        painter.drawPolygon(polygon);
+
+        painter.end();
+
+        //add resulting svg file to scene
+        UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+        QTransform transform;
+        QString textTransform = element.attribute(aTransform);
+        
+        QUuid uuid = QUuid::createUuid().toString();
+        mRefToUuidMap.insert(element.attribute(aId), uuid);
+        svgItem->setUuid(uuid);
+
+        svgItem->resetTransform();
+        if (!textTransform.isNull()) {
+            transform = transformFromString(textTransform, svgItem);
+        }
+        repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 - strokeWidth/2 + transform.m31(), y1 + strokeWidth/2 + transform.m32(), transform);
+        hashSceneItem(element, svgItem);
+
+        if (mGSectionContainer)
+        {
+            addItemToGSection(svgItem);
+        }
+
+        delete generator;
+    }
     return true;
 }
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &element)
@@ -441,6 +480,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     //bounding rect lef top corner coordinates
     qreal x1 = polygon.boundingRect().topLeft().x();
     qreal y1 = polygon.boundingRect().topLeft().y();
+
     //bounding rect dimensions
     qreal width = polygon.boundingRect().width();
     qreal height = polygon.boundingRect().height();
@@ -458,35 +498,72 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
     pen.setColor(strokeColor);
     pen.setWidth(strokeWidth);
 
-    QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
-    QPainter painter;
+    QBrush brush;
+    brush.setColor(strokeColor);
+    brush.setStyle(Qt::SolidPattern);
 
-    painter.begin(generator); //drawing to svg tmp file
-
-    painter.translate(pen.widthF()/2 - x1, pen.widthF()/2- y1);
-    painter.setPen(pen);
-    painter.drawPolyline(polygon);
-
-    painter.end();
-
-    //add resulting svg file to scene
-    UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
-    QTransform transform;
-    QString textTransform = element.attribute(aTransform);
-
-    svgItem->resetTransform();
-    if (!textTransform.isNull()) {
-        transform = transformFromString(textTransform, svgItem);
-    }
-    repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 + transform.m31() - strokeWidth/2, y1 + transform.m32() + strokeWidth/2, transform);
-    hashSceneItem(element, svgItem);
-
-    if (mGSectionContainer)
+    QUuid itemUuid(element.attribute(aId).right(QUuid().toString().length()));
+    QUuid itemGroupUuid(element.attribute(aId).left(QUuid().toString().length()-1));
+    if (!itemUuid.isNull() && (itemGroupUuid!=itemUuid)) // reimported from UBZ
     {
-        addItemToGSection(svgItem);
+        UBGraphicsPolygonItem *graphicsPolygon = new UBGraphicsPolygonItem(polygon);
+
+        UBGraphicsStroke *stroke = new UBGraphicsStroke();
+        graphicsPolygon->setStroke(stroke);
+
+        graphicsPolygon->setBrush(brush);
+        QTransform transform;
+        QString textTransform = element.attribute(aTransform);
+
+        graphicsPolygon->resetTransform();
+        if (!textTransform.isNull()) {
+            transform = transformFromString(textTransform, graphicsPolygon);
+        }
+        mCurrentScene->addItem(graphicsPolygon);
+
+        graphicsPolygon->setUuid(itemUuid);
+        mRefToUuidMap.insert(element.attribute(aId), itemUuid);
+
+    }
+    else // simple CFF
+    {
+        QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
+        QPainter painter;
+
+        painter.begin(generator); //drawing to svg tmp file
+
+        painter.translate(pen.widthF() / 2 - x1, pen.widthF() / 2 - y1);
+        painter.setBrush(brush);
+        painter.setPen(pen);
+        painter.drawPolygon(polygon);
+
+        painter.end();
+
+        //add resulting svg file to scene
+        UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+        
+        QString uuid = QUuid::createUuid().toString();
+        mRefToUuidMap.insert(element.attribute(aId), uuid);
+        svgItem->setUuid(QUuid(uuid));
+
+        QTransform transform;
+        QString textTransform = element.attribute(aTransform);
+
+        svgItem->resetTransform();
+        if (!textTransform.isNull()) {
+            transform = transformFromString(textTransform, svgItem);
+        }
+        repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 - strokeWidth/2 + transform.m31(), y1 + strokeWidth/2 + transform.m32(), transform);
+        hashSceneItem(element, svgItem);
+
+        if (mGSectionContainer)
+        {
+            addItemToGSection(svgItem);
+        }
+
+        delete generator;
     }
 
-    delete generator;
 
     return true;
 }
@@ -621,6 +698,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
     //add resulting svg file to scene
     UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
 
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    svgItem->setUuid(QUuid(uuid));
+
     svgItem->resetTransform();
     repositionSvgItem(svgItem, width, height, x + transform.m31(), y + transform.m32(), transform);
     hashSceneItem(element, svgItem);
@@ -734,6 +815,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     UBGraphicsTextItem *svgItem = mCurrentScene->addTextHtml(doc.toHtml());
     svgItem->resize(width, height);
 
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    svgItem->setUuid(QUuid(uuid));
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -783,6 +868,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgImage(const QDomElement &ele
     }
 
    UBGraphicsPixmapItem *pixItem = mCurrentScene->addPixmap(pix, NULL);
+
+   QString uuid = QUuid::createUuid().toString();
+   mRefToUuidMap.insert(element.attribute(aId), uuid);
+   pixItem->setUuid(QUuid(uuid));
+
    QTransform transform;
    QString textTransform = element.attribute(aTransform);
 
@@ -830,6 +920,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgFlash(const QDomElement &ele
     UBGraphicsWidgetItem *flashItem = mCurrentScene->addW3CWidget(QUrl::fromLocalFile(flashUrl));
     flashItem->setSourceUrl(urlPath);
 
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
+    flashItem->setUuid(QUuid(uuid));
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -867,14 +961,15 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
         concreteUrl = QUrl::fromLocalFile(audioPath);
     }
 
-    QUuid uuid = QUuid::createUuid();
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
 
     QString destFile;
     bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(
             mCurrentScene->document(), 
             concreteUrl.toLocalFile(), 
             UBPersistenceManager::audioDirectory,
-            uuid,
+            QUuid(uuid),
             destFile);
     if (!b)
     {
@@ -883,6 +978,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgAudio(const QDomElement &ele
     concreteUrl = QUrl::fromLocalFile(destFile);
     
     UBGraphicsMediaItem *audioItem = mCurrentScene->addAudio(concreteUrl, false);
+
     QTransform transform;
     QString textTransform = parentOfAudio.attribute(aTransform);
 
@@ -920,15 +1016,15 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
         concreteUrl = QUrl::fromLocalFile(videoPath);
     }
 
-    QUuid uuid = QUuid::createUuid();
-
+    QString uuid = QUuid::createUuid().toString();
+    mRefToUuidMap.insert(element.attribute(aId), uuid);
 
     QString destFile;
     bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(
             mCurrentScene->document(), 
             concreteUrl.toLocalFile(), 
             UBPersistenceManager::videoDirectory,
-            uuid,
+            QUuid(uuid),
             destFile);
     if (!b)
     {
@@ -937,6 +1033,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgVideo(const QDomElement &ele
     concreteUrl = QUrl::fromLocalFile(destFile);
 
     UBGraphicsMediaItem *videoItem = mCurrentScene->addVideo(concreteUrl, false);
+
     QTransform transform;
     QString textTransform = element.attribute(aTransform);
 
@@ -980,8 +1077,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgElement(const QDomElement &p
 {
     QString tagName = parent.tagName();
     if (parent.namespaceURI() != svgNS) {
-        qDebug() << "Incorrect namespace, error at content file, line number" << parent.lineNumber();
-        return false;
+        qWarning() << "Incorrect namespace, error at content file, line number" << parent.lineNumber();
+        //return false;
     }
 
     if      (tagName == tG          &&  !parseGSection(parent))             return false;
@@ -1027,8 +1124,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPageset(const QDomElement &p
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbMeta(const QDomElement &element)
 {
     if (element.namespaceURI() != iwbNS) {
-        qDebug() << "incorrect meta namespace, incorrect document";
-        return false;
+        qWarning() << "incorrect meta namespace, incorrect document";
+        //return false;
     }
 
     return true;
@@ -1036,8 +1133,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbMeta(const QDomElement &elem
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvg(const QDomElement &svgSection)
 {
     if (svgSection.namespaceURI() != svgNS) {
-        qDebug() << "incorrect svg namespace, incorrect document";
-        return false;
+        qWarning() << "incorrect svg namespace, incorrect document";
+       // return false;
     }
 
     parseSvgSectionAttr(svgSection);
@@ -1052,15 +1149,92 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvg(const QDomElement &svgSecti
     return true;
 }
 
-bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGroup(QDomElement &parent)
+UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGroup(QDomElement &parent)
 {
     //TODO. Create groups from elements parsed by parseIwbElement() function
     if (parent.namespaceURI() != iwbNS) {
-        qDebug() << "incorrect iwb group namespace, incorrect document";
-        return false;
+        qWarning() << "incorrect iwb group namespace, incorrect document";
+      //  return false;
     }
 
-    return true;
+    UBGraphicsGroupContainerItem *group = new UBGraphicsGroupContainerItem();
+    QMultiMap<QString, UBGraphicsPolygonItem *> strokesGroupsContainer;    
+    QList<QGraphicsItem *> groupContainer;    
+    QString currentStrokeIdentifier;
+
+    QDomElement currentStrokeElement = parent.firstChildElement();    
+    while (!currentStrokeElement.isNull())
+    {
+        if (tGroup == currentStrokeElement.tagName())
+            group->addToGroup(parseIwbGroup(currentStrokeElement));
+        else
+        {
+            
+            QString ref = currentStrokeElement.attribute(aRef);
+            QString uuid = mRefToUuidMap[ref];
+            if (!uuid.isEmpty())
+            {
+                if (ref.size() > QUuid().toString().length()) // create stroke group
+                {              
+                    currentStrokeIdentifier = ref.left(QUuid().toString().length()-1);
+                    UBGraphicsPolygonItem *strokeByUuid = qgraphicsitem_cast<UBGraphicsPolygonItem *>(mCurrentScene->itemForUuid(QUuid(ref.right(QUuid().toString().length()))));
+
+                    if (strokeByUuid)
+                        strokesGroupsContainer.insert(currentStrokeIdentifier, strokeByUuid);
+                }
+                else // single elements in group
+                    groupContainer.append(mCurrentScene->itemForUuid(QUuid(uuid)));
+            }
+        }
+        currentStrokeElement = currentStrokeElement.nextSiblingElement();
+    }
+
+
+
+    foreach (QString key, strokesGroupsContainer.keys().toSet())
+    {
+        UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
+        UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
+        foreach(UBGraphicsPolygonItem* poly, strokesGroupsContainer.values(key))
+        {
+            if (poly)
+            {
+                mCurrentScene->removeItem(poly);
+                mCurrentScene->removeItemFromDeletion(poly);
+                poly->setStrokesGroup(pStrokesGroup);
+                poly->setStroke(currentStroke);
+                pStrokesGroup->addToGroup(poly);
+            }
+        }
+        if (currentStroke->polygons().empty())
+            delete currentStroke;
+
+        if (pStrokesGroup->childItems().count())
+            mCurrentScene->addItem(pStrokesGroup);
+        else
+            delete pStrokesGroup;
+
+        if (pStrokesGroup)
+        {
+            QGraphicsItem *strokeGroup = qgraphicsitem_cast<QGraphicsItem *>(pStrokesGroup);
+            groupContainer.append(strokeGroup);
+        }
+    }
+
+    foreach(QGraphicsItem* item, groupContainer)
+        group->addToGroup(item);
+
+    if (group->childItems().count())
+    {
+        mCurrentScene->addItem(group);
+
+        if (1 == group->childItems().count())
+        {
+            group->destroy(false);
+        }
+    }
+
+    return group;
 }
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::strToBool(QString str)
@@ -1071,8 +1245,8 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::strToBool(QString str)
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbElement(QDomElement &element)
 {
     if (element.namespaceURI() != iwbNS) {
-        qDebug() << "incorrect iwb element namespace, incorrect document";
-        return false;
+        qWarning() << "incorrect iwb element namespace, incorrect document";
+      //  return false;
     }
 
     bool locked = false;

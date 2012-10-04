@@ -66,8 +66,7 @@ public:
         Undefined
     };
     
-    void setOrientation(Orientation orientation);
-    void setBoundingRect(QRectF boundingRect);        
+    void setOrientation(Orientation orientation);       
 
     virtual UBItem* deepCopy() const;
     virtual void copyItemParameters(UBItem *copy) const;
@@ -113,10 +112,9 @@ private:
     QTransform calculateRotationTransform();
     void rotateAroundCenter(QTransform& transform, QPointF center);
 
-    void calculatePoints();
+    void calculatePoints(QRectF bounds);
     QPainterPath determinePath();
     void setItemsPos();
-    void makeGeometryChange();
 
     QBrush fillBrush() const;
     void paintGraduations(QPainter *painter);

@@ -70,7 +70,6 @@ QList<UBGraphicsItem*> UBImportPDF::import(const QUuid& uuid, const QString& fil
     for(int pdfPageNumber = 1; pdfPageNumber <= pdfPageCount; pdfPageNumber++)
     {
         UBApplication::showMessage(tr("Importing page %1 of %2").arg(pdfPageNumber).arg(pdfPageCount), true);
-
         result << new UBGraphicsPDFItem(pdfRenderer, pdfPageNumber); // deleted by the scene
     }
     return result;

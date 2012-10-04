@@ -1,5 +1,5 @@
 var sankoreLang = {
-    view: "Показать", 
+    view: "Закрыть", 
     edit: "Изменить",
     example: "это группа слов которую нужно разделить",
     wgt_name: "Разделить фразу",
@@ -8,7 +8,8 @@ var sankoreLang = {
     pad: "Планшет",
     none: "Нет",
     help: "Помощь",
-    help_content: "Пример текста помощи ..."
+    help_content: "Пример текста помощи ...",
+    theme: "Тема"
 };
 
 // if use the "view/edit" button or rely on the api instead

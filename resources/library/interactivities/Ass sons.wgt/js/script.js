@@ -1,14 +1,14 @@
 var sankoreLang = {
-    display: "Close", 
+    display: "Display", 
     edit: "Edit", 
     short_desc: "How many signals do you hear?", 
     add: "Add new block",
     enter: "Enter your instruction here ...",
     wgt_name: "Associate to the audio",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

@@ -49,7 +49,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mInitialLoadDone(false)
     , mIsFreezable(true)
     , mIsResizable(false)    
-    , mLoadIsErronous(false)    
+    , mLoadIsErronous(false)
     , mCanBeContent(0)
     , mCanBeTool(0)
     , mWidgetUrl(pWidgetUrl)
@@ -113,12 +113,18 @@ void UBGraphicsWidgetItem::initialize()
     connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
     connect(this, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
+    connect(page()->mainFrame(), SIGNAL(initialLayoutCompleted()), this, SLOT(initialLayoutCompleted()));
     connect(page(), SIGNAL(linkClicked(const QUrl&)), this, SLOT(onLinkClicked(const QUrl&)));
 }
 
 void UBGraphicsWidgetItem::onLinkClicked(const QUrl& url)
 {
 	UBApplication::webController->loadUrl(url);
+}
+
+void UBGraphicsWidgetItem::initialLayoutCompleted()
+{
+    mInitialLoadDone = true;
 }
 
 QUrl UBGraphicsWidgetItem::mainHtml()
@@ -564,40 +570,33 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
 void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 
-    if (scene() && scene()->renderingContext() != UBGraphicsScene::Screen)
-    {
+    if (scene() && scene()->renderingContext() != UBGraphicsScene::Screen) {
         painter->drawPixmap(0, 0, snapshot());
     }
-    else
-    {
-        if (!mInitialLoadDone || mLoadIsErronous) 
-        {
-            QString message;
-
-            if (mInitialLoadDone && mLoadIsErronous)
-                message = tr("Cannot load content");
-            else
-                message = tr("Loading ...");
-
-            painter->setFont(QFont("Arial", 12));
-
-            QFontMetrics fm = painter->fontMetrics();
-            QRect txtBoundingRect = fm.boundingRect(message);
-
-            txtBoundingRect.moveCenter(rect().center().toPoint());
-            txtBoundingRect.adjust(-10, -5, 10, 5);
-
-            painter->setPen(Qt::NoPen);
-            painter->setBrush(UBSettings::paletteColor);
-            painter->drawRoundedRect(txtBoundingRect, 3, 3);
-
-            painter->setPen(Qt::white);
-            painter->drawText(rect(), Qt::AlignCenter, message);
-        }
-        else
-            QGraphicsWebView::paint(painter, option, widget);
+    else {
+        QGraphicsWebView::paint(painter, option, widget);
     }
 
+    if (!mInitialLoadDone) {
+        QString message;
+
+        message = tr("Loading ...");
+
+        painter->setFont(QFont("Arial", 12));
+
+        QFontMetrics fm = painter->fontMetrics();
+        QRect txtBoundingRect = fm.boundingRect(message);
+
+        txtBoundingRect.moveCenter(rect().center().toPoint());
+        txtBoundingRect.adjust(-10, -5, 10, 5);
+
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(UBSettings::paletteColor);
+        painter->drawRoundedRect(txtBoundingRect, 3, 3);
+
+        painter->setPen(Qt::white);
+        painter->drawText(rect(), Qt::AlignCenter, message);
+    }
 }
 
 void UBGraphicsWidgetItem::geometryChangeRequested(const QRect& geom)
@@ -618,9 +617,9 @@ void UBGraphicsWidgetItem::javaScriptWindowObjectCleared()
 
 void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 {
-    mInitialLoadDone = true;
     mLoadIsErronous = !ok;
     update(boundingRect());
+    takeSnapshot();
 }
 
 void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)

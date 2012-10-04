@@ -159,7 +159,7 @@ class UBBoardController : public UBDocumentContainer
 
         void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
-        UBGraphicsItem *duplicateItem(UBItem *item);
+        UBGraphicsItem *duplicateItem(UBItem *item, bool bAsync = true);
         void deleteScene(int index);
 
         bool cacheIsVisible() {return mCacheWidgetIsEnabled;}
