@@ -62,14 +62,11 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         QUrl widgetUrl();
         QString mainHtmlFileName();
 
-        bool hasEmbededObjects();
-        bool hasEmbededFlash();
-
         bool canBeContent();
         bool canBeTool();
 
         QString preference(const QString& key) const;
-        void setPreference(const QString& key, QString value);      
+        void setPreference(const QString& key, QString value);
         QMap<QString, QString> preferences() const;
         void removePreference(const QString& key);
         void removeAllPreferences();
@@ -94,7 +91,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
 
         virtual void setUuid(const QUuid &pUuid);
 
-        QSize nominalSize() const;       
+        QSize nominalSize() const;
 
         bool hasLoadedSuccessfully() const;
 
@@ -110,7 +107,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         virtual UBGraphicsScene* scene();
 
         static int widgetType(const QUrl& pUrl);
-        static QString widgetName(const QUrl& pUrl);        
+        static QString widgetName(const QUrl& pUrl);
         static QString iconFilePath(const QUrl& pUrl);
 
     public slots:
@@ -127,7 +124,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
             type_ALL  = 7, // 0111
         };
 
-        bool mFirstReleaseAfterMove;        
+        bool mFirstReleaseAfterMove;
         bool mInitialLoadDone;
         bool mIsFreezable;
         bool mIsResizable;
@@ -137,7 +134,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         int mCanBeTool;
         QSize mNominalSize;
         QString mMainHtmlFileName;
-        QUrl mMainHtmlUrl;        
+        QUrl mMainHtmlUrl;
         QUrl mWidgetUrl;
         QMap<QString, QString> mDatastore;
         QMap<QString, QString> mPreferences;
@@ -162,21 +159,21 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         void mainFrameLoadFinished(bool ok);
 
     private slots:
-    	void onLinkClicked(const QUrl& url);
+        void onLinkClicked(const QUrl& url);
         void initialLayoutCompleted();
 
     private:
         bool mIsFrozen;
         bool mIsTakingSnapshot;
-        bool mShouldMoveWidget;        
+        bool mShouldMoveWidget;
         UBWidgetUniboardAPI* mUniboardAPI;
         QPixmap mSnapshot;
         QPointF mLastMousePos;
         QUrl ownFolder;
-        QUrl SnapshotFile;  
+        QUrl SnapshotFile;
 
         static bool sInlineJavaScriptLoaded;
-        static QStringList sInlineJavaScripts;        
+        static QStringList sInlineJavaScripts;
 };
 
 class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
@@ -185,11 +182,11 @@ class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
 
     public:
         UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
-        ~UBGraphicsAppleWidgetItem();        
+        ~UBGraphicsAppleWidgetItem();
 
         virtual void copyItemParameters(UBItem *copy) const;
         virtual void setUuid(const QUuid &pUuid);
-        virtual UBItem* deepCopy() const;        
+        virtual UBItem* deepCopy() const;
 };
 
 class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
@@ -205,7 +202,7 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
                 {
                     /* NOOP */
                 }
-                
+
 
                 PreferenceValue(const QString& pValue, bool pReadonly)
                 {
@@ -230,13 +227,13 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         };
 
         UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent = 0);
-        ~UBGraphicsW3CWidgetItem();        
+        ~UBGraphicsW3CWidgetItem();
 
         virtual void setUuid(const QUuid &pUuid);
         virtual UBItem* deepCopy() const;
         virtual void copyItemParameters(UBItem *copy) const;
         QMap<QString, PreferenceValue> preferences();
-        Metadata metadatas() const;  
+        Metadata metadatas() const;
 
         static QString freezedWidgetFilePath();
         static QString createNPAPIWrapper(const QString& url, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
@@ -255,11 +252,11 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         static QString textForSubElementByLocale(QDomElement rootElement, QString subTagName, QLocale locale);
 
         UBW3CWidgetAPI* mW3CWidgetAPI;
-        QMap<QString, PreferenceValue> mPreferences;        
+        QMap<QString, PreferenceValue> mPreferences;
 
         static bool sTemplateLoaded;
         static QString sNPAPIWrappperConfigTemplate;
-        static QMap<QString, QString> sNPAPIWrapperTemplates;    
+        static QMap<QString, QString> sNPAPIWrapperTemplates;
 };
 
 #endif // UBGRAPHICSWIDGETITEM_H

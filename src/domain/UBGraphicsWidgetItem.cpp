@@ -48,7 +48,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     : QGraphicsWebView(parent)
     , mInitialLoadDone(false)
     , mIsFreezable(true)
-    , mIsResizable(false)    
+    , mIsResizable(false)
     , mLoadIsErronous(false)
     , mCanBeContent(0)
     , mCanBeTool(0)
@@ -56,7 +56,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mIsFrozen(false)
     , mIsTakingSnapshot(false)
     , mShouldMoveWidget(false)
-    , mUniboardAPI(0)    
+    , mUniboardAPI(0)
 {
     setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
@@ -119,7 +119,8 @@ void UBGraphicsWidgetItem::initialize()
 
 void UBGraphicsWidgetItem::onLinkClicked(const QUrl& url)
 {
-	UBApplication::webController->loadUrl(url);
+    //UBApplication::webController->loadUrl(url);
+    load(url);
 }
 
 void UBGraphicsWidgetItem::initialLayoutCompleted()
@@ -145,24 +146,6 @@ QUrl UBGraphicsWidgetItem::widgetUrl()
 QString UBGraphicsWidgetItem::mainHtmlFileName()
 {
     return mMainHtmlFileName;
-}
-
-bool UBGraphicsWidgetItem::hasEmbededObjects()
-{
-    if (page()->mainFrame()) {
-        QList<UBWebKitUtils::HtmlObject> htmlObjects = UBWebKitUtils::objectsInFrame(page()->mainFrame());
-        return htmlObjects.length() > 0;
-    }
-
-    return false;
-}
-
-bool UBGraphicsWidgetItem::hasEmbededFlash()
-{
-    if (hasEmbededObjects())
-        return page()->mainFrame()->toHtml().contains("application/x-shockwave-flash");
-    else
-        return false;
 }
 
 bool UBGraphicsWidgetItem::canBeContent()
@@ -324,18 +307,18 @@ bool UBGraphicsWidgetItem::hasLoadedSuccessfully() const
     return (mInitialLoadDone && !mLoadIsErronous);
 }
 
-bool UBGraphicsWidgetItem::freezable() 
-{ 
+bool UBGraphicsWidgetItem::freezable()
+{
     return mIsFreezable;
 }
 
 bool UBGraphicsWidgetItem::resizable()
-{ 
+{
     return mIsResizable;
-}        
+}
 
 bool UBGraphicsWidgetItem::isFrozen()
-{ 
+{
     return mIsFrozen;
 }
 
@@ -351,7 +334,7 @@ QPixmap UBGraphicsWidgetItem::takeSnapshot()
     QPixmap pixmap(size().toSize());
     pixmap.fill(Qt::transparent);
     QPainter painter(&pixmap);
- 
+
     QStyleOptionGraphicsItem options;
     paint(&painter, &options);
 
@@ -497,7 +480,7 @@ bool UBGraphicsWidgetItem::event(QEvent *event)
             event->accept();
             return true;
         }
-    }    
+    }
     else if (event->type() == QEvent::ShortcutOverride)
         event->accept();
 
@@ -813,7 +796,7 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
 
         if (roles.contains("tmac"))
             mCanBeTool |= UBGraphicsWidgetItem::type_MAC;
-        
+
         if (roles.contains("tunix"))
             mCanBeTool |= UBGraphicsWidgetItem::type_UNIX;
 
@@ -885,9 +868,6 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     mMainHtmlUrl.setPath(pWidgetUrl.path() + "/" + mMainHtmlFileName);
     /* is it a valid local file ? */
     QFile f(mMainHtmlUrl.toLocalFile());
-
-    qDebug() << mMainHtmlFileName;
-    qDebug() << mMainHtmlUrl.toLocalFile();
 
     if(!f.exists())
         mMainHtmlUrl = QUrl(mMainHtmlFileName);
@@ -1108,11 +1088,11 @@ QString UBGraphicsW3CWidgetItem::freezedWidgetPage()
         if (!wrapperFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "can't open wrapper file " + freezedWidgetDefaultContentFilePath;
             defaultcontent = "";
-        } 
+        }
         else {
             QByteArray arr = wrapperFile.readAll();
             if (!arr.isEmpty())
-                defaultcontent = QString(arr); 
+                defaultcontent = QString(arr);
             else {
                 qDebug() << "content of " + freezedWidgetDefaultContentFilePath + "is empty";
                 defaultcontent = QString();

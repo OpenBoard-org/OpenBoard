@@ -303,12 +303,10 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
 
 UBGraphicsScene::~UBGraphicsScene()
 {
-    if (mCurrentStroke)
-        if (mCurrentStroke->polygons().empty())
-        {
-            delete mCurrentStroke;
-            mCurrentStroke = NULL;
-        }
+    if (mCurrentStroke && mCurrentStroke->polygons().empty()){
+        delete mCurrentStroke;
+        mCurrentStroke = NULL;
+    }
 
     if (mZLayerController)
         delete mZLayerController;
@@ -437,7 +435,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
     }
 
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
-        delete mCurrentStroke;    
+        delete mCurrentStroke;
         mCurrentStroke = NULL;
     }
 
@@ -800,7 +798,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             }
         }
         else if (eraserPath.intersects(itemPainterPath))
-        {   
+        {
 
             QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
             #pragma omp critical
@@ -820,7 +818,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         else
         {
             UBGraphicsPolygonItem *pi = intersectedItems[i];
-            
+
             for(int j = 0; j < intersectedPolygons[i].size(); j++)
             {
                 QPolygonF p = intersectedPolygons[i][j];
@@ -2295,7 +2293,7 @@ void UBGraphicsScene::createPointer()
 void UBGraphicsScene::setToolCursor(int tool)
 {
     if (tool == (int)UBStylusTool::Selector ||
-             tool == (int)UBStylusTool::Text || 
+             tool == (int)UBStylusTool::Text ||
                 tool == (int)UBStylusTool::Play)
     {
         deselectAllItems();
@@ -2310,5 +2308,5 @@ void UBGraphicsScene::setToolCursor(int tool)
 
 void UBGraphicsScene::initStroke()
 {
-	mCurrentStroke = new UBGraphicsStroke();
+    mCurrentStroke = new UBGraphicsStroke();
 }
