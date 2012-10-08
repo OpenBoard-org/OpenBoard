@@ -70,12 +70,12 @@
                 $("div.tools_change").removeClass("tools_compass");
                 window.sankore.setTool('pen');              
                 window.sankore.setPenColor('#' + HSBToHex(hsb));
-                sankore.returnStatus("PEN installed", penFlag);
+                //sankore.returnStatus("PEN installed", penFlag);
             } else {
                 $("div.tools_change").addClass("tools_compass");
                 window.sankore.setTool('compass');              
                 window.sankore.setPenColor('#' + HSBToHex(hsb));
-                sankore.returnStatus("Compass installed", penFlag);
+                //sankore.returnStatus("Compass installed", penFlag);
             }
         },
         keyDown = function (ev) {
@@ -224,12 +224,12 @@
                 $("div.tools_change").removeClass("tools_compass");
                 window.sankore.setTool('pen');
                 window.sankore.setPenColor('#' + HSBToHex(tmpColor.b));
-                sankore.returnStatus("PEN installed", penFlag);
+                //sankore.returnStatus("PEN installed", penFlag);
             } else {
                 $("div.tools_change").addClass("tools_compass");
                 window.sankore.setTool('compass');
                 window.sankore.setPenColor('#' + HSBToHex(tmpColor.b));
-                sankore.returnStatus("Compass installed", penFlag);
+                //sankore.returnStatus("Compass installed", penFlag);
             }
             //$(tmpColor.a).data('colorpicker').newColor.css('backgroundColor', '#' + HSBToHex(tmpColor.b));
             return false;
@@ -261,7 +261,7 @@
             cal.data('colorpicker').onSubmit(col, HSBToHex(col), HSBToRGB(col), cal.data('colorpicker').el);
             penFlag = (penFlag)?false:true;
             setNewColor(col, cal.get(0));
-            sankore.returnStatus("startEditing()", penFlag);
+            //sankore.returnStatus("startEditing()", penFlag);
         },
         show = function (ev) {
             var cal = $('#' + $(this).data('colorpickerId'));
