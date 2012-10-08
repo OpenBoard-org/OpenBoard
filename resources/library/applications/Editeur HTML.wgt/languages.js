@@ -20,8 +20,8 @@ var sankoreLang = {
     "fr":{
         "enter_title": "Entrer le titre yuor ici ...",
         "welcome":"Bienvenue sur HTML Editor",
-        "source":"Source",
-        "link":"Lien",
+        "source":"Ajouter un lien vers une image",
+        "link":"Ajouter une URL",
         "preview":"Aperçu",
         "text_to_link":"Votre texte à lier",
         "alt_text":"Texte alternatif"
