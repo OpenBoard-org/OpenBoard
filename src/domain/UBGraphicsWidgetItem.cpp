@@ -119,7 +119,6 @@ void UBGraphicsWidgetItem::initialize()
 
 void UBGraphicsWidgetItem::onLinkClicked(const QUrl& url)
 {
-    //UBApplication::webController->loadUrl(url);
     load(url);
 }
 
