@@ -1,12 +1,12 @@
 var sankoreLang = {
-    view: "Close", 
+    view: "Display", 
     edit: "Edit",
     example: "this is a bunch of words which should be split apart",
     wgt_name: "Split a phrase",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

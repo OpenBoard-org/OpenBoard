@@ -1,13 +1,13 @@
 var sankoreLang = {
-    display: "Close", 
+    display: "Display", 
     edit: "Edit", 
     text_content: "This is an example. Instead of this text you can put your own content.", 
     new_txt: "New text block",
     new_slide: "This is new slide.",
     wgt_name: "Slider",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

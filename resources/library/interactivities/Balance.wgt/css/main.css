@@ -1,0 +1,278 @@
+#scene {
+	position: relative;
+}
+
+#scene > div {
+
+}
+
+#scalesCell {
+	display: table;
+}
+#scalesCell > div {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#scalesWrapper {
+	padding: 0px 100px 100px;
+	position: relative;
+}
+
+.onEdit #scalesWrapper {
+	padding-top: 100px;
+}
+
+#scales {
+	position: relative;
+}
+
+.scale {
+	position: absolute;
+	width: 125px;
+	height: 0;
+	padding: 90px 20px 35px;
+	top: 72px;
+	background: url(images/scale.png) no-repeat center bottom;
+}
+
+#tray, .scale {
+	/*
+	-webkit-transition: -webkit-transform 0.25s ease-in;
+	-moz-transition: -moz-transform 0.25s ease-in;
+	-ms-transition: -ms-transform 0.25s ease-in;
+	transition: transform 0.25s ease-in;
+	*/
+}
+
+#leftScale {
+	left: 0;
+	margin-left: -75px;
+}
+
+#rightScale {
+	right: 0;
+	margin-right: -75px;	
+}
+
+#tray {
+	position: relative;
+	background-color: red;
+	top: 50%;
+	margin-top: -1px;
+	width: 225px;
+	height: 144px;
+	background: url("images/scales.png") no-repeat center;
+}
+
+#graduations {
+	width: 50px;
+	height: 15px;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -25px;
+	background: url(images/graduations.png) center no-repeat;
+}
+
+#pivot {
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	left: 93px;
+	top: 52px;
+	background: url(images/pivot.png) center no-repeat;
+}
+
+#objects {
+	position: relative;
+	display: inline-block;
+	padding: 0 5px 0 10px; 
+}
+
+#objects .object {
+	display: inline-block;
+	vertical-align: top;
+}
+
+#objects button[role="add"] {
+	display: none;
+
+	position: relative;
+	overflow: hidden;
+
+	text-indent: -100px;
+
+	width: 34px;
+	height: 34px;
+
+	margin-left: 10px;
+
+	cursor: pointer;
+
+	border-radius: 2px;
+	border: 1px solid rgba(255,255,255, 0.15);
+	background: rgba(0,0,0, 0.15) url(images/weight-add.png) center no-repeat;
+}
+
+.onEdit #objects button[role="add"] {
+	display: inline-block;
+}
+
+#leftScale .object {
+	position: absolute;
+	bottom: 0;
+}
+
+.object input {
+	border: none;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	
+	text-align: center;
+	font-size: 12px;
+
+	color: #000;
+	border-radius: 2px;
+	background-color: #FFF;
+	box-shadow: 0 1px 2px rgba(0,0,0, 0.4);
+}
+
+.object .tools {
+	display: none;
+	position: absolute;
+	top: -13px;
+	width: 100%;
+	text-align: center;
+}
+
+.onEdit button[role="remove"] {
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	width: 11px;
+	height: 11px;
+	text-indent: -100px;
+	border: none;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	background: transparent url(images/delete.png) center no-repeat;
+}
+
+.onEdit .object .tools {
+	display: block;
+}
+
+.object input:disabled {
+	color: #CCC;
+	background: none;
+	box-shadow: none;
+}
+
+.object input:disabled::-webkit-outer-spin-button,
+.object input:disabled::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#objects .desk {
+	position: absolute;
+	width: 100%;
+	height: 20px;
+	top: 36px;
+	border-radius: 4px;
+	box-shadow: 0 3px 0 #999, 0 1px 2px rgba(0,0,0, .65);
+	background-color: #CCC;
+    background-image: -moz-linear-gradient(90deg, #FFF 0%, #CCC 100%);
+    background-image: -o-linear-gradient(90deg, #FFF 0%, #CCC 100%);
+    background-image: -webkit-linear-gradient(90deg, #FFF 0%, #CCC 100%);
+    background-image: linear-gradient(90deg, #FFF 0%, #CCC 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF', endColorstr='#CCC', GradientType=0);
+}
+
+#rightScale .weight {
+	position: absolute !important;
+}
+
+#weights {
+	display: none;
+	position: absolute;
+	top: 20px;
+	right: 0px;
+	width: 160px;
+}
+
+.onEdit #weights {
+	display: block;
+}
+
+#weights .weight {
+	display: inline-block;
+}
+
+.weight {
+	position: relative;
+	
+	width: 32px;
+	height: 35px;
+	
+	margin-left: 10px;
+	margin-bottom: 30px;
+
+	font-size: 12px;
+	text-align: center;
+	color: #CCC;
+	text-shadow: 0 -1px 0 #000;
+}
+
+.weight .unit {
+	font-size: 10px;
+}
+
+.weight .amount {
+	height: 100%;
+	padding: 4px 2px 0;
+	border-radius: 4px;
+	border: 1px solid rgba(255,255,255, 0.15);
+	background-color: rgba(0,0,0, 0.15);
+}
+
+.weight > div.bg {
+	position: absolute;
+	left: -2px;
+	bottom: -18px;
+	width: 35px;
+	height: 32px;
+	background: url(images/weight.png) no-repeat center bottom;
+}
+
+.weight.w500 {
+	
+}
+
+.weight.w200 {
+	
+}
+
+.weight.w100 {
+	
+}
+
+.weight.w50 {
+	
+}
+
+.weight.w20 {
+	
+}
+
+.weight.w10 {
+	
+}
+
+.onOut .amount {
+	background-color: rgba(255,0,0, 0.15);
+}

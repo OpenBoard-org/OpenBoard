@@ -170,9 +170,14 @@ void UBFeaturesWidget::deleteSelectedElements()
 {
     QModelIndexList selected = centralWidget->listView()->selectionModel()->selectedIndexes();
 
-    foreach ( QModelIndex sel, selected )
+    QList<UBFeature> featureasToMove;
+    for (int i = 0; i < selected.count(); i++)
     {
-        UBFeature feature = sel.data(Qt::UserRole + 1).value<UBFeature>();
+        featureasToMove.append(controller->getFeature(selected.at(i), objNameFeatureList));
+    }
+    
+    foreach (UBFeature feature, featureasToMove)
+    {
         if (feature.isDeletable()) {
             if (feature.inTrash()) {
                 controller->deleteItem(feature);
@@ -181,7 +186,8 @@ void UBFeaturesWidget::deleteSelectedElements()
             }
         }
     }
-   controller->refreshModels();
+
+    controller->refreshModels();
 }
 
 void UBFeaturesWidget::rescanModel()

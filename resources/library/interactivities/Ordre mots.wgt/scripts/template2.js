@@ -27,14 +27,14 @@ function checkResponse()
 */
 
 var sankoreLang = {
-    view: "Close", 
+    view: "Display", 
     edit: "Edit",
     example: "a*long*,*long*time*ago*...",
     wgt_name: "Order words",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

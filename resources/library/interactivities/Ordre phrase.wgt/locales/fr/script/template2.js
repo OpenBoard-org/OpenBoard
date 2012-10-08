@@ -26,7 +26,7 @@ function checkResponse()
 */
 
 var sankoreLang = {
-    view: "Fermer", 
+    view: "Afficher", 
     edit: "Modifier",
     example: "Cette phrase\nest un\nexemple",
     wgt_name: "Ordonner des phrases",

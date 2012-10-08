@@ -1,14 +1,14 @@
 var sankoreLang = {
-    display: "Close", 
+    display: "Display", 
     edit: "Edit", 
     short_desc: "Place the pictures in ascending order.", 
     add: "Add new block",
     enter: "Enter your instruction here ...",
     wgt_name: "Order images",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

@@ -28,13 +28,13 @@ function checkResponse()
 
 var sankoreLang = {
     edit: "Edit",
-    view: "Close",
+    view: "Display",
     example: "this is\nan example\nsentence",
     wgt_name: "Order phrases",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

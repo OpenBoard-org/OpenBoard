@@ -1,0 +1,248 @@
+.debug {
+	display: none;
+}
+
+#scene {
+	font-family: "SFToontimeRegular";
+	font-size: 24px;
+	color: #FFF;
+}
+
+#table {
+	display: table;
+	border-collapse: collapse;
+	text-align: center;
+}
+
+#table > div {
+	display: table-row;
+
+	border-top: 2px solid rgba(255, 255, 255, 0.25);
+	border-bottom: 2px solid rgba(255, 255, 255, 0.25);		
+}
+
+#table > div:first-child {
+	border-top: none;
+}
+
+#table > div:last-child {
+	border-bottom: none;
+}
+
+
+#table > div > div {
+	display: table-cell;
+	vertical-align: middle;
+	width: 180px;
+	height: 100px;
+	
+	padding: 0 10px;
+	
+	border-left: 2px solid rgba(255, 255, 255, 0.25);
+	border-right: 2px solid rgba(255, 255, 255, 0.25);
+	
+	-webkit-transition: opacity 0.25s ease-in;
+	   -moz-transition: opacity 0.25s ease-in;
+		-ms-transition: opacity 0.25s ease-in;
+			transition: opacity 0.25s ease-in;
+}
+
+#table > div > div:first-child {
+	border-left: none;
+}
+
+#table > div > div:last-child {
+	border-right: none;
+}
+
+
+#table .actions {
+	margin-top: 5px;
+	height: 26px;
+}
+
+
+#table > div > div.answered.succeed .actions {
+	display: none;
+}
+
+#table .actions .player {
+	font-size: 82px;
+	line-height: 45px;
+}
+
+#table > div > div button {
+	display: none;
+	vertical-align: top;
+	margin: 0;
+	padding: 0;
+	width: 32px;
+	height: 26px;
+	border: none;
+	text-indent: -9999px;
+	background: url("images/submit.png") top center no-repeat;
+	cursor: pointer;
+}
+
+#table .operation {
+	margin-right: 5px;
+}
+
+.onEdit #table .operation {
+	background-color: #FFF;
+	font-family: "helvetica neue";
+	padding: 6px;
+	font-size: 14px;
+	color: #666666;
+	border: 1px solid #000;
+	border-radius: 3px;
+}
+
+.onEdit #table .equal {
+	display: none;
+}
+
+#table span.result {
+	display: inline-block;
+	margin: 0 0 0 5px;
+	padding: 0 5px;
+	min-width: 30px;
+	font-family: "SFToontimeRegular";
+	font-size: 24px;
+	color: #FFF;
+	text-align: center;
+	background: url("images/result-bg.png") center bottom no-repeat;
+}
+
+#table .onAnswer span.result,
+#table > div > div.answered.succeed span.result {
+	background: none;
+}
+
+.onEdit #table span.result {
+	display: none;
+}
+
+#table > div > div.onAnswer button {
+	display: inline-block;
+}
+
+#table > div > div.answered.succeed {
+	padding-top: 112px;
+	height: auto;
+}
+
+.answered.succeed.player1 {
+	background: url("images/player1.png") center 10px no-repeat;
+}
+
+.answered.succeed.player2 {
+	background: url("images/player2.png") center 10px no-repeat;
+}
+
+#table.finish > div > div {
+	opacity: 0.3;
+}
+
+.win {
+	opacity: 1 !important;
+}
+
+.feedback {
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 0;
+}
+
+.feedback.closed {
+	-webkit-transition: width 0s 0.5s linear;
+	   -moz-transition: width 0s 0.5s linear;
+	    -ms-transition: width 0s 0.5s linear;
+			transition: width 0s 0.5s linear;
+}
+
+.feedback.expand {
+	width: 100%;
+	-webkit-transition-delay: 0;
+	   -moz-transition-delay: 0;
+		-ms-transition-delay: 0;
+			transition-delay: 0;
+}
+
+.feedback > div {
+	max-height: 100%;
+	text-align: center;
+}
+
+.feedback img {
+	max-height: 100%;
+	opacity: 0;
+	-webkit-transform:scale(0) rotate(0deg);
+}
+
+.feedback.closed img {	
+	/*
+	-webkit-animation: hide .4s ease-in;
+	   -moz-animation: hide .4s ease-in;
+	    -ms-animation: hide .4s ease-in;
+			animation: hide .4s ease-in;
+	*/
+}
+
+.feedback.expand img {
+	opacity: 1;
+	-webkit-transform:scale(1) rotate(360deg);
+	/*
+	-webkit-animation: expand .4s ease-in;
+	   -moz-animation: expand .4s ease-in;
+	    -ms-animation: expand .4s ease-in;
+			animation: expand .4s ease-in;
+	*/			
+}
+
+@-webkit-keyframes expand {
+	0% {
+		opacity: 0;
+	    -webkit-transform:scale(0) rotate(0deg);
+	}
+	100% {
+		opacity: 1;
+	    -webkit-transform:scale(1) rotate(360deg);
+	}
+}
+
+@-moz-keyframes expand {
+	0% {
+		opacity: 0;
+	    -webkit-transform:scale(0) rotate(0deg);
+	}
+	100% {
+		opacity: 1;
+	    -webkit-transform:scale(1) rotate(360deg);
+	}
+}
+
+@-webkit-keyframes hide {
+	0% {
+		opacity: 1;
+	    -webkit-transform:scale(1) rotate(360deg);
+	}
+	100% {
+		opacity: 0;
+	    -webkit-transform:scale(0) rotate(0deg);
+	}
+}
+
+@-moz-keyframes hide {
+	0% {
+		opacity: 1;
+	    -webkit-transform:scale(1) rotate(360deg);
+	}
+	100% {
+		opacity: 0;
+	    -webkit-transform:scale(0) rotate(0deg);
+	}
+}
