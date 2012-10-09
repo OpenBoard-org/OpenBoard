@@ -1582,10 +1582,6 @@
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
-        <source>Cannot load content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Loading ...</source>
         <translation type="unfinished">Nahrává se...</translation>
     </message>

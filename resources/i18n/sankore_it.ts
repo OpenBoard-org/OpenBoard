@@ -1580,10 +1580,6 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
-        <source>Cannot load content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Loading ...</source>
         <translation type="unfinished">Caricamento in corso...</translation>
     </message>
