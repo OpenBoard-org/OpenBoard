@@ -8,7 +8,7 @@ var sankoreLang = {
     wgt_name: "Ordonner des lettres",
     reload: "Recharger",
     slate: "ardoise",
-    pad: "pad",
+    pad: "tablette",
     none: "aucun",
     help: "Aide",
     help_content: "<p><h2>Ordre des lettres</h2></p>"+
