@@ -5,7 +5,7 @@
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
         width="850"
-        height="350" 
+        height="400" 
 		ub:resizable="true">
 		
 		<name>Split a text [alt]</name>

@@ -5,7 +5,7 @@
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
         width="850"
-        height="300" 
+        height="350" 
 	ub:resizable="true">
 		
 		<name>Split a phrase</name>
