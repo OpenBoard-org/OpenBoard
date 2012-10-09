@@ -231,8 +231,8 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 {
     QString previewImageUrl = ":images/libpalette/notFound.png";
 
-    QString widgetsUrl = metadata.value("Url", QString());
-    QString widgetsThumbsUrl = metadata.value("thumbnailUrl", QString());
+    QString widgetsUrl = QUrl::fromEncoded(metadata["Url"].toAscii()).toString()/*metadata.value("Url", QString())*/;
+	QString widgetsThumbsUrl = QUrl::fromEncoded(metadata["thumbnailUrl"].toAscii()).toString();
 
     bool isLocal = QFileInfo(widgetsUrl).exists();
 
@@ -269,8 +269,11 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
         // We send here the request and store its reply in order to be able to cancel it if needed
         imageGatherer->get(QUrl(widgetsThumbsUrl), QPoint(0,0), QSize(), false);
     }
+	
+	QString tmp = QUrl::fromEncoded(metadata["Url"].toAscii()).toString();
+	qDebug() << tmp;
 
-    UBFeature feature( "/root", QImage(previewImageUrl), QString(), metadata["Url"], FEATURE_ITEM );
+    UBFeature feature( "/root", QImage(previewImageUrl), QString(), tmp/*metadata["Url"]*/, FEATURE_ITEM );
     feature.setMetadata( metadata );
 
     centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
@@ -299,8 +302,8 @@ void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QU
 void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData)
 {
     Q_UNUSED(pContentHeader)
-
     if (pSuccess) {
+		qDebug() << pData.length();
         controller->addDownloadedFile(sourceUrl, pData);
         controller->refreshModels();
     }
