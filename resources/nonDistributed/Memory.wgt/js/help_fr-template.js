@@ -1,27 +1,16 @@
 <h3>Memory</h3>
-<h4>Jeu d’association de cartes.</h4>
+<h4>Calcul mental, jeu d’association de cartes</h4>
+<p>L’App Memory a pour but de faire des paires tout en mémorisant l’emplacement des différentes cartes.</p>
+<p>Les cartes sont retournées face contre table de façon à ce que les images ne soient pas visibles. Le joueur découvre 2 cartes. Si elles sont identiques, elles restent découvertes. Si elles sont différentes, elles se retournent à nouveau.</p>
+<p>La partie est terminée quand toutes les paires ont été trouvées.</p>
 
-<p>L’interactivité Memory a pour but de faire des paires tout en mémorisant l’emplacement des différentes cartes.</p>
-
-<p>Les cartes sont retournées face contre table, de manière à ce que les images ne soient pas visibles. Le joueur découvre 2 cartes. Si elles sont identiques, elles restent découvertes. Si elles sont différentes, elles se retournent à nouveau. La partie est terminée quand toutes les paires ont été trouvées.</p>
-
-<p>Les cartes sont disposées de manière aléatoire dans le mode jeu.</p>
-L’interactivité est capable d’identifier les écritures mathématiques équivalentes (signes autorisés : “+”, “*”, “-”, “/” et les parenthèses). Evitez toutefois la division par 0.</p>
-
-<p>Le bouton “Recharger” réinitialise le memory.</p>
-
-
-<p>Le bouton “Modifier” vous permet :</p>
+<p>Le bouton "éditer" vous permet de :</p>
 <ul>
-<li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut tablette),</li>
-<li>de choisir le nombre de cartes (4, 6 ou 8 cartes),</li>
-<li>de sélectionner le délai d’affichage des cartes retournées,</li> 
-<li>d’éditer directement une carte (insérer une image ou modifier le texte).</li></ul>
-
-<p>Les paires de cartes sont en colonne (même chiffre indiqué sous chaque carte).</p>
-<p>Les cartes possèdent par défaut un champ texte.</p> 
-<p>Pour insérer du texte, cliquez sur la carte et saisissez le texte désiré.</p> 
-<p>Pour utiliser des images, cochez la case “utiliser une image” et  glissez-déposez sur la carte l’image depuis votre bibliothèque.</p>
-<p>Le bouton bleu permet de simuler l’activité.</p>
-
-<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>
+	<li>modifier le thème de l'interactivité : tablette, ardoise ou aucun (par défaut tablette),</li>
+	<li>choisir le nombre de cartes (4, 6 ou 8 cartes),</li>
+	<li>sélectionner le délai d’affichage des cartes retournées,</li>
+	<li>éditer directement une carte.</li>
+</ul>
+<p>Les cartes possèdent par défaut un champ texte. Pour insérer du texte, cliquez sur cette dernière et saisissez le texte désiré. Pour ajouter une image depuis votre bibliothèque, cochez la case “utiliser une image” et utilisez le glisser-déposer. Il faut au préalable retourner la carte avec le bouton bleu.</p>
+<p>Les cartes sont disposées de manière aléatoire dans le mode jeu.</p>								
+<p>L’App est capable d’identifier les écritures mathématiques équivalentes (signes autorisés : “+”, “*”, “-”, “/” et les parenthèses).</p>

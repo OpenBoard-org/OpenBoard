@@ -14,7 +14,7 @@
  */
 
 var sankoreLang = {
-    display: "Fermer", 
+    display: "Afficher", 
     edit: "Modifier", 
     add: "Ajouter", 
     enter_data: "Saisir la donnée:", 

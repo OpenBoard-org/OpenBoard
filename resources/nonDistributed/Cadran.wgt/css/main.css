@@ -27,7 +27,8 @@
 	margin-top: -215px;
 	margin-left: -215px;
 
-	-webkit-transition: all 0.25s ease-in-out;
+	/*OPEN SANKORE bug sur cette animation*/
+	/*-webkit-transition: all 0.25s ease-in-out;*/
 }
 
 .hide {
@@ -115,10 +116,6 @@
 	text-align: center; 
 }
 
-.result {
-	-webkit-perspective: 600px;
-}
-
 .result > div {
 	width: 60px;
 	font-size: 50px;
@@ -143,6 +140,29 @@
 
 .reste {
 	font-size: 24px;
+}
+
+
+#result > div > div:first-child {
+	display: block;
+}
+
+#result > div > div:last-child {
+	display: none;
+}
+
+#result.flip > div > div:first-child {
+	display: none;
+}
+
+#result.flip > div > div:last-child {
+	display: block;
+}
+
+/*OPEN SANKORE bug sur cette animation*/
+/*
+.csstransforms3d .result {
+	-webkit-perspective: 600px;
 }
 
 .csstransforms3d #result > div > div {
@@ -182,3 +202,4 @@
 .no-csstransforms3d #result.flip > div > div:last-child {
 	display: block;
 }
+*/

@@ -4,7 +4,7 @@
         id="http://www.njin.fr/sankore/apps/Cadran opératoire" 
         version="1.0"
         width="800"
-        height="580" 
+        height="700" 
         ub:resizable="false">     
    
 		<name>Cadran opératoire</name>

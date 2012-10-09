@@ -1,14 +1,14 @@
 var sankoreLang = {
     display: "Afficher", 
     edit: "Modifier", 
-    short_desc: "Ecoutez le son et replacer les lettres dans l'ordre.", 
+    short_desc: "Ecoutez le son et replacez les lettres dans l'ordre.", 
     add: "Nouveau bloc",
     enter: "Saisir la consigne ici ...",
     example: "exemple",
     wgt_name: "Ordonner des lettres",
     reload: "Recharger",
     slate: "ardoise",
-    pad: "pad",
+    pad: "tablette",
     none: "aucun",
     help: "Aide",
     help_content: "<p><h2>Ordre des lettres</h2></p>"+
