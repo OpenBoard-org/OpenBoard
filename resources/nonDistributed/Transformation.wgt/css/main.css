@@ -1,0 +1,237 @@
+#edit-cards {
+	padding: 20px 0;
+	overflow-x: auto;
+	white-space: nowrap;
+}
+
+#edit-cards > div {
+	display: inline-block;
+}
+
+#edit-cards > div .label {
+
+}
+
+#edit-cards > div .switch,
+#edit-cards > div .label {
+	margin-bottom: 5px;
+}
+
+#edit-cards > div .cards {
+	padding: 20px;	
+
+	background-color: rgba(0, 0, 0, 0.15);
+
+	-webkit-border-radius: 10px;
+	   -moz-border-radius: 10px;
+		-ms-border-radius: 10px;
+			border-radius: 10px;
+}
+
+#edit-cards > div + div {
+	margin-left: 30px;
+}
+
+#edit-cards div[rel="before"],
+#edit-cards div[rel="after"] {
+	display: inline-block;
+	vertical-align: top;
+}
+
+#edit-cards div[rel="after"] {
+	margin-left: 20px;
+}
+
+.card {
+	position: relative;
+	white-space: normal;
+	width: 180px;
+	height: 180px;
+	
+	overflow: hidden;
+	
+	-webkit-border-radius: 8px;
+	   -moz-border-radius: 8px;
+		-ms-border-radius: 8px;
+			border-radius: 8px;
+	
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+	   -moz-box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+		-ms-box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+			box-shadow: 0 1px 3px rgba(0,0,0, 0.65);
+	
+	background-image: linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+	background-image: -o-linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+	background-image: -moz-linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+	background-image: -webkit-linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+	background-image: -ms-linear-gradient(top, rgb(255,255,255) 0%, rgb(204,204,204) 100%);
+
+	background-image: -webkit-gradient(
+		linear,
+		50% top,
+		50% bottom,
+		color-stop(0, rgb(255,255,255)),
+		color-stop(1, rgb(204,204,204))
+	);
+}
+
+.card > div {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	width: 180px;
+	height: 180px;
+}
+
+.card .text {
+	padding: 0px 20px;
+	font-family: "SFToontimeRegular";
+	font-size: 28px;
+	color: #000;
+}
+
+.usePicture .card .text {
+	display: none;
+}
+
+
+.card .picture {
+	display: none;
+	
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	-webkit-border-radius: 8px;
+	   -moz-border-radius: 8px;
+		-ms-border-radius: 8px;
+			border-radius: 8px;
+}
+
+.usePicture .card .picture {
+	display: block;
+}
+
+.card .picture > div {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	-webkit-border-radius: 8px;
+	   -moz-border-radius: 8px;
+		-ms-border-radius: 8px;
+			border-radius: 8px;
+}
+
+.card .picture > div:first-child {
+	position: relative;
+	display: table-cell;
+	vertical-align: middle;
+	width: 180px;
+	height: 180px;	
+}
+.card .picture > div img {
+	max-width: 100%;
+	max-height: 100%;
+	vertical-align: middle;
+}
+
+.card .picture > div.dropzone {
+	border: 1px dashed black;
+}
+
+.card .picture > div.dropzone div {
+	padding: 10px 10px 10px 50px;
+	text-align: left;
+	color: rgba(255, 255, 255, 0.5);
+	background: rgba(0, 0, 0, 0.4) url("images/drop-label-bg.png") 10px center no-repeat;
+	
+	-webkit-border-radius: 8px 8px 0 0;
+	   -moz-border-radius: 8px 8px 0 0;
+		-ms-border-radius: 8px 8px 0 0;
+			border-radius: 8px 8px 0 0;
+}
+
+.card .picture > div.dropzone.hover div {
+	background-image: url("images/drop-label-ondrop-bg.png");
+	color: rgba(255, 255, 255, 1);
+}
+
+#edit-cards .cards .label {
+	margin-top: 5px;
+	text-align: center;
+	font-style: italic;
+	text-shadow: 0 1px 0 #FFF;
+}
+
+#table {
+	display: table;
+	width: 840px;
+}
+
+#table > div {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#table > .deck {
+	width: 180px;
+	height: 180px;
+	background: url("images/pile-bg.png") center no-repeat;
+}
+
+#table > .deck > div {
+	height: 180px;
+	position: relative;
+	/*background: url("images/pile-with-card-bg.png") center no-repeat;*/
+	-webkit-border-radius: 8px;
+	   -moz-border-radius: 8px;
+		-ms-border-radius: 8px;
+			border-radius: 8px;
+}
+
+#table > .deck.empty > div {
+	background: none;
+}
+
+#table .box {
+	padding: 0 100px;
+	width: 280px;
+	height: 260px;
+}
+
+#table .box > div {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: url("images/box-bg.png") center no-repeat;
+}
+
+#table .part {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	bottom: 0;
+}
+
+.deck.before .part {
+	cursor: pointer;
+}
+
+.part.closed:after {
+	content: " ";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	background: url("images/card-closed-bg.png") center no-repeat;
+	-webkit-border-radius: 8px;
+	   -moz-border-radius: 8px;
+		-ms-border-radius: 8px;
+			border-radius: 8px;
+}
