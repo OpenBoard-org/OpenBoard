@@ -229,35 +229,45 @@ void UBFeaturesWidget::removeFromFavorite( const UBFeaturesMimeData * mimeData )
 
 void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 {
-    QString previewImageUrl;
+    QString previewImageUrl = ":images/libpalette/notFound.png";
 
-    switch (static_cast<int>(UBFileSystemUtils::mimeTypeFromUrl(QUrl(metadata["Url"]))))
-    {
-    case UBMimeType::RasterImage:
-    case UBMimeType::VectorImage:
-        {
-            previewImageUrl = ":images/libpalette/loading.png";
+    QString widgetsUrl = metadata.value("Url", QString());
+    QString widgetsThumbsUrl = metadata.value("thumbnailUrl", QString());
 
-            if (!imageGatherer)
-                imageGatherer = new UBDownloadHttpFile(0, this);
+    bool isLocal = QFileInfo(widgetsUrl).exists();
 
-            connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+    if (isLocal) {
+        QString strType = UBFileSystemUtils::mimeTypeFromFileName(widgetsUrl);
+        UBMimeType::Enum thumbType = UBFileSystemUtils::mimeTypeFromString(strType);
 
-            // We send here the request and store its reply in order to be able to cancel it if needed
-            imageGatherer->get(QUrl(metadata["Url"]), QPoint(0,0), QSize(), false);
-        } break;
-    case UBMimeType::Audio:
-        {
-           previewImageUrl = ":images/libpalette/soundIcon.svg";
-        }break;
-    case UBMimeType::Video:
-        {
+        switch (static_cast<int>(thumbType)) {
+        case UBMimeType::Audio:
+            previewImageUrl = ":images/libpalette/soundIcon.svg";
+            break;
+
+        case UBMimeType::Video:
             previewImageUrl = ":images/libpalette/movieIcon.svg";
-        }break;
-    case UBMimeType::Flash:
-        {
+            break;
+
+        case UBMimeType::Flash:
             previewImageUrl = ":images/libpalette/FlashIcon.svg";
-        }break;
+            break;
+
+        case UBMimeType::RasterImage:
+        case UBMimeType::VectorImage:
+            previewImageUrl = widgetsUrl;
+            break;
+        }
+
+    } else if (!widgetsThumbsUrl.isNull()) {
+        previewImageUrl = ":/images/libpalette/loading.png";
+        if (!imageGatherer)
+            imageGatherer = new UBDownloadHttpFile(0, this);
+
+        connect(imageGatherer, SIGNAL(downloadFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onPreviewLoaded(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)));
+
+        // We send here the request and store its reply in order to be able to cancel it if needed
+        imageGatherer->get(QUrl(widgetsThumbsUrl), QPoint(0,0), QSize(), false);
     }
 
     UBFeature feature( "/root", QImage(previewImageUrl), QString(), metadata["Url"], FEATURE_ITEM );
