@@ -16,8 +16,8 @@
 function init(){
 	
     var ubwidget = $("#ubwidget").ubwidget({
-        width:360,
-        height:240
+//        width:360,
+//        height:240
     });
 	
     var checkMinimize = false;
@@ -108,6 +108,7 @@ function init(){
 			
     minimize.click(
         function(){
+            $('.ubw-container').css("min-height", "26px")
             $('.ubw-container').animate({
                 height:"26px"
             },500);
@@ -123,11 +124,11 @@ function init(){
         });
 			
     maximize.click(
-        function(){
+        function(){            
             var lastHeight = String(minimizedHeight)+'px';
             $('.ubw-container').animate({
                 height: lastHeight
-            },500);
+            },500, function(){$('.ubw-container').css("min-height", "200px").css("height","")});
 
             maximize.hide();
             minimize.show();
@@ -190,8 +191,8 @@ function init(){
         text = window.sankore.preference('noteText', text);
         currentFontSize = window.sankore.preference('fontSize', defaultFontSize);
         $('.ubw-container').css({
-            width:window.innerWidth - 2,
-            height:window.innerHeight - 20
+//            width:window.innerWidth - 2,
+//            height:window.innerHeight - 20
         });
 
         if(checkMinimize){
@@ -212,25 +213,24 @@ function init(){
         winwidth = window.innerWidth;
         winheight = window.innerHeight;
 		  	
-        if(winwidth <= 290)
-        {
-            window.resizeTo(290,winheight);
-        }
-        if(winheight <= 100)
-        {
-            window.resizeTo(winwidth,100);
-        }
-        if(winheight > 600)
-        {
-            window.resizeTo(winwidth,600);
-        }      		
+//        if(winwidth <= 290)
+//        {
+//            window.resizeTo(290,winheight);
+//        }
+//        if(winheight <= 100)
+//        {
+//            window.resizeTo(winwidth,100);
+//        }
+//        if(winheight > 600)
+//        {
+//            window.resizeTo(winwidth,600);
+//        }      		
 
-        $('.ubw-container').width(winwidth-2);
-			
+//        $('.ubw-container').width(winwidth-2);
+//			
         if(checkMinimize)					
             minimizedHeight = winheight-40; 
-        else
-            $('.ubw-container').height(winheight-40);
+
 
         controlTextField();  
     }
