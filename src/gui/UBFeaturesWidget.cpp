@@ -270,9 +270,7 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
         imageGatherer->get(QUrl(widgetsThumbsUrl), QPoint(0,0), QSize(), false);
     }
 
-    QString tmp = QUrl::fromEncoded(metadata["Url"].toAscii()).toString();
-
-    UBFeature feature( "/root", QImage(previewImageUrl), QString(), widgetsThumbsUrl, FEATURE_ITEM );
+    UBFeature feature( "/root", QImage(previewImageUrl), QString(), widgetsUrl, FEATURE_ITEM );
     feature.setMetadata( metadata );
 
     centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
