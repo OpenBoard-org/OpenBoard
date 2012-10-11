@@ -111,7 +111,7 @@
     margin: 10px 10px 0 10px;
     padding: 0;
     float: left;
-    font-family: Arial,Helvetica,sans-serif;
+    font-family: sans-serif;
     font-size: 24px;
     color: #7F613F;
     text-shadow: #FFDCA9 0 1px 0;
@@ -121,7 +121,7 @@
     cursor: pointer;
     margin: 10px 10px 0 0;
     float: right;
-    font-family: Arial,Helvetica,sans-serif;
+    font-family: sans-serif;
     font-size: 24px;    
     line-height: 32px;
 }
@@ -243,7 +243,7 @@
 
 .inline{
     display: inline-block;
-    font-family: "helvetica neue";
+    font-family: sans-serif;
     font-size: 14px;
     color: #666;
 }
