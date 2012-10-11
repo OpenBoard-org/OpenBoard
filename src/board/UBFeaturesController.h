@@ -151,7 +151,7 @@ public:
     void setCurrentElement( const UBFeature &elem ) {currentElement = elem;}
 	const UBFeature & getTrashElement () const { return trashElement; }
 
-    void addDownloadedFile( const QUrl &sourceUrl, const QByteArray &pData );
+    void addDownloadedFile( const QUrl &sourceUrl, const QByteArray &pData, const QString pContentSource, const QString pTitle );
 
 	UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
 	UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
@@ -234,6 +234,8 @@ private:
 	//void addImageToCurrentPage( const QString &path );
 	void loadFavoriteList();
 	void saveFavoriteList();
+    QString uniqNameForFeature(const UBFeature &feature, const QString &pName = "Imported", const QString &pExtention = "") const;
+    QString adjustName(const QString &str);
 
     QList <UBFeature> *featuresList;
 
@@ -276,6 +278,7 @@ private:
 public:
     UBFeature trashElement;
     UBFeature getDestinationFeatureForUrl( const QUrl &url );
+    UBFeature getDestinationFeatureForMimeType(const QString &pMmimeType);
 
 };
 

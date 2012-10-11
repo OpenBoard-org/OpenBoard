@@ -87,7 +87,7 @@ private slots:
     void addToFavorite( const UBFeaturesMimeData  *);
     void removeFromFavorite( const UBFeaturesMimeData * );
     void onDisplayMetadata( QMap<QString,QString> );
-    void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray);
+    void onAddDownloadedFileToLibrary(bool, QUrl, QString, QByteArray, QString pTitle);
     void addElementsToFavorite();
     void removeElementsFromFavorite();
     void deleteSelectedElements();

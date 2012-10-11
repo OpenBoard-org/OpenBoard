@@ -67,8 +67,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     connect(mActionBar, SIGNAL(rescanModel()), this, SLOT(rescanModel()));
     connect(pathListView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(currentSelected(const QModelIndex &)));
     connect(UBApplication::boardController, SIGNAL(displayMetadata(QMap<QString,QString>)), this, SLOT(onDisplayMetadata( QMap<QString,QString>)));
-    connect(UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray))
-             , this, SLOT(onAddDownloadedFileToLibrary(bool, QUrl, QString,QByteArray)));
+    connect(UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray, QString))
+             , this, SLOT(onAddDownloadedFileToLibrary(bool, QUrl, QString,QByteArray, QString)));
     connect(centralWidget, SIGNAL(lockMainWidget(bool)), this, SLOT(lockIt(bool)));
     connect(centralWidget, SIGNAL(createNewFolderSignal(QString)), controller, SLOT(addNewFolder(QString)));
     connect(controller, SIGNAL(scanStarted()), centralWidget, SLOT(scanStarted()));
@@ -299,12 +299,11 @@ void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QU
     centralWidget->setPropertiesThumbnail(pix);
 }
 
-void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData)
+void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData, QString pTitle)
 {
-    Q_UNUSED(pContentHeader)
     if (pSuccess) {
 		qDebug() << pData.length();
-        controller->addDownloadedFile(sourceUrl, pData);
+        controller->addDownloadedFile(sourceUrl, pData, pContentHeader, pTitle);
         controller->refreshModels();
     }
 }
@@ -1065,7 +1064,7 @@ void UBFeatureProperties::onAddToLib()
         desc.isBackground = false;
         desc.modal = false;
         desc.dest = sDownloadFileDesc::library;
-        desc.name = QFileInfo( mpElement->getFullPath().toString()).fileName();
+        desc.name = mpElement->getMetadata().value("Title", QString());
         qDebug() << desc.name;
         desc.srcUrl = mpElement->getFullPath().toString();
         qDebug() << desc.srcUrl;

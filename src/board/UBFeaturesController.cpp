@@ -485,6 +485,71 @@ void UBFeaturesController::saveFavoriteList()
 	file.close();
 }
 
+QString UBFeaturesController::uniqNameForFeature(const UBFeature &feature, const QString &pName, const QString &pExtention) const
+{
+    Q_ASSERT(featuresList);
+
+    QStringList resultList;
+    QString parentVirtualPath = feature.getFullVirtualPath();
+    QString resultName;
+
+    qDebug() << "start";
+    foreach (UBFeature curFeature, *featuresList) {
+
+        if (curFeature.getFullVirtualPath().startsWith(feature.getFullVirtualPath())) {
+
+            QString curResultName = curFeature.getFullVirtualPath();
+            if (!parentVirtualPath.endsWith("/")) {
+                parentVirtualPath.append("/");
+            }
+            //Cut virtual path prevfix
+            int i = curResultName.indexOf(feature.getFullVirtualPath());
+            if (i != -1) {
+                curResultName = curResultName.right(curFeature.getFullVirtualPath().count() - i - parentVirtualPath.count());
+            }
+            //if directory has children, emptying the name;
+            i = curResultName.indexOf("/");
+            if (i != -1) {
+                curResultName = "";
+            }
+
+            if (!curResultName.isEmpty()) {
+                resultList.append(curResultName);
+            }
+
+            qDebug() << curResultName;
+        }
+    }
+
+    if (!resultList.contains(pName + pExtention, Qt::CaseInsensitive)) {
+        resultName = pName + pExtention;
+
+    } else {
+        for (int i = 0; i < 16777215; i++) {
+            QString probeName = pName + "_" + QString::number(i) + pExtention;
+            if (!resultList.contains(probeName, Qt::CaseInsensitive)) {
+                resultName = probeName;
+                break;
+            }
+        }
+    }
+    qDebug() << "result name is " << resultName;
+
+    return resultName;
+}
+
+QString UBFeaturesController::adjustName(const QString &str)
+{
+    if (str.isNull()) {
+        return QString();
+    }
+
+    QString resultStr = str;
+    QRegExp invalidSymbols("[\\/\\s\\:\\?\\*\\|\\<\\>\\\"]+");
+
+    return resultStr.replace(invalidSymbols, "_");
+}
+
 void UBFeaturesController::addToFavorite( const QUrl &path )
 {
 	QString filePath = fileNameFromUrl( path );
@@ -660,7 +725,6 @@ void UBFeaturesController::importImage( const QImage &image, const UBFeature &de
     }
     
 
-
     if ( !destination.getFullVirtualPath().startsWith( picturesElement.getFullVirtualPath(), Qt::CaseInsensitive ) )
     {
 	    dest = picturesElement;
@@ -730,16 +794,20 @@ void UBFeaturesController::addItemAsBackground(const UBFeature &item)
 UBFeature UBFeaturesController::getDestinationFeatureForUrl( const QUrl &url )
 {
     QString mimetype = UBFileSystemUtils::mimeTypeFromFileName( url.toString() );
+    return getDestinationFeatureForMimeType(mimetype);
+}
 
-    if ( mimetype.contains("audio") )
+UBFeature UBFeaturesController::getDestinationFeatureForMimeType(const QString &pMmimeType)
+{
+    if ( pMmimeType.contains("audio") )
         return audiosElement;
-    if ( mimetype.contains("video") )
+    if ( pMmimeType.contains("video") )
         return moviesElement;
-	else if ( mimetype.contains("image") || mimetype.isEmpty())
+    else if ( pMmimeType.contains("image") || pMmimeType.isEmpty())
         return picturesElement;
-    else if ( mimetype.contains("application") )
-	{
-        if ( mimetype.contains( "x-shockwave-flash") )
+    else if ( pMmimeType.contains("application") )
+    {
+        if ( pMmimeType.contains( "x-shockwave-flash") )
             return flashElement;
         else
             return interactElement;
@@ -747,48 +815,51 @@ UBFeature UBFeaturesController::getDestinationFeatureForUrl( const QUrl &url )
     return UBFeature();
 }
 
-void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteArray &pData)
+void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteArray &pData, const QString pContentSource, const QString pTitle)
 {
-    UBFeature dest = getDestinationFeatureForUrl(sourceUrl);
+    UBFeature dest = getDestinationFeatureForMimeType(pContentSource);
 
-	//TODO:claudio check this
     if (dest == UBFeature())
         return;
 
-    QString fileName("");
-    QString filePath("");
+    QString fileName;
+    QString filePath;
 	
-	if(UBFileSystemUtils::mimeTypeFromFileName( sourceUrl.toString() ).isEmpty()){
-		fileName = tr("ImportedImage") + "-" + QDateTime::currentDateTime().toString("dd-MM-yyyy hh-mm-ss")+ ".jpg";
-		filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
-		QImage::fromData(pData).save(filePath);
+    //Audio item
+    if(dest == picturesElement) {
 
-		UBFeature downloadedFeature = UBFeature(dest.getFullVirtualPath() + "/" + fileName, getIcon( filePath, fileTypeFromUrl(filePath)),
-                                                 fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM);
-        if (downloadedFeature != UBFeature()) {
-            featuresModel->addItem(downloadedFeature);
-        }
-		
-	}
-	else{
-	    fileName = QFileInfo( sourceUrl.toString() ).fileName();
-		filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
-	
+        QString UniqName = uniqNameForFeature(dest, adjustName(pTitle), ".jpg");
+        fileName =  !UniqName.isNull()
+                ? UniqName
+                : tr("ImportedImage") + "-" + QDateTime::currentDateTime().toString("dd-MM-yyyy hh-mm-ss")+ ".jpg";
 
-    
-	QFile file( filePath );
-    if ( file.open(QIODevice::WriteOnly ))
-    {
-        file.write(pData);
-        file.close();
+        filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
+
+        QImage::fromData(pData).save(filePath);
 
         UBFeature downloadedFeature = UBFeature(dest.getFullVirtualPath() + "/" + fileName, getIcon( filePath, fileTypeFromUrl(filePath)),
                                                  fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM);
         if (downloadedFeature != UBFeature()) {
             featuresModel->addItem(downloadedFeature);
         }
+
+    } else {
+        fileName = QFileInfo( sourceUrl.toString() ).fileName();
+        filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
+
+        QFile file( filePath );
+        if ( file.open(QIODevice::WriteOnly ))
+        {
+            file.write(pData);
+            file.close();
+
+            UBFeature downloadedFeature = UBFeature(dest.getFullVirtualPath() + "/" + fileName, getIcon( filePath, fileTypeFromUrl(filePath)),
+                                                    fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM);
+            if (downloadedFeature != UBFeature()) {
+                featuresModel->addItem(downloadedFeature);
+            }
+        }
     }
-	}
 
 }
 

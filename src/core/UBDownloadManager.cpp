@@ -283,7 +283,7 @@ void UBDownloadManager::onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl
             }
             else
             {
-                emit addDownloadedFileToLibrary(pSuccess, sourceUrl, pContentTypeHeader, pData);
+                emit addDownloadedFileToLibrary(pSuccess, sourceUrl, pContentTypeHeader, pData, desc.name);
             }
 
             break;

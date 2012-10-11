@@ -132,7 +132,7 @@ signals:
     void downloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData);
     void downloadModalFinished();
     void addDownloadedFileToBoard(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
-    void addDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData);
+    void addDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QString pTitle);
     void cancelAllDownloads();
     void allDownloadsFinished();
 
