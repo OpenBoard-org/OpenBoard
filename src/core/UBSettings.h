@@ -29,13 +29,14 @@ class UBSettings : public QObject
 
         UBSettings(QObject *parent = 0);
         virtual ~UBSettings();
+        void cleanNonPersistentSettings();
 
     public:
 
         QStringList* supportedKeyboardSizes;
         void InitKeyboardPaletteKeyBtnSizes();
         void ValidateKeyboardPaletteKeyBtnSize();
-
+        void closing();
 
         int penWidthIndex();
 
@@ -95,12 +96,14 @@ class UBSettings : public QObject
         void setCommunityUsername(const QString& username);
         QString communityPassword();
         void setCommunityPassword(const QString& password);
+        bool getCommunityDataPersistence(){return communityDataPersistence->get().toBool();}
+        void setCommunityPersistence(const bool persistence);
 
         int libraryIconSize();
         void setLibraryIconsize(const int& size);
 
         void init();
-        
+
         //user directories
         static QString userDataDirectory();
         static QString userDocumentDirectory();
@@ -115,9 +118,9 @@ class UBSettings : public QObject
         static QString userInteractiveFavoritesDirectory();
         static QString userPodcastRecordingDirectory();
 
-		QString userGipLibraryDirectory();
-        
-		//application directory
+        QString userGipLibraryDirectory();
+
+        //application directory
         QString applicationShapeLibraryDirectory();
         QString applicationImageLibraryDirectory();
         QString applicationApplicationsLibraryDirectory();
@@ -337,6 +340,7 @@ class UBSettings : public QObject
 
         UBSetting* communityUser;
         UBSetting* communityPsw;
+        UBSetting* communityDataPersistence;
 
         UBSetting* pageSize;
         UBSetting* pageDpi;
