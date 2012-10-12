@@ -234,9 +234,6 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
     QString widgetsUrl = QUrl::fromEncoded(metadata["Url"].toAscii()).toString()/*metadata.value("Url", QString())*/;
     QString widgetsThumbsUrl = QUrl::fromEncoded(metadata["thumbnailUrl"].toAscii()).toString();
 
-    bool isLocal = QFileInfo(widgetsUrl).exists();
-
-
     QString strType = UBFileSystemUtils::mimeTypeFromFileName(widgetsUrl);
     UBMimeType::Enum thumbType = UBFileSystemUtils::mimeTypeFromString(strType);
 

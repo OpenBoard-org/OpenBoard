@@ -34,11 +34,12 @@ QPixmap* UBToolWidget::sUnpinPixmap = 0;
 
 UBToolWidget::UBToolWidget(const QUrl& pUrl, QWidget *pParent)
     : QWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
+    , mWebView(0)
+    , mToolWidget(0)
     , mShouldMoveWidget(false)
     , mContentMargin(0)
     , mFrameWidth(0)
-    , mWebView(0)
-    , mToolWidget(0)    
+
 {
     int widgetType = UBGraphicsWidgetItem::widgetType(pUrl);
     if (widgetType == UBWidgetType::Apple)
@@ -53,11 +54,12 @@ UBToolWidget::UBToolWidget(const QUrl& pUrl, QWidget *pParent)
 
 UBToolWidget::UBToolWidget(UBGraphicsWidgetItem *pWidget, QWidget *pParent)
     : QWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
+    , mWebView(0)
+    , mToolWidget(pWidget)
     , mShouldMoveWidget(false)
     , mContentMargin(0)
     , mFrameWidth(0)
-    , mWebView(0)
-    , mToolWidget(pWidget)
+
 {
     initialize();
     javaScriptWindowObjectCleared();
@@ -92,7 +94,7 @@ void UBToolWidget::initialize()
 
 
     mWebView->installEventFilter(this);
-    
+
     mFrameWidth = UBSettings::settings()->objectFrameWidth;
     mContentMargin = sClosePixmap->width() / 2 + mFrameWidth;
     setLayout(new QVBoxLayout());

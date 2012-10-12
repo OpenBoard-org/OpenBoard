@@ -243,7 +243,7 @@ void UBGraphicsDelegateFrame::setCursorFromAngle(QString angle)
 
         QSize cursorSize(45,30);
 
-     
+
         QImage mask_img(cursorSize, QImage::Format_Mono);
         mask_img.fill(0xff);
         QPainter mask_ptr(&mask_img);
@@ -252,7 +252,7 @@ void UBGraphicsDelegateFrame::setCursorFromAngle(QString angle)
         QBitmap bmpMask = QBitmap::fromImage(mask_img);
 
 
-        QPixmap pixCursor(cursorSize); 
+        QPixmap pixCursor(cursorSize);
         pixCursor.fill(QColor(Qt::white));
 
         QPainter painter(&pixCursor);
@@ -293,12 +293,12 @@ QPointF UBGraphicsDelegateFrame::getFixedPointFromPos()
     QPointF fixedPoint;
     if (!moving() && !rotating())
     {
-        if (resizingTop())    
+        if (resizingTop())
         {
             if (mMirrorX && mMirrorY)
             {
                 if ((0 < mAngle) && (mAngle < 90))
-                    fixedPoint = delegated()->sceneBoundingRect().topLeft();                        
+                    fixedPoint = delegated()->sceneBoundingRect().topLeft();
                 else
                     fixedPoint = delegated()->sceneBoundingRect().topRight();
             }
@@ -310,12 +310,12 @@ QPointF UBGraphicsDelegateFrame::getFixedPointFromPos()
                     fixedPoint = delegated()->sceneBoundingRect().bottomLeft();
             }
         }
-        else if (resizingLeft())  
+        else if (resizingLeft())
         {
             if (mMirrorX && mMirrorY)
             {
                 if ((0 < mAngle) && (mAngle < 90))
-                    fixedPoint = delegated()->sceneBoundingRect().bottomLeft();                        
+                    fixedPoint = delegated()->sceneBoundingRect().bottomLeft();
                 else
                     fixedPoint = delegated()->sceneBoundingRect().topLeft();
             }
@@ -337,14 +337,14 @@ QSizeF UBGraphicsDelegateFrame::getResizeVector(qreal moveX, qreal moveY)
     qreal dPosX = 0;
     qreal dPosY = 0;
 
-    if (resizingTop())    
+    if (resizingTop())
     {
         if (mMirrorX && mMirrorY)
             dPosY = moveY;
         else
             dPosY = -moveY;
     }
-    else if (resizingLeft())  
+    else if (resizingLeft())
     {
         if (mMirrorX && mMirrorY)
             dPosX = moveX;
@@ -354,7 +354,7 @@ QSizeF UBGraphicsDelegateFrame::getResizeVector(qreal moveX, qreal moveY)
 
     else if (resizingRight())
         dPosX = (mMirrorX) ?  -moveX : moveX;
-    else if (resizingBottom())               
+    else if (resizingBottom())
         dPosY = mMirrorY ? -moveY : moveY;
 
     return QSizeF(dPosX, dPosY);
@@ -363,7 +363,7 @@ QSizeF UBGraphicsDelegateFrame::getResizeVector(qreal moveX, qreal moveY)
 QSizeF UBGraphicsDelegateFrame::resizeDelegate(qreal moveX, qreal moveY)
 {
     QSizeF incVector;
-    mFixedPoint = getFixedPointFromPos(); 
+    mFixedPoint = getFixedPointFromPos();
 
     UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(delegated());
     if (resizableItem)
@@ -382,15 +382,10 @@ QSizeF UBGraphicsDelegateFrame::resizeDelegate(qreal moveX, qreal moveY)
 }
 
 
-void UBGraphicsDelegateFrame::scaleByPos(qreal scaleX, qreal scaleY)
-{
-
-}
-
 void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (None == mCurrentTool)
-        return; 
+        return;
 
     QLineF move = QLineF(mStartingPoint, event->scenePos());
     qreal moveX = move.length() * cos((move.angle() - mAngle) * PI / 180);
@@ -399,7 +394,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal height = delegated()->boundingRect().height() * mTotalScaleY;
 
     if (mOperationMode == Scaling)
-    { 
+    {
         if(!rotating())
         {
             mTranslateX = moveX;
@@ -504,7 +499,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             }
         }
     }
- 
+
     if (rotating())
     {
         mTranslateX = 0;
@@ -597,7 +592,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         delegated()->setTransform(buildTransform());
     }
     else // resizing/resizing horizontally
-    {                  
+    {
 
         if (resizingBottomRight())
         {
@@ -609,9 +604,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             else
                 mCurrentTool = ResizeBottom;
 
-            incV = resizeDelegate(moveX, moveY); 
+            incV = resizeDelegate(moveX, moveY);
             mOriginalSize += incV;
-            
+
             if (mMirrorX && mMirrorY)
                 mCurrentTool = ResizeLeft;
             else
@@ -623,7 +618,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             mFixedPoint = getFixedPointFromPos();
 
-            incH = resizeDelegate(moveX, moveY); 
+            incH = resizeDelegate(moveX, moveY);
 
             mOriginalSize -= incV;
             mOriginalSize += incH;
@@ -631,7 +626,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             mCurrentTool = ResizeBottomRight;
         }
         else
-            resizeDelegate(moveX, moveY); 
+            resizeDelegate(moveX, moveY);
     }
     event->accept();
 }
@@ -660,11 +655,11 @@ void UBGraphicsDelegateFrame::prepareFramesToMove(QList<UBGraphicsDelegateFrame 
     foreach (UBGraphicsDelegateFrame *frame, mLinkedFrames)
     {
         frame->prepareLinkedFrameToMove();
-    }  
+    }
 }
 
 void UBGraphicsDelegateFrame::prepareLinkedFrameToMove()
-{ 
+{
     mDelegate->startUndoStep();
 
     mStartingPoint = QPointF(0,0);
@@ -685,12 +680,12 @@ void UBGraphicsDelegateFrame::prepareLinkedFrameToMove()
 void UBGraphicsDelegateFrame::moveLinkedItems(QLineF movingVector, bool bLinked)
 {
     if (bLinked)
-    {  
+    {
         mCurrentTool = Move;
 
         mTranslateX = movingVector.dx();
         mTranslateY = movingVector.dy();
-        
+
         delegated()->setTransform(buildTransform(), false);
     }
     else
@@ -777,7 +772,7 @@ void UBGraphicsDelegateFrame::setVisible(bool visible)
 void UBGraphicsDelegateFrame::positionHandles()
 {
     QRectF itemRect = delegated()->boundingRect();
-    
+
     if (mDelegate->getToolBarItem() && mDelegate->getToolBarItem()->isVisibleOnBoard()
         && mDelegate->getToolBarItem()->isShifting())
     {
