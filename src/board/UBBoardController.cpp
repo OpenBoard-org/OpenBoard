@@ -996,32 +996,30 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
                 || contentType.startsWith("application/widget")
                 || contentType.startsWith("application/vnd.apple-widget");
 
-
-        // TODO: claudio Fix it because it doesn't work with audio/video/flash items dropped from the teacher bar
-//        if (shouldLoadFileData)
-//        {
+       if (shouldLoadFileData)
+       {
             QFile file(fileName);
             file.open(QIODevice::ReadOnly);
             downloadFinished(true, formedUrl, QUrl(), contentType, file.readAll(), pPos, pSize, isBackground, internalData);
             file.close();
-//        }
-//        else
-//        {
-//            // media items should be copyed in separate thread
+       }
+       else
+       {
+           // media items should be copyed in separate thread
 
-//            sDownloadFileDesc desc;
-//            desc.modal = false;
-//            desc.srcUrl = sUrl;
-//            desc.originalSrcUrl = contentSourceUrl;
-//            desc.currentSize = 0;
-//            desc.name = QFileInfo(url.toString()).fileName();
-//            desc.totalSize = 0; // The total size will be retrieved during the download
-//            desc.pos = pPos;
-//            desc.size = pSize;
-//            desc.isBackground = isBackground;
+           sDownloadFileDesc desc;
+           desc.modal = false;
+           desc.srcUrl = sUrl;
+           desc.originalSrcUrl = contentSourceUrl;
+           desc.currentSize = 0;
+           desc.name = QFileInfo(url.toString()).fileName();
+           desc.totalSize = 0; // The total size will be retrieved during the download
+           desc.pos = pPos;
+           desc.size = pSize;
+           desc.isBackground = isBackground;
 
-//            UBDownloadManager::downloadManager()->addFileToDownload(desc);
-//        }
+           UBDownloadManager::downloadManager()->addFileToDownload(desc);
+       }
     }
     else
     {
