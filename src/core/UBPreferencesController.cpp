@@ -163,7 +163,7 @@ void UBPreferencesController::wire()
     //network
     connect(mPreferencesUI->Username_textBox, SIGNAL(editingFinished()), this, SLOT(onCommunityUsernameChanged()));
     connect(mPreferencesUI->Password_textEdit, SIGNAL(editingFinished()), this, SLOT(onCommunityPasswordChanged()));
-    connect(mPreferencesUI->PSDataPersistenceCheckBox,SIGNAL(clicked()),this, SLOT(onCommunityPersistenceChanged()));
+    connect(mPreferencesUI->PSCredentialsPersistenceCheckBox,SIGNAL(clicked()),this, SLOT(onCommunityPersistenceChanged()));
 
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
@@ -217,7 +217,7 @@ void UBPreferencesController::init()
     mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
 
     //network
-    mPreferencesUI->PSDataPersistenceCheckBox->setChecked(settings->getCommunityDataPersistence());
+    mPreferencesUI->PSCredentialsPersistenceCheckBox->setChecked(settings->getCommunityDataPersistence());
     persistanceCheckboxUpdate();
 
 }
@@ -238,14 +238,14 @@ void UBPreferencesController::onCommunityPasswordChanged()
 
 void UBPreferencesController::onCommunityPersistenceChanged()
 {
-    UBSettings::settings()->setCommunityPersistence(mPreferencesUI->PSDataPersistenceCheckBox->isChecked());
+    UBSettings::settings()->setCommunityPersistence(mPreferencesUI->PSCredentialsPersistenceCheckBox->isChecked());
 }
 
 void UBPreferencesController::persistanceCheckboxUpdate()
 {
     bool checkBoxEnabled = mPreferencesUI->Username_textBox->text().length() || mPreferencesUI->Password_textEdit->text().length();
-    mPreferencesUI->PSDataPersistenceCheckBox->setEnabled(checkBoxEnabled);
-    mPreferencesUI->PSDataPersistenceCheckBox->setStyleSheet(checkBoxEnabled ? "color:black;" : "color:lightgray;");
+    mPreferencesUI->PSCredentialsPersistenceCheckBox->setEnabled(checkBoxEnabled);
+    mPreferencesUI->PSCredentialsPersistenceCheckBox->setStyleSheet(checkBoxEnabled ? "color:black;" : "color:lightgray;");
 }
 
 

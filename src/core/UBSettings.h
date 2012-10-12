@@ -96,7 +96,7 @@ class UBSettings : public QObject
         void setCommunityUsername(const QString& username);
         QString communityPassword();
         void setCommunityPassword(const QString& password);
-        bool getCommunityDataPersistence(){return communityDataPersistence->get().toBool();}
+        bool getCommunityDataPersistence(){return communityCredentialsPersistence->get().toBool();}
         void setCommunityPersistence(const bool persistence);
 
         int libraryIconSize();
@@ -305,6 +305,7 @@ class UBSettings : public QObject
 
         UBSetting* podcastPublishToYoutube;
         UBSetting* youTubeUserEMail;
+        UBSetting* youTubeCredentialsPersistence;
 
         UBSetting* uniboardWebEMail;
         UBSetting* uniboardWebAuthor;
@@ -340,7 +341,7 @@ class UBSettings : public QObject
 
         UBSetting* communityUser;
         UBSetting* communityPsw;
-        UBSetting* communityDataPersistence;
+        UBSetting* communityCredentialsPersistence;
 
         UBSetting* pageSize;
         UBSetting* pageDpi;

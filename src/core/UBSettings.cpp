@@ -350,6 +350,7 @@ void UBSettings::init()
 
     podcastPublishToYoutube = new UBSetting(this, "Podcast", "PublishToYouTube", false);
     youTubeUserEMail = new UBSetting(this, "YouTube", "UserEMail", "");
+    youTubeCredentialsPersistence = new UBSetting(this,"YouTube", "CredentialsPersistence",false);
 
     uniboardWebEMail = new UBSetting(this, "UniboardWeb", "EMail", "");
     uniboardWebAuthor = new UBSetting(this, "UniboardWeb", "Author", "");
@@ -357,7 +358,7 @@ void UBSettings::init()
 
     communityUser = new UBSetting(this, "Community", "Username", "");
     communityPsw = new UBSetting(this, "Community", "Password", "");
-    communityDataPersistence = new UBSetting(this,"Community", "DataPeristence",true);
+    communityCredentialsPersistence = new UBSetting(this,"Community", "CredentialsPersistence",false);
 
     QStringList uris = UBToolsManager::manager()->allToolIDs();
 
@@ -1185,7 +1186,7 @@ void UBSettings::setCommunityPassword(const QString &password)
 
 void UBSettings::setCommunityPersistence(const bool persistence)
 {
-    communityDataPersistence->set(QVariant(persistence));
+    communityCredentialsPersistence->set(QVariant(persistence));
 }
 
 int UBSettings::libraryIconSize(){
@@ -1233,8 +1234,13 @@ void UBSettings::closing()
 
 void UBSettings::cleanNonPersistentSettings()
 {
-    if(!communityDataPersistence->get().toBool()){
+    if(!communityCredentialsPersistence->get().toBool()){
         communityPsw->set(QVariant(""));
         communityUser->set(QVariant(""));
+    }
+
+    if(!youTubeCredentialsPersistence->get().toBool()){
+        removePassword(youTubeUserEMail->get().toString());
+        youTubeUserEMail->set(QVariant(""));
     }
 }

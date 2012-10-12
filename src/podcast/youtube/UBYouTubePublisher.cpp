@@ -335,10 +335,25 @@ UBYouTubePublishingDialog::UBYouTubePublishingDialog(const QString& videoFilePat
 
     connect(email, SIGNAL(textChanged(const QString&)), this, SLOT(updateUIState(const QString&)));
     connect(password, SIGNAL(textChanged(const QString&)), this, SLOT(updateUIState(const QString&)));
+    connect(youtubeCredentialsPersistence,SIGNAL(clicked()), this, SLOT(updateCredentialPersistenceState()));
 
     dialogButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
     dialogButtons->button(QDialogButtonBox::Ok)->setText(tr("Upload"));
 
+    youtubeCredentialsPersistence->setChecked(UBSettings::settings()->youTubeCredentialsPersistence->get().toBool());
+}
+
+
+void UBYouTubePublishingDialog::updateCredentialPersistenceState()
+{
+    UBSettings::settings()->youTubeCredentialsPersistence->set(QVariant(youtubeCredentialsPersistence->checkState()));
+}
+
+void UBYouTubePublishingDialog::updatePersistanceEnableState()
+{
+    bool enabled = email->text().length() || password->text().length();
+    youtubeCredentialsPersistence->setEnabled(enabled);
+    youtubeCredentialsPersistence->setStyleSheet(enabled ? "color:black;" : "color lightgray;");
 }
 
 void UBYouTubePublishingDialog::updateUIState(const QString& string)

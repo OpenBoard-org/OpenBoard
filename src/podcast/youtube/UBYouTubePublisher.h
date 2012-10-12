@@ -78,9 +78,11 @@ class UBYouTubePublishingDialog : public QDialog, public Ui::YouTubePublishingDi
 
     private:
         QMap<QString, QString> categories();
+        void updatePersistanceEnableState();
 
     private slots:
         void updateUIState(const QString& = QString(""));
+        void updateCredentialPersistenceState();
 
 };
 
