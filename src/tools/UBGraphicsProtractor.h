@@ -62,10 +62,10 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         virtual void    hoverMoveEvent (QGraphicsSceneHoverEvent *event);
         virtual QPainterPath shape() const;
         QRectF boundingRect() const;
+        void paintGraduations(QPainter *painter);
 
     private:
         // Helpers
-        void paintGraduations (QPainter *painter);
         void paintButtons (QPainter *painter);
         void paintAngleMarker (QPainter *painter);
         Tool toolFromPos (QPointF pos);

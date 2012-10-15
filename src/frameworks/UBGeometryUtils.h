@@ -37,6 +37,12 @@ class UBGeometryUtils
         static QPoint pointConstrainedInRect(QPoint point, QRect rect);
 
         static void crashPointList(QVector<QPointF> &points);
+
+        const static int centimeterGraduationHeight;
+        const static int halfCentimeterGraduationHeight;
+        const static int millimeterGraduationHeight;
+        const static int millimetersPerCentimeter;
+        const static int millimetersPerHalfCentimeter;
 };
 
 #endif /* UBGEOMETRYUTILS_H_ */
