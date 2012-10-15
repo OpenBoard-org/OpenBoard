@@ -51,8 +51,6 @@ UBGraphicsCompass::UBGraphicsCompass()
     , mDrewCenterCross(false)
 {
     setRect(sDefaultRect);
-    setBrush(QBrush(Qt::red));
-
     //TODO claudio: remove code duplication
     QDesktopWidget* desktop = UBApplication::desktop();
     int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
