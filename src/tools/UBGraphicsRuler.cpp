@@ -29,12 +29,12 @@ const QRect UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800, 96);
 
 UBGraphicsRuler::UBGraphicsRuler()
     : QGraphicsRectItem()
-	, mResizing(false)
+    , mResizing(false)
     , mRotating(false)
 {
     setRect(sDefaultRect);
 
-	mResizeSvgItem = new QGraphicsSvgItem(":/images/resizeRuler.svg", this);
+    mResizeSvgItem = new QGraphicsSvgItem(":/images/resizeRuler.svg", this);
     mResizeSvgItem->setVisible(false);
     mResizeSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
@@ -42,7 +42,7 @@ UBGraphicsRuler::UBGraphicsRuler()
     mRotateSvgItem->setVisible(false);
     mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
-	create(*this);
+    create(*this);
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
 
@@ -98,9 +98,9 @@ void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *s
     Q_UNUSED(styleOption);
     Q_UNUSED(widget);
 
-	UBAbstractDrawRuler::paint();
+    UBAbstractDrawRuler::paint();
 
-	QTransform antiScaleTransform2;
+    QTransform antiScaleTransform2;
     qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
     antiScaleTransform2.scale(ratio, 1.0);
 
@@ -163,6 +163,9 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
     const int     millimeterGraduationHeight = 5;
     const int       millimetersPerCentimeter = 10;
     const int   millimetersPerHalfCentimeter = 5;
+
+
+    qDebug() << sPixelsPerMillimeter;
 
     painter->save();
     painter->setFont(font());
@@ -275,28 +278,28 @@ QRectF UBGraphicsRuler::rotateButtonRect() const
 
 void UBGraphicsRuler::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
-	UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-	if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
-	{
-		mCloseSvgItem->setVisible(mShowButtons);
-		mResizeSvgItem->setVisible(mShowButtons);
-		mRotateSvgItem->setVisible(mShowButtons);
-		if (resizeButtonRect().contains(event->pos()))
-			setCursor(resizeCursor());
-		else if (closeButtonRect().contains(event->pos()))
-			setCursor(closeCursor());
-		else if (rotateButtonRect().contains(event->pos()))
-			setCursor(rotateCursor());
-		else
-			setCursor(moveCursor());
+    if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
+    {
+        mCloseSvgItem->setVisible(mShowButtons);
+        mResizeSvgItem->setVisible(mShowButtons);
+        mRotateSvgItem->setVisible(mShowButtons);
+        if (resizeButtonRect().contains(event->pos()))
+            setCursor(resizeCursor());
+        else if (closeButtonRect().contains(event->pos()))
+            setCursor(closeCursor());
+        else if (rotateButtonRect().contains(event->pos()))
+            setCursor(rotateCursor());
+        else
+            setCursor(moveCursor());
 
-		event->accept();
-	}
-	else if (UBDrawingController::drawingController()->isDrawingTool())
-	{
-		event->accept();
-	}
+        event->accept();
+    }
+    else if (UBDrawingController::drawingController()->isDrawingTool())
+    {
+        event->accept();
+    }
 }
 
 void UBGraphicsRuler::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -315,7 +318,7 @@ void UBGraphicsRuler::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         mResizeSvgItem->setVisible(false);
         mRotateSvgItem->setVisible(false);
-		QGraphicsItem::mousePressEvent(event);
+        QGraphicsItem::mousePressEvent(event);
     }
     mResizeSvgItem->setVisible(mShowButtons && mResizing);
     mRotateSvgItem->setVisible(mShowButtons && mRotating);
@@ -326,20 +329,20 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (!mResizing && !mRotating)
     {
-		QGraphicsItem::mouseMoveEvent(event);
+        QGraphicsItem::mouseMoveEvent(event);
     }
     else
     {
         if (mResizing)
         {
-			QPointF delta = event->pos() - event->lastPos();
-			if (rect().width() + delta.x() < sMinLength)
-				delta.setX(sMinLength - rect().width());
+            QPointF delta = event->pos() - event->lastPos();
+            if (rect().width() + delta.x() < sMinLength)
+                delta.setX(sMinLength - rect().width());
 
             if (rect().width() + delta.x() > sMaxLength)
                 delta.setX(sMaxLength - rect().width());
 
-			setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
+            setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
         }
         else
         {
@@ -368,13 +371,13 @@ void UBGraphicsRuler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
     else if (closeButtonRect().contains(event->pos()))
     {
-		hide();
-		emit hidden();
+        hide();
+        emit hidden();
         event->accept();
     }
     else
     {
-		QGraphicsItem::mouseReleaseEvent(event);
+        QGraphicsItem::mouseReleaseEvent(event);
     }
 
     if (scene())
@@ -383,41 +386,41 @@ void UBGraphicsRuler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-	UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-	if (currentTool == UBStylusTool::Selector ||
+    if (currentTool == UBStylusTool::Selector ||
         currentTool == UBStylusTool::Play)
-	{
-		mCloseSvgItem->setParentItem(this);
-	    mResizeSvgItem->setParentItem(this);
-		mRotateSvgItem->setParentItem(this);
+    {
+        mCloseSvgItem->setParentItem(this);
+        mResizeSvgItem->setParentItem(this);
+        mRotateSvgItem->setParentItem(this);
 
-	    mShowButtons = true;
-		mCloseSvgItem->setVisible(mShowButtons);
-		mResizeSvgItem->setVisible(mShowButtons);
-	    mRotateSvgItem->setVisible(mShowButtons);
-		if (event->pos().x() >= resizeButtonRect().left())
-		{
-			setCursor(resizeCursor());
-		}
-		else
-		{
-			if (closeButtonRect().contains(event->pos()))
-				setCursor(closeCursor());
-			else if (rotateButtonRect().contains(event->pos()))
-				setCursor(rotateCursor());
-			else
-				setCursor(moveCursor());
-		}
-		event->accept();
-		update();
-	}
-	else if (UBDrawingController::drawingController()->isDrawingTool())
-	{
-		setCursor(drawRulerLineCursor());
-		UBDrawingController::drawingController()->mActiveRuler = this;
-		event->accept();
-	}
+        mShowButtons = true;
+        mCloseSvgItem->setVisible(mShowButtons);
+        mResizeSvgItem->setVisible(mShowButtons);
+        mRotateSvgItem->setVisible(mShowButtons);
+        if (event->pos().x() >= resizeButtonRect().left())
+        {
+            setCursor(resizeCursor());
+        }
+        else
+        {
+            if (closeButtonRect().contains(event->pos()))
+                setCursor(closeCursor());
+            else if (rotateButtonRect().contains(event->pos()))
+                setCursor(rotateCursor());
+            else
+                setCursor(moveCursor());
+        }
+        event->accept();
+        update();
+    }
+    else if (UBDrawingController::drawingController()->isDrawingTool())
+    {
+        setCursor(drawRulerLineCursor());
+        UBDrawingController::drawingController()->mActiveRuler = this;
+        event->accept();
+    }
 }
 
 void UBGraphicsRuler::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
@@ -427,7 +430,7 @@ void UBGraphicsRuler::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     mCloseSvgItem->setVisible(mShowButtons);
     mResizeSvgItem->setVisible(mShowButtons);
     mRotateSvgItem->setVisible(mShowButtons);
-	UBDrawingController::drawingController()->mActiveRuler = NULL;
+    UBDrawingController::drawingController()->mActiveRuler = NULL;
     event->accept();
     update();
 }
@@ -441,28 +444,28 @@ UBGraphicsScene* UBGraphicsRuler::scene() const
 
 void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
 {
-	QPointF itemPos = mapFromScene(scenePos);
+    QPointF itemPos = mapFromScene(scenePos);
 
-	qreal y;
+    qreal y;
 
-	if (itemPos.y() > rect().y() + rect().height() / 2)
-	{
-		drawLineDirection = 0;
-		y = rect().y() + rect().height() + width / 2;
-	}
-	else
-	{
-		drawLineDirection = 1;
-		y = rect().y() - width /2;
-	}
-	
-	if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-		itemPos.setX(rect().x() + sLeftEdgeMargin);
-	if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-		itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+    if (itemPos.y() > rect().y() + rect().height() / 2)
+    {
+        drawLineDirection = 0;
+        y = rect().y() + rect().height() + width / 2;
+    }
+    else
+    {
+        drawLineDirection = 1;
+        y = rect().y() - width /2;
+    }
 
-	itemPos.setY(y);
-	itemPos = mapToScene(itemPos);
+    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
+        itemPos.setX(rect().x() + sLeftEdgeMargin);
+    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
+        itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+
+    itemPos.setY(y);
+    itemPos = mapToScene(itemPos);
 
     scene()->moveTo(itemPos);
     scene()->drawLineTo(itemPos, width, true);
@@ -470,26 +473,26 @@ void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
 
 void UBGraphicsRuler::DrawLine(const QPointF& scenePos, qreal width)
 {
-	QPointF itemPos = mapFromScene(scenePos);
+    QPointF itemPos = mapFromScene(scenePos);
 
-	qreal y;
-	if (drawLineDirection == 0)
-	{
-		y = rect().y() + rect().height() + width / 2;
-	}
-	else
-	{
-		y = rect().y() - width /2;
-	}
-	if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-		itemPos.setX(rect().x() + sLeftEdgeMargin);
-	if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-		itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
+    qreal y;
+    if (drawLineDirection == 0)
+    {
+        y = rect().y() + rect().height() + width / 2;
+    }
+    else
+    {
+        y = rect().y() - width /2;
+    }
+    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
+        itemPos.setX(rect().x() + sLeftEdgeMargin);
+    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
+        itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
 
-	itemPos.setY(y);
-	itemPos = mapToScene(itemPos);
+    itemPos.setY(y);
+    itemPos = mapToScene(itemPos);
 
-	// We have to use "pointed" line for marker tool
+    // We have to use "pointed" line for marker tool
     scene()->drawLineTo(itemPos, width, UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker);
 }
 
