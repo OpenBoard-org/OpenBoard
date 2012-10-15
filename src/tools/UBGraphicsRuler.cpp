@@ -158,36 +158,30 @@ void UBGraphicsRuler::fillBackground(QPainter *painter)
 
 void UBGraphicsRuler::paintGraduations(QPainter *painter)
 {
-    const int     centimeterGraduationHeight = 15;
-    const int halfCentimeterGraduationHeight = 10;
-    const int     millimeterGraduationHeight = 5;
-    const int       millimetersPerCentimeter = 10;
-    const int   millimetersPerHalfCentimeter = 5;
-
     painter->save();
     painter->setFont(font());
     QFontMetricsF fontMetrics(painter->font());
     for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
     {
         int graduationX = rotationCenter().x() + sPixelsPerMillimeter * millimeters;
-        int graduationHeight = (0 == millimeters % millimetersPerCentimeter) ?
-            centimeterGraduationHeight :
-            ((0 == millimeters % millimetersPerHalfCentimeter) ?
-                halfCentimeterGraduationHeight : millimeterGraduationHeight);
+        int graduationHeight = (0 == millimeters % UBGeometryUtils::millimetersPerCentimeter) ?
+            UBGeometryUtils::centimeterGraduationHeight :
+            ((0 == millimeters % UBGeometryUtils::millimetersPerHalfCentimeter) ?
+                UBGeometryUtils::halfCentimeterGraduationHeight : UBGeometryUtils::millimeterGraduationHeight);
         painter->drawLine(QLine(graduationX, rotationCenter().y(), graduationX, rotationCenter().y() + graduationHeight));
         painter->drawLine(QLine(graduationX, rotationCenter().y() + rect().height(), graduationX, rotationCenter().y() + rect().height() - graduationHeight));
-        if (0 == millimeters % millimetersPerCentimeter)
+        if (0 == millimeters % UBGeometryUtils::millimetersPerCentimeter)
         {
-            QString text = QString("%1").arg((int)(millimeters / millimetersPerCentimeter));
+            QString text = QString("%1").arg((int)(millimeters / UBGeometryUtils::millimetersPerCentimeter));
             if (graduationX + fontMetrics.width(text) / 2 < rect().right())
             {
                 qreal textWidth = fontMetrics.width(text);
                 qreal textHeight = fontMetrics.tightBoundingRect(text).height() + 5;
                 painter->drawText(
-                    QRectF(graduationX - textWidth / 2, rect().top() + 5 + centimeterGraduationHeight, textWidth, textHeight),
+                    QRectF(graduationX - textWidth / 2, rect().top() + 5 + UBGeometryUtils::centimeterGraduationHeight, textWidth, textHeight),
                     Qt::AlignVCenter, text);
                 painter->drawText(
-                    QRectF(graduationX - textWidth / 2, rect().bottom() - 5 - centimeterGraduationHeight - textHeight, textWidth, textHeight),
+                    QRectF(graduationX - textWidth / 2, rect().bottom() - 5 - UBGeometryUtils::centimeterGraduationHeight - textHeight, textWidth, textHeight),
                     Qt::AlignVCenter, text);
             }
         }

@@ -118,6 +118,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         virtual void    hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+        void paintGraduations(QPainter *painter);
 
     private:
 
@@ -142,9 +143,6 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
         static const QRect sDefaultRect;
         static const UBGraphicsTriangleOrientation sDefaultOrientation;
-
-        void paintGraduations(QPainter *painter);
-
 
         UBGraphicsTriangleOrientation mOrientation;
 

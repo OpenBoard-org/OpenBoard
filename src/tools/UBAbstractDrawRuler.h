@@ -16,6 +16,8 @@
 #define UB_ABSTRACTDRAWRULER_H_
 
 #include <QtGui>
+#include "frameworks/UBGeometryUtils.h"
+
 class UBGraphicsScene;
 class QGraphicsSvgItem;
 
@@ -45,7 +47,8 @@ protected:
     virtual void rotateAroundCenter(qreal angle) = 0;
 
     virtual QPointF rotationCenter() const = 0;
-    virtual QRectF  closeButtonRect() const = 0;
+    virtual QRectF closeButtonRect() const = 0;
+    virtual void paintGraduations(QPainter *painter) = 0;
 
     bool mShowButtons;
     QGraphicsSvgItem* mCloseSvgItem;
