@@ -1541,7 +1541,7 @@ bool UBBoardView::isAbsurdPoint(QPoint point)
     for (int i = 0; i < desktop->numScreens (); i++)
     {
       QRect screenRect = desktop->screenGeometry (i);
-      isValidPoint = isValidPoint || screenRect.contains (point);
+      isValidPoint = isValidPoint || screenRect.contains (mapToGlobal(point));
     }
 
     return !isValidPoint;
