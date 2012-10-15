@@ -251,7 +251,14 @@ bool UBFeature::operator !=( const UBFeature &f )const
 bool UBFeature::isFolder() const
 {
 	return elementType == FEATURE_CATEGORY || elementType == FEATURE_TRASH || elementType == FEATURE_FAVORITE
-		|| elementType == FEATURE_FOLDER;
+        || elementType == FEATURE_FOLDER || elementType == FEATURE_SEARCH;
+}
+
+bool UBFeature::allowedCopy() const
+{
+    return isFolder()
+            && elementType != FEATURE_CATEGORY
+            && elementType != FEATURE_SEARCH;
 }
 
 bool UBFeature::isDeletable() const

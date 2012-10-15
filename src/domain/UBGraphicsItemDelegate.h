@@ -50,6 +50,9 @@ class DelegateButton: public QGraphicsSvgItem
 
         void setFileName(const QString & fileName);
 
+        void setShowProgressIndicator(bool pShow) {mShowProgressIndicator = pShow;}
+        bool testShowProgresIndicator() const {return mShowProgressIndicator;}
+
         void setSection(Qt::WindowFrameSection section) {mButtonAlignmentSection =  section;}
         Qt::WindowFrameSection getSection() const {return mButtonAlignmentSection;}
 
@@ -57,8 +60,13 @@ class DelegateButton: public QGraphicsSvgItem
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        void timerEvent(QTimerEvent *event);
 
         void modified();
+
+private slots:
+        void startShowProgress();
 
     private:
 
@@ -66,6 +74,10 @@ class DelegateButton: public QGraphicsSvgItem
 
         QTime mPressedTime;
         bool mIsTransparentToMouseEvent;
+        bool mIsPressed;
+        int mProgressTimerId;
+        int mPressProgres;
+        bool mShowProgressIndicator;
         Qt::WindowFrameSection mButtonAlignmentSection;
 
     signals:

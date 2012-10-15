@@ -121,18 +121,27 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
         if ( feature.getType() == FEATURE_FAVORITE ) {
             mActionBar->setCurrentState( IN_FAVORITE );
 
-        }  else   if ( feature.getType() == FEATURE_CATEGORY && feature.getName() == "root" ) {
+        }  else if ( feature.getType() == FEATURE_CATEGORY && feature.getName() == "root" ) {
             mActionBar->setCurrentState( IN_ROOT );
 
         } else if (feature.getType() == FEATURE_TRASH) {
             mActionBar->setCurrentState(IN_TRASH);
 
-        } else {
+        } else if (feature.getType() == FEATURE_SEARCH) {
+            //The search feature behavior is not standard. If features list clicked - show empty element
+            //else show existing saved features search QWebView
+            if (sender()->objectName() == objNameFeatureList) {
+                centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturesWebView);
+            } else if (sender()->objectName() == objNamePathList) {
+                centralWidget->switchTo(UBFeaturesCentralWidget::FeaturesWebView);
+            }
+
+        } else  {
             mActionBar->setCurrentState(IN_FOLDER);
         }
 
-    } else if (feature.getType() == FEATURE_SEARCH) {
-        centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturesWebView);
+//    } else if (feature.getType() == FEATURE_SEARCH) {
+//        centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturesWebView);
 
     } else {
         centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
@@ -1067,7 +1076,15 @@ void UBFeatureProperties::onAddToLib()
         desc.name = mpElement->getMetadata().value("Title", QString());
         qDebug() << desc.name;
         desc.srcUrl = mpElement->getFullPath().toString();
-        qDebug() << desc.srcUrl;
+        QString str1 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_C);
+        QString str2 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_D);
+        QString str3 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_KC);
+        QString str4 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_KD);
+        qDebug() << desc.srcUrl << endl
+                    << "str1" << str1 << endl
+                    << "str2" << str2 << endl
+                    << "str3" << str3 << endl
+                    << "str4" << str4 << endl;
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
     }
 }
@@ -1411,7 +1428,7 @@ bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
 	QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
 	
-	return feature.isFolder() && path.startsWith( feature.getFullVirtualPath() );
+    return feature.isFolder() && path.startsWith( feature.getFullVirtualPath()) ;
 }
 
 QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const

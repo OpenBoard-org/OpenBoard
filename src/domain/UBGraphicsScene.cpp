@@ -190,7 +190,6 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
         iCurElement.toBack();
         if (iCurElement.findPrevious(item)) {
             if (iCurElement.hasPrevious()) {
-//                qreal oldz = iCurElement.peekPrevious().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
                 qreal oldz = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
                 iCurElement.toFront();
                 qreal nextZ = iCurElement.next().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
@@ -199,11 +198,12 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
 //
                 //if we have some free space between lowest graphics item and layer's bottom bound,
                 //insert element close to first element in layer
-                if (nextZ >= curItemLayerTypeData.bottomLimit + curItemLayerTypeData.incStep) {
+                if (nextZ > curItemLayerTypeData.bottomLimit + curItemLayerTypeData.incStep) {
                     qreal result = nextZ - curItemLayerTypeData.incStep;
                     UBGraphicsItem::assignZValue(item, result);
                 } else {
                     UBGraphicsItem::assignZValue(item, nextZ);
+
                     bool doubleGap = false; //to detect if we can finish rundown since we can insert item to the free space
 
                     while (iCurElement.peekNext().value() != item) {
@@ -214,7 +214,8 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
                             doubleGap = true;
                             break;
                         } else {
-                            UBGraphicsItem::assignZValue(iCurElement.value(), iCurElement.next().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+                            UBGraphicsItem::assignZValue(iCurElement.value(), curNextZ);
+                            iCurElement.next();
                         }
                     }
                     if (!doubleGap) {
@@ -237,6 +238,7 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
 
     //Return new z value assigned to item
     return item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+
 }
 
 itemLayerType::Enum UBZLayerController::typeForData(QGraphicsItem *item) const
@@ -297,7 +299,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     }
 
 //    Just for debug. Do not delete please
-//    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
 }
 
@@ -315,10 +317,9 @@ UBGraphicsScene::~UBGraphicsScene()
 void UBGraphicsScene::selectionChangedProcessing()
 {
     if (selectedItems().count()){
-        //        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
-//                                                + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
-        qDebug() << "flippable" << selectedItems().first()->data(UBGraphicsItemData::ItemFlippable).toBool() << endl
-                 << "rotatable" << selectedItems().first()->data(UBGraphicsItemData::ItemRotatable).toBool();
+        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
+                                   + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
+
     }
 }
 

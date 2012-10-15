@@ -54,6 +54,10 @@ DelegateButton::DelegateButton(const QString & fileName, QGraphicsItem* pDelegat
     : QGraphicsSvgItem(fileName, parent)
     , mDelegated(pDelegated)
     , mIsTransparentToMouseEvent(false)
+    , mIsPressed(false)
+    , mProgressTimerId(-1)
+    , mPressProgres(0)
+    , mShowProgressIndicator(false)
     , mButtonAlignmentSection(section)
 {
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -71,26 +75,75 @@ void DelegateButton::setFileName(const QString & fileName)
     QGraphicsSvgItem::setSharedRenderer(new QSvgRenderer (fileName, this));
 }
 
-
 void DelegateButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (mShowProgressIndicator) {
+        QTimer::singleShot(300, this, SLOT(startShowProgress()));
+    }
+
+    mIsPressed = true;
+
     // make sure delegate is selected, to avoid control being hidden
     mPressedTime = QTime::currentTime();
 
     event->setAccepted(!mIsTransparentToMouseEvent);
- }
+}
 
 void DelegateButton::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (mShowProgressIndicator && mProgressTimerId != -1) {
+        killTimer(mProgressTimerId);
+        mPressProgres = 0;
+    }
+
+    mIsPressed = false;
     int timeto = qAbs(QTime::currentTime().msecsTo(mPressedTime));
 
     if (timeto < UBSettings::longClickInterval) {
         emit clicked();
+        qDebug() << "clicked";
     } else {
         emit longClicked();
+        qDebug() << "longClicked";
     }
 
     event->setAccepted(!mIsTransparentToMouseEvent);
+
+    update();
+}
+
+void DelegateButton::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    QGraphicsSvgItem::paint(painter, option, widget);
+
+    if (mIsPressed && mShowProgressIndicator) {
+        QPen pen;
+        pen.setBrush(Qt::darkRed);
+        pen.setWidth(3);
+        painter->save();
+
+        painter->setPen(pen);
+
+        int spanAngle = qMin(mPressProgres, UBSettings::longClickInterval) * 360 / UBSettings::longClickInterval;
+        painter->drawArc(option->rect.adjusted(pen.width(), pen.width(), -pen.width(), -pen.width()), 16 * 90, -16 * spanAngle);
+
+        painter->restore();
+    }
+}
+
+void DelegateButton::timerEvent(QTimerEvent *event)
+{
+    if (event->timerId() == mProgressTimerId) {
+        mPressProgres = qAbs(QTime::currentTime().msecsTo(mPressedTime));
+        update();
+    }
+}
+
+void DelegateButton::startShowProgress()
+{
+    if (mIsPressed) {
+         mProgressTimerId = startTimer(37);
+    }
 }
 
 UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, bool respectRatio, bool canRotate, bool useToolBar)
@@ -139,11 +192,13 @@ void UBGraphicsItemDelegate::init()
     mButtons << mMenuButton;
 
     mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    mZOrderUpButton->setShowProgressIndicator(true);
     connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
     connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
     mButtons << mZOrderUpButton;
 
     mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    mZOrderDownButton->setShowProgressIndicator(true);
     connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
     connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
     mButtons << mZOrderDownButton;

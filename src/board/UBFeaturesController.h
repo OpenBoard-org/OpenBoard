@@ -106,6 +106,7 @@ public:
     UBFeatureElementType getType() const { return elementType; }
 
 	bool isFolder() const;
+    bool allowedCopy() const;
 	bool isDeletable() const;
     bool inTrash() const;
 	bool operator ==( const UBFeature &f )const;
