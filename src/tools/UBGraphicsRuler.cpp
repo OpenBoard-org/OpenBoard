@@ -164,9 +164,6 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
     const int       millimetersPerCentimeter = 10;
     const int   millimetersPerHalfCentimeter = 5;
 
-
-    qDebug() << sPixelsPerMillimeter;
-
     painter->save();
     painter->setFont(font());
     QFontMetricsF fontMetrics(painter->font());

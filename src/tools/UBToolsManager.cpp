@@ -91,12 +91,12 @@ UBToolsManager::UBToolsManager(QObject *parent)
     mDescriptors << cache;
 //  --------------------------------------------------------------------------------
 
-    aristo.id = "uniboardTool://uniboard.mnemis.com/aristo";
-    aristo.icon = QPixmap(":/images/toolPalette/aristoTool.png");
-    aristo.label = tr("Aristo");
-    aristo.version = "1.0";
-    mToolsIcon.insert(aristo.id, ":/images/toolPalette/aristoTool.png");
-    mDescriptors << aristo;
+//    aristo.id = "uniboardTool://uniboard.mnemis.com/aristo";
+//    aristo.icon = QPixmap(":/images/toolPalette/aristoTool.png");
+//    aristo.label = tr("Aristo");
+//    aristo.version = "1.0";
+//    mToolsIcon.insert(aristo.id, ":/images/toolPalette/aristoTool.png");
+//    mDescriptors << aristo;
 }
 
 UBToolsManager::~UBToolsManager()
