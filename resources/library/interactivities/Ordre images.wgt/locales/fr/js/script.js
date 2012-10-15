@@ -1,6 +1,6 @@
 
 var sankoreLang = {
-    display: "Fermer", 
+    display: "Afficher", 
     edit: "Modifier", 
     short_desc: "Placez les images dans l'ordre croissant.", 
     add: "Nouveau bloc",

@@ -29,8 +29,6 @@
 	// Default options
 	
 	jQuery.fn.ubwidget.defaults = {
-		width:250,
-		height:300
 	};
 	
 	// Shadows

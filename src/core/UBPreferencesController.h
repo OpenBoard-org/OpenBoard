@@ -83,12 +83,14 @@ class UBPreferencesController : public QObject
         void toolbarOrientationHorizontal(bool checked);
         void onCommunityUsernameChanged();
         void onCommunityPasswordChanged();
+        void onCommunityPersistenceChanged();
 
     private:
 
         static qreal sSliderRatio;
         static qreal sMinPenWidth;
         static qreal sMaxPenWidth;
+        void persistanceCheckboxUpdate();
 
 };
 

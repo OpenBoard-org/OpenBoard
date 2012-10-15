@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Close", 
+    display: "Display", 
     edit: "Edit", 
     short_desc: "Listen to the sound and make the correct word.", 
     add: "Add new block",
@@ -7,9 +7,9 @@ var sankoreLang = {
     example: "example",
     wgt_name: "Order the letters",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"
@@ -31,8 +31,8 @@ function start(){
     $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
-        if(sankore.preference("associer_sound","")){
-            var data = jQuery.parseJSON(sankore.preference("associer_sound",""));
+        if(sankore.preference("ord_let","")){
+            var data = jQuery.parseJSON(sankore.preference("ord_let",""));
             importData(data);
         }
         else 
@@ -263,15 +263,17 @@ function exportData(){
             array_to_export.push(cont_obj);
         });
     }
-    if(window.sankore)
-        sankore.setPreference("associer_sound", JSON.stringify(array_to_export));
+    if(window.sankore){
+        sankore.setPreference("ord_let", JSON.stringify(array_to_export));
+        sankore.setPreference("ord_let_locale", "en");
+    }
     if($("#wgt_display").hasClass("selected")){
         if(window.sankore)
-            sankore.setPreference("associer_sound_state", "display");
+            sankore.setPreference("ord_let_state", "display");
     }
     else{
         if(window.sankore)
-            sankore.setPreference("associer_sound_state", "edit");
+            sankore.setPreference("ord_let_state", "edit");
     }
 }
 
@@ -308,8 +310,8 @@ function importData(data){
                 tmp_array.push(tmp_letter);
             }
         
-        if(sankore.preference("associer_sound_state","")){
-            if(sankore.preference("associer_sound_state","") == "edit")
+        if(sankore.preference("ord_let_state","")){
+            if(sankore.preference("ord_let_state","") == "edit")
                 tmp_array = shuffle(tmp_array);
         } else 
             tmp_array = shuffle(tmp_array);
@@ -365,12 +367,12 @@ function addContainer(){
     var sub_container = $("<div class='sub_cont'>").appendTo(container);
    
     $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
-    var text = $("<div class='text_cont'>").appendTo(sub_container);
-    text.attr("ondragenter", "return false;")
-    .attr("ondragleave", "$(this).removeClass('gray'); return false;")
-    .attr("ondragover", "$(this).addClass('gray'); return false;")
-    .attr("ondrop", "$(this).removeClass('gray'); return onDropAudio(this,event);");
+    var text = $("<div class='text_cont'>").appendTo(sub_container);    
     var audio_block = $("<div class='audio_block'>").appendTo(text);
+    audio_block.attr("ondragenter", "return false;")
+    .attr("ondragleave", "$(this).removeClass('audio_gray'); return false;")
+    .attr("ondragover", "$(this).addClass('audio_gray'); return false;")
+    .attr("ondrop", "$(this).removeClass('audio_gray'); return onDropAudio(this,event);");
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
     var source = $("<source/>").attr("src", "");
@@ -505,12 +507,11 @@ function onDropAudio(obj, event) {
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
         if(tmp_type.substr(0, 5) == "audio"){       
-            var audio_block = $(obj).find(".audio_block");
             $(obj).find("audio").remove();
-            audio_block.find(":first-child").removeClass("stop").addClass("play");
+            $(obj).find(":first-child").removeClass("stop").addClass("play");
             var source = $("<source/>").attr("src", tmp);
-            var audio = $("<audio>").appendTo(audio_block);
-            audio.append(source);
+            var audio = $("<audio>").appendTo($(obj));
+            audio.append(source);            
         }
     }
     else {

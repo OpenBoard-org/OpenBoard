@@ -1583,10 +1583,6 @@
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
-        <source>Cannot load content</source>
-        <translation>Impossible de charger le contenu</translation>
-    </message>
-    <message>
         <source>Loading ...</source>
         <translation>Chargement en cours ...</translation>
     </message>

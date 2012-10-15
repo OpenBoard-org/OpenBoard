@@ -184,19 +184,23 @@
 }
 
 .feedback.closed img {	
+	/*
 	-webkit-animation: hide .4s ease-in;
 	   -moz-animation: hide .4s ease-in;
 	    -ms-animation: hide .4s ease-in;
 			animation: hide .4s ease-in;
+	*/
 }
 
 .feedback.expand img {
 	opacity: 1;
 	-webkit-transform:scale(1) rotate(360deg);
+	/*
 	-webkit-animation: expand .4s ease-in;
 	   -moz-animation: expand .4s ease-in;
 	    -ms-animation: expand .4s ease-in;
 			animation: expand .4s ease-in;
+	*/			
 }
 
 @-webkit-keyframes expand {

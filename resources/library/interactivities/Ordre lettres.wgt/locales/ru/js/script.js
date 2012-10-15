@@ -31,8 +31,8 @@ function start(){
     $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
-        if(sankore.preference("associer_sound","")){
-            var data = jQuery.parseJSON(sankore.preference("associer_sound",""));
+        if(sankore.preference("ord_let","")){
+            var data = jQuery.parseJSON(sankore.preference("ord_let",""));
             importData(data);
         }
         else 
@@ -252,7 +252,7 @@ function exportData(){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
-            cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
+            cont_obj.audio = $(this).find("source").attr("src");
             cont_obj.answer = $(this).find(".audio_answer").text();
             cont_obj.cur_answer = "";            
             array_to_export.push(cont_obj);
@@ -261,22 +261,23 @@ function exportData(){
         $(".cont").each(function(){
             var cont_obj = new Object();
             cont_obj.text = $(this).find(".audio_desc").text();
-            cont_obj.audio = $(this).find("source").attr("src").replace("../../","");
+            cont_obj.audio = $(this).find("source").attr("src");
             cont_obj.answer = $(this).find("ul").next().val(); 
             cont_obj.cur_answer = getAnswer($(this).find("ul"));
             array_to_export.push(cont_obj);
         });
     }
-    sankore.setPreference("associer_sound", JSON.stringify(array_to_export));
+    sankore.setPreference("ord_let", JSON.stringify(array_to_export));
+    sankore.setPreference("ord_let_locale", sankore.locale().substr(0,2));
     if($("#wgt_display").hasClass("selected"))
-        sankore.setPreference("associer_sound_state", "display");
+        sankore.setPreference("ord_let_state", "display");
     else
-        sankore.setPreference("associer_sound_state", "edit");
+        sankore.setPreference("ord_let_state", "edit");
 }
 
 //import
 function importData(data){
-    
+    var tmp_loc = sankore.preference("ord_let_locale","")
     var tmp = 0;    
     for(var i in data){        
         var tmp_array = [];
@@ -289,7 +290,7 @@ function importData(data){
         var audio_block = $("<div class='audio_block'>").appendTo(text);
         $("<div class='play'>").appendTo(audio_block);
         $("<div class='replay'>").appendTo(audio_block);
-        var source = $("<source/>").attr("src", data[i].audio);
+        var source = $("<source/>").attr("src",((tmp_loc != "en")?"":"../../") + data[i].audio);
         var audio = $("<audio>").appendTo(audio_block);
         audio.append(source);
         $("<input type='hidden'/>").appendTo(audio_block);
@@ -306,8 +307,8 @@ function importData(data){
                 tmp_array.push(tmp_letter);
             }
         
-        if(sankore.preference("associer_sound_state","")){
-            if(sankore.preference("associer_sound_state","") == "edit")
+        if(sankore.preference("ord_let_state","")){
+            if(sankore.preference("ord_let_state","") == "edit")
                 tmp_array = shuffle(tmp_array);
         } else 
             tmp_array = shuffle(tmp_array);
@@ -339,7 +340,7 @@ function showExample(){
     var audio_block = $("<div class='audio_block'>").appendTo(text);
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
-    var source = $("<source/>").attr("src", "objects/exemple.mp3");
+    var source = $("<source/>").attr("src", "objects/example.mp3");
     var audio = $("<audio>").appendTo(audio_block);
     audio.append(source);
     $("<input type='hidden'/>").appendTo(audio_block);
@@ -370,11 +371,11 @@ function addContainer(){
    
     $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
     var text = $("<div class='text_cont'>").appendTo(sub_container);
-    text.attr("ondragenter", "return false;")
-    .attr("ondragleave", "$(this).removeClass('gray'); return false;")
-    .attr("ondragover", "$(this).addClass('gray'); return false;")
-    .attr("ondrop", "$(this).removeClass('gray'); return onDropAudio(this,event);");
     var audio_block = $("<div class='audio_block'>").appendTo(text);
+    audio_block.attr("ondragenter", "return false;")
+    .attr("ondragleave", "$(this).removeClass('audio_gray'); return false;")
+    .attr("ondragover", "$(this).addClass('audio_gray'); return false;")
+    .attr("ondrop", "$(this).removeClass('audio_gray'); return onDropAudio(this,event);");
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
     var source = $("<source/>").attr("src", "");
@@ -507,13 +508,12 @@ function onDropAudio(obj, event) {
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
         var tmp_type = textData.getElementsByTagName("type")[0].firstChild.textContent;
-        if(tmp_type.substr(0, 5) == "audio"){       
-            var audio_block = $(obj).find(".audio_block");
+        if(tmp_type.substr(0, 5) == "audio"){            
             $(obj).find("audio").remove();
-            audio_block.find(":first-child").removeClass("stop").addClass("play");
+            $(obj).find(":first-child").removeClass("stop").addClass("play");
             var source = $("<source/>").attr("src", "../../" + tmp);
-            var audio = $("<audio>").appendTo(audio_block);
-            audio.append(source);
+            var audio = $("<audio>").appendTo($(obj));
+            audio.append(source);   
         }
     }
     else {

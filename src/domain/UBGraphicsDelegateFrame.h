@@ -40,7 +40,6 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QPointF getFixedPointFromPos();
         QSizeF getResizeVector(qreal moveX, qreal moveY);
         QSizeF resizeDelegate(qreal moveX, qreal moveY);
-        void scaleByPos(qreal scaleX, qreal scaleY);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 

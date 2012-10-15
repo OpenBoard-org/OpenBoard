@@ -642,19 +642,31 @@ void UBFeaturesController::importImage(const QImage &image, const QString &fileN
 void UBFeaturesController::importImage( const QImage &image, const UBFeature &destination, const QString &fileName )
 {
     QString mFileName = fileName;
+    QString filePath;
+    UBFeature dest = destination;
     if (mFileName.isNull()) {
         QDateTime now = QDateTime::currentDateTime();
-        mFileName  = tr("ImportedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss") + ".png";
-    }
+        static int imageCounter = 0;
+        mFileName  = tr("ImportedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss");
+        
+        filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
 
-    UBFeature dest = destination;
+        if (QFile::exists(filePath+".png"))
+            mFileName += QString("-[%1]").arg(++imageCounter);
+        else
+            imageCounter = 0;
+        
+        mFileName += ".png";
+    }
+    
+
 
     if ( !destination.getFullVirtualPath().startsWith( picturesElement.getFullVirtualPath(), Qt::CaseInsensitive ) )
     {
 	    dest = picturesElement;
     }
 
-    QString filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
+    filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
     image.save(filePath);
 
     QImage thumb = createThumbnail( filePath );
@@ -723,7 +735,7 @@ UBFeature UBFeaturesController::getDestinationFeatureForUrl( const QUrl &url )
         return audiosElement;
     if ( mimetype.contains("video") )
         return moviesElement;
-    else if ( mimetype.contains("image") )
+	else if ( mimetype.contains("image") || mimetype.isEmpty())
         return picturesElement;
     else if ( mimetype.contains("application") )
 	{
@@ -739,13 +751,32 @@ void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteA
 {
     UBFeature dest = getDestinationFeatureForUrl(sourceUrl);
 
+	//TODO:claudio check this
     if (dest == UBFeature())
         return;
 
-    QString fileName = QFileInfo( sourceUrl.toString() ).fileName();
-    QString filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
+    QString fileName("");
+    QString filePath("");
+	
+	if(UBFileSystemUtils::mimeTypeFromFileName( sourceUrl.toString() ).isEmpty()){
+		fileName = tr("ImportedImage") + "-" + QDateTime::currentDateTime().toString("dd-MM-yyyy hh-mm-ss")+ ".jpg";
+		filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
+		QImage::fromData(pData).save(filePath);
 
-    QFile file( filePath );
+		UBFeature downloadedFeature = UBFeature(dest.getFullVirtualPath() + "/" + fileName, getIcon( filePath, fileTypeFromUrl(filePath)),
+                                                 fileName, QUrl::fromLocalFile(filePath), FEATURE_ITEM);
+        if (downloadedFeature != UBFeature()) {
+            featuresModel->addItem(downloadedFeature);
+        }
+		
+	}
+	else{
+	    fileName = QFileInfo( sourceUrl.toString() ).fileName();
+		filePath = dest.getFullPath().toLocalFile() + "/" + fileName;
+	
+
+    
+	QFile file( filePath );
     if ( file.open(QIODevice::WriteOnly ))
     {
         file.write(pData);
@@ -757,6 +788,7 @@ void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteA
             featuresModel->addItem(downloadedFeature);
         }
     }
+	}
 
 }
 

@@ -476,6 +476,8 @@ void UBApplication::closing()
     if (webController)
         webController->closing();
 
+    UBSettings::settings()->closing();
+
     UBSettings::settings()->appToolBarPositionedAtTop->set(mainWindow->toolBarArea(mainWindow->boardToolBar) == Qt::TopToolBarArea);
 
     quit();

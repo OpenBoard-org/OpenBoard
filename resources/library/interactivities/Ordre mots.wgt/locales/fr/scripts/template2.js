@@ -27,7 +27,7 @@ function checkResponse()
 */
 
 var sankoreLang = {
-    view: "Fermer", 
+    view: "Afficher", 
     edit: "Modifier",
     example: "Il*était*une*fois*...",
     wgt_name: "Ordonner des mots",

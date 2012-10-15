@@ -67,8 +67,6 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in
     mPreferencesUI->setupUi(mPreferencesWindow);
-    connect(mPreferencesUI->Username_textBox, SIGNAL(editingFinished()), this, SLOT(onCommunityUsernameChanged()));
-    connect(mPreferencesUI->Password_textEdit, SIGNAL(editingFinished()), this, SLOT(onCommunityPasswordChanged()));
 
     wire();
 }
@@ -76,7 +74,7 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
 
 UBPreferencesController::~UBPreferencesController()
 {
-	delete mPreferencesWindow;
+    delete mPreferencesWindow;
 
     delete mPreferencesUI;
 
@@ -161,6 +159,12 @@ void UBPreferencesController::wire()
     connect(mMarkerProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setMarkerPressureSensitive(bool)));
     connect(mMarkerProperties->opacitySlider, SIGNAL(valueChanged(int)), this, SLOT(opacitySliderChanged(int)));
 
+
+    //network
+    connect(mPreferencesUI->Username_textBox, SIGNAL(editingFinished()), this, SLOT(onCommunityUsernameChanged()));
+    connect(mPreferencesUI->Password_textEdit, SIGNAL(editingFinished()), this, SLOT(onCommunityPasswordChanged()));
+    connect(mPreferencesUI->PSCredentialsPersistenceCheckBox,SIGNAL(clicked()),this, SLOT(onCommunityPersistenceChanged()));
+
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
 }
@@ -212,18 +216,36 @@ void UBPreferencesController::init()
 
     mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
 
+    //network
+    mPreferencesUI->PSCredentialsPersistenceCheckBox->setChecked(settings->getCommunityDataPersistence());
+    persistanceCheckboxUpdate();
+
 }
 
 void UBPreferencesController::onCommunityUsernameChanged()
 {
     UBSettings* settings = UBSettings::settings();
     settings->setCommunityUsername(mPreferencesUI->Username_textBox->text());
+    persistanceCheckboxUpdate();
 }
 
 void UBPreferencesController::onCommunityPasswordChanged()
 {
     UBSettings* settings = UBSettings::settings();
     settings->setCommunityPassword(mPreferencesUI->Password_textEdit->text());
+    persistanceCheckboxUpdate();
+}
+
+void UBPreferencesController::onCommunityPersistenceChanged()
+{
+    UBSettings::settings()->setCommunityPersistence(mPreferencesUI->PSCredentialsPersistenceCheckBox->isChecked());
+}
+
+void UBPreferencesController::persistanceCheckboxUpdate()
+{
+    bool checkBoxEnabled = mPreferencesUI->Username_textBox->text().length() || mPreferencesUI->Password_textEdit->text().length();
+    mPreferencesUI->PSCredentialsPersistenceCheckBox->setEnabled(checkBoxEnabled);
+    mPreferencesUI->PSCredentialsPersistenceCheckBox->setStyleSheet(checkBoxEnabled ? "color:black;" : "color:lightgray;");
 }
 
 

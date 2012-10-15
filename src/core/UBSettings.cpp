@@ -173,7 +173,7 @@ void UBSettings::ValidateKeyboardPaletteKeyBtnSize()
 {
     // if boardKeyboardPaletteKeyBtnSize is not initialized, or supportedKeyboardSizes not initialized or empty
     if( !boardKeyboardPaletteKeyBtnSize ||
-        !supportedKeyboardSizes || 
+        !supportedKeyboardSizes ||
         supportedKeyboardSizes->size() == 0 ) return;
 
     // get original size value
@@ -243,7 +243,7 @@ void UBSettings::init()
     pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
 
     pageDpi = new UBSetting(this, "Board", "pageDpi", 0);
-    
+
     QStringList penLightBackgroundColors;
     penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A";
     boardPenLightBackgroundColors = new UBColorListSetting(this, "Board", "PenLightBackgroundColors", penLightBackgroundColors, 1.0);
@@ -350,6 +350,7 @@ void UBSettings::init()
 
     podcastPublishToYoutube = new UBSetting(this, "Podcast", "PublishToYouTube", false);
     youTubeUserEMail = new UBSetting(this, "YouTube", "UserEMail", "");
+    youTubeCredentialsPersistence = new UBSetting(this,"YouTube", "CredentialsPersistence",false);
 
     uniboardWebEMail = new UBSetting(this, "UniboardWeb", "EMail", "");
     uniboardWebAuthor = new UBSetting(this, "UniboardWeb", "Author", "");
@@ -357,6 +358,7 @@ void UBSettings::init()
 
     communityUser = new UBSetting(this, "Community", "Username", "");
     communityPsw = new UBSetting(this, "Community", "Password", "");
+    communityCredentialsPersistence = new UBSetting(this,"Community", "CredentialsPersistence",false);
 
     QStringList uris = UBToolsManager::manager()->allToolIDs();
 
@@ -383,7 +385,7 @@ void UBSettings::init()
     intranetPodcastPublishingUrl = new UBSetting(this, "IntranetPodcast", "PublishingUrl", "");
     intranetPodcastAuthor = new UBSetting(this, "IntranetPodcast", "Author", "");
 
-	KeyboardLocale = new UBSetting(this, "Board", "StartupKeyboardLocale", 0);
+    KeyboardLocale = new UBSetting(this, "Board", "StartupKeyboardLocale", 0);
     swapControlAndDisplayScreens = new UBSetting(this, "App", "SwapControlAndDisplayScreens", false);
 
     angleTolerance = new UBSetting(this, "App", "AngleTolerance", 4);
@@ -392,6 +394,8 @@ void UBSettings::init()
     teacherGuideLessonPagesActivated = new UBSetting(this,"DockPalette","TeacherGuideActivateLessonPages",true);
 
     libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
+
+    cleanNonPersistentSettings();
 }
 
 
@@ -401,7 +405,7 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
     {
         sAppSettings->setValue(key, defaultValue);
     }
-    
+
     return mUserSettings->value(key, sAppSettings->value(key, defaultValue));
 }
 
@@ -944,7 +948,7 @@ QString UBSettings::applicationImageLibraryDirectory()
 {
     QString defaultRelativePath = QString("./library/pictures");
 
-	QString configPath = value("Library/ImageDirectory", QVariant(defaultRelativePath)).toString();
+    QString configPath = value("Library/ImageDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
         return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
@@ -1180,12 +1184,17 @@ void UBSettings::setCommunityPassword(const QString &password)
     communityPsw->set(QVariant(password));
 }
 
+void UBSettings::setCommunityPersistence(const bool persistence)
+{
+    communityCredentialsPersistence->set(QVariant(persistence));
+}
+
 int UBSettings::libraryIconSize(){
-	return libIconSize->get().toInt();
+    return libIconSize->get().toInt();
 }
 
 void UBSettings::setLibraryIconsize(const int& size){
-	libIconSize->set(QVariant(size));
+    libIconSize->set(QVariant(size));
 }
 
 bool UBSettings::checkDirectory(QString& dirPath)
@@ -1218,3 +1227,20 @@ QString UBSettings::replaceWildcard(QString& path)
     return result;
 }
 
+void UBSettings::closing()
+{
+    cleanNonPersistentSettings();
+}
+
+void UBSettings::cleanNonPersistentSettings()
+{
+    if(!communityCredentialsPersistence->get().toBool()){
+        communityPsw->set(QVariant(""));
+        communityUser->set(QVariant(""));
+    }
+
+    if(!youTubeCredentialsPersistence->get().toBool()){
+        removePassword(youTubeUserEMail->get().toString());
+        youTubeUserEMail->set(QVariant(""));
+    }
+}

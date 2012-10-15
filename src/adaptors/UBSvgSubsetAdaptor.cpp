@@ -853,7 +853,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     UBGraphicsAppleWidgetItem* appleWidgetItem = graphicsAppleWidgetFromSvg();
                     if (appleWidgetItem)
                     {
-                        appleWidgetItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+ //                       appleWidgetItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         appleWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
                         appleWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
@@ -877,7 +877,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     if (w3cWidgetItem)
                     {
-                        w3cWidgetItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+ //                       w3cWidgetItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         w3cWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
                         w3cWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
@@ -1000,27 +1000,24 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
 {
     UBGraphicsGroupContainerItem *group = new UBGraphicsGroupContainerItem();
-    QMultiMap<QString, UBGraphicsPolygonItem *> strokesGroupsContainer;    
-    QList<QGraphicsItem *> groupContainer;    
-    QString currentStrokeIdentifier;
-    
-    QUuid groupUuid = QUuid(mXmlReader.attributes().value(aId).toString());
+    QMultiMap<QString, UBGraphicsPolygonItem *> strokesGroupsContainer;
+    QList<QGraphicsItem *> groupContainer;
 
     mXmlReader.readNext();
-    while (!mXmlReader.atEnd()) 
+    while (!mXmlReader.atEnd())
     {
         if (mXmlReader.isEndElement()) {
             mXmlReader.readNext();
             break;
         } else if (mXmlReader.isStartElement())
         {
-            if (mXmlReader.name() == tGroup) 
+            if (mXmlReader.name() == tGroup)
             {
                 qDebug() << "came across the group id is" << mXmlReader.attributes().value(aId);
                 UBGraphicsGroupContainerItem *curGroup = readGroup();
-                if (curGroup) 
+                if (curGroup)
                     groupContainer.append(curGroup);
-            } 
+            }
             else if (mXmlReader.name() == tElement)
             {
                 QString id = mXmlReader.attributes().value(aId).toString();
@@ -1460,7 +1457,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         QVector<tIDataStorage*> dataStorageItems;
 
         if(elements.value("teacherGuide"))
-        	dataStorageItems = elements.value("teacherGuide")->save(pageIndex);
+            dataStorageItems = elements.value("teacherGuide")->save(pageIndex);
         foreach(tIDataStorage* eachItem, dataStorageItems){
             if(eachItem->type == eElementType_START){
                 mXmlWriter.writeStartElement(eachItem->name);
@@ -2294,7 +2291,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMed
     videoFileHref = UBFileSystemUtils::removeLocalFilePrefix(videoFileHref);
     if(videoFileHref.startsWith(mDocumentPath))
         videoFileHref = videoFileHref.replace(mDocumentPath + "/","");
-    
+
     mXmlWriter.writeAttribute(nsXLink, "href", videoFileHref);
     mXmlWriter.writeEndElement();
 }

@@ -5,6 +5,7 @@ html, body{
     padding: 0;    
     border-radius: 35px;
     overflow: hidden;
+    font-family: sans-serif;
 }
 
 body{

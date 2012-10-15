@@ -1,5 +1,5 @@
 var sankoreLang = {
-    view: "Fermer", 
+    view: "Afficher", 
     edit: "Modifier",
     example: "Ceci est une série de mots à séparer correctement",
     wgt_name: "Séparer une phrase",

@@ -1,5 +1,5 @@
 var sankoreLang = {
-    display: "Close", 
+    display: "Display", 
     edit: "Edit", 
     short_desc: "Select animals from the following list:", 
     add: "Add new block",
@@ -11,9 +11,9 @@ var sankoreLang = {
     tree: "tree",
     wgt_name: "Select the desired",
     reload: "Reload",
-    slate: "Wood",
-    pad: "Pad",
-    none: "None",
+    slate: "slate",
+    pad: "pad",
+    none: "none",
     help: "Help",
     help_content: "This is an example of help content ...",
     theme: "Theme"

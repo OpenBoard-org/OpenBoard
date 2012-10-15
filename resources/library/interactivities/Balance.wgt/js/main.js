@@ -231,6 +231,11 @@ function reloadApp(app) {
 	refreshScales();
 	
 	var objects = app.parameters.value("Objects");
+	if(objects === undefined) {
+		var object = createObject(app);	
+		setWeightFor(app.parameters, object.attr("id"), 5);
+		objects = app.parameters.value("Objects")
+	}
 	if(objects !== undefined) {
 		objects = objects.split(",");
 		for(var i=0 ; i<objects.length ; i++) {
@@ -241,6 +246,10 @@ function reloadApp(app) {
 	}
 	
 	var weights = app.parameters.value("Weights");
+	if(weights === undefined) {
+		createWeight(app, 20);
+		weights = app.parameters.value("Weights");
+	}
 	if(weights !== undefined) {
 		weights = weights.split(",");
 		for(var i=0 ; i<weights.length ; i++) {

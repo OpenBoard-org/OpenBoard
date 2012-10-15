@@ -5,9 +5,9 @@ var sankoreLang = {
     new_txt: "Nouveau bloc de texte",
     new_slide: "Ceci est une nouvelle diapositive.",
     wgt_name: "Etudier",
-    slate: "Bois",
-    pad: "Pad",
-    none: "Aucun",
+    slate: "ardoise",
+    pad: "tablette",
+    none: "aucun",
     help: "Aide",
     help_content: "<p><h2>Etudier</h2></p>"+
     "<p><h3>Livret de pages.</h3></p>"+
