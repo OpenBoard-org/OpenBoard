@@ -2364,10 +2364,17 @@ void UBBoardController::togglePodcast(bool checked)
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
     mActiveScene->setURStackEnable(false);
+    UBGraphicsItem *toolW3C = duplicateItem(dynamic_cast<UBItem *>(graphicsWidget));
+    UBGraphicsWidgetItem *copyedGraphicsWidget = NULL;
+
+    if (UBGraphicsWidgetItem::Type == toolW3C->type())
+        copyedGraphicsWidget = static_cast<UBGraphicsWidgetItem *>(toolW3C);
+
+    UBToolWidget *toolWidget = new UBToolWidget(copyedGraphicsWidget, mControlView);
+
     graphicsWidget->remove(false);
     mActiveScene->addItemToDeletion(graphicsWidget);
-    
-    UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget, mControlView);
+
     mActiveScene->setURStackEnable(true);
 
     QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());

@@ -62,7 +62,6 @@ UBDocumentPublisher::UBDocumentPublisher(UBDocumentProxy* pDocument, QObject *pa
         , mPassword("")
         , bLoginCookieSet(false)
 {
-	//NOOP
     init();
 }
 
@@ -109,7 +108,7 @@ void UBDocumentPublisher::buildUbwFile()
 
     if (UBFileSystemUtils::copyDir(mSourceDocument->persistencePath(), tmpDir))
     {
-        QUuid publishingUuid = QUuid::createUuid();
+        QString documentName = mSourceDocument->name();
 
         mPublishingPath = tmpDir;
         mPublishingSize = mSourceDocument->pageCount();
@@ -120,11 +119,11 @@ void UBDocumentPublisher::buildUbwFile()
 
         UBExportFullPDF pdfExporter;
         pdfExporter.setVerbode(false);
-        pdfExporter.persistsDocument(mSourceDocument, mPublishingPath + "/" + UBStringUtils::toCanonicalUuid(publishingUuid) + ".pdf");
+        pdfExporter.persistsDocument(mSourceDocument, mPublishingPath + "/" + documentName + ".pdf");
 
         UBExportDocument ubzExporter;
         ubzExporter.setVerbode(false);
-        ubzExporter.persistsDocument(mSourceDocument, mPublishingPath + "/" + UBStringUtils::toCanonicalUuid(publishingUuid) + ".ubz");
+        ubzExporter.persistsDocument(mSourceDocument, mPublishingPath + "/" + documentName + ".ubz");
 
         // remove all useless files
 

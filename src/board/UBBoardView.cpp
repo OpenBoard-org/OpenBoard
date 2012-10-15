@@ -866,6 +866,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     mMouseDownPos = event->pos ();
 
     movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
+
     if (!movingItem)
         emit clickOnBoard();
 
@@ -1099,6 +1100,11 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
   if (currentTool == UBStylusTool::Selector)
   {
       bool bReleaseIsNeed = true;
+      if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()))))
+      {
+          movingItem = NULL;
+          bReleaseIsNeed = false;
+      }
       if (mWidgetMoved)
       {
           mWidgetMoved = false;
