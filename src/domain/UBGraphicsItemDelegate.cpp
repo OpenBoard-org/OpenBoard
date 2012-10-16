@@ -116,7 +116,7 @@ void DelegateButton::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
     if (mIsPressed && mShowProgressIndicator) {
         QPen pen;
-        pen.setBrush(Qt::darkRed);
+        pen.setBrush(Qt::white);
         pen.setWidth(3);
         painter->save();
 
