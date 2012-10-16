@@ -109,7 +109,10 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
     mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
 
-    UBSettings::settings()->crossSize = UBGeometryUtils::millimetersPerCentimeter * 4;
+    QDesktopWidget* desktop = UBApplication::desktop();
+    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    int sPixelsPerMillimeter = qRound(dpiCommon / UBGeometryUtils::inchSize);
+    UBSettings::settings()->crossSize = 10*sPixelsPerMillimeter;
 }
 
 

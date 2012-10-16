@@ -23,6 +23,7 @@ const int UBGeometryUtils::halfCentimeterGraduationHeight = 10;
 const int UBGeometryUtils::millimeterGraduationHeight = 5;
 const int UBGeometryUtils::millimetersPerCentimeter = 10;
 const int UBGeometryUtils::millimetersPerHalfCentimeter = 5;
+const float UBGeometryUtils::inchSize = 25.4f;
 
 UBGeometryUtils::UBGeometryUtils()
 {

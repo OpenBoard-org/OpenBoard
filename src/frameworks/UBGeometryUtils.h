@@ -43,6 +43,7 @@ class UBGeometryUtils
         const static int millimeterGraduationHeight;
         const static int millimetersPerCentimeter;
         const static int millimetersPerHalfCentimeter;
+        const static float inchSize;
 };
 
 #endif /* UBGEOMETRYUTILS_H_ */
