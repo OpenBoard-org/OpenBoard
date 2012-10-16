@@ -397,7 +397,6 @@ QString UBFileSystemUtils::lastPathComponent(const QString& path)
 
 QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
 {
-    Q_ASSERT(fileName.length());
     QString ext = extension(fileName);
 
     if (ext == "xls" || ext == "xlsx") return "application/msexcel";

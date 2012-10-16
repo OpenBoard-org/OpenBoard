@@ -148,8 +148,8 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     // RIGHT palette widgets
 #ifndef USE_WEB_WIDGET
     mpFeaturesWidget = new UBFeaturesWidget();
-	mRightPalette->registerWidget(mpFeaturesWidget);
-	mRightPalette->addTab(mpFeaturesWidget);
+    mRightPalette->registerWidget(mpFeaturesWidget);
+    mRightPalette->addTab(mpFeaturesWidget);
 #endif
 
     //Do not show deprecated lib widget to prevent collisions. Uncomment to return lib widget
@@ -332,15 +332,15 @@ void UBBoardPaletteManager::pagePaletteButtonReleased()
     {
         if( mPageButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
         {
-        	// The palette is reinstanciated because the duplication depends on the current scene
-        	delete(mPagePalette);
-        	mPagePalette = 0;
-        	QList<QAction*>pageActions;
-        	pageActions << UBApplication::mainWindow->actionNewPage;
-        	UBBoardController* boardController = UBApplication::boardController;
-        	if(UBApplication::documentController->pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(boardController->activeSceneIndex()))){
-        		pageActions << UBApplication::mainWindow->actionDuplicatePage;
-        	}
+            // The palette is reinstanciated because the duplication depends on the current scene
+            delete(mPagePalette);
+            mPagePalette = 0;
+            QList<QAction*>pageActions;
+            pageActions << UBApplication::mainWindow->actionNewPage;
+            UBBoardController* boardController = UBApplication::boardController;
+            if(UBApplication::documentController->pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(boardController->activeSceneIndex()))){
+                pageActions << UBApplication::mainWindow->actionDuplicatePage;
+            }
             pageActions << UBApplication::mainWindow->actionImportPage;
 
             mPagePalette = new UBActionPalette(pageActions, Qt::Horizontal , mContainer);
@@ -351,9 +351,9 @@ void UBBoardPaletteManager::pagePaletteButtonReleased()
 
             // As we recreate the pagePalette every time, we must reconnect the slots
             connect(UBApplication::mainWindow->actionNewPage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
-			connect(UBApplication::mainWindow->actionDuplicatePage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
-			connect(UBApplication::mainWindow->actionImportPage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
-			connect(mPagePalette, SIGNAL(closed()), this, SLOT(pagePaletteClosed()));
+            connect(UBApplication::mainWindow->actionDuplicatePage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
+            connect(UBApplication::mainWindow->actionImportPage, SIGNAL(triggered()), mPagePalette, SLOT(close()));
+            connect(mPagePalette, SIGNAL(closed()), this, SLOT(pagePaletteClosed()));
 
             togglePagePalette(true);
         }
@@ -955,7 +955,7 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     bool bVertical = var.toBool();
     bool bVisible = mStylusPalette->isVisible();
 
-	// Clean the old palette
+    // Clean the old palette
     if(NULL != mStylusPalette)
     {
         // TODO : check why this line creates a crash in the application.
@@ -995,7 +995,6 @@ void UBBoardPaletteManager::startDownloads()
         mDownloadInProgress = true;
         mpDownloadWidget->setVisibleState(true);
         mRightPalette->addTab(mpDownloadWidget);
-        mpDownloadWidget;
     }
 }
 

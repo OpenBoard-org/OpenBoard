@@ -108,6 +108,11 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     mPenColorOnLightBackground = UBSettings::settings()->penColors(false).at(penColorIndex);
     mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
     mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
+
+    QDesktopWidget* desktop = UBApplication::desktop();
+    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    int sPixelsPerMillimeter = qRound(dpiCommon / UBGeometryUtils::inchSize);
+    UBSettings::settings()->crossSize = 10*sPixelsPerMillimeter;
 }
 
 
@@ -996,30 +1001,30 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
                 || contentType.startsWith("application/widget")
                 || contentType.startsWith("application/vnd.apple-widget");
 
-        if (shouldLoadFileData)
-        {
+       if (shouldLoadFileData)
+       {
             QFile file(fileName);
             file.open(QIODevice::ReadOnly);
             downloadFinished(true, formedUrl, QUrl(), contentType, file.readAll(), pPos, pSize, isBackground, internalData);
             file.close();
-        }
-        else
-        {
-            // media items should be copyed in separate thread
+       }
+       else
+       {
+           // media items should be copyed in separate thread
 
-            sDownloadFileDesc desc;
-            desc.modal = false;
-            desc.srcUrl = sUrl;
-            desc.originalSrcUrl = contentSourceUrl;
-            desc.currentSize = 0;
-            desc.name = QFileInfo(url.toString()).fileName();
-            desc.totalSize = 0; // The total size will be retrieved during the download
-            desc.pos = pPos;
-            desc.size = pSize;
-            desc.isBackground = isBackground;
+           sDownloadFileDesc desc;
+           desc.modal = false;
+           desc.srcUrl = sUrl;
+           desc.originalSrcUrl = contentSourceUrl;
+           desc.currentSize = 0;
+           desc.name = QFileInfo(url.toString()).fileName();
+           desc.totalSize = 0; // The total size will be retrieved during the download
+           desc.pos = pPos;
+           desc.size = pSize;
+           desc.isBackground = isBackground;
 
-            UBDownloadManager::downloadManager()->addFileToDownload(desc);
-        }
+           UBDownloadManager::downloadManager()->addFileToDownload(desc);
+       }
     }
     else
     {
@@ -2362,10 +2367,17 @@ void UBBoardController::togglePodcast(bool checked)
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
     mActiveScene->setURStackEnable(false);
+    UBGraphicsItem *toolW3C = duplicateItem(dynamic_cast<UBItem *>(graphicsWidget));
+    UBGraphicsWidgetItem *copyedGraphicsWidget = NULL;
+
+    if (UBGraphicsWidgetItem::Type == toolW3C->type())
+        copyedGraphicsWidget = static_cast<UBGraphicsWidgetItem *>(toolW3C);
+
+    UBToolWidget *toolWidget = new UBToolWidget(copyedGraphicsWidget, mControlView);
+
     graphicsWidget->remove(false);
     mActiveScene->addItemToDeletion(graphicsWidget);
-    
-    UBToolWidget *toolWidget = new UBToolWidget(graphicsWidget, mControlView);
+
     mActiveScene->setURStackEnable(true);
 
     QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());

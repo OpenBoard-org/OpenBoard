@@ -33,18 +33,17 @@ UBAsyncLocalFileDownloader::UBAsyncLocalFileDownloader(sDownloadFileDesc desc, Q
 
 UBAsyncLocalFileDownloader *UBAsyncLocalFileDownloader::download()
 {
-    if (!QFile::exists(QUrl(mDesc.srcUrl).toLocalFile())) {
-        qDebug() << "file" << mDesc.srcUrl << "does not present in fs";
-        return this;
-    }
-
     start();
-
     return this;
 }
 
 void UBAsyncLocalFileDownloader::run()
 {
+
+    if(mDesc.srcUrl.startsWith("file://"))
+        mDesc.srcUrl = QUrl(mDesc.srcUrl).toLocalFile();
+    else
+        mDesc.srcUrl = QUrl::fromLocalFile(mDesc.srcUrl).toLocalFile();
 
     QString mimeType = UBFileSystemUtils::mimeTypeFromFileName(mDesc.srcUrl);
 
@@ -67,7 +66,7 @@ void UBAsyncLocalFileDownloader::run()
 
     QString uuid = QUuid::createUuid();
     UBPersistenceManager::persistenceManager()->addFileToDocument(UBApplication::boardController->selectedDocument(), 
-        QUrl(mDesc.srcUrl).toLocalFile(),
+        mDesc.srcUrl,
         destDirectory,
         uuid,
         mTo,

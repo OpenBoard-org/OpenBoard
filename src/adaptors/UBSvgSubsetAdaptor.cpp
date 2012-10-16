@@ -1002,9 +1002,6 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
     UBGraphicsGroupContainerItem *group = new UBGraphicsGroupContainerItem();
     QMultiMap<QString, UBGraphicsPolygonItem *> strokesGroupsContainer;
     QList<QGraphicsItem *> groupContainer;
-    QString currentStrokeIdentifier;
-
-    QUuid groupUuid = QUuid(mXmlReader.attributes().value(aId).toString());
 
     mXmlReader.readNext();
     while (!mXmlReader.atEnd())

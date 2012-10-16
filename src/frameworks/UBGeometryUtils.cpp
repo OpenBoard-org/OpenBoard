@@ -18,6 +18,12 @@
 #include "core/memcheck.h"
 
 const double PI = 4.0 * atan(1.0);
+const int UBGeometryUtils::centimeterGraduationHeight = 15;
+const int UBGeometryUtils::halfCentimeterGraduationHeight = 10;
+const int UBGeometryUtils::millimeterGraduationHeight = 5;
+const int UBGeometryUtils::millimetersPerCentimeter = 10;
+const int UBGeometryUtils::millimetersPerHalfCentimeter = 5;
+const float UBGeometryUtils::inchSize = 25.4f;
 
 UBGeometryUtils::UBGeometryUtils()
 {

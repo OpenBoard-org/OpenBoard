@@ -113,6 +113,7 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         QGraphicsSvgItem* mResizeSvgItem;
         qreal mAntiScaleRatio;
         bool mDrewCenterCross;
+        int mPixelsPerMillimeter;
 
         // Constants
         static const QRect                     sDefaultRect;
@@ -130,7 +131,6 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         static const QColor    sDarkBackgroundEdgeFillColor;
         static const QColor  sDarkBackgroundMiddleFillColor;
         static const QColor        sDarkBackgroundDrawColor;
-        static const int               sPixelsPerMillimeter = 5;
         static const int sDisplayRadiusOnPencilArmMinLength = 300;
         static const int        sDisplayRadiusUnitMinLength = 250;
 };

@@ -69,7 +69,7 @@
                     var iHeight = $("<input type='hidden'/>");
                     var iWidth = $("<input type='hidden'/>");
                     var iTitle = $("<input type='hidden'/>");
-            
+                    var iThumbnailUrl = $("<input type='hidden'/>");
                     // We use titleNoFormatting so that no HTML tags are left in the 
                     // title
                     //title.innerHTML = result.title;
@@ -96,12 +96,14 @@
                     iHeight.attr("value", result.height);
                     iWidth.attr("value", result.width);
                     iTitle.attr("value",result.title);
+                    iThumbnailUrl.attr("value",newImg.src);
                     //imgContainer.append($(title));  
                     imgContainer.append(iUrl);
                     imgContainer.append(iContent);
                     imgContainer.append(iHeight);
                     imgContainer.append(iWidth);
                     imgContainer.append(iTitle);
+                    imgContainer.append(iThumbnailUrl);
 
                     // Put our title + image in the content
                     imgContainer.appendTo(contentDiv);
@@ -252,6 +254,8 @@
                     parent.find("input:hidden").eq(3).val() +
                     "</value></data><data><key>Title</key><value>" +
                     parent.find("input:hidden").eq(4).val() +
+                    "</value></data><data><key>thumbnailUrl</key><value>" +
+                    parent.find("input:hidden").eq(5).val() +
                     "</value></data></metadata>";
                 return meta;
             }
