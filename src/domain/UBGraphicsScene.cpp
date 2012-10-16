@@ -195,7 +195,7 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
                 qreal nextZ = iCurElement.next().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
 
                 ItemLayerTypeData curItemLayerTypeData = scopeMap.value(curItemLayerType);
-//
+
                 //if we have some free space between lowest graphics item and layer's bottom bound,
                 //insert element close to first element in layer
                 if (nextZ > curItemLayerTypeData.bottomLimit + curItemLayerTypeData.incStep) {
@@ -299,7 +299,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     }
 
 //    Just for debug. Do not delete please
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+//    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
 }
 

@@ -101,10 +101,8 @@ void DelegateButton::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     if (timeto < UBSettings::longClickInterval) {
         emit clicked();
-        qDebug() << "clicked";
     } else {
         emit longClicked();
-        qDebug() << "longClicked";
     }
 
     event->setAccepted(!mIsTransparentToMouseEvent);
