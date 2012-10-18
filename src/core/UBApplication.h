@@ -117,6 +117,8 @@ class UBApplication : public QtSingleApplication
 #endif
         void importUniboardFiles();
 
+        void onScreenCountChanged(int newCount);
+
     private:
         void updateProtoActionsState();
         void setupTranslators(QStringList args);

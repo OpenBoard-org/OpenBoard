@@ -88,6 +88,7 @@ UBPreferencesController::~UBPreferencesController()
 
 void UBPreferencesController::adjustScreens(int screen)
 {
+    Q_UNUSED(screen);
     UBDisplayManager displayManager;
     mPreferencesUI->multiDisplayGroupBox->setEnabled(displayManager.numScreens() > 1);
 }

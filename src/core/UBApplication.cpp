@@ -55,6 +55,7 @@
 #include "frameworks/UBCryptoUtils.h"
 #include "tools/UBToolsManager.h"
 
+#include "UBDisplayManager.h"
 #include "core/memcheck.h"
 
 QPointer<QUndoStack> UBApplication::undoStack;
@@ -378,7 +379,16 @@ int UBApplication::exec(const QString& pFileToImport)
     else
         applicationController->showBoard();
 
+    onScreenCountChanged(1);
+    connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
     return QApplication::exec();
+}
+
+void UBApplication::onScreenCountChanged(int newCount)
+{
+    Q_UNUSED(newCount);
+    UBDisplayManager displayManager;
+    mainWindow->actionMultiScreen->setEnabled(displayManager.numScreens() > 1);
 }
 
 void UBApplication::importUniboardFiles()
