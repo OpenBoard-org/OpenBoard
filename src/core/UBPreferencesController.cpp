@@ -64,9 +64,12 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     , mPenProperties(0)
     , mMarkerProperties(0)
 {
+    mDesktop = qApp->desktop();
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in
     mPreferencesUI->setupUi(mPreferencesWindow);
+    adjustScreens(1);
+    connect(mDesktop, SIGNAL(screenCountChanged(int)), this, SLOT(adjustScreens(int)));
 
     wire();
 }
@@ -83,6 +86,11 @@ UBPreferencesController::~UBPreferencesController()
     delete mMarkerProperties;
 }
 
+void UBPreferencesController::adjustScreens(int screen)
+{
+    UBDisplayManager displayManager;
+    mPreferencesUI->multiDisplayGroupBox->setEnabled(displayManager.numScreens() > 1);
+}
 
 void UBPreferencesController::show()
 {
