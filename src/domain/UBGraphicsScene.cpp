@@ -287,6 +287,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     mShouldUseOMP = QSysInfo::MacintoshVersion >= QSysInfo::MV_10_5;
 #endif
 
+    setUuid(QUuid::createUuid());
     setDocument(parent);
     createEraiser();
     createPointer();
