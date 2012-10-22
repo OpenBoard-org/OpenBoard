@@ -85,12 +85,15 @@ class UBPreferencesController : public QObject
         void onCommunityPasswordChanged();
         void onCommunityPersistenceChanged();
 
-    private:
+    private slots:
+        void adjustScreens(int screen);
 
+    private:
         static qreal sSliderRatio;
         static qreal sMinPenWidth;
         static qreal sMaxPenWidth;
         void persistanceCheckboxUpdate();
+        QDesktopWidget* mDesktop;
 
 };
 

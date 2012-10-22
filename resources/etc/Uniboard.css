@@ -1,6 +1,11 @@
-*
+QWidget:enabled
 {
    color: #3F3F3F;
+}
+
+QWidget:disabled
+{
+    color: #AAAAAA;
 }
 
 QTextEdit, 
