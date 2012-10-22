@@ -187,7 +187,7 @@ public:
 
     static const QString virtualRootName;
 
-    void assignFeaturesListVeiw(UBFeaturesListView *pList);
+    void assignFeaturesListView(UBFeaturesListView *pList);
     void assignPathListView(UBFeaturesListView *pList);
 
 public:

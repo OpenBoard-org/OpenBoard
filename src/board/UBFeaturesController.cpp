@@ -1089,7 +1089,7 @@ UBFeaturesController::~UBFeaturesController()
     }
 }
 
-void UBFeaturesController::assignFeaturesListVeiw(UBFeaturesListView *pList)
+void UBFeaturesController::assignFeaturesListView(UBFeaturesListView *pList)
 {
     pList->setDragDropMode( QAbstractItemView::DragDrop );
     pList->setSelectionMode( QAbstractItemView::ContiguousSelection );

@@ -42,7 +42,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     controller->assignPathListView(pathListView);
 
     centralWidget = new UBFeaturesCentralWidget(this);
-    controller->assignFeaturesListVeiw(centralWidget->listView());
+    controller->assignFeaturesListView(centralWidget->listView());
     centralWidget->setSliderPosition(UBSettings::settings()->featureSliderPosition->get().toInt());
 
     //Bottom actionbar for DnD, quick search etc
@@ -430,7 +430,7 @@ void UBFeaturesListView::thumbnailSizeChanged( int value )
 }
 
 UBFeaturesNavigatorWidget::UBFeaturesNavigatorWidget(QWidget *parent, const char *name) :
-    QWidget(parent), mListView(0), mListSlder(0)
+    QWidget(parent), mListView(0), mListSlider(0)
 
 {
     name = "UBFeaturesNavigatorWidget";
@@ -440,26 +440,26 @@ UBFeaturesNavigatorWidget::UBFeaturesNavigatorWidget(QWidget *parent, const char
 
     mListView = new UBFeaturesListView(this, UBFeaturesWidget::objNameFeatureList);
 
-    mListSlder = new QSlider(Qt::Horizontal, this);
+    mListSlider = new QSlider(Qt::Horizontal, this);
 
-    mListSlder->setMinimum(UBFeaturesWidget::minThumbnailSize);
-    mListSlder->setMaximum(UBFeaturesWidget::maxThumbnailSize);
-    mListSlder->setValue(UBFeaturesWidget::minThumbnailSize);
-    mListSlder->setMinimumHeight(20);
+    mListSlider->setMinimum(UBFeaturesWidget::minThumbnailSize);
+    mListSlider->setMaximum(UBFeaturesWidget::maxThumbnailSize);
+    mListSlider->setValue(UBFeaturesWidget::minThumbnailSize);
+    mListSlider->setMinimumHeight(20);
 
     mListView->setParent(this);
     QVBoxLayout *mainLayer = new QVBoxLayout(this);
 
     mainLayer->addWidget(mListView, 1);
-    mainLayer->addWidget(mListSlder, 0);
+    mainLayer->addWidget(mListSlider, 0);
     mainLayer->setMargin(0);
 
-    connect(mListSlder, SIGNAL(valueChanged(int)), mListView, SLOT(thumbnailSizeChanged(int)));
+    connect(mListSlider, SIGNAL(valueChanged(int)), mListView, SLOT(thumbnailSizeChanged(int)));
 }
 
 void UBFeaturesNavigatorWidget::setSliderPosition(int pValue)
 {
-    mListSlder->setValue(pValue);
+    mListSlider->setValue(pValue);
 }
 
 UBFeaturesCentralWidget::UBFeaturesCentralWidget(QWidget *parent) : QWidget(parent)

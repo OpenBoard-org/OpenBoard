@@ -154,7 +154,7 @@ public:
 
 private:
     UBFeaturesListView *mListView;
-    QSlider *mListSlder;
+    QSlider *mListSlider;
 
 };
 

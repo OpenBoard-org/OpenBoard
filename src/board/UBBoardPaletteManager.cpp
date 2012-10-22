@@ -94,13 +94,12 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
 
 UBBoardPaletteManager::~UBBoardPaletteManager()
 {
-    delete mAddItemPalette;
 
-    if(NULL != mStylusPalette)
-    {
-        delete mStylusPalette;
-        mStylusPalette = NULL;
-    }
+// mAddedItemPalette is delete automatically because of is parent 
+// that changes depending on the mode 
+
+// mMainWindow->centralWidget is the parent of mStylusPalette
+// do not delete this here.
 }
 
 void UBBoardPaletteManager::initPalettesPosAtStartup()
@@ -958,8 +957,8 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     // Clean the old palette
     if(NULL != mStylusPalette)
     {
-        // TODO : check why this line creates a crash in the application.
         delete mStylusPalette;
+        mStylusPalette = NULL;
     }
 
     // Create the new palette
