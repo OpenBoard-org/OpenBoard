@@ -1,0 +1,14 @@
+fontFile Times-Roman           fonts/n021003l.pfb
+fontFile Times-Italic          fonts/n021023l.pfb
+fontFile Times-Bold            fonts/n021004l.pfb
+fontFile Times-BoldItalic      fonts/n021024l.pfb
+fontFile Helvetica             fonts/n019003l.pfb
+fontFile Helvetica-Oblique     fonts/n019023l.pfb
+fontFile Helvetica-Bold        fonts/n019004l.pfb
+fontFile Helvetica-BoldOblique fonts/n019024l.pfb
+fontFile Courier               fonts/n022003l.pfb
+fontFile Courier-Oblique       fonts/n022023l.pfb
+fontFile Courier-Bold          fonts/n022004l.pfb
+fontFile Courier-BoldOblique   fonts/n022024l.pfb
+fontFile Symbol                fonts/s050000l.pfb
+fontFile ZapfDingbats          fonts/d050000l.pfb
