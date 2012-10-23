@@ -44,16 +44,14 @@ class UBDocumentContainer : public QObject
         void addEmptyThumbPage();
 
     private:
-        void deleteThumbPage(int index);
-        void updateThumbPage(int index);
-        void insertThumbPage(int index);
-
-
         UBDocumentProxy* mCurrentDocument;
         QList<const QPixmap*>  mDocumentThumbs;
 
    
     protected:
+        void deleteThumbPage(int index);
+        void updateThumbPage(int index);
+        void insertThumbPage(int index);
         void reloadThumbnails();
 
     signals:

@@ -501,7 +501,7 @@ void UBDocumentController::duplicateSelectedItem()
         if (selectedSceneIndexes.count() > 0)
         {
             duplicatePages(selectedSceneIndexes);
-
+            emit documentThumbnailsUpdated(this);
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             UBMetadataDcSubsetAdaptor::persist(selectedDocument());
             mDocumentUI->thumbnailWidget->selectItemAt(selectedSceneIndexes.last() + selectedSceneIndexes.size());

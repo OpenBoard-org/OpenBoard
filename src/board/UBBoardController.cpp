@@ -526,7 +526,8 @@ void UBBoardController::duplicateScene(int nIndex)
     QList<int> scIndexes;
     scIndexes << nIndex;
     duplicatePages(scIndexes);
-
+    insertThumbPage(nIndex);
+    emit documentThumbnailsUpdated(this);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
     setActiveDocumentScene(nIndex + 1);

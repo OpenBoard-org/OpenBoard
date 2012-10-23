@@ -46,10 +46,8 @@ void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
     foreach(int sceneIndex, pageIndexes)
     {
         UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mCurrentDocument, sceneIndex + offset);
-        insertThumbPage(sceneIndex + offset);
         offset++;
     }
-    emit documentThumbnailsUpdated(this);
 }
 
 bool UBDocumentContainer::movePageToIndex(int source, int target)
