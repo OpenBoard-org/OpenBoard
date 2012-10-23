@@ -65,7 +65,7 @@
 
 #include "core/memcheck.h"
 
-UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool pIsControl)
+UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool isControl, bool isDesktop)
 : QGraphicsView (pParent)
 , mController (pController)
 , mIsCreatingTextZone (false)
@@ -75,7 +75,8 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
 , mLongPressInterval(1000)
 , mIsDragInProgress(false)
 , mMultipleSelectionIsEnabled(false)
-, isControl(pIsControl)
+, bIsControl(isControl)
+, bIsDesktop(isDesktop)
 , mRubberBandInPlayMode(false) //enables rubberband with play tool
 {
   init ();
@@ -86,14 +87,15 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
   mLongPressTimer.setSingleShot(true);
 }
 
-UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent, bool pIscontrol)
+UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent, bool isControl, bool isDesktop)
 : QGraphicsView (pParent)
 , mController (pController)
 , suspendedMousePressEvent(NULL)
 , mLongPressInterval(1000)
 , mIsDragInProgress(false)
 , mMultipleSelectionIsEnabled(false)
-, isControl(pIscontrol)
+, bIsControl(isControl)
+, bIsDesktop(isDesktop)
 {
   init ();
 
@@ -850,7 +852,7 @@ void UBBoardView::longPressEvent()
 
 void UBBoardView::mousePressEvent (QMouseEvent *event)
 {
-    if (!isControl) {
+    if (!bIsControl && !bIsDesktop) {
         event->ignore();
         return;
     }
@@ -896,6 +898,10 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         }
         else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
         {
+            if (bIsDesktop) {
+                event->ignore();
+                return;
+            }
             connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
             if (!movingItem && !mController->cacheIsVisible())
                 mLongPressTimer.start();
@@ -1017,6 +1023,11 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
           return;
       }
 
+      if (bIsDesktop) {
+          event->ignore();
+          return;
+      }
+
       if (currentTool != UBStylusTool::Play || mRubberBandInPlayMode) {
 
           if (!movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) && mUBRubberBand && mUBRubberBand->isVisible()) {
@@ -1099,6 +1110,11 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
   if (currentTool == UBStylusTool::Selector)
   {
+      if (bIsDesktop) {
+          event->ignore();
+          return;
+      }
+
       bool bReleaseIsNeed = true;
       if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()))))
       {
@@ -1161,6 +1177,11 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
   }
   else if (currentTool == UBStylusTool::Play)
   {
+      if (bIsDesktop) {
+          event->ignore();
+          return;
+      }
+
       if (mWidgetMoved)
       {
           movingItem = NULL;

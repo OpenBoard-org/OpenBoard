@@ -65,7 +65,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         , mDesktopStylusTool(UBDrawingController::drawingController()->stylusTool())
 {
 
-    mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), true); // deleted in UBDesktopAnnotationController::destructor
+    mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true); // deleted in UBDesktopAnnotationController::destructor
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 #ifdef Q_WS_MAC
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);

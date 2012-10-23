@@ -31,8 +31,8 @@ class UBBoardView : public QGraphicsView
 
     public:
 
-        UBBoardView(UBBoardController* pController, QWidget* pParent = 0, bool pIsControl = false);
-        UBBoardView(UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent = 0, bool pIscontrol = false);
+        UBBoardView(UBBoardController* pController, QWidget* pParent = 0, bool isControl = false, bool isDesktop = false);
+        UBBoardView(UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent = 0, bool isControl = false, bool isDesktop = false);
         virtual ~UBBoardView();
 
         UBGraphicsScene* scene();
@@ -153,7 +153,8 @@ class UBBoardView : public QGraphicsView
 
         bool mIsDragInProgress;
         bool mMultipleSelectionIsEnabled;
-        bool isControl;
+        bool bIsControl;
+        bool bIsDesktop;
         bool mRubberBandInPlayMode;
 
         static bool hasSelectedParents(QGraphicsItem * item);
