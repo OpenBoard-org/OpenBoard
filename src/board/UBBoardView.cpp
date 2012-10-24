@@ -733,7 +733,13 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     else
     {
         if (movingItem)
+        {
+            UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
+            if (graphicsItem)
+                graphicsItem->Delegate()->startUndoStep();
+
             movingItem->clearFocus();
+        }
 
         if (suspendedMousePressEvent)
         {
@@ -1114,6 +1120,10 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           event->ignore();
           return;
       }
+
+      UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
+      if (graphicsItem)
+          graphicsItem->Delegate()->commitUndoStep();
 
       bool bReleaseIsNeed = true;
       if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()))))
