@@ -25,6 +25,7 @@
 
 #include "core/memcheck.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
+#include "domain/UBGraphicsPolygonItem.h"
 
 UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
                                                      const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap)
@@ -106,6 +107,13 @@ void UBGraphicsItemUndoCommand::undo()
                 mScene->setAsBackgroundObject(item);
             else
                 mScene->addItem(item);
+
+            if (UBGraphicsPolygonItem::Type == item->type())
+            {
+                UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+                if (polygonItem)
+                    polygonItem->strokesGroup()->addToGroup(polygonItem);
+            }
 
             UBApplication::boardController->freezeW3CWidget(item, false);
         }
@@ -206,6 +214,10 @@ void UBGraphicsItemUndoCommand::redo()
                     mScene->setAsBackgroundObject(item);
                 else
                     mScene->addItem(item);
+
+                UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+                if (polygonItem)
+                    polygonItem->strokesGroup()->addToGroup(polygonItem);
             }
         }
 
