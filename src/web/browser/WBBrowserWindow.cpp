@@ -351,7 +351,7 @@ void WBBrowserWindow::loadUrl(const QUrl &url)
     if (!currentTabWebView() || !url.isValid())
         return;
 
-    mTabWidget->currentLineEdit()->setText(QString::fromUtf8(url.toEncoded()));
+    mTabWidget->currentLineEdit()->setText(url.toString());
     mTabWidget->loadUrlInCurrentTab(url);
 }
 

@@ -291,7 +291,7 @@ void WBUrlLineEdit::setWebView(WBWebView *pWebView)
 
 void WBUrlLineEdit::webViewUrlChanged(const QUrl &url)
 {
-    mLineEdit->setText(QString::fromUtf8(url.toEncoded()));
+    mLineEdit->setText(url.toString());
     mLineEdit->setCursorPosition(0);
 }
 
