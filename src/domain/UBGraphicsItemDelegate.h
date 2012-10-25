@@ -207,7 +207,7 @@ class UBGraphicsItemDelegate : public QObject
     Q_OBJECT
 
     public:
-        UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0,  bool respectRatio = true, bool canRotate = false, bool useToolBar = true);
+        UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0,  bool respectRatio = true, bool canRotate = false, bool useToolBar = true, bool showGoContentButton = false);
 
         virtual ~UBGraphicsItemDelegate();
 
@@ -287,6 +287,7 @@ class UBGraphicsItemDelegate : public QObject
         //buttons from the top left section of delegate frame
         DelegateButton* mDeleteButton;
         DelegateButton* mDuplicateButton;
+        DelegateButton *mContentSourceButton;
         DelegateButton* mMenuButton;
 
         //buttons from the bottom left section of delegate frame
@@ -308,7 +309,7 @@ class UBGraphicsItemDelegate : public QObject
         UBGraphicsToolBarItem* mToolBarItem;
 
 protected slots:
-        virtual void gotoContentSource(bool checked);
+        virtual void gotoContentSource();
 
 private:
         void updateFrame();
@@ -330,6 +331,8 @@ private:
         /** A boolean saying that this object can be flippable (mirror effect) */
         bool mFlippable;
         bool mToolBarUsed;
+
+        bool mShowGoContentButton;
 };
 
 

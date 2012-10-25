@@ -30,7 +30,7 @@
 #include "core/memcheck.h"
 
 UBGraphicsWidgetItemDelegate::UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType)
-    : UBGraphicsItemDelegate(pDelegated, 0, true, false, false)
+    : UBGraphicsItemDelegate(pDelegated, 0, true, false, false, true)
     , freezeAction(0)
     , setAsToolAction(0)
 {

@@ -28,7 +28,7 @@
 UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
 {
-    setDelegate(new UBGraphicsItemDelegate(this, 0, true));
+    setDelegate(new UBGraphicsItemDelegate(this, 0, true, false, true, true));
     Delegate()->init();
     Delegate()->setFlippable(true);
     Delegate()->setRotatable(true);

@@ -32,7 +32,7 @@
 #include "core/memcheck.h"
 
 UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent)
-    : UBGraphicsItemDelegate(pDelegated, parent, true, false)
+    : UBGraphicsItemDelegate(pDelegated, parent, true, false, true, true)
     , mMedia(pMedia)
     , mToolBarShowTimer(NULL)
     , m_iToolBarShowingInterval(5000)

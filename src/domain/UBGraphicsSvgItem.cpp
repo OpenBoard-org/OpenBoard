@@ -53,7 +53,7 @@ void UBGraphicsSvgItem::init()
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-    setDelegate(new UBGraphicsItemDelegate(this, 0, true, true, false));
+    setDelegate(new UBGraphicsItemDelegate(this, 0, true, true, false, true));
     Delegate()->init();
     Delegate()->setFlippable(true);
     Delegate()->setRotatable(true);
