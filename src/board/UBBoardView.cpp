@@ -28,6 +28,7 @@
 #include "core/UBApplication.h"
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
+#include "core/UB.h"
 
 #include "network/UBHttpGet.h"
 
@@ -444,6 +445,16 @@ bool UBBoardView::isUBItem(QGraphicsItem *item)
     {
         return false;
     }
+}
+
+bool UBBoardView::isCppTool(QGraphicsItem *item)
+{
+    return (item->type() == UBGraphicsItemType::CompassItemType
+        || item->type() == UBGraphicsItemType::RulerItemType
+        || item->type() == UBGraphicsItemType::ProtractorItemType
+        || item->type() == UBGraphicsItemType::TriangleItemType
+        || item->type() == UBGraphicsItemType::AristoItemType
+        || item->type() == UBGraphicsItemType::CurtainItemType);
 }
 
 void UBBoardView::handleItemsSelection(QGraphicsItem *item)
@@ -1137,7 +1148,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
           movingItem = NULL;
       }
       else
-      if (movingItem)
+      if (movingItem && !isCppTool(movingItem))
       {
           if (suspendedMousePressEvent)
           {
@@ -1153,7 +1164,6 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 DelegateButton::Type != movingItem->type() &&
                 QGraphicsSvgItem::Type !=  movingItem->type() &&
                 UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
-//                UBToolWidget::Type != movingItem->type() &&
                 UBGraphicsCache::Type != movingItem->type() &&
                 QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
                 !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
@@ -1175,6 +1185,8 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
              }
           }
       }
+      else
+          bReleaseIsNeed = true;
 
       if (mUBRubberBand && mUBRubberBand->isVisible()) {
           mUBRubberBand->hide();
