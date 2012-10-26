@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="480" viewBox="-125,-75 250,150">
+	<defs>
+		<g id="star">
+			<g id="t">
+				<g id="c">
+					<path id="h" d="M 0,-10 V 0 H 10" transform="rotate(30 0,-10)"/>
+					<use xlink:href="#h" transform="scale(-1,1)"/>
+				</g>
+				<use xlink:href="#c" transform="rotate(120)"/>
+				<use xlink:href="#c" transform="rotate(240)"/>
+			</g>
+			<use xlink:href="#t" transform="rotate(180)"/>
+		</g>
+	</defs>
+	<path d="M -125,-75 H 125 L -125,75 H 125 z" fill="#ce1126"/>
+	<path d="M -125,-75 V 75 L 125,-75 V 75 z" fill="#1eb53a"/>
+	<path d="M -125,-75 L 125,75 M 125,-75 L -125,75" stroke="#fff" stroke-width="20"/>
+	<circle r="42.5" fill="#fff"/>
+	<use id="green" xlink:href="#star" y="-22" fill="#1eb53a"/>
+	<use xlink:href="#green" transform="rotate(120)"/>
+	<use xlink:href="#green" transform="rotate(240)"/>
+	<use id="red" xlink:href="#star" transform="translate(0,-22) scale(.82)" fill="#ce1126"/>
+	<use xlink:href="#red" transform="rotate(120)"/>
+	<use xlink:href="#red" transform="rotate(240)"/>
+</svg>
