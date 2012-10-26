@@ -190,13 +190,6 @@ void UBGraphicsItemDelegate::init()
     connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
     mButtons << mMenuButton;
 
-    if (mShowGoContentButton)
-    {
-        mContentSourceButton = new DelegateButton(":/images/home.svg", mDelegated, mFrame, Qt::TopLeftSection);
-        connect(mContentSourceButton, SIGNAL(clicked()), this, SLOT(gotoContentSource()));
-        mButtons << mContentSourceButton;
-    }
-
     mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
     mZOrderUpButton->setShowProgressIndicator(true);
     connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
@@ -630,6 +623,15 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
     showIcon.addPixmap(QPixmap(":/images/eyeOpened.svg"), QIcon::Normal, QIcon::On);
     showIcon.addPixmap(QPixmap(":/images/eyeClosed.svg"), QIcon::Normal, QIcon::Off);
     mShowOnDisplayAction->setIcon(showIcon);
+
+    if (mShowGoContentButton)
+    {
+        mGotoContentSourceAction = menu->addAction(tr("Go to Content Source"), this, SLOT(gotoContentSource()));
+
+        QIcon sourceIcon;
+        sourceIcon.addPixmap(QPixmap(":/images/toolbar/internet.png"), QIcon::Normal, QIcon::On);
+        mGotoContentSourceAction->setIcon(sourceIcon);
+    }
 }
 
 void UBGraphicsItemDelegate::updateMenuActionState()

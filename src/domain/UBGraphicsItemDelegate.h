@@ -287,7 +287,6 @@ class UBGraphicsItemDelegate : public QObject
         //buttons from the top left section of delegate frame
         DelegateButton* mDeleteButton;
         DelegateButton* mDuplicateButton;
-        DelegateButton *mContentSourceButton;
         DelegateButton* mMenuButton;
 
         //buttons from the bottom left section of delegate frame
