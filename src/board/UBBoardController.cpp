@@ -544,7 +544,7 @@ void UBBoardController::duplicateScene()
 }
 
 UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
-{    
+{
     if (!item)
         return NULL;
 
@@ -580,9 +580,9 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
 
     if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem))
         itemMimeType = UBMimeType::Group;
-    else 
+    else
         itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
-        
+
     switch(static_cast<int>(itemMimeType))
     {
     case UBMimeType::AppleWidget:
@@ -604,7 +604,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
                 sourceUrl = mitem->mediaFileUrl();
                 if (bAsync)
                 {
-                    downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);    
+                    downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);
                     return NULL; // async operation
                 }
             }
@@ -636,7 +636,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
     {
         UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
         UBGraphicsGroupContainerItem* duplicatedGroup = NULL;
-        
+
         QList<QGraphicsItem*> duplicatedItems;
         QList<QGraphicsItem*> children = groupItem->childItems();
         foreach(QGraphicsItem* pIt, children){
@@ -665,7 +665,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
         {
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
             if (gitem)
-            {   
+            {
                 mActiveScene->addItem(gitem);
                 gitem->setPos(itemPos);
                 mLastCreatedItem = gitem;
@@ -673,8 +673,8 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
             }
             retItem = dynamic_cast<UBGraphicsItem *>(gitem);
         }break;
-    }    
-    
+    }
+
     if (retItem)
         return retItem;
 
@@ -959,7 +959,7 @@ void UBBoardController::groupButtonClicked()
     }
 
     if (groupAction->text() == mActionGroupText) { //The only way to get information from item, considering using smth else
-    	UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
+        UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
         groupItem->setSelected(true);
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
@@ -984,7 +984,7 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
     QString sUrl = url.toString();
 
     QGraphicsItem *oldBackgroundObject = NULL;
-    if (isBackground) 
+    if (isBackground)
         oldBackgroundObject = mActiveScene->backgroundObject();
 
     if(sUrl.startsWith("uniboardTool://"))
@@ -1029,12 +1029,17 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
     }
     else
     {
+        QString urlString = url.toString();
+        int parametersStringPosition = urlString.indexOf("?");
+        if(parametersStringPosition != -1)
+            urlString = urlString.left(parametersStringPosition);
+
         // When we fall there, it means that we are dropping something from the web to the board
         sDownloadFileDesc desc;
         desc.modal = true;
-        desc.srcUrl = url.toString();
+        desc.srcUrl = urlString;
         desc.currentSize = 0;
-        desc.name = QFileInfo(url.toString()).fileName();
+        desc.name = QFileInfo(urlString).fileName();
         desc.totalSize = 0; // The total size will be retrieved during the download
         desc.pos = pPos;
         desc.size = pSize;
@@ -1065,7 +1070,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
     if(mimeType.isEmpty())
       mimeType = UBFileSystemUtils::mimeTypeFromFileName(sourceUrl.toString());
-    
+
     int position=mimeType.indexOf(";");
     if(position != -1)
         mimeType=mimeType.left(position);
@@ -1080,7 +1085,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
 
     mActiveScene->deselectAllItems();
-    
+
     if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("uniboardTool://"))
         showMessage(tr("Download finished"));
 
@@ -1194,7 +1199,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         if (pData.length() > 0)
         {
             QString destFile;
-            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
                 UBPersistenceManager::videoDirectory,
                 uuid,
@@ -1219,7 +1224,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         if(mediaVideoItem){
             if (contentUrl.isEmpty())
                 mediaVideoItem->setSourceUrl(sourceUrl);
-            else 
+            else
                 mediaVideoItem->setSourceUrl(contentUrl);
             mediaVideoItem->setUuid(uuid);
             connect(this, SIGNAL(activeSceneChanged()), mediaVideoItem, SLOT(activeSceneChanged()));
@@ -1239,7 +1244,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         if (pData.length() > 0)
         {
             QString destFile;
-            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
                 UBPersistenceManager::audioDirectory,
                 uuid,
@@ -1263,7 +1268,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         if(audioMediaItem){
             if (contentUrl.isEmpty())
                 audioMediaItem->setSourceUrl(sourceUrl);
-            else 
+            else
                 audioMediaItem->setSourceUrl(contentUrl);
             audioMediaItem->setUuid(uuid);
             connect(this, SIGNAL(activeSceneChanged()), audioMediaItem, SLOT(activeSceneChanged()));
@@ -1497,7 +1502,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         mActiveScene = targetScene;
         mActiveSceneIndex = index;
         setDocument(pDocumentProxy, forceReload);
-        
+
         updateSystemScaleFactor();
 
         mControlView->setScene(mActiveScene);
@@ -2070,7 +2075,7 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     if (!bUseSource)
     {
         QString destFile;
-        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                     pSourceUrl.toLocalFile(),
                     UBPersistenceManager::videoDirectory,
                     uuid,
@@ -2105,7 +2110,7 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     if (!bUseSource)
     {
         QString destFile;
-        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(), 
+        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
             pSourceUrl.toLocalFile(),
             UBPersistenceManager::audioDirectory,
             uuid,
@@ -2273,10 +2278,10 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         {
             foreach(UBItem* item, mimeData->items())
             {
-            	QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);
-            	if(NULL != pItem){
-            		duplicateItem(item);
-            	}
+                QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);
+                if(NULL != pItem){
+                    duplicateItem(item);
+                }
             }
 
             return;

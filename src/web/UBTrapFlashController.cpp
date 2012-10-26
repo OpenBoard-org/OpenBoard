@@ -204,7 +204,7 @@ void UBTrapFlashController::createWidget()
     }
 
     QString freezedWidgetPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/freezedWidgetWrapper.html";
-	mTrapFlashUi->webView->load(QUrl::fromLocalFile(freezedWidgetPath));
+    mTrapFlashUi->webView->load(QUrl::fromLocalFile(freezedWidgetPath));
 
     mTrapFlashDialog->hide();
 }
@@ -370,6 +370,7 @@ QString UBTrapFlashController::generateFullPageHtml(const QString& pDirPath, boo
 QString UBTrapFlashController::generateHtml(const UBWebKitUtils::HtmlObject& pObject,
         const QString& pDirPath, bool pGenerateFile)
 {
+    qDebug() << pObject.source;
     QUrl objectUrl(pObject.source);
     QString objectFullUrl = pObject.source;
     if (!objectUrl.isValid())
@@ -471,9 +472,13 @@ QString UBTrapFlashController::generateHtml(const UBWebKitUtils::HtmlObject& pOb
 
 QString UBTrapFlashController::widgetNameForObject(UBWebKitUtils::HtmlObject pObject)
 {
-    int lastSlashIndex = pObject.source.lastIndexOf("/");
+    QString url = pObject.source;
+    int parametersIndex = url.indexOf("?");
+    if(parametersIndex != -1)
+        url = url.left(parametersIndex);
+    int lastSlashIndex = url.lastIndexOf("/");
 
-    QString result = pObject.source.right(pObject.source.length() - lastSlashIndex);
+    QString result = url.right(url.length() - lastSlashIndex);
     result = UBFileSystemUtils::cleanName(result);
 
     return result;
