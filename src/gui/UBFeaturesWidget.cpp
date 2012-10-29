@@ -1347,7 +1347,9 @@ void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destina
         deleteItem(source);
     }
 
-    emit dataRestructured();
+// Commented because of crashes on mac. But works fine. It is not predictable behavior. 
+// Please uncomment it if model will not refreshes
+//   emit dataRestructured();. 
 }
 
 Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
