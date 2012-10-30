@@ -821,7 +821,7 @@
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gruppieren</translation>
     </message>
 </context>
 <context>
@@ -866,11 +866,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Element ID = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inhalt wird im Zielformat nicht unterstützt.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -878,7 +878,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Wollen Sie wirklich 1 Seite des gewählten Dokuments &apos;%0&apos; entfernen?</translation>
     </message>
 </context>
 <context>
@@ -943,23 +943,23 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seite %1 des Dokuments löschen</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seite %1 gelöscht</translation>
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dokument hinzufügen fehlgeschlagen: Fehler beim Kopieren</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gruppieren</translation>
     </message>
     <message>
         <source>Ungroup</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gruppierung auflösen</translation>
     </message>
 </context>
 <context>
@@ -1020,7 +1020,7 @@
     </message>
     <message>
         <source>Show Open-Sankore</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open-Sankore anzeigen</translation>
     </message>
 </context>
 <context>
@@ -1154,7 +1154,7 @@
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Das Verzeichnis enthält keine Bilder</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
@@ -1189,7 +1189,7 @@
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hinzufügen der Seite %1 von %2</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1197,11 +1197,11 @@
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Import des Dokuments %1 erfolgreich.</translation>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Importieren von %1</translation>
     </message>
 </context>
 <context>
@@ -1279,7 +1279,7 @@
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Warnungen beim Exportieren aufgetreten</translation>
     </message>
 </context>
 <context>
@@ -1491,11 +1491,11 @@
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Favoriten</translation>
     </message>
     <message>
         <source>Web search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Websuche</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1506,7 +1506,7 @@
     <name>UBFeaturesNewFolderDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Akzeptieren</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1514,14 +1514,14 @@
     </message>
     <message>
         <source>Enter a new folder name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Geben Sie den Namen des Verzeichnisses ein</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Laden </translation>
     </message>
 </context>
 <context>
@@ -1572,7 +1572,7 @@
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished">Internet</translation>
+        <translation type="unfinished">Web</translation>
     </message>
 </context>
 <context>
@@ -2218,11 +2218,11 @@ Bitte starten Sie die Anwendung erneut, um auf die aktualisierten Dokumente zugr
     </message>
     <message>
         <source>Open-Sankore</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open-Sankore</translation>
     </message>
     <message>
         <source>OpenSankore</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open-Sankore</translation>
     </message>
 </context>
 <context>
