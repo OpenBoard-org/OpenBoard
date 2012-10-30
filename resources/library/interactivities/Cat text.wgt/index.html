@@ -10,6 +10,9 @@
         <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
         <script type="text/javascript" src="js/script.js"></script>
         <script type="text/javascript">
+            if (parent && parent.loaded)
+                parent.loaded();
+
             $(document).ready(function(){
                 var lang = ""; //locale language
                 if(window.sankore){

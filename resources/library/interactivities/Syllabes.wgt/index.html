@@ -20,6 +20,9 @@
         <script type="text/javascript" src="scripts/wcontainer.js"></script>
         <script type="text/javascript" src="scripts/spl-word.js"></script>
         <script type="text/javascript">
+            if (parent && parent.loaded)
+                parent.loaded();
+
             $(document).ready(function(){
                 if(window.sankore)
                     sankore.enableDropOnWidget(false);

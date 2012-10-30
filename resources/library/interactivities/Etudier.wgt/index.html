@@ -11,6 +11,9 @@
         <script type="text/javascript" src="js/easySlider1.5.js"></script>
         <script type="text/javascript" src="js/script.js"></script>
         <script type="text/javascript">
+            if (parent && parent.loaded)
+                parent.loaded();
+
             $(document).ready(function(){
                 var lang = ""; //locale language
                 if(window.sankore){
