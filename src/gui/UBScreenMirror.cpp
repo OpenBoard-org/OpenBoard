@@ -19,6 +19,11 @@
 #include "core/UBSetting.h"
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
+
+#if defined(Q_WS_MAC)
+#include <ApplicationServices/ApplicationServices.h>
+#endif
+
 #include "core/memcheck.h"
 
 
@@ -65,7 +70,6 @@ void UBScreenMirror::timerEvent(QTimerEvent *event)
     update();
 }
 
-
 void UBScreenMirror::grabPixmap()
 {
     if (mSourceWidget)
@@ -77,9 +81,26 @@ void UBScreenMirror::grabPixmap()
         mRect.setBottomRight(bottomRight);
     }
 
-    mLastPixmap = QPixmap::grabWindow(qApp->desktop()->screen(mScreenIndex)->winId(),
-        mRect.x(), mRect.y(), mRect.width(), mRect.height());
+    // get image of desktop
 
+    WId windowID = qApp->desktop()->screen(mScreenIndex)->winId();
+#if defined(Q_WS_MAC)
+    // Available in Mac OS X v10.6 and later.
+    CGRect grabRect;
+    grabRect.origin.x = mRect.x();
+    grabRect.origin.y = mRect.y();
+    grabRect.size.width = mRect.width();
+    grabRect.size.height = mRect.height();
+    CGImageRef windowImage = CGWindowListCreateImage(grabRect
+        ,kCGWindowListOptionOnScreenOnly
+        ,windowID
+        ,kCGWindowImageDefault);
+
+    mLastPixmap = QPixmap::fromMacCGImageRef(windowImage);
+#else
+
+    mLastPixmap = QPixmap::grabWindow(windowID, mRect.x(), mRect.y(), mRect.width(), mRect.height());
+#endif
     mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
