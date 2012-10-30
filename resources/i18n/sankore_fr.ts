@@ -2807,7 +2807,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>User:</source>
-        <translation>Nom d&apos;utilisateur :</translation>
+        <translation>Nom d&apos;utilisateur proxy :</translation>
     </message>
     <message>
         <source>Pass: </source>
