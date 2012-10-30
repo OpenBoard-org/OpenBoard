@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0">
+<!DOCTYPE TS><TS>
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -12,7 +10,7 @@
     <name>DownloadDialog</name>
     <message>
         <source>Downloads</source>
-        <translation>Download</translation>
+        <translation>Scarica</translation>
     </message>
     <message>
         <source>Clean Up</source>
@@ -109,7 +107,7 @@
     </message>
     <message>
         <source>Redo</source>
-        <translation>Ripeti</translation>
+        <translation>Rifai</translation>
     </message>
     <message>
         <source>Ctrl+Y</source>
@@ -149,7 +147,7 @@
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation>Browser web</translation>
+        <translation>Navigazione web</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -273,7 +271,7 @@
     </message>
     <message>
         <source>Show Library</source>
-        <translation>Visualizza Biblioteca</translation>
+        <translation>Visualizza biblioteca</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
@@ -329,7 +327,7 @@
     </message>
     <message>
         <source>Create a New Document</source>
-        <translation>Crea nuovo documento</translation>
+        <translation>Crea un nuovo documento</translation>
     </message>
     <message>
         <source>Import</source>
@@ -369,15 +367,15 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Cancella</translation>
+        <translation>Elimina</translation>
     </message>
     <message>
         <source>Delete Selected Content</source>
-        <translation>Cancella il contenuto selezionato</translation>
+        <translation>Elimina il contenuto selezionato</translation>
     </message>
     <message>
         <source>Del</source>
-        <translation>Cancella</translation>
+        <translation>Elimina</translation>
     </message>
     <message>
         <source>Add to Working Document</source>
@@ -477,7 +475,7 @@
     </message>
     <message>
         <source>Plain Light Background</source>
-        <translation>Sfondo chiaro</translation>
+        <translation>Sfondo chiaro semplice</translation>
     </message>
     <message>
         <source>Light</source>
@@ -489,7 +487,7 @@
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translation>Sfondo scuro</translation>
+        <translation>Sfondo scuro semplice</translation>
     </message>
     <message>
         <source>Dark</source>
@@ -513,23 +511,23 @@
     </message>
     <message>
         <source>Start Screen Recording</source>
-        <translation>Inizia registrazione schermata</translation>
+        <translation>Inizia registrazione schermo</translation>
     </message>
     <message>
         <source>Erase Items</source>
-        <translation>Elimina oggetti</translation>
+        <translation>Cancella oggetti</translation>
     </message>
     <message>
         <source>Erase All Items</source>
-        <translation>Elimina tutti gli oggetti</translation>
+        <translation>Cancella tutti gli oggetti</translation>
     </message>
     <message>
         <source>Erase Annotations</source>
-        <translation>Elimina annotazioni</translation>
+        <translation>Cancella annotazioni</translation>
     </message>
     <message>
         <source>Erase All Annotations</source>
-        <translation>Elimina tutte le annotazioni</translation>
+        <translation>Cancella tutte le annotazioni</translation>
     </message>
     <message>
         <source>Clear Page</source>
@@ -537,7 +535,7 @@
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation>Cancella tutti gli elementi</translation>
+        <translation>Pulisci tutti gli elementi</translation>
     </message>
     <message>
         <source>Pen</source>
@@ -545,7 +543,7 @@
     </message>
     <message>
         <source>Annotate Document</source>
-        <translation>Commenta documento</translation>
+        <translation>Annota documento</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
@@ -553,7 +551,7 @@
     </message>
     <message>
         <source>Erase Annotation</source>
-        <translation>Cancella annotazioni</translation>
+        <translation>Cancella l&apos;annotazione</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
@@ -565,7 +563,7 @@
     </message>
     <message>
         <source>Highlight </source>
-        <translation>Evidenzia</translation>
+        <translation>Evidenzia </translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -649,7 +647,7 @@
     </message>
     <message>
         <source>Add To Library</source>
-        <translation>Aggiungi alla Biblioteca</translation>
+        <translation>Aggiungi alla biblioteca</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
@@ -713,7 +711,7 @@
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>Cattura un contenuto web</translation>
+        <translation>Cattura contenuto web</translation>
     </message>
     <message>
         <source>Custom Capture</source>
@@ -767,41 +765,41 @@
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Open-Sankoré</source>
         <translation>Open-Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Quit Open-Sankoré</source>
         <translation>Chiudi Open-Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Open-Sankoré Editor</source>
-        <translation>Editore Open-Sankoré</translation>
+        <translation>Editor Open-Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Show Open-Sankoré Widgets Editor</source>
-        <translation>Mostra l&apos;editore dei Widgets Open-Sankoré</translation>
+        <translation>Mostra l&apos;editor dei Widgets Open-Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Open-Sankoré</source>
         <translation>Nascondi Open-Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Hide Open-Sankoré Application</source>
         <translation>Nascondi l&apos;applicazione Open-Sankoré</translation>
     </message>
     <message>
         <source>Import Uniboard Documents</source>
-        <translation>Importa i documenti Uniboard</translation>
+        <translation>Importa documenti Uniboard</translation>
     </message>
     <message>
         <source>Import old Sankore or Uniboard documents</source>
-        <translation>Importa i vecchi documenti Sankoré o Uniboard</translation>
+        <translation>Importa vecchi documenti Sankoré o Uniboard</translation>
     </message>
     <message>
         <source>Group items</source>
-        <translation>Raggruppa gli oggetti selezionati</translation>
+        <translation>Raggruppa oggetti</translation>
     </message>
     <message>
         <source>Play</source>
@@ -821,7 +819,7 @@
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Raggruppa</translation>
     </message>
 </context>
 <context>
@@ -859,26 +857,26 @@
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation>Salva username e password per usi futuri</translation>
+        <translation>Salva nome utente e password per usi futuri</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="unfinished"></translation>
+        <translation>Elemento ID =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il contenuto non è supportato nel formato di destinazione.</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished">Elimina pagina</translation>
+        <translation>Rimuovi pagina</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sei sicuro di voler rimuovere 1 pagina dal documento selezionato &apos;%0&apos;?</translation>
     </message>
 </context>
 <context>
@@ -943,34 +941,34 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi pagina %1 dal documento</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina %1 rimossa</translation>
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished"></translation>
+        <translation>Operazione di aggiunta file fallita: errore nella copia file</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Raggruppa</translation>
     </message>
     <message>
         <source>Ungroup</source>
-        <translation type="unfinished"></translation>
+        <translation>Separa</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation>Errore durante l&apos;aggiunta dell&apos;immagine alla Biblioteca</translation>
+        <translation>Errore aggiungendo l&apos;immagine alla biblioteca</translation>
     </message>
     <message>
         <source>CapturedImage</source>
-        <translation>Immagine catturata</translation>
+        <translation>ImmagineCatturata</translation>
     </message>
 </context>
 <context>
@@ -1000,15 +998,15 @@
     <name>UBDesktopPalette</name>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>Cattura parte della schermata</translation>
+        <translation>Cattura parte dello schermo</translation>
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation>Cattura la schermata</translation>
+        <translation>Cattura lo schermo</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation>Mostra la palette stilo</translation>
+        <translation>Mostra la palette dello stilo</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
@@ -1020,7 +1018,7 @@
     </message>
     <message>
         <source>Show Open-Sankore</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra Open Sankore</translation>
     </message>
 </context>
 <context>
@@ -1035,7 +1033,7 @@
     </message>
     <message>
         <source>Add Folder of Images</source>
-        <translation>Aggiungi una cartella di immagini</translation>
+        <translation>Aggiungi cartella di immagini</translation>
     </message>
     <message>
         <source>Add Images</source>
@@ -1047,7 +1045,7 @@
     </message>
     <message>
         <source>Duplicating Document %1</source>
-        <translation>Duplica il documento %1</translation>
+        <translation>Sto duplicando il documento %1</translation>
     </message>
     <message>
         <source>Document %1 copied</source>
@@ -1091,7 +1089,7 @@
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Nessun documento selezionato</translation>
+        <translation>Nessun documento selezionato!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1107,11 +1105,11 @@
     </message>
     <message>
         <source>Import all Images from Folder</source>
-        <translation>Importa tutte le immagini della cartella</translation>
+        <translation>Importa tutte le immagini dalla cartella</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Cancella</translation>
+        <translation>Elimina</translation>
     </message>
     <message>
         <source>Empty</source>
@@ -1141,12 +1139,9 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Il documento &apos;%1&apos; è stato generato con una versione più recente di Sankore (%2). Aprendolo, si potrebbero perdere alcune informazioni. Vuoi continuare?</translation>
     </message>
-    <message numerus="yes">
+    <message>
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform>
-Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezionato?        
-        </numerusform>
+        <translation>Sei sicuro di voler rimuovere %n pagine dal documento &apos;%1&apos; selezionato?
         </translation>
     </message>
     <message>
@@ -1155,11 +1150,11 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation type="unfinished"></translation>
+        <translation>La cartella non contiene alcun file immagine</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished">Documenti senza titolo</translation>
+        <translation>Documenti senza titolo</translation>
     </message>
 </context>
 <context>
@@ -1190,19 +1185,19 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserimento di pagina %1 di %2</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">Importazione completata con successo.</translation>
+        <translation>Importazione riuscita.</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importazione del file %1 riuscita.</translation>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sto importando il file %1</translation>
     </message>
 </context>
 <context>
@@ -1224,7 +1219,7 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     </message>
     <message>
         <source>Export canceled ...</source>
-        <translation>Esportazione annullata ...</translation>
+        <translation>Esportazione annullata...</translation>
     </message>
     <message>
         <source>Converting page %1/%2 ...</source>
@@ -1236,15 +1231,15 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     </message>
     <message>
         <source>Uploading Sankore File on Web.</source>
-        <translation>L&apos;upload in rete del file Sankore è in corso.</translation>
+        <translation>Caricamento nel web del file Sankore in corso.</translation>
     </message>
     <message>
         <source>Document uploaded correctly on the web.</source>
-        <translation>Documento caricato correttamente in rete.</translation>
+        <translation>Documento caricato correttamente nel web.</translation>
     </message>
     <message>
         <source>Failed to upload document on the web.</source>
-        <translation>L&apos;upload del documento in rete è fallito.</translation>
+        <translation>Il caricamento del documento nel web è fallito.</translation>
     </message>
 </context>
 <context>
@@ -1257,12 +1252,9 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
         <source>Copying page %1/%2</source>
         <translation>Sto copiando pagina %1/%2</translation>
     </message>
-    <message numerus="yes">
+    <message>
         <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform>%1 pagine copiate
-        
-        </numerusform>
+        <translation>%1 pagine copiate
         </translation>
     </message>
 </context>
@@ -1281,14 +1273,14 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation type="unfinished"></translation>
+        <translation>È apparso un avviso durante l&apos;esportazione</translation>
     </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Esporta come IWB</translation>
+        <translation>Esporta in IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
@@ -1365,7 +1357,7 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Esportazione completata son successo.</translation>
+        <translation>Esportazione riuscita.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1438,7 +1430,7 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     </message>
     <message>
         <source>Delete</source>
-        <translation>Cancella</translation>
+        <translation>Elimina</translation>
     </message>
     <message>
         <source>Back to folder</source>
@@ -1461,80 +1453,80 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <name>UBFeaturesController</name>
     <message>
         <source>ImportedImage</source>
-        <translation>Immagine importata</translation>
+        <translation>ImmagineImportata</translation>
     </message>
     <message>
         <source>Audios</source>
-        <translation type="unfinished">Audio</translation>
+        <translation>Audio</translation>
     </message>
     <message>
         <source>Movies</source>
-        <translation type="unfinished">Film</translation>
+        <translation>Filmati</translation>
     </message>
     <message>
         <source>Pictures</source>
-        <translation type="unfinished">Immagini</translation>
+        <translation>Immagini</translation>
     </message>
     <message>
         <source>Animations</source>
-        <translation type="unfinished">Animazioni</translation>
+        <translation>Animazioni</translation>
     </message>
     <message>
         <source>Interactivities</source>
-        <translation type="unfinished">Interattività</translation>
+        <translation>Interattività</translation>
     </message>
     <message>
         <source>Applications</source>
-        <translation type="unfinished">Applicazioni</translation>
+        <translation>Applicazioni</translation>
     </message>
     <message>
         <source>Shapes</source>
-        <translation type="unfinished">Forme</translation>
+        <translation>Forme</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferiti</translation>
     </message>
     <message>
         <source>Web search</source>
-        <translation type="unfinished"></translation>
+        <translation>Ricerca web</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Cestino</translation>
+        <translation>Cestino</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesNewFolderDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Accetta</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>Enter a new folder name</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci un nuovo nome di cartella</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation type="unfinished"></translation>
+        <translation>Caricamento in corso </translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished">Bloccato</translation>
+        <translation>Bloccato</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished">Visibile sullo schermo esteso</translation>
+        <translation>Visibile sullo schermo esteso</translation>
     </message>
 </context>
 <context>
@@ -1574,14 +1566,14 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished">Caricamento in corso...</translation>
+        <translation>Caricamento in corso...</translation>
     </message>
 </context>
 <context>
@@ -1592,7 +1584,7 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation>Trasforma in strumento</translation>
+        <translation>Trasforma in strumento </translation>
     </message>
 </context>
 <context>
@@ -1630,7 +1622,7 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>L&apos;importazione del file%1 è fallita.</translation>
+        <translation>L&apos;importazione del file %1 è fallita.</translation>
     </message>
     <message>
         <source>Open-Sankore (*.ubz)</source>
@@ -1663,11 +1655,11 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation>Errore nella pubblicazione del video in Intranet (%1)</translation>
+        <translation>Errore nella pubblicazione del video in intranet (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation>Pubblicazione in Intranet in corso %1 %</translation>
+        <translation>Pubblicazione in intranet in corso %1 %</translation>
     </message>
 </context>
 <context>
@@ -1703,7 +1695,7 @@ Sei sicuro di voler rimuovere %n pagina(e) dal documento &apos;%1&apos; selezion
     <name>UBMessagesDialog</name>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Chiudi</translation>
+        <translation>Chiudi</translation>
     </message>
 </context>
 <context>
@@ -1753,7 +1745,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation>Sankore ha perso l&apos;accesso all&apos;archivio dei documenti &apos;%1&apos;. Purtroppo l&apos;applicazione deve chiudere per evitare la corruzione dei dati. Potrebbero essere andate perse anche le ultime modifiche.</translation>
+        <translation>Sankore ha perso l&apos;accesso all&apos;archivio dei documenti &apos;%1&apos;. Purtroppo l&apos;applicazione deve chiudersi per evitare la corruzione dei dati. Potrebbero essere andate perse anche le ultime modifiche.</translation>
     </message>
 </context>
 <context>
@@ -1811,7 +1803,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
-        <translation>Entrata audio predefinita</translation>
+        <translation>Ingresso audio predefinito</translation>
     </message>
     <message>
         <source>No Audio Recording</source>
@@ -1918,7 +1910,7 @@ risorsa multimediale ...</translation>
     </message>
     <message>
         <source>Type title here...</source>
-        <translation>Digita qui il titolo ...</translation>
+        <translation>Digita qui il titolo...</translation>
     </message>
 </context>
 <context>
@@ -1939,15 +1931,15 @@ risorsa multimediale ...</translation>
     <name>UBTeacherGuideEditionWidget</name>
     <message>
         <source>Type title here ...</source>
-        <translation>Digita qui il titolo ...</translation>
+        <translation>Digita qui il titolo...</translation>
     </message>
     <message>
         <source>Type comment here ...</source>
-        <translation>Digita qui un commento ...</translation>
+        <translation>Digita qui un commento...</translation>
     </message>
     <message>
         <source>Add an action</source>
-        <translation>Aggiungi una attività</translation>
+        <translation>Aggiungi un&apos;azione</translation>
     </message>
     <message>
         <source>Add a media</source>
@@ -1966,7 +1958,7 @@ risorsa multimediale ...</translation>
     <name>UBTeacherGuidePageZeroWidget</name>
     <message>
         <source>Type session title here ...</source>
-        <translation>Digita qui il titolo della sessione ...</translation>
+        <translation>Digita qui il titolo della sessione...</translation>
     </message>
     <message>
         <source>Author(s)</source>
@@ -1974,7 +1966,7 @@ risorsa multimediale ...</translation>
     </message>
     <message>
         <source>Type authors here ...</source>
-        <translation>Digita qui gli autori ...</translation>
+        <translation>Digita qui gli autori...</translation>
     </message>
     <message>
         <source>Objective(s)</source>
@@ -1990,11 +1982,11 @@ risorsa multimediale ...</translation>
     </message>
     <message>
         <source>Keywords:</source>
-        <translation>Parole chiavi:</translation>
+        <translation>Parole chiave:</translation>
     </message>
     <message>
         <source>Type keywords here ...</source>
-        <translation>Digita qui le parole chiavi ...</translation>
+        <translation>Digita qui le parole chiave...</translation>
     </message>
     <message>
         <source>Level:</source>
@@ -2072,11 +2064,11 @@ risorsa multimediale ...</translation>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation>Generazione della miniatura di anteprima in corso ...</translation>
+        <translation>Generazione della miniatura di anteprima in corso...</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation>%1 miniatura generata ...</translation>
+        <translation>%1 miniature generate...</translation>
     </message>
 </context>
 <context>
@@ -2095,15 +2087,15 @@ risorsa multimediale ...</translation>
     </message>
     <message>
         <source>Protractor</source>
-        <translation>Gognometro</translation>
+        <translation>Goniometro</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation>Triangolo</translation>
+        <translation>Squadra</translation>
     </message>
     <message>
         <source>Magnifier</source>
-        <translation>Lente di ingrandimento</translation>
+        <translation>Lente</translation>
     </message>
     <message>
         <source>Cache</source>
@@ -2111,7 +2103,7 @@ risorsa multimediale ...</translation>
     </message>
     <message>
         <source>Aristo</source>
-        <translation type="unfinished"></translation>
+        <translation>Goniometro 2</translation>
     </message>
 </context>
 <context>
@@ -2129,11 +2121,11 @@ risorsa multimediale ...</translation>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
-        <translation>Aggiornamento documento</translation>
+        <translation>Aggiorna documento</translation>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation>I file necessitano di un aggiornamento.</translation>
+        <translation> i file necessitano di un aggiornamento.</translation>
     </message>
     <message>
         <source>Backup path: </source>
@@ -2159,7 +2151,7 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation>Si è verificato un errore durante l&apos;aggiornamento. I file non sono stati intaccati.</translation>
+        <translation>Si è verificato un errore durante l&apos;aggiornamento. I file non sono stati coinvolti.</translation>
     </message>
     <message>
         <source>Files update results</source>
@@ -2167,11 +2159,11 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>Updating file </source>
-        <translation>Aggiornamento file in corso</translation>
+        <translation>Aggiornamento file in corso </translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation>Si prega di attendere. Il processo di importazione sta per iniziare...</translation>
+        <translation>Si prega di attendere. Il processo di importazione inizierà a breve...</translation>
     </message>
     <message>
         <source>Remind me later</source>
@@ -2189,7 +2181,7 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <name>UBWebPublisher</name>
     <message>
         <source>Publish Document on Sankore Web</source>
-        <translation>Pubblica documento sulla rete Sankore</translation>
+        <translation>Pubblica documento sul web Sankore</translation>
     </message>
 </context>
 <context>
@@ -2211,26 +2203,26 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
-        <translation>Upload su YouTube in corso %1 %</translation>
+        <translation>Caricamento su YouTube in corso %1 %</translation>
     </message>
     <message>
         <source>Open-Sankore</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankore</translation>
     </message>
     <message>
         <source>OpenSankore</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenSankore</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublishingDialog</name>
     <message>
         <source>Upload</source>
-        <translation>Upload</translation>
+        <translation>Caricamento</translation>
     </message>
     <message>
         <source>Autos &amp; Vehicles</source>
-        <translation>Auto &amp; Veicoli</translation>
+        <translation>Auto e veicoli</translation>
     </message>
     <message>
         <source>Music</source>
@@ -2246,7 +2238,7 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation>Viaggi &amp; Eventi</translation>
+        <translation>Viaggi ed eventi</translation>
     </message>
     <message>
         <source>Gaming</source>
@@ -2258,11 +2250,11 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>People &amp; Blogs</source>
-        <translation>Persone &amp; Blog</translation>
+        <translation>Persone e blog</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation>Attualità &amp; Politica</translation>
+        <translation>Attualità e politica</translation>
     </message>
     <message>
         <source>Entertainment</source>
@@ -2274,15 +2266,15 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>Howto &amp; Style</source>
-        <translation>Stile</translation>
+        <translation>Howto e stile</translation>
     </message>
     <message>
         <source>Nonprofits &amp; Activism</source>
-        <translation>Non profit &amp; Attivismo</translation>
+        <translation>Non profit ed attivismo</translation>
     </message>
     <message>
         <source>Science &amp; Technology</source>
-        <translation>Scienza &amp; Tecnologia</translation>
+        <translation>Scienza e tecnologia</translation>
     </message>
 </context>
 <context>
@@ -2296,7 +2288,7 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <name>UniboardSankoreTransition</name>
     <message>
         <source>Import old Uniboard/Sankore documents</source>
-        <translation>Importa documenti Uniboard/Snkore dai formati precedenti</translation>
+        <translation>Importa documenti Uniboard/Sankore dai formati precedenti</translation>
     </message>
     <message>
         <source>There are no documents that should be imported</source>
@@ -2397,7 +2389,7 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     <name>WBHistoryTreeModel</name>
     <message>
         <source>Earlier Today</source>
-        <translation>Oggi</translation>
+        <translation>Oggi prima</translation>
     </message>
     <message>
         <source>%1 items</source>
@@ -2642,7 +2634,7 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>Uniboard Documents</source>
-        <translation>Documento Uniboard</translation>
+        <translation>Documenti Uniboard</translation>
     </message>
 </context>
 <context>
@@ -2651,9 +2643,9 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Preferenze</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>version : …</source>
-        <translation>versione: ...</translation>
+        <translation>versione : ...</translation>
     </message>
     <message>
         <source>Default Settings</source>
@@ -2693,15 +2685,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation>Posiziona in alto (consigliato per tablet)</translation>
+        <translation>Posizionata in alto (consigliato per tablet)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>Posiziona in basso (consigliato per lavagne)</translation>
+        <translation>Posizionata in basso (consigliato per lavagne)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
-        <translation>Visualizza testo sotto al bottone</translation>
+        <translation>Visualizza testo sotto il pulsante</translation>
     </message>
     <message>
         <source>Stylus Palette</source>
@@ -2725,7 +2717,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>About</source>
-        <translation>A proposito di</translation>
+        <translation>Informazioni su</translation>
     </message>
     <message>
         <source>Software Update</source>
@@ -2759,13 +2751,13 @@ p, li { white-space: pre-wrap; }
         <source>Network</source>
         <translation>Rete</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Open-Sankoré</source>
         <translation>Open-Sankoré</translation>
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation>Mostra il contenuto della pagina web locale  sullo schermo secondario o sul proiettore</translation>
+        <translation>Mostra il contenuto interno della pagina web sullo schermo secondario o sul proiettore</translation>
     </message>
     <message>
         <source>Multi display</source>
@@ -2799,9 +2791,9 @@ p, li { white-space: pre-wrap; }
         <source>Pass:</source>
         <translation>Password:</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Planète Sankoré ID</source>
-        <translation>ID Planete Sankoré</translation>
+        <translation>ID Pianeta Sankoré</translation>
     </message>
     <message>
         <source>User:</source>
@@ -2809,7 +2801,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Pass: </source>
-        <translation>Password:</translation>
+        <translation>Password: </translation>
     </message>
     <message>
         <source>                  GNU LIBRARY GENERAL PUBLIC LICENSE
@@ -3254,7 +3246,7 @@ DAMAGES.
     </message>
     <message>
         <source>Credits</source>
-        <translation>Crediti</translation>
+        <translation>Riconoscimenti</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3265,7 +3257,14 @@ p, li { white-space: pre-wrap; }
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Le licenze sono in inglese per rispettare le traduzioni ufficiali legalmente approvate.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -3276,9 +3275,9 @@ p, li { white-space: pre-wrap; }
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3288,9 +3287,9 @@ p, li { white-space: pre-wrap; }
 &lt;td style=&quot;border: none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Open-Sankoré version 1.4 , Copyright (C) 2010-2012 Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;&lt;br /&gt;Open-Sankoré est un logiciel libre : vous pouvez le redistribuer et/ou le modifier en respectant les termes de la Lesser GNU general Public Licence (GNU LGPL) telle que publiée par la Free Software Foundation en version 2 ou une version plus récente.&lt;br /&gt;Vous pouvez consulter et charger le code source du logiciel sur &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré est distribué dans l&apos;espoir qu&apos;il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de COMMERCIALISATION ou D&apos;ADAPTATION A UN OBJET PARTICULIER.&lt;br /&gt;Veuillez consulter la licence Lesser GNU General Public Licence située dans l&apos;onglet Licences ou consulter le site &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;http://www.gnu.org/licenses/&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;.&lt;br /&gt;&lt;br /&gt;Open-Sankoré is free software: you can redistribute it and/or modify it under the terms of the Lesser GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version. You can find the source code of this software at &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Lesser GNU General Public License below for more details.&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Contact : &lt;br /&gt;Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;br /&gt;20 Avenue Ségur Paris 75007&lt;br /&gt;Téléphone : 01 43 17 68 08&lt;br /&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3340,7 +3339,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Autorisation pour un usage non commercial&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
