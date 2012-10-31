@@ -919,6 +919,10 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 event->ignore();
                 return;
             }
+
+            if (scene()->backgroundObject() == movingItem)
+                movingItem = NULL;
+
             connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
             if (!movingItem && !mController->cacheIsVisible())
                 mLongPressTimer.start();
