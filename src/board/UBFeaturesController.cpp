@@ -566,7 +566,7 @@ void UBFeaturesController::addToFavorite( const QUrl &path )
 	{
 		QFileInfo fileInfo( filePath );
 		QString fileName = fileInfo.fileName();
-        UBFeatureElementType type = fileTypeFromUrl(fileInfo.absoluteFilePath());
+        UBFeatureElementType type = fileTypeFromUrl(filePath);
         UBFeature elem(favoritePath + "/" + fileName, getIcon(filePath, type), fileName, path, fileTypeFromUrl(filePath) );
 		favoriteSet->insert( path );
 		saveFavoriteList();
@@ -603,14 +603,16 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
 {
     QFileInfo fileInfo(path);
 
+    if ( path.contains("uniboardTool://"))
+        return FEATURE_INTERNAL;
+
     if (!fileInfo.exists()) {
         return FEATURE_INVALID;
     }
 
+    UBFeatureElementType fileType = FEATURE_INVALID;
     QString fileName = fileInfo.fileName();
     QString mimeString = UBFileSystemUtils::mimeTypeFromFileName(fileName);
-
-    UBFeatureElementType fileType = FEATURE_INVALID;
 
     if ( mimeString.contains("application")) {
         if (mimeString.contains("application/search")) {
@@ -620,8 +622,6 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
         } else {
             fileType = FEATURE_INTERACTIVE;
         }
-    } else if ( path.contains("uniboardTool://")) {
-		fileType = FEATURE_INTERNAL;
     } else if (mimeString.contains("audio")) {
         fileType = FEATURE_AUDIO;
     } else if (mimeString.contains("video")) {
