@@ -71,4 +71,7 @@ plugins/cffadaptor/objects
 *.qm
 
 
+# Others #
+##########
+.directory
 .DS_Store
