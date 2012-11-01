@@ -1457,6 +1457,8 @@ QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLoc
 
     QString text = value.toString();
     text = text.replace(".wgt", "");
+    text = text.replace(".wgs", "");
+    text = text.replace(".swf","");
     if (listView)
     {
         const QFontMetrics fm = listView->fontMetrics();
