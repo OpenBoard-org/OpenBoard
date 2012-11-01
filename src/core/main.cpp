@@ -1,22 +1,22 @@
 /*
  * Copyright (C) 2012 Webdoc SA
  *
- * This file is part of Open-Sankoré.
+ * This file is part of Open-SankorÃ©.
  *
- * Open-Sankoré is free software; you can redistribute it and/or
+ * Open-SankorÃ© is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation, version 2,
  * with a specific linking exception for the OpenSSL project's
  * "OpenSSL" library (or with modified versions of it that use the
  * same license as the "OpenSSL" library).
  *
- * Open-Sankoré is distributed in the hope that it will be useful,
+ * Open-SankorÃ© is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
- * License along with Open-Sankoré; if not, see
+ * License along with Open-SankorÃ©; if not, see
  * <http://www.gnu.org/licenses/>.
  */
 
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
     //when importing a sankore file that contains a non standard character
     //the codecForLocale or the codecForCString is used to convert the file path
     //into a const char*. This is why in french windows setup the codec name shouldn't be
-    //set to UTF-8. For example, setting UTF-8, will convert "Haïti" into "HaÂ-ti.
+    //set to UTF-8. For example, setting UTF-8, will convert "HaÃ¯ti" into "HaÃ‚-ti.
 
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
     //QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
