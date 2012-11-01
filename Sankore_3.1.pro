@@ -292,42 +292,36 @@ macx {
        TRANSLATION_ar.path = "$$RESOURCES_DIR/ar.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_ar
    }
-
    exists(resources/i18n/sankore_iw.qm) {
        TRANSLATION_iw.files = resources/i18n/sankore_iw.qm \
            resources/i18n/Localizable.strings
        TRANSLATION_iw.path = "$$RESOURCES_DIR/iw.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_iw
    }
-
    exists(resources/i18n/sankore_pt.qm) {
        TRANSLATION_pt.files = resources/i18n/sankore_pt.qm \
            resources/i18n/Localizable.strings
        TRANSLATION_pt.path = "$$RESOURCES_DIR/pt.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_pt
    }
-
    exists(resources/i18n/sankore_sk.qm) {
        TRANSLATION_sk.files = resources/i18n/sankore_sk.qm \
            resources/i18n/Localizable.strings
        TRANSLATION_sk.path = "$$RESOURCES_DIR/sk.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_sk
    }
-   
    exists(resources/i18n/sankore_bg.qm) {
        TRANSLATION_bg.files = resources/i18n/sankore_bg.qm \
            resources/i18n/Localizable.strings
        TRANSLATION_bg.path = "$$RESOURCES_DIR/bg.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_bg
    }
-   
    exists(resources/i18n/sankore_ca.qm) {
        TRANSLATION_ca.files = resources/i18n/sankore_ca.qm \
            resources/i18n/Localizable.strings
        TRANSLATION_ca.path = "$$RESOURCES_DIR/ca.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_ca
    }
-
    exists(resources/i18n/sankore_el.qm) {
        TRANSLATION_el.files = resources/i18n/sankore_el.qm \
            resources/i18n/Localizable.strings
@@ -346,7 +340,6 @@ macx {
        translation_cs.path = "$$resources_dir/cs.lproj"
        qmake_bundle_data += translation_cs
    }
-   
    exists(resources/i18n/sankore_mg.qm) {
        translation_mg.files = resources/i18n/sankore_mg.qm \
            resources/i18n/localizable.strings

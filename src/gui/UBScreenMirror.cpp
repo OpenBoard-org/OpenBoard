@@ -80,35 +80,41 @@ void UBScreenMirror::timerEvent(QTimerEvent *event)
 
 void UBScreenMirror::grabPixmap()
 {
-    if (mSourceWidget)
-    {
-        QPoint topLeft = mSourceWidget->mapToGlobal(mSourceWidget->geometry().topLeft());
-        QPoint bottomRight = mSourceWidget->mapToGlobal(mSourceWidget->geometry().bottomRight());
+//    if (mSourceWidget)
+//    {
+//        QPoint topLeft = mSourceWidget->mapToGlobal(mSourceWidget->geometry().topLeft());
+//        QPoint bottomRight = mSourceWidget->mapToGlobal(mSourceWidget->geometry().bottomRight());
 
-        mRect.setTopLeft(topLeft);
-        mRect.setBottomRight(bottomRight);
-    }
+//        mRect.setTopLeft(topLeft);
+//        mRect.setBottomRight(bottomRight);
+//    }
 
-    // get image of desktop
+//    // get image of desktop
 
-    WId windowID = qApp->desktop()->screen(mScreenIndex)->winId();
-#if defined(Q_WS_MAC)
-    // Available in Mac OS X v10.6 and later.
-    CGRect grabRect;
-    grabRect.origin.x = mRect.x();
-    grabRect.origin.y = mRect.y();
-    grabRect.size.width = mRect.width();
-    grabRect.size.height = mRect.height();
-    CGImageRef windowImage = CGWindowListCreateImage(grabRect
-        ,kCGWindowListOptionOnScreenOnly
-        ,windowID
-        ,kCGWindowImageDefault);
+//    WId windowID = qApp->desktop()->screen(mScreenIndex)->winId();
+//    qDebug() << windowID;
+//#if defined(Q_WS_MAC)
 
-    mLastPixmap = QPixmap::fromMacCGImageRef(windowImage);
-#else
+// TODO: bad mac fix. On dual screen mac os x and let web mode for more than one minute and it crashed
+// NSAutorelease pull should avoid this.
 
-    mLastPixmap = QPixmap::grabWindow(windowID, mRect.x(), mRect.y(), mRect.width(), mRect.height());
-#endif
+//    // Available in Mac OS X v10.6 and later.
+//    CGRect grabRect;
+//    grabRect.origin.x = mRect.x();
+//    grabRect.origin.y = mRect.y();
+//    grabRect.size.width = mRect.width();
+//    grabRect.size.height = mRect.height();
+//    CGImageRef windowImage = CGWindowListCreateImage(grabRect
+//        ,kCGWindowListOptionOnScreenOnly
+//        ,windowID
+//        ,kCGWindowImageDefault);
+
+//    mLastPixmap = QPixmap::fromMacCGImageRef(windowImage);
+//#else
+
+//    mLastPixmap = QPixmap::grabWindow(windowID, mRect.x(), mRect.y(), mRect.width(), mRect.height());
+//#endif
+    mLastPixmap = QPixmap::grabWidget(mSourceWidget);
     mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
