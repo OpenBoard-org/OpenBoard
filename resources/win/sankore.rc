@@ -33,13 +33,13 @@ BEGIN
 
         BEGIN
 
-            VALUE "CompanyName",      "Mnemis\000"
+            VALUE "CompanyName",      "Open-Sankoré\000"
 
             VALUE "FileDescription",  "Sankore 3.1\000"
 
             VALUE "FileVersion",      UBVERSION
 
-            VALUE "LegalCopyright",   "(c) Mnemis SA, 2009. All rights reserved\000"
+            VALUE "LegalCopyright",   "(c) Webdoc SA, 2009-2012. All rights reserved\000"
 
             VALUE "OriginalFilename", "Sankore 3.1.exe\000"
 
