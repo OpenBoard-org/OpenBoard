@@ -151,7 +151,7 @@ void UBScreenMirror::start()
     }
     else
     {
-        qDebug() << "UBScreenMirror::start() : Timer alrady running ...";
+        qDebug() << "UBScreenMirror::start() : Timer already running ...";
     }
 }
 
