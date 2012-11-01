@@ -106,7 +106,6 @@ void UBScreenMirror::grabPixmap()
 
     mLastPixmap = QPixmap::fromMacCGImageRef(windowImage);
 #else
-
     mLastPixmap = QPixmap::grabWindow(windowID, mRect.x(), mRect.y(), mRect.width(), mRect.height());
 #endif
     mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -145,7 +144,7 @@ void UBScreenMirror::start()
     }
     else
     {
-        qDebug() << "UBScreenMirror::start() : Timer alrady running ...";
+        qDebug() << "UBScreenMirror::start() : Timer already running ...";
     }
 }
 

@@ -129,25 +129,13 @@ int UBDisplayManager::numPreviousViews()
 void UBDisplayManager::setControlWidget(QWidget* pControlWidget)
 {
     if(hasControl() && pControlWidget && (pControlWidget != mControlWidget))
-    {
         mControlWidget = pControlWidget;
-		// !!!! Should be included into Windows after QT recompilation
-#ifdef Q_WS_MAC
-//        mControlWidget->setAttribute(Qt::WA_MacNoShadow);
-#endif
-    }
 }
 
 void UBDisplayManager::setDesktopWidget(QWidget* pControlWidget )
 {
     if(pControlWidget && (pControlWidget != mControlWidget))
-    {
         mDesktopWidget = pControlWidget;
-        // !!!! Should be included into Windows after QT recompilation
-#ifdef Q_WS_MAC
-        //        mControlWidget->setAttribute(Qt::WA_MacNoShadow);
-#endif
-    }
 }
 
 void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
@@ -164,10 +152,6 @@ void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
         if (UBSettings::settings()->appUseMultiscreen->get().toBool())
             mDisplayWidget->showFullScreen();
-		// !!!! Should be included into Windows after QT recompilation
-#ifdef Q_WS_MAC
-//        mDisplayWidget->setAttribute(Qt::WA_MacNoShadow);
-#endif
     }
 }
 
