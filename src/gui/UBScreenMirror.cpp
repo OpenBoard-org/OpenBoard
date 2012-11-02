@@ -80,41 +80,23 @@ void UBScreenMirror::timerEvent(QTimerEvent *event)
 
 void UBScreenMirror::grabPixmap()
 {
-//    if (mSourceWidget)
-//    {
-//        QPoint topLeft = mSourceWidget->mapToGlobal(mSourceWidget->geometry().topLeft());
-//        QPoint bottomRight = mSourceWidget->mapToGlobal(mSourceWidget->geometry().bottomRight());
+    if (mSourceWidget)
+    {
+        QPoint topLeft = mSourceWidget->mapToGlobal(mSourceWidget->geometry().topLeft());
+        QPoint bottomRight = mSourceWidget->mapToGlobal(mSourceWidget->geometry().bottomRight());
 
-//        mRect.setTopLeft(topLeft);
-//        mRect.setBottomRight(bottomRight);
-//    }
+        mRect.setTopLeft(topLeft);
+        mRect.setBottomRight(bottomRight);
+        mLastPixmap = QPixmap::grabWidget(mSourceWidget);
+    }
+    else{
+        // WHY HERE?
+        // this is the case we are showing the desktop but the is no widget and we use the last widget rectagle to know
+        // what we have to grab. Not very good way of doing
+        WId windowID = qApp->desktop()->screen(mScreenIndex)->winId();
+        mLastPixmap = QPixmap::grabWindow(windowID, mRect.x(), mRect.y(), mRect.width(), mRect.height());
+    }
 
-//    // get image of desktop
-
-//    WId windowID = qApp->desktop()->screen(mScreenIndex)->winId();
-//    qDebug() << windowID;
-//#if defined(Q_WS_MAC)
-
-// TODO: bad mac fix. On dual screen mac os x and let web mode for more than one minute and it crashed
-// NSAutorelease pull should avoid this.
-
-//    // Available in Mac OS X v10.6 and later.
-//    CGRect grabRect;
-//    grabRect.origin.x = mRect.x();
-//    grabRect.origin.y = mRect.y();
-//    grabRect.size.width = mRect.width();
-//    grabRect.size.height = mRect.height();
-//    CGImageRef windowImage = CGWindowListCreateImage(grabRect
-//        ,kCGWindowListOptionOnScreenOnly
-//        ,windowID
-//        ,kCGWindowImageDefault);
-
-//    mLastPixmap = QPixmap::fromMacCGImageRef(windowImage);
-//#else
-
-//    mLastPixmap = QPixmap::grabWindow(windowID, mRect.x(), mRect.y(), mRect.width(), mRect.height());
-//#endif
-    mLastPixmap = QPixmap::grabWidget(mSourceWidget);
     mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
