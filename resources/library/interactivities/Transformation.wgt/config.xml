@@ -3,8 +3,8 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.njin.fr/sankore/apps/tableur" 
         version="1.0"
-        width="972"
-        height="400" 
+        width="1050"
+        height="560" 
         ub:resizable="true">     
    
 		<name>La boite à transformation</name>
