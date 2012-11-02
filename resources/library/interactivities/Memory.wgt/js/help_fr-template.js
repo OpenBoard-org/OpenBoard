@@ -11,6 +11,6 @@
 	<li>sélectionner le délai d’affichage des cartes retournées,</li>
 	<li>éditer directement une carte.</li>
 </ul>
-<p>Les cartes possèdent par défaut un champ texte. Pour insérer du texte, cliquez sur cette dernière et saisissez le texte désiré. Pour ajouter une image depuis votre bibliothèque, cochez la case “utiliser une image” et utilisez le glisser-déposer. Il faut au préalable retourner la carte avec le bouton bleu.</p>
+<p>Les cartes possèdent par défaut un champ texte. Pour insérer du texte, cliquez sur cette dernière et saisissez le texte désiré. Pour ajouter une image depuis votre bibliothèque, cochez la case “utiliser une image” et utilisez le glisser-déposer.</p>
 <p>Attention, la paire de cartes doit être disposée en colonne lors de l'édition.</p>
 <p>Les cartes sont disposées de manière aléatoire dans le mode jeu.</p>								
