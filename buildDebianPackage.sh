@@ -289,7 +289,7 @@ cp -R $PRODUCT_PATH $SANKORE_PACKAGE_DIRECTORY
 
 
 cat > $BASE_WORKING_DIR/usr/local/$SANKORE_DIRECTORY_NAME/run.sh << EOF
-!/bin/bash
+#!/bin/bash
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
