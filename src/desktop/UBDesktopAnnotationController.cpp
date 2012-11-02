@@ -62,7 +62,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         , mDesktopMarkerPalette(NULL)
         , mDesktopEraserPalette(NULL)
         , mRightPalette(rightPalette)
-        , mWindowPositionInitialized(0)
+        , mWindowPositionInitialized(false)
         , mIsFullyTransparent(false)
         , mDesktopToolsPalettePositioned(false)
         , mPendingPenButtonPressed(false)
@@ -291,6 +291,7 @@ void UBDesktopAnnotationController::showWindow()
         mDesktopPalette->move(5, desktopRect.top() + 150);
 
         mWindowPositionInitialized = true;
+        mDesktopPalette->maximizeMe();
     }
 
     updateBackground();
@@ -719,7 +720,6 @@ void UBDesktopAnnotationController::switchCursor(const int tool)
  */
 void UBDesktopAnnotationController::onDesktopPaletteMaximized()
 {
-
     // Pen
     UBActionPaletteButton* pPenButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionPen);
     if(NULL != pPenButton)
