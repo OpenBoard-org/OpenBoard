@@ -335,16 +335,16 @@ macx {
        QMAKE_BUNDLE_DATA += TRANSLATION_tr
    }
    exists(resources/i18n/sankore_cs.qm) {
-       translation_cs.files = resources/i18n/sankore_cs.qm \
+       TRANSLATION_cs.files = resources/i18n/sankore_cs.qm \
            resources/i18n/localizable.strings
-       translation_cs.path = "$$resources_dir/cs.lproj"
-       qmake_bundle_data += translation_cs
+       TRANSLATION_cs.path = "$$RESOURCES_DIR/cs.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_cs
    }
    exists(resources/i18n/sankore_mg.qm) {
-       translation_mg.files = resources/i18n/sankore_mg.qm \
+       TRANSLATION_mg.files = resources/i18n/sankore_mg.qm \
            resources/i18n/localizable.strings
-       translation_mg.path = "$$resources_dir/mg.lproj"
-       qmake_bundle_data += translation_mg
+       TRANSLATION_mg.path = "$$RESOURCES_DIR/mg.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_mg
    }
    
    QMAKE_BUNDLE_DATA += UB_ETC \
