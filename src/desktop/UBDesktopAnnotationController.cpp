@@ -300,8 +300,12 @@ void UBDesktopAnnotationController::showWindow()
 
     UBDrawingController::drawingController()->setStylusTool(mDesktopStylusTool);
 
+#ifndef Q_WS_X11
     mTransparentDrawingView->showFullScreen();
-
+#else
+    // this is necessary to avoid unity to hide the panels
+    mTransparentDrawingView->show();
+#endif
     UBPlatformUtils::setDesktopMode(true);
 
     mDesktopPalette->appear();
