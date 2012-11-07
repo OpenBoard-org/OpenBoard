@@ -91,6 +91,7 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
 
         mItemsToDelete.remove(item);
         delete item;
+        item = NULL;
         return true;
     }
     else

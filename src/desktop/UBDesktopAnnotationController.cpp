@@ -110,13 +110,9 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     }
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
-    connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
-    connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(windowCapture()));
-    connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
-    connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(onToolClicked()));
     connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
@@ -397,7 +393,6 @@ void UBDesktopAnnotationController::customCapture()
 
     mDesktopPalette->disappearForCapture();
     UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
-
     // need to show the window before execute it to avoid some glitch on windows.
 
 #ifndef Q_WS_WIN // Working only without this call on win32 desktop mode
@@ -449,7 +444,7 @@ void UBDesktopAnnotationController::windowCapture()
 
 void UBDesktopAnnotationController::screenCapture()
 {
-	onToolClicked();
+    onToolClicked();
     mIsFullyTransparent = true;
     updateBackground();
 
@@ -926,7 +921,8 @@ void UBDesktopAnnotationController::refreshMask()
     }
 }
 
-void UBDesktopAnnotationController::onToolClicked(){
+void UBDesktopAnnotationController::onToolClicked()
+{
 	mDesktopEraserPalette->hide();
 	mDesktopMarkerPalette->hide();
 	mDesktopPenPalette->hide();
