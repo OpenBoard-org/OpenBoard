@@ -120,7 +120,11 @@ void UBGraphicsItemUndoCommand::undo()
             {
                 UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
                 if (polygonItem)
+                {
+                    mScene->removeItem(polygonItem);
+                    mScene->removeItemFromDeletion(polygonItem);
                     polygonItem->strokesGroup()->addToGroup(polygonItem);
+                }
             }
 
             UBApplication::boardController->freezeW3CWidget(item, false);
@@ -225,7 +229,11 @@ void UBGraphicsItemUndoCommand::redo()
 
                 UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
                 if (polygonItem)
+                {   
+                    mScene->removeItem(polygonItem);
+                    mScene->removeItemFromDeletion(polygonItem);
                     polygonItem->strokesGroup()->addToGroup(polygonItem);
+                }
             }
         }
 
