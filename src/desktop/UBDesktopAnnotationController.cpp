@@ -157,6 +157,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 #ifdef Q_WS_X11
     connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
+    connect(UBApplication::boardController->paletteManager()->addItemPalette(), SIGNAL(closed()), this, SLOT(refreshMask()));
 #endif
     onDesktopPaletteMaximized();
 
@@ -865,6 +866,16 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
             p.drawRect(tabsPalette);
         }
 
+#ifdef Q_WS_X11
+        //Rquiered only for compiz wm
+        //TODO. Window manager detection screen
+
+        if (UBApplication::boardController->paletteManager()->addItemPalette()->isVisible()) {
+            p.drawRect(UBApplication::boardController->paletteManager()->addItemPalette()->geometry());
+        }
+
+#endif
+
         p.end();
 
         // Then we add the annotations. We create another painter because we need to
@@ -909,15 +920,17 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
 
 void UBDesktopAnnotationController::refreshMask()
 {
-    if(mIsFullyTransparent
-            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector
-            //Needed to work correctly when another actions on stylus are checked
-            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Eraser
-            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pointer
-            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen
-            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Marker)
-    {
-        updateMask(true);
+    if (mTransparentDrawingScene && mTransparentDrawingView->isVisible()) {
+        if(mIsFullyTransparent
+                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector
+                //Needed to work correctly when another actions on stylus are checked
+                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Eraser
+                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pointer
+                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen
+                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Marker)
+        {
+            updateMask(true);
+        }
     }
 }
 
