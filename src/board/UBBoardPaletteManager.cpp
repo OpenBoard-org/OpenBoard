@@ -750,7 +750,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mLeftPalette->setVisible(leftPaletteVisible);
                 mRightPalette->setVisible(rightPaletteVisible);
 #ifdef Q_WS_WIN
-                if (rightPaletteVisible)
+                if (rightPaletteVisible && UBSettings::settings()->appToolBarPositionedAtTop->get().toBool())
                     mRightPalette->setAdditionalVOffset(30);
 #endif
 
