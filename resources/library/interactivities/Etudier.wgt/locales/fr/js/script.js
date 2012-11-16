@@ -43,7 +43,8 @@ var resize_obj = {
     object: null,
     top: 0,
     left: 0,
-    clicked: false
+    clicked: false,
+    k: 0
 }
 
 //main function
@@ -311,6 +312,8 @@ function start(){
         resize_obj.top = event.clientY;
         resize_obj.left = event.clientX;
         resize_obj.clicked = true;
+        if($(this).parent().hasClass("img_block"))
+            resize_obj.k = $(this).parent().find("img").width() / $(this).parent().find("img").height();
     })
     
     $("li>div").live("mouseup", function(){
@@ -329,13 +332,10 @@ function start(){
                 resize_obj.top = event.clientY;
                 resize_obj.object.parent().width(width);
             } else {
-                width = resize_obj.object.parent().width() - resize_obj.left + event.clientX;
-                var height = resize_obj.object.parent().height() - resize_obj.top + event.clientY;
                 var img_width = resize_obj.object.parent().find("img").width() - resize_obj.left + event.clientX;
-                var img_height = resize_obj.object.parent().find("img").height() - resize_obj.top + event.clientY;
+                var img_height = img_width / resize_obj.k;
                 resize_obj.left = event.clientX;
                 resize_obj.top = event.clientY;
-                resize_obj.object.parent().width(width).height(height);
                 resize_obj.object.parent().find("img").width(img_width).height(img_height);
             }
         }
@@ -435,8 +435,6 @@ function exportData(){
             img_obj.link = $(this).find("img").attr("src").replace("../../","");
             img_obj.h = $(this).find("img").height();
             img_obj.w = $(this).find("img").width();
-            img_obj.block_h = $(this).height();
-            img_obj.block_w = $(this).width();
             img_obj.top = $(this).position().top;
             img_obj.left = $(this).position().left;
             cont_obj.imgs.push(img_obj);
@@ -480,8 +478,6 @@ function importData(data){
         for(j in data[i].imgs){
             var img_div = $("<div class='img_block' style='text-align: center;'>");            
             img_div.draggable().css("position","absolute")
-            .width(data[i].imgs[j].block_w)
-            .height(data[i].imgs[j].block_h)
             .css("top", data[i].imgs[j].top)
             .css("left", data[i].imgs[j].left)
             .appendTo(div);

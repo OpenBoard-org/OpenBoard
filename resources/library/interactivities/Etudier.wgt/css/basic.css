@@ -43,13 +43,18 @@ body{
 }
 
 .img_block{
-    width: 120px;
+/*    width: 120px;
     height: 120px;
-    padding: 5px;
+    padding: 5px;*/
     display: inline-block;
     position: absolute;
     top: 100px;
     left: 350px;
+    -webkit-user-select: none;
+}
+
+.img_block img{
+    vertical-align: middle;
 }
 
 .img_gray{
