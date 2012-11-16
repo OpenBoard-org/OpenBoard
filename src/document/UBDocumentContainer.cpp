@@ -34,8 +34,10 @@ UBDocumentContainer::UBDocumentContainer(QObject * parent)
 
 UBDocumentContainer::~UBDocumentContainer()
 {
-    foreach(const QPixmap* pm, mDocumentThumbs)   
+    foreach(const QPixmap* pm, mDocumentThumbs){
         delete pm;
+        pm = NULL;
+    }
 }
 
 void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReload)

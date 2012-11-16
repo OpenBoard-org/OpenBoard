@@ -92,12 +92,13 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
     {
         mScene->removeItem(it);
         delete it;
+        it = NULL;
     }
 
     for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
     {
-
-    	const QPixmap* pix = source->pageAt(i);
+        const QPixmap* pix = source->pageAt(i);
+        Q_ASSERT(!pix->isNull());
         int pageIndex = UBDocumentContainer::pageFromSceneIndex(i);
 
         UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(*pix, source->selectedDocument(), i);
@@ -154,6 +155,7 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
         mScene->addItem(newItem);
         mThumbsWithLabels[iPage].setThumbnail(newItem);
         delete oldItem;
+        oldItem = NULL;
     }
 
 }
