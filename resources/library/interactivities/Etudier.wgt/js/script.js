@@ -6,10 +6,25 @@ var sankoreLang = {
     new_slide: "This is new slide.",
     wgt_name: "Slider",
     slate: "slate",
-    pad: "pad",
+    pad: "tablet",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p><h2>Slider</h2></p>" +
+"<p><h3>Booklet pages.</h3></p>" +
+"<p>Slider is a booklet with pages. This booklet can be enriched with text, images, sound and videos.</p>" +
+"<p>Enter the “Edit” mode to :</p>" +
+"<ul><li>choose the theme of interactivity : tablet, slate or none (none by default),</li>" +
+"<li>edit the pages of the booklet.</li></ul>" +
+"<p>On each page, you can :</p>" +
+"<ul><li> insert text boxes with the “T+” on the left (to modify these text boxes, click inside the text and write),</li>" +
+"<li>insert pictures, sounds and videos dragging and dropping files from the library,</li>" +
+"<li>move texts, pictures, sounds and videos inside the page by clicking and dragging the multidirectional arrows located on the frame,</li>" +
+"<li>enlarge the size of an element with the double arrow at the bottom right of the frame,</li>" +
+"<li>delete an item with the “X”.</li></ul>" +
+"<p>To add a page, click on the “+” green arrow at the bottom.</p>" +
+"<p>To delete a page, click on the red cross.</p>" +
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 
