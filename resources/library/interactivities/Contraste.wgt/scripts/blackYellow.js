@@ -27,7 +27,23 @@ var sankoreLang = {
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p><h2>Contrast</h2> </p>" +
+"<p><h3>Color game</h3> </p>" +
+
+"<p>Hide and show text playing with the background color (yellow or black). Hide and show data dragging and dropping text fields to the right or the left.</p> "+
+"<p>“Reload” button resets the exercises.</p>" +
+"<p>Enter the “Edit” mode to :</p>" +
+"<ul><li>choose the theme of interactivity : tablet, slate or none (none by default),</li>" +
+"<li>modify an exercise or create a new one.</li></ul>" +
+
+"<p>To create a new label :</p>" +
+"<ul><li> click on “+ Add”,</li>" +
+"<li>Enter the data for example “3x15”,</li>" +
+"<li>Enter the result, for example “15” and click “OK”. </li> </ul>" +
+"<p>To modify data or results, click directly on text fields.</p>" +
+"<p>To delete a label, click on the “X”.</p>" +
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 

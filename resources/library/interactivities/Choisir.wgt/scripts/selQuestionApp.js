@@ -41,7 +41,27 @@ var sankoreLang = {
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p><h2> Choose the right answer</h2></p>" +
+"<p><h3> Multiple-Choice Question (MCQ).</h3></p>" +
+"<p>Multiple-choice question. The goal is to choose the correct answer.</p>" +
+"<p>“Reload” button resets the exercises.</p>" +
+
+"<p> Enter the “Edit” mode to :</p>" +
+"<ul><li> choose the theme of interactivity : tablet, slate or none (none by default),</li>" +
+"<li> modify an exercise or create a new one.</li></ul>" +
+
+"<p>To create a new exercise :</p>" +
+"<ul> <li> click on “Add a new question”,</li>" +
+"<li>edit the text field clicking on the text field “Enter your question here ... ”,</li>" +
+"<li>click on “Options” to select the type of our MCQ (one correct answer, multiple correct answers, drop down) and close it,</li>" +
+"<li>add a new possible answer if needed,</li>" +
+"<li>modify the text field clicking on it.</li>" +
+"<li>set the correct answer by clicking in the checkbox to the left of the text field.</li></ul>" +
+"<p>To remove a label, click on the cross button on the frame.</p>" +
+"<p>To delete a possible answer click on the cross on the left.</p>" +
+"<p>To delete a question, click on the cross on the left.</p>" +
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 

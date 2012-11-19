@@ -20,7 +20,7 @@ var sankoreLang = {
     help_content: "<p><h2>Catégoriser des textes</h2></p>"+
     "<p><h3>Classer des étiquettes de mots en fonction de la dénomination de la catégorie.</h3></p>"+
 
-    "<p>L’activité s’effectue par un glisser-déposer de l’étiquette de mots dans la catégorie correspondante. Tant que toutes les étiquettes de mots ne sont pas classées, la zone reste rouge. Une fois que toutes les étiquettes de mots sont classées dans la bonne catégorie, la zone se colore en vert.</p>"+
+    "<p>L’activité s’effectue par un glisser-déposer de l’étiquette de mots dans la catégorie correspondante. Une fois que toutes les étiquettes de mots sont classées dans la bonne catégorie, la zone se colore en vert.</p>"+
 
     "<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
 

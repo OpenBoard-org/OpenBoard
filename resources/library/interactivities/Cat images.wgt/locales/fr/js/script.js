@@ -14,7 +14,7 @@ var sankoreLang = {
     help_content: "<p><h2>Catégoriser des images</h2></p>"+
     "<p><h3>Classer des images en fonction de la dénomination de la catégorie.</h3></p>"+
 
-    "<p>L’activité s’effectue par un glisser-déposer de l’image dans la catégorie correspondante. Tant que toutes les images d’une catégorie ne sont pas classées, la zone reste rouge. Une fois que toutes les images sont classées dans la bonne catégorie, la zone se colore en vert.</p>"+
+    "<p>L’activité s’effectue par un glisser-déposer de l’image dans la catégorie correspondante. Une fois que toutes les images sont classées dans la bonne catégorie, la zone se colore en vert.</p>"+
     "<p>Le bouton “Recharger” réinitialise les exercices.</p>"+
 
     "<p>Le bouton “Modifier” vous permet :</p>"+
