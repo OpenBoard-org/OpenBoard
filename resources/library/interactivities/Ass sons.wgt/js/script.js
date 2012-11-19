@@ -10,7 +10,28 @@ var sankoreLang = {
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p> <h2>Associate to the audio</h2> </p>" +
+"<p> <h3> Match a picture to a sound</h3> </p>" +
+"<p> Drag and drop the image in the correct area. If the result is incorrect, the area turns in red. If the result is correct, the area turns in green. </p> "+
+"<p> Reload “button” resets the exercises. </p>" +
+"<p> Enter the “Edit” mode to : </ p>" +
+"<ul> <li> choose the theme of the App : tablet, slate, or none (by default : none), </li>" +
+"<li> modify an exercise or to create a new one.</li> </ul>" +
+
+"<p>To create a new exercise : </p>" +
+"<ul> <li> click on “New block”,</li>" +
+"<li>insert an instruction the field dragging an audio file from your library, </li>" +
+"<li>add picture frames clicking on the “+”,</ li>" +
+"<li>drag an drop pictures from your library,</ li>" +
+"<li>set the correct image of your activity clicking on the submit button “v” on the frame. </li> </ul>" +
+"<p> To delete a frame, click on the cross button on the frame. </p>" +
+"<p> To replace an audio file, drag a new one from your library. </p>" +
+"<p> To replace a picture, drag a new one from your library. </p>" +
+
+"<p> To delete a whole block, click on the cross on the left.</p>" +
+
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 
