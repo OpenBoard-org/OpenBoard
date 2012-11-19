@@ -2,13 +2,25 @@ var sankoreLang = {
     view: "Display", 
     edit: "Edit",
     example: "this is a bunch of words which should be split apart",
-    wgt_name: "Split a phrase",
+    wgt_name: "Split a sentence",
     reload: "Reload",
     slate: "slate",
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p><h2>Split a sentence</h2></p>" +
+"<p><h3> Separate words in a sentence</h3></p>" +
+"<p>The sentence is written without separations between words. The goal is to insert spaces in right places. If the result is correct, the area turns in green.</p> "+
+
+"<p>To add separations between words, move the cursor and click between two characters, a separation is then added.</p>" +
+"<p>“Reload” button resets the exercise.</p>" +
+
+
+"<p>Enter the “Edit” mode to : </p>" +
+"<ul><li> choose the theme of the App : tablet, slate, or none (by default : none),</li>" +
+"<li>modify the sentence (select the text field).</li></ul>" +
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 

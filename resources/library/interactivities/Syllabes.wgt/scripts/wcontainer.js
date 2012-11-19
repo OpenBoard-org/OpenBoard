@@ -2,13 +2,24 @@ var sankoreLang = {
     view: "Display", 
     edit: "Edit",
     example: "so*phis*ti*ca*ted",
-    wgt_name: "Split a word",
+    wgt_name: "Syllables",
     reload: "Reload",
     slate: "slate",
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p><h2> Syllables </h2></p>" +
+"<p><h3> Separate the syllables of a word</h3></p>" +
+
+"<p>The goal is split the word correctly. If the result is correct, the area turns in green. </p>" +
+"<p>To add a separation between two syllables, move the cursor and click between two characters.</p>" +
+"<p>“Reload” button resets the exercise. </ P>" +
+
+"<p>Enter the “Edit” mode to : </p>" +
+"<ul><li> choose the theme of the App : tablet, slate, or none (by default : none),</li>" +
+"<li>modify the word (write in the text field and separate syllables with *).</li> </ul>" +
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 

@@ -9,13 +9,29 @@ var sankoreLang = {
     shovel: "shovel",
     dog: "dog",
     tree: "tree",
-    wgt_name: "Select the desired",
+    wgt_name: "Select",
     reload: "Reload",
     slate: "slate",
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p> <h2>Select</h2> </p>" +
+"<p> <h3> Select the correct element in the list </h3> </p>" +
+"<p> Choose correct element(s). If the result is correct, the area turns in green.</p>" +
+"<p> “Reload “button resets the exercises.</p>" +
+"<p> Enter the “Edit” mode to :</p>" +
+"<ul><li> choose the theme of the App : tablet, slate, or none (by default : none),</li>" +
+"<li> modify an exercise or create new ones in the same activity.</li></ul>" +
+"<p>To create a new exercise :</p>" +
+"<ul> <li> click on “New block”,</li>" +
+"<li> insert an instruction clicking on the text field “Enter your instruction here ... ”,</li>" +
+"<li> add text fields with “+T”,</li>" +
+"<li> select the correct answer clicking in the box,</li>" +
+"<li> change the order of images by dragging them.</li> </ul>" +
+"<p> To delete a frame, click the cross (X).</p>" +
+"<p> To delete a whole exercise, click the cross to the left. </p>" +
+"<p> “Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 

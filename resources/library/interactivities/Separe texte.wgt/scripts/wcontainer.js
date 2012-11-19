@@ -8,7 +8,17 @@ var sankoreLang = {
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p><h2>Split a text</h2></p>" +
+"<p><h3>Separate sentences in a text</h3></p>" +
+"<p>Text is written without the dots between sentences. The goal is to split the text correctly. If the result is correct, the area turns in green.</p>" +
+"<p>To add points between sentences, move the cursor and click between two words.</p>" +
+"<p>“Reload” button resets the exercise.</p>" +
+"<p>Enter the “Edit” mode to :</p>" +
+"<ul><li>choose the theme of the App : tablet, slate, or none (by default : none),</li>" +
+"<li>modify the text (write in the text field different phrases separated by dots.)</li></ul>" +
+"<p>Do not use question and exclamation mark.</p>" +
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 
