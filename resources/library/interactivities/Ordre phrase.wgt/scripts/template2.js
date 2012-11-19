@@ -30,13 +30,27 @@ var sankoreLang = {
     edit: "Edit",
     view: "Display",
     example: "this is\nan example\nsentence",
-    wgt_name: "Order phrases",
+    wgt_name: "Order sentences",
     reload: "Reload",
     slate: "slate",
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p><h2> Order sentences</h2></p>" +
+"<p><h3> Order fragments of the sentence to reconstruct the text.</h3> </p>" +
+"<p>The interactivity displays labels in a random order. Drag and drop fragments in correct order. If the result is correct, the area turns in green.</p> "+
+
+"<p>“Reload “button resets the exercises. </p>" +
+
+"<p> Enter the “Edit” mode to : </p>" +
+"<ul> <li> choose the theme of the App : tablet, slate, or none (by default : none),</li>" +
+"<li>determine the text and fragments. </li></ul>" +
+
+"<p>To create a new exercise : </p>" +
+"<ul><li>insert the desired text in the text field,</li>" +
+"<li>create fragments adding a new line.</li></ul> "+
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 }
 

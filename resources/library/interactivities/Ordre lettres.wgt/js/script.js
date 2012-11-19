@@ -11,7 +11,27 @@ var sankoreLang = {
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p> <h2> Order letters </ h2> </p>" +
+"<p> <h3>Drag and drop labels in the correct order</h3> </p>" +
+"<p>  Listen to the audio file and drag and drop labels in the correct order. If the result is correct, the area turns in green. </p> "+
+
+"<p> You can also use this activity with numbers.</p>" +
+
+"<p>“Reload” button resets the exercises. </p>" +
+
+"<p> Enter the “Edit” mode to : </p>" +
+"<ul> <li> choose the theme of the App : tablet, slate, or none (by default : none), </li>" +
+"<li> modify an exercise or to create a new one.</li> </ul>" +
+ "<p>To create a new exercise : </p>" +
+"<ul> <li> click on “New block”,</li>" +
+"<li>insert an instruction the field dragging an audio file from your library, </li>" +
+"<li>edit the text field “Enter your instruction here...”,</li>" +
+"<li>Write the desired word instead of “example”,</li>" +
+"<li>set the correct image of your activity clicking on the submit button “v” on the frame. </li> </ul>" +
+"<p> To replace an audio file, drag a new one from your library. </p>" +
+"<p> To delete a whole block, click on the cross on the left.</p>" +
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 

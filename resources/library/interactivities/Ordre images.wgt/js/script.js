@@ -4,13 +4,36 @@ var sankoreLang = {
     short_desc: "Place the pictures in ascending order.", 
     add: "Add new block",
     enter: "Enter your instruction here ...",
-    wgt_name: "Order images",
+    wgt_name: "Order pictures",
     reload: "Reload",
     slate: "slate",
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p> <h2> Order pictures </h2> </p>" +
+"<p> <h3> Sort pictures in the order requested</h3> </p>" +
+
+"<p> The number on the frame indicates the order in which the images should be classified. Drag and drop to rank pictures. Once all pictures are correctly classified, the area turns in green. </p> "+
+"<p> Reload “button resets the exercises. </p>" +
+
+"<p> Enter the “Edit” mode to : </p>" +
+"<ul> <li> choose the theme of interactivity : tablet, slate or none (by default : none),</li>" +
+"<li> modify an exercise or create a new one. </li> </ul>" +
+
+"<p>To create a new exercise : </p>" +
+"<ul> <li> click on “New block”,</li>" +
+"<li> insert an instruction clicking on the text field “Enter your instruction here ... ”,</li>" +
+"<li> add picture frames clicking on the “+”,</li>" +
+"<li> drag an drop pictures from your library,</li>" +
+"<li> change the order of images by dragging them.</li> </ul>" +
+
+"<p> To delete a frame, click the cross (X).</p>" +
+"<p> To change a picture, click the “reload” button on the frame.</p>" +
+
+"<p> To delete a whole exercise, click the cross to the left. </p>" +
+
+"<p> “Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 

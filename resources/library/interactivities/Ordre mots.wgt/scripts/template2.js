@@ -36,7 +36,21 @@ var sankoreLang = {
     pad: "pad",
     none: "none",
     help: "Help",
-    help_content: "This is an example of help content ...",
+    help_content: 
+"<p><h2>Order words </h2> </p>" +
+"<p><h3>Order words to reconstruct a correct sentence</h3></p>" +
+
+"<p>The interactivity displays labels in a random order. Drag and drop words in correct order. If the result is correct, the area turns in green.</p> "+
+"<p>“Reload” button resets the exercises. </p>" +
+
+"<p> Enter the “Edit” mode to : </p>" +
+"<ul> <li> choose the theme of the App : tablet, slate, or none (by default : none), </li>" +
+"<li> Determine the sentence and place separation between words. </li> </ul>" +
+
+ "<p>To create a new exercise : </p>" +
+"<ul><li>insert the desired sentence,</li>" +
+"<li> To add spaces in the sentence, insert “*” between each word. Do not place a star at the beginning or the end of your sentence.</li></ul>" +
+"<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"
 };
 
