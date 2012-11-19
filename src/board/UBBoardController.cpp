@@ -648,6 +648,8 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
 
         QList<QGraphicsItem*> duplicatedItems;
         QList<QGraphicsItem*> children = groupItem->childItems();
+          
+        mActiveScene->setURStackEnable(false);
         foreach(QGraphicsItem* pIt, children){
             UBItem* pItem = dynamic_cast<UBItem*>(pIt);
             if(pItem){ // we diong sync duplication of all childs.
@@ -668,6 +670,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
             mActiveScene->addItem(itemToAdd);
             itemToAdd->setSelected(true);
         }
+        mActiveScene->setURStackEnable(true);
     }break;
 
     case UBMimeType::UNKNOWN:
@@ -687,9 +690,9 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
     if (retItem)
     {
         QGraphicsItem *graphicsRetItem = dynamic_cast<QGraphicsItem *>(retItem);
-        if (graphicsRetItem && mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
-            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, 0, graphicsRetItem);
-            UBApplication::undoStack->push(uc);
+        if (mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
+             UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, 0, graphicsRetItem);
+             UBApplication::undoStack->push(uc);
         }
         return retItem;
     }

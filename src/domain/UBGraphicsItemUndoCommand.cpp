@@ -92,14 +92,6 @@ void UBGraphicsItemUndoCommand::undo()
     {
         QGraphicsItem* item = itAdded.next();
 
-        //if removing group
-        if (item->type() == UBGraphicsGroupContainerItem::Type) {
-            UBGraphicsGroupContainerItem *curGroup = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item);
-            if (curGroup) {
-                curGroup->destroy();
-            }
-        }
-
         UBApplication::boardController->freezeW3CWidget(item, true);
         item->setSelected(false);
         mScene->removeItem(item);
