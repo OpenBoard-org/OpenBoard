@@ -685,7 +685,14 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
     }
 
     if (retItem)
+    {
+        QGraphicsItem *graphicsRetItem = dynamic_cast<QGraphicsItem *>(retItem);
+        if (graphicsRetItem && mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, 0, graphicsRetItem);
+            UBApplication::undoStack->push(uc);
+        }
         return retItem;
+    }
 
     UBItem *createdItem = downloadFinished(true, sourceUrl, srcFile, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
     if (createdItem)
