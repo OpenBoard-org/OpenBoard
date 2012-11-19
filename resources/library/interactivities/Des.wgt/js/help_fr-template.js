@@ -3,7 +3,7 @@
 
 <p>L'interactivité “Dés” vous permet d'afficher des faces de dés de manière aléatoire. </p>
 
-<p>En cliquant sur la flèche ou "Lancer" vous affichez une nouvelle série de résultats. </p>
+<p>En cliquant sur la flèche ou sur "Lancer" vous affichez une nouvelle série de résultats. </p>
 
 <p>Les calculs et le raisonnement peuvent être saisis sur le tableau (en dehors de l'interactivité). </p>
 
