@@ -772,7 +772,7 @@ p, li { white-space: pre-wrap; }
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>4</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="OpenSSLTab">
           <attribute name="title">
@@ -784,8 +784,11 @@ p, li { white-space: pre-wrap; }
              <property name="acceptDrops">
               <bool>false</bool>
              </property>
+             <property name="undoRedoEnabled">
+              <bool>false</bool>
+             </property>
              <property name="plainText">
-              <string>  LICENSE ISSUES
+              <string notr="true">  LICENSE ISSUES
   ==============
 
   The OpenSSL toolkit stays under a dual license, i.e. both the conditions of
@@ -911,6 +914,9 @@ p, li { white-space: pre-wrap; }
  * [including the GNU Public Licence.]
  */</string>
              </property>
+             <property name="textInteractionFlags">
+              <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
             </widget>
            </item>
           </layout>
@@ -925,8 +931,11 @@ p, li { white-space: pre-wrap; }
              <property name="acceptDrops">
               <bool>false</bool>
              </property>
+             <property name="undoRedoEnabled">
+              <bool>false</bool>
+             </property>
              <property name="plainText">
-              <string>Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler
+              <string notr="true">Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler
 
 This software is provided 'as-is', without any express or implied
 warranty.  In no event will the authors be held liable for any damages
@@ -947,6 +956,9 @@ freely, subject to the following restrictions:
 Jean-loup Gailly        Mark Adler
 jloup@gzip.org          madler@alumni.caltech.edu</string>
              </property>
+             <property name="textInteractionFlags">
+              <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
             </widget>
            </item>
           </layout>
@@ -961,8 +973,11 @@ jloup@gzip.org          madler@alumni.caltech.edu</string>
              <property name="acceptDrops">
               <bool>false</bool>
              </property>
+             <property name="undoRedoEnabled">
+              <bool>false</bool>
+             </property>
              <property name="plainText">
-	      <string>Copyright (C) 1996-2011 Glyph & Cog, LLC.
+              <string notr="true">Copyright (C) 1996-2011 Glyph &amp; Cog, LLC.
 
 Xpdf is licensed under the GNU General Public License (GPL), version
 2.  In my opinion, the GPL is a convoluted, confusing, ambiguous mess.
@@ -985,13 +1000,13 @@ informal clarifications:
   available -- post it on a web site, email it to me, whatever.
 
 For information on commercial licensing and consulting, please see the
-Glyph & Cog web site:
+Glyph &amp; Cog web site:
 
     http://www.glyphandcog.com/
 
 Here is the full text of the GNU General Public License version 2.
 
---8<---------------cut here---------------start------------->8---
+--8&lt;---------------cut here---------------start-------------&gt;8---
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
@@ -1330,7 +1345,10 @@ proprietary programs.  If your program is a subroutine library, you may
 consider it more useful to permit linking proprietary applications with the
 library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.
---8<---------------cut here---------------end--------------->8---</string>
+--8&lt;---------------cut here---------------end---------------&gt;8---</string>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
              </property>
             </widget>
            </item>
@@ -1346,8 +1364,11 @@ Public License instead of this License.
              <property name="acceptDrops">
               <bool>false</bool>
              </property>
+             <property name="undoRedoEnabled">
+              <bool>false</bool>
+             </property>
              <property name="plainText">
-              <string>Copyright (C) 2005-2007 Sergey A. Tachenov
+              <string notr="true">Copyright (C) 2005-2007 Sergey A. Tachenov
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
@@ -1689,6 +1710,9 @@ consider it more useful to permit linking proprietary applications with the
 library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.</string>
              </property>
+             <property name="textInteractionFlags">
+              <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
             </widget>
            </item>
           </layout>
@@ -1704,7 +1728,7 @@ Public License instead of this License.</string>
               <bool>false</bool>
              </property>
              <property name="plainText">
-              <string>Copyright (C) 2012 Webdoc SA
+              <string notr="true">Copyright (C) 2012 Webdoc SA
 
                   GNU LIBRARY GENERAL PUBLIC LICENSE
                        Version 2, June 1991
@@ -2289,22 +2313,22 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Crédits police scolaire Open-Sankoré : &lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La police Andika Basic dispose d'une licence Open Font License &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Sil international&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;amp;id=andika&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Licence OFL (traduction française non officielle) http://fontforge.sourceforge.net/OFL-Unofficial-fr.html&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les polices Ecolier suivantes sont l'oeuvre de Jean-Marie Douteau et disposent d'une licence OFL : &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Ecolier Court &lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Ecolier Ligne Court&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Jean-Marie Douteau (douteau.ecolier@sfr.fr)&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://douteau.ecolier.perso.sfr.fr/page_ecolier.htm&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les polices Ecolier suivantes sont l'oeuvre de Jean-Marie Douteau et disposent d'une licence Creative Commons BY NC ND :&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Ecolier lignes pointillés&lt;/p&gt;
@@ -2313,12 +2337,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Écolier CP pointillés&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Jean-Marie Douteau (douteau.ecolier@sfr.fr)&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://douteau.ecolier.perso.sfr.fr/page_ecolier.htm&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les polices Cursive sont l'oeuvre d'Antoine Fetet (antoine.fetet@laposte.net) à partir d'une police proposée par Jean-Claude Gineau&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://lps13.free.fr/contenu/construire/Cursive_standard.zip et http://fr.fontriver.com/font/gino_school_script/&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;L'auteur en autorise l'utilisation dans le cadre du logiciel open-Sankoré pour un usage non commercial&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les polices Script (Ecole et CaseEcole) sont l'oeuvre d'Henri Rogelet&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://pointecole.free.fr/polices/SCRIPTCO.zip&lt;/p&gt;
@@ -2326,7 +2350,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Autorisation pour un usage non commercial&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La police phonétique, Alphonet est l'oeuvre d'Henri Rogelet&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://pointecole.free.fr/polices/ALPHONET.zip&lt;/p&gt;
