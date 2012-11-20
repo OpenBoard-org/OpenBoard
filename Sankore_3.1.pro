@@ -280,6 +280,18 @@ macx {
        TRANSLATION_zh.path = "$$RESOURCES_DIR/zh.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_zh
    }
+   exists(resources/i18n/sankore_zh_CN.qm) {
+       TRANSLATION_zh_CN.files = resources/i18n/sankore_zh_CN.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_zh_CN.path = "$$RESOURCES_DIR/zh_CN.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_zh_CN
+   }
+   exists(resources/i18n/sankore_zh_TW.qm) {
+       TRANSLATION_zh_TW.files = resources/i18n/sankore_zh_TW.qm \
+           resources/i18n/Localizable.strings
+       TRANSLATION_zh_TW.path = "$$RESOURCES_DIR/zh_TW.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_zh_TW
+   }
    exists(resources/i18n/sankore_ro.qm) {
        TRANSLATION_ro.files = resources/i18n/sankore_ro.qm \
            resources/i18n/Localizable.strings
@@ -404,6 +416,8 @@ TRANSLATIONS = resources/i18n/sankore_en.ts \
    resources/i18n/sankore_ja.ts \
    resources/i18n/sankore_ko.ts \
    resources/i18n/sankore_zh.ts \
+   resources/i18n/sankore_zh_CN.ts \
+   resources/i18n/sankore_zh_TW.ts \
    resources/i18n/sankore_ro.ts \
    resources/i18n/sankore_ar.ts \
    resources/i18n/sankore_iw.ts \
