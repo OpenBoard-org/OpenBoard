@@ -1,4 +1,4 @@
-<h3> Table</h3>
+<h3> Tables</h3>
 <h4> Mental calculation, properties of operations </h4>
 
 <p>With the table App you can work on properties of the various operations and review tables of addition, subtraction, multiplication, and division. Click on the case to display or to hide the answer.</p>
