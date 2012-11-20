@@ -801,27 +801,27 @@
     </message>
     <message>
         <source>Group items</source>
-        <translation type="unfinished"></translation>
+        <translation>组合项目</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation>播放</translation>
     </message>
     <message>
         <source>Interact with items</source>
-        <translation type="unfinished"></translation>
+        <translation>与项目互动</translation>
     </message>
     <message>
         <source>Erase Background</source>
-        <translation type="unfinished"></translation>
+        <translation>删除背景</translation>
     </message>
     <message>
         <source>Remove the backgound</source>
-        <translation type="unfinished"></translation>
+        <translation>移除背景</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation>组合</translation>
     </message>
 </context>
 <context>
@@ -832,11 +832,11 @@
     </message>
     <message>
         <source>Username:</source>
-        <translation>用户名：</translation>
+        <translation>用户名:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>密码：</translation>
+        <translation>密码:</translation>
     </message>
 </context>
 <context>
@@ -851,11 +851,11 @@
     </message>
     <message>
         <source>Username:</source>
-        <translation>用户名：</translation>
+        <translation>用户名:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>密码：</translation>
+        <translation>密码:</translation>
     </message>
     <message>
         <source>Save username and password for future use</source>
@@ -866,19 +866,19 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="unfinished"></translation>
+        <translation>Element ID = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="unfinished"></translation>
+        <translation>目标格式不支持该内容。</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished">删除页面</translation>
+        <translation>删除页面</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>确定要删除选中文件“%0”中的1页?</translation>
     </message>
 </context>
 <context>
@@ -900,7 +900,7 @@
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation>有可用的更新，是否登陆更新页面？</translation>
+        <translation>有可用的更新，是否登陆更新页面?</translation>
     </message>
     <message>
         <source>No update available</source>
@@ -943,23 +943,23 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation type="unfinished"></translation>
+        <translation>删除文件的%1页</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
-        <translation type="unfinished"></translation>
+        <translation>已删除%1页</translation>
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished"></translation>
+        <translation>增加操作失败文档:文件复制错误</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation>组合</translation>
     </message>
     <message>
         <source>Ungroup</source>
-        <translation type="unfinished"></translation>
+        <translation>取消组合</translation>
     </message>
 </context>
 <context>
@@ -970,7 +970,7 @@
     </message>
     <message>
         <source>CapturedImage</source>
-        <translation type="unfinished"></translation>
+        <translation>图像截图</translation>
     </message>
 </context>
 <context>
@@ -981,7 +981,7 @@
     </message>
     <message>
         <source>Color:</source>
-        <translation>颜色：</translation>
+        <translation>颜色:</translation>
     </message>
     <message>
         <source>Shape:</source>
@@ -1020,7 +1020,7 @@
     </message>
     <message>
         <source>Show Open-Sankore</source>
-        <translation type="unfinished"></translation>
+        <translation>显示Open-Sankore</translation>
     </message>
 </context>
 <context>
@@ -1135,11 +1135,11 @@
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation>选中对象不包含任何图片文件！</translation>
+        <translation>选中对象不包含任何图片文件!</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation>文档“%1”由一个更新版本的Sankore生成，打开该文档可能造成部分信息丢失，要继续吗？</translation>
+        <translation>文档“%1”由一个更新版本的Sankore (%2)生成，打开该文档可能造成部分信息丢失，要继续吗?</translation>
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
@@ -1149,15 +1149,15 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>标题页面</translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation type="unfinished"></translation>
+        <translation>文件夹中无图像文件</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished">未命名文档</translation>
+        <translation>未命名文档</translation>
     </message>
 </context>
 <context>
@@ -1188,19 +1188,19 @@
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>正在插入%2的页面%1</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">导入成功</translation>
+        <translation>导入成功。</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>文件%1导入成功。</translation>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>正在导入文件 %1</translation>
     </message>
 </context>
 <context>
@@ -1211,7 +1211,7 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>标题页面</translation>
     </message>
 </context>
 <context>
@@ -1277,30 +1277,30 @@
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation type="unfinished"></translation>
+        <translation>导出过程中出现警告</translation>
     </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="unfinished"></translation>
+        <translation>导出至IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="unfinished"></translation>
+        <translation>以 IWB文件格式导出</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">文档导出中……</translation>
+        <translation>文档导出中……</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">导出成功</translation>
+        <translation>导出成功。</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">导出失败</translation>
+        <translation>导出失败。</translation>
     </message>
 </context>
 <context>
@@ -1403,134 +1403,134 @@
     <name>UBFeatureProperties</name>
     <message>
         <source>Add to page</source>
-        <translation type="unfinished">添加至页面</translation>
+        <translation>添加至页面</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">设置为背景</translation>
+        <translation>设置为背景</translation>
     </message>
     <message>
         <source>Add to library</source>
-        <translation type="unfinished">添加至图书馆</translation>
+        <translation>添加至图书馆</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation type="unfinished">素材信息</translation>
+        <translation>素材信息</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished">添加至收藏夹</translation>
+        <translation>添加至收藏夹</translation>
     </message>
     <message>
         <source>Share</source>
-        <translation type="unfinished">分享</translation>
+        <translation>分享</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">搜索</translation>
+        <translation>搜索</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">删除</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation type="unfinished">返回上级文件夹</translation>
+        <translation>返回上级文件夹</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
-        <translation type="unfinished">从收藏夹中移除</translation>
+        <translation>从收藏夹中移除</translation>
     </message>
     <message>
         <source>Create new folder</source>
-        <translation type="unfinished">新建文件夹</translation>
+        <translation>新建文件夹</translation>
     </message>
     <message>
         <source>Rescan file system</source>
-        <translation type="unfinished"></translation>
+        <translation>重新扫描文件系统</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesController</name>
     <message>
         <source>ImportedImage</source>
-        <translation type="unfinished">已导入图片</translation>
+        <translation>已导入图片</translation>
     </message>
     <message>
         <source>Audios</source>
-        <translation type="unfinished">音频</translation>
+        <translation>音频</translation>
     </message>
     <message>
         <source>Movies</source>
-        <translation type="unfinished">视频</translation>
+        <translation>视频</translation>
     </message>
     <message>
         <source>Pictures</source>
-        <translation type="unfinished">图片</translation>
+        <translation>图片</translation>
     </message>
     <message>
         <source>Animations</source>
-        <translation type="unfinished">动画</translation>
+        <translation>动画</translation>
     </message>
     <message>
         <source>Interactivities</source>
-        <translation type="unfinished">互动</translation>
+        <translation>互动</translation>
     </message>
     <message>
         <source>Applications</source>
-        <translation type="unfinished">应用程序</translation>
+        <translation>应用程序</translation>
     </message>
     <message>
         <source>Shapes</source>
-        <translation type="unfinished">形状</translation>
+        <translation>形状</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>收藏夹</translation>
     </message>
     <message>
         <source>Web search</source>
-        <translation type="unfinished"></translation>
+        <translation>搜索网络</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">回收站</translation>
+        <translation>回收站</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesNewFolderDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>接受</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Enter a new folder name</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation type="unfinished"></translation>
+        <translation>载入中</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished">位置锁定</translation>
+        <translation>位置锁定</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished">宽屏上可见</translation>
+        <translation>宽屏上可见</translation>
     </message>
 </context>
 <context>
@@ -1570,14 +1570,14 @@
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished">网页</translation>
+        <translation>网页</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished">载入中……</translation>
+        <translation>载入中……</translation>
     </message>
 </context>
 <context>
@@ -1595,7 +1595,7 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>常见文件格式</translation>
+        <translation>常见文件格式 (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
@@ -1659,7 +1659,7 @@
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation>视频发布至内部网过程中发生错误</translation>
+        <translation>视频发布至内部网过程中发生错误 (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
@@ -1699,7 +1699,7 @@
     <name>UBMessagesDialog</name>
     <message>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
@@ -1749,30 +1749,30 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Sankore has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation>Sankore无法进入文档库。为避免数据出错，应用程序须立即关闭，最近所做的修改也可能丢失。</translation>
+        <translation>Sankore无法进入文档库“%1”。为避免数据出错，应用程序须立即关闭，最近所做的修改也可能丢失。</translation>
     </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
     <message>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>英语</translation>
     </message>
     <message>
         <source>Russian</source>
-        <translation type="unfinished"></translation>
+        <translation>俄语</translation>
     </message>
     <message>
         <source>German</source>
-        <translation type="unfinished"></translation>
+        <translation>德语</translation>
     </message>
     <message>
         <source>French</source>
-        <translation type="unfinished"></translation>
+        <translation>法语</translation>
     </message>
     <message>
         <source>Swiss French</source>
-        <translation type="unfinished"></translation>
+        <translation>瑞士法语</translation>
     </message>
 </context>
 <context>
@@ -1894,33 +1894,33 @@ Do you want to ignore these errors for this host?</source>
     <name>UBTGActionWidget</name>
     <message>
         <source>Teacher</source>
-        <translation type="unfinished"></translation>
+        <translation>教师</translation>
     </message>
     <message>
         <source>Student</source>
-        <translation type="unfinished"></translation>
+        <translation>学生</translation>
     </message>
     <message>
         <source>Type task here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此键入任务......</translation>
     </message>
 </context>
 <context>
     <name>UBTGMediaWidget</name>
     <message>
         <source>drop media here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此插入媒体......</translation>
     </message>
     <message>
         <source>Type title here...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此键入标题......</translation>
     </message>
 </context>
 <context>
     <name>UBTGUrlWidget</name>
     <message>
         <source>Insert link title here...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此插入链接标题......</translation>
     </message>
 </context>
 <context>
@@ -1934,131 +1934,131 @@ Do you want to ignore these errors for this host?</source>
     <name>UBTeacherGuideEditionWidget</name>
     <message>
         <source>Type title here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此键入标题......</translation>
     </message>
     <message>
         <source>Type comment here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此键入评论.......</translation>
     </message>
     <message>
         <source>Add an action</source>
-        <translation type="unfinished"></translation>
+        <translation>添加指令</translation>
     </message>
     <message>
         <source>Add a media</source>
-        <translation type="unfinished"></translation>
+        <translation>添加媒体</translation>
     </message>
     <message>
         <source>Add a link</source>
-        <translation type="unfinished"></translation>
+        <translation>添加链接</translation>
     </message>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished"></translation>
+        <translation>页:%0</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePageZeroWidget</name>
     <message>
         <source>Type session title here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此键入场次......</translation>
     </message>
     <message>
         <source>Author(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>作者</translation>
     </message>
     <message>
         <source>Type authors here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此键入作者姓名......</translation>
     </message>
     <message>
         <source>Objective(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>素材</translation>
     </message>
     <message>
         <source>Type objectives here...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此键入素材......</translation>
     </message>
     <message>
         <source>Resource indexing</source>
-        <translation type="unfinished"></translation>
+        <translation>资源索引</translation>
     </message>
     <message>
         <source>Keywords:</source>
-        <translation type="unfinished"></translation>
+        <translation>关键词</translation>
     </message>
     <message>
         <source>Type keywords here ...</source>
-        <translation type="unfinished"></translation>
+        <translation>在此键入关键字......</translation>
     </message>
     <message>
         <source>Level:</source>
-        <translation type="unfinished"></translation>
+        <translation>级别：</translation>
     </message>
     <message>
         <source>Subjects:</source>
-        <translation type="unfinished"></translation>
+        <translation>主题：</translation>
     </message>
     <message>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
+        <translation>类别：</translation>
     </message>
     <message>
         <source>Licence</source>
-        <translation type="unfinished"></translation>
+        <translation>证书</translation>
     </message>
     <message>
         <source>Attribution CC BY</source>
-        <translation type="unfinished"></translation>
+        <translation>署名</translation>
     </message>
     <message>
         <source>Attribution-NoDerivs CC BY-ND</source>
-        <translation type="unfinished"></translation>
+        <translation>禁止演绎</translation>
     </message>
     <message>
         <source>Attribution-ShareAlike CC BY-SA</source>
-        <translation type="unfinished"></translation>
+        <translation>相同方式共享</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial CC BY-NC</source>
-        <translation type="unfinished"></translation>
+        <translation>非商业用途</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-NoDerivs CC BY-NC-ND</source>
-        <translation type="unfinished"></translation>
+        <translation>非商业用途-禁止演绎</translation>
     </message>
     <message>
         <source>Attribution-NonCommercial-ShareAlike CC BY-NC-SA</source>
-        <translation type="unfinished"></translation>
+        <translation>非商业用途-相同方式共享</translation>
     </message>
     <message>
         <source>Public domain</source>
-        <translation type="unfinished"></translation>
+        <translation>公共领域</translation>
     </message>
     <message>
         <source>Copyright</source>
-        <translation type="unfinished"></translation>
+        <translation>版权</translation>
     </message>
     <message>
         <source>Created the:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>创建日期：</translation>
     </message>
     <message>
         <source>Updated the:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>更新日期：</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>标题页面</translation>
     </message>
 </context>
 <context>
     <name>UBTeacherGuidePresentationWidget</name>
     <message>
         <source>Page: %0</source>
-        <translation type="unfinished"></translation>
+        <translation>页:%0</translation>
     </message>
 </context>
 <context>
@@ -2101,6 +2101,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Cache</source>
         <translation>高级缓存</translation>
+    </message>
+    <message>
+        <source>Aristo</source>
+        <translation>Aristo</translation>
     </message>
 </context>
 <context>
@@ -2204,11 +2208,11 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Open-Sankore</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankore</translation>
     </message>
     <message>
         <source>OpenSankore</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenSankore</translation>
     </message>
 </context>
 <context>
@@ -2533,10 +2537,6 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;点击“上传”表示您对上传内容拥有全部版权或得到版权所有人将上传内容公开发表在YouTube上的授权，否则此举违反YouTube服务条款 &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-        <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>brushProperties</name>
@@ -2670,7 +2670,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Home Page:</source>
-        <translation>主页：</translation>
+        <translation>主页:</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
@@ -2794,7 +2794,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Planète Sankoré ID</source>
-        <translation type="obsolete">Planète Sankoré ID</translation>
+        <translation>Planète Sankoré ID</translation>
     </message>
     <message>
         <source>User:</source>
@@ -3247,100 +3247,108 @@ DAMAGES.
     </message>
     <message>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <source>Planète Sankoré ID for exporting file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Restore credentials on reboot  </source>
-        <translation type="unfinished"></translation>
+        <translation>版权</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;The licences are in English to respect the official and legal approved translation.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly and Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  This software is provided &apos;as-is&apos;, without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. This notice may not be removed or altered from any source distribution.&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;Copyright (C) 1995-1998 Jean-loup Gailly及 Mark Adler&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt; 本软件“按原样”提供，不附带任何明示的或暗含的担保。无论在何种情况下，软件作者对于由于使用本软件所带来的任何损失概不负责。&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  任何人都可将本软件用于任何目的（包括商业应用），并随意对软件进行更改或重新   发布，但是受以下条件的限制：&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  1. 不得歪曲本软件的出处；您不得声称原始软件是自己编写的。如果您在某产品中使用了本软件，希望您可以在产品文档中提及，但并非必须。&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  2. 同样，必须标明经过更改的源代码的版本，不得声称其为原创软件。&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; color:#1a1a1a;&quot;&gt;  3. 不得从任何源代码发布中将此说明去除或进行修改。&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Open-Sankoré version 1.4 , Copyright (C) 2010-2012 Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;&lt;br /&gt;Open-Sankoré est un logiciel libre : vous pouvez le redistribuer et/ou le modifier en respectant les termes de la Lesser GNU general Public Licence (GNU LGPL) telle que publiée par la Free Software Foundation en version 2 ou une version plus récente.&lt;br /&gt;Vous pouvez consulter et charger le code source du logiciel sur &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré est distribué dans l&apos;espoir qu&apos;il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de COMMERCIALISATION ou D&apos;ADAPTATION A UN OBJET PARTICULIER.&lt;br /&gt;Veuillez consulter la licence Lesser GNU General Public Licence située dans l&apos;onglet Licences ou consulter le site &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;http://www.gnu.org/licenses/&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;.&lt;br /&gt;&lt;br /&gt;Open-Sankoré is free software: you can redistribute it and/or modify it under the terms of the Lesser GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version. You can find the source code of this software at &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Lesser GNU General Public License below for more details.&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Contact : &lt;br /&gt;Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;br /&gt;20 Avenue Ségur Paris 75007&lt;br /&gt;Téléphone : 01 43 17 68 08&lt;br /&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Open-Sankoré version 1.4 , Copyright (C) 2010-2012 Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;&lt;br /&gt;Open-Sankoré est un logiciel libre : vous pouvez le redistribuer et/ou le modifier en respectant les termes de la Lesser GNU general Public Licence (GNU LGPL) telle que publiée par la Free Software Foundation en version 2 ou une version plus récente.&lt;br /&gt;Vous pouvez consulter et charger le code source du logiciel sur &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré est distribué dans l&apos;espoir qu&apos;il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de COMMERCIALISATION ou D&apos;ADAPTATION A UN OBJET PARTICULIER.&lt;br /&gt;Veuillez consulter la licence Lesser GNU General Public Licence située dans l&apos;onglet Licences ou consulter le site &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;http://www.gnu.org/licenses/&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;.&lt;br /&gt;&lt;br /&gt;Open-Sankoré is free software: you can redistribute it and/or modify it under the terms of the Lesser GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version. You can find the source code of this software at &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Lesser GNU General Public License below for more details.&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Contact : &lt;br /&gt;Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique (GIP ENA)&lt;br /&gt;Délégation Interministérielle à l&apos;Education Numérique en Afrique&lt;br /&gt;20 Avenue Ségur Paris 75007&lt;br /&gt;Téléphone : 01 43 17 68 08&lt;br /&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;Open-Sankoré 1.4版，Copyright (C) 2010-2012促进非洲数码教育公共利益共同体（Groupement d&apos;Intérêt Public pour l&apos;Education Numérique en Afrique，简称GIP ENA）&lt;br /&gt;&lt;br /&gt;Open-Sankoré为自由软件，您可根据自由软件基金会（Free Software Foundation）发表的第二版或最新版《GNU 通用公共授权》（Lesser GNU general Public Licence，简称GNU LGPL）条款规定，自由传播及/或修改本软件。&lt;br /&gt;您可在该网站查询源代码或将源代码上载到该网站：&lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré的发行宗旨在于希望该软件能发挥功能，但完全无法（明确或间接）保证其可用于商业用途或满足特殊需求。&lt;br /&gt;请查询使用许可页面中的《GNU 通用公共授权》或查询网站 &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;http://www.gnu.org/licenses/&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;。&lt;br /&gt;&lt;br /&gt;Open-Sankoré is free software: you can redistribute it and/or modify it under the terms of the Lesser GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or any later version. You can find the source code of this software at &lt;/span&gt;&lt;a href=&quot;https://github.com/Sankore&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;&amp;lt;https://github.com/Sankore&amp;gt;&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;Open-Sankoré is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Lesser GNU General Public License below for more details.&lt;br /&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;联系方式 : &lt;br /&gt;促进非洲数码教育公共利益共同体&lt;br /&gt;非洲数码教育部位综合代表团&lt;br /&gt;地址：20 Avenue Ségur Paris 75007&lt;br /&gt;电话 : 01 43 17 68 08&lt;br /&gt;电邮: &lt;/span&gt;&lt;a href=&quot;mailto:contact@sankore.org&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; text-decoration: underline; color:#0000ff;&quot;&gt;contact@sankore.org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;
+</translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Crédits police scolaire Open-Sankoré : &lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La police Andika Basic dispose d&apos;une licence Open Font License &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Sil international&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;amp;id=andika&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Licence OFL (traduction française non officielle) http://fontforge.sourceforge.net/OFL-Unofficial-fr.html&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les polices Ecolier suivantes sont l&apos;oeuvre de Jean-Marie Douteau et disposent d&apos;une licence OFL : &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Ecolier Court &lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Ecolier Ligne Court&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Jean-Marie Douteau (douteau.ecolier@sfr.fr)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://douteau.ecolier.perso.sfr.fr/page_ecolier.htm&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les polices Ecolier suivantes sont l&apos;oeuvre de Jean-Marie Douteau et disposent d&apos;une licence Creative Commons BY NC ND :&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Ecolier lignes pointillés&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Écolier pointillés&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Écolier CP&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Écolier CP pointillés&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Jean-Marie Douteau (douteau.ecolier@sfr.fr)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://douteau.ecolier.perso.sfr.fr/page_ecolier.htm&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les polices Cursive sont l&apos;oeuvre d&apos;Antoine Fetet (antoine.fetet@laposte.net) à partir d&apos;une police proposée par Jean-Claude Gineau&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://lps13.free.fr/contenu/construire/Cursive_standard.zip et http://fr.fontriver.com/font/gino_school_script/&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;L&apos;auteur en autorise l&apos;utilisation dans le cadre du logiciel open-Sankoré pour un usage non commercial&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les polices Script (Ecole et CaseEcole) sont l&apos;oeuvre d&apos;Henri Rogelet&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://pointecole.free.fr/polices/SCRIPTCO.zip&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://pointecole.free.fr/polices/SCRIPTCA.zip&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Autorisation pour un usage non commercial&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;La police phonétique, Alphonet est l&apos;oeuvre d&apos;Henri Rogelet&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://pointecole.free.fr/polices/ALPHONET.zip&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Autorisation pour un usage non commercial&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Crédits police scolaire Open-Sankoré : &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;La police Andika Basic dispose d&apos;une licence Open Font License &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Sil international&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;amp;id=andika&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Licence OFL (traduction française non officielle) http://fontforge.sourceforge.net/OFL-Unofficial-fr.html&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Les polices Ecolier suivantes sont l&apos;oeuvre de Jean-Marie Douteau et disposent d&apos;une licence OFL : &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Ecolier Court &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Ecolier Ligne Court&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Jean-Marie Douteau (douteau.ecolier@sfr.fr)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://douteau.ecolier.perso.sfr.fr/page_ecolier.htm&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Les polices Ecolier suivantes sont l&apos;oeuvre de Jean-Marie Douteau et disposent d&apos;une licence Creative Commons BY NC ND :&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Ecolier lignes pointillés&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Écolier pointillés&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Écolier CP&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;- Écolier CP pointillés&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Jean-Marie Douteau (douteau.ecolier@sfr.fr)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://douteau.ecolier.perso.sfr.fr/page_ecolier.htm&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Les polices Cursive sont l&apos;oeuvre d&apos;Antoine Fetet (antoine.fetet@laposte.net) à partir d&apos;une police proposée par Jean-Claude Gineau&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://lps13.free.fr/contenu/construire/Cursive_standard.zip et http://fr.fontriver.com/font/gino_school_script/&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;L&apos;auteur en autorise l&apos;utilisation dans le cadre du logiciel open-Sankoré pour un usage non commercial&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Les polices Script (Ecole et CaseEcole) sont l&apos;oeuvre d&apos;Henri Rogelet&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices/SCRIPTCO.zip&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices/SCRIPTCA.zip&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Autorisation pour un usage non commercial&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;La police phonétique, Alphonet est l&apos;oeuvre d&apos;Henri Rogelet&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices/ALPHONET.zip&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt; © Henri Rogelet &amp;lt;h.rogelet@free.fr&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Autorisation pour un usage non commercial&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt;&quot;&gt;Source : http://pointecole.free.fr/polices.html&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
