@@ -8,7 +8,7 @@
 <p> The first player to get 3 of his marks ( X or O) in a row (up, down, across, or diagonally) is the winner.</p>
 <p> The "Reload" button restarts the game. </p>
 <p> Enter the "Edit" mode to : </p>
-<ul>
+
 <ul> <li> choose the theme of interactivity : tablet, slate or none (by default : tablet),</li>
 <li> modify the calculations that you want to use for your activity. </li> </ul>
 

@@ -43,7 +43,7 @@ var sankoreLang = {
     help: "Help",
     help_content: 
 "<p><h2> Choose the right answer</h2></p>" +
-"<p><h3> Multiple-Choice Question (MCQ).</h3></p>" +
+"<p><h3> Multiple-Choice Question (MCQ)</h3></p>" +
 "<p>Multiple-choice question. The goal is to choose the correct answer.</p>" +
 "<p>“Reload” button resets the exercises.</p>" +
 
