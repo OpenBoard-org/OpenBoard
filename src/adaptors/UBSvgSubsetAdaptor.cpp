@@ -1025,6 +1025,8 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
                 UBGraphicsGroupContainerItem *curGroup = readGroup();
                 if (curGroup)
                     groupContainer.append(curGroup);
+                else
+                    qDebug() << "this is an error";
             }
             else if (mXmlReader.name() == tElement)
             {
@@ -1042,7 +1044,10 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
                 }
                 else // item
                 {
-                    groupContainer.append(curItem);
+                    if(curItem)
+                        groupContainer.append(curItem);
+                    else
+                        qDebug() << "this is an error";
                 }
             }else {
                 mXmlReader.skipCurrentElement();
@@ -1078,7 +1083,10 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
         if (pStrokesGroup)
         {
             QGraphicsItem *strokeGroup = qgraphicsitem_cast<QGraphicsItem *>(pStrokesGroup);
-            groupContainer.append(strokeGroup);
+            if(strokeGroup)
+                groupContainer.append(strokeGroup);
+            else
+                qDebug() << "this is an error";
         }
     }
 
@@ -1125,6 +1133,9 @@ QGraphicsItem *UBSvgSubsetAdaptor::UBSvgSubsetReader::readElementFromGroup()
     QString id = mXmlReader.attributes().value(aId).toString();
     QString uuid = id.right(QUuid().toString().size());
     result = mScene->itemForUuid(QUuid(uuid));
+
+    if(!result)
+        qDebug() << "uuid " << uuid;
 
     mXmlReader.skipCurrentElement();
     mXmlReader.readNext();
