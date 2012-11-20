@@ -9,7 +9,7 @@
 <p> The "Reload" button restarts the game. </p>
 <p> Enter the "Edit" mode to : </p>
 
-<ul> <li> choose the theme of interactivity : tablet, slate or none (by default : tablet),</li>
+<ul> <li> choose the theme of interactivity : pad, slate or none (by default : pad),</li>
 <li> modify the calculations that you want to use for your activity. </li> </ul>
 
 <p> Insert the calculation in each field. <b> Results of operations are automatically calculated by the interactivity. </b> </p>

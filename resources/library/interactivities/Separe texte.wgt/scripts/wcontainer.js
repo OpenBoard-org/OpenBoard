@@ -15,7 +15,7 @@ var sankoreLang = {
 "<p>To add points between sentences, move the cursor and click between two words.</p>" +
 "<p>“Reload” button resets the exercise.</p>" +
 "<p>Enter the “Edit” mode to :</p>" +
-"<ul><li>choose the theme of the App : tablet, slate, or none (by default : none),</li>" +
+"<ul><li>choose the theme of the App : pad, slate, or none (by default : none),</li>" +
 "<li>modify the text (write in the text field different phrases separated by dots.)</li></ul>" +
 "<p>Do not use question and exclamation mark.</p>" +
 "<p>“Display” button comes back to the activity.</p>",

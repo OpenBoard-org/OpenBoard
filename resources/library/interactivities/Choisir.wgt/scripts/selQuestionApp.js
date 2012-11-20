@@ -48,7 +48,7 @@ var sankoreLang = {
 "<p>“Reload” button resets the exercises.</p>" +
 
 "<p> Enter the “Edit” mode to :</p>" +
-"<ul><li> choose the theme of interactivity : tablet, slate or none (none by default),</li>" +
+"<ul><li> choose the theme of interactivity : pad, slate or none (none by default),</li>" +
 "<li> modify an exercise or create a new one.</li></ul>" +
 
 "<p>To create a new exercise :</p>" +

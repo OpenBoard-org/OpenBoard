@@ -8,7 +8,7 @@
 <p> "Reload" button removes the weight shown on the left pan. </p>
  
 <p>Enter the "Edit" mode to : </p>
-<ul> <li> choose the theme of the App : tablet, slate, or none (by default : slate), </li>
+<ul> <li> choose the theme of the App : pad, slate, or none (by default : pad), </li>
 <li>determine the mass on the right pan,</li>
 <li> determine weights you want to use for the left pane.</li> </ul>
 

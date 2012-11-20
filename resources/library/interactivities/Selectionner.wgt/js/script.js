@@ -21,7 +21,7 @@ var sankoreLang = {
 "<p> Choose correct element(s). If the result is correct, the area turns in green.</p>" +
 "<p> “Reload “button resets the exercises.</p>" +
 "<p> Enter the “Edit” mode to :</p>" +
-"<ul><li> choose the theme of the App : tablet, slate, or none (by default : none),</li>" +
+"<ul><li> choose the theme of the App : pad, slate, or none (by default : none),</li>" +
 "<li> modify an exercise or create new ones in the same activity.</li></ul>" +
 "<p>To create a new exercise :</p>" +
 "<ul> <li> click on “New block”,</li>" +

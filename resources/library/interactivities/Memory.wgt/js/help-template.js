@@ -11,7 +11,7 @@
 
 
 <p> Enter the "Edit" mode to : </p>
-<ul> <li> choose the theme of interactivity : tablet, slate or none (by default : tablet),</li>
+<ul> <li> choose the theme of interactivity : pad, slate or none (by default : pad),</li>
 <li> choose the number of cards (4, 6 or 8 cards),</li>
 <li> select the displayed time of returned cards,</li>
 <li> edit a card (insert a picture or change the text).</li> </ul>

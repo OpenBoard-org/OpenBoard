@@ -16,7 +16,7 @@ var sankoreLang = {
 "<p> Drag and drop the image in the correct area. If the result is incorrect, the area turns in red. If the result is correct, the area turns in green. </p> "+
 "<p> Reload “button” resets the exercises. </p>" +
 "<p> Enter the “Edit” mode to :</p>" +
-"<ul> <li> choose the theme of the App : tablet, slate, or none (by default : none), </li>" +
+"<ul> <li> choose the theme of the App : pad, slate, or none (by default : none), </li>" +
 "<li> modify an exercise or to create  a new one.</li> </ul>" +
 
 "<p>To create a new exercise : </p>" +

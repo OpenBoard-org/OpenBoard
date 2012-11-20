@@ -6,7 +6,7 @@
 <p>The calculations and reasoning can be written on the white board (outside the App).</p>
 <p>Enter the "Edit" mode to :</p>
 <ul>
-<li>choose the theme of the App : tablet, slate, or none (by default : tablet),</li>
+<li>choose the theme of the App : pad, slate, or none (by default : pad),</li>
 <li>determine the number of dices you want to use for your activity (2-6).</li>
 </ul>
 <p>The calculations and reasoning could be written on the page (outside the App).</p>

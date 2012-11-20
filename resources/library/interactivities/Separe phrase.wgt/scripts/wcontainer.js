@@ -18,7 +18,7 @@ var sankoreLang = {
 
 
 "<p>Enter the “Edit” mode to : </p>" +
-"<ul><li> choose the theme of the App : tablet, slate, or none (by default : none),</li>" +
+"<ul><li> choose the theme of the App : pad, slate, or none (by default : none),</li>" +
 "<li>modify the sentence (select the text field).</li></ul>" +
 "<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"

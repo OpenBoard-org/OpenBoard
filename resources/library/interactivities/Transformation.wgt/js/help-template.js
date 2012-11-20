@@ -10,7 +10,7 @@
 
 <p> Enter the "Edit" mode to choose : </p>
 
-<ul><li> choose the theme of interactivity : tablet, slate or none (by default : tablet),</li>
+<ul><li> choose the theme of interactivity : pad, slate or none (by default : pad),</li>
 <li>set the number of cards that you want to use,</li>
 <li>set the cards before and after transformation.</li></ul>
 	

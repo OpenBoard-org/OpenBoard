@@ -34,7 +34,7 @@ var sankoreLang = {
 "<p>Hide and show text playing with the background color (yellow or black). Hide and show data dragging and dropping text fields to the right or the left.</p> "+
 "<p>“Reload” button resets the exercises.</p>" +
 "<p>Enter the “Edit” mode to :</p>" +
-"<ul><li>choose the theme of interactivity : tablet, slate or none (none by default),</li>" +
+"<ul><li>choose the theme of interactivity : pad, slate or none (none by default),</li>" +
 "<li>modify an exercise or create a new one.</li></ul>" +
 
 "<p>To create a new label :</p>" +

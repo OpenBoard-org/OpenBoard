@@ -5,7 +5,7 @@
 
 <p> "Reload" button resets the selection. </p>
 <p> Enter the "Edit" mode to : </p>
-<ul> <li> choose the theme of the App : tablet, slate, or none (by default : slate), </li>
+<ul> <li> choose the theme of the App : pad, slate, or none (by default : pad), </li>
 <li> modify the number in the center of the dial. </li> </ul>
 
 <p> To change the number in the center, click and replace it.</p>

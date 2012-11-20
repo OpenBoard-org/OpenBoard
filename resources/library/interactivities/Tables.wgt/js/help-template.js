@@ -10,7 +10,7 @@
 
 <p> Enter the "Edit" mode to choose the : </p>
 
-<ul> <li>  theme of interactivity : tablet, slate or none (by default : tablet),</li>
+<ul> <li>  theme of interactivity : pad, slate or none (by default : pad),</li>
 <li> desired operation: addition, subtraction, multiplication or division,</ li>
 <li> number of rows and columns (1 to 12). </li> </ul>
 

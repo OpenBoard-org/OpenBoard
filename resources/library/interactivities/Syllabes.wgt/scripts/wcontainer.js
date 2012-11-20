@@ -17,7 +17,7 @@ var sankoreLang = {
 "<p>“Reload” button resets the exercise. </ P>" +
 
 "<p>Enter the “Edit” mode to : </p>" +
-"<ul><li> choose the theme of the App : tablet, slate, or none (by default : none),</li>" +
+"<ul><li> choose the theme of the App : pad, slate, or none (by default : none),</li>" +
 "<li>modify the word (write in the text field and separate syllables with *).</li> </ul>" +
 "<p>“Display” button comes back to the activity.</p>",
     theme: "Theme"

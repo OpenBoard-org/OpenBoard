@@ -14,7 +14,7 @@ var sankoreLang = {
 "<p><h3>Booklet pages.</h3></p>" +
 "<p>Slider is a booklet with pages. This booklet can be enriched with text, images, sound and videos.</p>" +
 "<p>Enter the “Edit” mode to :</p>" +
-"<ul><li>choose the theme of interactivity : tablet, slate or none (none by default),</li>" +
+"<ul><li>choose the theme of interactivity : pad, slate or none (none by default),</li>" +
 "<li>edit the pages of the booklet.</li></ul>" +
 "<p>On each page, you can :</p>" +
 "<ul><li> insert text boxes with the “T+” on the left (to modify these text boxes, click inside the text and write),</li>" +

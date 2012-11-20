@@ -7,7 +7,7 @@
 <p>"Reload" button generates new calculations. </p>
  
 <p>Enter the "Edit" mode to choose the : </p>
-<ul> <li>the theme of the App : tablet, slate, or none (by default : slate), </li>
+<ul> <li>the theme of the App : pad, slate, or none (by default : pad), </li>
 <li> operation (addition, subtraction, multiplication),</li>
 <li> magnitude of proposed numbers,</li>
 <li> number of elements (2-4),</li>

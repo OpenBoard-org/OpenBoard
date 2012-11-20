@@ -6,7 +6,7 @@
 
 <p>Enter the "Edit" mode to :</p>
 <ul>
-<li>choose the theme of the App : tablet, slate, or none (by default tablet),</li>
+<li>choose the theme of the App : pad, slate, or none (by default pad),</li>
 <li>change the number of paperclip(s).</li>
 </ul>
 

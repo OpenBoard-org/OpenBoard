@@ -8,7 +8,7 @@
 <p>"Reload" button generates new labels numbers.</p>
 <p>Enter the "Edit" mode to choose :</p>
 
-<ul><li> choose the theme of interactivity : tablet, slate or none (by default : tablet),</li>
+<ul><li> choose the theme of interactivity : pad, slate or none (by default : pad),</li>
 <li>the number of labels (2-6),</li>
 <li>magnitude of proposed numbers,</li>
 <li>the order to class numbers (ascending or descending).</li></ul>
