@@ -5,7 +5,7 @@ var sankoreLang = {
     add: "Add new block",
     enter: "Enter your instruction here ...",
     example: "example",
-    wgt_name: "Order the letters",
+    wgt_name: "Order letters",
     reload: "Reload",
     slate: "slate",
     pad: "pad",

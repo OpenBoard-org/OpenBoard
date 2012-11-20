@@ -8,8 +8,9 @@ var sankoreLang = {
     pad: "tablette",
     none: "aucun",
     help: "Aide",
-    help_content: "<p><h3>Séparer les phrases d’un texte.</h3></p>"+
-
+    help_content: 
+    "<p><h2>Séparer un texte</h2></p>"+
+"<p><h3>Séparer les phrases d’un texte.</h3></p>"+
     "<p>Un texte est écrit sans que les points entre les phrases n’apparaissent. Le but de cette activité est d’insérer les points aux bons endroits. Une fois que les points sont placés correctement, la phrase se colore en vert.</p>"+
 
     "<p>Pour ajouter les points entre les phrases, déplacez le curseur et cliquez entre deux mots, un point s’ajoute alors.</p>"+

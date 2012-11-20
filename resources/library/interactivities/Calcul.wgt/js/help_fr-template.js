@@ -1,4 +1,4 @@
-<h3>Calcul</h3>
+<h3>Calcul rapide</h3>
 <h4>Calcul mental, opérations simples</h4>
  
 <p>L’interactivité permet d’additionner, de soustraire ou de multiplier des nombres. Le but est d’effectuer l’opération en inscrivant le résultat. Une fois la réponse saisie, le bouton “v” permet de vérifier la réponse. L’interactivité vérifie la réponse en passant l'opération en vert ou en rouge.</p>

@@ -11,7 +11,7 @@ var sankoreLang = {
     pad: "tablette",
     none: "aucun",
     help: "Aide",
-    help_content: "<p><h2>Ordre des lettres</h2></p>"+
+    help_content: "<p><h2>Ordonner des lettres</h2></p>"+
     "<p><h3>Ordonner des lettres pour reconstituer un mot.</h3></p>"+
 
     "<p>L’intégration d’un fichier son (facultatif) permet d’écouter le mot à reconstituer. Lorsque les lettres sont dans le bon ordre, l’interactivité se colore en vert.</p>"+

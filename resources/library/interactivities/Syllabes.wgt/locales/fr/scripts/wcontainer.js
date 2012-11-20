@@ -2,13 +2,13 @@ var sankoreLang = {
     view: "Afficher", 
     edit: "Modifier",
     example: "so*phis*ti*qué",
-    wgt_name: "Syllabe",
+    wgt_name: "Syllabes",
     reload: "Recharger",
     slate: "ardoise",
     pad: "tablette",
     none: "aucun",
     help: "Aide",
-    help_content: "<p><h2>Syllabe</h2></p>"+
+    help_content: "<p><h2>Syllabes</h2></p>"+
     "<p><h3>Séparer les syllabes d’un mot.</h3></p>"+
 
     "<p>Un mot est écrit et le but est de découper le mot en syllabes. Une fois que le découpage est correct, le mot se colore en vert.</p>"+
