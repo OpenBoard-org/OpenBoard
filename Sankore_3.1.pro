@@ -250,12 +250,6 @@ macx {
        TRANSLATION_nb.path = "$$RESOURCES_DIR/nb.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_nb
    }
-   exists(resources/i18n/sankore_rm.qm) {
-       TRANSLATION_rm.files = resources/i18n/sankore_rm.qm \
-           resources/i18n/Localizable.strings
-       TRANSLATION_rm.path = "$$RESOURCES_DIR/rm.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_rm
-   }
    exists(resources/i18n/sankore_sv.qm) {
        TRANSLATION_sv.files = resources/i18n/sankore_sv.qm \
            resources/i18n/Localizable.strings
@@ -411,7 +405,6 @@ TRANSLATIONS = resources/i18n/sankore_en.ts \
    resources/i18n/sankore_ru.ts \
    resources/i18n/sankore_da.ts \
    resources/i18n/sankore_nb.ts \
-   resources/i18n/sankore_rm.ts \
    resources/i18n/sankore_sv.ts \
    resources/i18n/sankore_ja.ts \
    resources/i18n/sankore_ko.ts \
