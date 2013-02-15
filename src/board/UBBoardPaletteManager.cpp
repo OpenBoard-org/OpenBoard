@@ -103,8 +103,8 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
 UBBoardPaletteManager::~UBBoardPaletteManager()
 {
 
-// mAddedItemPalette is delete automatically because of is parent 
-// that changes depending on the mode 
+// mAddedItemPalette is delete automatically because of is parent
+// that changes depending on the mode
 
 // mMainWindow->centralWidget is the parent of mStylusPalette
 // do not delete this here.
@@ -150,22 +150,13 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     }
 
     mLeftPalette->connectSignals();
+    mLeftPalette->showTabWidget(0);
 
     mRightPalette = new UBRightPalette(mContainer);
     // RIGHT palette widgets
-#ifndef USE_WEB_WIDGET
     mpFeaturesWidget = new UBFeaturesWidget();
     mRightPalette->registerWidget(mpFeaturesWidget);
     mRightPalette->addTab(mpFeaturesWidget);
-#endif
-
-    //Do not show deprecated lib widget to prevent collisions. Uncomment to return lib widget
-
-#ifdef USE_WEB_WIDGET
-    mRightPalette->registerWidget(mpLibWidget);
-    mRightPalette->addTab(mpLibWidget);
-#endif
-
 
     // The cache widget will be visible only if a cache is put on the page
     mRightPalette->registerWidget(mpCachePropWidget);
@@ -890,14 +881,9 @@ void UBBoardPaletteManager::addItemToLibrary()
         }
         QImage image = mPixmap.toImage();
 
-#ifdef USE_WEB_WIDGET
-        mpLibWidget->libNavigator()->libraryWidget()->libraryController()->importImageOnLibrary(image);
-#else
         QDateTime now = QDateTime::currentDateTime();
         QString capturedName  = tr("CapturedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss") + ".png";
         mpFeaturesWidget->importImage(image, capturedName);
-#endif
-
     }
     else
     {
