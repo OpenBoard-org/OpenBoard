@@ -26,7 +26,7 @@
 
 #include <QtGui>
 #include <QtWebKit>
- 
+
 #include "gui/UBLeftPalette.h"
 #include "gui/UBRightPalette.h"
 #include "gui/UBPageNavigationWidget.h"
@@ -48,10 +48,6 @@ class UBKeyboardPalette;
 class UBMainWindow;
 class UBApplicationController;
 class UBDockTeacherGuideWidget;
-
-// Uncomment this to use old-styles lib paletter
-// #define USE_WEB_WIDGET
-
 
 class UBBoardPaletteManager : public QObject
 {
@@ -143,11 +139,11 @@ class UBBoardPaletteManager : public QObject
 
         /** The page navigator widget */
         UBPageNavigationWidget* mpPageNavigWidget;
-        
+
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
 
-		UBFeaturesWidget *mpFeaturesWidget;
+        UBFeaturesWidget *mpFeaturesWidget;
 
         /** The download widget */
         UBDockDownloadWidget* mpDownloadWidget;
