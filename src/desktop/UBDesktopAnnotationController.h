@@ -61,6 +61,7 @@ class UBDesktopAnnotationController : public QObject
         void hideWindow();
 
         UBDesktopPalette *desktopPalette();
+        QPainterPath desktopPalettePath() const;
         UBBoardView *drawingView();
 
         void TransparentWidgetResized();
