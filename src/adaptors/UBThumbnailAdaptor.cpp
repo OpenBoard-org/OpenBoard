@@ -107,18 +107,18 @@ const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
 void UBThumbnailAdaptor::updateDocumentToHandleZeroPage(UBDocumentProxy* proxy)
 {
     if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
-    	QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", 0);
-    	QFile file(fileName);
-    	if(!file.exists()){
-    		UBPersistenceManager::persistenceManager()->persistDocumentScene(proxy,new UBGraphicsScene(proxy),0);
-    	}
+        QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", 0);
+        QFile file(fileName);
+        if(!file.exists()){
+            UBPersistenceManager::persistenceManager()->persistDocumentScene(proxy,new UBGraphicsScene(proxy),0);
+        }
     }
 }
 
 void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<const QPixmap*>& list)
 {
     updateDocumentToHandleZeroPage(proxy);
-	generateMissingThumbnails(proxy);
+    generateMissingThumbnails(proxy);
 
     foreach(const QPixmap* pm, list)
         delete pm;
@@ -165,7 +165,7 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
 
         pScene->render(&painter, imageRect, sceneRect, Qt::KeepAspectRatio);
 
-        if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()){
+        if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()){
             QPixmap toque(":images/toque.svg");
             painter.setOpacity(0.6);
             painter.drawPixmap(QPoint(width - toque.width(),0),toque);
