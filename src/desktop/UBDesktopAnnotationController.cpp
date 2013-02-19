@@ -396,7 +396,7 @@ void UBDesktopAnnotationController::hideWindow()
 
 void UBDesktopAnnotationController::goToUniboard()
 {
-	onToolClicked();
+    onToolClicked();
     hideWindow();
 
     UBPlatformUtils::setDesktopMode(false);
@@ -408,7 +408,7 @@ void UBDesktopAnnotationController::goToUniboard()
 
 void UBDesktopAnnotationController::customCapture()
 {
-	onToolClicked();
+    onToolClicked();
     mIsFullyTransparent = true;
     updateBackground();
 
@@ -435,7 +435,7 @@ void UBDesktopAnnotationController::customCapture()
 
 void UBDesktopAnnotationController::windowCapture()
 {
-	onToolClicked();
+    onToolClicked();
     mIsFullyTransparent = true;
     updateBackground();
 
@@ -957,7 +957,7 @@ void UBDesktopAnnotationController::refreshMask()
 
 void UBDesktopAnnotationController::onToolClicked()
 {
-	mDesktopEraserPalette->hide();
-	mDesktopMarkerPalette->hide();
-	mDesktopPenPalette->hide();
+    mDesktopEraserPalette->hide();
+    mDesktopMarkerPalette->hide();
+    mDesktopPenPalette->hide();
 }

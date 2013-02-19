@@ -39,7 +39,7 @@ namespace merge_lib
          PageElementHandler(page),
             _basePage(basePage)
          {
-            _setHandlerName(handlerName);		
+            _setHandlerName(handlerName);        
          }
          virtual ~RotationHandler()
          {

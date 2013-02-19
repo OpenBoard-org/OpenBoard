@@ -26,7 +26,7 @@
 #include "gui/UBFeaturesWidget.h"
 
 UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWidget* parent, const char* name ) : QWidget (parent)
-	, featuresController(controller)
+    , featuresController(controller)
     , mButtonGroup(NULL)
     , mSearchBar(NULL)
     , mLayout(NULL)
@@ -46,7 +46,7 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     , mpRemoveFavoriteBtn(NULL)
     , mpNewFolderBtn(NULL)
 {
-	setObjectName(name);
+    setObjectName(name);
     setStyleSheet(QString("background: #EEEEEE; border-radius : 10px; border : 2px solid #999999;"));
 
     setAcceptDrops(true);
@@ -106,8 +106,8 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));*/
 
     connect(mpFavoriteAction,SIGNAL(triggered()), this, SLOT(onActionFavorite()));
-	connect(mSearchBar, SIGNAL(textChanged(QString)), this, SLOT(onSearchTextChanged(QString)));
-	connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));
+    connect(mSearchBar, SIGNAL(textChanged(QString)), this, SLOT(onSearchTextChanged(QString)));
+    connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));
     connect(mpRemoveFavorite, SIGNAL(triggered()), this, SLOT(onActionRemoveFavorite()));
     connect(mpRescanModelAction, SIGNAL(triggered()), this , SLOT(onActionRescanModel()));
     connect(mpDeleteAction,SIGNAL(triggered()), this, SLOT(onActionTrash()));
@@ -123,33 +123,33 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mLayout->addWidget(mpDeleteBtn);
     mLayout->addWidget(mpCloseBtn);
     mLayout->addWidget(mpRemoveFavoriteBtn);
-	setCurrentState( IN_ROOT );
-	mpDeleteBtn->setAcceptDrops(true);
-	setAcceptDrops( true );
+    setCurrentState( IN_ROOT );
+    mpDeleteBtn->setAcceptDrops(true);
+    setAcceptDrops( true );
 }
 
 void UBFeaturesActionBar::setCurrentState( UBFeaturesActionBarState state )
 {
-	currentState = state;
-	setButtons();
+    currentState = state;
+    setButtons();
 }
 
 void UBFeaturesActionBar::setButtons()
 {
     switch( currentState )
     {
-	case IN_FOLDER:
-		mpFavoriteBtn->show();
+    case IN_FOLDER:
+        mpFavoriteBtn->show();
         mpSocialBtn->hide();
         mSearchBar->show();
         mpDeleteBtn->show();
         mpCloseBtn->hide();
         mpRemoveFavoriteBtn->hide();
         mpNewFolderBtn->show();
-		mpNewFolderBtn->setEnabled(true);
-		mpDeleteBtn->setEnabled(true);
+        mpNewFolderBtn->setEnabled(true);
+        mpDeleteBtn->setEnabled(true);
 //        mpRescanModelBtn->show();
-		break;
+        break;
     case IN_ROOT:
         mpFavoriteBtn->show();
         mpSocialBtn->hide();
@@ -158,8 +158,8 @@ void UBFeaturesActionBar::setButtons()
         mpCloseBtn->hide();
         mpRemoveFavoriteBtn->hide();
         mpNewFolderBtn->show();
-		mpNewFolderBtn->setEnabled(false);
-		mpDeleteBtn->setEnabled(false);
+        mpNewFolderBtn->setEnabled(false);
+        mpDeleteBtn->setEnabled(false);
 //        mpRescanModelBtn->show();
         break;
     case IN_PROPERTIES:
@@ -184,8 +184,8 @@ void UBFeaturesActionBar::setButtons()
         mpNewFolderBtn->hide();
 //        mpRescanModelBtn->hide();
         break;
-	case IN_TRASH:
-		mpFavoriteBtn->hide();
+    case IN_TRASH:
+        mpFavoriteBtn->hide();
         mpSocialBtn->hide();
         mSearchBar->show();
         mpDeleteBtn->show();
@@ -196,7 +196,7 @@ void UBFeaturesActionBar::setButtons()
         //mpRemoveFavoriteBtn->show();
         mpNewFolderBtn->hide();
 //        mpRescanModelBtn->hide();
-		break;
+        break;
     default:
         break;
     }
@@ -253,7 +253,7 @@ void UBFeaturesActionBar::dragEnterEvent( QDragEnterEvent *event )
 }
 
 void UBFeaturesActionBar::dropEvent(QDropEvent *event)
-{	
+{    
     const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
 
     if (!fMimeData) {
@@ -273,22 +273,22 @@ void UBFeaturesActionBar::dropEvent(QDropEvent *event)
             }
         }
         event->setDropAction(Qt::MoveAction);
-		event->accept();
+        event->accept();
 
         emit deleteElements(fMimeData);
 
     } else if (dest == mpFavoriteBtn) {
         event->setDropAction( Qt::CopyAction);
-		event->accept();
+        event->accept();
 
         emit addToFavorite(fMimeData);
 
     } else if (dest == mpRemoveFavoriteBtn) {
-		event->setDropAction( Qt::MoveAction );
-		event->accept();
+        event->setDropAction( Qt::MoveAction );
+        event->accept();
 
         emit removeFromFavorite(fMimeData);
-	}
+    }
 }
 
 UBFeaturesActionBar::~UBFeaturesActionBar()

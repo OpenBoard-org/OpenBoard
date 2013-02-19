@@ -34,21 +34,21 @@
 void UBKeyboardButton::sendUnicodeSymbol(KEYCODE keycode)
 {
     if (keycode.modifier)
-		CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 56, true));
+        CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 56, true));
     CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, keycode.code, true));
     CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, keycode.code, false));
     if (keycode.modifier)
-		CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 56, false));
-	
+        CGEventPost(kCGSessionEventTap, CGEventCreateKeyboardEvent(NULL, 56, false));
+    
 }
 
 void UBKeyboardButton::sendControlSymbol(int nSymbol)
 {
-	CGEventRef event1 = CGEventCreateKeyboardEvent(NULL, nSymbol, true);
-	CGEventRef event2 = CGEventCreateKeyboardEvent(NULL, nSymbol, false);
+    CGEventRef event1 = CGEventCreateKeyboardEvent(NULL, nSymbol, true);
+    CGEventRef event2 = CGEventCreateKeyboardEvent(NULL, nSymbol, false);
 
-	CGEventPost(kCGHIDEventTap, event1);
-	CGEventPost(kCGHIDEventTap, event2);
+    CGEventPost(kCGHIDEventTap, event1);
+    CGEventPost(kCGHIDEventTap, event2);
 }
 
 void UBKeyboardPalette::createCtrlButtons()

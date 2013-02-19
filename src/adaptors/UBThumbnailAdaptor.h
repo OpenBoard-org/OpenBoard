@@ -32,7 +32,7 @@ class UBGraphicsScene;
 
 class UBThumbnailAdaptor //static class
 {
-	Q_DECLARE_TR_FUNCTIONS(UBThumbnailAdaptor)
+    Q_DECLARE_TR_FUNCTIONS(UBThumbnailAdaptor)
 
 public:
     static QUrl thumbnailUrl(UBDocumentProxy* proxy, int pageIndex);

@@ -49,19 +49,19 @@ const int UBAbstractDrawRuler::sRoundingRadius = sLeftEdgeMargin / 2;
 
 
 UBAbstractDrawRuler::UBAbstractDrawRuler()
-	: mShowButtons(false)
+    : mShowButtons(false)
     , mAntiScaleRatio(1.0)
 {
-	//we actually need to evaluate pixels per millimeter
-	QDesktopWidget* desktop = UBApplication::desktop();
-	int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    //we actually need to evaluate pixels per millimeter
+    QDesktopWidget* desktop = UBApplication::desktop();
+    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
     sPixelsPerMillimeter = qRound(dpiCommon / UBGeometryUtils::inchSize);
 
 }
 
 void UBAbstractDrawRuler::create(QGraphicsItem& item)
 {
-	item.setFlag(QGraphicsItem::ItemIsMovable, true);
+    item.setFlag(QGraphicsItem::ItemIsMovable, true);
     item.setFlag(QGraphicsItem::ItemIsSelectable, true);
     item.setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
@@ -94,7 +94,7 @@ QCursor UBAbstractDrawRuler::closeCursor() const
 
 QCursor UBAbstractDrawRuler::drawRulerLineCursor() const
 {
-	return UBResources::resources()->drawLineRulerCursor;
+    return UBResources::resources()->drawLineRulerCursor;
 }
 
 QColor UBAbstractDrawRuler::drawColor() const

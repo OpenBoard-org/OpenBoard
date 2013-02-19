@@ -174,18 +174,18 @@ UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString&
 
     QString documentRootFolder;
     
-	if(!extractFileToDir(pFile, path, documentRootFolder)){
-		UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
-		return NULL;
-	}
+    if(!extractFileToDir(pFile, path, documentRootFolder)){
+        UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
+        return NULL;
+    }
 
     bool addTitlePage = false;
     if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() && !QFile(documentRootFolder+"/page000.svg").exists())
         addTitlePage=true;
 
     UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder, pGroup, "", false, addTitlePage);
-	UBApplication::showMessage(tr("Import successful."));
-	return newDocument;
+    UBApplication::showMessage(tr("Import successful."));
+    return newDocument;
 }
 
 bool UBImportDocument::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)

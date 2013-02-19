@@ -706,15 +706,15 @@ void UBPodcastController::encodingFinished(bool ok)
         {
             if (!mApplicationIsClosing)
             {
-            	QString location;
+                QString location;
 
-            	if (mPodcastRecordingPath == QDesktopServices::storageLocation(QDesktopServices::DesktopLocation))
-            		location = tr("on your desktop ...");
-            	else
-            	{
-            		QDir dir(mPodcastRecordingPath);
-            		location = tr("in folder %1").arg(mPodcastRecordingPath);
-            	}
+                if (mPodcastRecordingPath == QDesktopServices::storageLocation(QDesktopServices::DesktopLocation))
+                    location = tr("on your desktop ...");
+                else
+                {
+                    QDir dir(mPodcastRecordingPath);
+                    location = tr("in folder %1").arg(mPodcastRecordingPath);
+                }
 
                 UBApplication::showMessage(tr("Podcast created %1").arg(location), false);
 
@@ -829,7 +829,7 @@ void UBPodcastController::toggleRecordingPalette(bool visible)
                    - mRecordingPalette->width() / 2;
 
         int top = UBApplication::boardController->controlView()->height()
-        		   - mRecordingPalette->height() - UBSettings::boardMargin;
+                   - mRecordingPalette->height() - UBSettings::boardMargin;
 
         QPoint controlViewPoint(left, top);
         QPoint mainWindowsPoint = UBApplication::boardController->controlView()->mapTo(UBApplication::mainWindow, controlViewPoint);

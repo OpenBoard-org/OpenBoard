@@ -55,5 +55,5 @@ UBDockTeacherGuideWidget::~UBDockTeacherGuideWidget()
 
 UBTeacherGuideWidget* UBDockTeacherGuideWidget::teacherGuideWidget()
 {
-	return mpTeacherGuideWidget;
+    return mpTeacherGuideWidget;
 }

@@ -89,14 +89,14 @@ struct KEYCODE{
 struct KEYBT
 {
     QChar symbol1;
-	QChar symbol2;
+    QChar symbol2;
     bool capsLockSwitch;
     int modifier1;
     int modifier2;
     KEYCODE codes[8];
 
     KEYBT(  QChar _symbol1,
-		    QChar _symbol2,
+            QChar _symbol2,
             bool _capsLockSwitch,
             int _modifier1,
             int _modifier2,
@@ -130,40 +130,40 @@ struct KEYBT
     
     
 
-	class UBKeyboardLocale
-	{
-	public:
-		UBKeyboardLocale(const QString& _fullName,
-			const QString& _name,
-			const QString& _id,
-			QIcon* _icon,
-			KEYBT** _symbols)
-			:fullName(_fullName),name(_name), id(_id), icon(_icon),
+    class UBKeyboardLocale
+    {
+    public:
+        UBKeyboardLocale(const QString& _fullName,
+            const QString& _name,
+            const QString& _id,
+            QIcon* _icon,
+            KEYBT** _symbols)
+            :fullName(_fullName),name(_name), id(_id), icon(_icon),
                         constSymbols(NULL), varSymbols(_symbols)
-		{}
-		UBKeyboardLocale(const QString& _fullName,
-			const QString& _name,
-			const QString& _id,
-			QIcon* _icon,
+        {}
+        UBKeyboardLocale(const QString& _fullName,
+            const QString& _name,
+            const QString& _id,
+            QIcon* _icon,
             KEYBT _symbols[])
-			:fullName(_fullName),name(_name),  id(_id), icon(_icon),
+            :fullName(_fullName),name(_name),  id(_id), icon(_icon),
                         constSymbols(_symbols), varSymbols(NULL)
-		{}
+        {}
 
-		~UBKeyboardLocale();
+        ~UBKeyboardLocale();
 
-		const QString fullName;
-		const QString name;
-		const QString id;
-		QIcon* icon;
+        const QString fullName;
+        const QString name;
+        const QString id;
+        QIcon* icon;
         KEYBT* operator[] (int index) const
-		{
-			return (varSymbols==NULL)? constSymbols + index : varSymbols[index];
-		}
-	private:
+        {
+            return (varSymbols==NULL)? constSymbols + index : varSymbols[index];
+        }
+    private:
         KEYBT* constSymbols;
-		KEYBT** varSymbols;
-	};
+        KEYBT** varSymbols;
+    };
 
 
 class UBPlatformUtils

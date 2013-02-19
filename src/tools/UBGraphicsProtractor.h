@@ -40,7 +40,7 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
 
     public:
         UBGraphicsProtractor ();
-		enum Tool {None, Move, Resize, Rotate, Reset, Close, MoveMarker};
+        enum Tool {None, Move, Resize, Rotate, Reset, Close, MoveMarker};
 
         qreal angle () { return mStartAngle; }
         qreal markerAngle () { return mCurrentAngle; }
@@ -83,17 +83,17 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
 
         QSizeF buttonSizeReference () const{return QSizeF(radius() / 10, mCloseSvgItem->boundingRect().height() * radius()/(10 * mCloseSvgItem->boundingRect().width()));}
         QSizeF markerSizeReference () const{return QSizeF(radius() / 10, mMarkerSvgItem->boundingRect().height() * radius()/(10 * mMarkerSvgItem->boundingRect().width()));}
-        QRectF	resetButtonRect () const;
-        QRectF	closeButtonRect () const;
-        QRectF	resizeButtonRect () const;
-        QRectF	rotateButtonRect () const{return QRectF(buttonSizeReference().width() * 5.5, -buttonSizeReference().width() * 5, buttonSizeReference().width(), buttonSizeReference().width());}
-        QRectF	markerButtonRect () const{return QRectF(radius() + 3, -markerSizeReference().height() / 2 , markerSizeReference().width(), markerSizeReference().height());}
+        QRectF    resetButtonRect () const;
+        QRectF    closeButtonRect () const;
+        QRectF    resizeButtonRect () const;
+        QRectF    rotateButtonRect () const{return QRectF(buttonSizeReference().width() * 5.5, -buttonSizeReference().width() * 5, buttonSizeReference().width(), buttonSizeReference().width());}
+        QRectF    markerButtonRect () const{return QRectF(radius() + 3, -markerSizeReference().height() / 2 , markerSizeReference().width(), markerSizeReference().height());}
                 inline qreal               radius () const{return rect().height() / 2 - 20;}
 
         // Members
         QPointF mPreviousMousePos;
         Tool    mCurrentTool;
-        bool	mShowButtons;
+        bool    mShowButtons;
         qreal   mCurrentAngle;
         qreal   mSpan;
         qreal   mStartAngle;
@@ -102,12 +102,12 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         QGraphicsSvgItem* mResetSvgItem;
         QGraphicsSvgItem* mResizeSvgItem;
         QGraphicsSvgItem* mMarkerSvgItem;
-		QGraphicsSvgItem* mRotateSvgItem;
+        QGraphicsSvgItem* mRotateSvgItem;
 
         static const QRectF sDefaultRect;
 
         virtual void rotateAroundCenter(qreal angle);
-        virtual QPointF	rotationCenter() const;
+        virtual QPointF    rotationCenter() const;
 
         int    sFillTransparency;
         int    sDrawTransparency;

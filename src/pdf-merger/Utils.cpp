@@ -120,7 +120,7 @@ unsigned long Utils::getFileSize(const char * fileName)
    pdfFile.open (fileName, std::ios::binary );
    if (pdfFile.fail())
    {
-	  std::stringstream errorMessage("File ");
+      std::stringstream errorMessage("File ");
       errorMessage << fileName << " is absent" << "\0";
       throw Exception(errorMessage);
    }

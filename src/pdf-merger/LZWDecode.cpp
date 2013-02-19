@@ -120,7 +120,7 @@ bool LZWDecode::decode(std::string & encoded)
    // LZW decoding
    std::string decoded;
    struct DecodingTable
-   {	
+   {    
       int length;
       int head;
       unsigned tail;
@@ -128,7 +128,7 @@ bool LZWDecode::decode(std::string & encoded)
 
    int prevCode = 0;     
    int newChar = 0;      
-   unsigned curSequence[4097];	
+   unsigned curSequence[4097];    
    int nextLength = 0;
 
    clearTable();
@@ -219,7 +219,7 @@ bool LZWDecode::decode(std::string & encoded)
    {
       _predict->decode(encoded);
    }
-   return true;	
+   return true;    
 }
 
 

@@ -588,7 +588,7 @@ void WBBrowserWindow::aboutToShowBackMenu()
 
         if (!QWebSettings::iconForUrl(item.originalUrl()).isNull())
         action->setIcon(item.icon());
-		action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
+        action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
         mHistoryBackMenu->addAction(action);
     }
 

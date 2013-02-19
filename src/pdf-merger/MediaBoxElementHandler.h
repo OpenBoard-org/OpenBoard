@@ -49,7 +49,7 @@ namespace merge_lib
       {
          if(_wasCropBoxHandlerCalled())
          {
-            PageElementHandler * tempNextHandler = _nextHandler;			
+            PageElementHandler * tempNextHandler = _nextHandler;            
             _nextHandler = new RemoveHimselfHandler(_page, _handlerName);
             _nextHandler->addNextHandler(tempNextHandler);
             return;
@@ -61,7 +61,7 @@ namespace merge_lib
          _page->insertToContent(startOfPageElement, matrix);
       }
       void _pageElementNotFound()
-      {		  
+      {          
          if(_wasCropBoxHandlerCalled())
             return;
          _retrieveBoxFromParent();

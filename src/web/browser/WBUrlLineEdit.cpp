@@ -79,7 +79,7 @@ WBExLineEdit::WBExLineEdit(QWidget *parent)
     , mLineEdit(new QLineEdit(this))
     , mClearButton(0)
 {
-	setFocusPolicy(mLineEdit->focusPolicy());
+    setFocusPolicy(mLineEdit->focusPolicy());
     setAttribute(Qt::WA_InputMethodEnabled);
     setSizePolicy(mLineEdit->sizePolicy());
     setBackgroundRole(mLineEdit->backgroundRole());

@@ -61,11 +61,11 @@ class UBDrawingController : public QObject
         UBAbstractDrawRuler* mActiveRuler;
 
         void setInDestopMode(bool mode){
-        	mIsDesktopMode = mode;
+            mIsDesktopMode = mode;
         }
 
         bool isInDesktopMode(){
-        	return mIsDesktopMode;
+            return mIsDesktopMode;
         }
 
     public slots:

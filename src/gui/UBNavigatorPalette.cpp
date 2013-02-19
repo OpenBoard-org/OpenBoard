@@ -33,9 +33,9 @@
  * @param name as the object name
  */
 UBNavigatorPalette::UBNavigatorPalette(QWidget *parent, const char *name):
-	UBDockPalette(eUBDockPaletteType_LEFT, parent, name)
-	, mNavigator(NULL)
-	, mLayout(NULL)
+    UBDockPalette(eUBDockPaletteType_LEFT, parent, name)
+    , mNavigator(NULL)
+    , mLayout(NULL)
     , mHLayout(NULL)
     , mPageNbr(NULL)
     , mClock(NULL)
@@ -98,13 +98,13 @@ UBNavigatorPalette::~UBNavigatorPalette()
     }
     if(NULL != mLayout)
     {
-	delete mLayout;
-	mLayout = NULL;
+    delete mLayout;
+    mLayout = NULL;
     }
     if(NULL != mNavigator)
     {
-	delete mNavigator;
-	mNavigator = NULL;
+    delete mNavigator;
+    mNavigator = NULL;
     }
 }
 

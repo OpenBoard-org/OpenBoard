@@ -43,7 +43,7 @@ namespace merge_lib
    protected:
 
       void _retrieveBoxFromParent()
-      {		  		
+      {                  
          std::string content = _page->getObjectContent();
          std::string mediaBox;
          Object * parent = _page;
@@ -72,8 +72,8 @@ namespace merge_lib
          {
             unsigned int startOfMediaBox = _page->getObjectContent().rfind(">>");
             _page->insertToContent(startOfMediaBox, mediaBox);
-            _changeObjectContent(startOfMediaBox);			
-         }			
+            _changeObjectContent(startOfMediaBox);            
+         }            
       }
    private:
       virtual void _changeObjectContent(unsigned int startOfPageElement) = 0;

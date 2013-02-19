@@ -120,15 +120,15 @@ QSizeF XPDFRenderer::pageSizeF(int pageNumber) const
     {
         int rotate = mDocument->getPageRotate(pageNumber);
 
-		cropWidth = mDocument->getPageCropWidth(pageNumber) * this->dpiForRendering / 72.0;
+        cropWidth = mDocument->getPageCropWidth(pageNumber) * this->dpiForRendering / 72.0;
         cropHeight = mDocument->getPageCropHeight(pageNumber) * this->dpiForRendering / 72.0;
 
         if (rotate == 90 || rotate == 270)
         {
             //switching width and height
-			qreal tmpVar = cropWidth;
-			cropWidth = cropHeight;
-			cropHeight = tmpVar;
+            qreal tmpVar = cropWidth;
+            cropWidth = cropHeight;
+            cropHeight = tmpVar;
         }
     }
     return QSizeF(cropWidth, cropHeight);
@@ -156,7 +156,7 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
         p->drawImage(QPointF(savedTransform.dx() + mSliceX, savedTransform.dy() + mSliceY), *pdfImage);
         p->setWorldTransform(savedTransform);
         delete pdfImage;
-	}
+    }
 }
 
 QImage* XPDFRenderer::createPDFImage(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds)
@@ -177,18 +177,18 @@ QImage* XPDFRenderer::createPDFImage(int pageNumber, qreal xscale, qreal yscale,
 
         if (bounds.isNull())
         {
-			mDocument->displayPage(mSplash, pageNumber, this->dpiForRendering * xscale, this->dpiForRendering *yscale,
+            mDocument->displayPage(mSplash, pageNumber, this->dpiForRendering * xscale, this->dpiForRendering *yscale,
                                    rotation, useMediaBox, crop, printing);
         }
         else
         {
-			mSliceX = bounds.x() * xscale;
+            mSliceX = bounds.x() * xscale;
             mSliceY = bounds.y() * yscale;
             qreal sliceW = bounds.width() * xscale;
             qreal sliceH = bounds.height() * yscale;
 
             mDocument->displayPageSlice(mSplash, pageNumber, this->dpiForRendering * xscale, this->dpiForRendering * yscale,
-				rotation, useMediaBox, crop, printing, mSliceX, mSliceY, sliceW, sliceH);
+                rotation, useMediaBox, crop, printing, mSliceX, mSliceY, sliceW, sliceH);
         }
 
         mpSplashBitmap = mSplash->getBitmap();

@@ -79,13 +79,13 @@ void UBGraphicsPolygonItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsPolygonItem::clearStroke()
 {
-	if (mStroke!=NULL)
-	{
+    if (mStroke!=NULL)
+    {
         mStroke->remove(this);
         if (mStroke->polygons().empty())
             delete mStroke;
         mStroke = NULL;
-	}
+    }
 }
 
 UBGraphicsPolygonItem::~UBGraphicsPolygonItem()

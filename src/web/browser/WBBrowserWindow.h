@@ -174,8 +174,8 @@ class WBBrowserWindow : public QWidget
 
         Ui::MainWindow* mUniboardMainWindow;
 
-        QMenu	*mHistoryBackMenu;
-        QMenu	*mHistoryForwardMenu;
+        QMenu    *mHistoryBackMenu;
+        QMenu    *mHistoryForwardMenu;
 };
 
 #endif // WBBROWSERMAINWINDOW_H

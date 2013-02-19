@@ -313,7 +313,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
 
 public slots:
-		void initStroke();
+        void initStroke();
         void hideEraser();
 
         void setBackground(bool pIsDark, bool pIsCrossed);

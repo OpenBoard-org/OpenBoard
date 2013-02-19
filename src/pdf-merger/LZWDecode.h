@@ -50,12 +50,12 @@ namespace merge_lib
       std::string &_encoded;
       size_t _curSymbolIndex;
 
-      int _earlyChange;	// early parameter
-      int _readBuf;	   
-      int _readBits;	   
+      int _earlyChange;    // early parameter
+      int _readBuf;       
+      int _readBits;       
       int _nextCode;     
       int _bitsToRead;     
-      bool _first;	      
+      bool _first;          
       int _curSequenceLength;    
    };
 }

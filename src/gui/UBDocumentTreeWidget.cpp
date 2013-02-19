@@ -116,10 +116,10 @@ void UBDocumentTreeWidget::dragLeaveEvent(QDragLeaveEvent *event)
     Q_UNUSED(event);
 
     if (mScrollTimer->isActive())
-	{
-		mScrollMagnitude = 0;
-		mScrollTimer->stop();
-	}
+    {
+        mScrollMagnitude = 0;
+        mScrollTimer->stop();
+    }
 
     if (mDropTargetProxyTi)
     {
@@ -131,25 +131,25 @@ void UBDocumentTreeWidget::dragLeaveEvent(QDragLeaveEvent *event)
 
 void UBDocumentTreeWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-	QRect boundingFrame = frameRect();
-	//setting up automatic scrolling
-	const int SCROLL_DISTANCE = 4;
-	int bottomDist = boundingFrame.bottom() - event->pos().y(), topDist = boundingFrame.top() - event->pos().y();
-	if(qAbs(bottomDist) <= SCROLL_DISTANCE)
-	{
-		mScrollMagnitude = (SCROLL_DISTANCE - bottomDist)*4;
-		if(verticalScrollBar()->isVisible() && !mScrollTimer->isActive()) mScrollTimer->start(100);
-	}
-	else if(qAbs(topDist) <= SCROLL_DISTANCE)
-	{
-		mScrollMagnitude = (- SCROLL_DISTANCE - topDist)*4;
-		if(verticalScrollBar()->isVisible() && !mScrollTimer->isActive()) mScrollTimer->start(100);
-	}
-	else
-	{
-		mScrollMagnitude = 0;
-		mScrollTimer->stop();
-	}
+    QRect boundingFrame = frameRect();
+    //setting up automatic scrolling
+    const int SCROLL_DISTANCE = 4;
+    int bottomDist = boundingFrame.bottom() - event->pos().y(), topDist = boundingFrame.top() - event->pos().y();
+    if(qAbs(bottomDist) <= SCROLL_DISTANCE)
+    {
+        mScrollMagnitude = (SCROLL_DISTANCE - bottomDist)*4;
+        if(verticalScrollBar()->isVisible() && !mScrollTimer->isActive()) mScrollTimer->start(100);
+    }
+    else if(qAbs(topDist) <= SCROLL_DISTANCE)
+    {
+        mScrollMagnitude = (- SCROLL_DISTANCE - topDist)*4;
+        if(verticalScrollBar()->isVisible() && !mScrollTimer->isActive()) mScrollTimer->start(100);
+    }
+    else
+    {
+        mScrollMagnitude = 0;
+        mScrollTimer->stop();
+    }
 
 
     QTreeWidgetItem* underlyingItem = this->itemAt(event->pos());
@@ -461,5 +461,5 @@ bool UBDocumentGroupTreeItem::isDefaultFolder() const
 
 void UBDocumentTreeWidget::autoScroll()
 {
-	this->verticalScrollBar()->setValue(this->verticalScrollBar()->value() + mScrollMagnitude);
+    this->verticalScrollBar()->setValue(this->verticalScrollBar()->value() + mScrollMagnitude);
 }

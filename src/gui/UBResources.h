@@ -58,7 +58,7 @@ class UBResources : public QObject
          QCursor playCursor;
          QCursor textCursor;
          QCursor rotateCursor;
-		 QCursor drawLineRulerCursor;
+         QCursor drawLineRulerCursor;
 };
 
 #endif /* UBRESOURCES_H_ */

@@ -36,7 +36,7 @@ std::string NUMBERANDWHITESPACE(" 0123456789");
 
 
 Object::~Object()
-{   	
+{       
    _parents.clear();
    _children.clear();
    _content.clear();
@@ -107,8 +107,8 @@ void Object::forgetAboutChildren(unsigned int leftBound, unsigned int rightBound
 {
    std::vector<Object *> children = getChildrenByBounds(leftBound, rightBound);
    for(size_t i = 0; i < children.size(); ++i)
-   {	     
-      _children.erase(_children.find(children[i]->getObjectNumber()));		 
+   {         
+      _children.erase(_children.find(children[i]->getObjectNumber()));         
    }
 }
 
@@ -250,9 +250,9 @@ void Object::insertToContent(unsigned int position, const std::string & inserted
 }
 
 void Object::insertToContent(unsigned int position, const char * insertedStr, unsigned int length)
-{	
+{    
    _recalculateReferencePositions(position, length);
-   _content.insert(position, insertedStr, length);	
+   _content.insert(position, insertedStr, length);    
 }
 
 //vector <object number, its size>
@@ -263,9 +263,9 @@ void Object::serialize(std::ofstream & out, std::map< unsigned int, std::pair<un
 
    std::string stream;
    if(_hasStream && !_hasStreamInContent)
-   {	   
+   {       
       getStream(stream);
-      stream.append("endstream\n");	   
+      stream.append("endstream\n");       
    }
    // xxxx + " " + "0" + " " + "obj" + "\n" + _content.size() + "endobj\n", where x - is a digit
    unsigned long long objectSizeForXref = (static_cast<unsigned int>(std::log10(static_cast<double>(_number))) + 1) + 14 + _content.size() + stream.size();    
@@ -285,13 +285,13 @@ void Object::serialize(std::ofstream & out, std::map< unsigned int, std::pair<un
    }
 }
 void Object::recalculateObjectNumbers(unsigned int & newNumber)
-{	
+{    
    _recalculateObjectNumbers(newNumber);
    resetIsPassed();
 }
 
 void Object::_recalculateObjectNumbers(unsigned int & newNumber)
-{	
+{    
    _setObjectNumber(newNumber);
 
    Children::iterator childIterator;
@@ -396,7 +396,7 @@ bool Object::findObject(const std::string & token, Object* & foundObject, unsign
    bool result = _findObject(token, foundObject, tokenPositionInContent);
    resetIsPassed();
    if(result)
-   {	
+   {    
       return true;
    }
    return false;
@@ -425,7 +425,7 @@ void Object::_addParent(Object * child)
 }
 void Object::_serialize(std::ofstream  & out, const std::string & stream)
 {
-	out << _number << " " << _generationNumber << " obj\n" << _content << stream << "endobj\n";
+    out << _number << " " << _generationNumber << " obj\n" << _content << stream << "endobj\n";
    out.flush();
 }
 

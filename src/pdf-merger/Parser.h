@@ -60,7 +60,7 @@ namespace merge_lib
       static bool tokenIsAName(const std::string &content, size_t start );
    protected:
       const std::string &                           _getObjectContent(unsigned int objectPosition, unsigned int & objectNumber, unsigned int & generationNumber, std::pair<unsigned int, unsigned int> &, bool &);
-	  virtual unsigned int                          _readTrailerAndReturnRoot();
+      virtual unsigned int                          _readTrailerAndReturnRoot();
    private:
       //methods
       virtual void                                  _getFileContent(const char * fileName);
@@ -77,7 +77,7 @@ namespace merge_lib
       unsigned int                                  _skipWhiteSpaces(const std::string & str);
       unsigned int                                  _skipWhiteSpacesFromContent(unsigned int fromPosition);
       const std::map<unsigned int, Object::ReferencePositionsInContent> & _getReferences(const std::string & objectContent);
-      unsigned int                                  _skipNumber(const std::string & str, unsigned int currentPosition);	  
+      unsigned int                                  _skipNumber(const std::string & str, unsigned int currentPosition);      
       unsigned int                                  _skipWhiteSpaces(const std::string & str, unsigned int fromPosition);
       void                                          _createDocument(const char * docName);      
       virtual unsigned int                          _getStartOfXrefWithRoot();

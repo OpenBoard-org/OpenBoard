@@ -42,7 +42,7 @@ class UBDocumentProxy;
 
 #include "UBDockPaletteWidget.h"
 
-#define TABSIZE	    50       //Height of the tab of the palette
+#define TABSIZE        50       //Height of the tab of the palette
 #define CLICKTIME   1000000  //Clicktime to expand or collapse palette
 
 /**

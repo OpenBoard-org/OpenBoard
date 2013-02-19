@@ -147,7 +147,7 @@ public:
     bool isModified();
 
 signals:
-	void resized();
+    void resized();
 
 public slots:
     void onActiveSceneChanged();
@@ -245,8 +245,8 @@ private:
     bool mKeyboardActionFired;
 
 private slots:
-	void onTriggeredAction(bool checked);
-	void onTriggeredKeyboardAction(bool checked);
+    void onTriggeredAction(bool checked);
+    void onTriggeredKeyboardAction(bool checked);
 };
 
 #endif // UBTEACHERGUIDEWIDGET_H

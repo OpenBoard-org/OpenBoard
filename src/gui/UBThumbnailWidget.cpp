@@ -224,11 +224,11 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
         return;
     }
     //if(sceneItem){
-    //	int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneItem->sceneIndex());
-    //	if(pageIndex == 0){
+    //    int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneItem->sceneIndex());
+    //    if(pageIndex == 0){
     //        event->ignore();
     //        return;
-    //	}
+    //    }
     //}
 
     mMousePressScenePos = mapToScene(mMousePressPos);
@@ -846,15 +846,15 @@ void UBSceneThumbnailNavigPixmap::mousePressEvent(QGraphicsSceneMouseEvent *even
 void UBSceneThumbnailNavigPixmap::updateButtonsState()
 {
 
-	bCanDelete = false;
+    bCanDelete = false;
     bCanMoveUp = false;
     bCanMoveDown = false;
     bCanDuplicate = false;
 
     if(proxy()){
-    	int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneIndex());
-    	UBDocumentController* documentController = UBApplication::documentController;
-    	bCanDelete = documentController->pageCanBeDeleted(pageIndex);
+        int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneIndex());
+        UBDocumentController* documentController = UBApplication::documentController;
+        bCanDelete = documentController->pageCanBeDeleted(pageIndex);
         bCanMoveUp = documentController->pageCanBeMovedUp(pageIndex);
         bCanMoveDown = documentController->pageCanBeMovedDown(pageIndex);
         bCanDuplicate = documentController->pageCanBeDuplicated(pageIndex);
@@ -866,14 +866,14 @@ void UBSceneThumbnailNavigPixmap::updateButtonsState()
 
 void UBSceneThumbnailNavigPixmap::deletePage()
 {
-	if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"), QObject::tr("Are you sure you want to remove 1 page from the selected document '%0'?").arg(UBApplication::documentController->selectedDocument()->metaData(UBSettings::documentName).toString()))){
-		UBApplication::boardController->deleteScene(sceneIndex());
-	}
+    if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"), QObject::tr("Are you sure you want to remove 1 page from the selected document '%0'?").arg(UBApplication::documentController->selectedDocument()->metaData(UBSettings::documentName).toString()))){
+        UBApplication::boardController->deleteScene(sceneIndex());
+    }
 }
 
 void UBSceneThumbnailNavigPixmap::duplicatePage()
 {
-	UBApplication::boardController->duplicateScene(sceneIndex());
+    UBApplication::boardController->duplicateScene(sceneIndex());
 }
 
 void UBSceneThumbnailNavigPixmap::moveUpPage()
@@ -891,17 +891,17 @@ void UBSceneThumbnailNavigPixmap::moveDownPage()
 void UBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal height)
 {
     int labelSpacing = 0;
-	if(this->caption)
-	{
+    if(this->caption)
+    {
         QFontMetrics fm(this->caption->font());
         labelSpacing = UBSettings::thumbnailSpacing + fm.height();
-	}
-	if(this->thumbnail)
-	{
+    }
+    if(this->thumbnail)
+    {
         int w = this->thumbnail->boundingRect().width();
         int h = this->thumbnail->boundingRect().height();
 
-		qreal scaleWidth = width / w;
+        qreal scaleWidth = width / w;
         qreal scaleHeight = height / h;
         qreal scaleFactor = qMin(scaleWidth, scaleHeight);
         UBThumbnail* pix = dynamic_cast<UBThumbnail*>(this->thumbnail);
@@ -924,8 +924,8 @@ void UBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal heigh
 
         this->thumbnail->setPos(pos);
 
-		if(this->caption)
-		{
+        if(this->caption)
+        {
             QFontMetrics fm(this->caption->font());
             QString elidedText = fm.elidedText(this->caption->toPlainText(), Qt::ElideRight, width);
 
@@ -935,6 +935,6 @@ void UBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal heigh
             qreal labelWidth = fm.width(elidedText);
             pos.setX(border + (width - labelWidth) / 2 + col * (width + border));
             this->caption->setPos(pos);
-		}
-	}
+        }
+    }
 }

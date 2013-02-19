@@ -65,7 +65,7 @@ namespace merge_lib
          _page->insertToContent(startOfPageElement, matrix.str());
       }
       void _pageElementNotFound()
-      {		  		
+      {                  
          _retrieveBoxFromParent();
       }
    };

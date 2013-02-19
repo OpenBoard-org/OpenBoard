@@ -44,8 +44,8 @@ class UBImportPDF : public UBPageBasedImportAdaptor
         virtual void placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item);
         virtual const QString& folderToCopy();
 
-	private:
-		int dpi;
+    private:
+        int dpi;
 };
 
 #endif /* UBIMPORTPDF_H_ */

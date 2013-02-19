@@ -39,7 +39,7 @@ UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-   	setDelegate(new UBGraphicsGroupContainerItemDelegate(this, 0));
+       setDelegate(new UBGraphicsGroupContainerItemDelegate(this, 0));
     Delegate()->init();
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);

@@ -328,7 +328,7 @@ void UBFeaturesWidget::onPreviewLoaded(int id, bool pSuccess, QUrl sourceUrl, QU
 void UBFeaturesWidget::onAddDownloadedFileToLibrary(bool pSuccess, QUrl sourceUrl, QString pContentHeader, QByteArray pData, QString pTitle)
 {
     if (pSuccess) {
-		qDebug() << pData.length();
+        qDebug() << pData.length();
         controller->addDownloadedFile(sourceUrl, pData, pContentHeader, pTitle);
         controller->refreshModels();
     }
@@ -371,20 +371,20 @@ void UBFeaturesWidget::removeElementsFromFavorite()
 
 void UBFeaturesWidget::switchToListView()
 {
-//	stackedWidget->setCurrentIndex(ID_LISTVIEW);
-//	currentStackedWidget = ID_LISTVIEW;
+//    stackedWidget->setCurrentIndex(ID_LISTVIEW);
+//    currentStackedWidget = ID_LISTVIEW;
 }
 
 void UBFeaturesWidget::switchToProperties()
 {
-//	stackedWidget->setCurrentIndex(ID_PROPERTIES);
-//	currentStackedWidget = ID_PROPERTIES;
+//    stackedWidget->setCurrentIndex(ID_PROPERTIES);
+//    currentStackedWidget = ID_PROPERTIES;
 }
 
 void UBFeaturesWidget::switchToWebView()
 {
-//	stackedWidget->setCurrentIndex(ID_WEBVIEW);
-//	currentStackedWidget = ID_WEBVIEW;
+//    stackedWidget->setCurrentIndex(ID_WEBVIEW);
+//    currentStackedWidget = ID_WEBVIEW;
 }
 
 QStringList UBFeaturesMimeData::formats() const
@@ -1141,7 +1141,7 @@ QVariant UBFeaturesModel::data(const QModelIndex &index, int role) const
     } else if (role == Qt::UserRole) {
         return featuresList->at(index.row()).getVirtualPath();
 
-    }	else if (role == Qt::UserRole + 1) {
+    }    else if (role == Qt::UserRole + 1) {
         //return featuresList->at(index.row()).getType();
         UBFeature f = featuresList->at(index.row());
         return QVariant::fromValue( f );
@@ -1446,12 +1446,12 @@ bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
-	
+    
     return feature.isFolder() && path.startsWith( feature.getFullVirtualPath()) ;
 
 }
 
-QString	UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const
+QString    UBFeaturesItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const
 {
     Q_UNUSED(locale)
 
@@ -1473,7 +1473,7 @@ UBFeaturesPathItemDelegate::UBFeaturesPathItemDelegate(QObject *parent) : QStyle
     arrowPixmap = new QPixmap(":images/navig_arrow.png");
 }
 
-QString	UBFeaturesPathItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const
+QString    UBFeaturesPathItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const
 {
     Q_UNUSED(value)
     Q_UNUSED(locale)

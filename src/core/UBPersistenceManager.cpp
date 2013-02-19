@@ -615,7 +615,7 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     UBBoardPaletteManager* paletteManager = UBApplication::boardController->paletteManager();
     bool teacherGuideModified = false;
     if(UBApplication::app()->boardController->currentPage() == pSceneIndex &&  paletteManager->teacherGuideDockWidget())
-    	teacherGuideModified = paletteManager->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
+        teacherGuideModified = paletteManager->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
 
     if (pDocumentProxy->isModified() || teacherGuideModified)
         UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
@@ -873,7 +873,7 @@ QString UBPersistenceManager::teacherGuideAbsoluteObjectPath(UBDocumentProxy* pD
 QString UBPersistenceManager::addObjectToTeacherGuideDirectory(UBDocumentProxy* pDocumentProxy, QString pPath)
 {
     QString path = UBFileSystemUtils::removeLocalFilePrefix(pPath);
-	QFileInfo fi(path);
+    QFileInfo fi(path);
     QString uuid = QUuid::createUuid();
 
     if (!fi.exists() || !pDocumentProxy)

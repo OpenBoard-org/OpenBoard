@@ -143,7 +143,7 @@ class UBBoardView : public QGraphicsView
 
         bool isAbsurdPoint(QPoint point);
 
-		bool mVirtualKeyboardActive;
+        bool mVirtualKeyboardActive;
         bool mOkOnWidget;
 
         bool mWidgetMoved;
@@ -172,9 +172,9 @@ class UBBoardView : public QGraphicsView
 
         void settingChanged(QVariant newValue);
 
-	public slots:
+    public slots:
 
-		void virtualKeyboardActivated(bool b);
+        void virtualKeyboardActivated(bool b);
         void longPressEvent();
 
 };

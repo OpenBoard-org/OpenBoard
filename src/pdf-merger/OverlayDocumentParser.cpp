@@ -58,7 +58,7 @@ void OverlayDocumentParser::_readXRefAndCreateObjects()
       for(objAndPIter = objectsAndPositions.begin(); objAndPIter != objectsAndPositions.end(); ++objAndPIter)
       {
          if((objAndPIter->second > objAndSIter->second) && (objAndPIter->second < nextPosition))
-            nextPosition = objAndPIter->second;			
+            nextPosition = objAndPIter->second;            
       }
       objectsAndSizes[objAndSIter->first] = nextPosition - objAndSIter->second;
    }
@@ -73,7 +73,7 @@ void OverlayDocumentParser::_readXRefAndCreateObjects()
          if(objIter->second < partStart)
             partStart = objIter->second;
       }
-      unsigned long nextPartStart = partStart + partSize;	  		   
+      unsigned long nextPartStart = partStart + partSize;                 
 
       if((nextPartStart) < fileSize)
          _getPartOfFileContent(partStart, partSize);
@@ -90,18 +90,18 @@ void OverlayDocumentParser::_readXRefAndCreateObjects()
          {
             std::pair<unsigned int, unsigned int> streamBounds;
             unsigned int objectNumber;
-			unsigned int generationNumber;
+            unsigned int generationNumber;
             bool hasObjectStream;
             const std::string content = _getObjectContent(objIter->second - partStart, objectNumber, generationNumber, streamBounds, hasObjectStream);
             streamBounds.first += partStart;
             streamBounds.second += partStart;
             Object * newObject = new Object(objectNumber, generationNumber, content, _document->_documentName ,streamBounds, hasObjectStream);
             _objects[objectNumber] = newObject;
-            std::map<unsigned int, unsigned long>::iterator temp = objIter;				   
+            std::map<unsigned int, unsigned long>::iterator temp = objIter;                   
             ++objIter;
             objectsAndPositions.erase(temp);
             continue;
-         }		   		   
+         }                      
          ++objIter;           
       }
       partStart = nextPartStart;

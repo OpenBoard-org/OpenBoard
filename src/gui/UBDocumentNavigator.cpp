@@ -87,8 +87,8 @@ UBDocumentNavigator::~UBDocumentNavigator()
 void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 {
 
-	mThumbsWithLabels.clear();
-	foreach(QGraphicsItem* it, mScene->items())
+    mThumbsWithLabels.clear();
+    foreach(QGraphicsItem* it, mScene->items())
     {
         mScene->removeItem(it);
         delete it;
@@ -106,15 +106,15 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
         QString label = pageIndex == 0 ? tr("Title page") : tr("Page %0").arg(pageIndex);
         UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(label);
 
-		UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
-		thumbWithText.setBorder(border());
-		mThumbsWithLabels.append(thumbWithText);
+        UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
+        thumbWithText.setBorder(border());
+        mThumbsWithLabels.append(thumbWithText);
 
-		mScene->addItem(pixmapItem);
-		mScene->addItem(labelItem);
+        mScene->addItem(pixmapItem);
+        mScene->addItem(labelItem);
     }
     
-	// Draw the items
+    // Draw the items
     refreshScene();
 }
 
@@ -173,7 +173,7 @@ void UBDocumentNavigator::refreshScene()
         UBImgTextThumbnailElement& item = mThumbsWithLabels[i];
         int columnIndex = i % mNbColumns;
         int rowIndex = i / mNbColumns;
-		item.Place(rowIndex, columnIndex, mThumbnailWidth, thumbnailHeight);
+        item.Place(rowIndex, columnIndex, mThumbnailWidth, thumbnailHeight);
     }
     scene()->setSceneRect(scene()->itemsBoundingRect());
 }
@@ -258,29 +258,29 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
             if(NULL != pTextItem) 
             {
                 for(int i = 0; i < mThumbsWithLabels.size(); i++)
-				{
-					const UBImgTextThumbnailElement& el = mThumbsWithLabels.at(i);
-					if(el.getCaption() == pTextItem)
-					{
-						pCrntItem = el.getThumbnail();
-						break;
-					}
-				}
+                {
+                    const UBImgTextThumbnailElement& el = mThumbsWithLabels.at(i);
+                    if(el.getCaption() == pTextItem)
+                    {
+                        pCrntItem = el.getThumbnail();
+                        break;
+                    }
+                }
             }
         }
 
         int index = 0;
-		for(int i = 0; i < mThumbsWithLabels.size(); i++)
+        for(int i = 0; i < mThumbsWithLabels.size(); i++)
         {
-		    if (mThumbsWithLabels.at(i).getThumbnail() == pCrntItem)
+            if (mThumbsWithLabels.at(i).getThumbnail() == pCrntItem)
             {
                 index = i;
                 break;
             }
         }
         UBApplication::boardController->setActiveDocumentScene(index);
-	}
-	QGraphicsView::mousePressEvent(event);
+    }
+    QGraphicsView::mousePressEvent(event);
 }
 
 void UBDocumentNavigator::mouseReleaseEvent(QMouseEvent *event)

@@ -232,7 +232,7 @@ void UBWebController::tutorialWebInstance()
 
         }
         else
-        	(*mCurrentWebBrowser)->loadUrl(currentUrl);
+            (*mCurrentWebBrowser)->loadUrl(currentUrl);
 
         mStackedWidget->setCurrentIndex(Tutorial);
         UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());

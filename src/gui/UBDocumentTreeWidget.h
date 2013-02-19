@@ -51,14 +51,14 @@ class UBDocumentTreeWidget : public QTreeWidget
 
         void itemChangedValidation(QTreeWidgetItem * item, int column);
 
-		void autoScroll();
+        void autoScroll();
 
     private:
         UBDocumentProxyTreeItem *mSelectedProxyTi;
         QTreeWidgetItem *mDropTargetProxyTi;
         QBrush mBackground;
-		QTimer* mScrollTimer;
-		int mScrollMagnitude;
+        QTimer* mScrollTimer;
+        int mScrollMagnitude;
 };
 
 

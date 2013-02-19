@@ -488,7 +488,7 @@ void UBDocumentController::duplicateSelectedItem()
     if (UBApplication::applicationController->displayMode() != UBApplicationController::Document)
         return;
 
-	if (mSelectionType == Page)
+    if (mSelectionType == Page)
     {
         QList<QGraphicsItem*> selectedItems = mDocumentUI->thumbnailWidget->selectedItems();
         QList<int> selectedSceneIndexes;
@@ -1141,26 +1141,26 @@ void UBDocumentController::selectionChanged()
 
     mMainWindow->actionNewDocument->setEnabled((groupSelected || docSelected || pageSelected) && !trashSelected);
     mMainWindow->actionExport->setEnabled((docSelected || pageSelected) && !trashSelected);
-	bool firstSceneSelected = false;
+    bool firstSceneSelected = false;
     if(docSelected)
-    	mMainWindow->actionDuplicate->setEnabled(!trashSelected);
+        mMainWindow->actionDuplicate->setEnabled(!trashSelected);
     else if(pageSelected){
-    	QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
-    	if(pageCount == 1)
-    		mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(0)));
-    	else{
-    		for(int i = 0; i < selection.count() && !firstSceneSelected; i += 1){
-    			if(dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i))->sceneIndex() == 0){
-    				mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(0)));
-    				firstSceneSelected = true;
-    			}
-    		}
-    		if(!firstSceneSelected)
-    			mMainWindow->actionDuplicate->setEnabled(!trashSelected);
-    	}
+        QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
+        if(pageCount == 1)
+            mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(0)));
+        else{
+            for(int i = 0; i < selection.count() && !firstSceneSelected; i += 1){
+                if(dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i))->sceneIndex() == 0){
+                    mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(0)));
+                    firstSceneSelected = true;
+                }
+            }
+            if(!firstSceneSelected)
+                mMainWindow->actionDuplicate->setEnabled(!trashSelected);
+        }
     }
     else
-    	mMainWindow->actionDuplicate->setEnabled(false);
+        mMainWindow->actionDuplicate->setEnabled(false);
 
     mMainWindow->actionOpen->setEnabled((docSelected || pageSelected) && !trashSelected);
     mMainWindow->actionRename->setEnabled((groupSelected || docSelected) && !trashSelected && !defaultGroupSelected);
@@ -1190,7 +1190,7 @@ void UBDocumentController::selectionChanged()
     }
 
     if(pageSelected && firstSceneSelected)
-    	deleteEnabled = false;
+        deleteEnabled = false;
 
     mMainWindow->actionDelete->setEnabled(deleteEnabled);
 
@@ -1632,28 +1632,28 @@ int UBDocumentController::getSelectedItemIndex()
 
 bool UBDocumentController::pageCanBeMovedUp(int page)
 {
-	if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-		return page >= 2;
-	else
-		return page >= 1;
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+        return page >= 2;
+    else
+        return page >= 1;
 }
 
 bool UBDocumentController::pageCanBeMovedDown(int page)
 {
-	if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-		return page != 0 && page < selectedDocument()->pageCount() - 1;
-	else
-		return page < selectedDocument()->pageCount() - 1;
+    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
+        return page != 0 && page < selectedDocument()->pageCount() - 1;
+    else
+        return page < selectedDocument()->pageCount() - 1;
 }
 
 bool UBDocumentController::pageCanBeDuplicated(int page)
 {
-	return page != 0;
+    return page != 0;
 }
 
 bool UBDocumentController::pageCanBeDeleted(int page)
 {
-	return page != 0;
+    return page != 0;
 }
 
 void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
@@ -1685,9 +1685,9 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
             items << pixmapItem;
             int pageIndex = pageFromSceneIndex(i);
             if(pageIndex)
-            	labels << tr("Page %1").arg(pageIndex);
+                labels << tr("Page %1").arg(pageIndex);
             else
-            	labels << tr("Title page");
+                labels << tr("Title page");
 
             itemsPath.append(QUrl::fromLocalFile(proxy->persistencePath() + QString("/pages/%1").arg(UBDocumentContainer::pageFromSceneIndex(i))));
         }

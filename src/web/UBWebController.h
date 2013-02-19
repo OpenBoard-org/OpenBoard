@@ -123,8 +123,8 @@ class UBWebController : public QObject
         UBTrapFlashController* mTrapFlashController;
         UBWebToolsPalette** mToolsCurrentPalette;
         UBWebToolsPalette* mToolsPaletteList[TotalNumberOfWebInstances];
-// 		UBKeyboardPalette** mKeyboardCurrentPalette;
-// 		UBKeyboardPalette* mKeyboardPaletteList[TotalNumberOfWebInstances];
+//         UBKeyboardPalette** mKeyboardCurrentPalette;
+//         UBKeyboardPalette* mKeyboardPaletteList[TotalNumberOfWebInstances];
 
         bool mToolsPalettePositionned;
         bool mToolsPalettePositionnedList[TotalNumberOfWebInstances];
@@ -144,7 +144,7 @@ class UBWebController : public QObject
         void toggleWebTrap(bool checked);
 
         void onOEmbedParsed(QVector<sOEmbedContent> contents);
-//		void showKeyboard(bool checked);
+//        void showKeyboard(bool checked);
 
     signals:
         /**

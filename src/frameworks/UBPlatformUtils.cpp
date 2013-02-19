@@ -27,7 +27,7 @@
 
 void UBPlatformUtils::destroy()
 {
-	destroyKeyboardLayouts();
+    destroyKeyboardLayouts();
 }
 
 UBPlatformUtils::UBPlatformUtils()
@@ -42,19 +42,19 @@ UBPlatformUtils::~UBPlatformUtils()
 
 bool UBPlatformUtils::hasVirtualKeyboard()
 {
-	return keyboardLayouts!=NULL && nKeyboardLayouts!=0;
+    return keyboardLayouts!=NULL && nKeyboardLayouts!=0;
 }
 
 
 UBKeyboardLocale::~UBKeyboardLocale()
 {
-	if (varSymbols!=NULL)
-	{
-		for(int i=0; i<SYMBOL_KEYS_COUNT; i++)
-			delete varSymbols[i];
-		delete [] varSymbols;
-	}
-	delete icon;
+    if (varSymbols!=NULL)
+    {
+        for(int i=0; i<SYMBOL_KEYS_COUNT; i++)
+            delete varSymbols[i];
+        delete [] varSymbols;
+    }
+    delete icon;
 }
 
 
@@ -63,7 +63,7 @@ UBKeyboardLocale** UBPlatformUtils::keyboardLayouts;
 
 UBKeyboardLocale** UBPlatformUtils::getKeyboardLayouts(int& nCount)
 {
-	nCount = nKeyboardLayouts;
-	return keyboardLayouts;
+    nCount = nKeyboardLayouts;
+    return keyboardLayouts;
 }
 

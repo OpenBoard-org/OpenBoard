@@ -123,21 +123,21 @@ eMediaType UBMediaWidget::mediaType()
 
 void UBMediaWidget::showEvent(QShowEvent* event)
 {
-	if(mType == eMediaType_Audio){
-		return;
-	}else{
-		if(!mpVideoWidget){
-			mpVideoWidget = new Phonon::VideoWidget(this);
-			mMediaLayout->addStretch(1);
-			mMediaLayout->addWidget(mpVideoWidget);
-			mMediaLayout->addStretch(1);
-			Phonon::createPath(mpMediaObject, mpVideoWidget);
-			adaptSizeToVideo();
-			mpMediaObject->play();
-			mpMediaObject->stop();
-		}
-		QWidget::showEvent(event);
-	}
+    if(mType == eMediaType_Audio){
+        return;
+    }else{
+        if(!mpVideoWidget){
+            mpVideoWidget = new Phonon::VideoWidget(this);
+            mMediaLayout->addStretch(1);
+            mMediaLayout->addWidget(mpVideoWidget);
+            mMediaLayout->addStretch(1);
+            Phonon::createPath(mpMediaObject, mpVideoWidget);
+            adaptSizeToVideo();
+            mpMediaObject->play();
+            mpMediaObject->stop();
+        }
+        QWidget::showEvent(event);
+    }
 }
 
 void UBMediaWidget::hideEvent(QHideEvent* event)

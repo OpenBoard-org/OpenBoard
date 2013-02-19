@@ -120,22 +120,22 @@ public:
     QString getDisplayName() const {return mDisplayName;}
     QImage getThumbnail() const {return mThumbnail;}
     QString getVirtualPath() const { return virtualDir; }
-	//QString getPath() const { return mPath; };
+    //QString getPath() const { return mPath; };
     QUrl getFullPath() const { return mPath; }
     QString getFullVirtualPath() const { return  virtualDir + "/" + mName; }
-	QString getUrl() const;
+    QString getUrl() const;
     void setFullPath(const QUrl &newPath) {mPath = newPath;}
     void setFullVirtualPath(const QString &newVirtualPath) {virtualDir = newVirtualPath;}
     UBFeatureElementType getType() const { return elementType; }
 
-	bool isFolder() const;
+    bool isFolder() const;
     bool allowedCopy() const;
-	bool isDeletable() const;
+    bool isDeletable() const;
     bool inTrash() const;
-	bool operator ==( const UBFeature &f )const;
-	bool operator !=( const UBFeature &f )const;
-	const QMap<QString,QString> & getMetadata() const { return metadata; }
-	void setMetadata( const QMap<QString,QString> &data ) { metadata = data; }
+    bool operator ==( const UBFeature &f )const;
+    bool operator !=( const UBFeature &f )const;
+    const QMap<QString,QString> & getMetadata() const { return metadata; }
+    void setMetadata( const QMap<QString,QString> &data ) { metadata = data; }
 
 
 private:
@@ -148,7 +148,7 @@ private:
     QImage mThumbnail;
     QString mName;
     QString mDisplayName;
-	QUrl mPath;
+    QUrl mPath;
     UBFeatureElementType elementType;
     QMap<QString,QString> metadata;
 };
@@ -161,11 +161,11 @@ friend class UBFeaturesWidget;
 Q_OBJECT
 
 public:
-	UBFeaturesController(QWidget *parentWidget);
+    UBFeaturesController(QWidget *parentWidget);
     virtual ~UBFeaturesController();
 
     QList <UBFeature>* getFeatures() const {return featuresList;}
-	
+    
     const QString& getRootPath()const {return rootPath;}
     void scanFS();
 
@@ -173,12 +173,12 @@ public:
     void addItemAsBackground(const UBFeature &item);
     const UBFeature& getCurrentElement()const {return currentElement;}
     void setCurrentElement( const UBFeature &elem ) {currentElement = elem;}
-	const UBFeature & getTrashElement () const { return trashElement; }
+    const UBFeature & getTrashElement () const { return trashElement; }
 
     void addDownloadedFile( const QUrl &sourceUrl, const QByteArray &pData, const QString pContentSource, const QString pTitle );
 
-	UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
-	UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
+    UBFeature moveItemToFolder( const QUrl &url, const UBFeature &destination );
+    UBFeature copyItemToFolder( const QUrl &url, const UBFeature &destination );
     void moveExternalData(const QUrl &url, const UBFeature &destination);
 
     void rescanModel();
@@ -188,9 +188,9 @@ public:
     void searchStarted(const QString &pattern, QListView *pOnView);
     void refreshModels();
 
-	void deleteItem( const QUrl &url );
+    void deleteItem( const QUrl &url );
     void deleteItem(const UBFeature &pFeature);
-	bool isTrash( const QUrl &url );
+    bool isTrash( const QUrl &url );
     void moveToTrash(UBFeature feature, bool deleteManualy = false);
     void addToFavorite( const QUrl &path );
     void removeFromFavorite(const QUrl &path, bool deleteManualy = false);
@@ -202,9 +202,9 @@ public:
     int featuresCount(const QUrl &currPath);
     static UBFeatureElementType fileTypeFromUrl( const QString &path );
 
-	static QString fileNameFromUrl( const QUrl &url );
+    static QString fileNameFromUrl( const QUrl &url );
     static QImage getIcon( const QString &path, UBFeatureElementType pFType );
-	static bool isDeletable( const QUrl &url );
+    static bool isDeletable( const QUrl &url );
     static char featureTypeSplitter() {return ':';}
     static QString categoryNameForVirtualPath(const QString &str);
 
@@ -255,49 +255,49 @@ private:
 private:
 
     static QImage createThumbnail(const QString &path);
-	//void addImageToCurrentPage( const QString &path );
-	void loadFavoriteList();
-	void saveFavoriteList();
+    //void addImageToCurrentPage( const QString &path );
+    void loadFavoriteList();
+    void saveFavoriteList();
     QString uniqNameForFeature(const UBFeature &feature, const QString &pName = "Imported", const QString &pExtention = "") const;
     QString adjustName(const QString &str);
 
     QList <UBFeature> *featuresList;
 
-	QUrl mUserAudioDirectoryPath;
+    QUrl mUserAudioDirectoryPath;
     QUrl mUserVideoDirectoryPath;
     QUrl mUserPicturesDirectoryPath;
     QUrl mUserInteractiveDirectoryPath;
     QUrl mUserAnimationDirectoryPath;
 
-	QString libraryPath;
+    QString libraryPath;
     QUrl mLibPicturesDirectoryPath;
-	QUrl mLibAudiosDirectoryPath;
-	QUrl mLibVideosDirectoryPath;
+    QUrl mLibAudiosDirectoryPath;
+    QUrl mLibVideosDirectoryPath;
     QUrl mLibInteractiveDirectoryPath;
     QUrl mLibAnimationsDirectoryPath;
-	QUrl mLibApplicationsDirectoryPath;
-	QUrl mLibShapesDirectoryPath;
+    QUrl mLibApplicationsDirectoryPath;
+    QUrl mLibShapesDirectoryPath;
 
-	QUrl trashDirectoryPath;
-	QUrl mLibSearchDirectoryPath;
+    QUrl trashDirectoryPath;
+    QUrl mLibSearchDirectoryPath;
 
 
 
-	int mLastItemOffsetIndex;
-	UBFeature currentElement;
+    int mLastItemOffsetIndex;
+    UBFeature currentElement;
 
     UBFeature rootElement;
     UBFeature favoriteElement;
-	UBFeature audiosElement;
-	UBFeature moviesElement;
-	UBFeature picturesElement;
-	UBFeature interactElement;
+    UBFeature audiosElement;
+    UBFeature moviesElement;
+    UBFeature picturesElement;
+    UBFeature interactElement;
     UBFeature applicationsElement;
-	UBFeature flashElement;
-	UBFeature shapesElement;
-	UBFeature webSearchElement;
+    UBFeature flashElement;
+    UBFeature shapesElement;
+    UBFeature webSearchElement;
 
-	QSet <QUrl> *favoriteSet;
+    QSet <QUrl> *favoriteSet;
 
 public:
     UBFeature trashElement;

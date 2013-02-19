@@ -233,10 +233,10 @@ void UBApplicationController::adjustDisplayView()
         QRect rect = mControlView->rect();
         QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 
-		QTransform recentTransform = mDisplayView->transform();
+        QTransform recentTransform = mDisplayView->transform();
 
-		if (recentTransform != tr)
-			mDisplayView->setTransform(tr);
+        if (recentTransform != tr)
+            mDisplayView->setTransform(tr);
 
         mDisplayView->centerOn(mControlView->mapToScene(center));
     }
@@ -493,22 +493,22 @@ void UBApplicationController::showTutorial()
 
     }
     else{
-    	mMainWindow->webToolBar->hide();
-    	mMainWindow->boardToolBar->hide();
-    	mMainWindow->documentToolBar->hide();
-    	mMainWindow->tutorialToolBar->show();
+        mMainWindow->webToolBar->hide();
+        mMainWindow->boardToolBar->hide();
+        mMainWindow->documentToolBar->hide();
+        mMainWindow->tutorialToolBar->show();
 
 
-    	mMainMode = Tutorial;
+        mMainMode = Tutorial;
 
-    	adaptToolBar();
+        adaptToolBar();
 
-    	mUninoteController->hideWindow();
+        mUninoteController->hideWindow();
 
-    	UBApplication::webController->show(UBWebController::Tutorial);
+        UBApplication::webController->show(UBWebController::Tutorial);
 
-    	mirroringEnabled(false);
-    	emit mainModeChanged(mMainMode);
+        mirroringEnabled(false);
+        emit mainModeChanged(mMainMode);
     }
 }
 
@@ -543,7 +543,7 @@ void UBApplicationController::showSankoreEditor()
 
 void UBApplicationController::checkUpdate()
 {
-	if(mHttp)
+    if(mHttp)
         delete mHttp;
     QUrl url("http://ftp.open-sankore.org/update.json");
     mHttp = new QHttp(url.host());

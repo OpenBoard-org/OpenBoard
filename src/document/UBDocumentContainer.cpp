@@ -141,6 +141,6 @@ int UBDocumentContainer::sceneIndexFromPage(int page)
 
 void UBDocumentContainer::addEmptyThumbPage()
 {
-	const QPixmap* pThumb = new QPixmap();
-	mDocumentThumbs.append(pThumb);
+    const QPixmap* pThumb = new QPixmap();
+    mDocumentThumbs.append(pThumb);
 }

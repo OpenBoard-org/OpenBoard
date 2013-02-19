@@ -39,17 +39,17 @@ UBRightPalette::UBRightPalette(QWidget *parent, const char *name):
     mCollapseWidth = 150;
     bool isCollapsed = false;
     if(mCurrentMode == eUBDockPaletteWidget_BOARD){
-    	mLastWidth = UBSettings::settings()->rightLibPaletteBoardModeWidth->get().toInt();
-    	isCollapsed = UBSettings::settings()->rightLibPaletteBoardModeIsCollapsed->get().toBool();
+        mLastWidth = UBSettings::settings()->rightLibPaletteBoardModeWidth->get().toInt();
+        isCollapsed = UBSettings::settings()->rightLibPaletteBoardModeIsCollapsed->get().toBool();
     }
     else{
-    	mLastWidth = UBSettings::settings()->rightLibPaletteDesktopModeWidth->get().toInt();
-    	isCollapsed = UBSettings::settings()->rightLibPaletteDesktopModeIsCollapsed->get().toBool();
+        mLastWidth = UBSettings::settings()->rightLibPaletteDesktopModeWidth->get().toInt();
+        isCollapsed = UBSettings::settings()->rightLibPaletteDesktopModeIsCollapsed->get().toBool();
     }
     if(isCollapsed)
-    	resize(0,parentWidget()->height());
+        resize(0,parentWidget()->height());
     else
-    	resize(mLastWidth, parentWidget()->height());
+        resize(mLastWidth, parentWidget()->height());
 }
 
 /**
@@ -77,18 +77,18 @@ void UBRightPalette::mouseMoveEvent(QMouseEvent *event)
  */
 void UBRightPalette::resizeEvent(QResizeEvent *event)
 {
-	int newWidth = width();
-	if(mCurrentMode == eUBDockPaletteWidget_BOARD){
-		if(newWidth > mCollapseWidth)
-			UBSettings::settings()->rightLibPaletteBoardModeWidth->set(newWidth);
-		UBSettings::settings()->rightLibPaletteBoardModeIsCollapsed->set(newWidth == 0);
-	}
-	else{
-		if(newWidth > mCollapseWidth)
-			UBSettings::settings()->rightLibPaletteDesktopModeWidth->set(newWidth);
-		UBSettings::settings()->rightLibPaletteDesktopModeIsCollapsed->set(newWidth == 0);
-	}
-	UBDockPalette::resizeEvent(event);
+    int newWidth = width();
+    if(mCurrentMode == eUBDockPaletteWidget_BOARD){
+        if(newWidth > mCollapseWidth)
+            UBSettings::settings()->rightLibPaletteBoardModeWidth->set(newWidth);
+        UBSettings::settings()->rightLibPaletteBoardModeIsCollapsed->set(newWidth == 0);
+    }
+    else{
+        if(newWidth > mCollapseWidth)
+            UBSettings::settings()->rightLibPaletteDesktopModeWidth->set(newWidth);
+        UBSettings::settings()->rightLibPaletteDesktopModeIsCollapsed->set(newWidth == 0);
+    }
+    UBDockPalette::resizeEvent(event);
     emit resized();
 }
 
@@ -104,19 +104,19 @@ void UBRightPalette::updateMaxWidth()
 
 bool UBRightPalette::switchMode(eUBDockPaletteWidgetMode mode)
 {
-	int newModeWidth;
-	if(mode == eUBDockPaletteWidget_BOARD){
-		mLastWidth = UBSettings::settings()->rightLibPaletteBoardModeWidth->get().toInt();
-		newModeWidth = mLastWidth;
-		if(UBSettings::settings()->rightLibPaletteBoardModeIsCollapsed->get().toBool())
-			newModeWidth = 0;
-	}
-	else{
-		mLastWidth = UBSettings::settings()->rightLibPaletteDesktopModeWidth->get().toInt();
-		newModeWidth = mLastWidth;
-		if(UBSettings::settings()->rightLibPaletteDesktopModeIsCollapsed->get().toBool())
-			newModeWidth = 0;
-	}
-	resize(newModeWidth,height());
-	return UBDockPalette::switchMode(mode);
+    int newModeWidth;
+    if(mode == eUBDockPaletteWidget_BOARD){
+        mLastWidth = UBSettings::settings()->rightLibPaletteBoardModeWidth->get().toInt();
+        newModeWidth = mLastWidth;
+        if(UBSettings::settings()->rightLibPaletteBoardModeIsCollapsed->get().toBool())
+            newModeWidth = 0;
+    }
+    else{
+        mLastWidth = UBSettings::settings()->rightLibPaletteDesktopModeWidth->get().toInt();
+        newModeWidth = mLastWidth;
+        if(UBSettings::settings()->rightLibPaletteDesktopModeIsCollapsed->get().toBool())
+            newModeWidth = 0;
+    }
+    resize(newModeWidth,height());
+    return UBDockPalette::switchMode(mode);
 }

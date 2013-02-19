@@ -61,7 +61,7 @@ class UBSetting : public QObject
     public slots:
 
         void setBool(bool pValue);
-		void setString(const QString& pValue);
+        void setString(const QString& pValue);
         void setInt(int pValue);
 
     signals:

@@ -55,9 +55,9 @@ UBExportFullPDF::UBExportFullPDF(QObject *parent)
     : UBExportAdaptor(parent)
 {
     //need to calculate screen resolution
-	QDesktopWidget* desktop = UBApplication::desktop();
-	int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-	mScaleFactor = 72.0f / dpiCommon;
+    QDesktopWidget* desktop = UBApplication::desktop();
+    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    mScaleFactor = 72.0f / dpiCommon;
 }
 
 
@@ -95,17 +95,17 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
         scene->setRenderingQuality(UBItem::RenderingQualityHigh);
         scene->setRenderingContext(UBGraphicsScene::PdfExport);
 
-		QSize pageSize = scene->nominalSize();
+        QSize pageSize = scene->nominalSize();
 
-		UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
+        UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
         if (pdfItem) mHasPDFBackgrounds = true;
         
-		pdfPrinter.setPaperSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPrinter::Point);
+        pdfPrinter.setPaperSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPrinter::Point);
 
         if (!pdfPainter) pdfPainter = new QPainter(&pdfPrinter);
 
-		if (pageIndex != 0) pdfPrinter.newPage();
+        if (pageIndex != 0) pdfPrinter.newPage();
 
         //render to PDF
         scene->setDrawingMode(true);
@@ -183,9 +183,9 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                 UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
                 UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
-				QSize pageSize = scene->nominalSize();
+                QSize pageSize = scene->nominalSize();
                 
-				if (pdfItem)
+                if (pdfItem)
                 {
                     QString pdfName = UBPersistenceManager::objectDirectory + "/" + pdfItem->fileUuid().toString() + ".pdf";
                     QString backgroundPath = pDocumentProxy->persistencePath() + "/" + pdfName;

@@ -61,7 +61,7 @@ class UBDesktopPalette : public UBActionPalette
         void updateShowHideState(bool pShowEnabled);
         void setShowHideButtonVisible(bool visible);
         void setDisplaySelectButtonVisible(bool show);
-	    void minimizeMe(eMinimizedLocation location);
+        void minimizeMe(eMinimizedLocation location);
         void maximizeMe();
         void parentResized();
 

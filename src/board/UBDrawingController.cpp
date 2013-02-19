@@ -55,7 +55,7 @@ UBDrawingController::UBDrawingController(QObject * parent)
     , mActiveRuler(NULL)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
-	, mIsDesktopMode(false)
+    , mIsDesktopMode(false)
 {
     connect(UBSettings::settings(), SIGNAL(colorContextChanged()), this, SIGNAL(colorPaletteChanged()));
 
@@ -96,7 +96,7 @@ void UBDrawingController::setStylusTool(int tool)
 {
     if (tool != mStylusTool)
     {
-    	UBApplication::boardController->activeScene()->deselectAllItems();
+        UBApplication::boardController->activeScene()->deselectAllItems();
         if (mStylusTool == UBStylusTool::Pen || mStylusTool == UBStylusTool::Marker
                 || mStylusTool == UBStylusTool::Line)
         {

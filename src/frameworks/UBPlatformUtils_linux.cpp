@@ -34,7 +34,7 @@
 
 void UBPlatformUtils::init()
 {
-	initializeKeyboardLayouts();
+    initializeKeyboardLayouts();
 }
 
 QString UBPlatformUtils::applicationResourcesDirectory()
@@ -68,11 +68,11 @@ void UBPlatformUtils::fadeDisplayIn()
 
 QStringList UBPlatformUtils::availableTranslations()
 {
-	QString translationsPath = applicationResourcesDirectory() + "/" + "i18n" + "/";
-	QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath);
-	QRegExp sankoreTranslationFiles(".*sankore_.*.qm");
-	translationsList=translationsList.filter(sankoreTranslationFiles);
-	return translationsList.replaceInStrings(QRegExp("(.*)sankore_(.*).qm"),"\\2");
+    QString translationsPath = applicationResourcesDirectory() + "/" + "i18n" + "/";
+    QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath);
+    QRegExp sankoreTranslationFiles(".*sankore_.*.qm");
+    translationsList=translationsList.filter(sankoreTranslationFiles);
+    return translationsList.replaceInStrings(QRegExp("(.*)sankore_(.*).qm"),"\\2");
 }
 
 QString UBPlatformUtils::translationPath(QString pFilePrefix,QString pLanguage)
@@ -351,57 +351,57 @@ KEYBT FRENCH_LOCALE[] = {
 
 
 KEYBT SWISS_FRENCH_LOCALE[] = {
-    /* § °*/	KEYBTDECL(0xa7, 0xb0, false, 41),
-    /* 1 +*/	KEYBTDECL(0x31, 0x2b, false, 2),
+    /* § °*/    KEYBTDECL(0xa7, 0xb0, false, 41),
+    /* 1 +*/    KEYBTDECL(0x31, 0x2b, false, 2),
     /* 2 "*/    KEYBTDECL(0x32, 0x22, false, 3),
-    /* 3 **/	KEYBTDECL(0x33, 0x2a, false, 4),
+    /* 3 **/    KEYBTDECL(0x33, 0x2a, false, 4),
     /* 4 ç*/    KEYBTDECL(0x34, 0xe7, false, 5),
     /* 5 %*/    KEYBTDECL(0x35, 0x25, false, 6),
     /* 6 &*/    KEYBTDECL(0x36, 0x26, false, 7),
     /* 7 /*/    KEYBTDECL(0x37, 0x2f, false, 8),
     /* 8 (*/    KEYBTDECL(0x38, 0x28, false, 9),
-    /* 9 )*/	KEYBTDECL(0x39, 0x29, false, 10),
-    /* 0 =*/	KEYBTDECL(0x30, 0x3d, false, 11),
-    /* ' ?*/	KEYBTDECL(0x27, 0x5f, false, 12),
-    /* ^ `*/	KEYBT(0x5e, 0x60, false, 1, 2, KEYCODE(0x5e, 13, 0), KEYCODE(0x60, 13, 1)),
+    /* 9 )*/    KEYBTDECL(0x39, 0x29, false, 10),
+    /* 0 =*/    KEYBTDECL(0x30, 0x3d, false, 11),
+    /* ' ?*/    KEYBTDECL(0x27, 0x5f, false, 12),
+    /* ^ `*/    KEYBT(0x5e, 0x60, false, 1, 2, KEYCODE(0x5e, 13, 0), KEYCODE(0x60, 13, 1)),
 
-    /* q Q*/	KEYBTDECL(0x71, 0x51, true, 16),
-    /* w W*/	KEYBTDECL(0x77, 0x57, true, 17),
-    /* e E*/	KEYBTDECLEX8(0x65, 0x45, true, 18, 0x65, 0x45, 0xea, 0xca, 0xe8, 0xc8, 0xeb, 0xcb),
+    /* q Q*/    KEYBTDECL(0x71, 0x51, true, 16),
+    /* w W*/    KEYBTDECL(0x77, 0x57, true, 17),
+    /* e E*/    KEYBTDECLEX8(0x65, 0x45, true, 18, 0x65, 0x45, 0xea, 0xca, 0xe8, 0xc8, 0xeb, 0xcb),
     /* r R*/    KEYBTDECL(0x72, 0x52, true, 19),
-    /* t T*/	KEYBTDECL(0x74, 0x54, true, 20),
-    /* z Z*/	KEYBTDECL(0x7a, 0x5a, true, 21),
-    /* u U*/	KEYBTDECLEX8(0x75, 0x55, true, 22, 0x75, 0x55, 0xfb, 0xdb, 0xf9, 0xd9, 0xfc, 0xdc),
-    /* i I*/	KEYBTDECLEX8(0x69, 0x49, true, 23, 0x69, 0x49, 0xee, 0xce, 0xec, 0xcc, 0xef, 0xcf),
-    /* o O*/	KEYBTDECLEX8(0x6f, 0x4f, true, 24, 0x6f, 0x4f, 0xf4, 0xd4, 0xf2, 0xd2, 0xf6, 0xd6),
-    /* p P*/	KEYBTDECL(0x70, 0x50, true, 25),
-    /* è ü*/	KEYBTDECL(0xe8, 0xfa, false, 26),
-    /* ¨ !*/	KEYBT(0xa8, 0x21, false, 3, 0, KEYCODE(0xa8, 27, 0), KEYCODE(0x21, 27, 1)),
+    /* t T*/    KEYBTDECL(0x74, 0x54, true, 20),
+    /* z Z*/    KEYBTDECL(0x7a, 0x5a, true, 21),
+    /* u U*/    KEYBTDECLEX8(0x75, 0x55, true, 22, 0x75, 0x55, 0xfb, 0xdb, 0xf9, 0xd9, 0xfc, 0xdc),
+    /* i I*/    KEYBTDECLEX8(0x69, 0x49, true, 23, 0x69, 0x49, 0xee, 0xce, 0xec, 0xcc, 0xef, 0xcf),
+    /* o O*/    KEYBTDECLEX8(0x6f, 0x4f, true, 24, 0x6f, 0x4f, 0xf4, 0xd4, 0xf2, 0xd2, 0xf6, 0xd6),
+    /* p P*/    KEYBTDECL(0x70, 0x50, true, 25),
+    /* è ü*/    KEYBTDECL(0xe8, 0xfa, false, 26),
+    /* ¨ !*/    KEYBT(0xa8, 0x21, false, 3, 0, KEYCODE(0xa8, 27, 0), KEYCODE(0x21, 27, 1)),
 
-    /* a A*/	KEYBTDECLEX8(0x61, 0x41, true, 30, 0x61, 0x41, 0xe2, 0xc2, 0xe0, 0xc0, 0xe4, 0xc4),
-    /* s S*/	KEYBTDECL(0x73, 0x53, true, 31),
-    /* d D*/	KEYBTDECL(0x64, 0x44, true, 32),
-    /* f F*/	KEYBTDECL(0x66, 0x46, true, 33),
-    /* g G*/	KEYBTDECL(0x67, 0x47, true, 34),
-    /* h H*/	KEYBTDECL(0x68, 0x48, true, 35),
-    /* j J*/	KEYBTDECL(0x6a, 0x4a, true, 36),
-    /* k K*/	KEYBTDECL(0x6b, 0x4b, true, 37),
-    /* l L*/	KEYBTDECL(0x6c, 0x4c, true, 38),
-    /* é ö*/	KEYBTDECL(0xe9, 0xf6, false, 39),
-    /* à ä*/	KEYBTDECL(0xe0, 0xe4, false, 40),
-    /* $ £*/	KEYBTDECL(0x24, 0xa3, false, 43),
+    /* a A*/    KEYBTDECLEX8(0x61, 0x41, true, 30, 0x61, 0x41, 0xe2, 0xc2, 0xe0, 0xc0, 0xe4, 0xc4),
+    /* s S*/    KEYBTDECL(0x73, 0x53, true, 31),
+    /* d D*/    KEYBTDECL(0x64, 0x44, true, 32),
+    /* f F*/    KEYBTDECL(0x66, 0x46, true, 33),
+    /* g G*/    KEYBTDECL(0x67, 0x47, true, 34),
+    /* h H*/    KEYBTDECL(0x68, 0x48, true, 35),
+    /* j J*/    KEYBTDECL(0x6a, 0x4a, true, 36),
+    /* k K*/    KEYBTDECL(0x6b, 0x4b, true, 37),
+    /* l L*/    KEYBTDECL(0x6c, 0x4c, true, 38),
+    /* é ö*/    KEYBTDECL(0xe9, 0xf6, false, 39),
+    /* à ä*/    KEYBTDECL(0xe0, 0xe4, false, 40),
+    /* $ £*/    KEYBTDECL(0x24, 0xa3, false, 43),
 
-    /* < >*/	KEYBTDECL(0x3c, 0x3e, false, 44),
-    /* y Y*/	KEYBTDECLEX8(0x79, 0x59, true, 45, 0x79, 0x59, 0, 0, 0, 0, 0xff, 0),
-    /* x X*/	KEYBTDECL(0x78, 0x58, true, 46),
-    /* c C*/	KEYBTDECL(0x63, 0x43, true, 47),
-    /* v V*/	KEYBTDECL(0x76, 0x56, true, 48),
-    /* b B*/	KEYBTDECL(0x62, 0x42, true, 49),
-    /* n N*/	KEYBTDECL(0x6e, 0x4e, true, 50),
-    /* m M*/	KEYBTDECL(0x6d, 0x4d, true, 51),
-    /* , ;*/	KEYBTDECL(0x2c, 0x3b, false, 52),
-    /* . :*/	KEYBTDECL(0x2e, 0x3a, false, 53),
-    /* - _*/	KEYBTDECL(0x2d, 0x5f, false, 54)};
+    /* < >*/    KEYBTDECL(0x3c, 0x3e, false, 44),
+    /* y Y*/    KEYBTDECLEX8(0x79, 0x59, true, 45, 0x79, 0x59, 0, 0, 0, 0, 0xff, 0),
+    /* x X*/    KEYBTDECL(0x78, 0x58, true, 46),
+    /* c C*/    KEYBTDECL(0x63, 0x43, true, 47),
+    /* v V*/    KEYBTDECL(0x76, 0x56, true, 48),
+    /* b B*/    KEYBTDECL(0x62, 0x42, true, 49),
+    /* n N*/    KEYBTDECL(0x6e, 0x4e, true, 50),
+    /* m M*/    KEYBTDECL(0x6d, 0x4d, true, 51),
+    /* , ;*/    KEYBTDECL(0x2c, 0x3b, false, 52),
+    /* . :*/    KEYBTDECL(0x2e, 0x3a, false, 53),
+    /* - _*/    KEYBTDECL(0x2d, 0x5f, false, 54)};
 
 
 void UBPlatformUtils::initializeKeyboardLayouts()
@@ -418,9 +418,9 @@ void UBPlatformUtils::initializeKeyboardLayouts()
 void UBPlatformUtils::destroyKeyboardLayouts()
 {
     for(int i=0; i<nKeyboardLayouts; i++)
-		delete keyboardLayouts[i];
-	delete [] keyboardLayouts;
-	keyboardLayouts = NULL;
+        delete keyboardLayouts[i];
+    delete [] keyboardLayouts;
+    keyboardLayouts = NULL;
 }
 
 QString UBPlatformUtils::urlFromClipboard()

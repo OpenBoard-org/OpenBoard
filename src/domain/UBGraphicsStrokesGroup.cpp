@@ -135,18 +135,18 @@ void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
-	UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
+    UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
 
-	QTransform groupTransform = transform();
-	const_cast<UBGraphicsStrokesGroup*>(this)->resetTransform();
+    QTransform groupTransform = transform();
+    const_cast<UBGraphicsStrokesGroup*>(this)->resetTransform();
 
-	QList<QGraphicsItem*> chl = childItems();
+    QList<QGraphicsItem*> chl = childItems();
 
-	foreach(QGraphicsItem *child, chl)
-	{
-		UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
+    foreach(QGraphicsItem *child, chl)
+    {
+        UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
 
-		if (polygon){
+        if (polygon){
             UBGraphicsPolygonItem *polygonCopy = dynamic_cast<UBGraphicsPolygonItem*>(polygon->deepCopy());
             if (polygonCopy)
             {
@@ -154,18 +154,18 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
                 copy->addToGroup(pItem);
                 polygonCopy->setStrokesGroup(copy);
             }
-		}
+        }
 
-	}
-	const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
-	copyItemParameters(copy);
+    }
+    const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
+    copyItemParameters(copy);
 
-	return copy;
+    return copy;
 }
 
 void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
 {
-	QGraphicsItem *cp = dynamic_cast<QGraphicsItem*>(copy);
+    QGraphicsItem *cp = dynamic_cast<QGraphicsItem*>(copy);
     if(NULL != cp)
     {
         cp->setTransform(transform());

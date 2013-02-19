@@ -43,20 +43,20 @@ namespace merge_lib
       Document * parseDocument(const char * fileName);
 
    protected:
-	  unsigned int _readTrailerAndReturnRoot();
+      unsigned int _readTrailerAndReturnRoot();
       
    private:
-	   //methods
+       //methods
       void         _getFileContent(const char * fileName);
       void         _readXRefAndCreateObjects();
-	  void         _readXref(std::map<unsigned int, unsigned long> & objectsAndSizes);
-	  void         _getPartOfFileContent(long startOfPart, unsigned int length);
+      void         _readXref(std::map<unsigned int, unsigned long> & objectsAndSizes);
+      void         _getPartOfFileContent(long startOfPart, unsigned int length);
       unsigned int _getStartOfXrefWithRoot();
-	  //constants
-	  static int DOC_PART_WITH_START_OF_XREF;
+      //constants
+      static int DOC_PART_WITH_START_OF_XREF;
 
-	  //members
-	  std::string _fileName;
+      //members
+      std::string _fileName;
    };
 }
 #endif

@@ -184,7 +184,7 @@ void Parser::_createObjectTree(const char * fileName)
       for(; refsIterator !=  refs.end(); ++refsIterator)
       {        
          if(_objects.count((*refsIterator).first))
-            currentObject->addChild(_objects[(*refsIterator).first], (*refsIterator).second);		
+            currentObject->addChild(_objects[(*refsIterator).first], (*refsIterator).second);        
       }
    }   
    _root = _objects[rootObjectNumber];

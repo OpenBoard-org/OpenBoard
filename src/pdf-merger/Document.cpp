@@ -114,7 +114,7 @@ void Document::saveAs(const char * newFileName)
    for ( sizeIterator = sizesAndGenerationNumbers.begin() ; sizeIterator != sizesAndGenerationNumbers.end(); sizeIterator++ )
    {
       out << std::setfill('0')<<std::setw(10)<<sizeInXref << " " << std::setw(5) << (*sizeIterator).second.second << " n \n";
-	  sizeInXref = sizeInXref + (*sizeIterator).second.first;
+      sizeInXref = sizeInXref + (*sizeIterator).second.first;
    }
    out << "trailer\n<<\n/Size " << numberOfObjects  << "\n/Info 1 0 R\n"
       << "/Root " << _root->getObjectNumber() << " 0 R\n >>\nstartxref\n" << sizeInXref << "\n%%EOF";

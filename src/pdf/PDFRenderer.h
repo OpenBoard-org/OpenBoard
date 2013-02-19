@@ -58,7 +58,7 @@ class PDFRenderer : public QObject
         QUuid fileUuid() const { return mFileUuid; }
         QByteArray fileData() const { return mFileData; }
 
-		void setDPI(int desiredDPI) { this->dpiForRendering = desiredDPI; }
+        void setDPI(int desiredDPI) { this->dpiForRendering = desiredDPI; }
 
     public slots:
         virtual void render(QPainter *p, int pageNumber, const QRectF &bounds = QRectF()) = 0;
@@ -74,9 +74,9 @@ class PDFRenderer : public QObject
 
         static QMap< QUuid, QPointer<PDFRenderer> > sRenderers;
 
-	protected:
-		int dpiForRendering;
-		PDFRenderer();
+    protected:
+        int dpiForRendering;
+        PDFRenderer();
 };
 
 #endif // PDFRENDERER_H

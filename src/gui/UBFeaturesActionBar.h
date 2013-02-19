@@ -50,26 +50,26 @@ public:
 
 enum UBFeaturesActionBarState
 {
-	IN_ROOT,
-	IN_FOLDER,
-	IN_PROPERTIES,
-	IN_FAVORITE,
-	IN_TRASH
+    IN_ROOT,
+    IN_FOLDER,
+    IN_PROPERTIES,
+    IN_FAVORITE,
+    IN_TRASH
 };
 
 class UBFeaturesActionBar : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	UBFeaturesActionBar(UBFeaturesController *controller, QWidget* parent=0, const char* name="UBFeaturesActionBar");
+    UBFeaturesActionBar(UBFeaturesController *controller, QWidget* parent=0, const char* name="UBFeaturesActionBar");
     ~UBFeaturesActionBar();
-	
-	void setCurrentState( UBFeaturesActionBarState state );
+    
+    void setCurrentState( UBFeaturesActionBarState state );
     void cleanText(){ mSearchBar->clear(); }
 
 signals:
-	void searchElement(const QString &text);
-	void newFolderToCreate();
+    void searchElement(const QString &text);
+    void newFolderToCreate();
     void deleteElements(const UBFeaturesMimeData *data);
     void addToFavorite(const UBFeaturesMimeData *data);
     void removeFromFavorite(const UBFeaturesMimeData *data);
@@ -79,8 +79,8 @@ signals:
     void rescanModel();
 
 private slots:
-	void onSearchTextChanged(QString txt);
-	void onActionNewFolder();
+    void onSearchTextChanged(QString txt);
+    void onActionNewFolder();
     void onActionFavorite();
     void onActionRemoveFavorite();
     void onActionTrash();
@@ -90,17 +90,17 @@ private slots:
 
 protected:
     void dragEnterEvent( QDragEnterEvent *event );
-	void dropEvent( QDropEvent *event );
+    void dropEvent( QDropEvent *event );
 
 private:
-	void setButtons();
-	UBFeaturesController *featuresController;
-	UBFeaturesActionBarState currentState;
+    void setButtons();
+    UBFeaturesController *featuresController;
+    UBFeaturesActionBarState currentState;
 
-	eButtonSet mCrntButtonSet;
+    eButtonSet mCrntButtonSet;
     eButtonSet mPreviousButtonSet;
 
-	QButtonGroup* mButtonGroup;
+    QButtonGroup* mButtonGroup;
     QLineEdit* mSearchBar;
     QHBoxLayout* mLayout;
     QAction* mpFavoriteAction;

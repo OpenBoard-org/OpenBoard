@@ -34,7 +34,7 @@
 #include "document/UBDocumentContainer.h"
 #include "UBThumbnailWidget.h"
 
-#define NO_PAGESELECTED		    -1
+#define NO_PAGESELECTED            -1
 
 class UBDocumentNavigator : public QGraphicsView
 {
@@ -68,8 +68,8 @@ private:
     QGraphicsScene* mScene;
     /** The current selected item */
     //UBSceneThumbnailNavigPixmap* mCrntItem;
-	/** The list of current thumbnails with labels*/
-	QList<UBImgTextThumbnailElement> mThumbsWithLabels;
+    /** The list of current thumbnails with labels*/
+    QList<UBImgTextThumbnailElement> mThumbsWithLabels;
     /** The current number of columns */
     int mNbColumns;
     /** The current thumbnails width */
