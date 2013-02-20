@@ -826,14 +826,14 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
         if (!intersectedPolygons[i].empty())
         {
-            // intersected polygons generated as QList<QPolygon> QPainterPath::toFillPolygons(),
-            // so each intersectedPolygonItem has one or couple of QPolygons who should be removed from it.
+            // intersected polygons generated as QList<QPolygon> QPainterPath::toFillPolygons(), 
+            // so each intersectedPolygonItem has one or couple of QPolygons who should be removed from it. 
             for(int j = 0; j < intersectedPolygons[i].size(); j++)
             {
                 // create small polygon from couple of polygons to replace particular erased polygon
                 UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem(intersectedPolygons[i][j], intersectedPolygonItem->parentItem());
 
-                intersectedPolygonItem->copyItemParameters(polygonItem);
+                intersectedPolygonItem->copyItemParameters(polygonItem);  
                 polygonItem->setStroke(intersectedPolygonItem->stroke());
                 polygonItem->setStrokesGroup(intersectedPolygonItem->strokesGroup());
                 intersectedPolygonItem->strokesGroup()->addToGroup(polygonItem);
