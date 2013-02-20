@@ -61,7 +61,7 @@
 
                     // Loop through our results, printing them to the page.
                     var results = imageSearch.results;
-                    console.log(results);
+
                     for (var i = 0; i < results.length; i++) {
                         // For each result write it's title and image to the screen
                         var result = results[i];
@@ -159,10 +159,10 @@
 
                 //localization
                 locale = locales[lang];
-
+                var search = $("<div id='search' class='search'>").insertBefore("#searchResult");
                 var disc_nav_cont = $("<div id='disc_nav_cont' class='disc_nav_cont'>").appendTo("body");    
                 var disclaimer = $("<div id='disclaimer' class='disclaimer'>"+locale.disclaimer_title+"<div>").appendTo(disc_nav_cont);
-                var search = $("<div id='search' class='search'>").appendTo("body");
+                
     
                 //var togglePages = $("<div id='togglePages' class='togglePages'>").appendTo(search);
                 //var toggleIcon = $("<div id='toggleIcon' class='toggleIcon'>").appendTo(togglePages);
@@ -250,7 +250,7 @@
                         filtersDisplayed = false;
                     } else {
                         //$("#search").height(120);
-                        subSearchFilter.show();
+                        subSearchFilter.css("display","inline-block");
                         toggleFilters.css("background-image","url(images/up.png)");
                         filtersDisplayed = true;
                     }
@@ -296,7 +296,7 @@
                 });
 
                 $(".imgContainer").live("click",function(){
-					sankore.sendFileMetadata(createMetaData($(this)));
+                    sankore.sendFileMetadata(createMetaData($(this)));
                 });
                 
                 //checking filters
@@ -427,17 +427,18 @@
                             imgSearch.setRestriction(google.search.ImageSearch.RESTRICT_RIGHTS,google.search.ImageSearch.RIGHTS_COMMERCIAL_MODIFICATION);
                             break;                        
                     }
+                    imgSearch.setRestriction(google.search.Search.RESTRICT_SAFESEARCH,google.search.Search.SAFESEARCH_STRICT);
                     return imgSearch;
                 }
                 
                 $(window).resize(function(){
-		  var width = "200px";
-		  if ($('#search').width() < 230) {
-		    width = $("#search").width()-40;
-		  } else {
-		    width = "200px";
-		  }
-		  $('select').selectBox('destroy').css('width', width).selectBox();
+                    var width = "200px";
+                    if ($('#search').width() < 230) {
+                        width = $("#search").width()-40;
+                    } else {
+                        width = "200px";
+                    }
+                    $('select').selectBox('destroy').css('width', width).selectBox();
                 });
                 
                 $(window).trigger("resize");
