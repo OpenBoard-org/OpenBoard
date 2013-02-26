@@ -125,17 +125,17 @@ addQtTranslations
 
 cp -R resources/customizations $PRODUCT_DIR/Open-Sankore.app/Contents/Resources
 
-notify "Tagging ..."
 VERSION=`cat "$BUILD_DIR/version"`
 if [ ! -f "$BUILD_DIR/version" ]; then
     echo "version not found"
     exit 1
 else
+    notify "Tagging ..."
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
 	echo creating a tag with the version $VERSION
-	#git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
-	#git push origin --tags
+	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
+	git push origin --tags
     fi
 fi
   
@@ -155,9 +155,6 @@ GSYM_i386="$PRODUCT_DIR/$NAME i386.sym"
 INFO_PLIST="$APP/Contents/Info.plist"
 
 rm -f "$APP/Contents/Resources/empty.lproj"
-
-notify "Removing .svn directories ..."
-find "$APP" -name .svn -exec rm -rf {} \; 2> /dev/null
 
 # set various version infomration in Info.plist
 $PLISTBUDDY -c "Set :CFBundleVersion $VERSION" "$INFO_PLIST"
