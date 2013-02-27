@@ -84,7 +84,6 @@ class UBToolsManager : public QObject
         UBToolDescriptor triangle;
         UBToolDescriptor magnifier;
         UBToolDescriptor cache;
-        UBToolDescriptor aristo;
 
         QString iconFromToolId(QString id) { return mToolsIcon.value(id);}
 
