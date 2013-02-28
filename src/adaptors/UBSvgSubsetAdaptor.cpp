@@ -1164,7 +1164,7 @@ QGraphicsItem *UBSvgSubsetAdaptor::UBSvgSubsetReader::readElementFromGroup()
     if(!result)
         result = mStrokesList.take(uuid.replace("}","").replace("{",""));
 
-    Q_ASSERT(result);
+    //Q_ASSERT(result);
 
     mXmlReader.skipCurrentElement();
     mXmlReader.readNext();
