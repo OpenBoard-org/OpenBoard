@@ -3,21 +3,20 @@
  *
  * This file is part of Open-Sankoré.
  *
- * Open-Sankoré is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation, version 2,
+ * Open-Sankoré is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License,
  * with a specific linking exception for the OpenSSL project's
  * "OpenSSL" library (or with modified versions of it that use the
  * same license as the "OpenSSL" library).
  *
  * Open-Sankoré is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with Open-Sankoré; if not, see
- * <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -31,14 +30,14 @@ CrashWindow::CrashWindow(QWidget* parent) : QDialog(parent)
     mCrashReporterUi->setupUi(this);
     mCrashReporterUi->crashReportResult->setFont(QFont("Monaco", 11));
 
-	connect(mCrashReporterUi->viewReportButton, SIGNAL(clicked(bool)), this, SLOT(showReport()));
-	connect(mCrashReporterUi->dumpFileButton, SIGNAL(clicked(bool)), this, SLOT(chooseDumpFile()));
-	connect(mCrashReporterUi->symFileButton, SIGNAL(clicked(bool)), this, SLOT(chooseSymboleFile()));
+    connect(mCrashReporterUi->viewReportButton, SIGNAL(clicked(bool)), this, SLOT(showReport()));
+    connect(mCrashReporterUi->dumpFileButton, SIGNAL(clicked(bool)), this, SLOT(chooseDumpFile()));
+    connect(mCrashReporterUi->symFileButton, SIGNAL(clicked(bool)), this, SLOT(chooseSymboleFile()));
 }
 
 CrashWindow::~CrashWindow()
 {
-	// NOOP
+    // NOOP
 }
 
 void CrashWindow::setDumpFilePath(const QString &fileName)
@@ -48,47 +47,47 @@ void CrashWindow::setDumpFilePath(const QString &fileName)
 
 void CrashWindow::chooseDumpFile()
 {
-	QSettings settings("Mnemis", "CrashReporter");
-	QString dumpFileName = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
-	if (settings.contains("DumpFileName"))
-	{
-		dumpFileName = settings.value("DumpFileName").toString();
-	}
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-			dumpFileName,
-			tr("Dump file (*.dmp)"));
-	settings.setValue("DumpFileName", QVariant(fileName));
+    QSettings settings("Mnemis", "CrashReporter");
+    QString dumpFileName = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+    if (settings.contains("DumpFileName"))
+    {
+        dumpFileName = settings.value("DumpFileName").toString();
+    }
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+            dumpFileName,
+            tr("Dump file (*.dmp)"));
+    settings.setValue("DumpFileName", QVariant(fileName));
     setDumpFilePath(fileName);
 }
 
 void CrashWindow::chooseSymboleFile()
 {
-	QSettings settings("Mnemis", "CrashReporter");
-	QString symFileName = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
-	if (settings.contains("SymFileName"))
-	{
-		symFileName = settings.value("SymFileName").toString();
-	}
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-			symFileName,
-			tr("Symbol file (*.sym)"));
-	settings.setValue("SymFileName", QVariant(fileName));
-	mCrashReporterUi->symFilePath->setText(fileName);
+    QSettings settings("Mnemis", "CrashReporter");
+    QString symFileName = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+    if (settings.contains("SymFileName"))
+    {
+        symFileName = settings.value("SymFileName").toString();
+    }
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+            symFileName,
+            tr("Symbol file (*.sym)"));
+    settings.setValue("SymFileName", QVariant(fileName));
+    mCrashReporterUi->symFilePath->setText(fileName);
 }
 
 //=============================================================================
 int CrashWindow::PrintRegister(const char *name, u_int32_t value, int sequence) {
-	if (sequence % 4 == 0) {
-		mReport.append("\n");
-	}
+    if (sequence % 4 == 0) {
+        mReport.append("\n");
+    }
     // string should not exceed 200 byte!!!
     size_t BufSize = 2000;
-	char buf[BufSize];
+    char buf[BufSize];
 
-	snprintf(buf, BufSize, "%6s = 0x%08x ", name, value);
-	QString str = QString::fromAscii(buf);
-	mReport.append(str);
-	return ++sequence;
+    snprintf(buf, BufSize, "%6s = 0x%08x ", name, value);
+    QString str = QString::fromAscii(buf);
+    mReport.append(str);
+    return ++sequence;
 }
 
 //=============================================================================
@@ -101,9 +100,9 @@ void CrashWindow::PrintStack(const CallStack* stack, const string &cpu) {
     const CodeModule *module = frame->module;
     // string should not exceed 200 byte!!!
     size_t BufSize = 2000;
-	char buf[BufSize];
-	snprintf(buf, BufSize, "%2d ", frame_index);
-	mReport.append(QString::fromAscii(buf));
+    char buf[BufSize];
+    snprintf(buf, BufSize, "%2d ", frame_index);
+    mReport.append(QString::fromAscii(buf));
 
     if (module) {
       // Module name (20 chars max)
@@ -229,98 +228,98 @@ void CrashWindow::PrintModules(const CodeModules *modules) {
     u_int64_t base_address = module->base_address();
     // string should not exceed 200 byte!!!
     size_t BufSize = 2000;
-	char buf[BufSize];
+    char buf[BufSize];
 
-	snprintf(buf, BufSize, "0x%08llx - 0x%08llx  %s  %s%s  %s\n",
-	           base_address, base_address + module->size() - 1,
-	           PathnameStripper::File(module->code_file()).c_str(),
-	           module->version().empty() ? "???" : module->version().c_str(),
-	           main_module != NULL && base_address == main_address ?
-	           "  (main)" : "",
-	           module->code_file().c_str());
-	mReport.append(QString::fromAscii(buf));
+    snprintf(buf, BufSize, "0x%08llx - 0x%08llx  %s  %s%s  %s\n",
+               base_address, base_address + module->size() - 1,
+               PathnameStripper::File(module->code_file()).c_str(),
+               module->version().empty() ? "???" : module->version().c_str(),
+               main_module != NULL && base_address == main_address ?
+               "  (main)" : "",
+               module->code_file().c_str());
+    mReport.append(QString::fromAscii(buf));
   }
 }
 
 void CrashWindow::showReport()
 {
-	qDebug() << "compute report";
-	mReport.clear();
-	QString minidump_file = mCrashReporterUi->dumpFilePath->text();
-	BasicSourceLineResolver resolver;
+    qDebug() << "compute report";
+    mReport.clear();
+    QString minidump_file = mCrashReporterUi->dumpFilePath->text();
+    BasicSourceLineResolver resolver;
 
-	scoped_ptr<CrashReporterSymbolSupplier> symbol_supplier(
+    scoped_ptr<CrashReporterSymbolSupplier> symbol_supplier(
 
-			new CrashReporterSymbolSupplier(mCrashReporterUi->symFilePath->text()));
-	scoped_ptr<MinidumpProcessor>
-	minidump_processor(new MinidumpProcessor(symbol_supplier.get(), &resolver));
-	ProcessState process_state;
-	if (minidump_processor->Process(minidump_file.toStdString(), &process_state) !=
-		MinidumpProcessor::PROCESS_OK) {
-		mReport += "MinidumpProcessor::Process failed\n";
-		return;
-	}
-	const SystemInfo *system_info = process_state.system_info();
-	string cpu = system_info->cpu;
-	// Convert the time to a string
-	u_int32_t time_date_stamp = process_state.time_date_stamp();
-	struct tm timestruct;
-	gmtime_r(reinterpret_cast<time_t*>(&time_date_stamp), &timestruct);
-	char timestr[20];
-	// string should not exceed 200 byte!!!
-	size_t BufSize = 2000;
-	char buf[BufSize];
-	strftime(timestr, 20, "%Y-%m-%d %H:%M:%S", &timestruct);
-	snprintf(buf, BufSize, "Date: %s GMT\n", timestr);
-	mReport.append(QString::fromAscii(buf));
-	snprintf(buf, BufSize, "Operating system: %s (%s)\n", system_info->os.c_str(),
-			system_info->os_version.c_str());
-	mReport.append(QString::fromAscii(buf));
-	snprintf(buf, BufSize, "Architecture: %s\n", cpu.c_str());
-	mReport.append(QString::fromAscii(buf));
+            new CrashReporterSymbolSupplier(mCrashReporterUi->symFilePath->text()));
+    scoped_ptr<MinidumpProcessor>
+    minidump_processor(new MinidumpProcessor(symbol_supplier.get(), &resolver));
+    ProcessState process_state;
+    if (minidump_processor->Process(minidump_file.toStdString(), &process_state) !=
+        MinidumpProcessor::PROCESS_OK) {
+        mReport += "MinidumpProcessor::Process failed\n";
+        return;
+    }
+    const SystemInfo *system_info = process_state.system_info();
+    string cpu = system_info->cpu;
+    // Convert the time to a string
+    u_int32_t time_date_stamp = process_state.time_date_stamp();
+    struct tm timestruct;
+    gmtime_r(reinterpret_cast<time_t*>(&time_date_stamp), &timestruct);
+    char timestr[20];
+    // string should not exceed 200 byte!!!
+    size_t BufSize = 2000;
+    char buf[BufSize];
+    strftime(timestr, 20, "%Y-%m-%d %H:%M:%S", &timestruct);
+    snprintf(buf, BufSize, "Date: %s GMT\n", timestr);
+    mReport.append(QString::fromAscii(buf));
+    snprintf(buf, BufSize, "Operating system: %s (%s)\n", system_info->os.c_str(),
+            system_info->os_version.c_str());
+    mReport.append(QString::fromAscii(buf));
+    snprintf(buf, BufSize, "Architecture: %s\n", cpu.c_str());
+    mReport.append(QString::fromAscii(buf));
 
-	if (process_state.crashed()) {
-		snprintf(buf, BufSize, "Crash reason:  %s\n", process_state.crash_reason().c_str());
-		mReport.append(QString::fromAscii(buf));
-		snprintf(buf, BufSize, "Crash address: 0x%llx\n", process_state.crash_address());
-		mReport.append(QString::fromAscii(buf));
-	} else {
-		mReport.append("No crash\n");
-	}
+    if (process_state.crashed()) {
+        snprintf(buf, BufSize, "Crash reason:  %s\n", process_state.crash_reason().c_str());
+        mReport.append(QString::fromAscii(buf));
+        snprintf(buf, BufSize, "Crash address: 0x%llx\n", process_state.crash_address());
+        mReport.append(QString::fromAscii(buf));
+    } else {
+        mReport.append("No crash\n");
+    }
 
-	int requesting_thread = process_state.requesting_thread();
-	if (requesting_thread != -1) {
-		mReport.append("\n");
-		snprintf(buf, BufSize, "Thread %d (%s)\n",
-				requesting_thread,
-				process_state.crashed() ? "crashed" :
-		"requested dump, did not crash");
-		mReport.append(QString::fromAscii(buf));
-		PrintStack(process_state.threads()->at(requesting_thread), cpu);
-	}
+    int requesting_thread = process_state.requesting_thread();
+    if (requesting_thread != -1) {
+        mReport.append("\n");
+        snprintf(buf, BufSize, "Thread %d (%s)\n",
+                requesting_thread,
+                process_state.crashed() ? "crashed" :
+        "requested dump, did not crash");
+        mReport.append(QString::fromAscii(buf));
+        PrintStack(process_state.threads()->at(requesting_thread), cpu);
+    }
 
-	// Print all of the threads in the dump.
-	int thread_count = process_state.threads()->size();
-	for (int thread_index = 0; thread_index < thread_count; ++thread_index) {
-		if (thread_index != requesting_thread) {
-			// Don't print the crash thread again, it was already printed.
-			mReport.append("\n");
-			snprintf(buf, BufSize,"Thread %d\n", thread_index);
-			mReport.append(QString::fromAscii(buf));
-			PrintStack(process_state.threads()->at(thread_index), cpu);
-		}
-	}
+    // Print all of the threads in the dump.
+    int thread_count = process_state.threads()->size();
+    for (int thread_index = 0; thread_index < thread_count; ++thread_index) {
+        if (thread_index != requesting_thread) {
+            // Don't print the crash thread again, it was already printed.
+            mReport.append("\n");
+            snprintf(buf, BufSize,"Thread %d\n", thread_index);
+            mReport.append(QString::fromAscii(buf));
+            PrintStack(process_state.threads()->at(thread_index), cpu);
+        }
+    }
 
-	// Print the crashed registers
-	if (requesting_thread != -1) {
-		snprintf(buf, BufSize,"\nThread %d:", requesting_thread);
-		mReport.append(QString::fromAscii(buf));
-		PrintRegisters(process_state.threads()->at(requesting_thread), cpu);
-	}
+    // Print the crashed registers
+    if (requesting_thread != -1) {
+        snprintf(buf, BufSize,"\nThread %d:", requesting_thread);
+        mReport.append(QString::fromAscii(buf));
+        PrintRegisters(process_state.threads()->at(requesting_thread), cpu);
+    }
 
-	// Print information about modules
-	PrintModules(process_state.modules());
-	mCrashReporterUi->crashReportResult->setPlainText(mReport);
+    // Print information about modules
+    PrintModules(process_state.modules());
+    mCrashReporterUi->crashReportResult->setPlainText(mReport);
 }
 
 

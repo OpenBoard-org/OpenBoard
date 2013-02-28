@@ -28,22 +28,22 @@
 
 
 UBWindowCapture::UBWindowCapture(UBDesktopAnnotationController *parent) 
-	: QObject(parent)
-	, mParent(parent)
+    : QObject(parent)
+    , mParent(parent)
 {
-	// NOOP
+    // NOOP
 }
 
 
 UBWindowCapture::~UBWindowCapture() 
 {
-	// NOOP
+    // NOOP
 }
 
 
 const QPixmap UBWindowCapture::getCapturedWindow() 
 {
-	return mWindowPixmap;
+    return mWindowPixmap;
 }
 
 
@@ -51,20 +51,20 @@ int UBWindowCapture::execute()
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSString *path = [NSString pathWithComponents: [NSArray arrayWithObjects: NSTemporaryDirectory(), 
-			[[NSString stringWithFormat:@"%d",[NSDate timeIntervalSinceReferenceDate]] stringByAppendingPathExtension:@"uninote"], 
-			nil]];
-	
+            [[NSString stringWithFormat:@"%d",[NSDate timeIntervalSinceReferenceDate]] stringByAppendingPathExtension:@"uninote"], 
+            nil]];
+    
     NSTask *task = [[NSTask alloc] init];
-	NSArray *arguments = [NSArray arrayWithObjects: @"-i", @"-W", @"-m", @"-tpng", path, nil];
+    NSArray *arguments = [NSArray arrayWithObjects: @"-i", @"-W", @"-m", @"-tpng", path, nil];
     [task setLaunchPath: @"/usr/sbin/screencapture"];
     [task setArguments: arguments];
-	
+    
     [task launch];
     [task waitUntilExit];
     [task release];
-	
+    
     QString resultPath = QString::fromUtf8([path UTF8String], strlen([path UTF8String]));
-	
+    
     mWindowPixmap.load(resultPath);
     
     QFile::remove(resultPath);
