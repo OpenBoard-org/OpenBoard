@@ -25,8 +25,10 @@
 
 #include "frameworks/UBPlatformUtils.h"
 
-#include "core/UBApplication.h"
-#include "core/UBApplicationController.h"
+#include "UBApplication.h"
+#include "UBApplicationController.h"
+
+#include "UBSettings.h"
 
 #include "board/UBBoardView.h"
 

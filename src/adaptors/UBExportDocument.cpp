@@ -37,8 +37,6 @@ THIRD_PARTY_WARNINGS_DISABLE
 #include "quazipfile.h"
 THIRD_PARTY_WARNINGS_ENABLE
 
-#include "transition/UniboardSankoreTransition.h"
-
 #include "core/memcheck.h"
 
 UBExportDocument::UBExportDocument(QObject *parent)
@@ -78,9 +76,7 @@ void UBExportDocument::persist(UBDocumentProxy* pDocumentProxy)
 
 void UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, QString filename)
 {
-    UniboardSankoreTransition document;
     QString documentPath(pDocumentProxy->persistencePath());
-    document.checkDocumentDirectory(documentPath);
 
     QuaZip zip(filename);
     zip.setFileNameCodec("UTF-8");

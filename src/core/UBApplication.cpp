@@ -72,7 +72,6 @@ UBApplicationController* UBApplication::applicationController = 0;
 UBBoardController* UBApplication::boardController = 0;
 UBWebController* UBApplication::webController = 0;
 UBDocumentController* UBApplication::documentController = 0;
-UniboardSankoreTransition* UBApplication::mUniboardSankoreTransition = 0;
 
 UBMainWindow* UBApplication::mainWindow = 0;
 
@@ -179,9 +178,6 @@ UBApplication::~UBApplication()
 
     delete mainWindow;
     mainWindow = 0;
-
-    delete mUniboardSankoreTransition;
-    mUniboardSankoreTransition = 0;
 
     UBPersistenceManager::destroy();
 
@@ -365,7 +361,6 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionMultiScreen, SIGNAL(triggered(bool)), applicationController, SLOT(useMultiScreen(bool)));
     connect(mainWindow->actionWidePageSize, SIGNAL(triggered(bool)), boardController, SLOT(setWidePageSize(bool)));
     connect(mainWindow->actionRegularPageSize, SIGNAL(triggered(bool)), boardController, SLOT(setRegularPageSize(bool)));
-    connect(mainWindow->actionImportUniboardDocuments, SIGNAL(triggered()), this, SLOT(importUniboardFiles()));
 
     connect(mainWindow->actionCut, SIGNAL(triggered()), applicationController, SLOT(actionCut()));
     connect(mainWindow->actionCopy, SIGNAL(triggered()), applicationController, SLOT(actionCopy()));
@@ -397,12 +392,6 @@ void UBApplication::onScreenCountChanged(int newCount)
     Q_UNUSED(newCount);
     UBDisplayManager displayManager;
     mainWindow->actionMultiScreen->setEnabled(displayManager.numScreens() > 1);
-}
-
-void UBApplication::importUniboardFiles()
-{
-    mUniboardSankoreTransition = new UniboardSankoreTransition();
-    mUniboardSankoreTransition->documentTransition();
 }
 
 #ifdef Q_WS_MAC
@@ -545,7 +534,6 @@ void UBApplication::decorateActionMenu(QAction* action)
             menu->addSeparator();
             menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionMultiScreen);
-            menu->addAction(mainWindow->actionImportUniboardDocuments);
             // SANKORE-48: Hide the check update action if the setting
             // EnableAutomaticSoftwareUpdates is false in Uniboard.config
             if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool())
@@ -662,14 +650,11 @@ void UBApplication::cleanup()
     if (boardController) delete boardController;
     if (webController) delete webController;
     if (documentController) delete documentController;
-    if (mUniboardSankoreTransition) delete mUniboardSankoreTransition;
-
 
     applicationController = NULL;
     boardController = NULL;
     webController = NULL;
     documentController = NULL;
-    mUniboardSankoreTransition = NULL;
 }
 
 void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,
