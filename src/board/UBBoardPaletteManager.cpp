@@ -175,7 +175,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
 void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMode mainMode)
 {
-//    Board = 0, Internet, Document, Tutorial, ParaschoolEditor, WebDocument
+//    Board = 0, Internet, Document, Tutorial, WebDocument
 
     switch( mainMode )
     {

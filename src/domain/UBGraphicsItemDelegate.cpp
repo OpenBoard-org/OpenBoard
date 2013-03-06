@@ -56,7 +56,6 @@
 
 #include "core/memcheck.h"
 
-class UBGraphicsParaschoolEditorWidgetItem;
 
 DelegateButton::DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent, Qt::WindowFrameSection section)
     : QGraphicsSvgItem(fileName, parent)

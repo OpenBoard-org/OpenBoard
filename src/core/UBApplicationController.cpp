@@ -513,34 +513,6 @@ void UBApplicationController::showTutorial()
 }
 
 
-void UBApplicationController::showSankoreEditor()
-{
-
-    if (UBApplication::boardController)
-    {
-        UBApplication::boardController->persistCurrentScene();
-        UBApplication::boardController->hide();
-    }
-
-// it's needed not to duplicate webbrowser search in web mode. If I've breaked smbd's code let Ivan know
-        UBApplication::webController->show(UBWebController::Paraschool);
-
-    mMainWindow->webToolBar->hide();
-    mMainWindow->boardToolBar->hide();
-    mMainWindow->documentToolBar->hide();
-    mMainWindow->tutorialToolBar->show();
-
-
-    mMainMode = ParaschoolEditor;
-
-    adaptToolBar();
-
-    mUninoteController->hideWindow();
-
-    mirroringEnabled(false);
-    emit mainModeChanged(mMainMode);
-}
-
 void UBApplicationController::checkUpdate()
 {
     if(mHttp)
@@ -621,10 +593,6 @@ void UBApplicationController::hideDesktop()
     else if (mMainMode == Tutorial)
     {
         showTutorial();
-    }
-    else if (mMainMode == ParaschoolEditor)
-    {
-        showSankoreEditor();
     }
 
     mIsShowingDesktop = false;

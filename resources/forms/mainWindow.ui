@@ -1596,18 +1596,6 @@
     <string>Check Update</string>
    </property>
   </action>
-  <action name="actionSankoreEditor">
-   <property name="icon">
-    <iconset resource="../sankore.qrc">
-     <normaloff>:/images/toolbar/paraschool.png</normaloff>:/images/toolbar/paraschool.png</iconset>
-   </property>
-   <property name="text">
-    <string>Open-Sankoré Editor</string>
-   </property>
-   <property name="toolTip">
-    <string>Show Open-Sankoré Widgets Editor</string>
-   </property>
-  </action>
   <action name="actionHideApplication">
    <property name="icon">
     <iconset resource="../sankore.qrc">
@@ -1621,14 +1609,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
-   </property>
-  </action>
-  <action name="actionImportUniboardDocuments">
-   <property name="text">
-    <string>Import Uniboard Documents</string>
-   </property>
-   <property name="toolTip">
-    <string>Import old Sankore or Uniboard documents</string>
    </property>
   </action>
   <action name="actionGroupItems">

@@ -349,7 +349,6 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
     connect(mainWindow->actionTutorial, SIGNAL(triggered()), applicationController, SLOT(showTutorial()));
     connect(mainWindow->actionTutorial, SIGNAL(triggered()), this, SLOT(stopScript()));
-    connect(mainWindow->actionSankoreEditor, SIGNAL(triggered()), applicationController, SLOT(showSankoreEditor()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
 
 
@@ -543,7 +542,6 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             menu->addSeparator();
             menu->addAction(mainWindow->actionTutorial);
-            menu->addAction(mainWindow->actionSankoreEditor);
 
 #ifndef Q_WS_X11 // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
