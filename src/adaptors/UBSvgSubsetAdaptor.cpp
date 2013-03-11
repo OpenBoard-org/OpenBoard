@@ -1017,10 +1017,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         mScene->setModified(false);
     }
 
-    if (annotationGroup)
-    {
-        if (annotationGroup->polygons().empty())
+    if (annotationGroup && annotationGroup->polygons().empty()){
             delete annotationGroup;
+            annotationGroup = 0;
     }
 
     mScene->enableUndoRedoStack();
@@ -2812,6 +2811,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         if (mXmlReader.hasError())
         {
             delete textItem;
+            textItem = 0;
             return 0;
         }
 
