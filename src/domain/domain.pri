@@ -37,7 +37,6 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsSvgItem.cpp \
     src/domain/UBGraphicsPolygonItem.cpp \
     src/domain/UBItem.cpp \
-    src/domain/UBGraphicsVideoItem.cpp \
     src/domain/UBGraphicsWidgetItem.cpp \
     src/domain/UBGraphicsPDFItem.cpp \
     src/domain/UBGraphicsTextItem.cpp \
