@@ -597,12 +597,12 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 QList<UBGraphicsPolygonItem*> polygonItems
                 = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
 
+                QString newParentId = QUuid::createUuid().toString();
+
                 foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
                 {
                     if (annotationGroup)
-                    {
                         polygonItem->setStroke(annotationGroup);
-                    }
 
 
                     if(strokesGroup){
@@ -614,6 +614,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
                     QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
+
+                    if(parentId.isEmpty())
+                        parentId = newParentId;
+
                     Q_ASSERT(!parentId.isEmpty());
                     UBGraphicsStrokesGroup* group;
                     if(!mStrokesList.contains(parentId)){
@@ -623,8 +627,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     else
                         group = mStrokesList.value(parentId);
 
+                    group->addToGroup(polygonItem);
                     polygonItem->show();
                 }
+
             }
             else if (mXmlReader.name() == "image")
             {
@@ -984,10 +990,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         {
             if (mXmlReader.name() == "g")
             {
-//                if(strokesGroup && mScene){
-//                    mScene->addItem(strokesGroup);
-//                }
-
                 if (annotationGroup)
                 {
                     if (!annotationGroup->polygons().empty())
@@ -1010,12 +1012,12 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
     QMapIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
     while (iterator.hasNext()) {
         iterator.next();
+        qDebug() << "Number of polygons : " << (int)(((UBGraphicsStrokesGroup*)iterator.value())->childItems().count());
         mScene->addItem(iterator.value());
     }
 
-    if (mScene) {
+    if (mScene)
         mScene->setModified(false);
-    }
 
     if (annotationGroup && annotationGroup->polygons().empty()){
             delete annotationGroup;
@@ -1557,17 +1559,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
         foreach (QGraphicsItem *item, groupItem->childItems()) {
             QUuid tmpUuid = UBGraphicsScene::getPersonalUuid(item);
             if (!tmpUuid.isNull()) {
-                if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count()) {
+                if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count())
                     persistGroupToDom(item, curParent, groupDomDocument);
-                }
-//                else if (item->type() == UBGraphicsStrokesGroup::Type) {
-//                    foreach (QGraphicsItem *polygonItem, item->childItems()) {
-//                        QDomElement curPolygonElement = groupDomDocument->createElement(tElement);
-//                        curPolygonElement.setAttribute(aId, tmpUuid.toString()
-//                                                          + UBGraphicsItem::getOwnUuid(polygonItem).toString());
-//                        curGroupElement.appendChild(curPolygonElement);
-//                    }
-//                }
                 else {
                     QDomElement curSubElement = groupDomDocument->createElement(tElement);
 

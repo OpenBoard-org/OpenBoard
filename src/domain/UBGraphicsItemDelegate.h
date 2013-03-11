@@ -104,10 +104,12 @@ public:
     MediaTimer(QGraphicsItem * parent = 0);
     ~MediaTimer();
 
+    void positionHandles();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                 QWidget *widget);
 
     void display(const QString &str);
+    void setNumDigits(int nDigits);
 
 private:
 
@@ -117,7 +119,6 @@ private:
     void drawSegment(const QPoint &, char, QPainter &, int, bool = false);
     void addPoint(QPolygon&, const QPoint&);
     void internalSetString(const QString& s);
-    void setNumDigits(int nDigits);
 
     static char segments [][8];
 
@@ -128,6 +129,14 @@ private:
 
     uint shadow : 1;
     uint smallPoint : 1;
+
+    int digitSpace;
+    int xSegLen;
+    int ySegLen;
+    int segLen;
+    int xAdvance;
+    int xOffset;
+    int yOffset;
 };
 
 class DelegateMediaControl: public QObject, public QGraphicsRectItem
@@ -178,6 +187,8 @@ class DelegateMediaControl: public QObject, public QGraphicsRectItem
         QRectF mLCDTimerArea;
 
         MediaTimer *lcdTimer;
+
+        QString mDisplayFormat;
 };
 
 class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
@@ -189,7 +200,7 @@ class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
         bool isVisibleOnBoard() const { return mVisible; }
         void setVisibleOnBoard(bool visible) { mVisible = visible; }
         bool isShifting() const { return mShifting; }
-        void setShifting(bool shifting) { mShifting = shifting; } 
+        void setShifting(bool shifting) { mShifting = shifting; }
         QList<QGraphicsItem*> itemsOnToolBar() const { return mItemsOnToolBar; }
         void setItemsOnToolBar(QList<QGraphicsItem*> itemsOnToolBar) { mItemsOnToolBar = itemsOnToolBar;}
         int minWidth() { return mMinWidth; }
@@ -340,6 +351,8 @@ private:
         bool mToolBarUsed;
 
         bool mShowGoContentButton;
+
+        bool mMoved;
 };
 
 

@@ -273,8 +273,8 @@ void UBTeacherGuideEditionWidget::onActiveSceneChanged()
 
 void UBTeacherGuideEditionWidget::cleanData()
 {
-    mpPageTitle->setText("");
-    mpComment->setText("");
+    mpPageTitle->resetText();
+    mpComment->resetText();
     QList<QTreeWidgetItem*> children = mpAddAnActionItem->takeChildren();
     children << mpAddAMediaItem->takeChildren();
     children << mpAddALinkItem->takeChildren();

@@ -357,9 +357,7 @@ void UBBoardController::setupToolbar()
 void UBBoardController::setToolCursor(int tool)
 {
     if (mActiveScene)
-    {
         mActiveScene->setToolCursor(tool);
-    }
 
     mControlView->setToolCursor(tool);
 }
@@ -648,7 +646,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
 
         QList<QGraphicsItem*> duplicatedItems;
         QList<QGraphicsItem*> children = groupItem->childItems();
-          
+
         mActiveScene->setURStackEnable(false);
         foreach(QGraphicsItem* pIt, children){
             UBItem* pItem = dynamic_cast<UBItem*>(pIt);

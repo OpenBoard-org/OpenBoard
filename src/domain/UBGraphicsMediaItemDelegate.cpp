@@ -255,6 +255,11 @@ void UBGraphicsMediaItemDelegate::mediaStateChanged ( Phonon::State newstate, Ph
 {
     Q_UNUSED(newstate);
     Q_UNUSED(oldstate);
+
+    if (oldstate == Phonon::LoadingState)
+    {
+        mMediaControl->totalTimeChanged(delegated()->mediaObject()->totalTime());
+    }
     updatePlayPauseState();
 }
 

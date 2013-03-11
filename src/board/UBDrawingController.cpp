@@ -159,35 +159,23 @@ bool UBDrawingController::isDrawingTool()
 int UBDrawingController::currentToolWidthIndex()
 {
     if (stylusTool() == UBStylusTool::Pen || stylusTool() == UBStylusTool::Line)
-    {
         return UBSettings::settings()->penWidthIndex();
-    }
     else if (stylusTool() == UBStylusTool::Marker)
-    {
         return UBSettings::settings()->markerWidthIndex();
-    }
     else
-    {
         return -1;
-    }
 }
 
 
 qreal UBDrawingController::currentToolWidth()
 {
     if (stylusTool() == UBStylusTool::Pen || stylusTool() == UBStylusTool::Line)
-    {
         return UBSettings::settings()->currentPenWidth();
-    }
     else if (stylusTool() == UBStylusTool::Marker)
-    {
         return UBSettings::settings()->currentMarkerWidth();
-    }
     else
-    {
         //failsafe
         return UBSettings::settings()->currentPenWidth();
-    }
 }
 
 

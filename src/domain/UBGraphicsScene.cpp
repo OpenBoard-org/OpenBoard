@@ -335,8 +335,8 @@ void UBGraphicsScene::updateGroupButtonState()
 {
 
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
-    if (UBStylusTool::Selector != currentTool)
-        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+    if (UBStylusTool::Selector != currentTool && UBStylusTool::Play != currentTool)
+        return;
 
     QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
     QList<QGraphicsItem*> selItems = selectedItems();
@@ -362,24 +362,18 @@ void UBGraphicsScene::updateGroupButtonState()
 
 bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure)
 {
-    //mMesure1Ms = 0;
-    //mMesure2Ms = 0;
-
     bool accepted = false;
 
-    if (mInputDeviceIsPressed)
-    {
+    if (mInputDeviceIsPressed) {
         qWarning() << "scene received input device pressed, without input device release, muting event as input device move";
         accepted = inputDeviceMove(scenePos, pressure);
     }
-    else
-    {
+    else {
         mInputDeviceIsPressed = true;
 
         UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
 
-        if (UBDrawingController::drawingController()->isDrawingTool())
-        {
+        if (UBDrawingController::drawingController()->isDrawingTool()) {
             // -----------------------------------------------------------------
             // We fall here if we are using the Pen, the Marker or the Line tool
             // -----------------------------------------------------------------
@@ -399,7 +393,8 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             if (currentTool != UBStylusTool::Line){
                 // Handle the pressure
                 width = UBDrawingController::drawingController()->currentToolWidth() * pressure;
-            }else{
+            }
+            else{
                 // Ignore pressure for the line tool
                 width = UBDrawingController::drawingController()->currentToolWidth();
             }
@@ -411,18 +406,14 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             mRemovedItems.clear();
 
             if (UBDrawingController::drawingController()->mActiveRuler)
-            {
                 UBDrawingController::drawingController()->mActiveRuler->StartLine(scenePos, width);
-            }
-            else
-            {
+            else {
                 moveTo(scenePos);
                 drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
             }
             accepted = true;
         }
-        else if (currentTool == UBStylusTool::Eraser)
-        {
+        else if (currentTool == UBStylusTool::Eraser) {
             mAddedItems.clear();
             mRemovedItems.clear();
             moveTo(scenePos);
@@ -436,8 +427,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 
             accepted = true;
         }
-        else if (currentTool == UBStylusTool::Pointer)
-        {
+        else if (currentTool == UBStylusTool::Pointer) {
             drawPointer(scenePos, true);
             accepted = true;
         }
@@ -516,7 +506,8 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
             if(dc->mActiveRuler){
                 dc->mActiveRuler->DrawLine(position, width);
-            }else{
+            }
+            else{
                 drawLineTo(position, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
             }
         }
@@ -1487,15 +1478,14 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
     if(!textItem){
         textItem = addTextWithFont(pString,QPointF(0,0) ,72,UBSettings::settings()->fontFamily(),true,false);
         textItem->setObjectName(objectName);
-        QSizeF size = textItem->size();
-        textItem->setPos(QPointF(-size.width()/2.0,-size.height()/2.0));
         textItem->setData(UBGraphicsItemData::ItemEditable,QVariant(false));
+        textItem->adjustSize();
+        textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     }
 
     textItem->setPlainText(pString);
-    textItem->adjustSize();
+
     textItem->clearFocus();
-    textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     return textItem;
 }
 
@@ -2286,9 +2276,8 @@ void UBGraphicsScene::createPointer()
 void UBGraphicsScene::setToolCursor(int tool)
 {
     if (tool == (int)UBStylusTool::Selector ||
-             tool == (int)UBStylusTool::Text ||
-                tool == (int)UBStylusTool::Play)
-    {
+            tool == (int)UBStylusTool::Text ||
+            tool == (int)UBStylusTool::Play) {
         deselectAllItems();
     }
 

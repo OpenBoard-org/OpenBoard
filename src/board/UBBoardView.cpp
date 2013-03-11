@@ -80,217 +80,217 @@
 #include "core/memcheck.h"
 
 UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool isControl, bool isDesktop)
-: QGraphicsView (pParent)
-, mController (pController)
-, mIsCreatingTextZone (false)
-, mIsCreatingSceneGrabZone (false)
-, mOkOnWidget(false)
-, suspendedMousePressEvent(NULL)
-, mLongPressInterval(1000)
-, mIsDragInProgress(false)
-, mMultipleSelectionIsEnabled(false)
-, bIsControl(isControl)
-, bIsDesktop(isDesktop)
-, mRubberBandInPlayMode(false) //enables rubberband with play tool
+    : QGraphicsView (pParent)
+    , mController (pController)
+    , mIsCreatingTextZone (false)
+    , mIsCreatingSceneGrabZone (false)
+    , mOkOnWidget(false)
+    , suspendedMousePressEvent(NULL)
+    , mLongPressInterval(1000)
+    , mIsDragInProgress(false)
+    , mMultipleSelectionIsEnabled(false)
+    , bIsControl(isControl)
+    , bIsDesktop(isDesktop)
+    , mRubberBandInPlayMode(false) //enables rubberband with play tool
 {
-  init ();
+    init ();
 
-  mFilterZIndex = false;
+    mFilterZIndex = false;
 
-  mLongPressTimer.setInterval(mLongPressInterval);
-  mLongPressTimer.setSingleShot(true);
+    mLongPressTimer.setInterval(mLongPressInterval);
+    mLongPressTimer.setSingleShot(true);
 }
 
 UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent, bool isControl, bool isDesktop)
-: QGraphicsView (pParent)
-, mController (pController)
-, suspendedMousePressEvent(NULL)
-, mLongPressInterval(1000)
-, mIsDragInProgress(false)
-, mMultipleSelectionIsEnabled(false)
-, bIsControl(isControl)
-, bIsDesktop(isDesktop)
+    : QGraphicsView (pParent)
+    , mController (pController)
+    , suspendedMousePressEvent(NULL)
+    , mLongPressInterval(1000)
+    , mIsDragInProgress(false)
+    , mMultipleSelectionIsEnabled(false)
+    , bIsControl(isControl)
+    , bIsDesktop(isDesktop)
 {
-  init ();
+    init ();
 
-  mStartLayer = pStartLayer;
-  mEndLayer = pEndLayer;
+    mStartLayer = pStartLayer;
+    mEndLayer = pEndLayer;
 
-  mFilterZIndex = true;
+    mFilterZIndex = true;
 
-  mLongPressTimer.setInterval(mLongPressInterval);
-  mLongPressTimer.setSingleShot(true);
+    mLongPressTimer.setInterval(mLongPressInterval);
+    mLongPressTimer.setSingleShot(true);
 }
 
 UBBoardView::~UBBoardView () {
-  //NOOP
+    //NOOP
     if (suspendedMousePressEvent)
         delete suspendedMousePressEvent;
 }
 
 void UBBoardView::init ()
 {
-  connect (UBSettings::settings ()->boardPenPressureSensitive, SIGNAL (changed (QVariant)),
-           this, SLOT (settingChanged (QVariant)));
+    connect (UBSettings::settings ()->boardPenPressureSensitive, SIGNAL (changed (QVariant)),
+             this, SLOT (settingChanged (QVariant)));
 
-  connect (UBSettings::settings ()->boardMarkerPressureSensitive, SIGNAL (changed (QVariant)),
-           this, SLOT (settingChanged (QVariant)));
+    connect (UBSettings::settings ()->boardMarkerPressureSensitive, SIGNAL (changed (QVariant)),
+             this, SLOT (settingChanged (QVariant)));
 
-  connect (UBSettings::settings ()->boardUseHighResTabletEvent, SIGNAL (changed (QVariant)),
-           this, SLOT (settingChanged (QVariant)));
+    connect (UBSettings::settings ()->boardUseHighResTabletEvent, SIGNAL (changed (QVariant)),
+             this, SLOT (settingChanged (QVariant)));
 
-  setWindowFlags (Qt::FramelessWindowHint);
-  setFrameStyle (QFrame::NoFrame);
-  setRenderHints (QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
-  setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
-  setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
-  setAcceptDrops (true);
+    setWindowFlags (Qt::FramelessWindowHint);
+    setFrameStyle (QFrame::NoFrame);
+    setRenderHints (QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
+    setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
+    setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
+    setAcceptDrops (true);
 
-  setOptimizationFlag (QGraphicsView::IndirectPainting); // enable UBBoardView::drawItems filter
+    setOptimizationFlag (QGraphicsView::IndirectPainting); // enable UBBoardView::drawItems filter
 
-  mTabletStylusIsPressed = false;
-  mMouseButtonIsPressed = false;
-  mPendingStylusReleaseEvent = false;
+    mTabletStylusIsPressed = false;
+    mMouseButtonIsPressed = false;
+    mPendingStylusReleaseEvent = false;
 
-  setCacheMode (QGraphicsView::CacheBackground);
+    setCacheMode (QGraphicsView::CacheBackground);
 
-  mUsingTabletEraser = false;
-  mIsCreatingTextZone = false;
-  mRubberBand = 0;
-  mUBRubberBand = 0;
+    mUsingTabletEraser = false;
+    mIsCreatingTextZone = false;
+    mRubberBand = 0;
+    mUBRubberBand = 0;
 
-  mVirtualKeyboardActive = false;
+    mVirtualKeyboardActive = false;
 
-  settingChanged (QVariant ());
+    settingChanged (QVariant ());
 
-  unsetCursor();
+    unsetCursor();
 
-  movingItem = NULL;
-  mWidgetMoved = false;
+    movingItem = NULL;
+    mWidgetMoved = false;
 }
 
 UBGraphicsScene*
 UBBoardView::scene ()
 {
-  return qobject_cast<UBGraphicsScene*> (QGraphicsView::scene ());
+    return qobject_cast<UBGraphicsScene*> (QGraphicsView::scene ());
 }
 
 void
 UBBoardView::hideEvent (QHideEvent * event)
 {
-  Q_UNUSED (event);
-  emit hidden ();
+    Q_UNUSED (event);
+    emit hidden ();
 }
 
 void
 UBBoardView::showEvent (QShowEvent * event)
 {
-  Q_UNUSED (event);
-  emit shown ();
+    Q_UNUSED (event);
+    emit shown ();
 }
 
 void
 UBBoardView::keyPressEvent (QKeyEvent *event)
 {
-  // send to the scene anyway
-  QApplication::sendEvent (scene (), event);
+    // send to the scene anyway
+    QApplication::sendEvent (scene (), event);
 
-  if (!event->isAccepted ())
+    if (!event->isAccepted ())
     {
-      switch (event->key ())
+        switch (event->key ())
         {
         case Qt::Key_Up:
         case Qt::Key_PageUp:
         case Qt::Key_Left:
-          {
+        {
             mController->previousScene ();
             break;
-          }
+        }
 
         case Qt::Key_Down:
         case Qt::Key_PageDown:
         case Qt::Key_Right:
         case Qt::Key_Space:
-          {
+        {
             mController->nextScene ();
             break;
-          }
+        }
 
         case Qt::Key_Home:
-          {
+        {
             mController->firstScene ();
             break;
-          }
+        }
         case Qt::Key_End:
-          {
+        {
             mController->lastScene ();
             break;
-          }
+        }
         case Qt::Key_Insert:
-          {
+        {
             mController->addScene ();
             break;
-          }
+        }
         case Qt::Key_Control:
         case Qt::Key_Shift:
-          {
+        {
             setMultiselection(true);
-          }break;
+        }break;
         }
 
 
-      if (event->modifiers () & Qt::ControlModifier) // keep only ctrl/cmd keys
+        if (event->modifiers () & Qt::ControlModifier) // keep only ctrl/cmd keys
         {
-          switch (event->key ())
+            switch (event->key ())
             {
             case Qt::Key_Plus:
             case Qt::Key_I:
-              {
+            {
                 mController->zoomIn ();
                 event->accept ();
                 break;
-              }
+            }
             case Qt::Key_Minus:
             case Qt::Key_O:
-              {
+            {
                 mController->zoomOut ();
                 event->accept ();
                 break;
-              }
+            }
             case Qt::Key_0:
-              {
+            {
                 mController->zoomRestore ();
                 event->accept ();
                 break;
-              }
+            }
             case Qt::Key_Left:
-              {
+            {
                 mController->handScroll (-100, 0);
                 event->accept ();
                 break;
-              }
+            }
             case Qt::Key_Right:
-              {
+            {
                 mController->handScroll (100, 0);
                 event->accept ();
                 break;
-              }
+            }
             case Qt::Key_Up:
-              {
+            {
                 mController->handScroll (0, -100);
                 event->accept ();
                 break;
-              }
+            }
             case Qt::Key_Down:
-              {
+            {
                 mController->handScroll (0, 100);
                 event->accept ();
                 break;
-              }
+            }
             default:
-              {
+            {
                 // NOOP
-              }
+            }
             }
         }
     }
@@ -303,10 +303,10 @@ UBBoardView::keyPressEvent (QKeyEvent *event)
 
 void UBBoardView::keyReleaseEvent(QKeyEvent *event)
 {
-   // if (!event->isAccepted ())
+    // if (!event->isAccepted ())
     {
         if (Qt::Key_Shift == event->key()
-          ||Qt::Key_Control == event->key())
+                ||Qt::Key_Control == event->key())
         {
             setMultiselection(false);
         }
@@ -318,30 +318,30 @@ void UBBoardView::keyReleaseEvent(QKeyEvent *event)
 bool
 UBBoardView::event (QEvent * e)
 {
-  if (e->type () == QEvent::Gesture)
+    if (e->type () == QEvent::Gesture)
     {
-      QGestureEvent *gestureEvent = dynamic_cast<QGestureEvent *> (e);
-      if (gestureEvent)
+        QGestureEvent *gestureEvent = dynamic_cast<QGestureEvent *> (e);
+        if (gestureEvent)
         {
-          QSwipeGesture* swipe = dynamic_cast<QSwipeGesture*> (gestureEvent->gesture (Qt::SwipeGesture));
-          if (swipe)
+            QSwipeGesture* swipe = dynamic_cast<QSwipeGesture*> (gestureEvent->gesture (Qt::SwipeGesture));
+            if (swipe)
             {
-              if (swipe->horizontalDirection () == QSwipeGesture::Left)
+                if (swipe->horizontalDirection () == QSwipeGesture::Left)
                 {
-                  mController->previousScene ();
-                  gestureEvent->setAccepted (swipe, true);
+                    mController->previousScene ();
+                    gestureEvent->setAccepted (swipe, true);
                 }
 
-              if (swipe->horizontalDirection () == QSwipeGesture::Right)
+                if (swipe->horizontalDirection () == QSwipeGesture::Right)
                 {
-                  mController->nextScene ();
-                  gestureEvent->setAccepted (swipe, true);
+                    mController->nextScene ();
+                    gestureEvent->setAccepted (swipe, true);
                 }
             }
         }
     }
 
-  return QGraphicsView::event (e);
+    return QGraphicsView::event (e);
 }
 
 void UBBoardView::tabletEvent (QTabletEvent * event)
@@ -474,20 +474,20 @@ bool UBBoardView::isUBItem(QGraphicsItem *item)
 bool UBBoardView::isCppTool(QGraphicsItem *item)
 {
     return (item->type() == UBGraphicsItemType::CompassItemType
-        || item->type() == UBGraphicsItemType::RulerItemType
-        || item->type() == UBGraphicsItemType::ProtractorItemType
-        || item->type() == UBGraphicsItemType::TriangleItemType
-        || item->type() == UBGraphicsItemType::CurtainItemType);
+            || item->type() == UBGraphicsItemType::RulerItemType
+            || item->type() == UBGraphicsItemType::ProtractorItemType
+            || item->type() == UBGraphicsItemType::TriangleItemType
+            || item->type() == UBGraphicsItemType::CurtainItemType);
 }
 
 void UBBoardView::handleItemsSelection(QGraphicsItem *item)
 {
-// we need to select new pressed itemOnBoard and deselect all other items.
-// the trouble is in:
-//                  some items can has parents (groupped items or strokes, or strokes in groups).
-//                  some items is already selected and we don't need to reselect them
-//
-// item selection managed by QGraphicsView::mousePressEvent(). It should be called later.
+    // we need to select new pressed itemOnBoard and deselect all other items.
+    // the trouble is in:
+    //                  some items can has parents (groupped items or strokes, or strokes in groups).
+    //                  some items is already selected and we don't need to reselect them
+    //
+    // item selection managed by QGraphicsView::mousePressEvent(). It should be called later.
 
     if (item)
     {
@@ -530,7 +530,7 @@ void UBBoardView::handleItemsSelection(QGraphicsItem *item)
 
 bool UBBoardView::itemShouldReceiveMousePressEvent(QGraphicsItem *item)
 {
-/*
+    /*
 Some items should receive mouse press events averytime,
 some items should receive that events when they are selected,
 some items shouldn't receive mouse press events at mouse press, but should receive them at mouse release (suspended mouse press event)
@@ -570,6 +570,8 @@ Here we determines cases when items should to get mouse press event at pressing 
     case UBGraphicsSvgItem::Type:
     case UBGraphicsPixmapItem::Type:
     case UBGraphicsTextItem::Type:
+        if (currentTool == UBStylusTool::Play)
+            return true;
         if ((currentTool == UBStylusTool::Selector) && item->isSelected())
             return true;
         if ((currentTool == UBStylusTool::Selector) && item->parentItem() && item->parentItem()->isSelected())
@@ -577,19 +579,19 @@ Here we determines cases when items should to get mouse press event at pressing 
         if (currentTool != UBStylusTool::Selector)
             return false;
         break;
-
-    // Groups shouldn't reacts on any presses and moves for Play tool.
+    case UBGraphicsItemType::StrokeItemType:
+        if (currentTool == UBStylusTool::Play)
+            return true;
+        break;
     case UBGraphicsGroupContainerItem::Type:
+        // Groups shouldn't reacts on any presses and moves for Play tool.
         if(currentTool == UBStylusTool::Play)
         {
             movingItem = NULL;
+            return true;
         }
         return false;
         break;
-
-    //case UBToolWidget::Type:
-      //  return true;
-
     case QGraphicsWebView::Type:
         return true;
 
@@ -693,9 +695,9 @@ QGraphicsItem* UBBoardView::determineItemToPress(QGraphicsItem *item)
 
         // if item is on group and group is not selected - group should take press.
         if (UBStylusTool::Selector == currentTool
-            && item->parentItem()
-            && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()
-            && !item->parentItem()->isSelected())
+                && item->parentItem()
+                && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()
+                && !item->parentItem()->isSelected())
             return item->parentItem();
 
         // items like polygons placed in two groups nested, so we need to recursive call.
@@ -715,7 +717,7 @@ QGraphicsItem* UBBoardView::determineItemToMove(QGraphicsItem *item)
 
         //W3C widgets should take mouse move events from play tool.
         if ((UBStylusTool::Play == currentTool) && (UBGraphicsWidgetItem::Type == item->type()))
-                return item;
+            return item;
 
         // if item is in group
         if(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type())
@@ -759,12 +761,10 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     if (isMultipleSelectionEnabled())
         return;
 
-    if (itemShouldReceiveMousePressEvent(movingItem))
-    {
+    if (itemShouldReceiveMousePressEvent(movingItem)) {
         QGraphicsView::mousePressEvent (event);
     }
-    else
-    {
+    else {
         if (movingItem)
         {
             UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
@@ -813,7 +813,7 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
         QGraphicsView::mouseMoveEvent (event);
 
         if (movingItem)
-          posAfterMove = movingItem->pos();
+            posAfterMove = movingItem->pos();
 
         mWidgetMoved = ((posAfterMove-posBeforeMove).manhattanLength() != 0);
 
@@ -845,14 +845,14 @@ void UBBoardView::moveRubberedItems(QPointF movingVector)
     {
 
         if (item->type() == UBGraphicsW3CWidgetItem::Type
-              || item->type() == UBGraphicsPixmapItem::Type
-              || item->type() == UBGraphicsMediaItem::Type
-              || item->type() == UBGraphicsSvgItem::Type
-              || item->type() == UBGraphicsTextItem::Type
-              || item->type() == UBGraphicsStrokesGroup::Type
-              || item->type() == UBGraphicsGroupContainerItem::Type)
+                || item->type() == UBGraphicsPixmapItem::Type
+                || item->type() == UBGraphicsMediaItem::Type
+                || item->type() == UBGraphicsSvgItem::Type
+                || item->type() == UBGraphicsTextItem::Type
+                || item->type() == UBGraphicsStrokesGroup::Type
+                || item->type() == UBGraphicsGroupContainerItem::Type)
         {
-              item->setPos(item->pos()+movingVector);
+            item->setPos(item->pos()+movingVector);
         }
     }
 
@@ -866,26 +866,26 @@ void UBBoardView::setMultiselection(bool enable)
 
 void UBBoardView::longPressEvent()
 {
-   UBDrawingController *drawingController = UBDrawingController::drawingController();
-   UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
+    UBDrawingController *drawingController = UBDrawingController::drawingController();
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
 
-   disconnect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
+    disconnect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
 
-   if (UBStylusTool::Selector == currentTool)
-   {
+    if (UBStylusTool::Selector == currentTool)
+    {
         drawingController->setStylusTool(UBStylusTool::Play);
-   }
-   else
-   if (currentTool == UBStylusTool::Play)
-   {
-        drawingController->setStylusTool(UBStylusTool::Selector);
-   }
-   else
-   if (UBStylusTool::Eraser == currentTool)
-   {
-       UBApplication::boardController->paletteManager()->toggleErasePalette(true);
-   }
+    }
+    else
+        if (currentTool == UBStylusTool::Play)
+        {
+            drawingController->setStylusTool(UBStylusTool::Selector);
+        }
+        else
+            if (UBStylusTool::Eraser == currentTool)
+            {
+                UBApplication::boardController->paletteManager()->toggleErasePalette(true);
+            }
 
 }
 
@@ -898,8 +898,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
     mIsDragInProgress = false;
 
-    if (isAbsurdPoint (event->pos ()))
-    {
+    if (isAbsurdPoint (event->pos ())) {
         event->accept ();
         return;
     }
@@ -935,8 +934,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             mPreviousPoint = event->posF ();
             event->accept ();
         }
-        else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
-        {
+        else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play) {
             if (bIsDesktop) {
                 event->ignore();
                 return;
@@ -957,8 +955,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 mUBRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
                 mUBRubberBand->show();
             }
-            else
-            {
+            else {
                 if(mUBRubberBand)
                     mUBRubberBand->hide();
             }
@@ -1035,110 +1032,110 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 void
 UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
-  if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()))
-  {
-      return;
-  }
-
-  mIsDragInProgress = true;
-  UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
-
-  mLongPressTimer.stop();
-
-  if (isAbsurdPoint (event->pos ()))
+    if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()))
     {
-      event->accept ();
-      return;
+        return;
     }
 
-  if (currentTool == UBStylusTool::Hand && (mMouseButtonIsPressed || mTabletStylusIsPressed))
+    mIsDragInProgress = true;
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
+
+    mLongPressTimer.stop();
+
+    if (isAbsurdPoint (event->pos ()))
     {
-      QPointF eventPosition = event->posF ();
-      qreal dx = eventPosition.x () - mPreviousPoint.x ();
-      qreal dy = eventPosition.y () - mPreviousPoint.y ();
-      mController->handScroll (dx, dy);
-      mPreviousPoint = eventPosition;
-      event->accept ();
+        event->accept ();
+        return;
     }
-  else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
-  {
-      if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
-          return;
-      }
 
-      if (bIsDesktop) {
-          event->ignore();
-          return;
-      }
-
-      if (currentTool != UBStylusTool::Play || mRubberBandInPlayMode) {
-
-          if (!movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) && mUBRubberBand && mUBRubberBand->isVisible()) {
-
-              QRect bandRect(mMouseDownPos, event->pos());
-
-              bandRect = bandRect.normalized();
-
-              mUBRubberBand->setGeometry(bandRect);
-
-              QList<QGraphicsItem *> rubberItems = items(bandRect);
-              foreach (QGraphicsItem *item, mJustSelectedItems) {
-                  if (!rubberItems.contains(item)) {
-                      item->setSelected(false);
-                      mJustSelectedItems.remove(item);
-                  }
-              }
-
-              if (currentTool == UBStylusTool::Selector)
-                  foreach (QGraphicsItem *item, items(bandRect)) {
-
-                      if (item->type() == UBGraphicsW3CWidgetItem::Type
-                              || item->type() == UBGraphicsPixmapItem::Type
-                              || item->type() == UBGraphicsMediaItem::Type
-                              || item->type() == UBGraphicsSvgItem::Type
-                              || item->type() == UBGraphicsTextItem::Type
-                              || item->type() == UBGraphicsStrokesGroup::Type
-                              || item->type() == UBGraphicsGroupContainerItem::Type) {
-
-                          if (!mJustSelectedItems.contains(item)) {
-                              item->setSelected(true);
-                              mJustSelectedItems.insert(item);
-                          }
-                      }
-                  }
-          }
-      }
-
-      handleItemMouseMove(event);
-    }
-  else if ((UBDrawingController::drawingController()->isDrawingTool())
-    && !mMouseButtonIsPressed)
-  {
-      QGraphicsView::mouseMoveEvent (event);
-  }
-  else if (currentTool == UBStylusTool::Text || currentTool == UBStylusTool::Capture)
+    if (currentTool == UBStylusTool::Hand && (mMouseButtonIsPressed || mTabletStylusIsPressed))
     {
-      if (mRubberBand && (mIsCreatingTextZone || mIsCreatingSceneGrabZone))
-        {
-          mRubberBand->setGeometry (QRect (mMouseDownPos, event->pos ()).normalized ());
-          event->accept ();
+        QPointF eventPosition = event->posF ();
+        qreal dx = eventPosition.x () - mPreviousPoint.x ();
+        qreal dy = eventPosition.y () - mPreviousPoint.y ();
+        mController->handScroll (dx, dy);
+        mPreviousPoint = eventPosition;
+        event->accept ();
+    }
+    else if (currentTool == UBStylusTool::Selector || currentTool == UBStylusTool::Play)
+    {
+        if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()) {
+            return;
         }
-      else
+
+        if (bIsDesktop) {
+            event->ignore();
+            return;
+        }
+
+        if (currentTool != UBStylusTool::Play || mRubberBandInPlayMode) {
+
+            if (!movingItem && (mMouseButtonIsPressed || mTabletStylusIsPressed) && mUBRubberBand && mUBRubberBand->isVisible()) {
+
+                QRect bandRect(mMouseDownPos, event->pos());
+
+                bandRect = bandRect.normalized();
+
+                mUBRubberBand->setGeometry(bandRect);
+
+                QList<QGraphicsItem *> rubberItems = items(bandRect);
+                foreach (QGraphicsItem *item, mJustSelectedItems) {
+                    if (!rubberItems.contains(item)) {
+                        item->setSelected(false);
+                        mJustSelectedItems.remove(item);
+                    }
+                }
+
+                if (currentTool == UBStylusTool::Selector)
+                    foreach (QGraphicsItem *item, items(bandRect)) {
+
+                        if (item->type() == UBGraphicsW3CWidgetItem::Type
+                                || item->type() == UBGraphicsPixmapItem::Type
+                                || item->type() == UBGraphicsMediaItem::Type
+                                || item->type() == UBGraphicsSvgItem::Type
+                                || item->type() == UBGraphicsTextItem::Type
+                                || item->type() == UBGraphicsStrokesGroup::Type
+                                || item->type() == UBGraphicsGroupContainerItem::Type) {
+
+                            if (!mJustSelectedItems.contains(item)) {
+                                item->setSelected(true);
+                                mJustSelectedItems.insert(item);
+                            }
+                        }
+                    }
+            }
+        }
+
+        handleItemMouseMove(event);
+    }
+    else if ((UBDrawingController::drawingController()->isDrawingTool())
+             && !mMouseButtonIsPressed)
+    {
+        QGraphicsView::mouseMoveEvent (event);
+    }
+    else if (currentTool == UBStylusTool::Text || currentTool == UBStylusTool::Capture)
+    {
+        if (mRubberBand && (mIsCreatingTextZone || mIsCreatingSceneGrabZone))
         {
-          QGraphicsView::mouseMoveEvent (event);
+            mRubberBand->setGeometry (QRect (mMouseDownPos, event->pos ()).normalized ());
+            event->accept ();
+        }
+        else
+        {
+            QGraphicsView::mouseMoveEvent (event);
         }
     }
-  else
+    else
     {
-      if (!mTabletStylusIsPressed && scene ())
-      {
-          scene ()->inputDeviceMove (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())), mMouseButtonIsPressed);
-      }
-      event->accept ();
+        if (!mTabletStylusIsPressed && scene ())
+        {
+            scene ()->inputDeviceMove (mapToScene (UBGeometryUtils::pointConstrainedInRect (event->pos (), rect ())), mMouseButtonIsPressed);
+        }
+        event->accept ();
     }
 
-  if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())
-      mWidgetMoved = true;
+    if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())
+        mWidgetMoved = true;
 }
 
 void
@@ -1146,207 +1143,199 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-  setToolCursor (currentTool);
-  // first/ propagate device release to the scene
-  if (scene ())
-    scene ()->inputDeviceRelease ();
+    setToolCursor (currentTool);
+    // first/ propagate device release to the scene
+    if (scene ())
+        scene ()->inputDeviceRelease ();
 
-  if (currentTool == UBStylusTool::Selector)
-  {
-      if (bIsDesktop) {
-          event->ignore();
-          return;
-      }
-
-      UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
-      if (graphicsItem)
-          graphicsItem->Delegate()->commitUndoStep();
-
-      bool bReleaseIsNeed = true;
-      if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()))))
-      {
-          movingItem = NULL;
-          bReleaseIsNeed = false;
-      }
-      if (mWidgetMoved)
-      {
-          mWidgetMoved = false;
-          movingItem = NULL;
-      }
-      else
-      if (movingItem && (!isCppTool(movingItem) || UBGraphicsCurtainItem::Type == movingItem->type()))
-      {
-          if (suspendedMousePressEvent)
-          {
-              QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
-              movingItem = NULL;
-              delete suspendedMousePressEvent;
-              suspendedMousePressEvent = NULL;
-              bReleaseIsNeed = true;
-          }
-          else
-          {
-             if (isUBItem(movingItem) &&
-                DelegateButton::Type != movingItem->type() &&
-                QGraphicsSvgItem::Type !=  movingItem->type() &&
-                UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
-                UBGraphicsCache::Type != movingItem->type() &&
-                QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
-                !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
-             {
-                 bReleaseIsNeed = false;
-                 if (movingItem->isSelected() && isMultipleSelectionEnabled())
-                    movingItem->setSelected(false);
-                 else
-                 if (movingItem->parentItem() && movingItem->parentItem()->isSelected() && isMultipleSelectionEnabled())
-                    movingItem->parentItem()->setSelected(false);
-                 else
-                 {
-                    if (movingItem->isSelected())
-                        bReleaseIsNeed = true;
-
-                    movingItem->setSelected(true);
-                 }
-
-             }
-          }
-      }
-      else
-          bReleaseIsNeed = true;
-
-      if (mUBRubberBand && mUBRubberBand->isVisible()) {
-          mUBRubberBand->hide();
-      }
-
-      if (bReleaseIsNeed)
-      {
-          QGraphicsView::mouseReleaseEvent (event);
-      }
-  }
-  else if (currentTool == UBStylusTool::Play)
-  {
-      if (bIsDesktop) {
-          event->ignore();
-          return;
-      }
-
-      if (mWidgetMoved)
-      {
-          movingItem = NULL;
-          mWidgetMoved = false;
-      }
-      else
-      {
-          if (suspendedMousePressEvent)
-          {
-              QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
-              movingItem = NULL;
-              delete suspendedMousePressEvent;
-              suspendedMousePressEvent = NULL;
-          }
-      }
-      QGraphicsView::mouseReleaseEvent (event);
-  }
-  else if (currentTool == UBStylusTool::Text)
+    if (currentTool == UBStylusTool::Selector)
     {
-      if (mRubberBand)
-        mRubberBand->hide ();
-
-      if (scene () && mRubberBand && mIsCreatingTextZone)
-        {
-          QRect rubberRect = mRubberBand->geometry ();
-
-          UBGraphicsTextItem* textItem = scene()->addTextHtml ("", mapToScene (rubberRect.topLeft ()));
-          event->accept ();
-
-          UBDrawingController::drawingController ()->setStylusTool (UBStylusTool::Selector);
-
-          textItem->setSelected (true);
-          textItem->setFocus();
-        }
-      else
-        {
-          QGraphicsView::mouseReleaseEvent (event);
+        if (bIsDesktop) {
+            event->ignore();
+            return;
         }
 
-      mIsCreatingTextZone = false;
+        UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
+        if (graphicsItem)
+            graphicsItem->Delegate()->commitUndoStep();
+
+        bool bReleaseIsNeed = true;
+        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()))))
+        {
+            movingItem = NULL;
+            bReleaseIsNeed = false;
+        }
+        if (mWidgetMoved)
+        {
+            mWidgetMoved = false;
+            movingItem = NULL;
+        }
+        else
+            if (movingItem && (!isCppTool(movingItem) || UBGraphicsCurtainItem::Type == movingItem->type()))
+            {
+                if (suspendedMousePressEvent)
+                {
+                    QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
+                    movingItem = NULL;
+                    delete suspendedMousePressEvent;
+                    suspendedMousePressEvent = NULL;
+                    bReleaseIsNeed = true;
+                }
+                else
+                {
+                    if (isUBItem(movingItem) &&
+                            DelegateButton::Type != movingItem->type() &&
+                            QGraphicsSvgItem::Type !=  movingItem->type() &&
+                            UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
+                            UBGraphicsCache::Type != movingItem->type() &&
+                            QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
+                            !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
+                    {
+                        bReleaseIsNeed = false;
+                        if (movingItem->isSelected() && isMultipleSelectionEnabled())
+                            movingItem->setSelected(false);
+                        else
+                            if (movingItem->parentItem() && movingItem->parentItem()->isSelected() && isMultipleSelectionEnabled())
+                                movingItem->parentItem()->setSelected(false);
+                            else
+                            {
+                                if (movingItem->isSelected())
+                                    bReleaseIsNeed = true;
+
+                                movingItem->setSelected(true);
+                            }
+
+                    }
+                }
+            }
+            else
+                bReleaseIsNeed = true;
+
+        if (mUBRubberBand && mUBRubberBand->isVisible()) {
+            mUBRubberBand->hide();
+        }
+
+        if (bReleaseIsNeed)
+        {
+            QGraphicsView::mouseReleaseEvent (event);
+        }
     }
-  else if (currentTool == UBStylusTool::Capture)
-    {
-      if (mRubberBand)
-        mRubberBand->hide ();
-
-      if (scene () && mRubberBand && mIsCreatingSceneGrabZone && mRubberBand->geometry ().width () > 16)
-        {
-          QRect rect = mRubberBand->geometry ();
-          QPointF sceneTopLeft = mapToScene (rect.topLeft ());
-          QPointF sceneBottomRight = mapToScene (rect.bottomRight ());
-          QRectF sceneRect (sceneTopLeft, sceneBottomRight);
-
-          mController->grabScene (sceneRect);
-
-          event->accept ();
-        }
-      else
-        {
-          QGraphicsView::mouseReleaseEvent (event);
+    else if (currentTool == UBStylusTool::Play) {
+        if (bIsDesktop) {
+            event->ignore();
+            return;
         }
 
-      mIsCreatingSceneGrabZone = false;
+        if (mWidgetMoved) {
+            movingItem = NULL;
+            mWidgetMoved = false;
+        }
+        else {
+            if (suspendedMousePressEvent) {
+                QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
+                movingItem = NULL;
+                delete suspendedMousePressEvent;
+                suspendedMousePressEvent = NULL;
+            }
+        }
+        QGraphicsView::mouseReleaseEvent (event);
     }
-  else
+    else if (currentTool == UBStylusTool::Text) {
+        if (mRubberBand)
+            mRubberBand->hide ();
+
+        if (scene () && mRubberBand && mIsCreatingTextZone) {
+            QRect rubberRect = mRubberBand->geometry ();
+
+            UBGraphicsTextItem* textItem = scene()->addTextHtml ("", mapToScene (rubberRect.topLeft ()));
+            event->accept ();
+
+            UBDrawingController::drawingController ()->setStylusTool (UBStylusTool::Selector);
+
+            textItem->setSelected (true);
+            textItem->setFocus();
+        }
+        else
+            QGraphicsView::mouseReleaseEvent (event);
+
+        mIsCreatingTextZone = false;
+    }
+    else if (currentTool == UBStylusTool::Capture)
     {
-      if (mPendingStylusReleaseEvent || mMouseButtonIsPressed)
+        if (mRubberBand)
+            mRubberBand->hide ();
+
+        if (scene () && mRubberBand && mIsCreatingSceneGrabZone && mRubberBand->geometry ().width () > 16)
         {
-          event->accept ();
+            QRect rect = mRubberBand->geometry ();
+            QPointF sceneTopLeft = mapToScene (rect.topLeft ());
+            QPointF sceneBottomRight = mapToScene (rect.bottomRight ());
+            QRectF sceneRect (sceneTopLeft, sceneBottomRight);
+
+            mController->grabScene (sceneRect);
+
+            event->accept ();
+        }
+        else
+        {
+            QGraphicsView::mouseReleaseEvent (event);
+        }
+
+        mIsCreatingSceneGrabZone = false;
+    }
+    else
+    {
+        if (mPendingStylusReleaseEvent || mMouseButtonIsPressed)
+        {
+            event->accept ();
         }
     }
 
-  mMouseButtonIsPressed = false;
-  mPendingStylusReleaseEvent = false;
-  mTabletStylusIsPressed = false;
-  movingItem = NULL;
+    mMouseButtonIsPressed = false;
+    mPendingStylusReleaseEvent = false;
+    mTabletStylusIsPressed = false;
+    movingItem = NULL;
 
-  mLongPressTimer.stop();
+    mLongPressTimer.stop();
 }
 
 void
 UBBoardView::forcedTabletRelease ()
 {
 
-  if (mMouseButtonIsPressed || mTabletStylusIsPressed || mPendingStylusReleaseEvent)
+    if (mMouseButtonIsPressed || mTabletStylusIsPressed || mPendingStylusReleaseEvent)
     {
-      qWarning () << "dirty mouse/tablet state:";
-      qWarning () << "mMouseButtonIsPressed =" << mMouseButtonIsPressed;
-      qWarning () << "mTabletStylusIsPressed = " << mTabletStylusIsPressed;
-      qWarning () << "mPendingStylusReleaseEvent" << mPendingStylusReleaseEvent;
-      qWarning () << "forcing device release";
+        qWarning () << "dirty mouse/tablet state:";
+        qWarning () << "mMouseButtonIsPressed =" << mMouseButtonIsPressed;
+        qWarning () << "mTabletStylusIsPressed = " << mTabletStylusIsPressed;
+        qWarning () << "mPendingStylusReleaseEvent" << mPendingStylusReleaseEvent;
+        qWarning () << "forcing device release";
 
-      scene ()->inputDeviceRelease ();
+        scene ()->inputDeviceRelease ();
 
-      mMouseButtonIsPressed = false;
-      mTabletStylusIsPressed = false;
-      mPendingStylusReleaseEvent = false;
+        mMouseButtonIsPressed = false;
+        mTabletStylusIsPressed = false;
+        mPendingStylusReleaseEvent = false;
     }
 }
 
 void
 UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 {
-  // We don't want a double click, we want two clicks
-  mousePressEvent (event);
+    // We don't want a double click, we want two clicks
+    mousePressEvent (event);
 }
 
 void
 UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 {
-  if (isInteractive () && wheelEvent->orientation () == Qt::Vertical)
+    if (isInteractive () && wheelEvent->orientation () == Qt::Vertical)
     {
-      // Too many wheelEvent are sent, how should we handle them to "smoothly" zoom ?
-      // something like zoom( pow(zoomFactor, event->delta() / 120) )
+        // Too many wheelEvent are sent, how should we handle them to "smoothly" zoom ?
+        // something like zoom( pow(zoomFactor, event->delta() / 120) )
 
-      // use DateTime man, store last event time, and if if less than 300ms than this is one big scroll
-      // and move scroll with one const speed.
+        // use DateTime man, store last event time, and if if less than 300ms than this is one big scroll
+        // and move scroll with one const speed.
         // so, you no will related with scroll event count
     }
 
@@ -1375,10 +1364,10 @@ UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 void
 UBBoardView::leaveEvent (QEvent * event)
 {
-  if (scene ())
-    scene ()->leaveEvent (event);
+    if (scene ())
+        scene ()->leaveEvent (event);
 
-  QGraphicsView::leaveEvent (event);
+    QGraphicsView::leaveEvent (event);
 }
 
 void
@@ -1386,39 +1375,39 @@ UBBoardView::drawItems (QPainter *painter, int numItems,
                         QGraphicsItem* items[],
                         const QStyleOptionGraphicsItem options[])
 {
-  if (!mFilterZIndex)
+    if (!mFilterZIndex)
     {
-      QGraphicsView::drawItems (painter, numItems, items, options);
+        QGraphicsView::drawItems (painter, numItems, items, options);
     }
-  else
+    else
     {
-      int count = 0;
+        int count = 0;
 
-      QGraphicsItem** itemsFiltered = new QGraphicsItem*[numItems];
-      QStyleOptionGraphicsItem *optionsFiltered = new QStyleOptionGraphicsItem[numItems];
+        QGraphicsItem** itemsFiltered = new QGraphicsItem*[numItems];
+        QStyleOptionGraphicsItem *optionsFiltered = new QStyleOptionGraphicsItem[numItems];
 
-      for (int i = 0; i < numItems; i++)
+        for (int i = 0; i < numItems; i++)
         {
-          if (shouldDisplayItem (items[i]))
+            if (shouldDisplayItem (items[i]))
             {
-              itemsFiltered[count] = items[i];
-              optionsFiltered[count] = options[i];
-              count++;
+                itemsFiltered[count] = items[i];
+                optionsFiltered[count] = options[i];
+                count++;
             }
         }
 
-      QGraphicsView::drawItems (painter, count, itemsFiltered, optionsFiltered);
+        QGraphicsView::drawItems (painter, count, itemsFiltered, optionsFiltered);
 
-      delete[] optionsFiltered;
-      delete[] itemsFiltered;
+        delete[] optionsFiltered;
+        delete[] itemsFiltered;
     }
 }
 
 
 void UBBoardView::dragMoveEvent(QDragMoveEvent *event)
 {
-  QGraphicsView::dragMoveEvent(event);
-  event->acceptProposedAction();
+    QGraphicsView::dragMoveEvent(event);
+    event->acceptProposedAction();
 }
 
 void UBBoardView::dropEvent (QDropEvent *event)
@@ -1447,94 +1436,94 @@ void UBBoardView::dropEvent (QDropEvent *event)
 void
 UBBoardView::resizeEvent (QResizeEvent * event)
 {
-  const qreal maxWidth = width () * 10;
-  const qreal maxHeight = height () * 10;
+    const qreal maxWidth = width () * 10;
+    const qreal maxHeight = height () * 10;
 
-  setSceneRect (-(maxWidth / 2), -(maxHeight / 2), maxWidth, maxHeight);
-  centerOn (0, 0);
+    setSceneRect (-(maxWidth / 2), -(maxHeight / 2), maxWidth, maxHeight);
+    centerOn (0, 0);
 
-  emit resized (event);
+    emit resized (event);
 }
 
 void
 UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 {
-  if (testAttribute (Qt::WA_TranslucentBackground))
+    if (testAttribute (Qt::WA_TranslucentBackground))
     {
-      QGraphicsView::drawBackground (painter, rect);
-      return;
+        QGraphicsView::drawBackground (painter, rect);
+        return;
     }
 
-  bool darkBackground = scene () && scene ()->isDarkBackground ();
+    bool darkBackground = scene () && scene ()->isDarkBackground ();
 
-  if (darkBackground)
+    if (darkBackground)
     {
-      painter->fillRect (rect, QBrush (QColor (Qt::black)));
+        painter->fillRect (rect, QBrush (QColor (Qt::black)));
     }
-  else
+    else
     {
-      painter->fillRect (rect, QBrush (QColor (Qt::white)));
+        painter->fillRect (rect, QBrush (QColor (Qt::white)));
     }
 
-  if (transform ().m11 () > 0.5)
+    if (transform ().m11 () > 0.5)
     {
-      QColor bgCrossColor;
+        QColor bgCrossColor;
 
-      if (darkBackground)
-        bgCrossColor = UBSettings::crossDarkBackground;
-      else
-        bgCrossColor = UBSettings::crossLightBackground;
+        if (darkBackground)
+            bgCrossColor = UBSettings::crossDarkBackground;
+        else
+            bgCrossColor = UBSettings::crossLightBackground;
 
-      if (transform ().m11 () < 1.0)
+        if (transform ().m11 () < 1.0)
         {
-          int alpha = 255 * transform ().m11 () / 2;
-          bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
+            int alpha = 255 * transform ().m11 () / 2;
+            bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
         }
 
-      painter->setPen (bgCrossColor);
+        painter->setPen (bgCrossColor);
 
-      if (scene () && scene ()->isCrossedBackground ())
+        if (scene () && scene ()->isCrossedBackground ())
         {
-          qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
+            qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
 
-          for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += UBSettings::crossSize)
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += UBSettings::crossSize)
             {
-              painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
 
-          qreal firstX = ((int) (rect.x () / UBSettings::crossSize)) * UBSettings::crossSize;
+            qreal firstX = ((int) (rect.x () / UBSettings::crossSize)) * UBSettings::crossSize;
 
-          for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += UBSettings::crossSize)
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += UBSettings::crossSize)
             {
-              painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+                painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
             }
         }
     }
 
-  if (!mFilterZIndex && scene ())
+    if (!mFilterZIndex && scene ())
     {
-      QSize pageNominalSize = scene ()->nominalSize ();
+        QSize pageNominalSize = scene ()->nominalSize ();
 
-      if (pageNominalSize.isValid ())
+        if (pageNominalSize.isValid ())
         {
-          qreal penWidth = 8.0 / transform ().m11 ();
+            qreal penWidth = 8.0 / transform ().m11 ();
 
-          QRectF pageRect (pageNominalSize.width () / -2, pageNominalSize.height () / -2
-                           , pageNominalSize.width (), pageNominalSize.height ());
+            QRectF pageRect (pageNominalSize.width () / -2, pageNominalSize.height () / -2
+                             , pageNominalSize.width (), pageNominalSize.height ());
 
-          pageRect.adjust (-penWidth / 2, -penWidth / 2, penWidth / 2, penWidth / 2);
+            pageRect.adjust (-penWidth / 2, -penWidth / 2, penWidth / 2, penWidth / 2);
 
-          QColor docSizeColor;
+            QColor docSizeColor;
 
-          if (darkBackground)
-            docSizeColor = UBSettings::documentSizeMarkColorDarkBackground;
-          else
-            docSizeColor = UBSettings::documentSizeMarkColorLightBackground;
+            if (darkBackground)
+                docSizeColor = UBSettings::documentSizeMarkColorDarkBackground;
+            else
+                docSizeColor = UBSettings::documentSizeMarkColorLightBackground;
 
-          QPen pen (docSizeColor);
-          pen.setWidth (penWidth);
-          painter->setPen (pen);
-          painter->drawRect (pageRect);
+            QPen pen (docSizeColor);
+            pen.setWidth (penWidth);
+            painter->setPen (pen);
+            painter->drawRect (pageRect);
         }
     }
 }
@@ -1542,11 +1531,11 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 void
 UBBoardView::settingChanged (QVariant newValue)
 {
-  Q_UNUSED (newValue);
+    Q_UNUSED (newValue);
 
-  mPenPressureSensitive = UBSettings::settings ()->boardPenPressureSensitive->get ().toBool ();
-  mMarkerPressureSensitive = UBSettings::settings ()->boardMarkerPressureSensitive->get ().toBool ();
-  mUseHighResTabletEvent = UBSettings::settings ()->boardUseHighResTabletEvent->get ().toBool ();
+    mPenPressureSensitive = UBSettings::settings ()->boardPenPressureSensitive->get ().toBool ();
+    mMarkerPressureSensitive = UBSettings::settings ()->boardMarkerPressureSensitive->get ().toBool ();
+    mUseHighResTabletEvent = UBSettings::settings ()->boardUseHighResTabletEvent->get ().toBool ();
 }
 
 void UBBoardView::virtualKeyboardActivated(bool b)
@@ -1566,8 +1555,8 @@ bool UBBoardView::isAbsurdPoint(QPoint point)
 
     for (int i = 0; i < desktop->numScreens (); i++)
     {
-      QRect screenRect = desktop->screenGeometry (i);
-      isValidPoint = isValidPoint || screenRect.contains (mapToGlobal(point));
+        QRect screenRect = desktop->screenGeometry (i);
+        isValidPoint = isValidPoint || screenRect.contains (mapToGlobal(point));
     }
 
     return !isValidPoint;
@@ -1576,56 +1565,56 @@ bool UBBoardView::isAbsurdPoint(QPoint point)
 void
 UBBoardView::focusOutEvent (QFocusEvent * event)
 {
-  Q_UNUSED (event);
+    Q_UNUSED (event);
 }
 
 void
 UBBoardView::setToolCursor (int tool)
 {
-  QWidget *controlViewport = viewport ();
-  switch (tool)
+    QWidget *controlViewport = viewport ();
+    switch (tool)
     {
     case UBStylusTool::Pen:
-      controlViewport->setCursor (UBResources::resources ()->penCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->penCursor);
+        break;
     case UBStylusTool::Eraser:
-      controlViewport->setCursor (UBResources::resources ()->eraserCursor);
-      scene()->hideEraser();
-      break;
+        controlViewport->setCursor (UBResources::resources ()->eraserCursor);
+        scene()->hideEraser();
+        break;
     case UBStylusTool::Marker:
-      controlViewport->setCursor (UBResources::resources ()->markerCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->markerCursor);
+        break;
     case UBStylusTool::Pointer:
-      controlViewport->setCursor (UBResources::resources ()->pointerCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->pointerCursor);
+        break;
     case UBStylusTool::Hand:
-      controlViewport->setCursor (UBResources::resources ()->handCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->handCursor);
+        break;
     case UBStylusTool::ZoomIn:
-      controlViewport->setCursor (UBResources::resources ()->zoomInCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->zoomInCursor);
+        break;
     case UBStylusTool::ZoomOut:
-      controlViewport->setCursor (UBResources::resources ()->zoomOutCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->zoomOutCursor);
+        break;
     case UBStylusTool::Selector:
-      controlViewport->setCursor (UBResources::resources ()->arrowCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->arrowCursor);
+        break;
     case UBStylusTool::Play:
-      controlViewport->setCursor (UBResources::resources ()->playCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->playCursor);
+        break;
     case UBStylusTool::Line:
-      controlViewport->setCursor (UBResources::resources ()->penCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->penCursor);
+        break;
     case UBStylusTool::Text:
-      controlViewport->setCursor (UBResources::resources ()->textCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->textCursor);
+        break;
     case UBStylusTool::Capture:
-      controlViewport->setCursor (UBResources::resources ()->penCursor);
-      break;
+        controlViewport->setCursor (UBResources::resources ()->penCursor);
+        break;
     default:
-      Q_ASSERT (false);
-      //failsafe
-      controlViewport->setCursor (UBResources::resources ()->penCursor);
+        Q_ASSERT (false);
+        //failsafe
+        controlViewport->setCursor (UBResources::resources ()->penCursor);
     }
 }
 

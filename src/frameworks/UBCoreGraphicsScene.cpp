@@ -40,15 +40,9 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
 {
     //we must delete removed items that are no more in any scene
     //at groups deleting some items can be added to mItemsToDelete, so we need to use iterators.
-    foreach(QGraphicsItem* item, mItemsToDelete)
-    {
-        if (item)
-        {
-            if (item->scene() == NULL || item->scene() == this)
-            {
-                delete item;
-            }
-        }
+    foreach(QGraphicsItem* item, mItemsToDelete){
+        if (item && item->type() != UBGraphicsItemType::PolygonItemType && item->type() != QGraphicsItem::UserType && item->type() != UBGraphicsItemType::groupContainerType && (item->scene() == NULL || item->scene() == this))
+            delete item;
     }
     mItemsToDelete.clear();
 }
@@ -62,7 +56,7 @@ void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
             removeItemFromDeletion(curItem);
         }
     }
- 
+
     if (item->scene() != this)
         QGraphicsScene::addItem(item);
 

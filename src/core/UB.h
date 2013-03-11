@@ -50,17 +50,17 @@ struct UBStylusTool
 {
     enum Enum
     {
-        Pen = 0, 
-        Eraser, 
-         Marker, 
-        Selector, 
+        Pen = 0,
+        Eraser,
+        Marker,
+        Selector,
         Play,
-        Hand, 
-        ZoomIn, 
-        ZoomOut, 
-        Pointer, 
-        Line, 
-        Text, 
+        Hand,
+        ZoomIn,
+        ZoomOut,
+        Pointer,
+        Line,
+        Text,
         Capture
     };
 };
@@ -138,17 +138,17 @@ struct UBGraphicsItemType
 {
     enum Enum
     {
-        PolygonItemType = QGraphicsItem::UserType + 1, 
+        PolygonItemType = QGraphicsItem::UserType + 1,
         PixmapItemType,
-        SvgItemType, 
+        SvgItemType,
         DelegateButtonType,
-        MediaItemType, 
-        PDFItemType, 
+        MediaItemType,
+        PDFItemType,
         TextItemType,
         CurtainItemType,
-        RulerItemType, 
-        CompassItemType, 
-        ProtractorItemType, 
+        RulerItemType,
+        CompassItemType,
+        ProtractorItemType,
         StrokeItemType,
         TriangleItemType,
         MagnifierItemType,

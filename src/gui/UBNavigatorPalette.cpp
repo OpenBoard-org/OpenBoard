@@ -98,13 +98,13 @@ UBNavigatorPalette::~UBNavigatorPalette()
     }
     if(NULL != mLayout)
     {
-    delete mLayout;
-    mLayout = NULL;
+        delete mLayout;
+        mLayout = NULL;
     }
     if(NULL != mNavigator)
     {
-    delete mNavigator;
-    mNavigator = NULL;
+        delete mNavigator;
+        mNavigator = NULL;
     }
 }
 
