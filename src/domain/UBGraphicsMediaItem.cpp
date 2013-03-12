@@ -35,7 +35,6 @@
 UBAudioPresentationWidget::UBAudioPresentationWidget(QWidget *parent)
     : QWidget(parent)
     , mBorderSize(10)
-    , mTitleSize(10)
 {
 
 }
@@ -44,23 +43,13 @@ void UBAudioPresentationWidget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.fillRect(rect(), QBrush(Qt::white));
-    
+
     QPen borderPen;
     borderPen.setWidth(2);
     borderPen.setColor(QColor(Qt::black));
 
     painter.setPen(borderPen);
     painter.drawRect(0,0, width(), height());
-
-    if (QString() != mTitle)
-    {
-        painter.setPen(QPen(Qt::black));
-        QRect titleRect = rect();
-        titleRect.setX(mBorderSize);
-        titleRect.setY(2);
-        titleRect.setHeight(15);
-        painter.drawText(titleRect, mTitle);
-    }
 
     QWidget::paintEvent(event);
 }
@@ -112,9 +101,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         int borderSize = 0;
         UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
         if (pAudioWidget)
-        {
             borderSize = pAudioWidget->borderSize();
-        }
 
         mAudioWidget->resize(320,26+2*borderSize); //3*border size with enabled title
         mAudioWidget->setMinimumSize(150,26+borderSize);
@@ -166,26 +153,19 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
             || (change == QGraphicsItem::ItemVisibleChange))
     {
         if (mMediaObject && (!isEnabled() || !isVisible() || !scene()))
-        {
             mMediaObject->pause();
-        }
     }
     else if (change == QGraphicsItem::ItemSceneHasChanged)
     {
         if (!scene())
-        {
             mMediaObject->stop();
-        }
-        else
-        {
+        else {
             QString absoluteMediaFilename;
 
-            if(mMediaFileUrl.toLocalFile().startsWith("audios/") || mMediaFileUrl.toLocalFile().startsWith("videos/")){
+            if(mMediaFileUrl.toLocalFile().startsWith("audios/") || mMediaFileUrl.toLocalFile().startsWith("videos/"))
                 absoluteMediaFilename = scene()->document()->persistencePath() + "/"  + mMediaFileUrl.toLocalFile();
-            }
-            else{
+            else
                 absoluteMediaFilename = mMediaFileUrl.toLocalFile();
-            }
 
             if (absoluteMediaFilename.length() > 0)
                 mMediaObject->setCurrentSource(Phonon::MediaSource(absoluteMediaFilename));
@@ -199,12 +179,6 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
 
 void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
 {
-    UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
-    if (pAudioWidget)
-    {
-        pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toString()));
-    }
-
     UBItem::setSourceUrl(pSourceUrl);
 }
 

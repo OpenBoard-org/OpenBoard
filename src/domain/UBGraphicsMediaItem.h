@@ -45,7 +45,6 @@ private:
     virtual void paintEvent(QPaintEvent *event);
 
     int mBorderSize;
-    int mTitleSize;
     QString mTitle;
 };
 
