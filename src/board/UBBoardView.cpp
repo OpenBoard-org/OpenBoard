@@ -899,7 +899,9 @@ QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
 {
     Q_ASSERT(w);
 
-    UBBoardView *board = qobject_cast<UBBoardView *>(w);
+    // it should work that, but it doesn't. So we check if it is control view.
+    //UBBoardView *board = qobject_cast<UBBoardView *>(w);
+    UBBoardView *board = UBApplication::boardController->controlView();
 
     QWidget *childAtPos = NULL;
 
