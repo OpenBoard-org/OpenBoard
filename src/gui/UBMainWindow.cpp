@@ -27,6 +27,10 @@
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
 #include "board/UBBoardController.h"
+// work around for handling tablet events on MAC OS with Qt 4.8.0 and above
+#if defined(Q_WS_MACX)
+#include "board/UBBoardView.h"
+#endif
 
 #include "core/memcheck.h"
 
@@ -144,6 +148,34 @@ void UBMainWindow::closeEvent(QCloseEvent *event)
     event->ignore();
     emit closeEvent_Signal(event);
 }
+
+// work around for handling tablet events on MAC OS with Qt 4.8.0 and above
+#if defined(Q_WS_MACX)
+bool UBMainWindow::event(QEvent *event)
+{
+    bool bRes = QMainWindow::event(event);
+
+    if (NULL != UBApplication::boardController)
+    {
+        UBBoardView *controlV = UBApplication::boardController->controlView();
+        if (controlV && controlV->isVisible())
+        {
+            switch (event->type())
+            {
+            case QEvent::TabletEnterProximity:
+            case QEvent::TabletLeaveProximity:
+            case QEvent::TabletMove:
+            case QEvent::TabletPress:
+            case QEvent::TabletRelease:
+                {
+                    return controlV->directTabletEvent(event);
+                }
+            }
+        }
+    }
+    return bRes;
+}
+#endif
 
 void UBMainWindow::onExportDone()
 {

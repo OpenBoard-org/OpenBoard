@@ -372,4 +372,3 @@ void UBCachePropertiesWidget::onCacheEnabled()
 {
     emit showTab(this);
 }
-
