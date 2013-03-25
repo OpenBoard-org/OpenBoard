@@ -20,7 +20,6 @@
  */
 
 
-
 #ifndef UBBOARDVIEW_H_
 #define UBBOARDVIEW_H_
 
@@ -54,7 +53,11 @@ class UBBoardView : public QGraphicsView
 
         void setMultiselection(bool enable);
         bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
-
+// work around for handling tablet events on MAC OS with Qt 4.8.0 and above
+#if defined(Q_WS_MACX)
+        bool directTabletEvent(QEvent *event);
+        QWidget *widgetForTabletEvent(QWidget *w, const QPoint &pos);
+#endif
     signals:
 
         void resized(QResizeEvent* event);
@@ -153,7 +156,7 @@ class UBBoardView : public QGraphicsView
 
         bool moveRubberBand;
         UBRubberBand *mUBRubberBand;
-        
+
         QList<QGraphicsItem *> mRubberedItems;
         QSet<QGraphicsItem*> mJustSelectedItems;
 

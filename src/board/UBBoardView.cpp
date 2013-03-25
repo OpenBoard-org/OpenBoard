@@ -864,11 +864,78 @@ void UBBoardView::setMultiselection(bool enable)
     mMultipleSelectionIsEnabled = enable;
 }
 
+// work around for handling tablet events on MAC OS with Qt 4.8.0 and above
+#if defined(Q_WS_MACX)
+bool UBBoardView::directTabletEvent(QEvent *event)
+{
+    QTabletEvent *tEvent = static_cast<QTabletEvent *>(event);
+    tEvent = new QTabletEvent(tEvent->type()
+        , mapFromGlobal(tEvent->pos())
+        , tEvent->globalPos()
+        , tEvent->hiResGlobalPos()
+        , tEvent->device()
+        , tEvent->pointerType()
+        , tEvent->pressure()
+        , tEvent->xTilt()
+        , tEvent->yTilt()
+        , tEvent->tangentialPressure()
+        , tEvent->rotation()
+        , tEvent->z()
+        , tEvent->modifiers()
+        , tEvent->uniqueId());
+
+    if (geometry().contains(tEvent->pos()))
+    {
+        if (NULL == widgetForTabletEvent(this->parentWidget(), tEvent->pos()))
+        {
+            tabletEvent(tEvent);
+            return true;
+        }
+    }
+    return false;
+}
+
+QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
+{
+    Q_ASSERT(w);
+
+    // it should work that, but it doesn't. So we check if it is control view.
+    //UBBoardView *board = qobject_cast<UBBoardView *>(w);
+    UBBoardView *board = UBApplication::boardController->controlView();
+
+    QWidget *childAtPos = NULL;
+
+    QList<QObject *> childs = w->children();
+    foreach(QObject *child, childs)
+    {
+        QWidget *childWidget = qobject_cast<QWidget *>(child);
+        if (childWidget)
+        {
+            if (childWidget->isVisible() && childWidget->geometry().contains(pos))
+            {
+                QWidget *lastChild = widgetForTabletEvent(childWidget, pos);
+
+                if (board && board->viewport() == lastChild)
+                    continue;
+
+                if (NULL != lastChild)
+                    childAtPos = lastChild;
+                else
+                    childAtPos = childWidget;
+
+                break;
+            }
+            else
+                childAtPos = NULL;
+        }
+    }
+    return childAtPos;
+}
+#endif
 void UBBoardView::longPressEvent()
 {
    UBDrawingController *drawingController = UBDrawingController::drawingController();
    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
-
 
    disconnect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
 
