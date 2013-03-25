@@ -362,9 +362,6 @@ void UBGraphicsScene::updateGroupButtonState()
 
 bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure)
 {
-    //mMesure1Ms = 0;
-    //mMesure2Ms = 0;
-
     bool accepted = false;
 
     if (mInputDeviceIsPressed)
@@ -541,18 +538,6 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
 bool UBGraphicsScene::inputDeviceRelease()
 {
-    /*
-    if (mMesure1Ms > 0 ||  mMesure2Ms > 0)
-    {
-        qWarning() << "---------------------------";
-        qWarning() << "mMesure1Ms: " << mMesure1Ms;
-        qWarning() << "mMesure2Ms: " << mMesure2Ms;
-
-        mMesure1Ms = 0;
-        mMesure2Ms = 0;
-    }
-    */
-
     bool accepted = false;
 
     if (mPointer)
