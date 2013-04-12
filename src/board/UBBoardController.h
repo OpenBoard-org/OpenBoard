@@ -245,7 +245,6 @@ class UBBoardController : public UBDocumentContainer
         void backgroundChanged();
         void cacheEnabled();
         void cacheDisabled();
-        void pageChanged();
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
         void pageSelectionChanged(int index);

@@ -541,8 +541,6 @@ void UBBoardController::duplicateScene(int nIndex)
 
     setActiveDocumentScene(nIndex + 1);
     QApplication::restoreOverrideCursor();
-
-    emit pageChanged();
 }
 
 void UBBoardController::duplicateScene()
@@ -648,7 +646,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
 
         QList<QGraphicsItem*> duplicatedItems;
         QList<QGraphicsItem*> children = groupItem->childItems();
-          
+
         mActiveScene->setURStackEnable(false);
         foreach(QGraphicsItem* pIt, children){
             UBItem* pItem = dynamic_cast<UBItem*>(pIt);
@@ -920,7 +918,6 @@ void UBBoardController::previousScene()
     }
 
     updateActionStates();
-    emit pageChanged();
 }
 
 
@@ -935,7 +932,6 @@ void UBBoardController::nextScene()
     }
 
     updateActionStates();
-    emit pageChanged();
 }
 
 
@@ -950,7 +946,6 @@ void UBBoardController::firstScene()
     }
 
     updateActionStates();
-    emit pageChanged();
 }
 
 
@@ -965,7 +960,6 @@ void UBBoardController::lastScene()
     }
 
     updateActionStates();
-    emit pageChanged();
 }
 
 void UBBoardController::groupButtonClicked()
@@ -1539,16 +1533,10 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     updateBackgroundState();
 
     if(documentChange)
-    {
         UBGraphicsTextItem::lastUsedTextColor = QColor();
-    }
-
 
     if (sceneChange)
-    {
         emit activeSceneChanged();
-        emit pageChanged();
-    }
 }
 
 
@@ -2476,7 +2464,7 @@ void UBBoardController::importPage()
 
 void UBBoardController::notifyPageChanged()
 {
-    emit pageChanged();
+    emit activeSceneChanged();
 }
 
 void UBBoardController::onDownloadModalFinished()

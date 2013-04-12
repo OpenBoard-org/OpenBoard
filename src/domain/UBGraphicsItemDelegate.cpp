@@ -359,17 +359,13 @@ bool UBGraphicsItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void UBGraphicsItemDelegate::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event)
-//    if (!mDelegated->isSelected()) {
-//        setZOrderButtonsVisible(true);
-//    }
+
 }
 
 void UBGraphicsItemDelegate::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event)
-//    if (!mDelegated->isSelected()) {
-//        setZOrderButtonsVisible(false);
-//    }
+
 }
 
 QGraphicsItem *UBGraphicsItemDelegate::delegated()
@@ -440,22 +436,9 @@ void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
-    /*UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
-    if (scene && canUndo)
-    {
-        UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand(scene, mDelegated, 0);
-        UBApplication::undoStack->push(uc);
-    }
-    mDelegated->hide();  */
-
     UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
     if (scene)
     {
-//        bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
-//        showHide(shownOnDisplay);
-//        updateFrame();
-//        updateButtons();
-
         if (mFrame && !mFrame->scene() && mDelegated->scene())
         {
             mDelegated->scene()->addItem(mFrame);
@@ -773,7 +756,7 @@ void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
 }
 
 
-UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) : 
+UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) :
     QGraphicsRectItem(parent),
     mShifting(true),
     mVisible(false),
@@ -786,7 +769,7 @@ UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) :
     rect.setWidth(parent->boundingRect().width());
     this->setRect(rect);
 
-  //  setBrush(QColor(UBSettings::paletteColor));             
+  //  setBrush(QColor(UBSettings::paletteColor));
     setPen(Qt::NoPen);
     hide();
 
@@ -816,14 +799,14 @@ void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     Q_UNUSED(widget);
 
     QPainterPath path;
-    path.addRoundedRect(rect(), 10, 10);  
+    path.addRoundedRect(rect(), 10, 10);
 
     setBrush(QBrush(UBSettings::paletteColor));
 
     painter->fillPath(path, brush());
 }
 
-MediaTimer::MediaTimer(QGraphicsItem * parent): QGraphicsRectItem(parent) 
+MediaTimer::MediaTimer(QGraphicsItem * parent): QGraphicsRectItem(parent)
 {
     val        = 0;
     smallPoint = false;
@@ -879,11 +862,11 @@ void MediaTimer::drawDigit(const QPoint &pos, QPainter &p, int segLen,
      int  nUpdates;
      const char *segs;
      int  i,j;
- 
+
      const char erase      = 0;
      const char draw       = 1;
      const char leaveAlone = 2;
- 
+
      segs = getSegments(oldCh);
      for (nErases=0; segs[nErases] != 99; nErases++) {
          updates[nErases][0] = erase;            // get segments to erase to
@@ -911,8 +894,8 @@ void MediaTimer::drawDigit(const QPoint &pos, QPainter &p, int segLen,
      }
 }
 
-char MediaTimer::segments [][8] = 
-        { 
+char MediaTimer::segments [][8] =
+        {
               { 0, 1, 2, 4, 5, 6,99, 0},             // 0    0
               { 2, 5,99, 0, 0, 0, 0, 0},             // 1    1
               { 0, 2, 3, 4, 6,99, 0, 0},             // 2    2
@@ -935,7 +918,7 @@ const char* MediaTimer::getSegments(char ch)               // gets list of segme
         return segments[10];
      if (ch == ' ')
         return segments[11];
-     
+
      return NULL;
 }
 
@@ -947,7 +930,7 @@ void MediaTimer::drawSegment(const QPoint &pos, char segmentNo, QPainter &p,
     QPoint ppt;
     QPoint pt = pos;
     int width = segLen/5;
- 
+
 #define LINETO(X,Y) addPoint(a, QPoint(pt.x() + (X),pt.y() + (Y)))
 #define LIGHT
 #define DARK
@@ -1236,7 +1219,7 @@ void DelegateMediaControl::paint(QPainter *painter,
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    
+
     QPainterPath path;
 
     mLCDTimerArea.setHeight(rect().height());
@@ -1289,7 +1272,7 @@ void DelegateMediaControl::positionHandles()
     selfRect.setHeight(parentItem()->boundingRect().height());
     setRect(selfRect);
 
-    lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0); 
+    lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0);
 }
 
 void DelegateMediaControl::update()
@@ -1318,9 +1301,9 @@ void DelegateMediaControl::totalTimeChanged(qint64 newTotalTime)
 void DelegateMediaControl::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
    qreal frameWidth =  mSeecArea.height()/2;
-    if (boundingRect().contains(event->pos() - QPointF(frameWidth,0)) 
+    if (boundingRect().contains(event->pos() - QPointF(frameWidth,0))
         && boundingRect().contains(event->pos() + QPointF(frameWidth,0)))
-    {  
+    {
         mDisplayCurrentTime = true;
         seekToMousePos(event->pos());
         this->update();
@@ -1332,9 +1315,9 @@ void DelegateMediaControl::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void DelegateMediaControl::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     qreal frameWidth = mSeecArea.height() / 2;
-    if (boundingRect().contains(event->pos() - QPointF(frameWidth,0)) 
+    if (boundingRect().contains(event->pos() - QPointF(frameWidth,0))
         && boundingRect().contains(event->pos() + QPointF(frameWidth,0)))
-    {   
+    {
         seekToMousePos(event->pos());
         this->update();
         event->accept();
