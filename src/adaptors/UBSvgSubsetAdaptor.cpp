@@ -389,7 +389,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     mFileVersion = 40100; // default to 4.1.0
 
-    UBGraphicsStroke* annotationGroup = 0;
     UBGraphicsStrokesGroup* strokesGroup = 0;
 
     while (!mXmlReader.atEnd())
@@ -514,16 +513,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             }
             else if (mXmlReader.name() == "g")
             {
-                // Create new stroke, if its NULL or already has polygons
-                if (annotationGroup)
-                {
-                    if (!annotationGroup->polygons().empty())
-                        annotationGroup = new UBGraphicsStroke();
-                }
-                else
-                    annotationGroup = new UBGraphicsStroke();
-
-
                 strokesGroup = new UBGraphicsStrokesGroup();
                 graphicsItemFromSvg(strokesGroup);
 
@@ -568,10 +557,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     polygonItem->setUuid(uuidFromSvg);
 
-                    if (annotationGroup)
-                        polygonItem->setStroke(annotationGroup);
-
-
                     if(strokesGroup){
                             polygonItem->setTransform(strokesGroup->transform());
                             strokesGroup->addToGroup(polygonItem);
@@ -598,13 +583,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 QList<UBGraphicsPolygonItem*> polygonItems
                 = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
 
+                QString parentId = QUuid::createUuid().toString();
+
                 foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
                 {
-                    if (annotationGroup)
-                    {
-                        polygonItem->setStroke(annotationGroup);
-                    }
-
 
                     if(strokesGroup){
                         polygonItem->setTransform(strokesGroup->transform());
@@ -614,8 +596,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
-                    QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
-                    Q_ASSERT(!parentId.isEmpty());
                     UBGraphicsStrokesGroup* group;
                     if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
@@ -625,6 +605,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         group = mStrokesList.value(parentId);
 
                     polygonItem->show();
+                    group->addToGroup(polygonItem);
                 }
             }
             else if (mXmlReader.name() == "image")
@@ -985,11 +966,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         {
             if (mXmlReader.name() == "g")
             {
-                if (annotationGroup)
-                {
-                    if (!annotationGroup->polygons().empty())
-                        annotationGroup = 0;
-                }
                 mGroupHasInfo = false;
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
@@ -1012,12 +988,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     if (mScene) {
         mScene->setModified(false);
-    }
-
-    if (annotationGroup)
-    {
-        if (annotationGroup->polygons().empty())
-            delete annotationGroup;
     }
 
     mScene->enableUndoRedoStack();
