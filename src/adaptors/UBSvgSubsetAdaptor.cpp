@@ -1206,9 +1206,20 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         // Get the items from the scene
         QList<QGraphicsItem*> items = mScene->items();
 
+        int strokes = 0; int polygons = 0;
+        foreach(QGraphicsItem *item, items) {
+            if (item->type() == UBGraphicsPolygonItem::Type) {
+                polygons++;
+            } else if (item->type() == UBGraphicsStrokesGroup::Type) {
+                strokes++;
+            }
+        }
+        qDebug() << "---Strokes count" << strokes << "Polygons count" << polygons;
+
         qSort(items.begin(), items.end(), itemZIndexComp);
 
         UBGraphicsStroke *openStroke = 0;
+        int nextStroke = 0;
 
         bool groupHoldsInfo = false;
 
@@ -1217,18 +1228,35 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             QGraphicsItem *item = items.takeFirst();
 
             // Is the item a strokes group?
-
             UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
 
             if(strokesGroupItem && strokesGroupItem->isVisible()){
                 // Add the polygons
-                foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
+                //parsing number of polygons into one polygon
+                qDebug() << "parsing stroke number" << nextStroke++;
+                UBGraphicsPolygonItem *resultPoly = 0;
 
+                foreach(QGraphicsItem* item, strokesGroupItem->childItems()) {
                     UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-                    if(NULL != poly){
-                        polygonItemToSvgPolygon(poly, true);
-                        items.removeOne(poly);
+                    if (!poly) {
+                        continue;
+                    } else if (!resultPoly) {
+                        resultPoly = poly;
+                        continue;
                     }
+                    QPolygonF newPolygon = poly->sceneTransform().map(poly->polygon());
+                    QPainterPath strokePainterPath;
+                    strokePainterPath.addPolygon(resultPoly->sceneTransform().map(resultPoly->polygon()));
+                    QPolygonF oldPolygons = strokePainterPath.simplified().toFillPolygon(resultPoly->sceneTransform().inverted());
+                    newPolygon = oldPolygons.united(newPolygon);
+                    resultPoly->setPolygon(newPolygon);
+
+                    //
+                    items.removeOne(poly);
+                }
+                if (resultPoly) {
+                    polygonItemToSvgPolygon(resultPoly, true);
+                    items.removeOne(resultPoly);
                 }
             }
 

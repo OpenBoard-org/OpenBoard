@@ -286,6 +286,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , magniferDisplayViewWidget(0)
     , mZLayerController(new UBZLayerController(this))
     , mpLastPolygon(NULL)
+    , mCurrentPolygon(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
 #ifdef __ppc__
@@ -597,6 +598,7 @@ bool UBGraphicsScene::inputDeviceRelease()
                 delete mCurrentStroke;
                 mCurrentStroke = 0;
             }
+            mCurrentPolygon = 0;
         }
     }
 
@@ -705,21 +707,7 @@ void UBGraphicsScene::moveTo(const QPointF &pPoint)
 void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, bool bLineStyle)
 {
     if (mPreviousWidth == -1.0)
-        mPreviousWidth = pWidth;
-
-    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), pWidth);
-
-    if (!polygonItem->brush().isOpaque())
-    {
-        // -------------------------------------------------------------------------------------
-        // Here we substract the polygons that are overlapping in order to keep the transparency
-        // -------------------------------------------------------------------------------------
-        for (int i = 0; i < mPreviousPolygonItems.size(); i++)
-        {
-            UBGraphicsPolygonItem* previous = mPreviousPolygonItems.value(i);
-            polygonItem->subtract(previous);
-        }
-    }
+            mPreviousWidth = pWidth;
 
     if (bLineStyle)
     {
@@ -733,18 +721,45 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         mAddedItems.clear();
     }
 
-    mpLastPolygon = polygonItem;
-    mAddedItems.insert(polygonItem);
-
-    // Here we add the item to the scene
-    addItem(polygonItem);
-
     if (!mCurrentStroke)
         mCurrentStroke = new UBGraphicsStroke();
 
-    polygonItem->setStroke(mCurrentStroke);
 
-    mPreviousPolygonItems.append(polygonItem);
+    QPolygonF newPolygon = UBGeometryUtils::lineToPolygon(QLineF(mPreviousPoint, pEndPoint), pWidth);
+
+    if (!mCurrentPolygon)
+    {
+        mCurrentPolygon = new UBGraphicsPolygonItem();
+        mCurrentPolygon->setPolygon(newPolygon);
+        initPolygonItem(mCurrentPolygon);
+        addItem(mCurrentPolygon);
+        mAddedItems.insert(mCurrentPolygon);
+        mCurrentPolygon->setStroke(mCurrentStroke);
+        mpLastPolygon = mCurrentPolygon;
+    }
+
+
+    //newPolygon = newPolygon.united(mCurrentPolygon->polygon());
+
+    QPainterPath strokePainterPath;
+
+
+    strokePainterPath.addPolygon(mCurrentPolygon->sceneTransform().map(mCurrentPolygon->polygon()));
+
+    //QList<QPolygonF>
+    QPolygonF oldPolygons = strokePainterPath.simplified().toFillPolygon(mCurrentPolygon->sceneTransform().inverted());
+    newPolygon = oldPolygons.united(newPolygon);
+
+    /*  foreach(QPolygonF polygon, oldPolygons)
+            {
+                newPolygon = polygon.united(newPolygon);
+            }
+                */
+
+    mpLastPolygon = mCurrentPolygon;
+
+    mCurrentPolygon->setPolygon(newPolygon);
+
 
     if (!bLineStyle)
     {
