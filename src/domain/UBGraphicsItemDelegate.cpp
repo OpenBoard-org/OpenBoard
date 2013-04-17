@@ -179,51 +179,51 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
 
 void UBGraphicsItemDelegate::init()
 {
-    if (mToolBarUsed)
-        mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
+//    if (mToolBarUsed)
+//        mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
 
-    mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
-    mFrame->hide();
-    mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
+//    mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
+//    mFrame->hide();
+//    mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
-    mButtons << mDeleteButton;
-    connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
-    if (canDuplicate()){
-        mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
-        connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
-        mButtons << mDuplicateButton;
-    }
-    mMenuButton = new DelegateButton(":/images/menu.svg", mDelegated, mFrame, Qt::TopLeftSection);
-    connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
-    mButtons << mMenuButton;
+//    mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
+//    mButtons << mDeleteButton;
+//    connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
+//    if (canDuplicate()){
+//        mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
+//        connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
+//        mButtons << mDuplicateButton;
+//    }
+//    mMenuButton = new DelegateButton(":/images/menu.svg", mDelegated, mFrame, Qt::TopLeftSection);
+//    connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
+//    mButtons << mMenuButton;
 
-    mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
-    mZOrderUpButton->setShowProgressIndicator(true);
-    connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
-    connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
-    mButtons << mZOrderUpButton;
+//    mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+//    mZOrderUpButton->setShowProgressIndicator(true);
+//    connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
+//    connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
+//    mButtons << mZOrderUpButton;
 
-    mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
-    mZOrderDownButton->setShowProgressIndicator(true);
-    connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
-    connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
-    mButtons << mZOrderDownButton;
+//    mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+//    mZOrderDownButton->setShowProgressIndicator(true);
+//    connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
+//    connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
+//    mButtons << mZOrderDownButton;
 
-    buildButtons();
+//    buildButtons();
 
-    foreach(DelegateButton* button, mButtons)
-    {
-        if (button->getSection() != Qt::TitleBarArea)
-        {
-            button->hide();
-            button->setFlag(QGraphicsItem::ItemIsSelectable, true);
-        }
-    }
+//    foreach(DelegateButton* button, mButtons)
+//    {
+//        if (button->getSection() != Qt::TitleBarArea)
+//        {
+//            button->hide();
+//            button->setFlag(QGraphicsItem::ItemIsSelectable, true);
+//        }
+//    }
 
-    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
-    setFlippable(false);
-    setRotatable(false);
+//    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
+//    setFlippable(false);
+//    setRotatable(false);
 }
 
 
@@ -235,11 +235,58 @@ UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
     // the mMimeData is owned by QDrag since the setMimeData call as specified in the documentation
 }
 
+
+void UBGraphicsItemDelegate::decorate()
+{
+
+    if (mToolBarUsed)
+        mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
+
+    if(!mFrame){
+        mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
+        mFrame->hide();
+        mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+        mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
+        mButtons << mDeleteButton;
+        connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
+        if (canDuplicate()){
+            mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
+            connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
+            mButtons << mDuplicateButton;
+        }
+        mMenuButton = new DelegateButton(":/images/menu.svg", mDelegated, mFrame, Qt::TopLeftSection);
+        connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
+        mButtons << mMenuButton;
+
+        mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+        mZOrderUpButton->setShowProgressIndicator(true);
+        connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
+        connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
+        mButtons << mZOrderUpButton;
+
+        mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+        mZOrderDownButton->setShowProgressIndicator(true);
+        connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
+        connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
+        mButtons << mZOrderDownButton;
+
+        buildButtons();
+
+        foreach(DelegateButton* button, mButtons)
+        {
+            if (button->getSection() != Qt::TitleBarArea)
+            {
+                button->hide();
+                button->setFlag(QGraphicsItem::ItemIsSelectable, true);
+            }
+        }
+    }
+}
+
 QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
-    if(change == QGraphicsItem::ItemChildAddedChange){
-
-    }else if (change == QGraphicsItem::ItemSelectedHasChanged) {
+    if (change == QGraphicsItem::ItemSelectedHasChanged) {
         bool ok;
         bool selected = value.toUInt(&ok);
         if (ok) {
@@ -687,6 +734,7 @@ bool UBGraphicsItemDelegate::isFlippable()
 
 void UBGraphicsItemDelegate::updateFrame()
 {
+    decorate();
     if (mFrame && !mFrame->scene() && mDelegated->scene())
     {
         mDelegated->scene()->addItem(mFrame);
