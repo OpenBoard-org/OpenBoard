@@ -392,6 +392,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
     mFileVersion = 40100; // default to 4.1.0
 
     UBGraphicsStrokesGroup* strokesGroup = 0;
+    UBGraphicsStroke* currentStroke = 0;
 
     while (!mXmlReader.atEnd())
     {
@@ -559,11 +560,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     polygonItem->setUuid(uuidFromSvg);
 
-                    if(strokesGroup){
-                            polygonItem->setTransform(strokesGroup->transform());
-                            strokesGroup->addToGroup(polygonItem);
-                            polygonItem->setStrokesGroup(strokesGroup);
-                    }
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
@@ -571,9 +567,15 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
+                        currentStroke = new UBGraphicsStroke();
                     }
                     else
                         group = mStrokesList.value(parentId);
+
+                    polygonItem->setTransform(group->transform());
+                    group->addToGroup(polygonItem);
+                    polygonItem->setStrokesGroup(group);
+                    polygonItem->setStroke(currentStroke);
 
                     polygonItem->show();
                     group->addToGroup(polygonItem);
@@ -589,22 +591,21 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
                 {
-
-                    if(strokesGroup){
-                        polygonItem->setTransform(strokesGroup->transform());
-                        strokesGroup->addToGroup(polygonItem);
-                        polygonItem->setStrokesGroup(strokesGroup);
-                    }
-
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
                     UBGraphicsStrokesGroup* group;
                     if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
+                        currentStroke = new UBGraphicsStroke();
                     }
                     else
                         group = mStrokesList.value(parentId);
+
+                    polygonItem->setTransform(group->transform());
+                    group->addToGroup(polygonItem);
+                    polygonItem->setStrokesGroup(group);
+                    polygonItem->setStroke(currentStroke);
 
                     polygonItem->show();
                     group->addToGroup(polygonItem);
