@@ -189,7 +189,7 @@ class UBGraphicsToolBarItem : public QGraphicsRectItem, public QObject
         bool isVisibleOnBoard() const { return mVisible; }
         void setVisibleOnBoard(bool visible) { mVisible = visible; }
         bool isShifting() const { return mShifting; }
-        void setShifting(bool shifting) { mShifting = shifting; } 
+        void setShifting(bool shifting) { mShifting = shifting; }
         QList<QGraphicsItem*> itemsOnToolBar() const { return mItemsOnToolBar; }
         void setItemsOnToolBar(QList<QGraphicsItem*> itemsOnToolBar) { mItemsOnToolBar = itemsOnToolBar;}
         int minWidth() { return mMinWidth; }
@@ -319,6 +319,7 @@ protected slots:
         virtual void gotoContentSource();
 
 private:
+        void decorate();
         void updateFrame();
         void updateButtons(bool showUpdated = false);
         inline void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);

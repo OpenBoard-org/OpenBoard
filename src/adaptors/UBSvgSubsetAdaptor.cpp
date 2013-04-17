@@ -384,6 +384,8 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
 UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 {
     qDebug() << "loadScene() : starting reading...";
+    QTime time;
+    time.start();
     mScene = 0;
     UBGraphicsWidgetItem *currentWidget = 0;
 
@@ -992,6 +994,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     mScene->enableUndoRedoStack();
     qDebug() << "loadScene() : created scene and read file";
+    qDebug() << "spent milliseconds: " << time.elapsed();
     return mScene;
 }
 
@@ -1003,7 +1006,6 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
 
     QString id = mXmlReader.attributes().value(aId).toString();
     id = id.mid(1,id.length()-2);
-    qDebug() << id;
     bool shouldSkipSubElements = false;
     if(mStrokesList.contains(id))
         shouldSkipSubElements = true;
@@ -1667,6 +1669,18 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     if (!svgPoints.isNull())
     {
+//        int lenght = strlen(svgPoints.toUtf8().constData()) + 1;
+//        char pippo[lenght];
+//        memcpy(pippo,svgPoints.toUtf8().constData(),lenght);
+//        char* localPosition = (char*) &pippo[0];
+//        do{
+//            float x = atof(localPosition);
+//            localPosition = strchr(localPosition,',') + 1;
+//            float y = atof(localPosition);
+//            localPosition = strchrnul(localPosition,' ');
+//            polygon << QPointF(x,y);
+//        }while(localPosition - pippo > lenght - 5);
+
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
                          QString::SkipEmptyParts);
 
