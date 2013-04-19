@@ -19,14 +19,13 @@
  * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 #include "UBDisplayManager.h"
 
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
+#include "core/UBSettings.h"
 
 #include "board/UBBoardView.h"
 
@@ -66,7 +65,7 @@ void UBDisplayManager::initScreenIndexes()
         mControlScreenIndex = mDesktop->primaryScreen();
         if (UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
         {
-           mControlScreenIndex = mControlScreenIndex^1;
+            mControlScreenIndex = mControlScreenIndex^1;
         }
 
         mScreenIndexesRoles << Control;
@@ -90,13 +89,13 @@ void UBDisplayManager::initScreenIndexes()
 
     if (screenCount > 2)
     {
-       for(int i = 2; i < screenCount; i++)
-       {
-           if(mControlScreenIndex == i)
-               mPreviousScreenIndexes.append(1);
-           else
-               mPreviousScreenIndexes.append(i);
-       }
+        for(int i = 2; i < screenCount; i++)
+        {
+            if(mControlScreenIndex == i)
+                mPreviousScreenIndexes.append(1);
+            else
+                mPreviousScreenIndexes.append(i);
+        }
     }
 }
 
