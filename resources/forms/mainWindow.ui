@@ -1623,14 +1623,6 @@
     <string>Ctrl+H</string>
    </property>
   </action>
-  <action name="actionImportUniboardDocuments">
-   <property name="text">
-    <string>Import Uniboard Documents</string>
-   </property>
-   <property name="toolTip">
-    <string>Import old Sankore or Uniboard documents</string>
-   </property>
-  </action>
   <action name="actionGroupItems">
    <property name="checkable">
     <bool>true</bool>

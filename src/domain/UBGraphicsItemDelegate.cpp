@@ -450,7 +450,9 @@ void UBGraphicsItemDelegate::positionHandles()
         foreach(DelegateButton* button, mButtons)
             button->hide();
 
-        mFrame->hide();
+        if(mFrame)
+            mFrame->hide();
+
         if (mToolBarItem)
             mToolBarItem->hide();
     }

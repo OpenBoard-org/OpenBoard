@@ -47,6 +47,7 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
             if (item->scene() == NULL || item->scene() == this)
             {
                 delete item;
+                item = NULL;
             }
         }
     }
@@ -62,7 +63,7 @@ void UBCoreGraphicsScene::addItem(QGraphicsItem* item)
             removeItemFromDeletion(curItem);
         }
     }
- 
+
     if (item->scene() != this)
         QGraphicsScene::addItem(item);
 

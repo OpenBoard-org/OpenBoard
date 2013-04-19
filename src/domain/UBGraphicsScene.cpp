@@ -1099,9 +1099,6 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     case clearAnnotations :
         foreach(QGraphicsItem* item, items()) {
 
-            bool isGroup = item->type() == UBGraphicsGroupContainerItem::Type;
-            bool isStrokesGroup = item->type() == UBGraphicsStrokesGroup::Type;
-
             UBGraphicsGroupContainerItem *itemGroup = item->parentItem()
                                                       ? qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item->parentItem())
                                                       : 0;
@@ -1109,6 +1106,9 @@ void UBGraphicsScene::clearContent(clearCase pCase)
             if (!curDelegate) {
                 continue;
             }
+
+            bool isGroup = item->type() == UBGraphicsGroupContainerItem::Type;
+            bool isStrokesGroup = item->type() == UBGraphicsStrokesGroup::Type;
 
             bool shouldDelete = false;
             switch (static_cast<int>(pCase)) {
