@@ -489,15 +489,15 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
         if (mFrame && !mFrame->scene() && mDelegated->scene())
         {
             mDelegated->scene()->addItem(mFrame);
-        }
-        mFrame->setAntiScale(mAntiScaleRatio);
-        mFrame->positionHandles();
-        updateButtons(true);
+            mFrame->setAntiScale(mAntiScaleRatio);
+            mFrame->positionHandles();
+            updateButtons(true);
 
-        foreach(DelegateButton* button, mButtons) {
-            scene->removeItem(button);
+            foreach(DelegateButton* button, mButtons) {
+                scene->removeItem(button);
+            }
+            scene->removeItem(mFrame);
         }
-        scene->removeItem(mFrame);
 
         /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */
         UBGraphicsWidgetItem *mDelegated_casted = dynamic_cast<UBGraphicsWidgetItem*>(mDelegated);
