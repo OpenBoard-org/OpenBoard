@@ -546,6 +546,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsPolygonItem* polygonItem = 0;
 
                 QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
+
                 if (mXmlReader.name() == "polygon")
                     polygonItem = polygonItemFromPolygonSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
                 else if (mXmlReader.name() == "line")
@@ -554,7 +555,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 if(parentId.isEmpty() && strokesGroup)
                     parentId = strokesGroup->uuid().toString();
 
-                Q_ASSERT(!parentId.isEmpty());
+                if(parentId.isEmpty())
+                    parentId = QUuid::createUuid().toString();
 
                 if (polygonItem)
                 {
