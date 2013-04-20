@@ -245,7 +245,7 @@ class UBGraphicsItemDelegate : public QObject
         void startUndoStep();
         void commitUndoStep();
 
-        UBGraphicsDelegateFrame* frame() { return mFrame; }
+        UBGraphicsDelegateFrame* frame() { if(!mFrame) decorate(); return mFrame; }
 
         bool canRotate() const { return mCanRotate; }
         bool isLocked() const;
