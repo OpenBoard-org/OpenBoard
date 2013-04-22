@@ -220,6 +220,7 @@ class UBGraphicsItemDelegate : public QObject
         virtual ~UBGraphicsItemDelegate();
 
         void init();
+        void decorate();
 
         virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -319,7 +320,6 @@ protected slots:
         virtual void gotoContentSource();
 
 private:
-        void decorate();
         void updateFrame();
         void updateButtons(bool showUpdated = false);
         inline void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
