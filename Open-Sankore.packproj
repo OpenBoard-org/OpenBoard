@@ -26,9 +26,9 @@
 					<key>International</key>
 					<dict>
 						<key>Mode</key>
-						<integer>1</integer>
+						<integer>0</integer>
 						<key>Path</key>
-						<string>COPYING</string>
+						<string></string>
 						<key>Path Type</key>
 						<integer>2</integer>
 					</dict>
