@@ -426,7 +426,7 @@ public slots:
         UBGraphicsPolygonItem* mpLastPolygon;
 
         bool mDrawWithCompass;
-
+        UBGraphicsPolygonItem *mCurrentPolygon;
 };
 
 
