@@ -208,6 +208,8 @@ void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphi
     if(mHasAlpha && scene() && scene()->isLightBackground())
         painter->setCompositionMode(QPainter::CompositionMode_Darken);
 
+    painter->setRenderHints(QPainter::Antialiasing);
+
     QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
