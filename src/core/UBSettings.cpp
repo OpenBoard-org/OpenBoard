@@ -70,7 +70,7 @@ QString UBSettings::uniboardApplicationNamespaceUri = "http://uniboard.mnemis.co
 const int UBSettings::sDefaultFontPixelSize = 36;
 const char *UBSettings::sDefaultFontFamily = "Arial";
 
-QString UBSettings::currentFileVersion = "4.6.0";
+QString UBSettings::currentFileVersion = "4.8.0";
 
 QColor UBSettings::crossDarkBackground = QColor(44, 44, 44, 200);
 QColor UBSettings::crossLightBackground = QColor(165, 225, 255);
