@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -100,7 +100,7 @@ private:
 
         bool parseUBZPolygon(const QDomElement &element, QMultiMap<int, QDomElement> &dstSvgList);
         bool parseUBZPolyline(const QDomElement &element, QMultiMap<int, QDomElement> &dstSvgList);
-        bool parseUBZLine(const QDomElement &element, QMultiMap<int, QDomElement> &dstSvgList);       
+        bool parseUBZLine(const QDomElement &element, QMultiMap<int, QDomElement> &dstSvgList);
         void addSVGElementToResultModel(const QDomElement &element, QMultiMap<int, QDomElement> &dstList, int layer = DEFAULT_LAYER);
         void addIWBElementToResultModel(const QDomElement &element);
 
