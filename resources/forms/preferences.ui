@@ -24,7 +24,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>6</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="displayTab">
       <attribute name="title">
@@ -794,7 +794,7 @@ p, li { white-space: pre-wrap; }
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="OpenSSLTab">
           <attribute name="title">
@@ -2084,7 +2084,7 @@ Public License instead of this License.
               <string notr="true"/>
              </property>
              <property name="plainText">
-              <string notr="true">Copyright (C) 2012 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
+              <string notr="true">Copyright (C) 2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
 
 Open-Sankoré is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
