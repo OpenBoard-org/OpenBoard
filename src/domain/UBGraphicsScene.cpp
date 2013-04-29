@@ -742,7 +742,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         mCurrentStroke = new UBGraphicsStroke();
 
 
-    QPolygonF newPolygon = UBGeometryUtils::lineToPolygon(QLineF(mPreviousPoint, pEndPoint), pWidth);
+    QPolygonF newPolygon = UBGeometryUtils::lineToPolygon(QLineF(mPreviousPoint, pEndPoint), mPreviousWidth, pWidth);
 
     if (!mCurrentPolygon)
     {
@@ -766,12 +766,6 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
     //QList<QPolygonF>
     QPolygonF oldPolygons = strokePainterPath.simplified().toFillPolygon(mCurrentPolygon->sceneTransform().inverted());
     newPolygon = oldPolygons.united(newPolygon);
-
-    /*  foreach(QPolygonF polygon, oldPolygons)
-            {
-                newPolygon = polygon.united(newPolygon);
-            }
-                */
 
     mpLastPolygon = mCurrentPolygon;
 
