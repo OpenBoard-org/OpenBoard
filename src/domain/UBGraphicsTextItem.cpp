@@ -55,12 +55,10 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent) :
 
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
-//    setData(UBGraphicsItemData::ItemEditable, QVariant(true));
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
 
     setFlag(QGraphicsItem::ItemIsSelectable, true);
-//    setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     setTextInteractionFlags(Qt::TextEditorInteraction);
@@ -91,8 +89,8 @@ QVariant UBGraphicsTextItem::itemChange(GraphicsItemChange change, const QVarian
 
 void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    // scene()->itemAt(pos) returns 0 if pos is not over text, but over text item, but mouse press comes. 
-    // It is a cludge... 
+    // scene()->itemAt(pos) returns 0 if pos is not over text, but over text item, but mouse press comes.
+    // It is a cludge...
     if (UBStylusTool::Play == UBDrawingController::drawingController()->stylusTool())
     {
         event->accept();
@@ -110,13 +108,13 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
             {
                 QGraphicsItem *curItem = group->getCurrentItem();
                 if (curItem && this != curItem)
-                {   
-                    group->deselectCurrentItem();    
-                }   
+                {
+                    group->deselectCurrentItem();
+                }
                 group->setCurrentItem(this);
                 this->setSelected(true);
                 Delegate()->positionHandles();
-            }       
+            }
 
         }
         else
@@ -178,8 +176,8 @@ void UBGraphicsTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    // scene()->itemAt(pos) returns 0 if pos is not over text, but over text item, but mouse press comes. 
-    // It is a cludge... 
+    // scene()->itemAt(pos) returns 0 if pos is not over text, but over text item, but mouse press comes.
+    // It is a cludge...
     if (UBStylusTool::Play == UBDrawingController::drawingController()->stylusTool())
     {
         event->accept();

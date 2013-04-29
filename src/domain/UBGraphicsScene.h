@@ -149,7 +149,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsW3CWidgetItem* addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         void addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos = QPointF(0, 0));
 
-        
+
 
         UBGraphicsMediaItem* addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsMediaItem* addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
@@ -320,10 +320,10 @@ public slots:
         void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
-        UBGraphicsPixmapItem* addPixmap(const QPixmap& pPixmap, 
+        UBGraphicsPixmapItem* addPixmap(const QPixmap& pPixmap,
             QGraphicsItem* replaceFor,
-            const QPointF& pPos = QPointF(0,0), 
-            qreal scaleFactor = 1.0, 
+            const QPointF& pPos = QPointF(0,0),
+            qreal scaleFactor = 1.0,
             bool pUseAnimation = false);
 
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
@@ -346,6 +346,8 @@ public slots:
     protected:
 
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);
+        UBGraphicsPolygonItem* lineToPolygonItem(const QLineF &pLine, const qreal &pStartWidth, const qreal &pEndWidth);
+
         UBGraphicsPolygonItem* arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth);
 
         void initPolygonItem(UBGraphicsPolygonItem*);

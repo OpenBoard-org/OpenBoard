@@ -220,7 +220,6 @@ class UBGraphicsItemDelegate : public QObject
         virtual ~UBGraphicsItemDelegate();
 
         void init();
-        void decorate();
 
         virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -246,7 +245,7 @@ class UBGraphicsItemDelegate : public QObject
         void startUndoStep();
         void commitUndoStep();
 
-        UBGraphicsDelegateFrame* frame() { if(!mFrame) decorate(); return mFrame; }
+        UBGraphicsDelegateFrame* frame() {return mFrame;}
 
         bool canRotate() const { return mCanRotate; }
         bool isLocked() const;

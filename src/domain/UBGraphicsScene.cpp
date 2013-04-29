@@ -707,7 +707,9 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
     if (mPreviousWidth == -1.0)
         mPreviousWidth = pWidth;
 
-    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), pWidth);
+//    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), pWidth);
+
+    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), mPreviousWidth,pWidth);
 
     if (!polygonItem->brush().isOpaque())
     {
@@ -943,6 +945,16 @@ void UBGraphicsScene::recolorAllItems()
 UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, const qreal &pWidth)
 {
     UBGraphicsPolygonItem *polygonItem = new UBGraphicsPolygonItem(pLine, pWidth);
+
+    initPolygonItem(polygonItem);
+
+    return polygonItem;
+}
+
+
+UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, const qreal &pStartWidth, const qreal &pEndWidth)
+{
+    UBGraphicsPolygonItem *polygonItem = new UBGraphicsPolygonItem(pLine, pStartWidth, pEndWidth);
 
     initPolygonItem(polygonItem);
 

@@ -34,6 +34,7 @@ class UBGeometryUtils
 
     public:
         static QPolygonF lineToPolygon(const QLineF& pLine, const qreal& pWidth);
+        static QPolygonF lineToPolygon(const QLineF& pLine, const qreal& pStartWidth, const qreal& pEndWidth);
         static QRectF lineToInnerRect(const QLineF& pLine, const qreal& pWidth);
 
         static QPolygonF arcToPolygon(const QLineF& startRadius, qreal spanAngle, qreal width);

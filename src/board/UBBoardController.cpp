@@ -2068,7 +2068,9 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
         mActiveScene->render(&painter, targetRect, pSceneRect);
 
         mActiveScene->setRenderingContext(UBGraphicsScene::Screen);
-        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
+//        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
+        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh);
+
 
         mPaletteManager->addItem(QPixmap::fromImage(image));
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));

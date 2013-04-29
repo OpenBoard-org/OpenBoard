@@ -42,6 +42,7 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
         UBGraphicsPolygonItem(QGraphicsItem * parent = 0 );
         UBGraphicsPolygonItem(const QLineF& line, qreal pWidth);
+        UBGraphicsPolygonItem(const QLineF& pLine, qreal pStartWidth, qreal pEndWidth);
         UBGraphicsPolygonItem(const QPolygonF & polygon, QGraphicsItem * parent = 0);
 
         ~UBGraphicsPolygonItem();

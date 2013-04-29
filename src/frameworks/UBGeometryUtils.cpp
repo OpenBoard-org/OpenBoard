@@ -81,6 +81,49 @@ QPolygonF UBGeometryUtils::lineToPolygon(const QLineF& pLine, const qreal& pWidt
     return painterPath.toFillPolygon();
 }
 
+
+
+QPolygonF UBGeometryUtils::lineToPolygon(const QLineF& pLine, const qreal& pStartWidth, const qreal& pEndWidth)
+{
+    qreal x1 = pLine.x1();
+    qreal y1 = pLine.y1();
+
+    qreal x2 = pLine.x2();
+    qreal y2 = pLine.y2();
+
+    qreal alpha = (90.0 - pLine.angle()) * PI / 180.0;
+    qreal startHypothenuse = pStartWidth / 2;
+    qreal endHypothenuse = pEndWidth / 2;
+
+    // TODO UB 4.x PERF cache sin/cos table
+    qreal startOpposite = sin(alpha) * startHypothenuse;
+    qreal startAdjacent = cos(alpha) * startHypothenuse;
+
+    qreal endOpposite = sin(alpha) * endHypothenuse;
+    qreal endAdjacent = cos(alpha) * endHypothenuse;
+
+    QPointF p1a(x1 - startAdjacent, y1 - startOpposite);
+    QPointF p1b(x1 + startAdjacent, y1 + startOpposite);
+
+    QPointF p2a(x2 - endAdjacent, y2 - endOpposite);
+    QPointF p2b(x2 + endAdjacent, y2 + endOpposite);
+
+    QPainterPath painterPath;
+    painterPath.moveTo(p1a);
+    painterPath.lineTo(p2a);
+
+    painterPath.arcTo(x2 - endHypothenuse, y2 - endHypothenuse, pEndWidth, pEndWidth, (90.0 + pLine.angle()), -180.0);
+
+    //painterPath.lineTo(p2b);
+    painterPath.lineTo(p1b);
+
+    painterPath.arcTo(x1 - startHypothenuse, y1 - startHypothenuse, pStartWidth, pStartWidth, -1 * (90.0 - pLine.angle()), -180.0);
+
+    painterPath.closeSubpath();
+
+    return painterPath.toFillPolygon();
+}
+
 QPolygonF UBGeometryUtils::lineToPolygon(const QPointF& pStart, const QPointF& pEnd,
         const qreal& pStartWidth, const qreal& pEndWidth)
 {

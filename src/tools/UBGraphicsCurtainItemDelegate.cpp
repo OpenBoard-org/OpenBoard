@@ -45,8 +45,7 @@ UBGraphicsCurtainItemDelegate::~UBGraphicsCurtainItemDelegate()
 
 void UBGraphicsCurtainItemDelegate::init()
 {
-    //UBGraphicsItemDelegate::init();
-    decorate();
+    UBGraphicsItemDelegate::init();
     mFrame->hide();
     mZOrderUpButton->hide();
     mZOrderDownButton->hide();

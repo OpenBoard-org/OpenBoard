@@ -39,8 +39,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelegate, QRectF pRect, qreal pFrameWidth, bool respectRatio = true);
         virtual ~UBGraphicsDelegateFrame();
 
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                QWidget *widget);
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
         QPainterPath shape() const;
 
@@ -54,7 +53,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         void positionHandles();
         void setVisible(bool visible);
 
-                virtual void setAntiScale(qreal pAntiScale);
+        virtual void setAntiScale(qreal pAntiScale);
 
         enum OperationMode {Scaling, Resizing, ResizingHorizontally};
         void setOperationMode(OperationMode pMode) {mOperationMode = pMode;}
