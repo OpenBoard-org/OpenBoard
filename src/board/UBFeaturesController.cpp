@@ -37,7 +37,6 @@
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
-#include "domain/UBGraphicsVideoItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 
 #include "gui/UBFeaturesWidget.h"
