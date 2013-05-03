@@ -287,6 +287,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mZLayerController(new UBZLayerController(this))
     , mpLastPolygon(NULL)
     , mCurrentPolygon(0)
+    , mMultipleSelectionProcess(false)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
 #ifdef __ppc__
@@ -294,6 +295,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
 #elif defined(Q_WS_MAC)
     mShouldUseOMP = QSysInfo::MacintoshVersion >= QSysInfo::MV_10_5;
 #endif
+
+    setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 
     setUuid(QUuid::createUuid());
     setDocument(parent);

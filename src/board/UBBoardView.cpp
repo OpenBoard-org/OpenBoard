@@ -1023,11 +1023,13 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 }
                 mUBRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
                 mUBRubberBand->show();
+                scene()->setMultipleSelectionProcess(true);
             }
             else
             {
                 if(mUBRubberBand)
                     mUBRubberBand->hide();
+                scene()->setMultipleSelectionProcess(false);
             }
 
             handleItemMousePress(event);
@@ -1061,6 +1063,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                 mRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
                 mRubberBand->show ();
                 mIsCreatingTextZone = true;
+                scene()->setMultipleSelectionProcess(true);
 
                 event->accept ();
             }
@@ -1075,6 +1078,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             mRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
             mRubberBand->show ();
             mIsCreatingSceneGrabZone = true;
+            scene()->setMultipleSelectionProcess(true);
 
             event->accept ();
         }
@@ -1283,6 +1287,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
       if (mUBRubberBand && mUBRubberBand->isVisible()) {
           mUBRubberBand->hide();
+          scene()->setMultipleSelectionProcess(false);
       }
 
       if (bReleaseIsNeed)
@@ -1316,8 +1321,11 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
   }
   else if (currentTool == UBStylusTool::Text)
     {
-      if (mRubberBand)
+      if (mRubberBand) {
         mRubberBand->hide ();
+        scene()->setMultipleSelectionProcess(false);
+      }
+
 
       if (scene () && mRubberBand && mIsCreatingTextZone)
         {
@@ -1340,8 +1348,10 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     }
   else if (currentTool == UBStylusTool::Capture)
     {
-      if (mRubberBand)
+      if (mRubberBand) {
         mRubberBand->hide ();
+        scene()->setMultipleSelectionProcess(false);
+      }
 
       if (scene () && mRubberBand && mIsCreatingSceneGrabZone && mRubberBand->geometry ().width () > 16)
         {

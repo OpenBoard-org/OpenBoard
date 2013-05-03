@@ -59,7 +59,7 @@ const QString UBFeaturesController::webSearchPath = rootPath + "/Web search";
 
 void UBFeaturesComputingThread::scanFS(const QUrl & currentPath, const QString & currVirtualPath, const QSet<QUrl> &pFavoriteSet)
 {
-    Q_ASSERT(QFileInfo(currentPath.toLocalFile()).exists());
+//    Q_ASSERT(QFileInfo(currentPath.toLocalFile()).exists());
 
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath.toLocalFile());
 

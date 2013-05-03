@@ -220,6 +220,8 @@ class UBGraphicsItemDelegate : public QObject
         virtual ~UBGraphicsItemDelegate();
 
         void init();
+        void createControls();
+        void freeControls();
 
         virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);

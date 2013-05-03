@@ -310,6 +310,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         static QUuid getPersonalUuid(QGraphicsItem *item);
 
         UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
+        void setMultipleSelectionProcess(bool pEnabled) {mMultipleSelectionProcess = pEnabled;}
+        bool multipleSelectionProcess() const {return mMultipleSelectionProcess;}
 
 public slots:
         void initStroke();
@@ -427,6 +429,7 @@ public slots:
 
         bool mDrawWithCompass;
         UBGraphicsPolygonItem *mCurrentPolygon;
+        bool mMultipleSelectionProcess;
 };
 
 

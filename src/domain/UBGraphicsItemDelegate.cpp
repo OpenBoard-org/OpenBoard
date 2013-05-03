@@ -226,6 +226,16 @@ void UBGraphicsItemDelegate::init()
     setRotatable(false);
 }
 
+void UBGraphicsItemDelegate::createControls()
+{
+
+}
+
+void UBGraphicsItemDelegate::freeControls()
+{
+
+}
+
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
@@ -242,9 +252,10 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
         bool ok;
         bool selected = value.toUInt(&ok);
+
         if (ok) {
             UBGraphicsScene *ubScene = castUBGraphicsScene();
-            if (ubScene) {
+            if (ubScene && !ubScene->multipleSelectionProcess()) {
                 if (selected) {
                     ubScene->setSelectedZLevel(delegated());
                 } else {
@@ -254,15 +265,16 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
         }
     }
 
-    if ((change == QGraphicsItem::ItemSelectedHasChanged
-         || change == QGraphicsItem::ItemPositionHasChanged
-         || change == QGraphicsItem::ItemTransformHasChanged)
-            && mDelegated->scene()
-            && UBApplication::boardController)
-    {
-        mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-        positionHandles();
-    }
+
+//    if ((change == QGraphicsItem::ItemSelectedHasChanged
+//         || change == QGraphicsItem::ItemPositionHasChanged
+//         || change == QGraphicsItem::ItemTransformHasChanged)
+//            && mDelegated->scene()
+//            && UBApplication::boardController)
+//    {
+//        mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+//        positionHandles();
+//    }
 
     if (change == QGraphicsItem::ItemPositionHasChanged
         || change == QGraphicsItem::ItemTransformHasChanged
