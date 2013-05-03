@@ -201,7 +201,7 @@ QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVa
     return QGraphicsItemGroup::itemChange(change, newValue);
 }
 
-QPainterPath UBGraphicsStrokesGroup::shape () const
+QPainterPath UBGraphicsStrokesGroup::shape() const
 {
     QPainterPath path;
 

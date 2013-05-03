@@ -146,7 +146,8 @@ void UBBoardView::init ()
   setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
   setAcceptDrops (true);
 
-  setOptimizationFlag (QGraphicsView::IndirectPainting); // enable UBBoardView::drawItems filter
+  setOptimizationFlags (QGraphicsView::IndirectPainting | QGraphicsView::DontSavePainterState); // enable UBBoardView::drawItems filter
+  setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 
   mTabletStylusIsPressed = false;
   mMouseButtonIsPressed = false;
