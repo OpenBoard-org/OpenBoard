@@ -19,6 +19,15 @@
 #     functions
 #**********************
 
+checkUser()
+{
+  if [ `id -u` -ne 0 ]; then
+    echo "Please run the script as root, may be using fakeroot command as follow"
+    echo "fakeroot ./buildDebianPackage.sh [options]"
+    exit 1
+  fi
+}
+
 initializeVariables()
 {
   MAKE_TAG=true
@@ -120,6 +129,7 @@ buildWithStandardQt(){
 #**********************
 #     script
 #**********************
+checkUser
 initializeVariables
 buildWithStandardQt
 
@@ -375,12 +385,13 @@ chmod 755 "$BASE_WORKING_DIR/DEBIAN/postint"
 mkdir -p "install/linux"
 DEBIAN_PACKAGE_NAME="Open-Sankore_${VERSION}_$ARCHITECTURE.deb"
 
-fakeroot  chown -R root:root $BASE_WORKING_DIR 
+chown -R root:root $BASE_WORKING_DIR 
 dpkg -b "$BASE_WORKING_DIR" "install/linux/$DEBIAN_PACKAGE_NAME"
-notifyProgress "Open-Sankore" "Package built"
 
 #clean up mess
-fakeroot rm -rf $BASE_WORKING_DIR
+rm -rf $BASE_WORKING_DIR
+
+notifyProgress "Open-Sankore" "Package built"
 
 
 if [ $CREATE_DIENA_DISTRIBUTION_ZIP == true ]; then
@@ -392,3 +403,4 @@ if [ $CREATE_DIENA_DISTRIBUTION_ZIP == true ]; then
     notifyProgress "Open-Sankore" "Build Diena zip file for distribution"
 fi
 
+exit 0
