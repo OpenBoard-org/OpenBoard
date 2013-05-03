@@ -574,7 +574,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     else
                         group = mStrokesList.value(parentId);
 
-                    polygonItem->setTransform(group->transform());
+                    if(polygonItem->transform().isIdentity())
+                        polygonItem->setTransform(group->transform());
                     group->addToGroup(polygonItem);
                     polygonItem->setStrokesGroup(group);
                     polygonItem->setStroke(currentStroke);
@@ -604,7 +605,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     else
                         group = mStrokesList.value(parentId);
 
-                    polygonItem->setTransform(group->transform());
+                    if(polygonItem->transform().isIdentity())
+                        polygonItem->setTransform(group->transform());
                     group->addToGroup(polygonItem);
                     polygonItem->setStrokesGroup(group);
                     polygonItem->setStroke(currentStroke);
@@ -1700,18 +1702,6 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     if (!svgPoints.isNull())
     {
-//        int lenght = strlen(svgPoints.toUtf8().constData()) + 1;
-//        char pippo[lenght];
-//        memcpy(pippo,svgPoints.toUtf8().constData(),lenght);
-//        char* localPosition = (char*) &pippo[0];
-//        do{
-//            float x = atof(localPosition);
-//            localPosition = strchr(localPosition,',') + 1;
-//            float y = atof(localPosition);
-//            localPosition = strchrnul(localPosition,' ');
-//            polygon << QPointF(x,y);
-//        }while(localPosition - pippo > lenght - 5);
-
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
                          QString::SkipEmptyParts);
 

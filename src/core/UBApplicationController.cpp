@@ -68,9 +68,9 @@
 
 #include "core/memcheck.h"
 
-UBApplicationController::UBApplicationController(UBBoardView *pControlView, 
+UBApplicationController::UBApplicationController(UBBoardView *pControlView,
                                                  UBBoardView *pDisplayView,
-                                                 UBMainWindow* pMainWindow, 
+                                                 UBMainWindow* pMainWindow,
                                                  QObject* parent,
                                                  UBRightPalette* rightPalette)
     : QObject(parent)
@@ -371,7 +371,7 @@ void UBApplicationController::showBoard()
     UBPlatformUtils::setDesktopMode(false);
 
     mUninoteController->hideWindow();
-    
+
     mMainWindow->show();
 
     emit mainModeChanged(Board);
@@ -543,12 +543,12 @@ void UBApplicationController::showSankoreEditor()
 
 void UBApplicationController::checkUpdate()
 {
-    if(mHttp)
-        delete mHttp;
-    QUrl url("http://ftp.open-sankore.org/update.json");
-    mHttp = new QHttp(url.host());
-    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
-    mHttp->get(url.path());
+//    if(mHttp)
+//        delete mHttp;
+//    QUrl url("http://ftp.open-sankore.org/update.json");
+//    mHttp = new QHttp(url.host());
+//    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
+//    mHttp->get(url.path());
 }
 
 void UBApplicationController::updateRequestFinished(int id, bool error)
