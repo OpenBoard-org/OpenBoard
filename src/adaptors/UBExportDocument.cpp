@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -76,8 +76,6 @@ void UBExportDocument::persist(UBDocumentProxy* pDocumentProxy)
 
 void UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, QString filename)
 {
-    QString documentPath(pDocumentProxy->persistencePath());
-
     QuaZip zip(filename);
     zip.setFileNameCodec("UTF-8");
     if(!zip.open(QuaZip::mdCreate))

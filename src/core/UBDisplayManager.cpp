@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -20,15 +20,13 @@
  */
 
 
-
 #include "UBDisplayManager.h"
 
 #include "frameworks/UBPlatformUtils.h"
 
-#include "UBApplication.h"
-#include "UBApplicationController.h"
-
-#include "UBSettings.h"
+#include "core/UBApplication.h"
+#include "core/UBApplicationController.h"
+#include "core/UBSettings.h"
 
 #include "board/UBBoardView.h"
 
@@ -68,7 +66,7 @@ void UBDisplayManager::initScreenIndexes()
         mControlScreenIndex = mDesktop->primaryScreen();
         if (UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
         {
-           mControlScreenIndex = mControlScreenIndex^1;
+            mControlScreenIndex = mControlScreenIndex^1;
         }
 
         mScreenIndexesRoles << Control;
@@ -92,13 +90,13 @@ void UBDisplayManager::initScreenIndexes()
 
     if (screenCount > 2)
     {
-       for(int i = 2; i < screenCount; i++)
-       {
-           if(mControlScreenIndex == i)
-               mPreviousScreenIndexes.append(1);
-           else
-               mPreviousScreenIndexes.append(i);
-       }
+        for(int i = 2; i < screenCount; i++)
+        {
+            if(mControlScreenIndex == i)
+                mPreviousScreenIndexes.append(1);
+            else
+                mPreviousScreenIndexes.append(i);
+        }
     }
 }
 

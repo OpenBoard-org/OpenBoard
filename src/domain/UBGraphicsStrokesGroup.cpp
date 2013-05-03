@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -206,7 +206,7 @@ QPainterPath UBGraphicsStrokesGroup::shape () const
         foreach(QGraphicsItem* item, childItems())
         {
             path.addPath(item->shape());
-        } 
+        }
     }
 
     return path;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -70,7 +70,7 @@ QString UBSettings::uniboardApplicationNamespaceUri = "http://uniboard.mnemis.co
 const int UBSettings::sDefaultFontPixelSize = 36;
 const char *UBSettings::sDefaultFontFamily = "Arial";
 
-QString UBSettings::currentFileVersion = "4.6.0";
+QString UBSettings::currentFileVersion = "4.8.0";
 
 QColor UBSettings::crossDarkBackground = QColor(44, 44, 44, 200);
 QColor UBSettings::crossLightBackground = QColor(165, 225, 255);

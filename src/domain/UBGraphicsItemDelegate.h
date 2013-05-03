@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -256,7 +256,7 @@ class UBGraphicsItemDelegate : public QObject
         void startUndoStep();
         void commitUndoStep();
 
-        UBGraphicsDelegateFrame* frame() { return mFrame; }
+        UBGraphicsDelegateFrame* frame() {return mFrame;}
 
         bool canRotate() const { return mCanRotate; }
         bool isLocked() const;

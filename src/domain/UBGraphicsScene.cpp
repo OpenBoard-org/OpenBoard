@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -286,6 +286,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , magniferDisplayViewWidget(0)
     , mZLayerController(new UBZLayerController(this))
     , mpLastPolygon(NULL)
+    , mCurrentPolygon(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
 #ifdef __ppc__
@@ -500,7 +501,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                     mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
                     mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
                 QLineF chord(position, newPosition);
-                                    if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
+                if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
                     position = newPosition;
             }
 
@@ -532,18 +533,6 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
 bool UBGraphicsScene::inputDeviceRelease()
 {
-    /*
-    if (mMesure1Ms > 0 ||  mMesure2Ms > 0)
-    {
-        qWarning() << "---------------------------";
-        qWarning() << "mMesure1Ms: " << mMesure1Ms;
-        qWarning() << "mMesure2Ms: " << mMesure2Ms;
-
-        mMesure1Ms = 0;
-        mMesure2Ms = 0;
-    }
-    */
-
     bool accepted = false;
 
     if (mPointer)
@@ -603,6 +592,7 @@ bool UBGraphicsScene::inputDeviceRelease()
                 delete mCurrentStroke;
                 mCurrentStroke = 0;
             }
+            mCurrentPolygon = 0;
         }
     }
 
@@ -713,7 +703,9 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
     if (mPreviousWidth == -1.0)
         mPreviousWidth = pWidth;
 
-    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), pWidth);
+    //    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), pWidth);
+
+    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), mPreviousWidth,pWidth);
 
     if (!polygonItem->brush().isOpaque())
     {
@@ -727,6 +719,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         }
     }
 
+
     if (bLineStyle)
     {
         QSetIterator<QGraphicsItem*> itItems(mAddedItems);
@@ -739,18 +732,39 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         mAddedItems.clear();
     }
 
-    mpLastPolygon = polygonItem;
-    mAddedItems.insert(polygonItem);
-
-    // Here we add the item to the scene
-    addItem(polygonItem);
-
     if (!mCurrentStroke)
         mCurrentStroke = new UBGraphicsStroke();
 
-    polygonItem->setStroke(mCurrentStroke);
 
-    mPreviousPolygonItems.append(polygonItem);
+    QPolygonF newPolygon = UBGeometryUtils::lineToPolygon(QLineF(mPreviousPoint, pEndPoint), mPreviousWidth, pWidth);
+
+    if (!mCurrentPolygon)
+    {
+        mCurrentPolygon = new UBGraphicsPolygonItem();
+        mCurrentPolygon->setPolygon(newPolygon);
+        initPolygonItem(mCurrentPolygon);
+        addItem(mCurrentPolygon);
+        mAddedItems.insert(mCurrentPolygon);
+        mCurrentPolygon->setStroke(mCurrentStroke);
+        mpLastPolygon = mCurrentPolygon;
+    }
+
+
+    //newPolygon = newPolygon.united(mCurrentPolygon->polygon());
+
+    QPainterPath strokePainterPath;
+
+
+    strokePainterPath.addPolygon(mCurrentPolygon->sceneTransform().map(mCurrentPolygon->polygon()));
+
+    //QList<QPolygonF>
+    QPolygonF oldPolygons = strokePainterPath.simplified().toFillPolygon(mCurrentPolygon->sceneTransform().inverted());
+    newPolygon = oldPolygons.united(newPolygon);
+
+    mpLastPolygon = mCurrentPolygon;
+
+    mCurrentPolygon->setPolygon(newPolygon);
+
 
     if (!bLineStyle)
     {
@@ -955,6 +969,16 @@ UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, c
     return polygonItem;
 }
 
+
+UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, const qreal &pStartWidth, const qreal &pEndWidth)
+{
+    UBGraphicsPolygonItem *polygonItem = new UBGraphicsPolygonItem(pLine, pStartWidth, pEndWidth);
+
+    initPolygonItem(polygonItem);
+
+    return polygonItem;
+}
+
 void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
 {
     QColor colorOnDarkBG;
@@ -1105,9 +1129,6 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     case clearAnnotations :
         foreach(QGraphicsItem* item, items()) {
 
-            bool isGroup = item->type() == UBGraphicsGroupContainerItem::Type;
-            bool isStrokesGroup = item->type() == UBGraphicsStrokesGroup::Type;
-
             UBGraphicsGroupContainerItem *itemGroup = item->parentItem()
                                                       ? qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item->parentItem())
                                                       : 0;
@@ -1115,6 +1136,9 @@ void UBGraphicsScene::clearContent(clearCase pCase)
             if (!curDelegate) {
                 continue;
             }
+
+            bool isGroup = item->type() == UBGraphicsGroupContainerItem::Type;
+            bool isStrokesGroup = item->type() == UBGraphicsStrokesGroup::Type;
 
             bool shouldDelete = false;
             switch (static_cast<int>(pCase)) {

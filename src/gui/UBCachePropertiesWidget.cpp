@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -142,7 +142,7 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     connect(mpCircleButton, SIGNAL(clicked()), this, SLOT(updateShapeButtons()));
     connect(mpSquareButton, SIGNAL(clicked()), this, SLOT(updateShapeButtons()));
     connect(mpSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(onSizeChanged(int)));
-    connect(UBApplication::boardController, SIGNAL(pageChanged()), this, SLOT(updateCurrentCache()));
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(updateCurrentCache()));
     connect(UBApplication::boardController, SIGNAL(cacheEnabled()), this, SLOT(onCacheEnabled()));
 }
 
@@ -372,4 +372,3 @@ void UBCachePropertiesWidget::onCacheEnabled()
 {
     emit showTab(this);
 }
-

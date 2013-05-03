@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -68,9 +68,9 @@
 
 #include "core/memcheck.h"
 
-UBApplicationController::UBApplicationController(UBBoardView *pControlView, 
+UBApplicationController::UBApplicationController(UBBoardView *pControlView,
                                                  UBBoardView *pDisplayView,
-                                                 UBMainWindow* pMainWindow, 
+                                                 UBMainWindow* pMainWindow,
                                                  QObject* parent,
                                                  UBRightPalette* rightPalette)
     : QObject(parent)
@@ -371,7 +371,7 @@ void UBApplicationController::showBoard()
     UBPlatformUtils::setDesktopMode(false);
 
     mUninoteController->hideWindow();
-    
+
     mMainWindow->show();
 
     emit mainModeChanged(Board);
@@ -515,12 +515,12 @@ void UBApplicationController::showTutorial()
 
 void UBApplicationController::checkUpdate()
 {
-    if(mHttp)
-        delete mHttp;
-    QUrl url("http://ftp.open-sankore.org/update.json");
-    mHttp = new QHttp(url.host());
-    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
-    mHttp->get(url.path());
+//    if(mHttp)
+//        delete mHttp;
+//    QUrl url("http://ftp.open-sankore.org/update.json");
+//    mHttp = new QHttp(url.host());
+//    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
+//    mHttp->get(url.path());
 }
 
 void UBApplicationController::updateRequestFinished(int id, bool error)

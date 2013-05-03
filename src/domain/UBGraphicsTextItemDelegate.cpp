@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -87,14 +87,8 @@ QFont UBGraphicsTextItemDelegate::createDefaultFont()
         textFormat.setFontItalic(true);
 
     QFont font(fFamily, -1, bold ? QFont::Bold : -1, italic);
-//    int pixSize = UBSettings::settings()->fontPixelSize();
-//    if (pixSize > 0) {
-//        mLastFontPixelSize = pixSize;
-//        font.setPixelSize(pixSize);
-//    }
     int pointSize = UBSettings::settings()->fontPointSize();
     if (pointSize > 0) {
-//        mLastFontPixelSize = pointSize;
         font.setPointSize(pointSize);
     }
 
@@ -227,8 +221,6 @@ void UBGraphicsTextItemDelegate::pickColor()
         {
             QColor selectedColor = colorDialog.selectedColor();
             delegated()->setDefaultTextColor(selectedColor);
-//            delegated()->setColorOnDarkBackground(selectedColor);
-//            delegated()->setColorOnLightBackground(selectedColor);
             QTextCursor curCursor = delegated()->textCursor();
             QTextCharFormat format;
             format.setForeground(QBrush(selectedColor));
@@ -257,6 +249,7 @@ UBGraphicsTextItem* UBGraphicsTextItemDelegate::delegated()
 {
     return static_cast<UBGraphicsTextItem*>(mDelegated);
 }
+
 void UBGraphicsTextItemDelegate::setEditable(bool editable)
 {
     if (editable) {
@@ -271,6 +264,7 @@ void UBGraphicsTextItemDelegate::setEditable(bool editable)
         mDelegated->setData(UBGraphicsItemData::ItemEditable, QVariant(false));
     }
 }
+
 void UBGraphicsTextItemDelegate::remove(bool canUndo)
 {
     UBGraphicsItemDelegate::remove(canUndo);
@@ -280,6 +274,7 @@ bool UBGraphicsTextItemDelegate::isEditable()
 {
     return mDelegated->data(UBGraphicsItemData::ItemEditable).toBool();
 }
+
 void UBGraphicsTextItemDelegate::decorateMenu(QMenu *menu)
 {
     UBGraphicsItemDelegate::decorateMenu(menu);
@@ -289,23 +284,25 @@ void UBGraphicsTextItemDelegate::decorateMenu(QMenu *menu)
     mEditableAction->setChecked(isEditable());
 
 }
+
 void UBGraphicsTextItemDelegate::updateMenuActionState()
 {
     UBGraphicsItemDelegate::updateMenuActionState();
 }
+
 void UBGraphicsTextItemDelegate::positionHandles()
 {
     UBGraphicsItemDelegate::positionHandles();
 
-    if (mDelegated->isSelected() || (mDelegated->parentItem() && UBGraphicsGroupContainerItem::Type == mDelegated->parentItem()->type())) 
+    if (mDelegated->isSelected() || (mDelegated->parentItem() && UBGraphicsGroupContainerItem::Type == mDelegated->parentItem()->type()))
     {
         if (mToolBarItem->isVisibleOnBoard())
         {
-            qreal AntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());    
+            qreal AntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
             mToolBarItem->setScale(AntiScaleRatio);
             QRectF toolBarRect = mToolBarItem->rect();
             toolBarRect.setWidth(delegated()->boundingRect().width()/AntiScaleRatio);
-            mToolBarItem->setRect(toolBarRect);           
+            mToolBarItem->setRect(toolBarRect);
             mToolBarItem->positionHandles();
             mToolBarItem->update();
             if (mToolBarItem->isShifting())
@@ -374,9 +371,9 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
    // we search continuous blocks of the text with the same PointSize and allpy new settings for them.
     cursor.setPosition (startPos, QTextCursor::MoveAnchor);
     while(iCursorPos < endPos)
-    {   
+    {
         bEndofTheSameBlock = false;
-        iBlockLen = 0; 
+        iBlockLen = 0;
 
         cursor.setPosition (iCursorPos+1, QTextCursor::KeepAnchor);
         iPointSize = cursor.charFormat().font().pointSize();

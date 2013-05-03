@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -42,6 +42,7 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
         UBGraphicsPolygonItem(QGraphicsItem * parent = 0 );
         UBGraphicsPolygonItem(const QLineF& line, qreal pWidth);
+        UBGraphicsPolygonItem(const QLineF& pLine, qreal pStartWidth, qreal pEndWidth);
         UBGraphicsPolygonItem(const QPolygonF & polygon, QGraphicsItem * parent = 0);
 
         ~UBGraphicsPolygonItem();

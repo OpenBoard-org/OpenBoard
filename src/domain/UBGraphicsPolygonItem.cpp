@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -64,6 +64,18 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pWidth)
     // NOOP
     initialize();
 }
+
+UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pStartWidth, qreal pEndWidth)
+    : QGraphicsPolygonItem(UBGeometryUtils::lineToPolygon(pLine, pStartWidth, pEndWidth))
+    , mOriginalLine(pLine)
+    , mOriginalWidth(pEndWidth)
+    , mIsNominalLine(true)
+    , mStroke(0)
+{
+    // NOOP
+    initialize();
+}
+
 
 void UBGraphicsPolygonItem::initialize()
 {
@@ -157,11 +169,11 @@ QColor UBGraphicsPolygonItem::color() const
 
 
 UBItem* UBGraphicsPolygonItem::deepCopy() const
-{  
+{
     UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(polygon(), 0);
 
     UBGraphicsStroke *stroke = new UBGraphicsStroke();
-    
+
     copyItemParameters(copy);
 
     copy->setStroke(stroke);
@@ -186,7 +198,6 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
 
         cp->setColorOnDarkBackground(this->colorOnDarkBackground());
         cp->setColorOnLightBackground(this->colorOnLightBackground());
-        //cp->setTransform(transform());
 
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
     }
@@ -195,9 +206,9 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
 void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
     if(mHasAlpha && scene() && scene()->isLightBackground())
-    {
         painter->setCompositionMode(QPainter::CompositionMode_Darken);
-    }
+
+    painter->setRenderHints(QPainter::Antialiasing);
 
     QGraphicsPolygonItem::paint(painter, option, widget);
 }
@@ -209,10 +220,6 @@ QPainterPath UBGraphicsPolygonItem::shape() const
     path.addRect(boundingRect());
 
     return path;
-
-//    static QPainterPath shapePath = QGraphicsPolygonItem::shape();
-
-//    return shapePath;
 }
 
 

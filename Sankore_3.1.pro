@@ -9,9 +9,9 @@ CONFIG += debug_and_release \
 
 
 VERSION_MAJ = 2
-VERSION_MIN = 00 
+VERSION_MIN = 00
 VERSION_TYPE = r # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 02 
+VERSION_PATCH = 05
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
@@ -128,10 +128,10 @@ win32 {
 }
 
 macx {
-   LIBS += -framework Foundation 
+   LIBS += -framework Foundation
    LIBS += -lcrypto
    #commented because Sankore crashes on Java Script. It seems to backends dependencies.
-   #LIBS += -framework AppKit 
+   #LIBS += -framework AppKit
    #LIBS += -framework WebKit
 
    CONFIG(release, debug|release):CONFIG += x86
@@ -351,7 +351,7 @@ macx {
        TRANSLATION_mg.path = "$$RESOURCES_DIR/mg.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_mg
    }
-   
+
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
        UB_FONTS \

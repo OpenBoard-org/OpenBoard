@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -52,8 +52,6 @@ void UBWebPublisher::persist(UBDocumentProxy* pDocumentProxy)
 {
     if (!pDocumentProxy)
         return;
-
-    QString documentPath(pDocumentProxy->persistencePath());
 
     UBDocumentPublisher* publisher = new UBDocumentPublisher(pDocumentProxy, this); // the publisher will self delete when publication finishes
     publisher->publish();

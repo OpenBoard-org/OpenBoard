@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -34,6 +34,7 @@ class UBGeometryUtils
 
     public:
         static QPolygonF lineToPolygon(const QLineF& pLine, const qreal& pWidth);
+        static QPolygonF lineToPolygon(const QLineF& pLine, const qreal& pStartWidth, const qreal& pEndWidth);
         static QRectF lineToInnerRect(const QLineF& pLine, const qreal& pWidth);
 
         static QPolygonF arcToPolygon(const QLineF& startRadius, qreal spanAngle, qreal width);

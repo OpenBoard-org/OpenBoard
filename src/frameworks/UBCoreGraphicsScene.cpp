@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -40,9 +40,16 @@ UBCoreGraphicsScene::~UBCoreGraphicsScene()
 {
     //we must delete removed items that are no more in any scene
     //at groups deleting some items can be added to mItemsToDelete, so we need to use iterators.
-    foreach(QGraphicsItem* item, mItemsToDelete){
-        if (item && item->type() != UBGraphicsItemType::PolygonItemType && item->type() != QGraphicsItem::UserType && item->type() != UBGraphicsItemType::groupContainerType && (item->scene() == NULL || item->scene() == this))
-            delete item;
+    foreach(QGraphicsItem* item, mItemsToDelete)
+    {
+        if (item)
+        {
+            if (item->scene() == NULL || item->scene() == this)
+            {
+                delete item;
+                item = NULL;
+            }
+        }
     }
     mItemsToDelete.clear();
 }

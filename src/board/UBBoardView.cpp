@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -122,10 +122,12 @@ UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int p
     mLongPressTimer.setSingleShot(true);
 }
 
-UBBoardView::~UBBoardView () {
-    //NOOP
-    if (suspendedMousePressEvent)
+UBBoardView::~UBBoardView ()
+{
+    if (suspendedMousePressEvent){
         delete suspendedMousePressEvent;
+        suspendedMousePressEvent = NULL;
+    }
 }
 
 void UBBoardView::init ()
@@ -169,28 +171,24 @@ void UBBoardView::init ()
     mWidgetMoved = false;
 }
 
-UBGraphicsScene*
-UBBoardView::scene ()
+UBGraphicsScene* UBBoardView::scene ()
 {
     return qobject_cast<UBGraphicsScene*> (QGraphicsView::scene ());
 }
 
-void
-UBBoardView::hideEvent (QHideEvent * event)
+void UBBoardView::hideEvent (QHideEvent * event)
 {
     Q_UNUSED (event);
     emit hidden ();
 }
 
-void
-UBBoardView::showEvent (QShowEvent * event)
+void UBBoardView::showEvent (QShowEvent * event)
 {
     Q_UNUSED (event);
     emit shown ();
 }
 
-void
-UBBoardView::keyPressEvent (QKeyEvent *event)
+void UBBoardView::keyPressEvent (QKeyEvent *event)
 {
     // send to the scene anyway
     QApplication::sendEvent (scene (), event);
@@ -303,20 +301,14 @@ UBBoardView::keyPressEvent (QKeyEvent *event)
 
 void UBBoardView::keyReleaseEvent(QKeyEvent *event)
 {
-    // if (!event->isAccepted ())
-    {
-        if (Qt::Key_Shift == event->key()
-                ||Qt::Key_Control == event->key())
-        {
-            setMultiselection(false);
-        }
-    }
+
+    if (Qt::Key_Shift == event->key() ||Qt::Key_Control == event->key())
+        setMultiselection(false);
 
     QGraphicsView::keyReleaseEvent(event);
 }
 
-bool
-UBBoardView::event (QEvent * e)
+bool UBBoardView::event (QEvent * e)
 {
     if (e->type () == QEvent::Gesture)
     {
@@ -461,14 +453,13 @@ bool UBBoardView::itemHaveParentWithType(QGraphicsItem *item, int type)
     return itemHaveParentWithType(item->parentItem(), type);
 
 }
+
 bool UBBoardView::isUBItem(QGraphicsItem *item)
 {
     if ((UBGraphicsItemType::UserTypesCount > item->type()) && (item->type() > QGraphicsItem::UserType))
         return true;
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 bool UBBoardView::isCppTool(QGraphicsItem *item)
@@ -761,9 +752,8 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     if (isMultipleSelectionEnabled())
         return;
 
-    if (itemShouldReceiveMousePressEvent(movingItem)) {
+    if (itemShouldReceiveMousePressEvent(movingItem))
         QGraphicsView::mousePressEvent (event);
-    }
     else {
         if (movingItem)
         {
@@ -864,13 +854,81 @@ void UBBoardView::setMultiselection(bool enable)
     mMultipleSelectionIsEnabled = enable;
 }
 
+// work around for handling tablet events on MAC OS with Qt 4.8.0 and above
+#if defined(Q_WS_MACX)
+bool UBBoardView::directTabletEvent(QEvent *event)
+{
+    QTabletEvent *tEvent = static_cast<QTabletEvent *>(event);
+    tEvent = new QTabletEvent(tEvent->type()
+        , mapFromGlobal(tEvent->pos())
+        , tEvent->globalPos()
+        , tEvent->hiResGlobalPos()
+        , tEvent->device()
+        , tEvent->pointerType()
+        , tEvent->pressure()
+        , tEvent->xTilt()
+        , tEvent->yTilt()
+        , tEvent->tangentialPressure()
+        , tEvent->rotation()
+        , tEvent->z()
+        , tEvent->modifiers()
+        , tEvent->uniqueId());
+
+    if (geometry().contains(tEvent->pos()))
+    {
+        if (NULL == widgetForTabletEvent(this->parentWidget(), tEvent->pos()))
+        {
+            tabletEvent(tEvent);
+            return true;
+        }
+    }
+    return false;
+}
+
+QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
+{
+    Q_ASSERT(w);
+
+    // it should work that, but it doesn't. So we check if it is control view.
+    //UBBoardView *board = qobject_cast<UBBoardView *>(w);
+    UBBoardView *board = UBApplication::boardController->controlView();
+
+    QWidget *childAtPos = NULL;
+
+    QList<QObject *> childs = w->children();
+    foreach(QObject *child, childs)
+    {
+        QWidget *childWidget = qobject_cast<QWidget *>(child);
+        if (childWidget)
+        {
+            if (childWidget->isVisible() && childWidget->geometry().contains(pos))
+            {
+                QWidget *lastChild = widgetForTabletEvent(childWidget, pos);
+
+                if (board && board->viewport() == lastChild)
+                    continue;
+
+                if (NULL != lastChild)
+                    childAtPos = lastChild;
+                else
+                    childAtPos = childWidget;
+
+                break;
+            }
+            else
+                childAtPos = NULL;
+        }
+    }
+    return childAtPos;
+}
+#endif
+
 void UBBoardView::longPressEvent()
 {
     UBDrawingController *drawingController = UBDrawingController::drawingController();
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-
-    disconnect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
+   disconnect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
 
     if (UBStylusTool::Selector == currentTool)
     {
@@ -949,9 +1007,9 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
             if (!movingItem) {
                 // Rubberband selection implementation
-                if (!mUBRubberBand) {
+                if (!mUBRubberBand)
                     mUBRubberBand = new UBRubberBand(QRubberBand::Rectangle, this);
-                }
+
                 mUBRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
                 mUBRubberBand->show();
             }
@@ -1029,13 +1087,10 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     }
 }
 
-void
-UBBoardView::mouseMoveEvent (QMouseEvent *event)
+void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
     if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()))
-    {
         return;
-    }
 
     mIsDragInProgress = true;
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
@@ -1108,8 +1163,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
         handleItemMouseMove(event);
     }
-    else if ((UBDrawingController::drawingController()->isDrawingTool())
-             && !mMouseButtonIsPressed)
+    else if ((UBDrawingController::drawingController()->isDrawingTool()) && !mMouseButtonIsPressed)
     {
         QGraphicsView::mouseMoveEvent (event);
     }
@@ -1138,8 +1192,7 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
         mWidgetMoved = true;
 }
 
-void
-UBBoardView::mouseReleaseEvent (QMouseEvent *event)
+void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
@@ -1299,8 +1352,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     mLongPressTimer.stop();
 }
 
-void
-UBBoardView::forcedTabletRelease ()
+void UBBoardView::forcedTabletRelease ()
 {
 
     if (mMouseButtonIsPressed || mTabletStylusIsPressed || mPendingStylusReleaseEvent)
@@ -1319,26 +1371,14 @@ UBBoardView::forcedTabletRelease ()
     }
 }
 
-void
-UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
+void UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 {
     // We don't want a double click, we want two clicks
     mousePressEvent (event);
 }
 
-void
-UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
+void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 {
-    if (isInteractive () && wheelEvent->orientation () == Qt::Vertical)
-    {
-        // Too many wheelEvent are sent, how should we handle them to "smoothly" zoom ?
-        // something like zoom( pow(zoomFactor, event->delta() / 120) )
-
-        // use DateTime man, store last event time, and if if less than 300ms than this is one big scroll
-        // and move scroll with one const speed.
-        // so, you no will related with scroll event count
-    }
-
     QList<QGraphicsItem *> selItemsList = scene()->selectedItems();
     // if NO have selected items, than no need process mouse wheel. just exist
     if( selItemsList.count() > 0 )
@@ -1350,8 +1390,8 @@ UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
         QPointF scenePos = mapToScene(wheelEvent->pos());
         QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
 
-        QBool isSlectedAndMouseHower = itemsList.contains(selItem);
-        if(isSlectedAndMouseHower)
+        QBool isSelectedAndMouseHower = itemsList.contains(selItem);
+        if(isSelectedAndMouseHower)
         {
             QGraphicsView::wheelEvent(wheelEvent);
             wheelEvent->accept();
@@ -1361,8 +1401,7 @@ UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 
 }
 
-void
-UBBoardView::leaveEvent (QEvent * event)
+void UBBoardView::leaveEvent (QEvent * event)
 {
     if (scene ())
         scene ()->leaveEvent (event);
@@ -1370,15 +1409,10 @@ UBBoardView::leaveEvent (QEvent * event)
     QGraphicsView::leaveEvent (event);
 }
 
-void
-UBBoardView::drawItems (QPainter *painter, int numItems,
-                        QGraphicsItem* items[],
-                        const QStyleOptionGraphicsItem options[])
+void UBBoardView::drawItems (QPainter *painter, int numItems, QGraphicsItem* items[], const QStyleOptionGraphicsItem options[])
 {
     if (!mFilterZIndex)
-    {
         QGraphicsView::drawItems (painter, numItems, items, options);
-    }
     else
     {
         int count = 0;
@@ -1433,8 +1467,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
     }
 }
 
-void
-UBBoardView::resizeEvent (QResizeEvent * event)
+void UBBoardView::resizeEvent (QResizeEvent * event)
 {
     const qreal maxWidth = width () * 10;
     const qreal maxHeight = height () * 10;
@@ -1445,8 +1478,7 @@ UBBoardView::resizeEvent (QResizeEvent * event)
     emit resized (event);
 }
 
-void
-UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
+void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 {
     if (testAttribute (Qt::WA_TranslucentBackground))
     {
@@ -1528,8 +1560,7 @@ UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
     }
 }
 
-void
-UBBoardView::settingChanged (QVariant newValue)
+void UBBoardView::settingChanged (QVariant newValue)
 {
     Q_UNUSED (newValue);
 
@@ -1562,14 +1593,12 @@ bool UBBoardView::isAbsurdPoint(QPoint point)
     return !isValidPoint;
 }
 
-void
-UBBoardView::focusOutEvent (QFocusEvent * event)
+void UBBoardView::focusOutEvent (QFocusEvent * event)
 {
     Q_UNUSED (event);
 }
 
-void
-UBBoardView::setToolCursor (int tool)
+void UBBoardView::setToolCursor (int tool)
 {
     QWidget *controlViewport = viewport ();
     switch (tool)

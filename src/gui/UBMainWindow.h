@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -83,6 +83,10 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         QWidget *mDocumentsWidget;
 
 private:
+// work around for handling tablet events on MAC OS with Qt 4.8.0 and above
+#if defined(Q_WS_MACX)
+        bool event(QEvent *event);
+#endif
         UBDownloadWidget* mpDownloadWidget;
 };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -539,8 +539,6 @@ void UBBoardController::duplicateScene(int nIndex)
 
     setActiveDocumentScene(nIndex + 1);
     QApplication::restoreOverrideCursor();
-
-    emit pageChanged();
 }
 
 void UBBoardController::duplicateScene()
@@ -918,7 +916,6 @@ void UBBoardController::previousScene()
     }
 
     updateActionStates();
-    emit pageChanged();
 }
 
 
@@ -933,7 +930,6 @@ void UBBoardController::nextScene()
     }
 
     updateActionStates();
-    emit pageChanged();
 }
 
 
@@ -948,7 +944,6 @@ void UBBoardController::firstScene()
     }
 
     updateActionStates();
-    emit pageChanged();
 }
 
 
@@ -963,7 +958,6 @@ void UBBoardController::lastScene()
     }
 
     updateActionStates();
-    emit pageChanged();
 }
 
 void UBBoardController::groupButtonClicked()
@@ -1537,16 +1531,10 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     updateBackgroundState();
 
     if(documentChange)
-    {
         UBGraphicsTextItem::lastUsedTextColor = QColor();
-    }
-
 
     if (sceneChange)
-    {
         emit activeSceneChanged();
-        emit pageChanged();
-    }
 }
 
 
@@ -2078,7 +2066,9 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
         mActiveScene->render(&painter, targetRect, pSceneRect);
 
         mActiveScene->setRenderingContext(UBGraphicsScene::Screen);
-        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
+//        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
+        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh);
+
 
         mPaletteManager->addItem(QPixmap::fromImage(image));
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -2474,7 +2464,7 @@ void UBBoardController::importPage()
 
 void UBBoardController::notifyPageChanged()
 {
-    emit pageChanged();
+    emit activeSceneChanged();
 }
 
 void UBBoardController::onDownloadModalFinished()

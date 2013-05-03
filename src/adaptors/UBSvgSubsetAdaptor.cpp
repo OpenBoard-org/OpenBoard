@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -383,13 +383,16 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
 
 UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 {
+    qDebug() << "loadScene() : starting reading...";
+    QTime time;
+    time.start();
     mScene = 0;
     UBGraphicsWidgetItem *currentWidget = 0;
 
     mFileVersion = 40100; // default to 4.1.0
 
-    UBGraphicsStroke* annotationGroup = 0;
     UBGraphicsStrokesGroup* strokesGroup = 0;
+    UBGraphicsStroke* currentStroke = 0;
 
     while (!mXmlReader.atEnd())
     {
@@ -513,16 +516,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             }
             else if (mXmlReader.name() == "g")
             {
-                // Create new stroke, if its NULL or already has polygons
-                if (annotationGroup)
-                {
-                    if (!annotationGroup->polygons().empty())
-                        annotationGroup = new UBGraphicsStroke();
-                }
-                else
-                    annotationGroup = new UBGraphicsStroke();
-
-
                 strokesGroup = new UBGraphicsStrokesGroup();
                 graphicsItemFromSvg(strokesGroup);
 
@@ -553,6 +546,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsPolygonItem* polygonItem = 0;
 
                 QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
+
                 if (mXmlReader.name() == "polygon")
                     polygonItem = polygonItemFromPolygonSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
                 else if (mXmlReader.name() == "line")
@@ -561,21 +555,13 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 if(parentId.isEmpty() && strokesGroup)
                     parentId = strokesGroup->uuid().toString();
 
-                Q_ASSERT(!parentId.isEmpty());
+                if(parentId.isEmpty())
+                    parentId = QUuid::createUuid().toString();
 
                 if (polygonItem)
                 {
                     polygonItem->setUuid(uuidFromSvg);
 
-                    if (annotationGroup)
-                        polygonItem->setStroke(annotationGroup);
-
-
-                    if(strokesGroup){
-                            polygonItem->setTransform(strokesGroup->transform());
-                            strokesGroup->addToGroup(polygonItem);
-                            polygonItem->setStrokesGroup(strokesGroup);
-                    }
 
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
@@ -583,9 +569,16 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
+                        currentStroke = new UBGraphicsStroke();
                     }
                     else
                         group = mStrokesList.value(parentId);
+
+                    if(polygonItem->transform().isIdentity())
+                        polygonItem->setTransform(group->transform());
+                    group->addToGroup(polygonItem);
+                    polygonItem->setStrokesGroup(group);
+                    polygonItem->setStroke(currentStroke);
 
                     polygonItem->show();
                     group->addToGroup(polygonItem);
@@ -597,38 +590,29 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 QList<UBGraphicsPolygonItem*> polygonItems
                 = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
 
-                QString newParentId = QUuid::createUuid().toString();
+                QString parentId = QUuid::createUuid().toString();
 
                 foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
                 {
-                    if (annotationGroup)
-                        polygonItem->setStroke(annotationGroup);
-
-
-                    if(strokesGroup){
-                        polygonItem->setTransform(strokesGroup->transform());
-                        strokesGroup->addToGroup(polygonItem);
-                        polygonItem->setStrokesGroup(strokesGroup);
-                    }
-
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
-                    QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
-
-                    if(parentId.isEmpty())
-                        parentId = newParentId;
-
-                    Q_ASSERT(!parentId.isEmpty());
                     UBGraphicsStrokesGroup* group;
                     if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
+                        currentStroke = new UBGraphicsStroke();
                     }
                     else
                         group = mStrokesList.value(parentId);
 
+                    if(polygonItem->transform().isIdentity())
+                        polygonItem->setTransform(group->transform());
                     group->addToGroup(polygonItem);
+                    polygonItem->setStrokesGroup(group);
+                    polygonItem->setStroke(currentStroke);
+
                     polygonItem->show();
+                    group->addToGroup(polygonItem);
                 }
 
             }
@@ -990,11 +974,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         {
             if (mXmlReader.name() == "g")
             {
-                if (annotationGroup)
-                {
-                    if (!annotationGroup->polygons().empty())
-                        annotationGroup = 0;
-                }
                 mGroupHasInfo = false;
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
@@ -1009,7 +988,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
     }
 
     qDebug() << "Number of detected strokes: " << mStrokesList.count();
-    QMapIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
+    QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
     while (iterator.hasNext()) {
         iterator.next();
         qDebug() << "Number of polygons : " << (int)(((UBGraphicsStrokesGroup*)iterator.value())->childItems().count());
@@ -1019,12 +998,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
     if (mScene)
         mScene->setModified(false);
 
-    if (annotationGroup && annotationGroup->polygons().empty()){
-            delete annotationGroup;
-            annotationGroup = 0;
-    }
-
     mScene->enableUndoRedoStack();
+    qDebug() << "loadScene() : created scene and read file";
+    qDebug() << "spent milliseconds: " << time.elapsed();
     return mScene;
 }
 
@@ -1032,8 +1008,13 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
 {
     UBGraphicsGroupContainerItem *group = new UBGraphicsGroupContainerItem();
-//    QMultiMap<QString, UBGraphicsPolygonItem *> strokesGroupsContainer;
     QList<QGraphicsItem *> groupContainer;
+
+    QString id = mXmlReader.attributes().value(aId).toString();
+    id = id.mid(1,id.length()-2);
+    bool shouldSkipSubElements = false;
+    if(mStrokesList.contains(id))
+        shouldSkipSubElements = true;
 
     mXmlReader.readNext();
     while (!mXmlReader.atEnd())
@@ -1044,34 +1025,18 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
         }
         else if (mXmlReader.isStartElement()) {
             if (mXmlReader.name() == tGroup) {
-                qDebug() << "came across the group id is" << mXmlReader.attributes().value(aId);
                 UBGraphicsGroupContainerItem *curGroup = readGroup();
                 if (curGroup)
                     groupContainer.append(curGroup);
-                else
-                    qDebug() << "this is an error";
             }
-            else if (mXmlReader.name() == tElement) {
+            else if (mXmlReader.name() == tElement && !shouldSkipSubElements) {
                 QString id = mXmlReader.attributes().value(aId).toString();
-//                QString itemId  = id.right(QUuid().toString().size());
-//                QString groupId = id.left(QUuid().toString().size());
-
                 QGraphicsItem *curItem = readElementFromGroup();
-
-//                UBGraphicsPolygonItem *curPolygon = qgraphicsitem_cast<UBGraphicsPolygonItem *>(curItem);
-//
-//                if (curPolygon && !groupId.isEmpty() && !itemId.isEmpty() && itemId != groupId) {
-//                    strokesGroupsContainer.insert(groupId, curPolygon);
-//                }
-//                else {// item
 
                 // Explanation: the second condition discriminate the old storage version that should
                 // not be interpreted anymore
                 if(curItem && id.count("{") < 2)
                     groupContainer.append(curItem);
-                else
-                    qDebug() << "this is an error";
-//                }
             }
             else {
                 mXmlReader.skipCurrentElement();
@@ -1081,39 +1046,6 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
             mXmlReader.readNext();
         }
     }
-
-//    foreach (QString key, strokesGroupsContainer.keys().toSet())
-//    {
-//        UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
-//        UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
-//        foreach(UBGraphicsPolygonItem* poly, strokesGroupsContainer.values(key))
-//        {
-//            if (poly)
-//            {
-//                mScene->removeItem(poly);
-//                mScene->removeItemFromDeletion(poly);
-//                poly->setStrokesGroup(pStrokesGroup);
-//                poly->setStroke(currentStroke);
-//                pStrokesGroup->addToGroup(poly);
-//            }
-//        }
-//        if (currentStroke->polygons().empty())
-//            delete currentStroke;
-
-//        if (pStrokesGroup->childItems().count())
-//            mScene->addItem(pStrokesGroup);
-//        else
-//            delete pStrokesGroup;
-
-//        if (pStrokesGroup)
-//        {
-//            QGraphicsItem *strokeGroup = qgraphicsitem_cast<QGraphicsItem *>(pStrokesGroup);
-//            if(strokeGroup)
-//                groupContainer.append(strokeGroup);
-//            else
-//                qDebug() << "this is an error";
-//        }
-//    }
 
     foreach(QGraphicsItem* item, groupContainer)
         group->addToGroup(item);
@@ -1164,8 +1096,6 @@ QGraphicsItem *UBSvgSubsetAdaptor::UBSvgSubsetReader::readElementFromGroup()
 
     if(!result)
         result = mStrokesList.take(uuid.replace("}","").replace("{",""));
-
-    //Q_ASSERT(result);
 
     mXmlReader.skipCurrentElement();
     mXmlReader.readNext();
@@ -1254,9 +1184,20 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         // Get the items from the scene
         QList<QGraphicsItem*> items = mScene->items();
 
+        int strokes = 0; int polygons = 0;
+        foreach(QGraphicsItem *item, items) {
+            if (item->type() == UBGraphicsPolygonItem::Type) {
+                polygons++;
+            } else if (item->type() == UBGraphicsStrokesGroup::Type) {
+                strokes++;
+            }
+        }
+        qDebug() << "---Strokes count" << strokes << "Polygons count" << polygons;
+
         qSort(items.begin(), items.end(), itemZIndexComp);
 
         UBGraphicsStroke *openStroke = 0;
+        int nextStroke = 0;
 
         bool groupHoldsInfo = false;
 
@@ -1265,18 +1206,35 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             QGraphicsItem *item = items.takeFirst();
 
             // Is the item a strokes group?
-
             UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
 
             if(strokesGroupItem && strokesGroupItem->isVisible()){
                 // Add the polygons
-                foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
+                //parsing number of polygons into one polygon
+                qDebug() << "parsing stroke number" << nextStroke++;
+                UBGraphicsPolygonItem *resultPoly = 0;
 
+                foreach(QGraphicsItem* item, strokesGroupItem->childItems()) {
                     UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-                    if(NULL != poly){
-                        polygonItemToSvgPolygon(poly, true);
-                        items.removeOne(poly);
+                    if (!poly) {
+                        continue;
+                    } else if (!resultPoly) {
+                        resultPoly = poly;
+                        continue;
                     }
+                    QPolygonF newPolygon = poly->sceneTransform().map(poly->polygon());
+                    QPainterPath strokePainterPath;
+                    strokePainterPath.addPolygon(resultPoly->sceneTransform().map(resultPoly->polygon()));
+                    QPolygonF oldPolygons = strokePainterPath.simplified().toFillPolygon(resultPoly->sceneTransform().inverted());
+                    newPolygon = oldPolygons.united(newPolygon);
+                    resultPoly->setPolygon(newPolygon);
+
+                    //
+                    items.removeOne(poly);
+                }
+                if (resultPoly) {
+                    polygonItemToSvgPolygon(resultPoly, true);
+                    items.removeOne(resultPoly);
                 }
             }
 
@@ -1561,12 +1519,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
             if (!tmpUuid.isNull()) {
                 if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count())
                     persistGroupToDom(item, curParent, groupDomDocument);
-                else {
-                    QDomElement curSubElement = groupDomDocument->createElement(tElement);
+            }
+            else {
+                QDomElement curSubElement = groupDomDocument->createElement(tElement);
 
-                    curSubElement.setAttribute(aId, tmpUuid);
-                    curGroupElement.appendChild(curSubElement);
-                }
+                curSubElement.setAttribute(aId, tmpUuid);
+                curGroupElement.appendChild(curSubElement);
             }
         }
     }
@@ -2501,15 +2459,12 @@ qreal UBSvgSubsetAdaptor::UBSvgSubsetReader::getZValueFromSvg()
 
 QUuid UBSvgSubsetAdaptor::UBSvgSubsetReader::getUuidFromSvg()
 {
-    QUuid result;
-
     QString strUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid").toString();
     QUuid uuid = QUuid(strUuid);
-    if (!uuid.isNull()) {
-        result = uuid;
-    }
+    if (!uuid.isNull())
+        return uuid;
 
-    return result;
+    return QUuid::createUuid();
 }
 
 

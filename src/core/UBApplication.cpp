@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -321,9 +321,9 @@ int UBApplication::exec(const QString& pFileToImport)
 
     UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
-    applicationController = new UBApplicationController(boardController->controlView(), 
-                                                        boardController->displayView(), 
-                                                        mainWindow, 
+    applicationController = new UBApplicationController(boardController->controlView(),
+                                                        boardController->displayView(),
+                                                        mainWindow,
                                                         staticMemoryCleaner,
                                                         boardController->paletteManager()->rightPalette());
 
