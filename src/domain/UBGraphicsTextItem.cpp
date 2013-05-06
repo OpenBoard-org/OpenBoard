@@ -93,6 +93,7 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     // It is a cludge...
     if (UBStylusTool::Play == UBDrawingController::drawingController()->stylusTool())
     {
+        QGraphicsTextItem::mousePressEvent(event);
         event->accept();
         clearFocus();
         return;
