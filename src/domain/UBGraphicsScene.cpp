@@ -558,6 +558,7 @@ bool UBGraphicsScene::inputDeviceRelease()
 
                 // Add the center cross
                 foreach(QGraphicsItem* item, mAddedItems){
+                    mAddedItems.remove(item);
                     removeItem(item);
                     UBCoreGraphicsScene::removeItemFromDeletion(item);
                     mArcPolygonItem->setStrokesGroup(pStrokes);
@@ -732,38 +733,17 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         mAddedItems.clear();
     }
 
+    mpLastPolygon = polygonItem;
+    mAddedItems.insert(polygonItem);
+
+    // Here we add the item to the scene
+    addItem(polygonItem);
     if (!mCurrentStroke)
         mCurrentStroke = new UBGraphicsStroke();
 
+    polygonItem->setStroke(mCurrentStroke);
 
-    QPolygonF newPolygon = UBGeometryUtils::lineToPolygon(QLineF(mPreviousPoint, pEndPoint), mPreviousWidth, pWidth);
-
-    if (!mCurrentPolygon)
-    {
-        mCurrentPolygon = new UBGraphicsPolygonItem();
-        mCurrentPolygon->setPolygon(newPolygon);
-        initPolygonItem(mCurrentPolygon);
-        addItem(mCurrentPolygon);
-        mAddedItems.insert(mCurrentPolygon);
-        mCurrentPolygon->setStroke(mCurrentStroke);
-        mpLastPolygon = mCurrentPolygon;
-    }
-
-
-    //newPolygon = newPolygon.united(mCurrentPolygon->polygon());
-
-    QPainterPath strokePainterPath;
-
-
-    strokePainterPath.addPolygon(mCurrentPolygon->sceneTransform().map(mCurrentPolygon->polygon()));
-
-    //QList<QPolygonF>
-    QPolygonF oldPolygons = strokePainterPath.simplified().toFillPolygon(mCurrentPolygon->sceneTransform().inverted());
-    newPolygon = oldPolygons.united(newPolygon);
-
-    mpLastPolygon = mCurrentPolygon;
-
-    mCurrentPolygon->setPolygon(newPolygon);
+    mPreviousPolygonItems.append(polygonItem);
 
 
     if (!bLineStyle)
@@ -845,10 +825,29 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             }
         }
 
-        //remove full polygon item for replace it by couple of polygons who creates the same stroke without a part which intersects with eraser
-        mRemovedItems << intersectedPolygonItem;
-        intersectedPolygonItem->strokesGroup()->removeFromGroup(intersectedPolygonItem);
+        //remove full polygon item for replace it by couple of polygons which creates the same stroke without a part intersects with eraser
+         mRemovedItems << intersectedPolygonItem;
+
+        QTransform t;
+        bool bApplyTransform = false;
+        if (intersectedPolygonItem->strokesGroup())
+        {
+            if (intersectedPolygonItem->strokesGroup()->parentItem())
+            {
+                bApplyTransform = true;
+                t = intersectedPolygonItem->sceneTransform();
+            }
+            intersectedPolygonItem->strokesGroup()->removeFromGroup(intersectedPolygonItem);
+        }
         removeItem(intersectedPolygonItem);
+        if (bApplyTransform)
+            intersectedPolygonItem->setTransform(t);
+
+
+        removeItem(intersectedPolygonItem);
+
+        if (bApplyTransform)
+            intersectedPolygonItem->setTransform(t);
     }
 
     if (!intersectedItems.empty())
@@ -1505,9 +1504,30 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
         textItem->setData(UBGraphicsItemData::ItemEditable,QVariant(false));
         textItem->adjustSize();
         textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+        textItem->setPlainText(pString);
     }
+    else{
+        textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+        if (pString == textItem->toPlainText())
+            return textItem;
 
-    textItem->setPlainText(pString);
+        QTextCursor curCursor = textItem->textCursor();
+        QFont font = textItem->font();
+        QColor color = curCursor.charFormat().foreground().color();
+
+        textItem->setPlainText(pString);
+        textItem->clearFocus();
+        textItem->setFont(font);
+
+
+        QTextCharFormat format;
+        format.setForeground(QBrush(color));
+        curCursor.mergeCharFormat(format);
+        textItem->setTextCursor(curCursor);
+//        textItem->setSelected(true);
+        textItem->contentsChanged();
+
+    }
 
     textItem->clearFocus();
     return textItem;
