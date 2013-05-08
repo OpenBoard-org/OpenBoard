@@ -97,12 +97,12 @@ QMap<QString,IDataStorage*> UBSvgSubsetAdaptor::additionalElementToStore;
 QString UBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
 {
     return QString("matrix(%1, %2, %3, %4, %5, %6)")
-           .arg(matrix.m11(), 0 , 'g')
-           .arg(matrix.m12(), 0 , 'g')
-           .arg(matrix.m21(), 0 , 'g')
-           .arg(matrix.m22(), 0 , 'g')
-           .arg(matrix.dx(), 0 , 'g')
-           .arg(matrix.dy(), 0 , 'g');
+            .arg(matrix.m11(), 0 , 'g')
+            .arg(matrix.m12(), 0 , 'g')
+            .arg(matrix.m21(), 0 , 'g')
+            .arg(matrix.m22(), 0 , 'g')
+            .arg(matrix.dx(), 0 , 'g')
+            .arg(matrix.dy(), 0 , 'g');
 }
 
 
@@ -117,12 +117,12 @@ QMatrix UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
     if (sl.size() >= 6)
     {
         matrix.setMatrix(
-            sl.at(0).toFloat(),
-            sl.at(1).toFloat(),
-            sl.at(2).toFloat(),
-            sl.at(3).toFloat(),
-            sl.at(4).toFloat(),
-            sl.at(5).toFloat());
+                    sl.at(0).toFloat(),
+                    sl.at(1).toFloat(),
+                    sl.at(2).toFloat(),
+                    sl.at(3).toFloat(),
+                    sl.at(4).toFloat(),
+                    sl.at(5).toFloat());
     }
 
     return matrix;
@@ -340,7 +340,7 @@ QString UBSvgSubsetAdaptor::readTeacherGuideNode(int sceneIndex)
         mXmlReader.readNext();
         if (mXmlReader.isStartElement())
         {
-             if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
+            if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
                 result.clear();
                 result += "<teacherGuide version=\"" + mXmlReader.attributes().value("version").toString() + "\">";
                 result += "\n";
@@ -372,10 +372,10 @@ QString UBSvgSubsetAdaptor::readTeacherGuideNode(int sceneIndex)
 
 
 UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy, const QByteArray& pXmlData)
-        : mXmlReader(pXmlData)
-        , mProxy(pProxy)
-        , mDocumentPath(pProxy->persistencePath())
-        , mGroupHasInfo(false)
+    : mXmlReader(pXmlData)
+    , mProxy(pProxy)
+    , mDocumentPath(pProxy->persistencePath())
+    , mGroupHasInfo(false)
 {
     // NOOP
 }
@@ -588,7 +588,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             else if (mXmlReader.name() == "polyline")
             {
                 QList<UBGraphicsPolygonItem*> polygonItems
-                = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
+                        = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
 
                 QString parentId = QUuid::createUuid().toString();
 
@@ -1111,9 +1111,9 @@ void UBSvgSubsetAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
 
 
 UBSvgSubsetAdaptor::UBSvgSubsetWriter::UBSvgSubsetWriter(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex)
-        : mScene(pScene)
-        , mDocumentPath(proxy->persistencePath())
-        , mPageIndex(pageIndex)
+    : mScene(pScene)
+    , mDocumentPath(proxy->persistencePath())
+    , mPageIndex(pageIndex)
 
 {
     // NOOP
@@ -1216,23 +1216,23 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 
                 foreach(QGraphicsItem* item, strokesGroupItem->childItems()) {
                     UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-                    if (!poly) {
+                    if (!poly)
                         continue;
-                    } else if (!resultPoly) {
+                    if (!resultPoly) {
                         resultPoly = poly;
                         continue;
                     }
-                    QPolygonF newPolygon = poly->sceneTransform().map(poly->polygon());
-                    QPainterPath strokePainterPath;
-                    strokePainterPath.addPolygon(resultPoly->sceneTransform().map(resultPoly->polygon()));
-                    QPolygonF oldPolygons = strokePainterPath.simplified().toFillPolygon(resultPoly->sceneTransform().inverted());
-                    newPolygon = oldPolygons.united(newPolygon);
-                    resultPoly->setPolygon(newPolygon);
 
-                    //
+                    QPolygonF unitedPolygon = resultPoly->polygon().united(poly->polygon());
+                    resultPoly->setPolygon(unitedPolygon);
                     items.removeOne(poly);
                 }
                 if (resultPoly) {
+                    //Claudio: the painter path simplification remove all the polygons overlap
+                    QPainterPath painterPath;
+                    painterPath.addPolygon(resultPoly->polygon());
+                    painterPath = painterPath.simplified();
+                    resultPoly->setPolygon(painterPath.toFillPolygon());
                     polygonItemToSvgPolygon(resultPoly, true);
                     items.removeOne(resultPoly);
                 }
@@ -1242,9 +1242,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
             if (polygonItem && polygonItem->isVisible())
             {
-
                 UBGraphicsStroke* currentStroke = polygonItem->stroke();
-
                 if (openStroke && (currentStroke != openStroke))
                 {
                     mXmlWriter.writeEndElement(); //g
@@ -1703,7 +1701,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
     if (!svgPoints.isNull())
     {
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
-                         QString::SkipEmptyParts);
+                                                    QString::SkipEmptyParts);
 
         foreach(const QString sPoint, ts)
         {
@@ -1998,7 +1996,7 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
     if (!svgPoints.isNull())
     {
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
-                         QString::SkipEmptyParts);
+                                                    QString::SkipEmptyParts);
 
         QList<QPointF> points;
 
@@ -2370,9 +2368,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     {
         if (!svgX.isNull() && !svgY.isNull())
         {
-            #ifdef Q_WS_WIN
-                gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
-            #endif
+#ifdef Q_WS_WIN
+            gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
+#endif
         }
     }
 
@@ -2749,7 +2747,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         color.setNamedColor(ubFillOnLightBackground.toString());
         if (!color.isValid())
             color = Qt::black;
-            textItem->setColorOnLightBackground(color);
+        textItem->setColorOnLightBackground(color);
     }
 
     QString text;
@@ -2779,7 +2777,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     return textItem;
                 }
 
-            //tracking for backward capability with older versions
+                //tracking for backward capability with older versions
             } else if (mXmlReader.name() == "font")  {
                 QFont font = textItem->font();
 
@@ -2794,18 +2792,18 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                         styleToken = styleToken.trimmed();
                         if (styleToken.startsWith(sFontSizePrefix) && styleToken.endsWith(sPixelUnit)) {
                             int fontSize = styleToken.mid(
-                                               sFontSizePrefix.length(),
-                                               styleToken.length() - sFontSizePrefix.length() - sPixelUnit.length()).toInt();
+                                        sFontSizePrefix.length(),
+                                        styleToken.length() - sFontSizePrefix.length() - sPixelUnit.length()).toInt();
                             font.setPixelSize(fontSize);
                         } else if (styleToken.startsWith(sFontWeightPrefix)) {
                             QString fontWeight = styleToken.mid(
-                                                     sFontWeightPrefix.length(),
-                                                     styleToken.length() - sFontWeightPrefix.length());
+                                        sFontWeightPrefix.length(),
+                                        styleToken.length() - sFontWeightPrefix.length());
                             font.setBold(fontWeight.contains("bold"));
                         } else if (styleToken.startsWith(sFontStylePrefix)) {
                             QString fontStyle = styleToken.mid(
-                                                    sFontStylePrefix.length(),
-                                                    styleToken.length() - sFontStylePrefix.length());
+                                        sFontStylePrefix.length(),
+                                        styleToken.length() - sFontStylePrefix.length());
                             font.setItalic(fontStyle.contains("italic"));
                         }
                     }
@@ -3159,7 +3157,7 @@ UBGraphicsTriangle* UBSvgSubsetAdaptor::UBSvgSubsetReader::triangleFromSvg()
     UBGraphicsTriangle::UBGraphicsTriangleOrientation orientation = UBGraphicsTriangle::orientationFromStr(orientationStringRef);
     triangle->setOrientation(orientation);
 
-        if (!svgX.isNull() && !svgY.isNull() && !svgWidth.isNull() && !svgHeight.isNull())
+    if (!svgX.isNull() && !svgY.isNull() && !svgWidth.isNull() && !svgHeight.isNull())
     {
         triangle->setRect(svgX.toString().toFloat(), svgY.toString().toFloat(), svgWidth.toString().toFloat(), svgHeight.toString().toFloat(), orientation);
     }
