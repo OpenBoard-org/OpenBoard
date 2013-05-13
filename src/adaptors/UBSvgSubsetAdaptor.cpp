@@ -570,6 +570,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
                         currentStroke = new UBGraphicsStroke();
+                        group->setTransform(polygonItem->transform());
                     }
                     else
                         group = mStrokesList.value(parentId);
@@ -582,7 +583,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     polygonItem->show();
                     group->addToGroup(polygonItem);
-
                 }
             }
             else if (mXmlReader.name() == "polyline")
@@ -601,6 +601,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
                         currentStroke = new UBGraphicsStroke();
+                        group->setTransform(polygonItem->transform());
                     }
                     else
                         group = mStrokesList.value(parentId);
