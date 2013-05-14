@@ -80,17 +80,17 @@ UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
 
 {
     scopeMap.insert(itemLayerType::NoLayer,        ItemLayerTypeData( errorNumber, errorNumber));
-    scopeMap.insert(itemLayerType::BackgroundItem, ItemLayerTypeData(-10000000.0, -10000000.0 ));
-    scopeMap.insert(itemLayerType::ObjectItem,     ItemLayerTypeData(-10000000.0,  0.0        ));
-    scopeMap.insert(itemLayerType::DrawingItem,    ItemLayerTypeData( 0.0,         10000000.0 ));
-    scopeMap.insert(itemLayerType::ToolItem,       ItemLayerTypeData( 10000000.0,  10000100.0 ));
-    scopeMap.insert(itemLayerType::CppTool,        ItemLayerTypeData( 10000100.0,  10000200.0 ));
-    scopeMap.insert(itemLayerType::Curtain,        ItemLayerTypeData( 10000200.0,  10001000.0 ));
-    scopeMap.insert(itemLayerType::Eraiser,        ItemLayerTypeData( 10001000.0,  10001100.0 ));
-    scopeMap.insert(itemLayerType::Pointer,        ItemLayerTypeData( 10001100.0,  10001200.0 ));
-    scopeMap.insert(itemLayerType::Cache,          ItemLayerTypeData( 10001300.0,  10001400.0 ));
+    scopeMap.insert(itemLayerType::BackgroundItem, ItemLayerTypeData(-1000000.0, -1000000.0 ));
+    scopeMap.insert(itemLayerType::ObjectItem,     ItemLayerTypeData(-1000000.0,  0.0        ));
+    scopeMap.insert(itemLayerType::DrawingItem,    ItemLayerTypeData( 0.0,        1000000.0 ));
+    scopeMap.insert(itemLayerType::ToolItem,       ItemLayerTypeData( 1000000.0,  1000100.0 ));
+    scopeMap.insert(itemLayerType::CppTool,        ItemLayerTypeData( 1000100.0,  1000200.0 ));
+    scopeMap.insert(itemLayerType::Curtain,        ItemLayerTypeData( 1000200.0,  1001000.0 ));
+    scopeMap.insert(itemLayerType::Eraiser,        ItemLayerTypeData( 1001000.0,  1001100.0 ));
+    scopeMap.insert(itemLayerType::Pointer,        ItemLayerTypeData( 1001100.0,  1001200.0 ));
+    scopeMap.insert(itemLayerType::Cache,          ItemLayerTypeData( 1001300.0,  1001400.0 ));
 
-    scopeMap.insert(itemLayerType::SelectedItem,   ItemLayerTypeData( 10001000.0,  10001000.0 ));
+    scopeMap.insert(itemLayerType::SelectedItem,   ItemLayerTypeData( 1001000.0,  1001000.0 ));
 }
 
 qreal UBZLayerController::generateZLevel(itemLayerType::Enum key)
@@ -547,47 +547,47 @@ bool UBGraphicsScene::inputDeviceRelease()
     {
         if(mArcPolygonItem){
 
-                UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
+            UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
-                // Add the arc
-                mAddedItems.remove(mArcPolygonItem);
-                removeItem(mArcPolygonItem);
-                UBCoreGraphicsScene::removeItemFromDeletion(mArcPolygonItem);
+            // Add the arc
+            mAddedItems.remove(mArcPolygonItem);
+            removeItem(mArcPolygonItem);
+            UBCoreGraphicsScene::removeItemFromDeletion(mArcPolygonItem);
+            mArcPolygonItem->setStrokesGroup(pStrokes);
+            pStrokes->addToGroup(mArcPolygonItem);
+
+            // Add the center cross
+            foreach(QGraphicsItem* item, mAddedItems){
+                mAddedItems.remove(item);
+                removeItem(item);
+                UBCoreGraphicsScene::removeItemFromDeletion(item);
                 mArcPolygonItem->setStrokesGroup(pStrokes);
-                pStrokes->addToGroup(mArcPolygonItem);
+                pStrokes->addToGroup(item);
+            }
 
-                // Add the center cross
-                foreach(QGraphicsItem* item, mAddedItems){
-                    mAddedItems.remove(item);
-                    removeItem(item);
-                    UBCoreGraphicsScene::removeItemFromDeletion(item);
-                    mArcPolygonItem->setStrokesGroup(pStrokes);
-                    pStrokes->addToGroup(item);
-                }
+            mAddedItems.clear();
+            mAddedItems << pStrokes;
+            addItem(pStrokes);
 
-                mAddedItems.clear();
-                mAddedItems << pStrokes;
-                addItem(pStrokes);
-                mDrawWithCompass = false;
-
+            mDrawWithCompass = false;
         }
         else if (mCurrentStroke){
-                UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
+            UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
-                // Remove the strokes that were just drawn here and replace them by a stroke item
-                foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
-                    mPreviousPolygonItems.removeAll(poly);
-                    removeItem(poly);
-                    UBCoreGraphicsScene::removeItemFromDeletion(poly);
-                    poly->setStrokesGroup(pStrokes);
-                    pStrokes->addToGroup(poly);
-                }
+            // Remove the strokes that were just drawn here and replace them by a stroke item
+            foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
+                mPreviousPolygonItems.removeAll(poly);
+                removeItem(poly);
+                UBCoreGraphicsScene::removeItemFromDeletion(poly);
+                poly->setStrokesGroup(pStrokes);
+                pStrokes->addToGroup(poly);
+            }
 
-                // TODO LATER : Generate well pressure-interpolated polygons and create the line group with them
+            // TODO LATER : Generate well pressure-interpolated polygons and create the line group with them
 
-                mAddedItems.clear();
-                mAddedItems << pStrokes;
-                addItem(pStrokes);
+            mAddedItems.clear();
+            mAddedItems << pStrokes;
+            addItem(pStrokes);
 
             if (mCurrentStroke->polygons().empty()){
                 delete mCurrentStroke;
@@ -1524,7 +1524,6 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
         format.setForeground(QBrush(color));
         curCursor.mergeCharFormat(format);
         textItem->setTextCursor(curCursor);
-//        textItem->setSelected(true);
         textItem->contentsChanged();
 
     }
@@ -1619,7 +1618,10 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
 {
     UBCoreGraphicsScene::addItem(item);
 
-    UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
+    qDebug() << item->zValue();
+
+    qreal zvalue = mZLayerController->generateZLevel(item);
+    UBGraphicsItem::assignZValue(item, zvalue);
 
     if (!mTools.contains(item))
       ++mItemCount;

@@ -571,12 +571,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         mStrokesList.insert(parentId,group);
                         currentStroke = new UBGraphicsStroke();
                         group->setTransform(polygonItem->transform());
+                        UBGraphicsItem::assignZValue(group, zFromSvg);
                     }
                     else
                         group = mStrokesList.value(parentId);
 
                     if(polygonItem->transform().isIdentity())
                         polygonItem->setTransform(group->transform());
+
                     group->addToGroup(polygonItem);
                     polygonItem->setStrokesGroup(group);
                     polygonItem->setStroke(currentStroke);
@@ -602,12 +604,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         mStrokesList.insert(parentId,group);
                         currentStroke = new UBGraphicsStroke();
                         group->setTransform(polygonItem->transform());
+                        UBGraphicsItem::assignZValue(group, zFromSvg);
                     }
                     else
                         group = mStrokesList.value(parentId);
 
                     if(polygonItem->transform().isIdentity())
                         polygonItem->setTransform(group->transform());
+
                     group->addToGroup(polygonItem);
                     polygonItem->setStrokesGroup(group);
                     polygonItem->setStroke(currentStroke);
@@ -990,10 +994,13 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     qDebug() << "Number of detected strokes: " << mStrokesList.count();
     QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
+    qreal zValue = 0;
     while (iterator.hasNext()) {
         iterator.next();
+        zValue = iterator.value()->zValue();
         qDebug() << "Number of polygons : " << (int)(((UBGraphicsStrokesGroup*)iterator.value())->childItems().count());
         mScene->addItem(iterator.value());
+        iterator.value()->setZValue(zValue);
     }
 
     if (mScene)
@@ -1229,12 +1236,13 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                     items.removeOne(poly);
                 }
                 if (resultPoly) {
+                    resultPoly->setZValue(strokesGroupItem->zValue());
                     //Claudio: the painter path simplification remove all the polygons overlap
                     QPainterPath painterPath;
                     painterPath.addPolygon(resultPoly->polygon());
                     painterPath = painterPath.simplified();
                     resultPoly->setPolygon(painterPath.toFillPolygon());
-                    polygonItemToSvgPolygon(resultPoly, true);
+                    polygonItemToSvgPolygon(resultPoly, false);
                     items.removeOne(resultPoly);
                 }
             }
@@ -1701,8 +1709,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     if (!svgPoints.isNull())
     {
-        QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
-                                                    QString::SkipEmptyParts);
+        QStringList ts = svgPoints.toString().split(QLatin1Char(' '), QString::SkipEmptyParts);
 
         foreach(const QString sPoint, ts)
         {

@@ -97,7 +97,7 @@ class UBThumbnailWidget : public QGraphicsView
         QList<QUrl> mItemsPaths;
         QStringList mLabels;
         bool bSelectionInProgress;
-        bool bCanDrag;       
+        bool bCanDrag;
 
     private:
         void selectAll();
@@ -161,7 +161,6 @@ class UBThumbnail
                     {
                         item->scene()->addItem(mSelectionItem);
                         mSelectionItem->setZValue(item->zValue() - 1);
-//                        UBGraphicsItem::assignZValue(mSelectionItem, item->zValue() - 1);
                         mAddedToScene = true;
                     }
 
