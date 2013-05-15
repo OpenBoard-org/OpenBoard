@@ -399,10 +399,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
         mXmlReader.readNext();
         if (mXmlReader.isStartElement())
         {
-            qreal zFromSvg = getZValueFromSvg();
-            QUuid uuidFromSvg = getUuidFromSvg();
-
-
             if (mXmlReader.name() == "svg")
             {
                 if (!mScene)
@@ -556,8 +552,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 if (polygonItem)
                 {
-                    polygonItem->setUuid(uuidFromSvg);
-
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
                     UBGraphicsStrokesGroup* group;
@@ -566,7 +560,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         mStrokesList.insert(parentId,group);
                         currentStroke = new UBGraphicsStroke();
                         group->setTransform(polygonItem->transform());
-                        UBGraphicsItem::assignZValue(group, zFromSvg);
+                        UBGraphicsItem::assignZValue(group, polygonItem->zValue());
                     }
                     else
                         group = mStrokesList.value(parentId);
@@ -598,7 +592,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         mStrokesList.insert(parentId,group);
                         currentStroke = new UBGraphicsStroke();
                         group->setTransform(polygonItem->transform());
-                        UBGraphicsItem::assignZValue(group, zFromSvg);
+                        UBGraphicsItem::assignZValue(group, polygonItem->zValue());
                     }
                     else
                         group = mStrokesList.value(parentId);
@@ -633,8 +627,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         UBGraphicsPixmapItem* pixmapItem = pixmapItemFromSvg();
                         if (pixmapItem)
                         {
-                            UBGraphicsItem::assignZValue(pixmapItem, zFromSvg);
-                            pixmapItem->setUuid(uuidFromSvg);
                             pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                             pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
@@ -651,8 +643,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         UBGraphicsSvgItem* svgItem = svgItemFromSvg();
                         if (svgItem)
                         {
-                            UBGraphicsItem::assignZValue(svgItem, zFromSvg);
-                            svgItem->setUuid(uuidFromSvg);
                             svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                             svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
@@ -675,8 +665,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsMediaItem* audioItem = audioItemFromSvg();
                 if (audioItem)
                 {
-                    UBGraphicsItem::assignZValue(audioItem, zFromSvg);
-                    audioItem->setUuid(uuidFromSvg);
                     audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
@@ -694,8 +682,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsMediaItem* videoItem = videoItemFromSvg();
                 if (videoItem)
                 {
-                    UBGraphicsItem::assignZValue(videoItem, zFromSvg);
-                    videoItem->setUuid(uuidFromSvg);
+
                     videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
@@ -713,8 +700,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsTextItem* textItem = textItemFromSvg();
                 if (textItem)
                 {
-                    UBGraphicsItem::assignZValue(textItem, zFromSvg);
-                    textItem->setUuid(uuidFromSvg);
                     textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
@@ -728,8 +713,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsCurtainItem* mask = curtainItemFromSvg();
                 if (mask)
                 {
-                    UBGraphicsItem::assignZValue(mask, zFromSvg);
-                    mask->setUuid(uuidFromSvg);
                     mScene->addItem(mask);
                     mScene->registerTool(mask);
                 }
@@ -740,8 +723,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsRuler *ruler = rulerFromSvg();
                 if (ruler)
                 {
-                    UBGraphicsItem::assignZValue(ruler, zFromSvg);
-                    ruler->setUuid(uuidFromSvg);
                     mScene->addItem(ruler);
                     mScene->registerTool(ruler);
                 }
@@ -752,8 +733,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsCompass *compass = compassFromSvg();
                 if (compass)
                 {
-                    UBGraphicsItem::assignZValue(compass, zFromSvg);
-                    compass->setUuid(uuidFromSvg);
                     mScene->addItem(compass);
                     mScene->registerTool(compass);
                 }
@@ -763,8 +742,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsProtractor *protractor = protractorFromSvg();
                 if (protractor)
                 {
-                    UBGraphicsItem::assignZValue(protractor, zFromSvg);
-                    protractor->setUuid(uuidFromSvg);
                     mScene->addItem(protractor);
                     mScene->registerTool(protractor);
                 }
@@ -774,8 +751,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsTriangle *triangle = triangleFromSvg();
                 if (triangle)
                 {
-                    UBGraphicsItem::assignZValue(triangle, zFromSvg);
-                    triangle->setUuid(uuidFromSvg);
                     mScene->addItem(triangle);
                     mScene->registerTool(triangle);
                 }
@@ -785,8 +760,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 UBGraphicsCache* cache = cacheFromSvg();
                 if(cache)
                 {
-                    UBGraphicsItem::assignZValue(cache, zFromSvg);
-                    cache->setUuid(uuidFromSvg);
                     mScene->addItem(cache);
                     mScene->registerTool(cache);
                     UBApplication::boardController->notifyCache(true);
@@ -807,8 +780,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     UBGraphicsPDFItem* pdfItem = pdfItemFromPDF();
                     if (pdfItem)
                     {
-                        UBGraphicsItem::assignZValue(pdfItem, zFromSvg);
-                        pdfItem->setUuid(uuidFromSvg);
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
                         qreal pdfScale = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
@@ -831,9 +802,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     UBGraphicsAppleWidgetItem* appleWidgetItem = graphicsAppleWidgetFromSvg();
                     if (appleWidgetItem)
                     {
-                        UBGraphicsItem::assignZValue(appleWidgetItem, zFromSvg);
-                        appleWidgetItem->setUuid(uuidFromSvg);
-
                         appleWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
                         appleWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
@@ -850,8 +818,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     UBGraphicsW3CWidgetItem* w3cWidgetItem = graphicsW3CWidgetFromSvg();
                     if (w3cWidgetItem)
                     {
-                        UBGraphicsItem::assignZValue(w3cWidgetItem, zFromSvg);
-                        w3cWidgetItem->setUuid(uuidFromSvg);
                         w3cWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
                         w3cWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
@@ -881,8 +847,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     if (textItem)
                     {
-                        UBGraphicsItem::assignZValue(textItem, zFromSvg);
-                        textItem->setUuid(uuidFromSvg);
                         textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
@@ -1642,6 +1606,8 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 {
     UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem();
 
+    graphicsItemFromSvg(polygonItem);
+
     QStringRef svgPoints = mXmlReader.attributes().value("points");
 
     QPolygonF polygon;
@@ -1683,25 +1649,12 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     polygonItem->setPolygon(polygon);
 
-    QStringRef svgTransform = mXmlReader.attributes().value("transform");
-
-    QMatrix itemMatrix;
-
-    if (!svgTransform.isNull())
-    {
-        itemMatrix = fromSvgTransform(svgTransform.toString());
-        polygonItem->setMatrix(itemMatrix);
-    }
-
     QStringRef svgFill = mXmlReader.attributes().value("fill");
 
     QColor brushColor = pDefaultColor;
 
     if (!svgFill.isNull())
-    {
         brushColor.setNamedColor(svgFill.toString());
-
-    }
 
     QStringRef svgFillOpacity = mXmlReader.attributes().value("fill-opacity");
     qreal opacity = 1.0;
@@ -1713,17 +1666,6 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
     }
 
     polygonItem->setColor(brushColor);
-
-    QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
-
-    if (!ubZValue.isNull())
-    {
-        UBGraphicsItem::assignZValue(polygonItem, ubZValue.toString().toFloat());
-    }
-    else
-    {
-        UBGraphicsItem::assignZValue(polygonItem, mGroupZIndex);
-    }
 
     QStringRef ubFillOnDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-dark-background");
 
@@ -1799,6 +1741,7 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
     }
 
     UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem(line, lineWidth);
+    graphicsItemFromSvg(polygonItem);
 
     QStringRef svgStroke = mXmlReader.attributes().value("stroke");
 
@@ -1820,18 +1763,6 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
     }
 
     polygonItem->setColor(brushColor);
-
-    QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
-
-    if (!ubZValue.isNull())
-    {
-        UBGraphicsItem::assignZValue(polygonItem, ubZValue.toString().toFloat());
-    }
-    else
-    {
-        UBGraphicsItem::assignZValue(polygonItem, mGroupZIndex);
-    }
-
 
     QStringRef ubFillOnDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-dark-background");
 
@@ -2223,24 +2154,21 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
 
     //Claudio this is necessary to fix the absolute path added on Sankore 3.1 1.00.00
     //The absoult path doesn't work when you want to share Sankore documents.
-    if(!href.startsWith("audios/")){
+    if(!audioHref.startsWith("audios/")){
         int indexOfAudioDirectory = href.lastIndexOf("audios");
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
 
     UBGraphicsMediaItem* audioItem = new UBGraphicsMediaItem(QUrl::fromLocalFile(href));
-    if(audioItem){
+    if(audioItem)
         audioItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), audioItem, SLOT(activeSceneChanged()));
-    }
 
     graphicsItemFromSvg(audioItem);
     QStringRef ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
 
     qint64 p = 0;
     if (!ubPos.isNull())
-    {
         p = ubPos.toString().toLongLong();
-    }
 
     audioItem->setInitialPos(p);
     return audioItem;
@@ -2261,7 +2189,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
 
     //Claudio this is necessary to fix the absolute path added on Sankore 3.1 1.00.00
     //The absoult path doesn't work when you want to share Sankore documents.
-    if(!href.startsWith("videos/")){
+    if(!videoHref.startsWith("videos/")){
         int indexOfAudioDirectory = href.lastIndexOf("videos");
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
@@ -2337,9 +2265,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
 
     if (!ubZValue.isNull())
-    {
         UBGraphicsItem::assignZValue(gItem, ubZValue.toString().toFloat());
-    }
 
     UBItem* ubItem = dynamic_cast<UBItem*>(gItem);
 
@@ -2348,16 +2274,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
         QStringRef ubUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
 
         if (!ubUuid.isNull())
-        {
             ubItem->setUuid(QUuid(ubUuid.toString()));
-        }
+        else
+            ubItem->setUuid(QUuid::createUuid());
 
         QStringRef ubSource = mXmlReader.attributes().value(mNamespaceUri, "source");
 
         if (!ubSource.isNull())
-        {
             ubItem->setSourceUrl(QUrl(ubSource.toString()));
-        }
     }
 
     QStringRef ubLocked = mXmlReader.attributes().value(mNamespaceUri, "locked");
@@ -2384,34 +2308,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
         int layerAsInt = ubLayer.toString().toInt(&ok);
 
         if (ok)
-        {
             gItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(layerAsInt));
-        }
     }
 }
-
-qreal UBSvgSubsetAdaptor::UBSvgSubsetReader::getZValueFromSvg()
-{
-    qreal result = UBZLayerController::errorNum();
-
-    QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
-    if (!ubZValue.isNull()) {
-        result  = ubZValue.toString().toFloat();
-    }
-
-    return result;
-}
-
-QUuid UBSvgSubsetAdaptor::UBSvgSubsetReader::getUuidFromSvg()
-{
-    QString strUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid").toString();
-    QUuid uuid = QUuid(strUuid);
-    if (!uuid.isNull())
-        return uuid;
-
-    return QUuid::createUuid();
-}
-
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* item)
 {
@@ -3235,9 +3134,3 @@ void UBSvgSubsetAdaptor::convertSvgImagesToImages(UBDocumentProxy* proxy)
         }
     }
 }
-
-
-
-
-
-
