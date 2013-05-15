@@ -44,9 +44,6 @@ public:
     virtual void DrawLine(const QPointF& position, qreal width);
     virtual void EndLine();
 
-    signals:
-        void hidden();
-
 protected:
 
     void paint();

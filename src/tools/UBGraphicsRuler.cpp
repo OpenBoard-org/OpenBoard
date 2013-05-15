@@ -371,7 +371,6 @@ void UBGraphicsRuler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     else if (closeButtonRect().contains(event->pos()))
     {
         hide();
-        emit hidden();
         event->accept();
     }
     else

@@ -51,10 +51,6 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
 
         virtual void copyItemParameters(UBItem *copy) const;
 
-    signals:
-
-       void hidden();
-
     protected:
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);

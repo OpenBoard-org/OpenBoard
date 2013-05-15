@@ -240,7 +240,6 @@ void UBGraphicsProtractor::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     case Close :
         hide();
-        emit hidden();
         break;
 
     case MoveMarker :

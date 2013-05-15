@@ -176,17 +176,6 @@ UBGraphicsScene* UBBoardView::scene ()
     return qobject_cast<UBGraphicsScene*> (QGraphicsView::scene ());
 }
 
-void UBBoardView::hideEvent (QHideEvent * event)
-{
-    Q_UNUSED (event);
-    emit hidden ();
-}
-
-void UBBoardView::showEvent (QShowEvent * event)
-{
-    Q_UNUSED (event);
-    emit shown ();
-}
 
 void UBBoardView::keyPressEvent (QKeyEvent *event)
 {
@@ -860,19 +849,19 @@ bool UBBoardView::directTabletEvent(QEvent *event)
 {
     QTabletEvent *tEvent = static_cast<QTabletEvent *>(event);
     tEvent = new QTabletEvent(tEvent->type()
-        , mapFromGlobal(tEvent->pos())
-        , tEvent->globalPos()
-        , tEvent->hiResGlobalPos()
-        , tEvent->device()
-        , tEvent->pointerType()
-        , tEvent->pressure()
-        , tEvent->xTilt()
-        , tEvent->yTilt()
-        , tEvent->tangentialPressure()
-        , tEvent->rotation()
-        , tEvent->z()
-        , tEvent->modifiers()
-        , tEvent->uniqueId());
+                              , mapFromGlobal(tEvent->pos())
+                              , tEvent->globalPos()
+                              , tEvent->hiResGlobalPos()
+                              , tEvent->device()
+                              , tEvent->pointerType()
+                              , tEvent->pressure()
+                              , tEvent->xTilt()
+                              , tEvent->yTilt()
+                              , tEvent->tangentialPressure()
+                              , tEvent->rotation()
+                              , tEvent->z()
+                              , tEvent->modifiers()
+                              , tEvent->uniqueId());
 
     if (geometry().contains(tEvent->pos()))
     {
@@ -928,7 +917,7 @@ void UBBoardView::longPressEvent()
     UBDrawingController *drawingController = UBDrawingController::drawingController();
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-   disconnect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
+    disconnect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
 
     if (UBStylusTool::Selector == currentTool)
     {

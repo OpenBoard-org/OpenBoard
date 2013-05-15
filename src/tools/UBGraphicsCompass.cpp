@@ -222,7 +222,7 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
         QGraphicsRectItem::mousePressEvent(event);
     }
-    else 
+    else
         closing = true;
 
     mResizeSvgItem->setVisible(mShowButtons && mResizing);
@@ -299,8 +299,6 @@ void UBGraphicsCompass::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     else if (closeButtonRect().contains(event->pos()))
     {
         hide();
-
-        emit hidden();
         event->accept();
     }
     else
