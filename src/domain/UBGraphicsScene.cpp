@@ -73,6 +73,9 @@
 
 #include "core/memcheck.h"
 
+
+#define DEFAULT_Z_VALUE 0.0
+
 qreal UBZLayerController::errorNumber = -20000001.0;
 
 UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
@@ -81,8 +84,9 @@ UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
 {
     scopeMap.insert(itemLayerType::NoLayer,        ItemLayerTypeData( errorNumber, errorNumber));
     scopeMap.insert(itemLayerType::BackgroundItem, ItemLayerTypeData(-1000000.0, -1000000.0 ));
-    scopeMap.insert(itemLayerType::ObjectItem,     ItemLayerTypeData(-1000000.0,  0.0        ));
-    scopeMap.insert(itemLayerType::DrawingItem,    ItemLayerTypeData( 0.0,        1000000.0 ));
+    // DEFAULT_Z_VALUE isn't used because it allows to easily identify new objects
+    scopeMap.insert(itemLayerType::ObjectItem,     ItemLayerTypeData(-1000000.0,  DEFAULT_Z_VALUE - 1.0));
+    scopeMap.insert(itemLayerType::DrawingItem,    ItemLayerTypeData( DEFAULT_Z_VALUE + 1.0, 1000000.0 ));
     scopeMap.insert(itemLayerType::ToolItem,       ItemLayerTypeData( 1000000.0,  1000100.0 ));
     scopeMap.insert(itemLayerType::CppTool,        ItemLayerTypeData( 1000100.0,  1000200.0 ));
     scopeMap.insert(itemLayerType::Curtain,        ItemLayerTypeData( 1000200.0,  1001000.0 ));
@@ -1618,10 +1622,11 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
 {
     UBCoreGraphicsScene::addItem(item);
 
-    qDebug() << item->zValue();
-
-    qreal zvalue = mZLayerController->generateZLevel(item);
-    UBGraphicsItem::assignZValue(item, zvalue);
+    // the default z value is already set. This is the case when a svg file is read
+    if(item->zValue() == DEFAULT_Z_VALUE || item->zValue() == UBZLayerController::errorNum()){
+        qreal zvalue = mZLayerController->generateZLevel(item);
+        UBGraphicsItem::assignZValue(item, zvalue);
+    }
 
     if (!mTools.contains(item))
       ++mItemCount;
