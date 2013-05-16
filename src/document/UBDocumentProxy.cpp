@@ -188,8 +188,6 @@ void UBDocumentProxy::setDefaultDocumentSize(QSize pSize)
     if (defaultDocumentSize() != pSize)
     {
         setMetaData(UBSettings::documentSize, QVariant(pSize));
-        emit defaultDocumentSizeChanged();
-
         mIsModified = true;
     }
 }

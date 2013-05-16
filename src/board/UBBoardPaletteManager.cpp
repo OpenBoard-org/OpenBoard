@@ -821,8 +821,6 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
     if( !isInit )
         UBApplication::boardController->notifyPageChanged();
-
-    emit signal_changeMode(newMode);
 }
 
 void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos,  qreal scaleFactor, const QUrl& sourceUrl)
@@ -969,11 +967,6 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     mStylusPalette->setVisible(bVisible); // always show stylus palette at startup
 }
 
-
-void UBBoardPaletteManager::connectToDocumentController()
-{
-    emit connectToDocController();
-}
 
 void UBBoardPaletteManager::refreshPalettes()
 {

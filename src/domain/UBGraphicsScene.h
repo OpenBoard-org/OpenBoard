@@ -339,10 +339,6 @@ public slots:
         void zoomOutMagnifier();
         void resizedMagnifier(qreal newPercent);
 
-    signals:
-
-       void pageSizeChanged();
-
     protected:
 
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);

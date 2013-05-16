@@ -317,8 +317,6 @@ int UBApplication::exec(const QString& pFileToImport)
     webController = new UBWebController(mainWindow);
     documentController = new UBDocumentController(mainWindow);
 
-    boardController->paletteManager()->connectToDocumentController();
-
     UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
     applicationController = new UBApplicationController(boardController->controlView(),

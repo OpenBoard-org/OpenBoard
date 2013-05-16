@@ -52,9 +52,6 @@ public:
 public slots:
     void updateCurrentCache();
 
-signals:
-    void cacheListEmpty();
-
 private slots:
     void onCloseClicked();
     void updateCacheColor(QColor color);

@@ -1888,10 +1888,7 @@ void UBBoardController::updateSystemScaleFactor()
     }
 
     if (mSystemScaleFactor != newScaleFactor)
-    {
         mSystemScaleFactor = newScaleFactor;
-        emit systemScaleFactorChanged(newScaleFactor);
-    }
 
     UBGraphicsScene::SceneViewState viewState = mActiveScene->viewState();
 
@@ -1956,13 +1953,8 @@ void UBBoardController::setPageSize(QSize newSize)
 void UBBoardController::notifyCache(bool visible)
 {
     if(visible)
-    {
         emit cacheEnabled();
-    }
-    else
-    {
-        emit cacheDisabled();
-    }
+    
     mCacheWidgetIsEnabled = visible;
 }
 

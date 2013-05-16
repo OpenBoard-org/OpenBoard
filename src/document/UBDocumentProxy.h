@@ -76,9 +76,6 @@ class UBDocumentProxy : public QObject
         int incPageCount();
         int decPageCount();
 
-    signals:
-        void defaultDocumentSizeChanged();
-
     private:
 
         void init();

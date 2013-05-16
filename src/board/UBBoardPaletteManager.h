@@ -64,7 +64,6 @@ class UBBoardPaletteManager : public QObject
         UBActionPalette *addItemPalette() {return mAddItemPalette;}
         void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
-        void connectToDocumentController();
         void refreshPalettes();
 
         UBKeyboardPalette *mKeyboardPalette;
@@ -78,10 +77,6 @@ class UBBoardPaletteManager : public QObject
         void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
         void startDownloads();
         void stopDownloads();
-
-    signals:
-        void connectToDocController();
-        void signal_changeMode(eUBDockPaletteWidgetMode newMode);
 
     public slots:
 

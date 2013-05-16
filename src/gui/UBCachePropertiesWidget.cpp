@@ -241,11 +241,6 @@ void UBCachePropertiesWidget::onCloseClicked()
         UBApplication::boardController->activeScene()->removeItem(mpCurrentCache);
         mpCurrentCache = NULL;
 
-        if(mCaches.empty())
-        {
-            emit cacheListEmpty();
-        }
-
         emit hideTab(this);
     }
 }

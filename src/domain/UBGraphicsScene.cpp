@@ -2075,11 +2075,9 @@ void UBGraphicsScene::setNominalSize(const QSize& pSize)
     if (nominalSize() != pSize)
     {
         mNominalSize = pSize;
-        emit pageSizeChanged();
 
         if(mDocument)
             mDocument->setDefaultDocumentSize(pSize);
-
     }
 }
 
