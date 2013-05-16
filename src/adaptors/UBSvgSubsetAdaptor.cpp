@@ -1553,7 +1553,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
     QPolygonF polygon = polygonItem->polygon();
     int pointsCount = polygon.size();
 
-    if (polygonItem && pointsCount > 0)
+    if (pointsCount > 0)
     {
         mXmlWriter.writeStartElement("polygon");
 

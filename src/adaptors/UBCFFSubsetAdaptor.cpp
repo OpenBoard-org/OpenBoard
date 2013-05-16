@@ -1215,13 +1215,17 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
                 pStrokesGroup->addToGroup(poly);
             }
         }
-        if (currentStroke->polygons().empty())
+        if (currentStroke->polygons().empty()){
             delete currentStroke;
+            currentStroke = NULL;
+        }
 
         if (pStrokesGroup->childItems().count())
             mCurrentScene->addItem(pStrokesGroup);
-        else
+        else{
             delete pStrokesGroup;
+            pStrokesGroup = NULL;
+        }
 
         if (pStrokesGroup)
         {
