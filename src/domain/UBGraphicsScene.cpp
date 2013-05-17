@@ -66,6 +66,7 @@
 #include "UBGraphicsPDFItem.h"
 #include "UBGraphicsTextItem.h"
 #include "UBGraphicsStrokesGroup.h"
+#include "UBSelectionFrame.h"
 
 #include "domain/UBGraphicsGroupContainerItem.h"
 
@@ -288,6 +289,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mpLastPolygon(NULL)
     , mCurrentPolygon(0)
     , mMultipleSelectionProcess(false)
+    , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
 #ifdef __ppc__
@@ -296,7 +298,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     mShouldUseOMP = QSysInfo::MacintoshVersion >= QSysInfo::MV_10_5;
 #endif
 
-    setItemIndexMethod(QGraphicsScene::BspTreeIndex);
+//    setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 
     setUuid(QUuid::createUuid());
     setDocument(parent);
@@ -1030,6 +1032,23 @@ UBGraphicsPolygonItem* UBGraphicsScene::arcToPolygonItem(const QLineF& pStartRad
     QPolygonF polygon = UBGeometryUtils::arcToPolygon(pStartRadius, pSpanAngle, pWidth);
 
     return polygonToPolygonItem(polygon);
+}
+
+void UBGraphicsScene::updateMultipleSelectionFrame()
+{
+    qDebug() << "selected item count" << selectedItems().count();
+    QList<QGraphicsItem*> selItems = selectedItems();
+    if (!mSelectionFrame) {
+        mSelectionFrame = new UBSelectionFrame();
+        addItem(mSelectionFrame);
+    }
+
+    mSelectionFrame->setEnclosedItems(selItems);
+    if (!mSelectionFrame->isEmpty()) {
+        mSelectionFrame->setVisible(true);
+    } else {
+        mSelectionFrame->setVisible(false);
+    }
 }
 
 UBGraphicsPolygonItem* UBGraphicsScene::polygonToPolygonItem(const QPolygonF pPolygon)

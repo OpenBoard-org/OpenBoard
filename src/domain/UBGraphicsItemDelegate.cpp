@@ -179,61 +179,67 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
 
 void UBGraphicsItemDelegate::init()
 {
-//    if (mToolBarUsed)
-//        mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
-
-//    mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
-//    mFrame->hide();
-//    mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-//    mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
-//    mButtons << mDeleteButton;
-//    connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
-//    if (canDuplicate()){
-//        mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
-//        connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
-//        mButtons << mDuplicateButton;
-//    }
-//    mMenuButton = new DelegateButton(":/images/menu.svg", mDelegated, mFrame, Qt::TopLeftSection);
-//    connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
-//    mButtons << mMenuButton;
-
-//    mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
-//    mZOrderUpButton->setShowProgressIndicator(true);
-//    connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
-//    connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
-//    mButtons << mZOrderUpButton;
-
-//    mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
-//    mZOrderDownButton->setShowProgressIndicator(true);
-//    connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
-//    connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
-//    mButtons << mZOrderDownButton;
-
-//    buildButtons();
-
-//    foreach(DelegateButton* button, mButtons)
-//    {
-//        if (button->getSection() != Qt::TitleBarArea)
-//        {
-//            button->hide();
-//            button->setFlag(QGraphicsItem::ItemIsSelectable, true);
-//        }
-//    }
-
-//    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
-//    setFlippable(false);
-//    setRotatable(false);
+    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
+    setFlippable(false);
+    setRotatable(false);
 }
 
 void UBGraphicsItemDelegate::createControls()
 {
+    if (mToolBarUsed)
+        mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
 
+    mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
+    mFrame->hide();
+    mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+    mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
+    mButtons << mDeleteButton;
+    connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
+    if (canDuplicate()){
+        mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
+        connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
+        mButtons << mDuplicateButton;
+    }
+    mMenuButton = new DelegateButton(":/images/menu.svg", mDelegated, mFrame, Qt::TopLeftSection);
+    connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
+    mButtons << mMenuButton;
+
+    mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    mZOrderUpButton->setShowProgressIndicator(true);
+    connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
+    connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
+    mButtons << mZOrderUpButton;
+
+    mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+    mZOrderDownButton->setShowProgressIndicator(true);
+    connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
+    connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
+    mButtons << mZOrderDownButton;
+
+    buildButtons();
+
+    foreach(DelegateButton* button, mButtons)
+    {
+        if (button->getSection() != Qt::TitleBarArea)
+        {
+            button->hide();
+            button->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        }
+    }
 }
 
 void UBGraphicsItemDelegate::freeControls()
 {
+    QGraphicsScene *controlsScene = delegated()->scene();
 
+    UB_FREE_CONTROL(mFrame,            controlsScene);
+    UB_FREE_CONTROL(mDeleteButton,     controlsScene);
+    UB_FREE_CONTROL(mMenuButton,       controlsScene);
+    UB_FREE_CONTROL(mZOrderUpButton,   controlsScene);
+    UB_FREE_CONTROL(mZOrderDownButton, controlsScene);
+
+    freeButtons();
 }
 
 
@@ -266,15 +272,16 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
     }
 
 
-//    if ((change == QGraphicsItem::ItemSelectedHasChanged
-//         || change == QGraphicsItem::ItemPositionHasChanged
-//         || change == QGraphicsItem::ItemTransformHasChanged)
-//            && mDelegated->scene()
-//            && UBApplication::boardController)
-//    {
-//        mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-//        positionHandles();
-//    }
+    if ((change == QGraphicsItem::ItemSelectedHasChanged
+         || change == QGraphicsItem::ItemPositionHasChanged
+         || change == QGraphicsItem::ItemTransformHasChanged)
+            && mDelegated->scene()
+            && UBApplication::boardController)
+    {
+        createControls();
+        mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+        positionHandles();
+    }
 
     if (change == QGraphicsItem::ItemPositionHasChanged
         || change == QGraphicsItem::ItemTransformHasChanged
@@ -609,6 +616,9 @@ void UBGraphicsItemDelegate::onZoomChanged()
 }
 
 void UBGraphicsItemDelegate::buildButtons()
+{
+}
+void UBGraphicsItemDelegate::freeButtons()
 {
 }
 

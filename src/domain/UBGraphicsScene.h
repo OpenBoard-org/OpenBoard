@@ -19,8 +19,6 @@
  * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 #ifndef UBGRAPHICSSCENE_H_
 #define UBGRAPHICSSCENE_H_
 
@@ -56,6 +54,7 @@ class UBMagnifierParams;
 class UBMagnifier;
 class UBGraphicsCache;
 class UBGraphicsGroupContainerItem;
+class UBSelectionFrame;
 
 const double PI = 4.0 * atan(1.0);
 
@@ -312,6 +311,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
         void setMultipleSelectionProcess(bool pEnabled) {mMultipleSelectionProcess = pEnabled;}
         bool multipleSelectionProcess() const {return mMultipleSelectionProcess;}
+        void updateMultipleSelectionFrame();
 
 public slots:
         void initStroke();
@@ -430,6 +430,7 @@ public slots:
         bool mDrawWithCompass;
         UBGraphicsPolygonItem *mCurrentPolygon;
         bool mMultipleSelectionProcess;
+        UBSelectionFrame *mSelectionFrame;
 };
 
 

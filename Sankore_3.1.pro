@@ -374,6 +374,7 @@ macx {
 linux-g++* {
     CONFIG += link_prl
     LIBS += -lcrypto
+    LIBS += -lprofiler
     LIBS += -lX11
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp

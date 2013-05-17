@@ -1028,9 +1028,10 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             }
             else
             {
-                if(mUBRubberBand)
+                if(mUBRubberBand) {
                     mUBRubberBand->hide();
-                scene()->setMultipleSelectionProcess(false);
+                    scene()->setMultipleSelectionProcess(false);
+                }
             }
 
             handleItemMousePress(event);
@@ -1107,6 +1108,12 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 void
 UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
+    static QTime lastCallTime;
+    if (!lastCallTime.isNull()) {
+        qDebug() << "time interval is " << lastCallTime.msecsTo(QTime::currentTime());
+    }
+
+  QTime mouseMoveTime = QTime::currentTime();
   if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance()))
   {
       return;
@@ -1153,15 +1160,23 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
               mUBRubberBand->setGeometry(bandRect);
 
+              QTime startTime = QTime::currentTime();
+              QTime testTime = QTime::currentTime();
               QList<QGraphicsItem *> rubberItems = items(bandRect);
+              qDebug() << "==================";
+              qDebug() << "| ====rubber items" << testTime.msecsTo(QTime::currentTime());
+              testTime = QTime::currentTime();
               foreach (QGraphicsItem *item, mJustSelectedItems) {
                   if (!rubberItems.contains(item)) {
                       item->setSelected(false);
                       mJustSelectedItems.remove(item);
                   }
               }
+              qDebug() << "| ===foreach length" << testTime.msecsTo(QTime::currentTime());
+              testTime = QTime::currentTime();
 
-              if (currentTool == UBStylusTool::Selector)
+              int counter = 0;
+              if (currentTool == UBStylusTool::Selector) {
                   foreach (QGraphicsItem *item, items(bandRect)) {
 
                       if (item->type() == UBGraphicsW3CWidgetItem::Type
@@ -1172,12 +1187,21 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
                               || item->type() == UBGraphicsStrokesGroup::Type
                               || item->type() == UBGraphicsGroupContainerItem::Type) {
 
+
                           if (!mJustSelectedItems.contains(item)) {
+                              counter++;
                               item->setSelected(true);
                               mJustSelectedItems.insert(item);
                           }
+                          item->setSelected(true);
                       }
                   }
+              }
+
+              qDebug() << "| ==selected items count" << counter << endl
+                       << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << endl
+                       << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << endl
+                       << "==================";
           }
       }
 
@@ -1211,6 +1235,8 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
   if((event->pos() - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())
       mWidgetMoved = true;
+  qDebug() << "mouse move time" << mouseMoveTime.msecsTo(QTime::currentTime());
+  lastCallTime = QTime::currentTime();
 }
 
 void
@@ -1289,6 +1315,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
       if (mUBRubberBand && mUBRubberBand->isVisible()) {
           mUBRubberBand->hide();
           scene()->setMultipleSelectionProcess(false);
+          scene()->updateMultipleSelectionFrame();
       }
 
       if (bReleaseIsNeed)
@@ -1325,6 +1352,7 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
       if (mRubberBand) {
         mRubberBand->hide ();
         scene()->setMultipleSelectionProcess(false);
+        scene()->updateMultipleSelectionFrame();
       }
 
 

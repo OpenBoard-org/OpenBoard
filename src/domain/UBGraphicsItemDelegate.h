@@ -24,6 +24,14 @@
 #ifndef UBGRAPHICSITEMDELEGATE_H_
 #define UBGRAPHICSITEMDELEGATE_H_
 
+#define UB_FREE_CONTROL(Object, Scene) \
+    if (Object) {                      \
+        if (Scene) {                   \
+            Scene->removeItem(Object); \
+        }                              \
+        delete Object;                 \
+    }                                  \
+
 #include <QtGui>
 #include <QtSvg>
 #include <QMimeData>
@@ -289,6 +297,7 @@ class UBGraphicsItemDelegate : public QObject
 
     protected:
         virtual void buildButtons();
+        virtual void freeButtons();
         virtual void decorateMenu(QMenu *menu);
         virtual void updateMenuActionState();
 
