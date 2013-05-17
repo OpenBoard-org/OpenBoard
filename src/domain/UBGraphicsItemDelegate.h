@@ -30,6 +30,7 @@
             Scene->removeItem(Object); \
         }                              \
         delete Object;                 \
+        Object = 0;                    \
     }                                  \
 
 #include <QtGui>
@@ -228,8 +229,9 @@ class UBGraphicsItemDelegate : public QObject
         virtual ~UBGraphicsItemDelegate();
 
         void init();
-        void createControls();
-        void freeControls();
+        virtual void createControls();
+        virtual void freeControls();
+        virtual bool controlsExist() const;
 
         virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);

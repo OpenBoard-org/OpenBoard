@@ -186,36 +186,47 @@ void UBGraphicsItemDelegate::init()
 
 void UBGraphicsItemDelegate::createControls()
 {
-    if (mToolBarUsed)
+    if (mToolBarUsed && !mToolBarItem)
         mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
 
-    mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
-    mFrame->hide();
-    mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-    mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
-    mButtons << mDeleteButton;
-    connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
-    if (canDuplicate()){
-        mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
-        connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
-        mButtons << mDuplicateButton;
+    if (!mFrame) {
+        mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
+        mFrame->hide();
+        mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
-    mMenuButton = new DelegateButton(":/images/menu.svg", mDelegated, mFrame, Qt::TopLeftSection);
-    connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
-    mButtons << mMenuButton;
 
-    mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
-    mZOrderUpButton->setShowProgressIndicator(true);
-    connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
-    connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
-    mButtons << mZOrderUpButton;
+    if (!mDeleteButton) {
+        mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
+        mButtons << mDeleteButton;
+        connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
+        if (canDuplicate()){
+            mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
+            connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
+            mButtons << mDuplicateButton;
+        }
+    }
 
-    mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
-    mZOrderDownButton->setShowProgressIndicator(true);
-    connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
-    connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
-    mButtons << mZOrderDownButton;
+    if (!mMenuButton) {
+        mMenuButton = new DelegateButton(":/images/menu.svg", mDelegated, mFrame, Qt::TopLeftSection);
+        connect(mMenuButton, SIGNAL(clicked()), this, SLOT(showMenu()));
+        mButtons << mMenuButton;
+    }
+
+    if (!mZOrderUpButton) {
+        mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+        mZOrderUpButton->setShowProgressIndicator(true);
+        connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
+        connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
+        mButtons << mZOrderUpButton;
+    }
+
+    if (!mZOrderDownButton) {
+        mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", mDelegated, mFrame, Qt::BottomLeftSection);
+        mZOrderDownButton->setShowProgressIndicator(true);
+        connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
+        connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
+        mButtons << mZOrderDownButton;
+    }
 
     buildButtons();
 
@@ -242,6 +253,16 @@ void UBGraphicsItemDelegate::freeControls()
     freeButtons();
 }
 
+bool UBGraphicsItemDelegate::controlsExist() const
+{
+    return mFrame
+            && mDeleteButton
+            && mMenuButton
+            && mZOrderUpButton
+            && mZOrderDownButton
+            ;
+}
+
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
@@ -255,12 +276,13 @@ UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 
 QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
+    UBGraphicsScene *ubScene = castUBGraphicsScene();
+
     if (change == QGraphicsItem::ItemSelectedHasChanged) {
         bool ok;
         bool selected = value.toUInt(&ok);
 
         if (ok) {
-            UBGraphicsScene *ubScene = castUBGraphicsScene();
             if (ubScene && !ubScene->multipleSelectionProcess()) {
                 if (selected) {
                     ubScene->setSelectedZLevel(delegated());
@@ -271,14 +293,16 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
         }
     }
 
-
     if ((change == QGraphicsItem::ItemSelectedHasChanged
          || change == QGraphicsItem::ItemPositionHasChanged
          || change == QGraphicsItem::ItemTransformHasChanged)
-            && mDelegated->scene()
+            && ubScene
+            && !ubScene->multipleSelectionProcess()
             && UBApplication::boardController)
     {
-        createControls();
+        if (!controlsExist()) {
+            createControls();
+        }
         mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
         positionHandles();
     }
