@@ -311,6 +311,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
         void setMultipleSelectionProcess(bool pEnabled) {mMultipleSelectionProcess = pEnabled;}
         bool multipleSelectionProcess() const {return mMultipleSelectionProcess;}
+        void clearSelectionFrame();
         void updateMultipleSelectionFrame();
 
 public slots:

@@ -158,6 +158,8 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mDeleteButton(NULL)
     , mDuplicateButton(NULL)
     , mMenuButton(NULL)
+    , mZOrderUpButton(0)
+    , mZOrderDownButton(0)
     , mMenu(0)
     , mLockAction(0)
     , mShowOnDisplayAction(0)
@@ -243,13 +245,10 @@ void UBGraphicsItemDelegate::createControls()
 void UBGraphicsItemDelegate::freeControls()
 {
     QGraphicsScene *controlsScene = delegated()->scene();
+    Q_ASSERT(controlsScene);
 
-    UB_FREE_CONTROL(mFrame,            controlsScene);
-    UB_FREE_CONTROL(mDeleteButton,     controlsScene);
-    UB_FREE_CONTROL(mMenuButton,       controlsScene);
-    UB_FREE_CONTROL(mZOrderUpButton,   controlsScene);
-    UB_FREE_CONTROL(mZOrderDownButton, controlsScene);
 
+    UB_FREE_CONTROL(mFrame, controlsScene);
     freeButtons();
 }
 
@@ -262,7 +261,6 @@ bool UBGraphicsItemDelegate::controlsExist() const
             && mZOrderDownButton
             ;
 }
-
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
@@ -277,43 +275,34 @@ UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     UBGraphicsScene *ubScene = castUBGraphicsScene();
+    switch (static_cast<int>(change)) {
 
-    if (change == QGraphicsItem::ItemSelectedHasChanged) {
-        bool ok;
-        bool selected = value.toUInt(&ok);
-
-        if (ok) {
-            if (ubScene && !ubScene->multipleSelectionProcess()) {
-                if (selected) {
+    case QGraphicsItem::ItemSelectedHasChanged : {
+        if (ubScene && !ubScene->multipleSelectionProcess()) {
+            if (value.toBool()) { //selected(true)
+                if (!controlsExist()) {
+                    createControls();
+                    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+                    positionHandles();
                     ubScene->setSelectedZLevel(delegated());
-                } else {
-                    ubScene->setOwnZlevel(delegated());
                 }
+            } else {
+                ubScene->setOwnZlevel(delegated());
+                freeControls();
             }
         }
-    }
 
-    if ((change == QGraphicsItem::ItemSelectedHasChanged
-         || change == QGraphicsItem::ItemPositionHasChanged
-         || change == QGraphicsItem::ItemTransformHasChanged)
-            && ubScene
-            && !ubScene->multipleSelectionProcess()
-            && UBApplication::boardController)
-    {
-        if (!controlsExist()) {
-            createControls();
-        }
+    } break;
+
+    case QGraphicsItem::ItemPositionHasChanged :
+    case QGraphicsItem::ItemTransformHasChanged :
+    case QGraphicsItem::ItemZValueHasChanged :
         mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
         positionHandles();
-    }
-
-    if (change == QGraphicsItem::ItemPositionHasChanged
-        || change == QGraphicsItem::ItemTransformHasChanged
-        || change == QGraphicsItem::ItemZValueHasChanged)
-    {
-        UBGraphicsScene* ubScene = qobject_cast<UBGraphicsScene*>(mDelegated->scene());
-        if(ubScene)
+        if (ubScene) {
             ubScene->setModified(true);
+        }
+        break;
     }
 
     return value;
@@ -425,6 +414,10 @@ QGraphicsItem *UBGraphicsItemDelegate::delegated()
 
 void UBGraphicsItemDelegate::positionHandles()
 {
+    if (!controlsExist()) {
+        return;
+    }
+
     if (mDelegated->isSelected()) {
         bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
         showHide(shownOnDisplay);
@@ -644,6 +637,13 @@ void UBGraphicsItemDelegate::buildButtons()
 }
 void UBGraphicsItemDelegate::freeButtons()
 {
+   //Previously deleted with the frame
+   // Rimplement for some specific behavior
+   mButtons.clear();
+   mDeleteButton = 0;
+   mMenuButton = 0;
+   mZOrderUpButton = 0;
+   mZOrderDownButton = 0;
 }
 
 void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)

@@ -1034,6 +1034,13 @@ UBGraphicsPolygonItem* UBGraphicsScene::arcToPolygonItem(const QLineF& pStartRad
     return polygonToPolygonItem(polygon);
 }
 
+void UBGraphicsScene::clearSelectionFrame()
+{
+    if (mSelectionFrame) {
+        mSelectionFrame->setEnclosedItems(QList<QGraphicsItem*>());
+    }
+}
+
 void UBGraphicsScene::updateMultipleSelectionFrame()
 {
     qDebug() << "selected item count" << selectedItems().count();
