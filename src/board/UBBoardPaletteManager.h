@@ -47,7 +47,6 @@ class UBServerXMLHttpRequest;
 class UBKeyboardPalette;
 class UBMainWindow;
 class UBApplicationController;
-class UBDockTeacherGuideWidget;
 
 class UBBoardPaletteManager : public QObject
 {
@@ -70,8 +69,6 @@ class UBBoardPaletteManager : public QObject
 
         void setCurrentWebToolsPalette(UBWebToolsPalette *palette) {mWebToolsCurrentPalette = palette;}
         UBWebToolsPalette* mWebToolsCurrentPalette;
-
-        UBDockTeacherGuideWidget* teacherGuideDockWidget() { return mpTeacherGuideWidget;}
 
         void processPalettersWidget(UBDockPalette *paletter, eUBDockPaletteWidgetMode mode);
         void changeMode(eUBDockPaletteWidgetMode newMode, bool isInit = false);
@@ -142,7 +139,6 @@ class UBBoardPaletteManager : public QObject
 
         /** The download widget */
         UBDockDownloadWidget* mpDownloadWidget;
-        UBDockTeacherGuideWidget* mpTeacherGuideWidget;
 
         bool mDownloadInProgress;
 

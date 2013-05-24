@@ -48,7 +48,6 @@ class UBGraphicsStroke;
 class UBPersistenceManager;
 class UBGraphicsTriangle;
 class UBGraphicsCache;
-class IDataStorage;
 class UBGraphicsGroupContainerItem;
 class UBGraphicsStrokesGroup;
 
@@ -68,12 +67,8 @@ class UBSvgSubsetAdaptor
         static QUuid sceneUuid(UBDocumentProxy* proxy, const int pageIndex);
         static void setSceneUuid(UBDocumentProxy* proxy, const int pageIndex, QUuid pUuid);
 
-        static bool addElementToBeStored(QString domName,IDataStorage* dataStorageClass);
-
         static void convertPDFObjectsToImages(UBDocumentProxy* proxy);
         static void convertSvgImagesToImages(UBDocumentProxy* proxy);
-
-        static QMap<QString,IDataStorage*> getAdditionalElementToStore() { return additionalElementToStore;}
 
         static const QString nsSvg;
         static const QString nsXLink;
@@ -100,10 +95,6 @@ class UBSvgSubsetAdaptor
 
         static QString toSvgTransform(const QMatrix& matrix);
         static QMatrix fromSvgTransform(const QString& transform);
-
-        static QMap<QString,IDataStorage*> additionalElementToStore;
-
-
 
 
         class UBSvgSubsetReader

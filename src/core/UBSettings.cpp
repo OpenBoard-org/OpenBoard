@@ -51,14 +51,6 @@ QString UBSettings::documentSize = QString("Size");
 QString UBSettings::documentIdentifer = QString("ID");
 QString UBSettings::documentVersion = QString("Version");
 QString UBSettings::documentUpdatedAt = QString("UpdatedAt");
-QString UBSettings::sessionTitle = QString("sessionTitle");
-QString UBSettings::sessionAuthors = QString("sessionAuthors");
-QString UBSettings::sessionObjectives = QString("sessionObjectives");
-QString UBSettings::sessionKeywords = QString("sessionKeywords");
-QString UBSettings::sessionGradeLevel = QString("sessionGradeLevel");
-QString UBSettings::sessionSubjects = QString("sessionSubjects");
-QString UBSettings::sessionType = QString("sessionType");
-QString UBSettings::sessionLicence = QString("sessionLicence");
 QString UBSettings::documentDate = QString("date");
 
 QString UBSettings::trashedDocumentGroupNamePrefix = QString("_Trash:");
@@ -405,8 +397,6 @@ void UBSettings::init()
 
     angleTolerance = new UBSetting(this, "App", "AngleTolerance", 4);
     historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
-    teacherGuidePageZeroActivated = new UBSetting(this,"DockPalette","TeacherGuideActivatePageZero",true);
-    teacherGuideLessonPagesActivated = new UBSetting(this,"DockPalette","TeacherGuideActivateLessonPages",true);
 
     libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
 

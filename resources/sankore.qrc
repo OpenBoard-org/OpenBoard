@@ -339,32 +339,11 @@
         <file>images/closeDisabled.svg</file>
         <file>images/menuDisabled.svg</file>
         <file>images/moveUpDisabled.svg</file>
-        <file>images/teacher_close.png</file>
-        <file>images/teacher_open.png</file>
-        <file>images/teacher_close_disabled.png</file>
         <file>style.qss</file>
-        <file>images/teacher_open_disabled.png</file>
         <file>images/libpalette/WebSearchCategory.svg</file>
         <file>images/download_close.png</file>
         <file>images/download_open.png</file>
         <file>images/tab_mask.png</file>
-        <file>images/duration1.png</file>
-        <file>images/duration2.png</file>
-        <file>images/duration3.png</file>
-        <file>images/licenses/ccby.png</file>
-        <file>images/licenses/ccbync.png</file>
-        <file>images/licenses/ccbyncnd.png</file>
-        <file>images/licenses/ccbyncsa.png</file>
-        <file>images/licenses/ccbynd.png</file>
-        <file>images/licenses/ccbysa.png</file>
-        <file>images/teacherGuide/audio_24x24.svg</file>
-        <file>images/teacherGuide/image_24x24.svg</file>
-        <file>images/teacherGuide/link_24x24.svg</file>
-        <file>images/teacherGuide/movie_24x24.svg</file>
-        <file>images/teacherGuide/w3c_24x24.svg</file>
-        <file>images/teacherGuide/pencil.svg</file>
         <file>images/duplicateDisabled.svg</file>
-        <file>images/teacherGuide/flash_24x24.svg</file>
-        <file>images/toque.svg</file>
     </qresource>
 </RCC>

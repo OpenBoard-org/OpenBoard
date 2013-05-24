@@ -1632,18 +1632,12 @@ int UBDocumentController::getSelectedItemIndex()
 
 bool UBDocumentController::pageCanBeMovedUp(int page)
 {
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return page >= 2;
-    else
-        return page >= 1;
+    return page >= 1;
 }
 
 bool UBDocumentController::pageCanBeMovedDown(int page)
 {
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return page != 0 && page < selectedDocument()->pageCount() - 1;
-    else
-        return page < selectedDocument()->pageCount() - 1;
+    return page < selectedDocument()->pageCount() - 1;
 }
 
 bool UBDocumentController::pageCanBeDuplicated(int page)

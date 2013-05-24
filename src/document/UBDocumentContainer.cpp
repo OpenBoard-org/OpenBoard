@@ -127,15 +127,11 @@ void UBDocumentContainer::reloadThumbnails()
 
 int UBDocumentContainer::pageFromSceneIndex(int sceneIndex)
 {
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return sceneIndex;
     return sceneIndex+1;
 }
 
 int UBDocumentContainer::sceneIndexFromPage(int page)
 {
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return page;
     return page-1;
 }
 

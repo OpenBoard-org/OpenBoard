@@ -1486,56 +1486,6 @@ UBGraphicsTextItem* UBGraphicsScene::addText(const QString& pString, const QPoin
             , UBSettings::settings()->isItalicFont());
 }
 
-UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, const QString& objectName)
-{
-    UBGraphicsTextItem* textItem = 0;
-    bool found = false;
-    //looking for a previous such item text
-    for(int i=0; i < mFastAccessItems.count() && !found ; i += 1){
-        UBGraphicsTextItem* currentItem = dynamic_cast<UBGraphicsTextItem*>(mFastAccessItems.at(i));
-        if(currentItem && (currentItem->objectName() == objectName || currentItem->toPlainText() == pString)){
-            // The second condition is necessary because the object name isn't stored. On reopeining the file we
-            // need another rule than the objectName
-            textItem = currentItem;
-            found=true;
-            if(currentItem->objectName() != objectName)
-                textItem->setObjectName(objectName);
-        }
-    }
-    if(!textItem){
-        textItem = addTextWithFont(pString,QPointF(0,0) ,72,UBSettings::settings()->fontFamily(),true,false);
-        textItem->setObjectName(objectName);
-        textItem->setData(UBGraphicsItemData::ItemEditable,QVariant(false));
-        textItem->adjustSize();
-        textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-        textItem->setPlainText(pString);
-    }
-    else{
-        textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-        if (pString == textItem->toPlainText())
-            return textItem;
-
-        QTextCursor curCursor = textItem->textCursor();
-        QFont font = textItem->font();
-        QColor color = curCursor.charFormat().foreground().color();
-
-        textItem->setPlainText(pString);
-        textItem->clearFocus();
-        textItem->setFont(font);
-
-
-        QTextCharFormat format;
-        format.setForeground(QBrush(color));
-        curCursor.mergeCharFormat(format);
-        textItem->setTextCursor(curCursor);
-        textItem->contentsChanged();
-
-    }
-
-    textItem->clearFocus();
-    return textItem;
-}
-
 UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, const QPointF& pTopLeft
             , int pointSize, const QString& fontFamily, bool bold, bool italic)
 {

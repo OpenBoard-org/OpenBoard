@@ -48,8 +48,6 @@
 #include "gui/UBKeyboardPalette.h"
 #include "gui/UBMagnifer.h"
 #include "gui/UBDockPaletteWidget.h"
-#include "gui/UBDockTeacherGuideWidget.h"
-#include "gui/UBTeacherGuideWidget.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
@@ -166,8 +164,6 @@ UBBoardController::~UBBoardController()
 
 int UBBoardController::currentPage()
 {
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return mActiveSceneIndex;
     return mActiveSceneIndex + 1;
 }
 
@@ -1762,10 +1758,7 @@ void UBBoardController::lastWindowClosed()
 {
     if (!mCleanupDone)
     {
-        bool teacherGuideModified = false;
-        if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget())
-            teacherGuideModified = UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
-        if (selectedDocument()->pageCount() == 1 && (!mActiveScene || mActiveScene->isEmpty()) && !teacherGuideModified)
+        if (selectedDocument()->pageCount() == 1 && (!mActiveScene || mActiveScene->isEmpty()))
         {
             UBPersistenceManager::persistenceManager()->deleteDocument(selectedDocument());
         }
@@ -1860,7 +1853,7 @@ void UBBoardController::persistCurrentScene()
     if(UBPersistenceManager::persistenceManager()
             && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
-            && (mActiveScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified())))
+            && (mActiveScene->isModified()))
     {
         UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex);
         updatePage(mActiveSceneIndex);
@@ -1954,7 +1947,7 @@ void UBBoardController::notifyCache(bool visible)
 {
     if(visible)
         emit cacheEnabled();
-    
+
     mCacheWidgetIsEnabled = visible;
 }
 

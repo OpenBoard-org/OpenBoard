@@ -63,11 +63,6 @@
 #include "core/UBPersistenceManager.h"
 #include "core/UBApplication.h"
 
-#include "gui/UBTeacherGuideWidget.h"
-#include "gui/UBDockTeacherGuideWidget.h"
-
-#include "interfaces/IDataStorage.h"
-
 #include "document/UBDocumentContainer.h"
 
 #include "pdf/PDFRenderer.h"
@@ -91,8 +86,6 @@ const QString tGroup = "group";
 const QString tStrokeGroup = "strokeGroup";
 const QString tGroups = "groups";
 const QString aId = "id";
-
-QMap<QString,IDataStorage*> UBSvgSubsetAdaptor::additionalElementToStore;
 
 QString UBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
 {
@@ -228,17 +221,6 @@ void UBSvgSubsetAdaptor::setSceneUuid(UBDocumentProxy* proxy, const int pageInde
     }
 }
 
-bool UBSvgSubsetAdaptor::addElementToBeStored(QString domName, IDataStorage *dataStorageClass)
-{
-    if(domName.isEmpty() || additionalElementToStore.contains(domName)){
-        qWarning() << "Error adding the element that should persist";
-        return false;
-    }
-
-    additionalElementToStore.insert(domName,dataStorageClass);
-    return true;
-}
-
 QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVersion)
 {
     return mFileVersion >= 40200 ? UBSettings::uniboardDocumentNamespaceUri : sFormerUniboardDocumentNamespaceUri;
@@ -322,54 +304,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QBy
     UBSvgSubsetReader reader(proxy, pArray);
     return reader.loadScene();
 }
-
-
-QString UBSvgSubsetAdaptor::readTeacherGuideNode(int sceneIndex)
-{
-    QString result;
-
-    QString fileName = UBApplication::boardController->selectedDocument()->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sceneIndex);
-    QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
-    QByteArray fileByteArray=file.readAll();
-    file.close();
-    QXmlStreamReader mXmlReader(fileByteArray);
-
-    while (!mXmlReader.atEnd())
-    {
-        mXmlReader.readNext();
-        if (mXmlReader.isStartElement())
-        {
-            if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
-                result.clear();
-                result += "<teacherGuide version=\"" + mXmlReader.attributes().value("version").toString() + "\">";
-                result += "\n";
-            }
-            else if (mXmlReader.name() == "media" || mXmlReader.name() == "link" || mXmlReader.name() == "title" || mXmlReader.name() == "comment" || mXmlReader.name() == "action")
-            {
-                result += "<" + mXmlReader.name().toString() + " ";
-                foreach(QXmlStreamAttribute attribute, mXmlReader.attributes())
-                    result += attribute.name().toString() + "=\"" + attribute.value().toString() + "\" ";
-                result += " />\n";
-            }
-            else
-            {
-                // NOOP
-            }
-        }
-        else if (mXmlReader.isEndElement() && (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide")){
-            result += "</teacherGuide>";
-        }
-    }
-
-    if (mXmlReader.hasError())
-    {
-        qWarning() << "error parsing Sankore file " << mXmlReader.errorString();
-    }
-
-    return result;
-}
-
 
 UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy, const QByteArray& pXmlData)
     : mXmlReader(pXmlData)
@@ -1070,7 +1004,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
-    if (mScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()))
+    Q_UNUSED(pageIndex);
+    if (mScene->isModified())
     {
 
         //Creating dom structure to store information
@@ -1345,29 +1280,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             mXmlWriter.writeEndElement();
             groupHoldsInfo = false;
             openStroke = 0;
-        }
-
-        QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
-        QVector<tIDataStorage*> dataStorageItems;
-
-        if(elements.value("teacherGuide"))
-            dataStorageItems = elements.value("teacherGuide")->save(pageIndex);
-        foreach(tIDataStorage* eachItem, dataStorageItems){
-            if(eachItem->type == eElementType_START){
-                mXmlWriter.writeStartElement(eachItem->name);
-                foreach(QString key,eachItem->attributes.keys())
-                    mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
-            }
-            else if (eachItem->type == eElementType_END)
-                mXmlWriter.writeEndElement();
-            else if (eachItem->type == eElementType_UNIQUE){
-                mXmlWriter.writeStartElement(eachItem->name);
-                foreach(QString key,eachItem->attributes.keys())
-                    mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
-                mXmlWriter.writeEndElement();
-            }
-            else
-                qWarning() << "unknown type";
         }
 
         //writing group data

@@ -78,9 +78,6 @@ UBDocumentNavigator::~UBDocumentNavigator()
     }
 }
 
-#include "gui/UBDockTeacherGuideWidget.h"
-#include "gui/UBTeacherGuideWidget.h"
-
 /**
  * \brief Generate the thumbnails
  */
@@ -113,7 +110,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
         mScene->addItem(pixmapItem);
         mScene->addItem(labelItem);
     }
-    
+
     // Draw the items
     refreshScene();
 }
@@ -255,7 +252,7 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
         {
             // If we fall here we may have clicked on the label instead of the thumbnail
             UBThumbnailTextItem* pTextItem = dynamic_cast<UBThumbnailTextItem*>(pClickedItem);
-            if(NULL != pTextItem) 
+            if(NULL != pTextItem)
             {
                 for(int i = 0; i < mThumbsWithLabels.size(); i++)
                 {

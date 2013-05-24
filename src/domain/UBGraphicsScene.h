@@ -156,7 +156,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsMediaItem* addAudio(const QUrl& pAudioFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsSvgItem* addSvg(const QUrl& pSvgFileUrl, const QPointF& pPos = QPointF(0, 0), const QByteArray pData = QByteArray());
         UBGraphicsTextItem* addText(const QString& pString, const QPointF& pTopLeft = QPointF(0, 0));
-        UBGraphicsTextItem* textForObjectName(const QString& pString, const QString &objectName = "UBTGZeroPageSessionTitle");
 
         UBGraphicsTextItem*  addTextWithFont(const QString& pString, const QPointF& pTopLeft = QPointF(0, 0)
                 , int pointSize = -1, const QString& fontFamily = "", bool bold = false, bool italic = false);

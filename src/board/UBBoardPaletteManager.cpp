@@ -40,8 +40,6 @@
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBActionPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
-#include "gui/UBDockTeacherGuideWidget.h"
-
 
 #include "web/UBWebPage.h"
 #include "web/UBWebController.h"
@@ -92,7 +90,6 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpPageNavigWidget(NULL)
     , mpCachePropWidget(NULL)
     , mpDownloadWidget(NULL)
-    , mpTeacherGuideWidget(NULL)
     , mDownloadInProgress(false)
 {
     setupPalettes();
@@ -142,12 +139,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mpPageNavigWidget = new UBPageNavigationWidget();
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
-
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() || UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
-        mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
-        mLeftPalette->registerWidget(mpTeacherGuideWidget);
-        mLeftPalette->addTab(mpTeacherGuideWidget);
-    }
 
     mLeftPalette->connectSignals();
     mLeftPalette->showTabWidget(0);
