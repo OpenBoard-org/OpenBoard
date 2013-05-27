@@ -27,8 +27,6 @@
 #include <QtGui>
 #include <QtNetwork>
 
-//#define DOCPUBLICATION_URL     "http://planete.sankore.org/xwiki/bin/view/CreateResources/UniboardUpload?xpage=plain&outputSyntax=plain"
-
 typedef struct
 {
     QString title;
