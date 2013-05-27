@@ -88,7 +88,7 @@ class WBBrowserWindow : public QWidget
     Q_OBJECT;
 
     public:
-        WBBrowserWindow(QWidget *parent = 0, Ui::MainWindow* uniboardMainWindow = 0, bool isViewerWebInstance = false);
+        WBBrowserWindow(QWidget *parent = 0, Ui::MainWindow* uniboardMainWindow = 0);
         ~WBBrowserWindow();
         QSize sizeHint() const;
 
@@ -160,7 +160,6 @@ class WBBrowserWindow : public QWidget
 
         void setupMenu();
         void setupToolBar();
-        void setupToolBarForTutorial();
         void updateStatusbarActionText(bool visible);
 
         QToolBar *mWebToolBar;

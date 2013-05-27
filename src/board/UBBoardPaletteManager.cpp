@@ -177,14 +177,6 @@ void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMod
                     changeMode(eUBDockPaletteWidget_BOARD);
             }
             break;
-
-        case UBApplicationController::Tutorial:
-            {
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
-                    mKeyboardPalette->hide();
-            }
-            break;
-
         case UBApplicationController::Internet:
             changeMode(eUBDockPaletteWidget_WEB);
             break;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1342</width>
-    <height>334</height>
+    <height>223</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -168,44 +168,6 @@
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
    <addaction name="actionDesktop"/>
-   <addaction name="actionMenu"/>
-  </widget>
-  <widget class="QToolBar" name="tutorialToolBar">
-   <property name="contextMenuPolicy">
-    <enum>Qt::PreventContextMenu</enum>
-   </property>
-   <property name="windowTitle">
-    <string>Tutorial</string>
-   </property>
-   <property name="layoutDirection">
-    <enum>Qt::LeftToRight</enum>
-   </property>
-   <property name="movable">
-    <bool>false</bool>
-   </property>
-   <property name="allowedAreas">
-    <set>Qt::BottomToolBarArea|Qt::TopToolBarArea</set>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>48</width>
-     <height>32</height>
-    </size>
-   </property>
-   <property name="floatable">
-    <bool>false</bool>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>true</bool>
-   </attribute>
-   <addaction name="actionWebBack"/>
-   <addaction name="actionWebForward"/>
-   <addaction name="actionBoard"/>
-   <addaction name="actionWeb"/>
-   <addaction name="actionDocument"/>
    <addaction name="actionMenu"/>
   </widget>
   <action name="actionStylus">

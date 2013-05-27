@@ -335,7 +335,6 @@ void UBBoardController::setupToolbar()
     //-----------------------------------------------------------//
 
     UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->boardToolBar, mMainWindow->actionBoard);
-    UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->tutorialToolBar, mMainWindow->actionBoard);
 
     UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
@@ -343,7 +342,6 @@ void UBBoardController::setupToolbar()
 
     mMainWindow->webToolBar->hide();
     mMainWindow->documentToolBar->hide();
-    mMainWindow->tutorialToolBar->hide();
 
     connectToolbar();
     initToolbarTexts();

@@ -32,7 +32,7 @@ class UBWebToolsPalette : public UBActionPalette
     Q_OBJECT;
 
     public:
-        UBWebToolsPalette(QWidget *parent,bool tutorialMode);
+        UBWebToolsPalette(QWidget *parent);
         virtual ~UBWebToolsPalette();
 
 };

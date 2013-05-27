@@ -93,7 +93,7 @@ WBDownloadManager *WBBrowserWindow::sDownloadManager = 0;
 WBHistoryManager *WBBrowserWindow::sHistoryManager = 0;
 
 
-WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWindow, bool isViewerWebInstance)
+WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWindow)
         : QWidget(parent)
         , mWebToolBar(0)
         , mSearchToolBar(0)
@@ -106,11 +106,8 @@ WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWi
     defaultSettings->setAttribute(QWebSettings::PluginsEnabled, true);
 
     setupMenu();
-    if(!isViewerWebInstance)
-        setupToolBar();
-    else{
-        setupToolBarForTutorial();
-    }
+    setupToolBar();
+
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setSpacing(0);
@@ -125,9 +122,8 @@ WBBrowserWindow::WBBrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWi
 
     connect(mTabWidget, SIGNAL(setCurrentTitle(const QString &)), this, SLOT(slotUpdateWindowTitle(const QString &)));
 
-    if (!isViewerWebInstance) {
-        connect(mTabWidget, SIGNAL(loadProgress(int)), this, SLOT(slotLoadProgress(int)));
-    }
+    connect(mTabWidget, SIGNAL(loadProgress(int)), this, SLOT(slotLoadProgress(int)));
+
 
     connect(mTabWidget, SIGNAL(loadFinished(bool)), this, SIGNAL(activeViewPageChanged()));
 
@@ -223,7 +219,7 @@ void WBBrowserWindow::setupToolBar()
     mHistoryForwardMenu = new QMenu(this);
     connect(mHistoryForwardMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowForwardMenu()));
     connect(mHistoryForwardMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
-    
+
     foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebForward->associatedWidgets())
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
@@ -256,33 +252,6 @@ void WBBrowserWindow::setupToolBar()
 
     mWebToolBar->show();
 }
-
-void WBBrowserWindow::setupToolBarForTutorial()
-{
-    mWebToolBar = mUniboardMainWindow->tutorialToolBar;
-
-    mTabWidget->addWebAction(mUniboardMainWindow->actionWebBack, QWebPage::Back);
-    mTabWidget->addWebAction(mUniboardMainWindow->actionWebForward, QWebPage::Forward);
-
-    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebBack->associatedWidgets())
-    {
-        QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
-
-        if (tb && tb->menu())
-            tb->setMenu(NULL);
-    }
-
-    foreach (QWidget* menuWidget,  mUniboardMainWindow->actionWebForward->associatedWidgets())
-    {
-        QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
-
-        if (tb && tb->menu())
-            tb->setMenu(NULL);
-    }
-
-    mWebToolBar->show();
-}
-
 
 
 void WBBrowserWindow::adaptToolBar(bool wideRes)
@@ -579,7 +548,7 @@ void WBBrowserWindow::aboutToShowBackMenu()
     if (historyLimit < 0)
         historyLimit = 0;
 
-    for (int i = history->backItems(historyCount).count() - 1; i >= historyLimit; --i) 
+    for (int i = history->backItems(historyCount).count() - 1; i >= historyLimit; --i)
     {
         QWebHistoryItem item = history->backItems(historyCount).at(i);
 
@@ -613,7 +582,7 @@ void WBBrowserWindow::aboutToShowForwardMenu()
     if (historyLimit > UBSettings::settings()->historyLimit->get().toReal())
         historyLimit = UBSettings::settings()->historyLimit->get().toReal();
 
-    for (int i = 0; i < historyLimit; ++i) 
+    for (int i = 0; i < historyLimit; ++i)
     {
         QWebHistoryItem item = history->forwardItems(historyCount).at(i);
 
@@ -636,7 +605,7 @@ void WBBrowserWindow::aboutToShowForwardMenu()
 
 void WBBrowserWindow::openActionUrl(QAction *action)
 {
-    QWebHistory *history = currentTabWebView()->history();  
+    QWebHistory *history = currentTabWebView()->history();
 
     if (action->data() == "clear")
     {
@@ -646,7 +615,7 @@ void WBBrowserWindow::openActionUrl(QAction *action)
 
     int offset = action->data().toInt();
     if (offset < 0)
-        history->goToItem(history->backItems(-1*offset).first()); 
+        history->goToItem(history->backItems(-1*offset).first());
     else if (offset > 0)
-        history->goToItem(history->forwardItems(history->count() - offset + 1).back()); 
+        history->goToItem(history->forwardItems(history->count() - offset + 1).back());
  }
