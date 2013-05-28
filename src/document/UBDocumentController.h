@@ -59,10 +59,6 @@ class UBDocumentController : public UBDocumentContainer
         void deletePages(QList<QGraphicsItem*> itemsToDelete);
         int getSelectedItemIndex();
 
-        bool pageCanBeMovedUp(int page);
-        bool pageCanBeMovedDown(int page);
-        bool pageCanBeDuplicated(int page);
-        bool pageCanBeDeleted(int page);
         QString documentTrashGroupName(){ return mDocumentTrashGroupName;}
         QString defaultDocumentGroupName(){ return mDefaultDocumentGroupName;}
 

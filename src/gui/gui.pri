@@ -25,7 +25,6 @@ HEADERS += src/gui/UBThumbnailView.h \
     src/gui/UBActionPalette.h \
     src/gui/UBFavoriteToolPalette.h \
     src/gui/UBKeyboardPalette.h \
-    src/gui/UBNavigatorPalette.h \
     src/gui/UBDocumentNavigator.h \
     src/gui/UBDockPalette.h \
     src/gui/UBPropertyPalette.h \
@@ -68,7 +67,6 @@ SOURCES += src/gui/UBThumbnailView.cpp \
     src/gui/UBActionPalette.cpp \
     src/gui/UBFavoriteToolPalette.cpp \
     src/gui/UBKeyboardPalette.cpp \
-    src/gui/UBNavigatorPalette.cpp \
     src/gui/UBDocumentNavigator.cpp \
     src/gui/UBDockPalette.cpp \
     src/gui/UBPropertyPalette.cpp \

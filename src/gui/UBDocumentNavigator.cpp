@@ -100,7 +100,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
         UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(*pix, source->selectedDocument(), i);
 
-        QString label = pageIndex == 0 ? tr("Title page") : tr("Page %0").arg(pageIndex);
+        QString label = tr("Page %0").arg(pageIndex);
         UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(label);
 
         UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
@@ -138,9 +138,6 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
  */
 void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
 {
-    // Generate the new thumbnail
-    //UBGraphicsScene* pScene = UBApplication::boardController->activeScene();
-
     const QPixmap* pix = UBApplication::boardController->pageAt(iPage);
     UBSceneThumbnailNavigPixmap* newItem = new UBSceneThumbnailNavigPixmap(*pix, UBApplication::boardController->selectedDocument(), iPage);
 

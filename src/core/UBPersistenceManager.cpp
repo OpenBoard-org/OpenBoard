@@ -655,7 +655,6 @@ int UBPersistenceManager::sceneCount(const UBDocumentProxy* proxy)
 
     int pageIndex = 0;
     bool moreToProcess = true;
-    bool addedMissingZeroPage = false;
 
     while (moreToProcess)
     {
@@ -667,12 +666,6 @@ int UBPersistenceManager::sceneCount(const UBDocumentProxy* proxy)
             pageIndex++;
         else
             moreToProcess = false;
-    }
-
-    if(pageIndex == 1 && addedMissingZeroPage){
-        // increment is done only to check if there are other pages than the missing zero page
-        // This situation means -> no pages on the document
-        return 0;
     }
 
     return pageIndex;

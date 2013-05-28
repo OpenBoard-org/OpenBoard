@@ -103,8 +103,7 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
 
     foreach (QGraphicsItem* item, pGraphicsItems)
     {
-        if (item->scene() != &mThumbnailsScene)
-        {
+        if (item->scene() != &mThumbnailsScene){
             mThumbnailsScene.addItem(item);
         }
     }
@@ -767,7 +766,6 @@ UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBD
     , bCanDelete(false)
     , bCanMoveUp(false)
     , bCanMoveDown(false)
-    , bCanDuplicate(false)
 {
     if(0 <= UBDocumentContainer::pageFromSceneIndex(pSceneIndex)){
         setAcceptsHoverEvents(true);
@@ -783,7 +781,16 @@ UBSceneThumbnailNavigPixmap::~UBSceneThumbnailNavigPixmap()
 void UBSceneThumbnailNavigPixmap::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     event->accept();
-    updateButtonsState();
+    bButtonsVisible = true;
+    bCanDelete = true;
+    bCanMoveDown = false;
+    bCanMoveUp = false;
+    if(sceneIndex() < proxy()->pageCount() - 1)
+        bCanMoveDown = true;
+    if(sceneIndex() > 0)
+        bCanMoveUp = true;
+    if(proxy()->pageCount() == 1)
+        bCanDelete = false;
     update();
 }
 
@@ -806,10 +813,9 @@ void UBSceneThumbnailNavigPixmap::paint(QPainter *painter, const QStyleOptionGra
             painter->drawPixmap(0, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/close.svg"));
         else
             painter->drawPixmap(0, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/closeDisabled.svg"));
-        if(bCanDuplicate)
-            painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/duplicate.svg"));
-        else
-            painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/duplicateDisabled.svg"));
+
+        painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/duplicate.svg"));
+
         if(bCanMoveUp)
             painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUp.svg"));
         else
@@ -828,35 +834,15 @@ void UBSceneThumbnailNavigPixmap::mousePressEvent(QGraphicsSceneMouseEvent *even
     // Here we check the position of the click and verify if it has to trig an action or not.
     if(bCanDelete && p.x() >= 0 && p.x() <= BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
         deletePage();
-    if(bCanDuplicate && p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= 2*BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
+    if(p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= 2*BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
         duplicatePage();
+
     if(bCanMoveUp && p.x() >= 2*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 3*BUTTONSIZE + 2*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
         moveUpPage();
     if(bCanMoveDown && p.x() >= 3*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 4*BUTTONSIZE + 3*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
         moveDownPage();
 
     event->accept();
-}
-
-void UBSceneThumbnailNavigPixmap::updateButtonsState()
-{
-
-    bCanDelete = false;
-    bCanMoveUp = false;
-    bCanMoveDown = false;
-    bCanDuplicate = false;
-
-    if(proxy()){
-        int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneIndex());
-        UBDocumentController* documentController = UBApplication::documentController;
-        bCanDelete = documentController->pageCanBeDeleted(pageIndex);
-        bCanMoveUp = documentController->pageCanBeMovedUp(pageIndex);
-        bCanMoveDown = documentController->pageCanBeMovedDown(pageIndex);
-        bCanDuplicate = documentController->pageCanBeDuplicated(pageIndex);
-    }
-
-    if(bCanDelete || bCanMoveUp || bCanMoveDown || bCanDuplicate)
-        bButtonsVisible = true;
 }
 
 void UBSceneThumbnailNavigPixmap::deletePage()

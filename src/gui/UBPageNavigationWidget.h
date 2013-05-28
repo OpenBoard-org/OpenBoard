@@ -42,8 +42,6 @@ class UBPageNavigationWidget : public UBDockPaletteWidget
 public:
     UBPageNavigationWidget(QWidget* parent=0, const char* name="UBPageNavigationWidget");
     ~UBPageNavigationWidget();
-    //void setDocument(UBDocumentProxy* document);
-    void refresh();
 
     bool visibleInMode(eUBDockPaletteWidgetMode mode)
     {

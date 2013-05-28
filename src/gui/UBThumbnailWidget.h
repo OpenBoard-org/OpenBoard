@@ -311,7 +311,6 @@ class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
     private:
-        void updateButtonsState();
         void deletePage();
         void duplicatePage();
         void moveUpPage();
@@ -321,7 +320,6 @@ class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
         bool bCanDelete;
         bool bCanMoveUp;
         bool bCanMoveDown;
-        bool bCanDuplicate;
 };
 
 class UBThumbnailVideo : public UBThumbnailPixmap

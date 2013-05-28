@@ -318,10 +318,7 @@ void UBBoardPaletteManager::pagePaletteButtonReleased()
             mPagePalette = 0;
             QList<QAction*>pageActions;
             pageActions << UBApplication::mainWindow->actionNewPage;
-            UBBoardController* boardController = UBApplication::boardController;
-            if(UBApplication::documentController->pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(boardController->activeSceneIndex()))){
-                pageActions << UBApplication::mainWindow->actionDuplicatePage;
-            }
+            pageActions << UBApplication::mainWindow->actionDuplicatePage;
             pageActions << UBApplication::mainWindow->actionImportPage;
 
             mPagePalette = new UBActionPalette(pageActions, Qt::Horizontal , mContainer);

@@ -119,16 +119,6 @@ UBPageNavigationWidget::~UBPageNavigationWidget()
     }
 }
 
-
-/**
- * \brief Refresh the thumbnails widget
- */
-void UBPageNavigationWidget::refresh()
-{
-    // TOLIK!!!
-    // mNavigator->setDocument(UBApplication::boardController->activeDocument());
-}
-
 /**
  * \brief Notify a timer event
  * @param event as the timer event
@@ -145,9 +135,7 @@ void UBPageNavigationWidget::timerEvent(QTimerEvent *event)
 void UBPageNavigationWidget::updateTime()
 {
     if (mClock)
-    {
         mClock->setText(QLocale::system().toString (QTime::currentTime(), mTimeFormat));
-    }
 }
 
 /**
@@ -157,7 +145,7 @@ void UBPageNavigationWidget::updateTime()
  */
 void UBPageNavigationWidget::setPageNumber(int current, int total)
 {
-    mPageNbr->setText(QString("%1 / %2").arg(current).arg(UBDocumentContainer::sceneIndexFromPage(total)));
+    mPageNbr->setText(QString("%1 / %2").arg(current).arg(total));
 }
 
 /**
