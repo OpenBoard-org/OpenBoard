@@ -287,7 +287,7 @@ void UBDocumentThumbnailWidget::setDragEnabled(bool enabled)
 
 bool UBDocumentThumbnailWidget::dragEnabled() const
 {
-    return true;// mDragEnabled;
+    return mDragEnabled;
 }
 
 void UBDocumentThumbnailWidget::hightlightItem(int index)
