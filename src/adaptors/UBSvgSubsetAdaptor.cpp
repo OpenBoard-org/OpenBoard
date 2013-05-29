@@ -1336,17 +1336,18 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
         curGroupElement.setAttribute(aId, uuid);
         curParent->appendChild(curGroupElement);
 
+        qDebug() << groupItem->children().count();
+
         foreach (QGraphicsItem *item, groupItem->childItems()) {
             QUuid tmpUuid = UBGraphicsScene::getPersonalUuid(item);
             if (!tmpUuid.isNull()) {
                 if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count())
                     persistGroupToDom(item, curParent, groupDomDocument);
-            }
-            else {
-                QDomElement curSubElement = groupDomDocument->createElement(tElement);
-
-                curSubElement.setAttribute(aId, tmpUuid);
-                curGroupElement.appendChild(curSubElement);
+                else {
+                    QDomElement curSubElement = groupDomDocument->createElement(tElement);
+                    curSubElement.setAttribute(aId, tmpUuid);
+                    curGroupElement.appendChild(curSubElement);
+                }
             }
         }
     }
