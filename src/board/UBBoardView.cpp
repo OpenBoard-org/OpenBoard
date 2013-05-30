@@ -558,10 +558,6 @@ Here we determines cases when items should to get mouse press event at pressing 
         if (currentTool != UBStylusTool::Selector)
             return false;
         break;
-    case UBGraphicsItemType::StrokeItemType:
-        if (currentTool == UBStylusTool::Play)
-            return true;
-        break;
     case UBGraphicsGroupContainerItem::Type:
         // Groups shouldn't reacts on any presses and moves for Play tool.
         if(currentTool == UBStylusTool::Play)
@@ -1201,6 +1197,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
             movingItem = NULL;
             bReleaseIsNeed = false;
         }
+
         if (mWidgetMoved)
         {
             mWidgetMoved = false;
