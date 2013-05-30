@@ -2174,8 +2174,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
 
     QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
 
-    if (!ubZValue.isNull())
-        UBGraphicsItem::assignZValue(gItem, ubZValue.toString().toFloat());
+    if (!ubZValue.isNull()){
+        // FIX
+        // In the firsts zvalue implemenations values outside the boudaries have been used.
+        // No boundaries specified on documentation but to small values are not correctly handled.
+        qreal zValue = ubZValue.toString().toFloat();
+        while(zValue < -999999) zValue /= 10.;
+        UBGraphicsItem::assignZValue(gItem, zValue);
+    }
 
     UBItem* ubItem = dynamic_cast<UBItem*>(gItem);
 
