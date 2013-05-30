@@ -90,6 +90,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         virtual void clearSource(){;}
         virtual void setUuid(const QUuid &pUuid);
+        void setHtml(const QString &text);
 
     signals:
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
@@ -107,7 +108,6 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    private:
         qreal mTextHeight;
 
         int mMultiClickState;

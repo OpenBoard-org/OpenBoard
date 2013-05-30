@@ -89,6 +89,8 @@ QVariant UBGraphicsTextItem::itemChange(GraphicsItemChange change, const QVarian
 
 void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    setTextInteractionFlags(Qt::TextEditorInteraction);
+
     // scene()->itemAt(pos) returns 0 if pos is not over text, but over text item, but mouse press comes.
     // It is a cludge...
     if (UBStylusTool::Play == UBDrawingController::drawingController()->stylusTool())
@@ -145,7 +147,6 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     if (mMultiClickState == 1)
     {
-//        setTextInteractionFlags(Qt::TextEditorInteraction);
         QGraphicsTextItem::mousePressEvent(event);
         setFocus();
     }
@@ -354,4 +355,10 @@ void UBGraphicsTextItem::undoCommandAdded()
 void UBGraphicsTextItem::documentSizeChanged(const QSizeF & newSize)
 {
     resize(newSize.width(), newSize.height());
+}
+
+void UBGraphicsTextItem::setHtml(const QString &text)
+{
+    QGraphicsTextItem::setHtml(text);
+    setTextInteractionFlags(Qt::NoTextInteraction);
 }

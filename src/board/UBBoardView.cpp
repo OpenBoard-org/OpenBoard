@@ -1288,6 +1288,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
             UBDrawingController::drawingController ()->setStylusTool (UBStylusTool::Selector);
 
+            textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
             textItem->setSelected (true);
             textItem->setFocus();
         }
