@@ -550,7 +550,7 @@ Here we determines cases when items should to get mouse press event at pressing 
     case UBGraphicsPixmapItem::Type:
     case UBGraphicsTextItem::Type:
         if (currentTool == UBStylusTool::Play)
-            return true;
+            return false;
         if ((currentTool == UBStylusTool::Selector) && item->isSelected())
             return true;
         if ((currentTool == UBStylusTool::Selector) && item->parentItem() && item->parentItem()->isSelected())
