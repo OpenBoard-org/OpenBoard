@@ -55,6 +55,7 @@ class UBMagnifier;
 class UBGraphicsCache;
 class UBGraphicsGroupContainerItem;
 class UBSelectionFrame;
+class UBBoardView;
 
 const double PI = 4.0 * atan(1.0);
 
@@ -309,12 +310,12 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         static QUuid getPersonalUuid(QGraphicsItem *item);
 
         UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
-        void setMultipleSelectionProcess(bool pEnabled) {mMultipleSelectionProcess = pEnabled;}
-        bool multipleSelectionProcess() const {return mMultipleSelectionProcess;}
         void clearSelectionFrame();
-        void updateMultipleSelectionFrame();
+        UBBoardView *controlView();
+
 
 public slots:
+        void updateSelectionFrame();
         void initStroke();
         void hideEraser();
 
@@ -430,7 +431,6 @@ public slots:
 
         bool mDrawWithCompass;
         UBGraphicsPolygonItem *mCurrentPolygon;
-        bool mMultipleSelectionProcess;
         UBSelectionFrame *mSelectionFrame;
 };
 

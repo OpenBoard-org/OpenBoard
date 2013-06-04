@@ -23,6 +23,8 @@
 #ifndef UBBOARDVIEW_H_
 #define UBBOARDVIEW_H_
 
+#define CONTROLVIEW_OBJ_NAME "ControlView"
+
 #include <QtGui>
 #include "core/UB.h"
 #include "domain/UBGraphicsDelegateFrame.h"
@@ -64,6 +66,7 @@ class UBBoardView : public QGraphicsView
         void hidden();
         void shown();
         void clickOnBoard();
+        void mouseReleased();
 
     protected:
 

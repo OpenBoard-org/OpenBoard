@@ -1023,13 +1023,10 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 //                mUBRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
 //                mUBRubberBand->show();
 //                scene()->updateMultipleSelectionFrame();
-                scene()->clearSelectionFrame();
             }
 
             if(mUBRubberBand) {
                 mUBRubberBand->hide();
-                scene()->setMultipleSelectionProcess(false);
-
             }
 
             handleItemMousePress(event);
@@ -1077,7 +1074,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             mRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
             mRubberBand->show ();
             mIsCreatingSceneGrabZone = true;
-            scene()->setMultipleSelectionProcess(true);
 
             event->accept ();
             break;
@@ -1102,12 +1098,12 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 void
 UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
-    static QTime lastCallTime;
-    if (!lastCallTime.isNull()) {
-        qDebug() << "time interval is " << lastCallTime.msecsTo(QTime::currentTime());
-    }
+//    static QTime lastCallTime;
+//    if (!lastCallTime.isNull()) {
+//        qDebug() << "time interval is " << lastCallTime.msecsTo(QTime::currentTime());
+//    }
 
-  QTime mouseMoveTime = QTime::currentTime();
+//  QTime mouseMoveTime = QTime::currentTime();
   if(!mIsDragInProgress
           && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())) {
       qDebug() << "mouse move event canceled";
@@ -1165,23 +1161,21 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
 //          mUBRubberBand->setGeometry (QRect (mMouseDownPos, QSize ()));
           mUBRubberBand->setGeometry(bandRect);
           mUBRubberBand->show();
-          scene()->setMultipleSelectionProcess(true);
 
-
-          QTime startTime = QTime::currentTime();
-          QTime testTime = QTime::currentTime();
+//          QTime startTime = QTime::currentTime();
+//          QTime testTime = QTime::currentTime();
           QList<QGraphicsItem *> rubberItems = items(bandRect);
-          qDebug() << "==================";
-          qDebug() << "| ====rubber items" << testTime.msecsTo(QTime::currentTime());
-          testTime = QTime::currentTime();
+//          qDebug() << "==================";
+//          qDebug() << "| ====rubber items" << testTime.msecsTo(QTime::currentTime());
+//          testTime = QTime::currentTime();
           foreach (QGraphicsItem *item, mJustSelectedItems) {
               if (!rubberItems.contains(item)) {
                   item->setSelected(false);
                   mJustSelectedItems.remove(item);
               }
           }
-          qDebug() << "| ===foreach length" << testTime.msecsTo(QTime::currentTime());
-          testTime = QTime::currentTime();
+//          qDebug() << "| ===foreach length" << testTime.msecsTo(QTime::currentTime());
+//          testTime = QTime::currentTime();
 
           int counter = 0;
           if (currentTool == UBStylusTool::Selector) {
@@ -1201,15 +1195,15 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
                           item->setSelected(true);
                           mJustSelectedItems.insert(item);
                       }
-                      item->setSelected(true);
                   }
               }
           }
 
-          qDebug() << "| ==selected items count" << counter << endl
-                   << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << endl
-                   << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << endl
-                   << "==================";
+//          qDebug() << "| ==selected items count" << counter << endl
+//                   << "| ==selection time" << testTime.msecsTo(QTime::currentTime()) << endl
+//                   << "| =elapsed time " << startTime.msecsTo(QTime::currentTime()) << endl
+//                   << "==================";
+//          QCoreApplication::removePostedEvents(scene(), 0);
       }
       handleItemMouseMove(event);
   } break;
@@ -1233,8 +1227,8 @@ UBBoardView::mouseMoveEvent (QMouseEvent *event)
       event->accept ();
    }
 
-  qDebug() << "mouse move time" << mouseMoveTime.msecsTo(QTime::currentTime());
-  lastCallTime = QTime::currentTime();
+//  qDebug() << "mouse move time" << mouseMoveTime.msecsTo(QTime::currentTime());
+//  lastCallTime = QTime::currentTime();
 }
 
 void
@@ -1242,10 +1236,10 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-  setToolCursor (currentTool);
+     setToolCursor (currentTool);
   // first/ propagate device release to the scene
-  if (scene ())
-    scene ()->inputDeviceRelease ();
+  if (scene())
+    scene()->inputDeviceRelease();
 
   if (currentTool == UBStylusTool::Selector)
   {
@@ -1312,8 +1306,6 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
       if (mUBRubberBand && mUBRubberBand->isVisible()) {
           mUBRubberBand->hide();
-          scene()->setMultipleSelectionProcess(false);
-          scene()->updateMultipleSelectionFrame();
       }
 
       if (bReleaseIsNeed)
@@ -1349,8 +1341,6 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     {
       if (mRubberBand) {
         mRubberBand->hide ();
-        scene()->setMultipleSelectionProcess(false);
-        scene()->updateMultipleSelectionFrame();
       }
 
 
@@ -1377,7 +1367,6 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     {
       if (mRubberBand) {
         mRubberBand->hide ();
-        scene()->setMultipleSelectionProcess(false);
       }
 
       if (scene () && mRubberBand && mIsCreatingSceneGrabZone && mRubberBand->geometry ().width () > 16)
@@ -1412,6 +1401,8 @@ UBBoardView::mouseReleaseEvent (QMouseEvent *event)
   movingItem = NULL;
 
   mLongPressTimer.stop();
+
+   emit mouseReleased();
 }
 
 void

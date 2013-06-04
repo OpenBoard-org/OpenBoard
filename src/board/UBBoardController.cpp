@@ -179,6 +179,7 @@ void UBBoardController::setupViews()
     mControlLayout->setContentsMargins(0, 0, 0, 0);
 
     mControlView = new UBBoardView(this, mControlContainer, true, false);
+    mControlView->setObjectName(CONTROLVIEW_OBJ_NAME);
     mControlView->setInteractive(true);
     mControlView->setMouseTracking(true);
 
@@ -1514,6 +1515,8 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         updateSystemScaleFactor();
 
         mControlView->setScene(mActiveScene);
+        disconnect(mControlView, SIGNAL(mouseReleased()), mActiveScene, SLOT(updateSelectionFrame()));
+        connect(mControlView, SIGNAL(mouseReleased()), mActiveScene, SLOT(updateSelectionFrame()));
         mDisplayView->setScene(mActiveScene);
         mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
         pDocumentProxy->setDefaultDocumentSize(mActiveScene->nominalSize());

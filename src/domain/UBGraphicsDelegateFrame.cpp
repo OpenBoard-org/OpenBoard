@@ -238,9 +238,8 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     setCursorFromAngle(QString::number((int)mAngle % 360));
     event->accept();
 
-    if (moving())
-        prepareFramesToMove(getLinkedFrames());
-
+//    if (moving())
+//        prepareFramesToMove(getLinkedFrames());
 }
 
 void UBGraphicsDelegateFrame::setCursorFromAngle(QString angle)
@@ -395,8 +394,10 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         return;
 
     QLineF move = QLineF(mStartingPoint, event->scenePos());
-    qreal moveX = move.length() * cos((move.angle() - mAngle) * PI / 180);
-    qreal moveY = -move.length() * sin((move.angle() - mAngle) * PI / 180);
+//    qreal moveX = move.length() * cos((move.angle() - mAngle) * PI / 180);
+//    qreal moveY = -move.length() * sin((move.angle() - mAngle) * PI / 180);
+    qreal moveX = (event->pos() - mStartingPoint).x();
+    qreal moveY = (event->pos() - mStartingPoint).y();
     qreal width = delegated()->boundingRect().width() * mTotalScaleX;
     qreal height = delegated()->boundingRect().height() * mTotalScaleY;
 

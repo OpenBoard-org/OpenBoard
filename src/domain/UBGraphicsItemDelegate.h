@@ -29,7 +29,7 @@
         if (Scene) {                   \
             Scene->removeItem(Object); \
         }                              \
-        delete Object;                 \
+        Object->deleteLater();         \
         Object = 0;                    \
     }                                  \
 
@@ -231,6 +231,7 @@ class UBGraphicsItemDelegate : public QObject
         void init();
         virtual void createControls();
         virtual void freeControls();
+        virtual void showControls();
         virtual bool controlsExist() const;
 
         virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);

@@ -252,6 +252,12 @@ void UBGraphicsItemDelegate::freeControls()
     freeButtons();
 }
 
+void UBGraphicsItemDelegate::showControls()
+{
+    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+    positionHandles();
+}
+
 bool UBGraphicsItemDelegate::controlsExist() const
 {
     return mFrame
@@ -278,14 +284,9 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
     switch (static_cast<int>(change)) {
 
     case QGraphicsItem::ItemSelectedHasChanged : {
-        if (ubScene && !ubScene->multipleSelectionProcess()) {
+        if (ubScene) {
             if (value.toBool()) { //selected(true)
-                if (!controlsExist()) {
-                    createControls();
-                    mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-                    positionHandles();
-                    ubScene->setSelectedZLevel(delegated());
-                }
+                ubScene->setSelectedZLevel(delegated());
             } else {
                 ubScene->setOwnZlevel(delegated());
                 freeControls();
@@ -297,6 +298,9 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
     case QGraphicsItem::ItemPositionHasChanged :
     case QGraphicsItem::ItemTransformHasChanged :
     case QGraphicsItem::ItemZValueHasChanged :
+        if (!controlsExist()) {
+            break;
+        }
         mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
         positionHandles();
         if (ubScene) {

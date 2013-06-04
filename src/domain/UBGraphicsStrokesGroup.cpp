@@ -187,8 +187,9 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
     }
     styleOption.state &= ~QStyle::State_Selected;
     QGraphicsItemGroup::paint(painter, &styleOption, widget);
-    if (selectedState) {
+    if (selectedState && !Delegate()->controlsExist()) {
         painter->save();
+        painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(0x88, 0x88, 0x88, 0x77));
         painter->drawRect(boundingRect());
         painter->restore();

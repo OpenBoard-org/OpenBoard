@@ -288,7 +288,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mZLayerController(new UBZLayerController(this))
     , mpLastPolygon(NULL)
     , mCurrentPolygon(0)
-    , mMultipleSelectionProcess(false)
     , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
@@ -1041,20 +1040,50 @@ void UBGraphicsScene::clearSelectionFrame()
     }
 }
 
-void UBGraphicsScene::updateMultipleSelectionFrame()
+UBBoardView *UBGraphicsScene::controlView()
+{
+    UBBoardView *result = 0;
+    foreach (QGraphicsView *view, views()) {
+        if (view->objectName() == CONTROLVIEW_OBJ_NAME) {
+            result = static_cast<UBBoardView*>(view);
+        }
+    }
+
+    return result;
+}
+
+void UBGraphicsScene::updateSelectionFrame()
 {
     qDebug() << "selected item count" << selectedItems().count();
-    QList<QGraphicsItem*> selItems = selectedItems();
+//    if (!mMultipleSelectionProcess) {
+//        return;
+//    }
+
     if (!mSelectionFrame) {
         mSelectionFrame = new UBSelectionFrame();
         addItem(mSelectionFrame);
     }
 
-    mSelectionFrame->setEnclosedItems(selItems);
-    if (!mSelectionFrame->isEmpty()) {
-        mSelectionFrame->setVisible(true);
-    } else {
+    QList<QGraphicsItem*> selItems = selectedItems();
+    switch (selItems.count()) {
+    case 0 : {
         mSelectionFrame->setVisible(false);
+        mSelectionFrame->setEnclosedItems(selItems);
+    } break;
+    case 1: {
+        mSelectionFrame->setVisible(false);
+        mSelectionFrame->setEnclosedItems(QList<QGraphicsItem*>());
+
+        UBGraphicsItemDelegate *itemDelegate = UBGraphicsItem::Delegate(selItems.first());
+        itemDelegate->createControls();
+        selItems.first()->setVisible(true);
+        itemDelegate->showControls();
+
+    } break;
+    default: {
+        mSelectionFrame->setVisible(true);
+        mSelectionFrame->setEnclosedItems(selItems);
+    } break;
     }
 }
 
